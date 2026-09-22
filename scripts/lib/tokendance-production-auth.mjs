@@ -15,11 +15,12 @@ const localCookie = (value, maxAge = lifetimeMs / 1000) => `${cookieName}=${valu
 // access are never copied to the preview. Only an opaque, HttpOnly handle reaches
 // the browser. The upstream cookie jar is encrypted at rest and revalidated on
 // every local API request (no trusting a client-supplied user ID or cookie cache).
-export async function createProductionAuthBridge({ db, secret, apiBase, frontendOrigins, fetcher = fetch, now = () => Date.now() }) {
+export async function createProductionAuthBridge({ db, secret, apiBase, frontendOrigins, previewKind = 'tokendance', fetcher = fetch, now = () => Date.now() }) {
   const key = Buffer.from(secret, 'base64');
   if (key.length !== 32) throw new Error('Local auth encryption key must contain 32 bytes');
   const apiOrigin = new URL(apiBase).origin;
-  if (apiOrigin !== 'http://127.0.0.1:8791') throw new Error('Production auth bridge must bind to its fixed loopback endpoint');
+  const expectedOrigin = { tokendance: 'http://127.0.0.1:8791', figure: 'http://127.0.0.1:8793' }[previewKind];
+  if (!expectedOrigin || apiOrigin !== expectedOrigin) throw new Error('Production auth bridge must bind to its fixed loopback endpoint');
   const origins = new Set(frontendOrigins);
   const sessions = db.collection('production_auth_preview_sessions');
   await sessions.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });

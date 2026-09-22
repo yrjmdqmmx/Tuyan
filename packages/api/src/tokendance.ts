@@ -92,12 +92,13 @@ export function tokenDanceModel(model: string, role: 'main' | 'vision' | 'image'
   return entry
 }
 
-export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true) {
+export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true, maxOutputTokens?: number) {
   tokenDanceModel(model, images.length ? 'vision' : 'main')
+  if (maxOutputTokens !== undefined && (!Number.isInteger(maxOutputTokens) || maxOutputTokens < 1 || maxOutputTokens > 16384)) throw tokenDanceInputError('文字输出上限必须是 1–16384 的整数。')
   const limit = referenceSubmissionPolicy('tokendance', model).maxCount
   if (images.length > limit) throw tokenDanceInputError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
   for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw tokenDanceInputError('观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
-  return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream }
+  return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream, ...(maxOutputTokens === undefined ? {} : { max_tokens: maxOutputTokens }) }
 }
 
 export type TokenDanceCallInfo = { channel: 'tokendance'; requestedModel: string; actualModel: string | null; requestId: string | null; protocol: string; supplier: null; routing: 'selected-model-auto-provider'; usage?: unknown }
@@ -106,8 +107,8 @@ export function tokenDanceCallInfo(response: Response, requestedModel: string, a
   return { channel: 'tokendance', requestedModel, actualModel: safeId(actual?.model), requestId: safeId(response.headers.get('x-request-id') || response.headers.get('request-id') || actual?.id), protocol, supplier: null, routing: 'selected-model-auto-provider' }
 }
 
-export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: string, system: string, user: string, images: { url: string }[], signal?: AbortSignal) {
-  const response = await tokenDanceResponse(fetcher, '/gateway/v1/chat/completions', key, tokenDanceChatBody(model, system, user, images), signal)
+export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: string, system: string, user: string, images: { url: string }[], signal?: AbortSignal, maxOutputTokens?: number) {
+  const response = await tokenDanceResponse(fetcher, '/gateway/v1/chat/completions', key, tokenDanceChatBody(model, system, user, images, true, maxOutputTokens), signal)
   const type = response.headers.get('content-type') || ''
   if (!type.includes('text/event-stream')) {
     const data = await tokenDanceJson(response)

@@ -449,3 +449,17 @@ test('deterministic reference validation never hides an earlier uncertain provid
   const job = await f.db.collection('paperbanana_jobs').findOne({_id:task.jobId})
   assert.equal(job.recovery.action,'review_request');assert.equal(job.recovery.canResume,false)
 })
+
+test('optional text output budget is bounded before transport and absent for unchanged workbench requests', async () => {
+  assert.equal('max_tokens' in tokenDanceChatBody('qwen3.8-flash', 'system', 'user'), false)
+  assert.equal(tokenDanceChatBody('qwen3.8-flash', 'system', 'user', [], true, 4096).max_tokens, 4096)
+  for (const limit of [0, -1, 1.1, 16385, NaN, Infinity]) assert.throws(() => tokenDanceChatBody('qwen3.8-flash', 'system', 'user', [], true, limit), (error: any) => error.requestState === 'not_sent')
+  let calls = 0
+  const fetcher: typeof fetch = async (_url, options) => {
+    calls++; assert.equal(JSON.parse(String(options?.body)).max_tokens, 4096)
+    return Response.json({ id: 'bounded-call', model: 'qwen3.8-flash', choices: [{ message: { content: 'bounded output' } }] })
+  }
+  assert.equal((await tokenDanceChat(fetcher, 'qwen3.8-flash', 'fixture-key', 'system', 'user', [], undefined, 4096)).text, 'bounded output')
+  await assert.rejects(tokenDanceChat(fetcher, 'qwen3.8-flash', 'fixture-key', 'system', 'user', [], undefined, 0), (error: any) => error.requestState === 'not_sent')
+  assert.equal(calls, 1)
+})

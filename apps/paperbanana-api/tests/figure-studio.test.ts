@@ -42,12 +42,12 @@ test('model success and invalid JSON each make one call; invalid output never cl
   assert.equal(failed.code, 422); assert.equal(failed.requestState, 'unknown'); assert.equal(failed.billingStatus, 'unconfirmed'); assert.equal(calls, 2)
 })
 
-test('local validation rejects missing credentials, managed/custom providers, oversized material and stale edits before model', async () => {
+test('local validation rejects missing credentials, invalid custom routes, oversized material and stale edits before model', async () => {
   let calls = 0
   const service = createFigureStudioService({ modelText: async () => { calls++; return '{}' } })
   for (const request of [
     { action: 'figureStudioPlan', materials: 'content', ...native, apiKeys: {} },
-    ...['tokendance', 'custom'].map(provider => ({ action: 'figureStudioPlan', materials: 'content', mainRoute: { accessProvider: provider, modelId: 'any' }, apiKeys: { [provider]: 'forged' } })),
+    ...['custom'].map(provider => ({ action: 'figureStudioPlan', materials: 'content', mainRoute: { accessProvider: provider, modelId: 'any' }, apiKeys: { [provider]: 'forged' } })),
     { action: 'figureStudioPlan', materials: 'x'.repeat(24_001), ...native },
     { action: 'figureStudioEdit', document: document(), instruction: '放大标签', objectIds: ['label-a'], baseRevision: 1, ...native },
   ]) {

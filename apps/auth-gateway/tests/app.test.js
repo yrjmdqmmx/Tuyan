@@ -345,7 +345,7 @@ test('maintenance blocks optimizeInputs before it reaches the backend', async ()
 test('Figure Studio requires login, strips forged identity/unused keys and asserts the session over trusted transport', async () => {
   const backend = fakeBackend();
   await withApp({ backend }, async ({ baseUrl }) => {
-    for (const action of ['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport']) {
+    for (const action of ['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport', 'figureStudioOperation', 'figureStudioResume']) {
       assert.equal((await post(baseUrl, { action, userId: 'forged' }, { 'x-paperbanana-auth-user-id': 'forged' })).status, 401);
     }
     assert.equal(backend.calls.length, 0);
@@ -353,6 +353,28 @@ test('Figure Studio requires login, strips forged identity/unused keys and asser
     assert.equal(response.status, 200); assert.equal(response.headers.get('cache-control'), 'no-store');
     assert.deepEqual(backend.calls[0].body, { action: 'figureStudioPlan', materials: 'source', mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' }, apiKeys: { openai: 'selected-key' } });
     assert.deepEqual(backend.calls[0].options, { authUserId: 'actual-user', timeoutMs: 55_000 });
+  });
+});
+
+test('Figure operation transport preserves immutable identity and custom binding, strips managed keys and keeps query read-only', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com' };
+    const documentContext = { id: 'source', revision: 2, sha256: 'a'.repeat(64) };
+    const custom = { version: 1, connectionId: 'connection', protocol: 'openai-chat', baseUrl: 'https://example.com/v1', auth: 'bearer' };
+    await post(baseUrl, { action: 'figureStudioPlan', requestId: 'figure-request-0001', documentContext, materials: 'source', mainRoute: { accessProvider: 'custom', modelId: 'exact-model', custom }, apiKeys: { custom: 'bound-envelope', tokendance: 'forged' } }, headers);
+    assert.deepEqual(backend.calls[0].body, { action: 'figureStudioPlan', requestId: 'figure-request-0001', documentContext, materials: 'source', mainRoute: { accessProvider: 'custom', modelId: 'exact-model', custom }, apiKeys: { custom: 'bound-envelope' } });
+    await post(baseUrl, { action: 'figureStudioPlan', requestId: 'figure-request-0002', documentContext, materials: 'source', mainRoute: { accessProvider: 'tokendance', modelId: 'exact-model' }, apiKeys: { tokendance: 'forged', openai: 'unneeded' } }, headers);
+    assert.deepEqual(backend.calls[1].body.apiKeys, {});
+    await post(baseUrl, { action: 'figureStudioOperation', requestId: 'figure-request-0001', apiKeys: { custom: 'must-not-forward' }, document: { forged: true }, userId: 'forged' }, headers);
+    assert.deepEqual(backend.calls[2].body, { action: 'figureStudioOperation', requestId: 'figure-request-0001' });
+    await post(baseUrl, { action: 'figureStudioResume', requestId: 'figure-request-0001', apiKeys: { custom: 'new-bound-key', tokendance: 'forged' }, materials: 'cannot-replace-input' }, headers);
+    assert.deepEqual(backend.calls[3].body, { action: 'figureStudioResume', requestId: 'figure-request-0001', apiKeys: { custom: 'new-bound-key' } });
+  });
+  await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com' };
+    assert.equal((await post(baseUrl, { action: 'figureStudioOperation', requestId: 'figure-request-0001' }, headers)).status, 200);
+    assert.equal((await post(baseUrl, { action: 'figureStudioResume', requestId: 'figure-request-0001' }, headers)).status, 503);
   });
 });
 

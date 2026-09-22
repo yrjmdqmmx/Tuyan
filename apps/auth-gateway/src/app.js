@@ -34,7 +34,7 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkPromptDecision',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
-const FIGURE_STUDIO_ACTIONS = new Set(['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport']);
+const FIGURE_STUDIO_ACTIONS = new Set(['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport', 'figureStudioOperation', 'figureStudioResume']);
 const MAINTENANCE_ACTIONS = new Set([
   'tokenDanceResume', 'providerResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
@@ -44,7 +44,7 @@ const MAINTENANCE_ACTIONS = new Set([
   'abortReferenceUpload',
   'providerAccountCatalog', 'universalApiCheck',
   'optimizeInputs',
-  'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport',
+  'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport', 'figureStudioResume',
   'submitFeedback',
   'benchmarkPromptSubmission',
   ...ADMIN_MUTATING_ACTIONS,
@@ -580,12 +580,16 @@ function normalizeFigureStudioBody(body) {
   const action = body.action;
   if (action === 'figureStudioCapabilities') return { action };
   if (action === 'figureStudioExport') return { action, document: body.document, format: body.format };
+  if (action === 'figureStudioOperation') return { action, requestId: body.requestId };
+  if (action === 'figureStudioResume') return { action, requestId: body.requestId, ...(typeof body.apiKeys?.custom === 'string' ? { apiKeys: { custom: body.apiKeys.custom } } : {}) };
   const provider = body.mainRoute?.accessProvider;
   return {
     action,
+    ...(body.requestId !== undefined ? { requestId: body.requestId } : {}),
+    ...(body.documentContext !== undefined ? { documentContext: { id: body.documentContext?.id, revision: body.documentContext?.revision, sha256: body.documentContext?.sha256 } } : {}),
     ...(action === 'figureStudioPlan' ? { materials: body.materials } : { document: body.document, instruction: body.instruction, objectIds: body.objectIds, baseRevision: body.baseRevision }),
-    mainRoute: { accessProvider: provider, modelId: body.mainRoute?.modelId },
-    apiKeys: typeof provider === 'string' && typeof body.apiKeys?.[provider] === 'string' ? { [provider]: body.apiKeys[provider] } : {},
+    mainRoute: { accessProvider: provider, modelId: body.mainRoute?.modelId, ...(provider === 'custom' ? { custom: body.mainRoute.custom } : {}) },
+    apiKeys: typeof provider === 'string' && provider !== 'tokendance' && typeof body.apiKeys?.[provider] === 'string' ? { [provider]: body.apiKeys[provider] } : {},
     ...(body.providerRegions ? { providerRegions: { minimax: body.providerRegions.minimax } } : {}),
   };
 }

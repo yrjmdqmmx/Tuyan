@@ -7,6 +7,14 @@ const apiBase = 'http://127.0.0.1:8791', origin = 'http://127.0.0.1:5173';
 const upstreamSecret = 'fixture-upstream-session-only';
 const upstreamCookie = '__Secure-paperbanana.session_token=' + upstreamSecret + '; Path=/; Domain=.paperbanana.asia; HttpOnly; Secure; SameSite=Lax';
 const sessionData = { user: { id: 'real-user-id', email: 'fixture@example.test' }, session: { id: 'session-id', token: upstreamSecret, userId: 'real-user-id', ipAddress: 'private-ip', userAgent: 'private-agent' } };
+
+test('figure preview uses its own fixed loopback endpoint without allowing arbitrary hosts or ports', async () => {
+  const options = { db: database(), secret: randomBytes(32).toString('base64'), frontendOrigins: ['http://127.0.0.1:5290'], previewKind: 'figure' };
+  await createProductionAuthBridge({ ...options, apiBase: 'http://127.0.0.1:8793' });
+  for (const apiBase of ['http://0.0.0.0:8793','http://127.0.0.1:8791','https://evil.test:8793','http://127.0.0.1:9999']) {
+    await assert.rejects(createProductionAuthBridge({ ...options, apiBase }), /fixed loopback/);
+  }
+});
 function database() {
   const rows = new Map();
   const match = (row, q) => row && (q.revision === undefined || row.revision === q.revision) && (!q.expiresAt || row.expiresAt > q.expiresAt.$gt);

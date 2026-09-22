@@ -49,6 +49,7 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build
       - run: pnpm --filter @paperbanana/benchmark-core test
+      - run: pnpm --filter @paperbanana/figure-core test
       - run: pnpm --filter @paperbanana/benchmark-core check
       - run: pnpm --filter @paperbanana/benchmark-worker test
       - run: pnpm --filter @paperbanana/benchmark-worker check
@@ -82,6 +83,24 @@ jobs:
           push: false
           build-args: |
             PAPERBANANA_CODE_SHA=${{ github.sha }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/paperbanana-api/Dockerfile
+          target: figure-export-smoke
+          platforms: linux/amd64
+          push: false
+          load: true
+          tags: paperbanana-figure-export-smoke:ci
+          build-args: |
+            PAPERBANANA_CODE_SHA=${{ github.sha }}
+      - name: Verify real Figure export runtime under production resource limits
+        run: |
+          docker run --rm --platform linux/amd64 --read-only --network none \
+            --cap-drop ALL --security-opt no-new-privileges \
+            --tmpfs /tmp:rw,noexec,nosuid,nodev,size=128m,uid=1000,gid=1000,mode=1777 \
+            --cpus 1.5 --memory 3g --pids-limit 192 \
+            paperbanana-figure-export-smoke:ci
       - uses: docker/build-push-action@v6
         with:
           context: .

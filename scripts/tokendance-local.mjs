@@ -15,13 +15,22 @@ import { createBackendClient } from '../apps/auth-gateway/src/backend-client.js'
 import { createServer as createCore } from '../apps/paperbanana-api/src/server.ts';
 import { createTokenDanceService } from '../apps/paperbanana-api/src/tokendance-service.ts';
 import { createProviderWorkflow } from '../apps/paperbanana-api/src/provider-workflow.ts';
+import { createFigureStudioService } from '../apps/paperbanana-api/src/figure-studio.ts';
+import { createFigureOperations } from '../apps/paperbanana-api/src/figure-operations.ts';
+import { createUniversalRuntime } from '../apps/paperbanana-api/src/universal-adapters.ts';
+import { createUniversalTransport } from '../apps/paperbanana-api/src/universal-transport.ts';
+import { UniversalApiError } from '../packages/api/src/universal-api.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(new URL('../apps/paperbanana-api/package.json', import.meta.url));
 const { MongoClient } = require('mongodb'), { build } = require('esbuild'), sharp = require('sharp'), express = require('express');
 const webRequire = createRequire(new URL('../apps/web/package.json', import.meta.url));
 const { createServer: createVite } = await import(webRequire.resolve('vite'));
-const webBase = 'http://127.0.0.1:5173', apiBase = 'http://127.0.0.1:8791';
+// Fixed alternative ports keep the figure acceptance independent of an active
+// workbench preview. Both account bridges are restricted to loopback.
+const figurePreview = process.env.TUYAN_LOCAL_PREVIEW === 'figure';
+const webBase = figurePreview ? 'http://127.0.0.1:5290' : 'http://127.0.0.1:5173';
+const apiBase = figurePreview ? 'http://127.0.0.1:8793' : 'http://127.0.0.1:8791';
 const stateDir = path.join(os.homedir(), '.config', 'tuyan-tokendance-local');
 await fs.mkdir(stateDir, { recursive: true, mode: 0o700 });
 await fs.chmod(stateDir, 0o700);
@@ -113,13 +122,26 @@ const realFetch = async (input, options = {}) => {
 };
 process.env.PAPERBANANA_GATEWAY_TOKEN = secrets.transport;
 legacy.configureRuntimeFetch(realFetch);
+const universalTransport = createUniversalTransport({ officialFetch: realFetch, fetch: realFetch });
+legacy.configureUniversalRuntime(createUniversalRuntime({ transport: {
+  ...universalTransport,
+  async request(input) {
+    // This preview has no approved custom credential/price. Reject before DNS
+    // or transport; provider errors must not imply an uncertain paid request.
+    if (input.kind === 'inference') throw new UniversalApiError('CAPABILITY_UNSUPPORTED', 'not_sent');
+    return universalTransport.request(input);
+  },
+} }));
 legacy.configureJobAdmission({ maxActive: 1, maxPending: 3, maxPerOwner: 3, maxPerIp: 3 });
 const td = createTokenDanceService({ db, fetcher: realFetch, secret: secrets.encryption, callbackUrl: webBase + '/' });
 const workflow = createProviderWorkflow({ db, service: td });
-legacy.configureProviderWorkflow(workflow);
-legacy.configureAccountDeletionDataCleanup(async id => { await td.eraseUserData(id); await workflow.remove(id); });
+const figureOperations = createFigureOperations({db,service:td,studio:createFigureStudioService({modelText:legacy.figureStudioTextModel}),baseWorkflow:workflow});
+legacy.configureProviderWorkflow(figureOperations.hooks);
+legacy.configureAccountDeletionDataCleanup(async id => { await td.eraseUserData(id); await workflow.remove(id); await figureOperations.remove(id); });
 await td.ensureIndexes(); await workflow.ensureIndexes();
+await figureOperations.ensureIndexes();
 const core = createCore({
+  figureStudio:figureOperations,
   handler: legacy.default, readinessProbe: async () => ({ ready: true }), healthSnapshot: () => ({ ready: true }),
   config: { gatewayToken: secrets.transport, serviceName: 'tuyan-local', version: 'tokendance-live' }, logger,
   tokenDance: td, providerWorkflow: workflow, resumeTokenDanceJob: legacy.resumeTokenDanceJob, requiresTokenDanceCredential: legacy.requiresTokenDanceCredential,
@@ -132,7 +154,7 @@ const config = {
   backend: { mode: 'node' }, maintenance: { retryAfterSeconds: 30 },
   oss: { bucket: 'tuyan-local', publicEndpoint: apiBase, allowLegacyExternalRefineUrl: false },
 };
-const auth = await createProductionAuthBridge({ db, secret: secrets.auth, apiBase, frontendOrigins: config.frontendOrigins });
+const auth = await createProductionAuthBridge({ db, secret: secrets.auth, apiBase, frontendOrigins: config.frontendOrigins, previewKind: figurePreview ? 'figure' : 'tokendance' });
 await auth.ready();
 const api = express();
 api.disable('x-powered-by');
@@ -161,16 +183,16 @@ api.get('/objects/*key', async (req, res) => {
   catch { res.sendStatus(404); }
 });
 api.use(createGateway({ config, auth, backend, isMaintenance: () => false, logger }));
-const server = http.createServer(api); server.listen(8791, '127.0.0.1'); await once(server, 'listening');
+const server = http.createServer(api); server.listen(Number(new URL(apiBase).port), '127.0.0.1'); await once(server, 'listening');
 Object.assign(process.env, { VITE_API_BASE: apiBase, VITE_AUTH_BASE: apiBase, VITE_BACKEND_MODE: 'gateway', VITE_AUTH_ENABLED: 'true', VITE_AUTH_REQUIRED: 'true', VITE_ALLOW_CUSTOM_API_BASE: 'true', VITE_LOCAL_CONSUMPTION_TEST: 'true' });
-const vite = await createVite({ root: path.join(root, 'apps/web'), server: { host: '127.0.0.1', port: 5173, strictPort: true }, logLevel: 'error' });
+const vite = await createVite({ root: path.join(root, 'apps/web'), server: { host: '127.0.0.1', port: Number(new URL(webBase).port), strictPort: true }, logLevel: 'error' });
 await vite.listen();
 console.log('TokenDance real-consumption local preview ready: ' + webBase);
 console.log('Connected to production account service. Preview jobs and encrypted keys persist on this Mac; model calls require user submission.');
 let closing = false;
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
   if (closing) return; closing = true;
-  legacy.stopJobAdmission(); await legacy.drainJobAdmission(); await vite.close();
+  legacy.stopJobAdmission(); figureOperations.stop(); await legacy.drainJobAdmission(); await figureOperations.drain(); await vite.close();
   server.closeAllConnections(); core.closeAllConnections();
   await Promise.all([new Promise(resolve => server.close(resolve)), new Promise(resolve => core.close(resolve))]);
   await auth.close(); await client.close(); process.exit(0);

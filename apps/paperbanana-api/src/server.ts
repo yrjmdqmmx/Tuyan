@@ -216,7 +216,9 @@ export function createApp({
       if (!userId) return response.status(401).json({ code: 401, error: '请先登录后使用图稿工作室。' })
       if (!figureStudio) return response.status(503).json({ code: 503, error: '图稿工作室服务尚未配置。' })
       // Only the already authenticated gateway transport can assert this identity.
-      return response.json(await figureStudio.handle({ ...body, userId }))
+      const apiKeys: Record<string, unknown> = { ...(body.apiKeys && typeof body.apiKeys === 'object' ? body.apiKeys : {}) }
+      delete apiKeys.tokendance
+      return response.json(await figureStudio.handle({ ...body, apiKeys, userId }))
     }
     const adminTransport = request.get('x-paperbanana-admin-transport-token') || ''
     const isAdminTransport = Boolean(

@@ -11,3 +11,5 @@ export const getCapabilities = (options) => studioRequest('figureStudioCapabilit
 export const requestPlan = (payload, options) => studioRequest('figureStudioPlan', payload, options);
 export const requestEdit = (payload, options) => studioRequest('figureStudioEdit', payload, options);
 export const requestExport = (payload, options) => studioRequest('figureStudioExport', payload, options);
+export const queryOperation = (requestId, options) => studioRequest('figureStudioOperation', { requestId }, options);
+export const resumeOperation = (requestId, apiKeys, options) => studioRequest('figureStudioResume', { requestId, ...(apiKeys ? { apiKeys } : {}) }, options);

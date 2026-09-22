@@ -1,6 +1,6 @@
 export type PaperBananaClientPlatform = "web" | "desktop" | "android";
 
-/** Figure Studio v1 is independent of legacy image jobs; drafts remain local. */
+/** Drafts remain local; AI operation snapshots are encrypted for bounded recovery. */
 export interface FigureStudioPlan {
   title: string; summary: string;
   nodes: Array<{ id: string; label: string; detail?: string }>;
@@ -9,11 +9,37 @@ export interface FigureStudioPlan {
 }
 export interface FigureStudioCapabilities {
   code: 0; formats: { svg: true; pdf: boolean; eps: boolean }; modelPlanning: boolean;
-  supportedModelModes: ['api-key']; supportedProviders: string[]; unsupportedProviders: string[];
+  supportedModelModes: Array<'api-key' | 'tokendance' | 'custom'>; supportedProviders: string[]; unsupportedProviders: string[];
+  operationContractVersion?: 1;
+  modelPlanningReason?: string;
   formatReasons: { pdf: string; eps: string }; limitations: string[];
   limits: { maxDocumentBytes: number; materialsChars: number; instructionChars: number; maxSelectedObjects: number; maxExportBytes: number };
 }
 export interface FigureStudioExportFile { name: string; mimeType: 'application/pdf' | 'application/postscript'; base64: string }
+
+export interface FigureDocumentContext { id: string; revision: number; sha256: string }
+export interface FigureStudioOperation {
+  requestId: string;
+  kind: 'plan' | 'edit';
+  status: 'queued' | 'running' | 'succeeded' | 'blocked';
+  requestHash: string;
+  documentContext: FigureDocumentContext;
+  mainRoute: Record<string, unknown>;
+  providerRegions: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+  failure?: Record<string, unknown>;
+  recovery: null | {
+    canResume: boolean; action: string; message: string;
+    requestState: 'not_sent' | 'rejected' | 'unknown' | 'completed';
+    billingStatus: string; retryAt?: string; expiresAt?: string;
+    channel?: string; billingMessage?: string;
+  };
+  /** Channel records are evidence of a call, not an invoice or a zero-cost claim. */
+  providerCalls: Array<Record<string, unknown>>;
+  result?: { plan: FigureStudioPlan } | { commands: Array<{ type: 'update'; id: string; patch: Record<string, unknown> }>; baseRevision: number };
+}
 
 export type { ImageSizeContract, ResolvedImageSize } from './image-size-contract.js'
 

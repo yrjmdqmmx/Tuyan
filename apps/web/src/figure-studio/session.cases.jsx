@@ -70,7 +70,7 @@ for (const scenario of [
     const previousStorage = globalThis.localStorage;
     globalThis.localStorage = window.localStorage;
     const requests = [];
-    const capabilities = { code: 0, modelPlanning: true, supportedModelModes: ['api-key'], supportedProviders: [scenario.provider] };
+    const capabilities = { code: 0, modelPlanning: true, operationContractVersion: 1, supportedModelModes: ['api-key'], supportedProviders: [scenario.provider] };
     const registry = { code: 0, routeContractVersion: 1, providerRegionContractVersion: 1, providers: {
       [scenario.provider]: { accessKind: 'direct', models: [{ id: 'exact-fixture', label: 'Account fixture', vendor: scenario.label, roles: ['main'], selectable: true, regions: ['global', 'cn'] }] },
     } };
@@ -79,7 +79,7 @@ for (const scenario of [
       requests.push(body);
       if (body.action === 'figureStudioCapabilities') return Response.json(capabilities);
       if (body.action === 'modelRegistry') return Response.json(registry);
-      if (body.action === 'figureStudioPlan') return Response.json({ code: 0, plan: { title: 'New account plan', summary: '', nodes: [{ id: 'n1', label: 'Synthetic node' }], edges: [], notes: [] } });
+      if (body.action === 'figureStudioPlan') return Response.json({ code: 0, operation: { requestId: body.requestId, kind: 'plan', status: 'succeeded', documentContext: body.documentContext, result: { plan: { title: 'New account plan', summary: '', nodes: [{ id: 'n1', label: 'Synthetic node' }], edges: [], notes: [] } } } });
       return Response.json({ code: 0, runtime: 'laf' });
     };
     async function selectSameModel() {
@@ -161,4 +161,59 @@ test('a pending login check never opens another auth flow or dispatches model wo
     fireEvent.click(screen.getByRole('button', { name: '添加矩形' }));
     assert.match(screen.getByRole('region', { name: '图稿画布' }).textContent, /1 个独立对象/);
   } finally { globalThis.localStorage = previousStorage; }
+});
+
+test('recovered edit result enters confirmation first, changes the same source once and remains undoable', async () => {
+  const previousFetch = globalThis.fetch, previousStorage = globalThis.localStorage;
+  const { createDocument } = await import('@paperbanana/figure-core');
+  const { documentContext, saveOperationPointers } = await import('./operations.js');
+  globalThis.localStorage = window.localStorage;
+  const doc = createDocument({ title: 'Recovered fixture', elements: [{ id: 'box', type: 'rect', x: 10, y: 10, width: 20, height: 10 }] });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(doc));
+  const binding = await documentContext(doc), requestId = crypto.randomUUID();
+  saveOperationPointers('a', [{ requestId, kind: 'edit', documentContext: binding }]);
+  const actions = [];
+  globalThis.fetch = async (_url, options = {}) => {
+    const body = options.body ? JSON.parse(options.body) : {}; actions.push(body.action);
+    if (body.action === 'figureStudioOperation') return Response.json({ code: 0, operation: { requestId, kind: 'edit', status: 'succeeded', documentContext: binding, providerCalls: [], result: { commands: [{ type: 'update', id: 'box', patch: { x: 15 } }], baseRevision: doc.revision } } });
+    return Response.json({ code: 0, modelPlanning: false, providers: {}, runtime: 'laf' });
+  };
+  try {
+    render(<FigureStudioEditor auth={{ isPending: false }} currentUser={{ id: 'a' }} authGeneration={1} onSignIn={() => {}} />);
+    fireEvent.click(await screen.findByRole('button', { name: '载入待确认方案' }));
+    await screen.findByRole('heading', { name: '待应用的修改' });
+    assert.equal(JSON.parse(localStorage.getItem(STORAGE_KEY)).elements[0].x, 10);
+    fireEvent.click(screen.getByRole('button', { name: '确认应用', exact: true }));
+    await waitFor(() => assert.equal(JSON.parse(localStorage.getItem(STORAGE_KEY)).elements[0].x, 15));
+    fireEvent.click(screen.getByRole('button', { name: '撤销', exact: true }));
+    assert.equal(JSON.parse(localStorage.getItem(STORAGE_KEY)).elements[0].x, 10);
+    assert.equal(actions.filter(action => ['figureStudioPlan', 'figureStudioEdit', 'figureStudioResume'].includes(action)).length, 0);
+  } finally { globalThis.fetch = previousFetch; globalThis.localStorage = previousStorage; }
+});
+
+test('opening same-id same-revision source with different content blocks recovered plan from loading', async () => {
+  const previousFetch = globalThis.fetch, previousStorage = globalThis.localStorage;
+  const { createDocument } = await import('@paperbanana/figure-core');
+  const { documentContext, saveOperationPointers } = await import('./operations.js');
+  globalThis.localStorage = window.localStorage;
+  const doc = createDocument({ title: 'Original content' }); localStorage.setItem(STORAGE_KEY, JSON.stringify(doc));
+  const binding = await documentContext(doc), requestId = crypto.randomUUID();
+  saveOperationPointers('a', [{ requestId, kind: 'plan', documentContext: binding }]);
+  globalThis.fetch = async (_url, options = {}) => {
+    const body = options.body ? JSON.parse(options.body) : {};
+    if (body.action === 'figureStudioOperation') return Response.json({ code: 0, operation: { requestId, kind: 'plan', status: 'succeeded', documentContext: binding, result: { plan: { title: 'Recovered plan', summary: '', nodes: [{ id: 'n1', label: 'A' }], edges: [], notes: [] } } } });
+    return Response.json({ code: 0, modelPlanning: false, providers: {}, runtime: 'laf' });
+  };
+  try {
+    render(<FigureStudioEditor auth={{ isPending: false }} currentUser={{ id: 'a' }} authGeneration={1} onSignIn={() => {}} />);
+    await screen.findByRole('button', { name: '载入待确认方案' });
+    const changed = { ...doc, title: 'Different content' }, source = JSON.stringify(changed);
+    const input = document.querySelector('input[type="file"][accept^=".json"]');
+    fireEvent.change(input, { target: { files: [{ size: source.length, text: async () => source }] } });
+    await waitFor(() => assert.equal(screen.getByLabelText('图稿标题').value, 'Different content'));
+    fireEvent.click(screen.getByRole('button', { name: '载入待确认方案' }));
+    await waitFor(() => assert.match(screen.getByRole('alert').textContent, /完整内容或版本不同/));
+    assert.equal(screen.queryByRole('heading', { name: '确认方案' }), null);
+    assert.equal(JSON.parse(localStorage.getItem(STORAGE_KEY)).title, 'Different content');
+  } finally { globalThis.fetch = previousFetch; globalThis.localStorage = previousStorage; }
 });

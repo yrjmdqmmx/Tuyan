@@ -5,7 +5,7 @@ import {UNIVERSAL_PROTOCOL_OPTIONS, universalDraftRoute, universalDraftConnectio
 import {universalDefaultAuth, resolveUniversalCatalogStrategy} from '../lib/universalContract.js'
 import UniversalCapabilities from './UniversalCapabilities.jsx'
 
-const roles = {main:['主模型','规划与文字推理'], vision:['识图模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
+const roleLabels = {main:['主模型','规划与文字推理'], vision:['识图模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
 const catalogFormats = [['auto','自动识别已核验服务'],['openai','OpenAI /models · data[].id'],['anthropic','Anthropic /models · data[].id'],['gemini','Gemini /models · models[].name'],['none','不获取目录，手动填写']]
 
 function ConnectionOptions({draft, label, onChange}) {
@@ -24,7 +24,7 @@ function ConnectionOptions({draft, label, onChange}) {
 }
 
 function UniversalRole({role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
-  const [label,description] = roles[role], c = draft.custom
+  const [label,description] = roleLabels[role], c = draft.custom
   const [feedbackReady,setFeedbackReady] = useState(false), [editing,setEditing] = useState(false)
   const [catalog,setCatalog] = useState(null), [config,setConfig] = useState(null), [pending,setPending] = useState(null), [query,setQuery] = useState('')
   const mounted = useRef(true), sequence = useRef(0), identity = useRef({})
@@ -96,13 +96,13 @@ function UniversalRole({role, draft, credential, onChange, onKeyChange, onCopy, 
   </fieldset>
 }
 
-export default function UniversalApiSettings({drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
+export default function UniversalApiSettings({drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported, roles = ['main','vision','image']}) {
   const [saved,setSaved]=useState('')
   return <section className="universal-api-settings" aria-label="通用 API 接入">
     <p className="universal-intro">接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。</p>
     {!contractSupported&&<p className="universal-status error" role="alert">当前后端暂不支持通用 API，配置已保留，请稍后重试。</p>}
     <details className="universal-privacy"><summary><ShieldCheck size={15}/>密钥与验证说明</summary><p>密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。</p><p>配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。</p></details>
-    {Object.keys(roles).map(role=><UniversalRole key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={()=>onCopy(role,'main')} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
+    {roles.filter(role=>Object.hasOwn(roleLabels,role)).map(role=><UniversalRole key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={()=>onCopy(role,'main')} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
     <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>保存非敏感配置</button>{saved&&<p className="universal-status neutral" role="status">{saved}</p>}
   </section>
 }

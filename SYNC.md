@@ -1,5 +1,19 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-22 · 论文画布接入观猹 / 通用 API 与持久操作恢复（开发验收中，未发布）
+
+- 保留独立 `/figure-studio/`，接入现有主模型目录、观猹账号授权、通用 API 连接描述符与渠道调用器；不把结构规划伪装成图片生成任务，不改工作台的生成 / 精修契约。
+- `figureStudioPlan` / `figureStudioEdit` 新增必填 `requestId` 和 `documentContext:{id,revision,sha256}`。SHA-256 针对 UTF-8 `JSON.stringify(document)`；编辑同时校验 document/baseRevision。相同账号与 ID 的不同输入返回 409，完成结果只读取，不重复调用。
+- 新增受认证的 `figureStudioOperation`（查询）与 `figureStudioResume`（明确恢复）。统一返回 `operation`、`queued/running/succeeded/blocked`、文档身份、经过结构验证的结果、真实调用记录和恢复状态。客户端网络异常仅查询原 ID；未知结果不得自动重发，原生 Key 的未知结果不开放恢复。
+- 观猹客户端 Key 被剥离，由当前账号的服务端授权解析；通用 API 保留完整 validated `mainRoute.custom`，凭据沿用连接绑定信封。复用 `provider-workflow` 的原子占用、加密检查点与恢复，引入画布专属集合，避免进入原图片队列；7 天 TTL，账号注销清理，公开记录不含材料、图稿像素或密钥。
+- `paperbanana_figure_admissions` 只保存调度租约，同账号跨实例最多 2 项在途操作；传输前同时校验账号代际与租约 fencing。画布观猹文本输出上限 4096 token，共享调用器新增可选 `maxOutputTokens`，原工作台未传时保持原行为。
+- Web 通用 API 面板支持仅主模型角色，保存时合并保留原工作台的其他角色；Key 仅在当前账号页面内存中。本机只保存操作指针，恢复结果在同账号查询后需作者重新确认，完整图稿 SHA 不同则禁止应用。
+- [x] Core / Gateway / 共享 API 与类型：本地实现和回归通过，真实渠道集成另列。新增 action 只供论文画布，其他客户端无必需迁移。
+- [x] Web：公共模型与连接复用、操作记录、恢复及版本保护完成本地验收；完整 Web 561/561。真实登录/推理另列。
+- [x] 生产转换器构建：Inkscape、Liberation/WQY 字体与受限 Linux 转换 gate 已验证；尚未部署。PDF 文字提取通过但原生编辑有合并/遮挡，EPS 科学符号编码失败，不等于兼容通过。
+- 验收细节与实际失败边界见 [集成验收记录](docs/figure-studio/2026-09-22-integration-acceptance.md)。
+- [ ] 真实调用与发布：观猹最多 6 次文本 / 本轮累计 ¥1 已授权；通用 API 暂缺用户验收连接与 Key，真实链路未验证。未合并、未部署，不以模拟结果代替验收。
+
 ## 2026-09-21 · 论文画布与公共 UI / 账号 / 模型能力统一（本地完成，未发布）
 
 - 已同步隔壁会话的 PR #224：`origin/main=0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`，目录 v21、模型版本映射、排行榜双语与共享筛选均已合入；隔壁发布记录确认该 SHA 的 Web/Core 发布。下方目录和排行榜条目中的“本地未发布”是当时记录，已被这次发布状态更新；微信上传仍未执行。

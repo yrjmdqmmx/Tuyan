@@ -992,6 +992,8 @@ type VisionImageInput = {
 type TextRequestPolicy = {
   region?: 'cn' | 'global'
   attempts?: number
+  maxOutputTokens?: number
+  beforeDispatch?: () => Promise<void>
   signal?: AbortSignal
   custom?: UniversalRoute['custom']
 }
@@ -2680,12 +2682,13 @@ export function tokenDanceModel(model: string, role: 'main' | 'vision' | 'image'
   return entry
 }
 
-export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true) {
+export function tokenDanceChatBody(model: string, system: string, user: string, images: { url: string }[] = [], stream = true, maxOutputTokens?: number) {
   tokenDanceModel(model, images.length ? 'vision' : 'main')
+  if (maxOutputTokens !== undefined && (!Number.isInteger(maxOutputTokens) || maxOutputTokens < 1 || maxOutputTokens > 16384)) throw tokenDanceInputError('文字输出上限必须是 1–16384 的整数。')
   const limit = referenceSubmissionPolicy('tokendance', model).maxCount
   if (images.length > limit) throw tokenDanceInputError(`当前模型最多接收 ${limit} 张图片，本次合计 ${images.length} 张（含上传和检索图片）。`)
   for (const image of images) if (!/^https:\/\//.test(image.url) && !/^data:image\/(png|jpeg|webp);base64,/.test(image.url)) throw tokenDanceInputError('观猹 TokenDance 视觉输入需要 HTTPS 图片或受支持的图片数据。')
-  return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream }
+  return { model, messages: [{ role: 'system', content: system }, { role: 'user', content: images.length ? [{ type: 'text', text: user }, ...images.map(image => ({ type: 'image_url', image_url: { url: image.url } }))] : user }], stream, ...(maxOutputTokens === undefined ? {} : { max_tokens: maxOutputTokens }) }
 }
 
 export type TokenDanceCallInfo = { channel: 'tokendance'; requestedModel: string; actualModel: string | null; requestId: string | null; protocol: string; supplier: null; routing: 'selected-model-auto-provider'; usage?: unknown }
@@ -2694,8 +2697,8 @@ export function tokenDanceCallInfo(response: Response, requestedModel: string, a
   return { channel: 'tokendance', requestedModel, actualModel: safeId(actual?.model), requestId: safeId(response.headers.get('x-request-id') || response.headers.get('request-id') || actual?.id), protocol, supplier: null, routing: 'selected-model-auto-provider' }
 }
 
-export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: string, system: string, user: string, images: { url: string }[], signal?: AbortSignal) {
-  const response = await tokenDanceResponse(fetcher, '/gateway/v1/chat/completions', key, tokenDanceChatBody(model, system, user, images), signal)
+export async function tokenDanceChat(fetcher: typeof fetch, model: string, key: string, system: string, user: string, images: { url: string }[], signal?: AbortSignal, maxOutputTokens?: number) {
+  const response = await tokenDanceResponse(fetcher, '/gateway/v1/chat/completions', key, tokenDanceChatBody(model, system, user, images, true, maxOutputTokens), signal)
   const type = response.headers.get('content-type') || ''
   if (!type.includes('text/event-stream')) {
     const data = await tokenDanceJson(response)
@@ -5073,30 +5076,39 @@ async function optimizeInputs(body: OptimizeInputsBody) {
   return { code: 0, target, optimizedText: candidate }
 }
 
-// Called only by the authenticated Node Figure Studio service. No server key,
-// managed TokenDance credential, custom endpoint, image model or retry fallback.
+// Called only by the authenticated Node Figure Studio operation service. The
+// Node layer supplies account-authoritative TokenDance credentials and scopes
+// the existing workflow hooks; no fallback or provider retry is permitted.
 export async function figureStudioTextModel(body: any, system: string, user: string, signal: AbortSignal): Promise<string> {
   const invalid = (message: string): never => {
     throw Object.assign(new Error(message), { status: 400, code: 'FIGURE_STUDIO_ROUTE_INVALID', requestState: 'not_sent' })
   }
   const route = body?.mainRoute
   if (!route || typeof route !== 'object' || Array.isArray(route)
-    || Object.keys(route).some(key => !['accessProvider', 'modelId'].includes(key))
-    || typeof route.accessProvider !== 'string' || typeof route.modelId !== 'string'
-    || ['tokendance', 'custom'].includes(route.accessProvider)) invalid('图稿模型仅支持明确选择的原生 API Key 主模型。')
+    || Object.keys(route).some(key => !(route.accessProvider === 'custom' ? ['accessProvider', 'modelId', 'custom'] : ['accessProvider', 'modelId']).includes(key))
+    || typeof route.accessProvider !== 'string' || typeof route.modelId !== 'string') invalid('请明确选择受支持的图稿主模型。')
   let normalized: ModelRoute
   try { normalized = normalizeModelRoute(route, 'main'); checkedModelRegions(body.providerRegions, { main: normalized }) }
-  catch { return invalid('所选主模型或地区配置不受支持。') }
-  const key = body.apiKeys?.[normalized!.accessProvider]
-  if (typeof key !== 'string' || !key.trim() || key.length > 8192 || /[\r\n\0]/.test(key)) invalid('请提供当前渠道的有效个人 API Key。')
-  try {
-    const registry = await registryForModelRoute(normalized!)
-    const entry = registry.models.find(candidate => candidate.id === normalized!.modelId)
-    if (!entry || entry.selectable !== true || !entry.roles.includes('main')) invalid('所选模型当前不可用于图稿规划。')
-  } catch { return invalid('所选模型当前不可用于图稿规划。') }
+  catch (error: any) { if (['TokenDanceError', 'UniversalApiError'].includes(error?.name)) throw error; return invalid('所选主模型或地区配置不受支持。') }
+  const key = normalized!.accessProvider === 'custom' ? universalCredential(normalized!, body.apiKeys?.custom || '') : body.apiKeys?.[normalized!.accessProvider]
+  if (typeof key !== 'string' || !key.trim() || key.length > 16384 || /[\r\n\0]/.test(key)) invalid('请提供当前渠道的有效授权或个人 API Key。')
+  // TokenDance's live, force-refreshed catalog is checked inside callTextModel;
+  // preserve its typed not_sent/retry_request failure for durable recovery.
+  if (normalized!.accessProvider !== 'tokendance') {
+    try {
+      const registry = await registryForModelRoute(normalized!)
+      const entry = registry.models.find(candidate => candidate.id === normalized!.modelId)
+      if (!entry || entry.selectable !== true || !entry.roles.includes('main')) invalid('所选模型当前不可用于图稿规划。')
+    } catch (error: any) {
+      if (['TokenDanceError', 'UniversalApiError'].includes(error?.name) || error?.code === 'FIGURE_STUDIO_ROUTE_INVALID') throw error
+      return invalid('所选模型目录当前不可核验，未发送模型请求。')
+    }
+  }
   try {
     return await callTextModel(normalized!.accessProvider, normalized!.modelId, key.trim(), system, user, [], {
-      attempts: 1, signal, region: normalized!.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined,
+      attempts: 1, maxOutputTokens: 4096, signal, custom: normalized!.custom,
+      beforeDispatch: typeof body.beforeProviderCall === 'function' ? body.beforeProviderCall : undefined,
+      region: normalized!.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined,
     })
   } catch (error: any) { if (error && typeof error === 'object') error.failureStage = 'planning'; throw error }
 }
@@ -7833,8 +7845,9 @@ async function callTextModelRaw(
   assertVisionInputBudget(provider, model, images)
   if (provider === 'tokendance') {
     await assertTokenDanceLiveModel(model, 'openai:chat-completions')
-    checkedReferenceRequest(provider, model, tokenDanceChatBody(model, system, user, images))
-    const result = await tokenDanceChat(runtimeFetch, model, apiKey, system, user, images, policy.signal)
+    checkedReferenceRequest(provider, model, tokenDanceChatBody(model, system, user, images, true, policy.maxOutputTokens))
+    await policy.beforeDispatch?.()
+    const result = await tokenDanceChat(runtimeFetch, model, apiKey, system, user, images, policy.signal, policy.maxOutputTokens)
     await providerWorkflow.record(result.call)
     return result.text
   }

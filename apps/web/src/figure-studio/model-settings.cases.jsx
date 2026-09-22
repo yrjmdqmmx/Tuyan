@@ -128,7 +128,7 @@ test('unconfirmed capabilities permit catalog inspection but never submission; u
   assert.equal(selection().provider, 'tokendance');
   assert.equal(selection().modelId, 'td-id');
   assert.equal(selection().valid, false);
-  assert.ok(screen.getByText(/暂不支持观猹 TokenDance 或通用 API/));
+  assert.ok(screen.getByText(/后端尚未确认支持所选渠道/));
   assert.equal(screen.queryByLabelText(/接入密钥/), null);
 });
 
@@ -174,4 +174,55 @@ test('signed-in model settings do not offer a sign-in action', async () => {
   render(<Harness signedIn onSignIn={() => assert.fail('must not reopen sign-in')} />);
   await openSettings();
   assert.equal(screen.queryByRole('button', { name: '登录图研' }), null);
+});
+
+test('custom main mode keeps shared role settings and saves without any key', async () => {
+  const { emptyUniversalDraft, saveUniversalDrafts, loadUniversalDrafts } = await import('../lib/universalApi.js');
+  const { saveStudioUniversalDraft } = await import('./modelSettings.js');
+  const storage = window.localStorage;
+  const old = Object.fromEntries(['main', 'vision', 'image'].map(role => [role, { ...emptyUniversalDraft(role), modelId: `${role}-existing` }]));
+  saveUniversalDrafts(old, storage);
+  const changed = { ...emptyUniversalDraft('main'), modelId: 'main-new', key: 'must-not-save' };
+  assert.equal(saveStudioUniversalDraft(changed, storage), true);
+  const saved = loadUniversalDrafts(storage);
+  assert.equal(saved.main.modelId, 'main-new'); assert.equal(saved.vision.modelId, 'vision-existing'); assert.equal(saved.image.modelId, 'image-existing');
+  assert.doesNotMatch(storage.getItem('tuyan.universal-api.v1'), /must-not-save/);
+  storage.clear();
+});
+
+test('custom submission uses the bound shared descriptor; TokenDance never sends a browser key', async () => {
+  const { emptyUniversalDraft, bindUniversalKey } = await import('../lib/universalApi.js');
+  const { studioModelContext } = await import('./modelSettings.js');
+  const caps = { modelPlanning: true, supportedModelModes: ['api-key', 'custom', 'tokendance'], supportedProviders: ['custom', 'tokendance'] };
+  const draft = { ...emptyUniversalDraft('main'), modelId: 'gpt-4.1' };
+  const custom = studioModelContext({ provider: 'custom', modelId: draft.modelId, customDraft: draft, customKey: bindUniversalKey(draft, 'synthetic-bound'), valid: true }, caps);
+  assert.equal(custom.mainRoute.custom.baseUrl, draft.custom.baseUrl);
+  assert.equal(JSON.parse(custom.apiKeys.custom).custom_main.apiKey, 'synthetic-bound');
+  assert.throws(() => studioModelContext({ provider: 'custom', modelId: draft.modelId, customDraft: { ...draft, custom: { ...draft.custom, baseUrl: 'https://different.example/v1' } }, customKey: bindUniversalKey(draft, 'synthetic-bound'), valid: true }, caps));
+  assert.deepEqual(studioModelContext({ provider: 'tokendance', modelId: 'td', key: 'must-not-send', valid: true, connected: true }, caps), { mainRoute: { accessProvider: 'tokendance', modelId: 'td' }, apiKeys: {} });
+  assert.throws(() => studioModelContext({ provider: 'tokendance', modelId: 'td', valid: true, connected: false }, caps), /连接观猹/);
+});
+
+test('canvas custom UI renders only main role, retains preset selection, and clears a key when its binding changes', async () => {
+  const previousStorage = globalThis.localStorage; globalThis.localStorage = window.localStorage;
+  try {
+    mockCatalog(() => ({ ...registryFixture(), universalApiContractVersion: 1 }));
+    const caps = { ...capabilities, supportedModelModes: ['api-key', 'custom', 'tokendance'], supportedProviders: ['openai', 'custom', 'tokendance'], unsupportedProviders: [] };
+    render(<Harness caps={caps} initial={{ provider: 'openai', modelId: 'exact-api-id', key: 'native-memory-key', valid: false }} />);
+    await openSettings();
+    fireEvent.click(screen.getByRole('button', { name: /通用 API.*自有服务/ }));
+    assert.ok(screen.getByRole('group', { name: '主模型', exact: true }));
+    assert.equal(screen.queryByRole('group', { name: '识图模型', exact: true }), null);
+    assert.equal(screen.queryByRole('group', { name: '图像模型', exact: true }), null);
+    fireEvent.change(screen.getByLabelText('主模型 模型 ID'), { target: { value: 'gpt-4.1' } });
+    fireEvent.change(screen.getByLabelText('主模型 API Key'), { target: { value: 'custom-memory-key' } });
+    await waitFor(() => assert.equal(selection().valid, true));
+    fireEvent.click(screen.getByRole('button', { name: '保存非敏感配置' }));
+    assert.doesNotMatch(window.localStorage.getItem('tuyan.universal-api.v1'), /memory-key/);
+    fireEvent.change(screen.getByLabelText('主模型 Base URL'), { target: { value: 'https://changed.example/v1' } });
+    assert.equal(screen.getByLabelText('主模型 API Key').value, '');
+    fireEvent.click(screen.getByRole('button', { name: /预设渠道.*原生渠道与观猹/ }));
+    assert.equal(selection().modelId, 'exact-api-id');
+    assert.equal(screen.getByLabelText('OpenAI 接入密钥').value, 'native-memory-key');
+  } finally { globalThis.localStorage = previousStorage; window.localStorage.clear(); }
 });
