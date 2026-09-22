@@ -30,7 +30,7 @@ test('retained clients continue to render historical platform labels', () => {
 
 test('retained task detail and record views show the normalized source label', () => {
   const surfaces = [
-    [read('apps/web/src/components/JobStatus.jsx'), /任务来源：\{formatClientPlatform\(job\.client_platform\)\}/],
+    [read('apps/web/src/components/JobStatus.jsx'), /\{t\("任务来源："\)\}\{formatClientPlatform\(job\.client_platform\)\}/],
     [read('apps/web/src/components/JobTable.jsx'), /formatClientPlatform\(item\.client_platform\)/],
     [read('apps/miniprogram/miniprogram/pages/job-detail/job-detail.wxml'), /任务来源：\{\{job\.client_platform_text\}\}/],
     [read('apps/miniprogram/miniprogram/pages/records/records.wxml'), /任务来源：\{\{item\.client_platform_text\}\}/],
