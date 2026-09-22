@@ -100,7 +100,8 @@ export async function callNewTextChannel(input:NewTextInput, io:Pick<ImageChanne
       state=await io.json(response,8*1024*1024,label)
     }
     throw new Error('Runware 文本任务结果待确认。')
-  } catch(error) {
+  } catch(error: any) {
+    if (error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent') throw error
     if(io.checkpoint&&pending&&!pending.failed)throw Object.assign(new Error('原文本任务已保存，可恢复查询；不会重新生成。'),{pollOnly:true,recoveryAction:'resume',requestState:'unknown',uncertain:false})
     throw error
   }

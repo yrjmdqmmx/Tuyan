@@ -86,6 +86,8 @@ import useRefineUpload from './hooks/useRefineUpload';
 import { refineUploadLimits, validateRefineDimensions, validateRefineFile, readImageDimensions } from './lib/refineUpload';
 import JobStatus from './components/JobStatus';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
+import ThinkingSettings from './components/ThinkingSettings';
+import {thinkingIdentities, reconcileThinkingSettings, rememberThinkingSettings, readThinkingSettings, saveThinkingSettings, buildThinkingSubmission} from './lib/thinkingSettings';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
 import Select from './components/Select';
 import TaskRecordsPanel from './components/TaskRecordsPanel';
@@ -203,6 +205,7 @@ export default function App() {
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
+  const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
   const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
@@ -306,6 +309,22 @@ export default function App() {
   const activeMainRegistryEntry = accessMode === 'custom' ? customEntries.main : modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
   const activeImageRegistryEntry = accessMode === 'custom' ? customEntries.image : modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
   const activeVisionRegistryEntry = accessMode === 'custom' ? customEntries.vision : modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
+  const thinkingIdentity = thinkingIdentities(activeModelRoutes, {main:activeMainRegistryEntry, vision:activeVisionRegistryEntry, image:activeImageRegistryEntry}, providerRegions);
+  const thinkingIdentityKey = JSON.stringify(thinkingIdentity);
+  const thinkingSettings = reconcileThinkingSettings(savedThinking, thinkingIdentity);
+  useEffect(() => {
+    if (!modelRegistry) return;
+    setSavedThinking(current => {
+      const next = rememberThinkingSettings(reconcileThinkingSettings(current, JSON.parse(thinkingIdentityKey)), current);
+      saveThinkingSettings(next);
+      return next;
+    });
+  }, [thinkingIdentityKey, Boolean(modelRegistry)]);
+  function changeThinking(role, selection) {
+    const next = rememberThinkingSettings({...thinkingSettings, roles:{...thinkingSettings.roles,[role]:selection}}, savedThinking);
+    setSavedThinking(next);
+    saveThinkingSettings(next);
+  }
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, accessMode === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
   const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
@@ -1094,6 +1113,7 @@ export default function App() {
     let modelSubmission;
     try {
       modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, createRouteRoles, 'generation'));
     } catch (routingError) {
       setGenerationFocusSetting('configuration-mode');
       setShowGenerationSettings(true);
@@ -1332,6 +1352,7 @@ export default function App() {
     let modelSubmission;
     try {
       modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, refineRouteRoles, 'editing'));
     } catch (routingError) {
       setRefineError(routingError.message);
       setGenerationFocusSetting('configuration-mode');
@@ -1355,6 +1376,7 @@ export default function App() {
         apiKeys: scopedApiKeys,
         modelRoutes: modelSubmission.modelRoutes,
         providerRegions: modelSubmission.providerRegions,
+        thinkingConfig: modelSubmission.thinkingConfig,
         mainModelName: modelSubmission.mainModelName,
         imageModelName: modelSubmission.imageGenModelName,
         referenceVisionModelName: modelSubmission.referenceVisionModelName,
@@ -1404,6 +1426,7 @@ export default function App() {
         configurationMode={configurationMode}
         accessMode={accessMode}
         onAccessModeChange={setAccessMode}
+        thinkingSettings={<ThinkingSettings settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking}/>}
         universalSettings={<UniversalApiSettings drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}

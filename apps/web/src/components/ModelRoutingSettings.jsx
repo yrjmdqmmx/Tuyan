@@ -19,7 +19,7 @@ function probeRoleLabel(role) {
 
 export default function ModelRoutingSettings({
   configurationMode,
-  accessMode = 'preset', onAccessModeChange, universalSettings,
+  accessMode = 'preset', onAccessModeChange, universalSettings, thinkingSettings,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -44,7 +44,7 @@ export default function ModelRoutingSettings({
   arkVerificationError,
   onVerifyArk,
 }) {
-  const recoverableCredentials = credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai'].includes(provider))
+  const recoverableCredentials = Number(modelRegistry?.thinkingContractVersion) >= 1 || credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai'].includes(provider))
   const isAdvancedMode = configurationMode === 'advanced'
   const routeContractSupported = Number(modelRegistry?.routeContractVersion || 0) >= 1
   const arkImageProbeRequired = arkProbes.some((probe) => probe.role === 'image')
@@ -68,7 +68,7 @@ export default function ModelRoutingSettings({
         {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">当前后端不支持专业模式的多渠道路由，提交会失败关闭。</p> : null}
       </div>
 
-      {accessMode === 'custom' ? universalSettings : <>
+      {accessMode === 'custom' ? <>{universalSettings}{thinkingSettings}</> : <>
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>API 接入渠道</span>
@@ -110,6 +110,8 @@ export default function ModelRoutingSettings({
           />
         </div>
       )}
+
+      {thinkingSettings}
 
       <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} /> 接入凭据</summary>

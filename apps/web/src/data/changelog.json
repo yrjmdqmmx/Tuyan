@@ -1,0 +1,677 @@
+{
+  "schemaVersion": 1,
+  "coverage": {
+    "from": "2026-09-07",
+    "through": "2026-09-22",
+    "description": "目前收录 2026 年 9 月 7 日至 9 月 22 日有发布证据的主要 Web 更新。更早历史仍在整理；日期沿用各次发布记录，不代表完整版本清单。"
+  },
+  "entries": [
+    {
+      "id": "refine-catalog-v23",
+      "date": "2026-09-22",
+      "status": "released",
+      "title": "精修控制更完整，补齐三渠道模型目录",
+      "summary": "精修支持更多输入方式，TokenHub、MiMo 与 Runware 的可选型号进一步补齐。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "按具体型号提供辅助参考图、遮罩与结构化编辑控制，提交前提示图数和尺寸限制。"
+        },
+        {
+          "kind": "改进",
+          "text": "补齐三个渠道的主模型、识图、生成与精修适配；目录接入不代表各型号的账号权限或真实推理已验证。"
+        },
+        {
+          "kind": "修复",
+          "text": "已确认下架或暂不可用的型号从可选列表隐藏，保留原有配置和历史记录，不自动换用其他型号。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #226",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/226"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35684170270"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35683970466"
+        }
+      ]
+    },
+    {
+      "id": "catalog-leaderboard-language",
+      "date": "2026-09-21",
+      "status": "released",
+      "title": "模型版本更清楚，排行榜支持中英文",
+      "summary": "具体版本、滚动别名与调用 ID 分开展示，排行榜信息和筛选同步完善。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "改进",
+          "text": "模型选择展示版本依据与调用 ID；无法确认的版本明确标注，保留原有模型选择。"
+        },
+        {
+          "kind": "改进",
+          "text": "API 渠道按国内聚合、国内官方直连、国外官方直连、国外聚合分组排序。"
+        },
+        {
+          "kind": "新增",
+          "text": "排行榜、模型详情与方法说明支持中英文切换，统一模型研发方名称和相关搜索。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #224",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/224"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35603884753"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35601906465"
+        }
+      ]
+    },
+    {
+      "id": "mobile-navigation-pareto",
+      "date": "2026-09-21",
+      "status": "released",
+      "title": "手机工作台更清晰，新增帕累托视图",
+      "summary": "手机上按操作步骤组织工作台，并让排行榜的能力与费用比较更直观。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "改进",
+          "text": "优化手机工作台的输入、设置、生成与结果层级，模板支持横向浏览。"
+        },
+        {
+          "kind": "新增",
+          "text": "排行榜增加帕累托视图，支持放大查看模型能力与费用分布。"
+        },
+        {
+          "kind": "改进",
+          "text": "统一工作台和排行榜页面导航，手机次要入口收纳到“更多”。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #221",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/221"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #222",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/222"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #223",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/223"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35561997844"
+        }
+      ]
+    },
+    {
+      "id": "settings-catalog",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "获取模型目录后，搜索并选择型号",
+      "summary": "通用 API 设置可以先读取连接目录，再按角色选择模型。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "提供目录搜索、明确选择、手动填写与刷新；刷新不会替换已选型号。"
+        },
+        {
+          "kind": "改进",
+          "text": "三种使用模式改为等宽选择项，空配置使用中性引导，检查时再说明所需能力。"
+        },
+        {
+          "kind": "修复",
+          "text": "更换地址或密钥后，旧目录响应不会覆盖新配置；目录可见与真实调用分别说明。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #219",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/219"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35505004154"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35504895519"
+        }
+      ]
+    },
+    {
+      "id": "universal-api",
+      "date": "2026-09-20",
+      "status": "released",
+      "title": "新增通用 API 接入",
+      "summary": "在生成设置中，为主模型、识图模型和图像模型配置自己的服务连接。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "按角色填写协议、地址和准确模型 ID，支持已适配协议的同步生成与精修。"
+        },
+        {
+          "kind": "改进",
+          "text": "普通、专业和通用 API 模式之间保留输入与配置；配置检查、目录可见和真实调用状态分别呈现。"
+        },
+        {
+          "kind": "改进",
+          "text": "可复用已完成步骤恢复任务；结果未知的请求不会自动重复发送。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #216",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/216"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35501960459"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35501840089"
+        }
+      ]
+    },
+    {
+      "id": "tokendance-catalog-isolation",
+      "date": "2026-09-19",
+      "status": "released",
+      "title": "单个目录异常不再影响整个渠道",
+      "summary": "观猹 TokenDance 目录按型号隔离异常，并保留用户的输入与选择。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "修复",
+          "text": "单条字段异常或型号缺失不再导致整个渠道不可用。"
+        },
+        {
+          "kind": "改进",
+          "text": "说明异常原因及处理方式；重试读取目录时保留已有输入、渠道和型号。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #214",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/214"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35447224666"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35447222365"
+        }
+      ]
+    },
+    {
+      "id": "riverflow-withdrawal",
+      "date": "2026-09-17",
+      "status": "released",
+      "title": "调整公开排行榜的收录范围",
+      "summary": "Riverflow V2 Pro 从公开榜单及比较入口撤下。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "调整",
+          "text": "总榜、维度榜、模型详情与逐题比较同步调整收录范围。"
+        },
+        {
+          "kind": "改进",
+          "text": "其余模型保留分数、评语和图片，按原有并列规则更新名次；历史评测证据保留。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #212",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/212"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35194175508"
+        }
+      ]
+    },
+    {
+      "id": "scientific-rereview",
+      "date": "2026-09-17",
+      "status": "released",
+      "title": "完成 Scientific V2 既有图片重评",
+      "summary": "对既有生成结果进行独立复核，公开更新后的评分与具体评语。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "调整",
+          "text": "完成 40 个模型的既有产物重评及争议仲裁，7 个指定模型保留原评分。"
+        },
+        {
+          "kind": "改进",
+          "text": "保持原题目、图片和费用，更新评分与名次；本次重评没有重新生成图片。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #209",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/209"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #210",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/210"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35188561140"
+        }
+      ]
+    },
+    {
+      "id": "benchmark-model-costs",
+      "date": "2026-09-17",
+      "status": "released",
+      "title": "补齐五个模型的评测与逐题费用",
+      "summary": "排行榜可查看 GPT Image 2 与 Nano Banana 系列的生成证据及费用依据。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "补齐五个模型的固定题目结果、评分、评语和公开图片。"
+        },
+        {
+          "kind": "改进",
+          "text": "模型详情展示合计及逐题费用，区分已核对账单、历史估算与未调用情况，未知金额不当作零。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #205",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/205"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35138774787"
+        },
+        {
+          "kind": "release-record",
+          "label": "发布核验记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/7b3b99114b617a96e5c6a104574dae89b9d1b83b/docs/releases/2026-09-17-replicate-five-models.md"
+        }
+      ]
+    },
+    {
+      "id": "reference-budget",
+      "date": "2026-09-16",
+      "status": "released",
+      "title": "参考图按需选择，失败原因更明确",
+      "summary": "自动检索遵守当前模型的实际图片预算，失败时提供中文处理指引。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "修复",
+          "text": "参考图按相关性与预算选择，避免固定检索数量超过模型输入上限。"
+        },
+        {
+          "kind": "改进",
+          "text": "失败提示说明具体步骤、原因、处理建议与费用状态，并保留已有成功步骤和参考图。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #200",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/200"
+        },
+        {
+          "kind": "release-record",
+          "label": "发布核验记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/de855a96a201e7b39a972fe0437d7617130dbc94/docs/releases/2026-09-16-reference-budget.md"
+        }
+      ]
+    },
+    {
+      "id": "watcha-login",
+      "date": "2026-09-10",
+      "status": "released",
+      "title": "支持观猹账号登录与绑定",
+      "summary": "可在图研使用观猹身份登录，或绑定已有图研账号。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "支持官方授权后明确确认绑定，账户页可管理绑定与解绑。"
+        },
+        {
+          "kind": "改进",
+          "text": "观猹身份登录与 TokenDance 模型消费授权分别管理，避免混淆登录和服务连接。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #193",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/193"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #194",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/194"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34466422367"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34466186148"
+        }
+      ]
+    },
+    {
+      "id": "reference-upload",
+      "date": "2026-09-10",
+      "status": "released",
+      "title": "参考图上传与工作区切换体验升级",
+      "summary": "上传过程保留原文件，按当前模型说明限制与处理方式。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "改进",
+          "text": "平台原图支持最多 8 张、单张 20 MiB、合计 80 MiB；实际提交仍受所选模型限制。"
+        },
+        {
+          "kind": "改进",
+          "text": "切换模型或账户页面时保留已选图片、文本和参数，超限时给出明确修改指引。"
+        },
+        {
+          "kind": "改进",
+          "text": "从原文件处理方向和尺寸，符合条件的图片保留原字节；无法满足限制时明确提示。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #191",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/191"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34449410067"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34449122494"
+        }
+      ]
+    },
+    {
+      "id": "tokendance-account",
+      "date": "2026-09-09",
+      "status": "released",
+      "title": "接入观猹 TokenDance，统一账户与钱包入口",
+      "summary": "新增 TokenDance 模型渠道，并集中管理连接、钱包与订单。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "接入适用的主模型、视觉、生成和直接精修型号。"
+        },
+        {
+          "kind": "新增",
+          "text": "账户页集中展示消费连接、钱包、充值入口和最近订单；服务接入与实际消费结果分别核验。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #188",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/188"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #189",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/189"
+        },
+        {
+          "kind": "release-record",
+          "label": "发布核验记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/b2bb1108447fc46b5be75578bcdca7fba39844db/docs/releases/2026-09-09-tokendance.md"
+        }
+      ]
+    },
+    {
+      "id": "gpt-image-25",
+      "date": "2026-09-09",
+      "status": "released",
+      "title": "新增 GPT Image 2.5 Sunburst 与 Flare",
+      "summary": "在已适配渠道中提供两个新图像型号的生成与精修选择。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "补齐 OpenAI、OpenRouter、fal 和 Replicate 的对应型号入口。"
+        },
+        {
+          "kind": "修复",
+          "text": "按各渠道实际能力显示清晰度与比例，修复 OpenRouter 新型号的原生精修尺寸选项。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #185",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/185"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #186",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/186"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34313236102"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34313064489"
+        }
+      ]
+    },
+    {
+      "id": "refine-upload",
+      "date": "2026-09-08",
+      "status": "released",
+      "title": "精修页支持直接上传与指令优化",
+      "summary": "从上传原图、填写修改要求到查看结果，精修流程更加连贯。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "支持原图上传进度、失败重试、替换与移除；优化后的精修指令可以预览、采用或取消。"
+        },
+        {
+          "kind": "改进",
+          "text": "桌面双栏、手机单栏布局，比例选项以真实形状展示，并按型号能力过滤。"
+        },
+        {
+          "kind": "修复",
+          "text": "修复部分恢复身份账号无法完成原图上传的问题。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #178",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/178"
+        },
+        {
+          "kind": "pull-request",
+          "label": "变更 #179",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/179"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34198181074"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34199774340"
+        }
+      ]
+    },
+    {
+      "id": "email-confirmation",
+      "date": "2026-09-08",
+      "status": "released",
+      "title": "邮箱验证改为主动确认",
+      "summary": "打开邮件链接后，需要点击确认按钮才会完成验证。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "修复",
+          "text": "防止链接预览或提前访问直接完成邮箱验证。"
+        },
+        {
+          "kind": "改进",
+          "text": "确认成功后原注册页自动更新状态；验证邮箱不会自动登录。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #176",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/176"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187824622"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34187832204"
+        }
+      ]
+    },
+    {
+      "id": "account-lifecycle",
+      "date": "2026-09-07",
+      "status": "released",
+      "title": "完善账号生命周期与历史身份保护",
+      "summary": "账号状态处理进一步保护已有身份与任务资料。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "修复",
+          "text": "修复历史中断状态影响原账号正常使用的问题。"
+        },
+        {
+          "kind": "改进",
+          "text": "账号生命周期操作按原身份和当前状态核验，避免旧操作影响恢复后的账号资料。"
+        }
+      ],
+      "sources": [
+        {
+          "kind": "pull-request",
+          "label": "变更 #168",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/168"
+        },
+        {
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098748870"
+        },
+        {
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098510229"
+        }
+      ]
+    }
+  ]
+}

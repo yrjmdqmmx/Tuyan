@@ -1,0 +1,16 @@
+{
+  "id": "replace-with-stable-entry-id",
+  "date": "YYYY-MM-DD",
+  "status": "draft",
+  "title": "简述用户可见的改进",
+  "summary": "用一句话说明这次变化。",
+  "surfaces": ["Web"],
+  "changes": [
+    { "kind": "新增", "text": "确认已经发布的用户可见行为。" },
+    { "kind": "修复", "text": "具体问题和修复后的行为。" }
+  ],
+  "sources": [
+    { "kind": "pull-request", "label": "变更 #待填", "url": "https://github.com/yrjmdqmmx/Tuyan/pull/待填" },
+    { "kind": "deployment", "label": "发布结果", "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/待填" }
+  ]
+}

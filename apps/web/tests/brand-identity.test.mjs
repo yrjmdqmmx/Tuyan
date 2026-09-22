@@ -20,7 +20,7 @@ test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry 
   assert.match(guide, /图研Tuyan 客户端以开源方式维护/u)
   assert.doesNotMatch(guide, /PaperBanana 客户端以开源方式维护/u)
   const leaderboardRoot = read('src/components/LeaderboardRoot.jsx')
-  assert.match(leaderboardRoot, /<WorkbenchHeader section="leaderboard"/u)
+  assert.match(leaderboardRoot, /<WorkbenchHeader section=\{section\}/u)
   assert.doesNotMatch(leaderboardRoot, /PaperBanana 标志|<strong>PaperBanana<\/strong>|多智能体|学术图示生成/u)
   for (const legal of ['public/privacy-policy.html', 'public/terms-of-service.html']) {
     const source = read(legal)

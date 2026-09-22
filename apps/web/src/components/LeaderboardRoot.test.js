@@ -183,7 +183,7 @@ for (const [route, active] of [[{}, '排行榜'], [{ dimensionId: 'scientific-fa
     assert.equal(nav.querySelector('[aria-current="page"]').textContent, active);
     const globalNav = screen.getByRole('navigation', { name: '网站导航' });
     assert.ok(globalNav.querySelector('a[href="/"]'));
-    assert.deepEqual([...globalNav.querySelectorAll('.header-primary-link')].map(link => link.textContent.trim()), ['工作台', '排行榜']);
+    assert.deepEqual([...globalNav.querySelectorAll('.header-primary-link')].map(link => link.textContent.trim()), ['工作台', '排行榜', '更新日志']);
     assert.equal(globalNav.querySelector('a[href="/"]').getAttribute('aria-current'), null);
     assert.equal(globalNav.querySelector('a[href="/leaderboard"]').getAttribute('aria-current'), 'page');
   });

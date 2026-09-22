@@ -49,6 +49,8 @@ export interface Job {
   failure?: { message: string; billingMessage: string; stageLabel: string } | null
   referenceSelection?: { selectedCount: number; imageCount: number; mode: string } | null
   providerCalls?: unknown[]
+  thinkingConfig?: { version: number; roles: Record<string, unknown> }
+  thinkingSnapshot?: { version: number; roles: Record<string, unknown> }
   id: string
   status: JobStatus
   provider: string
@@ -139,6 +141,7 @@ export function normalizeJob(input: unknown): Job {
     id: jobId,
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
+    ...(job.thinkingConfig?.version === 1 ? { thinkingConfig: job.thinkingConfig, thinkingSnapshot: job.thinkingSnapshot } : {}),
     failure: job.failure || null,
     referenceSelection: job.referenceSelection || null,
     status,

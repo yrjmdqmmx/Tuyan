@@ -24,7 +24,7 @@ const job_assets_1 = require("./job-assets");
 const reference_mode_1 = require("./reference-mode");
 const media_1 = require("./media");
 function normalizeJob(input) {
-    var _a;
+    var _a, _b;
     const job = (input || {});
     const jobId = String(job.id || job._id || '');
     const methodContent = String(job.method_content || job.methodContent || '');
@@ -60,6 +60,7 @@ function normalizeJob(input) {
         id: jobId,
         recovery: job.recovery || null,
         providerCalls: job.providerCalls || [],
+        ...(((_b = job.thinkingConfig) === null || _b === void 0 ? void 0 : _b.version) === 1 ? { thinkingConfig: job.thinkingConfig, thinkingSnapshot: job.thinkingSnapshot } : {}),
         failure: job.failure || null,
         referenceSelection: job.referenceSelection || null,
         status,

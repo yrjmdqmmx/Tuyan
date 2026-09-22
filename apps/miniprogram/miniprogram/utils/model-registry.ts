@@ -59,6 +59,7 @@ export interface ModelRegistry {
   refineUpload?: RefineUploadCapability
   referenceUpload?: { version: number; platform: Record<string, any> }
   providerRegionContractVersion?: number
+  thinkingContractVersion?: number
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean

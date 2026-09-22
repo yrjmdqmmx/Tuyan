@@ -1,6 +1,6 @@
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react';
-import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
+import { BarChart3, BookOpen, Bot, LayoutDashboard, History, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
 import { AUTH_UI_ENABLED, logoUrl } from '../config';
 import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
@@ -11,6 +11,7 @@ function PrimaryPageLinks({ section = 'workbench' }) {
   return <>
     <a className="header-primary-link" href={appPath('/')} aria-current={section === 'workbench' ? 'page' : undefined}><LayoutDashboard size={16} /> {t("工作台")}</a>
     <a className="header-primary-link" href={appPath('/leaderboard')} aria-current={section === 'leaderboard' ? 'page' : undefined}><BarChart3 size={16} /> {t("排行榜")}</a>
+    <a className="header-primary-link" href={appPath('/changelog')} aria-current={section === 'changelog' ? 'page' : undefined}><History size={16} /> {t("更新日志")}</a>
   </>
 }
 

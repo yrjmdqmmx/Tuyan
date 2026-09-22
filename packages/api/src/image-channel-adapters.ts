@@ -162,6 +162,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     return await executeImageChannel(input, io)
   }
   catch (error: any) {
+    if (error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent') throw error
     const pending = await io.pending?.()
     if (pending && !pending.failed && !error.terminal) {
       throw Object.assign(new Error('已保存原渠道任务；可恢复查询或下载，不会重新生成。'), {name:'ImageChannelError', recoveryAction:'resume', pollOnly:true, uncertain:false, requestState:'unknown'})
@@ -260,7 +261,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
         state=await submit('https://tokenhub.tencentmaas.com'+prepared.endpoint,prepared.body)
         if(!state.task_id)throw unknown()
         await save({taskId:String(state.task_id),state})
-      } catch(error:any) {if(checkpoint?.failed)throw error;throw unknown()}
+      } catch(error:any) {if(checkpoint?.failed || error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent')throw error;throw unknown()}
     }
     const deadline=io.now()+(io.pollTimeoutMs??600000)
     while(io.now()<deadline) {

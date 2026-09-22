@@ -16,11 +16,11 @@ test('main routes leaderboard and canonicalizes legacy bench before render', () 
 
 test('workspace header exposes leaderboard and mini-program without retired client links', () => {
   const source = readSource('../src/App.jsx') + readSource('../src/components/WorkbenchHeader.jsx')
-  for (const [section, active] of [['workbench', '工作台'], ['leaderboard', '排行榜']]) {
+  for (const [section, active] of [['workbench', '工作台'], ['leaderboard', '排行榜'], ['changelog', '更新日志']]) {
     const nav = document.createElement('div')
     nav.innerHTML = renderToStaticMarkup(React.createElement(SiteNavigation, { section }))
     const links = [...nav.querySelectorAll('.header-primary-link')]
-    assert.deepEqual(links.map(link => [link.textContent.trim(), link.getAttribute('href')]), [['工作台', '/'], ['排行榜', '/leaderboard']])
+    assert.deepEqual(links.map(link => [link.textContent.trim(), link.getAttribute('href')]), [['工作台', '/'], ['排行榜', '/leaderboard'], ['更新日志', '/changelog']])
     assert.deepEqual(links.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.textContent.trim()), [active])
   }
   assert.match(source, /微信小程序/u)
@@ -36,7 +36,7 @@ test('leaderboard headers use the 图研Tuyan brand without the retired subtitle
     assert.doesNotMatch(source, /PaperBanana 标志|>PaperBanana<|PAPERBANANA IMAGE MODEL LEADERBOARD/u)
   }
   const root = readSource('../src/components/LeaderboardRoot.jsx')
-  assert.match(root, /<WorkbenchHeader section="leaderboard"/u)
+  assert.match(root, /<WorkbenchHeader section=\{section\}/u)
   // All routes share the workbench brand; retired product taglines stay removed.
   assert.doesNotMatch(root, /多智能体|学术图示生成/u)
 })
