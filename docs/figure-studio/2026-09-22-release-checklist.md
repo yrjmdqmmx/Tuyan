@@ -1,12 +1,27 @@
 # 论文画布发布核对 · 2026-09-22
 
-**当前不可合并发布。** PDF 编辑兼容性验收失败；真实预览 `5290` 等待用户正常登录，通用 API 缺少验收连接和凭据。以下仅为源码与 GitHub GET 核对结果，未启动构建、部署或供应商调用。
+**当前保持 draft，不合并发布。** TokenDance 两次真实调用、PDF/EPS 受限 Linux 导出与 Mac 同格式编辑回环已完成。兼容性有条件：PDF 外部另存缩放内容，EPS 重开后部分标签再次合并；不承诺跨软件无损。仅通用 API 真实联调仍缺用户连接凭据，最终 CI/发布审核待完成；尚未合并或部署。
 
 ## 源码与审批
 
-- [x] GitHub 当前 `main`：`0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`（PR #224）；本工作树 HEAD：`29b310168d84a93a4374de00e6067ecaede4bf63`，本轮后端/运行时改动尚未提交，HEAD **不是**完整待发布产物。[main 来源](https://api.github.com/repos/yrjmdqmmx/Tuyan/commits/main)
+- [x] 当前基线 `main`：`0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`（PR #224）；本轮实现提交：`f8d2a0e95c78c45d69044f6fc1884a7d3a926832`，[PR #225](https://github.com/yrjmdqmmx/Tuyan/pull/225) 为 draft。实现已本地提交、未 push；最终含文档提交的 CI 待核验。[main 来源](https://api.github.com/repos/yrjmdqmmx/Tuyan/commits/main)
 - [x] `paperbanana-production` 环境只允许 `main`，要求审核人 `yrjmdqmmx`；`prevent_self_review=false` 不等于免审。必须通过原 GitHub 环境审核，不能更改保护规则或绕过 reviewer。[环境规则](https://api.github.com/repos/yrjmdqmmx/Tuyan/environments/paperbanana-production) · [分支限制](https://api.github.com/repos/yrjmdqmmx/Tuyan/environments/paperbanana-production/deployment-branch-policies)
 - [ ] 修复当前验收阻塞并确认最终范围；提交、PR 审查、最终 SHA 的 `CI` 全通过后，记录合并后的完整 `RELEASE_SHA`。CI 含 `node`、`mongo-index-migration`、`images`，新增受限 Linux 容器的真实转换 smoke 不得跳过。[CI](../../.github/workflows/ci.yml)
+
+## 当前验收门槛
+
+- [x] 用户正常登录并连接 TokenDance；Qwen3.8 Flash 规划生成 18 对象、手动改标签、自然语言单标签修改、刷新恢复、过期版本拒绝、源稿保存重开通过。实际文本调用 2 次，观测余额差 ¥0.002692；不是逐次账单核销。累计最多 6 次 / ¥1、不自动重试的授权仍有效。
+- [x] PDF/EPS 转换输入隔离标签边界，EPS 修复 Type42 字体子集重名并增加非绘制 pdfmark 边界；源稿与下载 SVG 不变。最终 figure-core/runtime 53/53、figure service 18/18、类型检查、真实 Docker build 与受限 Linux smoke 通过；PDF/EPS 精确文字及普通/强制 fallback 像素一致性通过。
+- [x] 实际图稿通过安全 Linux wrapper 使用固定生产同版本 Inkscape 1.2.2/开源字体导出 PDF/EPS，13 个文字标签分别精确提取。桌面公共导航、普通编辑区 738 px、1440×900 整页 1019 px 正常滚动、390 px 手机验收通过。
+- [x] Mac SVG 的独立文字/模块编辑、另存及重开通过。
+- [x] Mac PDF 在安装同运行时字体后，GUI 单标签/矩形编辑、Embed fonts 另存 PDF 及 Internal import 重开通过；13 个文字绘制块与 3 个独立矩形保留，仅指定标签变化，其余 Unicode 精确，3 字体嵌入/子集/ToUnicode 均通过。
+- 已知 PDF 兼容边界：外部另存由 183×70 mm 变为 183.091667×70.202778 mm，内容轻微非等比缩放，字号矩阵 6 变为 6.003005 / 6.017381。原图研导出尺寸正确，Web 已提示另存后重新核验。此为有条件兼容范围，不设跨软件无损承诺或实现门槛；继续编辑优先用源稿/SVG。
+- [x] 最终 EPS 首次 GUI 独立标签/矩形编辑、Embed fonts EPS level 3 保存和重开通过；全文仅指定标签增加 revised，其他 Unicode 保留，3 字体嵌入，中间矩形移动 3 pt，裁剪宽高不变。兼容边界：重开后标签再次合并成 48 字符对象，13 个文字块减为 4，不能承诺反复保持独立对象；Web 已提示。历史失败与缺字体环境证据保留。
+- [ ] 通用 API 真实联调：缺少用户连接及凭据，保持 blocked，不以 mock 或 native/TokenDance 成功替代。
+- [x] 本轮 API 全量 686/686、Web 全量 564/564 及 Web build 通过。
+- [ ] 最终提交 CI 与 PR/发布审核；`de44b604` 已有 CI 成功仅覆盖当时提交。
+
+详细条件与证据见[集成验收记录](2026-09-22-integration-acceptance.md)。临时本地 wrapper 和用户字体对照不属于生产部署变更；生产仍使用仓库 Dockerfile 安装的转换器与字体。
 
 ## 发布顺序与参数
 
