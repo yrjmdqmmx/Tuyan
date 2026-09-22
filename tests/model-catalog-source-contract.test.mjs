@@ -15,6 +15,23 @@ const audit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-a
 const current = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
 const channels = ['cn', 'runware'].flatMap(name => JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/${name}-directory.json`), 'utf8')))
 
+const officialContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/official-contracts.json'), 'utf8'))
+const officialAudits = Object.fromEntries(['xai', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat'].map(provider => [provider, JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/v24/${provider}.json`), 'utf8'))]))
+
+function assertOfficialEvidence(provider, model) {
+  const reviewed = officialAudits[provider]?.models.find(row => row.id === model.id)
+  const contract = officialContracts[provider + '/' + model.id]
+  assert.ok(reviewed && contract, `${provider}/${model.id} needs both official audit and executable contract`)
+  assert.deepEqual([...new Set(reviewed.roles.map(role => role.startsWith('image-') ? 'image' : role))].sort(), [...model.roles].sort())
+  assert.deepEqual(contract.roles, model.roles)
+  assert.match(contract.source, /^https:\/\//)
+  const integration = provider === 'xai' ? reviewed : JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/v24/${provider}-integration.json`), 'utf8')).models.find(row => row.id === model.id)
+  assert.equal(integration.realInference, false)
+  assert.equal(integration.accountEntitlement, false)
+  assert.equal(integration.billingVerified, false)
+  assert.equal(model.verified, false)
+}
+
 test('backend and both bundled catalogs are generated from the same reviewed source without drift', () => {
   assert.equal(STATIC_MODEL_REGISTRY_VERSION, current.version)
   assert.equal(mini.STATIC_MODEL_REGISTRY_VERSION, current.version)
@@ -39,6 +56,15 @@ test('every original audit row has an explicit implementation or exclusion decis
     assert.match(row.source, /^https:\/\//)
     if (row.provider === 'openrouter') { assert.ok(['dynamic', 'dynamic-excluded'].includes(row.decision)); continue }
     const model = STATIC_MODEL_REGISTRY[row.provider]?.models.find((m) => m.id === row.resolvedId)
+    // The original exclusion remains a historical fact; only this exact reviewed
+    // v24 adapter supersedes it, never a blanket exception for older exclusions.
+    if (row.provider === 'xai' && row.resolvedId === 'grok-4.20-multi-agent-0309') {
+      assert.equal(row.decision, 'excluded')
+      assert.equal(officialAudits.xai.models.find(m => m.id === row.resolvedId).decision, 'adapt')
+      assert.equal(model.selectable, true)
+      assertOfficialEvidence(row.provider, model)
+      continue
+    }
     if (['added', 'covered', 'alias'].includes(row.decision)) assert.equal(model?.selectable, true, `${row.provider}/${row.id}`)
     else if (row.decision === 'disabled') assert.equal(model?.selectable, false, `${row.provider}/${row.id}`)
     else { assert.equal(row.decision, 'excluded'); assert.equal(model?.selectable === true, false, `${row.provider}/${row.id} exclusion contradicts catalog`) }
@@ -52,7 +78,9 @@ test('every original audit row has an explicit implementation or exclusion decis
       }
       const previous = audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id)
       const added = channels.find(row => row.channel === provider && row.apiModelId === model.id)
-      assert.ok(previous || added, `${provider}/${model.id} lacks audit evidence`)
+      const official = officialContracts[provider + '/' + model.id]
+      assert.ok(previous || added || official, `${provider}/${model.id} lacks audit evidence`)
+      if (official) assertOfficialEvidence(provider, model)
       if (added) {
         assert.equal(added.after, '适配链路已完成但真实调用未验证')
         assert.deepEqual(added.roles, model.roles)

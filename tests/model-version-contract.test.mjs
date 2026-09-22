@@ -12,7 +12,22 @@ const get = (p,id) => registry[p].models.find(m => m.id === id)
 
 test('760 historical identities and capabilities remain unchanged except the explicitly added refine controls', () => {
   const historical = structuredClone(registry)
-  for (const p of ['tokenhub', 'xiaomi', 'runware']) delete historical[p]
+  for (const p of ['tokenhub', 'xiaomi', 'runware', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat']) delete historical[p]
+  for (const id of ['grok-4.7', 'grok-4.20-multi-agent-0309', 'grok-4.20-multi-agent']) {
+    const added = historical.xai.models.find(m => m.id === id)
+    assert.equal(added.selectable, true)
+    assert.deepEqual(added.roles, ['main', 'vision'])
+    historical.xai.models = historical.xai.models.filter(m => m.id !== id)
+  }
+  for (const [id, maxImages] of [['grok-imagine-image-2.0', 5], ['grok-imagine-image', 3], ['grok-imagine-image-quality', 3]]) {
+    const model = historical.xai.models.find(m => m.id === id)
+    assert.deepEqual(model.capabilities.refineControls, {
+      version: 1, maxImages, sourceCounts: true, mask: false, maskWithReferences: false,
+      structured: null, checkedAt: '2026-09-22',
+      source: 'https://docs.x.ai/developers/rest-api-reference/inference/images',
+    })
+    delete model.capabilities.refineControls
+  }
   const bria = historical.fal.models.find(m => m.id === 'bria/fibo-edit-1.5/edit')
   assert.equal(bria.capabilities.refineControls.structured, 'bria-fibo')
   assert.equal(bria.capabilities.refineControls.maxImages, 4)
