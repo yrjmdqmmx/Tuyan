@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-22.v23",
+  "registryVersion": "2026-09-22.v24",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -1573,6 +1573,31 @@
     },
     {
       "provider": "xai",
+      "model": "grok-4.7",
+      "workflow": "generation",
+      "protocol": "openai-responses",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 16000000,
+        "maxTotalBytes": 48000000,
+        "maxDimension": 8192,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "status": "partial",
+        "source": "https://docs.x.ai/developers/model-capabilities/images/understanding",
+        "note": "官方单图 20MiB、PNG/JPEG；平台限制同批数量和总量，完整请求总量仍待确认。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xai",
       "model": "grok-4.6",
       "workflow": "generation",
       "protocol": "openai-responses",
@@ -1674,6 +1699,56 @@
     {
       "provider": "xai",
       "model": "grok-4.20-0309-reasoning",
+      "workflow": "generation",
+      "protocol": "openai-responses",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 16000000,
+        "maxTotalBytes": 48000000,
+        "maxDimension": 8192,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "status": "partial",
+        "source": "https://docs.x.ai/developers/model-capabilities/images/understanding",
+        "note": "官方单图 20MiB、PNG/JPEG；平台限制同批数量和总量，完整请求总量仍待确认。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4.20-multi-agent",
+      "workflow": "generation",
+      "protocol": "openai-responses",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 16000000,
+        "maxTotalBytes": 48000000,
+        "maxDimension": 8192,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg"
+        ],
+        "status": "partial",
+        "source": "https://docs.x.ai/developers/model-capabilities/images/understanding",
+        "note": "官方单图 20MiB、PNG/JPEG；平台限制同批数量和总量，完整请求总量仍待确认。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xai",
+      "model": "grok-4.20-multi-agent-0309",
       "workflow": "generation",
       "protocol": "openai-responses",
       "policy": {
@@ -13164,6 +13239,776 @@
         "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
       },
       "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "sensenova",
+      "model": "kimi-k3",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://platform.sensenova.cn/docs",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.sensenova.cn/docs",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "sensenova",
+      "model": "sensenova-6.8-flash-lite",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://platform.sensenova.cn/docs",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.sensenova.cn/docs",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "sensenova",
+      "model": "sensenova-u1.5-fast",
+      "workflow": "refine",
+      "protocol": "sensenova-images-json",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://platform.sensenova.cn/docs",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.sensenova.cn/docs",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "sensenova",
+      "model": "sensenova-u1.5-lite",
+      "workflow": "refine",
+      "protocol": "sensenova-images-json",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://platform.sensenova.cn/docs",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.sensenova.cn/docs",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "stepfun",
+      "model": "step-3.7-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://platform.stepfun.com/docs/zh/welcome",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.stepfun.com/docs/zh/welcome",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "stepfun",
+      "model": "step-1o-turbo-vision",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://platform.stepfun.com/docs/zh/welcome",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.stepfun.com/docs/zh/welcome",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "stepfun",
+      "model": "step-2x-large",
+      "workflow": "refine",
+      "protocol": "stepfun-images-json",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 2048,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.stepfun.com/docs/zh/welcome",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "stepfun",
+      "model": "step-5-preview",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://platform.stepfun.com/docs/zh/welcome",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.stepfun.com/docs/zh/welcome",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "stepfun",
+      "model": "step-image-edit-2",
+      "workflow": "refine",
+      "protocol": "stepfun-images-multipart",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://platform.stepfun.com/docs/zh/welcome",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "deepseek-v4.1-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "glm-5.3-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qwen-image-edit",
+      "workflow": "refine",
+      "protocol": "qianfan-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 128,
+        "maxAspectRatio": 4,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qwen3.5-122b-a10b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qwen3.5-27b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qwen3.5-35b-a3b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qwen3.5-397b-a17b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "deepseek-ocr",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "ernie-4.5-turbo-vl",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "ernie-4.5-turbo-vl-32k",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "ernie-5.0",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "ernie-5.0-thinking-latest",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "ernie-5.0-thinking-preview",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "internvl3-38b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "qianfan",
+      "model": "qianfan-ocr",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 5,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xop3qwen32bvl",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xopqwen35397b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xopqwen36v35b",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xopkimik25",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xopkimik26",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "iflytek",
+      "model": "xopkimik27code",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
     }
   ]

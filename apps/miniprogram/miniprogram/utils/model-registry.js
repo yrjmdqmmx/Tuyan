@@ -7,7 +7,7 @@ exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
 const model_presentation_1 = require("./model-presentation");
-exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'tokendance'];
+exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'tokendance'];
 function normalizeModelRegistry(input) {
     const source = asRecord(input);
     const registryVersion = stringValue(source.registryVersion);

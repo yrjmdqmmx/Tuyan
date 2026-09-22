@@ -7643,6 +7643,131 @@
       "maxRatio": 16,
       "alignment": 16,
       "auto": "square"
+    },
+    "sensenova-sensenova-u1.5-lite": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        },
+        "4K": {
+          "targetEdge": 4096
+        }
+      },
+      "auto": "square",
+      "minSide": 512,
+      "maxSide": 4096,
+      "minPixels": 262144,
+      "maxPixels": 16777216,
+      "maxRatio": 3,
+      "alignment": 32
+    },
+    "sensenova-sensenova-u1.5-fast": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        },
+        "4K": {
+          "targetEdge": 4096
+        }
+      },
+      "auto": "square",
+      "minSide": 512,
+      "maxSide": 4096,
+      "minPixels": 262144,
+      "maxPixels": 16777216,
+      "maxRatio": 3,
+      "alignment": 32
+    },
+    "stepfun-step-2x-large": {
+      "mode": "table",
+      "auto": "square",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "8:5": "1280x800",
+            "5:8": "800x1280"
+          }
+        }
+      }
+    },
+    "stepfun-step-image-edit-2": {
+      "mode": "table",
+      "auto": "square",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "16:9": "1360x768",
+            "4:3": "1184x896",
+            "9:16": "768x1360",
+            "3:4": "896x1184"
+          }
+        }
+      }
+    },
+    "stepfun-step-image-edit-2-edit": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {}
+      }
+    },
+    "qianfan-musesteamer-air-image": {
+      "mode": "table",
+      "auto": "square",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "16:9": "1280x720",
+            "9:16": "720x1280",
+            "4:3": "1152x864",
+            "3:4": "864x1152"
+          }
+        }
+      }
+    },
+    "qianfan-qwen-image": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        }
+      },
+      "auto": "square",
+      "minSide": 512,
+      "maxSide": 2048,
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "maxRatio": 4
+    },
+    "qianfan-qwen-image-edit": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        }
+      },
+      "auto": "square",
+      "minSide": 512,
+      "maxSide": 2048,
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "maxRatio": 4
     }
   },
   "routes": {
@@ -11505,6 +11630,78 @@
         "https://cloud.tencent.com/document/product/1823/136609"
       ],
       "notes": "TokenHub 独立型号接口；Vidu 1K 选项对应原生1080p，具体像素由渠道决定。"
+    },
+    "sensenova/sensenova-u1.5-lite": {
+      "generation": "sensenova-sensenova-u1.5-lite",
+      "editing": "sensenova-sensenova-u1.5-lite",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://platform.sensenova.cn/docs"
+      ]
+    },
+    "sensenova/sensenova-u1.5-fast": {
+      "generation": "sensenova-sensenova-u1.5-fast",
+      "editing": "sensenova-sensenova-u1.5-fast",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://platform.sensenova.cn/docs"
+      ]
+    },
+    "stepfun/step-2x-large": {
+      "generation": "stepfun-step-2x-large",
+      "editing": "stepfun-step-2x-large",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image2image"
+      ]
+    },
+    "stepfun/step-image-edit-2": {
+      "generation": "stepfun-step-image-edit-2",
+      "editing": "stepfun-step-image-edit-2-edit",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/edits"
+      ]
+    },
+    "qianfan/musesteamer-air-image": {
+      "generation": "qianfan-musesteamer-air-image",
+      "editing": null,
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Ymio9i9i4",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ]
+    },
+    "qianfan/qwen-image": {
+      "generation": "qianfan-qwen-image",
+      "editing": null,
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ]
+    },
+    "qianfan/qwen-image-edit": {
+      "generation": null,
+      "editing": "qianfan-qwen-image-edit",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Rm9m76ekf",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ]
     }
   }
 }

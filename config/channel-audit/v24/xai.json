@@ -1,0 +1,1174 @@
+{
+  "provider": "xai",
+  "label": "SpaceXAI",
+  "operator": "SpaceXAI LLC",
+  "brand": "Grok",
+  "checkedAt": "2026-09-22",
+  "announcementDate": "2026-09-21",
+  "dateNote": "官方公告与 API 日志标注 9 月21日；不能将中文时区的9月22日当官方日期。",
+  "sources": [
+    {
+      "file": "developers-advanced-api-usage-cost-tracking.md",
+      "sha256": "0cbdeb9569532bce32c59e1f28145c6bee1214466d84ce8152668353cf1d9da2",
+      "bytes": 686
+    },
+    {
+      "file": "developers-advanced-api-usage-regional-endpoints.md",
+      "sha256": "0cbdeb9569532bce32c59e1f28145c6bee1214466d84ce8152668353cf1d9da2",
+      "bytes": 686
+    },
+    {
+      "file": "developers-advanced-api-usage-regions.md",
+      "sha256": "bbdc49af9ada156a591e23f7c222e473c5166a9d0fd3b79a7723288b00b03a63",
+      "bytes": 6644
+    },
+    {
+      "file": "developers-grok-4-7.md",
+      "sha256": "272db10e00ee72f72fcdc1bb270387643446dfcdcb520e6027326068557d8fed",
+      "bytes": 5349
+    },
+    {
+      "file": "developers-migration-imagine-image-quality-nov-2.md",
+      "sha256": "fc1c7ac4e6c0acb55172cf4e2f126f7e93c55044d5962a95029e21a2e12174dc",
+      "bytes": 4446
+    },
+    {
+      "file": "developers-migration-may-15-retirement.md",
+      "sha256": "d228ec29ccd39efefa16af6347b02069fb7ef1fc29085bded9004c71c3437b6c",
+      "bytes": 4389
+    },
+    {
+      "file": "developers-model-capabilities-images-editing.md",
+      "sha256": "7eef300bdb5bf28f4edfd50b7e8c68c216b3b96b3d3e3e11df6305c8f755e66a",
+      "bytes": 3166
+    },
+    {
+      "file": "developers-model-capabilities-images-generation.md",
+      "sha256": "3e8a8d6a4782d667b0915d408f3fb4df7de905e5b462d1f937ecec20b1baeef6",
+      "bytes": 13862
+    },
+    {
+      "file": "developers-model-capabilities-images-multi-image-editing.md",
+      "sha256": "5f654c23e7fd4f814fe2e489f76343afd581652d90437ab3dfef0494cf0ffa0e",
+      "bytes": 1061
+    },
+    {
+      "file": "developers-model-capabilities-images-understanding.md",
+      "sha256": "931e5b54dc6cf9aa7ab893d3ebfdedb217792f3e4e7672bdcfc1025e4f34ebf3",
+      "bytes": 5157
+    },
+    {
+      "file": "developers-model-capabilities-text-multi-agent.md",
+      "sha256": "0463d9d2022fd9453ece718e3fc898103c9cab20dc8cd4a2601d7c92b0fab6d4",
+      "bytes": 19603
+    },
+    {
+      "file": "developers-models-grok-4.20-multi-agent.md",
+      "sha256": "6de12a68529773f220cb4bde47f13c452fa6df66fa5171e834b5a0ff52a87ee2",
+      "bytes": 1192
+    },
+    {
+      "file": "developers-models-grok-4.7.md",
+      "sha256": "3ed635f3374714d627a45b4632753004c43b09418529273f8c75075a5ae6c3e4",
+      "bytes": 936
+    },
+    {
+      "file": "developers-models.md",
+      "sha256": "205bc82362bbbe966ab750913a77df848a4ab6fa48b3d21aa7548d60f435e0f3",
+      "bytes": 4708
+    },
+    {
+      "file": "developers-pricing.md",
+      "sha256": "9be18c2f9508f95731abf88fce1651759bea790b5f0dad8849d61f12a7604966",
+      "bytes": 10964
+    },
+    {
+      "file": "developers-quickstart.md",
+      "sha256": "e51c21f759665c77d77efd27b762a009608ecf91a0635271a1ca598c1ec9b6d4",
+      "bytes": 5875
+    },
+    {
+      "file": "developers-release-notes.md",
+      "sha256": "3685602028e78baf90aef7c545d934dbc4a43052667647c54f04d19534bef581",
+      "bytes": 17521
+    },
+    {
+      "file": "developers-rest-api-reference-inference-images.md",
+      "sha256": "29936d730ae04a61fef85f9488224bd2309c9140418a06133a9d20025a9a3f4c",
+      "bytes": 12674
+    }
+  ],
+  "sourceUrls": [
+    "https://x.ai/news/grok-4-7",
+    "https://docs.x.ai/developers/release-notes",
+    "https://docs.x.ai/developers/models"
+  ],
+  "endpoints": {
+    "standard": "https://api.x.ai/v1",
+    "usRegional": "https://us.api.x.ai/v1"
+  },
+  "endpointDecision": "保留标准公共端点；美国数据驻留端点有额外10%价格，未默认切换。",
+  "auth": {
+    "type": "Bearer API Key",
+    "keySource": "https://console.x.ai",
+    "accountEntitlement": "unverified",
+    "creditBalance": "unverified",
+    "subscriptionCompatibility": "Grok产品订阅不等于API额度"
+  },
+  "models": [
+    {
+      "id": "grok-4.5",
+      "label": "grok-4.5",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "500k",
+            "input": 2,
+            "cachedInput": 0.3,
+            "output": 6,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "500k",
+            "input": 4,
+            "cachedInput": 0.6,
+            "output": 12,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.5",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "500k",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.5",
+        "httpStatus": 200,
+        "sha256": "81ddddf9109893f5a84c92cf524984afe446009043dada7aeb4b85cbbb781b2b",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.5-latest",
+        "grok-build-latest"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.3",
+      "label": "grok-4.3",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "1M",
+            "input": 1.25,
+            "cachedInput": 0.2,
+            "output": 2.5,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "1M",
+            "input": 2.5,
+            "cachedInput": 0.4,
+            "output": 5,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.3",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "1M",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.3",
+        "httpStatus": 200,
+        "sha256": "9bcd456b37a6fa5bb1b1fed6acd53a2d8128e8f1b60d3eea76f44e3badc4ebc2",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.3-latest"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, eu-west-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.20-0309-reasoning",
+      "label": "grok-4.20-0309-reasoning",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "fixed",
+        "id": "grok-4.20-0309-reasoning"
+      },
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "1M",
+            "input": 1.25,
+            "cachedInput": 0.2,
+            "output": 2.5,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "1M",
+            "input": 2.5,
+            "cachedInput": 0.4,
+            "output": 5,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "1M",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+        "httpStatus": 200,
+        "sha256": "99057608aeb1a4e6ace5d87bf6c4b27b3bff4af5248babad475500da31fdc2e3",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.20-reasoning-latest",
+        "grok-4.20",
+        "grok-4.20-reasoning",
+        "grok-4.20-0309",
+        "grok-4.20-beta-0309-reasoning",
+        "grok-4.20-beta",
+        "grok-4.20-beta-0309",
+        "grok-4.20-beta-latest",
+        "grok-4.20-beta-latest-reasoning",
+        "grok-4.20-beta-reasoning",
+        "grok-4.20-experimental-beta-0304-reasoning",
+        "grok-4.20-experimental-beta-0304",
+        "grok-4.20-experimental-beta-reasoning-latest",
+        "grok-4.20-experimental-beta-latest",
+        "grok-4.20-reasoning-gv2"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.20-0309-non-reasoning",
+      "label": "grok-4.20-0309-non-reasoning",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "fixed",
+        "id": "grok-4.20-0309-non-reasoning"
+      },
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "1M",
+            "input": 1.25,
+            "cachedInput": 0.2,
+            "output": 2.5,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "1M",
+            "input": 2.5,
+            "cachedInput": 0.4,
+            "output": 5,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "1M",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+        "httpStatus": 200,
+        "sha256": "4077bae7964e9b5942763b4d95958234879f82720a3eb5ed37b83347ee1024a8",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.20-non-reasoning",
+        "grok-4.20-non-reasoning-latest",
+        "grok-4.20-beta-non-reasoning",
+        "grok-4.20-beta-latest-non-reasoning",
+        "grok-4.20-experimental-beta-0304-non-reasoning",
+        "grok-4.20-experimental-beta-non-reasoning-latest",
+        "grok-4.20-beta-0309-non-reasoning",
+        "grok-4.20-non-reasoning-gv2"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-imagine-image",
+      "label": "grok-imagine-image",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "image"
+      ],
+      "protocol": "xai-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 3,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "amount": 0.02,
+            "unit": "image",
+            "kind": "starting-price-not-fixed-cost"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-imagine-image",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/images/generations",
+        "editingEndpoint": "https://api.x.ai/v1/images/edits"
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": null,
+        "outputTokens": null,
+        "productImageCap": 3,
+        "providerImageCount": 3,
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": {
+        "resolutions": [
+          "1k",
+          "2k"
+        ],
+        "source": "https://docs.x.ai/developers/model-capabilities/images/generation",
+        "modelSpecificProfile": "config/image-size-contracts.json"
+      },
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-imagine-image",
+        "httpStatus": 200,
+        "sha256": "8f9593491a141a7d3d339ce91dba221d3d275e01aa6d54a16871a7eaa3165857",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-imagine-image-2026-03-02"
+      ],
+      "documentedModalities": "text, image → image",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2, us-saltlake-2\n"
+    },
+    {
+      "id": "grok-imagine-image-2.0",
+      "label": "Grok Imagine Image 2.0",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "image"
+      ],
+      "protocol": "xai-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 5,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "amount": 0.04,
+            "unit": "image",
+            "kind": "starting-price-not-fixed-cost"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-imagine-image-2.0",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/images/generations",
+        "editingEndpoint": "https://api.x.ai/v1/images/edits"
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": null,
+        "outputTokens": null,
+        "productImageCap": 5,
+        "providerImageCount": 5,
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": {
+        "resolutions": [
+          "1k",
+          "2k"
+        ],
+        "source": "https://docs.x.ai/developers/model-capabilities/images/generation",
+        "modelSpecificProfile": "config/image-size-contracts.json"
+      },
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-imagine-image-2.0",
+        "httpStatus": 200,
+        "sha256": "b96853a986641254b5b19a59fdc60e5ea0cacbe880f08ca7ed73037beabd4b23",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [],
+      "documentedModalities": "text, image → image",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-build-0.1",
+      "label": "grok-build-0.1",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "regions": [
+        "us-east-1",
+        "us-west-2"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "256k",
+            "input": 1,
+            "cachedInput": 0.2,
+            "output": 2,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "256k",
+            "input": 2,
+            "cachedInput": 0.4,
+            "output": 4,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": "stable",
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-build-0.1",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "256k",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-build-0.1",
+        "httpStatus": 200,
+        "sha256": "e8c0cbcb733852896245ef05be4475e4bf08e54d741b47a5d031fd7d213baef0",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-code-fast-1",
+        "grok-code-fast",
+        "grok-code-fast-1-0825"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-imagine-image-quality",
+      "label": "grok-imagine-image-quality",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "image"
+      ],
+      "protocol": "xai-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 3,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "amount": 0.05,
+            "unit": "image",
+            "kind": "starting-price-not-fixed-cost"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": "legacy",
+      "retirementDate": "2026-11-02",
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/images/generations",
+        "editingEndpoint": "https://api.x.ai/v1/images/edits"
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": null,
+        "outputTokens": null,
+        "productImageCap": 3,
+        "providerImageCount": 3,
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": {
+        "resolutions": [
+          "1k",
+          "2k"
+        ],
+        "source": "https://docs.x.ai/developers/model-capabilities/images/generation",
+        "modelSpecificProfile": "config/image-size-contracts.json"
+      },
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+        "httpStatus": 200,
+        "sha256": "f276f08df043899e99920d3d2cc1754de33fb712f63ac993b742892e6f27a73b",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-imagine-image-quality-20260403",
+        "grok-imagine-image-quality-latest",
+        "grok-imagine-image-pro"
+      ],
+      "documentedModalities": "text, image → image",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.7",
+      "label": "Grok 4.7",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "regions": [
+        "global-endpoint"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "500k",
+            "input": 2,
+            "cachedInput": 0.5,
+            "output": 6,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "500k",
+            "input": 4,
+            "cachedInput": 1,
+            "output": 12,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": "stable",
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.7",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "500k",
+        "outputTokens": "no separate output cap",
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": [
+          "low",
+          "medium",
+          "high",
+          "xhigh"
+        ]
+      },
+      "size": null,
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.7",
+        "httpStatus": 200,
+        "sha256": "3ed635f3374714d627a45b4632753004c43b09418529273f8c75075a5ae6c3e4",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2, us-central-1\n"
+    },
+    {
+      "id": "grok-4.20-multi-agent-0309",
+      "label": "Grok 4.20 Multi-agent 0309",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "fixed",
+        "id": "grok-4.20-multi-agent-0309"
+      },
+      "regions": [
+        "global-endpoint"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "1M",
+            "input": 1.25,
+            "cachedInput": 0.2,
+            "output": 2.5,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "1M",
+            "input": 2.5,
+            "cachedInput": 0.4,
+            "output": 5,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": "preview",
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "1M",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+        "httpStatus": 200,
+        "sha256": "6de12a68529773f220cb4bde47f13c452fa6df66fa5171e834b5a0ff52a87ee2",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.20-multi-agent",
+        "grok-4.20-multi-agent-latest",
+        "grok-4.20-multi-agent-beta-latest",
+        "grok-4.20-multi-agent-experimental-beta-0304",
+        "grok-4.20-multi-agent-experimental-beta-latest",
+        "grok-4.20-multi-agent-beta-0309"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.20-multi-agent",
+      "label": "Grok 4.20 Multi-agent",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "regions": [
+        "global-endpoint"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "1M",
+            "input": 1.25,
+            "cachedInput": 0.2,
+            "output": 2.5,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "1M",
+            "input": 2.5,
+            "cachedInput": 0.4,
+            "output": 5,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": "preview",
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "1M",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+        "httpStatus": 200,
+        "sha256": "6de12a68529773f220cb4bde47f13c452fa6df66fa5171e834b5a0ff52a87ee2",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [
+        "grok-4.20-multi-agent",
+        "grok-4.20-multi-agent-latest",
+        "grok-4.20-multi-agent-beta-latest",
+        "grok-4.20-multi-agent-experimental-beta-0304",
+        "grok-4.20-multi-agent-experimental-beta-latest",
+        "grok-4.20-multi-agent-beta-0309"
+      ],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2\n"
+    },
+    {
+      "id": "grok-4.6",
+      "label": "Grok 4.6",
+      "developer": "SpaceXAI",
+      "version": {
+        "kind": "rolling",
+        "id": null
+      },
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-responses",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 8,
+      "price": {
+        "currency": "USD",
+        "rates": [
+          {
+            "condition": "(< 200k prompt tokens)",
+            "context": "500k",
+            "input": 2,
+            "cachedInput": 0.5,
+            "output": 6,
+            "unit": "million_tokens"
+          },
+          {
+            "condition": "(≥ 200k prompt tokens)",
+            "context": "500k",
+            "input": 4,
+            "cachedInput": 1,
+            "output": 12,
+            "unit": "million_tokens"
+          }
+        ],
+        "source": "https://docs.x.ai/developers/models",
+        "checkedAt": "2026-09-22",
+        "verifiedAccountPrice": false
+      },
+      "retirementDate": null,
+      "selectable": true,
+      "decision": "adapt",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.6",
+        "https://docs.x.ai/developers/models"
+      ],
+      "request": {
+        "endpoint": "https://api.x.ai/v1/responses",
+        "editingEndpoint": null
+      },
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false,
+      "limits": {
+        "context": "500k",
+        "outputTokens": null,
+        "productImageCap": 8,
+        "providerImageCount": "no count limit stated in vision guide",
+        "visionImageBytes": 20971520,
+        "reasoningEffort": null
+      },
+      "size": null,
+      "lifecycle": "stable",
+      "detailEvidence": {
+        "url": "https://docs.x.ai/developers/models/grok-4.6",
+        "httpStatus": 200,
+        "sha256": "0c227f45a9c4c7c6c86e671fbeaf2284138e0fbbc36d57918400e25e5801b679",
+        "checkedAt": "2026-09-22"
+      },
+      "documentedAliases": [],
+      "documentedModalities": "text, image → text",
+      "documentedRegions": "\nAvailable in: us-east-1, us-west-2, us-central-1\n"
+    }
+  ],
+  "excluded": [
+    {
+      "id": null,
+      "label": "Grok 4.7 Fast",
+      "reason": "产品已发布，但API更新日志仅声明Cursor/Grok Build提供Fast；公共API ID未确认，不上架。",
+      "source": "https://docs.x.ai/developers/release-notes"
+    },
+    {
+      "id": "grok-4-1-fast-reasoning",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-4-1-fast-non-reasoning",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-4-fast-reasoning",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-4-fast-non-reasoning",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-4-0709",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-code-fast-1",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-3",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    },
+    {
+      "id": "grok-imagine-image-pro",
+      "reason": "2026-05-15已退役；服务端重定向不是旧型号仍活跃的证明。",
+      "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+    }
+  ],
+  "scope": "文本规划、视觉和图片；音视频不属于当前图研三角色。"
+}

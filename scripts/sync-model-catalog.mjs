@@ -39,11 +39,11 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
-const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
-const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).map(([key,c]) => {
-  const policy = {maxCount:Math.min(3,c.maxImages || 0),source:c.source}
+const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
+  const policy = {maxCount:c.productImageCap ?? Math.min(3,c.maxImages || 0),source:c.source}
   if (c.taskType==='vidu') Object.assign(policy,{minDimension:128,maxAspectRatio:4})
   if (c.taskType==='seedream') Object.assign(policy,{minDimension:14,maxAspectRatio:16})
   for (const x of c.schema?.['x-constraints'] || []) {
@@ -74,8 +74,13 @@ const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.S
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
 const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']]]) {
+  const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
+  lines.push(`const {${names.join(',')}} = (()=>{${moduleSource}\nreturn {${names.join(',')}}})()`)
+}
 lines.push(routeModule, channelRuntime, textChannelRuntime, `const extendedModelChannels: Record<string, any> = ${JSON.stringify(config.channels || {})}`)
 lines.push(`const auditedModelAliases: Record<string, Record<string, string>> = ${JSON.stringify(config.aliases || {})}`)
+lines.push(`const auditedDisabledIdentities: Record<string, Record<string, any>> = ${JSON.stringify(config.disabled || {})}`)
 for (const [provider, channel] of Object.entries(config.channels || {})) {
   lines.push(`staticModelRegistry[${JSON.stringify(provider)}] = ${JSON.stringify({accessKind:channel.accessKind, routeContractVersion:1, accountCatalogRequired:false, defaults:channel.defaults, models:[]})}`)
 }

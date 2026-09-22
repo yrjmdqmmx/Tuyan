@@ -33,7 +33,7 @@
 渠道分类次序（仅用于排序，界面名称及辅助标签不加国内 / 国外前缀；下面采用小程序 / 设置常量的既有同类顺序）：
 
 1. 国内聚合：观猹 TokenDance → 硅基流动。
-2. 国内官方直连：阿里云百炼 → 火山方舟 → 深度求索 → Kimi → 智谱 → MiniMax。
+2. 国内官方直连：阿里云百炼 → 火山方舟 → 深度求索 → Kimi → 智谱 → 稀宇科技。
 3. 国外官方直连：Google → OpenAI → Anthropic → Recraft → SpaceXAI → BFL → Stability AI → Ideogram → Mistral AI。
 4. 国外聚合：OpenRouter → Together AI → Fireworks AI → fal.ai → Replicate。
 

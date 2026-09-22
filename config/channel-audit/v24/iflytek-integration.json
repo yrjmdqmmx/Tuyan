@@ -1,0 +1,493 @@
+{
+  "provider": "iflytek",
+  "checkedAt": "2026-09-22",
+  "endpointScope": "使用华北 MaaS 普通 API Key；Astron Token Plan、Coding Plan、星火 API Password 和 AK/SK 签名凭据不通用。仅开放已适配 HTTP 服务。",
+  "models": [
+    {
+      "id": "spark-x2.5",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "spark-x2.5",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "spark-x2.5-4b",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "spark-x2.5-4b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "spark-x2.5-1.7b",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "spark-x2.5-1.7b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopglm53",
+      "roles": [
+        "main"
+      ],
+      "developer": "智谱AI",
+      "apiId": "xopglm53",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopdeepseekv4pro0813",
+      "roles": [
+        "main"
+      ],
+      "developer": "深度求索",
+      "apiId": "xopdeepseekv4pro0813",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopdeepseekv4flash0731",
+      "roles": [
+        "main"
+      ],
+      "developer": "深度求索",
+      "apiId": "xopdeepseekv4flash0731",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopkimik27code",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "月之暗面",
+      "apiId": "xopkimik27code",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopglm52",
+      "roles": [
+        "main"
+      ],
+      "developer": "智谱AI",
+      "apiId": "xopglm52",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopdeepseekv4flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "深度求索",
+      "apiId": "xopdeepseekv4flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopkimik26",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "月之暗面",
+      "apiId": "xopkimik26",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopdeepseekv4pro",
+      "roles": [
+        "main"
+      ],
+      "developer": "深度求索",
+      "apiId": "xopdeepseekv4pro",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopqwen36v35b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xopqwen36v35b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xsparkx2flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "xsparkx2flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopglm51",
+      "roles": [
+        "main"
+      ],
+      "developer": "智谱AI",
+      "apiId": "xopglm51",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xsparkx2",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "xsparkx2",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop35qwen2b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop35qwen2b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopqwen35397b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xopqwen35397b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xminimaxm25",
+      "roles": [
+        "main"
+      ],
+      "developer": "MiniMax",
+      "apiId": "xminimaxm25",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopkimik25",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "月之暗面",
+      "apiId": "xopkimik25",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xopglmv47flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "智谱AI",
+      "apiId": "xopglmv47flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen32bvl",
+      "roles": [
+        "vision"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen32bvl",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen80bnext",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen80bnext",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen30b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen30b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen32b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen32b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xdeepseekr1qwen32b",
+      "roles": [
+        "main"
+      ],
+      "developer": "深度求索",
+      "apiId": "xdeepseekr1qwen32b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen0b6",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen0b6",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen4b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen4b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen14b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen14b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xop3qwen8b",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xop3qwen8b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xsparkprox",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "xsparkprox",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xspark13b6k",
+      "roles": [
+        "main"
+      ],
+      "developer": "科大讯飞",
+      "apiId": "xspark13b6k",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "xqwen14bchat",
+      "roles": [
+        "main"
+      ],
+      "developer": "阿里巴巴",
+      "apiId": "xqwen14bchat",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    }
+  ],
+  "excluded": [
+    {
+      "id": "xophunyuan7bmt",
+      "channel": "iflytek_maas",
+      "reason": "Translation-specialized model is not a general planning model. A separate translation workflow is required."
+    },
+    {
+      "id": "xoppaddleocrv16 ",
+      "channel": "iflytek_maas",
+      "reason": "OCR-specialized task is not a general figure reviewer; needs a dedicated prompt/parser. Official ID also has trailing whitespace."
+    },
+    {
+      "id": "xopglm5",
+      "channel": "iflytek_maas",
+      "reason": "Public list serverStatus is 0 rather than 3. Status meaning not proven; no retirement inferred. Confirm ready state before enabling."
+    },
+    {
+      "id": "xopdeepseekocr",
+      "channel": "iflytek_maas_ws",
+      "reason": "OCR-specialized task is not a general figure reviewer; needs a dedicated prompt/parser. "
+    },
+    {
+      "id": "xophunyuanocr",
+      "channel": "iflytek_maas_ws",
+      "reason": "OCR-specialized task is not a general figure reviewer; needs a dedicated prompt/parser. "
+    },
+    {
+      "id": "xop3qwen235b2507",
+      "channel": "iflytek_maas_ws",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "xqwen257bchat",
+      "channel": "iflytek_maas",
+      "reason": "Public list serverStatus is 0 rather than 3. Status meaning not proven; no retirement inferred. Confirm ready state before enabling."
+    },
+    {
+      "id": "lite",
+      "channel": "iflytek_spark",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "generalv3",
+      "channel": "iflytek_spark",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "pro-128k",
+      "channel": "iflytek_spark",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "4.0Ultra",
+      "channel": "iflytek_spark",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "generalv3.5",
+      "channel": "iflytek_spark",
+      "reason": "Max subscription ended and backend/entitlement merged with Ultra. Do not advertise as distinct Max version; retain original API ID/history."
+    },
+    {
+      "id": "max-32k",
+      "channel": "iflytek_spark",
+      "reason": "Max subscription ended and backend/entitlement merged with Ultra. Do not advertise as distinct Max version; retain original API ID/history."
+    },
+    {
+      "id": "spark-x",
+      "channel": "iflytek_spark_x2",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "spark-x",
+      "channel": "iflytek_spark_v2",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "general",
+      "channel": "iflytek_spark_vision",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "imagev3",
+      "channel": "iflytek_spark_vision",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "general",
+      "channel": "iflytek_spark_image",
+      "reason": "独立星火凭据或 WS 签名协议尚未接入当前 MaaS 凭据槽，不能混用；保留逐型号官方协议，暂不作为可用 API 上架。"
+    },
+    {
+      "id": "s3fd61810",
+      "channel": "iflytek_hidream",
+      "reason": "Exact service path is documented, but model/weights version, decoded result JSON image URL paths, input image cap and full aspect-ratio enum are not documented. Do not infer HiDream-I1/E1/O1 identity or advertise semantic editing/mask controls."
+    }
+  ]
+}

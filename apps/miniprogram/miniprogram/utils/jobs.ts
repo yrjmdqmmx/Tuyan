@@ -135,7 +135,7 @@ export function normalizeJob(input: unknown): Job {
     job_type: String(job.job_type || job.jobType || 'generate'),
     refine_mode: String(job.refine_mode || job.refineMode || ''),
     refine_mode_text: (job.refine_mode || job.refineMode) === 'direct-edit' ? '直接编辑' : (job.refine_mode || job.refineMode) === 'analyze-redraw' ? '分析后重绘' : '',
-    provider_regions_text: String(job.provider_regions_text || (job.providerRegions?.minimax ? `MiniMax · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
+    provider_regions_text: String(job.provider_regions_text || (job.providerRegions?.minimax ? `稀宇科技 · ${job.providerRegions.minimax === 'cn' ? '国内' : '国际'}` : '')),
     id: jobId,
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],

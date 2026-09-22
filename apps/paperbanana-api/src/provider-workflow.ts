@@ -21,7 +21,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   const steps = db.collection<any>('paperbanana_provider_steps')
   const chunks = db.collection<any>('paperbanana_provider_step_chunks')
   const jobs = db.collection<any>('paperbanana_jobs')
-  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel]))
+  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel]))
   const isManaged = (task: Task) => Boolean(managedChannel(task))
   const expires = () => new Date(now() + 7 * 86400_000)
   async function acceptingData(userId: string) {

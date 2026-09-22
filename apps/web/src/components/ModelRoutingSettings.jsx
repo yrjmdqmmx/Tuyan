@@ -44,7 +44,7 @@ export default function ModelRoutingSettings({
   arkVerificationError,
   onVerifyArk,
 }) {
-  const recoverableCredentials = credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi'].includes(provider))
+  const recoverableCredentials = credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai'].includes(provider))
   const isAdvancedMode = configurationMode === 'advanced'
   const routeContractSupported = Number(modelRegistry?.routeContractVersion || 0) >= 1
   const arkImageProbeRequired = arkProbes.some((probe) => probe.role === 'image')
@@ -122,8 +122,8 @@ export default function ModelRoutingSettings({
           return (
             <div className="credential-provider" key={provider}>
               {provider === 'minimax' ? <label className="field">
-                <span>MiniMax 区域</span>
-                <select aria-label="MiniMax 区域" value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+                <span>稀宇科技区域</span>
+                <select aria-label="稀宇科技区域" value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
                   {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{region.label}</option>)}
                 </select>
                 <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase} · 请填写该区域平台的 Key</small>
@@ -142,7 +142,7 @@ export default function ModelRoutingSettings({
                   />
                 </div>
               </label>
-              <ApiKeyGuide recoverable={recoverableCredentials} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
+              <ApiKeyGuide recoverable={recoverableCredentials} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 稀宇科技（MiniMax）开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
             </div>
           )
         })}

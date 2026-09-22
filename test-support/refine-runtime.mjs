@@ -92,6 +92,14 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       if (channelFailure === 'download') return new Response('temporary fixture error',{status:503});
       return new Response(output,{headers:{'Content-Type':'image/png'}});
     }
+    if (/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com|maas-api.cn-huabei-1.xf-yun.com|api.longcat.chat)\//.test(url)) {
+      if (channelFailure === 'lost-submit') throw new Error('fixture lost official acknowledgment');
+      if (url.includes('/images/')) return Response.json({id:'fixture-official-image',data:[{url:'https://fixture-assets.example.org/image.png'}],usage:{total_tokens:10}});
+      if (url.includes('/messages')) return Response.json({id:'fixture-official-text',stop_reason:'end_turn',content:[{type:'text',text:'保留图中标签与连接关系。'}],usage:{input_tokens:8,output_tokens:10}});
+      return Response.json({id:'fixture-official-text',choices:[{finish_reason:'stop',message:{content:'保留图中标签与连接关系。'}}],usage:{prompt_tokens:8,completion_tokens:10}});
+    }
+    if (url === 'https://api.x.ai/v1/responses') return Response.json({id:'fixture-xai',status:'completed',output_text:'保留图中标签与连接关系。',usage:{cost_in_usd_ticks:10000}});
+    if (url.startsWith('https://api.x.ai/v1/images/')) return Response.json({id:'fixture-xai-image',data:[{b64_json:output.toString('base64')}],usage:{cost_in_usd_ticks:100000000}});
     if (url === 'https://api.runware.ai/v1') {
       const task=JSON.parse(options.body)[0];
       if (['imageInference','textInference','caption'].includes(task.taskType)) {

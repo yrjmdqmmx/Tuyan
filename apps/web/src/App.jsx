@@ -948,7 +948,7 @@ export default function App() {
       return null;
     }
     if (mainRoute.accessProvider === 'minimax' && minimaxRegion(providerRegions) === 'cn' && !modelRegistry?.providerRegionContractVersion) {
-      setInputOptimizationGuidance('当前服务端尚未支持 MiniMax 国内区域，请等待服务端更新。');
+      setInputOptimizationGuidance('当前服务端尚未支持 稀宇科技国内区域，请等待服务端更新。');
       return null;
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();

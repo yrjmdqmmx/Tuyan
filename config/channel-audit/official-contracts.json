@@ -1,0 +1,5411 @@
+{
+  "sensenova/sensenova-6.8-flash-lite": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "plan": "Token Plan public beta",
+      "perModelRate": null,
+      "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "sensenova-6.8-flash-lite"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "sensenova/deepseek-v4-pro": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "plan": "Token Plan public beta",
+      "perModelRate": null,
+      "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-pro"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "sensenova/deepseek-v4-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "plan": "Token Plan public beta",
+      "perModelRate": null,
+      "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "sensenova/glm-5.2": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "plan": "Token Plan public beta",
+      "perModelRate": null,
+      "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5.2"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "sensenova/kimi-k3": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "plan": "Token Plan public beta",
+      "perModelRate": null,
+      "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "temperature": 1,
+      "top_p": 0.95,
+      "max_completion_tokens": 8192
+    },
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "kimi-k3"
+        }
+      },
+      "x-constraints": []
+    },
+    "requireDataUrl": true
+  },
+  "sensenova/sensenova-u1.5-lite": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 5,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 5,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "perModelRate": null,
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "notes": "公测有积分额度；移除水印当前公测免费，不等于生图永远免费。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "n": 1,
+      "output_format": "png",
+      "response_format": "url",
+      "watermark": true,
+      "prompt_extend": false
+    },
+    "textProtocol": "sensenova-images-json",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "sensenova-u1.5-lite"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "sensenova/sensenova-u1.5-fast": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 5,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 5,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": null,
+      "currency": null,
+      "unit": "points",
+      "perModelRate": null,
+      "sourceUrl": "https://platform.sensenova.cn/docs",
+      "notes": "公测有积分额度；移除水印当前公测免费，不等于生图永远免费。",
+      "verifiedAccountPrice": false,
+      "source": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "n": 1,
+      "output_format": "png",
+      "response_format": "url",
+      "watermark": true,
+      "prompt_extend": false
+    },
+    "textProtocol": "sensenova-images-json",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "sensenova-u1.5-fast"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "stepfun/step-5-preview": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 60,
+    "productImageCap": 3,
+    "source": "https://platform.stepfun.com/docs/zh/welcome",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "unit": "million tokens",
+      "input": 7,
+      "inputCached": 0.35,
+      "output": 20,
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "currency": "USD",
+        "unit": "million tokens",
+        "input": 1,
+        "inputCached": 0.05,
+        "output": 2.7,
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.stepfun.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-5-preview"
+        }
+      },
+      "x-constraints": []
+    },
+    "maxCombinedImageBytes": 20971520
+  },
+  "stepfun/step-3.7-flash": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 60,
+    "productImageCap": 3,
+    "source": "https://platform.stepfun.com/docs/zh/welcome",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "unit": "million tokens",
+      "input": 1.35,
+      "inputCached": 0.27,
+      "output": 8.1,
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "currency": "USD",
+        "unit": "million tokens",
+        "input": 0.2,
+        "inputCached": 0.04,
+        "output": 1.15,
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.stepfun.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-3.7-flash"
+        }
+      },
+      "x-constraints": []
+    },
+    "maxCombinedImageBytes": 20971520
+  },
+  "stepfun/step-3.5-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://platform.stepfun.com/docs/zh/welcome",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "unit": "million tokens",
+      "input": 0.7,
+      "inputCached": 0.14,
+      "output": 2.1,
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "currency": "USD",
+        "unit": "million tokens",
+        "input": 0.1,
+        "inputCached": 0.02,
+        "output": 0.3,
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.stepfun.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-3.5-flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "stepfun/step-3.5-flash-2603": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://platform.stepfun.com/docs/zh/welcome",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "unit": "million tokens",
+      "input": 0.7,
+      "inputCached": 0.14,
+      "output": 2.1,
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "currency": "USD",
+        "unit": "million tokens",
+        "input": 0.1,
+        "inputCached": 0.02,
+        "output": 0.3,
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.stepfun.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-3.5-flash-2603"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "stepfun/step-1o-turbo-vision": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 60,
+    "productImageCap": 3,
+    "source": "https://platform.stepfun.com/docs/zh/welcome",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "unit": "million tokens",
+      "input": 2.5,
+      "inputCached": 0.5,
+      "output": 8,
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "currency": "USD",
+        "unit": "million tokens",
+        "input": 0.36,
+        "inputCached": 0.07,
+        "output": 1.15,
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.stepfun.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-1o-turbo-vision"
+        }
+      },
+      "x-constraints": []
+    },
+    "maxCombinedImageBytes": 20971520
+  },
+  "stepfun/step-2x-large": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": 1,
+    "productImageCap": 1,
+    "source": "https://platform.stepfun.com/docs/zh/guides/models/image",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": 0.1,
+      "currency": "CNY",
+      "unit": "image",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "amount": 0.02,
+        "currency": "USD",
+        "unit": "image",
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "n": 1,
+      "response_format": "url",
+      "steps": 50,
+      "cfg_scale": 6
+    },
+    "textProtocol": "stepfun-images-json",
+    "systemMode": "system",
+    "expiresAt": "2026-10-09T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-2x-large"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "maximum": 2048
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "maximum": 2048
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "stepfun/step-image-edit-2": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": 1,
+    "productImageCap": 1,
+    "source": "https://platform.stepfun.com/docs/zh/guides/models/image",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "amount": 0.02,
+      "currency": "CNY",
+      "unit": "image",
+      "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "verifiedAccountPrice": false,
+      "international": {
+        "amount": 0.003,
+        "currency": "USD",
+        "unit": "image",
+        "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+      },
+      "source": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "n": 1,
+      "response_format": "url",
+      "steps": 8,
+      "cfg_scale": 1
+    },
+    "textProtocol": "stepfun-images-multipart",
+    "systemMode": "system",
+    "expiresAt": "2026-10-09T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "step-image-edit-2"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "maximum": 4096
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "maximum": 4096
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-5.1": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（输入<=32k）",
+          "condition": "推理服务",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（输入<=32k）",
+          "condition": "推理服务",
+          "amount": "0.018",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入（32k<输入<=128k）",
+          "condition": "推理服务",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（32k<输入<=128k）",
+          "condition": "推理服务",
+          "amount": "0.022",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-5.1"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-5.0": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.01",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.04",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-5.0"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-5.0-thinking-preview": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.01",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.04",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "enable_thinking": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-5.0-thinking-preview"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-5.0-thinking-latest": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.01",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.04",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-5.0-thinking-latest"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-5.0-thinking-exp": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（输入= < 32k）",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.01",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（32k < 输入= < 128k）",
+          "condition": "推理服务",
+          "amount": "0.04",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-5.0-thinking-exp"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-4.5-turbo-32k": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.0008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.0002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.0032",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "触发",
+          "condition": "搜索增强",
+          "amount": "0.004",
+          "unit": "元/次"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-4.5-turbo-32k"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-4.5-turbo-128k": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": null,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "unknown-exact-id-price",
+      "caveat": "当前计费页在此处保留已退役的 128K-Preview 标签，不能静默借用其价；旧价格页写 128K，存在标签冲突，准确当前金额留空。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-4.5-turbo-128k"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-4.5-turbo-20260402": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.0008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.0002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.0032",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "触发",
+          "condition": "搜索增强",
+          "amount": "0.004",
+          "unit": "元/次"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-4.5-turbo-20260402"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-4.5-turbo-vl": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.003",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.00075",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.009",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-4.5-turbo-vl"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-4.5-turbo-vl-32k": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.003",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.00075",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.009",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-4.5-turbo-vl-32k"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/deepseek-v4.1-flash": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入（高峰时段：8:00-22:00）",
+          "condition": "推理服务",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存（高峰时段：8:00-22:00）",
+          "condition": "推理服务",
+          "amount": "0.00004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（高峰时段：8:00-22:00）",
+          "condition": "推理服务",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存（空闲时段：22:00-次日8:00）",
+          "condition": "推理服务",
+          "amount": "0.00002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出（空闲时段：22:00-次日8:00）",
+          "condition": "推理服务",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4.1-flash"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/deepseek-v4-pro-0813": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "input",
+          "condition": "08:00-22:00 Asia/Shanghai",
+          "amount": "0.009",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "cached_input",
+          "condition": "08:00-22:00 Asia/Shanghai; effective 2026-09-09",
+          "amount": "0.0003",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "condition": "08:00-22:00 Asia/Shanghai",
+          "amount": "0.027",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "cached_input",
+          "condition": "22:00-08:00 Asia/Shanghai; effective 2026-09-09",
+          "amount": "0.00015",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "condition": "22:00-08:00 Asia/Shanghai; temporary promotion from 2026-08-25",
+          "amount": "0.0135",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "input",
+          "condition": "22:00-08:00 Asia/Shanghai",
+          "amount": null,
+          "unit": "CNY/1000 tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "已排除页面中旧缓存价与历史套餐价。闲时非缓存输入的准确数额未单列，保留 null，不从输出折扣外推。限时促销结束日未明确。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-pro-0813"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-v4-pro": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.012",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.001",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-pro"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-v4-flash-0731": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "input",
+          "condition": "08:00-22:00 Asia/Shanghai",
+          "amount": "0.003",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "cached_input",
+          "condition": "08:00-22:00 Asia/Shanghai; effective 2026-09-09",
+          "amount": "0.0001",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "condition": "08:00-22:00 Asia/Shanghai",
+          "amount": "0.009",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "cached_input",
+          "condition": "22:00-08:00 Asia/Shanghai; effective 2026-09-09",
+          "amount": "0.00005",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "condition": "22:00-08:00 Asia/Shanghai; temporary promotion from 2026-08-25",
+          "amount": "0.0045",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "input",
+          "condition": "22:00-08:00 Asia/Shanghai",
+          "amount": null,
+          "unit": "CNY/1000 tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "已排除页面中旧缓存价与历史套餐价。闲时非缓存输入的准确数额未单列，保留 null，不从输出折扣外推。限时促销结束日未明确。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-flash-0731"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-v4-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.0002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.001",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v4-flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-v3.2": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "缓存命中",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.0004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.003",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "缓存命中",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.0004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v3.2"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/internvl3-38b": {
+    "roles": [
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 1,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "internvl3-38b"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/ernie-x1.1-preview": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.001",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "触发",
+          "condition": "搜索增强",
+          "amount": "0.004",
+          "unit": "元/次"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-x1.1-preview"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/ernie-x1.1": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": null,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "unknown-exact-id-price",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "ernie-x1.1"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": null,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "unknown-exact-id-price",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-v3.2-think": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.0004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,32k]",
+          "amount": "0.003",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.0004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(32k,128k]",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-v3.2-think"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/qwen3.5-397b-a17b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0012",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0072",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.003",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.018",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen3.5-397b-a17b"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/qwen3.5-122b-a10b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0064",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.016",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen3.5-122b-a10b"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/qwen3.5-27b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0048",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.0018",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.0144",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen3.5-27b"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/qwen3.5-35b-a3b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,128k]",
+          "amount": "0.0032",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.0016",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：(128k,256]",
+          "amount": "0.0128",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen3.5-35b-a3b"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/glm-5.3-flash": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.0008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.00023",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.0028",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5.3-flash"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/glm-5.3": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.028",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5.3"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/glm-5.2": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.028",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5.2"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/glm-5.1": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.0013",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.024",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.008",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.002",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.028",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5.1"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/glm-5": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.004",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.001",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：[0,32k)",
+          "amount": "0.018",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输入",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.006",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.0015",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务   输入Token数：（32k，200k]",
+          "amount": "0.022",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "thinking": {
+        "type": "disabled"
+      },
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "glm-5"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/kimi-k2.6": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "输入",
+          "condition": "推理服务",
+          "amount": "0.0065",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "命中缓存",
+          "condition": "推理服务",
+          "amount": "0.0011",
+          "unit": "元/千tokens"
+        },
+        {
+          "component": "输出",
+          "condition": "推理服务",
+          "amount": "0.027",
+          "unit": "元/千tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "expiresAt": "2026-09-28T16:00:00.000Z",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "kimi-k2.6"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/deepseek-ocr": {
+    "roles": [
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 1,
+    "providerMaxImages": 1,
+    "productImageCap": 1,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "input",
+          "amount": "0.0003",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "amount": "0.0012",
+          "unit": "CNY/1000 tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "user-prefix",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-ocr"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/qianfan-ocr": {
+    "roles": [
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 1,
+    "providerMaxImages": 10,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "currency": "CNY",
+      "kind": "public-reference",
+      "billingVerified": false,
+      "rates": [
+        {
+          "component": "input",
+          "amount": "0.00045",
+          "unit": "CNY/1000 tokens"
+        },
+        {
+          "component": "output",
+          "amount": "0.0018",
+          "unit": "CNY/1000 tokens"
+        }
+      ],
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "status": "public-price-not-bill",
+      "caveat": "保留官网原始条件；历史/删除线价格与峰谷时间需再核对，不直接用于最终账单。",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://qianfan.baidubce.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "qianfan-ocr"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 5
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        }
+      ]
+    }
+  },
+  "qianfan/musesteamer-air-image": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "kind": "public-reference",
+      "currency": "CNY",
+      "amount": "0.05",
+      "unit": "image",
+      "scope": "1024x1024",
+      "billingVerified": false,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "prompt_extend": false,
+      "response_format": "url"
+    },
+    "textProtocol": "qianfan-images",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "musesteamer-air-image"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/qwen-image": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "kind": "public-reference",
+      "currency": "CNY",
+      "amount": "0.25",
+      "unit": "image",
+      "scope": "1024x1024",
+      "billingVerified": false,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "prompt_extend": false,
+      "n": 1,
+      "watermark": false
+    },
+    "textProtocol": "qianfan-images",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen-image"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "qianfan/qwen-image-edit": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 3,
+    "productImageCap": 3,
+    "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "kind": "public-reference",
+      "currency": "CNY",
+      "amount": "0.3",
+      "unit": "image",
+      "scope": "per image",
+      "billingVerified": false,
+      "sourceUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "prompt_extend": false,
+      "n": 1,
+      "watermark": false
+    },
+    "textProtocol": "qianfan-images",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "prompt"
+      ],
+      "properties": {
+        "model": {
+          "const": "qwen-image-edit"
+        }
+      },
+      "x-constraints": [
+        {
+          "operation": "width",
+          "scope": "each",
+          "minimum": 128
+        },
+        {
+          "operation": "height",
+          "scope": "each",
+          "minimum": 128
+        },
+        {
+          "operation": "fileSize",
+          "scope": "each",
+          "maximum": 10485760
+        },
+        {
+          "operation": "ratio",
+          "scope": "each",
+          "minimum": 0.25,
+          "maximum": 4
+        }
+      ]
+    }
+  },
+  "iflytek/spark-x2.5": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1.6,
+      "output": 6,
+      "cacheInput": 0.24,
+      "listInput": 3.2,
+      "listOutput": 12,
+      "discount": 0.5,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.48,
+        "cacheTokensPrice": 0.24,
+        "cacheTokensUnit": "元/百万tokens",
+        "discount": 0.5,
+        "inTokensOrigPrice": 3.2,
+        "inTokensPrice": 1.6,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 1.6,
+        "noCacheTokensUnit": "",
+        "outTokensOrigPrice": 12,
+        "outTokensPrice": 6,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.5"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/spark-x2.5-4b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0,
+      "output": 0,
+      "cacheInput": 0,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensPrice": 0,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 0,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 0,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 0,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.5-4b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/spark-x2.5-1.7b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0,
+      "output": 0,
+      "cacheInput": 0,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensPrice": 0,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 0,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 0,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 0,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "spark-x2.5-1.7b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopglm53": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 8,
+      "output": 28,
+      "cacheInput": 2,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 2,
+        "cacheTokensPrice": 2,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 8,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 8,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 28,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopglm53"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopdeepseekv4pro0813": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 9,
+      "output": 27,
+      "cacheInput": 0.3,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.3,
+        "cacheTokensPrice": 0.3,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 9,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 9,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 27,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopdeepseekv4pro0813"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopdeepseekv4flash0731": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1,
+      "output": 2,
+      "cacheInput": 0.2,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.2,
+        "cacheTokensPrice": 0.2,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 1,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 1,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 2,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopdeepseekv4flash0731"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopkimik27code": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 6.5,
+      "output": 27,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 6.5,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 27,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopkimik27code"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopglm52": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 8,
+      "output": 28,
+      "cacheInput": 2,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 2,
+        "cacheTokensPrice": 2,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 8,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 8,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 28,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopglm52"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopdeepseekv4flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1,
+      "output": 2,
+      "cacheInput": 0.2,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 0.2,
+        "cacheTokensPrice": 0.2,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 1,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 1,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 2,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopdeepseekv4flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopkimik26": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 6.5,
+      "output": 27,
+      "cacheInput": 1.3,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 1.3,
+        "cacheTokensPrice": 1.3,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 6.5,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 6.5,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 27,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopkimik26"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopdeepseekv4pro": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 12,
+      "output": 24,
+      "cacheInput": 1,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensOrigPrice": 1,
+        "cacheTokensPrice": 1,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 12,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 12,
+        "noCacheTokensUnit": "",
+        "outTokensPrice": 24,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopdeepseekv4pro"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopqwen36v35b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1.08,
+      "output": 6.48,
+      "cacheInput": null,
+      "listInput": 1.8,
+      "listOutput": 10.8,
+      "discount": 0.6,
+      "publicPriceFields": {
+        "discount": 0.6,
+        "inTokensOrigPrice": 1.8,
+        "inTokensPrice": 1.08,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensOrigPrice": 10.8,
+        "outTokensPrice": 6.48,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopqwen36v35b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xsparkx2flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1,
+      "output": 2,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 1,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 2,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xsparkx2flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopglm51": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 8,
+      "output": 28,
+      "cacheInput": 1.6,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "cacheTokensPrice": 1.6,
+        "cacheTokensUnit": "元/百万tokens",
+        "inTokensPrice": 8,
+        "inTokensUnit": "元/百万tokens",
+        "noCacheTokensPrice": 8,
+        "noCacheTokensUnit": "元/百万tokens",
+        "outTokensPrice": 28,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopglm51"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xsparkx2": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 3,
+      "output": 3,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 3,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 3,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xsparkx2"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop35qwen2b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.2,
+      "output": 0.4,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 0.2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 0.4,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop35qwen2b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopqwen35397b": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1.2,
+      "output": 7.2,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 1.2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 7.2,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopqwen35397b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xminimaxm25": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 2.1,
+      "output": 8.4,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 2.1,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 8.4,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xminimaxm25"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopkimik25": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 0,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 4,
+      "output": 21,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 4,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 21,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopkimik25"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xopglmv47flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1,
+      "output": 1.5,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 1,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 1.5,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xopglmv47flash"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen32bvl": {
+    "roles": [
+      "vision"
+    ],
+    "maxImages": 1,
+    "minImages": 1,
+    "providerMaxImages": null,
+    "productImageCap": 1,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 2,
+      "output": 8,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 8,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen32bvl"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen80bnext": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.6,
+      "output": 2.4,
+      "cacheInput": null,
+      "listInput": 1,
+      "listOutput": 4,
+      "discount": 0.6,
+      "publicPriceFields": {
+        "discount": 0.6,
+        "inTokensOrigPrice": 1,
+        "inTokensPrice": 0.6,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensOrigPrice": 4,
+        "outTokensPrice": 2.4,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen80bnext"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen30b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.45,
+      "output": 4.5,
+      "cacheInput": null,
+      "listInput": 0.75,
+      "listOutput": 7.5,
+      "discount": 0.6,
+      "publicPriceFields": {
+        "discount": 0.6,
+        "inTokensOrigPrice": 0.75,
+        "inTokensPrice": 0.45,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensOrigPrice": 7.5,
+        "outTokensPrice": 4.5,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen30b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen32b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1.2,
+      "output": 12,
+      "cacheInput": null,
+      "listInput": 2,
+      "listOutput": 20,
+      "discount": 0.6,
+      "publicPriceFields": {
+        "discount": 0.6,
+        "inTokensOrigPrice": 2,
+        "inTokensPrice": 1.2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensOrigPrice": 20,
+        "outTokensPrice": 12,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen32b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xdeepseekr1qwen32b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1.6,
+      "output": 4.8,
+      "cacheInput": null,
+      "listInput": 2,
+      "listOutput": 6,
+      "discount": 0.8,
+      "publicPriceFields": {
+        "discount": 0.8,
+        "inTokensOrigPrice": 2,
+        "inTokensPrice": 1.6,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensOrigPrice": 6,
+        "outTokensPrice": 4.8,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xdeepseekr1qwen32b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen0b6": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.3,
+      "output": 3,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 0.3,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 3,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen0b6"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen4b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.3,
+      "output": 3,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 0.3,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 3,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen4b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen14b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 1,
+      "output": 10,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 1,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 10,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen14b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xop3qwen8b": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 0.5,
+      "output": 5,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 0.5,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 5,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xop3qwen8b"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xsparkprox": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 8,
+      "output": 40,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 8,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 40,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xsparkprox"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xspark13b6k": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 2,
+      "output": 6,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 6,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xspark13b6k"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "iflytek/xqwen14bchat": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "currency": "CNY",
+      "unit": "million_tokens",
+      "input": 2,
+      "output": 6,
+      "cacheInput": null,
+      "listInput": null,
+      "listOutput": null,
+      "discount": null,
+      "publicPriceFields": {
+        "inTokensPrice": 2,
+        "inTokensUnit": "元/百万tokens",
+        "outTokensPrice": 6,
+        "outTokensUnit": "元/百万tokens",
+        "showPrice": true
+      },
+      "billedAmount": null,
+      "billingVerified": false,
+      "note": "Observed on official public directory. Zero price is not proof of free entitlement; temporary discount expiry unknown.",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "max_tokens": 2048
+    },
+    "textEndpoint": "https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages",
+    "textProtocol": "anthropic-messages",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "xqwen14bchat"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "longcat/LongCat-2.0": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://longcat.chat/platform/docs/zh/api/models.html",
+    "checkedAt": "2026-09-22",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 5,
+        "cacheInputList": 0.1,
+        "outputList": 20,
+        "inputDiscount": 2,
+        "cacheInputDiscount": 0.04,
+        "outputDiscount": 8
+      },
+      "USD": {
+        "inputList": 0.75,
+        "cacheInputList": 0.015,
+        "outputList": 2.95,
+        "inputDiscount": 0.3,
+        "cacheInputDiscount": 0.006,
+        "outputDiscount": 1.2
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "note": "Limited promotion; actual settlement governs. Do not infer account currency/region.",
+      "source": "https://longcat.chat/platform/docs/zh/Pricing/LongCat-2.0.html",
+      "checkedAt": "2026-09-22"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.longcat.chat/openai/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "LongCat-2.0"
+        }
+      },
+      "x-constraints": []
+    }
+  },
+  "xai/grok-4.5": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "500k",
+          "input": 2,
+          "cachedInput": 0.3,
+          "output": 6,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "500k",
+          "input": 4,
+          "cachedInput": 0.6,
+          "output": 12,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.5",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.3": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "1M",
+          "input": 1.25,
+          "cachedInput": 0.2,
+          "output": 2.5,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "1M",
+          "input": 2.5,
+          "cachedInput": 0.4,
+          "output": 5,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.3",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.20-0309-reasoning": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "1M",
+          "input": 1.25,
+          "cachedInput": 0.2,
+          "output": 2.5,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "1M",
+          "input": 2.5,
+          "cachedInput": 0.4,
+          "output": 5,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.20-0309-reasoning",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.20-0309-non-reasoning": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "1M",
+          "input": 1.25,
+          "cachedInput": 0.2,
+          "output": 2.5,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "1M",
+          "input": 2.5,
+          "cachedInput": 0.4,
+          "output": 5,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.20-0309-non-reasoning",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-imagine-image": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 3,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "amount": 0.02,
+          "unit": "image",
+          "kind": "starting-price-not-fixed-cost"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-imagine-image",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-imagine-image-2.0": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 5,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "amount": 0.04,
+          "unit": "image",
+          "kind": "starting-price-not-fixed-cost"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-imagine-image-2.0",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-build-0.1": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "256k",
+          "input": 1,
+          "cachedInput": 0.2,
+          "output": 2,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "256k",
+          "input": 2,
+          "cachedInput": 0.4,
+          "output": 4,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-build-0.1",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-imagine-image-quality": {
+    "roles": [
+      "image"
+    ],
+    "maxImages": 3,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "amount": 0.05,
+          "unit": "image",
+          "kind": "starting-price-not-fixed-cost"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-imagine-image-quality",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.7": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "500k",
+          "input": 2,
+          "cachedInput": 0.5,
+          "output": 6,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "500k",
+          "input": 4,
+          "cachedInput": 1,
+          "output": 12,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.7",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.20-multi-agent-0309": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "1M",
+          "input": 1.25,
+          "cachedInput": 0.2,
+          "output": 2.5,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "1M",
+          "input": 2.5,
+          "cachedInput": 0.4,
+          "output": 5,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.20-multi-agent": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "1M",
+          "input": 1.25,
+          "cachedInput": 0.2,
+          "output": 2.5,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "1M",
+          "input": 2.5,
+          "cachedInput": 0.4,
+          "output": 5,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309",
+    "checkedAt": "2026-09-22"
+  },
+  "xai/grok-4.6": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 8,
+    "generateInputPolicy": false,
+    "price": {
+      "currency": "USD",
+      "rates": [
+        {
+          "condition": "(< 200k prompt tokens)",
+          "context": "500k",
+          "input": 2,
+          "cachedInput": 0.5,
+          "output": 6,
+          "unit": "million_tokens"
+        },
+        {
+          "condition": "(≥ 200k prompt tokens)",
+          "context": "500k",
+          "input": 4,
+          "cachedInput": 1,
+          "output": 12,
+          "unit": "million_tokens"
+        }
+      ],
+      "source": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-09-22",
+      "verifiedAccountPrice": false
+    },
+    "source": "https://docs.x.ai/developers/models/grok-4.6",
+    "checkedAt": "2026-09-22"
+  }
+}

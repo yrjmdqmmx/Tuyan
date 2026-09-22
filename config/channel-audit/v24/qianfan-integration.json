@@ -1,0 +1,451 @@
+{
+  "provider": "qianfan",
+  "checkedAt": "2026-09-22",
+  "endpointScope": "使用普通按量 API Key。Token Plan（个人/企业）和 Coding Plan 不用于本产品后端；国际站与内部图片工作流未接入。",
+  "models": [
+    {
+      "id": "ernie-5.1",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-5.1",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-5.0",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-5.0",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-5.0-thinking-preview",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-5.0-thinking-preview",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-5.0-thinking-latest",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-5.0-thinking-latest",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-5.0-thinking-exp",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-5.0-thinking-exp",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-4.5-turbo-32k",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-4.5-turbo-32k",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-4.5-turbo-128k",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-4.5-turbo-128k",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-4.5-turbo-20260402",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-4.5-turbo-20260402",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-4.5-turbo-vl",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-4.5-turbo-vl",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-4.5-turbo-vl-32k",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-4.5-turbo-vl-32k",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v4.1-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v4-pro-0813",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v4-pro",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v4-flash-0731",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v4-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v3.2",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v3.2",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "internvl3-38b",
+      "roles": [
+        "vision"
+      ],
+      "developer": "shanghai-ai-lab",
+      "apiId": "internvl3-38b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-x1.1-preview",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-x1.1-preview",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "ernie-x1.1",
+      "roles": [
+        "main"
+      ],
+      "developer": "baidu",
+      "apiId": "ernie-x1.1",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v3.2-think",
+      "roles": [
+        "main"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-v3.2-think",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen3.5-397b-a17b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen3.5-397b-a17b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen3.5-122b-a10b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen3.5-122b-a10b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen3.5-27b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen3.5-27b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen3.5-35b-a3b",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5.3-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "zhipu",
+      "apiId": "glm-5.3-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5.3",
+      "roles": [
+        "main"
+      ],
+      "developer": "zhipu",
+      "apiId": "glm-5.3",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5.2",
+      "roles": [
+        "main"
+      ],
+      "developer": "zhipu",
+      "apiId": "glm-5.2",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5.1",
+      "roles": [
+        "main"
+      ],
+      "developer": "zhipu",
+      "apiId": "glm-5.1",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5",
+      "roles": [
+        "main"
+      ],
+      "developer": "zhipu",
+      "apiId": "glm-5",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "kimi-k2.6",
+      "roles": [
+        "main"
+      ],
+      "developer": "moonshot",
+      "apiId": "kimi-k2.6",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-ocr",
+      "roles": [
+        "vision"
+      ],
+      "developer": "deepseek",
+      "apiId": "deepseek-ocr",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qianfan-ocr",
+      "roles": [
+        "vision"
+      ],
+      "developer": "baidu",
+      "apiId": "qianfan-ocr",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "musesteamer-air-image",
+      "roles": [
+        "image"
+      ],
+      "developer": "baidu",
+      "apiId": "musesteamer-air-image",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen-image",
+      "roles": [
+        "image"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen-image",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "qwen-image-edit",
+      "roles": [
+        "image"
+      ],
+      "developer": "alibaba",
+      "apiId": "qwen-image-edit",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    }
+  ],
+  "excluded": []
+}

@@ -194,7 +194,7 @@ Component({
                 return {
                     provider, label: PROVIDER_LABELS[provider] || provider, value: selectedKeys[provider] || '',
                     placeholder: (config === null || config === void 0 ? void 0 : config.keyPlaceholder) || 'API Key',
-                    guideSteps: provider === 'minimax' ? [`登录 MiniMax ${region.label}平台，进入 API Key 页面创建密钥。`, ...((config === null || config === void 0 ? void 0 : config.guideSteps) || []).slice(1)] : (config === null || config === void 0 ? void 0 : config.guideSteps) || [],
+                    guideSteps: provider === 'minimax' ? [`登录稀宇科技 ${region.label}平台，进入 API Key 页面创建密钥。`, ...((config === null || config === void 0 ? void 0 : config.guideSteps) || []).slice(1)] : (config === null || config === void 0 ? void 0 : config.guideSteps) || [],
                     guideUrl, guideHost: ((_a = guideUrl.match(/^https:\/\/([^/]+)/)) === null || _a === void 0 ? void 0 : _a[1]) || '',
                 };
             });
@@ -204,7 +204,7 @@ Component({
             this.setData({
                 draft, routeRows, ratioOptions, resolutionOptions, keyFields, tokenDanceConnected: connected,
                 credentialSummary: [...new Set(routeRows.filter(row => row.required && !row.credentialReady).map(row => row.providerLabel + (row.provider === 'tokendance' ? ' 未连接' : ' 缺少 API Key')))].join('；') || '本次任务所需凭据已就绪',
-                normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.some(provider => ['tokendance', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi'].includes(provider)),
+                normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.some(provider => ['tokendance', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'xai'].includes(provider)),
                 providerOptions,
                 minimaxRegionIndex: (0, provider_regions_1.minimaxRegion)(draft.providerRegions) === 'cn' ? 1 : 0,
                 minimaxApiBase: provider_regions_1.MINIMAX_REGIONS[(0, provider_regions_1.minimaxRegion)(draft.providerRegions)].apiBase,
@@ -361,7 +361,7 @@ Component({
                 return;
             const region = Number(event.detail.value) === 1 ? 'cn' : 'global';
             if (region === 'cn' && !((_a = this.getRegistry()) === null || _a === void 0 ? void 0 : _a.providerRegionContractVersion)) {
-                this.setData({ error: '当前服务端尚未支持 MiniMax 国内区域。' });
+                this.setData({ error: '当前服务端尚未支持 稀宇科技国内区域。' });
                 return;
             }
             draft.providerRegions = { minimax: region };

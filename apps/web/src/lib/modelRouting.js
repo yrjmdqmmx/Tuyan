@@ -40,7 +40,7 @@ export function buildModelSubmission({ configurationMode, modelRoutes, registry,
   }
   if (providerRegions && Object.values(modelRoutes).some(route => route.accessProvider === 'minimax')) {
     submission.providerRegions = normalizeProviderRegions(providerRegions)
-    if (submission.providerRegions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
+    if (submission.providerRegions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 稀宇科技国内区域。')
   }
   if (explicitRoutesSupported) submission.modelRoutes = modelRoutes
   return submission
