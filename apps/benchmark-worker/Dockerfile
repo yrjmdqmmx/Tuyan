@@ -11,12 +11,14 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/benchmark-worker/package.json apps/benchmark-worker/package.json
 COPY apps/paperbanana-api/package.json apps/paperbanana-api/package.json
 COPY packages/benchmark-core/package.json packages/benchmark-core/package.json
+COPY packages/figure-core/package.json packages/figure-core/package.json
 RUN pnpm install --filter @paperbanana/benchmark-worker... --filter @paperbanana/paperbanana-api... --frozen-lockfile
 
 COPY apps/benchmark-worker apps/benchmark-worker
 COPY apps/paperbanana-api apps/paperbanana-api
 COPY apps/laf-functions/paperbanana-api.ts apps/laf-functions/paperbanana-api.ts
 COPY packages/benchmark-core packages/benchmark-core
+COPY packages/figure-core packages/figure-core
 COPY packages/api/src packages/api/src
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/benchmark-worker build

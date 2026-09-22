@@ -13,3 +13,6 @@ port="$(docker port "$container" 27017/tcp | sed -n 's/^127\.0\.0\.1://p')"
 [[ "$port" =~ ^[0-9]+$ ]] || { echo 'Loopback Mongo port unavailable' >&2; exit 1; }
 cd "$repo_dir/apps/paperbanana-api"
 TOKENDANCE_TEST_MONGO_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --import tsx tests/integration/tokendance.mjs
+# Figure operations create and clean their own isolated database on this same
+# disposable Mongo service, without using TokenDance's integration database.
+FIGURE_INTEGRATION_MONGO_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --import tsx tests/integration/figure-operations.mjs

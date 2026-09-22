@@ -8,7 +8,7 @@
 - 观猹客户端 Key 被剥离，由当前账号的服务端授权解析；通用 API 保留完整 validated `mainRoute.custom`，凭据沿用连接绑定信封。复用 `provider-workflow` 的原子占用、加密检查点与恢复，引入画布专属集合，避免进入原图片队列；7 天 TTL，账号注销清理，公开记录不含材料、图稿像素或密钥。
 - `paperbanana_figure_admissions` 只保存调度租约，同账号跨实例最多 2 项在途操作；传输前同时校验账号代际与租约 fencing。画布观猹文本输出上限 4096 token，共享调用器新增可选 `maxOutputTokens`，原工作台未传时保持原行为。
 - Web 通用 API 面板支持仅主模型角色，保存时合并保留原工作台的其他角色；Key 仅在当前账号页面内存中。本机只保存操作指针，恢复结果在同账号查询后需作者重新确认，完整图稿 SHA 不同则禁止应用。
-- [x] Core / Gateway / 共享 API 与类型：本地实现和回归通过，真实渠道集成另列。新增 action 只供论文画布，其他客户端无必需迁移。
+- [x] Core / Gateway / 共享 API 与类型：本地实现和回归通过，真实 Mongo 8.0.16 跨实例/新进程恢复检查已接入 CI，真实渠道集成另列。新增 action 只供论文画布，其他客户端无必需迁移。
 - [x] Web：公共模型与连接复用、操作记录、恢复及版本保护完成本地验收；完整 Web 561/561。真实登录/推理另列。
 - [x] 生产转换器构建：Inkscape、Liberation/WQY 字体与受限 Linux 转换 gate 已验证；尚未部署。PDF 文字提取通过但原生编辑有合并/遮挡，EPS 科学符号编码失败，不等于兼容通过。
 - 验收细节与实际失败边界见 [集成验收记录](docs/figure-studio/2026-09-22-integration-acceptance.md)。
