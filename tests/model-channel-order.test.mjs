@@ -8,7 +8,7 @@ const { MODEL_PROVIDER_IDS } = require('../apps/miniprogram/miniprogram/utils/mo
 
 test('every channel is stably grouped by API operator across Web and Mini without changing input', () => {
   const original = [...MODEL_PROVIDER_IDS]
-  const expected = ['tokendance','siliconflow','bailian','ark','deepseek','kimi','zhipu','minimax','gemini','openai','anthropic','recraft','xai','bfl','stability','ideogram','mistral','openrouter','together','fireworks','fal','replicate']
+  const expected = ['tokendance','siliconflow','tokenhub','bailian','ark','deepseek','kimi','zhipu','minimax','xiaomi','gemini','openai','anthropic','recraft','xai','bfl','stability','ideogram','mistral','openrouter','together','fireworks','fal','replicate','runware']
   assert.deepEqual(orderModelChannels(original), expected)
   assert.deepEqual(mini.orderModelChannels(original), expected)
   assert.deepEqual(original, MODEL_PROVIDER_IDS)

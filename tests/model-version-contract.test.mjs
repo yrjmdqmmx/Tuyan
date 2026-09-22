@@ -10,8 +10,21 @@ const mini = require('../apps/miniprogram/miniprogram/utils/model-registry.js')
 const audit = JSON.parse(fs.readFileSync(new URL('../config/model-version-audit.json', import.meta.url)))
 const get = (p,id) => registry[p].models.find(m => m.id === id)
 
-test('all 760 existing IDs, defaults, protocols, roles, selection flags and capabilities survive the version audit unchanged', () => {
-  const stable = Object.fromEntries(Object.entries(registry).sort(([a],[b]) => a < b ? -1 : 1).map(([p,v]) => [p, {defaults:v.defaults,models:[...v.models].sort((a,b) => a.id < b.id ? -1 : 1).map(m => Object.fromEntries(['id','roles','protocol','capabilities','selectable'].map(k=>[k,m[k]])))}]))
+test('760 historical identities and capabilities remain unchanged except the explicitly added refine controls', () => {
+  const historical = structuredClone(registry)
+  for (const p of ['tokenhub', 'xiaomi', 'runware']) delete historical[p]
+  const bria = historical.fal.models.find(m => m.id === 'bria/fibo-edit-1.5/edit')
+  assert.equal(bria.capabilities.refineControls.structured, 'bria-fibo')
+  assert.equal(bria.capabilities.refineControls.maxImages, 4)
+  assert.ok(bria.capabilities.refineAspectRatios.includes('16:9'))
+  bria.capabilities.refineAspectRatios = []
+  bria.capabilities.refineAspectRatiosByResolution = {auto: []}
+  delete bria.capabilities.refineControls
+  const qwen = historical.replicate.models.find(m => m.id === 'qwen/qwen-image-edit-plus')
+  assert.equal(qwen.capabilities.refineControls.maxImages, 3)
+  delete qwen.capabilities.refineControls
+  assert.equal(Object.values(historical).reduce((n,p) => n + p.models.length, 0), 760)
+  const stable = Object.fromEntries(Object.entries(historical).sort(([a],[b]) => a < b ? -1 : 1).map(([p,v]) => [p, {defaults:v.defaults,models:[...v.models].sort((a,b) => a.id < b.id ? -1 : 1).map(m => Object.fromEntries(['id','roles','protocol','capabilities','selectable'].map(k=>[k,m[k]])))}]))
   // Captured from the pre-change ec24b73 catalog, independent of the new metadata.
   assert.equal(createHash('sha256').update(JSON.stringify(stable)).digest('hex'), '9824866b06ef5f53e43ddb9a8bb3cee3d31d3e098d88a535835b7e1cf60df458')
 })

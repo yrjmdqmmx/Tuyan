@@ -12,10 +12,12 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const require = createRequire(import.meta.url)
 const mini = require('../apps/miniprogram/miniprogram/utils/static-model-catalog.js')
 const audit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-audit.json'), 'utf8'))
+const current = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
+const channels = ['cn', 'runware'].flatMap(name => JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/${name}-directory.json`), 'utf8')))
 
 test('backend and both bundled catalogs are generated from the same reviewed source without drift', () => {
-  assert.equal(STATIC_MODEL_REGISTRY_VERSION, audit.version)
-  assert.equal(mini.STATIC_MODEL_REGISTRY_VERSION, audit.version)
+  assert.equal(STATIC_MODEL_REGISTRY_VERSION, current.version)
+  assert.equal(mini.STATIC_MODEL_REGISTRY_VERSION, current.version)
   assert.deepEqual(mini.STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY)
   assert.match(execFileSync(process.execPath, ['scripts/sync-model-catalog.mjs', '--check'], { cwd: root, encoding: 'utf8' }), /no drift/)
   for (const [provider, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
@@ -48,7 +50,15 @@ test('every original audit row has an explicit implementation or exclusion decis
         assert.ok(model.disabledReason && model.lifecycleSourceUrl, `${provider}/${model.id} needs an official retirement reason`)
         assert.ok(audit.latestUpdate.removedFromSelection.includes(`${provider}/${model.id}`))
       }
-      assert.ok(audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id), `${provider}/${model.id} lacks audit evidence`)
+      const previous = audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id)
+      const added = channels.find(row => row.channel === provider && row.apiModelId === model.id)
+      assert.ok(previous || added, `${provider}/${model.id} lacks audit evidence`)
+      if (added) {
+        assert.equal(added.after, '适配链路已完成但真实调用未验证')
+        assert.deepEqual(added.roles, model.roles)
+        assert.match(added.source, /^https:\/\//)
+        assert.ok(added.decision.length > 10)
+      }
     }
   }
 })
