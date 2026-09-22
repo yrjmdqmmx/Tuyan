@@ -59,4 +59,3 @@ Step 2x 的文档把1280×800错误标为16:9，保留精确尺寸，不照抄�
 [中国图片停服公告](https://platform.stepfun.com/docs/zh/guides/image-offline-notice) 和 [国际公告](https://platform.stepfun.ai/docs/en/guides/image-offline-notice) 明确：**2026-10-10**，普通 API 与 Step Plan 的 Step 2x Large / Step Image Edit 2 同时停止。审计日尚在此前，标为 scheduled-retirement。公告没有具体时刻/时区，retirementAt=null；若中国调用层采用北京时间当日零点保护，是产品保守策略，不是厂商公布时间。截止后停止新提交，但不能阻止已有 URL 下载。step-1x-edit 已明确不可用，但确切日期未知。
 
 [2026-07-08 迁移公告](https://platform.stepfun.com/docs/zh/guides/model-migration) 明确退役：step-1-8k、step-1-32k、step-1v-8k、step-1v-32k、step-2-mini、step-1o-vision-32k、step-2-16k、step-3、step-1x-medium。历史 ID 保留，推荐替代项不自动替换用户配置。国际生成页未枚举 Step 2x 不等于退役，中国当前生成页与两区公告均说明它在截止前可用；本轮只实现中国精确协议。
-
