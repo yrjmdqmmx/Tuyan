@@ -1,5 +1,6 @@
 export const CHANGE_KINDS = ['新增', '优化', '修复']
 export const PRODUCTS = { tuyan: 'Tuyan', benchmark: 'Tuyan Benchmark', openacad: 'OpenAcad' }
+export const CHANGELOG_VIEWS = { all: '更新日志', tuyan: '图研工作台', benchmark: 'Tuyan Benchmark', openacad: 'OpenAcad', ecosystem: '生态事件' }
 const SOURCE_PATHS = {
   'pull-request': /^pull\/\d+$/,
   deployment: /^actions\/runs\/\d+$/,
@@ -21,9 +22,22 @@ export function compareVersions(a, b) {
 }
 export function isChangelogPath(pathname) { return /^\/changelog(?:\/|\/index\.html)?$/.test(pathname || '') }
 export function publishedVersions(data, product) {
-  return (data.entries || []).filter(entry => entry.product === product && entry.release?.status === 'released' && entry.changes?.every(change => change.state === 'released'))
+  return (data.entries || []).filter(entry => entry.product === product && entry.release?.status === 'released' && isDate(entry.release.date) && entry.changes?.every(change => change.state === 'released'))
 }
-export function publicEvents(data) { return (data.events || []).filter(event => event.status === 'recorded' && event.changes?.every(change => change.state === 'released')) }
+export function publicEvents(data) { return (data.events || []).filter(event => event.status === 'recorded' && isDate(event.date) && event.changes?.every(change => change.state === 'released')) }
+export function groupPublishedUpdates(data) {
+  const dates = new Map()
+  const add = (date, category, entry) => {
+    if (!dates.has(date)) dates.set(date, [])
+    dates.get(date).push({ category, entry })
+  }
+  // Same-day items retain each product's version order, followed by dated events.
+  for (const product of Object.keys(PRODUCTS)) {
+    for (const entry of publishedVersions(data, product)) add(entry.release.date, product, entry)
+  }
+  for (const entry of publicEvents(data)) add(entry.date, 'ecosystem', entry)
+  return [...dates].sort(([a], [b]) => b.localeCompare(a)).map(([date, items]) => ({ date, items }))
+}
 export function resolveChangelogAnchor(data, id) {
   return [...Object.keys(PRODUCTS).flatMap(product => publishedVersions(data, product)), ...publicEvents(data)]
     .find(entry => entry.id === id || entry.legacyAnchors?.includes(id))?.id

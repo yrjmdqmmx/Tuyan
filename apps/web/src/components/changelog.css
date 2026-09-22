@@ -4,11 +4,20 @@
 .changelog-products { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 0 24px; border-bottom: 1px solid var(--hairline); }
 .changelog-products a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; color: var(--sage); background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-control); font-size: 13px; font-weight: 650; text-decoration: none; }
 .changelog-products a:hover { border-color: var(--sage); }
+.changelog-products a[aria-current="page"] { background: var(--sage); border-color: var(--sage); color: #fff; }
 .changelog-timeline, .changelog-day { scroll-margin-top: 28px; }
 .changelog-timeline + .changelog-timeline { border-top: 1px solid var(--hairline); margin-top: 24px; }
 .changelog-group-title { margin: 30px 0 8px; font-size: 18px; font-weight: 700; }
 .changelog-section-note { margin: 0; font-size: 13px; line-height: 1.8; color: var(--muted); }
 .changelog-day { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 32px; padding-top: 32px; }
+.changelog-date-group { grid-template-columns: 160px minmax(0, 1fr); }
+.changelog-date-group > .changelog-event-date { padding-top: 4px; color: var(--sage); }
+.changelog-overview-entry { scroll-margin-top: 28px; }
+.changelog-overview-entry + .changelog-overview-entry { padding-top: 26px; border-top: 1px solid var(--hairline); }
+.changelog-overview-entry + .changelog-overview-entry::before { top: 34px; }
+.changelog-item-heading { margin-bottom: 18px; }
+.changelog-item-heading .changelog-version { margin: 8px 0 0; }
+.changelog-category { color: var(--sage); background: #e8eee7; border-radius: 4px; padding: 3px 7px; font-size: 11px; font-weight: 650; }
 .changelog-version { margin: 0 0 12px; font-size: 23px; font-variant-numeric: tabular-nums; letter-spacing: -.035em; overflow-wrap: anywhere; }
 .changelog-version a, .changelog-event-date a { color: var(--sage); text-decoration: none; }
 .changelog-version a:hover, .changelog-event-date a:hover { text-decoration: underline; text-underline-offset: 4px; }
@@ -37,6 +46,7 @@
   .changelog-intro h1 { font-size: 30px; }
   .changelog-products { gap: 8px; padding-bottom: 20px; }.changelog-products a { padding: 8px 12px; }
   .changelog-day { display: block; padding-top: 24px; }
+  .changelog-date-group > .changelog-event-date { margin-bottom: 20px; }
   .changelog-version { font-size: 23px; }
   .changelog-version-meta { margin-bottom: 18px; }
   .changelog-day-entries { padding-left: 18px; }.changelog-entry::before { left: -23px; }

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
 import { appRelativePath } from './appPaths.js'
-import { compareVersions, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
+import { compareVersions, groupPublishedUpdates, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
 const data = JSON.parse(readFileSync(new URL('./data/changelog.json', import.meta.url), 'utf8'))
 test('independent product lines contain only published versions with their own numbering', () => {
   assert.deepEqual(validateChangelog(data), [])
@@ -72,4 +72,36 @@ test('drafts and independent drawing module stay outside the public archive', ()
 test('direct, trailing-slash, static and base-path routes remain valid', () => {
   for (const path of ['/changelog', '/changelog/', '/changelog/index.html']) { assert.equal(isChangelogPath(path), true); assert.equal(isChangelogPath(appRelativePath(`/Tuyan${path}`, '/Tuyan/')), true) }
   for (const path of ['/changelog/unknown', '/changelog-extra', '/leaderboard', '/', undefined]) assert.equal(isChangelogPath(path), false)
+})
+
+test('overview merges every public entry once and groups confirmed dates in descending order', () => {
+  const before = structuredClone(data)
+  const groups = groupPublishedUpdates(data)
+  assert.equal(groups[0].date, '2026-09-20')
+  assert.deepEqual(groups.map(group => group.date), [...new Set(groups.map(group => group.date))].sort().reverse())
+  const ids = groups.flatMap(group => group.items.map(item => item.entry.id))
+  assert.equal(new Set(ids).size, 25)
+  assert.deepEqual([...ids].sort(), [...data.entries, ...data.events].map(entry => entry.id).sort())
+  assert.deepEqual(groups.find(group => group.date === '2026-09-07').items.map(item => item.entry.id), ['v3-5-0', 'openacad-v1-1-0', 'openacad-v1-0-2', 'openacad-v1-0-1', 'openacad-v1-0-0'])
+  assert.equal(groups.find(group => group.date === '2026-09-04').items.length, 2)
+  assert.ok(groups.find(group => group.date === '2026-09-02').items.some(item => item.entry.id === 'v3-0-2'))
+  assert.deepEqual(data, before)
+})
+test('new source records automatically appear in both views without dates or publication being inferred', () => {
+  const copy = structuredClone(data)
+  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '3.7.2', release: { status: 'released', date: '2026-09-22', surfaces: ['Web'] } }
+  copy.entries.unshift(next)
+  assert.equal(groupPublishedUpdates(copy)[0].items[0].entry, next)
+  assert.equal(publishedVersions(copy, 'tuyan')[0], next)
+  for (const state of ['unreleased', 'unverified']) {
+    next.release.status = state
+    assert.ok(!groupPublishedUpdates(copy).flatMap(g => g.items).some(item => item.entry === next))
+    assert.ok(!publishedVersions(copy, 'tuyan').includes(next))
+  }
+  next.release.status = 'released'; next.release.date = null
+  assert.ok(!publishedVersions(copy, 'tuyan').includes(next))
+  assert.ok(!groupPublishedUpdates(copy).flatMap(g => g.items).some(item => item.entry === next))
+  copy.events[0].date = null
+  assert.ok(!publicEvents(copy).includes(copy.events[0]))
+  assert.ok(!groupPublishedUpdates(copy).flatMap(g => g.items).some(item => item.entry === copy.events[0]))
 })
