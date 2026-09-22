@@ -72,7 +72,7 @@ Component({
             this.resuming = true;
             this.setData({ error: '' });
             try {
-                await (0, api_1.requestJson)({ action: ((_d = (_c = this.data.job) === null || _c === void 0 ? void 0 : _c.recovery) === null || _d === void 0 ? void 0 : _d.channel) === 'custom' ? 'providerResume' : 'tokenDanceResume', jobId });
+                await (0, api_1.requestJson)({ action: (!((_d = (_c = this.data.job) === null || _c === void 0 ? void 0 : _c.recovery) === null || _d === void 0 ? void 0 : _d.channel) || this.data.job.recovery.channel === 'tokendance') ? 'tokenDanceResume' : 'providerResume', jobId });
                 if (current())
                     this.startPolling();
             }

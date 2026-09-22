@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-21.v21",
+  "registryVersion": "2026-09-22.v22",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -9990,6 +9990,158 @@
         "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
       },
       "channelGuide": "https://tokendance.space/docs/api-key-oauth",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemini@3.1-flash-lite",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite",
+        "note": "所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image-edit@2511",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hy-image-v3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hy-vision-2.0-instruct",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136956",
+        "note": "所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xiaomi",
+      "model": "mimo-v2.6-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+        "note": "所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。"
+      },
+      "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xiaomi",
+      "model": "mimo-v2.6-pro",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+        "note": "所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。"
+      },
+      "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
     }
   ]

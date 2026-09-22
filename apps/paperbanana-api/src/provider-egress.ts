@@ -21,7 +21,7 @@ const targetHosts = new Set([
   'external.api.recraft.ai',
   'api.bfl.ai', 'api.eu.bfl.ai', 'api.us.bfl.ai',
   'api.stability.ai', 'api.ideogram.ai', 'api.minimax.io', 'api.mistral.ai',
-  'api.together.ai', 'api.fireworks.ai', 'queue.fal.run', 'api.replicate.com',
+  'api.together.ai', 'api.fireworks.ai', 'queue.fal.run', 'api.replicate.com', 'api.runware.ai',
   'generativelanguage.googleapis.com',
   'openrouter.ai',
   'tokendance.space',

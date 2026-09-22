@@ -1,4 +1,7 @@
 import GenerationWorkspace, { GenerationInputPanel } from './components/GenerationWorkspace';
+import useRefineReferences from './hooks/useRefineReferences';
+import { refineInputIssue } from './lib/refineControls';
+import { refineMaskFile } from './components/RefineMaskEditor';
 import useCompactLayout from './hooks/useCompactLayout';
 import WorkbenchHeader from './components/WorkbenchHeader';
 import PageNavigation from './components/PageNavigation';
@@ -244,6 +247,7 @@ export default function App() {
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
   const [refineJobId, setRefineJobId] = useState('');
+  const [refinePollNonce, setRefinePollNonce] = useState(0);
   const [refineJob, setRefineJob] = useState(null);
   const [refinePollError, setRefinePollError] = useState('');
   const refineSubmitLock = useRef(false);
@@ -251,6 +255,9 @@ export default function App() {
   const [refineInstruction, setRefineInstruction] = useState('');
   const [refineImageSize, setRefineImageSize] = useState('2K');
   const [refineAspectRatio, setRefineAspectRatio] = useState('16:9');
+  const [refineMask,setRefineMask] = useState(null);
+  const [refineStructuredEnabled,setRefineStructuredEnabled] = useState(false);
+  const [refineStructured,setRefineStructured] = useState({object:'',attributes:'',relationship:'',preserve:''});
   const [refineError, setRefineError] = useState('');
   const [isSubmittingRefine, setIsSubmittingRefine] = useState(false);
   const [arkVerification, setArkVerification] = useState({});
@@ -304,6 +311,17 @@ export default function App() {
   const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
     apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
   });
+  const refineControls = Number(modelRegistry?.refineControlsContractVersion) >= 1 ? activeImageRegistryEntry?.capabilities?.refineControls : null;
+  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,activeModelRoutes.image,'refine');
+  refineReferencePolicy.maxCount = Math.min(refineReferencePolicy.platform.maxCount,Math.max(0,(refineControls?.maxImages || 1)-1));
+  const refineReferences = useRefineReferences({apiBase:apiBaseNormalized,health,ownerId:currentUser?.id || '',policy:refineReferencePolicy});
+  const refineInputDraft = {version:1,references:refineReferences.images.map(image=>({objectKey:image.id,purpose:image.purpose,note:image.note})),...(refineMask?.strokes?.length ? {mask:{objectKey:'pending-mask'}} : {}),...(refineStructuredEnabled ? {structured:refineStructured} : {})};
+  const hasRefineControls = Boolean(refineControls || refineInputDraft.references.length || refineInputDraft.mask || refineInputDraft.structured);
+  const refineControlsIssue = refineMask?.strokes?.length && refineMask.sourceId !== refineSource.url ? '原图已更换，旧遮罩仍保留；请清除旧遮罩并重新标记。'
+    : refineInputIssue(refineControls, hasRefineControls ? refineInputDraft : undefined,refineAspectRatio,refineImageSize)
+      || referenceUploadSelectionError(refineReferences.images,refineReferencePolicy)
+      || [...(hasRefineControls ? [refineSource] : []),...refineReferences.images].some(image=>image.width>refineReferencePolicy.submission.maxDimension || image.height>refineReferencePolicy.submission.maxDimension || image.width*image.height>refineReferencePolicy.submission.maxPixels) && '当前型号的输入尺寸超限；已保留图片，请裁剪、导出或切换模型，不会自动缩小。';
+  useEffect(()=>{setRefineMask(null);setRefineStructuredEnabled(false);setRefineStructured({object:'',attributes:'',relationship:'',preserve:''});},[currentUser?.id,apiBaseNormalized]);
   const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
   const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
   const selectedCatalogIssues = accessMode === 'custom' ? [] : [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
@@ -331,7 +349,6 @@ export default function App() {
     ? (Array.isArray(refineResolutionMetadata.refineResolutions) ? refineResolutionMetadata.refineResolutions : [])
     : ['2K'];
   const refineResolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => refineResolutionValues.includes(value));
-  const defaultRefineImageSize = refineResolutionOptions[0]?.[0] || '';
   // 有参考图时以后端能力目录为权威；能力未知时默认走独立识别，避免把文本模型误当视觉模型。
   const mainModelCanRead = accessMode === 'custom' ? customEntries.main.selectable && customRoutes.main.custom.capabilities.vision : referenceImages.length
     ? mainModelCapability?.status === 'supported' && mainModelCapability?.supportsReferenceImages !== false
@@ -385,10 +402,12 @@ export default function App() {
   const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
     : refineRunning ? '正在处理当前精修，请等待完成。'
     : ['validating', 'uploading', 'checking'].includes(refineUpload.status) ? '请等待原图上传与校验完成。'
+    : refineReferences.busy ? '请等待参考图检查或上传完成。'
+    : refineControlsIssue ? refineControlsIssue
     : refineSourcePolicyIssue ? refineSourcePolicyIssue
     : !Object.keys(refineRequestSource(refineSource)).length ? '请先选择并上传一张原图。'
     : refineCapability.mode === 'none' ? '请在精修设置中选择支持精修的图像模型。'
-    : !refineResolutionOptions.length || !refineAspectRatioOptions.some(option => option.value === refineAspectRatio) ? '请在精修设置中选择可用模型和参数。'
+    : !refineResolutionValues.includes(refineImageSize) || !refineResolutionOptions.length || !refineAspectRatioOptions.some(option => option.value === refineAspectRatio) ? '请在精修设置中选择可用模型和参数。'
     : missingCredentialProviders.length ? '请在精修设置中填写所需接入密钥。'
     : refineInstruction.trim().length < 3 ? '请填写至少 3 个字符的精修指令。'
     : refineInstruction.length > 2000 ? '精修指令不能超过 2000 个字符。' : '';
@@ -469,16 +488,7 @@ export default function App() {
     if (normalized !== aspectRatio) setAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio, imageSize]);
 
-  useEffect(() => {
-    if (accessMode === 'custom' || !activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
-    const normalized = normalizeSelectedAspectRatio(refineAspectRatio, refineAspectRatioOptions);
-    if (normalized !== refineAspectRatio) setRefineAspectRatio(normalized);
-  }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, refineAspectRatio, refineImageSize]);
-
-  // 精修清晰度是独立执行能力；路由或目录变化时回到新模型声明的第一档。
-  useEffect(() => {
-    if (accessMode !== 'custom' && activeImageRegistryEntry?.selectable !== false && activeImageRegistryEntry && !refineResolutionValues.includes(refineImageSize)) setRefineImageSize(defaultRefineImageSize);
-  }, [activeImageRegistryEntry, defaultRefineImageSize, refineImageSize]);
+  // Preserve refinement inputs across route/catalog changes; admission explains incompatibilities.
 
   // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
@@ -784,7 +794,7 @@ export default function App() {
     }
     void poll();
     return () => { cancelled = true; clearTimeout(timer); };
-  }, [apiBaseNormalized, health, refineJobId]);
+  }, [apiBaseNormalized, health, refineJobId, refinePollNonce]);
 
   useEffect(() => {
     refineRequestGeneration.current += 1;
@@ -1335,6 +1345,9 @@ export default function App() {
     setRefineJob(null);
     setRefinePollError('');
     try {
+      const maskFile = await refineMaskFile(refineMask);
+      const refineInputs = hasRefineControls ? {version:1,...await refineReferences.prepare(maskFile),...(refineStructuredEnabled ? {structured:{...refineStructured}} : {})} : undefined;
+      if (requestGeneration !== refineRequestGeneration.current) return;
       const scopedApiKeys = scopedApiKeysForRoles(activeModelRoutes, refineRouteRoles, apiKeys);
       const created = await refineImageRequest(apiBaseNormalized, health, {
         configurationMode: modelSubmission.configurationMode,
@@ -1346,6 +1359,7 @@ export default function App() {
         imageModelName: modelSubmission.imageGenModelName,
         referenceVisionModelName: modelSubmission.referenceVisionModelName,
         ...refineRequestSource(refineSource),
+        refineInputs,
         editInstruction: refineInstruction,
         aspectRatio: refineAspectRatio,
         imageSize: refineImageSize,
@@ -1371,9 +1385,9 @@ export default function App() {
   async function showResumedTask(id) {
     const resumed = await getJobRequest(apiBaseNormalized, health, id);
     if (resumed.refine_mode) {
-      setRefineJobId('');
       setRefineJob(resumed);
       setRefineJobId(id);
+      setRefinePollNonce(value => value + 1);
       selectTab('refine');
     } else {
       setCurrentJobId(id);
@@ -1777,6 +1791,8 @@ export default function App() {
         <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
           <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={refineJob} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
           <RefinePanel
+            controls={refineControls} references={refineReferences} referencePolicy={refineReferencePolicy} controlsIssue={refineControlsIssue}
+            mask={refineMask} onMaskChange={setRefineMask} structuredEnabled={refineStructuredEnabled} onStructuredEnabledChange={setRefineStructuredEnabled} structured={refineStructured} onStructuredChange={setRefineStructured}
             source={refineSource}
             upload={{ ...refineUpload, error: refineSourcePolicyIssue || refineUpload.error }}
             uploadLimits={activeRefineUploadLimits}

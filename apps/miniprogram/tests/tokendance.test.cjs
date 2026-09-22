@@ -208,6 +208,26 @@ test('mini failed-job recovery counts down, rejects an early tap, refreshes afte
   assert.equal(timers.size, 0)
 })
 
+test('mini resumes new provider jobs through their original task without a TokenDance connection', async () => {
+  for (const channel of ['custom', 'runware', 'tokenhub', 'xiaomi', 'fal', 'replicate', 'tokendance', undefined]) {
+    const requests = []
+    const f = componentFrom('../miniprogram/pages/job-detail/job-detail.js', {
+      api: { formatError: error => error.message, requestJson: async body => { requests.push(body); return { jobId: 'original-job' } } },
+      tokendance: { openTokenDance() { throw new Error('unrelated authorization must not open') } },
+    }, { setInterval() { throw new Error('no retry delay') }, clearInterval() {} })
+    f.page.data.jobId = 'original-job'
+    f.page.data.job = { status: 'failed', recovery: { channel, canResume: true } }
+    let polls = 0
+    f.page.startPolling = () => { polls++ }
+    await f.page.resumeJob()
+    assert.equal(requests.length, 1, channel)
+    assert.equal(requests[0].jobId, 'original-job', channel)
+    assert.equal(requests[0].action, !channel || channel === 'tokendance' ? 'tokenDanceResume' : 'providerResume', channel)
+    assert.equal(polls, 1, channel)
+    assert.equal(f.page.data.error, '', channel)
+  }
+})
+
 test('mini blocks submit and repeat selection while original image dimensions are pending', async () => {
   let media, info, chooserCount = 0, requests = 0
   const { page } = componentFrom('../miniprogram/pages/index/index.js', {

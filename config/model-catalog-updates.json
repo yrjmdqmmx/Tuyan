@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-21.v21",
+  "version": "2026-09-22.v22",
   "providers": {
     "deepseek": [
       {
@@ -18891,6 +18891,260 @@
           ]
         }
       }
+    ],
+    "runware": [
+      {
+        "id": "alibaba:qwen-image@2512",
+        "label": "Qwen-Image-2512",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "已实现专用适配；账户权限、计费与真实输出未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2512",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "alibaba",
+          "regions": [
+            "global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "alibaba:qwen-image-edit@2511",
+        "label": "Qwen-Image-Edit-2511",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "已实现专用适配；账户权限、计费与真实输出未验证。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "alibaba",
+          "regions": [
+            "global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "google:gemini@3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "已实现精确型号适配；账号权限、限流额度与真实推理尚未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/examples",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-03-03"
+        }
+      }
+    ],
+    "tokenhub": [
+      {
+        "id": "hy-image-v3",
+        "label": "HyImage 3.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "已实现专用适配；账户权限、计费与真实输出未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/135745",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "tencent",
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hy3",
+        "label": "Hy3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "已实现精确型号适配；账号权限、限流额度与真实推理尚未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130079",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "hy-vision-2.0-instruct",
+        "label": "HY-Vision-2.0-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "已实现精确型号适配；账号权限、限流额度与真实推理尚未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136956",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      }
+    ],
+    "xiaomi": [
+      {
+        "id": "mimo-v2.6-pro",
+        "label": "MiMo-V2.6-Pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "已实现精确型号适配；账号权限、限流额度与真实推理尚未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-22"
+        }
+      },
+      {
+        "id": "mimo-v2.6-flash",
+        "label": "MiMo-V2.6-Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "已实现精确型号适配；账号权限、限流额度与真实推理尚未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-22"
+        }
+      }
     ]
   },
   "lifecycle": {
@@ -19296,6 +19550,69 @@
         "登录图研后连接 TokenDance。",
         "在 TokenDance 授权页设置 Key 的有效期和额度；图研安全保存授权。",
         "钱包余额与 Key 额度是两个独立限制。"
+      ]
+    },
+    "runware": {
+      "label": "Runware",
+      "accessKind": "aggregator",
+      "guideUrl": "https://runware.ai/docs/platform/authentication",
+      "textBaseUrl": "",
+      "regions": [
+        "global-endpoint"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "google:gemini@3.1-flash-lite",
+        "image": "alibaba:qwen-image@2512",
+        "vision": "google:gemini@3.1-flash-lite"
+      },
+      "keyPlaceholder": "API Key",
+      "guideSteps": [
+        "创建 Runware API Key，确认余额、账号地区与所选 AIR 型号权限。",
+        "采用 Runware 原生异步接口；目录与模拟测试不代表真实调用验证。",
+        "费用按型号、尺寸与步数变化；返回 cost 不是已核对账单。"
+      ]
+    },
+    "tokenhub": {
+      "label": "腾讯 TokenHub",
+      "accessKind": "direct",
+      "guideUrl": "https://cloud.tencent.com/document/product/1823/135745",
+      "textBaseUrl": "https://tokenhub.tencentmaas.com/v1",
+      "regions": [
+        "cn-endpoint"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "hy3",
+        "image": "hy-image-v3",
+        "vision": "hy-vision-2.0-instruct"
+      },
+      "keyPlaceholder": "API Key",
+      "guideSteps": [
+        "腾讯云账号开通 TokenHub 并创建 API Key，按模型配置后付费和额度。",
+        "使用 tokenhub.tencentmaas.com 的 Bearer 接口，不使用旧版混元签名与计费。",
+        "当前仅接稳定 HyImage 3.0；图像 Token 用量与账单金额分开记录。"
+      ]
+    },
+    "xiaomi": {
+      "label": "小米 MiMo",
+      "accessKind": "direct",
+      "guideUrl": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "textBaseUrl": "https://api.xiaomimimo.com/v1",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "mimo-v2.6-pro",
+        "image": "",
+        "vision": "mimo-v2.6-flash"
+      },
+      "keyPlaceholder": "普通 API Key（非 Token Plan）",
+      "guideSteps": [
+        "创建小米 MiMo 普通按量 API Key；Token Plan Key 和套餐额度不互通。",
+        "MiMo-V2.6-Pro 与 Flash 均用于文本规划/识图，不提供生图；请在专业模式搭配图像渠道。",
+        "本轮使用同步 Chat API；截断或结果未知不会自动重复请求，价格按账号地区分别核对。"
       ]
     }
   },

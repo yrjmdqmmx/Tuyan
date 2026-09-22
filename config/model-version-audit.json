@@ -23230,6 +23230,110 @@
       "catalogRoles": [
         "image"
       ]
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@2512",
+      "displayName": "Qwen-Image-2512",
+      "kind": "fixed",
+      "versionId": "2512",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2512"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "型号版本明确；服务端构建与账户权限未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image-edit@2511",
+      "displayName": "Qwen-Image-Edit-2511",
+      "kind": "fixed",
+      "versionId": "2511",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "型号版本明确；服务端构建与账户权限未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy-image-v3",
+      "displayName": "HyImage 3.0",
+      "kind": "rolling",
+      "versionId": "3.0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/135745"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "型号版本明确；服务端构建与账户权限未验证。"
+    },
+    {
+      "channel": "xiaomi",
+      "apiModelId": "mimo-v2.6-pro",
+      "displayName": "MiMo-V2.6-Pro",
+      "kind": "unconfirmed",
+      "versionId": "mimo-v2.6-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/en-US/api/chat/openai-api"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
+    },
+    {
+      "channel": "xiaomi",
+      "apiModelId": "mimo-v2.6-flash",
+      "displayName": "MiMo-V2.6-Flash",
+      "kind": "unconfirmed",
+      "versionId": "mimo-v2.6-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/en-US/api/chat/openai-api"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy3",
+      "displayName": "Hy3",
+      "kind": "unconfirmed",
+      "versionId": "hy3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy-vision-2.0-instruct",
+      "displayName": "HY-Vision-2.0-Instruct",
+      "kind": "unconfirmed",
+      "versionId": "hy-vision-2.0-instruct",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/136956"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:gemini@3.1-flash-lite",
+      "displayName": "Gemini 3.1 Flash Lite",
+      "kind": "unconfirmed",
+      "versionId": "google:gemini@3.1-flash-lite",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/examples"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

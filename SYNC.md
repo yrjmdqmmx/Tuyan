@@ -1,5 +1,18 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-22 · 科研精修控制与 Runware / TokenHub / MiMo V2.6（本地未发布）
+
+- 共享新增可选 `refineInputs={version:1,references:[{objectKey,purpose,note}],mask:{objectKey},structured:{object,attributes,relationship,preserve}}`，严格按具体型号校验；公开任务新增 `refineInputMetadata`，所有图片和遮罩冻结为私有任务快照。`modelRegistry.refineControlsContractVersion=1` 与型号 `capabilities.refineControls` 控制 UI 开放。旧单图请求兼容；BRIA 单图不兼容尺寸明确拒绝。
+- 目录 v22 新增 8 个 SKU / 3 个渠道：Runware 原生文本+视觉、Qwen 2512 生图/2511 编辑；腾讯 TokenHub HY3、HY Vision 2.0、HY Image v3；小米 MiMo **V2.6 Pro/Flash** 主模型+视觉（9 月 22 日官方发布）。新增 `runware-text` 协议标签；不改用户原路线，不宣称账号调用已验证。
+- Core 工作流对 Runware/TokenHub/MiMo/fal/Replicate 加密保存恢复状态和凭据（7 天 TTL，沿用 `TOKENDANCE_ENCRYPTION_KEY`，无新环境变量）；扩展 `recovery.channel`，沿用 `providerResume`。Runware 超时只查原 UUID；同步结果未知不重新 POST。`providerCalls` 分开公开参考价、估算、渠道费用和已核对账单。Runware 加入已有海外出口主机清单；旧观猹恢复兼容。
+- [x] Core / 共享类型 / 请求封装：图片所有权、总量、无损快照、遮罩黑白语义、原生 BRIA 字段、型号适配、费用与恢复字段；模拟链路覆盖，真实推理 0。
+- [x] Web：辅助图上传/预览/用途、遮罩画擦撤销清除、结构化表单、按型号限制、切换保留输入、同任务恢复后继续轮询；桌面/窄屏浏览器模拟验收。
+- [x] 小程序 TS / JS：同步渠道、目录、使用指南、视觉上传政策及共享字段；通用任务恢复、加密保存提示与调用记录兼容，原有单图生成/精修兼容检查。
+- [ ] 小程序新增原生辅助图、遮罩与结构化表单 UI：本轮 Web 功能未移植，按 v1 控制契约后续接入；不得仅因目录存在就显示为已支持。
+- [ ] 真实服务权限/地区/账单与科研质量验收：需要所选 SKU 的有效账号，未充值、未调用付费推理。
+- [ ] Web / Core 部署、微信上传 / 审核 / 发布：本轮未执行，无 push。
+- [实现与边界](docs/refinement/2026-09-22-controls-and-channels.md) · [国内渠道建议](docs/refinement/2026-09-22-domestic-channel-research.md) · [本地验收](/Users/a1-6/.codex/artifacts/tuyan-refine-channels-20260922/qa/README.md)。
+
 ## 2026-09-21 · 排行榜中英文、研发厂商与共享筛选（本地未发布）
 
 - 排行榜首次默认简体中文，语言偏好保存在 `tuyan.benchmark.language.v1`；所有公开排行榜视图使用统一词典。保留原始提示词、评语、模型 ID、评分、名次和历史证据，原始材料标明保持原文。

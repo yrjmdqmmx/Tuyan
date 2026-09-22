@@ -12,7 +12,8 @@ export default function Select({ label, value, onChange, options, disabled = fal
   return (
     <label className="field compact">
       <span>{label}</span>
-      <select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value)}>
+      <select aria-label={label} value={value} disabled={disabled} onChange={(event) => onChange(event.target.value)}>
+        {!options.some(([id]) => id === value) ? <option value={value} disabled>{value || '尚未选择'}（当前不可用，请重新选择）</option> : null}
         {groups
           ? Object.entries(groups).map(([group, items]) => (
               <optgroup key={group} label={group}>

@@ -1,12 +1,18 @@
 import { IMAGE_CHANNEL_ROUTES } from './image-channel-routes.js'
+import { briaStructuredInstruction, refineControlsFor, refineInputIssue, type RefineInputs } from './refine-controls.js'
 
 /** Provider protocols shared with the standalone Core/Laf handler through catalog generation. */
 export type ImageChannelInput = {
   provider: string; model: string; region?: 'cn' | 'global'; apiKey: string; prompt: string; aspectRatio: string; resolution: string
   size: {size?: string; width?: number; height?: number}
+  edit?: { references?: NonNullable<ImageChannelInput['source']>[]; mask?: NonNullable<ImageChannelInput['source']>; inputs: RefineInputs }
   source?: {base64: string; mimeType: string; dataUrl: string; remoteUrl?: string} | null
 }
+export type ImageChannelCheckpoint = { provider: string; model: string; taskId?: string; polling?: string; resultUrl?: string; state?: any; result?: {url: string; metadata?: any}; failed?: boolean }
 export type ImageChannelTransport = {
+  pending?(): Promise<ImageChannelCheckpoint | undefined>
+  checkpoint?(value: ImageChannelCheckpoint): Promise<void>
+  record?(info: unknown): Promise<void>
   request(url: string, init: RequestInit, label: string, attempts: number): Promise<Response>
   json(response: Response, limit: number, label: string): Promise<any>
   download(url: string): Promise<string>
@@ -69,8 +75,15 @@ export async function buildImageChannelBody(input: ImageChannelInput, wire: Imag
   if (input.source) {
     if (!wire.sourceField) throw new Error(`${input.provider} operation does not accept a source image`)
     if (wire.maxSourceBytes && Buffer.from(input.source.base64, 'base64').length > wire.maxSourceBytes) throw new Error(`${input.provider} source image exceeds the channel limit`)
-    const value = wire.sourceEncoding === 'base64' ? input.source.base64 : wire.sourceEncoding === 'public-url' ? await io.publicSource(input.source) : input.source.dataUrl
-    body[wire.sourceField] = wire.sourceArray ? [value] : value
+    const images = [input.source, ...(input.edit?.references || [])]
+    if (images.length > 1 && !wire.sourceArray) throw new Error('该接口不接收多张图片，未发起请求。')
+    const values = await Promise.all(images.map(image => wire.sourceEncoding === 'base64' ? image.base64 : wire.sourceEncoding === 'public-url' ? io.publicSource(image) : image.dataUrl))
+    body[wire.sourceField] = wire.sourceArray ? values : values[0]
+  }
+  if (input.edit?.mask) body.mask_url = input.edit.mask.dataUrl
+  if (input.edit?.inputs.structured) {
+    delete body[wire.promptField || 'prompt']
+    body.structured_instruction = briaStructuredInstruction(input.edit.inputs.structured, input.prompt)
   }
   return body
 }
@@ -86,6 +99,22 @@ function imageTaskUrl(value: unknown, provider: string): string {
 
 /** Submission is never retried: a lost response may already represent a paid task. */
 export async function callExtendedImageChannel(input: ImageChannelInput, io: ImageChannelTransport): Promise<string> {
+  if (['runware','tokenhub'].includes(input.provider) && (!io.pending || !io.checkpoint)) throw Object.assign(new Error('当前后端缺少持久任务恢复能力，未发起渠道请求。'), {requestState:'not_sent', localInputFailure:true})
+  const issue = refineInputIssue(refineControlsFor(input.provider, input.model), input.edit?.inputs ?? (input.source ? {version:1} : undefined), input.aspectRatio, input.resolution)
+  if (issue) throw Object.assign(new Error(issue), {requestState:'not_sent', localInputFailure:true})
+  if (input.edit && !input.source) throw new Error('精修控制需要原图。')
+  if ((input.edit?.references?.length || 0) !== (input.edit?.inputs.references?.length || 0)) throw new Error('参考图传输数量与输入不一致。')
+  if (Boolean(input.edit?.mask) !== Boolean(input.edit?.inputs.mask)) throw new Error('遮罩传输与输入不一致。')
+  try { return await executeImageChannel(input, io) }
+  catch (error: any) {
+    const pending = await io.pending?.()
+    if (pending && !pending.failed && !error.terminal) {
+      throw Object.assign(new Error('已保存原渠道任务；可恢复查询或下载，不会重新生成。'), {name:'ImageChannelError', recoveryAction:'resume', pollOnly:true, uncertain:false, requestState:'unknown'})
+    }
+    throw error
+  }
+}
+async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTransport): Promise<string> {
   const { provider, model, apiKey, prompt, source, size } = input
   const label = `${provider} image ${model}`
   const headers: Record<string,string> = provider === 'bfl' ? {'x-key':apiKey} : provider === 'ideogram' ? {'Api-Key':apiKey} : {Authorization: `${provider === 'fal' ? 'Key' : 'Bearer'} ${apiKey}`}
@@ -94,8 +123,17 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   if (source && !['image/png','image/jpeg','image/webp'].includes(source.mimeType)) throw new Error(`${provider} accepts PNG, JPEG or WebP source images`)
   if (sourceBytes && sourceBytes.length > 25 * 1024 * 1024) throw new Error('Source image exceeds 25 MB')
   const wire: ImageChannelWire | undefined = IMAGE_CHANNEL_ROUTES[provider + '/' + model]?.[source ? 'editing' : 'generation']
+  const previous = await io.pending?.()
+  if (previous && (previous.provider !== provider || previous.model !== model || previous.failed)) throw Object.assign(new Error('原渠道任务不可重放，请核对记录。'), {terminal:true})
+  let checkpoint = previous
+  const save = async (value: Partial<ImageChannelCheckpoint>) => { checkpoint = {...checkpoint, provider, model, ...value}; await io.checkpoint?.(checkpoint) }
+  const terminal = async (message: string): Promise<never> => { if (checkpoint) await save({failed:true}); throw Object.assign(new Error(message), {terminal:true}) }
   const read = (response:Response) => io.json(response, 80 * 1024 * 1024, label)
-  const submit = (url:string, body:any, multipart=false) => io.request(url, {method:'POST', headers:multipart ? headers : jsonHeaders, body:multipart ? body : JSON.stringify(body), redirect:'error'}, label, 1).then(read)
+  const submit = async (url:string, body:any, multipart=false) => {
+    const response = await io.request(url, {method:'POST', headers:multipart ? headers : jsonHeaders, body:multipart ? body : JSON.stringify(body), redirect:'error', ...(['runware','tokenhub'].includes(provider) ? {signal:AbortSignal.timeout(600000)} : {})}, label, 1)
+    if (response.status >= 400 && response.status < 500) { await response.body?.cancel(); return terminal(`${provider} 请求被拒绝（HTTP ${response.status}），请核对密钥、额度、限流与输入；未自动重发。`) }
+    return read(response)
+  }
   const asset = async (value:unknown): Promise<string> => {
     if (typeof value !== 'string' || !value) throw new Error(`${provider} completed without an image`)
     if (value.startsWith('data:')) {
@@ -106,6 +144,46 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     const url = new URL(value)
     if (url.protocol !== 'https:' || url.username || url.password) throw new Error(`${provider} returned an invalid image URL`)
     return io.download(url.href) // Never send API credentials to image hosts.
+  }
+  const completed = async (url: string, metadata: any = {}) => {
+    await save({...(metadata.requestId ? {taskId:metadata.requestId} : {}), result:{url, metadata}})
+    await io.record?.({provider, model, requestId:checkpoint?.taskId || null, publicPrice:{source:provider === 'tokenhub' ? 'https://cloud.tencent.com/document/product/1823/130055' : provider === 'runware' ? 'https://runware.ai/pricing' : `https://${provider === 'fal' ? 'fal.ai' : 'replicate.com'}/pricing`, checkedAt:'2026-09-22', amount:null}, estimatedCost:null, reportedCost:metadata.reportedCost ?? null, invoiceCost:null, ...metadata})
+    return asset(url)
+  }
+  if (previous?.result) return completed(previous.result.url, previous.result.metadata)
+  if (provider === 'runware') {
+    if (!wire || !size.width || !size.height) throw new Error('Runware 型号或尺寸契约缺失。')
+    if (!prompt.trim() || [...prompt].length > (wire.maxPromptLength || 32000)) throw Object.assign(new Error('Runware 提示词为空或超过型号限制，未发送。'), {localInputFailure:true, requestState:'not_sent'})
+    if (!previous) {
+      // UUID is committed BEFORE the potentially billed POST. Even a lost
+      // acknowledgment can only lead to getResponse, never a second inference.
+      await save({taskId:crypto.randomUUID()})
+      const data = await submit('https://api.runware.ai/v1', [{taskType:'imageInference', taskUUID:checkpoint!.taskId, model, positivePrompt:prompt, width:size.width, height:size.height, outputType:'URL', outputFormat:'PNG', deliveryMethod:'async', includeCost:true, numberResults:1, steps:30, ...(source ? {inputs:{referenceImages:[source, ...(input.edit?.references || [])].map(image => image.dataUrl)}} : {})}])
+      if (data.errors?.length) return terminal('Runware 拒绝或终止了任务，请核对渠道记录与费用。')
+      await save({state:data})
+    }
+    const deadline = io.now() + (io.pollTimeoutMs ?? 600000)
+    let state = checkpoint?.state, attempt = 0
+    while (io.now() < deadline) {
+      if (state?.errors?.length) return terminal('Runware 原任务失败，请核对渠道记录与费用。')
+      const row = state?.data?.find((item:any) => item.taskUUID === checkpoint?.taskId && item.imageURL)
+      if (row) return completed(row.imageURL, {reportedCost:typeof row.cost === 'number' && Number.isFinite(row.cost) ? {amount:row.cost,currency:'USD',source:'provider-response'} : null, seed:row.seed ?? null})
+      await io.sleep(Math.min(io.pollIntervalMs ?? Math.min(15000,1500 * 2 ** Math.min(attempt++,3)), Math.max(0,deadline-io.now())))
+      if (io.now() >= deadline) break
+      const response = await io.request('https://api.runware.ai/v1', {method:'POST',headers:jsonHeaders,body:JSON.stringify([{taskType:'getResponse',taskUUID:checkpoint!.taskId}]),redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' poll',1)
+      if (response.status === 429 || response.status >= 500) { const retry = Number(response.headers.get('retry-after')); await response.body?.cancel(); if (Number.isFinite(retry) && retry > 0) await io.sleep(Math.min(retry*1000,Math.max(0,deadline-io.now()))); continue }
+      state = await read(response)
+    }
+    throw new Error('Runware 原任务仍未确认；仅可恢复查询。')
+  }
+  if (provider === 'tokenhub') {
+    if (!wire) throw new Error('TokenHub 型号契约缺失。')
+    // A historical incomplete checkpoint is never permission to submit again.
+    if (previous) return terminal('TokenHub 原请求缺少可下载结果，须核对渠道调用记录；未重新提交。')
+    const body = await buildImageChannelBody(input, wire, io)
+    const data = await submit('https://tokenhub.tencentmaas.com' + wire.endpoint, body)
+    if (!data.data?.[0]?.url) throw new Error('TokenHub 未返回图片；结果未知，请核对调用记录，勿重复提交。')
+    return completed(data.data[0].url, {requestId:String(data.request_id || data.id || ''), usage:data.tokenhub_usage || null, reportedCost:null, responseId:data.id || null})
   }
   const attach = (form:FormData, field='image') => {
     if (source && sourceBytes) form.append(field, new Blob([new Uint8Array(sourceBytes)],{type:source.mimeType}), `source.${source.mimeType.split('/')[1]}`)
@@ -161,7 +239,9 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   let state:any, polling:string, resultUrl:string|undefined
   if (!wire) throw new Error(`Unsupported ${provider} image operation`)
   const body = await buildImageChannelBody(input, wire, io)
-  if (provider === 'bfl') {
+  if (previous?.polling) {
+    state=previous.state || {}; polling=imageTaskUrl(previous.polling,provider); resultUrl=previous.resultUrl ? imageTaskUrl(previous.resultUrl,provider) : undefined
+  } else if (provider === 'bfl') {
     state=await submit('https://api.bfl.ai'+wire.endpoint,body)
     polling=imageTaskUrl(state.polling_url,provider)
   } else if (provider === 'fal') {
@@ -182,6 +262,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     state=await submit(wire.version ? 'https://api.replicate.com/v1/predictions' : `https://api.replicate.com/v1/models/${wire.endpoint}/predictions`,{...(wire.version?{version:wire.version}:{}),input:body})
     polling=imageTaskUrl(state.urls?.get,provider)
   } else throw new Error(`Unsupported image channel: ${provider}`)
+  if (!previous) await save({taskId:String(state.request_id || state.id || ''), polling, resultUrl, state})
   const deadline=io.now()+(io.pollTimeoutMs ?? 600000)
   const timeout = () => new Error(`${provider} image task timed out; do not submit a duplicate task`)
   const readTask = async (url:string, phase:string): Promise<any> => {
@@ -201,20 +282,20 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
     throw timeout()
   }
   while (io.now() < deadline) {
-    if (provider==='bfl' && state.status==='Ready') return asset(state.result?.sample)
+    if (provider==='bfl' && state.status==='Ready') return completed(state.result?.sample)
     if (provider==='replicate' && state.status==='succeeded') {
       const result = state.output?.image || state.output?.images || state.output
       const first = Array.isArray(result) ? result[0] : result
-      return asset(first?.url || first)
+      return completed(first?.url || first, {metrics:state.metrics || null, modelVersion:state.version || null})
     }
     if (provider==='fal' && state.status==='COMPLETED') {
       const result=await readTask(resultUrl!,'result')
-      if (result.has_nsfw_concepts?.some(Boolean)) throw new Error('fal image was moderated')
-      return asset(result.images?.[0]?.url || result.image?.url)
+      if (result.has_nsfw_concepts?.some(Boolean)) return terminal('fal 图片被安全策略拒绝。')
+      return completed(result.images?.[0]?.url || result.image?.url, {structuredInstruction:result.structured_instruction || null, seed:result.seed ?? null})
     }
     const pending=provider==='bfl'?['Pending','Running']:provider==='fal'?['IN_QUEUE','IN_PROGRESS']:['starting','processing']
     // The initial BFL submission has id/polling_url without a status.
-    if (state.status && !pending.includes(state.status)) throw new Error(`${provider} image task ${String(state.status).slice(0,100)}`)
+    if (state.status && !pending.includes(state.status)) return terminal(`${provider} 原任务终止：${String(state.status).slice(0,100)}；请核对费用。`)
     if (!state.status && provider!=='bfl') throw new Error(`${provider} returned no task status`)
     state=await readTask(polling,'poll')
     if (!state.status) throw new Error(`${provider} returned no task status`)

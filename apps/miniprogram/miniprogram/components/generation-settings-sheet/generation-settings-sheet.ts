@@ -195,7 +195,7 @@ Component({
       this.setData({
         draft, routeRows, ratioOptions, resolutionOptions, keyFields, tokenDanceConnected: connected,
         credentialSummary: [...new Set(routeRows.filter(row => row.required && !row.credentialReady).map(row => row.providerLabel + (row.provider === 'tokendance' ? ' 未连接' : ' 缺少 API Key')))].join('；') || '本次任务所需凭据已就绪',
-        normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
+        normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.some(provider => ['tokendance', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi'].includes(provider)),
         providerOptions,
         minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
         minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,

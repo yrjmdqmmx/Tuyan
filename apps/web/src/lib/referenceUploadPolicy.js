@@ -54,7 +54,11 @@ export function referenceSubmissionPolicy(provider, model, workflow = 'generatio
         p.mimeTypes = ['image/png']; // Current editing snapshots are lossless PNG.
         return p;
     }
-    if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
+    if (['xiaomi', 'tokenhub', 'runware'].includes(provider)) {
+        Object.assign(p, { status: 'partial', source: provider === 'xiaomi' ? 'https://mimo.mi.com/docs/en-US/api/chat/openai-api' : provider === 'tokenhub' ? 'https://cloud.tencent.com/document/product/1823/136956' : 'https://runware.ai/docs/models/google-gemini-3-1-flash-lite',
+            note: '所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。' });
+    }
+    else if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
         Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, maxDimension: 4096,
             maxPixels: 8000000, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
             mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。' });

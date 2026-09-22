@@ -34,9 +34,9 @@ function orderModelChannels(channels) {
 function modelChannelCategoryOrder(channel) {
     const groups = [
         ['tokendance', 'siliconflow'],
-        ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax'],
+        ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'tokenhub', 'xiaomi'],
         ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
-        ['openrouter', 'together', 'fireworks', 'fal', 'replicate'],
+        ['openrouter', 'together', 'fireworks', 'fal', 'replicate', 'runware'],
     ];
     const index = groups.findIndex(group => group.includes(channel));
     return index < 0 ? groups.length : index;

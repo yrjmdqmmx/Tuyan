@@ -194,3 +194,33 @@ test('MiniMax binds each region to its endpoint and keeps image-01-live fixed an
  await assert.rejects(callExtendedImageChannel({...defaults,provider:'minimax',model:'image-01',region:'invalid' as any},io),/Unsupported/)
  assert.equal(calls.length,1)
 })
+
+test('new native channels require a durable journal; partial TokenHub checkpoints never resubmit',async()=>{
+  for(const [provider,model] of [['tokenhub','hy-image-v3'],['runware','alibaba:qwen-image@2512']]) {
+    const {io,calls}=fixture(()=>Response.json({}))
+    await assert.rejects(callExtendedImageChannel({...defaults,provider,model},io),/持久任务/)
+    assert.equal(calls.length,0)
+  }
+  const {io,calls}=fixture(()=>Response.json({}))
+  let pending:any={provider:'tokenhub',model:'hy-image-v3',taskId:'already-submitted'}
+  io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3'},io),/未重新提交/)
+  assert.equal(calls.length,0);assert.equal(pending.failed,true)
+})
+
+test('Runware generation has native task fields and polls through rate limits without re-submission',async()=>{
+  let uuid='',polls=0,pending:any
+  const {io,calls}=fixture((_url,init)=>{
+    const body=JSON.parse(String(init.body))[0]
+    if(body.taskType==='imageInference') { uuid=body.taskUUID;assert.equal(pending.taskId,uuid);assert.equal(body.model,'alibaba:qwen-image@2512');assert.equal(body.inputs,undefined);assert.equal(body.deliveryMethod,'async');assert.equal(body.includeCost,true);return Response.json({data:[{taskUUID:uuid}]}) }
+    assert.equal(body.taskType,'getResponse');assert.equal(body.taskUUID,uuid)
+    if(++polls===1)return new Response('',{status:429,headers:{'Retry-After':'1'}})
+    return Response.json({data:[{taskUUID:uuid,imageURL:'https://asset.invalid/result.png',cost:0.01}]})
+  })
+  io.pollTimeoutMs=5000;io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
+  assert.equal(await callExtendedImageChannel({...defaults,provider:'runware',model:'alibaba:qwen-image@2512'},io),png)
+  assert.equal(calls.filter(call=>String(call.init.body).includes('imageInference')).length,1)
+  const before=calls.length
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'runware',model:'alibaba:qwen-image@2512',prompt:'x'.repeat(32001)}, {...io,pending:async()=>undefined}),/提示词/)
+  assert.equal(calls.length,before)
+})

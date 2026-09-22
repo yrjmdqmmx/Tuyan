@@ -4491,6 +4491,70 @@
         "auto": {}
       },
       "auto": "square"
+    },
+    "runwareQwenEdit": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        }
+      },
+      "minSide": 512,
+      "maxSide": 2048,
+      "alignment": 16,
+      "maxPixels": 4194304,
+      "auto": "square"
+    },
+    "runwareQwenGenerate": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetEdge": 1024
+        },
+        "2K": {
+          "targetEdge": 2048
+        }
+      },
+      "minSide": 256,
+      "maxSide": 2048,
+      "alignment": 16,
+      "maxPixels": 4194304,
+      "auto": "square"
+    },
+    "tokenhubHyImage3": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        }
+      },
+      "minSide": 512,
+      "maxSide": 2048,
+      "maxPixels": 1048576,
+      "alignment": 1,
+      "separator": "x",
+      "auto": "square"
+    },
+    "fiboEdit15": {
+      "mode": "ratio",
+      "tiers": {
+        "auto": {}
+      },
+      "ratios": [
+        "1:1",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:3",
+        "4:5",
+        "5:4",
+        "9:16",
+        "16:9"
+      ],
+      "auto": "omit"
     }
   },
   "routes": {
@@ -5621,12 +5685,12 @@
     },
     "fal/bria/fibo-edit-1.5/edit": {
       "generation": null,
-      "editing": "providerDefaultInherited",
+      "editing": "fiboEdit15",
       "reviewedAt": "2026-09-07",
       "sources": [
         "https://fal.ai/models/bria/fibo-edit-1.5/edit/api"
       ],
-      "notes": "直接编辑。"
+      "notes": "单图与遮罩继承原图；2–4 图可显式选比例，执行前独立验证。"
     },
     "fal/bria/fibo-gen-1.5/text-to-image": {
       "generation": "fal_bria_fibo-gen-1.5_text-to-image_ratios",
@@ -7161,6 +7225,33 @@
         "https://replicate.com/krea/krea-2-medium/api/schema"
       ],
       "notes": "仅文生图；风格参考不等同直接编辑，精修使用识图后重绘。"
+    },
+    "runware/alibaba:qwen-image@2512": {
+      "generation": "runwareQwenGenerate",
+      "editing": null,
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2512"
+      ],
+      "notes": "按精确型号限制输出；auto 在这些像素接口为默认方形，不表示保留原比例。"
+    },
+    "runware/alibaba:qwen-image-edit@2511": {
+      "generation": null,
+      "editing": "runwareQwenEdit",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+      ],
+      "notes": "按精确型号限制输出；auto 在这些像素接口为默认方形，不表示保留原比例。"
+    },
+    "tokenhub/hy-image-v3": {
+      "generation": "tokenhubHyImage3",
+      "editing": "tokenhubHyImage3",
+      "reviewedAt": "2026-09-22",
+      "sources": [
+        "https://cloud.tencent.com/document/product/1823/135745"
+      ],
+      "notes": "按精确型号限制输出；auto 在这些像素接口为默认方形，不表示保留原比例。"
     }
   }
 }

@@ -80,6 +80,7 @@ type LegacyPolicyModule = {
   validateProviderImageBase64(value: string, maxBytes: number, label: string): string
   readStoredObject(bucket: Record<string, any>, key: string, maxBytes: number, label: string): Promise<Buffer>
   verifyUploadedReferenceObjects(images: Array<Record<string, unknown>>, bucket?: Record<string, unknown>): Promise<void>
+  configureProviderWorkflow(hooks: any): void
   configureRuntimeFetch(fetchImpl?: typeof fetch): void
   fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
   callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal; region?: 'cn' | 'global' }): Promise<string>
@@ -1166,7 +1167,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
       ['https://cdn.invalid/refined.png', '', ''],
     ])
     const source = fs.readFileSync(legacyPath, 'utf8')
-    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true, imageRoute\.region, imageRoute\.custom\)/)
+    assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, editPrompt, body\.aspectRatio \|\| '16:9', sourceUrl, body\.imageSize \|\| '2K', true, imageRoute\.region, imageRoute\.custom, edit\)/)
     assert.match(source, /callImageModel\(imageRoute\.provider, imageRoute\.model, imageRoute\.apiKey, diagramPromptFromDescription\(description\), body\.aspectRatio \|\| '16:9', '', body\.imageSize \|\| '2K', true, imageRoute\.region, imageRoute\.custom\)/)
   } finally {
     legacy.configureRuntimeFetch()
@@ -1733,7 +1734,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-21.v21')
+    assert.equal(result.registryVersion, '2026-09-22.v22')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2985,7 +2986,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-21.v21')
+    assert.equal(registry.registryVersion, '2026-09-22.v22')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5323,7 +5324,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-21.v21')
+    assert.equal(registry.registryVersion, '2026-09-22.v22')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6522,6 +6523,9 @@ test('channel extensions: runtime dispatches every new selectable image option u
   const legacy=await loadLegacy()
   const extensions=JSON.parse(fs.readFileSync(path.resolve(packageRoot,'../../config/model-catalog-updates.json'),'utf8')).channels
   const raster=(await sharp({create:{width:64,height:64,channels:3,background:'#fff'}}).png().toBuffer()).toString('base64')
+  let pending:any
+  const workflow={run:(_task:any,operation:any)=>operation(),call:(_descriptor:any,operation:any)=>{pending=undefined;return operation()},scope:(_scope:any,operation:any)=>operation(),key:async(key:string)=>key,record:async()=>{},pending:async()=>pending,checkpoint:async(value:any)=>{pending=value}}
+  legacy.configureProviderWorkflow(workflow)
   const calls:Array<{url:string;body:any;headers:Headers}>=[]
   legacy.configureRuntimeFetch(async(input,init)=>{
     const url=String(input),headers=new Headers(init?.headers)
@@ -6530,6 +6534,8 @@ test('channel extensions: runtime dispatches every new selectable image option u
     if(url==='https://tokendance.space/gateway/v1/models')return Response.json({data:JSON.parse(fs.readFileSync(path.resolve(packageRoot,'../../config/tokendance/catalog.json'),'utf8')).models})
     if(url==='https://tokendance.space/gateway/ark/v3/images/generations'){assert.equal(headers.get('X-App-URL'),'https://www.paperbanana.asia/');return Response.json({model:body.model,data:[{b64_json:raster}]})}
     if(url.startsWith('https://asset.invalid/')){assert.equal(headers.has('Authorization'),false);assert.equal(headers.has('x-key'),false);return new Response(Buffer.from(raster,'base64'),{headers:{'Content-Type':'image/png'}})}
+    if(url==='https://api.runware.ai/v1')return Response.json({data:[{taskUUID:body[0].taskUUID,...(body[0].taskType==='textInference'?{text:'A scientific diagram.',finishReason:'stop'}:{imageURL:'https://asset.invalid/output.png'})}]})
+    if(url.includes('/v1/wand/'))return Response.json({id:'tokenhub-fixture',data:[{url:'https://asset.invalid/output.png'}]})
     if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
     if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})
     if(url.startsWith('https://api.us1.bfl.ai/'))return Response.json({status:'Ready',result:{sample:'https://asset.invalid/output.png'}})
@@ -6553,8 +6559,8 @@ test('channel extensions: runtime dispatches every new selectable image option u
           const start=calls.length
           if(role==='main')await legacy.callTextModel(provider,model.id,'extension-fixture-secret','system','plan a figure')
           else await legacy.callVisionModel(provider,model.id,'extension-fixture-secret','describe figure','caption',[{url:`data:image/png;base64,${raster}`,mimeType:'image/png',base64:raster}])
-          const call=calls.slice(start).find(call=>call.url.endsWith('/chat/completions'))!
-          assert.ok(call,`${provider}/${model.id}/${role}`);assert.equal(call.body.model,model.id)
+          const call=calls.slice(start).find(call=>call.url.endsWith('/chat/completions')||call.url==='https://api.runware.ai/v1')!
+          assert.ok(call,`${provider}/${model.id}/${role}`);assert.equal((provider==='runware'?call.body[0]:call.body).model,model.id)
           assert.equal(call.headers.get('Authorization'),'Bearer extension-fixture-secret')
           if(provider==='minimax')assert.equal(call.body.reasoning_split,true)
         }
@@ -6564,6 +6570,9 @@ test('channel extensions: runtime dispatches every new selectable image option u
           const maps=model.capabilities[editing?'refineAspectRatiosByResolution':'aspectRatiosByResolution']
           for(const [resolution,ratios] of Object.entries(maps) as Array<[string,string[]]>) for(const ratio of ['auto',...ratios]) {
             const start=calls.length
+            if(editing && model.capabilities.refineControls?.singleImageInheritsSize && ratio!=='auto') {
+              await assert.rejects(legacy.callImageModel(provider,model.id,'extension-fixture-secret','scientific figure',ratio,'https://asset.invalid/source.png',resolution,true,region),/继承原图/);continue
+            }
             const image=await legacy.callImageModel(provider,model.id,'extension-fixture-secret','scientific figure',ratio,editing?'https://asset.invalid/source.png':'',resolution,true,region)
             assert.ok(image);combinations++
             const api=calls.slice(start).find(call=>call.body)!

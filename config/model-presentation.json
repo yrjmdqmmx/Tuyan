@@ -22,7 +22,10 @@
     "fireworks": "Fireworks AI",
     "fal": "fal",
     "replicate": "Replicate",
-    "tokendance": "观猹 TokenDance"
+    "tokendance": "观猹 TokenDance",
+    "runware": "Runware",
+    "tokenhub": "腾讯 TokenHub",
+    "xiaomi": "小米 MiMo"
   },
   "vendors": {
     "deepseek": {
@@ -230,11 +233,13 @@
     },
     "xiaomi": {
       "label": "小米",
+      "labelEn": "Xiaomi",
+      "labelZh": "小米",
       "aliases": [
-        "Xiaomi"
+        "xiaomi",
+        "MiMo"
       ],
-      "source": "https://huggingface.co/XiaomiMiMo",
-      "labelEn": "Xiaomi"
+      "source": "https://mimo.mi.com/docs/en-US/updates/model"
     },
     "unisound": {
       "label": "云知声",
@@ -572,6 +577,22 @@
   "routes": [
     {
       "channels": [
+        "runware"
+      ],
+      "pattern": "^alibaba:",
+      "vendorId": "alibaba",
+      "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+    },
+    {
+      "channels": [
+        "tokenhub"
+      ],
+      "pattern": "^hy-image-",
+      "vendorId": "tencent",
+      "source": "https://cloud.tencent.com/document/product/1823/135745"
+    },
+    {
+      "channels": [
         "siliconflow"
       ],
       "pattern": "^(?:Pro/)?THUDM/(?:GLM|chatglm)",
@@ -785,6 +806,22 @@
       "pattern": "^zai-glm-",
       "vendorId": "zhipu",
       "source": "https://docs.mistral.ai/models"
+    },
+    {
+      "channels": [
+        "xiaomi"
+      ],
+      "pattern": "^mimo-",
+      "vendorId": "xiaomi",
+      "source": "https://mimo.mi.com/docs/en-US/api/chat/openai-api"
+    },
+    {
+      "channels": [
+        "runware"
+      ],
+      "pattern": "^google:",
+      "vendorId": "google",
+      "source": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/examples"
     }
   ],
   "families": [

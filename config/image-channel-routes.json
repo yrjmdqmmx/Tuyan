@@ -368,9 +368,10 @@
     "editing": {
       "endpoint": "bria/fibo-edit-1.5/edit",
       "promptField": "instruction",
-      "sizeMode": "none",
+      "sizeMode": "ratio",
       "sourceField": "image_urls",
-      "sourceArray": true
+      "sourceArray": true,
+      "sizeField": "aspect_ratio"
     }
   },
   "fal/bria/fibo-gen-1.5/text-to-image": {
@@ -3110,6 +3111,49 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "sizeField": "aspect_ratio"
+    }
+  },
+  "runware/alibaba:qwen-image@2512": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/alibaba:qwen-image-edit@2511": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "sourceField": "referenceImages",
+      "sourceArray": true,
+      "maxPromptLength": 32000
+    }
+  },
+  "tokenhub/hy-image-v3": {
+    "generation": {
+      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "maxPromptLength": 8192,
+      "constants": {
+        "model": "hy-image-v3",
+        "revise": false
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "maxPromptLength": 8192,
+      "constants": {
+        "model": "hy-image-v3",
+        "revise": false
+      },
+      "sourceField": "images",
+      "sourceArray": true,
+      "sourceEncoding": "base64"
     }
   }
 }
