@@ -1,5 +1,7 @@
 # TokenHub、MiMo、Runware 全目录审计与本地实现
 
+> 后续发布状态：用户明确要求“上线”后，Web / Core 已发布 `f547344`，见 [发布记录](../../releases/2026-09-22-refine-v23.md)。下文“未部署 / 无 push”描述当时的实施阶段；真实付费推理仍为 0，小程序未发布。
+
 核查日期：2026-09-22，Asia/Shanghai。基于隔离分支 `codex/refine-controls-runware-tokenhub-20260922`，变更前为 `8bc6e246`。本轮没有充值、付费推理、push 或部署。目录与模拟测试不证明账号权益或科研图质量。
 
 ## 交付范围

@@ -1,14 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
-## 2026-09-22 · v23 发布前 Runware 出口补齐
+## 2026-09-22 · v23 Web / Core 已发布与 Runware 出口补齐
 
-- 用户在本地验收后明确授权“上线”；此前禁止自动部署的记录保留为阶段记录，Web / Core 进入发布流程。继续禁止充值、付费推理与历史重跑，微信平台发布不在本轮范围。
+- 用户在本地验收后明确授权“上线”；此前禁止自动部署的记录保留为阶段记录，Web / Core 固定版本已发布。继续禁止充值、付费推理与历史重跑，微信平台发布不在本轮范围。
 - 新加坡 Squid 精确主机白名单补入 `api.runware.ai`，与 Core 出口目标一致；保留仅 HK 来源、CONNECT 443、私网/伪造后缀拒绝等边界。无密钥、环境变量或任务契约变更。
 - [x] Core / 出口配置：补齐精确路由与 allow/deny 回归。
 - [x] Web / 小程序：接口和客户端行为不变，无额外迁移。
-- [ ] 生产出口配置、Core 与 Web 固定版本发布及只读验收。
+- [x] 生产出口配置、Core 与 Web：PR #226 / `f547344`，固定镜像、正常环境审批、Pages 发布、183 个目录项及 7 个 Web 产物逐项核对、Chrome 只读精修与选择器验收通过。Benchmark 执行器仍关闭，付费推理 0；见 [发布记录](docs/releases/2026-09-22-refine-v23.md)。
 
-## 2026-09-22 · TokenHub / MiMo / Runware 全目录 v23 与不可用型号隐藏（本地未发布）
+## 2026-09-22 · TokenHub / MiMo / Runware 全目录 v23 与不可用型号隐藏（Web / Core 已发布）
 
 - 核对官方目录与详情 491 项（127 / 9 / 355）；三渠道适配共 183 个 SKU，较 v22 新增 175（TokenHub 38、小米 2、Runware 135），包含主模型、视觉、生图和精修。完整逐项来源、版本/地区、未接入理由、价格及实际约束见 [全量审计](docs/channel-audit/2026-09-22/README.md)。真实调用、权益与账单均未验证。
 - 按型号共享 JSON Schema/专用协议：Runware 原生 textInference/caption/imageInference；腾讯 Kimi/GLM/MiniMax 等文本差异、HY3.5 SSE、Seedream 同步、Vidu/WAND 异步。精修契约 v1 可选 `minImages` / `maskRequired`，原图占名额，多图与 mask 组合分别校验；不新增 env 或迁移历史任务。未知结果不重发计费 POST，已知任务仅查询/下载。
@@ -18,9 +18,10 @@
 - [x] 小程序 TS / JS：目录/角色/输入政策/生命周期/渠道排序同步；新增无损字典压缩格式，解包字段与身份一致，包体预算不放宽。
 - [ ] 小程序原生辅助图、遮罩与结构化表单仍未移植；沿用上一条待办，本轮只同步共享能力/目录，不能标为原生 UI 已完成。
 - [ ] 真实权限、地区/限流、实际账单、科研质量及专用多资产/风格/擦除工具工作流：本轮未验证/未开放，逐项理由见审计。
-- [ ] 部署、微信上传/审核/发布：用户明确禁止自动部署；无 push、充值或付费推理。
+- [x] Web / Core：实施阶段禁止自动部署，后经用户“上线”授权发布，见顶部发布记录。未充值或付费推理。
+- [ ] 微信上传 / 审核 / 发布：本轮未执行。
 
-## 2026-09-22 · 科研精修控制与 Runware / TokenHub / MiMo V2.6（本地未发布）
+## 2026-09-22 · 科研精修控制与 Runware / TokenHub / MiMo V2.6（Web / Core 已发布）
 
 - 共享新增可选 `refineInputs={version:1,references:[{objectKey,purpose,note}],mask:{objectKey},structured:{object,attributes,relationship,preserve}}`，严格按具体型号校验；公开任务新增 `refineInputMetadata`，所有图片和遮罩冻结为私有任务快照。`modelRegistry.refineControlsContractVersion=1` 与型号 `capabilities.refineControls` 控制 UI 开放。旧单图请求兼容；BRIA 单图不兼容尺寸明确拒绝。
 - 目录 v22 新增 8 个 SKU / 3 个渠道：Runware 原生文本+视觉、Qwen 2512 生图/2511 编辑；腾讯 TokenHub HY3、HY Vision 2.0、HY Image v3；小米 MiMo **V2.6 Pro/Flash** 主模型+视觉（9 月 22 日官方发布）。新增 `runware-text` 协议标签；不改用户原路线，不宣称账号调用已验证。
@@ -30,7 +31,8 @@
 - [x] 小程序 TS / JS：同步渠道、目录、使用指南、视觉上传政策及共享字段；通用任务恢复、加密保存提示与调用记录兼容，原有单图生成/精修兼容检查。
 - [ ] 小程序新增原生辅助图、遮罩与结构化表单 UI：本轮 Web 功能未移植，按 v1 控制契约后续接入；不得仅因目录存在就显示为已支持。
 - [ ] 真实服务权限/地区/账单与科研质量验收：需要所选 SKU 的有效账号，未充值、未调用付费推理。
-- [ ] Web / Core 部署、微信上传 / 审核 / 发布：本轮未执行，无 push。
+- [x] Web / Core：后续 v23 已由用户授权发布，见顶部记录。
+- [ ] 微信上传 / 审核 / 发布：本轮未执行。
 - [实现与边界](docs/refinement/2026-09-22-controls-and-channels.md) · [国内渠道建议](docs/refinement/2026-09-22-domestic-channel-research.md) · [本地验收](/Users/a1-6/.codex/artifacts/tuyan-refine-channels-20260922/qa/README.md)。
 
 ## 2026-09-21 · 排行榜中英文、研发厂商与共享筛选（本地未发布）
