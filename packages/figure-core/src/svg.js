@@ -23,7 +23,13 @@ function wrap(text, width, fontMm) {
 }
 
 /** Safe standalone SVG: no user markup, external resources, scripts, effects or outlined text. */
-export function renderSvg(input) {
+export function renderSvg(input) { return render(input, false); }
+
+/** Print-conversion page clips keep Cairo labels in separate text blocks. */
+export function renderPrintSvg(input) { return render(input, true); }
+export const renderPdfSvg = renderPrintSvg;
+
+function render(input, printTextBoundaries) {
   const doc = validateDocument(input);
   const children = new Map();
   for (const item of doc.elements) {
@@ -60,7 +66,13 @@ export function renderSvg(input) {
         ? `<ellipse${geometry({ cx: item.x + item.width / 2, cy: item.y + item.height / 2, rx: item.width / 2, ry: item.height / 2 })}${style}/>`
         : `<rect${geometry({ x: item.x, y: item.y, width: item.width, height: item.height })}${style}/>`;
     }
-    return `${wrapper}${shape}${(children.get(item.id) ?? []).map(render).join('')}</g>`;
+    const content = `${wrapper}${shape}${(children.get(item.id) ?? []).map(render).join('')}</g>`;
+    // The clip is outside the object wrapper: page coordinates remain fixed if
+    // an object later gains its own transform. Current documents reject transforms.
+    return printTextBoundaries && item.type === 'text'
+      ? `<g clip-path="url(#tuyan-pdf-page-boundary)">${content}</g>` : content;
   }
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${number(doc.canvas.widthMm)}mm" height="${number(doc.canvas.heightMm)}mm" viewBox="0 0 ${number(doc.canvas.widthMm)} ${number(doc.canvas.heightMm)}"><title>${escape(doc.title)}</title><rect x="0" y="0" width="${number(doc.canvas.widthMm)}" height="${number(doc.canvas.heightMm)}" fill="${escape(doc.canvas.background)}"/>${(children.get(null) ?? []).map(render).join('')}</svg>`;
+  const page = `x="0" y="0" width="${number(doc.canvas.widthMm)}" height="${number(doc.canvas.heightMm)}"`;
+  const clips = printTextBoundaries ? `<defs><clipPath id="tuyan-pdf-page-boundary" clipPathUnits="userSpaceOnUse"><rect ${page}/></clipPath></defs>` : '';
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${number(doc.canvas.widthMm)}mm" height="${number(doc.canvas.heightMm)}mm" viewBox="0 0 ${number(doc.canvas.widthMm)} ${number(doc.canvas.heightMm)}">${clips}<title>${escape(doc.title)}</title><rect ${page} fill="${escape(doc.canvas.background)}"/>${(children.get(null) ?? []).map(render).join('')}</svg>`;
 }

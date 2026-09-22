@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import sharp from 'sharp'
-import { createDocument } from '@paperbanana/figure-core'
+import { createDocument, normalizeEpsFontSubsetNames, preserveEpsTextBoundaries, renderPdfSvg, renderPrintSvg, renderSvg } from '@paperbanana/figure-core'
 import { createFigureStudioService, FigureStudioError, runFigureConverter, validateExportedFile, validateFigureCommands, validateFigurePlan } from '../src/figure-studio.js'
 import { createServer } from '../src/server.js'
 // @ts-ignore Existing fixture composes real legacy routing with mock provider transport.
@@ -15,6 +15,27 @@ const native = { mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' }
 const plan = { title: '研究流程', summary: '研究材料中的两个阶段。', nodes: [{ id: 'input', label: '输入' }, { id: 'analysis', label: '分析' }], edges: [{ from: 'input', to: 'analysis' }], notes: ['请作者确认箭头语义。'] }
 const pdfPrefix = '%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n'
 const pdfFixture = Buffer.from(`${pdfPrefix}xref\n0 2\n0000000000 65535 f \n0000000009 00000 n \ntrailer\n<< /Size 2 /Root 1 0 R >>\nstartxref\n${Buffer.byteLength(pdfPrefix)}\n%%EOF\n`)
+const epsFont = (id: string) => `%%BeginResource: font FixtureSans
+11 dict begin
+/FontType 42 def
+/FontName /FixtureSans def
+/PaintType 0 def
+/FontMatrix [ 1 0 0 1 0 0 ] def
+/FontBBox [ 0 0 0 0 ] def
+/Encoding 256 array def
+0 1 255 { Encoding exch /.notdef put } for
+Encoding 1 /uni03B1 put
+/CharStrings 2 dict dup begin
+/.notdef 0 def
+/uni03B1 1 def
+end readonly def
+/sfnts [
+<00010000>
+] def
+/${id} currentdict end definefont pop
+%%EndResource
+`
+const epsFixture = `%!PS-Adobe-3.0 EPSF-3.0\n%%Creator: cairo 1.16.0\n%%BoundingBox: 0 0 100 100\n%%BeginProlog\n/BT { } bind def\n/ET { } bind def\n%%EndProlog\n${epsFont('f-0-0')}${epsFont('f-0-1')}%%Page: 1 1\nBT\nET\nshowpage\n%%Trailer\n%%EOF\n`
 const document = () => createDocument({ id: 'fixture-figure', elements: [
   { id: 'label-a', type: 'text', x: 10, y: 10, width: 40, height: 10, text: '原标签' },
   { id: 'label-b', type: 'text', x: 60, y: 10, width: 40, height: 10, text: '保留标签' },
@@ -121,6 +142,7 @@ test('export uses internal standalone SVG, page area and actual bytes; report le
     assert.ok(args.includes('--batch-process')); assert.ok(args.some(arg => arg.startsWith('--app-id-tag=tuyan-')))
     assert.equal((await stat(options.cwd)).mode & 0o777, 0o700)
     const svg = await readFile(args[0], 'utf8'); assert.match(svg, /<text\b/); assert.match(svg, /原标签/); assert.doesNotMatch(svg, /https?:\/\/(?!www.w3.org)/)
+    assert.equal(svg, renderPdfSvg(document()))
     await writeFile(options.outputPath!, fileBytes)
   } })
   const result = await service.handle({ action: 'figureStudioExport', format: 'pdf', document: document() })
@@ -129,6 +151,43 @@ test('export uses internal standalone SVG, page area and actual bytes; report le
   assert.equal(result.verification.fileSha256, createHash('sha256').update(fileBytes).digest('hex'))
   assert.equal(result.verification.checks[0].status, 'passed'); assert.equal(result.verification.checks[1].status, 'manual')
   assert.ok(!('editable' in result.verification)); for (const dir of dirs) await assert.rejects(stat(dir))
+})
+
+test('EPS subset repair is applied to actual returned bytes and hash while canonical source stays unchanged', async () => {
+  const source = document(), before = JSON.stringify(source)
+  const expected = Buffer.from(preserveEpsTextBoundaries(normalizeEpsFontSubsetNames(epsFixture).eps).eps, 'latin1')
+  const service = createFigureStudioService({ runConverter: async (_binary, args, options) => {
+    if (args[0] === '--version') return
+    assert.equal(await readFile(args[0], 'utf8'), renderPrintSvg(source))
+    await writeFile(options.outputPath!, epsFixture)
+  } })
+  const result = await service.handle({ action: 'figureStudioExport', format: 'eps', document: source })
+  assert.equal(result.code, 0, JSON.stringify(result))
+  assert.deepEqual(Buffer.from(result.file.base64, 'base64'), expected)
+  assert.equal(result.verification.fileSha256, createHash('sha256').update(expected).digest('hex'))
+  assert.equal(result.verification.byteLength, expected.length)
+  assert.match(result.verification.checks[1].message, /2 个重名/)
+  assert.equal(result.verification.checks[1].status, 'manual')
+  assert.equal(JSON.stringify(source), before)
+})
+
+test('unsupported EPS fonts or malformed text boundaries fail closed and release conversion admission', async () => {
+  let output = epsFixture
+  const dirs: string[] = []
+  const service = createFigureStudioService({ runConverter: async (_binary, args, options) => {
+    if (args[0] === '--version') return
+    dirs.push(options.cwd)
+    await writeFile(options.outputPath!, output)
+  } })
+  const request = { action: 'figureStudioExport', format: 'eps', document: document() }
+  for (const invalid of [epsFixture.replace('/FontType 42 def', '/FontType 3 def'), epsFixture.replace('\nBT\nET\n', '\nBT\nBT\nET\nET\n'), epsFixture.replace('\nET\n', '\n')]) {
+    output = invalid
+    const failed = await service.handle(request)
+    assert.equal(failed.errorCode, 'FIGURE_STUDIO_EXPORT_INVALID'); assert.equal(failed.file, undefined)
+  }
+  output = epsFixture
+  assert.equal((await service.handle(request)).code, 0)
+  for (const dir of dirs) await assert.rejects(stat(dir))
 })
 
 test('only one conversion runs, alpha assets and unsupported effects fail without spawning', async () => {

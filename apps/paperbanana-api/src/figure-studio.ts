@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import sharp, { type Metadata } from 'sharp'
-import { applyCommands, evaluateRules, renderSvg, validateDocument } from '@paperbanana/figure-core'
+import { applyCommands, evaluateRules, normalizeEpsFontSubsetNames, preserveEpsTextBoundaries, renderPrintSvg, validateDocument } from '@paperbanana/figure-core'
 import { normalizeUniversalRoute, universalCredential } from '../../../packages/api/src/universal-api.js'
 import { publicExecutionFailure } from '../../../packages/api/src/execution-errors.js'
 
@@ -164,20 +164,29 @@ export function createFigureStudioService(dependencies: Dependencies = {}) {
       }
       if (!await converterAvailable()) reject('FIGURE_STUDIO_CONVERTER_UNAVAILABLE', '尚未安装可用的 Inkscape 转换器，可继续导出 SVG 源稿。', 503)
       dir = await mkdtemp(path.join(tmpdir(), 'tuyan-figure-export-'))
-      const svg = renderSvg(document)
+      const svg = renderPrintSvg(document)
       const input = path.join(dir, 'source.svg'), output = path.join(dir, `figure.${body.format}`)
       await writeFile(input, svg, { mode: 0o600 })
       await run(converter, [input, '--batch-process', `--app-id-tag=tuyan-${randomUUID()}`, `--export-type=${body.format}`, '--export-area-page', `--export-filename=${output}`], { cwd: dir, outputPath: output, timeoutMs: dependencies.converterTimeoutMs || 20_000 })
       const info = await stat(output)
       if (!info.isFile() || !info.size || info.size > MAX_FILE_BYTES) reject('FIGURE_STUDIO_EXPORT_INVALID', '导出文件为空或超出大小限制。', 502)
-      const bytes = await readFile(output)
+      let bytes = await readFile(output)
       if (!validateExportedFile(bytes, body.format)) reject('FIGURE_STUDIO_EXPORT_INVALID', '导出文件结构不完整或与目标格式不符；未提供文件，请继续使用 SVG。', 502)
+      let renamedFontSubsets = 0
+      if (body.format === 'eps') {
+        try {
+          const normalized = normalizeEpsFontSubsetNames(bytes.toString('latin1'))
+          bytes = Buffer.from(preserveEpsTextBoundaries(normalized.eps).eps, 'latin1')
+          renamedFontSubsets = normalized.renamedFonts.length
+        } catch { reject('FIGURE_STUDIO_EXPORT_INVALID', 'EPS 字体子集或文字边界无法安全核验；未提供文件，请继续使用 SVG 或 PDF。', 502) }
+        if (!validateExportedFile(bytes, 'eps')) reject('FIGURE_STUDIO_EXPORT_INVALID', 'EPS 字体核验后的文件结构或大小无效；未提供文件。', 502)
+      }
       const fileHash = hash(bytes)
       return { code: 0, file: { name: `tuyan-figure-r${document.revision}.${body.format}`, mimeType: body.format === 'pdf' ? 'application/pdf' : 'application/postscript', base64: bytes.toString('base64') }, verification: {
         documentId: document.id, documentRevision: document.revision, documentSha256: hash(JSON.stringify(document)), sourceSvgSha256: hash(svg), fileSha256: fileHash, byteLength: bytes.length, format: body.format,
         checkedAt: new Date().toISOString(), checks: [
           { id: 'file-identity', status: 'passed', message: '已检查实际文件大小、格式签名与结束结构（PDF 含交叉引用位置），并计算 SHA-256；不是完整兼容性核验。' },
-          { id: 'external-editor-compatibility', status: 'manual', message: body.format === 'pdf' ? '本文件尚未核验。已知 Inkscape 样本存在文字合并和修改后层次遮挡；继续编辑优先使用源稿或 SVG。' : '本文件尚未核验。已知 EPS 样本存在科学符号编码变化、文字合并和分组丢失；继续编辑优先使用源稿或 SVG。' },
+          { id: 'external-editor-compatibility', status: 'manual', message: body.format === 'pdf' ? '已为标签保留独立绘制边界，但字体运行可能拆为多个文字对象。本文件在外部软件的文字、层次和保存重开仍需核验；继续编辑优先使用源稿或 SVG。' : `已核验 EPS 字体子集名称${renamedFontSubsets ? `并消除 ${renamedFontSubsets} 个重名` : ''}；本文件的文字编码、独立对象和保存重开仍需外部软件核验，继续编辑优先使用源稿或 SVG。` },
           { id: 'exported-file-journal-rules', status: 'manual', message: '图稿规则检查不能代替对实际 PDF/EPS 的逐项核验。' },
         ], documentRules: evaluateRules(document),
       } }
@@ -214,7 +223,7 @@ export function createFigureStudioService(dependencies: Dependencies = {}) {
           return { code: 0, formats: { svg: true, pdf: available, eps: available }, modelPlanning: Boolean(dependencies.modelText), supportedModelModes: ['api-key', 'tokendance', 'custom'], supportedProviders: FIGURE_STUDIO_PROVIDERS,
             operationContractVersion: 1,
             limits: { maxDocumentBytes: MAX_DOCUMENT_BYTES, materialsChars: 24_000, instructionChars: 2000, maxSelectedObjects: 40, maxExportBytes: MAX_FILE_BYTES },
-            unsupportedProviders: [], formatReasons: { pdf: available ? '转换可用；已知外部编辑存在文字合并和层次遮挡，编辑兼容验收未通过' : 'Inkscape 转换器不可用', eps: available ? '不支持透明图片；已知科学符号文字编码兼容验收未通过' : 'Inkscape 转换器不可用' }, limitations: ['草稿保存在本机；模型操作与恢复结果加密保存 7 天。', '模型编辑仅修改所选已有对象，不新增、删除对象或改写期刊规则。', '转换使用服务器可用的开源字体；字体替代与外部编辑兼容性需人工确认。'] }
+            unsupportedProviders: [], formatReasons: { pdf: available ? '转换可用；目标软件需具备所用字体，文字对象、分组及编辑后保存重开需人工核验' : 'Inkscape 转换器不可用', eps: available ? '转换可用；请核对科学符号、字体与对象，外部编辑后保存重开需人工核验；不支持透明图片或未支持的字体格式' : 'Inkscape 转换器不可用' }, limitations: ['草稿保存在本机；模型操作与恢复结果加密保存 7 天。', '模型编辑仅修改所选已有对象，不新增、删除对象或改写期刊规则。', '转换使用服务器可用的开源字体；字体替代与外部编辑兼容性需人工确认。', '外部软件可能改变文字对象拆分或分组；目前不支持将外部修改后的 SVG/PDF/EPS 回导为图研源稿。'] }
         }
         if (body.action === 'figureStudioExport') return await exportFile(body)
         return await execute(body)
