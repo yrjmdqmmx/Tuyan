@@ -1,3 +1,4 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { TokenDanceStatus } from './TokenDancePanel'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../lib/modelPresentation'
 import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
@@ -44,6 +45,7 @@ export default function ModelRoutingSettings({
   arkVerificationError,
   onVerifyArk,
 }) {
+  const { t } = useAppLocale()
   const recoverableCredentials = Number(modelRegistry?.thinkingContractVersion) >= 1 || credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai'].includes(provider))
   const isAdvancedMode = configurationMode === 'advanced'
   const routeContractSupported = Number(modelRegistry?.routeContractVersion || 0) >= 1
@@ -55,26 +57,26 @@ export default function ModelRoutingSettings({
   return (
     <>
       <div className="field" data-focus-setting="configuration-mode" tabIndex={-1}>
-        <span>使用模式</span>
-        <div className="mode-switch" role="group" aria-label="使用模式">
+        <span>{t("使用模式")}</span>
+        <div className="mode-switch" role="group" aria-label={t("使用模式")}>
           <button type="button" aria-pressed={accessMode !== 'custom' && !isAdvancedMode} className={accessMode !== 'custom' && !isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
-            <Sparkles size={16} /><span>普通模式</span><small>预设渠道 · 单 Key</small>
+            <Sparkles size={16} /><span>{t("普通模式")}</span><small>{t("预设渠道 · 单 Key")}</small>
           </button>
           <button type="button" aria-pressed={accessMode !== 'custom' && isAdvancedMode} className={accessMode !== 'custom' && isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
-            <Settings2 size={16} /><span>专业模式</span><small>预设渠道 · 分角色配置</small>
+            <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("预设渠道 · 分角色配置")}</small>
           </button>
-          <button type="button" aria-pressed={accessMode === 'custom'} className={accessMode === 'custom' ? 'active' : ''} onClick={()=>onAccessModeChange?.('custom')}><KeyRound size={16}/><span>通用 API</span><small>自有服务 · 按角色接入</small></button>
+          <button type="button" aria-pressed={accessMode === 'custom'} className={accessMode === 'custom' ? 'active' : ''} onClick={()=>onAccessModeChange?.('custom')}><KeyRound size={16}/><span>{t("通用 API")}</span><small>{t("自有服务 · 按角色接入")}</small></button>
         </div>
-        {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">当前后端不支持专业模式的多渠道路由，提交会失败关闭。</p> : null}
+        {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">{t("当前后端不支持专业模式的多渠道路由，提交会失败关闭。")}</p> : null}
       </div>
 
       {accessMode === 'custom' ? <>{universalSettings}{thinkingSettings}</> : <>
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
-          <span>API 接入渠道</span>
-          <small>更多渠道可在专业模式中分别选择主模型、图像模型和识别模型。</small>
+          <span>{t("API 接入渠道")}</span>
+          <small>{t("更多渠道可在专业模式中分别选择主模型、图像模型和识别模型。")}</small>
           <div data-focus-setting="main-model" tabIndex={-1}>
-            <div className="segmented provider-segmented" role="group" aria-label="API 接入渠道">
+            <div className="segmented provider-segmented" role="group" aria-label={t("API 接入渠道")}>
               {orderModelChannels(Object.keys(providerConfigs)).filter(id => providerDefaultRoutes(id, modelRegistry, providerConfigs)).map(id => (
                 <button
                   type="button"
@@ -94,17 +96,17 @@ export default function ModelRoutingSettings({
       ) : (
         <div className="model-grid model-route-grid">
           <ModelPicker
-            label="主模型" role="main" route={modelRoutes.main} outputFormat={outputFormat}
+            label={t("主模型")} role="main" route={modelRoutes.main} outputFormat={outputFormat}
             registry={modelRegistry} providerConfigs={providerConfigs}
             onRouteChange={(route) => onRouteChange('main', route)} focusSetting="main-model"
           />
           <ModelPicker
-            label="图像生成模型" role="image" route={modelRoutes.image} outputFormat={executionRouteRoles.includes('image') ? outputFormat : ''}
+            label={t("图像生成模型")} role="image" route={modelRoutes.image} outputFormat={executionRouteRoles.includes('image') ? outputFormat : ''}
             registry={modelRegistry} providerConfigs={providerConfigs}
             onRouteChange={(route) => onRouteChange('image', route)} focusSetting="image-model"
           />
           <ModelPicker
-            label="参考图识别模型" role="vision" route={modelRoutes.vision} outputFormat={outputFormat}
+            label={t("参考图识别模型")} role="vision" route={modelRoutes.vision} outputFormat={outputFormat}
             registry={modelRegistry} providerConfigs={providerConfigs}
             onRouteChange={(route) => onRouteChange('vision', route)} focusSetting="vision-model"
           />
@@ -114,29 +116,29 @@ export default function ModelRoutingSettings({
       {thinkingSettings}
 
       <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
-        <summary><KeyRound size={17} /> 接入凭据</summary>
-        <p>填写当前任务所需的渠道密钥，或连接观猹 TokenDance 授权账户。{recoverableCredentials ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。'}</p>
+        <summary><KeyRound size={17} />{t(" 接入凭据")}</summary>
+        <p>{t("填写当前任务所需的渠道密钥，或连接观猹 TokenDance 授权账户。")}{t(recoverableCredentials ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。')}</p>
         {credentialProviders.map((provider) => {
           const config = providerConfigs[provider]
           if (!config) return null
-          if (provider === 'tokendance') return tokenDance ? <TokenDanceStatus key={provider} controller={tokenDance} onOpenAccount={onOpenAccount} /> : <p key={provider}>请连接观猹 TokenDance 账户。</p>
+          if (provider === 'tokendance') return tokenDance ? <TokenDanceStatus key={provider} controller={tokenDance} onOpenAccount={onOpenAccount} /> : <p key={provider}>{t("请连接观猹 TokenDance 账户。")}</p>
           const label = providerLabel(provider, providerConfigs)
           return (
             <div className="credential-provider" key={provider}>
               {provider === 'minimax' ? <label className="field">
-                <span>稀宇科技区域</span>
-                <select aria-label="稀宇科技区域" value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
-                  {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{region.label}</option>)}
+                <span>{t("稀宇科技区域")}</span>
+                <select aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+                  {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{t(region.label)}</option>)}
                 </select>
-                <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase} · 请填写该区域平台的 Key</small>
+                <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase}{t(" · 请填写该区域平台的 Key")}</small>
               </label> : null}
               <label className="field">
-                <span>{label} 接入密钥</span>
+                <span>{t(label)}{t(" 接入密钥")}</span>
                 <div className="key-input">
                   <KeyRound size={18} />
                   <input
                     type="password"
-                    aria-label={`${label} 接入密钥`}
+                    aria-label={t("{v0} 接入密钥", {v0: label})}
                     value={apiKeys[provider] || ''}
                     onChange={(event) => onApiKeyChange(provider, event.target.value)}
                     placeholder={config.keyPlaceholder}
@@ -148,18 +150,18 @@ export default function ModelRoutingSettings({
             </div>
           )
         })}
-        {!credentialProviders.length ? <p className="credential-empty">当前配置没有需要由浏览器提供的模型凭据。</p> : null}
+        {!credentialProviders.length ? <p className="credential-empty">{t("当前配置没有需要由浏览器提供的模型凭据。")}</p> : null}
 
         {arkProbes.length ? (
-          <section className="ark-verification" aria-label="Ark 所选模型验证">
-            <div className="ark-verification-head"><ShieldCheck size={17} /><strong>Ark 模型验证（可选）</strong></div>
-            <p>完整激活目录需 AK/SK；这里的推理探针只用于提前诊断账号可用性，不是提交前置条件。验证结果和 Key 都只保留在页面内存中。</p>
+          <section className="ark-verification" aria-label={t("Ark 所选模型验证")}>
+            <div className="ark-verification-head"><ShieldCheck size={17} /><strong>{t("Ark 模型验证（可选）")}</strong></div>
+            <p>{t("完整激活目录需 AK/SK；这里的推理探针只用于提前诊断账号可用性，不是提交前置条件。验证结果和 Key 都只保留在页面内存中。")}</p>
             <ul>
               {arkProbes.map((probe) => (
                 <li key={arkVerificationKey(probe)}>
                   <span>{probeRoleLabel(probe.role)} · {probe.modelId}</span>
                   <em className={arkVerification[arkVerificationKey(probe)] || 'pending'}>
-                    {arkVerification[arkVerificationKey(probe)] === 'verified' ? '已验证' : arkVerification[arkVerificationKey(probe)] || '待验证'}
+                    {t(arkVerification[arkVerificationKey(probe)] === 'verified' ? '已验证' : arkVerification[arkVerificationKey(probe)] || '待验证')}
                   </em>
                 </li>
               ))}
@@ -167,7 +169,7 @@ export default function ModelRoutingSettings({
             {arkImageProbeRequired ? (
               <label className="ark-paid-confirmation">
                 <input type="checkbox" checked={arkProbePaidConfirmed} onChange={(event) => onArkProbePaidConfirmedChange(event.target.checked)} />
-                <span>会按所选图片模型的最低支持分辨率产生一次图片调用费用</span>
+                <span>{t("会按所选图片模型的最低支持分辨率产生一次图片调用费用")}</span>
               </label>
             ) : null}
             <button
@@ -176,9 +178,7 @@ export default function ModelRoutingSettings({
               disabled={isVerifyingArk || arkKeyMissing || !verifiableArkProbes.length}
               onClick={onVerifyArk}
             >
-              {isVerifyingArk ? <Loader2 className="spin" size={16} /> : <ShieldCheck size={16} />}
-              验证所选模型
-            </button>
+              {isVerifyingArk ? <Loader2 className="spin" size={16} /> : <ShieldCheck size={16} />}{t("验证所选模型")}</button>
             {arkVerificationError ? <p className="ark-verification-error">{arkVerificationError}</p> : null}
           </section>
         ) : null}

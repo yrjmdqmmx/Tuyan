@@ -24,7 +24,7 @@ test('workspace header exposes leaderboard and mini-program without retired clie
     assert.deepEqual(links.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.textContent.trim()), [active])
   }
   assert.match(source, /微信小程序/u)
-  assert.match(source, />\s*论文/u)
+  assert.match(source, /t\("论文方法内容"\)/u)
   assert.match(source, />\s*GitHub/u)
   assert.doesNotMatch(source, /Android 版|Windows 版|Mac 版|MonitorDown|\bApple\b/u)
   assert.doesNotMatch(source, /className="brand-tags"|>多智能体<|>学术图示生成</u)

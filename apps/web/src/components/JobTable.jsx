@@ -1,3 +1,4 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import JobFailureNotice from './JobFailureNotice';
 import { AlertTriangle } from 'lucide-react';
 import { formatConfigurationMode, formatDate, formatOutputFormat, formatReferenceImageMode } from '../utils';
@@ -7,49 +8,50 @@ import StatusBadge from './StatusBadge';
 import { formatClientPlatform } from '@paperbanana/api';
 
 export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, renderRecovery }) {
+  const { t } = useAppLocale()
   return (
     <div className="job-table">
-      {!jobs.length ? <div className="job-empty">暂无任务记录</div> : null}
+      {!jobs.length ? <div className="job-empty">{t("暂无任务记录")}</div> : null}
       {jobs.map((item) => (
         <div className="job-record-card" key={item.id}>
           <div className="job-record-topline">
             <div className="job-record-meta">
               <span>
-                <strong>时间</strong>
+                <strong>{t("时间")}</strong>
                 {formatDate(item.created_at || item.createdAt)}
               </span>
               <span>
-                <strong>状态</strong>
+                <strong>{t("状态")}</strong>
                 <StatusBadge status={item.status} />
               </span>
               <span>
-                <strong>任务来源</strong>
+                <strong>{t("任务来源")}</strong>
                 {formatClientPlatform(item.client_platform)}
               </span>
               <span>
-                <strong>模式</strong>
+                <strong>{t("模式")}</strong>
                 {formatConfigurationMode(item.configuration_mode)}
               </span>
               <span>
-                <strong>类别</strong>
-                {item.infographic_category || '方法框架图'}
+                <strong>{t("类别")}</strong>
+                {t(item.infographic_category || '方法框架图')}
               </span>
               <span>
-                <strong>格式</strong>
+                <strong>{t("格式")}</strong>
                 {formatOutputFormat(item.output_format)}
               </span>
               <span>
-                <strong>检索</strong>
+                <strong>{t("检索")}</strong>
                 {formatRetrievalSetting(item.retrieval_setting)}
               </span>
               <span>
-                <strong>阶段</strong>
+                <strong>{t("阶段")}</strong>
                 {(item.stages || []).length || 0}
               </span>
               {showUser ? (
                 <span>
-                  <strong>用户</strong>
-                  <span title={item.user_email}>{item.user_email || '匿名'}</span>
+                  <strong>{t("用户")}</strong>
+                  <span title={item.user_email}>{t(item.user_email || '匿名')}</span>
                 </span>
               ) : null}
             </div>
@@ -57,37 +59,37 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
 
           <div className="job-models">
             <div>
-              <strong>主模型</strong>
-              <span title={item.main_model_name}>{item.main_model_name || '未记录'}</span>
+              <strong>{t("主模型")}</strong>
+              <span title={item.main_model_name}>{t(item.main_model_name || '未记录')}</span>
             </div>
             <div>
-              <strong>图像生成模型</strong>
-              <span title={item.image_gen_model_name}>{item.image_gen_model_name || '未记录'}</span>
+              <strong>{t("图像生成模型")}</strong>
+              <span title={item.image_gen_model_name}>{t(item.image_gen_model_name || '未记录')}</span>
             </div>
             <div>
-              <strong>参考图识别模型</strong>
+              <strong>{t("参考图识别模型")}</strong>
               <span title={item.reference_image_mode_used === 'vision_model' ? item.reference_vision_model_name : ''}>
-                {item.reference_image_mode_used === 'vision_model' ? item.reference_vision_model_name || '未记录' : '未使用'}
+                {t(item.reference_image_mode_used === 'vision_model' ? item.reference_vision_model_name || '未记录' : '未使用')}
               </span>
             </div>
             <div>
-              <strong>参考图处理</strong>
+              <strong>{t("参考图处理")}</strong>
               <span title={item.reference_image_mode_used || item.reference_image_mode}>{formatReferenceImageMode(item.reference_image_mode_used || item.reference_image_mode)}</span>
             </div>
             <div>
-              <strong>评审模式</strong>
-              <span>{item.critic_mode === 'image' ? '图像评审' : item.critic_mode === 'text' ? '文本评审' : '未记录'}</span>
+              <strong>{t("评审模式")}</strong>
+              <span>{t(item.critic_mode === 'image' ? '图像评审' : item.critic_mode === 'text' ? '文本评审' : '未记录')}</span>
             </div>
           </div>
 
           <div className="job-prompts">
             <div>
-              <strong>论文方法内容</strong>
-              <p>{item.method_content || '未记录'}</p>
+              <strong>{t("论文方法内容")}</strong>
+              <p>{t(item.method_content || '未记录')}</p>
             </div>
             <div>
-              <strong>目标图注</strong>
-              <p>{item.caption || '未记录'}</p>
+              <strong>{t("目标图注")}</strong>
+              <p>{t(item.caption || '未记录')}</p>
             </div>
           </div>
 
@@ -95,11 +97,11 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
             <JobFailureNotice job={{ ...item, error: item.error || lastDiagnosticLine(item.logs_tail) }} />
           ) : null}
           {renderRecovery?.(item)}
-          {item.providerCalls?.length > 0 && <details><summary>模型调用记录</summary>{item.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {call.actualModel || '未返回实际型号'}<br />请求编号：{call.requestId || '未返回'}；供应商：{call.supplier || '未返回'}</p>)}</details>}
+          {item.providerCalls?.length > 0 && <details><summary>{t("模型调用记录")}</summary>{item.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {t(call.actualModel || '未返回实际型号')}<br />{t("请求编号：")}{t(call.requestId || '未返回')}{t("；供应商：")}{t(call.supplier || '未返回')}</p>)}</details>}
 
           {(item.reference_images || []).some((image) => image.url) ? (
             <div className="job-record-images">
-              <strong>参考图</strong>
+              <strong>{t("参考图")}</strong>
               <div className="job-record-image-grid">
                 {(item.reference_images || []).filter((image) => image.url).map((image, index) => (
                   <ResultFigure
@@ -116,7 +118,7 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
           {item.status === 'succeeded' && (item.result_images || []).some((image) => image.url) ? (
             <div className="job-record-images">
               <div className="job-record-images-head">
-                <strong>结果图</strong>
+                <strong>{t("结果图")}</strong>
                 <DownloadJobZipButton job={item} apiBase={apiBase} />
               </div>
               <div className="job-record-image-grid">

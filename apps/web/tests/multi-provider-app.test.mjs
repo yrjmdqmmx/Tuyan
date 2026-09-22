@@ -266,7 +266,7 @@ test('Ark verification is optional and a failed probe does not block submit', as
   const imageProbe = requests.filter((request) => request.body?.action === 'providerAccountCatalog')[1].body
   assert.equal(imageProbe.confirmPaidImageProbe, true)
   assert.deepEqual(imageProbe.probes.map(({ role, modelId }) => [role, modelId]), [['image', 'doubao-image']])
-  assert.ok(screen.getAllByText('failed').length >= 1)
+  assert.ok(screen.getAllByText('失败').length >= 1)
 
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))

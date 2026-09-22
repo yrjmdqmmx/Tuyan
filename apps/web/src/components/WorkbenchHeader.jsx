@@ -1,3 +1,4 @@
+import LanguageSwitch from './LanguageSwitch.jsx'
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react';
 import { BarChart3, BookOpen, Bot, LayoutDashboard, History, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
@@ -15,7 +16,7 @@ function PrimaryPageLinks({ section = 'workbench' }) {
   </>
 }
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, languageControl, section = 'workbench' }) {
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, showLanguage = true, section = 'workbench' }) {
   const { t, locale } = useBenchmarkLocale()
   return (
     <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
@@ -33,7 +34,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
           <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> {t("微信小程序")}</button>
       </div>
       <div className="header-actions">
-        {languageControl && <div className="header-language-control" onClick={event => event.stopPropagation()}>{languageControl}</div>}
+        {showLanguage && <LanguageSwitch />}
         <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => onAgentConnection()}>
           <Bot size={18} /> {t("智能体接入")}</button>
         <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
@@ -69,7 +70,7 @@ export function MobileMoreMenu({ open, onClose, onAccount, onWorkspaceAccount = 
       <button type="button" onClick={onGuide}><BookOpen size={18} />{t("使用教程")}</button>
       {onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck size={18} />{t("站长")}</button>}
     </nav>
-    <SiteNavigation {...navigationProps} onAccount={onAccount} onNavigate={closeAfterAction} />
+    <SiteNavigation {...navigationProps} onAccount={onAccount} onNavigate={closeAfterAction} showLanguage={false} />
   </AccessibleDialog>;
 }
 
@@ -86,8 +87,9 @@ export default function WorkbenchHeader(props) {
         {compact ? <div className="mobile-brand-copy"><h1>{t("图研 Tuyan")}</h1><span>{t("学术图示工作台")}</span></div> : <h1>{t("图研Tuyan工作台")}</h1>}
       </div>
       {compact ? <div className="mobile-header-actions">
+        <LanguageSwitch compact />
         {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? t("账户") : t("登录")}</button>}
-        <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />{t("更多")}</button>
+        <button type="button" className="mobile-more-trigger" aria-label={t("更多")} aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={20} /><span className="mobile-more-label">{t("更多")}</span></button>
       </div> : <SiteNavigation {...props} />}
     </header>
     <MobileMoreMenu {...props} open={compact && moreOpen} onClose={() => setMoreOpen(false)} />

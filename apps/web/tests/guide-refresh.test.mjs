@@ -44,7 +44,7 @@ test('guide derives registry and current routes from props and includes current 
   assert.match(document.body.textContent, /OpenRouter.*阿里云百炼/u)
   assert.match(document.body.textContent, /306/u)
   assert.match(document.body.textContent, /PNG.*统一/u)
-  assert.match(document.body.textContent, /不会持久化/u)
+  assert.match(document.body.textContent, /加密保存至任务完成或过期/u)
   assert.match(document.body.textContent, /禁用原因/u)
   assert.match(document.body.textContent, /1:1.*3:2.*2:3.*4:3.*3:4.*16:9.*9:16.*21:9.*1:4.*4:1/u)
   assert.doesNotMatch(document.body.textContent, /顶部模型接口/u)

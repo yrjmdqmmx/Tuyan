@@ -19,7 +19,7 @@ import AuthUnavailablePanel from './AuthUnavailablePanel.jsx'
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
 import BenchmarkPage from './BenchmarkPage.jsx'
 import FeedbackDialog from './FeedbackDialog.jsx'
-import { BenchmarkLocaleProvider, BenchmarkLanguageSwitch, useBenchmarkLocale } from './BenchmarkLocale.jsx'
+import { BenchmarkLocaleProvider, useBenchmarkLocale } from './BenchmarkLocale.jsx'
 
 const AccountSettingsDialog = lazy(() => import('./AccountSettingsDialog.jsx'))
 
@@ -115,7 +115,6 @@ export function BenchmarkSiteHeader({ route = {}, section = 'leaderboard', onFee
   const user = auth.session?.user
   return <div className="app-shell benchmark-navigation-shell">
     <WorkbenchHeader section={section} currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
-      languageControl={section === 'leaderboard' ? <BenchmarkLanguageSwitch /> : null}
       onAccount={onAccount} onWorkspaceAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin}
       onContact={onContact} onFeedback={onFeedback} onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} />
     {section === 'leaderboard' && <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /></div>}
