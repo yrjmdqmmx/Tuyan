@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-22.v23",
+  "version": "2026-09-22.v24",
   "providers": {
     "deepseek": [
       {
@@ -3368,7 +3368,7 @@
           "image"
         ],
         "protocol": "provider-images",
-        "availabilityNotes": "按本接入渠道官方 API 参数适配；账户权限与真实输出待验证。",
+        "availabilityNotes": "官方公告 2026-11-02 退役并改路由；图研到期禁用，保留配置，不自动换型号。公告未给出时区，采用保守 UTC 零点停止发送。",
         "capabilities": {
           "imageGeneration": true,
           "imageEditing": true,
@@ -3383,7 +3383,7 @@
         "metadata": {
           "verified": false,
           "verificationState": "catalog",
-          "lifecycle": "stable",
+          "lifecycle": "legacy",
           "officialSourceUrl": "https://docs.x.ai/docs/models/grok-imagine-image-quality",
           "inputModalities": [
             "text",
@@ -3392,7 +3392,103 @@
           "outputModalities": [
             "image"
           ],
-          "vendor": "xAI"
+          "vendor": "xAI",
+          "expirationDate": "2026-11-02",
+          "lifecycleSourceUrl": "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+        }
+      },
+      {
+        "id": "grok-4.7",
+        "label": "Grok 4.7",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "普通公共 API；按账号与地区确认权益。已适配，真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 8
+        },
+        "metadata": {
+          "vendor": "SpaceXAI",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models/grok-4.7",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-21"
+        }
+      },
+      {
+        "id": "grok-4.20-multi-agent-0309",
+        "label": "Grok 4.20 Multi-agent 0309",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "普通公共 API；按账号与地区确认权益。已适配，真实调用和账单未验证。多智能体推理可能消耗更多 token；不自动启用搜索工具。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 8
+        },
+        "metadata": {
+          "vendor": "SpaceXAI",
+          "lifecycle": "preview",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "grok-4.20-multi-agent",
+        "label": "Grok 4.20 Multi-agent",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "普通公共 API；按账号与地区确认权益。已适配，真实调用和账单未验证。多智能体推理可能消耗更多 token；不自动启用搜索工具。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 8
+        },
+        "metadata": {
+          "vendor": "SpaceXAI",
+          "lifecycle": "preview",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.x.ai/developers/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ]
         }
       }
     ],
@@ -25216,6 +25312,2934 @@
           ]
         }
       }
+    ],
+    "sensenova": [
+      {
+        "id": "sensenova-6.8-flash-lite",
+        "label": "SenseNova 6.8 Flash Lite",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "sensetime",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek V4 Pro 0813",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash",
+        "label": "DeepSeek V4 Flash 0731",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.2",
+        "label": "GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k3",
+        "label": "Kimi K3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "sensenova-u1.5-lite",
+        "label": "SenseNova U1.5 Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "sensenova-images-json",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方主图/参考图数量表述有歧义；图研保守限制总共5张（含原图），不声称官方精确总上限。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 5,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sensetime",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "sensenova-u1.5-fast",
+        "label": "SenseNova U1.5 Fast",
+        "roles": [
+          "image"
+        ],
+        "protocol": "sensenova-images-json",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方主图/参考图数量表述有歧义；图研保守限制总共5张（含原图），不声称官方精确总上限。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 5,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sensetime",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      }
+    ],
+    "stepfun": [
+      {
+        "id": "step-5-preview",
+        "label": "Step 5 Preview",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 60,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/welcome",
+          "inputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "step-3.7-flash",
+        "label": "Step 3.7 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 60,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/welcome",
+          "inputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "step-3.5-flash",
+        "label": "Step 3.5 Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/welcome",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "step-3.5-flash-2603",
+        "label": "Step 3.5 Flash 2603",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/welcome",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "step-1o-turbo-vision",
+        "label": "Step 1o Turbo Vision",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 60,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/welcome",
+          "inputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn"
+          ]
+        }
+      },
+      {
+        "id": "step-2x-large",
+        "label": "Step 2x Large",
+        "roles": [
+          "image"
+        ],
+        "protocol": "stepfun-images-json",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-10-10 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn"
+          ],
+          "expirationDate": "2026-10-10",
+          "expirationAt": "2026-10-09T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://platform.stepfun.com/docs/zh/guides/image-offline-notice"
+        }
+      },
+      {
+        "id": "step-image-edit-2",
+        "label": "Step Image Edit 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "stepfun-images-multipart",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-10-10 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://platform.stepfun.com/docs/zh/guides/models/image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn"
+          ],
+          "expirationDate": "2026-10-10",
+          "expirationAt": "2026-10-09T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://platform.stepfun.com/docs/zh/guides/image-offline-notice"
+        }
+      }
+    ],
+    "qianfan": [
+      {
+        "id": "ernie-5.1",
+        "label": "ERNIE 5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-5.0",
+        "label": "ERNIE 5.0",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-5.0-thinking-preview",
+        "label": "ERNIE 5.0 Thinking Preview",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-5.0-thinking-latest",
+        "label": "ERNIE 5.0 Thinking Latest",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-5.0-thinking-exp",
+        "label": "ERNIE 5.0 Thinking Exp",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-4.5-turbo-32k",
+        "label": "ERNIE 4.5 Turbo 32K",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-4.5-turbo-128k",
+        "label": "ERNIE 4.5 Turbo 128K",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-4.5-turbo-20260402",
+        "label": "ERNIE 4.5 Turbo 20260402",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-4.5-turbo-vl",
+        "label": "ERNIE 4.5 Turbo VL",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-4.5-turbo-vl-32k",
+        "label": "ERNIE 4.5 Turbo VL 32K",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4.1-flash",
+        "label": "DeepSeek-V4.1-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro-0813",
+        "label": "DeepSeek-V4-Pro-0813",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek-V4-Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash-0731",
+        "label": "DeepSeek-V4-Flash-0731",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash",
+        "label": "DeepSeek-V4-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "deepseek-v3.2",
+        "label": "DeepSeek-V3.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "internvl3-38b",
+        "label": "InternVL3-38B",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "shanghai-ai-lab",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "ernie-x1.1-preview",
+        "label": "ERNIE-X1.1-Preview",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "ernie-x1.1",
+        "label": "ERNIE-X1.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "deepseek-flash",
+        "label": "DeepSeek-V4.1-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v3.2-think",
+        "label": "DeepSeek-V3.2-Think",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "qwen3.5-397b-a17b",
+        "label": "Qwen3.5-397B-A17B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qwen3.5-122b-a10b",
+        "label": "Qwen3.5-122B-A10B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qwen3.5-27b",
+        "label": "Qwen3.5-27B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qwen3.5-35b-a3b",
+        "label": "Qwen3.5-35B-A3B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3-flash",
+        "label": "GLM-5.3-Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3",
+        "label": "GLM-5.3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.2",
+        "label": "GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.1",
+        "label": "GLM-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5",
+        "label": "GLM-5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "kimi-k2.6",
+        "label": "Kimi-K2.6",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。官方公告 2026-09-29 下线；本产品按北京时间当日零点停止新提交，保留历史配置。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ],
+          "expirationDate": "2026-09-29",
+          "expirationAt": "2026-09-28T16:00:00.000Z",
+          "lifecycleSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+        }
+      },
+      {
+        "id": "deepseek-ocr",
+        "label": "DeepSeek-OCR",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qianfan-ocr",
+        "label": "Qianfan-OCR",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 10,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "musesteamer-air-image",
+        "label": "MuseSteamer Air Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "qianfan-images",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image",
+        "label": "Qwen Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "qianfan-images",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image-edit",
+        "label": "Qwen Image Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "qianfan-images",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "requiresSourceImage": true
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-account-global-endpoint"
+          ]
+        }
+      }
+    ],
+    "iflytek": [
+      {
+        "id": "spark-x2.5",
+        "label": "Spark-X2.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "spark-x2.5-4b",
+        "label": "Spark-X2.5-4B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "spark-x2.5-1.7b",
+        "label": "Spark-X2.5-1.7B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopglm53",
+        "label": "GLM-5.3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopdeepseekv4pro0813",
+        "label": "DeepSeek-V4-Pro-0813",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopdeepseekv4flash0731",
+        "label": "DeepSeek-V4-Flash-0731",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopkimik27code",
+        "label": "Kimi-K2.7-Code",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopglm52",
+        "label": "GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopdeepseekv4flash",
+        "label": "DeepSeek-V4-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopkimik26",
+        "label": "Kimi-K2.6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopdeepseekv4pro",
+        "label": "DeepSeek-V4-Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopqwen36v35b",
+        "label": "Qwen3.6-35B-A3B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xsparkx2flash",
+        "label": "Spark-X2-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopglm51",
+        "label": "GLM-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xsparkx2",
+        "label": "Spark X2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop35qwen2b",
+        "label": "Qwen3.5-2B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopqwen35397b",
+        "label": "Qwen3.5-397B-A17B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xminimaxm25",
+        "label": "MiniMax-M2.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopkimik25",
+        "label": "Kimi-K2.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xopglmv47flash",
+        "label": "GLM-4.7-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen32bvl",
+        "label": "Qwen3-VL-32B-Instruct",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。图片数量官方未明确；图研保守限制 1 张。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": null,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen80bnext",
+        "label": "Qwen3-Next-80B-A3B-Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen30b",
+        "label": "Qwen3-30B-A3B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen32b",
+        "label": "Qwen3-32B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xdeepseekr1qwen32b",
+        "label": "DeepSeek-R1-Distill-Qwen-32B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen0b6",
+        "label": "Qwen3-0.6B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen4b",
+        "label": "Qwen3-4B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen14b",
+        "label": "Qwen3-14B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xop3qwen8b",
+        "label": "Qwen3-8B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xsparkprox",
+        "label": "Spark Max",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xspark13b6k",
+        "label": "Spark Lite",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "xqwen14bchat",
+        "label": "Qwen_v2.5_14b_Instruct",
+        "roles": [
+          "main"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      }
+    ],
+    "longcat": [
+      {
+        "id": "LongCat-2.0",
+        "label": "LongCat 2.0",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录及协议已核对；账号权限、真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "meituan",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://longcat.chat/platform/docs/zh/api/models.html",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      }
     ]
   },
   "lifecycle": {
@@ -25533,7 +28557,7 @@
       ]
     },
     "minimax": {
-      "label": "MiniMax",
+      "label": "稀宇科技",
       "accessKind": "direct",
       "guideUrl": "https://platform.minimax.io/docs/api-reference/text-openai-api",
       "textBaseUrl": "https://api.minimax.io/v1",
@@ -25554,7 +28578,7 @@
           }
         ]
       },
-      "reviewedAt": "2026-09-07",
+      "reviewedAt": "2026-09-22",
       "defaults": {
         "main": "MiniMax-M3",
         "image": "image-01",
@@ -25562,7 +28586,7 @@
       },
       "keyPlaceholder": "API Key",
       "guideSteps": [
-        "先选择区域，再使用该区域官方平台创建的 API Key。",
+        "稀宇科技（MiniMax）开放平台：先选择区域，再使用该区域创建的普通 API Key；Coding Plan 不通用。",
         "国内与国际凭据分别保存在本地会话内；切换区域不会把 Key 发送到另一平台。",
         "模型列表按区域过滤；实际账户额度和权限由所选平台决定。"
       ]
@@ -25751,6 +28775,111 @@
         "MiMo-V2.6-Pro 与 Flash 均用于文本规划/识图，不提供生图；请在专业模式搭配图像渠道。",
         "本轮使用同步 Chat API；截断或结果未知不会自动重复请求，价格按账号地区分别核对。"
       ]
+    },
+    "sensenova": {
+      "label": "商汤 SenseNova",
+      "accessKind": "direct",
+      "guideUrl": "https://platform.sensenova.cn/docs",
+      "textBaseUrl": "https://token.sensenova.cn/v1",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "sensenova-6.8-flash-lite",
+        "image": "sensenova-u1.5-lite",
+        "vision": "sensenova-6.8-flash-lite"
+      },
+      "keyPlaceholder": "商汤新平台 sk- API Key",
+      "guideSteps": [
+        "新平台 Token Plan API Key；旧 SenseCore AK/SK/JWT 不通用。通用 API 已公开；商业应用权益和积分消耗需由账号确认。",
+        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
+        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+      ]
+    },
+    "stepfun": {
+      "label": "阶跃星辰",
+      "accessKind": "direct",
+      "guideUrl": "https://platform.stepfun.com/docs/zh/welcome",
+      "textBaseUrl": "https://api.stepfun.com/v1",
+      "regions": [
+        "cn"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "step-5-preview",
+        "image": "step-2x-large",
+        "vision": "step-5-preview"
+      },
+      "keyPlaceholder": "中国站普通 API Key",
+      "guideSteps": [
+        "仅接入中国站 api.stepfun.com 普通 API；国际站和 Step Plan 端点、额度分别核对，不能混用。图片 API 公告将于 2026-10-10 下线。",
+        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
+        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+      ]
+    },
+    "qianfan": {
+      "label": "百度千帆",
+      "accessKind": "direct",
+      "guideUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "textBaseUrl": "https://qianfan.baidubce.com/v2",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "ernie-5.1",
+        "image": "musesteamer-air-image",
+        "vision": "ernie-5.0"
+      },
+      "keyPlaceholder": "千帆普通 API Key（非 Token/Coding Plan）",
+      "guideSteps": [
+        "使用普通按量 API Key。Token Plan（个人/企业）和 Coding Plan 不用于本产品后端；国际站与内部图片工作流未接入。",
+        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
+        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+      ]
+    },
+    "iflytek": {
+      "label": "讯飞星辰 MaaS",
+      "accessKind": "direct",
+      "guideUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "textBaseUrl": "https://maas-api.cn-huabei-1.xf-yun.com/v2",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "spark-x2.5",
+        "image": "",
+        "vision": "xopkimik27code"
+      },
+      "keyPlaceholder": "星辰 MaaS 普通 API Key（非 Token Plan/星火）",
+      "guideSteps": [
+        "使用华北 MaaS 普通 API Key；Astron Token Plan、Coding Plan、星火 API Password 和 AK/SK 签名凭据不通用。仅开放已适配 HTTP 服务。",
+        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
+        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+      ]
+    },
+    "longcat": {
+      "label": "美团 LongCat",
+      "accessKind": "direct",
+      "guideUrl": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "textBaseUrl": "https://api.longcat.chat/openai/v1",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "LongCat-2.0",
+        "image": "",
+        "vision": ""
+      },
+      "keyPlaceholder": "LongCat API Key",
+      "guideSteps": [
+        "当前普通 API 仅 LongCat-2.0 文本模型。旧 Flash/Thinking/Omni 已退役；生图和识图请另配渠道。",
+        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
+        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+      ]
     }
   },
   "disabled": {
@@ -25784,6 +28913,40 @@
       "doubao-1-5-pro-32k-character-250715": {
         "reason": "角色对话专用模型；当前科研规划流程未适配。",
         "source": "https://docs.volcengine.com/docs/82379/1330310"
+      }
+    },
+    "xai": {
+      "grok-4-1-fast-reasoning": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-4-1-fast-non-reasoning": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-4-fast-reasoning": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-4-fast-non-reasoning": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-4-0709": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-code-fast-1": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-3": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
+      },
+      "grok-imagine-image-pro": {
+        "reason": "该直连型号已于2026-05-15退役；旧配置已保留，请手动选择。服务端重定向不代表原型号可用。",
+        "source": "https://docs.x.ai/developers/migration/may-15-retirement"
       }
     }
   },

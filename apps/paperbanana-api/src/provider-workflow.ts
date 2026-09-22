@@ -8,7 +8,7 @@ import type { createTokenDanceService } from './tokendance-service.js'
 
 type ConnectionService = ReturnType<typeof createTokenDanceService>
 type Task = { jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
-type Context = { task: Task; scope: string; counts: Map<string, number>; stepId?: string }
+type Context = { task: Task; scope: string; counts: Map<string, number>; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image' }
 const version = 'tokendance-workflow-v2-reference-budget'
 const isReferenceValidationError = isLocalInputFailure
 
@@ -21,8 +21,8 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   const steps = db.collection<any>('paperbanana_provider_steps')
   const chunks = db.collection<any>('paperbanana_provider_step_chunks')
   const jobs = db.collection<any>('paperbanana_jobs')
-  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel]))
-  const isManaged = (task: Task) => Boolean(managedChannel(task))
+  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel])) || (task.body.thinkingSnapshot ? Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) : undefined)
+  const isManaged = (task: Task) => Boolean(managedChannel(task) || task.body.thinkingSnapshot)
   const expires = () => new Date(now() + 7 * 86400_000)
   async function acceptingData(userId: string) {
     try { await service.accepting(userId) }
@@ -51,10 +51,14 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     }
     return JSON.parse(parts.join(''))
   }
-  async function call<T>(descriptor: unknown, operation: () => Promise<T>): Promise<T> {
+  async function call<T>(descriptor: unknown, operation: () => Promise<T>, role?: 'main'|'vision'|'image'): Promise<T> {
     const current = context.getStore()
     if (!current) return operation()
-    const digest = createHash('sha256').update(JSON.stringify(descriptor)).digest('hex')
+    const thinkingRole = role || (Array.isArray(descriptor) ? ({text:'main',vision:'vision',image:'image'} as const)[descriptor[0] as 'text'|'vision'|'image'] : undefined)
+    const thinking = thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[thinkingRole] : undefined
+    if (thinking && Array.isArray(descriptor) && (thinking.provider !== descriptor[1] || thinking.modelId !== descriptor[2])) throw Object.assign(new Error('模型调用与原任务思考配置不一致，未发送。'), {name:'ThinkingConfigValidationError',localInputFailure:true,requestState:'not_sent'})
+    // Keep descriptors byte-identical for all historical tasks.
+    const digest = createHash('sha256').update(JSON.stringify(thinking ? [descriptor, {thinking}] : descriptor)).digest('hex')
     const occurrence = current.counts.get(digest) || 0
     current.counts.set(digest, occurrence + 1)
     const id = `${current.task.jobId}:${current.scope}:${digest}:${occurrence}`
@@ -72,7 +76,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     try {
       // Composite steps (e.g. reference selection) may contain multiple paid
       // calls. Keep their own checkpoints when the enclosing step fails later.
-      const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id }, operation)
+      const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id, thinkingRole: thinkingRole || current.thinkingRole }, operation)
       const count = await writeResult(id, current.task.body.userId, result)
       await steps.updateOne({ _id: id, state: { $in: ['running','awaiting'] } }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       return result
@@ -147,6 +151,8 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   }
   return {
     run, call, reconcile, active:()=>Boolean(context.getStore()),
+    thinkingAvailable: () => Boolean(service.cipher),
+    thinking() { const current = context.getStore(); return current?.thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole] : undefined },
     async pending() {
       const current = context.getStore()
       if (!current?.stepId) return undefined
@@ -170,7 +176,10 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       return current ? context.run({ ...current, scope: current.scope + '/' + name, counts: new Map() }, operation) : operation()
     },
     async key(original: string) { const current = context.getStore(); return current ? (await service.credential(current.task.body.userId)).key : original },
-    async record(info: unknown) { const current = context.getStore(); if (current) await jobs.updateOne({ _id: current.task.jobId }, { $addToSet: { providerCalls: info } } as any) },
+    async record(info: unknown) { const current = context.getStore(); if (current) {
+      const thinking = current.thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole] : undefined
+      await jobs.updateOne({ _id: current.task.jobId }, { $addToSet: { providerCalls: thinking ? {...(info as object), thinking} : info } } as any)
+    } },
     async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>, customKeys?: string) {
       await reconcile(jobId); await service.accepting(userId)
       const existing = await executions.findOne({ _id: jobId, userId })

@@ -5,7 +5,7 @@ import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../apps/web/src/lib/modelPresentation.js'
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..')
 const audit=JSON.parse(fs.readFileSync(path.join(root,'config/model-version-audit.json'),'utf8'))
-const order=orderModelChannels(['gemini','openai','bailian','ark','openrouter','deepseek','kimi','zhipu','siliconflow','anthropic','recraft','xai','bfl','stability','ideogram','minimax','mistral','together','fireworks','fal','replicate','tokendance','tokenhub','runware','xiaomi'])
+const order=orderModelChannels(['gemini','openai','bailian','ark','openrouter','deepseek','kimi','zhipu','siliconflow','anthropic','recraft','xai','bfl','stability','ideogram','minimax','mistral','together','fireworks','fal','replicate','tokendance','tokenhub','runware','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat'])
 const kind={fixed:'固定版本',rolling:'滚动别名',unconfirmed:'固定性 / 对应版本待确认'}
 const quote=value=>'"'+String(value??'').replaceAll('"','""')+'"'
 const allRows=[...audit.models].sort((a,b)=>order.indexOf(a.channel)-order.indexOf(b.channel)||a.apiModelId.localeCompare(b.apiModelId,'en'))

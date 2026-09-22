@@ -14,8 +14,8 @@ test('featured carousel declares five-second autoplay and all required pause con
   assert.match(source, /onMouseLeave/u)
   assert.match(source, /onFocusCapture/u)
   assert.match(source, /onBlurCapture/u)
-  assert.match(source, /aria-label="上一张模板"/u)
-  assert.match(source, /aria-label="下一张模板"/u)
+  assert.match(source, /aria-label=\{t\("上一张模板"\)\}/u)
+  assert.match(source, /aria-label=\{t\("下一张模板"\)\}/u)
 })
 
 test('featured studio, prominent settings, ratios, and guide have desktop and 390px layout contracts', () => {

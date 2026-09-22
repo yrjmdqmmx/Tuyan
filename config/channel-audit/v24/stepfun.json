@@ -1,0 +1,1694 @@
+{
+  "provider": "stepfun",
+  "label": "阶跃星辰",
+  "operator": "StepFun / 阶跃星辰",
+  "brand": "StepFun",
+  "checkedAt": "2026-09-22T06:52:16Z",
+  "channelClass": "domestic-official-direct",
+  "sources": [
+    {
+      "url": "https://platform.stepfun.com/docs/zh/welcome",
+      "title": "阶跃中国官方文档：welcome",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/vision",
+      "title": "阶跃中国官方文档：guides/models/vision",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/image",
+      "title": "阶跃中国官方文档：guides/models/image",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+      "title": "阶跃中国官方文档：guides/pricing/details",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+      "title": "阶跃中国官方文档：guides/image-offline-notice",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/model-migration",
+      "title": "阶跃中国官方文档：guides/model-migration",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+      "title": "阶跃中国官方文档：api-reference/chat/chat-completion-create",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/api-reference/models/list",
+      "title": "阶跃中国官方文档：api-reference/models/list",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+      "title": "阶跃中国官方文档：api-reference/images/image",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/api-reference/images/image2image",
+      "title": "阶跃中国官方文档：api-reference/images/image2image",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/api-reference/images/edits",
+      "title": "阶跃中国官方文档：api-reference/images/edits",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/developer/image-chat",
+      "title": "阶跃中国官方文档：guides/developer/image-chat",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/step-plan/overview",
+      "title": "阶跃中国官方文档：step-plan/overview",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/step-plan/integrations/reasoning-api",
+      "title": "阶跃中国官方文档：step-plan/integrations/reasoning-api",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/step-plan/integrations/image-api",
+      "title": "阶跃中国官方文档：step-plan/integrations/image-api",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/model-lab",
+      "title": "阶跃中国官方文档：guides/models/model-lab",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/step-router",
+      "title": "阶跃中国官方文档：guides/models/step-router",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/welcome",
+      "title": "StepFun international: welcome",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/models/step-5-preview",
+      "title": "StepFun international: guides/models/step-5-preview",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/models/step-3.7-flash",
+      "title": "StepFun international: guides/models/step-3.7-flash",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/models/step-3.5-flash",
+      "title": "StepFun international: guides/models/step-3.5-flash",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/models/step-image-edit-2",
+      "title": "StepFun international: guides/models/step-image-edit-2",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/pricing/details",
+      "title": "StepFun international: guides/pricing/details",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+      "title": "StepFun international: guides/image-offline-notice",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/en/step-plan/overview",
+      "title": "StepFun international: step-plan/overview",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.com/docs/llms.txt",
+      "title": "中国官方完整文档索引",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://platform.stepfun.ai/docs/llms.txt",
+      "title": "国际官方文档索引",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    }
+  ],
+  "endpoints": {
+    "default": {
+      "region": "cn",
+      "baseUrl": "https://api.stepfun.com/v1",
+      "models": "https://api.stepfun.com/v1/models",
+      "chat": "https://api.stepfun.com/v1/chat/completions",
+      "images": "https://api.stepfun.com/v1/images/generations",
+      "image2image": "https://api.stepfun.com/v1/images/image2image",
+      "edits": "https://api.stepfun.com/v1/images/edits"
+    },
+    "international": {
+      "baseUrl": "https://api.stepfun.ai/v1",
+      "region": "international",
+      "implementedThisAudit": false
+    },
+    "stepPlan": {
+      "cn": "https://api.stepfun.com/step_plan/v1",
+      "international": "https://api.stepfun.ai/step_plan/v1",
+      "mixWithOrdinary": false
+    }
+  },
+  "auth": {
+    "type": "bearer-api-key",
+    "header": "Authorization: Bearer <STEP_API_KEY>",
+    "keySources": {
+      "cn": "https://platform.stepfun.com/interface-key",
+      "international": "https://platform.stepfun.ai/interface-key"
+    },
+    "crossRegionKeyCompatibility": "unknown",
+    "stepPlan": {
+      "usesStepApiKey": true,
+      "requiresSubscription": true,
+      "notes": "普通 /v1 请求不消耗 Step Plan 订阅额度；必须用专属 /step_plan/v1。"
+    }
+  },
+  "models": [
+    {
+      "id": "step-5-preview",
+      "label": "Step 5 Preview",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-5-preview"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 60,
+      "limits": {
+        "contextTokens": 1000000,
+        "maxOutputTokens": 65536,
+        "maxImages": 60,
+        "imageCombinedBytes": 20971520,
+        "formats": [
+          "jpeg",
+          "png",
+          "webp",
+          "gif-static"
+        ],
+        "recommendedMaxImageSide": 4096,
+        "imageSideLimitIsRecommendation": true,
+        "contextLabel": "1M",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "currency": "CNY",
+        "unit": "million tokens",
+        "input": 7,
+        "inputCached": 0.35,
+        "output": 20,
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "currency": "USD",
+          "unit": "million tokens",
+          "input": 1,
+          "inputCached": 0.05,
+          "output": 2.7,
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/chat/completions",
+        "internationalEndpoint": "https://api.stepfun.ai/v1/chat/completions",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "stream": false
+        },
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream",
+          "reasoning_effort",
+          "reasoning_format"
+        ],
+        "visionEncoding": {
+          "field": "messages[].content[]",
+          "shape": {
+            "type": "image_url",
+            "image_url": {
+              "url": "complete data URL or public HTTPS URL",
+              "detail": "high"
+            }
+          },
+          "detailEnum": [
+            "high",
+            "low"
+          ]
+        },
+        "reasoningEffort": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": [
+          "choices[0].message.reasoning",
+          "choices[0].message.reasoning_content"
+        ],
+        "reasoningFormat": "general by default; deepseek-style supported; CN docs say both fields currently returned identically",
+        "usage": "usage",
+        "requestId": "id",
+        "stream": "SSE, final data: [DONE]"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-3.7-flash",
+      "label": "Step 3.7 Flash",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-3.7-flash"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 60,
+      "limits": {
+        "contextTokens": 262144,
+        "maxOutputTokens": null,
+        "maxImages": 60,
+        "imageCombinedBytes": 20971520,
+        "formats": [
+          "jpeg",
+          "png",
+          "webp",
+          "gif-static"
+        ],
+        "recommendedMaxImageSide": 4096,
+        "imageSideLimitIsRecommendation": true,
+        "notes": "当前能力段明确最多 60 张；英文旧多图段落 10–50 与此不一致，记录冲突而不把上限默认为 50。",
+        "contextLabel": "256K",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "currency": "CNY",
+        "unit": "million tokens",
+        "input": 1.35,
+        "inputCached": 0.27,
+        "output": 8.1,
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "currency": "USD",
+          "unit": "million tokens",
+          "input": 0.2,
+          "inputCached": 0.04,
+          "output": 1.15,
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/chat/completions",
+        "internationalEndpoint": "https://api.stepfun.ai/v1/chat/completions",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "stream": false
+        },
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream",
+          "reasoning_effort",
+          "reasoning_format"
+        ],
+        "visionEncoding": {
+          "field": "messages[].content[]",
+          "shape": {
+            "type": "image_url",
+            "image_url": {
+              "url": "complete data URL or public HTTPS URL",
+              "detail": "high"
+            }
+          },
+          "detailEnum": [
+            "high",
+            "low"
+          ]
+        }
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": [
+          "choices[0].message.reasoning",
+          "choices[0].message.reasoning_content"
+        ],
+        "reasoningFormat": "general by default; deepseek-style supported; CN docs say both fields currently returned identically",
+        "usage": "usage",
+        "requestId": "id",
+        "stream": "SSE, final data: [DONE]"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-3.5-flash",
+      "label": "Step 3.5 Flash",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-3.5-flash"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 262144,
+        "maxOutputTokens": null,
+        "contextLabel": "256K",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "currency": "CNY",
+        "unit": "million tokens",
+        "input": 0.7,
+        "inputCached": 0.14,
+        "output": 2.1,
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "currency": "USD",
+          "unit": "million tokens",
+          "input": 0.1,
+          "inputCached": 0.02,
+          "output": 0.3,
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/chat/completions",
+        "internationalEndpoint": "https://api.stepfun.ai/v1/chat/completions",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "stream": false
+        },
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream",
+          "reasoning_effort",
+          "reasoning_format"
+        ],
+        "visionEncoding": null
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": [
+          "choices[0].message.reasoning",
+          "choices[0].message.reasoning_content"
+        ],
+        "reasoningFormat": "general by default; deepseek-style supported; CN docs say both fields currently returned identically",
+        "usage": "usage",
+        "requestId": "id",
+        "stream": "SSE, final data: [DONE]"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-3.5-flash-2603",
+      "label": "Step 3.5 Flash 2603",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-3.5-flash-2603",
+        "notes": "2603 为官方 API 变体 ID；文档未声明不可变，因此不因数字后缀判定 fixed。"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 262144,
+        "maxOutputTokens": null,
+        "contextLabel": "256K",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "currency": "CNY",
+        "unit": "million tokens",
+        "input": 0.7,
+        "inputCached": 0.14,
+        "output": 2.1,
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "currency": "USD",
+          "unit": "million tokens",
+          "input": 0.1,
+          "inputCached": 0.02,
+          "output": 0.3,
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/chat/completions",
+        "internationalEndpoint": "https://api.stepfun.ai/v1/chat/completions",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "stream": false
+        },
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream",
+          "reasoning_effort",
+          "reasoning_format"
+        ],
+        "visionEncoding": null,
+        "reasoningEffort": [
+          "low",
+          "high"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": [
+          "choices[0].message.reasoning",
+          "choices[0].message.reasoning_content"
+        ],
+        "reasoningFormat": "general by default; deepseek-style supported; CN docs say both fields currently returned identically",
+        "usage": "usage",
+        "requestId": "id",
+        "stream": "SSE, final data: [DONE]"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-1o-turbo-vision",
+      "label": "Step 1o Turbo Vision",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-1o-turbo-vision"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 60,
+      "limits": {
+        "contextTokens": 32768,
+        "maxOutputTokens": null,
+        "maxImages": 60,
+        "imageCombinedBytes": 20971520,
+        "formats": [
+          "jpeg",
+          "png",
+          "webp",
+          "gif-static"
+        ],
+        "recommendedMaxImageSide": 4096,
+        "imageSideLimitIsRecommendation": true,
+        "video": {
+          "formats": [
+            "mp4"
+          ],
+          "maxBytes": 134217728
+        },
+        "contextLabel": "32K",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "currency": "CNY",
+        "unit": "million tokens",
+        "input": 2.5,
+        "inputCached": 0.5,
+        "output": 8,
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "currency": "USD",
+          "unit": "million tokens",
+          "input": 0.36,
+          "inputCached": 0.07,
+          "output": 1.15,
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/chat/completions",
+        "internationalEndpoint": "https://api.stepfun.ai/v1/chat/completions",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "stream": false
+        },
+        "fields": [
+          "model",
+          "messages",
+          "max_tokens",
+          "stream",
+          "reasoning_effort",
+          "reasoning_format"
+        ],
+        "visionEncoding": {
+          "field": "messages[].content[]",
+          "shape": {
+            "type": "image_url",
+            "image_url": {
+              "url": "complete data URL or public HTTPS URL",
+              "detail": "high"
+            }
+          },
+          "detailEnum": [
+            "high",
+            "low"
+          ]
+        }
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": [
+          "choices[0].message.reasoning",
+          "choices[0].message.reasoning_content"
+        ],
+        "reasoningFormat": "general by default; deepseek-style supported; CN docs say both fields currently returned identically",
+        "usage": "usage",
+        "requestId": "id",
+        "stream": "SSE, final data: [DONE]"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-2x-large",
+      "label": "Step 2x Large",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-2x-large"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "image-generation",
+        "image-editing"
+      ],
+      "protocol": "stepfun-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 1,
+      "limits": {
+        "maxImages": 1,
+        "minImagesEditing": 1,
+        "maxPromptLength": 512,
+        "editingMaxPromptLength": 1024,
+        "maxImageBytes": 10485760,
+        "maxInputWidth": 2048,
+        "maxInputHeight": 2048,
+        "inputFormats": [
+          "png",
+          "jpeg"
+        ],
+        "n": 1,
+        "mask": false
+      },
+      "size": {
+        "encoding": "widthxheight",
+        "values": [
+          "256x256",
+          "512x512",
+          "768x768",
+          "1024x1024",
+          "1280x800",
+          "800x1280"
+        ],
+        "default": "1024x1024",
+        "notes": "矩形的官方文字比例标作16:9/9:16，但实际尺寸是8:5/5:8；保留精确尺寸，不照抄错误比例。"
+      },
+      "price": {
+        "amount": 0.1,
+        "currency": "CNY",
+        "unit": "image",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "amount": 0.02,
+          "currency": "USD",
+          "unit": "image",
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "scheduled-retirement",
+        "retirementDate": "2026-10-10",
+        "retirementAt": null,
+        "timezone": "unknown",
+        "sourceUrls": [
+          "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+          "https://platform.stepfun.ai/docs/en/guides/image-offline-notice"
+        ],
+        "notes": "官方明确中国/国际普通 API 与 Step Plan 同日停止；没有给出具体时间或时区，不能伪造时间戳。审计日在下线日期前。",
+        "productSubmissionCutoff": {
+          "at": "2026-10-09T16:00:00Z",
+          "timezone": "Asia/Shanghai",
+          "reason": "Conservative application policy: China midnight at the provider-announced retirement date; this is not a provider-announced timestamp."
+        }
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。 国际英文生成枚举未列 2x，但双地区停用公告仍声明其可用；本轮只实现中国合同。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image2image"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/images/generations",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "n": 1,
+          "response_format": "url",
+          "steps": 50,
+          "cfg_scale": 6
+        },
+        "fields": [
+          "model",
+          "prompt",
+          "size",
+          "n",
+          "response_format",
+          "steps",
+          "cfg_scale",
+          "seed"
+        ],
+        "visionEncoding": null,
+        "editing": {
+          "endpoint": "https://api.stepfun.com/v1/images/image2image",
+          "method": "POST",
+          "contentType": "application/json",
+          "sourceField": "source_url",
+          "visionEncoding": "complete data URL or public HTTPS URL",
+          "required": [
+            "model",
+            "prompt",
+            "source_url",
+            "source_weight"
+          ],
+          "sourceWeight": {
+            "minExclusive": 0,
+            "max": 1,
+            "default": null,
+            "example": 0.5,
+            "semantics": "Lower means MORE similar to source"
+          },
+          "steps": {
+            "min": 1,
+            "max": 100,
+            "default": 50
+          },
+          "cfgScale": {
+            "min": 1,
+            "max": 10,
+            "default": 6
+          },
+          "maskField": null,
+          "productConstants": {
+            "source_weight": 0.5,
+            "steps": 50,
+            "cfg_scale": 6,
+            "n": 1,
+            "response_format": "url",
+            "notes": "source_weight=0.5 is an explicit application choice from the official example; no official default is published."
+          }
+        },
+        "parameters": {
+          "steps": {
+            "min": 1,
+            "max": 50,
+            "default": 50
+          },
+          "cfg_scale": {
+            "min": 1,
+            "max": 10,
+            "default": 6
+          },
+          "seed": "0 or omitted = random"
+        }
+      },
+      "response": {
+        "images": "data[]",
+        "url": "data[].url",
+        "base64": "data[].b64_json",
+        "created": "created",
+        "seed": "data[].seed",
+        "finishReason": "data[].finish_reason",
+        "successFinishReason": "success",
+        "filteredFinishReason": "content_filtered",
+        "urlExpires": {
+          "cn": "30 days",
+          "international": "2 hours"
+        },
+        "notes": "同步返回；content_filtered 不能当成功图片；未找到异步提交/查询流程。"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "step-image-edit-2",
+      "label": "Step Image Edit 2",
+      "developer": "StepFun",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "step-image-edit-2"
+      },
+      "regions": [
+        "cn",
+        "international"
+      ],
+      "roles": [
+        "image-generation",
+        "image-editing"
+      ],
+      "protocol": "stepfun-images-multipart",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 1,
+      "limits": {
+        "maxImages": 1,
+        "minImagesEditing": 1,
+        "maxPromptLength": 512,
+        "maxImageBytes": null,
+        "maxInputWidth": 4096,
+        "maxInputHeight": 4096,
+        "inputFormats": null,
+        "n": 1,
+        "mask": false,
+        "notes": "文档文件示例含 WebP/JPEG；未穷举允许格式和字节数。产品入口冻结 PNG，格式以本地真实解码约束为准。"
+      },
+      "size": {
+        "encoding": "heightxwidth",
+        "generationValues": [
+          "1024x1024",
+          "768x1360",
+          "896x1184",
+          "1360x768",
+          "1184x896"
+        ],
+        "generationDefault": "1024x1024",
+        "editing": "same-as-input",
+        "editingSizeIgnored": true,
+        "notes": "官方生图文档将 size 定义为 HEIGHTxWIDTH；精修 size 不生效，输出尺寸随原图。"
+      },
+      "price": {
+        "amount": 0.02,
+        "currency": "CNY",
+        "unit": "image",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "verifiedAccountPrice": false,
+        "international": {
+          "amount": 0.003,
+          "currency": "USD",
+          "unit": "image",
+          "sourceUrl": "https://platform.stepfun.ai/docs/en/guides/pricing/details"
+        }
+      },
+      "lifecycle": {
+        "status": "scheduled-retirement",
+        "retirementDate": "2026-10-10",
+        "retirementAt": null,
+        "timezone": "unknown",
+        "sourceUrls": [
+          "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+          "https://platform.stepfun.ai/docs/en/guides/image-offline-notice"
+        ],
+        "notes": "官方明确中国/国际普通 API 与 Step Plan 同日停止；没有给出具体时间或时区，不能伪造时间戳。审计日在下线日期前。",
+        "productSubmissionCutoff": {
+          "at": "2026-10-09T16:00:00Z",
+          "timezone": "Asia/Shanghai",
+          "reason": "Conservative application policy: China midnight at the provider-announced retirement date; this is not a provider-announced timestamp."
+        }
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/edits"
+      ],
+      "request": {
+        "endpoint": "https://api.stepfun.com/v1/images/generations",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "n": 1,
+          "response_format": "url",
+          "steps": 8,
+          "cfg_scale": 1
+        },
+        "fields": [
+          "model",
+          "prompt",
+          "size",
+          "n",
+          "response_format",
+          "steps",
+          "cfg_scale",
+          "seed"
+        ],
+        "visionEncoding": null,
+        "editing": {
+          "endpoint": "https://api.stepfun.com/v1/images/edits",
+          "method": "POST",
+          "contentType": "multipart/form-data",
+          "sourceField": "image",
+          "visionEncoding": "single file upload (official example)",
+          "sizeIgnored": true,
+          "required": [
+            "model",
+            "prompt",
+            "image"
+          ],
+          "maskField": null,
+          "notes": "正文提及 Base64，但本轮采用有完整官方 multipart 文件示例的协议，不臆造 JSON 编辑端点。",
+          "constants": {
+            "response_format": "url",
+            "steps": 8,
+            "cfg_scale": 1
+          },
+          "omittedFields": [
+            "n",
+            "size",
+            "mask"
+          ]
+        },
+        "parameters": {
+          "steps": {
+            "min": 1,
+            "max": 50,
+            "default": 8
+          },
+          "cfg_scale": {
+            "min": 1,
+            "max": 10,
+            "default": 1
+          },
+          "seed": {
+            "min": 0,
+            "max": 2147483647
+          },
+          "negative_prompt": {
+            "maxLength": 512,
+            "ignoredWhenCfgScale": 1
+          },
+          "text_mode": "boolean"
+        }
+      },
+      "response": {
+        "images": "data[]",
+        "url": "data[].url",
+        "base64": "data[].b64_json",
+        "created": "created",
+        "seed": "data[].seed",
+        "finishReason": "data[].finish_reason",
+        "successFinishReason": "success",
+        "filteredFinishReason": "content_filtered",
+        "urlExpires": {
+          "cn": "30 days",
+          "international": "2 hours"
+        },
+        "notes": "同步返回；content_filtered 不能当成功图片；未找到异步提交/查询流程。"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "id": "step-1-8k",
+      "label": "step-1-8k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1-32k",
+      "label": "step-1-32k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1v-8k",
+      "label": "step-1v-8k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1v-32k",
+      "label": "step-1v-32k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-2-mini",
+      "label": "step-2-mini",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1o-vision-32k",
+      "label": "step-1o-vision-32k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-2-16k",
+      "label": "step-2-16k",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-1o-turbo-vision",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-3",
+      "label": "step-3",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-3.7-flash",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1x-medium",
+      "label": "step-1x-medium",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": "2026-07-08",
+        "sourceUrl": "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      },
+      "replacement": "step-2x-large",
+      "reason": "官方明确退役，保留历史 ID；替代型号仅供人工选择，不自动替换历史配置。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/model-migration"
+      ]
+    },
+    {
+      "id": "step-1x-edit",
+      "label": "Step 1x Edit",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retirementDate": null
+      },
+      "reason": "官方图片下线公告明确已经下线/不可用，但未给出准确退役日期。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice"
+      ]
+    },
+    {
+      "id": "step-gui",
+      "label": "Step GUI",
+      "selectable": false,
+      "decision": "specialized-experimental",
+      "lifecycle": {
+        "status": "experimental"
+      },
+      "reason": "Model Lab GUI 操作专用；官方不建议生产，单并发且不保证服务，不作为科研主模型。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/model-lab"
+      ]
+    },
+    {
+      "id": "step-router-v1",
+      "label": "Step Router",
+      "selectable": false,
+      "decision": "plan-only",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "仅 Step Plan，路由 DeepSeek V4 Pro / Step 3.7；官方明确不支持图片理解，不能继承路由后模型视觉能力。",
+      "endpoints": [
+        "https://api.stepfun.com/step_plan/v1/chat/completions"
+      ],
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/step-router",
+        "https://platform.stepfun.com/docs/zh/step-plan/overview"
+      ]
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "label": "DeepSeek V4 Pro (Step Plan)",
+      "developer": "DeepSeek",
+      "selectable": false,
+      "decision": "router-engine-only",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "Step Router 后端计费引擎，不是公开可指定 model ID；专用入口仅接受 step-router-v1。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/step-plan/integrations/reasoning-api"
+      ]
+    },
+    {
+      "id": "stepaudio-3-realtime-preview",
+      "label": "stepaudio-3-realtime-preview",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-3-chat-preview",
+      "label": "stepaudio-3-chat-preview",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2.5-realtime",
+      "label": "stepaudio-2.5-realtime",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2.5-chat",
+      "label": "stepaudio-2.5-chat",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-1o-audio",
+      "label": "step-1o-audio",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-audio-2",
+      "label": "step-audio-2",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-audio-2-mini",
+      "label": "step-audio-2-mini",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-audio-r1.5",
+      "label": "step-audio-r1.5",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-3-tts",
+      "label": "stepaudio-3-tts",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2.5-tts",
+      "label": "stepaudio-2.5-tts",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-tts-2",
+      "label": "step-tts-2",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-tts-mini",
+      "label": "step-tts-mini",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-3-gen-preview",
+      "label": "stepaudio-3-gen-preview",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-3-music-preview",
+      "label": "stepaudio-3-music-preview",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-3-asr-max",
+      "label": "stepaudio-3-asr-max",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2.5-asr",
+      "label": "stepaudio-2.5-asr",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2.5-asr-stream",
+      "label": "stepaudio-2.5-asr-stream",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "stepaudio-2-asr-pro",
+      "label": "stepaudio-2-asr-pro",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-asr",
+      "label": "step-asr",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-asr-1.1",
+      "label": "step-asr-1.1",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    },
+    {
+      "id": "step-asr-1.1-stream",
+      "label": "step-asr-1.1-stream",
+      "selectable": false,
+      "decision": "specialized-audio",
+      "lifecycle": {
+        "status": "listed"
+      },
+      "reason": "语音/音频识别、合成、实时会话或音乐专用；不属于本轮通用科研规划、静态视觉或图像生成/编辑角色。未进行服务权益测试。",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create"
+      ]
+    }
+  ],
+  "coverage": {
+    "documentedRelevantModels": 7,
+    "main": 5,
+    "vision": 3,
+    "imageGeneration": 2,
+    "imageEditing": 2,
+    "authenticatedDirectoryRead": false,
+    "realInferenceCalls": 0,
+    "eligibilityMeaning": "selectable=true means suitable for local adaptation before documented retirement; not entitlement/invocation proof.",
+    "normalApiRegion": "cn",
+    "unresolved": [
+      "图片下线只有日期无时区/时刻，调用层必须使用公开、明确的产品截止策略，不能伪称厂商公布 UTC 时刻。",
+      "step-image-edit-2 图片格式/字节上限未完整公开。",
+      "国际 Step2x 协议列举与公告不一致，本轮不开放国际图片请求。"
+    ]
+  },
+  "plans": [
+    {
+      "name": "Step Plan",
+      "ordinaryApi": false,
+      "endpoints": {
+        "cn": "https://api.stepfun.com/step_plan/v1",
+        "international": "https://api.stepfun.ai/step_plan/v1"
+      },
+      "documentedIds": [
+        "step-5-preview",
+        "step-3.7-flash",
+        "step-3.5-flash",
+        "step-3.5-flash-2603",
+        "step-router-v1",
+        "step-image-edit-2"
+      ],
+      "price": null,
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/step-plan/overview",
+        "https://platform.stepfun.com/docs/zh/step-plan/integrations/reasoning-api",
+        "https://platform.stepfun.com/docs/zh/step-plan/integrations/image-api",
+        "https://platform.stepfun.ai/docs/en/step-plan/overview"
+      ],
+      "notes": "订阅套餐、模型权益、消耗倍率独立于普通 API 每 token/每图价格；未购买或验证订阅。图片同 2026-10-10 退役。"
+    }
+  ]
+}

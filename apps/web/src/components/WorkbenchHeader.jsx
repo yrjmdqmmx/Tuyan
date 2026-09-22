@@ -1,86 +1,85 @@
+import LanguageSwitch from './LanguageSwitch.jsx'
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
-import { useEffect, useId, useState } from 'react';
-import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
-import { AUTH_UI_ENABLED, BENCH_ENABLED, logoUrl } from '../config';
-import { appPath } from '../appPaths';
-import AccessibleDialog from './AccessibleDialog';
-import useCompactLayout from '../hooks/useCompactLayout';
+import { useEffect, useId, useState } from 'react'
+import { ArrowUpRight, BarChart3, BookOpen, Bot, LayoutDashboard, History, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react'
+import { AUTH_UI_ENABLED, logoUrl } from '../config'
+import { appPath } from '../appPaths'
+import AccessibleDialog from './AccessibleDialog'
+import useCompactLayout from '../hooks/useCompactLayout'
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
-  const { t, locale } = useBenchmarkLocale()
-  return (
-    <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
-      <div className="header-links">
-        {section === 'leaderboard' ? <a href={appPath('/')}><LayoutDashboard size={16} /> {t("工作台")}</a>
-          : BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> {t("排行榜")}</a> : null}
-        <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
-        <button type="button" className="contact-author-button" onClick={() => onContact()}>
-          <QrCode size={16} /> {t("联系作者")}</button>
-        <button type="button" className="header-feedback-button" onClick={onFeedback}>
-          <MessageSquare size={16} /> {t("意见反馈")}</button>
-        <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer">
-          <img className="github-mark" src={appPath('/brand/github-invertocat.svg')} width="18" height="18" alt="" aria-hidden="true" /> GitHub
-        </a>
-        <button type="button" className="header-miniprogram-button" aria-haspopup="dialog" onClick={() => onMiniProgram()}>
-          <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> {t("微信小程序")}</button>
-      </div>
-      <div className="header-actions">
-        <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => onAgentConnection()}>
-          <Bot size={18} /> {t("智能体接入")}</button>
-        <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
-          <>{locale === 'en' ? <span className="bench-watcha-link">Review Tuyan on Watcha ↗</span> : <img src={appPath('/brand/watcha-invite-light.png')} alt={t("去观猹点评图研 Tuyan")} width="4500" height="972" />}</>
-        </a>
-        {AUTH_UI_ENABLED ? (
-          currentUser ? (
-            <div className="auth-user">
-              <ShieldCheck size={16} />
-              <button type="button" className="auth-user-email" title={currentUser.email} aria-label={t("{v0}，账户", {v0: currentUser.email})} onClick={onAccount}>{currentUser.email}</button>
-              <button type="button" onClick={onSignOut}>{t("退出")}</button>
-            </div>
-          ) : (
-            <button type="button" className="auth-entry-button" onClick={() => onSignIn()}>
-              <ShieldCheck size={16} /> {t("登录 / 注册")}</button>
-          )
-        ) : null}
-      </div>
-    </nav>
-  );
+function NavigationGroup({ id, title, children }) {
+  const { t } = useBenchmarkLocale()
+  return <div className={`header-group header-group-${id}`} role="group" aria-label={t(title)}>
+    <span className="header-group-label" aria-hidden="true">{t(title)}</span>
+    <div className="header-group-items">{children}</div>
+  </div>
 }
 
-export function MobileMoreMenu({ open, onClose, onAccount, onWorkspaceAccount = onAccount, onGuide, onAdmin, ...navigationProps }) {
-  const { t, locale } = useBenchmarkLocale()
-  const titleId = useId();
-  function closeAfterAction(event) {
-    if (event.target.closest('a, button')) onClose();
-  }
+function PrimaryPageLinks({ section }) {
+  const { t } = useBenchmarkLocale()
+  return <>
+    <a className="header-primary-link" href={appPath('/')} aria-current={section === 'workbench' ? 'page' : undefined}><LayoutDashboard />{t('工作台')}</a>
+    <a className="header-primary-link" href={appPath('/leaderboard')} aria-current={section === 'leaderboard' ? 'page' : undefined}><BarChart3 />{t('排行榜')}</a>
+    <a className="header-product-link" href="https://openacad.xyz/" target="_blank" rel="noreferrer">openacad<ArrowUpRight /></a>
+    <a className="header-primary-link" href={appPath('/changelog')} aria-current={section === 'changelog' ? 'page' : undefined}><History />{t('更新日志')}</a>
+  </>
+}
+
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onWorkspaceAccount = onAccount, onGuide, onAdmin, onNavigate, showLanguage = true, inMenu = false, section = 'workbench' }) {
+  const { t } = useBenchmarkLocale()
+  return <nav className="header-navigation" aria-label={t('网站导航')} onClick={onNavigate}>
+    <NavigationGroup id="pages" title="页面导航"><PrimaryPageLinks section={section} /></NavigationGroup>
+    <NavigationGroup id="tools" title="工具与生态">
+      <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={onAgentConnection}><Bot />{t('智能体接入')}</button>
+      <a href="https://github.com/yrjmdqmmx/Tuyan" target="_blank" rel="noreferrer"><img className="github-mark" src={appPath('/brand/github-invertocat.svg')} alt="" aria-hidden="true" />GitHub</a>
+      <button type="button" className="header-miniprogram-button" aria-haspopup="dialog" onClick={onMiniProgram}><img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} alt="" aria-hidden="true" />{t('微信小程序')}</button>
+      {inMenu && <button type="button" onClick={onGuide}><BookOpen />{t('使用教程')}</button>}
+    </NavigationGroup>
+    <NavigationGroup id="support" title="支持与交流">
+      <button type="button" className="contact-author-button" onClick={onContact}><QrCode />{t('联系作者')}</button>
+      <button type="button" className="header-feedback-button" onClick={onFeedback}><MessageSquare />{t('意见反馈')}</button>
+      <a className="watcha-product-badge" aria-label={t('去观猹点评图研 Tuyan')} href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer"><img src={appPath('/brand/watcha-rounded.svg')} alt="" aria-hidden="true" /><span>{t('观猹点评')}</span><ArrowUpRight /></a>
+    </NavigationGroup>
+    <NavigationGroup id="account" title="语言与账户">
+      {showLanguage && <LanguageSwitch />}
+      {inMenu && <button type="button" onClick={onWorkspaceAccount}><Wallet />{t('账户与钱包')}</button>}
+      {AUTH_UI_ENABLED && (currentUser ? <div className="auth-user">
+        <button type="button" className="auth-user-email" title={currentUser.email} aria-label={t('{v0}，账户', {v0: currentUser.email})} onClick={onAccount}><ShieldCheck /><span>{currentUser.email}</span></button>
+        <button type="button" className="auth-sign-out" onClick={onSignOut}>{t('退出')}</button>
+      </div> : <button type="button" className="auth-entry-button" onClick={onSignIn}><ShieldCheck />{t('登录 / 注册')}</button>)}
+      {inMenu && onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck />{t('站长')}</button>}
+    </NavigationGroup>
+  </nav>
+}
+
+export function MobileMoreMenu({ open, onClose, ...navigationProps }) {
+  const { t } = useBenchmarkLocale()
+  const titleId = useId()
+  function closeAfterAction(event) { if (event.target.closest('a, button')) onClose() }
   return <AccessibleDialog open={open} onClose={onClose} labelledBy={titleId} className="mobile-more-dialog" backdropClassName="mobile-more-backdrop">
-    <header className="mobile-more-head"><h2 id={titleId}>{t("更多功能")}</h2><button type="button" aria-label={t("关闭更多功能")} onClick={onClose}><X size={20} /></button></header>
-    <nav className="mobile-workspace-links" aria-label={t("工作台入口")} onClick={closeAfterAction}>
-      <button type="button" onClick={onWorkspaceAccount}><Wallet size={18} />{t("账户与钱包")}</button>
-      <button type="button" onClick={onGuide}><BookOpen size={18} />{t("使用教程")}</button>
-      {onAdmin && <button type="button" onClick={onAdmin}><ShieldCheck size={18} />{t("站长")}</button>}
-    </nav>
-    <SiteNavigation {...navigationProps} onAccount={onAccount} onNavigate={closeAfterAction} />
-  </AccessibleDialog>;
+    <header className="mobile-more-head"><h2 id={titleId}>{t('更多功能')}</h2><button type="button" aria-label={t('关闭更多功能')} onClick={onClose}><X size={20} /></button></header>
+    <SiteNavigation {...navigationProps} onNavigate={closeAfterAction} showLanguage={false} inMenu />
+  </AccessibleDialog>
 }
 
 export default function WorkbenchHeader(props) {
   const { t, locale } = useBenchmarkLocale()
-  const { currentUser, onSignIn, onAccount } = props;
-  const compact = useCompactLayout();
-  const [moreOpen, setMoreOpen] = useState(false);
-  useEffect(() => { if (!compact) setMoreOpen(false); }, [compact]);
+  const { currentUser, onSignIn, onAccount } = props
+  const compact = useCompactLayout()
+  const [moreOpen, setMoreOpen] = useState(false)
+  useEffect(() => { if (!compact) setMoreOpen(false) }, [compact])
   return <>
     <header className="paper-header">
       <div className="brand">
-        <img className="brand-logo" src={logoUrl} alt={t("图研Tuyan 标志")} />
-        {compact ? <div className="mobile-brand-copy"><h1>{t("图研 Tuyan")}</h1><span>{t("学术图示工作台")}</span></div> : <h1>{t("图研Tuyan工作台")}</h1>}
+        <img className="brand-logo" src={logoUrl} alt={t('图研Tuyan 标志')} />
+        <div className="site-brand-copy"><h1 aria-label={t('图研Tuyan工作台')}>{locale === 'en' ? 'Tuyan' : <>图研 <span>Tuyan</span></>}</h1><span>{t('学术图示工作台')}</span></div>
       </div>
       {compact ? <div className="mobile-header-actions">
-        {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? t("账户") : t("登录")}</button>}
-        <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />{t("更多")}</button>
+        <LanguageSwitch compact />
+        {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? t('账户') : t('登录')}</button>}
+        <button type="button" className="mobile-more-trigger" aria-label={t('更多')} aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={20} /><span className="mobile-more-label">{t('更多')}</span></button>
       </div> : <SiteNavigation {...props} />}
     </header>
     <MobileMoreMenu {...props} open={compact && moreOpen} onClose={() => setMoreOpen(false)} />
-  </>;
+  </>
 }

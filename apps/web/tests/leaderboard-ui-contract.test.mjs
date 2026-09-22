@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { SiteNavigation } from '../src/components/WorkbenchHeader.jsx'
 
 const readSource = (relativePath) => readFileSync(new URL(relativePath, import.meta.url), 'utf8')
 
@@ -13,9 +16,17 @@ test('main routes leaderboard and canonicalizes legacy bench before render', () 
 
 test('workspace header exposes leaderboard and mini-program without retired client links', () => {
   const source = readSource('../src/App.jsx') + readSource('../src/components/WorkbenchHeader.jsx')
-  assert.match(source, /BENCH_ENABLED\s*\?\s*<a href=\{appPath\('\/leaderboard'\)\}[^>]*>[\s\S]*?排行榜/u)
+  for (const [section, active] of [['workbench', '工作台'], ['leaderboard', '排行榜'], ['changelog', '更新日志']]) {
+    const nav = document.createElement('div')
+    nav.innerHTML = renderToStaticMarkup(React.createElement(SiteNavigation, { section }))
+    const links = [...nav.querySelectorAll('.header-primary-link')]
+    assert.deepEqual(links.map(link => [link.textContent.trim(), link.getAttribute('href')]), [['工作台', '/'], ['排行榜', '/leaderboard'], ['更新日志', '/changelog']])
+    assert.deepEqual(links.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.textContent.trim()), [active])
+    assert.deepEqual([...nav.querySelectorAll('.header-group')].map(group=>group.getAttribute('aria-label')), ['页面导航','工具与生态','支持与交流','语言与账户'])
+    assert.deepEqual([...nav.querySelectorAll('.header-group-pages a')].map(link=>link.textContent.trim()), ['工作台','排行榜','openacad','更新日志'])
+  }
   assert.match(source, /微信小程序/u)
-  assert.match(source, />\s*论文/u)
+  assert.match(source, /t\("论文方法内容"\)/u)
   assert.match(source, />\s*GitHub/u)
   assert.doesNotMatch(source, /Android 版|Windows 版|Mac 版|MonitorDown|\bApple\b/u)
   assert.doesNotMatch(source, /className="brand-tags"|>多智能体<|>学术图示生成</u)
@@ -27,7 +38,7 @@ test('leaderboard headers use the 图研Tuyan brand without the retired subtitle
     assert.doesNotMatch(source, /PaperBanana 标志|>PaperBanana<|PAPERBANANA IMAGE MODEL LEADERBOARD/u)
   }
   const root = readSource('../src/components/LeaderboardRoot.jsx')
-  assert.match(root, /<WorkbenchHeader section="leaderboard"/u)
+  assert.match(root, /<WorkbenchHeader section=\{section\}/u)
   // All routes share the workbench brand; retired product taglines stay removed.
   assert.doesNotMatch(root, /多智能体|学术图示生成/u)
 })

@@ -360,6 +360,8 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-language-switch button { min-height: 38px; padding: 7px 12px; border: 0; border-radius: 5px; background: transparent; color: #535951; font: inherit; font-size: 12px; cursor: pointer; }
 .bench-language-switch button[aria-pressed="true"] { background: #fffefa; color: #293b30; box-shadow: 0 1px 4px #332b1e14; }
 .bench-language-switch button:focus-visible { outline: 3px solid #b58220; outline-offset: 2px; }
+.header-language-control { display: flex; align-items: center; flex: none; }
+.header-language-control .bench-language-switch { margin: 0; }
 .bench-ranking-filters { margin: 22px 0 26px; font-size: 13px; }
 .bench-ranking-filters .pareto-toolbar { flex-wrap: wrap; }
 .bench-ranking-filters .pareto-search { flex: 1 1 300px; margin-left: auto; max-width: 480px; }

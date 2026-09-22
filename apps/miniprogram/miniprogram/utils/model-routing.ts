@@ -36,7 +36,7 @@ export function buildModelSubmission(input: {
   }
   const regions = normalizeProviderRegions(input.providerRegions)
   const usesMiniMax = Object.values(input.modelRoutes).some(route => route.accessProvider === 'minimax')
-  if (usesMiniMax && regions.minimax === 'cn' && !input.registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
+  if (usesMiniMax && regions.minimax === 'cn' && !input.registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 稀宇科技国内区域。')
   return {
     ...(usesMiniMax && input.providerRegions ? {providerRegions: regions} : {}),
     configurationMode: input.configurationMode,

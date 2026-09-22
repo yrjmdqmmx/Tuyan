@@ -1,0 +1,20 @@
+{
+  "provider": "longcat",
+  "checkedAt": "2026-09-22",
+  "endpointScope": "当前普通 API 仅 LongCat-2.0 文本模型。旧 Flash/Thinking/Omni 已退役；生图和识图请另配渠道。",
+  "models": [
+    {
+      "id": "LongCat-2.0",
+      "roles": [
+        "main"
+      ],
+      "developer": "美团",
+      "apiId": "LongCat-2.0",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    }
+  ],
+  "excluded": []
+}

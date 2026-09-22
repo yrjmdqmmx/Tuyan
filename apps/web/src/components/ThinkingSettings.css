@@ -1,0 +1,24 @@
+.model-role-settings { min-width: 0; }
+.model-thinking-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); gap: 10px 14px; margin-top: 10px; }
+.thinking-control { min-width: 0; position: relative; }
+.thinking-control-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; color: var(--muted); font-size: 12px; }
+.thinking-control :is(input, select) { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--hairline); border-radius: 9px; background: var(--surface, #fff); font: inherit; font-size: 13px; color: var(--ink-soft); }
+.thinking-control :is(input, select):focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+.thinking-error { grid-column: 1 / -1; margin: 0; font-size: 12px; color: #a13225; line-height: 1.6; }
+.thinking-help { flex-shrink: 0; }
+.thinking-help > summary { display: flex; align-items: center; justify-content: center; min-width: 26px; min-height: 26px; cursor: pointer; list-style: none; border-radius: 50%; }
+.thinking-help > summary::-webkit-details-marker { display: none; }
+.thinking-help > summary:hover, .thinking-help[open] > summary { color: var(--sage); background: #e9f0e7; }
+.thinking-help-content { position: absolute; z-index: 4; right: 0; top: 32px; width: 270px; max-width: 100%; padding: 12px 14px; border: 1px solid #cfdbce; border-radius: 10px; background: #fbfdf8; color: var(--ink-soft); box-shadow: 0 8px 24px #213c2420; font-size: 12px; line-height: 1.7; }
+.thinking-help-content p { margin: 0; }
+.thinking-help-content p + p { margin-top: 6px; }
+.simple-model-summary { display: grid; gap: 6px; padding: 12px 14px; border: 1px solid var(--hairline); border-radius: 11px; background: #f7f9f3; }
+.simple-model-summary > span { color: var(--muted); font-size: 12px; }
+.simple-model-summary > strong { font-size: 14px; color: var(--ink-soft); overflow-wrap: anywhere; }
+.model-role-settings + .model-role-settings { margin-top: 2px; }
+@media (max-width: 760px) {
+  .thinking-control :is(input, select) { min-height: 44px; font-size: 16px; }
+  .thinking-control-label { margin-bottom: 4px; font-size: 13px; }
+  .thinking-help > summary { min-width: 44px; min-height: 44px; }
+  .thinking-help-content { top: 48px; }
+}

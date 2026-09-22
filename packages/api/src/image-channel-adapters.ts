@@ -1,3 +1,5 @@
+import { callOfficialImageChannel } from './official-image-channels.js'
+import { callQianfanImageChannel } from './qianfan-image-channel.js'
 import { auditedChannelContract, assertChannelRequest, assertChannelSourceConstraints } from './audited-channel-contracts.js'
 import { IMAGE_CHANNEL_ROUTES } from './image-channel-routes.js'
 import { briaStructuredInstruction, refineControlsFor, refineInputIssue, type RefineInputs } from './refine-controls.js'
@@ -154,8 +156,13 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   if (input.edit && !input.source) throw new Error('精修控制需要原图。')
   if ((input.edit?.references?.length || 0) !== (input.edit?.inputs.references?.length || 0)) throw new Error('参考图传输数量与输入不一致。')
   if (Boolean(input.edit?.mask) !== Boolean(input.edit?.inputs.mask)) throw new Error('遮罩传输与输入不一致。')
-  try { return await executeImageChannel(input, io) }
+  try {
+    if (input.provider==='sensenova'||input.provider==='stepfun') return await callOfficialImageChannel(input,io)
+    if (input.provider==='qianfan') return await callQianfanImageChannel(input,io)
+    return await executeImageChannel(input, io)
+  }
   catch (error: any) {
+    if (error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent') throw error
     const pending = await io.pending?.()
     if (pending && !pending.failed && !error.terminal) {
       throw Object.assign(new Error('已保存原渠道任务；可恢复查询或下载，不会重新生成。'), {name:'ImageChannelError', recoveryAction:'resume', pollOnly:true, uncertain:false, requestState:'unknown'})
@@ -254,7 +261,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
         state=await submit('https://tokenhub.tencentmaas.com'+prepared.endpoint,prepared.body)
         if(!state.task_id)throw unknown()
         await save({taskId:String(state.task_id),state})
-      } catch(error:any) {if(checkpoint?.failed)throw error;throw unknown()}
+      } catch(error:any) {if(checkpoint?.failed || error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent')throw error;throw unknown()}
     }
     const deadline=io.now()+(io.pollTimeoutMs??600000)
     while(io.now()<deadline) {

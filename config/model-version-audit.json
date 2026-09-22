@@ -25609,6 +25609,1395 @@
       ],
       "idEvidence": "official-doc",
       "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "xai",
+      "apiModelId": "grok-4.7",
+      "displayName": "Grok 4.7",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models/grok-4.7"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "官方无日期名称采用滚动别名规则；未公开确认更细的固定快照，不推造 dated ID。"
+    },
+    {
+      "channel": "xai",
+      "apiModelId": "grok-4.20-multi-agent-0309",
+      "displayName": "Grok 4.20 Multi-agent 0309",
+      "kind": "fixed",
+      "versionId": "grok-4.20-multi-agent-0309",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "官方模型目录列出该带日期快照 ID。"
+    },
+    {
+      "channel": "xai",
+      "apiModelId": "grok-4.20-multi-agent",
+      "displayName": "Grok 4.20 Multi-agent",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://docs.x.ai/developers/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "官方无日期名称采用滚动别名规则；未公开确认更细的固定快照，不推造 dated ID。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "sensenova-6.8-flash-lite",
+      "displayName": "SenseNova 6.8 Flash Lite",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "deepseek-v4-pro",
+      "displayName": "DeepSeek V4 Pro 0813",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "deepseek-v4-flash",
+      "displayName": "DeepSeek V4 Flash 0731",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "glm-5.2",
+      "displayName": "GLM-5.2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "kimi-k3",
+      "displayName": "Kimi K3",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "sensenova-u1.5-lite",
+      "displayName": "SenseNova U1.5 Lite",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "sensenova",
+      "apiModelId": "sensenova-u1.5-fast",
+      "displayName": "SenseNova U1.5 Fast",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-5-preview",
+      "displayName": "Step 5 Preview",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-3.7-flash",
+      "displayName": "Step 3.7 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-3.5-flash",
+      "displayName": "Step 3.5 Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-3.5-flash-2603",
+      "displayName": "Step 3.5 Flash 2603",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-1o-turbo-vision",
+      "displayName": "Step 1o Turbo Vision",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/welcome",
+        "https://platform.stepfun.com/docs/zh/api-reference/chat/chat-completion-create",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/models/vision",
+        "https://platform.stepfun.com/docs/zh/guides/developer/image-chat"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-2x-large",
+      "displayName": "Step 2x Large",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image2image"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "stepfun",
+      "apiModelId": "step-image-edit-2",
+      "displayName": "Step Image Edit 2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://platform.stepfun.com/docs/zh/guides/models/image",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
+        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
+        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
+        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
+        "https://platform.stepfun.com/docs/zh/api-reference/images/edits"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-5.1",
+      "displayName": "ERNIE 5.1",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-5.0",
+      "displayName": "ERNIE 5.0",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-5.0-thinking-preview",
+      "displayName": "ERNIE 5.0 Thinking Preview",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-5.0-thinking-latest",
+      "displayName": "ERNIE 5.0 Thinking Latest",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-5.0-thinking-exp",
+      "displayName": "ERNIE 5.0 Thinking Exp",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-4.5-turbo-32k",
+      "displayName": "ERNIE 4.5 Turbo 32K",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-4.5-turbo-128k",
+      "displayName": "ERNIE 4.5 Turbo 128K",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-4.5-turbo-20260402",
+      "displayName": "ERNIE 4.5 Turbo 20260402",
+      "kind": "fixed",
+      "versionId": "ernie-4.5-turbo-20260402",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-4.5-turbo-vl",
+      "displayName": "ERNIE 4.5 Turbo VL",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-4.5-turbo-vl-32k",
+      "displayName": "ERNIE 4.5 Turbo VL 32K",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4.1-flash",
+      "displayName": "DeepSeek-V4.1-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Kmh4stnjp",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4-pro-0813",
+      "displayName": "DeepSeek-V4-Pro-0813",
+      "kind": "fixed",
+      "versionId": "deepseek-v4-pro-0813",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4-pro",
+      "displayName": "DeepSeek-V4-Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4-flash-0731",
+      "displayName": "DeepSeek-V4-Flash-0731",
+      "kind": "fixed",
+      "versionId": "deepseek-v4-flash-0731",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v4-flash",
+      "displayName": "DeepSeek-V4-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v3.2",
+      "displayName": "DeepSeek-V3.2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Imkdq47r5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "internvl3-38b",
+      "displayName": "InternVL3-38B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-x1.1-preview",
+      "displayName": "ERNIE-X1.1-Preview",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "ernie-x1.1",
+      "displayName": "ERNIE-X1.1",
+      "kind": "rolling",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-flash",
+      "displayName": "DeepSeek-V4.1-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-v3.2-think",
+      "displayName": "DeepSeek-V3.2-Think",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Imkdq47r5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen3.5-397b-a17b",
+      "displayName": "Qwen3.5-397B-A17B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Mmh8l4qwj",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen3.5-122b-a10b",
+      "displayName": "Qwen3.5-122B-A10B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Mmh8l4qwj",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen3.5-27b",
+      "displayName": "Qwen3.5-27B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Mmh8l4qwj",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen3.5-35b-a3b",
+      "displayName": "Qwen3.5-35B-A3B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Mmh8l4qwj",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "glm-5.3-flash",
+      "displayName": "GLM-5.3-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan/s/Kmh4stnjp"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "glm-5.3",
+      "displayName": "GLM-5.3",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "glm-5.2",
+      "displayName": "GLM-5.2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "glm-5.1",
+      "displayName": "GLM-5.1",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "glm-5",
+      "displayName": "GLM-5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Wm95lyynv",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/6m8r1x5hz"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "kimi-k2.6",
+      "displayName": "Kimi-K2.6",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+        "https://cloud.baidu.com/doc/qianfan/s/zmh4stou3"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "deepseek-ocr",
+      "displayName": "DeepSeek-OCR",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm",
+        "https://cloud.baidu.com/doc/qianfan-api/s/6mhelwygh"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qianfan-ocr",
+      "displayName": "Qianfan-OCR",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
+        "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/fm8r1ndsm"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "musesteamer-air-image",
+      "displayName": "MuseSteamer Air Image",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Ymio9i9i4",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen-image",
+      "displayName": "Qwen Image",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "qianfan",
+      "apiModelId": "qwen-image-edit",
+      "displayName": "Qwen Image Edit",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-api/s/Rm9m76ekf",
+        "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "版本固定性只按本渠道证据，不继承研发方直连的快照绑定。"
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "spark-x2.5",
+      "displayName": "Spark-X2.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2624708664591360",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2624708664591360",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "spark-x2.5-4b",
+      "displayName": "Spark-X2.5-4B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2624338172569611",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2624338172569611",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "spark-x2.5-1.7b",
+      "displayName": "Spark-X2.5-1.7B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2624338063517705",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2624338063517705",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopglm53",
+      "displayName": "GLM-5.3",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2624337214014468",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2624337214014468",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopdeepseekv4pro0813",
+      "displayName": "DeepSeek-V4-Pro-0813",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2623634250738704",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2623634250738704",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopdeepseekv4flash0731",
+      "displayName": "DeepSeek-V4-Flash-0731",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2621705736811530",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2621705736811530",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopkimik27code",
+      "displayName": "Kimi-K2.7-Code",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2618407483895810",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2618407483895810",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopglm52",
+      "displayName": "GLM-5.2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2617642562957312",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2617642562957312",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopdeepseekv4flash",
+      "displayName": "DeepSeek-V4-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2614906572683265",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2614906572683265",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopkimik26",
+      "displayName": "Kimi-K2.6",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2614608753721354",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2614608753721354",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopdeepseekv4pro",
+      "displayName": "DeepSeek-V4-Pro",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2614028610448384",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2614028610448384",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopqwen36v35b",
+      "displayName": "Qwen3.6-35B-A3B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2611305318918153",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2611305318918153",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xsparkx2flash",
+      "displayName": "Spark-X2-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2611845619399681",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2611845619399681",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopglm51",
+      "displayName": "GLM-5.1",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2609906506466304",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2609906506466304",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xsparkx2",
+      "displayName": "Spark X2",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2610636408864769",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2610636408864769",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop35qwen2b",
+      "displayName": "Qwen3.5-2B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2607707690465290",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2607707690465290",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopqwen35397b",
+      "displayName": "Qwen3.5-397B-A17B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2605832307727360",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2605832307727360",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xminimaxm25",
+      "displayName": "MiniMax-M2.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2604642773721089",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2604642773721089",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopkimik25",
+      "displayName": "Kimi-K2.5",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2604233030352897",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2604233030352897",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xopglmv47flash",
+      "displayName": "GLM-4.7-Flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2602929848816649",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2602929848816649",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen32bvl",
+      "displayName": "Qwen3-VL-32B-Instruct",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2600830408912897",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2600830408912897",
+        "https://www.xfyun.cn/doc/spark/图像理解API-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen80bnext",
+      "displayName": "Qwen3-Next-80B-A3B-Instruct",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2526209096605696",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2526209096605696",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen30b",
+      "displayName": "Qwen3-30B-A3B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2511858193031168",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2511858193031168",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen32b",
+      "displayName": "Qwen3-32B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2512023007014913",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2512023007014913",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xdeepseekr1qwen32b",
+      "displayName": "DeepSeek-R1-Distill-Qwen-32B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2503957932827655",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2503957932827655",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen0b6",
+      "displayName": "Qwen3-0.6B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2512020731604992",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2512020731604992",
+        "https://www.xfyun.cn/doc/spark/推理服务-http.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen4b",
+      "displayName": "Qwen3-4B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2512022504747008",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2512022504747008",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen14b",
+      "displayName": "Qwen3-14B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2512021493763073",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2512021493763073",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xop3qwen8b",
+      "displayName": "Qwen3-8B",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2512020350815232",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2512020350815232",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xsparkprox",
+      "displayName": "Spark Max",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2429305505232896",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2429305505232896",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xspark13b6k",
+      "displayName": "Spark Lite",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2426304036509697",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2426304036509697",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "xqwen14bchat",
+      "displayName": "Qwen_v2.5_14b_Instruct",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/modelSquare/base/2434127415228418",
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/2434127415228418",
+        "https://www.xfyun.cn/doc/spark/产品使用说明.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact API ID confirmed; no promise of immutable weights/version binding."
+    },
+    {
+      "channel": "longcat",
+      "apiModelId": "LongCat-2.0",
+      "displayName": "LongCat 2.0",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/api/models.html",
+        "https://longcat.chat/platform/docs/zh/api/model.html",
+        "https://longcat.chat/platform/docs/zh/api/chat.html",
+        "https://longcat.chat/platform/docs/zh/api/messages.html",
+        "https://longcat.chat/platform/docs/zh/APIDocs.html",
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+        "https://longcat.chat/platform/docs/zh/Pricing/LongCat-2.0.html",
+        "https://longcat.chat/platform/docs/zh/api-pay-as-you-go",
+        "https://longcat.chat/platform/docs/zh/token-pack",
+        "https://longcat.chat/platform/docs/zh/FAQ.html"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Current exact API name; no documented immutable snapshot binding."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "x-ai/grok-4.7",
+      "displayName": "SpaceXAI: Grok 4.7",
+      "kind": "rolling",
+      "versionId": "x-ai/grok-4.7-20260916",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "OpenRouter 自身公开目录 ID 与 canonical_slug；该目录身份不证明原厂固定快照或账号权限，不套用原厂发布日期/价格。"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

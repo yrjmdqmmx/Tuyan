@@ -22,7 +22,7 @@ function buildOptimizationRequest(input) {
         throw new Error('请先在设置中选择可用的主模型。');
     const regions = (0, provider_regions_1.normalizeProviderRegions)(input.providerRegions);
     if (mainRoute.accessProvider === 'minimax' && regions.minimax === 'cn' && !(registry === null || registry === void 0 ? void 0 : registry.providerRegionContractVersion))
-        throw new Error('当前服务端尚未支持 MiniMax 国内区域。');
+        throw new Error('当前服务端尚未支持 稀宇科技国内区域。');
     const apiKey = (_a = (0, provider_regions_1.selectRegionApiKeys)(input.apiKeys, regions)[mainRoute.accessProvider]) === null || _a === void 0 ? void 0 : _a.trim();
     if (mainRoute.accessProvider === 'tokendance' && !input.tokenDanceConnected)
         throw new Error('请先到账户页连接观猹 TokenDance。');

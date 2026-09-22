@@ -21,7 +21,7 @@ export function buildOptimizationRequest(input: {
   const model = findRegistryModel(registry, mainRoute?.accessProvider, mainRoute?.modelId)
   if (!model || model.selectable !== true || !model.roles.includes('main') || !modelAvailableInRegion(mainRoute.accessProvider, model, input.providerRegions)) throw new Error('请先在设置中选择可用的主模型。')
   const regions = normalizeProviderRegions(input.providerRegions)
-  if (mainRoute.accessProvider === 'minimax' && regions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 MiniMax 国内区域。')
+  if (mainRoute.accessProvider === 'minimax' && regions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 稀宇科技国内区域。')
   const apiKey = selectRegionApiKeys(input.apiKeys, regions)[mainRoute.accessProvider]?.trim()
   if (mainRoute.accessProvider === 'tokendance' && !input.tokenDanceConnected) throw new Error('请先到账户页连接观猹 TokenDance。')
   if (mainRoute.accessProvider !== 'tokendance' && !apiKey) throw new Error('请先在设置中填写当前主模型接入渠道的密钥。')

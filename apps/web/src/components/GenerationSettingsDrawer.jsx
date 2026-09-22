@@ -1,9 +1,11 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useRef } from 'react'
 import { Settings2, X } from 'lucide-react'
 
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 export default function GenerationSettingsDrawer({ open, onClose, focusSetting = '', children }) {
+  const { t } = useAppLocale()
   const titleId = useId()
   const panelRef = useRef(null)
   const previousFocusRef = useRef(null)
@@ -76,9 +78,9 @@ export default function GenerationSettingsDrawer({ open, onClose, focusSetting =
         <header className="generation-drawer-head">
           <div>
             <span>Generation controls</span>
-            <h2 id={titleId}><Settings2 size={19} /> 生成设置</h2>
+            <h2 id={titleId}><Settings2 size={19} />{t(" 生成设置")}</h2>
           </div>
-          <button type="button" aria-label="关闭生成设置" onClick={onClose}><X size={20} /></button>
+          <button type="button" aria-label={t("关闭生成设置")} onClick={onClose}><X size={20} /></button>
         </header>
         <div className="generation-drawer-body">{children}</div>
       </aside>

@@ -1,3 +1,4 @@
+import { useAppLocale } from './components/BenchmarkLocale.jsx'
 import GenerationWorkspace, { GenerationInputPanel } from './components/GenerationWorkspace';
 import useRefineReferences from './hooks/useRefineReferences';
 import { refineInputIssue } from './lib/refineControls';
@@ -86,6 +87,8 @@ import useRefineUpload from './hooks/useRefineUpload';
 import { refineUploadLimits, validateRefineDimensions, validateRefineFile, readImageDimensions } from './lib/refineUpload';
 import JobStatus from './components/JobStatus';
 import ModelRoutingSettings from './components/ModelRoutingSettings';
+import ThinkingSettings from './components/ThinkingSettings';
+import {thinkingIdentities, reconcileThinkingSettings, rememberThinkingSettings, readThinkingSettings, saveThinkingSettings, buildThinkingSubmission} from './lib/thinkingSettings';
 import ReferenceUploadPanel from './components/ReferenceUploadPanel';
 import Select from './components/Select';
 import TaskRecordsPanel from './components/TaskRecordsPanel';
@@ -131,6 +134,7 @@ function emptyInputOptimizationUndos() {
 }
 
 export default function App() {
+  const { t } = useAppLocale()
   useVisualViewport();
   const compactLayout = useCompactLayout();
   const authSession = useAuthSession();
@@ -203,6 +207,7 @@ export default function App() {
   const [infographicCategory, setInfographicCategory] = useState('method_framework');
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
+  const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
   const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
@@ -296,23 +301,35 @@ export default function App() {
   const activeModelRoutes = accessMode === 'custom' ? customRoutes : isAdvancedMode ? modelRoutes : simpleModelRoutes;
   const providerConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.main.accessProvider], modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]);
   const imageProviderConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.image.accessProvider], modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]);
-  const visionProviderConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.vision.accessProvider], modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]);
-  const defaultMainModelLabel = modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find(model => model.id === activeModelRoutes.main.modelId)?.label || findModelLabel(providerConfig.mainModels, activeModelRoutes.main.modelId);
-  const defaultImageModelLabel = modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find(model => model.id === activeModelRoutes.image.modelId)?.label || findModelLabel(imageProviderConfig.imageModels, activeModelRoutes.image.modelId);
-  const defaultVisionModelLabel = modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find(model => model.id === activeModelRoutes.vision.modelId)?.label || findModelLabel(visionProviderConfig.visionModels || [], activeModelRoutes.vision.modelId);
   const activeMainModelName = activeModelRoutes.main.modelId;
   const activeImageGenModelName = activeModelRoutes.image.modelId;
   const activeReferenceVisionModelName = activeModelRoutes.vision.modelId;
   const activeMainRegistryEntry = accessMode === 'custom' ? customEntries.main : modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
   const activeImageRegistryEntry = accessMode === 'custom' ? customEntries.image : modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
   const activeVisionRegistryEntry = accessMode === 'custom' ? customEntries.vision : modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
+  const thinkingIdentity = thinkingIdentities(activeModelRoutes, {main:activeMainRegistryEntry, vision:activeVisionRegistryEntry, image:activeImageRegistryEntry}, providerRegions);
+  const thinkingIdentityKey = JSON.stringify(thinkingIdentity);
+  const thinkingSettings = reconcileThinkingSettings(savedThinking, thinkingIdentity);
+  useEffect(() => {
+    if (!modelRegistry) return;
+    setSavedThinking(current => {
+      const next = rememberThinkingSettings(reconcileThinkingSettings(current, JSON.parse(thinkingIdentityKey)), current);
+      saveThinkingSettings(next);
+      return next;
+    });
+  }, [thinkingIdentityKey, Boolean(modelRegistry)]);
+  function changeThinking(role, selection) {
+    const next = rememberThinkingSettings({...thinkingSettings, roles:{...thinkingSettings.roles,[role]:selection}}, savedThinking);
+    setSavedThinking(next);
+    saveThinkingSettings(next);
+  }
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, accessMode === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
   const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
     apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
   });
   const refineControls = Number(modelRegistry?.refineControlsContractVersion) >= 1 ? activeImageRegistryEntry?.capabilities?.refineControls : null;
-  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,activeModelRoutes.image,'refine');
+  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,accessMode === 'custom' && !customEntries.image.selectable ? undefined : activeModelRoutes.image,'refine');
   refineReferencePolicy.maxCount = Math.min(refineReferencePolicy.platform.maxCount,Math.max(0,(refineControls?.maxImages || 1)-1));
   const refineReferences = useRefineReferences({apiBase:apiBaseNormalized,health,ownerId:currentUser?.id || '',policy:refineReferencePolicy});
   const refineInputDraft = {version:1,references:refineReferences.images.map(image=>({objectKey:image.id,purpose:image.purpose,note:image.note})),...(refineMask?.strokes?.length ? {mask:{objectKey:'pending-mask'}} : {}),...(refineStructuredEnabled ? {structured:refineStructured} : {})};
@@ -847,8 +864,12 @@ export default function App() {
     if (nextMode === configurationMode) return;
     if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
     if (nextMode === 'simple') {
-      setProvider(activeModelRoutes.main.accessProvider);
-      setSimpleModelRoutes(providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS));
+      const defaults = providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS);
+      // A text-only channel cannot supply a simple preset; retain the previous complete preset.
+      if (defaults) {
+        setProvider(activeModelRoutes.main.accessProvider);
+        setSimpleModelRoutes(defaults);
+      }
     }
     arkProbeGenerationRef.current += 1;
     arkActiveProbeRequestRef.current = 0;
@@ -948,7 +969,7 @@ export default function App() {
       return null;
     }
     if (mainRoute.accessProvider === 'minimax' && minimaxRegion(providerRegions) === 'cn' && !modelRegistry?.providerRegionContractVersion) {
-      setInputOptimizationGuidance('当前服务端尚未支持 MiniMax 国内区域，请等待服务端更新。');
+      setInputOptimizationGuidance('当前服务端尚未支持 稀宇科技国内区域，请等待服务端更新。');
       return null;
     }
     const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
@@ -1094,6 +1115,7 @@ export default function App() {
     let modelSubmission;
     try {
       modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, createRouteRoles, 'generation'));
     } catch (routingError) {
       setGenerationFocusSetting('configuration-mode');
       setShowGenerationSettings(true);
@@ -1332,6 +1354,7 @@ export default function App() {
     let modelSubmission;
     try {
       modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, refineRouteRoles, 'editing'));
     } catch (routingError) {
       setRefineError(routingError.message);
       setGenerationFocusSetting('configuration-mode');
@@ -1355,6 +1378,7 @@ export default function App() {
         apiKeys: scopedApiKeys,
         modelRoutes: modelSubmission.modelRoutes,
         providerRegions: modelSubmission.providerRegions,
+        thinkingConfig: modelSubmission.thinkingConfig,
         mainModelName: modelSubmission.mainModelName,
         imageModelName: modelSubmission.imageGenModelName,
         referenceVisionModelName: modelSubmission.referenceVisionModelName,
@@ -1398,13 +1422,16 @@ export default function App() {
     await loadUserJobs();
   }
 
+  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} />;
+
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
         configurationMode={configurationMode}
         accessMode={accessMode}
         onAccessModeChange={setAccessMode}
-        universalSettings={<UniversalApiSettings drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+        renderThinkingSettings={renderThinkingSettings}
+        universalSettings={<UniversalApiSettings renderThinkingSettings={renderThinkingSettings} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
           onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
@@ -1441,50 +1468,47 @@ export default function App() {
 
       {workspaceTab === 'refine' ? (
         <div className="refine-settings-note" role="note">
-          {refineResolutionOptions.length
-            ? `精修固定输出 PNG；清晰度（${refineImageSize}）与目标比例（${refineAspectRatio}）请在精修面板设置。`
-            : '精修固定输出 PNG；当前图像模型未声明可执行的精修清晰度，请更换模型。'}
+          {t(refineResolutionOptions.length
+            ? t('精修固定输出 PNG；清晰度（{size}）与目标比例（{ratio}）请在精修面板设置。', {size: refineImageSize, ratio: refineAspectRatio})
+            : '精修固定输出 PNG；当前图像模型未声明可执行的精修清晰度，请更换模型。')}
         </div>
       ) : (<>
         <div className="output-format-field">
-          <Select label="导出格式" value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
+          <Select label={t("导出格式")} value={outputFormat} onChange={setOutputFormat} options={OUTPUT_FORMATS} />
           {outputFormat === 'svg'
-            ? <div className="plot-note svg-output-note">SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。</div>
-            : <Select label="输出清晰度" value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
+            ? <div className="plot-note svg-output-note">{t("SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。")}</div>
+            : <Select label={t("输出清晰度")} value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
         </div>
-        <AspectRatioPicker emptyMessage={accessMode === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined} label="画面比例" value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
+        <AspectRatioPicker emptyMessage={t(accessMode === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined)} label={t("画面比例")} value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
 
         {!isAdvancedMode ? (
-        <div className="default-summary" aria-label="默认生成配置">
-          <span>主模型：{defaultMainModelLabel}</span>
-          <span>图像：{defaultImageModelLabel}</span>
-          <span>识别：{defaultVisionModelLabel}</span>
-          <span>规划器 + 评审器</span>
-          <span>{aspectRatio === 'auto' ? '自动比例' : aspectRatio}</span>
-          <span>{formatOutputFormat(outputFormat)}</span>
+        <div className="default-summary" aria-label={t("默认生成配置")}>
+          <span>{t("规划器 + 评审器")}</span>
+          <span>{t(aspectRatio === 'auto' ? '自动比例' : aspectRatio)}</span>
+          <span>{t(formatOutputFormat(outputFormat))}</span>
         </div>
         ) : (
         <>
           {CUSTOM_API_BASE_ENABLED ? (
             <label className="field">
-              <span>开发后端地址</span>
-              <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder="仅本地开发构建可修改" />
+              <span>{t("开发后端地址")}</span>
+              <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder={t("仅本地开发构建可修改")} />
             </label>
           ) : (
-            <div className="service-boundary-note"><ShieldCheck size={16} />{accessMode === 'custom' ? '请求经图研后端转发至你明确配置并通过安全校验的模型服务地址；密钥仅用于对应接入。' : '已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。'}</div>
+            <div className="service-boundary-note"><ShieldCheck size={16} />{t(accessMode === 'custom' ? '请求经图研后端转发至你明确配置并通过安全校验的模型服务地址；密钥仅用于对应接入。' : '已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。')}</div>
           )}
 
           <div className="settings-grid">
-            <Select label="生成流程" value={pipelineMode} onChange={setPipelineMode} options={[
+            <Select label={t("生成流程")} value={pipelineMode} onChange={setPipelineMode} options={[
               ['demo_planner_critic', '规划器 + 评审器'],
               ['demo_full', '完整流程'],
               ['vanilla', '基础生成'],
             ]} />
-            <Select label="检索设置"
+            <Select label={t("检索设置")}
               value={referenceImages.length ? 'none' : retrievalSetting}
               onChange={setRetrievalSetting}
               disabled={referenceImages.length > 0}
-              hint={referenceImages.length ? '已上传参考图，检索自动关闭（以参考图为唯一风格来源）' : ''}
+              hint={t(referenceImages.length ? '已上传参考图，检索自动关闭（以参考图为唯一风格来源）' : '')}
               options={[
               ['none', '不使用检索'],
               ['auto', '自动检索'],
@@ -1492,27 +1516,27 @@ export default function App() {
               ['manual', '手动参考'],
             ]} />
             <label className="field compact">
-              <span>候选图数量</span>
+              <span>{t("候选图数量")}</span>
               <input type="number" min="1" max="3" value={numCandidates} onChange={(event) => setNumCandidates(event.target.value)} />
             </label>
             <label className="field compact">
-              <span>评审轮数</span>
+              <span>{t("评审轮数")}</span>
               <input type="number" min="0" max={INPUT_LIMITS.maxCriticRounds} value={maxCriticRounds} onChange={(event) => setMaxCriticRounds(event.target.value)} />
-              <small>最多 {INPUT_LIMITS.maxCriticRounds} 轮；候选图与评审轮数会增加模型调用费用。</small>
+              <small>{t("最多 ")}{INPUT_LIMITS.maxCriticRounds}{t(" 轮；候选图与评审轮数会增加模型调用费用。")}</small>
             </label>
           </div>
 
           {accessMode !== 'custom' && selectedModelNotes.length ? (
-            <div className="model-availability-notes" aria-label="模型可用性说明">
+            <div className="model-availability-notes" aria-label={t("模型可用性说明")}>
               {selectedModelNotes.map((model) => (
-                <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{model.availabilityNotes || '服务端目录可用'} · {formatLifecycle(model.lifecycle)} · {formatVerification(model)}{model.entitlement ? ` · 权益：${model.entitlement}` : model.requiresEntitlement ? ' · 需开通模型权益' : ' · 无额外权益'}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
+                <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{t(model.availabilityNotes || '服务端目录可用')} · {formatLifecycle(model.lifecycle)} · {formatVerification(model)}{t(model.entitlement ? ` · 权益：${model.entitlement}` : model.requiresEntitlement ? ' · 需开通模型权益' : ' · 无额外权益')}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
               ))}
             </div>
           ) : null}
 
           {referenceImages.length ? (
             <div className="reference-mode-panel">
-              <span>参考图处理方式</span>
+              <span>{t("参考图处理方式")}</span>
               <div className="reference-mode-switch">
                 {REFERENCE_IMAGE_MODES.map(([id, label]) => (
                   <button
@@ -1522,7 +1546,7 @@ export default function App() {
                     disabled={id === 'main_model' && !canSelectMainModelDirect}
                     onClick={() => setReferenceImageMode(id)}
                   >
-                    {label}
+                    {t(label)}
                   </button>
                 ))}
               </div>
@@ -1533,13 +1557,13 @@ export default function App() {
           {health?.mock_enabled ? (
             <label className="mock-switch">
               <input type="checkbox" checked={mock} onChange={(event) => setMock(event.target.checked)} />
-              <span>模拟模式</span>
+              <span>{t("模拟模式")}</span>
             </label>
           ) : null}
 
           {retrievalSetting === 'manual' && !referenceImages.length ? (
             <div data-focus-setting="manual-reference" tabIndex={-1}>
-              <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入参考图库</div>}>
+              <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />{t("正在载入参考图库")}</div>}>
                 <ReferenceLibraryPanel
                   references={referenceLibrary}
                   selectedIds={manualReferenceIds}
@@ -1561,18 +1585,18 @@ export default function App() {
 
   return (
     <main className={`app-shell${activeTab === 'account' ? ' account-view' : ''}`}>
-      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label="本地消费测试"><strong>已连接正式图研账号服务 · 观猹 TokenDance 消费预览</strong><p>使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。</p><small>本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">正式图研</a>查看。初始为 1 张候选图、0 轮评审。</small></section>}
+      {LOCAL_CONSUMPTION_TEST && <section className="tokendance-panel" aria-label={t("本地消费测试")}><strong>{t("已连接正式图研账号服务 · 观猹 TokenDance 消费预览")}</strong><p>{t("使用你已有的图研账号登录，再连接观猹 TokenDance。生成、精修和优化输入会使用真实观猹 TokenDance 余额。")}</p><small>{t("本次预览的任务、图片和渠道授权保存在本机，线上历史记录可在")}<a href="https://www.paperbanana.asia/" target="_blank" rel="noreferrer">{t("正式图研")}</a>{t("查看。初始为 1 张候选图、0 轮评审。")}</small></section>}
       <WorkbenchHeader currentUser={currentUser} onGuide={() => selectTab('guide')} onAdmin={isAdmin ? () => selectTab('admin') : undefined} onContact={() => setShowContactDialog(true)} onFeedback={openFeedbackDialog}
         onMiniProgram={() => setShowMiniProgramDialog(true)} onAgentConnection={() => setShowAgentConnection(true)}
         onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} onAccount={openAccount} />
 
-      {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>查看账户</button></div>}
+      {activeTab !== 'account' && (tokenDance.notice || tokenDance.error) && <div className="service-alert" role="status">{tokenDance.error || tokenDance.notice}<button type="button" className="account-button" onClick={openAccount}>{t("查看账户")}</button></div>}
       {healthError ? (
-        <div className="service-alert" role="status"><AlertTriangle size={16} />后端连接异常：{formatErrorMessage(healthError)}</div>
+        <div className="service-alert" role="status"><AlertTriangle size={16} />{t("后端连接异常：")}{formatErrorMessage(healthError)}</div>
       ) : null}
-      {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">已保留所选模型：{selectedCatalogIssues.join('；')} {accessMode === 'custom' ? '输入内容保持不变，请打开完整设置补充或修正当前接入配置。' : '输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。'}</div>}
+      {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">{t("已保留所选模型：")}{selectedCatalogIssues.join('；')} {t(accessMode === 'custom' ? '输入内容保持不变，请打开完整设置补充或修正当前接入配置。' : '输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。')}</div>}
       {authSession.error ? (
-        <div className="service-alert" role="status"><AlertTriangle size={16} />登录状态检查失败：{formatErrorMessage(authSession.error.message || String(authSession.error))}</div>
+        <div className="service-alert" role="status"><AlertTriangle size={16} />{t("登录状态检查失败：")}{formatErrorMessage(authSession.error.message || String(authSession.error))}</div>
       ) : null}
 
       {showAccountDialog && currentUser ? (
@@ -1625,7 +1649,7 @@ export default function App() {
       {AUTH_REQUIRED && authSession.isPending ? (
         <section className="auth-panel">
           <Loader2 className="spin" size={24} />
-          <p>正在检查登录状态</p>
+          <p>{t("正在检查登录状态")}</p>
         </section>
       ) : AUTH_REQUIRED && !currentUser ? (
         <AuthPanel watcha={watcha} onAuthenticated={handleEmailAuthenticated} />
@@ -1646,7 +1670,7 @@ export default function App() {
       {['generate', 'refine'].includes(activeTab) && !(compactLayout && activeTab === 'generate') && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
 
       {activeTab === 'account' && (
-        <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} onReturn={returnFromAccount} returnLabel={accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台'} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
+        <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} onReturn={returnFromAccount} returnLabel={t(accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台')} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
       )}
       <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
       {workspaceTab === 'generate' ? (
@@ -1656,22 +1680,22 @@ export default function App() {
           template={<FeaturedTemplateStudio templates={featuredTemplates} isDirty={inputIsDirty} onApply={applyFeaturedTemplate} />}
           connection={AUTH_UI_ENABLED && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') ? <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} /> : null}
           controls={<form className="generation-form" onSubmit={submitJob}>
-          <section className="generation-settings-summary" role="region" aria-label="当前生成设置">
+          <section className="generation-settings-summary" role="region" aria-label={t("当前生成设置")}>
             <div className="generation-settings-summary-head">
-              <div><span>当前生成设置</span><strong>路由与输出一眼确认</strong></div>
-              <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>打开完整设置</span></button>
+              <div><span>{t("当前生成设置")}</span><strong>{t("路由与输出一眼确认")}</strong></div>
+              <button type="button" className="generation-settings-trigger" onClick={() => { setGenerationFocusSetting(''); setShowGenerationSettings(true) }}><Settings2 size={18} /><span>{t("打开完整设置")}</span></button>
             </div>
             <GenerationSummaryDetails outputLabel={`${outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`} · ${aspectRatio === 'auto' ? '自动比例' : aspectRatio}`}>
             <div className="generation-settings-facts">
-              <div><span>主模型</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
-              <div><span>图像模型</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
-              <div><span>识图模型</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
-              <div><span>画面比例</span><strong>{aspectRatio === 'auto' ? '自动' : aspectRatio}</strong></div>
-              <div><span>输出</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
+              <div><span>{t("主模型")}</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
+              <div><span>{t("图像模型")}</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
+              <div><span>{t("识图模型")}</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
+              <div><span>{t("画面比例")}</span><strong>{t(aspectRatio === 'auto' ? '自动' : aspectRatio)}</strong></div>
+              <div><span>{t("输出")}</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
             </GenerationSummaryDetails>
             <button className="primary-button" type="submit" disabled={isSubmitting || isUploadingReferences || isInspectingReferences}>
-              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{isInspectingReferences ? '检查参考图' : isUploadingReferences ? '上传参考图' : '生成候选图'}
+              {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{t(isInspectingReferences ? '检查参考图' : isUploadingReferences ? '上传参考图' : '生成候选图')}
             </button>
           </section>
 
@@ -1679,7 +1703,7 @@ export default function App() {
             <div className="error-line">
               <AlertTriangle size={16} /> {formatErrorMessage(error, errorContext)}
               {errorContext === 'poll-stopped' ? (
-                <button type="button" className="inline-retry" onClick={() => setPollRetryNonce((value) => value + 1)}>重新刷新</button>
+                <button type="button" className="inline-retry" onClick={() => setPollRetryNonce((value) => value + 1)}>{t("重新刷新")}</button>
               ) : null}
             </div>
           ) : null}
@@ -1691,23 +1715,21 @@ export default function App() {
             heading={<div className="section-head">
               <FileText size={20} />
               <div>
-                <h2>输入内容</h2>
-                <p>选择信息图类别，再粘贴论文方法部分和目标图注。</p>
+                <h2>{t("输入内容")}</h2>
+                <p>{t("选择信息图类别，再粘贴论文方法部分和目标图注。")}</p>
               </div>
             </div>}
             category={<><div className="input-options">
               <Select
-                label="信息图类别"
+                label={t("信息图类别")}
                 value={infographicCategory}
                 onChange={setInfographicCategory}
                 options={INFOGRAPHIC_CATEGORIES.map(([id, label]) => [id, label])}
               />
-              <p>{selectedInfographicCategory[2]}</p>
+              <p>{t(selectedInfographicCategory[2])}</p>
             </div>
             {isPlotCategory ? (
-              <div className="plot-note">
-                统计图由独立渲染服务生成，可能稍慢。
-              </div>
+              <div className="plot-note">{t("统计图由独立渲染服务生成，可能稍慢。")}</div>
             ) : null}</>}
             reference={<ReferenceUploadPanel
               images={referenceImages}
@@ -1726,7 +1748,7 @@ export default function App() {
             fields={<div className="two-col input-copy">
               <div className="field">
                 <div className="input-field-head">
-                  <label htmlFor="method-content">论文方法内容</label>
+                  <label htmlFor="method-content">{t("论文方法内容")}</label>
                   {inputOptimizationSupported ? (
                     <InputOptimizationFieldActions
                       target="methodContent"
@@ -1738,12 +1760,12 @@ export default function App() {
                   ) : null}
                 </div>
                 <textarea id="method-content" value={methodContent} onChange={(event) => handleInputValueChange('methodContent', event.target.value)} rows={12} maxLength={INPUT_LIMITS.methodContent} />
-                <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()} 字符</small>
+                <small>{methodContent.length.toLocaleString()} / {INPUT_LIMITS.methodContent.toLocaleString()}{t(" 字符")}</small>
               </div>
 
               <div className="field">
                 <div className="input-field-head">
-                  <label htmlFor="target-caption">目标图注</label>
+                  <label htmlFor="target-caption">{t("目标图注")}</label>
                   {inputOptimizationSupported ? (
                     <InputOptimizationFieldActions
                       target="caption"
@@ -1755,12 +1777,12 @@ export default function App() {
                   ) : null}
                 </div>
                 <textarea id="target-caption" value={caption} onChange={(event) => handleInputValueChange('caption', event.target.value)} rows={12} maxLength={INPUT_LIMITS.caption} />
-                <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()} 字符</small>
+                <small>{caption.length.toLocaleString()} / {INPUT_LIMITS.caption.toLocaleString()}{t(" 字符")}</small>
               </div>
             </div>}
             extras={<div className="field negative-prompt-field">
               <div className="input-field-head">
-                <label htmlFor="negative-prompt">负向提示词（可选）</label>
+                <label htmlFor="negative-prompt">{t("负向提示词（可选）")}</label>
                 {inputOptimizationSupported ? (
                   <InputOptimizationFieldActions
                     target="negativePrompt"
@@ -1771,16 +1793,16 @@ export default function App() {
                   />
                 ) : null}
               </div>
-              <textarea id="negative-prompt" value={negativePrompt} onChange={(event) => handleInputValueChange('negativePrompt', event.target.value)} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder="例如：避免文字拥挤、模糊箭头、装饰性背景。" />
-              <small>{negativePrompt.length.toLocaleString()} / {INPUT_LIMITS.negativePrompt.toLocaleString()} 字符</small>
+              <textarea id="negative-prompt" value={negativePrompt} onChange={(event) => handleInputValueChange('negativePrompt', event.target.value)} rows={4} maxLength={INPUT_LIMITS.negativePrompt} placeholder={t("例如：避免文字拥挤、模糊箭头、装饰性背景。")} />
+              <small>{negativePrompt.length.toLocaleString()} / {INPUT_LIMITS.negativePrompt.toLocaleString()}{t(" 字符")}</small>
             </div>}
           />}
           results={<div className="results-col">
             <div className="section-head results-head">
               <ImageIcon size={20} />
               <div>
-                <h2>生成结果</h2>
-                <p>{currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。'}</p>
+                <h2>{t("生成结果")}</h2>
+                <p>{t(currentJobId ? `任务编号 ${currentJobId}` : '提交任务后显示生成结果。')}</p>
               </div>
             </div>
             <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={job} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
@@ -1788,7 +1810,7 @@ export default function App() {
           </div>}
         />
       ) : workspaceTab === 'refine' ? (
-        <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />正在载入精修工具</div>}>
+        <Suspense fallback={<div className="loading-card"><Loader2 className="spin" size={18} />{t("正在载入精修工具")}</div>}>
           <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={refineJob} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />
           <RefinePanel
             controls={refineControls} references={refineReferences} referencePolicy={refineReferencePolicy} controlsIssue={refineControlsIssue}
@@ -1834,8 +1856,8 @@ export default function App() {
           />
         </Suspense>
       ) : workspaceTab === 'admin' ? (
-        isAdmin && currentUser ? <Suspense fallback={<p role="status">正在加载站长后台…</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /><TokenDancePricing apiBase={apiBaseNormalized} /></Suspense>
-          : <section className="card"><h2>站长运营后台</h2><p role="status">{authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。'}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>登录账号</button>}</section>
+        isAdmin && currentUser ? <Suspense fallback={<p role="status">{t("正在加载站长后台…")}</p>}><AdminWorkspace key={currentUser?.id} apiBase={apiBaseNormalized} health={health} /><TokenDancePricing apiBase={apiBaseNormalized} /></Suspense>
+          : <section className="card"><h2>{t("站长运营后台")}</h2><p role="status">{t(authSession.isPending ? '正在确认登录状态…' : '需要已登录的站长账号才能访问，后台接口会再次校验权限。')}</p>{!currentUser && <button onClick={() => setShowAuthPanel(true)}>{t("登录账号")}</button>}</section>
       ) : workspaceTab === 'guide' ? (
         <GuidePanel
           onStart={() => selectTab('generate')}
@@ -1887,11 +1909,6 @@ function extensionForMimeType(mimeType) {
   if (mimeType === 'image/webp') return 'webp';
   if (mimeType === 'image/svg+xml') return 'svg';
   return 'png';
-}
-
-function findModelLabel(options, value) {
-  const option = options.find(([id]) => id === value);
-  return option ? option[1] : value;
 }
 
 function formatLifecycle(value) {

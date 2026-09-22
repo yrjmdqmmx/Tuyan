@@ -1734,7 +1734,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-22.v23')
+    assert.equal(result.registryVersion, '2026-09-22.v24')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2986,7 +2986,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-22.v23')
+    assert.equal(registry.registryVersion, '2026-09-22.v24')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5324,7 +5324,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-22.v23')
+    assert.equal(registry.registryVersion, '2026-09-22.v24')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6539,6 +6539,8 @@ test('channel extensions: runtime dispatches every new selectable image option u
     if(url.includes('/vidu-image/')||url.includes('/vega-images/'))return Response.json({task_id:'task-fixture',state:'success',status:'completed',creations:[{url:'https://asset.invalid/output.png'}],data:[{url:'https://asset.invalid/output.png'}]})
     if(url.includes('/v1/wand/'))return Response.json({id:'tokenhub-fixture',data:[{url:'https://asset.invalid/output.png'}]})
     if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
+    if(url==='https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages')return Response.json({stop_reason:'end_turn',content:[{type:'text',text:'A scientific diagram.'}]})
+    if(/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com)\//.test(url))return Response.json({id:'fixture-official-image',data:[{url:'https://asset.invalid/output.png'}]})
     if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})
     if(url.startsWith('https://api.us1.bfl.ai/'))return Response.json({status:'Ready',result:{sample:'https://asset.invalid/output.png'}})
     if(url.startsWith('https://queue.fal.run/'))return Response.json(init?.method==='POST'?{status:'IN_QUEUE',request_id:'fixture',status_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status',response_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture'}:url.endsWith('/status')?{status:'COMPLETED'}:{images:[{url:'https://asset.invalid/output.png'}]})
@@ -6561,7 +6563,7 @@ test('channel extensions: runtime dispatches every new selectable image option u
           const start=calls.length
           if(role==='main')await legacy.callTextModel(provider,model.id,'extension-fixture-secret','system','plan a figure')
           else await legacy.callVisionModel(provider,model.id,'extension-fixture-secret','describe figure','caption',[{url:`data:image/png;base64,${raster}`,mimeType:'image/png',base64:raster}])
-          const call=calls.slice(start).find(call=>call.url.endsWith('/chat/completions')||call.url==='https://api.runware.ai/v1')!
+          const call=calls.slice(start).find(call=>call.url.endsWith('/chat/completions')||call.url.endsWith('/anthropic/v1/messages')||call.url==='https://api.runware.ai/v1')!
           assert.ok(call,`${provider}/${model.id}/${role}`);assert.equal((provider==='runware'?call.body[0]:call.body).model,model.id)
           assert.equal(call.headers.get('Authorization'),'Bearer extension-fixture-secret')
           if(provider==='minimax')assert.equal(call.body.reasoning_split,true)
@@ -6875,4 +6877,49 @@ test('live modelRegistry preserves OpenRouter canonical versions without substit
     assert.equal(models.find((m:any)=>m.id==='~deepseek/deepseek-pro-latest').version.id,'')
     assert.equal(models.find((m:any)=>m.id==='example/new-model').version.kind,'unconfirmed')
   } finally { legacy.configureRuntimeFetch() }
+})
+
+test('v24 xAI exact API IDs use Responses, preserve provider usage and do not leak reasoning as output',async()=>{
+  const legacy=await loadLegacy(),calls:any[]=[],records:any[]=[]
+  legacy.configureProviderWorkflow({run:(_t:any,op:any)=>op(),call:(_d:any,op:any)=>op(),scope:(_s:any,op:any)=>op(),key:async(k:string)=>k,record:async(r:any)=>records.push(r)})
+  legacy.configureRuntimeFetch(async(url,init)=>{calls.push({url:String(url),body:JSON.parse(String(init?.body))});return Response.json({id:'response-fixture',model:'provider-resolved',status:'completed',output:[{type:'reasoning',encrypted_content:'not-an-answer'},{type:'message',content:[{type:'output_text',text:'scientific plan'}]}],usage:{input_tokens:10,output_tokens:5,cost_in_usd_ticks:123450000}},{headers:{'x-request-id':'fixture-request'}})})
+  try{
+    for(const id of ['grok-4.7','grok-4.20-multi-agent-0309','grok-4.20-multi-agent']){
+      assert.equal(await legacy.callTextModel('xai',id,'fixture','system','plan'),'scientific plan')
+      assert.equal(calls.at(-1).url,'https://api.x.ai/v1/responses');assert.equal(calls.at(-1).body.model,id);assert.equal(calls.at(-1).body.tools,undefined)
+      assert.equal(records.at(-1).reportedCost.amount,.012345);assert.equal(records.at(-1).invoiceCost,null);assert.equal(records.at(-1).resolvedModel,'provider-resolved')
+    }
+    let attempts=0;legacy.configureRuntimeFetch(async()=>{attempts++;throw new Error('unknown transport')})
+    await assert.rejects(legacy.callTextModel('xai','grok-4.7','fixture','system','plan'));assert.equal(attempts,1)
+  }finally{legacy.configureRuntimeFetch();legacy.configureProviderWorkflow({run:(_t:any,op:any)=>op(),call:(_d:any,op:any)=>op(),scope:(_s:any,op:any)=>op(),key:async(k:string)=>k,record:async()=>{}})}
+})
+
+test('v24 xAI editing uses documented JSON singular or multiple images and rejects excess references before transport',async()=>{
+  const legacy=await loadLegacy(),bodies:any[]=[]
+  const raster=(await sharp({create:{width:1024,height:1024,channels:3,background:'#fff'}}).png().toBuffer()).toString('base64')
+  const source={base64:raster,mimeType:'image/png',dataUrl:'data:image/png;base64,'+raster}
+  legacy.configureRuntimeFetch(async(url,init)=>{assert.equal(String(url),'https://api.x.ai/v1/images/edits');bodies.push(JSON.parse(String(init?.body)));return Response.json({data:[{b64_json:raster}],usage:{cost_in_usd_ticks:100000000}})})
+  try{
+    await legacy.callImageModel('xai','grok-imagine-image-2.0','fixture','edit','1:1',source.dataUrl,'1K',true)
+    assert.equal(bodies.at(-1).image.url,source.dataUrl);assert.equal(bodies.at(-1).images,undefined)
+    const edit={references:Array.from({length:4},()=>source),inputs:{version:1 as const,references:Array.from({length:4},(_,i)=>({objectKey:'ref'+i,purpose:'content' as const}))}}
+    await legacy.callImageModel('xai','grok-imagine-image-2.0','fixture','edit','1:1',source.dataUrl,'1K',true,undefined,undefined,edit)
+    assert.equal(bodies.at(-1).images.length,5);assert.equal(bodies.at(-1).image,undefined)
+    edit.references.push(source);edit.inputs.references.push({objectKey:'extra',purpose:'content'})
+    await assert.rejects(legacy.callImageModel('xai','grok-imagine-image-2.0','fixture','edit','1:1',source.dataUrl,'1K',true,undefined,undefined,edit),/最多|不支持|数量/)
+    assert.equal(bodies.length,2)
+  }finally{legacy.configureRuntimeFetch()}
+})
+
+test('v24 retired xAI identities cannot silently execute a redirected replacement or propagate to hosted routes',async()=>{
+  const legacy=await loadLegacy();let calls=0
+  legacy.configureRuntimeFetch(async()=>{calls++;return Response.json({output_text:'wrong replacement'})})
+  try{
+    for(const id of ['grok-4-1-fast-reasoning','grok-4-1-fast-non-reasoning','grok-4-fast-reasoning','grok-4-fast-non-reasoning','grok-4-0709','grok-code-fast-1','grok-3','grok-imagine-image-pro']){
+      assert.equal(legacy.normalizeModelName('xai',id),id)
+      assert.equal(legacy.normalizeModelName('openrouter','x-ai/'+id),'x-ai/'+id)
+      await assert.rejects(legacy.callTextModel('xai',id,'fixture','system','plan'),/退役|停用/)
+    }
+    assert.equal(calls,0)
+  }finally{legacy.configureRuntimeFetch()}
 })

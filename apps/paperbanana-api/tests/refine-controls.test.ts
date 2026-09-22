@@ -106,10 +106,10 @@ test('refining an owned historical image freezes its orientation-corrected pixel
   } finally {await f.close()}
 })
 
-for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true]] as const) test(`${provider} ${scenario}: recovery never repeats billed submission`,async()=>{
+for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['stepfun','step-2x-large','lost-submit',false],['stepfun','step-2x-large','download',true]] as const) test(`${provider} ${scenario}: recovery never repeats billed submission`,async()=>{
   const f=await createRefineRuntime({tokenDance:true})
   try {
-    const source=await upload(f);f.setChannelFailure(scenario)
+    const source=await upload(f,['sensenova','qianfan','stepfun'].includes(provider)?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image);f.setChannelFailure(scenario)
     const submitted=await f.post(request(provider,model,source.objectKey));assert.equal(submitted.data.code,0,JSON.stringify(submitted));await f.legacy.drainJobAdmission()
     const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
     assert.equal(failed.status,'failed',JSON.stringify(failed));assert.equal(failed.recovery.canResume,resumable,JSON.stringify(failed));assert.equal(failed.recovery.channel,provider)

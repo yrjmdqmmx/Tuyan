@@ -13,7 +13,7 @@ export type RefineInputs = {
 export type ProviderMoney = {amount:number; currency:string; source?:string}
 export type ProviderPublicPrice = {source:string; checkedAt:string; amount:number|null; perMillionTokens?:{currency:string; market:string; input:number; output:number; cachedInput?:number}; accountTariffConfirmed?:boolean}
 export interface AuditedProviderCallRecord {
-  provider:'runware'|'tokenhub'|'xiaomi'|'fal'|'replicate'; model:string; requestId:string|null;
+  provider:'runware'|'tokenhub'|'xiaomi'|'fal'|'replicate'|'sensenova'|'stepfun'|'qianfan'|'iflytek'|'longcat'|'xai'; model:string; requestId:string|null;
   operation?:'text'|'vision'; resolvedModel?:string|null; usage?:Record<string,unknown>|null;
   publicPrice:ProviderPublicPrice; estimatedCost:ProviderMoney|null; reportedCost:ProviderMoney|null; invoiceCost:ProviderMoney|null;
   structuredInstruction?:unknown; version?:string; metrics?:Record<string,unknown>|null;

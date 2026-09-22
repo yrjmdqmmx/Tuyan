@@ -1,26 +1,29 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, LayoutTemplate, X } from 'lucide-react'
 import AccessibleDialog from './AccessibleDialog'
 import useCompactLayout from '../hooks/useCompactLayout'
 
 function TemplateArtwork({ template, className = '' }) {
+  const { t } = useAppLocale()
   if (template.imageUrl) {
-    return <img className={className} src={template.imageUrl} alt={`${template.title}参考图`} />
+    return <img className={className} src={template.imageUrl} alt={t("{v0}参考图", {v0: t(template.title)})} />
   }
   return (
-    <div className={`featured-template-placeholder ${className}`.trim()} role="img" aria-label={`${template.title}结构预览`}>
-      <span>结构预览</span>
+    <div className={`featured-template-placeholder ${className}`.trim()} role="img" aria-label={t("{v0}结构预览", {v0: t(template.title)})}>
+      <span>{t("结构预览")}</span>
       <div aria-hidden="true">
         <i />
         <b />
         <i />
       </div>
-      <strong>{template.title}</strong>
+      <strong>{t(template.title)}</strong>
     </div>
   )
 }
 
 function MobileTemplateCarousel({ templates, onPreview, reducedMotion, documentHidden }) {
+  const { t } = useAppLocale()
   const viewportRef = useRef(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [manualPaused, setManualPaused] = useState(false)
@@ -51,7 +54,7 @@ function MobileTemplateCarousel({ templates, onPreview, reducedMotion, documentH
     scrollToIndex(Math.max(0, Math.min(templates.length - 1, nearestIndex() + direction)), reducedMotion ? 'instant' : 'smooth')
   }
 
-  return <div className="mobile-template-carousel" aria-label="滑动浏览精选模板">
+  return <div className="mobile-template-carousel" aria-label={t("滑动浏览精选模板")}>
     <div ref={viewportRef} className="mobile-template-viewport" onScroll={() => setActiveIndex(nearestIndex())}
       onPointerDown={() => setManualPaused(true)} onWheel={() => setManualPaused(true)} onFocusCapture={() => setManualPaused(true)}
       onKeyDown={event => {
@@ -60,21 +63,22 @@ function MobileTemplateCarousel({ templates, onPreview, reducedMotion, documentH
         move(event.key === 'ArrowLeft' ? -1 : 1)
       }}>
       <div className="mobile-template-track">
-        {templates.map(template => <button type="button" className="mobile-template-card" key={template.id} aria-label={`预览模板 ${template.title}`} onClick={() => onPreview(template.id)}>
+        {templates.map(template => <button type="button" className="mobile-template-card" key={template.id} aria-label={t("预览模板 {v0}", {v0: t(template.title)})} onClick={() => onPreview(template.id)}>
           <TemplateArtwork template={template} />
-          <span className="mobile-template-caption"><strong>{template.title}</strong><small>{template.summary}</small></span>
+          <span className="mobile-template-caption"><strong>{t(template.title)}</strong><small>{t(template.summary)}</small></span>
         </button>)}
       </div>
     </div>
     <div className="mobile-template-controls">
-      <button type="button" aria-label="上一张模板" disabled={activeIndex === 0} onClick={() => move(-1)}><ArrowLeft size={18} /></button>
+      <button type="button" aria-label={t("上一张模板")} disabled={activeIndex === 0} onClick={() => move(-1)}><ArrowLeft size={18} /></button>
       <span className="mobile-template-position"><span>{templates.length ? activeIndex + 1 : 0} / {templates.length}</span></span>
-      <button type="button" aria-label="下一张模板" disabled={activeIndex >= templates.length - 1} onClick={() => move(1)}><ArrowRight size={18} /></button>
+      <button type="button" aria-label={t("下一张模板")} disabled={activeIndex >= templates.length - 1} onClick={() => move(1)}><ArrowRight size={18} /></button>
     </div>
   </div>
 }
 
 export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) {
+  const { t } = useAppLocale()
   const compact = useCompactLayout()
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [visibleCount, setVisibleCount] = useState(3)
@@ -163,7 +167,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
     <>
       <section
         className="featured-template-hero"
-        aria-label="精选学术图示模板"
+        aria-label={t("精选学术图示模板")}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
@@ -172,11 +176,10 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
         }}
       >
         <div className="featured-template-copy">
-          <h2>{compact ? '从模板开始' : '从真实研究图示开始'}</h2>
-          <p>{compact ? '选用参考结构，或直接填写下方内容。' : '图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。'}</p>
+          <h2>{t(compact ? '从模板开始' : '从真实研究图示开始')}</h2>
+          <p>{t(compact ? '选用参考结构，或直接填写下方内容。' : '图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。')}</p>
           <button type="button" className="featured-template-cta" onClick={() => openLibrary()}>
-            <LayoutTemplate size={17} />浏览模板
-          </button>
+            <LayoutTemplate size={17} />{t("浏览模板")}</button>
         </div>
         {compact ? <MobileTemplateCarousel templates={templates} onPreview={openLibrary} reducedMotion={reducedMotion} documentHidden={documentHidden || libraryOpen || confirmOpen} /> : <div className="featured-carousel">
           <div className="featured-carousel-viewport">
@@ -187,33 +190,33 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
               {templates.map((template) => (
                 <article className="featured-carousel-card" key={template.id}>
                   <TemplateArtwork template={template} />
-                  <div><span>{template.title}</span><small>{template.summary}</small></div>
+                  <div><span>{t(template.title)}</span><small>{t(template.summary)}</small></div>
                 </article>
               ))}
             </div>
           </div>
           <div className="featured-carousel-controls">
-            <button type="button" aria-label="上一张模板" onClick={() => setCarouselIndex((current) => current <= 0 ? maxIndex : current - 1)}><ArrowLeft size={17} /></button>
-            <div className="featured-carousel-dots" aria-label="模板轮播页">
+            <button type="button" aria-label={t("上一张模板")} onClick={() => setCarouselIndex((current) => current <= 0 ? maxIndex : current - 1)}><ArrowLeft size={17} /></button>
+            <div className="featured-carousel-dots" aria-label={t("模板轮播页")}>
               {carouselPositions.map((index) => (
                 <button
                   type="button"
                   key={index}
-                  aria-label={`查看第 ${index + 1} 张模板`}
+                  aria-label={t("查看第 {v0} 张模板", {v0: index + 1})}
                   aria-current={carouselIndex === index ? 'true' : undefined}
                   onClick={() => setCarouselIndex(index)}
                 />
               ))}
             </div>
-            <button type="button" aria-label="下一张模板" onClick={() => setCarouselIndex((current) => current >= maxIndex ? 0 : current + 1)}><ArrowRight size={17} /></button>
+            <button type="button" aria-label={t("下一张模板")} onClick={() => setCarouselIndex((current) => current >= maxIndex ? 0 : current + 1)}><ArrowRight size={17} /></button>
           </div>
         </div>}
       </section>
 
       <AccessibleDialog open={libraryOpen} onClose={() => setLibraryOpen(false)} labelledBy={libraryTitleId} describedBy={libraryDescriptionId} className="featured-template-dialog">
         <header className="featured-template-dialog-head">
-          <div><h2 id={libraryTitleId}>精选模板库</h2><p id={libraryDescriptionId}>先预览模板，再明确套用到输入区。</p></div>
-          <button type="button" aria-label="关闭精选模板库" onClick={() => setLibraryOpen(false)}><X size={18} /></button>
+          <div><h2 id={libraryTitleId}>{t("精选模板库")}</h2><p id={libraryDescriptionId}>{t("先预览模板，再明确套用到输入区。")}</p></div>
+          <button type="button" aria-label={t("关闭精选模板库")} onClick={() => setLibraryOpen(false)}><X size={18} /></button>
         </header>
         <div className="featured-template-grid">
           {templates.map((template) => (
@@ -221,31 +224,31 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
               type="button"
               className={`featured-template-card${selectedTemplate?.id === template.id ? ' active' : ''}`}
               key={template.id}
-              aria-label={`预览模板 ${template.title}`}
+              aria-label={t("预览模板 {v0}", {v0: t(template.title)})}
               aria-pressed={selectedTemplate?.id === template.id}
               onClick={() => setSelectedId(template.id)}
             >
               <TemplateArtwork template={template} />
-              <span>{template.title}</span>
-              <small>{template.summary}</small>
+              <span>{t(template.title)}</span>
+              <small>{t(template.summary)}</small>
               {selectedTemplate?.id === template.id ? <Check size={17} aria-hidden="true" /> : null}
             </button>
           ))}
         </div>
         {selectedTemplate ? (
           <aside className="featured-template-preview" aria-live="polite">
-            <div><span>{selectedTemplate.title}</span><p>{selectedTemplate.summary}</p></div>
-            <button type="button" className="primary-button" data-autofocus onClick={requestApply}>套用到输入区</button>
+            <div><span>{t(selectedTemplate.title)}</span><p>{t(selectedTemplate.summary)}</p></div>
+            <button type="button" className="primary-button" data-autofocus onClick={requestApply}>{t("套用到输入区")}</button>
           </aside>
         ) : null}
       </AccessibleDialog>
 
       <AccessibleDialog open={confirmOpen} onClose={cancelConfirmation} labelledBy={confirmTitleId} describedBy={confirmDescriptionId} className="featured-template-confirm">
-        <h2 id={confirmTitleId}>替换输入内容？</h2>
-        <p id={confirmDescriptionId}>你已修改方法内容、目标图注或负向提示词。继续会同时替换这三项内容。</p>
+        <h2 id={confirmTitleId}>{t("替换输入内容？")}</h2>
+        <p id={confirmDescriptionId}>{t("你已修改方法内容、目标图注或负向提示词。继续会同时替换这三项内容。")}</p>
         <div>
-          <button type="button" onClick={cancelConfirmation}>取消</button>
-          <button type="button" className="primary-button" onClick={confirmApply}>确认替换</button>
+          <button type="button" onClick={cancelConfirmation}>{t("取消")}</button>
+          <button type="button" className="primary-button" onClick={confirmApply}>{t("确认替换")}</button>
         </div>
       </AccessibleDialog>
     </>

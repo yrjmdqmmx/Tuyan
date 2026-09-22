@@ -1,14 +1,20 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import test from 'node:test'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import WorkbenchHeader from '../src/components/WorkbenchHeader.jsx'
 
 const read = (relative) => readFileSync(new URL(`../${relative}`, import.meta.url), 'utf8')
 
 test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry points', () => {
   assert.match(read('index.html'), /<title>图研Tuyan工作台<\/title>/u)
   const app = read('src/App.jsx') + read('src/components/WorkbenchHeader.jsx')
-  assert.match(app, /<h1>\{t\("图研Tuyan工作台"\)\}<\/h1>/u)
-  assert.match(app, /alt=\{t\("图研Tuyan 标志"\)\}/u)
+  const header = document.createElement('div')
+  header.innerHTML = renderToStaticMarkup(React.createElement(WorkbenchHeader))
+  assert.equal(header.querySelector('h1').textContent, '图研 Tuyan')
+  assert.equal(header.querySelector('h1').getAttribute('aria-label'), '图研Tuyan工作台')
+  assert.equal(header.querySelector('.brand-logo').getAttribute('alt'), '图研Tuyan 标志')
   assert.doesNotMatch(app, /Android 版|className="brand-tags"/u)
   const featured = read('src/components/FeaturedTemplateStudio.jsx')
   assert.match(featured, /图研Tuyan 是开源的学术图示工作台/u)
@@ -20,7 +26,7 @@ test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry 
   assert.match(guide, /图研Tuyan 客户端以开源方式维护/u)
   assert.doesNotMatch(guide, /PaperBanana 客户端以开源方式维护/u)
   const leaderboardRoot = read('src/components/LeaderboardRoot.jsx')
-  assert.match(leaderboardRoot, /<WorkbenchHeader section="leaderboard"/u)
+  assert.match(leaderboardRoot, /<WorkbenchHeader section=\{section\}/u)
   assert.doesNotMatch(leaderboardRoot, /PaperBanana 标志|<strong>PaperBanana<\/strong>|多智能体|学术图示生成/u)
   for (const legal of ['public/privacy-policy.html', 'public/terms-of-service.html']) {
     const source = read(legal)

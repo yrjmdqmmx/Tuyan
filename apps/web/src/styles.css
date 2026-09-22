@@ -1244,6 +1244,13 @@ button {
   color: var(--ink);
 }
 
+.header-links .header-primary-link[aria-current="page"] {
+  color: #28523f;
+  background: #e7eee6;
+  border-color: #c8d8cc;
+  font-weight: 750;
+}
+
 .auth-user {
   display: inline-flex;
   align-items: center;
@@ -5785,3 +5792,26 @@ figcaption {
 .refine-structured-fields label { display:grid; gap:6px; font-size:12px; }
 .refine-process-details pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; }
 @media (max-width:600px) { .refine-structured-fields { grid-template-columns:1fr; } .refine-mask-tools { gap:8px; } }
+
+/* A single language action shared by all site headers. */
+.site-language-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 13px;
+  flex-shrink: 0;
+  border: 1px solid #bed0c5;
+  border-radius: 999px;
+  background: #f0f6f2;
+  color: #285a4b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.site-language-switch:hover { background: #e1eee5; border-color: #749b86; }
+.site-language-switch:focus-visible { outline: 3px solid #bd873e; outline-offset: 3px; }
+html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }

@@ -19,7 +19,7 @@ import AuthUnavailablePanel from './AuthUnavailablePanel.jsx'
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
 import BenchmarkPage from './BenchmarkPage.jsx'
 import FeedbackDialog from './FeedbackDialog.jsx'
-import { BenchmarkLocaleProvider, BenchmarkLanguageSwitch, useBenchmarkLocale } from './BenchmarkLocale.jsx'
+import { BenchmarkLocaleProvider, useBenchmarkLocale } from './BenchmarkLocale.jsx'
 
 const AccountSettingsDialog = lazy(() => import('./AccountSettingsDialog.jsx'))
 
@@ -106,7 +106,7 @@ function activeNav(route) {
   return 'leaderboard'
 }
 
-export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onSignOut, onContact, onMiniProgram, onAgentConnection, onAdmin,
+export function BenchmarkSiteHeader({ route = {}, section = 'leaderboard', onFeedback, onLogin, onAccount, onSignOut, onContact, onMiniProgram, onAgentConnection, onAdmin,
   onWorkspaceAccount = () => window.location.assign(appPath('/?view=account')),
   onGuide = () => window.location.assign(appPath('/?view=guide')),
 }) {
@@ -114,18 +114,23 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
   const auth = useLeaderboardSession()
   const user = auth.session?.user
   return <div className="app-shell benchmark-navigation-shell">
-    <WorkbenchHeader section="leaderboard" currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
+    <WorkbenchHeader section={section} currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
       onAccount={onAccount} onWorkspaceAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin}
       onContact={onContact} onFeedback={onFeedback} onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} />
-    <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /><BenchmarkLanguageSwitch /></div>
+    {section === 'leaderboard' && <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /></div>}
   </div>
 }
 
-export default function LeaderboardRoot(props) {
-  return <BenchmarkLocaleProvider><LeaderboardContent {...props} /></BenchmarkLocaleProvider>
+export default function LeaderboardRoot({ apiBase, backendMode, enabled, pathname, route }) {
+  return <BenchmarkLocaleProvider><SitePageShell apiBase={apiBase} backendMode={backendMode} route={route}>
+    {route.methodology
+      ? <BenchmarkMethodologyPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} showNavigation={false} />
+      : <BenchmarkPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} showNavigation={false} />}
+  </SitePageShell></BenchmarkLocaleProvider>
 }
 
-function LeaderboardContent({ apiBase, backendMode, enabled, pathname, route }) {
+// Public pages share one session provider and the same account / feedback actions.
+export function SitePageShell({ apiBase, backendMode, route = {}, section = 'leaderboard', children }) {
   const { t, locale } = useBenchmarkLocale()
   useVisualViewport()
   const auth = useLeaderboardSession()
@@ -184,7 +189,7 @@ function LeaderboardContent({ apiBase, backendMode, enabled, pathname, route }) 
 
   return (
     <div className="benchmark-site-shell">
-      <BenchmarkSiteHeader route={route} onFeedback={() => setShowFeedback(true)} onLogin={() => setShowAuth(true)} onAccount={() => setShowAccount(true)} onSignOut={signOut}
+      <BenchmarkSiteHeader route={route} section={section} onFeedback={() => setShowFeedback(true)} onLogin={() => setShowAuth(true)} onAccount={() => setShowAccount(true)} onSignOut={signOut}
         onContact={() => setShowContact(true)} onMiniProgram={() => setShowMiniProgram(true)} onAgentConnection={() => setShowAgentConnection(true)}
         onAdmin={userId && userId === adminIdentity?.userId && auth.generation === adminIdentity.generation ? () => window.location.assign(appPath('/?admin=overview')) : undefined} />
       <ContactDialog open={showContact} onClose={() => setShowContact(false)} />
@@ -196,9 +201,7 @@ function LeaderboardContent({ apiBase, backendMode, enabled, pathname, route }) 
         : <AuthUnavailablePanel onCancel={() => setShowAuth(false)} />) : null}
       {showAccount && auth.session?.user ? <Suspense fallback={null}><AccountSettingsDialog apiBase={apiBase} email={auth.session.user.email || ''} onClose={() => setShowAccount(false)} onDeleted={accountDeleted} /></Suspense> : null}
       <FeedbackDialog open={showFeedback} isSubmitting={feedbackPending} error={feedbackError} success={feedbackSuccess} onClose={closeFeedback} onSubmit={submitFeedback} />
-      {route.methodology
-        ? <BenchmarkMethodologyPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} showNavigation={false} />
-        : <BenchmarkPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} showNavigation={false} />}
+      {children}
     </div>
   )
 }
