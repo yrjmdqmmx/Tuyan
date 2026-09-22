@@ -6,11 +6,11 @@ import { compareVersions, groupPublishedUpdates, isChangelogPath, publishedVersi
 const data = JSON.parse(readFileSync(new URL('./data/changelog.json', import.meta.url), 'utf8'))
 test('independent product lines contain only published versions with their own numbering', () => {
   assert.deepEqual(validateChangelog(data), [])
-  assert.equal(publishedVersions(data, 'tuyan').length, 12)
+  assert.equal(publishedVersions(data, 'tuyan').length, 13)
   assert.equal(publishedVersions(data, 'benchmark').length, 5)
   assert.equal(publishedVersions(data, 'openacad').length, 4)
   assert.equal(publicEvents(data).length, 4)
-  assert.equal(versionLabel(data.entries[0]), 'Tuyan v3.7.1')
+  assert.equal(versionLabel(data.entries[0]), 'Tuyan v3.8.0')
   assert.equal(versionLabel(publishedVersions(data, 'benchmark')[0]), 'Tuyan Benchmark v2.5')
   assert.equal(versionLabel(publishedVersions(data, 'openacad')[0]), 'OpenAcad v1.1.0')
   assert.ok(compareVersions('2.10', '2.9') > 0)
@@ -27,7 +27,7 @@ test('owner-confirmed early versions and announcement-based 3.0.0 date are retai
   assert.equal(versions.find(entry => entry.version === '3.0.2').release.date, '2026-09-02')
 })
 for (const [name, mutate, expected] of [
-  ['draft version', copy => { copy.entries[0].release.status = 'unreleased' }, /only released versions/],
+  ['draft version', copy => { copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased' }, /only released versions/],
   ['local change', copy => { copy.entries[0].changes[0].state = 'local-verified' }, /unreleased changes/],
   ['invalid date', copy => { copy.entries[0].release.date = '2026-02-30' }, /calendar date/],
   ['future date', copy => { copy.entries[0].release.date = '2027-01-01' }, /calendar date/],
@@ -53,18 +53,18 @@ for (const [name, mutate, expected] of [
 ]) test(`validation rejects ${name}`, () => { const copy = structuredClone(data); mutate(copy); assert.match(validateChangelog(copy).join('\n'), expected) })
 test('runtime selection and anchors never expose a pending version or event', () => {
   const copy = structuredClone(data)
-  copy.entries[0].release.status = 'unreleased'
+  copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased'
   copy.events[0].status = 'pending'
-  assert.equal(publishedVersions(copy, 'tuyan').length, 11)
+  assert.equal(publishedVersions(copy, 'tuyan').length, 12)
   assert.equal(publicEvents(copy).length, 3)
   assert.equal(resolveChangelogAnchor(copy, 'watcha-login'), undefined)
   assert.equal(resolveChangelogAnchor(data, 'watcha-login'), 'v3-7-1')
   assert.equal(resolveChangelogAnchor(data, 'early-ranking-mai'), 'benchmark-v2-1')
   assert.equal(resolveChangelogAnchor(data, 'early-agent-tools'), 'agent-tools-release')
-  assert.equal(resolveChangelogAnchor(data, 'reference-budget'), undefined)
+  assert.equal(resolveChangelogAnchor(data, 'reference-budget'), 'v3-8-0')
 })
 test('drafts and independent drawing module stay outside the public archive', () => {
-  assert.doesNotMatch(JSON.stringify(data), /3\.8\.0|figure-studio|论文画布|历史微信公告整理稿/)
+  assert.doesNotMatch(JSON.stringify(data), /figure-studio|论文画布|历史微信公告整理稿/)
   assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /Benchmark v|MCP|微信小程序/)
   assert.ok(publishedVersions(data, 'tuyan').some(e => e.changes.some(c => c.text.includes('精修'))))
   assert.ok(publishedVersions(data, 'openacad').some(e => e.changes.some(c => c.text.includes('AB1'))))
@@ -77,10 +77,10 @@ test('direct, trailing-slash, static and base-path routes remain valid', () => {
 test('overview merges every public entry once and groups confirmed dates in descending order', () => {
   const before = structuredClone(data)
   const groups = groupPublishedUpdates(data)
-  assert.equal(groups[0].date, '2026-09-20')
+  assert.equal(groups[0].date, '2026-09-22')
   assert.deepEqual(groups.map(group => group.date), [...new Set(groups.map(group => group.date))].sort().reverse())
   const ids = groups.flatMap(group => group.items.map(item => item.entry.id))
-  assert.equal(new Set(ids).size, 25)
+  assert.equal(new Set(ids).size, 26)
   assert.deepEqual([...ids].sort(), [...data.entries, ...data.events].map(entry => entry.id).sort())
   assert.deepEqual(groups.find(group => group.date === '2026-09-07').items.map(item => item.entry.id), ['v3-5-0', 'openacad-v1-1-0', 'openacad-v1-0-2', 'openacad-v1-0-1', 'openacad-v1-0-0'])
   assert.equal(groups.find(group => group.date === '2026-09-04').items.length, 2)
@@ -89,7 +89,7 @@ test('overview merges every public entry once and groups confirmed dates in desc
 })
 test('new source records automatically appear in both views without dates or publication being inferred', () => {
   const copy = structuredClone(data)
-  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '3.7.2', release: { status: 'released', date: '2026-09-22', surfaces: ['Web'] } }
+  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '3.8.1', release: { status: 'released', date: '2026-09-24', surfaces: ['Web'] } }
   copy.entries.unshift(next)
   assert.equal(groupPublishedUpdates(copy)[0].items[0].entry, next)
   assert.equal(publishedVersions(copy, 'tuyan')[0], next)

@@ -1,0 +1,211 @@
+{
+  "version": "Tuyan v3.8.0",
+  "releasedAt": "2026-09-22T15:49:00Z",
+  "releaseDate": "2026-09-22",
+  "surfaces": [
+    "Web"
+  ],
+  "featureCommit": "d40f1a8c2be6e315ee00b45cceca1a832ca4521d",
+  "featurePr": 228,
+  "ciRuns": [
+    35747654742,
+    35747656958,
+    35748540418
+  ],
+  "coreImageRun": 35748579311,
+  "benchmarkImageRun": 35748584532,
+  "coreDeploymentRun": 35749194148,
+  "webFeatureDeploymentRun": 35749463448,
+  "images": {
+    "paperbanana-api": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:afb7a4f6ecac3d752c768709e99a187f35757a08161da1219f950124802a69aa",
+    "benchmark-worker": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:30464e8361886cf9ab3997f2f9a2b732e28400154832a6609c110108fd49f0a3"
+  },
+  "verification": {
+    "allFiveContainersHealthy": true,
+    "codeAndImageProvenanceMatch": true,
+    "unchangedEnvironmentFingerprintsExcludingCodeSha": true,
+    "maintenance": false,
+    "benchmarkExecutorEnabled": false,
+    "registry": {
+      "version": "2026-09-22.v24",
+      "thinkingContractVersion": 1,
+      "counts": {
+        "deepseek": 4,
+        "kimi": 4,
+        "zhipu": 28,
+        "siliconflow": 66,
+        "anthropic": 11,
+        "recraft": 16,
+        "xai": 12,
+        "gemini": 15,
+        "bailian": 178,
+        "openai": 66,
+        "ark": 32,
+        "bfl": 12,
+        "stability": 6,
+        "ideogram": 13,
+        "minimax": 10,
+        "mistral": 16,
+        "together": 48,
+        "fireworks": 23,
+        "fal": 42,
+        "replicate": 97,
+        "tokendance": 64,
+        "runware": 138,
+        "tokenhub": 41,
+        "xiaomi": 4,
+        "sensenova": 7,
+        "stepfun": 7,
+        "qianfan": 36,
+        "iflytek": 32,
+        "longcat": 1
+      },
+      "preservedUnavailable": [
+        "deepseek-v4-flash-vision-exp",
+        "deepseek-chat-v3-0324"
+      ],
+      "total": 1029,
+      "diffs": []
+    },
+    "webArtifacts": [
+      {
+        "path": "index.html",
+        "status": 200,
+        "bytes": 658,
+        "sha256": "1935d830774b04cf5ab960c23cad85798fda13b14877bf4a4a1b3ccb26ba5b61",
+        "matches": true
+      },
+      {
+        "path": "leaderboard/index.html",
+        "status": 200,
+        "bytes": 658,
+        "sha256": "c782ccd6a8b8f83d4f240465429128c012b43ab2735fc82bc415d6e4282947b5",
+        "matches": true
+      },
+      {
+        "path": "changelog/index.html",
+        "status": 200,
+        "bytes": 615,
+        "sha256": "d31278d16aa854424c23620ec347d77f19f4de99328ed502388df391ede454f4",
+        "matches": true
+      },
+      {
+        "path": "assets/not-found-K_dFyY8s.js",
+        "status": 200,
+        "bytes": 489,
+        "sha256": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+        "matches": true
+      },
+      {
+        "path": "assets/AdminWorkspace-1-NNYLN_.js",
+        "status": 200,
+        "bytes": 40658,
+        "sha256": "ba591feade21f5eb5b8e6fd94ddf03c9768ee21806e37479dc3faaf42119636a",
+        "matches": true
+      },
+      {
+        "path": "assets/main-Cywqm4HA.css",
+        "status": 200,
+        "bytes": 234340,
+        "sha256": "bf0ee42f8f91c260ffbb0e66453526304d4193939973b1ce8170e646b0fd7891",
+        "matches": true
+      },
+      {
+        "path": "assets/AccountSettingsDialog-w6aZbxQB.js",
+        "status": 200,
+        "bytes": 5779,
+        "sha256": "1a15986bec19caa37fe29b4c16538a0158e7c3bc36078516c7c1a2ddf848307c",
+        "matches": true
+      },
+      {
+        "path": "assets/ChangelogRoot-HCRUk1Bf.js",
+        "status": 200,
+        "bytes": 44775,
+        "sha256": "580e778b6d3b08e7cf0d805278dbf43013af6ece1b249bf67e0738b38b0b7e63",
+        "matches": true
+      },
+      {
+        "path": "assets/appPaths-Ba0fLi8f.js",
+        "status": 200,
+        "bytes": 1473,
+        "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+        "matches": true
+      },
+      {
+        "path": "assets/ReferenceLibraryPanel-ZUilcc2Z.js",
+        "status": 200,
+        "bytes": 85966,
+        "sha256": "c02d1d0c1bbb53de9a5ad4c89ea3752adc4ebecef85048a9f50f2525d28dfe46",
+        "matches": true
+      },
+      {
+        "path": "assets/upload-BW2eWB38.js",
+        "status": 200,
+        "bytes": 257,
+        "sha256": "a917fd60ba48dfffabdb47c32c68a6dc4e81f3b09be4771d700e3805004aa341",
+        "matches": true
+      },
+      {
+        "path": "assets/trash-2-ra5ytuFH.js",
+        "status": 200,
+        "bytes": 357,
+        "sha256": "32ce9ed97e490769d02d9e05c429723f8d0bc436ed35ac0f8db562fd307efca8",
+        "matches": true
+      },
+      {
+        "path": "assets/RefinePanel-Cx5UBfKj.js",
+        "status": 200,
+        "bytes": 13159,
+        "sha256": "2703d855dc8a622007627b87cb0605643715c245178e260b857ac367c0f556ab",
+        "matches": true
+      },
+      {
+        "path": "assets/main-DbFOgtNh.js",
+        "status": 200,
+        "bytes": 3827857,
+        "sha256": "50aed1393f8fbd8b1f0db8ef97510ba544a08b46fa01beeaa1ce5db757f566a1",
+        "matches": true
+      },
+      {
+        "path": "assets/jszip.min-nsimodmt.js",
+        "status": 200,
+        "bytes": 97144,
+        "sha256": "c24bea4d0f1bbc2657875478589734dcdc2b9b69c64a3bf87c17070961bb1af9",
+        "matches": true
+      }
+    ],
+    "browser": {
+      "checks": [
+        "Production registry enables independent inline thinking settings; default omission UI, provider switching and unsupported/custom hiding verified. No inference or uploads.",
+        "Workbench, leaderboard and changelog share navigation and global locale; public timeline is complete and dates descend.",
+        "390/320px production: visible language button, same four More-menu groups, no horizontal overflow in either language."
+      ],
+      "actions": [
+        "modelRegistry",
+        "referenceLibrary",
+        "benchmarkLeaderboard"
+      ],
+      "blocked": [],
+      "pageErrors": [],
+      "consoleErrors": [],
+      "httpErrors": []
+    },
+    "tests": {
+      "core": 1009,
+      "web": 518,
+      "mini": 121,
+      "sharedApi": 29,
+      "rootAndRetainedAndLaf": 30,
+      "deployment": 339
+    }
+  },
+  "boundaries": {
+    "paidInference": 0,
+    "recharge": 0,
+    "historicalTaskReplay": 0,
+    "wechatPlatformPublish": false,
+    "legacyLafDeployed": false,
+    "independentCanvasIncluded": false
+  },
+  "versionRecord": "The feature was deployed and verified before adding the public version entry. The version-record PR only updates Web changelog data, translations, tests and documentation."
+}
