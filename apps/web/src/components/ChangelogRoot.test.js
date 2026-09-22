@@ -7,36 +7,31 @@ import { LeaderboardSessionProvider } from './LeaderboardRoot.jsx'
 
 afterEach(cleanup)
 
-test('a direct entry fragment scrolls to its article after the lazy route mounts', () => {
+test('legacy published fragments scroll to the independent product entry', () => {
   const original = HTMLElement.prototype.scrollIntoView
   let target
   HTMLElement.prototype.scrollIntoView = function () { target = this.id }
   try {
-    window.history.replaceState({}, '', '/changelog#reference-budget')
+    window.history.replaceState({}, '', '/changelog#early-ranking-mai')
     render(React.createElement(ChangelogPage))
-    assert.equal(target, 'v3-8-0')
+    assert.equal(target, 'benchmark-v2-1')
   } finally { HTMLElement.prototype.scrollIntoView = original }
 })
 
-test('readers can search the archive, recover from no results, and inspect public sources', () => {
+test('page shows three product lines and dated ecosystem events without removed copy or draft UI', () => {
   render(React.createElement(ChangelogPage))
-  assert.match(screen.getByText(/^按图研版本整理，截至/).textContent, /2026 年 9 月 22 日/)
-  assert.ok(screen.getByRole('region', {name:'待发布版本'}))
-  assert.ok(screen.getByRole('region', {name:'历史版本'}))
-  assert.ok(screen.getByRole('region', {name:'版本归属待核实'}))
-  const search = screen.getByRole('searchbox', { name: '搜索更新日志' })
-  fireEvent.change(search, { target: { value: '3.8.0 Runware 遮罩' } })
-  assert.equal(screen.getAllByRole('article').length, 1)
-  assert.equal(screen.getByRole('status').textContent, '找到 1 个版本')
-  const source = screen.getByText('查看来源')
+  for (const name of ['图研工作台', 'Tuyan Benchmark', 'OpenAcad', '生态事件']) assert.ok(screen.getByRole('region', { name }))
+  assert.ok(screen.getByRole('heading', { name: 'Tuyan v3.7.1' }))
+  assert.ok(screen.getByRole('heading', { name: 'Tuyan Benchmark v2.5' }))
+  assert.ok(screen.getByRole('heading', { name: 'OpenAcad v1.1.0' }))
+  assert.equal(screen.queryByRole('searchbox'), null)
+  assert.equal(document.getElementById('v3-8-0'), null)
+  assert.doesNotMatch(document.body.textContent, /待发布版本|归属待核实|按版本回顾|按图研版本整理|历史微信公告整理稿|搜索更新日志/)
+  assert.equal(within(screen.getByRole('region', { name: '生态事件' })).getAllByRole('article').length, 4)
+  const source = document.querySelector('#v3-7-1 summary')
   fireEvent.click(source)
   assert.equal(source.parentElement.open, true)
-  assert.equal(screen.getByRole('link', { name: '变更 #226' }).getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan/pull/226')
-  fireEvent.change(search, { target: { value: '不存在的更新' } })
-  assert.ok(screen.getByRole('heading', { name: '未找到相关更新' }))
-  fireEvent.click(screen.getByRole('button', { name: '查看全部更新' }))
-  assert.equal(search.value, '')
-  assert.ok(screen.getAllByRole('article').length > 1)
+  assert.equal(screen.getByRole('link', { name: '观猹身份登录与绑定' }).getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan/pull/193')
 })
 
 test('changelog reuses shared header and account actions with only one session request', async () => {
@@ -74,14 +69,9 @@ test('mobile changelog link appears only inside More and marks the active page',
 })
 
 
-test('unknown dates and mixed client publication remain explicit', () => {
+test('confirmed early releases show published status and 3.0.0 uses its announcement date', () => {
   render(React.createElement(ChangelogPage))
-  const oldest = document.getElementById('v1-0-0')
-  assert.match(oldest.textContent, /发布信息待核实/)
-  assert.match(oldest.textContent, /公告记录 2026-05-14/)
-  const next = document.getElementById('v3-8-0')
-  assert.match(next.textContent, /正式发布日期待定/)
-  assert.match(next.textContent, /本地已验证/)
-  assert.match(next.textContent, /此前已上线/)
-  assert.match(document.getElementById('v3-7-1').textContent, /已发布 · Web/)
+  for (const id of ['v1-0-0', 'v1-1-0', 'v1-3-0']) assert.match(document.getElementById(id).textContent, /已发布 · Web/)
+  assert.match(document.getElementById('v3-0-0').textContent, /2026-08-24/)
+  assert.match(screen.getByRole('region', { name: '图研工作台' }).textContent, /PaperBanana 是 Tuyan 在 1.x–2.x 的历史品牌/)
 })

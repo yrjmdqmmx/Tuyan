@@ -1,17 +1,40 @@
 {
-  "id": "vMAJOR-MINOR-PATCH",
-  "version": "MAJOR.MINOR.PATCH",
-  "announcementDate": null,
-  "release": { "status": "unreleased", "date": null, "surfaces": [] },
-  "title": "概括本版本的用户变化",
-  "summary": "说明这次更新的主要内容。",
-  "surfaces": ["Web"],
-  "notes": ["开发完成并本地验证，尚未正式发布。"],
-  "changes": [
-    { "kind": "新增", "text": "用户可感知的新功能与必要边界。", "state": "local-verified", "surfaces": ["Web"], "sourceIds": ["local-check"] }
-  ],
-  "sources": [
-    { "id": "local-check", "kind": "local-verification", "label": "本地验收（公开发布记录待补）" }
-  ],
-  "legacyAnchors": []
+  "productVersion": {
+    "id": "tuyan-vMAJOR-MINOR-PATCH",
+    "product": "tuyan",
+    "version": "MAJOR.MINOR.PATCH",
+    "announcementDate": null,
+    "release": { "status": "released", "date": "YYYY-MM-DD", "surfaces": ["Web"] },
+    "title": "版本标题",
+    "summary": "概括本版用户可感知的变化。",
+    "surfaces": ["Web"],
+    "notes": [],
+    "changes": [
+      { "kind": "新增", "text": "已经发布的新功能及必要边界。", "state": "released", "sourceIds": ["release"] }
+    ],
+    "sources": [
+      { "id": "release", "kind": "release-record", "label": "发布记录", "url": "https://github.com/yrjmdqmmx/Tuyan/blob/COMMIT/docs/releases/RECORD.md" }
+    ],
+    "legacyAnchors": []
+  },
+  "numbering": {
+    "tuyan": "MAJOR.MINOR.PATCH",
+    "benchmark": "MAJOR.MINOR",
+    "openacad": "MAJOR.MINOR.PATCH"
+  },
+  "event": {
+    "id": "ecosystem-event-name",
+    "date": "YYYY-MM-DD",
+    "status": "recorded",
+    "title": "生态事件名称",
+    "summary": "已经发生的 Skill、MCP、小程序或平台事件。",
+    "surfaces": ["Agent"],
+    "changes": [
+      { "kind": "新增", "text": "已经完成的具体事件。", "state": "released", "sourceIds": ["release"] }
+    ],
+    "sources": [
+      { "id": "release", "kind": "release-record", "label": "事件记录", "url": "https://github.com/yrjmdqmmx/Tuyan/blob/COMMIT/docs/releases/RECORD.md" }
+    ],
+    "legacyAnchors": []
+  }
 }

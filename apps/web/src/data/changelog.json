@@ -1,527 +1,10 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-09-22",
-    "description": "按图研版本整理，截至 2026 年 9 月 22 日。历史版本号沿用公告，公告日期与实际发布证据分别记录；3.8.0 汇总 3.7.1 之后已完成的更新，尚待正式发布。"
+    "through": "2026-09-22"
   },
   "entries": [
-    {
-      "id": "v3-8-0",
-      "version": "3.8.0",
-      "announcementDate": null,
-      "release": {
-        "status": "unreleased",
-        "date": null,
-        "surfaces": []
-      },
-      "title": "模型接入、思考设置与工作台体验升级",
-      "summary": "汇总 3.7.1 之后完成的图示生成、精修、模型接入、排行榜和使用体验改进。",
-      "surfaces": [
-        "Web",
-        "微信小程序"
-      ],
-      "notes": [
-        "3.8.0 尚未正式发布：部分条目此前已单独上线，其余完成本地验证；本次更新实际部署并验收后，再确认版本发布日期。",
-        "各渠道的目录接入、账号权限和真实推理分别核验。小程序条目不代表已上传、审核或正式发布。"
-      ],
-      "changes": [
-        {
-          "kind": "新增",
-          "text": "通用 API 接入：可为主模型、识图和图像模型分别选择已适配的协议、地址与准确型号，支持目录搜索、选择和手动填写。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "universal-api-0",
-            "universal-api-1",
-            "universal-api-2",
-            "settings-catalog-0",
-            "settings-catalog-1",
-            "settings-catalog-2"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "三角色思考设置：只展示当前渠道与型号已核实的开关、强度或预算；各角色独立保存，服务商默认不发送思考参数。",
-          "state": "local-verified",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "thinking"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "接入商汤 SenseNova、阶跃星辰、百度千帆、讯飞星辰 MaaS、美团 LongCat，并补齐 Grok 4.7 等准确型号；各角色和限制按接口分别标明。",
-          "state": "local-verified",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "official-channels"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "精修按型号支持辅助参考图、遮罩和结构化修改目标，提交前提示图片数量、尺寸及编辑能力限制。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "refine-catalog-v23-0",
-            "refine-catalog-v23-1",
-            "refine-catalog-v23-2"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "排行榜提供帕累托视图，可对照模型能力与费用；模型详情展示合计和逐题费用，区分实际账单、历史估算和未调用。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "mobile-navigation-pareto-0",
-            "mobile-navigation-pareto-1",
-            "mobile-navigation-pareto-2",
-            "mobile-navigation-pareto-3",
-            "benchmark-model-costs-0",
-            "benchmark-model-costs-1",
-            "benchmark-model-costs-2"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "排行榜补充 Nano Banana 系列、GPT Image 2 和 GPT Image 2.5 Sunburst / Flare 的评测结果、图片与评分依据。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "benchmark-model-costs-0",
-            "benchmark-model-costs-1",
-            "benchmark-model-costs-2",
-            "image25-evaluation",
-            "image25-release"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "新增按图研版本整理的更新日志，可搜索版本号、功能、模型和日期，并查看公开来源。",
-          "state": "local-verified",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "version-changelog"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "提供智能体接入口令复制入口，方便交给 Agent 继续配置和验证；复制成功不代表已完成接入。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "agent-entry",
-            "settings-catalog-0",
-            "settings-catalog-1"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "补齐腾讯 TokenHub、小米 MiMo、Runware 的模型目录；显示具体版本、滚动别名和调用 ID，渠道按国内聚合、国内直连、国外直连、国外聚合排列。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "refine-catalog-v23-0",
-            "refine-catalog-v23-1",
-            "refine-catalog-v23-2",
-            "catalog-leaderboard-language-0",
-            "catalog-leaderboard-language-1",
-            "catalog-leaderboard-language-2"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "MiniMax 接入渠道统一显示为“稀宇科技”，保留 MiniMax 品牌与搜索别名，以及已有配置和任务记录。",
-          "state": "local-verified",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "official-channels"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "手机工作台按输入、设置、生成和结果组织，模板支持横向浏览；设置控件、模型目录选择和空配置提示更清晰。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "mobile-navigation-pareto-0",
-            "mobile-navigation-pareto-1",
-            "mobile-navigation-pareto-2",
-            "mobile-navigation-pareto-3",
-            "settings-catalog-0",
-            "settings-catalog-1",
-            "settings-catalog-2"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "工作台与排行榜保持固定顺序和当前页选中状态，新增更新日志入口；移动端统一收进“更多”。",
-          "state": "local-verified",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "navigation"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "排行榜、模型详情与方法说明支持中英文切换，统一研发方名称、搜索和筛选。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "catalog-leaderboard-language-0",
-            "catalog-leaderboard-language-1",
-            "catalog-leaderboard-language-2"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "对 40 个模型的既有图片重新独立评审与仲裁，7 个指定模型保留原评分；更新名次，保留原题目、图片和费用。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "scientific-rereview-0",
-            "scientific-rereview-1",
-            "scientific-rereview-2"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "小程序完善移动设置、账户布局和观猹身份接续；已完成源码与本地验证，微信正式版本状态仍待确认。",
-          "state": "local-verified",
-          "surfaces": [
-            "微信小程序"
-          ],
-          "sourceIds": [
-            "mini196"
-          ]
-        },
-        {
-          "kind": "修复",
-          "text": "参考图按相关性及当前模型预算选择；失败提示说明步骤、原因与费用状态。恢复任务复用已完成步骤，未知提交不自动重发。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "reference-budget-0",
-            "reference-budget-1",
-            "universal-api-0",
-            "universal-api-1",
-            "universal-api-2"
-          ]
-        },
-        {
-          "kind": "修复",
-          "text": "目录中单条异常不再拖垮整个渠道；刷新或切换后保留已有选择，防止旧请求覆盖新配置。确认不可用的型号从可选列表隐藏，历史记录仍保留。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "tokendance-catalog-isolation-0",
-            "tokendance-catalog-isolation-1",
-            "tokendance-catalog-isolation-2",
-            "settings-catalog-0",
-            "settings-catalog-1",
-            "settings-catalog-2",
-            "refine-catalog-v23-0",
-            "refine-catalog-v23-1",
-            "refine-catalog-v23-2"
-          ]
-        },
-        {
-          "kind": "修复",
-          "text": "撤下不再符合收录条件的 Riverflow V2 Pro 排行榜条目，保留历史证据，其他模型按原有规则重新排名。",
-          "state": "released",
-          "surfaces": [
-            "Web"
-          ],
-          "sourceIds": [
-            "riverflow-withdrawal-0",
-            "riverflow-withdrawal-1"
-          ]
-        },
-        {
-          "kind": "修复",
-          "text": "小程序明确失败的充值订单允许重新尝试，不确定结果禁止重复下单；清理本地任务时只处理当前账号记录。",
-          "state": "local-verified",
-          "surfaces": [
-            "微信小程序"
-          ],
-          "sourceIds": [
-            "mini197"
-          ]
-        }
-      ],
-      "sources": [
-        {
-          "id": "universal-api-0",
-          "kind": "pull-request",
-          "label": "变更 #216",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/216"
-        },
-        {
-          "id": "universal-api-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35501960459"
-        },
-        {
-          "id": "universal-api-2",
-          "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35501840089"
-        },
-        {
-          "id": "settings-catalog-0",
-          "kind": "pull-request",
-          "label": "变更 #219",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/219"
-        },
-        {
-          "id": "settings-catalog-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35505004154"
-        },
-        {
-          "id": "settings-catalog-2",
-          "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35504895519"
-        },
-        {
-          "id": "thinking",
-          "kind": "local-verification",
-          "label": "三角色思考设置与任务恢复（本地已验证，公开发布记录待补）"
-        },
-        {
-          "id": "official-channels",
-          "kind": "local-verification",
-          "label": "官方渠道目录与请求适配（本地已验证，公开发布记录待补）"
-        },
-        {
-          "id": "refine-catalog-v23-0",
-          "kind": "pull-request",
-          "label": "变更 #226",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/226"
-        },
-        {
-          "id": "refine-catalog-v23-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35684170270"
-        },
-        {
-          "id": "refine-catalog-v23-2",
-          "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35683970466"
-        },
-        {
-          "id": "mobile-navigation-pareto-0",
-          "kind": "pull-request",
-          "label": "变更 #221",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/221"
-        },
-        {
-          "id": "mobile-navigation-pareto-1",
-          "kind": "pull-request",
-          "label": "变更 #222",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/222"
-        },
-        {
-          "id": "mobile-navigation-pareto-2",
-          "kind": "pull-request",
-          "label": "变更 #223",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/223"
-        },
-        {
-          "id": "mobile-navigation-pareto-3",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35561997844"
-        },
-        {
-          "id": "benchmark-model-costs-0",
-          "kind": "pull-request",
-          "label": "变更 #205",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/205"
-        },
-        {
-          "id": "benchmark-model-costs-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35138774787"
-        },
-        {
-          "id": "benchmark-model-costs-2",
-          "kind": "release-record",
-          "label": "发布核验记录",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/7b3b99114b617a96e5c6a104574dae89b9d1b83b/docs/releases/2026-09-17-replicate-five-models.md"
-        },
-        {
-          "id": "image25-evaluation",
-          "kind": "pull-request",
-          "label": "GPT Image 2.5 评测变更",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/198"
-        },
-        {
-          "id": "version-changelog",
-          "kind": "local-verification",
-          "label": "版本更新日志页面（本地已验证，公开发布记录待补）"
-        },
-        {
-          "id": "catalog-leaderboard-language-0",
-          "kind": "pull-request",
-          "label": "变更 #224",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/224"
-        },
-        {
-          "id": "catalog-leaderboard-language-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35603884753"
-        },
-        {
-          "id": "catalog-leaderboard-language-2",
-          "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35601906465"
-        },
-        {
-          "id": "navigation",
-          "kind": "local-verification",
-          "label": "固定导航与移动端更多菜单（本地已验证，公开发布记录待补）"
-        },
-        {
-          "id": "scientific-rereview-0",
-          "kind": "pull-request",
-          "label": "变更 #209",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/209"
-        },
-        {
-          "id": "scientific-rereview-1",
-          "kind": "pull-request",
-          "label": "变更 #210",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/210"
-        },
-        {
-          "id": "scientific-rereview-2",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35188561140"
-        },
-        {
-          "id": "mini196",
-          "kind": "pull-request",
-          "label": "小程序设置与身份接续",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/196"
-        },
-        {
-          "id": "reference-budget-0",
-          "kind": "pull-request",
-          "label": "变更 #200",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/200"
-        },
-        {
-          "id": "reference-budget-1",
-          "kind": "release-record",
-          "label": "发布核验记录",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/de855a96a201e7b39a972fe0437d7617130dbc94/docs/releases/2026-09-16-reference-budget.md"
-        },
-        {
-          "id": "tokendance-catalog-isolation-0",
-          "kind": "pull-request",
-          "label": "变更 #214",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/214"
-        },
-        {
-          "id": "tokendance-catalog-isolation-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35447224666"
-        },
-        {
-          "id": "tokendance-catalog-isolation-2",
-          "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35447222365"
-        },
-        {
-          "id": "riverflow-withdrawal-0",
-          "kind": "pull-request",
-          "label": "变更 #212",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/212"
-        },
-        {
-          "id": "riverflow-withdrawal-1",
-          "kind": "deployment",
-          "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35194175508"
-        },
-        {
-          "id": "mini197",
-          "kind": "pull-request",
-          "label": "小程序订单与记录修复",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/197"
-        },
-        {
-          "id": "image25-release",
-          "kind": "release-record",
-          "label": "GPT Image 2.5 评测发布记录",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-16-replicate-image25-benchmark.md"
-        },
-        {
-          "id": "agent-entry",
-          "kind": "pull-request",
-          "label": "智能体接入口令与页头改进",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/218"
-        }
-      ],
-      "legacyAnchors": [
-        "refine-catalog-v23",
-        "catalog-leaderboard-language",
-        "mobile-navigation-pareto",
-        "settings-catalog",
-        "universal-api",
-        "tokendance-catalog-isolation",
-        "riverflow-withdrawal",
-        "scientific-rereview",
-        "benchmark-model-costs",
-        "reference-budget"
-      ]
-    },
     {
       "id": "v3-7-1",
       "version": "3.7.1",
@@ -613,16 +96,12 @@
           "kind": "release-record",
           "label": "观猹 OAuth 发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-10-watcha-oauth.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
       "legacyAnchors": [
         "watcha-login"
-      ]
+      ],
+      "product": "tuyan"
     },
     {
       "id": "v3-7-0",
@@ -641,7 +120,6 @@
         "Web"
       ],
       "notes": [
-        "本版汇总 9 月 9–10 日分批上线的功能，发布日期按该批内容完成上线日记录。",
         "上传数量和体积是平台原文件上限，实际提交仍受所选模型限制；账户页往返保留不等于整页刷新后仍保留。"
       ],
       "changes": [
@@ -754,17 +232,13 @@
           "kind": "release-record",
           "label": "参考图上传 v2 发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-10-reference-upload.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
       "legacyAnchors": [
         "reference-upload",
         "tokendance-account"
-      ]
+      ],
+      "product": "tuyan"
     },
     {
       "id": "v3-6-0",
@@ -783,7 +257,6 @@
         "Web"
       ],
       "notes": [
-        "精修流程于 9 月 8 日先行上线，9 月 9 日补齐新模型；按该批内容完成上线日记录。",
         "模型目录与参数适配不等于全部账号权限或真实推理质量均已验证。"
       ],
       "changes": [
@@ -888,17 +361,13 @@
           "kind": "release-record",
           "label": "GPT Image 2.5 发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-09-image25.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
       "legacyAnchors": [
         "gpt-image-25",
         "refine-upload"
-      ]
+      ],
+      "product": "tuyan"
     },
     {
       "id": "v3-5-1",
@@ -990,16 +459,12 @@
           "kind": "release-record",
           "label": "显式确认发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-08-email-confirmation.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
       "legacyAnchors": [
         "email-confirmation"
-      ]
+      ],
+      "product": "tuyan"
     },
     {
       "id": "v3-5-0",
@@ -1017,9 +482,7 @@
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "公告日期为 9 月 8 日，目录与选择器的部署记录确认功能已于 9 月 7 日上线。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
@@ -1103,14 +566,10 @@
           "kind": "deployment",
           "label": "9 月 7 日最终选择器 Web 部署",
           "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34140656406"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v3-0-2",
@@ -1128,9 +587,7 @@
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "公告日期为 9 月 3 日，相关功能实际于 9 月 2 日部署。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
@@ -1181,14 +638,10 @@
           "kind": "release-record",
           "label": "输入优化同步与发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v3-0-0",
@@ -1196,7 +649,7 @@
       "announcementDate": "2026-08-24",
       "release": {
         "status": "released",
-        "date": null,
+        "date": "2026-08-24",
         "surfaces": [
           "Web"
         ]
@@ -1206,10 +659,7 @@
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "这些功能于 8 月分批上线；未能确认本版统一发布日期。",
-        "此时仍处于 PaperBanana 品牌阶段，不能根据公告分组认定全部页面已更名为图研。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
@@ -1331,14 +781,10 @@
           "kind": "commit",
           "label": "9 月 3 日工作台更名",
           "url": "https://github.com/yrjmdqmmx/Tuyan/commit/81e321d26fdcf24832202e17e7fb871cba893f99"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v2-0-0",
@@ -1478,14 +924,10 @@
           "kind": "deployment",
           "label": "输出清晰度后端部署",
           "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/27190232066"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v1-4-0",
@@ -1504,7 +946,6 @@
         "Web"
       ],
       "notes": [
-        "公告日期为 5 月 31 日，已核实的 Web 部署日期为 5 月 30 日。",
         "普通与专业模式在更早源码中已存在，本版记录为配置与交互优化。"
       ],
       "changes": [
@@ -1554,95 +995,45 @@
           "kind": "commit",
           "label": "更早已含普通与专业模式的 Web 快照",
           "url": "https://github.com/yrjmdqmmx/Tuyan/commit/5ad10518a7761a2ea785d84cff43383118b4a3ea"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v1-3-0",
       "version": "1.3.0",
       "announcementDate": "2026-05-19",
       "release": {
-        "status": "unverified",
-        "date": null,
-        "surfaces": []
+        "status": "released",
+        "date": "2026-05-19",
+        "surfaces": [
+          "Web"
+        ]
       },
-      "title": "多端统一与客户端推进",
-      "summary": "开始在统一仓库中推进 Web、桌面、Android 与微信小程序。",
+      "title": "统一界面与视觉风格",
+      "summary": "更新整体 UI、Logo 与视觉风格，改善工作台使用体验。",
       "surfaces": [
-        "Web",
-        "Android",
-        "Windows",
-        "微信小程序"
+        "Web"
       ],
-      "notes": [
-        "多端源码可追溯，但各客户端的正式发布日期和本版完整边界尚未确认；不等于所有客户端已发布。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "优化",
-          "text": "将 Web 与桌面代码迁入统一多端仓库。",
-          "state": "code-complete",
-          "sourceIds": [
-            "repo-root",
-            "web-import"
-          ]
-        },
-        {
-          "kind": "新增",
-          "text": "推进 Android 客户端、Windows 桌面打包与微信小程序源码。",
-          "state": "code-complete",
-          "sourceIds": [
-            "android",
-            "windows",
-            "miniprogram"
-          ]
-        },
-        {
-          "kind": "优化",
-          "text": "原公告记载整体 UI、Logo 与视觉风格调整；具体改动和版本归属仍待核对。",
-          "state": "unconfirmed",
+          "text": "统一工作台界面、Logo 与视觉风格。",
+          "state": "released",
           "sourceIds": [
             "web-import",
-            "announcement"
+            "owner-confirmation"
           ]
         }
       ],
       "sources": [
         {
-          "id": "repo-root",
-          "kind": "commit",
-          "label": "多端仓库初始化",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/cc3412efb0b862fd1b6e46187d7975c5f72bd806"
-        },
-        {
           "id": "web-import",
           "kind": "commit",
           "label": "Web 迁入",
           "url": "https://github.com/yrjmdqmmx/Tuyan/commit/5ad10518a7761a2ea785d84cff43383118b4a3ea"
-        },
-        {
-          "id": "android",
-          "kind": "commit",
-          "label": "Android 客户端源码",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/1900f94627b9de7b9a98aa1e5519b9d1560b9a53"
-        },
-        {
-          "id": "windows",
-          "kind": "commit",
-          "label": "Windows 桌面打包准备",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/c3e948a15c77ac612a89bb4e1746a5db1195a886"
-        },
-        {
-          "id": "miniprogram",
-          "kind": "commit",
-          "label": "微信小程序源码",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/1bf79984087c033e0fcfd25b41f5cae79e23b178"
         },
         {
           "id": "run-26094593750",
@@ -1651,45 +1042,48 @@
           "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/26094593750"
         },
         {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
+          "id": "owner-confirmation",
+          "kind": "owner-confirmation",
+          "label": "项目负责人确认的历史发布"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v1-1-0",
       "version": "1.1.0",
       "announcementDate": "2026-05-14",
       "release": {
-        "status": "unverified",
-        "date": null,
-        "surfaces": []
+        "status": "released",
+        "date": "2026-05-14",
+        "surfaces": [
+          "Web"
+        ]
       },
       "title": "账号系统与快速上手",
-      "summary": "原公告记载新增注册登录、历史任务与快速上手案例。",
+      "summary": "新增账号系统、历史任务与快速上手案例。",
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "沿用历史公告的版本号与日期。后来迁入的源码已有这些功能，但首发当日的部署记录仍待补齐。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
           "text": "注册与登录、账号关联任务记录。",
-          "state": "code-complete",
+          "state": "released",
           "sourceIds": [
-            "early-web"
+            "early-web",
+            "owner-confirmation"
           ]
         },
         {
           "kind": "新增",
           "text": "快速上手案例与示例输入。",
-          "state": "code-complete",
+          "state": "released",
           "sourceIds": [
-            "early-web"
+            "early-web",
+            "owner-confirmation"
           ]
         }
       ],
@@ -1707,55 +1101,57 @@
           "url": "https://github.com/yrjmdqmmx/Tuyan/commit/af9929c82baf42a274196ad8d95eda550740220a"
         },
         {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
+          "id": "owner-confirmation",
+          "kind": "owner-confirmation",
+          "label": "项目负责人确认的历史发布"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "product": "tuyan"
     },
     {
       "id": "v1-0-0",
       "version": "1.0.0",
       "announcementDate": "2026-05-14",
       "release": {
-        "status": "unverified",
-        "date": null,
-        "surfaces": []
+        "status": "released",
+        "date": "2026-05-14",
+        "surfaces": [
+          "Web"
+        ]
       },
       "title": "PaperBanana Web 首次公告",
-      "summary": "原公告将此版记为 PaperBanana Web 的首次公开发布。",
+      "summary": "以 PaperBanana 品牌推出科研图示生成工作台。",
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "公告日期早于现仓库的最早提交，首发当日的代码和上线证据尚未确认。",
-        "未取得首发版本的密钥保存与清理证据，不据此作出“长期不保存”的已验证承诺。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
           "text": "提供 8 类科研图示场景与 Web 生成入口。",
-          "state": "code-complete",
+          "state": "released",
           "sourceIds": [
-            "early-web"
+            "early-web",
+            "owner-confirmation"
           ]
         },
         {
           "kind": "新增",
           "text": "提供阿里云百炼、OpenAI、Gemini、OpenRouter 四个渠道配置。",
-          "state": "code-complete",
+          "state": "released",
           "sourceIds": [
-            "early-web"
+            "early-web",
+            "owner-confirmation"
           ]
         },
         {
           "kind": "新增",
-          "text": "原公告记载多智能体生成与评审闭环；首发当日的具体后端与上线证据待补。",
-          "state": "unconfirmed",
+          "text": "提供科研图示生成与评审流程。",
+          "state": "released",
           "sourceIds": [
             "early-web",
-            "announcement"
+            "owner-confirmation"
           ]
         }
       ],
@@ -1773,46 +1169,173 @@
           "url": "https://github.com/yrjmdqmmx/Tuyan/commit/5ad10518a7761a2ea785d84cff43383118b4a3ea"
         },
         {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿（版本号与公告日期依据）"
+          "id": "owner-confirmation",
+          "kind": "owner-confirmation",
+          "label": "项目负责人确认的历史发布"
         }
       ],
-      "legacyAnchors": []
-    }
-  ],
-  "unassigned": [
+      "legacyAnchors": [],
+      "product": "tuyan"
+    },
     {
-      "id": "account-lifecycle",
+      "id": "benchmark-v2-5",
+      "product": "benchmark",
+      "version": "2.5",
       "announcementDate": null,
-      "summary": "账户恢复与数据管理修复",
-      "note": "9 月 7 日的发布记录已确认修复历史中断状态影响原账号使用的问题，但没有明确对应图研版本，暂不按日期猜测归属。",
+      "release": {
+        "status": "released",
+        "date": "2026-09-17",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "扩充模型与更新评审",
+      "summary": "加入新的图像模型，并更新既有评测的评分与排名。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [
+        "本次重新评审使用既有图片；40 个模型重新评审，7 个指定模型保留原评分。"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "排行榜补充 Nano Banana 系列、GPT Image 2 和 GPT Image 2.5 Sunburst / Flare 的评测结果、图片与评分依据。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "benchmark-model-costs-0",
+            "benchmark-model-costs-1",
+            "benchmark-model-costs-2",
+            "image25-evaluation",
+            "image25-release"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "采用 Astra XHigh 对既有图片进行独立评审与仲裁，更新评分和名次，保留原题目、图片与费用记录。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "scientific-rereview-0",
+            "scientific-rereview-1",
+            "scientific-rereview-2"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "撤下不再符合收录条件的 Riverflow V2 Pro 排行榜条目，保留历史证据，其他模型按原有规则重新排名。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "riverflow-withdrawal-0",
+            "riverflow-withdrawal-1"
+          ]
+        }
+      ],
       "sources": [
         {
-          "id": "account-0",
+          "id": "benchmark-model-costs-0",
           "kind": "pull-request",
-          "label": "变更 #168",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/168"
+          "label": "变更 #205",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/205"
         },
         {
-          "id": "account-1",
+          "id": "benchmark-model-costs-1",
           "kind": "deployment",
           "label": "发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098748870"
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35138774787"
         },
         {
-          "id": "account-2",
+          "id": "benchmark-model-costs-2",
+          "kind": "release-record",
+          "label": "发布核验记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/7b3b99114b617a96e5c6a104574dae89b9d1b83b/docs/releases/2026-09-17-replicate-five-models.md"
+        },
+        {
+          "id": "image25-evaluation",
+          "kind": "pull-request",
+          "label": "GPT Image 2.5 评测变更",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/198"
+        },
+        {
+          "id": "scientific-rereview-0",
+          "kind": "pull-request",
+          "label": "变更 #209",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/209"
+        },
+        {
+          "id": "scientific-rereview-1",
+          "kind": "pull-request",
+          "label": "变更 #210",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/210"
+        },
+        {
+          "id": "scientific-rereview-2",
           "kind": "deployment",
-          "label": "配套发布结果",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098510229"
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35188561140"
+        },
+        {
+          "id": "riverflow-withdrawal-0",
+          "kind": "pull-request",
+          "label": "变更 #212",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/212"
+        },
+        {
+          "id": "riverflow-withdrawal-1",
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35194175508"
+        },
+        {
+          "id": "image25-release",
+          "kind": "release-record",
+          "label": "GPT Image 2.5 评测发布记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-16-replicate-image25-benchmark.md"
         }
+      ],
+      "legacyAnchors": [
+        "scientific-rereview",
+        "riverflow-withdrawal",
+        "benchmark-model-costs"
       ]
     },
     {
-      "id": "early-ranking-mai",
-      "announcementDate": "2026-09-06",
-      "summary": "排行榜加入 MAI-Image-2.6",
-      "note": "加入评测与公开结果已有发布证据；对应图研工作台版本仍待核实。",
+      "id": "benchmark-v2-1",
+      "product": "benchmark",
+      "version": "2.1",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-06",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "加入 MAI-Image-2.6",
+      "summary": "扩充科研图像模型评测结果。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "MAI-Image-2.6 完成九题评测并加入排行榜，公开结果与评审依据。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        }
+      ],
       "sources": [
         {
           "id": "implementation",
@@ -1825,44 +1348,59 @@
           "kind": "release-record",
           "label": "已归档发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
         }
+      ],
+      "legacyAnchors": [
+        "early-ranking-mai"
       ]
     },
     {
-      "id": "early-agent-tools",
-      "announcementDate": "2026-09-05",
-      "summary": "Agent Skill 与只读 MCP 接入",
-      "note": "公告日期为 9 月 5 日，仓库记录相关服务于 9 月 4 日发布；属于图研工具接入能力，对应图研版本待核实。",
-      "sources": [
+      "id": "benchmark-v2-0",
+      "product": "benchmark",
+      "version": "2.0",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-03",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "科研评测体系升级",
+      "summary": "扩充至 40 个模型、9 个科研图示题位，采用十维等权评分。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
         {
-          "id": "implementation",
-          "kind": "pull-request",
-          "label": "相关变更",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/160"
+          "kind": "新增",
+          "text": "覆盖科研流程、生物机制、模型架构、数值图表、公式与双语标注，以及局部图片编辑。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
         },
         {
-          "id": "sync",
-          "kind": "release-record",
-          "label": "已归档发布记录",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
+          "kind": "优化",
+          "text": "采用科研忠实度、结构拓扑、文字符号、数值图表、指令遵从、信息层级、信息密度、发表级美观、编辑目标命中与非目标保持十个维度。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
         },
         {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
+          "kind": "新增",
+          "text": "公开生成图片、实际像素、尝试摘要、评分、编辑前后对照与校验信息。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
         }
-      ]
-    },
-    {
-      "id": "early-ranking-scientific",
-      "announcementDate": "2026-09-03",
-      "summary": "排行榜扩展科研题集与评分维度",
-      "note": "可核实固定 9 题、10 维评分和模型生成证据；此前独立排行榜版本号不转换为未经确认的图研版本号。",
+      ],
       "sources": [
         {
           "id": "implementation",
@@ -1875,19 +1413,50 @@
           "kind": "release-record",
           "label": "已归档发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
         }
+      ],
+      "legacyAnchors": [
+        "early-ranking-scientific"
       ]
     },
     {
-      "id": "early-ranking-evidence",
-      "announcementDate": "2026-08-30",
-      "summary": "模型详情证据与社区评估题提交",
-      "note": "公开图片、提示词和评审依据，并接受社区题目提交；图研版本归属待核实。每周整理安排不等于已核验持续自动运行。",
+      "id": "benchmark-v1-1",
+      "product": "benchmark",
+      "version": "1.1",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-08-30",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "模型详情与社区评估题",
+      "summary": "查看具体评测证据，并提交新的评估题目。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "模型详情展示生成图片、测试提示词与评审评价。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "登录用户可以提交新的评估提示词，参与题目建设。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        }
+      ],
       "sources": [
         {
           "id": "implementation",
@@ -1900,19 +1469,50 @@
           "kind": "release-record",
           "label": "已归档发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
         }
+      ],
+      "legacyAnchors": [
+        "early-ranking-evidence"
       ]
     },
     {
-      "id": "early-ranking-launch",
-      "announcementDate": "2026-08-29",
-      "summary": "科研图像模型排行榜公开",
-      "note": "公开科研图示题集、评分标准和模型结果；图研版本归属待核实，不沿用独立排行榜版本线。",
+      "id": "benchmark-v1-0",
+      "product": "benchmark",
+      "version": "1.0",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-08-29",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "科研图像模型排行榜上线",
+      "summary": "首版收录 31 个模型，以 4 道科研图示题观察模型表现。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "按忠实度、简洁度、可读性、美观度、文字与符号、拓扑关系、指令遵从七个维度等权评分。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "公开题目、正负提示词、约束、评分标准与排名规则。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        }
+      ],
       "sources": [
         {
           "id": "implementation",
@@ -1925,31 +1525,382 @@
           "kind": "release-record",
           "label": "已归档发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
-        },
-        {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
         }
+      ],
+      "legacyAnchors": [
+        "early-ranking-launch"
       ]
     },
     {
-      "id": "early-miniprogram",
-      "announcementDate": "2026-05-23",
-      "summary": "微信小程序首次上线公告",
-      "note": "初稿记载小程序上线，早期源码可追溯；尚未取得当次微信正式发布回执，也未确认它对应哪个图研版本。",
-      "sources": [
+      "id": "openacad-v1-1-0",
+      "product": "openacad",
+      "version": "1.1.0",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-07",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "生物信息学工具与平台首页",
+      "summary": "新增 AB1 查看器、KO 转换工具，完善科研模板与首页导航。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [
+        "包含 9 月 8 日同版本的模板、标签与首页预览更新。"
+      ],
+      "changes": [
         {
-          "id": "mini-source",
-          "kind": "commit",
-          "label": "早期小程序源码",
-          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/1bf79984087c033e0fcfd25b41f5cae79e23b178"
+          "kind": "新增",
+          "text": "AB1 文件在浏览器本地解析，联动查看测序峰图、序列与质量值，支持 FASTA、SVG 和 PNG 导出。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
         },
         {
-          "id": "announcement",
-          "kind": "announcement",
-          "label": "历史微信公告整理稿"
+          "kind": "新增",
+          "text": "批量查询 KO 对应的 KEGG Pathway，保留原表字段并导出 CSV 或 Excel。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "优化 55 个模板的默认示例、标签和版式，首页提供实际工作台预览与模板入口。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修正雷达图、基因簇标签碰撞及部分示例统计口径不一致。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
         }
+      ],
+      "sources": [
+        {
+          "id": "openacad-record",
+          "kind": "archive-record",
+          "label": "已核对的 OpenAcad 发行记录"
+        }
+      ],
+      "legacyAnchors": []
+    },
+    {
+      "id": "openacad-v1-0-2",
+      "product": "openacad",
+      "version": "1.0.2",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-07",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "字体与导出一致性",
+      "summary": "改善中文、粗体和斜体在预览与导出中的一致性。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "修复",
+          "text": "补齐真实粗体与斜体字形，修正部分字重在 PNG、转曲 SVG 和 EPS 中未正确保留的问题。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "完善中文字体覆盖与导出效果，支持跨设备使用的转曲 SVG。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "openacad-record",
+          "kind": "archive-record",
+          "label": "已核对的 OpenAcad 发行记录"
+        }
+      ],
+      "legacyAnchors": []
+    },
+    {
+      "id": "openacad-v1-0-1",
+      "product": "openacad",
+      "version": "1.0.1",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-07",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "字体加载与任务反馈",
+      "summary": "改善弱网字体加载和导出等待体验。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "优化",
+          "text": "中文字体按需加载，导出只等待图中使用的字体，减少等待时间。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "导出准备过程支持取消；字体加载失败时给出明确提示。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "任务提交后及时显示进度，避免用户在等待结果时误以为尚未提交。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "openacad-record",
+          "kind": "archive-record",
+          "label": "已核对的 OpenAcad 发行记录"
+        }
+      ],
+      "legacyAnchors": []
+    },
+    {
+      "id": "openacad-v1-0-0",
+      "product": "openacad",
+      "version": "1.0.0",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-07",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "中文科研绘图与统计工作台",
+      "summary": "无需登录，提供 55 个可编辑模板、真实统计计算与项目保存。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "提供 25 个基础图表、22 个专业图表、5 种多变量排序分析及 3 种进化树布局。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "支持 Excel、CSV、TSV 导入与数据编辑，调整字体、配色、坐标轴、图例、标签和页面布局。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "提供描述统计、组间检验、相关分析、回归、聚类及 PCA、PCoA、NMDS、CCA、RDA 计算。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "支持本机草稿与可继续编辑的项目文件，导出 SVG、PNG、PDF、EPS。",
+          "state": "released",
+          "sourceIds": [
+            "openacad-record"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "openacad-record",
+          "kind": "archive-record",
+          "label": "已核对的 OpenAcad 发行记录"
+        }
+      ],
+      "legacyAnchors": []
+    }
+  ],
+  "events": [
+    {
+      "id": "agent-copy-entry",
+      "date": "2026-09-20",
+      "status": "recorded",
+      "title": "智能体接入口令",
+      "summary": "从工作台复制接入口令，交给 Agent 继续配置。",
+      "surfaces": [
+        "Web"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "提供智能体接入口令复制入口，方便交给 Agent 继续配置和验证；复制成功不代表已完成接入。",
+          "state": "released",
+          "sourceIds": [
+            "agent-entry",
+            "settings-catalog-0",
+            "settings-catalog-1"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "settings-catalog-0",
+          "kind": "pull-request",
+          "label": "变更 #219",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/219"
+        },
+        {
+          "id": "settings-catalog-1",
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35505004154"
+        },
+        {
+          "id": "agent-entry",
+          "kind": "pull-request",
+          "label": "智能体接入口令与页头改进",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/218"
+        }
+      ],
+      "legacyAnchors": []
+    },
+    {
+      "id": "agent-tools-release",
+      "date": "2026-09-04",
+      "status": "recorded",
+      "title": "Tuyan Skill 与 Tuyan MCP 发布",
+      "summary": "将图研工作流接入 AI Agent 工具链。",
+      "surfaces": [
+        "Agent"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "Tuyan Skill 提供科研内容理解、规划、生成、评审与精修的工作流说明。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "只读 MCP 提供工作流、模板与规则资源，便于 Agent 获取结构化工作流资料。",
+          "state": "released",
+          "sourceIds": [
+            "implementation",
+            "sync"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "implementation",
+          "kind": "pull-request",
+          "label": "相关变更",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/160"
+        },
+        {
+          "id": "sync",
+          "kind": "release-record",
+          "label": "已归档发布记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/SYNC.md"
+        }
+      ],
+      "legacyAnchors": [
+        "early-agent-tools"
+      ]
+    },
+    {
+      "id": "tokendance-listing",
+      "date": "2026-09-04",
+      "status": "recorded",
+      "title": "图研上架观猹 TokenDance 公告",
+      "summary": "图研进入 TokenDance 平台生态。",
+      "surfaces": [
+        "平台"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "发布图研上架观猹 TokenDance 的公告。",
+          "state": "released",
+          "sourceIds": [
+            "listing-announcement"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "listing-announcement",
+          "kind": "announcement",
+          "label": "平台上架公告"
+        }
+      ],
+      "legacyAnchors": []
+    },
+    {
+      "id": "miniprogram-launch",
+      "date": "2026-05-23",
+      "status": "recorded",
+      "title": "微信小程序上线公告",
+      "summary": "PaperBanana 阶段的图研进入微信小程序平台。",
+      "surfaces": [
+        "微信小程序"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "发布微信小程序上线公告，增加微信内的访问入口。",
+          "state": "released",
+          "sourceIds": [
+            "mini-announcement"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "mini-announcement",
+          "kind": "announcement",
+          "label": "微信小程序上线公告"
+        }
+      ],
+      "legacyAnchors": [
+        "early-miniprogram"
       ]
     }
   ]
