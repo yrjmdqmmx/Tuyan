@@ -59,7 +59,7 @@ Component({
       const current = () => epoch === (this as any).epoch && jobId === this.data.jobId
       ;(this as any).resuming = true
       this.setData({ error: '' })
-      try { await requestJson({ action: this.data.job?.recovery?.channel === 'custom' ? 'providerResume' : 'tokenDanceResume', jobId }); if (current()) this.startPolling() } catch (error) { if (current()) this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
+      try { await requestJson({ action: (!this.data.job?.recovery?.channel || this.data.job.recovery.channel === 'tokendance') ? 'tokenDanceResume' : 'providerResume', jobId }); if (current()) this.startPolling() } catch (error) { if (current()) this.setData({ error: formatError(error) }) } finally { (this as any).resuming = false }
     },
     startRecoveryCountdown() {
       this.stopRecoveryCountdown()

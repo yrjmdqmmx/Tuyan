@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-21.v21",
+  "registryVersion": "2026-09-22.v23",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -9990,6 +9990,3180 @@
         "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
       },
       "channelGuide": "https://tokendance.space/docs/api-key-oauth",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt-image@2.5-flare",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-2-5-flare",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt-image@2.5-sunburst",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "xai:grok-imagine@image-2.0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image@3.0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-3-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image@3.0-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bytedance:seedream@5.0-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "meta:muse@image",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/meta-muse-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:nano-banana@2-lite",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-nano-banana-2-lite",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "rundiffusion:300@100",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "anthropic:claude@fable-5",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/anthropic-claude-fable-5",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "sourceful:riverflow-2.5@fast",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "sourceful:riverflow-2.5@pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:4@remix",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-4-0-remix",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "minimax:m3@0",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/minimax-m3",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "anthropic:claude@opus-4.8",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/anthropic-claude-opus-4-8",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemini@3.5-flash",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemini-3-5-flash",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "xai:grok-imagine@image-quality",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "luma:uni@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/luma-uni-1",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "luma:uni@1-max",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/luma-uni-1-max",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "xai:grok@4.3",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/xai-grok-4-3",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "rundiffusion:200@100",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/rundiffusion-juggernaut-z",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5.5",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-5",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt-image@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-2",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "anthropic:claude@opus-4.7",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/anthropic-claude-opus-4-7",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "imagineart:2.0@0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/imagineart-2-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemma@4-31b",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemma-4-31b",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:wan@2.7-image",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-wan2-7-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:wan@2.7-image-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-wan2-7-image-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@6",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5.4-mini",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-4-mini",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5.4-nano",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-4-nano",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5.4",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-4",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5.4-pro",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-4-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemini@3.1-flash-lite",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:4@3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-nano-banana-2",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bytedance:seedream@5.0-lite",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-lite",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemini@3.1-pro",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemini-3-1-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "anthropic:claude@sonnet-4.6",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image@2.0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image@2.0-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "klingai:kling-image@3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/klingai-image-3-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "klingai:kling-image@o3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/klingai-image-o3",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "sourceful:riverflow-2.0@fast",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "sourceful:riverflow-2.0@pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "xai:grok-imagine@image",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/xai-grok-imagine-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:z-image@0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-z-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-klein-9b",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bria:21@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bria-fibo-edit",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@4",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-klein-4b",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@5",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bria:20@3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bria-fibo-lite",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image@2512",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-2512",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:gemini@3-flash",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-gemini-3-flash",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:wan@2.6-image",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-wan2-6-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:7@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-max",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:4@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-1-5",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bytedance:seedream@4.5",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 14,
+        "maxAspectRatio": 16,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bytedance-seedream-4-5",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "klingai:kling-image@o1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/klingai-image-o1",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:5@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:kandinsky-5.0-image-lite@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/kandinsky-5-0-image-lite",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:z-image@turbo",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-z-image-turbo",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "alibaba:qwen-image-edit@2511",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:6@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-flex",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:400@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-2-dev",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:4@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-nano-banana-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "prunaai:2@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/prunaai-p-image-edit",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bria:20@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bria-fibo",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "anthropic:claude@haiku-4.5",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/anthropic-claude-haiku-4-5",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:108@22",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bria:11@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bria-image-replace-background",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:111@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/flux-1-dev-srpo",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bytedance:5@0",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bytedance-seedream-4-0",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "google:4@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/google-nano-banana",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:108@20",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runway:4@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/runway-gen-4-image-turbo",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5-mini",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-mini",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:gpt@5-nano",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-5-nano",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:108@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:107@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/krea-flux-1-krea-dev",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:3@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-kontext-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:4@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-kontext-max",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:106@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-kontext-dev",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:5@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/stabilityai-stable-diffusion-3",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runway:4@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/runway-gen-4-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:4@3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-3-0-edit",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:4@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-3-0-remix",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:1@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-1-mini",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "vidu:q1@image",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/vidu-q1-image",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:4@5",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-3-0-replace-background",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "openai:1@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/openai-gpt-image-1",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "rundiffusion:110@101",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "rundiffusion:120@100",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "rundiffusion:130@100",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:2@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-2a-remix",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:102@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-fill-dev",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "bfl:1@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-fill-pro",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "ideogram:3@2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/ideogram-2-0-remix",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:100@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-schnell",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:101@1",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/bfl-flux-1-dev",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:150@2",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:152@1",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "runware:152@2",
+      "workflow": "generation",
+      "protocol": "runware-text",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "runware",
+      "model": "civitai:101055@128078",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://runware.ai/docs/platform/authentication",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "deepseek/deepseek-v4-flash-vision-exp",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132248",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "glm-5.3-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132061",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "glm-5.3-flashx",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132061",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "glm-5v-turbo",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132061",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "kimi-k3",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132232",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "kimi-k2.7-code",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132232",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "kimi-k2.7-code-highspeed",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132232",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "kimi-k2.6",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132232",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "minimax-m3",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132246",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "deepseek/deepseek-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132248",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hunyuan-t1-vision-20250916",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136956",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hy-image-v3",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "unconfirmed",
+        "source": "",
+        "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hy-image-v3.5-preview",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/135745",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "hy-vision-2.0-instruct",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136956",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "kimi-k2.8-preview",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/132232",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "seedream-image-v5.0-lite",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 14,
+        "maxAspectRatio": 16,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136609",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "seedream-image-v5.0-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 14,
+        "maxAspectRatio": 16,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136609",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "vidu-image-q2",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 128,
+        "maxAspectRatio": 4,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/135746",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "wand-vega-image-flash",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/137203",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "wand-vega-image-lite",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/137203",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "wand-vega-image-pro",
+      "workflow": "refine",
+      "protocol": "provider-images",
+      "policy": {
+        "maxCount": 1,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 4194304,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/137203",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "tokenhub",
+      "model": "youtu-vita",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://cloud.tencent.com/document/product/1823/136956",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://cloud.tencent.com/document/product/1823/135745",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xiaomi",
+      "model": "mimo-v2.6-flash",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xiaomi",
+      "model": "mimo-v2.6-pro",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "xiaomi",
+      "model": "mimo-v2.5",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+        "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
+      },
+      "channelGuide": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
     }
   ]

@@ -32,7 +32,7 @@ function registry() {
   }
 }
 
-assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'])
+assert.deepEqual(MODEL_PROVIDER_IDS, ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'tokendance'])
 const normalized = normalizeModelRegistry(registry())
 assert.equal(normalized.registryVersion, '2026-08-21.v9')
 assert.equal(normalized.providers.openrouter.models.length, 3)
@@ -53,7 +53,7 @@ const partition = partitionRegistryModels([
   { id: 'wrong', vendor: 'OpenAI', roles: ['main'], roleReasons: { image: '不提供图片输出' } },
 ], { role: 'image', outputFormat: 'png' })
 assert.deepEqual(partition.compatible.map((item) => item.id), ['ok'])
-assert.deepEqual(partition.incompatible.map((item) => item.selectionDisabledReason), ['当前账号无权益', '不提供图片输出'])
+assert.deepEqual(partition.incompatible.map((item) => item.selectionDisabledReason), ['不提供图片输出'])
 assert.deepEqual(groupRegistryModels(partition.compatible).map((group) => group.vendor), ['OpenAI'])
 
 console.log('model-registry.test.cjs passed')
@@ -93,7 +93,7 @@ try {
   Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
   assert.equal(partitionRegistryModels(zoned, { role: 'main' }).compatible.length, 1)
   Date.now = () => Date.parse('2026-10-09T16:00:00Z')
-  assert.equal(partitionRegistryModels(zoned, { role: 'main' }).incompatible.length, 1)
+  assert.equal(partitionRegistryModels(zoned, { role: 'main' }).incompatible.length, 0)
 } finally { Date.now = originalNow }
 
 const uploadPolicy = require('../miniprogram/utils/reference-upload-policy.js')

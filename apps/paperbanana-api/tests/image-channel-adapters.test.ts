@@ -18,6 +18,51 @@ function fixture(respond:(url:string,init:RequestInit)=>Response) {
   return {calls,io}
 }
 
+function durableFixture(respond:(url:string,init:RequestInit)=>Response) {
+  const f=fixture(respond);let state:any
+  f.io.pending=async()=>state
+  f.io.checkpoint=async value=>{state=structuredClone(value)}
+  return {...f,state:()=>state}
+}
+test('TokenHub Vidu and WAND persist IDs, recover by GET, retain usage and never resubmit',async()=>{
+  for(const [model,protocol]of [['vidu-image-q2','vidu'],['wand-vega-image-lite','vega']]) {
+    let ready=false,polls=0;const records:any[]=[]
+    const f=durableFixture((url,init)=>{
+      if(init.method==='POST')return Response.json({task_id:'original-id'})
+      polls++;assert.ok(url.endsWith('/tasks/original-id'))
+      if(!ready)return new Response('',{status:429})
+      return Response.json(protocol==='vidu'?{state:'success',creations:[{url:'https://asset.invalid/result.png'}],tokenhub_usage:{total_tokens:25000}}:{status:'completed',data:[{url:'https://asset.invalid/result.png'}],usage:{total_tokens:18000}})
+    });f.io.record=async r=>{records.push(r)}
+    const input={...defaults,provider:'tokenhub',model,aspectRatio:'1:1',size:{width:1024,height:1024,size:protocol==='vidu'?'1:1':'1024x1024'}}
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.pollOnly===true)
+    assert.equal(f.state().taskId,'original-id');ready=true
+    assert.equal(await callExtendedImageChannel(input,f.io),png)
+    assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1);assert.ok(polls>1)
+    assert.ok(records[0].usage);assert.equal(records[0].estimatedCost,null);assert.equal(records[0].invoiceCost,null)
+    assert.equal(records[0].publicPrice.currency,'CNY')
+  }
+})
+test('TokenHub unknown async acknowledgment stops, and terminal task failures are never replayed',async()=>{
+  for(const scenario of ['lost','failed']) {
+    const f=durableFixture((_url,init)=>{
+      if(init.method==='POST'){if(scenario==='lost')throw new Error('connection lost');return Response.json({task_id:'original-id'})}
+      return Response.json({status:'failed'})
+    })
+    const input={...defaults,provider:'tokenhub',model:'wand-vega-image-lite',size:{size:'1024x1024',width:1024,height:1024}}
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.terminal===true)
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.terminal===true)
+    assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1)
+  }
+})
+test('TokenHub HY 3.5 assembles SSE image and separate usage chunks without inventing a bill',async()=>{
+  const records:any[]=[]
+  const f=durableFixture(()=>new Response('data: {"choices":[{"delta":{"image":{"url":"https://asset.invalid/result.png"}}}]}\n\ndata: {"tokenhub_usage":{"total_tokens":12345}}\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}}))
+  f.io.record=async r=>{records.push(r)}
+  assert.equal(await callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3.5-preview',size:{size:'1024x1024',width:1024,height:1024}},f.io),png)
+  assert.equal(records[0].usage.total_tokens,12345);assert.equal(records[0].reportedCost,null);assert.equal(records[0].invoiceCost,null)
+  assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1)
+})
+
 test('native JSON/multipart channels send exact fields and keep asset downloads credential-free', async()=>{
   for(const provider of ['ideogram','stability','minimax','together']) for(const editing of [false,true]) {
     if(provider==='minimax'&&editing)continue
@@ -193,4 +238,34 @@ test('MiniMax binds each region to its endpoint and keeps image-01-live fixed an
  await assert.rejects(callExtendedImageChannel({...defaults,provider:'minimax',model:'image-01-live',region:'global'},io),/unavailable/)
  await assert.rejects(callExtendedImageChannel({...defaults,provider:'minimax',model:'image-01',region:'invalid' as any},io),/Unsupported/)
  assert.equal(calls.length,1)
+})
+
+test('new native channels require a durable journal; partial TokenHub checkpoints never resubmit',async()=>{
+  for(const [provider,model] of [['tokenhub','hy-image-v3'],['runware','alibaba:qwen-image@2512']]) {
+    const {io,calls}=fixture(()=>Response.json({}))
+    await assert.rejects(callExtendedImageChannel({...defaults,provider,model},io),/持久任务/)
+    assert.equal(calls.length,0)
+  }
+  const {io,calls}=fixture(()=>Response.json({}))
+  let pending:any={provider:'tokenhub',model:'hy-image-v3',taskId:'already-submitted'}
+  io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3'},io),/未重新提交/)
+  assert.equal(calls.length,0);assert.equal(pending.failed,true)
+})
+
+test('Runware generation has native task fields and polls through rate limits without re-submission',async()=>{
+  let uuid='',polls=0,pending:any
+  const {io,calls}=fixture((_url,init)=>{
+    const body=JSON.parse(String(init.body))[0]
+    if(body.taskType==='imageInference') { uuid=body.taskUUID;assert.equal(pending.taskId,uuid);assert.equal(body.model,'alibaba:qwen-image@2512');assert.equal(body.inputs,undefined);assert.equal(body.deliveryMethod,'async');assert.equal(body.includeCost,true);return Response.json({data:[{taskUUID:uuid}]}) }
+    assert.equal(body.taskType,'getResponse');assert.equal(body.taskUUID,uuid)
+    if(++polls===1)return new Response('',{status:429,headers:{'Retry-After':'1'}})
+    return Response.json({data:[{taskUUID:uuid,imageURL:'https://asset.invalid/result.png',cost:0.01}]})
+  })
+  io.pollTimeoutMs=5000;io.pending=async()=>pending;io.checkpoint=async value=>{pending=value}
+  assert.equal(await callExtendedImageChannel({...defaults,provider:'runware',model:'alibaba:qwen-image@2512'},io),png)
+  assert.equal(calls.filter(call=>String(call.init.body).includes('imageInference')).length,1)
+  const before=calls.length
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'runware',model:'alibaba:qwen-image@2512',prompt:'x'.repeat(32001)}, {...io,pending:async()=>undefined}),/提示词/)
+  assert.equal(calls.length,before)
 })

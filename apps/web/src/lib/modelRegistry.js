@@ -1,8 +1,12 @@
 import { modelDeveloper, sortModelsNewestFirst } from './modelPresentation.js'
+export function modelUnavailableForSelection(model) {
+  return model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
+}
 export function mergeProviderRegistry(fallback, registry) {
   if (!registry?.defaults || !Array.isArray(registry.models)) return fallback
 
   const optionsForRole = (role) => registry.models
+    .filter((model) => !modelUnavailableForSelection(model))
     .filter((model) => Array.isArray(model.roles) && model.roles.includes(role) && model.selectable !== false)
     .map((model) => [model.id, model.label || model.id])
 
@@ -38,6 +42,7 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
   return sortModelsNewestFirst((models || [])
     .filter((model) => model?.roles?.includes(role)
       || (role === 'image' && (model?.outputModalities?.includes('image') || model?.protocol === 'openrouter-images')))
+    .filter((model) => !modelUnavailableForSelection(model))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
@@ -52,6 +57,7 @@ export function partitionRegistryModels(models, { role, query = '', outputFormat
     .filter((model) => model?.roles?.includes(role)
       || Boolean(model?.roleReasons?.[role])
       || (role === 'image' && model?.protocol === 'openrouter-images'))
+    .filter((model) => !modelUnavailableForSelection(model))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))

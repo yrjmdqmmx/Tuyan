@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-21.v21",
+  "version": "2026-09-22.v23",
   "providers": {
     "deepseek": [
       {
@@ -18891,6 +18891,6331 @@
           ]
         }
       }
+    ],
+    "runware": [
+      {
+        "id": "alibaba:qwen-image@2512",
+        "label": "Qwen-Image-2512",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2512",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-25"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image-edit@2511",
+        "label": "Qwen-Image-Edit-2511",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-25"
+        }
+      },
+      {
+        "id": "google:gemini@3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-03"
+        }
+      },
+      {
+        "id": "openai:gpt-image@2.5-flare",
+        "label": "GPT-Image-2.5 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-flare",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-08"
+        }
+      },
+      {
+        "id": "openai:gpt-image@2.5-sunburst",
+        "label": "GPT-Image-2.5 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-08"
+        }
+      },
+      {
+        "id": "xai:grok-imagine@image-2.0",
+        "label": "Grok Imagine Image 2.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "xai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-08-10"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image@3.0",
+        "label": "Qwen-Image-3.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-08-04"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image@3.0-pro",
+        "label": "Qwen-Image-3.0-Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-08-04"
+        }
+      },
+      {
+        "id": "deepseek:v4@flash",
+        "label": "DeepSeek-V4-Flash-0731",
+        "roles": [
+          "main"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/deepseek-v4-flash",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-07-31"
+        }
+      },
+      {
+        "id": "prunaai:p-image@ideogram",
+        "label": "P-Image-Ideogram",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "prunaai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/prunaai-p-image-ideogram",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-07-30"
+        }
+      },
+      {
+        "id": "krea:krea@2-turbo",
+        "label": "Krea 2 Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。该型号只提供风格参考生图，未开放保留原图精修。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-2-turbo",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-07-14"
+        }
+      },
+      {
+        "id": "bytedance:seedream@5.0-pro",
+        "label": "Seedream 5.0 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-07-08"
+        }
+      },
+      {
+        "id": "meta:muse@image",
+        "label": "Muse Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "meta",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/meta-muse-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-07-07"
+        }
+      },
+      {
+        "id": "google:nano-banana@2-lite",
+        "label": "Nano Banana 2 Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-lite",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-30"
+        }
+      },
+      {
+        "id": "krea:krea@2-raw",
+        "label": "Krea 2 Raw",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。该型号只提供风格参考生图，未开放保留原图精修。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-2-raw",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-22"
+        }
+      },
+      {
+        "id": "rundiffusion:300@100",
+        "label": "Juggernaut Z Fast",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "rundiffusion",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-11"
+        }
+      },
+      {
+        "id": "anthropic:claude@fable-5",
+        "label": "Claude Fable 5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/anthropic-claude-fable-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-09"
+        }
+      },
+      {
+        "id": "sourceful:riverflow-2.5@fast",
+        "label": "Riverflow 2.5 Fast",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sourceful",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-05"
+        }
+      },
+      {
+        "id": "sourceful:riverflow-2.5@pro",
+        "label": "Riverflow 2.5 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sourceful",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-05"
+        }
+      },
+      {
+        "id": "ideogram:4@0",
+        "label": "Ideogram 4.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-4-0",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-03"
+        }
+      },
+      {
+        "id": "ideogram:4@q",
+        "label": "Ideogram 4.0q",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-4-0q",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-03"
+        }
+      },
+      {
+        "id": "krea:krea@2-medium-turbo",
+        "label": "Krea 2 Medium Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。该型号只提供风格参考生图，未开放保留原图精修。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-2-medium-turbo",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-03"
+        }
+      },
+      {
+        "id": "ideogram:4@remix",
+        "label": "Ideogram 4.0 Remix",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-4-0-remix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-03"
+        }
+      },
+      {
+        "id": "minimax:m3@0",
+        "label": "MiniMax M3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/minimax-m3",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-06-01"
+        }
+      },
+      {
+        "id": "anthropic:claude@opus-4.8",
+        "label": "Claude Opus 4.8",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-8",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-28"
+        }
+      },
+      {
+        "id": "krea:krea@2-large",
+        "label": "Krea 2 Large",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。该型号只提供风格参考生图，未开放保留原图精修。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-2-large",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-27"
+        }
+      },
+      {
+        "id": "krea:krea@2-medium",
+        "label": "Krea 2 Medium",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。该型号只提供风格参考生图，未开放保留原图精修。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-2-medium",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-27"
+        }
+      },
+      {
+        "id": "google:gemini@3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemini-3-5-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-19"
+        }
+      },
+      {
+        "id": "recraft:v4.1@0",
+        "label": "Recraft V4.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-1",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-14"
+        }
+      },
+      {
+        "id": "recraft:v4.1-pro@0",
+        "label": "Recraft V4.1 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-1-pro",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-14"
+        }
+      },
+      {
+        "id": "recraft:v4.1-utility@0",
+        "label": "Recraft V4.1 Utility",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-1-utility",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-14"
+        }
+      },
+      {
+        "id": "recraft:v4.1-utility-pro@0",
+        "label": "Recraft V4.1 Utility Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-1-utility-pro",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-14"
+        }
+      },
+      {
+        "id": "xai:grok-imagine@image-quality",
+        "label": "Grok Imagine Image Quality",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "xai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-06"
+        }
+      },
+      {
+        "id": "luma:uni@1",
+        "label": "UNI-1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "luma",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/luma-uni-1",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-05"
+        }
+      },
+      {
+        "id": "luma:uni@1-max",
+        "label": "UNI-1 Max",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "luma",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/luma-uni-1-max",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-05"
+        }
+      },
+      {
+        "id": "xai:grok@4.3",
+        "label": "Grok 4.3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/xai-grok-4-3",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-05-05"
+        }
+      },
+      {
+        "id": "rundiffusion:200@100",
+        "label": "Juggernaut Z",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "rundiffusion",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-z",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-29"
+        }
+      },
+      {
+        "id": "openai:gpt@5.5",
+        "label": "GPT-5.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-23"
+        }
+      },
+      {
+        "id": "openai:gpt-image@2",
+        "label": "GPT Image 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-2",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-21"
+        }
+      },
+      {
+        "id": "anthropic:claude@opus-4.7",
+        "label": "Claude Opus 4.7",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/anthropic-claude-opus-4-7",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-16"
+        }
+      },
+      {
+        "id": "baidu:ernie-image@turbo",
+        "label": "ERNIE-Image-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/baidu-ernie-image-turbo",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-15"
+        }
+      },
+      {
+        "id": "baidu:ernie-image@0",
+        "label": "ERNIE-Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "baidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/baidu-ernie-image",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-15"
+        }
+      },
+      {
+        "id": "imagineart:2.0@0",
+        "label": "ImagineArt 2.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "imagineart",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/imagineart-2-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-14"
+        }
+      },
+      {
+        "id": "zai:glm@5.1",
+        "label": "GLM-5.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/zai-glm-5-1",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-07"
+        }
+      },
+      {
+        "id": "google:gemma@4-31b",
+        "label": "Gemma 4 31B",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemma-4-31b",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-02"
+        }
+      },
+      {
+        "id": "alibaba:wan@2.7-image",
+        "label": "Wan2.7 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 9,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-01"
+        }
+      },
+      {
+        "id": "alibaba:wan@2.7-image-pro",
+        "label": "Wan2.7 Image Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 9,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-wan2-7-image-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-04-01"
+        }
+      },
+      {
+        "id": "runware:400@6",
+        "label": "FLUX.2 [klein] 9B KV",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-20"
+        }
+      },
+      {
+        "id": "minimax:m2.7@0",
+        "label": "MiniMax M2.7",
+        "roles": [
+          "main"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/minimax-m2-7",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-18"
+        }
+      },
+      {
+        "id": "minimax:m2.7@highspeed",
+        "label": "MiniMax M2.7 Highspeed",
+        "roles": [
+          "main"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/minimax-m2-7-highspeed",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-18"
+        }
+      },
+      {
+        "id": "openai:gpt@5.4-mini",
+        "label": "GPT-5.4 Mini",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-4-mini",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-17"
+        }
+      },
+      {
+        "id": "openai:gpt@5.4-nano",
+        "label": "GPT-5.4 Nano",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-4-nano",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-17"
+        }
+      },
+      {
+        "id": "openai:gpt@5.4",
+        "label": "GPT-5.4",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-4",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-05"
+        }
+      },
+      {
+        "id": "openai:gpt@5.4-pro",
+        "label": "GPT-5.4 Pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-4-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-03-05"
+        }
+      },
+      {
+        "id": "google:4@3",
+        "label": "Nano Banana 2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana-2",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-26"
+        }
+      },
+      {
+        "id": "bytedance:seedream@5.0-lite",
+        "label": "Seedream 5.0 Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-lite",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-24"
+        }
+      },
+      {
+        "id": "google:gemini@3.1-pro",
+        "label": "Gemini 3.1 Pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemini-3-1-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-19"
+        }
+      },
+      {
+        "id": "anthropic:claude@sonnet-4.6",
+        "label": "Claude Sonnet 4.6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-17"
+        }
+      },
+      {
+        "id": "recraft:v4-pro@0",
+        "label": "Recraft V4 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-pro",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-17"
+        }
+      },
+      {
+        "id": "recraft:v4@0",
+        "label": "Recraft V4",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-17"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image@2.0-pro",
+        "label": "Qwen-Image-2.0-Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-10"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image@2.0",
+        "label": "Qwen-Image-2.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-10"
+        }
+      },
+      {
+        "id": "klingai:kling-image@3",
+        "label": "Kling IMAGE 3.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "klingai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/klingai-image-3-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-05"
+        }
+      },
+      {
+        "id": "klingai:kling-image@o3",
+        "label": "Kling IMAGE O3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "klingai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/klingai-image-o3",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-02-05"
+        }
+      },
+      {
+        "id": "sourceful:riverflow-2.0@fast",
+        "label": "Riverflow 2.0 Fast",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sourceful",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-30"
+        }
+      },
+      {
+        "id": "sourceful:riverflow-2.0@pro",
+        "label": "Riverflow 2.0 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "sourceful",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-30"
+        }
+      },
+      {
+        "id": "xai:grok-imagine@image",
+        "label": "Grok Imagine Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "xai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-29"
+        }
+      },
+      {
+        "id": "runware:z-image@0",
+        "label": "Z-Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-z-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-26"
+        }
+      },
+      {
+        "id": "runware:400@2",
+        "label": "FLUX.2 [klein] 9B",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-23"
+        }
+      },
+      {
+        "id": "bria:21@1",
+        "label": "Bria FIBO Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bria",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo-edit",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-20"
+        }
+      },
+      {
+        "id": "runware:400@4",
+        "label": "FLUX.2 [klein] 4B",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-15"
+        }
+      },
+      {
+        "id": "runware:400@3",
+        "label": "FLUX.2 [klein] 9B Base",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-15"
+        }
+      },
+      {
+        "id": "imagineart:1.5-pro@0",
+        "label": "ImagineArt 1.5 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "imagineart",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/imagineart-1-5-pro",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-15"
+        }
+      },
+      {
+        "id": "runware:400@5",
+        "label": "FLUX.2 [klein] 4B Base",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-15"
+        }
+      },
+      {
+        "id": "bria:20@3",
+        "label": "Bria FIBO Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bria",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo-lite",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-01-06"
+        }
+      },
+      {
+        "id": "runware:twinflow-z-image-turbo@0",
+        "label": "TwinFlow Z-Image-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/twinflow-z-image-turbo",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-29"
+        }
+      },
+      {
+        "id": "google:gemini@3-flash",
+        "label": "Gemini 3 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-gemini-3-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-17"
+        }
+      },
+      {
+        "id": "openai:4@1",
+        "label": "GPT Image 1.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-16"
+        }
+      },
+      {
+        "id": "bfl:7@1",
+        "label": "FLUX.2 [max]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 8,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-max",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-16"
+        }
+      },
+      {
+        "id": "alibaba:wan@2.6-image",
+        "label": "Wan2.6 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-wan2-6-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-16"
+        }
+      },
+      {
+        "id": "bytedance:seedream@4.5",
+        "label": "Seedream 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bytedance-seedream-4-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-03"
+        }
+      },
+      {
+        "id": "klingai:kling-image@o1",
+        "label": "Kling IMAGE O1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "klingai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/klingai-image-o1",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-02"
+        }
+      },
+      {
+        "id": "prunaai:1@1",
+        "label": "P-Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "prunaai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/prunaai-p-image",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-12-02"
+        }
+      },
+      {
+        "id": "bfl:5@1",
+        "label": "FLUX.2 [pro]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 9,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-26"
+        }
+      },
+      {
+        "id": "runware:kandinsky-5.0-image-lite@1",
+        "label": "Kandinsky 5.0 Image Lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/kandinsky-5-0-image-lite",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-26"
+        }
+      },
+      {
+        "id": "runware:z-image@turbo",
+        "label": "Z-Image-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-z-image-turbo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-26"
+        }
+      },
+      {
+        "id": "runware:400@1",
+        "label": "FLUX.2 [dev]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-dev",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-25"
+        }
+      },
+      {
+        "id": "bfl:6@1",
+        "label": "FLUX.2 [flex]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-2-flex",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-25"
+        }
+      },
+      {
+        "id": "google:4@2",
+        "label": "Nano Banana Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-20"
+        }
+      },
+      {
+        "id": "imagineart:1@5",
+        "label": "ImagineArt 1.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "imagineart",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/imagineart-1-5",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-15"
+        }
+      },
+      {
+        "id": "prunaai:2@1",
+        "label": "P-Image-Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "prunaai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/prunaai-p-image-edit",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-10"
+        }
+      },
+      {
+        "id": "bria:20@1",
+        "label": "Bria FIBO",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bria",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-11-03"
+        }
+      },
+      {
+        "id": "anthropic:claude@haiku-4.5",
+        "label": "Claude Haiku 4.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/anthropic-claude-haiku-4-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-10-15"
+        }
+      },
+      {
+        "id": "runware:201@10",
+        "label": "Wan2.5-Preview Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-wan2-5-preview-image",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-09-24"
+        }
+      },
+      {
+        "id": "runware:108@22",
+        "label": "Qwen-Image-Edit-Plus",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-09-23"
+        }
+      },
+      {
+        "id": "bria:11@1",
+        "label": "Bria Image Replace Background",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bria",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-image-replace-background",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-09-18"
+        }
+      },
+      {
+        "id": "runware:111@1",
+        "label": "FLUX.1 [dev] SRPO",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/flux-1-dev-srpo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-09-12"
+        }
+      },
+      {
+        "id": "bytedance:5@0",
+        "label": "Seedream 4.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bytedance-seedream-4-0",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-09-09"
+        }
+      },
+      {
+        "id": "google:4@1",
+        "label": "Nano Banana",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 8,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-26"
+        }
+      },
+      {
+        "id": "runware:108@20",
+        "label": "Qwen-Image-Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-edit",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-19"
+        }
+      },
+      {
+        "id": "runway:4@2",
+        "label": "Runway Gen-4 Image Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "runway",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/runway-gen-4-image-turbo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-19"
+        }
+      },
+      {
+        "id": "openai:gpt@5-mini",
+        "label": "GPT-5 Mini",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-mini",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-07"
+        }
+      },
+      {
+        "id": "openai:gpt@5-nano",
+        "label": "GPT-5 Nano",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-5-nano",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-07"
+        }
+      },
+      {
+        "id": "runware:108@1",
+        "label": "Qwen-Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-08-04"
+        }
+      },
+      {
+        "id": "runware:107@1",
+        "label": "FLUX.1 Krea [dev]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/krea-flux-1-krea-dev",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-07-31"
+        }
+      },
+      {
+        "id": "bfl:4@1",
+        "label": "FLUX.1 Kontext [max]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 2,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-max",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-07-11"
+        }
+      },
+      {
+        "id": "bfl:3@1",
+        "label": "FLUX.1 Kontext [pro]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 2,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-07-11"
+        }
+      },
+      {
+        "id": "runware:106@1",
+        "label": "FLUX.1 Kontext [dev]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-kontext-dev",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-06-17"
+        }
+      },
+      {
+        "id": "runware:5@1",
+        "label": "Stable Diffusion 3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-3",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-06-12"
+        }
+      },
+      {
+        "id": "bria:10@1",
+        "label": "Bria 3.2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bria",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-3-2",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-06-10"
+        }
+      },
+      {
+        "id": "runway:4@1",
+        "label": "Runway Gen-4 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "runway",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/runway-gen-4-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-05-07"
+        }
+      },
+      {
+        "id": "ideogram:4@3",
+        "label": "Ideogram 3.0 Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-3-0-edit",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-05-01"
+        }
+      },
+      {
+        "id": "ideogram:4@2",
+        "label": "Ideogram 3.0 Remix",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-3-0-remix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-04-30"
+        }
+      },
+      {
+        "id": "openai:1@2",
+        "label": "GPT Image 1 Mini",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-mini",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-04-23"
+        }
+      },
+      {
+        "id": "runware:97@2",
+        "label": "HiDream-I1 Dev",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/hidream-i1-dev",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-04-08"
+        }
+      },
+      {
+        "id": "runware:97@3",
+        "label": "HiDream-I1 Fast",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://runware.ai/docs/models/hidream-i1-fast",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-04-07"
+        }
+      },
+      {
+        "id": "runware:97@1",
+        "label": "HiDream-I1 Full",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/hidream-i1-full",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-04-07"
+        }
+      },
+      {
+        "id": "vidu:q1@image",
+        "label": "Vidu Q1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 7,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "vidu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/vidu-q1-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-29"
+        }
+      },
+      {
+        "id": "ideogram:4@1",
+        "label": "Ideogram 3.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-3-0",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-26"
+        }
+      },
+      {
+        "id": "ideogram:4@5",
+        "label": "Ideogram 3.0 Replace Background",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-3-0-replace-background",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-26"
+        }
+      },
+      {
+        "id": "openai:1@1",
+        "label": "GPT Image 1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 16,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-25"
+        }
+      },
+      {
+        "id": "rundiffusion:110@101",
+        "label": "Juggernaut Lightning Flux",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "rundiffusion",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-06"
+        }
+      },
+      {
+        "id": "rundiffusion:130@100",
+        "label": "Juggernaut Pro Flux",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "rundiffusion",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-06"
+        }
+      },
+      {
+        "id": "rundiffusion:120@100",
+        "label": "Juggernaut Base Flux",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "rundiffusion",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-03-06"
+        }
+      },
+      {
+        "id": "ideogram:2@2",
+        "label": "Ideogram 2a Remix",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-2a-remix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-02-27"
+        }
+      },
+      {
+        "id": "ideogram:2@1",
+        "label": "Ideogram 2a",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-2a",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2025-02-27"
+        }
+      },
+      {
+        "id": "runware:102@1",
+        "label": "FLUX.1 Fill [dev]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-dev",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-11-21"
+        }
+      },
+      {
+        "id": "bfl:2@2",
+        "label": "FLUX.1.1 [pro] Ultra",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-11-06"
+        }
+      },
+      {
+        "id": "bfl:1@2",
+        "label": "FLUX.1 Fill [pro]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-fill-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-11-01"
+        }
+      },
+      {
+        "id": "ideogram:3@2",
+        "label": "Ideogram 2.0 Remix",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-2-0-remix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-10-23"
+        }
+      },
+      {
+        "id": "bfl:2@1",
+        "label": "FLUX.1.1 [pro]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-1-pro",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-10-02"
+        }
+      },
+      {
+        "id": "ideogram:3@1",
+        "label": "Ideogram 2.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-2-0",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-08-21"
+        }
+      },
+      {
+        "id": "runware:100@1",
+        "label": "FLUX.1 [schnell]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-schnell",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-08-01"
+        }
+      },
+      {
+        "id": "runware:101@1",
+        "label": "FLUX.1 [dev]",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-1-dev",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-08-01"
+        }
+      },
+      {
+        "id": "runware:150@2",
+        "label": "LLaVA-1.6-Mistral-7B",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2024-01-31"
+        }
+      },
+      {
+        "id": "runware:152@1",
+        "label": "Qwen2.5-VL-3B-Instruct",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2023-08-24"
+        }
+      },
+      {
+        "id": "runware:152@2",
+        "label": "Qwen2.5-VL-7B-Instruct",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "runware-text",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2023-08-24"
+        }
+      },
+      {
+        "id": "civitai:101055@128078",
+        "label": "Stable Diffusion XL v1.0 VAE Fix",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "stabilityai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2023-07-28"
+        }
+      }
+    ],
+    "tokenhub": [
+      {
+        "id": "hy-image-v3",
+        "label": "HyImage 3.0",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "已实现专用适配；账户权限、计费与真实输出未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/135745",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "tencent",
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hy3",
+        "label": "Hy3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132252",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hy-vision-2.0-instruct",
+        "label": "HY-Vision-2.0-Instruct",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136956",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hy4-preview",
+        "label": "Hy4 preview",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132252",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-flash",
+        "label": "DeepSeek-V4.1-Flash 原厂直供",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash-202605",
+        "label": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4-flash-0731",
+        "label": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4-flash",
+        "label": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro-202606",
+        "label": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4-pro-0813",
+        "label": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4-pro",
+        "label": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek/deepseek-v4-flash-vision-exp",
+        "label": "DeepSeek-V4-Flash-Vision-Exp 原厂直供",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash-0731",
+        "label": "DeepSeek-V4-Flash 0731 正式版",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro-0813",
+        "label": "DeepSeek-V4-Pro 0813 正式版",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-flash",
+        "label": "DeepSeek-V4-Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-pro",
+        "label": "DeepSeek-V4-Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132248",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3-flash",
+        "label": "GLM-5.3-Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3-flashx",
+        "label": "GLM-5.3-FlashX",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.3",
+        "label": "GLM-5.3",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.2",
+        "label": "GLM-5.2",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5.1",
+        "label": "GLM-5.1（2026-10-08下线）",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。官方公布下线日期 2026-10-08，不自动迁移。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5v-turbo",
+        "label": "GLM-5V-Turbo（2026-10-30下线）",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。官方公布下线日期 2026-10-30，不自动迁移。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5-turbo",
+        "label": "GLM-5-Turbo（2026-10-08下线）",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。官方公布下线日期 2026-10-08，不自动迁移。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "glm-5",
+        "label": "GLM-5（2026-10-08下线）",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。官方公布下线日期 2026-10-08，不自动迁移。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132061",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k2.7-code-highspeed",
+        "label": "Kimi K2.7 Code HighSpeed",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132232",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k3",
+        "label": "Kimi K3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132232",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k2.8-preview",
+        "label": "Kimi K2.8 Preview",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132232",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k2.7-code",
+        "label": "Kimi K2.7 Code",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132232",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k2.6",
+        "label": "Kimi-K2.6",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132232",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "minimax-m3",
+        "label": "MiniMax-M3",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132246",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "minimax-m2.7",
+        "label": "MiniMax-M2.7",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132246",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "mimo-v2.5-pro",
+        "label": "MiMo-V2.5-Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130079",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "youtu-vita",
+        "label": "YT-VITA",
+        "roles": [
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136956",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hunyuan-t1-vision-20250916",
+        "label": "HY-Vision-1.5-Thinking",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136956",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "hy-image-v3.5-preview",
+        "label": "hy-image-v3.5-preview",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 20,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/135745",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "wand-vega-image-lite",
+        "label": "wand-vega-image-lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/137203",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "wand-vega-image-flash",
+        "label": "wand-vega-image-flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 6,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/137203",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "wand-vega-image-pro",
+        "label": "wand-vega-image-pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 6,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/137203",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "vidu-image-q2",
+        "label": "vidu-image-q2",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 7,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "shengshu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/135746",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "seedream-image-v5.0-pro",
+        "label": "seedream-image-v5.0-pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136609",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
+        "id": "seedream-image-v5.0-lite",
+        "label": "seedream-image-v5.0-lite",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "专用接口与恢复适配；广州端点，真实服务未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/136609",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      }
+    ],
+    "xiaomi": [
+      {
+        "id": "mimo-v2.6-pro",
+        "label": "MiMo-v2.6-pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "真实调用未验证；普通API Key按量计费。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-22"
+        }
+      },
+      {
+        "id": "mimo-v2.6-flash",
+        "label": "MiMo-v2.6-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "真实调用未验证；普通API Key按量计费。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-09-22"
+        }
+      },
+      {
+        "id": "mimo-v2.5-pro",
+        "label": "MiMo-v2.5-pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "真实调用未验证；普通API Key按量计费。2026-10-21 10:00北京时间下线；保留配置，不自动迁移。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "mimo-v2.5",
+        "label": "MiMo-v2.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "真实调用未验证；普通API Key按量计费。2026-10-21 10:00北京时间下线；保留配置，不自动迁移。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "legacy",
+          "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      }
     ]
   },
   "lifecycle": {
@@ -19060,6 +25385,72 @@
         "expirationDate": "2026-09-29",
         "lifecycleSourceUrl": "https://docs.together.ai/docs/deprecations",
         "replacementModelId": "deepseek-ai/DeepSeek-V4.1-Flash"
+      }
+    },
+    "tokenhub": {
+      "glm-5.1": {
+        "expirationDate": "2026-10-08",
+        "expirationAt": "2026-10-08T00:00:00+08:00",
+        "lifecycle": "legacy"
+      },
+      "glm-5v-turbo": {
+        "expirationDate": "2026-10-30",
+        "expirationAt": "2026-10-30T00:00:00+08:00",
+        "lifecycle": "legacy"
+      },
+      "glm-5-turbo": {
+        "expirationDate": "2026-10-08",
+        "expirationAt": "2026-10-08T00:00:00+08:00",
+        "lifecycle": "legacy"
+      },
+      "glm-5": {
+        "expirationDate": "2026-10-08",
+        "expirationAt": "2026-10-08T00:00:00+08:00",
+        "lifecycle": "legacy"
+      }
+    },
+    "xiaomi": {
+      "mimo-v2.5-pro": {
+        "expirationDate": "2026-10-21",
+        "expirationAt": "2026-10-21T10:00:00+08:00",
+        "lifecycle": "legacy"
+      },
+      "mimo-v2.5": {
+        "expirationDate": "2026-10-21",
+        "expirationAt": "2026-10-21T10:00:00+08:00",
+        "lifecycle": "legacy"
+      }
+    },
+    "runware": {
+      "xai:grok-imagine@image-quality": {
+        "expirationDate": "2026-11-02",
+        "expirationAt": "2026-11-02T00:00:00Z",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
+      },
+      "openai:4@1": {
+        "expirationDate": "2026-12-01",
+        "expirationAt": "2026-12-01T00:00:00Z",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-5"
+      },
+      "google:4@1": {
+        "expirationDate": "2026-10-02",
+        "expirationAt": "2026-10-02T00:00:00Z",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/google-nano-banana"
+      },
+      "openai:1@2": {
+        "expirationDate": "2026-12-01",
+        "expirationAt": "2026-12-01T00:00:00Z",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1-mini"
+      },
+      "openai:1@1": {
+        "expirationDate": "2026-10-23",
+        "expirationAt": "2026-10-23T00:00:00Z",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1"
       }
     }
   },
@@ -19296,6 +25687,69 @@
         "登录图研后连接 TokenDance。",
         "在 TokenDance 授权页设置 Key 的有效期和额度；图研安全保存授权。",
         "钱包余额与 Key 额度是两个独立限制。"
+      ]
+    },
+    "runware": {
+      "label": "Runware",
+      "accessKind": "aggregator",
+      "guideUrl": "https://runware.ai/docs/platform/authentication",
+      "textBaseUrl": "",
+      "regions": [
+        "global-endpoint"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "google:gemini@3.1-flash-lite",
+        "image": "alibaba:qwen-image@2512",
+        "vision": "google:gemini@3.1-flash-lite"
+      },
+      "keyPlaceholder": "API Key",
+      "guideSteps": [
+        "创建 Runware API Key，确认余额、账号地区与所选 AIR 型号权限。",
+        "采用 Runware 原生异步接口；目录与模拟测试不代表真实调用验证。",
+        "费用按型号、尺寸与步数变化；返回 cost 不是已核对账单。"
+      ]
+    },
+    "tokenhub": {
+      "label": "腾讯 TokenHub",
+      "accessKind": "aggregator",
+      "guideUrl": "https://cloud.tencent.com/document/product/1823/135745",
+      "textBaseUrl": "https://tokenhub.tencentmaas.com/v1",
+      "regions": [
+        "cn-endpoint"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "hy3",
+        "image": "hy-image-v3",
+        "vision": "hy-vision-2.0-instruct"
+      },
+      "keyPlaceholder": "API Key",
+      "guideSteps": [
+        "腾讯云账号开通 TokenHub 并创建 API Key，按所选模型开通服务与额度。",
+        "当前适配广州入口；新加坡入口的独立密钥与逐型号权限待确认。",
+        "主模型、识图与图片接口按具体型号适配；公开价、Token 用量、渠道费用和账单分别记录。"
+      ]
+    },
+    "xiaomi": {
+      "label": "小米 MiMo",
+      "accessKind": "direct",
+      "guideUrl": "https://mimo.mi.com/docs/en-US/api/chat/openai-api",
+      "textBaseUrl": "https://api.xiaomimimo.com/v1",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-22",
+      "defaults": {
+        "main": "mimo-v2.6-pro",
+        "image": "",
+        "vision": "mimo-v2.6-flash"
+      },
+      "keyPlaceholder": "普通 API Key（非 Token Plan）",
+      "guideSteps": [
+        "创建小米 MiMo 普通按量 API Key；Token Plan Key 和套餐额度不互通。",
+        "MiMo-V2.6-Pro 与 Flash 均用于文本规划/识图，不提供生图；请在专业模式搭配图像渠道。",
+        "本轮使用同步 Chat API；截断或结果未知不会自动重复请求，价格按账号地区分别核对。"
       ]
     }
   },

@@ -7,8 +7,11 @@ import ResultFigure from './ResultFigure';
 import StageTimeline from './StageTimeline';
 import StatusBadge from './StatusBadge';
 import Select from './Select';
+import ReferenceUploadPanel from './ReferenceUploadPanel';
+import RefineMaskEditor from './RefineMaskEditor';
 
 export default function RefinePanel({
+  controls, references, referencePolicy, mask, onMaskChange, structuredEnabled, onStructuredEnabledChange, structured, onStructuredChange, controlsIssue,
   source = {}, upload = {}, uploadLimits, uploadEnabled, capability, instruction, imageSize, resolutionOptions = [],
   aspectRatio, aspectRatioOptions = [], settingsSummary, canSubmit, submitHint, isSubmitting, error, job, pollError,
   apiBase, optimizationSupported, optimizationDisabledReason, optimizationHasUndo, optimizationGuidance,
@@ -49,6 +52,16 @@ export default function RefinePanel({
           {upload.error ? <div className="refine-upload-error" role="alert"><span>{formatErrorMessage(upload.error)}</span>{upload.status === 'failed' ? <button type="button" disabled={running} onClick={onRetryUpload}>重新上传</button> : null}</div> : null}
           <div className="refine-source-links"><span>也可从</span><button type="button" disabled={running} onClick={onOpenGenerate}>生成结果</button><span>或</span><button type="button" disabled={running} onClick={onOpenRecords}>任务记录</button><span>选择原图</span></div>
         </section>
+        {references && referencePolicy ? <section className="refine-step" aria-label="辅助参考图与编辑控制">
+          <ReferenceUploadPanel title="辅助参考图" images={references.images} policy={referencePolicy} disabled={running} uploadBlocked={!controls || referencePolicy.maxCount === 0} isUploading={references.busy} error={references.error} onAddFiles={references.add} onRemove={references.remove} onPurposeChange={references.update} help="原图是修改对象；辅助图按所选用途一同传给最终编辑模型。" processingHint={`原图占用 1 个模型图片名额，当前最多 ${referencePolicy.maxCount} 张辅助图。提交前只校正方向并转为无损 PNG；不自动缩小、截断或有损压缩。超限将保留输入并阻止提交。SVG 会栅格化，文字需转曲；不是矢量对象编辑。单张提交额度 ${(referencePolicy.submission.maxBytes/1048576).toFixed(1)} MiB。`}/>
+          {!controls ? <p className="refine-submit-hint">当前型号尚未接入辅助参考图、遮罩或结构化控制；已有输入保留。</p> : <p className="refine-submit-hint">模型总名额 {controls.maxImages} 张，包含待精修原图。{controls.mask ? '遮罩仅限一张原图，不能同时使用辅助参考图。' : ''}</p>}
+          {controls?.mask && source.url ? <RefineMaskEditor source={source} value={mask} onChange={onMaskChange} disabled={running}/> : mask ? <p>遮罩已保留，当前模型不能提交。<button type="button" disabled={running} onClick={()=>onMaskChange(null)}>清除遮罩</button></p> : null}
+          {controls?.structured || structuredEnabled ? <div className="refine-structured">
+            <label><input type="checkbox" checked={structuredEnabled} disabled={running || !controls?.structured && !structuredEnabled} onChange={event=>onStructuredEnabledChange(event.target.checked)}/>使用原生结构化编辑</label>
+            {structuredEnabled ? <><p>将对象、属性和关系映射到 BRIA 的正式结构化字段；结果仍是像素图，文字、箭头不会成为独立可编辑对象。</p><div className="refine-structured-fields">{[['object','修改对象','例如：流程图右侧的对照组节点'],['attributes','目标属性','例如：蓝色边框，标签更大'],['relationship','对象关系','例如：保留与上游节点的箭头连接'],['preserve','保留约束','例如：所有数值、文字内容与其余节点位置']].map(([key,label,placeholder])=><label key={key}>{label}<textarea aria-label={label} value={structured[key]} maxLength={500} rows={2} placeholder={placeholder} disabled={running || !controls?.structured} onChange={event=>onStructuredChange({...structured,[key]:event.target.value})}/></label>)}</div></> : null}
+          </div> : null}
+          {controlsIssue ? <p className="refine-upload-error" role="alert">{controlsIssue}</p> : null}
+        </section> : null}
         <section className="refine-step">
           <div className="refine-step-head input-field-head"><h3><span>2</span><label id="refine-instruction-label" htmlFor="refine-instruction">精修指令</label></h3>
             {optimizationSupported ? <InputOptimizationFieldActions target="editInstruction" disabledReason={optimizationDisabledReason} hasUndo={optimizationHasUndo} onOptimize={onOptimize} onRestore={onRestore} /> : null}
@@ -65,6 +78,7 @@ export default function RefinePanel({
             {resolutionOptions.length ? <Select label="清晰度" value={imageSize} onChange={onImageSizeChange} options={resolutionOptions} /> : <p className="refine-resolution-unavailable" role="status">当前模型没有可用精修清晰度，请在精修设置中更换。</p>}
             <AspectRatioPicker label="目标比例" value={aspectRatio} onChange={onAspectRatioChange} options={aspectRatioOptions} compact maxVisible={12} />
           </fieldset>
+          {controls?.autoAspectRatio && aspectRatio === 'auto' ? <p className="refine-submit-hint">此型号的自动比例按 {controls.autoAspectRatio} 输出；需要保持原图长宽比时，请手动选择相应比例。</p> : null}
         </section>
         <div className="refine-submit-area"><button className="primary-button" type="submit" disabled={!canSubmit}>{running ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{running ? '正在精修…' : '提交精修'}</button>
           {submitHint && !error ? <p className="refine-submit-hint">{submitHint}</p> : null}
@@ -77,7 +91,8 @@ export default function RefinePanel({
         {pollError ? <p className="error-line" role="alert">{formatErrorMessage(pollError)}</p> : null}
         {job?.error ? <p className="error-line" role="alert">{formatErrorMessage(job.error)}</p> : null}
         {images.length ? <div className="refine-output-images">{images.map((image, index) => <ResultFigure key={image.filename || index} image={image} apiBase={apiBase} outputFormat={job.output_format} labelPrefix="精修结果" onUseForRefine={onUseForRefine} />)}</div>
-          : <div className={`refine-result-empty${running ? ' processing' : ''}`}><ImagePlus size={38} /><h3>{running ? '精修结果生成中' : job?.status === 'failed' ? '本次精修未完成' : '让原图更接近你的想法'}</h3><p>{running ? '完成后会在这里显示，可下载或继续精修。' : job?.status === 'failed' ? '原图和指令已保留，可调整设置后重新提交。' : '选择一张原图，写下修改要求，再提交精修。'}</p>{!job && !running ? <div><span>选择原图</span><ArrowRight size={14} /><span>描述修改</span><ArrowRight size={14} /><span>查看结果</span></div> : null}</div>}
+          : <div className={`refine-result-empty${running ? ' processing' : ''}`}><ImagePlus size={38} /><h3>{running ? '精修结果生成中' : job?.status === 'failed' ? '本次精修未完成' : '让原图更接近你的想法'}</h3><p>{running ? '完成后会在这里显示，可下载或继续精修。' : job?.status === 'failed' ? job?.recovery?.canResume ? '原图和指令已保留，请使用上方任务恢复入口。' : '原图和指令已保留。若调用结果或费用未知，请先核对渠道记录，勿重复提交。' : '选择一张原图，写下修改要求，再提交精修。'}</p>{!job && !running ? <div><span>选择原图</span><ArrowRight size={14} /><span>描述修改</span><ArrowRight size={14} /><span>查看结果</span></div> : null}</div>}
+        {job?.providerCalls?.length ? <details className="refine-process-details"><summary>调用用量与费用记录</summary>{job.providerCalls.map((call,index)=><div key={index}><p>{call.provider || call.channel || '渠道'} · {call.model || call.requestedModel || '型号待确认'} · 请求 {call.requestId || '待确认'}</p><p>公开单价：{call.publicPrice?.amount ?? '待确认'}；估算费用：{call.estimatedCost?.amount ?? '未估算'}；渠道返回费用：{call.reportedCost ? `${call.reportedCost.amount} ${call.reportedCost.currency}` : '未返回'}；已核对账单：{call.invoiceCost?.amount ?? '待确认'}。</p>{call.usage ? <p>渠道用量：{JSON.stringify(call.usage)}</p> : null}{call.structuredInstruction ? <details><summary>查看模型返回的结构化指令</summary><pre>{JSON.stringify(call.structuredInstruction,null,2)}</pre></details> : null}</div>)}</details> : null}
         {job?.stages?.length ? <details className="refine-process-details"><summary>查看处理过程</summary><StageTimeline job={job} apiBase={apiBase} /></details> : null}
       </section>
     </section>

@@ -1,0 +1,2478 @@
+[
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy4-preview",
+    "name": "Hy4 preview",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132252",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6,
+        "output": 18,
+        "cachedInput": 0.3
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy3",
+    "name": "Hy3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "适配链路已完成但真实调用未验证",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132252",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 1,
+        "output": 4,
+        "cachedInput": 0.25
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-mt2-pro",
+    "name": "Hy-MT2-Pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "翻译专用，4K输出；不适合作为科研图主规划模型。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-mt2-plus",
+    "name": "Hy-MT2-Plus",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "翻译专用，4K输出；不适合作为科研图主规划模型。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-mt2-lite",
+    "name": "Hy-MT2-Lite",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "翻译专用，4K输出；不适合作为科研图主规划模型。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hunyuan-role-latest",
+    "name": "Hy-Role-Latest",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "角色扮演/剧情专用，非科研规划用途。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-role",
+    "name": "Hy-Role",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "角色扮演/剧情专用，非科研规划用途。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-flash",
+    "name": "DeepSeek-V4.1-Flash 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-flash-202605",
+    "name": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-v4-flash-0731",
+    "name": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-v4-flash",
+    "name": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-pro-202606",
+    "name": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-v4-pro-0813",
+    "name": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-v4-pro",
+    "name": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek/deepseek-v4-flash-vision-exp",
+    "name": "DeepSeek-V4-Flash-Vision-Exp 原厂直供",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-flash-0731",
+    "name": "DeepSeek-V4-Flash 0731 正式版",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间每日9–12/14–18",
+          "input": 3.0,
+          "output": 9.0,
+          "cachedInput": 0.1
+        },
+        {
+          "condition": "其余时段",
+          "input": 1.5,
+          "output": 4.5,
+          "cachedInput": 0.05
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-pro-0813",
+    "name": "DeepSeek-V4-Pro 0813 正式版",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间每日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-flash",
+    "name": "DeepSeek-V4-Flash",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "rates": {
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.2
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "deepseek-v4-pro",
+    "name": "DeepSeek-V4-Pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132248",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "rates": {
+        "input": 12,
+        "output": 24,
+        "cachedInput": 1
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5.3-flash",
+    "name": "GLM-5.3-Flash",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 0.8,
+        "output": 2.8,
+        "cachedInput": 0.23
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5.3-flashx",
+    "name": "GLM-5.3-FlashX",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 2,
+        "output": 7,
+        "cachedInput": 0.57
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5.3",
+    "name": "GLM-5.3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 8,
+        "output": 28,
+        "cachedInput": 2
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5.2",
+    "name": "GLM-5.2",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 8,
+        "output": 28,
+        "cachedInput": 2
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5.1",
+    "name": "GLM-5.1（2026-10-08下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "retirementDate": "2026-10-08",
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 6,
+          "output": 24,
+          "cachedInput": 1.3
+        },
+        {
+          "condition": "输入>32K",
+          "input": 8,
+          "output": 28,
+          "cachedInput": 2
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5v-turbo",
+    "name": "GLM-5V-Turbo（2026-10-30下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "retirementDate": "2026-10-30",
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 5,
+          "output": 22,
+          "cachedInput": 1.2
+        },
+        {
+          "condition": "输入>32K",
+          "input": 7,
+          "output": 26,
+          "cachedInput": 1.8
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5-turbo",
+    "name": "GLM-5-Turbo（2026-10-08下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "retirementDate": "2026-10-08",
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 5,
+          "output": 22,
+          "cachedInput": 1.2
+        },
+        {
+          "condition": "输入>32K",
+          "input": 7,
+          "output": 26,
+          "cachedInput": 1.8
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "glm-5",
+    "name": "GLM-5（2026-10-08下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "retirementDate": "2026-10-08",
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132061",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 4,
+          "output": 18,
+          "cachedInput": 1
+        },
+        {
+          "condition": "输入>32K",
+          "input": 6,
+          "output": 22,
+          "cachedInput": 1.5
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kimi-k2.7-code-highspeed",
+    "name": "Kimi K2.7 Code HighSpeed",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132232",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 13,
+        "output": 54,
+        "cachedInput": 2.6
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kimi-k3",
+    "name": "Kimi K3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132232",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 20,
+        "output": 100,
+        "cachedInput": 2
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kimi-k2.8-preview",
+    "name": "Kimi K2.8 Preview",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132232",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.7
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kimi-k2.7-code",
+    "name": "Kimi K2.7 Code",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132232",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.3
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kimi-k2.6",
+    "name": "Kimi-K2.6",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132232",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.1
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-m3",
+    "name": "MiniMax-M3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132246",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "上下文≤512K",
+          "input": 2.1,
+          "output": 8.4,
+          "cachedInput": 0.42
+        },
+        {
+          "condition": "上下文>512K",
+          "input": 4.2,
+          "output": 16.8,
+          "cachedInput": 0.84
+        }
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-m2.7",
+    "name": "MiniMax-M2.7",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/132246",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 2.1,
+        "output": 8.4,
+        "cachedInput": 0.42
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "qwen3.5-flash",
+    "name": "Qwen3.5-Flash（2026-09-08下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-08",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "qwen3.5-plus",
+    "name": "Qwen3.5-Plus（2026-09-08下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-08",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "mimo-v2.5-pro",
+    "name": "MiMo-V2.5-Pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/130079",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-image-v3",
+    "name": "Hy-Image-3.0",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "适配链路已完成但真实调用未验证",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "保留已接入 v3 独立接口，不改成 v3.5。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "currency": "CNY",
+      "unit": "million output tokens",
+      "rate": 10,
+      "example": {
+        "outputTokens": 20000,
+        "amount": 0.2
+      },
+      "accountTariffConfirmed": false
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-vega-image-lite",
+    "name": "WAND-Vega-Image-1.0-Lite",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 16200,
+        "2K": 18000,
+        "4K": 22500
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-vega-image-flash",
+    "name": "WAND-Vega-Image-1.0-Flash",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 45000,
+        "2K": 67500,
+        "4K": 100800
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-vega-image-pro",
+    "name": "WAND-Vega-Image-1.0-Pro",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 95000,
+        "2K": 95000,
+        "4K": 171000,
+        "inputAfterFirstThreeEach": 10000
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-image-q2",
+    "name": "Vidu-Image-q2",
+    "source": "https://cloud.tencent.com/document/product/1823/135746",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImageByInputCount": {
+        "0": [
+          18750,
+          25000,
+          31250
+        ],
+        "1–3": [
+          25000,
+          37500,
+          62500
+        ],
+        "4–7": [
+          31250,
+          50000,
+          93750
+        ]
+      },
+      "resolutions": [
+        "1080p",
+        "2K",
+        "4K"
+      ]
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "seedream-image-v5.0-pro",
+    "name": "Seedream-Image-v5.0-pro",
+    "source": "https://cloud.tencent.com/document/product/1823/136609",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。目录ID大小写与接口示例冲突；使用详情示例小写ID，真实服务待确认。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "output≤2.61MP": 30000,
+        "output>2.61MP": 60000,
+        "inputAfterFirstEach": 2000
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "seedream-image-v5.0-lite",
+    "name": "Seedream-Image-v5.0-lite",
+    "source": "https://cloud.tencent.com/document/product/1823/136609",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "image"
+    ],
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。目录ID大小写与接口示例冲突；使用详情示例小写ID，真实服务待确认。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": 22000
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-image-v3.0",
+    "name": "HY-Image-V3.0（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-image-lite",
+    "name": "HY-Image-Lite（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-vega-video-1.0-lite",
+    "name": "WAND-Vega-Video-1.0-Lite",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-video-h3-max",
+    "name": "MiniMax-Video-H3-Max",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-video-h3",
+    "name": "MiniMax-Video-H3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-video-v2.3",
+    "name": "MiniMax-Video-v2.3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-video-v2.3-fast",
+    "name": "MiniMax-Video-v2.3-fast",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-v3",
+    "name": "Kling-Video-V3",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-v3-omni",
+    "name": "Kling-Video-V3-omni",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-v3-turbo",
+    "name": "Kling-Video-V3-turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-v2.6",
+    "name": "Kling-Video-V2.6",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-v2.5-turbo",
+    "name": "Kling-Video-V2.5-turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kling-video-o1",
+    "name": "Kling-Video-O1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v3",
+    "name": "Kling-Video-v3（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v2-6",
+    "name": "Kling-Video-v2.6（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v2-5-turbo",
+    "name": "Kling-Video-v2.5-turbo（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v2-1-master",
+    "name": "Kling-Video-v2.1-master（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v2-1",
+    "name": "Kling-Video-v2.1（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v2-master",
+    "name": "Kling-Video-v2-master（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v1-6",
+    "name": "Kling-Video-v1.6（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v1-5",
+    "name": "Kling-Video-v1.5（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kl-video-v1",
+    "name": "Kling-Video-v1（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q3-pro",
+    "name": "Vidu-Video-q3.0-pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q3-turbo",
+    "name": "Vidu-Video-q3.0-turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q3",
+    "name": "Vidu-Video-q3.0",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q2",
+    "name": "Vidu-Video-q2.0",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q2-pro",
+    "name": "Vidu-Video-q2.0-pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vidu-video-q2-turbo",
+    "name": "Vidu-Video-q2.0-turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q3-pro",
+    "name": "Vidu-Video-q3-pro（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q3-turbo",
+    "name": "Vidu-Video-q3-turbo（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q2-pro",
+    "name": "Vidu-Video-q2-pro（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q2-pro-fast",
+    "name": "Vidu-Video-q2-pro-fast（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q2-turbo",
+    "name": "Vidu-Video-q2-turbo（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "vd-video-q2",
+    "name": "Vidu-Video-q2（2026-09-15下线）",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "retirementDate": "2026-09-15",
+    "decision": "官方已下线，不开放新选择；不把价格表仍列出视为可用。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "pixverse-video-v6.0",
+    "name": "PixVerse-Video-v6",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "pixverse-video-v5.6",
+    "name": "PixVerse-Video-v5.6",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "pixverse-video-c1",
+    "name": "PixVerse-Video-c1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-video-1.5",
+    "name": "HY-Video-1.5",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "yt-video-2.0",
+    "name": "YT-Video-2.0",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "yt-video-humanactor",
+    "name": "YT-Video-HumanActor",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "yt-video-fx",
+    "name": "YT-Video-FX",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-world2-panorama",
+    "name": "Hy-World-2.1-panorama",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-world2-scene",
+    "name": "Hy-World-2.1-scene",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-3.0",
+    "name": "HY-3D-3.0",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-3.1",
+    "name": "HY-3D-3.1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-express",
+    "name": "HY-3D-Express",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-component",
+    "name": "HY-3D-Component",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-format",
+    "name": "HY-3D-Format",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-motion",
+    "name": "HY-3D-Motion",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-retopology",
+    "name": "HY-3D-Retopology",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-rigging",
+    "name": "HY-3D-Rigging",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-texture",
+    "name": "HY-3D-Texture",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-3d-uv",
+    "name": "HY-3D-UV",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-3.1",
+    "name": "Tripo-3D-3.1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-p1",
+    "name": "Tripo-3D-P1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-rigging-check",
+    "name": "Tripo-3D-Rigging-Check",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-rigging",
+    "name": "Tripo-3D-Rigging",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-animation",
+    "name": "Tripo-3D-Animation",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "tripo-3d-format",
+    "name": "Tripo-3D-Format",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-music-v2.6",
+    "name": "MiniMax-Music-v2.6",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "indextts-2",
+    "name": "IndexTTS-2",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-2.8-hd",
+    "name": "MiniMax-Speech-2.8-HD",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-2.8-turbo",
+    "name": "MiniMax-Speech-2.8-Turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-2.6-hd",
+    "name": "MiniMax-Speech-2.6-HD",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-2.6-turbo",
+    "name": "MiniMax-Speech-2.6-Turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-02-hd",
+    "name": "MiniMax-Speech-02-HD",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-speech-02-turbo",
+    "name": "MiniMax-Speech-02-Turbo",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-voice-clone",
+    "name": "MiniMax-Voice-Clone",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "minimax-voice-design",
+    "name": "MiniMax-Voice-Design",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-dubbing-clone-v1",
+    "name": "WAND-Dubbing-Clone-v1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-dubbing-clone-v2",
+    "name": "WAND-Dubbing-Clone-v2",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-dubbing-sts-v1",
+    "name": "WAND-Dubbing-STS-v1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "wand-asr-v1",
+    "name": "WAND-ASR-v1",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-asr-3.0-preview",
+    "name": "Hy-ASR-3.0-Preview",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "youtu-vita",
+    "name": "YT-VITA",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/136956",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "status": "待确认"
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hy-vision-2.0-instruct",
+    "name": "HY-Vision-2.0-Instruct",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "适配链路已完成但真实调用未验证",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/136956",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 7.5,
+        "output": 17.5
+      }
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hunyuan-t1-vision-20250916",
+    "name": "HY-Vision-1.5-Thinking",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "按具体文本/视觉协议补齐；不自动替换同系列别名。",
+    "apiSource": "https://cloud.tencent.com/document/product/1823/136956",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "status": "待确认"
+    }
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "hunyuan-turbos-vision-video-20250728",
+    "name": "HY-Vision-Video",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kinfra-text-embedding-0.6b",
+    "name": "Kinfra-Text-Embedding-0.6b",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kinfra-text-embedding-4b",
+    "name": "Kinfra-Text-Embedding-4b",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kinfra-vl-embedding-2b",
+    "name": "Kinfra-VL-Embedding-2b",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "apiModelId": "kinfra-vl-embedding-8b",
+    "name": "Kinfra-VL-Embedding-8b",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "视频/音频/3D/嵌入专用，超出本轮科研图工作流。"
+  },
+  {
+    "channel": "tokenhub",
+    "name": "hy-image-v3.5-preview",
+    "before": "尚未登记",
+    "checkedAt": "2026-09-22",
+    "apiModelId": "hy-image-v3.5-preview",
+    "source": "https://cloud.tencent.com/document/product/1823/135745",
+    "roles": [
+      "image"
+    ],
+    "after": "适配链路已完成但真实调用未验证",
+    "decision": "补齐专用接口、尺寸、图片名额与结果恢复。",
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "status": "待确认：价格页尚未列出3.5，不沿用3.0价格"
+    }
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.6-pro",
+    "name": "mimo-v2.6-pro",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "适配链路已完成但真实调用未验证",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "文本和识图适配；保留历史ID。",
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.435,
+        "output": 0.87,
+        "cachedInput": 0.0036
+      }
+    }
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.6-flash",
+    "name": "mimo-v2.6-flash",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "适配链路已完成但真实调用未验证",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "文本和识图适配；保留历史ID。",
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.02
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.14,
+        "output": 0.28,
+        "cachedInput": 0.0028
+      }
+    }
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.6-pro-ultraspeed",
+    "name": "mimo-v2.6-pro-ultraspeed",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "需联系商务/技术支持定制开通；不伪装普通API Key可调用。"
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5-pro",
+    "name": "mimo-v2.5-pro",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main"
+    ],
+    "decision": "逐型号适配，V2.5 Pro 仅文本，不继承V2.6视觉能力。",
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.435,
+        "output": 0.87,
+        "cachedInput": 0.0036
+      }
+    }
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5",
+    "name": "mimo-v2.5",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "适配链路已完成但真实调用未验证",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "decision": "文本和识图适配；保留历史ID。",
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.02
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.14,
+        "output": 0.28,
+        "cachedInput": 0.0028
+      }
+    }
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5-asr",
+    "name": "mimo-v2.5-asr",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "音频识别/合成/克隆/设计，超出本轮科研图用途。"
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5-tts",
+    "name": "mimo-v2.5-tts",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "音频识别/合成/克隆/设计，超出本轮科研图用途。"
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5-tts-voiceclone",
+    "name": "mimo-v2.5-tts-voiceclone",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "音频识别/合成/克隆/设计，超出本轮科研图用途。"
+  },
+  {
+    "channel": "xiaomi",
+    "apiModelId": "mimo-v2.5-tts-voicedesign",
+    "name": "mimo-v2.5-tts-voicedesign",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "checkedAt": "2026-09-22",
+    "before": "尚未登记",
+    "after": "尚未登记",
+    "roles": [],
+    "decision": "音频识别/合成/克隆/设计，超出本轮科研图用途。"
+  }
+]

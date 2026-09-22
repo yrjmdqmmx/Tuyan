@@ -22,7 +22,10 @@
     "fireworks": "Fireworks AI",
     "fal": "fal",
     "replicate": "Replicate",
-    "tokendance": "观猹 TokenDance"
+    "tokendance": "观猹 TokenDance",
+    "runware": "Runware",
+    "tokenhub": "腾讯 TokenHub",
+    "xiaomi": "小米 MiMo"
   },
   "vendors": {
     "deepseek": {
@@ -44,7 +47,8 @@
         "z-ai",
         "zai-org",
         "GLM",
-        "智谱 GLM"
+        "智谱 GLM",
+        "zai"
       ],
       "source": "https://github.com/zai-org/GLM-4",
       "labelEn": "Zhipu AI"
@@ -230,11 +234,13 @@
     },
     "xiaomi": {
       "label": "小米",
+      "labelEn": "Xiaomi",
+      "labelZh": "小米",
       "aliases": [
-        "Xiaomi"
+        "xiaomi",
+        "MiMo"
       ],
-      "source": "https://huggingface.co/XiaomiMiMo",
-      "labelEn": "Xiaomi"
+      "source": "https://mimo.mi.com/docs/en-US/updates/model"
     },
     "unisound": {
       "label": "云知声",
@@ -567,9 +573,60 @@
       ],
       "source": "https://www.siliconflow.cn/models",
       "labelEn": "XingChenAGI"
+    },
+    "klingai": {
+      "label": "Kling AI",
+      "labelEn": "Kling AI",
+      "aliases": [
+        "klingai",
+        "Kling AI"
+      ],
+      "source": "https://runware.ai/docs/models/kling-image-3-0"
+    },
+    "runway": {
+      "label": "Runway",
+      "labelEn": "Runway",
+      "aliases": [
+        "runway",
+        "Runway"
+      ],
+      "source": "https://runware.ai/docs/models/runway-gen-4-image"
+    },
+    "vidu": {
+      "label": "Vidu",
+      "labelEn": "Vidu",
+      "aliases": [
+        "vidu",
+        "Vidu"
+      ],
+      "source": "https://runware.ai/docs/models/vidu-q1"
+    },
+    "shengshu": {
+      "label": "生数科技",
+      "labelEn": "ShengShu",
+      "aliases": [
+        "ShengShu"
+      ],
+      "source": "https://cloud.tencent.com/document/product/1823/135746"
     }
   },
   "routes": [
+    {
+      "channels": [
+        "runware"
+      ],
+      "pattern": "^alibaba:",
+      "vendorId": "alibaba",
+      "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+    },
+    {
+      "channels": [
+        "tokenhub"
+      ],
+      "pattern": "^hy-image-",
+      "vendorId": "tencent",
+      "source": "https://cloud.tencent.com/document/product/1823/135745"
+    },
     {
       "channels": [
         "siliconflow"
@@ -785,6 +842,22 @@
       "pattern": "^zai-glm-",
       "vendorId": "zhipu",
       "source": "https://docs.mistral.ai/models"
+    },
+    {
+      "channels": [
+        "xiaomi"
+      ],
+      "pattern": "^mimo-",
+      "vendorId": "xiaomi",
+      "source": "https://mimo.mi.com/docs/en-US/api/chat/openai-api"
+    },
+    {
+      "channels": [
+        "runware"
+      ],
+      "pattern": "^google:",
+      "vendorId": "google",
+      "source": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/examples"
     }
   ],
   "families": [

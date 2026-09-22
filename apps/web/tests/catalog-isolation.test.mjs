@@ -90,9 +90,8 @@ test('an explicitly selected advanced model stays selected while quarantined, ca
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   await user.click(screen.getByRole('button', { name: '图像生成模型', exact: true }))
   assert.equal(screen.queryByRole('button', { name: '选择 Seedream 5.0 lite', exact: true }), null)
-  const unavailable = screen.getByRole('region', { name: '暂不可用的模型' })
-  assert.match(unavailable.textContent, /Seedream 5.0 lite/)
-  assert.match(unavailable.textContent, /目录读取超时/)
+  assert.equal(screen.queryByRole('region', { name: '暂不可用的模型' }), null)
+  assert.match(screen.getByRole('button', { name: '图像生成模型', exact: true }).textContent, /Seedream 5.0 lite/)
   await user.click(screen.getByRole('button', { name: '关闭模型选择' }))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   f.set('ready')
@@ -101,7 +100,7 @@ test('an explicitly selected advanced model stays selected while quarantined, ca
   assert.match(screen.getByRole('region', { name: '当前生成设置' }).textContent, /Seedream 5.0 lite/)
 })
 
-test('quarantined TokenDance models remain searchable with reasons and recover without changing selection', async () => {
+test('quarantined TokenDance models are hidden from search and recover without changing selection', async () => {
   const user = userEvent.setup(), changes = []
   const model = { id: 'deepseek-chat-v3-0324', label: 'DeepSeek V3', vendor: '深度求索', roles: ['main'], selectable: false, disabledReason: 'supported_protocols 返回 null，已暂停调用；请稍后重试目录。' }
   const props = { label: '主模型', role: 'main', provider: 'tokendance', value: 'qwen3.8-flash', onChange: id => changes.push(id), models: [
@@ -112,7 +111,7 @@ test('quarantined TokenDance models remain searchable with reasons and recover w
   await waitFor(() => assert.ok(document.activeElement === screen.getByRole('button', { name: '关闭模型选择' })))
   await user.type(screen.getByRole('searchbox', { name: '搜索主模型' }), model.id)
   assert.equal(screen.getByRole('searchbox', { name: '搜索主模型' }).value, model.id)
-  assert.match(screen.getByRole('region', { name: '暂不可用的模型' }).textContent, /supported_protocols 返回 null/)
+  assert.equal(screen.queryByRole('region', { name: '暂不可用的模型' }), null)
   assert.equal(screen.queryByRole('button', { name: '选择 DeepSeek V3' }), null)
   assert.deepEqual(changes, [])
   view.rerender(React.createElement(ModelPicker, { ...props, models: [props.models[0], { ...model, selectable: true, disabledReason: '' }] }))
@@ -121,7 +120,7 @@ test('quarantined TokenDance models remain searchable with reasons and recover w
   assert.deepEqual(changes, [])
 })
 
-test('compact picker reaches reasons when every TokenDance model is quarantined', async () => {
+test('compact picker hides quarantined choices while explaining the saved selection', async () => {
   const previous = window.matchMedia
   window.matchMedia = () => ({ matches: true, addEventListener() {}, removeEventListener() {} })
   try {
@@ -131,8 +130,9 @@ test('compact picker reaches reasons when every TokenDance model is quarantined'
     ] }))
     await user.click(screen.getByRole('button', { name: '主模型', exact: true }))
     await user.click(screen.getByRole('button', { name: /观猹/ }))
-    await user.click(screen.getByRole('button', { name: '厂商 深度求索' }))
-    assert.match(screen.getByRole('region', { name: '暂不可用的模型' }).textContent, /目录读取超时/)
+    assert.equal(screen.queryByRole('button', { name: '厂商 深度求索' }), null)
+    assert.equal(screen.queryByRole('region', { name: '暂不可用的模型' }), null)
+    assert.ok(screen.getByText(/目录读取超时/))
     assert.equal(screen.queryByRole('button', { name: '选择 DeepSeek V3' }), null)
   } finally { window.matchMedia = previous }
 })

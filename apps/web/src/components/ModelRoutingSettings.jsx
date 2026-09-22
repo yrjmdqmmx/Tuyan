@@ -44,6 +44,7 @@ export default function ModelRoutingSettings({
   arkVerificationError,
   onVerifyArk,
 }) {
+  const recoverableCredentials = credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi'].includes(provider))
   const isAdvancedMode = configurationMode === 'advanced'
   const routeContractSupported = Number(modelRegistry?.routeContractVersion || 0) >= 1
   const arkImageProbeRequired = arkProbes.some((probe) => probe.role === 'image')
@@ -112,7 +113,7 @@ export default function ModelRoutingSettings({
 
       <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} /> 接入凭据</summary>
-        <p>填写当前任务所需的渠道密钥，或连接观猹 TokenDance 授权账户。{credentialProviders.includes('tokendance') ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。'}</p>
+        <p>填写当前任务所需的渠道密钥，或连接观猹 TokenDance 授权账户。{recoverableCredentials ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。'}</p>
         {credentialProviders.map((provider) => {
           const config = providerConfigs[provider]
           if (!config) return null
@@ -141,7 +142,7 @@ export default function ModelRoutingSettings({
                   />
                 </div>
               </label>
-              <ApiKeyGuide recoverable={credentialProviders.includes('tokendance')} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
+              <ApiKeyGuide recoverable={recoverableCredentials} providerConfig={provider === 'minimax' ? {...config, guideUrl: MINIMAX_REGIONS[minimaxRegion(providerRegions)].keyUrl, guideSteps: ['登录所选区域的 MiniMax 开放平台并创建 API Key。', '不同区域的 Key 分别保存在当前页面内存，切换时不会互用。']} : config} />
             </div>
           )
         })}

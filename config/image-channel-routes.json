@@ -368,9 +368,10 @@
     "editing": {
       "endpoint": "bria/fibo-edit-1.5/edit",
       "promptField": "instruction",
-      "sizeMode": "none",
+      "sizeMode": "ratio",
       "sourceField": "image_urls",
-      "sourceArray": true
+      "sourceArray": true,
+      "sizeField": "aspect_ratio"
     }
   },
   "fal/bria/fibo-gen-1.5/text-to-image": {
@@ -3110,6 +3111,1216 @@
       "promptField": "prompt",
       "sizeMode": "ratio",
       "sizeField": "aspect_ratio"
+    }
+  },
+  "runware/alibaba:qwen-image@2512": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/alibaba:qwen-image-edit@2511": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "tokenhub/hy-image-v3": {
+    "generation": {
+      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "maxPromptLength": 8192,
+      "constants": {
+        "model": "hy-image-v3",
+        "revise": false
+      }
+    },
+    "editing": {
+      "endpoint": "/v1/wand/hunyuan-image/v3-generation",
+      "promptField": "prompt",
+      "sizeMode": "string",
+      "sizeField": "size",
+      "maxPromptLength": 8192,
+      "constants": {
+        "model": "hy-image-v3",
+        "revise": false
+      },
+      "sourceField": "images",
+      "sourceArray": true,
+      "sourceEncoding": "base64"
+    }
+  },
+  "runware/openai:gpt-image@2.5-flare": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/openai:gpt-image@2.5-sunburst": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/xai:grok-imagine@image-2.0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/alibaba:qwen-image@3.0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/alibaba:qwen-image@3.0-pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/prunaai:p-image@ideogram": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 7000
+    }
+  },
+  "runware/krea:krea@2-turbo": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/bytedance:seedream@5.0-pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/meta:muse@image": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/google:nano-banana@2-lite": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    }
+  },
+  "runware/krea:krea@2-raw": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/rundiffusion:300@100": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/sourceful:riverflow-2.5@fast": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 24000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 24000
+    }
+  },
+  "runware/sourceful:riverflow-2.5@pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 24000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 24000
+    }
+  },
+  "runware/ideogram:4@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/ideogram:4@q": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/krea:krea@2-medium-turbo": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/ideogram:4@remix": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2048
+    }
+  },
+  "runware/krea:krea@2-large": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/krea:krea@2-medium": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/recraft:v4.1@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/recraft:v4.1-pro@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/recraft:v4.1-utility@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/recraft:v4.1-utility-pro@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/xai:grok-imagine@image-quality": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/luma:uni@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 6000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 6000
+    }
+  },
+  "runware/luma:uni@1-max": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 6000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 6000
+    }
+  },
+  "runware/rundiffusion:200@100": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/openai:gpt-image@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/baidu:ernie-image@turbo": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/baidu:ernie-image@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/imagineart:2.0@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/alibaba:wan@2.7-image": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/alibaba:wan@2.7-image-pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:400@6": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/google:4@3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    }
+  },
+  "runware/bytedance:seedream@5.0-lite": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/recraft:v4-pro@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/recraft:v4@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/alibaba:qwen-image@2.0-pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/alibaba:qwen-image@2.0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/klingai:kling-image@3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    }
+  },
+  "runware/klingai:kling-image@o3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    }
+  },
+  "runware/sourceful:riverflow-2.0@fast": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/sourceful:riverflow-2.0@pro": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/xai:grok-imagine@image": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/runware:z-image@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/runware:400@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/bria:21@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:400@4": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/runware:400@3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/imagineart:1.5-pro@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:400@5": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/bria:20@3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:twinflow-z-image-turbo@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/openai:4@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/bfl:7@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/alibaba:wan@2.6-image": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2100
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2100
+    }
+  },
+  "runware/bytedance:seedream@4.5": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/klingai:kling-image@o1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2500
+    }
+  },
+  "runware/prunaai:1@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/bfl:5@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/runware:kandinsky-5.0-image-lite@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/runware:z-image@turbo": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 10000
+    }
+  },
+  "runware/runware:400@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/bfl:6@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/google:4@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 45000
+    }
+  },
+  "runware/imagineart:1@5": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/prunaai:2@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/bria:20@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:201@10": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/runware:108@22": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/bria:11@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:111@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bytedance:5@0": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/google:4@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:108@20": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/runway:4@2": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 1000
+    }
+  },
+  "runware/runware:108@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/runware:107@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bfl:4@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bfl:3@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:106@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:5@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bria:10@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runway:4@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 1000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 1000
+    }
+  },
+  "runware/ideogram:4@3": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/ideogram:4@2": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/openai:1@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/runware:97@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/runware:97@3": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/runware:97@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 200000
+    }
+  },
+  "runware/vidu:q1@image": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 1500
+    }
+  },
+  "runware/ideogram:4@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/ideogram:4@5": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/openai:1@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 32000
+    }
+  },
+  "runware/rundiffusion:110@101": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/rundiffusion:130@100": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/rundiffusion:120@100": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/ideogram:2@2": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/ideogram:2@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/runware:102@1": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bfl:2@2": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/bfl:1@2": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "none",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/ideogram:3@2": {
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/bfl:2@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/ideogram:3@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 2000
+    }
+  },
+  "runware/runware:100@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/runware:101@1": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "runware/civitai:101055@128078": {
+    "generation": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    },
+    "editing": {
+      "endpoint": "/v1",
+      "sizeMode": "dimensions",
+      "maxPromptLength": 3000
+    }
+  },
+  "tokenhub/hy-image-v3.5-preview": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 8192
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 8192
+    }
+  },
+  "tokenhub/wand-vega-image-lite": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "tokenhub/wand-vega-image-flash": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "tokenhub/wand-vega-image-pro": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "tokenhub/vidu-image-q2": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 2000
+    }
+  },
+  "tokenhub/seedream-image-v5.0-pro": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 600
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 600
+    }
+  },
+  "tokenhub/seedream-image-v5.0-lite": {
+    "generation": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 600
+    },
+    "editing": {
+      "endpoint": "/v1/wand/",
+      "sizeMode": "none",
+      "maxPromptLength": 600
     }
   }
 }

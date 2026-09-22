@@ -469,7 +469,7 @@ test('model without supported refine resolutions shows an honest disabled capabi
   assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
 })
 
-test('switching from a 4K refine model to a 2K-only model normalizes before rendered submit', async () => {
+test('switching from a 4K refine model preserves the selected size and blocks until explicit correction', async () => {
   const { requests, user } = await renderReadyApp(registryV1, {
     getJob: ({ jobId }) => ({
       id: jobId,
@@ -495,8 +495,12 @@ test('switching from a 4K refine model to a 2K-only model normalizes before rend
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  await waitFor(() => assert.equal(screen.getByLabelText('清晰度').value, '2K'))
+  assert.equal(screen.getByLabelText('清晰度').value, '4K')
   await user.type(screen.getByLabelText('精修指令'), '放大标签并保持版式')
+  assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
+  assert.equal(requests.some((request) => request.body?.action === 'refineImage'), false)
+  await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
+  await user.click(screen.getByRole('button', { name: '目标比例 自动' }))
   await user.click(screen.getByRole('button', { name: '提交精修' }))
 
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'refineImage')))

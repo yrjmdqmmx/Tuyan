@@ -51,7 +51,8 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   const legacy = await import('data:text/javascript;base64,' + Buffer.from(result.outputFiles[0].text + '\n// ' + Math.random()).toString('base64'));
   const image = await sharp({ create: { width: 120, height: 80, channels: 4, background: '#89a78a' } }).png().toBuffer();
   const output = await sharp({ create: { width: 1024, height: 1024, channels: 4, background: '#b1c5ae' } }).png().toBuffer();
-  let providerFailure = false;
+  let providerFailure = false, channelFailure = '';
+  const channelTasks = new Map();
   let tdFailure = '', tdPaid = false, tdSession = null;
   const tokenDanceCalls = [];
   const catalog = tokenDance ? JSON.parse(readFileSync(new URL('../config/tokendance/catalog.json', import.meta.url), 'utf8')) : null;
@@ -87,6 +88,44 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     providerCalls.push({ url, options });
     if (providerDelay) await new Promise(resolve => setTimeout(resolve, providerDelay));
     if (providerFailure) return Response.json({ error: { message: 'Local provider failure fixture' } }, { status: 400 });
+    if (url === 'https://fixture-assets.example.org/image.png') {
+      if (channelFailure === 'download') return new Response('temporary fixture error',{status:503});
+      return new Response(output,{headers:{'Content-Type':'image/png'}});
+    }
+    if (url === 'https://api.runware.ai/v1') {
+      const task=JSON.parse(options.body)[0];
+      if (['imageInference','textInference','caption'].includes(task.taskType)) {
+        channelTasks.set(task.taskUUID,task);
+        if (channelFailure === 'lost-submit') throw new Error('fixture lost acknowledgment');
+        return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'processing'}]});
+      }
+      if (!channelTasks.has(task.taskUUID)) return Response.json({errors:[{taskUUID:task.taskUUID,code:'taskNotFound'}]});
+      if (['textInference','caption'].includes(channelTasks.get(task.taskUUID).taskType)) return Response.json({data:[{taskType:'textInference',taskUUID:task.taskUUID,text:'需要保留科研图的数值、文字与连接关系。',finishReason:'stop',cost:.00003,usage:{promptTokens:12,completionTokens:8,totalTokens:20}}]});
+      return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'success',imageURL:'https://fixture-assets.example.org/image.png',cost:.012,seed:42}]});
+    }
+    if (['https://tokenhub.tencentmaas.com/v1/chat/completions','https://api.xiaomimimo.com/v1/chat/completions'].includes(url)) {
+      if (channelFailure === 'lost-submit') throw new Error('fixture lost text acknowledgment');
+      return Response.json({id:'fixture-text',choices:[{finish_reason:'stop',message:{content:'需要保留科研图的数值、文字与连接关系。'}}],usage:{prompt_tokens:12,completion_tokens:8,total_tokens:20}});
+    }
+    if(url.includes('/vidu-image/')||url.includes('/vega-images/')) {
+      if(options.method==='POST') {if(channelFailure==='lost-submit')throw new Error('fixture lost async acknowledgment');return Response.json({task_id:'fixture-tokenhub-task'});}
+      if(channelFailure==='pending')return Response.json({state:'processing',status:'in_progress'});
+      return Response.json({state:'success',status:'completed',creations:[{url:'https://fixture-assets.example.org/image.png'}],data:[{url:'https://fixture-assets.example.org/image.png'}],tokenhub_usage:{total_tokens:18000}});
+    }
+    if(url.includes('/v35-generation'))return Response.json({choices:[{delta:{image:{url:'https://fixture-assets.example.org/image.png'}}}],tokenhub_usage:{total_tokens:12345}});
+    if (url.startsWith('https://tokenhub.tencentmaas.com/')) {
+      if (channelFailure === 'lost-submit') throw new Error('fixture lost synchronous result');
+      return Response.json({id:'fixture-tokenhub-image',request_id:'fixture-tokenhub-request',tokenhub_usage:{total_tokens:4000},data:[{url:'https://fixture-assets.example.org/image.png'}]});
+    }
+    if (url.startsWith('https://queue.fal.run/')) {
+      if (options.method === 'POST') { if (channelFailure === 'lost-submit') throw new Error('fixture lost fal acknowledgment'); return Response.json({request_id:'fixture-edit-task'}); }
+      if (url.endsWith('/status')) return Response.json({status:'COMPLETED'});
+      return Response.json({image:{url:'https://fixture-assets.example.org/image.png'},structured_instruction:{short_description:'fixture structured output',objects:[{description:'node',relationship:'kept'}]}});
+    }
+    if (url.startsWith('https://api.replicate.com/')) {
+      if (options.method === 'POST') return Response.json({id:'fixture-replicate',status:'starting',urls:{get:'https://api.replicate.com/v1/predictions/fixture-replicate'}});
+      return Response.json({status:'succeeded',version:'fixture-exact-version',output:['https://fixture-assets.example.org/image.png'],metrics:{predict_time:.5}});
+    }
     if (url === 'https://api.openai.com/v1/responses') return Response.json({output_text: 'A scientific figure preserving the reference labels and connections.'});
     if (url.includes('/chat/completions')) return Response.json({ choices: [{ message: { content: '需要调整：放大标签。需要保留：原有文字、配色和布局；其他内容保持不变。' } }] });
     if (['https://api.openai.com/v1/images/edits', 'https://api.openai.com/v1/images/generations'].includes(url)) return Response.json({ data: [{ b64_json: output.toString('base64') }] });
@@ -112,6 +151,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     app.post('/fixture/paid',(_req,res)=>{tdPaid=true;tdFailure='';res.json({fixture:true,paid:true})});
     app.post('/fixture/balance-failure',(_req,res)=>{tdPaid=false;tdFailure='top_up_balance';res.json({fixture:true,paid:false})});
   }
+  app.post('/fixture/channel-failure',express.json(),(req,res)=>{channelFailure=String(req.body.scenario || '');res.json({fixture:true,scenario:channelFailure});});
   app.use('/objects', (req, res, next) => {
     res.set('Access-Control-Allow-Origin', frontendOrigin);
     res.set('Access-Control-Allow-Methods', 'GET,PUT,OPTIONS');
@@ -150,6 +190,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     baseUrl, db, objects, providerCalls, image, output, legacy, invoke, tokenDanceService, workflow, tokenDanceCalls,
     setTokenDanceFailure(action) { tdFailure = action; }, payTokenDance() { tdPaid = true; tdFailure = ''; },
     failProvider(value) { providerFailure = value; },
+    setChannelFailure(value) { channelFailure = value; },
     async post(body, user = 'refine-owner') {
       const response = await fetch(baseUrl + '/paperbanana-api', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-test-user': user }, body: JSON.stringify(body) });
       return { status: response.status, data: await response.json() };

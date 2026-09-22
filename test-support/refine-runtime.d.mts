@@ -30,6 +30,7 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   };
   invoke(body: Record<string, unknown>): Promise<any>;
   failProvider(value: boolean): void;
+  setChannelFailure(value: string): void;
   post(body: Record<string, unknown>, user?: string): Promise<{ status: number; data: any }>;
   close(): Promise<void>;
 }>;

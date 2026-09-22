@@ -52,11 +52,23 @@ test('each keyed channel shows its own guide; copying cannot alter keys or route
   p.copyKeyGuide({currentTarget:{dataset:{provider:config.id}}});assert.equal(clipboard.at(-1),field.guideUrl);assert.ok(!clipboard.at(-1).includes('fictional-secret'));assert.equal(JSON.stringify({draft:p.data.draft,keys:p.data.draftKeys}),before);
  }
  const p=sheet(base(),{},true,wx).instance;const count=clipboard.length;assert.equal(p.data.keyFields.find(f=>f.provider==='tokendance').guideUrl,'');
- for(const provider of ['tokendance','unavailable'])p.copyKeyGuide({currentTarget:{dataset:{provider}}});assert.equal(clipboard.length,count);assert.equal(toasts.length,21);
+ for(const provider of ['tokendance','unavailable'])p.copyKeyGuide({currentTarget:{dataset:{provider}}});assert.equal(clipboard.length,count);assert.equal(toasts.length,PROVIDERS.filter(c=>c.id!=='tokendance').length);
 });
 test('MiniMax guide and copied link follow draft region, including switching back without saving',()=>{
  const chosen=base();chosen.modelRoutes.main=providerDefaultRoutes('minimax',registry).main;const copied=[];
  const f=sheet(chosen,{},true,{setClipboardData(o){copied.push(o.data)},showToast(){}});const p=f.instance;
  p.onMiniMaxRegionChange({detail:{value:'1'}});let field=p.data.keyFields.find(f=>f.provider==='minimax');assert.match(field.guideUrl,/platform.minimaxi.com/);assert.match(field.guideSteps[0],/中国大陆/);p.copyKeyGuide({currentTarget:{dataset:{provider:'minimax'}}});assert.equal(copied.at(-1),field.guideUrl);
  p.onMiniMaxRegionChange({detail:{value:'0'}});field=p.data.keyFields.find(f=>f.provider==='minimax');assert.match(field.guideUrl,/platform.minimax.io/);assert.match(field.guideSteps[0],/国际/);p.cancel();assert.equal(f.events.at(-1).name,'close');assert.equal(chosen.providerRegions,undefined);
+});
+
+test('recovery privacy notice follows non-TokenDance providers and is removed when no recovery channel is selected',()=>{
+ for(const provider of ['runware','tokenhub','xiaomi','fal','replicate']){
+  const chosen=base();chosen.modelRoutes=providerDefaultRoutes('gemini',registry);
+  const role=['main','image','vision'].find(role=>registry.providers[provider].models.some(m=>m.roles.includes(role)&&m.selectable!==false));
+  chosen.modelRoutes[role]={accessProvider:provider,modelId:registry.providers[provider].models.find(m=>m.roles.includes(role)&&m.selectable!==false).id};
+  const p=sheet(chosen,{[provider]:'fictional-secret'},false).instance;
+  assert.equal(p.data.encryptedRecovery,true,provider);
+  p.data.editingRole=role;p.selectModel({detail:{provider:'gemini',modelId:providerDefaultRoutes('gemini',registry)[role].modelId}});
+  assert.equal(p.data.encryptedRecovery,false,provider);
+ }
 });

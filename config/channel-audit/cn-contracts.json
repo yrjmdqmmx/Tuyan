@@ -1,0 +1,1384 @@
+{
+  "tokenhub/hy4-preview": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132252",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6,
+        "output": 18,
+        "cachedInput": 0.3
+      }
+    }
+  },
+  "tokenhub/hy3": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132252",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 1,
+        "output": 4,
+        "cachedInput": 0.25
+      }
+    }
+  },
+  "tokenhub/deepseek/deepseek-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek-v4-flash-202605": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek/deepseek-v4-flash-0731": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek/deepseek-v4-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek-v4-pro-202606": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek/deepseek-v4-pro-0813": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek/deepseek-v4-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek/deepseek-v4-flash-vision-exp": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间工作日9–12/14–18",
+          "input": 2,
+          "output": 8,
+          "cachedInput": 0.04
+        },
+        {
+          "condition": "其余时段",
+          "input": 1,
+          "output": 4,
+          "cachedInput": 0.02
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek-v4-flash-0731": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间每日9–12/14–18",
+          "input": 3.0,
+          "output": 9.0,
+          "cachedInput": 0.1
+        },
+        {
+          "condition": "其余时段",
+          "input": 1.5,
+          "output": 4.5,
+          "cachedInput": 0.05
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek-v4-pro-0813": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "北京时间每日9–12/14–18",
+          "input": 9.0,
+          "output": 27.0,
+          "cachedInput": 0.3
+        },
+        {
+          "condition": "其余时段",
+          "input": 4.5,
+          "output": 13.5,
+          "cachedInput": 0.15
+        }
+      ]
+    }
+  },
+  "tokenhub/deepseek-v4-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "rates": {
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.2
+      }
+    }
+  },
+  "tokenhub/deepseek-v4-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132248",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "rates": {
+        "input": 12,
+        "output": 24,
+        "cachedInput": 1
+      }
+    }
+  },
+  "tokenhub/glm-5.3-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 0.8,
+        "output": 2.8,
+        "cachedInput": 0.23
+      }
+    }
+  },
+  "tokenhub/glm-5.3-flashx": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 2,
+        "output": 7,
+        "cachedInput": 0.57
+      }
+    }
+  },
+  "tokenhub/glm-5.3": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 8,
+        "output": 28,
+        "cachedInput": 2
+      }
+    }
+  },
+  "tokenhub/glm-5.2": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 8,
+        "output": 28,
+        "cachedInput": 2
+      }
+    }
+  },
+  "tokenhub/glm-5.1": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 6,
+          "output": 24,
+          "cachedInput": 1.3
+        },
+        {
+          "condition": "输入>32K",
+          "input": 8,
+          "output": 28,
+          "cachedInput": 2
+        }
+      ]
+    },
+    "expiresAt": "2026-10-08T00:00:00+08:00"
+  },
+  "tokenhub/glm-5v-turbo": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 5,
+          "output": 22,
+          "cachedInput": 1.2
+        },
+        {
+          "condition": "输入>32K",
+          "input": 7,
+          "output": 26,
+          "cachedInput": 1.8
+        }
+      ]
+    },
+    "expiresAt": "2026-10-30T00:00:00+08:00"
+  },
+  "tokenhub/glm-5-turbo": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 5,
+          "output": 22,
+          "cachedInput": 1.2
+        },
+        {
+          "condition": "输入>32K",
+          "input": 7,
+          "output": 26,
+          "cachedInput": 1.8
+        }
+      ]
+    },
+    "expiresAt": "2026-10-08T00:00:00+08:00"
+  },
+  "tokenhub/glm-5": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132061",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "输入≤32K",
+          "input": 4,
+          "output": 18,
+          "cachedInput": 1
+        },
+        {
+          "condition": "输入>32K",
+          "input": 6,
+          "output": 22,
+          "cachedInput": 1.5
+        }
+      ]
+    },
+    "expiresAt": "2026-10-08T00:00:00+08:00"
+  },
+  "tokenhub/kimi-k2.7-code-highspeed": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 13,
+        "output": 54,
+        "cachedInput": 2.6
+      }
+    }
+  },
+  "tokenhub/kimi-k3": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "request": {
+      "max_completion_tokens": 16384,
+      "reasoning_effort": "low"
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 20,
+        "output": 100,
+        "cachedInput": 2
+      }
+    }
+  },
+  "tokenhub/kimi-k2.8-preview": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "request": {
+      "max_tokens": 16384,
+      "reasoning_effort": "low"
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.7
+      }
+    }
+  },
+  "tokenhub/kimi-k2.7-code": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "enabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.3
+      }
+    }
+  },
+  "tokenhub/kimi-k2.6": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132232",
+    "request": {
+      "max_tokens": 16384,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 6.5,
+        "output": 27,
+        "cachedInput": 1.1
+      }
+    }
+  },
+  "tokenhub/minimax-m3": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132246",
+    "request": {
+      "max_tokens": 16384,
+      "reasoning_split": true,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "tiers": [
+        {
+          "condition": "上下文≤512K",
+          "input": 2.1,
+          "output": 8.4,
+          "cachedInput": 0.42
+        },
+        {
+          "condition": "上下文>512K",
+          "input": 4.2,
+          "output": 16.8,
+          "cachedInput": 0.84
+        }
+      ]
+    }
+  },
+  "tokenhub/minimax-m2.7": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/132246",
+    "request": {
+      "max_tokens": 16384,
+      "reasoning_split": true
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 2.1,
+        "output": 8.4,
+        "cachedInput": 0.42
+      }
+    }
+  },
+  "tokenhub/mimo-v2.5-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/130079",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      }
+    }
+  },
+  "tokenhub/youtu-vita": {
+    "taskType": "chat",
+    "roles": [
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 1,
+    "source": "https://cloud.tencent.com/document/product/1823/136956",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "status": "待确认"
+    }
+  },
+  "tokenhub/hy-vision-2.0-instruct": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/136956",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "Guangzhou",
+        "input": 7.5,
+        "output": 17.5
+      }
+    }
+  },
+  "tokenhub/hunyuan-t1-vision-20250916": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "source": "https://cloud.tencent.com/document/product/1823/136956",
+    "request": {
+      "max_tokens": 8192
+    },
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "status": "待确认"
+    }
+  },
+  "tokenhub/hy-image-v3.5-preview": {
+    "taskType": "hy35",
+    "source": "https://cloud.tencent.com/document/product/1823/135745",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 20,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "status": "待确认：价格页尚未列出3.5，不沿用3.0价格"
+    },
+    "maxPromptLength": 8192
+  },
+  "tokenhub/wand-vega-image-lite": {
+    "taskType": "vega",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 3,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 16200,
+        "2K": 18000,
+        "4K": 22500
+      }
+    },
+    "maxPromptLength": 2000
+  },
+  "tokenhub/wand-vega-image-flash": {
+    "taskType": "vega",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 6,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 45000,
+        "2K": 67500,
+        "4K": 100800
+      }
+    },
+    "maxPromptLength": 2000
+  },
+  "tokenhub/wand-vega-image-pro": {
+    "taskType": "vega",
+    "source": "https://cloud.tencent.com/document/product/1823/137203",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 6,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "1K": 95000,
+        "2K": 95000,
+        "4K": 171000,
+        "inputAfterFirstThreeEach": 10000
+      }
+    },
+    "maxPromptLength": 2000
+  },
+  "tokenhub/vidu-image-q2": {
+    "taskType": "vidu",
+    "source": "https://cloud.tencent.com/document/product/1823/135746",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 7,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImageByInputCount": {
+        "0": [
+          18750,
+          25000,
+          31250
+        ],
+        "1–3": [
+          25000,
+          37500,
+          62500
+        ],
+        "4–7": [
+          31250,
+          50000,
+          93750
+        ]
+      },
+      "resolutions": [
+        "1080p",
+        "2K",
+        "4K"
+      ]
+    },
+    "maxPromptLength": 2000
+  },
+  "tokenhub/seedream-image-v5.0-pro": {
+    "taskType": "seedream",
+    "source": "https://cloud.tencent.com/document/product/1823/136609",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 10,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": {
+        "output≤2.61MP": 30000,
+        "output>2.61MP": 60000,
+        "inputAfterFirstEach": 2000
+      }
+    },
+    "maxPromptLength": 600
+  },
+  "tokenhub/seedream-image-v5.0-lite": {
+    "taskType": "seedream",
+    "source": "https://cloud.tencent.com/document/product/1823/136609",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 14,
+    "generation": true,
+    "editing": true,
+    "price": {
+      "source": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "currency": "CNY",
+      "unit": "million tokens",
+      "market": "Guangzhou online postpaid",
+      "accountTariffConfirmed": false,
+      "perMillionOutputTokens": 10,
+      "tokensPerImage": 22000
+    },
+    "maxPromptLength": 600
+  },
+  "xiaomi/mimo-v2.6-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "request": {
+      "max_completion_tokens": 8192,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.435,
+        "output": 0.87,
+        "cachedInput": 0.0036
+      }
+    }
+  },
+  "xiaomi/mimo-v2.6-flash": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "request": {
+      "max_completion_tokens": 8192,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.02
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.14,
+        "output": 0.28,
+        "cachedInput": 0.0028
+      }
+    }
+  },
+  "xiaomi/mimo-v2.5-pro": {
+    "taskType": "chat",
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "request": {
+      "max_completion_tokens": 8192,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 3,
+        "output": 6,
+        "cachedInput": 0.025
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.435,
+        "output": 0.87,
+        "cachedInput": 0.0036
+      }
+    },
+    "expiresAt": "2026-10-21T10:00:00+08:00"
+  },
+  "xiaomi/mimo-v2.5": {
+    "taskType": "chat",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "request": {
+      "max_completion_tokens": 8192,
+      "thinking": {
+        "type": "disabled"
+      }
+    },
+    "price": {
+      "source": "https://mimo.mi.com/docs/zh-CN/price/pay-as-you-go",
+      "checkedAt": "2026-09-22",
+      "amount": null,
+      "unit": "million tokens; real-time ordinary API key, not Token Plan",
+      "accountTariffConfirmed": false,
+      "perMillionTokens": {
+        "currency": "CNY",
+        "market": "mainland-list",
+        "input": 1,
+        "output": 2,
+        "cachedInput": 0.02
+      },
+      "overseasPerMillionTokens": {
+        "currency": "USD",
+        "input": 0.14,
+        "output": 0.28,
+        "cachedInput": 0.0028
+      }
+    },
+    "expiresAt": "2026-10-21T10:00:00+08:00"
+  }
+}

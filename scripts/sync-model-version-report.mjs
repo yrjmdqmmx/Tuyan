@@ -5,10 +5,10 @@ import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../apps/web/src/lib/modelPresentation.js'
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..')
 const audit=JSON.parse(fs.readFileSync(path.join(root,'config/model-version-audit.json'),'utf8'))
-const order=orderModelChannels(['gemini','openai','bailian','ark','openrouter','deepseek','kimi','zhipu','siliconflow','anthropic','recraft','xai','bfl','stability','ideogram','minimax','mistral','together','fireworks','fal','replicate','tokendance'])
+const order=orderModelChannels(['gemini','openai','bailian','ark','openrouter','deepseek','kimi','zhipu','siliconflow','anthropic','recraft','xai','bfl','stability','ideogram','minimax','mistral','together','fireworks','fal','replicate','tokendance','tokenhub','runware','xiaomi'])
 const kind={fixed:'固定版本',rolling:'滚动别名',unconfirmed:'固定性 / 对应版本待确认'}
 const quote=value=>'"'+String(value??'').replaceAll('"','""')+'"'
-const rows=[...audit.models].sort((a,b)=>order.indexOf(a.channel)-order.indexOf(b.channel)||a.apiModelId.localeCompare(b.apiModelId,'en'))
+const allRows=[...audit.models].sort((a,b)=>order.indexOf(a.channel)-order.indexOf(b.channel)||a.apiModelId.localeCompare(b.apiModelId,'en'))
 const uncertain=r=>r.kind==='unconfirmed'||!r.versionId||['unconfirmed','historical-version-unconfirmed'].includes(r.idEvidence)
 function csv(models) {
   const header=['渠道','展示名称','配置 ID（保留）','实际 API model ID / 调用标识','固定版本 / 滚动别名','已核对具体版本 / 目录身份','核对日期','核对依据','ID 证据','范围 / 可选状态','说明']
@@ -23,8 +23,10 @@ function write(file,text) {
   if(process.argv.includes('--check')) {if(fs.readFileSync(p,'utf8')!==text)throw new Error('Version report drift: '+file)}
   else fs.writeFileSync(p,text)
 }
-write('docs/model-version-mapping.csv',csv(rows))
-write('docs/model-version-unconfirmed.csv',csv(rows.filter(uncertain)))
+write('docs/model-version-mapping.csv',csv(allRows))
+write('docs/model-version-unconfirmed.csv',csv(allRows.filter(uncertain)))
+// Keep the dated v21 report historical; current CSVs include later audited channels.
+const rows=allRows.filter(row => row.checkedAt <= '2026-09-21')
 const changed=rows.filter(r=>r.previousDisplayName && r.previousDisplayName!==r.displayName)
 write('docs/model-version-label-changes.csv','\uFEFF'+[['渠道','原展示名称','新展示名称','API ID（保持原样）','核对依据'],...changed.map(r=>[MODEL_CHANNEL_LABELS[r.channel],r.previousDisplayName,r.displayName,r.apiModelId,r.sourceUrls.join(' ; ')])].map(row=>row.map(quote).join(',')).join('\n')+'\n')
 const counts={};for(const row of rows)counts[row.kind]=(counts[row.kind]||0)+1
@@ -65,4 +67,4 @@ ${mapping.map(r=>`| ${MODEL_CHANNEL_LABELS[r.channel]} | ${r.displayName} | \`${
 
 验证与部署记录见 [本地验证记录](model-version-validation-20260921.md)。本轮公开文档 / 目录使用只读请求，真实付费推理为 0；无 push、无自动部署、无微信上传发布。目录及本地模拟测试不能证明账号权益或真实推理成功。
 `)
-console.log(`Version reports: ${rows.length} rows; ${rows.filter(uncertain).length} unresolved rows; ${process.argv.includes('--check')?'no drift':'generated'}`)
+console.log(`Version reports: ${allRows.length} rows; ${rows.filter(uncertain).length} unresolved rows; ${process.argv.includes('--check')?'no drift':'generated'}`)

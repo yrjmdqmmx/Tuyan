@@ -5,9 +5,13 @@ exports.unpackModelCatalog = unpackModelCatalog;
 // each model must own its arrays/objects, as it did in the original JSON data.
 function unpackModelCatalog(data) {
     function expand(index) {
-        const node = data.nodes[index];
+        let node = data.nodes[index];
         if (!Array.isArray(node))
             return node;
+        if (node[0] === 4)
+            node = String(node[1]).split('.').map(n => parseInt(n, 36));
+        if (node[0] === 3)
+            return expand(node[1]) + node[2];
         if (node[0] === 1)
             return node.slice(1).map(expand);
         const result = {};

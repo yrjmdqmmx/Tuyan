@@ -3,7 +3,7 @@ import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY } from './static-model-c
 import type { OutputFormat } from './job-assets'
 import type { ReferenceImageMode } from './reference-mode'
 
-export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance'
+export type ProviderId = 'bailian' | 'openrouter' | 'gemini' | 'openai' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'runware' | 'tokenhub' | 'xiaomi' | 'tokendance'
 export type ConfigurationMode = 'simple' | 'advanced'
 export type FeedbackCategory = 'bug' | 'feature' | 'experience' | 'other'
 export type ImageSize = '512' | '1K' | '1.5K' | '2K' | '3K' | '4K' | 'auto'

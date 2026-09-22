@@ -1,0 +1,79 @@
+{
+  "tokenhub/hy-image-v3.5-preview": {
+    "version": 1,
+    "maxImages": 20,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/135745"
+  },
+  "tokenhub/wand-vega-image-lite": {
+    "version": 1,
+    "maxImages": 3,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/137203"
+  },
+  "tokenhub/wand-vega-image-flash": {
+    "version": 1,
+    "maxImages": 6,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/137203"
+  },
+  "tokenhub/wand-vega-image-pro": {
+    "version": 1,
+    "maxImages": 6,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/137203"
+  },
+  "tokenhub/vidu-image-q2": {
+    "version": 1,
+    "maxImages": 7,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/135746"
+  },
+  "tokenhub/seedream-image-v5.0-pro": {
+    "version": 1,
+    "maxImages": 10,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/136609"
+  },
+  "tokenhub/seedream-image-v5.0-lite": {
+    "version": 1,
+    "maxImages": 14,
+    "sourceCounts": true,
+    "mask": false,
+    "maskWithReferences": false,
+    "structured": null,
+    "autoAspectRatio": "1:1",
+    "checkedAt": "2026-09-22",
+    "source": "https://cloud.tencent.com/document/product/1823/136609"
+  }
+}

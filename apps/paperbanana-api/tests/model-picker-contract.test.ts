@@ -92,7 +92,7 @@ test('known dates and version relations produce a stable newest-first order with
 test('all catalogs keep deterministic chronology after refresh, without changing routes or IDs', async () => {
   const { orderModelChannels, MODEL_CHANNEL_LABELS } = await import('../../../packages/types/src/model-presentation.js')
   const ids = Object.keys(catalog)
-  assert.deepEqual(orderModelChannels(ids), ['tokendance','siliconflow','deepseek','kimi','zhipu','bailian','ark','minimax','anthropic','recraft','xai','gemini','openai','bfl','stability','ideogram','mistral','together','fireworks','fal','replicate'])
+  assert.deepEqual(orderModelChannels(ids), ['tokendance','siliconflow','tokenhub','deepseek','kimi','zhipu','bailian','ark','minimax','xiaomi','anthropic','recraft','xai','gemini','openai','bfl','stability','ideogram','mistral','together','fireworks','fal','replicate','runware'])
   assert.equal(MODEL_CHANNEL_LABELS.tokendance, '观猹 TokenDance')
   assert.deepEqual(ids, Object.keys(catalog))
   for (const [channel, entry] of Object.entries(catalog) as [string, any][]) {

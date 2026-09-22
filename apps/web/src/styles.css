@@ -5766,3 +5766,22 @@ figcaption {
 /* The desktop summary keeps its original grid; mobile uses a disclosure. */
 .generation-summary-details { display: contents; }
 .generation-summary-details > summary { display: none; }
+
+/* Refinement controls reuse the reference uploader, with the original kept separate. */
+.reference-purpose { display:grid; gap:8px; padding:0 10px 10px; }
+.reference-purpose label { display:grid; gap:4px; font-size:12px; }
+.reference-purpose input, .reference-purpose select { width:100%; min-width:0; border:1px solid var(--border, #ddd); border-radius:6px; padding:7px; background:var(--surface, #fff); color:inherit; }
+.refine-mask-editor, .refine-structured { margin-top:18px; padding-top:16px; border-top:1px solid var(--border, #e2e5e0); }
+.refine-mask-editor p, .refine-structured p { font-size:12px; color:var(--text-secondary, #62675f); line-height:1.65; }
+.refine-control-head, .refine-mask-tools { display:flex; align-items:center; flex-wrap:wrap; gap:12px; justify-content:space-between; }
+.refine-mask-tools { margin:12px 0; justify-content:flex-start; }
+.refine-mask-tools label { display:flex; align-items:center; gap:8px; font-size:12px; }
+.refine-mask-tools input { width:100px; }
+.refine-mask-canvas { position:relative; width:100%; max-height:none; line-height:0; border-radius:8px; overflow:hidden; border:1px solid var(--border, #ddd); }
+.refine-mask-canvas img { width:100%; height:auto; display:block; }
+.refine-mask-canvas canvas { position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:crosshair; }
+.refine-structured > label { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; }
+.refine-structured-fields { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+.refine-structured-fields label { display:grid; gap:6px; font-size:12px; }
+.refine-process-details pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; }
+@media (max-width:600px) { .refine-structured-fields { grid-template-columns:1fr; } .refine-mask-tools { gap:8px; } }
