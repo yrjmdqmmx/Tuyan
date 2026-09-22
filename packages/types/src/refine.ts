@@ -1,5 +1,5 @@
 export type RefineControls = {
-  version: 1; maxImages: number; sourceCounts: true; mask: boolean; maskWithReferences: boolean;
+  version: 1; maxImages: number; minImages?: number; maskRequired?: boolean; sourceCounts: true; mask: boolean; maskWithReferences: boolean;
   structured: 'bria-fibo' | null; singleImageInheritsSize?: boolean; autoAspectRatio?: '1:1'; checkedAt: string; source: string;
 }
 export type RefineInputs = {

@@ -94,19 +94,25 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     }
     if (url === 'https://api.runware.ai/v1') {
       const task=JSON.parse(options.body)[0];
-      if (['imageInference','textInference'].includes(task.taskType)) {
+      if (['imageInference','textInference','caption'].includes(task.taskType)) {
         channelTasks.set(task.taskUUID,task);
         if (channelFailure === 'lost-submit') throw new Error('fixture lost acknowledgment');
         return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'processing'}]});
       }
       if (!channelTasks.has(task.taskUUID)) return Response.json({errors:[{taskUUID:task.taskUUID,code:'taskNotFound'}]});
-      if (channelTasks.get(task.taskUUID).taskType === 'textInference') return Response.json({data:[{taskType:'textInference',taskUUID:task.taskUUID,text:'需要保留科研图的数值、文字与连接关系。',finishReason:'stop',cost:.00003,usage:{promptTokens:12,completionTokens:8,totalTokens:20}}]});
+      if (['textInference','caption'].includes(channelTasks.get(task.taskUUID).taskType)) return Response.json({data:[{taskType:'textInference',taskUUID:task.taskUUID,text:'需要保留科研图的数值、文字与连接关系。',finishReason:'stop',cost:.00003,usage:{promptTokens:12,completionTokens:8,totalTokens:20}}]});
       return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'success',imageURL:'https://fixture-assets.example.org/image.png',cost:.012,seed:42}]});
     }
     if (['https://tokenhub.tencentmaas.com/v1/chat/completions','https://api.xiaomimimo.com/v1/chat/completions'].includes(url)) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost text acknowledgment');
       return Response.json({id:'fixture-text',choices:[{finish_reason:'stop',message:{content:'需要保留科研图的数值、文字与连接关系。'}}],usage:{prompt_tokens:12,completion_tokens:8,total_tokens:20}});
     }
+    if(url.includes('/vidu-image/')||url.includes('/vega-images/')) {
+      if(options.method==='POST') {if(channelFailure==='lost-submit')throw new Error('fixture lost async acknowledgment');return Response.json({task_id:'fixture-tokenhub-task'});}
+      if(channelFailure==='pending')return Response.json({state:'processing',status:'in_progress'});
+      return Response.json({state:'success',status:'completed',creations:[{url:'https://fixture-assets.example.org/image.png'}],data:[{url:'https://fixture-assets.example.org/image.png'}],tokenhub_usage:{total_tokens:18000}});
+    }
+    if(url.includes('/v35-generation'))return Response.json({choices:[{delta:{image:{url:'https://fixture-assets.example.org/image.png'}}}],tokenhub_usage:{total_tokens:12345}});
     if (url.startsWith('https://tokenhub.tencentmaas.com/')) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost synchronous result');
       return Response.json({id:'fixture-tokenhub-image',request_id:'fixture-tokenhub-request',tokenhub_usage:{total_tokens:4000},data:[{url:'https://fixture-assets.example.org/image.png'}]});

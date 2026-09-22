@@ -171,7 +171,7 @@ test('refine panel renders all ratios and consumes refineAspectRatios truthfully
 })
 
 
-test('changing resolution clears an incompatible selected ratio in generation and refinement', async () => {
+test('generation adjusts ratio, while refinement preserves incompatible input until explicitly changed', async () => {
   const { user } = await renderReady({ imageCapabilities: {
     refineResolutions: ['1K', '2K'],
     aspectRatiosByResolution: { '1K': ['1:1','16:9'], '2K': ['1:1','16:9','4:1'] },
@@ -188,6 +188,8 @@ test('changing resolution clears an incompatible selected ratio in generation an
   await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
   await user.click(screen.getByRole('button', { name: '目标比例 2:3' }))
   await user.selectOptions(screen.getByLabelText('清晰度'), '1K')
-  await waitFor(() => assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'true'))
+  assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'false')
+  await user.click(screen.getByRole('button', { name: '目标比例 自动' }))
+  assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'true')
   assert.equal(screen.queryByRole('button', { name: /目标比例 2:3，/u }), null)
 })

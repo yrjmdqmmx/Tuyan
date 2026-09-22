@@ -29,8 +29,8 @@ export function orderModelChannels<T extends string>(channels: readonly T[]): T[
 
 function modelChannelCategoryOrder(channel: string): number {
   const groups: readonly (readonly string[])[] = [
-    ['tokendance', 'siliconflow'],
-    ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'tokenhub', 'xiaomi'],
+    ['tokendance', 'siliconflow', 'tokenhub'],
+    ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'xiaomi'],
     ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
     ['openrouter', 'together', 'fireworks', 'fal', 'replicate', 'runware'],
   ]

@@ -33,8 +33,8 @@ function orderModelChannels(channels) {
 }
 function modelChannelCategoryOrder(channel) {
     const groups = [
-        ['tokendance', 'siliconflow'],
-        ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'tokenhub', 'xiaomi'],
+        ['tokendance', 'siliconflow', 'tokenhub'],
+        ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'xiaomi'],
         ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
         ['openrouter', 'together', 'fireworks', 'fal', 'replicate', 'runware'],
     ];

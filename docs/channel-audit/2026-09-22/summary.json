@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-09-22",
+  "officialRows": 491,
+  "counts": {
+    "tokenhub": {
+      "catalog": 41,
+      "added": 38,
+      "main": 32,
+      "vision": 14,
+      "image": 8
+    },
+    "xiaomi": {
+      "catalog": 4,
+      "added": 2,
+      "main": 4,
+      "vision": 3,
+      "image": 0
+    },
+    "runware": {
+      "catalog": 138,
+      "added": 135,
+      "main": 23,
+      "vision": 22,
+      "image": 112
+    }
+  },
+  "realInferenceCalls": 0,
+  "deployment": false
+}

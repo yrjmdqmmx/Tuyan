@@ -28,6 +28,15 @@ function referenceSubmissionPolicy(provider, model, workflow = 'generation') {
         requestMaxBytes: 20 * 1000000, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
         status: 'unconfirmed', source: '', note: '该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。',
     };
+    if (auditedInputPolicy[provider + '/' + model]) {
+        Object.assign(p, auditedInputPolicy[provider + '/' + model], { status: 'partial', note: '图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。' });
+        if (workflow === 'refine') {
+            p.maxCount = 1;
+            p.mimeTypes = ['image/png'];
+        }
+        p.maxTotalBytes = p.maxBytes * Math.max(1, p.maxCount);
+        return p;
+    }
     if (workflow === 'refine') {
         p.maxCount = 1;
         // The product edits one source. Vendor multi-image support does not turn it into a multi-source editor.
@@ -178,3 +187,6 @@ function routeReferencePolicy(route, workflow = 'generation') {
         ? { ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }
         : referenceSubmissionPolicy((route === null || route === void 0 ? void 0 : route.accessProvider) || '', (route === null || route === void 0 ? void 0 : route.modelId) || '', workflow);
 }
+// BEGIN GENERATED CHANNEL INPUT POLICY
+const auditedInputPolicy = require('./audited-input-policy.js');
+// END GENERATED CHANNEL INPUT POLICY

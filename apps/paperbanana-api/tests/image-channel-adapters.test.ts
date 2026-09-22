@@ -18,6 +18,51 @@ function fixture(respond:(url:string,init:RequestInit)=>Response) {
   return {calls,io}
 }
 
+function durableFixture(respond:(url:string,init:RequestInit)=>Response) {
+  const f=fixture(respond);let state:any
+  f.io.pending=async()=>state
+  f.io.checkpoint=async value=>{state=structuredClone(value)}
+  return {...f,state:()=>state}
+}
+test('TokenHub Vidu and WAND persist IDs, recover by GET, retain usage and never resubmit',async()=>{
+  for(const [model,protocol]of [['vidu-image-q2','vidu'],['wand-vega-image-lite','vega']]) {
+    let ready=false,polls=0;const records:any[]=[]
+    const f=durableFixture((url,init)=>{
+      if(init.method==='POST')return Response.json({task_id:'original-id'})
+      polls++;assert.ok(url.endsWith('/tasks/original-id'))
+      if(!ready)return new Response('',{status:429})
+      return Response.json(protocol==='vidu'?{state:'success',creations:[{url:'https://asset.invalid/result.png'}],tokenhub_usage:{total_tokens:25000}}:{status:'completed',data:[{url:'https://asset.invalid/result.png'}],usage:{total_tokens:18000}})
+    });f.io.record=async r=>{records.push(r)}
+    const input={...defaults,provider:'tokenhub',model,aspectRatio:'1:1',size:{width:1024,height:1024,size:protocol==='vidu'?'1:1':'1024x1024'}}
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.pollOnly===true)
+    assert.equal(f.state().taskId,'original-id');ready=true
+    assert.equal(await callExtendedImageChannel(input,f.io),png)
+    assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1);assert.ok(polls>1)
+    assert.ok(records[0].usage);assert.equal(records[0].estimatedCost,null);assert.equal(records[0].invoiceCost,null)
+    assert.equal(records[0].publicPrice.currency,'CNY')
+  }
+})
+test('TokenHub unknown async acknowledgment stops, and terminal task failures are never replayed',async()=>{
+  for(const scenario of ['lost','failed']) {
+    const f=durableFixture((_url,init)=>{
+      if(init.method==='POST'){if(scenario==='lost')throw new Error('connection lost');return Response.json({task_id:'original-id'})}
+      return Response.json({status:'failed'})
+    })
+    const input={...defaults,provider:'tokenhub',model:'wand-vega-image-lite',size:{size:'1024x1024',width:1024,height:1024}}
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.terminal===true)
+    await assert.rejects(callExtendedImageChannel(input,f.io),(e:any)=>e.terminal===true)
+    assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1)
+  }
+})
+test('TokenHub HY 3.5 assembles SSE image and separate usage chunks without inventing a bill',async()=>{
+  const records:any[]=[]
+  const f=durableFixture(()=>new Response('data: {"choices":[{"delta":{"image":{"url":"https://asset.invalid/result.png"}}}]}\n\ndata: {"tokenhub_usage":{"total_tokens":12345}}\n\ndata: [DONE]\n\n',{headers:{'content-type':'text/event-stream'}}))
+  f.io.record=async r=>{records.push(r)}
+  assert.equal(await callExtendedImageChannel({...defaults,provider:'tokenhub',model:'hy-image-v3.5-preview',size:{size:'1024x1024',width:1024,height:1024}},f.io),png)
+  assert.equal(records[0].usage.total_tokens,12345);assert.equal(records[0].reportedCost,null);assert.equal(records[0].invoiceCost,null)
+  assert.equal(f.calls.filter(c=>c.init.method==='POST').length,1)
+})
+
 test('native JSON/multipart channels send exact fields and keep asset downloads credential-free', async()=>{
   for(const provider of ['ideogram','stability','minimax','together']) for(const editing of [false,true]) {
     if(provider==='minimax'&&editing)continue

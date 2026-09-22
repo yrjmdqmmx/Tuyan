@@ -32,7 +32,7 @@ test('MiMo V2.6 and Tencent use exact text/vision fields and preserve images wit
   }
   const f=fixture(()=>{throw new Error('must not be called')})
   await assert.rejects(callNewTextChannel({...base,provider:'tokenhub',model:'hy3',images:[{url:'data:image/png;base64,eA=='}]},f.io),/不支持/)
-  await assert.rejects(callNewTextChannel({...base,model:'mimo-v2.5'},f.io),/不支持/)
+  await assert.rejects(callNewTextChannel({...base,model:'mimo-v2.6-pro-ultraspeed'},f.io),/不支持/)
   assert.equal(f.calls.length,0)
 })
 

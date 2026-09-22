@@ -1,24 +1,30 @@
+import { auditedChannelContract, assertChannelRequest } from './audited-channel-contracts.js'
 import type { ImageChannelTransport, ImageChannelCheckpoint } from './image-channel-adapters.js'
 export type NewTextInput = {provider:'xiaomi'|'tokenhub'|'runware'; model:string; apiKey:string; system:string; user:string; images:{url:string}[]; signal?:AbortSignal}
-const newTextModels: Record<string,string[]> = {xiaomi:['mimo-v2.6-pro','mimo-v2.6-flash'],tokenhub:['hy3','hy-vision-2.0-instruct'],runware:['google:gemini@3.1-flash-lite']}
-// Public list prices are dated references, not the account tariff or its invoice.
-function textPublicPrice(provider: string, model: string) {
-  const source = provider === 'xiaomi' ? 'https://mimo.mi.com/docs/en-US/price/pay-as-you-go'
-    : provider === 'tokenhub' ? 'https://cloud.tencent.com/document/product/1823/130055'
-    : 'https://runware.ai/docs/models/google-gemini-3-1-flash-lite'
-  const rates = provider === 'xiaomi'
-    ? {currency:'CNY', market:'mainland-list', input:model.endsWith('-pro') ? 3 : 1, cachedInput:model.endsWith('-pro') ? .025 : .02, output:model.endsWith('-pro') ? 6 : 2}
-    : provider === 'tokenhub'
-      ? {currency:'CNY', market:'Guangzhou', input:model === 'hy3' ? 1 : 7.5, output:model === 'hy3' ? 4 : 17.5, ...(model === 'hy3' ? {cachedInput:.25} : {})}
-      : {currency:'USD', market:'Runware', input:.25, output:1.5}
-  return {source, checkedAt:'2026-09-22', amount:null, perMillionTokens:rates, accountTariffConfirmed:false}
+function textPublicPrice(provider:string,model:string) { return auditedChannelContract(provider,model)?.price || {source:'',checkedAt:'2026-09-22',amount:null,status:'待确认'} }
+export function buildAuditedTextBody(input:NewTextInput,taskId?:string) {
+  const {provider,model,system,user,images}=input
+  const contract=auditedChannelContract(provider,model)
+  if(!contract||!contract.roles?.some((r:string)=>r==='main'||r==='vision')||images.length>(contract.maxImages||0)||images.length<(contract.minImages||0))throw Object.assign(new Error('所选型号不支持此文本/图片输入，未发送。'),{localInputFailure:true,requestState:'not_sent'})
+  let body:any
+  if(provider==='runware') {
+    if(contract.taskType==='caption')body={model,taskType:'caption',taskUUID:taskId,prompt:system+'\n'+user,inputs:{image:images[0].url},deliveryMethod:'async',includeCost:true}
+    else body={model,taskType:'textInference',taskUUID:taskId,messages:[{role:'user',content:contract.systemInSettings?user:system+'\n\n'+user}],settings:{...(contract.systemInSettings?{systemPrompt:system}:{}),maxTokens:contract.maxTokens},...(images.length?{inputs:{images:images.map(i=>i.url)}}:{}),outputFormat:'TEXT',deliveryMethod:'async',includeCost:true,includeUsage:true,numberResults:1}
+  } else {
+    if(provider==='tokenhub'&&model==='kimi-k3'&&images.some(i=>!i.url.startsWith('data:image/')))throw Object.assign(new Error('Kimi K3 图片需要 Base64 Data URI；未发送。'),{localInputFailure:true,requestState:'not_sent'})
+    const content=images.length?[{type:'text',text:user},...images.map(image=>({type:'image_url',image_url:{url:image.url}}))]:user
+    body={model,messages:[{role:'system',content:system},{role:'user',content}],stream:false,...contract.request}
+  }
+  assertChannelRequest(contract,body)
+  return body
 }
 /** Explicit audited fields; neither an ID in a catalog nor generic compatibility
  * enables arbitrary models. No inference POST is retried. */
 export async function callNewTextChannel(input:NewTextInput, io:Pick<ImageChannelTransport,'request'|'json'|'sleep'|'now'|'pending'|'checkpoint'|'record'|'pollIntervalMs'|'pollTimeoutMs'>):Promise<string> {
   const {provider,model,apiKey,system,user,images}=input
   const signal=input.signal ? AbortSignal.any([input.signal,AbortSignal.timeout(600000)]) : AbortSignal.timeout(600000)
-  if (!newTextModels[provider]?.includes(model) || provider==='tokenhub'&&model==='hy3'&&images.length) throw Object.assign(new Error('所选型号不支持此文本/图片输入，未发送。'),{localInputFailure:true,requestState:'not_sent'})
+  const contract=auditedChannelContract(provider,model)
+  const prepared=buildAuditedTextBody(input,crypto.randomUUID())
   const headers={'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'}
   const label=`${provider} text ${model}`
   let pending=await io.pending?.()
@@ -27,8 +33,7 @@ export async function callNewTextChannel(input:NewTextInput, io:Pick<ImageChanne
   const record=async(data:any,requestId:string)=>io.record?.({provider,model,requestId,operation:images.length?'vision':'text',resolvedModel:data.model || null,usage:data.usage || data.tokenhub_usage || null,reportedCost:provider==='runware'&&Number.isFinite(data.cost)?{amount:data.cost,currency:'USD',source:'provider-response'}:null,publicPrice:textPublicPrice(provider,model),estimatedCost:null,invoiceCost:null})
   if(provider!=='runware') {
     if (pending) throw new Error('原同步文本任务结果待确认，不能重新提交。')
-    const content=images.length?[{type:'text',text:user},...images.map(image=>({type:'image_url',image_url:{url:image.url}}))]:user
-    const body={model,messages:[{role:'system',content:system},{role:'user',content}],stream:false,...(provider==='xiaomi'?{max_completion_tokens:8192,thinking:{type:'disabled'}}:{max_tokens:8192})}
+    const body=prepared
     const base=provider==='xiaomi'?'https://api.xiaomimimo.com/v1':'https://tokenhub.tencentmaas.com/v1'
     const response=await io.request(base+'/chat/completions',{method:'POST',headers,body:JSON.stringify(body),redirect:'error',...(signal?{signal}:{})},label,1)
     const data=await io.json(response,8*1024*1024,label)
@@ -40,14 +45,14 @@ export async function callNewTextChannel(input:NewTextInput, io:Pick<ImageChanne
   }
   const finished=async(data:any)=>{
     await record(data,pending?.taskId || '')
-    if(data.finishReason!=='stop'||typeof data.text!=='string'||!data.text.trim()) {await save({failed:true});throw new Error('Runware 文本未完整结束，未重新提交。')}
+    if((contract.taskType!=='caption'&&data.finishReason!=='stop')||typeof data.text!=='string'||!data.text.trim()) {await save({failed:true});throw new Error('Runware 文本未完整结束，未重新提交。')}
     return data.text
   }
   try {
     if(pending?.state?.finishedText)return finished(pending.state.finishedText)
     if(!pending) {
-      await save({taskId:crypto.randomUUID()})
-      const response=await io.request('https://api.runware.ai/v1',{method:'POST',headers,body:JSON.stringify([{taskType:'textInference',taskUUID:pending!.taskId,model,messages:[{role:'user',content:user}],settings:{systemPrompt:system,maxTokens:8192},...(images.length?{inputs:{images:images.map(image=>image.url)}}:{}),outputFormat:'TEXT',deliveryMethod:'async',includeCost:true,includeUsage:true,numberResults:1}]),redirect:'error',...(signal?{signal}:{})},label,1)
+      await save({taskId:prepared.taskUUID})
+      const response=await io.request('https://api.runware.ai/v1',{method:'POST',headers,body:JSON.stringify([prepared]),redirect:'error',...(signal?{signal}:{})},label,1)
       if(response.status>=400&&response.status<500) {await save({failed:true});await response.body?.cancel();throw new Error(`Runware 拒绝文本请求（HTTP ${response.status}），未自动重发。`)}
       await save({state:await io.json(response,8*1024*1024,label)})
     }

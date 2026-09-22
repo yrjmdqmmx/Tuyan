@@ -47,7 +47,8 @@
         "z-ai",
         "zai-org",
         "GLM",
-        "智谱 GLM"
+        "智谱 GLM",
+        "zai"
       ],
       "source": "https://github.com/zai-org/GLM-4",
       "labelEn": "Zhipu AI"
@@ -572,6 +573,41 @@
       ],
       "source": "https://www.siliconflow.cn/models",
       "labelEn": "XingChenAGI"
+    },
+    "klingai": {
+      "label": "Kling AI",
+      "labelEn": "Kling AI",
+      "aliases": [
+        "klingai",
+        "Kling AI"
+      ],
+      "source": "https://runware.ai/docs/models/kling-image-3-0"
+    },
+    "runway": {
+      "label": "Runway",
+      "labelEn": "Runway",
+      "aliases": [
+        "runway",
+        "Runway"
+      ],
+      "source": "https://runware.ai/docs/models/runway-gen-4-image"
+    },
+    "vidu": {
+      "label": "Vidu",
+      "labelEn": "Vidu",
+      "aliases": [
+        "vidu",
+        "Vidu"
+      ],
+      "source": "https://runware.ai/docs/models/vidu-q1"
+    },
+    "shengshu": {
+      "label": "生数科技",
+      "labelEn": "ShengShu",
+      "aliases": [
+        "ShengShu"
+      ],
+      "source": "https://cloud.tencent.com/document/product/1823/135746"
     }
   },
   "routes": [

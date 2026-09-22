@@ -1,8 +1,10 @@
+import { AUDITED_REFINE_CONTROLS } from './audited-refine-data.js'
 /** Audited editing combinations, not inferred from a provider name or OpenAI compatibility. */
 import type { RefineControls, RefineInputs } from '../../types/src/refine.js'
 export type { RefineControls, RefineInputs } from '../../types/src/refine.js'
 export const REFINE_PRODUCT_MAX_REFERENCES = 8
 export function refineControlsFor(provider: string, model: string): RefineControls | null {
+  if (AUDITED_REFINE_CONTROLS[provider+'/'+model]) return AUDITED_REFINE_CONTROLS[provider+'/'+model]
   const common = {version: 1 as const, sourceCounts: true as const, mask: false, maskWithReferences: false, structured: null, checkedAt: '2026-09-22'}
   if (provider === 'fal' && model === 'bria/fibo-edit-1.5/edit') return {...common, maxImages: 4, mask: true, structured: 'bria-fibo', singleImageInheritsSize: true, source: 'https://fal.ai/models/bria/fibo-edit-1.5/edit/api'}
   if (provider === 'replicate' && model === 'qwen/qwen-image-edit-plus') return {...common, maxImages: 3, source: 'https://replicate.com/qwen/qwen-image-edit-plus'}
@@ -16,6 +18,8 @@ export function refineInputIssue(caps: RefineControls | null | undefined, input:
   const refs = input.references ?? []
   if (!Array.isArray(refs)) return '辅助参考图必须为列表。'
   if (refs.length > Math.min(REFINE_PRODUCT_MAX_REFERENCES, Math.max(0, (caps?.maxImages || 1) - 1))) return `当前型号最多接收 ${Math.max(0, (caps?.maxImages || 1) - 1)} 张辅助参考图；原图占用 1 个名额。图片已保留，请移除部分参考图或切换模型。`
+  if (1 + refs.length < (caps?.minImages || 1)) return `当前型号至少需要 ${caps!.minImages} 张图片（含原图），请补充辅助参考图。`
+  if (caps?.maskRequired && !input.mask) return '当前型号必须提供遮罩；请标记修改区域后再提交。'
   for (const ref of refs) {
     if (!ref || typeof ref.objectKey !== 'string' || !ref.objectKey || ref.objectKey.length > 300 || !['content','layout','color','style'].includes(ref.purpose) || (ref.note !== undefined && (typeof ref.note !== 'string' || ref.note.length > 300)) || Object.keys(ref).some(k => !['objectKey','purpose','note'].includes(k))) return '参考图的文件、用途或说明无效。'
   }

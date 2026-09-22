@@ -1,5 +1,17 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-22 · TokenHub / MiMo / Runware 全目录 v23 与不可用型号隐藏（本地未发布）
+
+- 核对官方目录与详情 491 项（127 / 9 / 355）；三渠道适配共 183 个 SKU，较 v22 新增 175（TokenHub 38、小米 2、Runware 135），包含主模型、视觉、生图和精修。完整逐项来源、版本/地区、未接入理由、价格及实际约束见 [全量审计](docs/channel-audit/2026-09-22/README.md)。真实调用、权益与账单均未验证。
+- 按型号共享 JSON Schema/专用协议：Runware 原生 textInference/caption/imageInference；腾讯 Kimi/GLM/MiniMax 等文本差异、HY3.5 SSE、Seedream 同步、Vidu/WAND 异步。精修契约 v1 可选 `minImages` / `maskRequired`，原图占名额，多图与 mask 组合分别校验；不新增 env 或迁移历史任务。未知结果不重发计费 POST，已知任务仅查询/下载。
+- 公开价、估算、响应费用与账单分离。腾讯广州与新加坡不混用账号/目录；本轮只开放已核对广州入口。TokenHub 按跨厂商聚合渠道分类，保留各研发方。未来到期按准确时间戳拒绝；不可用项从可选列表/搜索/厂商分组隐藏，旧配置、输入及记录保留，不替换渠道或型号。
+- [x] Core / Laf / 共享类型：逐型号字段、尺寸、图片限制、生命周期、响应及恢复模拟验证；目录 v23 生成，无真实推理。
+- [x] Web：全目录选择、停用隐藏、辅助图/遮罩/尺寸不兼容拦截、模型切换保留；浏览器本地模拟失败恢复及 WAND 多图异步精修通过。
+- [x] 小程序 TS / JS：目录/角色/输入政策/生命周期/渠道排序同步；新增无损字典压缩格式，解包字段与身份一致，包体预算不放宽。
+- [ ] 小程序原生辅助图、遮罩与结构化表单仍未移植；沿用上一条待办，本轮只同步共享能力/目录，不能标为原生 UI 已完成。
+- [ ] 真实权限、地区/限流、实际账单、科研质量及专用多资产/风格/擦除工具工作流：本轮未验证/未开放，逐项理由见审计。
+- [ ] 部署、微信上传/审核/发布：用户明确禁止自动部署；无 push、充值或付费推理。
+
 ## 2026-09-22 · 科研精修控制与 Runware / TokenHub / MiMo V2.6（本地未发布）
 
 - 共享新增可选 `refineInputs={version:1,references:[{objectKey,purpose,note}],mask:{objectKey},structured:{object,attributes,relationship,preserve}}`，严格按具体型号校验；公开任务新增 `refineInputMetadata`，所有图片和遮罩冻结为私有任务快照。`modelRegistry.refineControlsContractVersion=1` 与型号 `capabilities.refineControls` 控制 UI 开放。旧单图请求兼容；BRIA 单图不兼容尺寸明确拒绝。

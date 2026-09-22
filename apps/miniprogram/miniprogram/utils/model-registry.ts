@@ -221,6 +221,7 @@ export function partitionRegistryModels(
 ): RegistryModelPartition {
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
+    .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
     .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))

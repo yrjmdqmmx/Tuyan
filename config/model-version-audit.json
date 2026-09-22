@@ -23334,6 +23334,2281 @@
       ],
       "idEvidence": "official-doc",
       "notes": "具体渠道 SKU 已确认；未公布不可变权重快照，不以系列名推断固定性。真实调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt-image@2.5-flare",
+      "displayName": "GPT-Image-2.5 Flare",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt-image@2.5-flare",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-2-5-flare"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt-image@2.5-sunburst",
+      "displayName": "GPT-Image-2.5 Sunburst",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt-image@2.5-sunburst",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-2-5-sunburst"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "xai:grok-imagine@image-2.0",
+      "displayName": "Grok Imagine Image 2.0",
+      "kind": "unconfirmed",
+      "versionId": "xai:grok-imagine@image-2.0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/xai-grok-imagine-image-2-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@3.0",
+      "displayName": "Qwen-Image-3.0",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:qwen-image@3.0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-3-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@3.0-pro",
+      "displayName": "Qwen-Image-3.0-Pro",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:qwen-image@3.0-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-3-0-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "deepseek:v4@flash",
+      "displayName": "DeepSeek-V4-Flash-0731",
+      "kind": "unconfirmed",
+      "versionId": "deepseek:v4@flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/deepseek-v4-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "prunaai:p-image@ideogram",
+      "displayName": "P-Image-Ideogram",
+      "kind": "unconfirmed",
+      "versionId": "prunaai:p-image@ideogram",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/prunaai-p-image-ideogram"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "krea:krea@2-turbo",
+      "displayName": "Krea 2 Turbo",
+      "kind": "unconfirmed",
+      "versionId": "krea:krea@2-turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-2-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bytedance:seedream@5.0-pro",
+      "displayName": "Seedream 5.0 Pro",
+      "kind": "unconfirmed",
+      "versionId": "bytedance:seedream@5.0-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "meta:muse@image",
+      "displayName": "Muse Image",
+      "kind": "unconfirmed",
+      "versionId": "meta:muse@image",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/meta-muse-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:nano-banana@2-lite",
+      "displayName": "Nano Banana 2 Lite",
+      "kind": "unconfirmed",
+      "versionId": "google:nano-banana@2-lite",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana-2-lite"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "krea:krea@2-raw",
+      "displayName": "Krea 2 Raw",
+      "kind": "unconfirmed",
+      "versionId": "krea:krea@2-raw",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-2-raw"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "rundiffusion:300@100",
+      "displayName": "Juggernaut Z Fast",
+      "kind": "unconfirmed",
+      "versionId": "rundiffusion:300@100",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/rundiffusion-juggernaut-z-fast"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "anthropic:claude@fable-5",
+      "displayName": "Claude Fable 5",
+      "kind": "unconfirmed",
+      "versionId": "anthropic:claude@fable-5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/anthropic-claude-fable-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "sourceful:riverflow-2.5@fast",
+      "displayName": "Riverflow 2.5 Fast",
+      "kind": "unconfirmed",
+      "versionId": "sourceful:riverflow-2.5@fast",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/sourceful-riverflow-2-5-fast"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "sourceful:riverflow-2.5@pro",
+      "displayName": "Riverflow 2.5 Pro",
+      "kind": "unconfirmed",
+      "versionId": "sourceful:riverflow-2.5@pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/sourceful-riverflow-2-5-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@0",
+      "displayName": "Ideogram 4.0",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@q",
+      "displayName": "Ideogram 4.0q",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@q",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-0q"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "krea:krea@2-medium-turbo",
+      "displayName": "Krea 2 Medium Turbo",
+      "kind": "unconfirmed",
+      "versionId": "krea:krea@2-medium-turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-2-medium-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@remix",
+      "displayName": "Ideogram 4.0 Remix",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@remix",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-0-remix"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "minimax:m3@0",
+      "displayName": "MiniMax M3",
+      "kind": "unconfirmed",
+      "versionId": "minimax:m3@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/minimax-m3"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "anthropic:claude@opus-4.8",
+      "displayName": "Claude Opus 4.8",
+      "kind": "unconfirmed",
+      "versionId": "anthropic:claude@opus-4.8",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/anthropic-claude-opus-4-8"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "krea:krea@2-large",
+      "displayName": "Krea 2 Large",
+      "kind": "unconfirmed",
+      "versionId": "krea:krea@2-large",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-2-large"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "krea:krea@2-medium",
+      "displayName": "Krea 2 Medium",
+      "kind": "unconfirmed",
+      "versionId": "krea:krea@2-medium",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-2-medium"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:gemini@3.5-flash",
+      "displayName": "Gemini 3.5 Flash",
+      "kind": "unconfirmed",
+      "versionId": "google:gemini@3.5-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-gemini-3-5-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4.1@0",
+      "displayName": "Recraft V4.1",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4.1@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4.1-pro@0",
+      "displayName": "Recraft V4.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4.1-pro@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4.1-utility@0",
+      "displayName": "Recraft V4.1 Utility",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4.1-utility@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1-utility"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4.1-utility-pro@0",
+      "displayName": "Recraft V4.1 Utility Pro",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4.1-utility-pro@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1-utility-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "xai:grok-imagine@image-quality",
+      "displayName": "Grok Imagine Image Quality",
+      "kind": "unconfirmed",
+      "versionId": "xai:grok-imagine@image-quality",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/xai-grok-imagine-image-quality"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "luma:uni@1",
+      "displayName": "UNI-1",
+      "kind": "unconfirmed",
+      "versionId": "luma:uni@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/luma-uni-1"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "luma:uni@1-max",
+      "displayName": "UNI-1 Max",
+      "kind": "unconfirmed",
+      "versionId": "luma:uni@1-max",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/luma-uni-1-max"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "xai:grok@4.3",
+      "displayName": "Grok 4.3",
+      "kind": "unconfirmed",
+      "versionId": "xai:grok@4.3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/xai-grok-4-3"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "rundiffusion:200@100",
+      "displayName": "Juggernaut Z",
+      "kind": "unconfirmed",
+      "versionId": "rundiffusion:200@100",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/rundiffusion-juggernaut-z"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5.5",
+      "displayName": "GPT-5.5",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5.5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt-image@2",
+      "displayName": "GPT Image 2",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt-image@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-2"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "anthropic:claude@opus-4.7",
+      "displayName": "Claude Opus 4.7",
+      "kind": "unconfirmed",
+      "versionId": "anthropic:claude@opus-4.7",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/anthropic-claude-opus-4-7"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "baidu:ernie-image@turbo",
+      "displayName": "ERNIE-Image-Turbo",
+      "kind": "unconfirmed",
+      "versionId": "baidu:ernie-image@turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/baidu-ernie-image-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "baidu:ernie-image@0",
+      "displayName": "ERNIE-Image",
+      "kind": "unconfirmed",
+      "versionId": "baidu:ernie-image@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/baidu-ernie-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "imagineart:2.0@0",
+      "displayName": "ImagineArt 2.0",
+      "kind": "unconfirmed",
+      "versionId": "imagineart:2.0@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/imagineart-2-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "zai:glm@5.1",
+      "displayName": "GLM-5.1",
+      "kind": "unconfirmed",
+      "versionId": "zai:glm@5.1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/zai-glm-5-1"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:gemma@4-31b",
+      "displayName": "Gemma 4 31B",
+      "kind": "unconfirmed",
+      "versionId": "google:gemma@4-31b",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-gemma-4-31b"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:wan@2.7-image",
+      "displayName": "Wan2.7 Image",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:wan@2.7-image",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-wan2-7-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:wan@2.7-image-pro",
+      "displayName": "Wan2.7 Image Pro",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:wan@2.7-image-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-wan2-7-image-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@6",
+      "displayName": "FLUX.2 [klein] 9B KV",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@6",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-klein-9b-kv"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "minimax:m2.7@0",
+      "displayName": "MiniMax M2.7",
+      "kind": "unconfirmed",
+      "versionId": "minimax:m2.7@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/minimax-m2-7"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "minimax:m2.7@highspeed",
+      "displayName": "MiniMax M2.7 Highspeed",
+      "kind": "unconfirmed",
+      "versionId": "minimax:m2.7@highspeed",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/minimax-m2-7-highspeed"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5.4-mini",
+      "displayName": "GPT-5.4 Mini",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5.4-mini",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-4-mini"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5.4-nano",
+      "displayName": "GPT-5.4 Nano",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5.4-nano",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-4-nano"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5.4",
+      "displayName": "GPT-5.4",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5.4",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-4"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5.4-pro",
+      "displayName": "GPT-5.4 Pro",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5.4-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-4-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:4@3",
+      "displayName": "Nano Banana 2",
+      "kind": "unconfirmed",
+      "versionId": "google:4@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana-2"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bytedance:seedream@5.0-lite",
+      "displayName": "Seedream 5.0 Lite",
+      "kind": "unconfirmed",
+      "versionId": "bytedance:seedream@5.0-lite",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-lite"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:gemini@3.1-pro",
+      "displayName": "Gemini 3.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "google:gemini@3.1-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-gemini-3-1-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "anthropic:claude@sonnet-4.6",
+      "displayName": "Claude Sonnet 4.6",
+      "kind": "unconfirmed",
+      "versionId": "anthropic:claude@sonnet-4.6",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/anthropic-claude-sonnet-4-6"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4-pro@0",
+      "displayName": "Recraft V4 Pro",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4-pro@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "recraft:v4@0",
+      "displayName": "Recraft V4",
+      "kind": "unconfirmed",
+      "versionId": "recraft:v4@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@2.0-pro",
+      "displayName": "Qwen-Image-2.0-Pro",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:qwen-image@2.0-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-0-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:qwen-image@2.0",
+      "displayName": "Qwen-Image-2.0",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:qwen-image@2.0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "klingai:kling-image@3",
+      "displayName": "Kling IMAGE 3.0",
+      "kind": "unconfirmed",
+      "versionId": "klingai:kling-image@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/klingai-image-3-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "klingai:kling-image@o3",
+      "displayName": "Kling IMAGE O3",
+      "kind": "unconfirmed",
+      "versionId": "klingai:kling-image@o3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/klingai-image-o3"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "sourceful:riverflow-2.0@fast",
+      "displayName": "Riverflow 2.0 Fast",
+      "kind": "unconfirmed",
+      "versionId": "sourceful:riverflow-2.0@fast",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/sourceful-riverflow-2-0-fast"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "sourceful:riverflow-2.0@pro",
+      "displayName": "Riverflow 2.0 Pro",
+      "kind": "unconfirmed",
+      "versionId": "sourceful:riverflow-2.0@pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/sourceful-riverflow-2-0-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "xai:grok-imagine@image",
+      "displayName": "Grok Imagine Image",
+      "kind": "unconfirmed",
+      "versionId": "xai:grok-imagine@image",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/xai-grok-imagine-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:z-image@0",
+      "displayName": "Z-Image",
+      "kind": "unconfirmed",
+      "versionId": "runware:z-image@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-z-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@2",
+      "displayName": "FLUX.2 [klein] 9B",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-klein-9b"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bria:21@1",
+      "displayName": "Bria FIBO Edit",
+      "kind": "unconfirmed",
+      "versionId": "bria:21@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bria-fibo-edit"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@4",
+      "displayName": "FLUX.2 [klein] 4B",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@4",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-klein-4b"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@3",
+      "displayName": "FLUX.2 [klein] 9B Base",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-klein-9b-base"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "imagineart:1.5-pro@0",
+      "displayName": "ImagineArt 1.5 Pro",
+      "kind": "unconfirmed",
+      "versionId": "imagineart:1.5-pro@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/imagineart-1-5-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@5",
+      "displayName": "FLUX.2 [klein] 4B Base",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-klein-4b-base"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bria:20@3",
+      "displayName": "Bria FIBO Lite",
+      "kind": "unconfirmed",
+      "versionId": "bria:20@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bria-fibo-lite"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:twinflow-z-image-turbo@0",
+      "displayName": "TwinFlow Z-Image-Turbo",
+      "kind": "unconfirmed",
+      "versionId": "runware:twinflow-z-image-turbo@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/twinflow-z-image-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:gemini@3-flash",
+      "displayName": "Gemini 3 Flash",
+      "kind": "unconfirmed",
+      "versionId": "google:gemini@3-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-gemini-3-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:4@1",
+      "displayName": "GPT Image 1.5",
+      "kind": "unconfirmed",
+      "versionId": "openai:4@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-1-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:7@1",
+      "displayName": "FLUX.2 [max]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:7@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-max"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "alibaba:wan@2.6-image",
+      "displayName": "Wan2.6 Image",
+      "kind": "unconfirmed",
+      "versionId": "alibaba:wan@2.6-image",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-wan2-6-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bytedance:seedream@4.5",
+      "displayName": "Seedream 4.5",
+      "kind": "unconfirmed",
+      "versionId": "bytedance:seedream@4.5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-4-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "klingai:kling-image@o1",
+      "displayName": "Kling IMAGE O1",
+      "kind": "unconfirmed",
+      "versionId": "klingai:kling-image@o1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/klingai-image-o1"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "prunaai:1@1",
+      "displayName": "P-Image",
+      "kind": "unconfirmed",
+      "versionId": "prunaai:1@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/prunaai-p-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:5@1",
+      "displayName": "FLUX.2 [pro]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:5@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:kandinsky-5.0-image-lite@1",
+      "displayName": "Kandinsky 5.0 Image Lite",
+      "kind": "unconfirmed",
+      "versionId": "runware:kandinsky-5.0-image-lite@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/kandinsky-5-0-image-lite"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:z-image@turbo",
+      "displayName": "Z-Image-Turbo",
+      "kind": "unconfirmed",
+      "versionId": "runware:z-image@turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-z-image-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:400@1",
+      "displayName": "FLUX.2 [dev]",
+      "kind": "unconfirmed",
+      "versionId": "runware:400@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:6@1",
+      "displayName": "FLUX.2 [flex]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:6@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-2-flex"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:4@2",
+      "displayName": "Nano Banana Pro",
+      "kind": "unconfirmed",
+      "versionId": "google:4@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "imagineart:1@5",
+      "displayName": "ImagineArt 1.5",
+      "kind": "unconfirmed",
+      "versionId": "imagineart:1@5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/imagineart-1-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "prunaai:2@1",
+      "displayName": "P-Image-Edit",
+      "kind": "unconfirmed",
+      "versionId": "prunaai:2@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/prunaai-p-image-edit"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bria:20@1",
+      "displayName": "Bria FIBO",
+      "kind": "unconfirmed",
+      "versionId": "bria:20@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bria-fibo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "anthropic:claude@haiku-4.5",
+      "displayName": "Claude Haiku 4.5",
+      "kind": "unconfirmed",
+      "versionId": "anthropic:claude@haiku-4.5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/anthropic-claude-haiku-4-5"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:201@10",
+      "displayName": "Wan2.5-Preview Image",
+      "kind": "unconfirmed",
+      "versionId": "runware:201@10",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-wan2-5-preview-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:108@22",
+      "displayName": "Qwen-Image-Edit-Plus",
+      "kind": "unconfirmed",
+      "versionId": "runware:108@22",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-edit-plus"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bria:11@1",
+      "displayName": "Bria Image Replace Background",
+      "kind": "unconfirmed",
+      "versionId": "bria:11@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bria-image-replace-background"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:111@1",
+      "displayName": "FLUX.1 [dev] SRPO",
+      "kind": "unconfirmed",
+      "versionId": "runware:111@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/flux-1-dev-srpo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bytedance:5@0",
+      "displayName": "Seedream 4.0",
+      "kind": "unconfirmed",
+      "versionId": "bytedance:5@0",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-4-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "google:4@1",
+      "displayName": "Nano Banana",
+      "kind": "unconfirmed",
+      "versionId": "google:4@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:108@20",
+      "displayName": "Qwen-Image-Edit",
+      "kind": "unconfirmed",
+      "versionId": "runware:108@20",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-edit"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runway:4@2",
+      "displayName": "Runway Gen-4 Image Turbo",
+      "kind": "unconfirmed",
+      "versionId": "runway:4@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/runway-gen-4-image-turbo"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5-mini",
+      "displayName": "GPT-5 Mini",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5-mini",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-mini"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:gpt@5-nano",
+      "displayName": "GPT-5 Nano",
+      "kind": "unconfirmed",
+      "versionId": "openai:gpt@5-nano",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-5-nano"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:108@1",
+      "displayName": "Qwen-Image",
+      "kind": "unconfirmed",
+      "versionId": "runware:108@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:107@1",
+      "displayName": "FLUX.1 Krea [dev]",
+      "kind": "unconfirmed",
+      "versionId": "runware:107@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/krea-flux-1-krea-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:4@1",
+      "displayName": "FLUX.1 Kontext [max]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:4@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-kontext-max"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:3@1",
+      "displayName": "FLUX.1 Kontext [pro]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:3@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-kontext-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:106@1",
+      "displayName": "FLUX.1 Kontext [dev]",
+      "kind": "unconfirmed",
+      "versionId": "runware:106@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-kontext-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:5@1",
+      "displayName": "Stable Diffusion 3",
+      "kind": "unconfirmed",
+      "versionId": "runware:5@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/stabilityai-stable-diffusion-3"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bria:10@1",
+      "displayName": "Bria 3.2",
+      "kind": "unconfirmed",
+      "versionId": "bria:10@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bria-3-2"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runway:4@1",
+      "displayName": "Runway Gen-4 Image",
+      "kind": "unconfirmed",
+      "versionId": "runway:4@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/runway-gen-4-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@3",
+      "displayName": "Ideogram 3.0 Edit",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-3-0-edit"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@2",
+      "displayName": "Ideogram 3.0 Remix",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-3-0-remix"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:1@2",
+      "displayName": "GPT Image 1 Mini",
+      "kind": "unconfirmed",
+      "versionId": "openai:1@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-1-mini"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:97@2",
+      "displayName": "HiDream-I1 Dev",
+      "kind": "unconfirmed",
+      "versionId": "runware:97@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/hidream-i1-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:97@3",
+      "displayName": "HiDream-I1 Fast",
+      "kind": "unconfirmed",
+      "versionId": "runware:97@3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/hidream-i1-fast"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:97@1",
+      "displayName": "HiDream-I1 Full",
+      "kind": "unconfirmed",
+      "versionId": "runware:97@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/hidream-i1-full"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "vidu:q1@image",
+      "displayName": "Vidu Q1",
+      "kind": "unconfirmed",
+      "versionId": "vidu:q1@image",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/vidu-q1-image"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@1",
+      "displayName": "Ideogram 3.0",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-3-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:4@5",
+      "displayName": "Ideogram 3.0 Replace Background",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:4@5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-3-0-replace-background"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "openai:1@1",
+      "displayName": "GPT Image 1",
+      "kind": "unconfirmed",
+      "versionId": "openai:1@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/openai-gpt-image-1"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "rundiffusion:110@101",
+      "displayName": "Juggernaut Lightning Flux",
+      "kind": "unconfirmed",
+      "versionId": "rundiffusion:110@101",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/rundiffusion-juggernaut-lightning-flux"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "rundiffusion:130@100",
+      "displayName": "Juggernaut Pro Flux",
+      "kind": "unconfirmed",
+      "versionId": "rundiffusion:130@100",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/rundiffusion-juggernaut-pro-flux"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "rundiffusion:120@100",
+      "displayName": "Juggernaut Base Flux",
+      "kind": "unconfirmed",
+      "versionId": "rundiffusion:120@100",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/rundiffusion-juggernaut-base-flux"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:2@2",
+      "displayName": "Ideogram 2a Remix",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:2@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-2a-remix"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:2@1",
+      "displayName": "Ideogram 2a",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:2@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-2a"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:102@1",
+      "displayName": "FLUX.1 Fill [dev]",
+      "kind": "unconfirmed",
+      "versionId": "runware:102@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-fill-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:2@2",
+      "displayName": "FLUX.1.1 [pro] Ultra",
+      "kind": "unconfirmed",
+      "versionId": "bfl:2@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-1-pro-ultra"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:1@2",
+      "displayName": "FLUX.1 Fill [pro]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:1@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-fill-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:3@2",
+      "displayName": "Ideogram 2.0 Remix",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:3@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-2-0-remix"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "bfl:2@1",
+      "displayName": "FLUX.1.1 [pro]",
+      "kind": "unconfirmed",
+      "versionId": "bfl:2@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-1-pro"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "ideogram:3@1",
+      "displayName": "Ideogram 2.0",
+      "kind": "unconfirmed",
+      "versionId": "ideogram:3@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-2-0"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:100@1",
+      "displayName": "FLUX.1 [schnell]",
+      "kind": "unconfirmed",
+      "versionId": "runware:100@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-schnell"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:101@1",
+      "displayName": "FLUX.1 [dev]",
+      "kind": "unconfirmed",
+      "versionId": "runware:101@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-1-dev"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:150@2",
+      "displayName": "LLaVA-1.6-Mistral-7B",
+      "kind": "unconfirmed",
+      "versionId": "runware:150@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:152@1",
+      "displayName": "Qwen2.5-VL-3B-Instruct",
+      "kind": "unconfirmed",
+      "versionId": "runware:152@1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "runware:152@2",
+      "displayName": "Qwen2.5-VL-7B-Instruct",
+      "kind": "unconfirmed",
+      "versionId": "runware:152@2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "runware",
+      "apiModelId": "civitai:101055@128078",
+      "displayName": "Stable Diffusion XL v1.0 VAE Fix",
+      "kind": "unconfirmed",
+      "versionId": "civitai:101055@128078",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/stabilityai-stable-diffusion-xl-v1-0-vae-fix"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy4-preview",
+      "displayName": "Hy4 preview",
+      "kind": "unconfirmed",
+      "versionId": "hy4-preview",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132252"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-flash",
+      "displayName": "DeepSeek-V4.1-Flash 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-flash-202605",
+      "displayName": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-flash-202605",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-v4-flash-0731",
+      "displayName": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-v4-flash-0731",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-v4-flash",
+      "displayName": "DeepSeek-V4-Flash 0731 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-v4-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-pro-202606",
+      "displayName": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-pro-202606",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-v4-pro-0813",
+      "displayName": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-v4-pro-0813",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-v4-pro",
+      "displayName": "DeepSeek-V4-Pro 0813 正式版 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-v4-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek/deepseek-v4-flash-vision-exp",
+      "displayName": "DeepSeek-V4-Flash-Vision-Exp 原厂直供",
+      "kind": "unconfirmed",
+      "versionId": "deepseek/deepseek-v4-flash-vision-exp",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-flash-0731",
+      "displayName": "DeepSeek-V4-Flash 0731 正式版",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-flash-0731",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-pro-0813",
+      "displayName": "DeepSeek-V4-Pro 0813 正式版",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-pro-0813",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-flash",
+      "displayName": "DeepSeek-V4-Flash",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4-pro",
+      "displayName": "DeepSeek-V4-Pro",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132248"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5.3-flash",
+      "displayName": "GLM-5.3-Flash",
+      "kind": "unconfirmed",
+      "versionId": "glm-5.3-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5.3-flashx",
+      "displayName": "GLM-5.3-FlashX",
+      "kind": "unconfirmed",
+      "versionId": "glm-5.3-flashx",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5.3",
+      "displayName": "GLM-5.3",
+      "kind": "unconfirmed",
+      "versionId": "glm-5.3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5.2",
+      "displayName": "GLM-5.2",
+      "kind": "unconfirmed",
+      "versionId": "glm-5.2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5.1",
+      "displayName": "GLM-5.1（2026-10-08下线）",
+      "kind": "unconfirmed",
+      "versionId": "glm-5.1",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5v-turbo",
+      "displayName": "GLM-5V-Turbo（2026-10-30下线）",
+      "kind": "unconfirmed",
+      "versionId": "glm-5v-turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5-turbo",
+      "displayName": "GLM-5-Turbo（2026-10-08下线）",
+      "kind": "unconfirmed",
+      "versionId": "glm-5-turbo",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "glm-5",
+      "displayName": "GLM-5（2026-10-08下线）",
+      "kind": "unconfirmed",
+      "versionId": "glm-5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132061"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k2.7-code-highspeed",
+      "displayName": "Kimi K2.7 Code HighSpeed",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k2.7-code-highspeed",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132232"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k3",
+      "displayName": "Kimi K3",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132232"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k2.8-preview",
+      "displayName": "Kimi K2.8 Preview",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k2.8-preview",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132232"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k2.7-code",
+      "displayName": "Kimi K2.7 Code",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k2.7-code",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132232"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k2.6",
+      "displayName": "Kimi-K2.6",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k2.6",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132232"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "minimax-m3",
+      "displayName": "MiniMax-M3",
+      "kind": "unconfirmed",
+      "versionId": "minimax-m3",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132246"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "minimax-m2.7",
+      "displayName": "MiniMax-M2.7",
+      "kind": "unconfirmed",
+      "versionId": "minimax-m2.7",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/132246"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "mimo-v2.5-pro",
+      "displayName": "MiMo-V2.5-Pro",
+      "kind": "unconfirmed",
+      "versionId": "mimo-v2.5-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130079"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "youtu-vita",
+      "displayName": "YT-VITA",
+      "kind": "unconfirmed",
+      "versionId": "youtu-vita",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/136956"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hunyuan-t1-vision-20250916",
+      "displayName": "HY-Vision-1.5-Thinking",
+      "kind": "unconfirmed",
+      "versionId": "hunyuan-t1-vision-20250916",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/136956"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "hy-image-v3.5-preview",
+      "displayName": "hy-image-v3.5-preview",
+      "kind": "unconfirmed",
+      "versionId": "hy-image-v3.5-preview",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/135745"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "wand-vega-image-lite",
+      "displayName": "wand-vega-image-lite",
+      "kind": "unconfirmed",
+      "versionId": "wand-vega-image-lite",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/137203"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "wand-vega-image-flash",
+      "displayName": "wand-vega-image-flash",
+      "kind": "unconfirmed",
+      "versionId": "wand-vega-image-flash",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/137203"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "wand-vega-image-pro",
+      "displayName": "wand-vega-image-pro",
+      "kind": "unconfirmed",
+      "versionId": "wand-vega-image-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/137203"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "vidu-image-q2",
+      "displayName": "vidu-image-q2",
+      "kind": "unconfirmed",
+      "versionId": "vidu-image-q2",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/135746"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "seedream-image-v5.0-pro",
+      "displayName": "seedream-image-v5.0-pro",
+      "kind": "unconfirmed",
+      "versionId": "seedream-image-v5.0-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/136609"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "seedream-image-v5.0-lite",
+      "displayName": "seedream-image-v5.0-lite",
+      "kind": "unconfirmed",
+      "versionId": "seedream-image-v5.0-lite",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/136609"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "xiaomi",
+      "apiModelId": "mimo-v2.5-pro",
+      "displayName": "MiMo-v2.5-pro",
+      "kind": "unconfirmed",
+      "versionId": "mimo-v2.5-pro",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+    },
+    {
+      "channel": "xiaomi",
+      "apiModelId": "mimo-v2.5",
+      "displayName": "MiMo-v2.5",
+      "kind": "unconfirmed",
+      "versionId": "mimo-v2.5",
+      "checkedAt": "2026-09-22",
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",
