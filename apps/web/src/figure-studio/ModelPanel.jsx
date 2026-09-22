@@ -9,7 +9,7 @@ import useModelCatalog from '../hooks/useModelCatalog.js';
 import { regionApiKeySlot } from '../lib/providerRegions.js';
 import { studioModelRegistry, studioModelSelection } from './modelSettings.js';
 
-export function ModelSettings({ value, onChange, capabilities, onSignIn, signedIn = false }) {
+export function ModelSettings({ value, onChange, capabilities }) {
   const [open, setOpen] = useState(false);
   const { registry, error, loading, refresh } = useModelCatalog({ apiBase: API_BASE_DEFAULT, enabled: open || Boolean(value.provider) });
   const keyRing = useRef({});
@@ -60,7 +60,6 @@ export function ModelSettings({ value, onChange, capabilities, onSignIn, signedI
       </details>
       <div className="fs-button-row">
       <button type="button" className="generation-settings-trigger" disabled={loading} onClick={refresh}>{loading ? <Loader2 size={14} className="fs-spin" /> : null}刷新目录</button>
-      {!signedIn && onSignIn && <button type="button" className="generation-settings-trigger" onClick={() => { setOpen(false); onSignIn(); }}>登录图研</button>}
       </div>
       {error && <p className="fs-error" role="alert">{error}</p>}
       <p className="fs-micro">图稿模型功能当前仅支持用户自带 Key 的原生渠道。观猹 TokenDance 和通用 API 暂不可用；目录可见不代表当前图稿服务可调用。发起模型请求可能产生渠道费用。</p>

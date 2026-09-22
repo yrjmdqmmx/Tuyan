@@ -1,4 +1,5 @@
-import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 import { adminStatusRequest, submitFeedbackRequest } from '@paperbanana/api';
 import { appPath } from '../appPaths.js';
 import { CLIENT_VERSION } from '../config.js';
@@ -10,6 +11,8 @@ import MiniProgramDialog from './MiniProgramDialog.jsx';
 import AgentConnectionDialog from './AgentConnectionDialog.jsx';
 import AuthPanel from './AuthPanel.jsx';
 import AuthUnavailablePanel from './AuthUnavailablePanel.jsx';
+import AccessibleDialog from './AccessibleDialog.jsx';
+import { getAuthAccess } from '../lib/authAccess.js';
 import FeedbackDialog from './FeedbackDialog.jsx';
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx';
 
@@ -40,6 +43,8 @@ function SitePageContent({ section = 'figure-studio', apiBase, backendMode = 'ga
   const { t } = useBenchmarkLocale();
   const auth = useSiteSession();
   const currentUser = auth.session?.user || null;
+  const authAccess = getAuthAccess(auth, currentUser);
+  const authDialogTitle = useId();
   const userId = currentUser?.id;
   const identity = `${userId || 'anonymous'}:${auth.generation}`;
   const [dialog, setDialog] = useState(null);
@@ -105,13 +110,17 @@ function SitePageContent({ section = 'figure-studio', apiBase, backendMode = 'ga
     <MiniProgramDialog key={`mini:${identity}`} open={visibleDialog === 'mini-program'} onClose={closeDialog} />
     <AgentConnectionDialog key={`agent:${identity}`} open={visibleDialog === 'agent'} onClose={closeDialog} />
     {auth.error ? <div className="service-alert" role="status">{t('登录状态检查失败：')}{auth.error.message || String(auth.error)}</div> : null}
-    {visibleDialog === 'auth' && !currentUser ? (auth.authEnabled
-      ? <AuthPanel key={identity} client={auth.client} onAuthenticated={async () => { if (auth.isCurrentGeneration(auth.generation)) await auth.refresh(); }} onCancel={closeDialog} />
-      : <AuthUnavailablePanel onCancel={closeDialog} {...(section === 'figure-studio' ? {
-        description: '账号服务暂不可用。本机编辑、源稿和 SVG 导出仍可使用。',
-        detail: '结构规划、语言编辑和服务端导出需要登录后使用，请稍后重试。',
-        returnLabel: '返回论文画布',
-      } : {})} />) : null}
+    <AccessibleDialog open={visibleDialog === 'auth' && authAccess.state !== 'authenticated'} onClose={closeDialog} labelledBy={authDialogTitle} className="site-auth-dialog" backdropClassName="site-auth-backdrop">
+      <header className="site-auth-dialog-head"><h2 className="sr-only" id={authDialogTitle}>账号登录</h2><button type="button" aria-label="关闭账号登录" onClick={closeDialog}><X size={20} /></button></header>
+      {authAccess.state === 'anonymous'
+        ? <AuthPanel key={identity} client={auth.client} onAuthenticated={async () => { if (auth.isCurrentGeneration(auth.generation)) await auth.refresh(); }} onCancel={closeDialog} />
+        : <AuthUnavailablePanel onCancel={closeDialog}
+          title={authAccess.state === 'pending' ? '正在检查登录状态' : authAccess.state === 'error' ? '登录状态检查失败' : '账号服务尚未配置'}
+          description={authAccess.notice}
+          detail={section === 'figure-studio' ? '本机编辑、源稿和 SVG 导出仍可使用。结构规划、语言编辑与 PDF/EPS 需账号服务恢复后使用。' : '仍可浏览公开内容；需要账号的操作暂不可用。'}
+          returnLabel={section === 'figure-studio' ? '返回论文画布' : '返回页面'}
+          onRetry={authAccess.state === 'error' ? () => { void auth.refresh(); } : undefined} />}
+    </AccessibleDialog>
     {visibleDialog === 'account' && currentUser ? <Suspense fallback={null}><AccountSettingsDialog key={identity} apiBase={apiBase} email={currentUser.email || ''} onClose={closeDialog}
       onDeleted={() => { if (auth.isCurrentGeneration(auth.generation)) { auth.clear(); closeDialog(); } }} /></Suspense> : null}
     <FeedbackDialog key={`feedback:${identity}`} open={visibleDialog === 'feedback'} isSubmitting={feedback.pending} error={feedback.error} success={feedback.success} onClose={closeDialog} onSubmit={submitFeedback} />

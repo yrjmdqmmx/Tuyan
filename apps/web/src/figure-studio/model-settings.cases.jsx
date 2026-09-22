@@ -159,14 +159,14 @@ test('account remount clears the private regional key ring and a late catalog re
   assert.equal(screen.getByLabelText('MiniMax 接入密钥').value, '');
 });
 
-test('sign-in uses the current page callback while the shared settings drawer closes', async () => {
+test('anonymous model settings leave login entry to the shared page header', async () => {
   mockCatalog();
   let signIns = 0;
   render(<Harness onSignIn={() => signIns++} />);
   await openSettings();
-  fireEvent.click(screen.getByRole('button', { name: '登录图研' }));
-  assert.equal(signIns, 1);
-  assert.equal(screen.queryByRole('dialog', { name: '生成设置' }), null);
+  assert.equal(screen.queryByRole('button', { name: '登录图研' }), null);
+  assert.equal(signIns, 0);
+  assert.ok(screen.getByRole('dialog', { name: '生成设置' }));
 });
 
 test('signed-in model settings do not offer a sign-in action', async () => {

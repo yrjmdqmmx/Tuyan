@@ -49,7 +49,8 @@ test('shared login, account settings and immediate signout work without mounting
     await screen.findByTitle('author@example.com');
     assert.equal(checks, 2); assert.equal(screen.queryByLabelText('密码'), null);
     fireEvent.click(screen.getByRole('button', { name: 'author@example.com，账户' }));
-    const account = await screen.findByRole('dialog', { name: '账号与隐私' });
+    // This is the first lazy import of the account dialog in this test worker.
+    const account = await screen.findByRole('dialog', { name: '账号与隐私' }, { timeout: 5_000 });
     assert.equal(account.closest('.figure-studio'), null);
     fireEvent.click(screen.getByRole('button', { name: '关闭账号设置' }));
     fireEvent.click(screen.getByRole('button', { name: '退出', exact: true }));
@@ -123,7 +124,7 @@ test('standalone shell preserves document title and the leaderboard keeps its ow
   const shell = render(<SitePageShell authEnabled={false}><main /></SitePageShell>);
   assert.equal(document.title, '图研 · 论文画布');
   fireEvent.click(screen.getByRole('button', { name: '登录 / 注册' }));
-  assert.ok(screen.getByText('登录注册暂未接入后端'));
+  assert.ok(screen.getByRole('heading', { name: '账号服务尚未配置' }));
   shell.unmount();
   try {
     render(<SiteSessionProvider authEnabled={false}><LeaderboardRoot apiBase="https://gateway.example" backendMode="gateway" enabled={false} pathname="/leaderboard" route={{}} /></SiteSessionProvider>);

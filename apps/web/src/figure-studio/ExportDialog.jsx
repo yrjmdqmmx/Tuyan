@@ -5,11 +5,12 @@ import AccessibleDialog from '../components/AccessibleDialog.jsx';
 import { requestExport } from './api.js';
 import { downloadBlob, filename } from './state.js';
 import { svgVerification, validateReturnedReport } from './exportReport.js';
+import { figureAuthAccess } from './authAccess.js';
 
 const STATUS_LABELS = { passed: '通过', manual: '待人工确认', unverified: '未核验', problem: '发现问题' };
 const CHECK_LABELS = { 'file-identity': '实际文件身份与格式', 'external-editor-compatibility': '外部编辑软件兼容性', 'exported-file-journal-rules': '最终文件期刊要求', 'font-portability': '字体可移植性' };
 
-export default function ExportDialog({ open, onClose, document, capabilities, saveSource }) {
+export default function ExportDialog({ open, onClose, document, capabilities, saveSource, auth, currentUser, onSignIn }) {
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -23,9 +24,26 @@ export default function ExportDialog({ open, onClose, document, capabilities, sa
     return () => { active.current = false; request.current?.abort(); };
   }, []);
   const documentSnapshot = useMemo(() => JSON.stringify(document), [document]);
+  const authAccess = figureAuthAccess(auth, currentUser);
   const results = evaluateRules(document);
   const baselineWarnings = results.baseline.filter((rule) => ['problem', 'fail', 'failed', 'warning', 'warn'].includes(rule.status)).length;
+  function unavailableReason(format) {
+    if (authAccess.state !== 'authenticated') return authAccess.notice;
+    return capabilities?.formatReasons?.[format] || '当前服务端未确认转换能力。SVG 与源稿可直接下载。';
+  }
+  function serverExportDisabled(format) {
+    return !!busy || authAccess.state === 'pending'
+      || (authAccess.state === 'authenticated' ? capabilities?.formats?.[format] !== true : !onSignIn);
+  }
   async function exportFile(format) {
+    if (busy) return;
+    if (format !== 'svg') {
+      // An explicit protected action opens the same site login; it never queues
+      // an export to replay after authentication.
+      if (authAccess.state === 'pending') return;
+      if (authAccess.state !== 'authenticated') { onClose(); onSignIn?.(); return; }
+      if (capabilities?.formats?.[format] !== true) { setError(unavailableReason(format)); return; }
+    }
     setBusy(format); setMessage(''); setError(''); setReport(null); setReportSnapshot('');
     try {
       if (format === 'svg') {
@@ -53,7 +71,7 @@ export default function ExportDialog({ open, onClose, document, capabilities, sa
     <div className="fs-export-body"><div className="fs-note">{baselineWarnings ? `官方基线有 ${baselineWarnings} 项需留意。` : '自动检查未发现需调整的技术项。'}科学内容、AI 使用政策与外部软件兼容性仍需人工核验。</div>
       <div className="fs-export-row"><div><strong>图研源稿</strong><p>完整对象、图片与工作规则，可重新打开继续编辑。</p></div><button onClick={saveSource}><Download size={15} />源稿</button></div>
       <div className="fs-export-row"><div><strong>SVG</strong><p>本机导出矢量对象与文本，嵌入的图片仍为位图。</p></div><button disabled={!!busy} onClick={() => exportFile('svg')}><Download size={15} />SVG</button></div>
-      {['pdf', 'eps'].map((format) => <div className="fs-export-row" key={format}><div><strong>{format.toUpperCase()}</strong><p>{capabilities?.formats?.[format] ? '服务端转换；目标软件的编辑保真仍需核验。' : capabilities?.formatReasons?.[format] || '当前服务端未确认转换能力。SVG 与源稿可直接下载。'}</p></div><button disabled={!!busy || !capabilities?.formats?.[format]} onClick={() => exportFile(format)}>{busy === format ? <Loader2 size={15} className="fs-spin" /> : <Download size={15} />}{format.toUpperCase()}</button></div>)}
+      {['pdf', 'eps'].map((format) => <div className="fs-export-row" key={format}><div><strong>{format.toUpperCase()}</strong><p>{authAccess.state === 'authenticated' && capabilities?.formats?.[format] === true ? '服务端转换；目标软件的编辑保真仍需核验。' : unavailableReason(format)}</p></div><button disabled={serverExportDisabled(format)} onClick={() => exportFile(format)}>{busy === format ? <Loader2 size={15} className="fs-spin" /> : <Download size={15} />}{format.toUpperCase()}</button></div>)}
       <p className="fs-micro">PDF / EPS 请求含嵌入图片，上限 768 KiB。下载源稿与 SVG 在本机完成。字体是否可用由打开文件的软件决定。</p>
       <p className="fs-micro">SVG 优先用于继续编辑；PDF/EPS 在外部软件中可能合并文字或分组，EPS 的科学符号还需逐项检查。</p>
       {message && <p role="status" className="fs-success">{message}</p>}{error && <p role="alert" className="fs-error">{error}</p>}

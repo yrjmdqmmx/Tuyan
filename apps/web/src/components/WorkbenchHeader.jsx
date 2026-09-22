@@ -1,19 +1,20 @@
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react';
-import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, PenTool, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
+import { BookOpen, Bot, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
 import { AUTH_UI_ENABLED, BENCH_ENABLED, logoUrl } from '../config';
 import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
 import useCompactLayout from '../hooks/useCompactLayout';
+import { sitePageLinks } from './siteNavigation.js';
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onWorkspaceAccount, onGuide, onAdmin, onNavigate, showWorkspaceLinks = false, section = 'workbench' }) {
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
   const { t, locale } = useBenchmarkLocale()
   return (
     <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
       <div className="header-links">
-        {section !== 'workbench' && <a href={appPath('/')}><LayoutDashboard size={16} /> {t("工作台")}</a>}
-        <a href={appPath('/figure-studio/')} aria-current={section === 'figure-studio' ? 'page' : undefined}><PenTool size={16} /> {t("论文画布")}</a>
-        {BENCH_ENABLED && section !== 'leaderboard' && <a href={appPath('/leaderboard')}><BarChart3 size={16} /> {t("排行榜")}</a>}
+        {sitePageLinks({ benchmarkEnabled: BENCH_ENABLED }).map(({ id, path, label, icon: Icon }) =>
+          <a key={id} href={appPath(path)} aria-current={section === id ? 'page' : undefined}><Icon size={16} /> {t(label)}</a>
+        )}
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
         <button type="button" className="contact-author-button" onClick={() => onContact()}>
           <QrCode size={16} /> {t("联系作者")}</button>
@@ -26,11 +27,6 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
           <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> {t("微信小程序")}</button>
       </div>
       <div className="header-actions">
-        {showWorkspaceLinks && <>
-          {onWorkspaceAccount && <button type="button" className="auth-entry-button" onClick={onWorkspaceAccount}><Wallet size={16} /> {t("账户与钱包")}</button>}
-          {onGuide && <button type="button" className="auth-entry-button" onClick={onGuide}><BookOpen size={16} /> {t("使用教程")}</button>}
-          {onAdmin && <button type="button" className="auth-entry-button" onClick={onAdmin}><ShieldCheck size={16} /> {t("站长")}</button>}
-        </>}
         <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => onAgentConnection()}>
           <Bot size={18} /> {t("智能体接入")}</button>
         <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
@@ -86,7 +82,7 @@ export default function WorkbenchHeader(props) {
       {compact ? <div className="mobile-header-actions">
         {AUTH_UI_ENABLED && <button type="button" onClick={currentUser ? onAccount : onSignIn}>{currentUser ? t("账户") : t("登录")}</button>}
         <button type="button" aria-haspopup="dialog" aria-expanded={moreOpen} onClick={() => setMoreOpen(true)}><Menu size={18} />{t("更多")}</button>
-      </div> : <SiteNavigation {...props} showWorkspaceLinks={section !== 'workbench'} />}
+      </div> : <SiteNavigation {...props} />}
     </header>
     <MobileMoreMenu {...props} open={compact && moreOpen} onClose={() => setMoreOpen(false)} />
   </>;

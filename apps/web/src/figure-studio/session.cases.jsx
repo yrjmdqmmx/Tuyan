@@ -2,6 +2,7 @@ import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { FigureStudioEditor } from './FigureStudio.jsx';
+import { STORAGE_KEY } from './state.js';
 
 afterEach(() => { cleanup(); window.localStorage.clear(); });
 
@@ -28,10 +29,13 @@ test('account changes invalidate export capabilities while retaining the local e
     assert.equal(screen.getByRole('button', { name: 'PDF', exact: true }).disabled, true);
     await act(async () => pending[1](Response.json({ code: 0, formats: { pdf: true } })));
     assert.equal(screen.getByRole('button', { name: 'PDF', exact: true }).disabled, false);
-    view.rerender(<FigureStudioEditor {...props} currentUser={null} authGeneration={3} />);
+    let loginRequests = 0;
+    view.rerender(<FigureStudioEditor {...props} onSignIn={() => loginRequests++} currentUser={null} authGeneration={3} />);
     assert.equal(screen.queryByRole('dialog'), null);
     fireEvent.click(screen.getByRole('button', { name: '导出', exact: true }));
-    assert.equal(screen.getByRole('button', { name: 'PDF', exact: true }).disabled, true);
+    assert.equal(screen.getByRole('button', { name: 'PDF', exact: true }).disabled, false);
+    fireEvent.click(screen.getByRole('button', { name: 'PDF', exact: true }));
+    assert.equal(loginRequests, 1);
     assert.match(screen.getByRole('region', { name: '图稿画布' }).textContent, /1 个独立对象/);
   } finally { globalThis.fetch = previousFetch; globalThis.localStorage = previousStorage; }
 });
@@ -49,9 +53,8 @@ test('anonymous authors can edit locally and open the shared login without sendi
     render(<FigureStudioEditor auth={{ isPending: false }} currentUser={null} authGeneration={0} onSignIn={() => loginRequests++} />);
     fireEvent.change(screen.getByLabelText('研究材料与制图目标'), { target: { value: 'Synthetic research outline' } });
     fireEvent.click(screen.getByRole('button', { name: '生成结构方案' }));
-    assert.match(screen.getByRole('alert').textContent, /请先登录图研/);
     assert.ok(!actions.includes('figureStudioPlan'));
-    fireEvent.click(screen.getByRole('button', { name: '登录图研', exact: true }));
+    assert.equal(screen.queryByRole('button', { name: '登录图研', exact: true }), null);
     assert.equal(loginRequests, 1);
     fireEvent.click(screen.getByRole('button', { name: '添加矩形' }));
     assert.match(screen.getByRole('region', { name: '图稿画布' }).textContent, /1 个独立对象/);
@@ -119,3 +122,43 @@ for (const scenario of [
     } finally { globalThis.fetch = previousFetch; globalThis.localStorage = previousStorage; }
   });
 }
+
+
+test('collapsing panels and expanding the editor preserves material input, source bytes and original panel choices', () => {
+  const previousStorage = globalThis.localStorage;
+  globalThis.localStorage = window.localStorage;
+  try {
+    render(<FigureStudioEditor auth={{ isPending: false }} currentUser={null} authGeneration={0} onSignIn={() => {}} />);
+    fireEvent.change(screen.getByLabelText('研究材料与制图目标'), { target: { value: 'Preserved synthetic material' } });
+    fireEvent.click(screen.getByRole('button', { name: '添加矩形' }));
+    const source = localStorage.getItem(STORAGE_KEY);
+    fireEvent.click(screen.getByRole('button', { name: '收起材料面板' }));
+    assert.equal(screen.queryByRole('complementary', { name: '材料与对象面板' }), null);
+    fireEvent.click(screen.getByRole('button', { name: '展开编辑区' }));
+    assert.equal(screen.queryByRole('complementary', { name: '属性与规则面板' }), null);
+    assert.equal(screen.getByRole('button', { name: '还原编辑区' }).getAttribute('aria-pressed'), 'true');
+    fireEvent.keyDown(window, { key: 'Escape' });
+    assert.equal(screen.getByRole('button', { name: '展开编辑区' }).getAttribute('aria-pressed'), 'false');
+    assert.equal(screen.queryByRole('complementary', { name: '材料与对象面板' }), null);
+    assert.ok(screen.getByRole('complementary', { name: '属性与规则面板' }));
+    fireEvent.click(screen.getByRole('button', { name: '展开材料面板' }));
+    fireEvent.click(screen.getByRole('tab', { name: '材料与结构' }));
+    assert.equal(screen.getByLabelText('研究材料与制图目标').value, 'Preserved synthetic material');
+    assert.equal(localStorage.getItem(STORAGE_KEY), source);
+  } finally { globalThis.localStorage = previousStorage; }
+});
+
+test('a pending login check never opens another auth flow or dispatches model work', () => {
+  const previousStorage = globalThis.localStorage;
+  globalThis.localStorage = window.localStorage;
+  let loginRequests = 0;
+  try {
+    render(<FigureStudioEditor auth={{ isPending: true }} currentUser={null} authGeneration={0} onSignIn={() => loginRequests++} />);
+    fireEvent.change(screen.getByLabelText('研究材料与制图目标'), { target: { value: 'Synthetic content' } });
+    fireEvent.click(screen.getByRole('button', { name: '生成结构方案' }));
+    assert.equal(loginRequests, 0);
+    assert.ok(screen.getAllByRole('status').some((node) => /正在检查登录状态/.test(node.textContent)));
+    fireEvent.click(screen.getByRole('button', { name: '添加矩形' }));
+    assert.match(screen.getByRole('region', { name: '图稿画布' }).textContent, /1 个独立对象/);
+  } finally { globalThis.localStorage = previousStorage; }
+});

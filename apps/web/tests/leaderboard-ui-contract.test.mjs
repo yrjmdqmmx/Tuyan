@@ -12,8 +12,9 @@ test('main routes leaderboard and canonicalizes legacy bench before render', () 
 })
 
 test('workspace header exposes leaderboard and mini-program without retired client links', () => {
-  const source = readSource('../src/App.jsx') + readSource('../src/components/WorkbenchHeader.jsx')
-  assert.match(source, /BENCH_ENABLED\s*&&\s*section\s*!==\s*'leaderboard'\s*&&\s*<a href=\{appPath\('\/leaderboard'\)\}[^>]*>[\s\S]*?排行榜/u)
+  const source = readSource('../src/App.jsx') + readSource('../src/components/WorkbenchHeader.jsx') + readSource('../src/components/siteNavigation.js')
+  assert.match(source, /sitePageLinks\(\{ benchmarkEnabled: BENCH_ENABLED \}\)/u)
+  assert.match(source, /id: 'leaderboard', path: '\/leaderboard', label: '排行榜'/u)
   assert.match(source, /微信小程序/u)
   assert.match(source, />\s*论文/u)
   assert.match(source, />\s*GitHub/u)
