@@ -15,7 +15,7 @@ function PrimaryPageLinks({ section = 'workbench' }) {
   </>
 }
 
-export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
+export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, languageControl, section = 'workbench' }) {
   const { t, locale } = useBenchmarkLocale()
   return (
     <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
@@ -33,6 +33,7 @@ export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgr
           <img className="wechat-mark" src={appPath('/brand/wechat-mark.svg')} width="22" height="22" alt="" aria-hidden="true" /> {t("微信小程序")}</button>
       </div>
       <div className="header-actions">
+        {languageControl && <div className="header-language-control" onClick={event => event.stopPropagation()}>{languageControl}</div>}
         <button type="button" className="header-agent-button" aria-haspopup="dialog" onClick={() => onAgentConnection()}>
           <Bot size={18} /> {t("智能体接入")}</button>
         <a className="watcha-product-badge" href="https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite" target="_blank" rel="noopener noreferrer">
