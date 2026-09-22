@@ -15,13 +15,15 @@ import { saveStudioUniversalDraft, studioModelRegistry, studioModelSelection, st
 
 export function ModelSettings({ value, onChange, capabilities, userId, authReady = false }) {
   const [open, setOpen] = useState(false);
-  const { registry, error, loading, refresh } = useModelCatalog({ apiBase: API_BASE_DEFAULT, enabled: open || Boolean(value.provider) });
+  const tokenDance = useTokenDance(API_BASE_DEFAULT, userId, authReady);
+  const { registry, error, loading, refresh } = useModelCatalog({ apiBase: API_BASE_DEFAULT,
+    enabled: authReady && (open || Boolean(value.provider)),
+    contextKey: `${authReady ? 'ready' : 'pending'}:${userId || 'anonymous'}:${Boolean(tokenDance.connection.connected)}` });
   const keyRing = useRef({});
   const presetRoute = useRef(null);
   const [customDraft, setCustomDraft] = useState(() => loadUniversalDrafts().main);
   const [customKey, setCustomKey] = useState(undefined);
   const [walletOpen, setWalletOpen] = useState(false);
-  const tokenDance = useTokenDance(API_BASE_DEFAULT, userId, authReady);
   const customMode = value.provider === 'custom';
   const customSupported = studioProviderSupported('custom', capabilities);
   const selectedRegistry = useMemo(() => studioModelRegistry(registry, capabilities, value.providerRegions), [registry, capabilities, value.providerRegions]);

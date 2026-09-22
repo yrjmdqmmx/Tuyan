@@ -2,6 +2,7 @@ import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
 import useFigureOperations from './useFigureOperations.js';
+import OperationPanel from './OperationPanel.jsx';
 import { documentContext, operationPending, readOperationPointers, returnedOperation, saveOperationPointers, sameDocumentContext } from './operations.js';
 import { createDocument } from '@paperbanana/figure-core';
 
@@ -12,6 +13,20 @@ afterEach(() => { cleanup(); globalThis.fetch = originalFetch; globalThis.localS
 const context = { id: 'document', revision: 4, sha256: 'a'.repeat(64) };
 const payload = () => ({ requestId: crypto.randomUUID(), documentContext: context, materials: 'Synthetic material', mainRoute: { accessProvider: 'openai', modelId: 'fixture' }, apiKeys: { openai: 'synthetic-secret' } });
 const response = (body, extra = {}) => ({ code: 0, operation: { requestId: body.requestId, kind: 'plan', status: 'succeeded', documentContext: context, providerCalls: [], result: { plan: { title: 'Synthetic', nodes: [], edges: [], notes: [] } }, ...extra } });
+
+test('call records show shared TokenDance receipts without inventing per-call success or billing', () => {
+  const row = response(payload(), { providerCalls: [
+    { channel: 'tokendance', requestedModel: 'requested-fixture', actualModel: 'actual-fixture', requestId: 'provider-call-fixture', protocol: 'openai:chat-completions' },
+    { channel: 'openai', model: 'native-fixture', status: 'unknown', billingStatus: 'unknown' },
+  ] }).operation;
+  const { container } = render(<OperationPanel rows={[row]} />);
+  assert.match(container.textContent, /结构规划 · 结果已保存/);
+  assert.match(container.textContent, /provider-call-fixture · 已保存渠道响应记录/);
+  assert.match(container.textContent, /requested-fixture → actual-fixture/);
+  assert.match(container.textContent, /调用结果待核对/);
+  assert.match(container.textContent, /费用：以渠道账单核对/);
+  assert.doesNotMatch(container.textContent, /状态未返回|调用完成|费用：未调用/);
+});
 
 test('operation pointers are account scoped and exclude credentials, materials and returned results', () => {
   const body = payload();

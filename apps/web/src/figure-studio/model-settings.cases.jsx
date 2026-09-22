@@ -19,7 +19,7 @@ function registryFixture() {
     anthropic: { accessKind: 'direct', models: [main('claude-id', 'Claude fixture')] },
   } };
 }
-function mockCatalog(getRegistry = () => registryFixture()) {
+function mockCatalog(getRegistry = () => registryFixture(), getConnection = () => ({ connected: false, available: true })) {
   const requests = [];
   globalThis.fetch = async (url, options = {}) => {
     const body = options.body ? JSON.parse(options.body) : null;
@@ -28,13 +28,14 @@ function mockCatalog(getRegistry = () => registryFixture()) {
       const data = await getRegistry();
       return new Response(JSON.stringify(data), { status: data.code ? 503 : 200 });
     }
+    if (body?.action === 'tokenDanceStatus') return new Response(JSON.stringify(await getConnection()));
     return new Response(JSON.stringify({ runtime: 'laf', ok: true }));
   };
   return requests;
 }
-function Harness({ initial = { provider: '', modelId: '', key: '', valid: false }, caps = capabilities, onSignIn, signedIn = false }) {
+function Harness({ initial = { provider: '', modelId: '', key: '', valid: false }, caps = capabilities, onSignIn, signedIn = false, userId, authReady = true }) {
   const [value, onChange] = useState(initial);
-  return <><ModelSettings value={value} onChange={onChange} capabilities={caps} onSignIn={onSignIn} signedIn={signedIn} /><output data-testid="selection">{JSON.stringify(value)}</output></>;
+  return <><ModelSettings value={value} onChange={onChange} capabilities={caps} onSignIn={onSignIn} signedIn={signedIn} userId={userId} authReady={authReady} /><output data-testid="selection">{JSON.stringify(value)}</output></>;
 }
 const selection = () => JSON.parse(screen.getByTestId('selection').textContent);
 async function openSettings() {
@@ -73,6 +74,47 @@ test('Figure uses the shared searchable picker and guides without auto-selecting
   assert.equal(selection().key, 'memory-only-fixture');
   assert.equal(requests.filter((request) => request.body && request.body.action !== 'modelRegistry').length, 0);
   assert.doesNotMatch(JSON.stringify(requests), /memory-only-fixture/);
+});
+
+test('opening the picker before its first catalog arrives populates browsing without selecting a model', async () => {
+  let resolveCatalog;
+  const deferred = new Promise(resolve => { resolveCatalog = resolve; });
+  const requests = mockCatalog(() => deferred);
+  render(<Harness caps={{ ...capabilities, supportedProviders: ['openai'] }} />);
+  fireEvent.click(screen.getByRole('button', { name: '规划与编辑模型设置' }));
+  fireEvent.click(screen.getByRole('button', { name: '主模型' }));
+  await waitFor(() => assert.equal(requests.filter(request => request.body?.action === 'modelRegistry').length, 1));
+  await act(async () => { resolveCatalog(registryFixture()); await deferred; });
+  assert.ok(await screen.findByRole('button', { name: '选择 Latest fixture' }));
+  assert.equal(screen.getByRole('button', { name: 'OpenAI', exact: true }).getAttribute('aria-pressed'), 'true');
+  assert.deepEqual(selection(), { provider: '', modelId: '', key: '', valid: false });
+});
+
+test('catalog waits for session readiness and refreshes after the TokenDance connection becomes ready', async () => {
+  let resolveConnection, resolveOldCatalog;
+  const connection = new Promise(resolve => { resolveConnection = resolve; });
+  const oldCatalog = new Promise(resolve => { resolveOldCatalog = resolve; });
+  let connected = false;
+  const requests = mockCatalog(() => connected ? registryFixture() : oldCatalog, () => connection);
+  const props = { userId: 'synthetic-user', initial: { provider: 'tokendance', modelId: 'td-id', key: '', valid: false }, caps: { ...capabilities, supportedModelModes: ['api-key', 'tokendance'], supportedProviders: ['tokendance'], unsupportedProviders: [] } };
+  const view = render(<Harness {...props} authReady={false} />);
+  fireEvent.click(screen.getByRole('button', { name: '规划与编辑模型设置' }));
+  await act(async () => {});
+  assert.equal(requests.filter(request => request.body?.action === 'modelRegistry').length, 0);
+  view.rerender(<Harness {...props} authReady />);
+  await waitFor(() => assert.equal(requests.filter(request => request.body?.action === 'modelRegistry').length, 1));
+  fireEvent.click(screen.getByRole('button', { name: '主模型' }));
+  connected = true;
+  await act(async () => { resolveConnection({ connected: true, available: true }); await connection; });
+  await waitFor(() => assert.equal(requests.filter(request => request.body?.action === 'modelRegistry').length, 2));
+  assert.ok(await screen.findByRole('button', { name: '选择 TD fixture' }));
+  assert.equal(selection().provider, 'tokendance');
+  assert.equal(selection().modelId, 'td-id');
+  await waitFor(() => assert.equal(selection().valid, true));
+  const obsolete = registryFixture(); obsolete.providers.tokendance.models = [];
+  await act(async () => { resolveOldCatalog(obsolete); await oldCatalog; });
+  assert.ok(screen.getByRole('button', { name: '选择 TD fixture' }));
+  assert.equal(selection().valid, true);
 });
 
 test('catalog failure and retired model keep the exact choice and credential but fail closed', async () => {

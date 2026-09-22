@@ -3,6 +3,7 @@ import JobFailureNotice from '../components/JobFailureNotice.jsx';
 import { operationPending, routeIdentity } from './operations.js';
 
 const statusLabels = { queued: '排队中', running: '正在处理', succeeded: '结果已保存', blocked: '已暂停', unconfirmed: '结果待查询' };
+const callStatusLabels = { succeeded: '调用完成', completed: '调用完成', running: '调用中', queued: '等待调用', not_sent: '尚未发送', rejected: '渠道已拒绝', unknown: '调用结果待核对', failed: '调用失败' };
 export default function OperationPanel({ rows, onQuery, onLoad, onResume, onAcknowledge, currentRouteIdentity }) {
   const [open, setOpen] = useState(false);
   const pending = rows.filter(operationPending).length;
@@ -31,7 +32,7 @@ export default function OperationPanel({ rows, onQuery, onLoad, onResume, onAckn
           {retryLater && <p className="fs-micro">渠道要求等待至 {new Date(row.recovery.retryAt).toLocaleString('zh-CN')}，请届时查询后恢复。</p>}
           {canResume && <p className="fs-micro">仅恢复明确允许继续的原操作，保留已完成步骤。更换密钥必须使用与原操作相同的渠道、型号、地址与协议。</p>}
           {(row.status === 'unconfirmed' || row.recovery?.requestState === 'unknown') && !row.acknowledged && <details><summary>已自行核对渠道记录</summary><p className="fs-micro">结果不明时再次提交可能重复计费。只有你已核对渠道记录并决定另建操作，才解除新提交保护；此按钮不会重发旧请求。</p><button type="button" onClick={() => onAcknowledge(row)}>已核对，允许另建操作</button></details>}
-          <details><summary>模型调用记录（{row.providerCalls?.length || 0}）</summary>{row.providerCalls?.length ? <ul>{row.providerCalls.map((call, index) => <li key={index}><p>{call.channel || '渠道未返回'} · {call.requestedModel || call.model || '型号未返回'} → {call.actualModel || '实际型号未返回'}</p><p className="fs-micro">请求：{call.requestId || '未返回'} · {call.status || '状态未返回'}<br />费用：{call.billingStatus === 'not_called' ? '未调用' : '以渠道账单核对'}{call.protocol ? ` · ${call.protocol}` : ''}</p></li>)}</ul> : <p className="fs-micro">尚无服务端调用记录。记录为空不代表费用为零。</p>}</details>
+          <details><summary>模型调用记录（{row.providerCalls?.length || 0}）</summary>{row.providerCalls?.length ? <ul>{row.providerCalls.map((call, index) => <li key={index}><p>{call.channel || '渠道未返回'} · {call.requestedModel || call.model || '型号未返回'} → {call.actualModel || '实际型号未返回'}</p><p className="fs-micro">请求：{call.requestId || '未返回'} · {callStatusLabels[call.status] || call.status || '已保存渠道响应记录'}<br />费用：{call.billingStatus === 'not_called' ? '未调用' : '以渠道账单核对'}{call.protocol ? ` · ${call.protocol}` : ''}</p></li>)}</ul> : <p className="fs-micro">尚无服务端调用记录。记录为空不代表费用为零。</p>}</details>
           {row.result && <details><summary>查看保存的方案内容</summary><div className="fs-command-list"><pre>{JSON.stringify(row.result, null, 2)}</pre></div><p className="fs-micro">仅查看。载入与确认应用都要核对当前图稿的完整内容。</p></details>}
         </article>;
       })}

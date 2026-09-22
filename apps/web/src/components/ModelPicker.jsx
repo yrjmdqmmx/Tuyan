@@ -117,6 +117,12 @@ export default function ModelPicker({
     resetModelList()
   }, [models, role, outputFormat, provider])
 
+  // A picker can open before its first catalog arrives. Populate only its
+  // browsing column; an existing route or browsed channel is never replaced.
+  useEffect(() => {
+    if (open && !selectedProvider && providerIds.length) setSelectedProvider(effectiveRoute.accessProvider || providerIds[0])
+  }, [open, selectedProvider, providerIds, effectiveRoute.accessProvider])
+
   useEffect(() => {
     const mediaQuery = window.matchMedia?.(COMPACT_MEDIA_QUERY)
     if (!mediaQuery) return undefined
