@@ -25,6 +25,10 @@ test('mobile More keeps all secondary actions, closes on selection, restores foc
     assert.equal(screen.queryByRole('navigation', {name:'网站导航'}), null);
     await userEvent.click(more);
     const dialog = within(screen.getByRole('dialog', {name:'更多功能'}));
+    const primary = dialog.getByRole('navigation', {name:'网站导航'});
+    assert.deepEqual([...primary.querySelectorAll('.header-primary-link')].map(link => link.textContent.trim()), ['工作台','排行榜']);
+    assert.equal(within(primary).getByRole('link', {name:'工作台'}).getAttribute('aria-current'), 'page');
+    assert.equal(within(primary).getByRole('link', {name:'排行榜'}).getAttribute('href'), '/leaderboard');
     for (const name of ['联系作者','意见反馈','微信小程序','智能体接入','登录 / 注册']) assert.ok(dialog.getByRole('button', {name,exact:true}));
     for (const name of ['OpenAcad','GitHub','去观猹点评图研 Tuyan']) assert.ok(dialog.getByRole('link', {name,exact:true}));
     await userEvent.click(dialog.getByRole('button', {name:'智能体接入',exact:true}));

@@ -1,18 +1,25 @@
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react';
 import { BarChart3, BookOpen, Bot, LayoutDashboard, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react';
-import { AUTH_UI_ENABLED, BENCH_ENABLED, logoUrl } from '../config';
+import { AUTH_UI_ENABLED, logoUrl } from '../config';
 import { appPath } from '../appPaths';
 import AccessibleDialog from './AccessibleDialog';
 import useCompactLayout from '../hooks/useCompactLayout';
+
+function PrimaryPageLinks({ section = 'workbench' }) {
+  const { t } = useBenchmarkLocale()
+  return <>
+    <a className="header-primary-link" href={appPath('/')} aria-current={section === 'workbench' ? 'page' : undefined}><LayoutDashboard size={16} /> {t("工作台")}</a>
+    <a className="header-primary-link" href={appPath('/leaderboard')} aria-current={section === 'leaderboard' ? 'page' : undefined}><BarChart3 size={16} /> {t("排行榜")}</a>
+  </>
+}
 
 export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onNavigate, section = 'workbench' }) {
   const { t, locale } = useBenchmarkLocale()
   return (
     <nav className="header-navigation" aria-label={t("网站导航")} onClick={onNavigate}>
       <div className="header-links">
-        {section === 'leaderboard' ? <a href={appPath('/')}><LayoutDashboard size={16} /> {t("工作台")}</a>
-          : BENCH_ENABLED ? <a href={appPath('/leaderboard')}><BarChart3 size={16} /> {t("排行榜")}</a> : null}
+        <PrimaryPageLinks section={section} />
         <a href="https://openacad.xyz/" target="_blank" rel="noreferrer">OpenAcad</a>
         <button type="button" className="contact-author-button" onClick={() => onContact()}>
           <QrCode size={16} /> {t("联系作者")}</button>

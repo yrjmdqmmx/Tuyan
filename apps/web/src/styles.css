@@ -1244,6 +1244,13 @@ button {
   color: var(--ink);
 }
 
+.header-links .header-primary-link[aria-current="page"] {
+  color: #28523f;
+  background: #e7eee6;
+  border-color: #c8d8cc;
+  font-weight: 750;
+}
+
 .auth-user {
   display: inline-flex;
   align-items: center;

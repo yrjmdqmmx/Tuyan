@@ -42,7 +42,7 @@ test('benchmark header preserves nav labels, hrefs, external targets, and active
   assert.deepEqual(labels, ['排行榜', '方法说明', '提交评估题'])
   assert.equal(screen.getByText('方法说明').getAttribute('aria-current'), 'page')
   assert.equal(screen.getByRole('link', { name: '工作台' }).getAttribute('href'), '/')
-  assert.equal(screen.getByRole('link', { name: '排行榜' }).getAttribute('href'), '/leaderboard')
+  assert.equal(nav.querySelector('a').getAttribute('href'), '/leaderboard')
   assert.equal(screen.getByRole('link', { name: '提交评估题' }).getAttribute('href'), '/leaderboard/submit-prompt')
   const github = screen.getByRole('link', { name: 'GitHub' })
   assert.equal(github.getAttribute('href'), 'https://github.com/yrjmdqmmx/Tuyan')
@@ -183,7 +183,9 @@ for (const [route, active] of [[{}, '排行榜'], [{ dimensionId: 'scientific-fa
     assert.equal(nav.querySelector('[aria-current="page"]').textContent, active);
     const globalNav = screen.getByRole('navigation', { name: '网站导航' });
     assert.ok(globalNav.querySelector('a[href="/"]'));
-    assert.equal(globalNav.querySelector('a[href*="/leaderboard"]'), null);
+    assert.deepEqual([...globalNav.querySelectorAll('.header-primary-link')].map(link => link.textContent.trim()), ['工作台', '排行榜']);
+    assert.equal(globalNav.querySelector('a[href="/"]').getAttribute('aria-current'), null);
+    assert.equal(globalNav.querySelector('a[href="/leaderboard"]').getAttribute('aria-current'), 'page');
   });
 }
 
