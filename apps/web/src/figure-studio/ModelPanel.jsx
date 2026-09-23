@@ -111,7 +111,7 @@ export function ModelSettings({ value, onChange, capabilities, userId, authReady
 export function PlanPanel({ materials, setMaterials, plan, setPlan, busy, onPlan, onConfirm, limits, pending }) {
   return <div className="fs-panel-content fs-plan-panel">
     <div className="fs-section-heading"><h3>先确定图示结构</h3><span className="fs-step">01</span></div>
-    <p className="fs-muted">写清研究对象、步骤与因果关系。先核对逻辑，再生成可编辑的图稿。</p>
+    <p className="fs-muted">写清研究对象、步骤与因果关系。规划会结合当前画布尺寸和工作规则；官方基线仍独立核验。先核对逻辑，再生成可编辑的图稿。</p>
     <label className="field fs-field"><span>研究材料与制图目标</span><textarea rows={9} maxLength={limits?.materialsChars || 24000} value={materials} onChange={(event) => setMaterials(event.target.value)} placeholder="例如：展示材料 A 在不同温度下的制备流程，包含取样、处理和测试三个阶段。请保留……" /></label>
     <button className="primary-button fs-primary fs-wide" disabled={busy || pending || !materials.trim()} onClick={onPlan}>{busy ? <Loader2 size={15} className="fs-spin" /> : <Send size={15} />} {busy ? '正在梳理结构…' : '生成结构方案'}</button>
     {plan && <div className="fs-plan-review"><div className="fs-section-heading"><h3>确认方案</h3><span className="fs-step">02</span></div><p className="fs-muted">修改下面的标题与节点，再确认生成。科学含义与关系由你把关。</p>

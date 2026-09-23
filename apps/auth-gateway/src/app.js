@@ -293,7 +293,15 @@ export function createApp({
         const session = await requireSession(auth, request);
         response.set('Cache-Control', 'no-store');
         if (backend.mode !== 'node') return response.status(503).json({ code: 503, error: '图稿工作室需要 Node Core 服务。' });
-        return relay(response, await backend.call(normalizeFigureStudioBody(request.body), context, { authUserId: String(session.user.id), timeoutMs: 55_000 }));
+        const result = await backend.call(normalizeFigureStudioBody(request.body), context, { authUserId: String(session.user.id), timeoutMs: 55_000 });
+        if (action === 'figureStudioCapabilities' && result.status === 200 && result.data?.code === 0) {
+          // This acknowledgement belongs to the gateway, not the Core. The web
+          // client requires both versions so an older gateway cannot silently
+          // discard document/rules binding while relaying a newer Core's claim.
+          const { generationContextTransportVersion: _ignored, ...data } = result.data;
+          return relay(response, { ...result, data: { ...data, ...(data.generationContextVersion === 1 ? { generationContextTransportVersion: 1 } : {}) } });
+        }
+        return relay(response, result);
       }
 
       if (action === 'optimizeInputs') {
@@ -586,8 +594,8 @@ function normalizeFigureStudioBody(body) {
   return {
     action,
     ...(body.requestId !== undefined ? { requestId: body.requestId } : {}),
-    ...(body.documentContext !== undefined ? { documentContext: { id: body.documentContext?.id, revision: body.documentContext?.revision, sha256: body.documentContext?.sha256 } } : {}),
-    ...(action === 'figureStudioPlan' ? { materials: body.materials } : { document: body.document, instruction: body.instruction, objectIds: body.objectIds, baseRevision: body.baseRevision }),
+    ...(body.documentContext !== undefined ? { documentContext: { id: body.documentContext?.id, revision: body.documentContext?.revision, sha256: body.documentContext?.sha256, ...(body.documentContext?.generationContextSha256 !== undefined ? { generationContextSha256: body.documentContext.generationContextSha256 } : {}) } } : {}),
+    ...(action === 'figureStudioPlan' ? { materials: body.materials, ...(body.document !== undefined ? { document: body.document } : {}) } : { document: body.document, instruction: body.instruction, objectIds: body.objectIds, baseRevision: body.baseRevision }),
     mainRoute: { accessProvider: provider, modelId: body.mainRoute?.modelId, ...(provider === 'custom' ? { custom: body.mainRoute.custom } : {}) },
     apiKeys: typeof provider === 'string' && provider !== 'tokendance' && typeof body.apiKeys?.[provider] === 'string' ? { [provider]: body.apiKeys[provider] } : {},
     ...(body.providerRegions ? { providerRegions: { minimax: body.providerRegions.minimax } } : {}),

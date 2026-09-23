@@ -1,11 +1,12 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { createHash, randomUUID } from 'node:crypto'
 import type { Db } from 'mongodb'
+import { generationContextFromDocument } from '@paperbanana/figure-core'
 import { publicExecutionFailure } from '../../../packages/api/src/execution-errors.js'
 import { normalizeUniversalRoute, universalCredential } from '../../../packages/api/src/universal-api.js'
 import { createProviderWorkflow } from './provider-workflow.js'
 import type { createTokenDanceService } from './tokendance-service.js'
-import { FigureStudioError, figureStudioFailure, prepareFigureRequest, type createFigureStudioService } from './figure-studio.js'
+import { FigureStudioError, figureStudioFailure, type createFigureStudioService } from './figure-studio.js'
 
 type Row = Record<string, any>
 type Workflow = ReturnType<typeof createProviderWorkflow>
@@ -23,10 +24,19 @@ const requestId = (value: unknown): string => {
 }
 export function figureDocumentContext(value: unknown) {
   const c = value as Row
-  if (!c || typeof c !== 'object' || Array.isArray(c) || Object.keys(c).some(key => !['id', 'revision', 'sha256'].includes(key))
+  if (!c || typeof c !== 'object' || Array.isArray(c) || Object.keys(c).some(key => !['id', 'revision', 'sha256', 'generationContextSha256'].includes(key))
     || typeof c.id !== 'string' || !c.id || c.id.length > 120 || /[\x00-\x1f]/.test(c.id)
+    || (c.generationContextSha256 !== undefined && (typeof c.generationContextSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(c.generationContextSha256)))
     || !Number.isSafeInteger(c.revision) || c.revision < 0 || typeof c.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(c.sha256)) fail(400, 'FIGURE_STUDIO_DOCUMENT_CONTEXT', '缺少有效的图稿版本与 SHA-256，未发送模型请求。')
-  return { id: (c as Row).id, revision: (c as Row).revision, sha256: (c as Row).sha256 }
+  return { id: (c as Row).id, revision: (c as Row).revision, sha256: (c as Row).sha256, ...((c as Row).generationContextSha256 === undefined ? {} : { generationContextSha256: (c as Row).generationContextSha256 }) }
+}
+
+function assertGenerationContext(document: unknown, binding: Row) {
+  if (document === undefined) return // Legacy unconfigured plans have no journal context.
+  let actual: string
+  try { actual = sha(JSON.stringify(generationContextFromDocument(document))) }
+  catch { return fail(409, 'FIGURE_STUDIO_GENERATION_CONTEXT_CHANGED', '当前生成规则已变化或不能执行，请核对当前规则；未发送模型请求。') }
+  if (!binding.generationContextSha256 || binding.generationContextSha256 !== actual) fail(409, 'FIGURE_STUDIO_GENERATION_CONTEXT_CHANGED', '生成规则版本与原请求不一致，请核对当前规则后建立新操作；未发送模型请求。')
 }
 
 /** Reuse the existing checkpoint engine; only the figure result namespace is
@@ -90,7 +100,7 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
     if (!current) return baseWorkflow.record(info)
     await ensureCurrent()
     const record = { ...info, source: 'figure-studio', kind: current.kind, operationRequestId: current.requestId }
-    if (['tokendance', 'custom'].includes(current.provider)) return workflow.record(record)
+    if (workflow.active()) return workflow.record(record)
     await operations.updateOne({ _id: current.id, userId: current.userId, status: 'running' }, { $push: { providerCalls: record } } as any)
   }
   const currentWorkflow = () => context.getStore() ? workflow : baseWorkflow
@@ -117,9 +127,9 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
       const current = context.getStore()
       if (!current) return baseWorkflow.call(descriptor, operation, role)
       await ensureCurrent()
-      if (['tokendance', 'custom'].includes(current.provider)) return workflow.call(descriptor, async () => { await ensureCurrent(); return operation() }, role)
-      // Native adapters do not enter the managed-provider engine. Their entire
-      // single-call operation is claimed durably below and never auto-resumed.
+      if (workflow.active()) return workflow.call(descriptor, async () => { await ensureCurrent(); return operation() }, role)
+      // Adapters outside the shared managed-provider engine use the durable
+      // whole-operation claim below and are never automatically resumed.
       try {
         await ensureCurrent()
         const output = await operation()
@@ -151,7 +161,7 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
       if (!row) fail(404, 'FIGURE_STUDIO_OPERATION_NOT_FOUND', '操作记录已清理。')
       if (row.status === 'failed' || ['running', 'queued'].includes(row.status) && (row.leaseUntil?.getTime() || 0) <= now()) {
         const engine = await executions.findOne({ _id: id, userId })
-        if (row.result && (!['tokendance', 'custom'].includes(row.mainRoute.accessProvider) || engine?.state === 'complete')) {
+        if (row.result && (!engine || engine.state === 'complete')) {
           // The validated result was committed before a process interruption
           // between result storage and the final public status transition.
           service.cipher!.open(row.result, id + ':result')
@@ -189,6 +199,7 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
     heartbeat.unref()
     try {
       await ensureOwner(row)
+      assertGenerationContext(task.body.document, row.documentContext)
       await context.run({ id: row._id, owner, userId: row.userId, kind: row.kind, requestId: row.requestId, provider: row.mainRoute.accessProvider, model: row.mainRoute.modelId }, async () => {
         await workflow.run(task as any, async () => {
           await ensureOwner(row)
@@ -223,8 +234,9 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
     const userId = body.userId, accountGeneration = await generation(userId)
     if (!service.cipher) fail(503, 'FIGURE_STUDIO_STORAGE_UNAVAILABLE', '安全恢复存储尚未配置，未发送模型请求。')
     const externalId = requestId(body.requestId), documentContext = figureDocumentContext(body.documentContext)
-    const prepared = prepareFigureRequest(body)
-    if (prepared.document && (documentContext.id !== prepared.document.id || documentContext.revision !== prepared.document.revision || documentContext.sha256 !== sha(JSON.stringify(body.document)))) fail(409, 'FIGURE_STUDIO_DOCUMENT_CONTEXT', '编辑请求与图稿版本或 SHA-256 不一致，未发送模型请求。')
+    const prepared = studio.prepare(body)
+    if (prepared.document && (documentContext.id !== prepared.document.id || documentContext.revision !== prepared.document.revision || documentContext.sha256 !== sha(JSON.stringify(body.document)))) fail(409, 'FIGURE_STUDIO_DOCUMENT_CONTEXT', '模型请求与图稿版本或 SHA-256 不一致，未发送模型请求。')
+    assertGenerationContext(prepared.document, documentContext)
     const { apiKeys, ...safeBody } = prepared
     const requestHash = sha(JSON.stringify(stable({ ...safeBody, documentContext })))
     const id = identity(userId, externalId)
@@ -268,6 +280,7 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
     }
     const admission = await reserve(body.userId)
     try { await workflow.resume(id, body.userId, async task => {
+      assertGenerationContext(task.body.document, current.operation.documentContext)
       const changed = await operations.updateOne({ _id: id, userId: body.userId, version: VERSION, status: 'blocked', 'recovery.canResume': true }, { $set: { status: 'queued', admission, leaseUntil: new Date(now() + 60_000), updatedAt: new Date(now()) }, $unset: { failure: '', recovery: '' } })
       if (!changed.modifiedCount) fail(409, 'FIGURE_STUDIO_NOT_RESUMABLE', '原操作正在恢复或不再可恢复。')
       enqueue(task)

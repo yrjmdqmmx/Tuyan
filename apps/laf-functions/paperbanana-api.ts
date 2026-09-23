@@ -6712,6 +6712,14 @@ async function optimizeInputs(body: OptimizeInputsBody) {
   return { code: 0, target, optimizedText: candidate }
 }
 
+// Read-only projection of the same complete catalog used by the workbench.
+// Dynamic/bound routes still pass their existing per-model runtime validation.
+export function figureStudioTextProviders(): string[] {
+  return [...new Set(['openrouter', ...Object.entries(staticModelRegistry)
+    .filter(([, registry]) => publicProviderModelRegistry(registry).models.some(model => model.selectable === true && model.roles.includes('main')))
+    .map(([provider]) => provider), 'custom'])]
+}
+
 // Called only by the authenticated Node Figure Studio operation service. The
 // Node layer supplies account-authoritative TokenDance credentials and scopes
 // the existing workflow hooks; no fallback or provider retry is permitted.

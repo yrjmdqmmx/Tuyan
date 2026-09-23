@@ -378,6 +378,43 @@ test('Figure operation transport preserves immutable identity and custom binding
   });
 });
 
+test('Figure HTTP transport preserves the source document and generation binding for both plan and edit', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com', 'x-paperbanana-auth-user-id': 'forged-user' };
+    const document = { id: 'source', revision: 4, canvas: { widthMm: 183, heightMm: 110 }, elements: [], rules: { profileId: 'nature-main-final-v1' } };
+    const documentContext = { id: document.id, revision: document.revision, sha256: 'a'.repeat(64), generationContextSha256: 'b'.repeat(64) };
+    for (const action of ['figureStudioPlan', 'figureStudioEdit']) {
+      const operationInput = action === 'figureStudioPlan' ? { materials: 'Three linked research stages' } : { instruction: 'Update the selected label', objectIds: ['label-1'], baseRevision: 4 };
+      const requestId = `figure-${action}-0001`;
+      const response = await post(baseUrl, {
+        action, requestId, document, documentContext: { ...documentContext, forgedRuleVersion: 1 }, ...operationInput,
+        mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash', baseUrl: 'https://unsafe.invalid' },
+        apiKeys: { tokendance: 'forged-managed-key', openai: 'unused-key' }, userId: 'forged-user', gatewayToken: 'forged-token',
+        generationContext: { officialBaseline: { rules: [] } }, arbitrarySvg: '<svg/>',
+      }, headers);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      const forwarded = backend.calls.at(-1);
+      assert.deepEqual(forwarded.body, { action, requestId, document, documentContext, ...operationInput, mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' }, apiKeys: {} });
+      assert.deepEqual(forwarded.options, { authUserId: 'actual-user', timeoutMs: 55_000 });
+    }
+  });
+});
+
+test('Figure capabilities acknowledge the gateway generation transport only for the supported Core version', async () => {
+  for (const generationContextVersion of [undefined, 1, 2]) {
+    const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, generationContextVersion, generationContextTransportVersion: 999, modelPlanning: true } }));
+    await withApp({ backend }, async ({ baseUrl }) => {
+      const response = await post(baseUrl, { action: 'figureStudioCapabilities', generationContextTransportVersion: 999, document: { forged: true } }, { 'x-test-session': 'actual-user|user@example.com' });
+      const data = await response.json();
+      assert.equal(data.generationContextTransportVersion, generationContextVersion === 1 ? 1 : undefined);
+      assert.equal(data.generationContextVersion, generationContextVersion);
+      assert.deepEqual(backend.calls[0].body, { action: 'figureStudioCapabilities' });
+    });
+  }
+});
+
 test('Figure Studio maintenance, untrusted origin and pending deletion stop model/export dispatch', async () => {
   const backend = fakeBackend();
   await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {

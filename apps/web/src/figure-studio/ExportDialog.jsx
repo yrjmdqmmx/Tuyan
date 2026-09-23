@@ -8,7 +8,7 @@ import { svgVerification, validateReturnedReport } from './exportReport.js';
 import { figureAuthAccess } from './authAccess.js';
 
 const STATUS_LABELS = { passed: '通过', manual: '待人工确认', unverified: '未核验', problem: '发现问题' };
-const CHECK_LABELS = { 'file-identity': '实际文件身份与格式', 'external-editor-compatibility': '外部编辑软件兼容性', 'exported-file-journal-rules': '最终文件期刊要求', 'font-portability': '字体可移植性' };
+const CHECK_LABELS = { 'file-identity': '实际文件身份与格式', 'file-page-size': '实际文件页面尺寸', 'file-text-properties': '实际文字属性', 'svg-structure': 'SVG 结构', 'svg-independent-objects': 'SVG 独立对象', 'export-page-size': '实际页面与边界', 'export-text-operators': '实际文字绘制指令', 'export-font-embedding': '实际字体嵌入', 'export-visual-and-editing-review': '外观与编辑检查', 'external-editor-compatibility': '外部编辑软件兼容性', 'exported-file-journal-rules': '最终文件期刊要求', 'font-portability': '字体可移植性' };
 
 export default function ExportDialog({ open, onClose, document, capabilities, saveSource, auth, currentUser, onSignIn }) {
   const [busy, setBusy] = useState('');
@@ -71,7 +71,7 @@ export default function ExportDialog({ open, onClose, document, capabilities, sa
     <div className="fs-export-body"><div className="fs-note">{baselineWarnings ? `官方基线有 ${baselineWarnings} 项需留意。` : '自动检查未发现需调整的技术项。'}科学内容、AI 使用政策与外部软件兼容性仍需人工核验。</div>
       <div className="fs-export-row"><div><strong>图研源稿</strong><p>完整对象、图片与工作规则，可重新打开继续编辑。</p></div><button onClick={saveSource}><Download size={15} />源稿</button></div>
       <div className="fs-export-row"><div><strong>SVG</strong><p>本机导出矢量对象与文本，嵌入的图片仍为位图。</p></div><button disabled={!!busy} onClick={() => exportFile('svg')}><Download size={15} />SVG</button></div>
-      {['pdf', 'eps'].map((format) => <div className="fs-export-row" key={format}><div><strong>{format.toUpperCase()} · 需人工核验</strong><p>{authAccess.state === 'authenticated' && capabilities?.formats?.[format] === true ? (capabilities.formatReasons?.[format] || '服务端转换；目标软件的编辑保真仍需核验。') : unavailableReason(format)}</p><p>{format === 'pdf' ? '文字对象与分组的处理随编辑软件而异，请核对标签选择和编辑后保存重开的效果。' : '请核对科学符号、文字内容与对象选择。Inkscape 另存 EPS 后可能重新合并文字对象；EPS 不支持透明图片。'}</p></div><button disabled={serverExportDisabled(format)} onClick={() => exportFile(format)}>{busy === format ? <Loader2 size={15} className="fs-spin" /> : <Download size={15} />}{format.toUpperCase()}</button></div>)}
+      {['pdf', 'eps'].map((format) => <div className="fs-export-row" key={format}><div><strong>{format.toUpperCase()} · 需人工核验</strong><p>{authAccess.state === 'authenticated' && capabilities?.formats?.[format] === true ? (capabilities.formatReasons?.[format] || '服务端转换；目标软件的编辑保真仍需核验。') : unavailableReason(format)}</p><p>{format === 'pdf' ? '文字对象与分组的处理随编辑软件而异，请核对标签选择和编辑后保存重开的效果。' : 'Inkscape 1.4.4 另存 EPS 后已观察到文字合并与希腊字母丢失。请逐项核对科学符号、文字和对象；继续编辑优先使用 SVG。EPS 不支持透明图片。'}</p></div><button disabled={serverExportDisabled(format)} onClick={() => exportFile(format)}>{busy === format ? <Loader2 size={15} className="fs-spin" /> : <Download size={15} />}{format.toUpperCase()}</button></div>)}
       <p className="fs-micro">PDF / EPS 请求含嵌入图片，上限 768 KiB。下载源稿与 SVG 在本机完成。外部编辑软件需安装导出文件所用字体；缺失字体可能改变外观。</p>
       <p className="fs-micro">继续编辑优先使用图研源稿或 SVG。Inkscape 将 PDF 另存为 PDF 时，可能取整页面尺寸并缩放内容，请重新核对毫米尺寸与字号。外部软件修改后的 SVG、PDF、EPS 暂不能回导为图研源稿。</p>
       {message && <p role="status" className="fs-success">{message}</p>}{error && <p role="alert" className="fs-error">{error}</p>}

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { createHash, randomBytes } from 'node:crypto'
 import test from 'node:test'
-import { createDocument } from '@paperbanana/figure-core'
+import { createDocument, generationContextFromDocument } from '@paperbanana/figure-core'
 import { memoryDb } from '../../../test-support/memory-db.mjs'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 import { createFigureOperations } from '../src/figure-operations.js'
@@ -16,7 +16,7 @@ const plan = { title: '研究流程', summary: '材料中的两个阶段。', no
 const native = { accessProvider: 'openai', modelId: 'gpt-5.6-sol' }
 const custom = () => normalizeUniversalRoute({ accessProvider: 'custom', modelId: 'exact/Model:KeepCase', custom: { version: 1, connectionId: 'figure-main', protocol: 'openai-chat', baseUrl: 'https://figure.example.com/v1', auth: 'bearer', capabilities: { text: true, vision: false, imageGeneration: false, imageEditing: false }, inputLimits: { maxCount: 2, maxBytes: 5e6, maxTotalBytes: 10e6, maxDimension: 4096, maxPixels: 16e6, requestMaxBytes: 32e6, mimeTypes: ['image/png'] }, outputLimits: { maxBytes: 10e6, maxDimension: 4096, maxPixels: 16e6, mimeTypes: ['image/png'] } } })
 const envelope = (route = custom(), key = 'fixture-custom-key') => JSON.stringify({ [route.custom.connectionId]: { baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey: key } })
-const context = (document = createDocument({ id: 'fixture-source' })) => ({ id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex') })
+const context = (document = createDocument({ id: 'fixture-source' })) => ({ id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex'), generationContextSha256: createHash('sha256').update(JSON.stringify(generationContextFromDocument(document))).digest('hex') })
 const body = (extra: Record<string, any> = {}) => ({ action: 'figureStudioPlan', requestId: 'fixture-request-00001', documentContext: context(), userId: 'figure-user', materials: '输入然后分析。', mainRoute: native, apiKeys: { openai: 'fixture-native-key' }, ...extra })
 const tick = () => new Promise(resolve => setImmediate(resolve))
 async function fixture() {
@@ -24,7 +24,7 @@ async function fixture() {
   const calls: any[] = []
   let behavior: (b: any) => Promise<string> = async () => JSON.stringify(plan), now = Date.now()
   let ops: ReturnType<typeof createFigureOperations>
-  const studio = createFigureStudioService({ modelText: async (b, system, input) => ops.hooks.call(['text', b.mainRoute, system, input], async () => {
+  const studio = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async (b, system, input) => ops.hooks.call(['text', b.mainRoute, system, input], async () => {
     const key = b.mainRoute.accessProvider === 'tokendance' ? await ops.hooks.key(b.apiKeys.tokendance) : b.apiKeys[b.mainRoute.accessProvider]
     calls.push({ userId: b.userId, key, mainRoute: b.mainRoute })
     const result = await behavior(b)
@@ -162,7 +162,7 @@ test('real legacy custom adapter uses the same workflow and binding, keeps preci
       if (failure) throw new UniversalApiError('UPSTREAM_REJECTED', 'rejected', 402)
       return { status: 200, headers: new Headers(), bytes: Buffer.from(JSON.stringify({ choices: [{ finish_reason: 'stop', message: { content: JSON.stringify(plan) } }] })) }
     } } }))
-    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ modelText: runtime.legacy.figureStudioTextModel }) })
+    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ supportedProviders: runtime.legacy.figureStudioTextProviders(), modelText: runtime.legacy.figureStudioTextModel }) })
     runtime.legacy.configureProviderWorkflow(ops.hooks)
     const request = body({ mainRoute: custom(), apiKeys: { custom: envelope() } })
     assert.equal((await ops.handle(request)).code, 0); await ops.drain()
@@ -192,7 +192,7 @@ test('real legacy TokenDance adapter preserves provider request ID, authoritativ
     })
     const userId = 'figure-td-owner'
     await runtime.db.collection('paperbanana_tokendance_connections').insertOne({ _id: userId, version: 'fixture', secret: runtime.tokenDanceService.cipher.seal({ key: 'account-authority-key' }, userId) })
-    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ modelText: runtime.legacy.figureStudioTextModel }) })
+    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ supportedProviders: runtime.legacy.figureStudioTextProviders(), modelText: runtime.legacy.figureStudioTextModel }) })
     runtime.legacy.configureProviderWorkflow(ops.hooks)
     const request = body({ userId, mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' }, apiKeys: { tokendance: 'forged-key' } })
     await ops.handle(request); await ops.drain()
@@ -226,7 +226,7 @@ test('account generation is rechecked at paid-call/key boundaries after async pr
     const gate = new Promise<void>(resolve => { release = resolve }), started = new Promise<void>(resolve => { entered = resolve })
     if (provider === 'tokendance') await db.collection('paperbanana_tokendance_connections').insertOne({ _id: userId, version: 'fixture', secret: service.cipher!.seal({ key: 'old-key' }, userId) })
     let ops: ReturnType<typeof createFigureOperations>
-    const studio = createFigureStudioService({ modelText: async b => {
+    const studio = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async b => {
       entered(); await gate
       if (provider === 'tokendance') { await ops.hooks.key(b.apiKeys.tokendance); keys++ }
       return ops.hooks.call(['paid-model'], async () => { calls++; return JSON.stringify(plan) })
@@ -261,7 +261,7 @@ test('same-account admission is atomic across instances while other accounts hav
   const releases: Array<(value: string) => void> = []; let calls = 0
   const instances = Array.from({ length: 3 }, () => {
     let ops: ReturnType<typeof createFigureOperations>
-    const studio = createFigureStudioService({ modelText: async () => ops.hooks.call(['paid-model'], async () => { calls++; return new Promise(resolve => releases.push(resolve)) }) })
+    const studio = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => ops.hooks.call(['paid-model'], async () => { calls++; return new Promise(resolve => releases.push(resolve)) }) })
     ops = createFigureOperations({ db, service, baseWorkflow, studio }); return ops
   })
   const results = await Promise.all(instances.map((ops, i) => ops.handle(body({ requestId: 'atomic-request-' + i.toString().padStart(4, '0') }))))
@@ -310,7 +310,7 @@ test('TokenDance async live catalog cannot dispatch after account generation cha
     })
     const userId = 'catalog-generation-owner'
     await runtime.db.collection('paperbanana_tokendance_connections').insertOne({ _id: userId, version: 'fixture', secret: runtime.tokenDanceService.cipher.seal({ key: 'account-key' }, userId) })
-    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ modelText: runtime.legacy.figureStudioTextModel }) })
+    const ops = createFigureOperations({ db: runtime.db, service: runtime.tokenDanceService, baseWorkflow: runtime.workflow, studio: createFigureStudioService({ supportedProviders: runtime.legacy.figureStudioTextProviders(), modelText: runtime.legacy.figureStudioTextModel }) })
     runtime.legacy.configureProviderWorkflow(ops.hooks)
     await ops.handle(body({ userId, mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' } })); await started
     await runtime.db.collection('paperbanana_account_deletions').insertOne({ _id: 'user:' + userId, contractVersion: 3, status: 'active', accountGeneration: 'changed' })
@@ -324,7 +324,7 @@ test('expired or reassigned admission is fenced at dispatch even while the old o
     let release!: () => void, entered!: () => void, calls = 0
     const gate = new Promise<void>(resolve => { release = resolve }), started = new Promise<void>(resolve => { entered = resolve })
     let ops: ReturnType<typeof createFigureOperations>
-    const studio = createFigureStudioService({ modelText: async () => { entered(); await gate; return ops.hooks.call(['paid-model'], async () => { calls++; return JSON.stringify(plan) }) } })
+    const studio = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => { entered(); await gate; return ops.hooks.call(['paid-model'], async () => { calls++; return JSON.stringify(plan) }) } })
     ops = createFigureOperations({ db, service, baseWorkflow, studio })
     await ops.handle(body()); await started
     const admission = db.collection('paperbanana_figure_admissions').rows[0]
@@ -335,4 +335,49 @@ test('expired or reassigned admission is fenced at dispatch even while the old o
     assert.equal(failed.operation.status, 'blocked'); assert.equal(failed.operation.failure.requestState, 'not_sent')
     if (mode === 'reassigned') assert.equal(db.collection('paperbanana_figure_admissions').rows[0].owner, 'replacement-owner')
   }
+})
+
+test('new planning source and its rules are hash-bound before admission, and changing rules cannot replay an old request', async () => {
+  const f = await fixture()
+  const document = createDocument({ id: 'bound-plan-source', ruleOverrides: { 'text-size': { value: { min: 8, max: 9 } } } })
+  const request = body({ document, documentContext: context(document) })
+  for (const documentContext of [{ ...context(document), id: 'other' }, { ...context(document), revision: 1 }, { ...context(document), sha256: 'a'.repeat(64) }, { ...context(document), generationContextSha256: undefined }, { ...context(document), generationContextSha256: 'b'.repeat(64) }]) {
+    const failed = await f.ops.handle({ ...request, documentContext })
+    assert.equal(failed.code, 409); assert.equal(failed.requestState, 'not_sent')
+  }
+  assert.equal(f.calls.length, 0); assert.equal(f.db.collection('paperbanana_figure_operations').rows.length, 0)
+  assert.equal((await f.ops.handle(request)).code, 0)
+  assert.equal((await f.done(request)).operation.status, 'succeeded')
+  const changed = createDocument({ ...document, ruleOverrides: { 'text-size': { value: { min: 9, max: 10 } } } })
+  assert.equal((await f.ops.handle({ ...request, document: changed, documentContext: context(changed) })).code, 409)
+  assert.equal(f.calls.length, 1)
+})
+
+
+test('rules evidence drift or a legacy missing generation hash cannot resume a stored document operation', async () => {
+  for (const oldHash of [undefined, 'b'.repeat(64)]) {
+    const f = await fixture(), document = createDocument({ id: 'resume-rules-source' })
+    const request = body({ document, documentContext: context(document), mainRoute: custom(), apiKeys: { custom: envelope() } })
+    f.setBehavior(async () => { throw new UniversalApiError('UPSTREAM_REJECTED', 'rejected', 402) })
+    await f.ops.handle(request)
+    const blocked = await f.done(request)
+    assert.equal(blocked.operation.recovery.canResume, true)
+    const collection = f.db.collection('paperbanana_figure_operations')
+    await collection.updateOne({ requestId: request.requestId }, { $set: { documentContext: { ...context(document), generationContextSha256: oldHash } } })
+    assert.equal((await f.get(request)).operation.status, 'blocked')
+    const resumed = await f.ops.handle({ action: 'figureStudioResume', requestId: request.requestId, userId: request.userId })
+    assert.equal(resumed.code, 409); assert.equal(resumed.errorCode, 'FIGURE_STUDIO_GENERATION_CONTEXT_CHANGED'); assert.equal(resumed.requestState, 'not_sent')
+    await f.ops.drain(); assert.equal(f.calls.length, 1)
+    assert.equal((await f.get(request)).operation.status, 'blocked')
+  }
+})
+
+test('legacy completed document results stay queryable after the generation hash field is absent', async () => {
+  const f = await fixture(), document = createDocument({ id: 'read-legacy-source' })
+  const request = body({ document, documentContext: context(document) })
+  await f.ops.handle(request); await f.done(request)
+  const { generationContextSha256: _removed, ...legacyBinding } = context(document)
+  await f.db.collection('paperbanana_figure_operations').updateOne({ requestId: request.requestId }, { $set: { documentContext: legacyBinding } })
+  assert.deepEqual((await f.get(request)).operation.result, { plan })
+  assert.equal(f.calls.length, 1)
 })

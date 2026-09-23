@@ -135,7 +135,7 @@ legacy.configureUniversalRuntime(createUniversalRuntime({ transport: {
 legacy.configureJobAdmission({ maxActive: 1, maxPending: 3, maxPerOwner: 3, maxPerIp: 3 });
 const td = createTokenDanceService({ db, fetcher: realFetch, secret: secrets.encryption, callbackUrl: webBase + '/' });
 const workflow = createProviderWorkflow({ db, service: td });
-const figureOperations = createFigureOperations({db,service:td,studio:createFigureStudioService({modelText:legacy.figureStudioTextModel}),baseWorkflow:workflow});
+const figureOperations = createFigureOperations({db,service:td,studio:createFigureStudioService({modelText:legacy.figureStudioTextModel,supportedProviders:legacy.figureStudioTextProviders()}),baseWorkflow:workflow});
 legacy.configureProviderWorkflow(figureOperations.hooks);
 legacy.configureAccountDeletionDataCleanup(async id => { await td.eraseUserData(id); await workflow.remove(id); await figureOperations.remove(id); });
 await td.ensureIndexes(); await workflow.ensureIndexes();

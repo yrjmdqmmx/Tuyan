@@ -13,7 +13,10 @@ import useFigureOperations from './useFigureOperations.js';
 import OperationPanel from './OperationPanel.jsx';
 import { documentContext, operationPending, routeIdentity, sameDocumentContext } from './operations.js';
 import { studioModelContext } from './modelSettings.js';
-import { downloadBlob, filename, historyReducer, initialHistory, makeElement, MAX_SOURCE_BYTES, parseSource, STORAGE_KEY } from './state.js';
+import { downloadBlob, filename, historyReducer, makeElement, MAX_SOURCE_BYTES, parseSource } from './state.js';
+import { readLocalDraft } from './localDraft.js';
+import useLocalDraftSave from './useLocalDraftSave.js';
+import LocalSaveNotice from './LocalSaveNotice.jsx';
 import { validateSourceAssets } from './sourceAssets.js';
 import { selectedEditScope } from './editScope.js';
 import { figureAuthAccess } from './authAccess.js';
@@ -59,8 +62,10 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
     authIdentityRef.current = authIdentity;
     return () => { authIdentityRef.current = null; };
   }, [authIdentity]);
-  const [history, dispatch] = useReducer(historyReducer, undefined, () => initialHistory());
+  const [localDraft] = useState(readLocalDraft);
+  const [history, dispatch] = useReducer(historyReducer, localDraft.history);
   const { document: doc } = history;
+  const localSave = useLocalDraftSave(doc, localDraft);
   const documentRef = useRef(doc); documentRef.current = doc;
   const documentSession = useRef(0);
   const readOnly = useReadOnlyViewport();
@@ -119,7 +124,7 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
   const [serviceError, setServiceError] = useState('');
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
-  const [saveStatus, setSaveStatus] = useState('尚未保存');
+  const saveStatus = localSave.message;
   const [exportOpen, setExportOpen] = useState(false);
   const [mobileRules, setMobileRules] = useState(false);
   const sourceInput = useRef(null);
@@ -144,10 +149,8 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
     return () => controller.abort();
   }, [auth.isPending, authIdentity, currentUser?.id]);
   useEffect(() => {
-    if (history.recoveryError) { setError(history.recoveryError); return; }
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(doc)); setSaveStatus('已保存在此浏览器'); }
-    catch { setSaveStatus('本机保存失败，请下载源稿'); }
-  }, [doc, history.recoveryError]);
+    if (history.recoveryError) setError(history.recoveryError);
+  }, [history.recoveryError]);
   useEffect(() => { if (selectedId && !selected) setSelectedId(null); }, [selectedId, selected]);
 
   function commands(items, baseRevision = documentRef.current.revision) {
@@ -222,9 +225,13 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
       if (commands([{ type: 'asset', id: assetId, asset }, { type: 'add', element }])) select(element.id);
     } catch (error) { setError(error.message); }
   }
+  function requireModelService() {
+    if (!capabilities?.modelPlanning || capabilities.operationContractVersion !== 1) throw new Error('论文画布模型操作恢复服务尚不可用，请稍后重试。');
+    if (capabilities.generationContextVersion !== 1 || capabilities.generationContextTransportVersion !== 1) throw new Error('当前服务链路尚未支持期刊规则与图稿版本关联规划，请刷新或稍后重试。本机编辑与导出不受影响。');
+  }
   function context() {
     if (authIdentityRef.current !== authIdentity || !currentUser?.id || auth.isPending) throw new Error('请先登录图研，再使用模型规划或语言编辑。');
-    if (!capabilities?.modelPlanning || capabilities.operationContractVersion !== 1) throw new Error('论文画布模型操作恢复服务尚不可用，请稍后重试。');
+    requireModelService();
     return studioModelContext(safeModel, capabilities);
   }
   function requireModelSession() {
@@ -236,11 +243,12 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
     const snapshot = documentRef.current;
     const actual = await documentContext(snapshot);
     if (authIdentityRef.current !== authIdentity || session !== documentSession.current || snapshot !== documentRef.current
-      || !sameDocumentContext(actual, expected)) throw new Error('当前图稿与原操作的完整内容或版本不同，方案未载入或应用。原结果仍可在操作记录中查看。');
+      || !sameDocumentContext(actual, expected)) throw new Error('当前图稿与原操作的完整内容、版本或生成规则不同，方案未载入或应用。原结果仍可在操作记录中查看。');
     return snapshot;
   }
   async function loadOperation(operation) {
     try {
+      if (operation.bindingMismatch) throw new Error('原操作的图稿或生成规则绑定不一致，仅可查看记录，不能载入或应用。');
       if (operation.status !== 'succeeded') return;
       const session = documentSession.current;
       const snapshot = await currentBinding(operation.documentContext, session);
@@ -267,7 +275,8 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
       const binding = await documentContext(snapshot);
       if (authIdentityRef.current !== authIdentity || documentRef.current !== snapshot || documentSession.current !== session) throw new Error('准备请求期间图稿或账号已更改，未发送模型请求。');
       const payload = { requestId: crypto.randomUUID(), documentContext: binding, ...modelContext,
-        ...(kind === 'plan' ? { materials } : { document: snapshot, instruction, objectIds: scope.objectIds, baseRevision: snapshot.revision }) };
+        document: snapshot,
+        ...(kind === 'plan' ? { materials } : { instruction, objectIds: scope.objectIds, baseRevision: snapshot.revision }) };
       const operation = await operations.start(kind, payload, routeIdentity(modelContext));
       if (authIdentityRef.current !== authIdentity) return;
       if (operation?.status === 'succeeded') await loadOperation(operation);
@@ -291,6 +300,8 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
   }
   async function resume(row, replaceKey) {
     try {
+      if (row.bindingMismatch) throw new Error('原操作的图稿或生成规则绑定不一致，不能恢复；请先核对原操作记录。');
+      requireModelService();
       let keys;
       if (replaceKey) {
         const modelContext = context();
@@ -307,6 +318,7 @@ export function FigureStudioEditor({ auth, currentUser, authGeneration, onSignIn
     <div className="fs-document-bar"><div className="fs-document-name"><input aria-label="图稿标题" readOnly={readOnly} key={`${doc.id}-${doc.title}`} defaultValue={doc.title} onBlur={(event) => { if (event.target.value.trim() && event.target.value !== doc.title) commands([{ type: 'title', title: event.target.value.trim() }]); }} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); }} /><span className={saveStatus.includes('失败') ? 'fs-error' : ''}>{saveStatus}</span></div><div className="fs-document-actions"><button ref={expandButton} aria-label={expanded ? '还原编辑区' : '展开编辑区'} aria-pressed={expanded} title={expanded ? '还原编辑区（Esc）' : '展开编辑区，集中查看图稿'} onClick={toggleExpanded}>{expanded ? <Minimize2 size={17} /> : <Maximize2 size={17} />}<span>{expanded ? '还原编辑区' : '展开编辑区'}</span></button>{!readOnly && <><button aria-label="撤销" title="撤销 ⌘Z" disabled={!history.past.length} onClick={() => dispatch({ type: 'undo' })}><Undo2 size={17} /></button><button aria-label="重做" title="重做 ⇧⌘Z" disabled={!history.future.length} onClick={() => dispatch({ type: 'redo' })}><Redo2 size={17} /></button><span className="fs-separator" /></>}<button onClick={() => sourceInput.current.click()}><FolderOpen size={16} /><span>打开源稿</span></button><button className="fs-source-save" onClick={saveSource}><Save size={16} /><span>保存源稿</span></button><button className="primary-button fs-primary" onClick={() => setExportOpen(true)}><Download size={16} />导出</button></div></div>
     <input className="fs-file-input" type="file" ref={sourceInput} accept=".json,.tuyan.json,application/json" onChange={importSource} />
     <input className="fs-file-input" type="file" ref={imageInput} accept="image/png,image/jpeg,image/webp" onChange={uploadImage} />
+    <LocalSaveNotice save={localSave} onSaveSource={saveSource} onOpenStored={(document) => openDocument(document, '已载入本机存档。当前页的原图稿可从刚下载的源稿恢复。')} />
     {(error || notice) && <div className={`fs-banner ${error ? 'is-error' : ''}`} role={error ? 'alert' : 'status'}><span>{error || notice}</span><button aria-label="关闭提示" onClick={() => { setError(''); setNotice(''); }}><X size={14} /></button></div>}
     {readOnly && <div className="fs-mobile-notice">手机支持查看与导出。对象编辑请在宽屏电脑上进行。<button onClick={() => setMobileRules(!mobileRules)}>{mobileRules ? '收起检查' : '查看规则检查'}</button></div>}
     <main className={`fs-workspace ${leftCollapsed ? 'is-left-collapsed' : ''} ${rightCollapsed ? 'is-right-collapsed' : ''}`}>{!readOnly && <aside id="figure-material-panel" aria-label="材料与对象面板" className="fs-left-panel" hidden={leftCollapsed}><div className="fs-panel-tabs" role="tablist" aria-label="图稿工作流程">{[['plan', '材料与结构'], ['layers', '对象'], ['edit', '语言编辑']].map(([id, label]) => <button role="tab" aria-selected={leftTab === id} className={leftTab === id ? 'active' : ''} key={id} onClick={() => setLeftTab(id)}>{label}</button>)}</div><div className="fs-panel-scroll">

@@ -9,8 +9,8 @@ test('panel editing explicitly scopes all transitive descendants and no unrelate
   document.elements.push({ id: 'nested-text', type: 'text', parentId: 'nested-panel', x: 11, y: 11, width: 10, height: 4, fontSize: 6, fontFamily: 'Arial', fontWeight: 400, color: '#000000', role: 'label', text: 'Child' });
   const scope = selectedEditScope(document, 'node-input');
   assert.equal(scope.error, '');
-  assert.deepEqual(new Set(scope.objectIds), new Set(['node-input', 'label-input', 'detail-input', 'nested-panel', 'nested-text']));
-  assert.equal(scope.relatedCount, 4);
+  assert.deepEqual(new Set(scope.objectIds), new Set(['node-input', 'panel-label-input', 'label-input', 'detail-input', 'nested-panel', 'nested-text']));
+  assert.equal(scope.relatedCount, 5);
   const selected = document.elements.find((element) => element.id === 'node-input');
   const after = applyCommands(document, [{ type: 'update', id: selected.id, patch: { x: selected.x + 5 } }]);
   document.elements.forEach((element, index) => {

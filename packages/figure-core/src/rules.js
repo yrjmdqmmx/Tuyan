@@ -1,7 +1,7 @@
 import { validateDocument, connectorEndpoints } from './document.js';
 import { PROFILES } from './profiles.js';
 
-function inspectRule(doc, rule) {
+function inspectRule(doc, rule, { overridden = false } = {}) {
   const result = { id: rule.id, label: rule.label, status: 'passed', message: '' };
   if (rule.sourceUrl) result.sourceUrl = rule.sourceUrl;
   if (rule.enabled === false) return { ...result, status: 'unverified', message: '工作规则已关闭；期刊原始基线仍独立检查，不代表符合该要求。' };
@@ -33,13 +33,27 @@ function inspectRule(doc, rule) {
       result.status = doc.canvas.heightMm <= rule.value ? 'passed' : 'problem';
       result.message = `当前高度 ${doc.canvas.heightMm} mm；此规则上限 ${rule.value} mm。`;
       break;
-    case 'column-width':
-      result.status = rule.value.some((v) => Math.abs(doc.canvas.widthMm - v) < 0.01) ? 'passed' : 'problem';
-      result.message = `当前宽度 ${doc.canvas.widthMm} mm；建议栏宽 ${rule.value.join(' / ')} mm，最终尺寸由期刊决定。`;
+    case 'column-width': {
+      const matches = rule.value.some((v) => Math.abs(doc.canvas.widthMm - v) < 0.01);
+      const examples = rule.coverage === 'examples' && !overridden;
+      result.status = matches ? 'passed' : examples ? 'manual' : 'problem';
+      result.message = examples
+        ? `当前宽度 ${doc.canvas.widthMm} mm；常用栏宽 ${rule.value.join(' / ')} mm。官方 final submission 也允许必要时使用 120–136 mm 的一栏半宽度；其他尺寸需人工确认，最终尺寸由期刊决定。`
+        : `当前宽度 ${doc.canvas.widthMm} mm；工作规则指定宽度 ${rule.value.join(' / ')} mm，不代表官方仅接受这些宽度。`;
       break;
+    }
     case 'standard-font': {
       const allowed = rule.value.map((v) => v.toLowerCase());
-      failures(texts.filter((e) => !allowed.includes(e.fontFamily.toLowerCase())), '文字对象使用所列标准字体；嵌入和字体替换仍需外部导出检查。', `请核对字体，规则接受：${rule.value.join('、')}。Courier / Symbol 仅适用于相应序列或符号用途。`);
+      const outsideExamples = texts.filter((e) => !allowed.includes(e.fontFamily.toLowerCase()));
+      if (rule.coverage === 'examples' && !overridden) {
+        result.status = outsideExamples.length ? 'manual' : 'passed';
+        if (outsideExamples.length) result.objectIds = outsideExamples.map((e) => e.id);
+        result.message = outsideExamples.length
+          ? 'Nature 普通文字使用无衬线字体，Arial / Helvetica 是官方优先示例，并非完整字体白名单。Courier 用于氨基酸序列，Symbol 用于字形和希腊字母；这些字体及其他字体的实际用途、无衬线属性、可读性和嵌入需人工确认。'
+          : '文字使用官方优先示例 Arial / Helvetica；这不是完整字体白名单，实际嵌入和导出后字体替换仍需检查。';
+      } else {
+        failures(outsideExamples, '文字符合用户指定的工作字体列表；不代表官方字体要求已通过。', `工作规则只接受：${rule.value.join('、')}。此列表由用户指定，不替代独立官方基线。`);
+      }
       break;
     }
     case 'rgb':
@@ -94,6 +108,6 @@ export function evaluateRules(input) {
     documentRevision: doc.revision,
     profileId: doc.profileId,
     baseline: profile.rules.map((rule) => inspectRule(doc, rule)),
-    working: [...profile.rules, ...doc.customRules].map((rule) => inspectRule(doc, { ...rule, ...doc.ruleOverrides[rule.id] })),
+    working: [...profile.rules, ...doc.customRules].map((rule) => inspectRule(doc, { ...rule, ...doc.ruleOverrides[rule.id] }, { overridden: Object.hasOwn(doc.ruleOverrides[rule.id] || {}, 'value') })),
   };
 }

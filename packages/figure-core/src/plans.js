@@ -1,5 +1,5 @@
 import { createDocument, copyJsonData } from './document.js';
-import { PROFILES } from './profiles.js';
+import { generationContextFromDocument } from './generation-context.js';
 
 const fail = (message) => { throw new Error(message); };
 const plain = (value) => value !== null && typeof value === 'object' && !Array.isArray(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value));
@@ -25,11 +25,9 @@ export function documentFromPlan(plan, options = {}) {
   fields(plan, ['title', 'summary', 'nodes', 'edges', 'notes'], '图形规划');
   fields(options, ['id', 'title', 'profileId', 'canvas', 'ruleOverrides', 'customRules'], '排版选项');
   const template = createDocument(options);
-  const workingRules = PROFILES.find((profile) => profile.id === template.profileId).rules.map((rule) => ({ ...rule, ...template.ruleOverrides[rule.id] }));
-  const typeRule = workingRules.find((rule) => rule.kind === 'text-size');
-  const typeRange = typeRule?.enabled === false ? { min: 5, max: 7 } : typeRule.value;
-  const fontRule = workingRules.find((rule) => rule.kind === 'standard-font');
-  const fontFamily = fontRule?.enabled === false || fontRule.value.includes('Arial') ? 'Arial' : fontRule.value[0];
+  const { constraints } = generationContextFromDocument(template);
+  const typeRange = constraints.textSizePt;
+  const fontFamily = constraints.fontFamily;
   const bodyFont = Math.max(typeRange.min, Math.min(typeRange.max, 6));
   const detailFont = Math.max(typeRange.min, Math.min(typeRange.max, 5.5));
   const titleFont = Math.max(typeRange.min, Math.min(typeRange.max, 7));
@@ -53,7 +51,9 @@ export function documentFromPlan(plan, options = {}) {
   if (!Array.isArray(notes) || notes.length > 10) fail('规划备注最多 10 条。');
   notes.forEach((note) => text(note, 1000, '规划备注'));
 
-  const width = options.canvas?.widthMm ?? 183;
+  const suggestedWidths = constraints.allowedWidthsMm ?? constraints.preferredWidthsMm;
+  const width = options.canvas?.widthMm ?? (suggestedWidths.includes(183) ? 183 : suggestedWidths.find((value) => value >= 60 && value <= 400) ?? 183);
+  if (!options.canvas?.widthMm && constraints.allowedWidthsMm && !constraints.allowedWidthsMm.includes(width)) fail('工作规则要求的栏宽超出自动排版支持范围，请调整工作规则。');
   if (typeof width !== 'number' || !Number.isFinite(width) || width < 60 || width > 400) fail('自动排版宽度须为 60 到 400 mm。');
   const margin = 8; const gap = 12; const columns = width >= 150 ? 3 : width >= 110 ? 2 : 1;
   const boxWidth = (width - margin * 2 - gap * (columns - 1)) / columns;
@@ -67,17 +67,20 @@ export function documentFromPlan(plan, options = {}) {
     elements.push(makeLabel('plan-summary', summary, margin, y, width - margin * 2, height)); y += height + 5;
   }
   const nodeMap = new Map();
+  const panelFont = plan.nodes.length > 1 ? constraints.panelLabelSizePt : null;
+  const panelHeaderHeight = panelFont === null ? 0 : estimatedHeight('a', boxWidth - 6, panelFont) + 1;
   for (let offset = 0; offset < plan.nodes.length; offset += columns) {
     const row = plan.nodes.slice(offset, offset + columns);
-    const heights = row.map((node) => 6 + estimatedHeight(node.label, boxWidth - 6, bodyFont) + (node.detail ? estimatedHeight(node.detail, boxWidth - 6, detailFont) + 2 : 0));
+    const heights = row.map((node) => 6 + panelHeaderHeight + estimatedHeight(node.label, boxWidth - 6, bodyFont) + (node.detail ? estimatedHeight(node.detail, boxWidth - 6, detailFont) + 2 : 0));
     const rowHeight = Math.max(18, ...heights);
     row.forEach((node, column) => {
       const x = margin + column * (boxWidth + gap); const nodeId = `node-${node.id}`;
       const panel = { id: nodeId, type: 'panel', x, y, width: boxWidth, height: rowHeight, fill: '#f4f7f8', stroke: '#416879', strokeWidth: 0.3 };
       elements.push(panel); nodeMap.set(node.id, panel);
       const height = estimatedHeight(node.label, boxWidth - 6, bodyFont);
-      elements.push(makeLabel(`label-${node.id}`, node.label, x + 3, y + 3, boxWidth - 6, height, { parentId: nodeId, fontWeight: 700 }));
-      if (node.detail) elements.push(makeLabel(`detail-${node.id}`, node.detail, x + 3, y + 3 + height + 2, boxWidth - 6, rowHeight - height - 7, { parentId: nodeId, fontSize: detailFont }));
+      if (panelFont !== null) elements.push(makeLabel(`panel-label-${node.id}`, String.fromCharCode(97 + offset + column), x + 3, y + 3, boxWidth - 6, panelHeaderHeight - 1, { parentId: nodeId, role: 'panel-label', fontSize: panelFont, fontWeight: 700 }));
+      elements.push(makeLabel(`label-${node.id}`, node.label, x + 3, y + 3 + panelHeaderHeight, boxWidth - 6, height, { parentId: nodeId, fontWeight: 700 }));
+      if (node.detail) elements.push(makeLabel(`detail-${node.id}`, node.detail, x + 3, y + 3 + panelHeaderHeight + height + 2, boxWidth - 6, rowHeight - panelHeaderHeight - height - 7, { parentId: nodeId, fontSize: detailFont }));
     });
     y += rowHeight + gap;
   }
@@ -97,7 +100,13 @@ export function documentFromPlan(plan, options = {}) {
     const height = estimatedHeight(notes[i], width - margin * 2, detailFont);
     elements.push(makeLabel(`note-${i + 1}`, notes[i], margin, y, width - margin * 2, height, { fontSize: detailFont })); y += height + 2;
   }
-  const chosenHeight = options.canvas?.heightMm ?? Math.max(70, Math.ceil(y + margin));
+  // Preserve the author's canvas. Rule recommendations never silently change
+  // its physical size, and a failed layout leaves the caller's source untouched.
+  const contentHeight = Math.ceil(Math.max(y, ...elements.map((element) => element.y + element.height)) + margin);
+  const autoHeightLimit = constraints.maxHeightMm ?? 2000;
+  const chosenHeight = options.canvas?.heightMm ?? Math.max(Math.min(70, autoHeightLimit), contentHeight);
+  if (options.canvas?.heightMm === undefined && chosenHeight > autoHeightLimit) fail('规划内容超过工作规则的最大高度，请减少展示内容或调整画布与工作规则。');
+  if (elements.some((element) => element.x < 0 || element.y < 0 || element.x + element.width > width || element.y + element.height > chosenHeight)) fail('规划内容无法容纳在当前画布中，请减少展示内容或调整画布与工作规则；未改变原图稿。');
   return createDocument({ ...options, title: options.title ?? title, canvas: { widthMm: width, heightMm: chosenHeight, background: '#ffffff', ...options.canvas }, elements: [...connectors, ...elements] });
 }
 

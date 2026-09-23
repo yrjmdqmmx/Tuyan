@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createHash } from 'node:crypto'
-import { createDocument } from '@paperbanana/figure-core'
+import { createDocument, generationContextFromDocument } from '@paperbanana/figure-core'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 import { memoryDb } from '../../../test-support/memory-db.mjs'
 import { createFigureOperations } from '../src/figure-operations.js'
@@ -61,7 +61,7 @@ test('workbench pending checkpoints survive the scoped wrapper without entering 
 test('native and managed figure work never inherit an enclosing workbench thinking or pending checkpoint', async () => {
   const db: any = memoryDb(), service = createTokenDanceService({ db, secret: Buffer.alloc(32, 19).toString('base64') }), baseWorkflow = createProviderWorkflow({ db, service })
   const observations: any[] = []; let ops: ReturnType<typeof createFigureOperations>
-  const studio = createFigureStudioService({ modelText: async b => ops.hooks.call(['text', b.mainRoute.accessProvider, b.mainRoute.modelId], async () => {
+  const studio = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async b => ops.hooks.call(['text', b.mainRoute.accessProvider, b.mainRoute.modelId], async () => {
     observations.push({ provider: b.mainRoute.accessProvider, active: ops.hooks.active(), thinking: ops.hooks.thinking(), pending: await ops.hooks.pending() })
     if (b.mainRoute.accessProvider === 'tokendance') { await ops.hooks.checkpoint({ channel: 'figure-fixture', taskId: 'only-figure-checkpoint' }); assert.equal((await ops.hooks.pending()).taskId, 'only-figure-checkpoint') }
     return JSON.stringify(plan)
@@ -70,7 +70,7 @@ test('native and managed figure work never inherit an enclosing workbench thinki
   const original = task('workbench-enclosing-composition')
   await db.collection('paperbanana_jobs').insertOne({ _id: original.jobId, userId: original.body.userId, providerCalls: [] })
   await db.collection('paperbanana_tokendance_connections').insertOne({ _id: 'figure-composition-owner', version: 'fixture', secret: service.cipher!.seal({ key: 'fixture-td-key' }, 'figure-composition-owner') })
-  const document = createDocument(), documentContext = { id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex') }
+  const document = createDocument(), documentContext = { id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex'), generationContextSha256: createHash('sha256').update(JSON.stringify(generationContextFromDocument(document))).digest('hex') }
   await ops.hooks.run(original as any, () => ops.hooks.call(['text', 'openai', 'gpt-4.1'], async () => {
     await ops.hooks.checkpoint({ channel: 'workbench-fixture', taskId: 'only-workbench-checkpoint' })
     for (const provider of ['openai', 'tokendance']) {

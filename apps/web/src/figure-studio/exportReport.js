@@ -1,4 +1,5 @@
 import { evaluateRules } from '@paperbanana/figure-core';
+import { inspectExportedSvg } from './svgInspection.js';
 
 export async function sha256(bytes) {
   if (!globalThis.crypto?.subtle) return null;
@@ -16,6 +17,7 @@ export async function svgVerification(document, svg) {
     format: 'svg', checkedAt: new Date().toISOString(),
     checks: [
       { id: 'file-identity', status: fileSha256 ? 'passed' : 'unverified', message: fileSha256 ? '已从本次实际下载的 SVG 字节计算大小与 SHA-256，未进行外部软件兼容性核验。' : '浏览器没有可用的 SHA-256 能力，未核验导出文件身份。' },
+      ...inspectExportedSvg(svg, document),
       { id: 'external-editor-compatibility', status: 'manual', message: '需在目标编辑器核对独立对象、可编辑文字、字体和保存后重开。' },
       { id: 'exported-file-journal-rules', status: 'manual', message: '下方是源稿规则结果；最终文件的外观与期刊政策仍需人工检查。' },
       { id: 'font-portability', status: 'unverified', message: '未核验接收方字体安装与替换情况。' },

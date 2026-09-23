@@ -57,7 +57,7 @@ test('planning enforces bounded nodes, exact shape, known edge endpoints and no 
 
 test('model success and invalid JSON each make one call; invalid output never claims unbilled', async () => {
   let calls = 0
-  const service = createFigureStudioService({ modelText: async () => { calls++; return calls === 1 ? JSON.stringify(plan) : 'not JSON' } })
+  const service = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => { calls++; return calls === 1 ? JSON.stringify(plan) : 'not JSON' } })
   assert.deepEqual((await service.handle({ action: 'figureStudioPlan', materials: '研究分为输入和分析两个阶段。', ...native })).plan, plan)
   const failed = await service.handle({ action: 'figureStudioPlan', materials: '研究材料。', ...native })
   assert.equal(failed.code, 422); assert.equal(failed.requestState, 'unknown'); assert.equal(failed.billingStatus, 'unconfirmed'); assert.equal(calls, 2)
@@ -65,7 +65,7 @@ test('model success and invalid JSON each make one call; invalid output never cl
 
 test('local validation rejects missing credentials, invalid custom routes, oversized material and stale edits before model', async () => {
   let calls = 0
-  const service = createFigureStudioService({ modelText: async () => { calls++; return '{}' } })
+  const service = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => { calls++; return '{}' } })
   for (const request of [
     { action: 'figureStudioPlan', materials: 'content', ...native, apiKeys: {} },
     ...['custom'].map(provider => ({ action: 'figureStudioPlan', materials: 'content', mainRoute: { accessProvider: provider, modelId: 'any' }, apiKeys: { [provider]: 'forged' } })),
@@ -91,14 +91,14 @@ test('editing validates selected-object scope, immutable source, unknown fields 
   assert.equal(JSON.stringify(source), before)
   const grouped = createDocument({ elements: [{ id: 'panel', type: 'panel', x: 0, y: 0, width: 100, height: 100 }, { id: 'child', type: 'text', parentId: 'panel', x: 5, y: 5, width: 10, height: 5, text: 'child' }] })
   assert.throws(() => validateFigureCommands(grouped, [{ type: 'update', id: 'panel', patch: { x: 20 } }], ['panel'], 0), /未选对象/)
-  const service = createFigureStudioService({ modelText: async (_b, system) => { assert.match(system, /fontSize uses points/); return JSON.stringify({ commands: [{ type: 'update', id: 'label-b', patch: { text: '越界' } }] }) } })
+  const service = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async (_b, system) => { assert.match(system, /fontSize uses points/); return JSON.stringify({ commands: [{ type: 'update', id: 'label-b', patch: { text: '越界' } }] }) } })
   const failed = await service.handle({ action: 'figureStudioEdit', document: source, instruction: '改字', objectIds: ['label-a'], baseRevision: 0, ...native })
   assert.equal(failed.code, 422); assert.equal(failed.billingStatus, 'unconfirmed'); assert.equal(JSON.stringify(source), before)
 })
 
 test('model timeout reports uncertainty, aborts once and never retries', async () => {
   let calls = 0, aborted = false
-  const service = createFigureStudioService({ modelTimeoutMs: 15, modelText: async (_b, _s, _u, signal) => { calls++; signal.addEventListener('abort', () => { aborted = true }); return new Promise(() => {}) } })
+  const service = createFigureStudioService({ supportedProviders: ['openai'], modelTimeoutMs: 15, modelText: async (_b, _s, _u, signal) => { calls++; signal.addEventListener('abort', () => { aborted = true }); return new Promise(() => {}) } })
   const failed = await service.handle({ action: 'figureStudioPlan', materials: 'content', ...native })
   assert.equal(failed.code, 504); assert.equal(failed.requestState, 'unknown'); assert.equal(failed.billingStatus, 'unknown'); assert.equal(calls, 1); assert.equal(aborted, true)
 })
@@ -106,7 +106,7 @@ test('model timeout reports uncertainty, aborts once and never retries', async (
 test('successful edits return commands for the exact base revision without changing or saving the caller draft', async () => {
   const source = document(), before = JSON.stringify(source)
   const commands = [{ type: 'update', id: 'label-a', patch: { text: '新标签' } }]
-  const service = createFigureStudioService({ modelText: async () => JSON.stringify({ commands }) })
+  const service = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => JSON.stringify({ commands }) })
   const result = await service.handle({ action: 'figureStudioEdit', document: source, instruction: '把第一个标签改为新标签', objectIds: ['label-a'], baseRevision: source.revision, ...native })
   assert.deepEqual(result, { code: 0, commands, baseRevision: source.revision }); assert.equal(JSON.stringify(source), before)
 })
@@ -114,7 +114,7 @@ test('successful edits return commands for the exact base revision without chang
 test('model concurrency is bounded and excess requests are rejected before dispatch', async () => {
   let count = 0
   const releases: Array<(raw: string) => void> = []
-  const service = createFigureStudioService({ modelText: async () => { count++; return new Promise(resolve => releases.push(resolve)) } })
+  const service = createFigureStudioService({ supportedProviders: ['openai', 'tokendance', 'custom'], modelText: async () => { count++; return new Promise(resolve => releases.push(resolve)) } })
   const request = { action: 'figureStudioPlan', materials: 'content', ...native }
   const first = service.handle(request), second = service.handle(request)
   const busy = await service.handle(request)
@@ -149,7 +149,7 @@ test('export uses internal standalone SVG, page area and actual bytes; report le
   assert.equal(result.code, 0, JSON.stringify(result)); assert.equal(result.file.mimeType, 'application/pdf')
   assert.deepEqual(Buffer.from(result.file.base64, 'base64'), fileBytes)
   assert.equal(result.verification.fileSha256, createHash('sha256').update(fileBytes).digest('hex'))
-  assert.equal(result.verification.checks[0].status, 'passed'); assert.equal(result.verification.checks[1].status, 'manual')
+  assert.equal(result.verification.checks[0].status, 'passed'); assert.equal(result.verification.checks.find((check: any) => check.id === 'external-editor-compatibility').status, 'manual')
   assert.ok(!('editable' in result.verification)); for (const dir of dirs) await assert.rejects(stat(dir))
 })
 
@@ -166,8 +166,8 @@ test('EPS subset repair is applied to actual returned bytes and hash while canon
   assert.deepEqual(Buffer.from(result.file.base64, 'base64'), expected)
   assert.equal(result.verification.fileSha256, createHash('sha256').update(expected).digest('hex'))
   assert.equal(result.verification.byteLength, expected.length)
-  assert.match(result.verification.checks[1].message, /2 个重名/)
-  assert.equal(result.verification.checks[1].status, 'manual')
+  assert.match(result.verification.checks.find((check: any) => check.id === 'external-editor-compatibility').message, /2 个重名/)
+  assert.equal(result.verification.checks.find((check: any) => check.id === 'external-editor-compatibility').status, 'manual')
   assert.equal(JSON.stringify(source), before)
 })
 
@@ -248,6 +248,37 @@ test('converter failures, wrong formats and EPS transparent canvas return no dow
   assert.equal((await service.handle({ action: 'figureStudioExport', format: 'eps', document: alpha })).errorCode, 'FIGURE_STUDIO_EPS_ALPHA')
   const timeout = createFigureStudioService({ runConverter: async (_b, args) => { if (args[0] !== '--version') throw new FigureStudioError(504, 'FIGURE_STUDIO_CONVERTER_TIMEOUT', '转换超时') } })
   assert.equal((await timeout.handle({ action: 'figureStudioExport', format: 'pdf', document: document() })).code, 504)
+})
+
+test('exit-zero converter without an output reports an export failure and releases its conversion gate', async () => {
+  const dirs: string[] = []
+  let createOutput = false
+  const service = createFigureStudioService({ runConverter: async (_binary, args, options) => {
+    dirs.push(options.cwd)
+    if (args[0] !== '--version' && createOutput) await writeFile(options.outputPath!, pdfFixture)
+  } })
+  const failed = await service.handle({ action: 'figureStudioExport', format: 'pdf', document: document() })
+  assert.equal(failed.code, 502)
+  assert.equal(failed.errorCode, 'FIGURE_STUDIO_EXPORT_INVALID')
+  assert.match(failed.error, /转换器未生成可读取的导出文件/)
+  assert.equal(failed.requestState, 'not_sent')
+  assert.equal(failed.billingStatus, 'not_called')
+  assert.equal(failed.file, undefined)
+  assert.equal(failed.failure, undefined)
+  for (const dir of dirs) await assert.rejects(stat(dir))
+  createOutput = true
+  assert.equal((await service.handle({ action: 'figureStudioExport', format: 'pdf', document: document() })).code, 0)
+})
+
+test('output read guard preserves an explicit invalid-file FigureStudioError', async () => {
+  const service = createFigureStudioService({ runConverter: async (_binary, args, options) => {
+    if (args[0] !== '--version') await writeFile(options.outputPath!, '')
+  } })
+  const failed = await service.handle({ action: 'figureStudioExport', format: 'pdf', document: document() })
+  assert.equal(failed.errorCode, 'FIGURE_STUDIO_EXPORT_INVALID')
+  assert.equal(failed.error, '导出文件为空或超出大小限制。')
+  assert.equal(failed.billingStatus, 'not_called')
+  assert.equal(failed.file, undefined)
 })
 
 test('real subprocess runner kills a stalled process with a bounded timeout and strips secrets', async () => {

@@ -68,7 +68,7 @@ async function main(): Promise<void> {
   const tokenDance = createTokenDanceService({ db: mongo.db, fetcher: providerEgress.fetch, secret: process.env.TOKENDANCE_ENCRYPTION_KEY, callbackUrl: process.env.TOKENDANCE_CALLBACK_URL, managementKey: process.env.TOKENDANCE_MANAGEMENT_KEY, applicationId: process.env.TOKENDANCE_APPLICATION_ID })
   const providerWorkflow = createProviderWorkflow({ db: mongo.db, service: tokenDance })
   const legacy = await import('./legacy-entry.mjs')
-  const figureOperations = createFigureOperations({ db: mongo.db, service: tokenDance, baseWorkflow: providerWorkflow, studio: createFigureStudioService({ modelText: legacy.figureStudioTextModel }) })
+  const figureOperations = createFigureOperations({ db: mongo.db, service: tokenDance, baseWorkflow: providerWorkflow, studio: createFigureStudioService({ modelText: legacy.figureStudioTextModel, supportedProviders: legacy.figureStudioTextProviders() }) })
   legacy.configureProviderWorkflow(figureOperations.hooks)
   await tokenDance.ensureIndexes()
   await providerWorkflow.ensureIndexes()

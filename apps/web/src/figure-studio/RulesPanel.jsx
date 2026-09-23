@@ -46,6 +46,7 @@ export default function RulesPanel({ document, onCommands, readOnly = false }) {
   }
   return <div className="fs-rules fs-panel-content">
     <h3>{profile.label}</h3><p className="fs-muted">{profile.scope}</p>
+    {profile.sourceWarnings?.length > 0 && <details className="fs-note"><summary>适用范围与来源差异</summary><ul>{profile.sourceWarnings.map((warning) => <li key={warning}>{warning}</li>)}</ul><p>核对日期：{profile.checkedAt}；此日期不是官方政策生效日期。</p></details>}
     <div className="fs-rule-scopes" aria-label="检查依据"><button className={scope === 'baseline' ? 'active' : ''} onClick={() => setScope('baseline')}>官方基线</button><button className={scope === 'working' ? 'active' : ''} onClick={() => setScope('working')}>我的工作规则{changes ? ` · ${changes}` : ''}</button></div>
     <p className="fs-rule-caption">{scope === 'baseline' ? '始终按已记录的官方基线检查，修改工作规则不会覆盖这里的结果。' : '仅用于当前图稿。符合工作规则不代表符合官方要求。'}</p>
     {scope === 'working' && !readOnly && <button className="fs-wide fs-subtle" onClick={() => setEditing(!editing)}><SlidersHorizontal size={14} />{editing ? '收起规则设置' : '调整工作规则'}</button>}

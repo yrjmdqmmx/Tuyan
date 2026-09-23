@@ -11,13 +11,17 @@ export interface FigureStudioCapabilities {
   code: 0; formats: { svg: true; pdf: boolean; eps: boolean }; modelPlanning: boolean;
   supportedModelModes: Array<'api-key' | 'tokendance' | 'custom'>; supportedProviders: string[]; unsupportedProviders: string[];
   operationContractVersion?: 1;
+  /** Rules are derived from the validated document by the server, not client prompt text. */
+  generationContextVersion?: 1;
+  /** The gateway preserves the document and generation-rule binding end to end. */
+  generationContextTransportVersion?: 1;
   modelPlanningReason?: string;
   formatReasons: { pdf: string; eps: string }; limitations: string[];
   limits: { maxDocumentBytes: number; materialsChars: number; instructionChars: number; maxSelectedObjects: number; maxExportBytes: number };
 }
 export interface FigureStudioExportFile { name: string; mimeType: 'application/pdf' | 'application/postscript'; base64: string }
 
-export interface FigureDocumentContext { id: string; revision: number; sha256: string }
+export interface FigureDocumentContext { id: string; revision: number; sha256: string; /** Missing only on historical operations; cannot resume against changed rules. */ generationContextSha256?: string }
 export interface FigureStudioOperation {
   requestId: string;
   kind: 'plan' | 'edit';

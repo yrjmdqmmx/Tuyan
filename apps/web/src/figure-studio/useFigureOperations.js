@@ -22,7 +22,7 @@ export default function useFigureOperations({ userId, identity }) {
     if (current.current !== identity || requests.current.has(key)) return null;
     requests.current.add(key); update(row.requestId, { checking: true });
     try {
-      const operation = returnedOperation(await queryOperation(row.requestId), row);
+      const operation = returnedOperation(await queryOperation(row.requestId), row, { readOnlyQuery: true });
       update(row.requestId, { ...operation, checking: false, queryError: '' }); return operation;
     } catch (error) {
       update(row.requestId, { checking: false, queryError: `${error.message || '暂时无法查询'} 未重新发送模型请求。` }); return null;
@@ -62,7 +62,8 @@ export default function useFigureOperations({ userId, identity }) {
     }
   }
   async function resume(row, apiKeys) {
-    if (current.current !== identity || rowsRef.current.find(item => item.requestId === row.requestId)?.status !== 'blocked' || !row.recovery?.canResume || row.recovery.requestState === 'unknown' || row.recovery.retryAt && Date.parse(row.recovery.retryAt) > Date.now()) return null;
+    const stored = rowsRef.current.find(item => item.requestId === row.requestId);
+    if (current.current !== identity || stored?.status !== 'blocked' || row.bindingMismatch || stored.bindingMismatch || !row.recovery?.canResume || row.recovery.requestState === 'unknown' || row.recovery.retryAt && Date.parse(row.recovery.retryAt) > Date.now()) return null;
     update(row.requestId, { status: 'running', queryError: '' });
     try {
       const operation = returnedOperation(await resumeOperation(row.requestId, apiKeys), row);

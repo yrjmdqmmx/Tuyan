@@ -209,7 +209,8 @@ test('rejects unknown custom checks, duplicate rules, arbitrary code and invalid
 test('panel label typography, final dimensions and standard fonts are checked', () => {
   const doc = createDocument({ canvas: { widthMm: 100, heightMm: 171 }, elements: [text('panel-label', { role: 'panel-label', text: 'A', fontSize: 8, fontWeight: 400 }), text('custom-font', { fontFamily: 'Fancy' })] });
   const evaluated = evaluateRules(doc);
-  for (const id of ['panel-label-size', 'max-height', 'column-width', 'standard-font']) assert.equal(check(evaluated, id).status, 'problem');
+  for (const id of ['panel-label-size', 'max-height']) assert.equal(check(evaluated, id).status, 'problem');
+  for (const id of ['column-width', 'standard-font']) assert.equal(check(evaluated, id).status, 'manual');
   const corrected = applyCommands(doc, [{ type: 'update', id: 'panel-label', patch: { text: 'a', fontWeight: 'bold' } }]);
   assert.equal(check(evaluateRules(corrected), 'panel-label-size').status, 'passed');
 });
@@ -227,7 +228,7 @@ test('photographic 300/450 dpi ambiguity stays manual; inadequate resolution is 
 test('scientific, policy and external-editor checks never turn into automatic acceptance', () => {
   const evaluated = evaluateRules(createDocument());
   assert.equal(check(evaluated, 'scientific-accuracy').status, 'manual');
-  assert.equal(check(evaluated, 'ai-policy').status, 'unverified');
+  assert.equal(check(evaluated, 'ai-policy').status, 'manual');
   assert.equal(check(evaluated, 'external-editability').status, 'unverified');
   assert.equal(check(evaluated, 'aesthetic-review').status, 'manual');
 });
@@ -235,7 +236,7 @@ test('scientific, policy and external-editor checks never turn into automatic ac
 test('plan layout uses actual editable node text, bound edges and supplied content only', () => {
   const plan = { title: 'Author-defined flow', summary: '已核对的概述', nodes: [{ id: 'n1', label: 'Input A', detail: 'Author detail' }, { id: 'n2', label: 'Measured outcome' }], edges: [{ from: 'n1', to: 'n2', label: 'Recorded transition' }], notes: ['No new values.'] };
   const doc = documentFromPlan(plan);
-  const allText = doc.elements.filter((e) => e.type === 'text').map((e) => e.text);
+  const allText = doc.elements.filter((e) => e.type === 'text' && e.role !== 'panel-label').map((e) => e.text);
   assert.deepEqual(new Set(allText), new Set([plan.title, plan.summary, ...plan.nodes.flatMap((n) => [n.label, ...(n.detail ? [n.detail] : [])]), plan.edges[0].label, ...plan.notes]));
   assert.equal(doc.elements.filter((e) => e.type === 'image').length, 0);
   assert.equal(doc.elements.find((e) => e.type === 'arrow').fromId, 'node-n1');
@@ -338,7 +339,7 @@ test('multiple panels with absent or unbound labels cannot pass the panel-label 
   assert.equal(check(evaluateRules(partial), 'panel-label-size').status, 'manual');
   const full = applyCommands(partial, [{ type: 'add', element: text('label-b', { parentId: 'panel-b', role: 'panel-label', text: 'b', fontSize: 8, fontWeight: 700 }) }]);
   assert.equal(check(evaluateRules(full), 'panel-label-size').status, 'passed');
-  assert.equal(check(evaluateRules(createExampleDocument()), 'panel-label-size').status, 'manual');
+  assert.equal(check(evaluateRules(createExampleDocument()), 'panel-label-size').status, 'passed');
 });
 
 test('reused image payloads cannot amplify a small source into an unbounded SVG', () => {
@@ -372,7 +373,8 @@ test('replace-content confirms large plans in one revision while retaining docum
 
 test('auxiliary geometry check catches a large plan in a retained small canvas but never certifies aesthetics', () => {
   const plan = { title: 'Author flow', nodes: Array.from({ length: 12 }, (_, index) => ({ id: `node${index}`, label: `Step ${index}`, detail: '作者提供的具体方法与检查事项。' })) };
-  const doc = documentFromPlan(plan, { canvas: { widthMm: 89, heightMm: 25 } });
+  assert.throws(() => documentFromPlan(plan, { canvas: { widthMm: 89, heightMm: 25 } }), /无法容纳/);
+  const doc = createDocument({ canvas: { widthMm: 89, heightMm: 25 }, elements: [rect('outside', { y: 20, height: 20 })] });
   assert.equal(doc.canvas.heightMm, 25);
   const result = check(evaluateRules(doc), 'aesthetic-review');
   assert.equal(result.status, 'problem');

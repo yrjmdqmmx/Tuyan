@@ -5,7 +5,7 @@ import { randomBytes, createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { MongoClient } from 'mongodb';
-import { createDocument } from '@paperbanana/figure-core';
+import { createDocument, generationContextFromDocument } from '@paperbanana/figure-core';
 import { createFigureOperations } from '../../src/figure-operations.ts';
 import { createFigureStudioService } from '../../src/figure-studio.ts';
 import { createProviderWorkflow } from '../../src/provider-workflow.ts';
@@ -14,7 +14,7 @@ import { normalizeUniversalRoute } from '../../../../packages/api/src/universal-
 
 const plan = { title: '合成科研流程', summary: '仅验证持久化行为的固定测试数据。', nodes: [{ id: 'input', label: '输入' }, { id: 'analysis', label: '分析' }], edges: [{ from: 'input', to: 'analysis' }], notes: ['没有调用外部模型。'] };
 const document = createDocument({ id: 'mongo-integration-source' });
-const documentContext = { id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex') };
+const documentContext = { id: document.id, revision: document.revision, sha256: createHash('sha256').update(JSON.stringify(document)).digest('hex'), generationContextSha256: createHash('sha256').update(JSON.stringify(generationContextFromDocument(document))).digest('hex') };
 const native = { accessProvider: 'openai', modelId: 'gpt-5.6-sol' };
 const route = normalizeUniversalRoute({ accessProvider: 'custom', modelId: 'synthetic/ExactID', custom: { version: 1, connectionId: 'fixture-connection', protocol: 'openai-chat', baseUrl: 'https://fixture.example.com/v1', auth: 'bearer', capabilities: { text: true, vision: false, imageGeneration: false, imageEditing: false }, inputLimits: { maxCount: 1, maxBytes: 1024, maxTotalBytes: 1024, maxDimension: 100, maxPixels: 10000, requestMaxBytes: 32768, mimeTypes: ['image/png'] }, outputLimits: { maxBytes: 32768, maxDimension: 100, maxPixels: 10000, mimeTypes: ['image/png'] } } });
 const credentials = { custom: JSON.stringify({ [route.custom.connectionId]: { baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey: 'synthetic-no-provider-key' } }) };
@@ -38,7 +38,7 @@ function makeOperations(db, secret, behavior) {
   const service = createTokenDanceService({ db, secret, fetcher: noNetwork });
   const baseWorkflow = createProviderWorkflow({ db, service });
   let ops;
-  const studio = createFigureStudioService({ modelTimeoutMs: 10000, modelText: async (body, system, input) => behavior({ body, call: async (output = modelOutput) => ops.hooks.call(['synthetic-text', body.mainRoute, system, input], async () => {
+  const studio = createFigureStudioService({ supportedProviders: ['openai', 'custom'], modelTimeoutMs: 10000, modelText: async (body, system, input) => behavior({ body, call: async (output = modelOutput) => ops.hooks.call(['synthetic-text', body.mainRoute, system, input], async () => {
     if (body.mainRoute.accessProvider === 'custom') await ops.hooks.record({ channel: 'custom', model: route.modelId, requestId: 'synthetic-provider-record', status: 'succeeded', billingStatus: 'unconfirmed' });
     return output;
   }) }) });
