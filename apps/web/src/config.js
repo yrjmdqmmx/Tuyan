@@ -1,5 +1,6 @@
 import { createAuthClient } from 'better-auth/react';
 import { appPath } from './appPaths';
+import { publicLeaderboardEnabled } from './publicLeaderboard.js';
 
 const META_ENV = import.meta.env || {};
 
@@ -12,7 +13,7 @@ export const AUTH_REQUIRED = META_ENV.VITE_AUTH_REQUIRED === 'true';
 export const AUTH_BASE_DEFAULT = META_ENV.VITE_AUTH_BASE || (BACKEND_MODE === 'gateway' ? API_BASE_DEFAULT : '');
 export const AUTH_ENABLED = AUTH_REQUIRED || META_ENV.VITE_AUTH_ENABLED === 'true' || Boolean(META_ENV.VITE_AUTH_BASE);
 export const AUTH_UI_ENABLED = META_ENV.VITE_AUTH_UI !== 'false';
-export const BENCH_ENABLED = META_ENV.VITE_BENCH_ENABLED === 'true';
+export const PUBLIC_LEADERBOARD_ENABLED = publicLeaderboardEnabled(META_ENV);
 export const LOCAL_CONSUMPTION_TEST = Boolean(META_ENV.DEV && META_ENV.VITE_LOCAL_CONSUMPTION_TEST === 'true');
 
 export const authClient = createAuthClient({

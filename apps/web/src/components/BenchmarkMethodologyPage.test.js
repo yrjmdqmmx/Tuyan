@@ -6,6 +6,7 @@ import React from 'react'
 
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
 import { SCIENTIFIC_WEB_CONTRACT } from './scientificBenchmarkContract.js'
+import { publicLeaderboardEnabled } from '../publicLeaderboard.js'
 
 const axisEntries = [
   ['faithfulness', '忠实度'],
@@ -419,5 +420,17 @@ test('Replicate scientific methodology renders the fourth channel and exact subm
     assert.match(container.textContent, /Replicate：每题最多 1 次提交，不自动重试。/u)
     assert.match(container.textContent, /¥40/u)
     assert.equal(container.querySelectorAll('.bench-method-case').length, 9)
+  } finally { fetchMock.restore() }
+})
+
+test('disabling benchmark workers does not block the published nine-case methodology', async () => {
+  const fetchMock = installFetch(() => jsonResponse(scientificMethodologyResponse()))
+  try {
+    const enabled = publicLeaderboardEnabled({ PAPERBANANA_BENCH_ENABLED: 'false', VITE_BENCH_ENABLED: 'false' })
+    const { container } = render(React.createElement(BenchmarkMethodologyPage, { apiBase: 'https://gateway.example', enabled }))
+    await screen.findByRole('heading', { name: '评测方法与完整题集' })
+    assert.equal(container.querySelectorAll('.bench-method-case').length, 9)
+    assert.deepEqual(fetchMock.calls.map(call => call.body.action), ['benchmarkMethodology'])
+    assert.equal(screen.queryByText('方法说明尚未开放。'), null)
   } finally { fetchMock.restore() }
 })

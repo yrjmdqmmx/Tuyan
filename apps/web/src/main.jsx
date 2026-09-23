@@ -6,7 +6,7 @@ import { AppLocaleProvider } from './components/BenchmarkLocale.jsx';
 import { isChangelogPath } from './changelog.js';
 import LeaderboardRoot, { LeaderboardSessionProvider } from './components/LeaderboardRoot.jsx';
 import { APP_BASE_URL, appRelativeLocation } from './appPaths.js';
-import { API_BASE_DEFAULT, BACKEND_MODE, BENCH_ENABLED } from './config.js';
+import { API_BASE_DEFAULT, BACKEND_MODE, PUBLIC_LEADERBOARD_ENABLED } from './config.js';
 import { canonicalizeLeaderboardLocation, resolveLeaderboardRoute } from './leaderboardRoutes.js';
 import './styles.css';
 import './components/tokendance.css';
@@ -37,6 +37,6 @@ createRoot(document.getElementById('root')).render(
   <AppLocaleProvider title={pageTitle}>{isChangelog
     ? <LeaderboardSessionProvider><Suspense fallback={<div className="changelog-page" role="status">正在载入更新日志…</div>}><ChangelogRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} /></Suspense></LeaderboardSessionProvider>
     : leaderboardRoute.isLeaderboard
-    ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={BENCH_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>
+    ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={PUBLIC_LEADERBOARD_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>
     : <App />}</AppLocaleProvider>,
 );

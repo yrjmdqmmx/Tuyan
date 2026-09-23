@@ -21,7 +21,7 @@ try {
  const port=docker('port',container,'27017/tcp').split(':').at(-1);
  fixture=await startAdminFixture(`mongodb://127.0.0.1:${port}/?directConnection=true`,webBase);
  const viteLog=fs.openSync(out+'/vite.log','w');
- vite=spawn(process.execPath,[root+'/apps/web/node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',webPort,'--strictPort'],{cwd:root+'/apps/web',env:{...process.env,VITE_AUTH_BASE:fixture.apiBase,VITE_API_BASE:fixture.apiBase,VITE_ALLOW_CUSTOM_API_BASE:'true',VITE_AUTH_ENABLED:'true',VITE_AUTH_REQUIRED:'false',VITE_BACKEND_MODE:'gateway',VITE_BENCH_ENABLED:'false'},stdio:['ignore',viteLog,viteLog]});
+ vite=spawn(process.execPath,[root+'/apps/web/node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',webPort,'--strictPort'],{cwd:root+'/apps/web',env:{...process.env,VITE_AUTH_BASE:fixture.apiBase,VITE_API_BASE:fixture.apiBase,VITE_ALLOW_CUSTOM_API_BASE:'true',VITE_AUTH_ENABLED:'true',VITE_AUTH_REQUIRED:'false',VITE_BACKEND_MODE:'gateway',VITE_PUBLIC_LEADERBOARD_ENABLED:'false'},stdio:['ignore',viteLog,viteLog]});
  for(let i=0;i<60;i++){try{if((await fetch(webBase)).ok)break}catch{}await pause(500)}
  browser=await chromium.launch({channel:'chrome',headless:true});
  const context=await browser.newContext({viewport:{width:1440,height:1080},locale:'zh-CN',timezoneId:'Asia/Shanghai'});

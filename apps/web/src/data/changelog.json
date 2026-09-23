@@ -1588,13 +1588,14 @@
           "Web"
         ]
       },
-      "title": "扩充模型与更新评审",
-      "summary": "加入新的图像模型，并更新既有评测的评分与排名。",
+      "title": "扩充模型、帕累托视图与更新评审",
+      "summary": "加入新的图像模型并更新评分与排名，新增帕累托视图对照模型能力与单张成本，完善双语和移动端浏览。",
       "surfaces": [
         "Web"
       ],
       "notes": [
-        "本次重新评审使用既有图片；40 个模型重新评审，7 个指定模型保留原评分。"
+        "本次重新评审使用既有图片；40 个模型重新评审，7 个指定模型保留原评分。",
+        "包含 2026-09-20–21 日已上线的帕累托与双语更新；版本原发布日期为 2026-09-17。"
       ],
       "changes": [
         {
@@ -1610,6 +1611,50 @@
             "benchmark-model-costs-2",
             "image25-evaluation",
             "image25-release"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增帕累托视图，按评分与单张成本对照模型，支持维度、研发厂商和成本筛选，查看最优模型与计价依据；图表支持缩放、拖动和手机展开。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "mobile-navigation-pareto-1",
+            "mobile-navigation-pareto-2",
+            "mobile-navigation-pareto-3",
+            "pareto-initial-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "模型详情展示合计和逐题费用，区分实际账单、历史估算和未调用；帕累托比较分别标注官方定价与已核对测试费用，缺少可比较成本的型号仍保留在排名视图。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "mobile-navigation-pareto-1",
+            "mobile-navigation-pareto-2",
+            "mobile-navigation-pareto-3",
+            "benchmark-model-costs-0",
+            "benchmark-model-costs-1",
+            "benchmark-model-costs-2",
+            "pareto-initial-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "排行榜、模型详情与方法说明支持中英文切换，统一研发方名称、搜索和筛选。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "catalog-leaderboard-language-0",
+            "catalog-leaderboard-language-1",
+            "catalog-leaderboard-language-2"
           ]
         },
         {
@@ -1698,6 +1743,48 @@
           "kind": "release-record",
           "label": "GPT Image 2.5 评测发布记录",
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/d651519872fb1b437041c90ee4167902a124085f/docs/releases/2026-09-16-replicate-image25-benchmark.md"
+        },
+        {
+          "id": "mobile-navigation-pareto-1",
+          "kind": "pull-request",
+          "label": "变更 #222",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/222"
+        },
+        {
+          "id": "mobile-navigation-pareto-2",
+          "kind": "pull-request",
+          "label": "变更 #223",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/223"
+        },
+        {
+          "id": "mobile-navigation-pareto-3",
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35561997844"
+        },
+        {
+          "id": "catalog-leaderboard-language-0",
+          "kind": "pull-request",
+          "label": "变更 #224",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/224"
+        },
+        {
+          "id": "catalog-leaderboard-language-1",
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35603884753"
+        },
+        {
+          "id": "catalog-leaderboard-language-2",
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35601906465"
+        },
+        {
+          "id": "pareto-initial-web",
+          "kind": "deployment",
+          "label": "帕累托视图发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35519902396"
         }
       ],
       "legacyAnchors": [
