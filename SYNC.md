@@ -1,6 +1,6 @@
 # 平台同步日志 (Platform Sync Log)
 
-## 2026-09-23 · GPT-6 Sol / Luna 与 Opus 5.5（v25，授权并入 Tuyan v3.8.0，待发布）
+## 2026-09-23 · GPT-6 Sol / Luna 与 Opus 5.5（v25，已并入 Tuyan v3.8.0 上线）
 
 - 官方 API 已核实：`gpt-6-sol`、`gpt-6-luna`、`claude-opus-5-5`，均只开放主模型/参考图识别；既有默认、Key 绑定和历史型号不迁移。目录 v25 共 1,032 个静态型号，OpenRouter 仍走动态目录。
 - OpenRouter 分别核实 5 个同步 ID（含 Sol/Luna Pro）与 5 个 `:batch`，Batch 继续隐藏。思考字段与默认值按渠道独立；“默认”仍省略字段，原契约 v1 不变。详情与逐渠道来源见 [本轮审计](docs/channel-audit/2026-09-23-openai-anthropic/README.md)。
@@ -9,7 +9,7 @@
 - [x] 小程序共享 TS / JS / 目录：同步生成；保留旧请求和任务思考快照透传，不改变小程序默认模型。
 - [ ] 小程序原生思考设置 UI、真机验收及微信发布：仍未完成，本轮未上传/审核/发布。
 - [ ] 各渠道真实 Key、地区权限、模型调用质量、配额及账单：均未进行真实服务验收。公开目录可见不代表账号可调用。
-- [ ] 上线：用户随后明确授权发布，并将此次更新并入 Tuyan v3.8.0；待 Web / Core 实际部署验收后回填证据和公开日志。既有 v3.8.0 发布证据不替代此次 v25 验证。验证细节见 [验收记录](docs/channel-audit/2026-09-23-openai-anthropic/validation.md)。
+- [x] Web / Core 上线：用户明确授权，PR #230 / `9a52aa7` 已部署；CI、固定镜像与运行来源、5 个容器健康、1,032 个静态身份及 5 个 OpenRouter 路由、桌面与 390/320px 只读设置验收通过。此次更新并入 Tuyan v3.8.0，保留 2026-09-22 原发布日期，记录 2026-09-23 追加日期和本次实际部署来源；公开日志随发布记录 PR 回填。Benchmark 执行器仍关闭，无付费推理/历史重跑/遗留 Laf 发布。见 [本次发布记录](docs/releases/2026-09-23-tuyan-v3.8.0-model-update.md)。
 
 ## 2026-09-22 · Tuyan v3.8.0 Web / Core 正式发布
 
