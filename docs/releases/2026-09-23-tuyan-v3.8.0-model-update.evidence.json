@@ -1,0 +1,96 @@
+{
+  "product": "Tuyan",
+  "version": "3.8.0",
+  "originalReleaseDate": "2026-09-22",
+  "supplementDate": "2026-09-23",
+  "featureSha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20",
+  "featurePr": "https://github.com/yrjmdqmmx/Tuyan/pull/230",
+  "runs": {
+    "featurePr": 230,
+    "featureSha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20",
+    "mainCi": 35808852120,
+    "coreBuild": 35809078529,
+    "benchmarkBuild": 35809079770,
+    "coreDeploy": 35809281978,
+    "featureWebDeploy": 35809537535
+  },
+  "images": {
+    "core": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:9856c6e5e0de2102110218e6f1fa363f931932ee64d2bf1186359577a6b56bb2",
+    "benchmarkCompanion": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:aaf190de846c5e6f4084e299d71f7c4831d0ab00877a4a5a1b0fd9019c871587"
+  },
+  "host": {
+    "sha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20",
+    "healthyContainers": 5,
+    "immutableImagesMatch": true,
+    "otherServicesUnchanged": true,
+    "environmentUnchangedExceptCodeSha": true,
+    "recoveryEncryptionConfigured": true,
+    "maintenance": false,
+    "benchmarkEnabled": false
+  },
+  "registry": {
+    "version": "2026-09-23.v25",
+    "staticModels": 1032,
+    "staticFieldMismatches": 0,
+    "preservedRuntimeReferenceLimits": 189,
+    "preservedUnavailable": [
+      "deepseek-v4-flash-vision-exp",
+      "deepseek-chat-v3-0324"
+    ],
+    "openRouterNewSynchronousRoutes": 5,
+    "batchRoutesHidden": 5
+  },
+  "webArtifact": {
+    "files": 15,
+    "allBytesMatch": true
+  },
+  "browser": {
+    "checks": [
+      "Native Sol/Luna/Opus searchable by label and exact ID; distinct verified options only; defaults blank; model switch resets and restores identity preferences; main and vision persist independently; image role hides unsupported thinking.",
+      "OpenRouter Pro route has effort only, no native mode field; Opus route has no off/none and retains the channel-specific high default in help.",
+      "390px and 320px: controls fit without page overflow; mobile search and model selection work; defaults remain blank."
+    ],
+    "pageErrors": [],
+    "blockedMutations": [],
+    "viewports": [
+      1440,
+      390,
+      320
+    ],
+    "mode": "anonymous production read-only"
+  },
+  "validation": {
+    "mainCi": "success",
+    "localTests": {
+      "root": 20,
+      "core": 1015,
+      "web": 519,
+      "miniprogram": 121
+    },
+    "ciReferenceMatrixDrift": "Initial CI detected stale generated docs/reference-upload/model-matrix.json; regenerated it, all four generator checks and final PR/main CI passed.",
+    "runtimeCatalogComparison": "Static maxReferenceImages fallback differs from the existing runtime upload policy for 189 historical IDs; all matched both the shared policy and the pre-deploy production snapshot. No runtime limit change."
+  },
+  "boundaries": {
+    "paidInferenceCalls": 0,
+    "historicTaskReplays": 0,
+    "wechatPlatformRelease": false,
+    "legacyLafDeployment": false,
+    "modelEntitlementVerified": false,
+    "actualBillingVerified": false,
+    "benchmarkExecutorEnabled": false
+  },
+  "changelogValidation": {
+    "webTests": 520,
+    "webBuild": "passed",
+    "browser": "local Chinese/English; desktop 1440px and mobile 390px/320px",
+    "sameVersionAndOriginalDatePreserved": true,
+    "overviewEntries": 26,
+    "categoryCounts": [
+      13,
+      5,
+      4,
+      4
+    ],
+    "newModelSummaryOccurrences": 1
+  }
+}

@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-09-22"
+    "through": "2026-09-23"
   },
   "entries": [
     {
@@ -22,7 +22,8 @@
         "Web"
       ],
       "notes": [
-        "可选型号和功能受渠道、接口及账号权益限制；目录和参数适配不代表全部账号权限或真实推理效果已验证。"
+        "可选型号和功能受渠道、接口及账号权益限制；目录和参数适配不代表全部账号权限或真实推理效果已验证。",
+        "2026-09-23 追加模型更新；本版本原发布日期为 2026-09-22。"
       ],
       "changes": [
         {
@@ -51,7 +52,10 @@
           "sourceIds": [
             "implementation-v380",
             "v380-core",
-            "v380-web"
+            "v380-web",
+            "v380-model-update-code",
+            "v380-model-update-core",
+            "v380-model-update-web"
           ]
         },
         {
@@ -65,6 +69,19 @@
             "implementation-v380",
             "v380-core",
             "v380-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增 GPT-6 Sol、GPT-6 Luna 和 Claude Opus 5.5，支持主模型规划与参考图识别；OpenRouter 同步接入已核实的普通及 Pro 路由。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v380-model-update-code",
+            "v380-model-update-core",
+            "v380-model-update-web"
           ]
         },
         {
@@ -176,7 +193,10 @@
             "reference-budget-1",
             "universal-api-0",
             "universal-api-1",
-            "universal-api-2"
+            "universal-api-2",
+            "v380-model-update-code",
+            "v380-model-update-core",
+            "v380-model-update-web"
           ]
         },
         {
@@ -355,6 +375,24 @@
           "kind": "pull-request",
           "label": "工作台功能与界面更新",
           "url": "https://github.com/yrjmdqmmx/Tuyan/pull/228"
+        },
+        {
+          "id": "v380-model-update-code",
+          "kind": "commit",
+          "label": "新模型接入与恢复保护",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/commit/9a52aa7414c72a02fcaf285dbb020dbdc68c6c20"
+        },
+        {
+          "id": "v380-model-update-core",
+          "kind": "deployment",
+          "label": "新模型配套服务发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35809281978"
+        },
+        {
+          "id": "v380-model-update-web",
+          "kind": "deployment",
+          "label": "新模型 Web 发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/35809537535"
         }
       ],
       "legacyAnchors": [

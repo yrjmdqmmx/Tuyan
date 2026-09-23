@@ -26,6 +26,24 @@ test('owner-confirmed early versions and announcement-based 3.0.0 date are retai
   assert.equal(versions.find(entry => entry.version === '3.0.2').announcementDate, '2026-09-03')
   assert.equal(versions.find(entry => entry.version === '3.0.2').release.date, '2026-09-02')
 })
+test('the deployed model supplement belongs to the original Tuyan v3.8.0 release', () => {
+  const versions = publishedVersions(data, 'tuyan')
+  const matches = versions.filter(entry => entry.version === '3.8.0')
+  assert.equal(matches.length, 1)
+  const entry = matches[0]
+  assert.equal(entry.release.date, '2026-09-22')
+  assert.ok(entry.notes.some(note => note.includes('2026-09-23 追加模型更新')))
+  const changes = entry.changes.filter(change => change.text.includes('GPT-6 Sol'))
+  assert.equal(changes.length, 1)
+  assert.match(changes[0].text, /GPT-6 Luna.*Claude Opus 5.5.*OpenRouter/)
+  const sources = entry.sources.filter(source => changes[0].sourceIds.includes(source.id))
+  assert.equal(sources.filter(source => source.kind === 'deployment').length, 2)
+  assert.ok(sources.some(source => source.kind === 'commit'))
+  assert.equal(groupPublishedUpdates(data).flatMap(group => group.items).filter(item => item.entry.id === entry.id).length, 1)
+  for (const product of ['benchmark', 'openacad']) {
+    assert.doesNotMatch(JSON.stringify(publishedVersions(data, product)), /GPT-6 Sol|Claude Opus 5.5/)
+  }
+})
 for (const [name, mutate, expected] of [
   ['draft version', copy => { copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased' }, /only released versions/],
   ['local change', copy => { copy.entries[0].changes[0].state = 'local-verified' }, /unreleased changes/],

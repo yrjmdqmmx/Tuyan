@@ -149,5 +149,10 @@
   "可选型号和功能受渠道、接口及账号权益限制；目录和参数适配不代表全部账号权限或真实推理效果已验证。": "Model availability and features depend on the channel, API and account access. Catalog and parameter support do not imply verified access or real inference results for every account.",
   "工作台功能与界面更新": "Workbench features and interface update",
   "配套服务发布": "Companion service deployment",
-  "Web 发布": "Web deployment"
+  "Web 发布": "Web deployment",
+  "新增 GPT-6 Sol、GPT-6 Luna 和 Claude Opus 5.5，支持主模型规划与参考图识别；OpenRouter 同步接入已核实的普通及 Pro 路由。": "Add GPT-6 Sol, GPT-6 Luna and Claude Opus 5.5 for planning and reference-image recognition, including verified standard and Pro routes on OpenRouter.",
+  "2026-09-23 追加模型更新；本版本原发布日期为 2026-09-22。": "Model update added on 2026-09-23; this version was originally released on September 22, 2026.",
+  "新模型接入与恢复保护": "New model integrations and recovery safeguards",
+  "新模型配套服务发布": "New model service deployment",
+  "新模型 Web 发布": "New model Web deployment"
 }

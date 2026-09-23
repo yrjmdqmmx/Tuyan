@@ -1,36 +1,6 @@
 {
   "asOf": "2026-09-23",
-  "tuyan": {
-    "version": "3.8.0",
-    "mode": "append-to-existing-version",
-    "note": "用户授权本次模型更新并入已发布 Tuyan v3.8.0；保留 2026-09-22 原发布日期，Web / Core 上线后记录本次追加日期和部署来源。",
-    "changes": [
-      {
-        "kind": "新增",
-        "text": "新增 GPT-6 Sol、GPT-6 Luna 和 Claude Opus 5.5，支持主模型规划与参考图识别；OpenRouter 同步支持已核实的普通及 Pro 路由。",
-        "state": "local-verified",
-        "surfaces": [
-          "Web"
-        ]
-      },
-      {
-        "kind": "优化",
-        "text": "按具体渠道和型号提供思考强度与可用模式，切换模型时分别保留偏好；默认不发送额外思考参数，原有默认模型保持不变。",
-        "state": "local-verified",
-        "surfaces": [
-          "Web"
-        ]
-      },
-      {
-        "kind": "修复",
-        "text": "补齐新型号的调用用量记录和任务恢复保护；空回答、拒绝或截断不会自动重发，已完成步骤继续复用。",
-        "state": "local-verified",
-        "surfaces": [
-          "Web"
-        ]
-      }
-    ]
-  },
+  "tuyan": null,
   "benchmark": {
     "version": null,
     "note": "后续双语、帕累托视图等已有分批上线记录，尚未指定独立 Benchmark 版本，不能归入 Tuyan v3.8.0。",
