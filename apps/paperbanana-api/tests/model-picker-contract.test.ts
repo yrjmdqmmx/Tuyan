@@ -85,7 +85,7 @@ test('known dates and version relations produce a stable newest-first order with
   assert.equal(sortModelsNewestFirst(sortModelsNewestFirst(models)).length, models.length)
   const glm = catalog.siliconflow.models.filter((model: any) => /GLM-5/.test(model.id))
   assert.deepEqual(glm.map((model: any) => model.id), ['zai-org/GLM-5.3','zai-org/GLM-5.2','Pro/zai-org/GLM-5.1'])
-  assert.equal(catalog.anthropic.models[0].id, 'claude-fable-5-1')
+  assert.equal(catalog.anthropic.models[0].id, 'claude-opus-5-5')
   assert.equal(catalog.gemini.models[0].id, 'gemini-3.8-flash')
 })
 

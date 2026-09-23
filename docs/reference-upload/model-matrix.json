@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-22.v24",
+  "registryVersion": "2026-09-23.v25",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -945,6 +945,32 @@
         "status": "unconfirmed",
         "source": "",
         "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-opus-5-5",
+      "workflow": "generation",
+      "protocol": "anthropic-messages",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 7000000,
+        "maxTotalBytes": 21000000,
+        "maxDimension": 8000,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 32000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "documented",
+        "source": "https://platform.claude.com/docs/en/build-with-claude/vision",
+        "note": "直连 Claude：单图编码后 10MB、整包 32MB；模型内部仍会缩放，4.7 及更新型号可读取更高分辨率。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
@@ -4195,6 +4221,58 @@
         "status": "unconfirmed",
         "source": "",
         "note": "该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "workflow": "generation",
+      "protocol": "openai-responses",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 16000000,
+        "maxTotalBytes": 48000000,
+        "maxDimension": 8192,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 50000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://developers.openai.com/api/docs/guides/images-vision",
+        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
+      },
+      "channelGuide": null,
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-6-sol",
+      "workflow": "generation",
+      "protocol": "openai-responses",
+      "policy": {
+        "maxCount": 8,
+        "maxBytes": 16000000,
+        "maxTotalBytes": 48000000,
+        "maxDimension": 8192,
+        "maxPixels": 32000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 50000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://developers.openai.com/api/docs/guides/images-vision",
+        "note": "平台额度低于当前通用 API 上限；模型和 detail 各自的缩放、patch 与上下文限制仍适用。"
       },
       "channelGuide": null,
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."

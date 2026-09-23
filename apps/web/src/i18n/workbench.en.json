@@ -832,5 +832,7 @@
   "开启思考时须同时填写预算；自适应模式不能同时指定固定预算。": "Enabled mode requires a budget. Adaptive mode cannot be combined with a fixed budget.",
   "思考强度与预算不能同时设置。": "Reasoning effort and budget cannot be set together.",
   "此接口的思考设置仅适用于不带参考图的生成请求。": "Reasoning controls apply only to generation requests without reference images.",
-  "思考预算（tokens）": "Reasoning budget (tokens)"
+  "思考预算（tokens）": "Reasoning budget (tokens)",
+  "GPT-6 Sol / Luna 使用独立计费的公开 API；ChatGPT / Codex 订阅不等于 API 额度。思考设为默认时不传参数。": "GPT-6 Sol / Luna use the separately billed public API. ChatGPT / Codex subscriptions do not include API credits. Default omits reasoning parameters.",
+  "Opus 5.5 的自适应思考始终开启，只能调节强度；Claude 订阅不等于 Claude API 额度。": "Opus 5.5 always uses adaptive thinking; adjust its effort instead. Claude subscriptions do not include Claude API credits."
 }

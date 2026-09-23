@@ -4,6 +4,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import type { Db } from 'mongodb'
 import { isLocalInputFailure, publicExecutionFailure } from '../../../packages/api/src/execution-errors.js'
 import { TokenDanceError } from '../../../packages/api/src/tokendance.js'
+import { auditedChannelContract } from '../../../packages/api/src/audited-channel-contracts.js'
 import type { createTokenDanceService } from './tokendance-service.js'
 
 type ConnectionService = ReturnType<typeof createTokenDanceService>
@@ -21,7 +22,14 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   const steps = db.collection<any>('paperbanana_provider_steps')
   const chunks = db.collection<any>('paperbanana_provider_step_chunks')
   const jobs = db.collection<any>('paperbanana_jobs')
-  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel])) || (task.body.thinkingSnapshot ? Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) : undefined)
+  // New audited models need durable calls even when older clients omit thinkingConfig.
+  const refreshedChannel = (task: Task) => ['main', 'vision'].map(role => {
+    const route = task.body.modelRoutes?.[role]
+    const provider = route?.accessProvider || task.body.provider
+    const model = route?.modelId || task.body[role === 'main' ? 'mainModelName' : 'referenceVisionModelName']
+    return auditedChannelContract(provider, model)?.refreshAccounting ? provider : undefined
+  }).find(Boolean)
+  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel])) || refreshedChannel(task) || (task.body.thinkingSnapshot ? Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) : undefined)
   const isManaged = (task: Task) => Boolean(managedChannel(task) || task.body.thinkingSnapshot)
   const expires = () => new Date(now() + 7 * 86400_000)
   async function acceptingData(userId: string) {
@@ -185,6 +193,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       const existing = await executions.findOne({ _id: jobId, userId })
       if (existing && existing.version !== version) throw new TokenDanceError(409, '原任务使用旧执行版本，成功步骤已保留；请核对原调用记录后处理，不能自动重放。', 'review_request', 0, true)
       const pending = await executions.findOne({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true })
+      if (!pending && existing?.needsTokenDance === false) throw new TokenDanceError(409, '原任务不可恢复，请核对原调用记录；不会重新发送请求。', 'review_request', 0, true)
       const retryAt = pending?.recovery?.retryAt?.getTime() || 0
       if (retryAt > now()) throw new TokenDanceError(429, '等待时间尚未结束，请稍后恢复原任务。', pending.recovery.action === 'retry_request' ? 'retry_request' : 'rate_limit', Math.ceil((retryAt - now()) / 1000))
       const connected = (pending?.needsTokenDance ?? (!pending?.channel || pending.channel === 'tokendance')) ? await service.credential(userId) : undefined

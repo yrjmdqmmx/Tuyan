@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-21",
+  "reviewedAt": "2026-09-23",
   "providerCalls": 0,
   "policy": "逐渠道、逐精确 ID 核对；未确认不删除、不替换、不以发布时间推断固定版本；目录身份不等于不可变权重。HTTP 200 不等于页面含模型证据，idEvidence 单独记录。",
   "sources": [
@@ -26998,6 +26998,186 @@
       ],
       "idEvidence": "exact-id",
       "notes": "OpenRouter 自身公开目录 ID 与 canonical_slug；该目录身份不证明原厂固定快照或账号权限，不套用原厂发布日期/价格。"
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-6-sol",
+      "displayName": "GPT-6 Sol",
+      "kind": "fixed",
+      "versionId": "gpt-6-sol",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6-sol"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Official model page identifies this exact ID as the current snapshot; no dated or -pro API ID has been confirmed."
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-6-luna",
+      "displayName": "GPT-6 Luna",
+      "kind": "fixed",
+      "versionId": "gpt-6-luna",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6-luna"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Official model page identifies this exact ID as the current snapshot; no dated or -pro API ID has been confirmed."
+    },
+    {
+      "channel": "anthropic",
+      "apiModelId": "claude-opus-5-5",
+      "displayName": "Claude Opus 5.5",
+      "kind": "fixed",
+      "versionId": "claude-opus-5-5",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/opus-5-5/overview",
+        "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "4.6 and later dateless IDs are pinned snapshots, not rolling aliases."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-luna-pro",
+      "displayName": "GPT-6 Luna Pro",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-luna-pro-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-luna-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-luna-pro:batch",
+      "displayName": "GPT-6 Luna Pro (batch)",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-luna-pro-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-luna-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-luna",
+      "displayName": "GPT-6 Luna",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-luna-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-luna"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-luna:batch",
+      "displayName": "GPT-6 Luna (batch)",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-luna-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-luna"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-sol-pro",
+      "displayName": "GPT-6 Sol Pro",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-sol-pro-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-sol-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-sol-pro:batch",
+      "displayName": "GPT-6 Sol Pro (batch)",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-sol-pro-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-sol-pro"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-sol",
+      "displayName": "GPT-6 Sol",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-sol-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-sol"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "openai/gpt-6-sol:batch",
+      "displayName": "GPT-6 Sol (batch)",
+      "kind": "fixed",
+      "versionId": "openai/gpt-6-sol-20260922",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/openai/gpt-6-sol"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "anthropic/claude-opus-5.5",
+      "displayName": "Claude Opus 5.5",
+      "kind": "fixed",
+      "versionId": "anthropic/claude-opus-5.5-20260921",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/anthropic/claude-opus-5.5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "openrouter",
+      "apiModelId": "anthropic/claude-opus-5.5:batch",
+      "displayName": "Claude Opus 5.5 (batch)",
+      "kind": "fixed",
+      "versionId": "anthropic/claude-opus-5.5-20260921",
+      "checkedAt": "2026-09-23",
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/anthropic/claude-opus-5.5"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

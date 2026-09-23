@@ -16,6 +16,7 @@ const current = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog
 const channels = ['cn', 'runware'].flatMap(name => JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/${name}-directory.json`), 'utf8')))
 
 const officialContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/official-contracts.json'), 'utf8'))
+const refreshContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/frontier-refresh-contracts.json'), 'utf8'))
 const officialAudits = Object.fromEntries(['xai', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat'].map(provider => [provider, JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/v24/${provider}.json`), 'utf8'))]))
 
 function assertOfficialEvidence(provider, model) {
@@ -79,7 +80,15 @@ test('every original audit row has an explicit implementation or exclusion decis
       const previous = audit.decisions.some((row) => row.provider === provider && row.resolvedId === model.id)
       const added = channels.find(row => row.channel === provider && row.apiModelId === model.id)
       const official = officialContracts[provider + '/' + model.id]
-      assert.ok(previous || added || official, `${provider}/${model.id} lacks audit evidence`)
+      const refresh = refreshContracts[provider + '/' + model.id]
+      assert.ok(previous || added || official || refresh, `${provider}/${model.id} lacks audit evidence`)
+      if (refresh) {
+        assert.deepEqual(refresh.roles, model.roles)
+        assert.equal(refresh.realInference, false)
+        assert.equal(refresh.accountEntitlement, false)
+        assert.equal(refresh.billingVerified, false)
+        assert.match(refresh.source, /^https:\/\//)
+      }
       if (official) assertOfficialEvidence(provider, model)
       if (added) {
         assert.equal(added.after, '适配链路已完成但真实调用未验证')

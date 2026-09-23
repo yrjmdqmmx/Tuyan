@@ -12,6 +12,12 @@ const get = (p,id) => registry[p].models.find(m => m.id === id)
 
 test('760 historical identities and capabilities remain unchanged except the explicitly added refine controls', () => {
   const historical = structuredClone(registry)
+  for (const [provider, ids] of [['openai', ['gpt-6-sol', 'gpt-6-luna']], ['anthropic', ['claude-opus-5-5']]]) {
+    for (const id of ids) {
+      assert.deepEqual(historical[provider].models.find(model => model.id === id).roles, ['main', 'vision'])
+      historical[provider].models = historical[provider].models.filter(model => model.id !== id)
+    }
+  }
   for (const p of ['tokenhub', 'xiaomi', 'runware', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat']) delete historical[p]
   for (const id of ['grok-4.7', 'grok-4.20-multi-agent-0309', 'grok-4.20-multi-agent']) {
     const added = historical.xai.models.find(m => m.id === id)

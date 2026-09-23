@@ -1,0 +1,123 @@
+[
+  {
+    "provider": "tokendance",
+    "url": "https://tokendance.space/gateway/v1/models",
+    "checkedAt": "2026-09-23T01:12:43.247Z",
+    "httpStatus": 200,
+    "sha256": "c1452c11af9a7e74f1c6e0bbc2442677931c963b0daf7afad9202e10154df52a",
+    "directoryCount": 101,
+    "candidateIds": [],
+    "authenticated": false,
+    "decision": "No candidate IDs present in this public snapshot; no inference about retirement or private entitlements."
+  },
+  {
+    "provider": "tokenhub",
+    "url": "https://cloud.tencent.com/document/product/1823/130079",
+    "checkedAt": "2026-09-23T01:12:41.176Z",
+    "httpStatus": 200,
+    "bytes": 538015,
+    "sha256": "a39df76a6816b36d2563766491bce4c38ccca8b82c599b27d4b2c74d881c14c9",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "siliconflow",
+    "url": "https://www.siliconflow.cn/models",
+    "checkedAt": "2026-09-23T01:12:41.318Z",
+    "httpStatus": 200,
+    "bytes": 525396,
+    "sha256": "8ee2b01fb57a51b4a61fdad420bd23b10ebe78c8de7597359b2da6132893dea6",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "together",
+    "url": "https://docs.together.ai/docs/serverless/models",
+    "checkedAt": "2026-09-23T01:12:42.074Z",
+    "httpStatus": 200,
+    "bytes": 532752,
+    "sha256": "35f42f7168178939f299d8a31926dc81038a4830209891da2f5808d22707fe44",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "fireworks",
+    "url": "https://app.fireworks.ai/models",
+    "checkedAt": "2026-09-23T01:12:43.242Z",
+    "httpStatus": 200,
+    "bytes": 2531724,
+    "sha256": "1158e93261d9b2805b41474f4d8d113b6d1625e564563eafdcb04f601dc40e19",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "fal",
+    "url": "https://fal.ai/llms.txt",
+    "checkedAt": "2026-09-23T01:12:41.581Z",
+    "httpStatus": 200,
+    "bytes": 7898,
+    "sha256": "3807010fb3254f21cf1e9b16c02ad84b7efb8c656a21486a34e0ad397ab1c1ad",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "replicate",
+    "url": "https://replicate.com/collections/language-models",
+    "checkedAt": "2026-09-23T01:12:42.167Z",
+    "httpStatus": 200,
+    "bytes": 249400,
+    "sha256": "8689cb522c01ea11312abbc81c7169996a1a1aaceab99abc072afd4ea5152638",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "runware",
+    "url": "https://runware.ai/docs/models",
+    "checkedAt": "2026-09-23T01:12:41.969Z",
+    "httpStatus": 200,
+    "bytes": 757194,
+    "sha256": "55a7573025e7e7590117da88942f006fc5d8a3f3fbde56993ad466273e2d09cf",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "bailian",
+    "url": "https://help.aliyun.com/zh/model-studio/models",
+    "checkedAt": "2026-09-23T01:34:38.333Z",
+    "httpStatus": 200,
+    "bytes": 94896,
+    "sha256": "28f40f9da2707966bdbdbaef322805590e4de9f43b0427aadd52492bc1617b5e",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "ark",
+    "url": "https://docs.volcengine.com/docs/82379/1330310",
+    "checkedAt": "2026-09-23T01:34:39.091Z",
+    "httpStatus": 200,
+    "bytes": 1867718,
+    "sha256": "9472482745f23cd67fd177eaf3a78b2e7159b932683fa58e7ed12126ac4b420e",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "qianfan",
+    "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+    "checkedAt": "2026-09-23T01:34:38.719Z",
+    "httpStatus": 200,
+    "bytes": 375985,
+    "sha256": "9e1d4f91dd9a50ddcaa751aa74237e46181cbf217222b0778de14971c7a2ddda",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  },
+  {
+    "provider": "iflytek",
+    "url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+    "checkedAt": "2026-09-23T01:34:41.427Z",
+    "httpStatus": 200,
+    "bytes": 323051,
+    "sha256": "998341e8632500525f102ff1419fa375618d3a61e4e540107f968071d5b33816",
+    "candidateMentions": [],
+    "decision": "Not confirmed in checked public material; absence or retrieval failure does not establish retirement."
+  }
+]

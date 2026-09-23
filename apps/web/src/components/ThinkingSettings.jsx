@@ -6,8 +6,8 @@ import { validateThinkingOptions } from '../lib/thinking'
 
 const labels = {main:'主模型 / 规划', vision:'视觉识别', image:'图像生成 / 编辑'}
 const values = {
-  'zh-CN': {true:'开启',false:'关闭',enabled:'开启',disabled:'关闭',adaptive:'自适应',none:'不思考',off:'关闭',minimal:'极低',low:'低',medium:'中',high:'高',xhigh:'更高',max:'最高',ultra:'极高','very low':'极低','very high':'极高'},
-  en: {true:'On',false:'Off',enabled:'On',disabled:'Off',adaptive:'Adaptive',none:'None',off:'Off',minimal:'Minimal',low:'Low',medium:'Medium',high:'High',xhigh:'Extra high',max:'Maximum',ultra:'Very high','very low':'Very low','very high':'Very high'},
+  'zh-CN': {true:'开启',false:'关闭',enabled:'开启',disabled:'关闭',adaptive:'自适应',standard:'标准',pro:'Pro（更多推理）',none:'不思考',off:'关闭',minimal:'极低',low:'低',medium:'中',high:'高',xhigh:'更高',max:'最高',ultra:'极高','very low':'极低','very high':'极高'},
+  en: {true:'On',false:'Off',enabled:'On',disabled:'Off',adaptive:'Adaptive',standard:'Standard',pro:'Pro (more reasoning)',none:'None',off:'Off',minimal:'Minimal',low:'Low',medium:'Medium',high:'High',xhigh:'Extra high',max:'Maximum',ultra:'Very high','very low':'Very low','very high':'Very high'},
 }
 
 function ThinkingHelp({ control, profile, label }) {

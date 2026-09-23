@@ -298,3 +298,41 @@ test('Runware pre-transport thinking validation cannot become a resumable pendin
     assert.deepEqual([execution.recovery.canResume, execution.recovery.action, execution.recovery.requestState, execution.recovery.billingStatus], [false, 'change_input', 'not_sent', 'not_called'])
   } finally { await runtime.close() }
 })
+
+test('new models retain paid-call checkpoints even for old clients without thinkingConfig', async () => {
+  for (const [provider, model] of [['openai', 'gpt-6-sol'], ['openai', 'gpt-6-luna'], ['anthropic', 'claude-opus-5-5'], ['openrouter', 'anthropic/claude-opus-5.5']]) {
+    const f = fixture(), original = task('refresh-' + model, false)
+    original.routeSecrets = { [provider]: 'fixture-private-key' }
+    original.body = { ...original.body, provider, mainModelName: model }
+    await f.addJob(original)
+    let calls = 0
+    const descriptor = ['text', provider, model, 'system', 'user']
+    await assert.rejects(f.workflow.run(original, async () => {
+      assert.equal(f.workflow.active(), true)
+      assert.equal(f.workflow.thinking(), undefined)
+      await f.workflow.call(descriptor, async () => { calls++; return 'saved' })
+      await f.workflow.call([...descriptor, 'next'], async () => { throw refused() })
+    }), { status: 402 })
+    const restarted = f.restart()
+    await restarted.resume(original.jobId, 'thinking-owner', async resumed => {
+      assert.equal(resumed.body.mainModelName, model)
+      assert.equal(resumed.body.thinkingSnapshot, undefined)
+      await restarted.run(resumed, async () => {
+        assert.equal(await restarted.call(descriptor, async () => { calls++; return 'must not run' }), 'saved')
+      })
+    })
+    assert.equal(calls, 1)
+  }
+})
+
+test('new model transport with unknown result is not replayed after process restart', async () => {
+  const f = fixture(), original = task('refresh-unknown', false)
+  original.body = { ...original.body, configurationMode: 'advanced', modelRoutes: { main: { accessProvider: 'openai', modelId: 'gpt-6-luna' } } }
+  await f.addJob(original)
+  let calls = 0
+  await assert.rejects(f.workflow.run(original, () => f.workflow.call(['text', 'openai', 'gpt-6-luna'], async () => { calls++; throw new Error('fixture reply lost') })), /reply lost/)
+  const restarted = f.restart()
+  await restarted.reconcile(original.jobId)
+  await assert.rejects(restarted.resume(original.jobId, 'thinking-owner', async () => { calls++ }), { status: 409 })
+  assert.equal(calls, 1)
+})

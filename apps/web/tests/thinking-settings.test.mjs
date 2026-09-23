@@ -132,3 +132,23 @@ test('client job helpers transmit optional settings for create and refine withou
     }
   } finally {globalThis.fetch=fetcher}
 })
+
+test('September 23 exact models expose only native options and changing identities preserves independent role choices',()=>{
+  const ids={main:{provider:'openai',modelId:'gpt-6-sol',protocol:'openai-responses'},vision:{provider:'anthropic',modelId:'claude-opus-5-5',protocol:'anthropic-messages'},image:{provider:'openai',modelId:'gpt-image-2',protocol:'openai-images'}}
+  const settings=reconcileThinkingSettings(null,ids)
+  render(React.createElement(Harness,{initial:settings}))
+  const values=label=>Array.from(screen.getByLabelText(label).options).map(option=>option.value)
+  assert.deepEqual(values('主模型 / 规划思考强度'),['','"none"','"low"','"medium"','"high"','"xhigh"','"max"'])
+  assert.deepEqual(values('主模型 / 规划思考模式'),['','"standard"','"pro"'])
+  assert.deepEqual(values('视觉识别思考强度'),['','"low"','"medium"','"high"','"xhigh"','"max"'])
+  assert.equal(screen.queryByLabelText('视觉识别思考模式'),null)
+  assert.equal(screen.queryByLabelText('图像生成 / 编辑思考强度'),null)
+  for(const c of screen.getAllByRole('combobox'))assert.equal(c.value,'')
+  settings.roles.main.options={effort:'low',mode:'pro'};settings.roles.vision.options={effort:'high'}
+  const changed=rememberThinkingSettings(reconcileThinkingSettings(settings,{...ids,main:{...ids.main,modelId:'gpt-6-luna'}}),settings)
+  assert.deepEqual(changed.roles.main.options,{})
+  assert.deepEqual(changed.roles.vision.options,{effort:'high'})
+  const back=reconcileThinkingSettings(changed,ids)
+  assert.deepEqual(back.roles.main.options,{effort:'low',mode:'pro'})
+  assert.deepEqual(compileThinkingSelection(changed.roles.main,'main').wire,{})
+})
