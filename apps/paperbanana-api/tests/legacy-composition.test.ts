@@ -1618,13 +1618,15 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   }
 
   const openaiOrdered = openai.providers.openai.models.filter((model: any) => model.roles.includes('main'))
-  assert.deepEqual(openaiOrdered.slice(0, 4).map((model: any) => [model.id, model.releasedAt]), [
+  assert.deepEqual(openaiOrdered.slice(0, 6).map((model: any) => [model.id, model.releasedAt]), [
+    ['gpt-6-luna', '2026-09-22'],
+    ['gpt-6-sol', '2026-09-22'],
     ['gpt-6-astra', '2026-09-03'],
     ['gpt-5.6-luna', '2026-07-09'],
     ['gpt-5.6-sol', '2026-07-09'],
     ['gpt-5.6-terra', '2026-07-09'],
   ])
-  assert.equal(openaiOrdered[0].releaseOrder > openaiOrdered[1].releaseOrder, true)
+  assert.equal(openaiOrdered[2].releaseOrder > openaiOrdered[3].releaseOrder, true)
 
   const ark = await legacy.default(context({ action: 'modelRegistry', provider: 'ark' }))
   assert.equal(ark.code, 0)
@@ -1734,7 +1736,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-22.v24')
+    assert.equal(result.registryVersion, '2026-09-23.v25')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2986,7 +2988,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-22.v24')
+    assert.equal(registry.registryVersion, '2026-09-23.v25')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5324,7 +5326,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-22.v24')
+    assert.equal(registry.registryVersion, '2026-09-23.v25')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities

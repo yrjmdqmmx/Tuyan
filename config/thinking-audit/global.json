@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-09-22",
+  "checkedAt": "2026-09-23",
   "schemaVersion": 1,
   "scope": "Local-only official documentation and unauthenticated public directories; zero inference/deployment/history replay.",
-  "catalogVersion": "2026-09-22.v24",
+  "catalogVersion": "2026-09-23.v25",
   "providers": [
     "openai",
     "anthropic",
@@ -23,17 +23,17 @@
   ],
   "counts": {
     "openai": {
-      "staticModels": 66,
-      "profiles": 66,
-      "supported": 30,
+      "staticModels": 68,
+      "profiles": 68,
+      "supported": 32,
       "unsupported": 29,
       "unconfirmed": 5,
       "fixed": 2
     },
     "anthropic": {
-      "staticModels": 11,
-      "profiles": 11,
-      "supported": 11,
+      "staticModels": 12,
+      "profiles": 12,
+      "supported": 12,
       "unsupported": 0,
       "unconfirmed": 0,
       "fixed": 0
@@ -80,10 +80,10 @@
     },
     "openrouter": {
       "staticModels": 0,
-      "profiles": 496,
-      "supported": 223,
+      "profiles": 506,
+      "supported": 228,
       "unsupported": 172,
-      "unconfirmed": 71,
+      "unconfirmed": 76,
       "fixed": 30
     },
     "fal": {
@@ -61965,6 +61965,922 @@
           "max": 3
         }
       }
+    },
+    {
+      "id": "refresh:openai:gpt-6-sol",
+      "provider": "openai",
+      "modelIds": [
+        "gpt-6-sol"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-responses"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        },
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "standard",
+            "pro"
+          ],
+          "default": "standard",
+          "field": "reasoning.mode"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "dropSamplingWhenThinking": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "logprobs",
+          "top_logprobs"
+        ]
+      },
+      "conflicts": [
+        "Sampling/logprobs are unavailable unless effort=none.",
+        "Chat Completions function calling requires effort=none; Tuyan uses Responses."
+      ],
+      "notes": [
+        "Default means omission; never insert the provider default.",
+        "reasoning.mode and effort are independent; pro can consume more tokens at the same token rates."
+      ],
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6-sol",
+        "https://developers.openai.com/api/docs/guides/reasoning",
+        "https://developers.openai.com/api/docs/guides/latest-model"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort",
+        "reasoning.mode"
+      ],
+      "dropSamplingWhenThinking": true,
+      "operations": [
+        "text"
+      ],
+      "allowEffortWithoutThinking": true
+    },
+    {
+      "id": "refresh:openai:gpt-6-luna",
+      "provider": "openai",
+      "modelIds": [
+        "gpt-6-luna"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-responses"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        },
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "standard",
+            "pro"
+          ],
+          "default": "standard",
+          "field": "reasoning.mode"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "dropSamplingWhenThinking": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "logprobs",
+          "top_logprobs"
+        ]
+      },
+      "conflicts": [
+        "Sampling/logprobs are unavailable unless effort=none.",
+        "Chat Completions function calling requires effort=none; Tuyan uses Responses."
+      ],
+      "notes": [
+        "Default means omission; never insert the provider default.",
+        "reasoning.mode and effort are independent; pro can consume more tokens at the same token rates."
+      ],
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6-luna",
+        "https://developers.openai.com/api/docs/guides/reasoning",
+        "https://developers.openai.com/api/docs/guides/latest-model"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort",
+        "reasoning.mode"
+      ],
+      "dropSamplingWhenThinking": true,
+      "operations": [
+        "text"
+      ],
+      "allowEffortWithoutThinking": true
+    },
+    {
+      "id": "refresh:anthropic:claude-opus-5-5",
+      "provider": "anthropic",
+      "modelIds": [
+        "claude-opus-5-5"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "anthropic-messages"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "field": "output_config.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "thinkingCannotDisable": true,
+        "dropSamplingWhenThinking": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "logprobs",
+          "top_logprobs"
+        ]
+      },
+      "conflicts": [
+        "thinking.type disabled/enabled and budget_tokens are rejected; only adaptive is valid.",
+        "Forced tool_choice any/tool is unsupported."
+      ],
+      "notes": [
+        "Default means omission; never insert the provider default.",
+        "Adaptive thinking is always on; only effort is exposed. max_tokens=16384 remains the existing combined output ceiling."
+      ],
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/opus-5-5/overview",
+        "https://platform.claude.com/docs/en/build-with-claude/effort",
+        "https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "thinking.type",
+        "thinking.budget_tokens",
+        "output_config.effort"
+      ],
+      "dropSamplingWhenThinking": true,
+      "operations": [
+        "text"
+      ],
+      "allowEffortWithoutThinking": true
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-luna-pro",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-luna-pro"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Only per-model supported_efforts exposed; no manual budget is declared.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-luna-pro-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-luna-pro:batch",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-luna-pro:batch"
+      ],
+      "roles": [],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Batch-only route; no synchronous adapter.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-luna-pro-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-luna",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-luna"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Only per-model supported_efforts exposed; no manual budget is declared.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-luna-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-luna:batch",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-luna:batch"
+      ],
+      "roles": [],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Batch-only route; no synchronous adapter.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-luna-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-sol-pro",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-sol-pro"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Only per-model supported_efforts exposed; no manual budget is declared.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-sol-pro-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-sol-pro:batch",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-sol-pro:batch"
+      ],
+      "roles": [],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Batch-only route; no synchronous adapter.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-sol-pro-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-sol",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-sol"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Only per-model supported_efforts exposed; no manual budget is declared.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-sol-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:openai/gpt-6-sol:batch",
+      "provider": "openrouter",
+      "modelIds": [
+        "openai/gpt-6-sol:batch"
+      ],
+      "roles": [],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "Batch-only route; no synchronous adapter.",
+        "Pro routes are channel-specific IDs, not new direct OpenAI model IDs."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "seed",
+        "structured_outputs",
+        "tool_choice",
+        "tools"
+      ],
+      "reasoningMetadata": {
+        "mandatory": false,
+        "default_enabled": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low",
+          "none"
+        ],
+        "default_effort": "medium"
+      },
+      "contextLength": 1050000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "openai/gpt-6-sol-20260922"
+    },
+    {
+      "id": "refresh:openrouter:chat:anthropic/claude-opus-5.5",
+      "provider": "openrouter",
+      "modelIds": [
+        "anthropic/claude-opus-5.5"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "max",
+            "xhigh",
+            "high",
+            "medium",
+            "low"
+          ],
+          "default": "high",
+          "field": "reasoning.effort"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": true
+      },
+      "conflicts": [],
+      "notes": [
+        "Only per-model supported_efforts exposed; no manual budget is declared.",
+        "The channel lists high as default; native Anthropic medium is not copied."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_completion_tokens",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "stop",
+        "structured_outputs",
+        "temperature",
+        "tool_choice",
+        "tools",
+        "verbosity"
+      ],
+      "reasoningMetadata": {
+        "mandatory": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low"
+        ],
+        "default_effort": "high"
+      },
+      "contextLength": 1000000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "anthropic/claude-opus-5.5-20260921"
+    },
+    {
+      "id": "refresh:openrouter:chat:anthropic/claude-opus-5.5:batch",
+      "provider": "openrouter",
+      "modelIds": [
+        "anthropic/claude-opus-5.5:batch"
+      ],
+      "roles": [],
+      "protocols": [
+        "openrouter-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": {
+        "exclusiveEffortBudget": true,
+        "thinkingCannotDisable": true
+      },
+      "conflicts": [],
+      "notes": [
+        "Batch-only route; no synchronous adapter.",
+        "The channel lists high as default; native Anthropic medium is not copied."
+      ],
+      "sourceUrls": [
+        "https://openrouter.ai/api/v1/models",
+        "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+      ],
+      "checkedAt": "2026-09-23",
+      "clearFields": [],
+      "operations": [
+        "text"
+      ],
+      "supportedParameters": [
+        "include_reasoning",
+        "max_tokens",
+        "reasoning",
+        "reasoning_effort",
+        "response_format",
+        "stop",
+        "structured_outputs",
+        "tool_choice",
+        "tools",
+        "verbosity"
+      ],
+      "reasoningMetadata": {
+        "mandatory": true,
+        "supported_efforts": [
+          "max",
+          "xhigh",
+          "high",
+          "medium",
+          "low"
+        ],
+        "default_effort": "high"
+      },
+      "contextLength": 1000000,
+      "maximumCompletionTokens": 128000,
+      "canonicalSlug": "anthropic/claude-opus-5.5-20260921"
     }
   ],
   "excluded": [

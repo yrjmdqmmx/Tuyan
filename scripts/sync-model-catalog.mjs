@@ -39,7 +39,7 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
