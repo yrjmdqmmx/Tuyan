@@ -144,18 +144,18 @@ test('MiniMax keys are isolated by region and a region switch preserves the exac
   // A finished catalog request and its derived selection effect are separate
   // React updates; interact only after the selected route is actually admitted.
   await waitFor(() => assert.equal(selection().valid, true));
-  const key = screen.getByLabelText('MiniMax 接入密钥');
-  fireEvent.change(screen.getByLabelText('MiniMax 区域'), { target: { value: 'cn' } });
+  const key = screen.getByLabelText('稀宇科技 接入密钥');
+  fireEvent.change(screen.getByLabelText('稀宇科技区域'), { target: { value: 'cn' } });
   assert.equal(key.value, '');
   assert.equal(selection().modelId, 'same-regional-id');
   assert.deepEqual(selection().providerRegions, { minimax: 'cn' });
   fireEvent.change(key, { target: { value: 'cn-secret' } });
-  fireEvent.change(screen.getByLabelText('MiniMax 区域'), { target: { value: 'global' } });
+  fireEvent.change(screen.getByLabelText('稀宇科技区域'), { target: { value: 'global' } });
   assert.equal(key.value, 'global-secret');
-  fireEvent.change(screen.getByLabelText('MiniMax 区域'), { target: { value: 'cn' } });
+  fireEvent.change(screen.getByLabelText('稀宇科技区域'), { target: { value: 'cn' } });
   assert.equal(key.value, 'cn-secret');
   await waitFor(() => assert.equal(selection().valid, true));
-  assert.equal(screen.getByRole('link', { name: /打开 MiniMax/ }).href, 'https://platform.minimaxi.com/user-center/basic-information/interface-key');
+  assert.equal(screen.getByRole('link', { name: /打开稀宇科技/ }).href, 'https://platform.minimaxi.com/user-center/basic-information/interface-key');
 });
 
 test('unconfirmed capabilities permit catalog inspection but never submission; unsupported selections stay intact', async () => {
@@ -196,9 +196,9 @@ test('account remount clears the private regional key ring and a late catalog re
   assert.deepEqual(selection(), { provider: '', modelId: '', key: '', valid: false });
   await openSettings();
   fireEvent.click(screen.getByRole('button', { name: '主模型' }));
-  fireEvent.click(screen.getByRole('button', { name: 'MiniMax', exact: true }));
+  fireEvent.click(screen.getByRole('button', { name: '稀宇科技', exact: true }));
   fireEvent.click(screen.getByRole('button', { name: '选择 Region fixture' }));
-  assert.equal(screen.getByLabelText('MiniMax 接入密钥').value, '');
+  assert.equal(screen.getByLabelText('稀宇科技 接入密钥').value, '');
 });
 
 test('anonymous model settings leave login entry to the shared page header', async () => {

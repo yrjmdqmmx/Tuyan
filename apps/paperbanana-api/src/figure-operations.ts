@@ -93,9 +93,18 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
     if (['tokendance', 'custom'].includes(current.provider)) return workflow.record(record)
     await operations.updateOne({ _id: current.id, userId: current.userId, status: 'running' }, { $push: { providerCalls: record } } as any)
   }
+  const currentWorkflow = () => context.getStore() ? workflow : baseWorkflow
   const hooks = {
-    run: baseWorkflow.run,
-    scope<T>(name: string, operation: () => Promise<T>) { return (context.getStore() ? workflow : baseWorkflow).scope(name, operation) },
+    // This adapter is installed for the whole legacy runtime, including ordinary
+    // workbench jobs. Preserve its complete transport/recovery contract while
+    // selecting only the figure engine inside an active figure operation.
+    run(...args: Parameters<Workflow['run']>) { return currentWorkflow().run(...args) },
+    active() { return currentWorkflow().active() },
+    thinkingAvailable() { return currentWorkflow().thinkingAvailable() },
+    thinking() { return currentWorkflow().thinking() },
+    async pending() { await ensureCurrent(); return currentWorkflow().pending() },
+    async checkpoint(value: Parameters<Workflow['checkpoint']>[0]) { await ensureCurrent(); return currentWorkflow().checkpoint(value) },
+    scope<T>(name: string, operation: () => Promise<T>) { return currentWorkflow().scope(name, operation) },
     async key(original: string) {
       if (!context.getStore()) return baseWorkflow.key(original)
       await ensureCurrent()
@@ -104,11 +113,11 @@ export function createFigureOperations({ db, service, studio, baseWorkflow, now 
       return value
     },
     record: addCall,
-    async call<T>(descriptor: unknown, operation: () => Promise<T>): Promise<T> {
+    async call<T>(descriptor: unknown, operation: () => Promise<T>, role?: 'main' | 'vision' | 'image'): Promise<T> {
       const current = context.getStore()
-      if (!current) return baseWorkflow.call(descriptor, operation)
+      if (!current) return baseWorkflow.call(descriptor, operation, role)
       await ensureCurrent()
-      if (['tokendance', 'custom'].includes(current.provider)) return workflow.call(descriptor, async () => { await ensureCurrent(); return operation() })
+      if (['tokendance', 'custom'].includes(current.provider)) return workflow.call(descriptor, async () => { await ensureCurrent(); return operation() }, role)
       // Native adapters do not enter the managed-provider engine. Their entire
       // single-call operation is claimed durably below and never auto-resumed.
       try {

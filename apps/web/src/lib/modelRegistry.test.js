@@ -82,7 +82,6 @@ test('OpenRouter compatible choices and disabled entries are partitioned with se
   assert.deepEqual(partition.compatible.map((model) => model.id), ['ok'])
   assert.deepEqual(partition.incompatible.map((model) => [model.id, model.selectionDisabledReason]), [
     ['wrong-role', '此路由不提供图片输出'],
-    ['disabled', '当前账号目录不可用'],
   ])
 })
 
@@ -116,12 +115,10 @@ test('role and output format filters keep incompatible entries visible but disab
     { id: 'text-only', vendor: 'Anthropic', roles: ['main'], selectable: true },
   ]
   const visible = filterRegistryModels(models, { role: 'image', outputFormat: 'png' })
-  assert.deepEqual(visible.map((model) => model.id), ['ok', 'wrong-format', 'catalog-disabled', 'protocol-disabled'])
+  assert.deepEqual(visible.map((model) => model.id), ['ok', 'wrong-format'])
   assert.equal(visible[0].selectionDisabled, false)
   assert.match(visible[1].selectionDisabledReason, /PNG/u)
-  assert.equal(visible[2].selectionDisabledReason, '区域不可用')
-  assert.equal(visible[3].selectionDisabled, true)
-  assert.equal(visible[3].selectionDisabledReason, '未声明 PNG/SVG 输出')
+  assert.equal(models[2].id, 'catalog-disabled')
 })
 
 test('model search indexes declared roles, capabilities, and protocol instead of labels only', () => {
@@ -161,8 +158,8 @@ test('cached expiration dates disable selection, while earliest dates and provid
   ]
   const { compatible, incompatible } = partitionRegistryModels(models, { role: 'main' })
   assert.deepEqual(compatible.map((m) => m.id), ['earliest', 'placeholder'])
-  assert.equal(incompatible[0].id, 'expired')
-  assert.match(incompatible[0].selectionDisabledReason, /2000-01-01/)
+  assert.deepEqual(incompatible, [])
+  assert.equal(models[0].id, 'expired', 'historical identity is preserved')
 })
 
 test('cached retirement instants honor the channel time zone', () => {
@@ -172,7 +169,7 @@ test('cached retirement instants honor the channel time zone', () => {
     Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
     assert.equal(partitionRegistryModels([model], { role: 'main' }).compatible.length, 1)
     Date.now = () => Date.parse('2026-10-09T16:00:00Z')
-    assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible.length, 1)
+    assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible.length, 0)
   } finally { Date.now = now }
 })
 
@@ -184,4 +181,11 @@ test('retired configured default stays identifiable and never becomes a selectab
   assert.deepEqual(merged.visionModels, [['current', 'current']])
   assert.deepEqual(partitionRegistryModels(merged.registryModels, { role: 'vision' }).compatible.map(m => m.id), ['current'])
   assert.equal(registry.defaults.vision, 'previous')
+})
+
+test('temporarily unavailable models are hidden without mutating saved identities',()=>{
+  const models=[{id:'quarantined',roles:['main'],selectable:false,disabledReason:'暂不可用'},{id:'unverified',roles:['main'],selectable:true,verificationState:'catalog'}]
+  assert.deepEqual(filterRegistryModels(models,{role:'main'}).map(m=>m.id),['unverified'])
+  assert.deepEqual(partitionRegistryModels(models,{role:'main'}).incompatible,[])
+  assert.equal(models[0].id,'quarantined')
 })

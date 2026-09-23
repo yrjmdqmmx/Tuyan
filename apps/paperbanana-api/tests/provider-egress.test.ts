@@ -92,6 +92,7 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
       ['https://api.fireworks.ai', '/inference/v1/chat/completions'],
       ['https://queue.fal.run', '/fal-ai/flux-2-pro'],
       ['https://api.replicate.com', '/v1/predictions/fixture'],
+      ['https://api.runware.ai', '/v1'],
       ['https://api.anthropic.com', '/v1/messages'],
       ['https://api.x.ai', '/v1/responses'],
       ['https://external.api.recraft.ai', '/v1/images/generations'],

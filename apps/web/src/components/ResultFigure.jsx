@@ -1,8 +1,10 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useState } from 'react';
 import { FileDown } from 'lucide-react';
 import { resolveImageUrl } from '../utils';
 
 export default function ResultFigure({ image, apiBase, labelPrefix = '候选图', outputFormat = '', onUseForRefine }) {
+  const { t } = useAppLocale()
   const [isDownloading, setIsDownloading] = useState(false);
   const url = resolveImageUrl(apiBase, image.url);
   const candidateNumber = Number(image.candidate_id ?? 0) + 1;
@@ -31,13 +33,13 @@ export default function ResultFigure({ image, apiBase, labelPrefix = '候选图'
         {url ? (
           <span className="result-actions">
             {onUseForRefine ? (
-              <button type="button" onClick={() => onUseForRefine(url, image)} aria-label={`${labelPrefix === '精修结果' ? '继续精修结果' : `精修${labelPrefix}`} ${candidateNumber}`} >
-                {labelPrefix === '精修结果' ? '继续精修' : '精修'}
+              <button type="button" onClick={() => onUseForRefine(url, image)} aria-label={t(`${labelPrefix === '精修结果' ? '继续精修结果' : `精修${labelPrefix}`} ${candidateNumber}`)} >
+                {t(labelPrefix === '精修结果' ? '继续精修' : '精修')}
               </button>
             ) : null}
-            <button type="button" onClick={downloadImage} disabled={isDownloading} aria-label={`下载${labelPrefix} ${candidateNumber}`}>
+            <button type="button" onClick={downloadImage} disabled={isDownloading} aria-label={t("下载{v0} {v1}", {v0: labelPrefix, v1: candidateNumber})}>
               <FileDown size={15} />
-              {isDownloading ? '准备中' : '下载'}
+              {t(isDownloading ? '准备中' : '下载')}
             </button>
           </span>
         ) : null}

@@ -1,5 +1,5 @@
 import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
-export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'tokendance'] as const
+export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
@@ -59,6 +59,7 @@ export interface ModelRegistry {
   refineUpload?: RefineUploadCapability
   referenceUpload?: { version: number; platform: Record<string, any> }
   providerRegionContractVersion?: number
+  thinkingContractVersion?: number
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean
@@ -221,6 +222,7 @@ export function partitionRegistryModels(
 ): RegistryModelPartition {
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
+    .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))
     .filter((model) => !query || modelSearchValues(model).some((value) => value.toLocaleLowerCase('zh-CN').includes(query)))

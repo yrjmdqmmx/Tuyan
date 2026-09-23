@@ -1,0 +1,95 @@
+{
+  "provider": "stepfun",
+  "checkedAt": "2026-09-22",
+  "endpointScope": "仅接入中国站 api.stepfun.com 普通 API；国际站和 Step Plan 端点、额度分别核对，不能混用。图片 API 公告将于 2026-10-10 下线。",
+  "models": [
+    {
+      "id": "step-5-preview",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-5-preview",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-3.7-flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-3.7-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-3.5-flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-3.5-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-3.5-flash-2603",
+      "roles": [
+        "main"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-3.5-flash-2603",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-1o-turbo-vision",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-1o-turbo-vision",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-2x-large",
+      "roles": [
+        "image"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-2x-large",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "step-image-edit-2",
+      "roles": [
+        "image"
+      ],
+      "developer": "StepFun",
+      "apiId": "step-image-edit-2",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    }
+  ],
+  "excluded": []
+}

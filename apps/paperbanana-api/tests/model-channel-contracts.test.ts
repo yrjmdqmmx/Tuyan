@@ -90,6 +90,6 @@ test('catalog lifecycle and regional corrections are present without advertising
   assert.equal(get('fireworks','accounts/fireworks/models/kimi-k3').roles.includes('vision'),true)
   assert.equal(get('gemini','imagen-4.0-generate-001'),undefined)
   assert.ok(get('replicate','google/imagen-4'))
-  assert.equal(updates.channels.minimax.label,'MiniMax')
+  assert.equal(updates.channels.minimax.label,'稀宇科技')
   assert.deepEqual(get('minimax','image-01-live').regions,['cn'])
 })

@@ -119,16 +119,16 @@ test('MiniMax region selector keeps independent keys and submits only the select
   registry.providers.minimax = structuredClone(STATIC_MODEL_REGISTRY.minimax)
   const {requests,user} = await renderReadyApp(registry)
   await user.click(screen.getByRole('button',{name:'打开完整设置'}))
-  await user.click(screen.getByRole('button',{name:'MiniMax',exact:true}))
-  const key = screen.getByLabelText('MiniMax 接入密钥')
+  await user.click(screen.getByRole('button',{name:'稀宇科技',exact:true}))
+  const key = screen.getByLabelText('稀宇科技 接入密钥')
   await user.type(key,'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
   assert.equal(key.value,'')
   assert.match(document.body.textContent,/api\.minimax\.cn/)
   await user.type(key,'fixture-cn-key')
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'global')
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'global')
   assert.equal(key.value,'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
   assert.equal(key.value,'fixture-cn-key')
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.click(submitButton())
@@ -153,12 +153,12 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
   await user.click(submitButton())
   await user.click(await screen.findByRole('button',{name:'精修候选图 1'},{timeout:5000}))
   await user.click(await screen.findByRole('button',{name:'精修设置'}))
-  await user.click(screen.getByRole('button',{name:'MiniMax',exact:true}))
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'global')
-  await user.type(screen.getByLabelText('MiniMax 接入密钥'),'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),'cn')
-  await user.type(screen.getByLabelText('MiniMax 接入密钥'),'fixture-cn-key')
-  await user.selectOptions(screen.getByLabelText('MiniMax 区域'),region)
+  await user.click(screen.getByRole('button',{name:'稀宇科技',exact:true}))
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'global')
+  await user.type(screen.getByLabelText('稀宇科技 接入密钥'),'fixture-global-key')
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
+  await user.type(screen.getByLabelText('稀宇科技 接入密钥'),'fixture-cn-key')
+  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),region)
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.type(screen.getByLabelText('精修指令'),'放大标签并保持版式')
   await user.click(screen.getByRole('button',{name:'提交精修'}))
@@ -266,7 +266,7 @@ test('Ark verification is optional and a failed probe does not block submit', as
   const imageProbe = requests.filter((request) => request.body?.action === 'providerAccountCatalog')[1].body
   assert.equal(imageProbe.confirmPaidImageProbe, true)
   assert.deepEqual(imageProbe.probes.map(({ role, modelId }) => [role, modelId]), [['image', 'doubao-image']])
-  assert.ok(screen.getAllByText('failed').length >= 1)
+  assert.ok(screen.getAllByText('失败').length >= 1)
 
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
@@ -469,7 +469,7 @@ test('model without supported refine resolutions shows an honest disabled capabi
   assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
 })
 
-test('switching from a 4K refine model to a 2K-only model normalizes before rendered submit', async () => {
+test('switching from a 4K refine model preserves the selected size and blocks until explicit correction', async () => {
   const { requests, user } = await renderReadyApp(registryV1, {
     getJob: ({ jobId }) => ({
       id: jobId,
@@ -495,8 +495,12 @@ test('switching from a 4K refine model to a 2K-only model normalizes before rend
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.type(screen.getByLabelText('OpenAI 接入密钥'), 'openai-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  await waitFor(() => assert.equal(screen.getByLabelText('清晰度').value, '2K'))
+  assert.equal(screen.getByLabelText('清晰度').value, '4K')
   await user.type(screen.getByLabelText('精修指令'), '放大标签并保持版式')
+  assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
+  assert.equal(requests.some((request) => request.body?.action === 'refineImage'), false)
+  await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
+  await user.click(screen.getByRole('button', { name: '目标比例 自动' }))
   await user.click(screen.getByRole('button', { name: '提交精修' }))
 
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'refineImage')))

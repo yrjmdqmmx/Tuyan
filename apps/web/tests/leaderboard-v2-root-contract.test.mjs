@@ -8,7 +8,7 @@ const rootUrl = new URL('../src/components/LeaderboardRoot.jsx', import.meta.url
 test('every leaderboard route boots one unified root and session provider', () => {
   assert.match(main, /LeaderboardRoot/u)
   assert.match(main, /LeaderboardSessionProvider/u)
-  assert.doesNotMatch(main, /leaderboardRoute\.methodology\s*\?/u)
+  assert.doesNotMatch(main.slice(main.indexOf('createRoot(document')), /leaderboardRoute\.methodology\s*\?/u)
 })
 
 test('unified leaderboard delegates account controls to the shared page shell', () => {

@@ -21,7 +21,7 @@ test('generation settings drawer stays mounted and supports Escape, backdrop, cl
 
 test('generation canvas has a prominent settings summary', () => {
   const source = readSource('../src/App.jsx')
-  assert.match(source, />打开完整设置</u)
+  assert.match(source, /t\("打开完整设置"\)/u)
   assert.match(source, /generation-settings-summary/u)
 })
 
@@ -59,7 +59,7 @@ test('model picker supports provider grouping, search, disabled reasons and boun
   assert.match(source, /groupRegistryModels/u)
   assert.match(source, /COMPATIBLE_PAGE_SIZE/u)
   assert.match(source, /rows\.slice\(0, compatibleLimit\)/u)
-  assert.match(source, />\s*显示更多模型\s*</u)
+  assert.match(source, /t\("显示更多模型"\)/u)
   assert.match(source, /复制模型 ID/u)
   assert.match(source, /API 接入渠道/u)
   assert.match(source, /模型厂商/u)

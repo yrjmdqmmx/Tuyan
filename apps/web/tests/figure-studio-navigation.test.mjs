@@ -6,12 +6,11 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WorkbenchHeader from '../src/components/WorkbenchHeader.jsx';
 import { BenchmarkLocaleProvider } from '../src/components/BenchmarkLocale.jsx';
-import { BENCHMARK_LANGUAGE_KEY } from '../src/components/benchmarkLocale.js';
-import { BENCH_ENABLED } from '../src/config.js';
+import { APP_LANGUAGE_KEY, BENCHMARK_LANGUAGE_KEY } from '../src/components/benchmarkLocale.js';
 import { sitePageLinks } from '../src/components/siteNavigation.js';
 
-const sections = ['workbench', 'figure-studio', 'leaderboard'];
-const peerLabels = ['工作台', '论文画布', ...(BENCH_ENABLED ? ['排行榜'] : [])];
+const sections = ['workbench', 'figure-studio', 'leaderboard', 'changelog'];
+const peerLabels = ['工作台', '论文画布', '排行榜', 'openacad', '更新日志'];
 
 function controlEntries(container) {
   return [...container.querySelectorAll('a,button')].map((element) => ({
@@ -23,12 +22,12 @@ function controlEntries(container) {
 }
 
 function assertPeerLinks(container, section) {
-  const links = [...container.querySelectorAll('.header-links>a')];
-  assert.deepEqual(links.slice(0, peerLabels.length).map((link) => link.textContent.trim()), peerLabels);
-  assert.deepEqual(links.slice(0, peerLabels.length).map((link) => link.getAttribute('href')), ['/', '/figure-studio/', ...(BENCH_ENABLED ? ['/leaderboard'] : [])]);
+  const links = [...container.querySelectorAll('.header-group-pages a')];
+  assert.deepEqual(links.map((link) => link.textContent.trim()), peerLabels);
+  assert.deepEqual(links.map((link) => link.getAttribute('href')), ['/', '/figure-studio/', '/leaderboard', 'https://openacad.xyz/', '/changelog']);
   const current = [...container.querySelectorAll('[aria-current="page"]')];
-  const expectedLabel = { workbench: '工作台', 'figure-studio': '论文画布', leaderboard: '排行榜' }[section];
-  assert.deepEqual(current.map((item) => item.textContent.trim()), section === 'leaderboard' && !BENCH_ENABLED ? [] : [expectedLabel]);
+  const expectedLabel = { workbench: '工作台', 'figure-studio': '论文画布', leaderboard: '排行榜', changelog: '更新日志' }[section];
+  assert.deepEqual(current.map((item) => item.textContent.trim()), [expectedLabel]);
 }
 
 function headerProps(actions = []) {
@@ -38,13 +37,14 @@ function headerProps(actions = []) {
   };
 }
 
-test('the shared peer page table keeps the same order with the site-wide leaderboard feature on or off', () => {
-  assert.deepEqual(sitePageLinks({ benchmarkEnabled: true }).map(({ id, path, label }) => ({ id, path, label })), [
-    { id: 'workbench', path: '/', label: '工作台' },
-    { id: 'figure-studio', path: '/figure-studio/', label: '论文画布' },
-    { id: 'leaderboard', path: '/leaderboard', label: '排行榜' },
+test('one public navigation table preserves all 3.8 entries with Figure Canvas beside Workbench', () => {
+  assert.deepEqual(sitePageLinks().map(({ id, path, href, label }) => ({ id, destination: path || href, label })), [
+    { id: 'workbench', destination: '/', label: '工作台' },
+    { id: 'figure-studio', destination: '/figure-studio/', label: '论文画布' },
+    { id: 'leaderboard', destination: '/leaderboard', label: '排行榜' },
+    { id: 'openacad', destination: 'https://openacad.xyz/', label: 'openacad' },
+    { id: 'changelog', destination: '/changelog', label: '更新日志' },
   ]);
-  assert.deepEqual(sitePageLinks({ benchmarkEnabled: false }).map(({ id }) => id), ['workbench', 'figure-studio']);
 });
 
 for (const signedIn of [false, true]) {
@@ -56,6 +56,8 @@ for (const signedIn of [false, true]) {
         render(React.createElement(WorkbenchHeader, { ...headerProps(actions), section, currentUser: signedIn ? { id: 'author', email: 'author@example.test' } : null }));
         const navigation = screen.getByRole('navigation', { name: '网站导航' });
         assertPeerLinks(navigation, section);
+        assert.deepEqual([...navigation.querySelectorAll('.header-group')].map(group => group.getAttribute('aria-label')), ['页面导航', '工具与生态', '支持与交流', '语言与账户']);
+        assert.equal(navigation.querySelectorAll('[data-site-language]').length, 1);
         const entries = controlEntries(navigation);
         if (!expectedEntries) expectedEntries = entries;
         else assert.deepEqual(entries, expectedEntries, section);
@@ -90,7 +92,10 @@ for (const signedIn of [false, true]) {
           const entries = controlEntries(dialog);
           if (!expectedEntries) expectedEntries = entries;
           else assert.deepEqual(entries, expectedEntries, section);
-          assert.deepEqual([...dialog.querySelectorAll('.mobile-workspace-links button')].map((button) => button.textContent.trim()), ['账户与钱包', '使用教程', ...(signedIn ? ['站长'] : [])]);
+          assert.equal(dialog.querySelectorAll('[data-site-language]').length, 0);
+          assert.ok(within(dialog).getByRole('button', { name: '使用教程', exact: true }));
+          assert.equal(Boolean(within(dialog).queryByRole('button', { name: '站长', exact: true })), signedIn);
+          assert.equal(within(dialog).getAllByRole('button', { name: '账户与钱包', exact: true }).length, 1);
           await userEvent.click(within(dialog).getByRole('button', { name: '账户与钱包', exact: true }));
           assert.equal(actions.at(-1), 'onWorkspaceAccount');
           assert.equal(screen.queryByRole('dialog'), null);
@@ -106,7 +111,7 @@ test('paper canvas mobile More exposes return navigation, wallet and account sec
   const actions = [];
   try {
     render(React.createElement(WorkbenchHeader, { ...headerProps(actions), currentUser: { id: 'author', email: 'author@example.test' } }));
-    assert.ok(screen.getByText('论文画布', { selector: '.mobile-brand-copy span' }));
+    assert.ok(screen.getByText('论文画布', { selector: '.site-brand-copy > span' }));
     assert.equal(screen.queryByRole('navigation', { name: '网站导航' }), null);
     await userEvent.click(screen.getByRole('button', { name: '账户', exact: true }));
     assert.deepEqual(actions, ['onAccount']);
@@ -131,19 +136,51 @@ test('workbench keeps its existing brand and does not duplicate its workspace ac
 });
 
 test('leaderboard English locale names the shared canvas link Figure Canvas', () => {
-  const previous = window.localStorage.getItem(BENCHMARK_LANGUAGE_KEY);
-  window.localStorage.setItem(BENCHMARK_LANGUAGE_KEY, 'en');
+  const previous = window.localStorage.getItem(APP_LANGUAGE_KEY);
+  window.localStorage.setItem(APP_LANGUAGE_KEY, 'en');
   try {
     render(React.createElement(BenchmarkLocaleProvider, null, React.createElement(WorkbenchHeader, { ...headerProps(), section: 'leaderboard' })));
     assert.ok(screen.getByRole('link', { name: 'Figure Canvas', exact: true }));
     assert.ok(screen.getByRole('link', { name: 'Workbench', exact: true }));
-    assert.equal(Boolean(screen.queryByRole('link', { name: 'Leaderboard', exact: true })), BENCH_ENABLED);
+    assert.ok(screen.getByRole('link', { name: 'Leaderboard', exact: true }));
+    assert.ok(screen.getByRole('link', { name: 'Changelog', exact: true }));
   } finally {
     cleanup();
-    if (previous === null) window.localStorage.removeItem(BENCHMARK_LANGUAGE_KEY);
-    else window.localStorage.setItem(BENCHMARK_LANGUAGE_KEY, previous);
+    if (previous === null) window.localStorage.removeItem(APP_LANGUAGE_KEY);
+    else window.localStorage.setItem(APP_LANGUAGE_KEY, previous);
   }
 });
+
+for (const compact of [false, true]) {
+  test(`every public page can switch the common navigation language (${compact ? 'mobile' : 'desktop'})`, async () => {
+    const originalMedia = window.matchMedia;
+    const originalLanguage = document.documentElement.lang;
+    const stored = [APP_LANGUAGE_KEY, BENCHMARK_LANGUAGE_KEY].map(key => [key, window.localStorage.getItem(key)]);
+    window.matchMedia = () => ({ matches: compact, addEventListener() {}, removeEventListener() {} });
+    try {
+      for (const section of sections) {
+        window.localStorage.setItem(APP_LANGUAGE_KEY, 'zh-CN');
+        render(React.createElement(BenchmarkLocaleProvider, null, React.createElement(WorkbenchHeader, { ...headerProps(), section })));
+        assert.equal(document.querySelectorAll('[data-site-language]').length, 1);
+        await userEvent.click(screen.getByRole('button', { name: 'Switch to English', exact: true }));
+        if (compact) await userEvent.click(screen.getByRole('button', { name: 'More', exact: true }));
+        const navigation = screen.getByRole('navigation', { name: 'Site navigation' });
+        assert.deepEqual([...navigation.querySelectorAll('.header-group-pages a')].map(link => link.textContent.trim()), ['Workbench', 'Figure Canvas', 'Leaderboard', 'openacad', 'Changelog']);
+        assert.deepEqual([...navigation.querySelectorAll('[aria-current="page"]')].map(link => link.getAttribute('href')), [sitePageLinks().find(link => link.id === section).path]);
+        assert.equal(document.querySelectorAll('[data-site-language]').length, 1);
+        cleanup();
+      }
+    } finally {
+      cleanup();
+      window.matchMedia = originalMedia;
+      document.documentElement.lang = originalLanguage;
+      for (const [key, value] of stored) {
+        if (value === null) window.localStorage.removeItem(key);
+        else window.localStorage.setItem(key, value);
+      }
+    }
+  });
+}
 
 test('editor styles leave embedded shared model controls and source SVG colors intact', () => {
   const shared = document.createElement('style');

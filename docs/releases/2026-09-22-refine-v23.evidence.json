@@ -1,0 +1,177 @@
+{
+  "releaseDate": "2026-09-22",
+  "pullRequest": "https://github.com/yrjmdqmmx/Tuyan/pull/226",
+  "previousCodeSha": "0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb",
+  "candidateSha": "f2d7a827d95ff76273a73e46fc3c776b30286fe3",
+  "authorization": "用户明确要求上线；不充值、不触发付费推理，不发布微信平台版本",
+  "localExtraChecks": {
+    "providerEgress": 11,
+    "sgPolicy": 111,
+    "rootContracts": 20,
+    "hkDeployment": 228,
+    "lafSecurity": 6
+  },
+  "ciFirstFailure": "旧版目录快照与顺序断言、Seedream 展示名称大小写不一致；已修正并重跑",
+  "currentStage": "deployed and verified",
+  "paidInferenceCalls": 0,
+  "releaseSha": "f547344d8019769eafd53d668bbcbd367210a609",
+  "coreImage": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:81029ed394e7a19ce977361fa6ae8d00cde117ae3c098c8a83aca6a1f1bded94",
+  "benchmarkImage": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:faa8815f825e72045f6fb56955c5bbbdb1783c996e78c92caf8715d20120d801",
+  "prCI": [
+    35683441765,
+    35683438946
+  ],
+  "mainCI": 35683825661,
+  "imageBuilds": [
+    35683848669,
+    35683851463
+  ],
+  "sgPolicy": "updated; Runware CONNECT 200 / unauthenticated GET 400; original deny smoke passed",
+  "hkDeployment": 35683970466,
+  "deploymentApproval": "normal environment reviewer approval; current_user_can_approve=true",
+  "mainCIResult": "success",
+  "hkDeploymentResult": "success",
+  "pagesDeployment": 35684170270,
+  "pagesDeploymentResult": "success",
+  "browserValidation": "passed; temporary selection and mode restored",
+  "rechargeCount": 0,
+  "miniProgramPublished": false,
+  "registry": {
+    "registryVersion": "2026-09-22.v23",
+    "refineControlsContractVersion": 1,
+    "counts": {
+      "tokenhub": 41,
+      "xiaomi": 4,
+      "runware": 138
+    },
+    "checkedModels": 183,
+    "fields": [
+      "id",
+      "label",
+      "version",
+      "apiIdentifier",
+      "roles",
+      "protocol",
+      "vendorId",
+      "selectable",
+      "capabilities"
+    ],
+    "referencePolicy": "Runtime referenceSubmission and legacy maxReferenceImages checked against canonical shared referenceSubmissionPolicy; refine multi-reference limits checked in refineControls",
+    "differences": 0
+  },
+  "webAssets": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "d8ab925170ed5925ea5bc0b6ddbc7e02fbaf96cca4201939271d3ef73fc353a6",
+      "artifactMatches": true
+    },
+    {
+      "path": "assets/appPaths-Ba0fLi8f.js",
+      "status": 200,
+      "bytes": 1473,
+      "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+      "artifactMatches": true
+    },
+    {
+      "path": "assets/main-Yit2r1de.js",
+      "status": 200,
+      "bytes": 2848206,
+      "sha256": "232c399ce400f960628e2428bd93d417d0b330888bb6a80de11dab6f62faeb1c",
+      "artifactMatches": true
+    },
+    {
+      "path": "assets/main-DP6HAkk_.css",
+      "status": 200,
+      "bytes": 220714,
+      "sha256": "2e897a1c206ba072ec0af5d4f2b6cc8ca53ae28b485c7c932927a32030fd53a8",
+      "artifactMatches": true
+    },
+    {
+      "path": "leaderboard/index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "e45b0e9f748c7b84746649df137d4285482737cd9f72bd4e146ac77ef543aa0e",
+      "artifactMatches": true
+    },
+    {
+      "path": "assets/upload-BG5o4_-B.js",
+      "status": 200,
+      "bytes": 257,
+      "sha256": "40998daa46ef736d0628338d9e32c908b3b8b87db46a09a41d885d963017eef6",
+      "artifactMatches": true
+    },
+    {
+      "path": "assets/RefinePanel-jtPwdO2V.js",
+      "status": 200,
+      "bytes": 12923,
+      "sha256": "a9f8cd84bdacb69b6589e302fe6d10921ebd4c763d1f7ab6e6b5e6396aefbb5a",
+      "artifactMatches": true
+    }
+  ],
+  "browser": {
+    "environment": "Production Chrome; read-only model catalog and UI checks; no inference",
+    "checks": [
+      "MiMo main 4 and vision 3 models visible",
+      "TokenHub Kimi family and Seedream visible",
+      "Runware main and image model selectors visible",
+      "hy-image-v3.0 search returns zero options",
+      "Refine original and auxiliary inputs separated",
+      "Runware Flare shows auxiliary maximum 8 and model total 16 including original; mask and references incompatible",
+      "Empty-original refine submission disabled",
+      "Generation config restored: normal mode, TokenDance, Qwen3.8 Flash / Seedream 5.0 Pro / Qwen3.8 Flash, 1K PNG 16:9",
+      "Method and caption preserved"
+    ],
+    "consoleErrors": [],
+    "viewportWidth": 1554,
+    "documentWidth": 1554,
+    "screenshot": "refine-production.png",
+    "paidInferenceCalls": 0,
+    "uploads": 0,
+    "configurationRestored": true
+  },
+  "containers": {
+    "paperbanana-api": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:81029ed394e7a19ce977361fa6ae8d00cde117ae3c098c8a83aca6a1f1bded94",
+      "health": "healthy",
+      "revision": "f547344d8019769eafd53d668bbcbd367210a609",
+      "codeSha": "f547344d8019769eafd53d668bbcbd367210a609",
+      "benchEnabled": null,
+      "provenance": {
+        "codeSha": "f547344d8019769eafd53d668bbcbd367210a609"
+      }
+    },
+    "benchmark-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:faa8815f825e72045f6fb56955c5bbbdb1783c996e78c92caf8715d20120d801",
+      "health": "healthy",
+      "revision": "f547344d8019769eafd53d668bbcbd367210a609",
+      "codeSha": "f547344d8019769eafd53d668bbcbd367210a609",
+      "benchEnabled": "false",
+      "provenance": {
+        "codeSha": "f547344d8019769eafd53d668bbcbd367210a609"
+      }
+    },
+    "auth-gateway": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:1ad307c929e4663ce8011c6cb371d0ca33aeedde80e87fe78c8edd5035ef0cce",
+      "health": "healthy",
+      "revision": "55cb5051dcd921f951fd22d8484b639294afe062",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "plot-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "health": "healthy",
+      "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "mongodb": {
+      "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "health": "healthy",
+      "revision": null,
+      "codeSha": null,
+      "benchEnabled": null
+    }
+  }
+}

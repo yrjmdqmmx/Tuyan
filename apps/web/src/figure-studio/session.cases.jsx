@@ -63,7 +63,7 @@ test('anonymous authors can edit locally and open the shared login without sendi
 
 for (const scenario of [
   { name: 'direct account switch', provider: 'openai', label: 'OpenAI', transitions: [{ id: 'b' }] },
-  { name: 'sign-out followed by another account', provider: 'minimax', label: 'MiniMax', transitions: [null, { id: 'b' }] },
+  { name: 'sign-out followed by another account', provider: 'minimax', label: '稀宇科技', transitions: [null, { id: 'b' }] },
 ]) {
   test(`${scenario.name} cannot restore the previous account's key through the actual model settings`, async () => {
     const previousFetch = globalThis.fetch;
@@ -88,7 +88,7 @@ for (const scenario of [
       fireEvent.click(screen.getByRole('button', { name: '主模型' }));
       fireEvent.click(screen.getByRole('button', { name: scenario.label, exact: true }));
       fireEvent.click(screen.getByRole('button', { name: '选择 Account fixture' }));
-      if (scenario.provider === 'minimax') fireEvent.change(screen.getByLabelText('MiniMax 区域'), { target: { value: 'cn' } });
+      if (scenario.provider === 'minimax') fireEvent.change(screen.getByLabelText('稀宇科技区域'), { target: { value: 'cn' } });
       return screen.getByLabelText(`${scenario.label} 接入密钥`);
     }
     try {

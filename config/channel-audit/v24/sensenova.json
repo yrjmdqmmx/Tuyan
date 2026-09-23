@@ -1,0 +1,1356 @@
+{
+  "provider": "sensenova",
+  "label": "商汤 SenseNova",
+  "operator": "SenseTime / 商汤科技",
+  "brand": "SenseNova",
+  "checkedAt": "2026-09-22T06:52:16Z",
+  "channelClass": "domestic-official-direct",
+  "sources": [
+    {
+      "url": "https://platform.sensenova.cn/docs",
+      "title": "SenseNova 当前官方 API 文档：模型目录、七个型号详情、OpenAI/Anthropic 协议与积分计费",
+      "retrieval": "live browser DOM",
+      "checkedAt": "2026-09-22T06:52:16Z",
+      "notes": "入口新文档与搜索引擎旧 product/APIService 文档不同；本次逐节读取七个型号。未持 Key 调用 /models。"
+    },
+    {
+      "url": "https://www.sensenova.cn/token-plan",
+      "title": "SenseNova Token Plan",
+      "retrieval": "live browser DOM",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensenova.cn/models",
+      "title": "SenseNova 当前模型营销页",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/overview/Authorization",
+      "title": "旧 SenseCore API 鉴权",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs",
+      "title": "旧 SenseCore 融合大模型",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/mllm",
+      "title": "旧 SenseCore 多模态理解模型",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/llm/CharacterLLM",
+      "title": "旧 SenseCore 角色扮演模型",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release",
+      "title": "旧 SenseCore 更新日志",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/vision/ChatCompletions",
+      "title": "旧 SenseCore 多模态对话协议",
+      "checkedAt": "2026-09-22T06:52:16Z"
+    },
+    {
+      "url": "https://sensetime.com/cn/faq/",
+      "title": "商汤官方常见问题：Token Plan 的工作流、API 接入与旧 SenseChat 状态",
+      "checkedAt": "2026-09-22T06:52:16Z",
+      "notes": "2026-08-27 FAQ 的旧次数配额与当前积分文档不同；以当前 API 文档为准，FAQ 仅支持用途/状态判断。"
+    }
+  ],
+  "endpoints": {
+    "default": {
+      "region": "cn",
+      "baseUrl": "https://token.sensenova.cn/v1",
+      "models": "https://token.sensenova.cn/v1/models",
+      "chat": "https://token.sensenova.cn/v1/chat/completions",
+      "anthropic": "https://token.sensenova.cn/v1/messages",
+      "images": "https://token.sensenova.cn/v1/images/generations",
+      "edits": "https://token.sensenova.cn/v1/images/edits",
+      "product": "SenseNova Token Plan public API (not separately verified metered commercial entitlement)"
+    },
+    "legacy": {
+      "baseUrl": "https://api.sensenova.cn/v1",
+      "chatPath": "/llm/chat-completions",
+      "mixWithDefault": false
+    }
+  },
+  "auth": {
+    "default": {
+      "type": "bearer-api-key",
+      "keyPrefix": "sk-",
+      "keySource": "https://platform.sensenova.cn/console/keys",
+      "authorizationHeader": "Bearer <API_KEY>",
+      "jwtRequired": false,
+      "notes": "新 Token Plan 平台使用 API Key；普通/Token Plan 模型配额与账号权限以平台为准。"
+    },
+    "legacy": {
+      "type": [
+        "bearer-api-key",
+        "bearer-jwt"
+      ],
+      "jwt": {
+        "algorithm": "HS256",
+        "header": {
+          "typ": "JWT",
+          "alg": "HS256"
+        },
+        "payload": {
+          "iss": "Access Key",
+          "exp": "expiry UNIX seconds",
+          "nbf": "optional not-before UNIX seconds"
+        },
+        "signingSecret": "Secret Key",
+        "exampleLifetimeSeconds": 1800
+      },
+      "mixKeys": false,
+      "sourceUrl": "https://www.sensecore.cn/help/docs/model-as-a-service/nova/overview/Authorization"
+    },
+    "regions": {
+      "cn": "已核对新平台 token.sensenova.cn",
+      "international": "unknown"
+    },
+    "applicationUse": {
+      "genericApiDocumented": true,
+      "codingCliOnlyRestrictionFound": false,
+      "commercialBackendTerms": "unknown",
+      "notes": "当前官方提供 curl/Python/JavaScript 通用 API；商汤 FAQ 明确办公、分析、报告、信息图工作流，但未找到逐字确认多用户商业应用后端/转售许可的条款。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://sensetime.com/cn/faq/"
+      ]
+    }
+  },
+  "models": [
+    {
+      "id": "sensenova-6.8-flash-lite",
+      "label": "SenseNova 6.8 Flash Lite",
+      "developer": "SenseTime",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "sensenova-6.8-flash-lite"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": null,
+      "limits": {
+        "contextTokens": 262144,
+        "contextEvidence": "GET /models response example; OpenCode configuration also shows 256000, not an account-verified limit.",
+        "maxOutputTokens": 65536,
+        "defaultMaxOutputTokens": 65535,
+        "imageCount": null,
+        "imageBytes": null,
+        "imageDimensions": null,
+        "formats": [
+          "jpeg",
+          "png",
+          "webp"
+        ],
+        "temperature": {
+          "min": 0,
+          "max": 2
+        },
+        "topP": {
+          "minExclusive": 0,
+          "max": 1
+        },
+        "n": {
+          "min": 1,
+          "max": 7
+        },
+        "contextLabel": "256K",
+        "tokenUnitNote": "262144 comes from official /models response example, not an authenticated result."
+      },
+      "size": null,
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "plan": "Token Plan public beta",
+        "perModelRate": null,
+        "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "stream": false
+        },
+        "modelField": "model",
+        "messagesField": "messages",
+        "maxOutputField": "max_tokens",
+        "visionEncoding": {
+          "field": "messages[].content[]",
+          "shape": {
+            "type": "image_url",
+            "image_url": {
+              "url": "complete data URL or public HTTPS URL"
+            }
+          }
+        },
+        "reasoningEffort": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "max"
+        ],
+        "thinking": [
+          "enabled",
+          "disabled"
+        ],
+        "jsonMode": {
+          "response_format": {
+            "type": "json_object"
+          },
+          "reasoning_effort": "none"
+        }
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": "choices[0].message.reasoning",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "stream": "SSE choices[].delta"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "label": "DeepSeek V4 Pro 0813",
+      "developer": "DeepSeek",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "DeepSeek V4 Pro0813 正式版",
+        "apiId": "deepseek-v4-pro",
+        "notes": "官方确认当前映射版本，但未承诺该别名不可变或给出完整滚动规则。"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 1000000,
+        "maxOutputTokens": null,
+        "defaultMaxOutputTokens": {
+          "nonThinking": 8192,
+          "thinking": 65536,
+          "maxReasoning": 131072
+        },
+        "contextLabel": "1M",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "plan": "Token Plan public beta",
+        "perModelRate": null,
+        "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "stream": false
+        },
+        "modelField": "model",
+        "messagesField": "messages",
+        "maxOutputField": "max_tokens",
+        "visionEncoding": null,
+        "reasoningEffort": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "max"
+        ],
+        "thinking": [
+          "enabled",
+          "disabled"
+        ],
+        "notes": [
+          "工具调用必须保留 assistant reasoning_content；普通对话可忽略。",
+          "思考模式忽略 temperature、presence_penalty、frequency_penalty；top_p 最低 0.95。非思考模式 top_p 固定 1。",
+          "该托管平台未声明图片输入，不继承研发方直连视觉能力。"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": "choices[0].message.reasoning_content",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "stream": "SSE choices[].delta"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "label": "DeepSeek V4 Flash 0731",
+      "developer": "DeepSeek",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "DeepSeek V4 Flash0731 正式版",
+        "apiId": "deepseek-v4-flash",
+        "notes": "官方确认当前映射版本，但未承诺该别名不可变或给出完整滚动规则。"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 1000000,
+        "maxOutputTokens": null,
+        "defaultMaxOutputTokens": {
+          "nonThinking": 8192,
+          "thinking": 65536,
+          "maxReasoning": 131072
+        },
+        "contextLabel": "1M",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "plan": "Token Plan public beta",
+        "perModelRate": null,
+        "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "stream": false
+        },
+        "modelField": "model",
+        "messagesField": "messages",
+        "maxOutputField": "max_tokens",
+        "visionEncoding": null,
+        "reasoningEffort": [
+          "none",
+          "low",
+          "medium",
+          "high",
+          "max"
+        ],
+        "thinking": [
+          "enabled",
+          "disabled"
+        ],
+        "notes": [
+          "工具调用必须保留 assistant reasoning_content；普通对话可忽略。",
+          "思考模式忽略 temperature、presence_penalty、frequency_penalty；top_p 最低 0.95。非思考模式 top_p 固定 1。",
+          "该托管平台未声明图片输入，不继承研发方直连视觉能力。"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": "choices[0].message.reasoning_content",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "stream": "SSE choices[].delta"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "glm-5.2",
+      "label": "GLM-5.2",
+      "developer": "Z.ai",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "glm-5.2"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 1000000,
+        "maxOutputTokens": 131072,
+        "defaultMaxOutputTokens": 65536,
+        "contextLabel": "1M",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "plan": "Token Plan public beta",
+        "perModelRate": null,
+        "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "stream": false
+        },
+        "modelField": "model",
+        "messagesField": "messages",
+        "maxOutputField": "max_tokens",
+        "visionEncoding": null,
+        "reasoningEffort": [
+          "none",
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "notes": [
+          "关闭思考须使用 reasoning_effort=none；thinking.type=disabled 会失败。"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": "choices[0].message.reasoning_content",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "stream": "SSE choices[].delta"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "kimi-k3",
+      "label": "Kimi K3",
+      "developer": "Moonshot AI",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "kimi-k3"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": null,
+      "limits": {
+        "contextTokens": 1000000,
+        "maxOutputTokens": null,
+        "maxOutputFormula": "1048576 - prompt_tokens",
+        "defaultMaxOutputTokens": 131072,
+        "imageCount": null,
+        "imageBytes": null,
+        "formats": [
+          "jpeg",
+          "png",
+          "webp",
+          "gif",
+          "bmp",
+          "heic",
+          "heif"
+        ],
+        "contextLabel": "1M",
+        "tokenUnitNote": "Numeric normalization uses K=1024, M=1000000 when the source gives a shorthand; source contextLabel is authoritative."
+      },
+      "size": null,
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "plan": "Token Plan public beta",
+        "perModelRate": null,
+        "notes": "公开文档有积分配额，但未给出该 SKU 单位积分价格；/models 示例 pricing=0 不作为实际价格。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "stream": false,
+          "temperature": 1,
+          "top_p": 0.95
+        },
+        "modelField": "model",
+        "messagesField": "messages",
+        "maxOutputField": "max_completion_tokens",
+        "visionEncoding": {
+          "field": "messages[].content[]",
+          "shape": {
+            "type": "image_url",
+            "image_url": {
+              "url": "complete data URL"
+            }
+          },
+          "publicUrl": false,
+          "notes": "Kimi K3 模型专节不支持远程图片 URL，必须完整 Data URL；不套用 Flash Lite 的 URL 能力。"
+        },
+        "reasoningEffort": [
+          "low",
+          "medium",
+          "high",
+          "max"
+        ],
+        "notes": [
+          "none 在文档示例与字段枚举中存在冲突，首版可省略；不发送 presence_penalty 或 frequency_penalty。",
+          "工具调用/多轮完整保留 assistant 消息。"
+        ]
+      },
+      "response": {
+        "text": "choices[0].message.content",
+        "reasoning": "choices[0].message.reasoning_content",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "stream": "SSE choices[].delta"
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "sensenova-u1.5-lite",
+      "label": "SenseNova U1.5 Lite",
+      "developer": "SenseTime",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "sensenova-u1.5-lite"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "image-generation",
+        "image-editing"
+      ],
+      "protocol": "sensenova-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 5,
+      "limits": {
+        "minImagesEditing": 1,
+        "maxImages": 5,
+        "maxImagesIsConservative": true,
+        "imageCountEvidence": "第 1 张为主编辑图；至多支持 5 张参考图。原文未明确 5 是否包含主图，产品先限制总数为 5，不能据此承诺 6 张。",
+        "imageBytes": null,
+        "imageDimensions": null,
+        "maxPromptLength": null,
+        "outputCount": 1,
+        "mask": false
+      },
+      "size": {
+        "encoding": "widthxheight",
+        "generationDefault": "auto",
+        "editingDefault": "auto",
+        "minWidth": 512,
+        "minHeight": 512,
+        "maxWidth": 4096,
+        "maxHeight": 4096,
+        "multiple": 32,
+        "minAspectRatio": 0.3333333333333333,
+        "maxAspectRatio": 3,
+        "recommended": [
+          "2048x2048",
+          "2720x1536",
+          "1536x2720",
+          "1664x2496",
+          "2496x1664",
+          "4096x4096"
+        ],
+        "example": "1024x1024",
+        "notes": "文档提及 2K/4K，但具体请求示例为 WxH；适配器使用明确尺寸。"
+      },
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "perModelRate": null,
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "notes": "公测有积分额度；移除水印当前公测免费，不等于生图永远免费。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/images/generations",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "n": 1,
+          "output_format": "png",
+          "response_format": "url",
+          "watermark": true,
+          "prompt_extend": false
+        },
+        "constantsRationale": "n=1 避免多结果；watermark=true 采用官方默认；prompt_extend=false 是产品保持输入提示词的明确选择，官方默认 true。",
+        "visionEncoding": null,
+        "editing": {
+          "endpoint": "https://token.sensenova.cn/v1/images/edits",
+          "method": "POST",
+          "contentType": "application/json",
+          "sourceField": "images",
+          "visionEncoding": [
+            {
+              "image_url": "complete data URL or public HTTPS URL"
+            }
+          ],
+          "maskField": null
+        },
+        "fields": [
+          "model",
+          "prompt",
+          "n",
+          "size",
+          "output_format",
+          "response_format",
+          "watermark",
+          "prompt_extend"
+        ],
+        "formats": {
+          "generation": [
+            "png",
+            "jpeg",
+            "webp"
+          ],
+          "editing": [
+            "png",
+            "jpg",
+            "jpeg",
+            "webp"
+          ]
+        }
+      },
+      "response": {
+        "images": "data[]",
+        "base64": "data[].b64_json",
+        "url": "data[].url",
+        "selection": "response_format chooses one; default b64_json",
+        "urlExpiresHours": 24,
+        "size": "size",
+        "format": "output_format",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "usageFields": [
+          "input_tokens",
+          "input_tokens_details.image_tokens",
+          "input_tokens_details.text_tokens",
+          "output_tokens",
+          "total_tokens",
+          "images_count"
+        ]
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    },
+    {
+      "id": "sensenova-u1.5-fast",
+      "label": "SenseNova U1.5 Fast",
+      "developer": "SenseTime",
+      "version": {
+        "kind": "unconfirmed",
+        "id": "sensenova-u1.5-fast"
+      },
+      "regions": [
+        "cn"
+      ],
+      "roles": [
+        "image-generation",
+        "image-editing"
+      ],
+      "protocol": "sensenova-images-json",
+      "inputModalities": [
+        "text",
+        "image"
+      ],
+      "outputModalities": [
+        "image"
+      ],
+      "maxImages": 5,
+      "limits": {
+        "minImagesEditing": 1,
+        "maxImages": 5,
+        "maxImagesIsConservative": true,
+        "imageCountEvidence": "第 1 张为主编辑图；至多支持 5 张参考图。原文未明确 5 是否包含主图，产品先限制总数为 5，不能据此承诺 6 张。",
+        "imageBytes": null,
+        "imageDimensions": null,
+        "maxPromptLength": null,
+        "outputCount": 1,
+        "mask": false
+      },
+      "size": {
+        "encoding": "widthxheight",
+        "generationDefault": "auto",
+        "editingDefault": "auto",
+        "minWidth": 512,
+        "minHeight": 512,
+        "maxWidth": 4096,
+        "maxHeight": 4096,
+        "multiple": 32,
+        "minAspectRatio": 0.3333333333333333,
+        "maxAspectRatio": 3,
+        "recommended": [
+          "2048x2048",
+          "2720x1536",
+          "1536x2720",
+          "1664x2496",
+          "2496x1664",
+          "4096x4096"
+        ],
+        "example": "1024x1024",
+        "notes": "文档提及 2K/4K，但具体请求示例为 WxH；适配器使用明确尺寸。"
+      },
+      "price": {
+        "amount": null,
+        "currency": null,
+        "unit": "points",
+        "perModelRate": null,
+        "sourceUrl": "https://platform.sensenova.cn/docs",
+        "notes": "公测有积分额度；移除水印当前公测免费，不等于生图永远免费。",
+        "verifiedAccountPrice": false
+      },
+      "lifecycle": {
+        "status": "listed",
+        "retirementDate": null,
+        "retirementAt": null
+      },
+      "selectable": true,
+      "decision": "adapt",
+      "reason": "官方文档给出精确 API ID 和公开调用协议；只表示可实现，不证明权益或真实调用。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "request": {
+        "endpoint": "https://token.sensenova.cn/v1/images/generations",
+        "method": "POST",
+        "contentType": "application/json",
+        "constants": {
+          "n": 1,
+          "output_format": "png",
+          "response_format": "url",
+          "watermark": true,
+          "prompt_extend": false
+        },
+        "constantsRationale": "n=1 避免多结果；watermark=true 采用官方默认；prompt_extend=false 是产品保持输入提示词的明确选择，官方默认 true。",
+        "visionEncoding": null,
+        "editing": {
+          "endpoint": "https://token.sensenova.cn/v1/images/edits",
+          "method": "POST",
+          "contentType": "application/json",
+          "sourceField": "images",
+          "visionEncoding": [
+            {
+              "image_url": "complete data URL or public HTTPS URL"
+            }
+          ],
+          "maskField": null
+        },
+        "fields": [
+          "model",
+          "prompt",
+          "n",
+          "size",
+          "output_format",
+          "response_format",
+          "watermark",
+          "prompt_extend"
+        ],
+        "formats": {
+          "generation": [
+            "png",
+            "jpeg",
+            "webp"
+          ],
+          "editing": [
+            "png",
+            "jpg",
+            "jpeg",
+            "webp"
+          ]
+        }
+      },
+      "response": {
+        "images": "data[]",
+        "base64": "data[].b64_json",
+        "url": "data[].url",
+        "selection": "response_format chooses one; default b64_json",
+        "urlExpiresHours": 24,
+        "size": "size",
+        "format": "output_format",
+        "requestId": [
+          "request_id",
+          "id"
+        ],
+        "usage": "usage",
+        "usageFields": [
+          "input_tokens",
+          "input_tokens_details.image_tokens",
+          "input_tokens_details.text_tokens",
+          "output_tokens",
+          "total_tokens",
+          "images_count"
+        ]
+      },
+      "recovery": {
+        "mode": "synchronous",
+        "queryEndpoint": null,
+        "idempotency": null,
+        "beforeSubmit": "Durably store submitting=true before the only POST.",
+        "unknownOutcome": "Never resubmit a synchronous inference with unknown outcome; no documented lookup endpoint.",
+        "knownResult": "Persist returned URL before download; resume download only, without API credentials.",
+        "billing": "Public prices, estimates, provider usage/cost, and verified invoice remain separate; no paid calls made."
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "id": "SenseNova-V6.5-Pro",
+      "label": "SenseNova-V6.5-Pro",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs"
+      ]
+    },
+    {
+      "id": "SenseNova-V6.5-Turbo",
+      "label": "SenseNova-V6.5-Turbo",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs"
+      ]
+    },
+    {
+      "id": "SenseNova-V6-Pro",
+      "label": "SenseNova-V6-Pro",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs"
+      ]
+    },
+    {
+      "id": "SenseNova-V6-Turbo",
+      "label": "SenseNova-V6-Turbo",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs"
+      ]
+    },
+    {
+      "id": "SenseNova-V6-Reasoner",
+      "label": "SenseNova-V6-Reasoner",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/fusionllm/FusionLLMs"
+      ]
+    },
+    {
+      "id": "SenseChat-VisionV5.5",
+      "label": "SenseChat-VisionV5.5",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/mllm"
+      ]
+    },
+    {
+      "id": "SenseChat-Character",
+      "label": "SenseChat-Character",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧平台专用角色扮演流程；新平台七型号目录未列入，开通和协议分离。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/llm/CharacterLLM"
+      ]
+    },
+    {
+      "id": "SenseChat-Character-Pro",
+      "label": "SenseChat-Character-Pro",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧平台专用角色扮演流程；新平台七型号目录未列入，开通和协议分离。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/llm/CharacterLLM"
+      ]
+    },
+    {
+      "id": "SenseChat-Character-Turbo",
+      "label": "SenseChat-Character-Turbo",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧平台专用角色扮演流程；新平台七型号目录未列入，开通和协议分离。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/model/llm/CharacterLLM"
+      ]
+    },
+    {
+      "id": "SenseChat-5-1202",
+      "label": "SenseChat-5-1202",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": "SenseChat-Turbo-1202",
+      "label": "SenseChat-Turbo-1202",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": "SenseChat-5",
+      "label": "SenseChat-5",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": "SenseChat-Turbo",
+      "label": "SenseChat-Turbo",
+      "selectable": false,
+      "decision": "exclude-from-new-platform",
+      "lifecycle": {
+        "status": "unknown",
+        "retirementDate": null
+      },
+      "reason": "旧 SenseCore 文档仍有记录，但新平台目录未列入；未核验旧账号和协议，不据缺席或旧页失败判定退役。",
+      "sourceUrls": [
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "SenseNova Omni / RTC",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "旧秒画文生图",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "旧秒画图生图",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "人脸工具",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "超分辨率",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "图像分割",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "擦除",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "扩图",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "风格化",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    },
+    {
+      "id": null,
+      "label": "局部重绘",
+      "selectable": false,
+      "decision": "specialized-or-unverified-legacy",
+      "lifecycle": {
+        "status": "unknown"
+      },
+      "reason": "专用服务或旧文档工具流程；当前新平台七型号目录无可核验的精确 ID/通用图片合同，不能编造 ID。",
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs",
+        "https://www.sensecore.cn/help/docs/model-as-a-service/nova/release"
+      ]
+    }
+  ],
+  "coverage": {
+    "currentDocumentedModels": 7,
+    "main": 5,
+    "vision": 2,
+    "imageGeneration": 2,
+    "imageEditing": 2,
+    "authenticatedDirectoryRead": false,
+    "realInferenceCalls": 0,
+    "eligibilityMeaning": "selectable=true means documented and suitable for local adaptation; not entitlement, real invocation, or published implementation.",
+    "unresolved": [
+      "无新平台逐型号价格表；积分消耗率未知。",
+      "官方新文档未给出视觉输入数量/字节上限与 U1.5 输入字节上限。",
+      "旧平台的在售状态不能由新目录缺席判断。"
+    ]
+  },
+  "plans": [
+    {
+      "name": "Token Plan public beta",
+      "monthlyCNY": 0,
+      "keyLimit": 20,
+      "quota": {
+        "general": {
+          "rolling5h": 60000,
+          "rollingWeek": 600000
+        },
+        "flashLiteSpecific": {
+          "rolling5h": 60000,
+          "rollingWeek": 600000
+        }
+      },
+      "sourceUrls": [
+        "https://www.sensenova.cn/token-plan",
+        "https://platform.sensenova.cn/docs"
+      ],
+      "notes": "已核对免费公测页面；付费 Lite/Pro 尚待上线。60,000 积分不等于 60,000 tokens，也不证明当前账号已开通。"
+    }
+  ]
+}

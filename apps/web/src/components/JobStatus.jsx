@@ -1,3 +1,4 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import JobFailureNotice from './JobFailureNotice';
 import { Loader2, Settings2 } from 'lucide-react';
 import { formatConfigurationMode, formatOutputFormat, formatReferenceImageMode } from '../utils';
@@ -8,11 +9,12 @@ import StatusBadge from './StatusBadge';
 import { formatClientPlatform } from '@paperbanana/api';
 
 export default function JobStatus({ job, apiBase, onUseForRefine }) {
+  const { t } = useAppLocale()
   if (!job) {
     return (
       <div className="empty-state">
         <Settings2 size={34} />
-        <p>等待新任务</p>
+        <p>{t("等待新任务")}</p>
       </div>
     );
   }
@@ -21,24 +23,24 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
     <div className="job-detail">
       <div className="status-strip">
         <StatusBadge status={job.status} />
-        <span>任务来源：{formatClientPlatform(job.client_platform)}</span>
+        <span>{t("任务来源：")}{formatClientPlatform(job.client_platform)}</span>
         <span>{formatConfigurationMode(job.configuration_mode)}</span>
         <span>{job.provider}</span>
         <span>{job.aspect_ratio}</span>
         <span>{formatOutputFormat(job.output_format)}</span>
         <span>{formatReferenceImageMode(job.reference_image_mode_used)}</span>
         <span>{formatRetrievalSetting(job.retrieval_setting)}</span>
-        {job.critic_mode ? <span>{job.critic_mode === 'image' ? '图像评审' : '文本评审'}</span> : null}
-        <span>{job.num_candidates} 张候选图</span>
+        {job.critic_mode ? <span>{t(job.critic_mode === 'image' ? '图像评审' : '文本评审')}</span> : null}
+        <span>{job.num_candidates}{t(" 张候选图")}</span>
       </div>
       {(job.result_images || []).length > 0 ? (
         <DownloadJobZipButton job={job} apiBase={apiBase} />
       ) : null}
       <JobFailureNotice job={job} />
-      {job.referenceSelection && <p className="echo-label">参考图选择：实际采用 {job.referenceSelection.selectedCount} 张，{job.referenceSelection.mode === 'images' ? `本阶段合计提交 ${job.referenceSelection.imageCount} 张图片` : '本阶段仅使用参考文字'}；按相关性和当前模型限制筛选，无合适参考图时不使用。</p>}
+      {job.referenceSelection && <p className="echo-label">{t("参考图选择：实际采用 ")}{job.referenceSelection.selectedCount}{t(" 张，")}{t(job.referenceSelection.mode === 'images' ? `本阶段合计提交 ${job.referenceSelection.imageCount} 张图片` : '本阶段仅使用参考文字')}{t("；按相关性和当前模型限制筛选，无合适参考图时不使用。")}</p>}
       {(job.reference_images || []).some((image) => image.url) ? (
         <>
-          <p className="echo-label">参考回显（仅作风格参考，不决定版式）</p>
+          <p className="echo-label">{t("参考回显（仅作风格参考，不决定版式）")}</p>
           <div className="image-grid reference-echo">
             {(job.reference_images || []).filter((image) => image.url).map((image, index) => (
               <ResultFigure key={image.object_key || image.filename || index} image={{ ...image, candidate_id: index }} apiBase={apiBase} labelPrefix="参考图" />
@@ -52,9 +54,9 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
         ))}
       </div>
       <StageTimeline job={job} apiBase={apiBase} />
-      {job.providerCalls?.length > 0 && <details><summary>模型调用记录</summary>{job.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {call.actualModel || '未返回实际型号'}<br />请求编号：{call.requestId || '未返回'}；供应商：{call.supplier || '未返回'}</p>)}</details>}
+      {job.providerCalls?.length > 0 && <details><summary>{t("模型调用记录")}</summary>{job.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {t(call.actualModel || '未返回实际型号')}<br />{t("请求编号：")}{t(call.requestId || '未返回')}{t("；供应商：")}{t(call.supplier || '未返回')}</p>)}</details>}
       {job.status === 'running' || job.status === 'queued' ? (
-        <div className="running-line"><Loader2 className="spin" size={17} />生成中，页面会自动刷新。</div>
+        <div className="running-line"><Loader2 className="spin" size={17} />{t("生成中，页面会自动刷新。")}</div>
       ) : null}
       {job.status === 'failed' && job.logs_tail ? <pre className="logs">{job.logs_tail}</pre> : null}
     </div>

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test, { afterEach } from 'node:test';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { AppLocaleProvider } from './BenchmarkLocale.jsx';
 import SitePageShell, { SiteSessionProvider, useSiteSession } from './SitePageShell.jsx';
 import LeaderboardRoot, { LeaderboardSessionProvider, useLeaderboardSession } from './LeaderboardRoot.jsx';
 
@@ -118,7 +119,7 @@ test('late admin privileges from a previous account cannot appear in the shared 
   } finally { cleanup(); globalThis.fetch = previousFetch; }
 });
 
-test('standalone shell preserves document title and the leaderboard keeps its own locale title contract', async () => {
+test('standalone shell preserves document title and the app locale owns the leaderboard title', async () => {
   const previousTitle = document.title;
   document.title = '图研 · 论文画布';
   const shell = render(<SitePageShell authEnabled={false}><main /></SitePageShell>);
@@ -127,9 +128,9 @@ test('standalone shell preserves document title and the leaderboard keeps its ow
   assert.ok(screen.getByRole('heading', { name: '账号服务尚未配置' }));
   shell.unmount();
   try {
-    render(<SiteSessionProvider authEnabled={false}><LeaderboardRoot apiBase="https://gateway.example" backendMode="gateway" enabled={false} pathname="/leaderboard" route={{}} /></SiteSessionProvider>);
-    await waitFor(() => assert.equal(document.title, '图研排行榜'));
-    fireEvent.click(screen.getByRole('button', { name: 'English', exact: true }));
-    assert.equal(document.title, 'Tuyan Leaderboard');
-  } finally { cleanup(); window.localStorage.removeItem('tuyan.benchmark.language.v1'); document.title = previousTitle; }
+    render(<AppLocaleProvider title="图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测"><SiteSessionProvider authEnabled={false}><LeaderboardRoot apiBase="https://gateway.example" backendMode="gateway" enabled={false} pathname="/leaderboard" route={{}} /></SiteSessionProvider></AppLocaleProvider>);
+    await waitFor(() => assert.equal(document.title, '图研 Tuyan Benchmark · 科研图示生成与编辑模型基准评测'));
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to English', exact: true }));
+    assert.equal(document.title, 'Tuyan Benchmark · Research figure generation and editing');
+  } finally { cleanup(); window.localStorage.removeItem('tuyan.benchmark.language.v1'); window.localStorage.removeItem('tuyan.app.language.v1'); document.title = previousTitle; }
 });

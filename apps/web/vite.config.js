@@ -11,6 +11,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         'figure-studio': resolve(import.meta.dirname, 'figure-studio/index.html'),
         'not-found': resolve(import.meta.dirname, '404.html'),
+        changelog: resolve(import.meta.dirname, 'changelog/index.html'),
         bench: resolve(import.meta.dirname, 'bench/index.html'),
         leaderboard: resolve(import.meta.dirname, 'leaderboard/index.html'),
         'leaderboard-methodology': resolve(import.meta.dirname, 'leaderboard/methodology/index.html'),

@@ -194,6 +194,7 @@ export const PROVIDERS = {
       '登录 OpenAI Platform，进入 API keys 页面。',
       '点击 Create new secret key，创建密钥。',
       '复制 sk- 开头的密钥，粘贴到上方输入框。',
+      'GPT-6 Sol / Luna 使用独立计费的公开 API；ChatGPT / Codex 订阅不等于 API 额度。思考设为默认时不传参数。',
     ],
   },
   bailian: {
@@ -526,7 +527,8 @@ export const PROVIDERS = {
     "guideSteps": [
       "登录 Anthropic 官方开放平台，进入 API Key 管理页面。",
       "创建 API Key，并确认账户已开通所选模型。",
-      "复制密钥并粘贴到对应渠道的输入框。"
+      "复制密钥并粘贴到对应渠道的输入框。",
+      "Opus 5.5 的自适应思考始终开启，只能调节强度；Claude 订阅不等于 Claude API 额度。"
     ]
   },
   recraft: {
@@ -607,7 +609,7 @@ export const PROVIDERS = {
 // Generated catalog is the common fallback; public runtime registry remains authoritative.
 for (const [id, registry] of Object.entries(STATIC_MODEL_REGISTRY)) {
   const options = (role) => registry.models.filter((model) => model.selectable !== false && model.roles.includes(role)).map((model) => [model.id, model.label, model.vendor])
-  PROVIDERS[id] = { ...PROVIDERS[id], ...(EXTENDED_MODEL_CHANNELS[id] ? { ...EXTENDED_MODEL_CHANNELS[id], name: EXTENDED_MODEL_CHANNELS[id].label, keyName: id, keyPlaceholder: 'API Key' } : {}), mainModel: registry.defaults.main, imageModel: registry.defaults.image, visionModel: registry.defaults.vision, mainModels: options('main'), imageModels: options('image'), visionModels: options('vision'), registryModels: registry.models }
+  PROVIDERS[id] = { ...PROVIDERS[id], ...(EXTENDED_MODEL_CHANNELS[id] ? { ...EXTENDED_MODEL_CHANNELS[id], name: EXTENDED_MODEL_CHANNELS[id].label, keyName: id, keyPlaceholder: EXTENDED_MODEL_CHANNELS[id].keyPlaceholder || 'API Key' } : {}), mainModel: registry.defaults.main, imageModel: registry.defaults.image, visionModel: registry.defaults.vision, mainModels: options('main'), imageModels: options('image'), visionModels: options('vision'), registryModels: registry.models }
 }
 
 export const REFERENCE_IMAGE_LIMITS = {

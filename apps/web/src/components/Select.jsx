@@ -1,4 +1,6 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 export default function Select({ label, value, onChange, options, disabled = false, hint = '' }) {
+  const { t } = useAppLocale()
   const hasGroups = options.some((option) => option[2]);
   const groups = hasGroups
     ? options.reduce((acc, option) => {
@@ -11,17 +13,18 @@ export default function Select({ label, value, onChange, options, disabled = fal
 
   return (
     <label className="field compact">
-      <span>{label}</span>
-      <select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value)}>
+      <span>{t(label)}</span>
+      <select aria-label={t(label)} value={value} disabled={disabled} onChange={(event) => onChange(event.target.value)}>
+        {!options.some(([id]) => id === value) ? <option value={value} disabled>{t(value || '尚未选择')}{t("（当前不可用，请重新选择）")}</option> : null}
         {groups
           ? Object.entries(groups).map(([group, items]) => (
               <optgroup key={group} label={group}>
-                {items.map(([id, text]) => <option key={id} value={id}>{text}</option>)}
+                {items.map(([id, text]) => <option key={id} value={id}>{t(text)}</option>)}
               </optgroup>
             ))
-          : options.map(([id, text]) => <option key={id} value={id}>{text}</option>)}
+          : options.map(([id, text]) => <option key={id} value={id}>{t(text)}</option>)}
       </select>
-      {hint ? <small className="field-hint">{hint}</small> : null}
+      {hint ? <small className="field-hint">{t(hint)}</small> : null}
     </label>
   );
 }

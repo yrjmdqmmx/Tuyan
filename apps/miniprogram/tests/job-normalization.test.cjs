@@ -40,3 +40,13 @@ const failureJob = normalizeJob({ id: 'failure', status: 'failed', error: '图�
 assert.equal(failureJob.failure.stageLabel, '图示规划')
 assert.match(failureJob.failure.billingMessage, /账单/)
 assert.equal(failureJob.referenceSelection.imageCount, 3)
+
+// Web-created settings remain attached to records. Resume submits the existing ID.
+const thinkingConfig = {version: 1, roles: {main: {provider:'openai',modelId:'gpt-6-astra',protocol:'openai-responses',options:{effort:'low'}}}}
+const thinkingSnapshot = {version: 1, roles: {main: {...thinkingConfig.roles.main,wire:{reasoning:{effort:'low'}},clearFields:['reasoning.effort']}}}
+const thinkingJob = normalizeJob({id:'thinking',thinkingConfig,thinkingSnapshot})
+for (const record of [thinkingJob,toLocalJobSummary(thinkingJob),toRecordJobSummary(thinkingJob)]) {
+  assert.deepEqual(record.thinkingConfig,thinkingConfig)
+  assert.deepEqual(record.thinkingSnapshot,thinkingSnapshot)
+}
+assert.equal('thinkingConfig' in job,false)

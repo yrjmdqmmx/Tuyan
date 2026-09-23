@@ -1,0 +1,114 @@
+{
+  "asOf": "2026-09-23",
+  "tuyan": {
+    "id": "tuyan-v4-0-0",
+    "product": "tuyan",
+    "version": "4.0.0",
+    "release": {
+      "status": "unreleased",
+      "date": null,
+      "surfaces": [
+        "Web",
+        "Core"
+      ]
+    },
+    "branch": "codex/tuyan-v4.0.0",
+    "baseline": {
+      "version": "3.8.0",
+      "commit": "0b60f85c8387ddc41b05b55c3952c36f685f42fa"
+    },
+    "summary": "新增独立论文画布：可编辑图稿、基础画布编辑、期刊规则配置与导出核验。",
+    "notes": [
+      "负责人于 2026-09-23 明确归属后续 4.0.0；不并入已发布的 3.8.0。",
+      "当前为开发集成记录，公开更新日志只保留已发布版本。",
+      "通用 API 真实凭据验收、发布门槛和线上复验仍待完成；不以本地测试替代。"
+    ],
+    "changes": [
+      {
+        "kind": "新增",
+        "text": "论文画布作为与工作台平级的独立页面，复用公共导航、账号和模型能力。",
+        "state": "local-verified",
+        "sourceIds": [
+          "canvas-dev"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "canvas-dev",
+        "kind": "branch",
+        "label": "Tuyan 4.0.0 开发分支",
+        "url": "https://github.com/yrjmdqmmx/Tuyan/tree/codex/tuyan-v4.0.0"
+      }
+    ]
+  },
+  "benchmark": null,
+  "ecosystem": {
+    "changes": [
+      {
+        "kind": "优化",
+        "text": "小程序完善移动设置、账户布局和观猹身份接续；已完成源码与本地验证，微信正式版本状态仍待确认。",
+        "state": "local-verified",
+        "surfaces": [
+          "微信小程序"
+        ],
+        "sourceIds": [
+          "mini196"
+        ]
+      },
+      {
+        "kind": "修复",
+        "text": "小程序明确失败的充值订单允许重新尝试，不确定结果禁止重复下单；清理本地任务时只处理当前账号记录。",
+        "state": "local-verified",
+        "surfaces": [
+          "微信小程序"
+        ],
+        "sourceIds": [
+          "mini197"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "mini196",
+        "kind": "pull-request",
+        "label": "小程序设置与身份接续",
+        "url": "https://github.com/yrjmdqmmx/Tuyan/pull/196"
+      },
+      {
+        "id": "mini197",
+        "kind": "pull-request",
+        "label": "小程序订单与记录修复",
+        "url": "https://github.com/yrjmdqmmx/Tuyan/pull/197"
+      }
+    ]
+  },
+  "unassigned": [
+    {
+      "id": "account-lifecycle",
+      "announcementDate": null,
+      "summary": "账户恢复与数据管理修复",
+      "note": "9 月 7 日的发布记录已确认修复历史中断状态影响原账号使用的问题，但没有明确对应图研版本，暂不按日期猜测归属。",
+      "sources": [
+        {
+          "id": "account-0",
+          "kind": "pull-request",
+          "label": "变更 #168",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/168"
+        },
+        {
+          "id": "account-1",
+          "kind": "deployment",
+          "label": "发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098748870"
+        },
+        {
+          "id": "account-2",
+          "kind": "deployment",
+          "label": "配套发布结果",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/34098510229"
+        }
+      ]
+    }
+  ]
+}

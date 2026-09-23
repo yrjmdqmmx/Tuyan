@@ -12,6 +12,7 @@ export async function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, oper
 }
 export function isLocalInputFailure(error: any) {
   return !error?.uncertain && (error?.name === 'ReferenceUploadValidationError'
+    || error?.name === 'ThinkingConfigValidationError' && error?.localInputFailure === true && error?.requestState === 'not_sent'
     || ['TokenDanceError', 'UniversalApiError'].includes(error?.name) && error?.requestState === 'not_sent' && error?.status === 400)
 }
 export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {

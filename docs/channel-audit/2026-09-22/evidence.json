@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-09-22",
+  "baseline": "8bc6e246e48c66c62884bb2fb9f01e2e3ca6f6f9",
+  "realInferenceCalls": 0,
+  "recharge": false,
+  "push": false,
+  "deploy": false,
+  "logs": [
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/core-final.log",
+      "sha256": "c7c97213976e59272902fa48d6bab2641e2a4f2442514e22f5f7bda5e91d02a7",
+      "summary": [
+        "ℹ tests 860",
+        "ℹ pass 860",
+        "ℹ fail 0",
+        "ℹ duration_ms 74768.593542"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/core-last-diff.log",
+      "sha256": "82c4ced648052def0c2369363166b4ea6ee88697ce5c04d00a56ee35f5295f6b",
+      "summary": [
+        "ℹ tests 202",
+        "ℹ pass 202",
+        "ℹ fail 0",
+        "ℹ duration_ms 7298.685625"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/core-check.log",
+      "sha256": "eb1c32aec05a42b6729bfffe241ca9f547006182c654ce12449143b127cc845a",
+      "summary": []
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/core-build.log",
+      "sha256": "5cf193ab58db86b40c31479387d8d44115fb08fb769cd1b1470224a1e830236d",
+      "summary": []
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/web-final.log",
+      "sha256": "b3f3b267b185161817def91766739e10247af6a83c36a3aacac453afcdddb287",
+      "summary": [
+        "ℹ tests 466",
+        "ℹ pass 466",
+        "ℹ fail 0",
+        "ℹ duration_ms 57587.954542"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/web-registry-final.log",
+      "sha256": "73e2103760ad01313b2f1ef97855ba7fcf95efb6da1d84e3531ecb5a60dbfbca",
+      "summary": [
+        "ℹ tests 15",
+        "ℹ pass 15",
+        "ℹ fail 0",
+        "ℹ duration_ms 1799.702875"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/web-build-final.log",
+      "sha256": "35547eab2f5f8d50466845f408d893455328adc2bc25962fc84689ae52f0ecab",
+      "summary": [
+        "✓ built in 3.21s"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/mini-final.log",
+      "sha256": "a14d5680105fe15ddf0999f83ae4c70e95014c0f3dfff762b18d5af639bc80e1",
+      "summary": [
+        "ℹ tests 121",
+        "ℹ pass 121",
+        "ℹ fail 0",
+        "ℹ duration_ms 2191.629417"
+      ]
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/mini-check.log",
+      "sha256": "98d471d7ce3664d22719c4783918407ea8f8f90a43a7f8017173ab5af5e89416",
+      "summary": []
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/mini-build.log",
+      "sha256": "3d8a3ac1a1a6a00b845bfa10a8b14df08181bf532002be7b24804252f8af6c17",
+      "summary": []
+    },
+    {
+      "path": "/tmp/tuyan-directory-audit-20260922/sync-final.log",
+      "sha256": "5798d8e7a3bd386fcfec8d73659ff48af224a6df41e2f7a4f8b0b15198ad8f6f",
+      "summary": [
+        "Catalog 2026-09-22.v23: 943 static models; no drift",
+        "Version reports: 1358 rows; 938 unresolved rows; no drift"
+      ]
+    }
+  ]
+}

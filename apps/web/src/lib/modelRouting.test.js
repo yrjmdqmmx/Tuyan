@@ -208,5 +208,5 @@ test('MiniMax China is explicit routing data and cannot be submitted to an older
   const modelRoutes = {main:{accessProvider:'minimax',modelId:'MiniMax-M3'},image:{accessProvider:'minimax',modelId:'image-01'},vision:{accessProvider:'minimax',modelId:'MiniMax-M3'}}
   const input = {configurationMode:'simple', modelRoutes, providerRegions:{minimax:'cn'}, registry:{routeContractVersion:1,providerRegionContractVersion:1}}
   assert.deepEqual(buildModelSubmission(input).providerRegions,{minimax:'cn'})
-  assert.throws(()=>buildModelSubmission({...input,registry:{routeContractVersion:1}}),/MiniMax 国内区域/)
+  assert.throws(()=>buildModelSubmission({...input,registry:{routeContractVersion:1}}),/稀宇科技国内区域/)
 })

@@ -61,6 +61,7 @@ export function memoryDb(seed = {}) {
           if (inserted) Object.assign(row, structuredClone(change.$setOnInsert || {}));
           Object.assign(row, structuredClone(change.$set || {}));
           for (const key of Object.keys(change.$unset || {})) delete row[key];
+          for (const [key,value] of Object.entries(change.$addToSet || {})) { row[key] ||= []; if (!row[key].some(item=>JSON.stringify(item)===JSON.stringify(value))) row[key].push(structuredClone(value)); }
           for (const [key, value] of Object.entries(change.$push || {})) { row[key] ||= []; row[key].push(structuredClone(value)); }
           for (const [key, value] of Object.entries(change.$inc || {})) row[key] = (row[key] || 0) + value;
           assertUnique(row, previous);

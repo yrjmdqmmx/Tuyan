@@ -1,0 +1,94 @@
+{
+  "provider": "sensenova",
+  "checkedAt": "2026-09-22",
+  "endpointScope": "新平台 Token Plan API Key；旧 SenseCore AK/SK/JWT 不通用。通用 API 已公开；商业应用权益和积分消耗需由账号确认。",
+  "models": [
+    {
+      "id": "sensenova-6.8-flash-lite",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "SenseTime",
+      "apiId": "sensenova-6.8-flash-lite",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "roles": [
+        "main"
+      ],
+      "developer": "DeepSeek",
+      "apiId": "deepseek-v4-pro",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "roles": [
+        "main"
+      ],
+      "developer": "DeepSeek",
+      "apiId": "deepseek-v4-flash",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "glm-5.2",
+      "roles": [
+        "main"
+      ],
+      "developer": "Z.ai",
+      "apiId": "glm-5.2",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "kimi-k3",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "developer": "Moonshot AI",
+      "apiId": "kimi-k3",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "sensenova-u1.5-lite",
+      "roles": [
+        "image"
+      ],
+      "developer": "SenseTime",
+      "apiId": "sensenova-u1.5-lite",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    },
+    {
+      "id": "sensenova-u1.5-fast",
+      "roles": [
+        "image"
+      ],
+      "developer": "SenseTime",
+      "apiId": "sensenova-u1.5-fast",
+      "adapter": "implemented-local-unverified",
+      "realInference": false,
+      "accountEntitlement": false,
+      "billingVerified": false
+    }
+  ],
+  "excluded": []
+}

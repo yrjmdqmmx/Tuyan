@@ -85,14 +85,14 @@ test('known dates and version relations produce a stable newest-first order with
   assert.equal(sortModelsNewestFirst(sortModelsNewestFirst(models)).length, models.length)
   const glm = catalog.siliconflow.models.filter((model: any) => /GLM-5/.test(model.id))
   assert.deepEqual(glm.map((model: any) => model.id), ['zai-org/GLM-5.3','zai-org/GLM-5.2','Pro/zai-org/GLM-5.1'])
-  assert.equal(catalog.anthropic.models[0].id, 'claude-fable-5-1')
+  assert.equal(catalog.anthropic.models[0].id, 'claude-opus-5-5')
   assert.equal(catalog.gemini.models[0].id, 'gemini-3.8-flash')
 })
 
 test('all catalogs keep deterministic chronology after refresh, without changing routes or IDs', async () => {
   const { orderModelChannels, MODEL_CHANNEL_LABELS } = await import('../../../packages/types/src/model-presentation.js')
   const ids = Object.keys(catalog)
-  assert.deepEqual(orderModelChannels(ids), ['tokendance','siliconflow','deepseek','kimi','zhipu','bailian','ark','minimax','anthropic','recraft','xai','gemini','openai','bfl','stability','ideogram','mistral','together','fireworks','fal','replicate'])
+  assert.deepEqual(orderModelChannels(ids), ['tokendance','siliconflow','tokenhub','deepseek','kimi','zhipu','bailian','ark','minimax','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','anthropic','recraft','xai','gemini','openai','bfl','stability','ideogram','mistral','together','fireworks','fal','replicate','runware'])
   assert.equal(MODEL_CHANNEL_LABELS.tokendance, '观猹 TokenDance')
   assert.deepEqual(ids, Object.keys(catalog))
   for (const [channel, entry] of Object.entries(catalog) as [string, any][]) {

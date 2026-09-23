@@ -1,0 +1,114 @@
+{
+  "checkedAt": "2026-09-22",
+  "models": [
+    {
+      "provider": "fal",
+      "id": "xai/grok-imagine-image",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/api",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "e7e1904a33972de0dea7fc31863459e154635737cf1dc40b393fd477000098aa",
+      "responseKind": "text/html; charset=utf-8",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "fal",
+      "id": "xai/grok-imagine-image/quality/text-to-image",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/quality/text-to-image/api",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "61c9ceb4eefb1e76749bd99d2664d05d1f5fb9f6257fda6b3c53704919fcf0e1",
+      "responseKind": "text/html; charset=utf-8",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "fal",
+      "id": "xai/grok-imagine-image/v2.0/text-to-image",
+      "url": "https://fal.ai/models/xai/grok-imagine-image/v2.0/text-to-image/api",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "6b70f74f645f2da97b719c3fa1dedc5856639807c1e2e5448b929de0cfd4120c",
+      "responseKind": "text/html; charset=utf-8",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "replicate",
+      "id": "xai/grok-imagine-image",
+      "url": "https://replicate.com/xai/grok-imagine-image/api/schema",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "32a30dd5a6b1975acf52176d99430c98ee1d4c9bfe1050c0b9b19471e8b35da0",
+      "responseKind": "text/html; charset=utf-8",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "replicate",
+      "id": "xai/grok-imagine-image-2",
+      "url": "https://replicate.com/xai/grok-imagine-image-2/api/schema",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "6e973593dc0a833f5889e50d0bd822da441ab21afcb16a180ce982057602373b",
+      "responseKind": "text/html; charset=utf-8",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok-imagine@image-2.0",
+      "url": "https://runware.ai/docs/models/xai-grok-imagine-image-2-0/schema.json",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "4a803bbd6a8d18c7eee78e0985661e99993a754a9ab36bcb34dd06c1abd88633",
+      "responseKind": "application/json",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok-imagine@image-quality",
+      "url": "https://runware.ai/docs/models/xai-grok-imagine-image-quality/schema.json",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "fd29d37181e9e2d96d4065df0dfcb41ee52f94608eb8bd288926494028dd9888",
+      "responseKind": "application/json",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok@4.3",
+      "url": "https://runware.ai/docs/models/xai-grok-4-3/schema.json",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "4da6ec3d70afba288c38ca595df67151afc2b40a90ec1217ca1ef730221b5e28",
+      "responseKind": "application/json",
+      "status": "official-page-rechecked"
+    },
+    {
+      "provider": "runware",
+      "id": "xai:grok-imagine@image",
+      "url": "https://runware.ai/docs/models/xai-grok-imagine-image/schema.json",
+      "decision": "保留本渠道既有能力；原厂退役日期不自动传播。",
+      "retirementEvidence": null,
+      "httpStatus": 200,
+      "exactIdentifierFound": true,
+      "sha256": "f924b9fa6085338b1cbd4998797b5205a8a93cce77543ca894d7ae55b0bd685c",
+      "responseKind": "application/json",
+      "status": "official-page-rechecked"
+    }
+  ],
+  "policy": "HTTP 200/型号出现在页面不能证明账号权益、推理成功或账单。OpenRouter 独立公开JSON目录另存，不沿用原厂版本绑定。"
+}

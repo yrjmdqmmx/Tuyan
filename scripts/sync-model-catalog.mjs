@@ -38,14 +38,49 @@ write(path.join(root, 'apps/miniprogram/miniprogram/utils/aspect-ratios.ts'), '/
 const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/image-channel-routes.json'), 'utf8'))
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
-const channelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/image-channel-adapters.ts'), 'utf8').replace(/^import .*image-channel-routes.js'\n/m, '')
+const channelAuditDir = path.join(root, 'config/channel-audit')
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
+const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
+  const policy = {maxCount:c.productImageCap ?? Math.min(3,c.maxImages || 0),source:c.source}
+  if (c.taskType==='vidu') Object.assign(policy,{minDimension:128,maxAspectRatio:4})
+  if (c.taskType==='seedream') Object.assign(policy,{minDimension:14,maxAspectRatio:16})
+  for (const x of c.schema?.['x-constraints'] || []) {
+    if(x.scope!=='each'||x.when)continue
+    if(['width','height'].includes(x.operation)) { if(x.minimum)policy.minDimension=Math.max(policy.minDimension || 1,x.minimum);if(x.maximum)policy.maxDimension=Math.min(policy.maxDimension || 4096,x.maximum) }
+    if(x.operation==='ratio')policy.maxAspectRatio=Math.min(x.maximum || 200,1/(x.minimum || .005))
+    if(x.operation==='fileSize'&&x.maximum)policy.maxBytes=Math.min(4*1024*1024,x.maximum)
+  }
+  return [key,policy]
+}))
+const policyFile=path.join(root,'packages/api/src/reference-upload.ts')
+let policySource=fs.readFileSync(policyFile,'utf8')
+const policyStart='// BEGIN GENERATED CHANNEL INPUT POLICY',policyEnd='// END GENERATED CHANNEL INPUT POLICY'
+const policyBlock=policyStart+'\nconst auditedInputPolicy: Record<string, Partial<ReferenceSubmissionPolicy>> = '+JSON.stringify(auditedInputPolicy)+'\n'+policyEnd
+policySource=policySource.includes(policyStart)?policySource.slice(0,policySource.indexOf(policyStart))+policyBlock+policySource.slice(policySource.indexOf(policyEnd)+policyEnd.length):policySource+'\n'+policyBlock+'\n'
+write(policyFile,policySource)
+const auditRefineData = 'export const AUDITED_REFINE_CONTROLS: Record<string, any> = ' + JSON.stringify(auditRefine) + '\n'
+write(path.join(root,'packages/api/src/audited-channel-data.ts'),'// Generated from config/channel-audit.\n'+auditData)
+write(path.join(root,'packages/api/src/audited-refine-data.ts'),'// Generated from config/channel-audit.\n'+auditRefineData)
+lines.push(auditData,fs.readFileSync(path.join(root,'packages/api/src/audited-channel-contracts.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
+const refineRuntime = auditRefineData + fs.readFileSync(path.join(root, 'packages/types/src/refine.ts'), 'utf8') + fs.readFileSync(path.join(root, 'packages/api/src/refine-controls.ts'), 'utf8').replace(/^(?:import|import type|export type) .* from .*\n/gm, '')
+write(path.join(root, 'apps/web/src/lib/refineControls.js'), '// Generated from packages/api/src/refine-controls.ts\n' + ts.transpileModule(refineRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+lines.push(refineRuntime)
+const channelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/image-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
 const regionRuntime = fs.readFileSync(path.join(root, 'packages/types/src/provider-regions.ts'), 'utf8')
 lines.push(regionRuntime)
 const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
-lines.push(routeModule, channelRuntime, `const extendedModelChannels: Record<string, any> = ${JSON.stringify(config.channels || {})}`)
+const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']]]) {
+  const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
+  lines.push(`const {${names.join(',')}} = (()=>{${moduleSource}\nreturn {${names.join(',')}}})()`)
+}
+lines.push(routeModule, channelRuntime, textChannelRuntime, `const extendedModelChannels: Record<string, any> = ${JSON.stringify(config.channels || {})}`)
 lines.push(`const auditedModelAliases: Record<string, Record<string, string>> = ${JSON.stringify(config.aliases || {})}`)
+lines.push(`const auditedDisabledIdentities: Record<string, Record<string, any>> = ${JSON.stringify(config.disabled || {})}`)
 for (const [provider, channel] of Object.entries(config.channels || {})) {
   lines.push(`staticModelRegistry[${JSON.stringify(provider)}] = ${JSON.stringify({accessKind:channel.accessKind, routeContractVersion:1, accountCatalogRequired:false, defaults:channel.defaults, models:[]})}`)
 }
@@ -97,6 +132,8 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
   const model = staticModelRegistry[provider]?.models.find((model) => model.id === key.slice(slash + 1))
   if (!model) throw new Error('Image contract references missing model: ' + key)
   const caps = model.capabilities
+  const refineControls = refineControlsFor(provider, model.id)
+  if (refineControls) caps.refineControls = refineControls
   caps.imageGeneration = Boolean(route.generation)
   caps.requiresSourceImage = !route.generation
   caps.sizeReviewedAt = route.reviewedAt

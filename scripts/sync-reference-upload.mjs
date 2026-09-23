@@ -1,3 +1,4 @@
+import { packModelCatalog } from './lib/pack-model-catalog.mjs';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { EXTENDED_MODEL_CHANNELS, STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from '../apps/web/src/lib/staticModelCatalog.js';
@@ -22,8 +23,10 @@ const models = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([provider, registr
     reviewScope: 'Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check.',
   }));
 }));
-const miniSource = inlineSource.replace('universalReferencePolicy(route)', "{ ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }");
+const inputPolicyLiteral = /const auditedInputPolicy: Record<string, Partial<ReferenceSubmissionPolicy>> = (.*)\n/.exec(inlineSource)?.[1]
+const miniSource = inlineSource.replace(inputPolicyLiteral, "require('./audited-input-policy.js')").replace('universalReferencePolicy(route)', "{ ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }");
 const outputs = {
+  'apps/miniprogram/miniprogram/utils/audited-input-policy.js': generated + "module.exports = require('./unpack-model-catalog.js').unpackModelCatalog(" + JSON.stringify(packModelCatalog(JSON.parse(inputPolicyLiteral))) + ')\n',
   'apps/web/src/lib/referenceUploadPolicy.js': generated + ts.transpileModule(source.replace('./universal-api.js', './universalContract.js'), { compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ES2020 } }).outputText,
   'apps/miniprogram/miniprogram/utils/reference-upload-policy.ts': generated + miniSource,
   'apps/miniprogram/miniprogram/utils/reference-upload-policy.js': ts.transpileModule(generated + miniSource, { compilerOptions: { target: ts.ScriptTarget.ES2019, module: ts.ModuleKind.CommonJS, alwaysStrict: true } }).outputText,

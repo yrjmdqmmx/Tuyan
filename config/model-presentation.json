@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-09-09",
+  "reviewedAt": "2026-09-23",
   "channels": {
     "deepseek": "深度求索",
     "kimi": "Kimi",
@@ -16,13 +16,21 @@
     "bfl": "BFL",
     "stability": "Stability AI",
     "ideogram": "Ideogram",
-    "minimax": "MiniMax",
+    "minimax": "稀宇科技",
     "mistral": "Mistral AI",
     "together": "Together AI",
     "fireworks": "Fireworks AI",
     "fal": "fal",
     "replicate": "Replicate",
-    "tokendance": "观猹 TokenDance"
+    "tokendance": "观猹 TokenDance",
+    "runware": "Runware",
+    "tokenhub": "腾讯 TokenHub",
+    "xiaomi": "小米 MiMo",
+    "sensenova": "商汤 SenseNova",
+    "stepfun": "阶跃星辰",
+    "qianfan": "百度千帆",
+    "iflytek": "讯飞星辰 MaaS",
+    "longcat": "美团 LongCat"
   },
   "vendors": {
     "deepseek": {
@@ -44,7 +52,8 @@
         "z-ai",
         "zai-org",
         "GLM",
-        "智谱 GLM"
+        "智谱 GLM",
+        "zai"
       ],
       "source": "https://github.com/zai-org/GLM-4",
       "labelEn": "Zhipu AI"
@@ -64,10 +73,14 @@
       "label": "MiniMax",
       "aliases": [
         "MiniMax",
-        "MiniMaxAI"
+        "MiniMaxAI",
+        "稀宇科技",
+        "上海稀宇科技有限公司"
       ],
       "source": "https://huggingface.co/MiniMaxAI",
-      "labelEn": "MiniMax"
+      "labelEn": "MiniMax",
+      "legalName": "上海稀宇科技有限公司",
+      "nameSource": "https://design.minimax.cn/protocol/user-agreement"
     },
     "alibaba": {
       "label": "阿里巴巴",
@@ -230,11 +243,13 @@
     },
     "xiaomi": {
       "label": "小米",
+      "labelEn": "Xiaomi",
+      "labelZh": "小米",
       "aliases": [
-        "Xiaomi"
+        "xiaomi",
+        "MiMo"
       ],
-      "source": "https://huggingface.co/XiaomiMiMo",
-      "labelEn": "Xiaomi"
+      "source": "https://mimo.mi.com/docs/en-US/updates/model"
     },
     "unisound": {
       "label": "云知声",
@@ -567,9 +582,80 @@
       ],
       "source": "https://www.siliconflow.cn/models",
       "labelEn": "XingChenAGI"
+    },
+    "klingai": {
+      "label": "Kling AI",
+      "labelEn": "Kling AI",
+      "aliases": [
+        "klingai",
+        "Kling AI"
+      ],
+      "source": "https://runware.ai/docs/models/kling-image-3-0"
+    },
+    "runway": {
+      "label": "Runway",
+      "labelEn": "Runway",
+      "aliases": [
+        "runway",
+        "Runway"
+      ],
+      "source": "https://runware.ai/docs/models/runway-gen-4-image"
+    },
+    "vidu": {
+      "label": "Vidu",
+      "labelEn": "Vidu",
+      "aliases": [
+        "vidu",
+        "Vidu"
+      ],
+      "source": "https://runware.ai/docs/models/vidu-q1"
+    },
+    "shengshu": {
+      "label": "生数科技",
+      "labelEn": "ShengShu",
+      "aliases": [
+        "ShengShu"
+      ],
+      "source": "https://cloud.tencent.com/document/product/1823/135746"
+    },
+    "sensetime": {
+      "label": "商汤",
+      "labelEn": "SenseTime",
+      "labelZh": "商汤",
+      "aliases": [
+        "SenseNova",
+        "商汤日日新"
+      ],
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    "shanghai-ai-lab": {
+      "label": "上海人工智能实验室",
+      "labelZh": "上海人工智能实验室",
+      "labelEn": "Shanghai AI Laboratory",
+      "aliases": [
+        "InternVL",
+        "书生"
+      ],
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
     }
   },
   "routes": [
+    {
+      "channels": [
+        "runware"
+      ],
+      "pattern": "^alibaba:",
+      "vendorId": "alibaba",
+      "source": "https://runware.ai/docs/models/alibaba-qwen-image-edit-2511"
+    },
+    {
+      "channels": [
+        "tokenhub"
+      ],
+      "pattern": "^hy-image-",
+      "vendorId": "tencent",
+      "source": "https://cloud.tencent.com/document/product/1823/135745"
+    },
     {
       "channels": [
         "siliconflow"
@@ -785,6 +871,686 @@
       "pattern": "^zai-glm-",
       "vendorId": "zhipu",
       "source": "https://docs.mistral.ai/models"
+    },
+    {
+      "channels": [
+        "xiaomi"
+      ],
+      "pattern": "^mimo-",
+      "vendorId": "xiaomi",
+      "source": "https://mimo.mi.com/docs/en-US/api/chat/openai-api"
+    },
+    {
+      "channels": [
+        "runware"
+      ],
+      "pattern": "^google:",
+      "vendorId": "google",
+      "source": "https://runware.ai/docs/models/google-gemini-3-1-flash-lite/examples"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^sensenova-6\\.8-flash-lite$",
+      "vendorId": "sensetime",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^deepseek-v4-pro$",
+      "vendorId": "deepseek",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^deepseek-v4-flash$",
+      "vendorId": "deepseek",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^glm-5\\.2$",
+      "vendorId": "zhipu",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^kimi-k3$",
+      "vendorId": "moonshot",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^sensenova-u1\\.5-lite$",
+      "vendorId": "sensetime",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "sensenova"
+      ],
+      "pattern": "^sensenova-u1\\.5-fast$",
+      "vendorId": "sensetime",
+      "source": "https://platform.sensenova.cn/docs"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-5-preview$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-3\\.7-flash$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-3\\.5-flash$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-3\\.5-flash-2603$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-1o-turbo-vision$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/welcome"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-2x-large$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/guides/models/image"
+    },
+    {
+      "channels": [
+        "stepfun"
+      ],
+      "pattern": "^step-image-edit-2$",
+      "vendorId": "stepfun",
+      "source": "https://platform.stepfun.com/docs/zh/guides/models/image"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-5\\.1$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-5\\.0$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-5\\.0-thinking-preview$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-5\\.0-thinking-latest$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-5\\.0-thinking-exp$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-4\\.5-turbo-32k$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-4\\.5-turbo-128k$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-4\\.5-turbo-20260402$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-4\\.5-turbo-vl$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-4\\.5-turbo-vl-32k$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v4\\.1-flash$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v4-pro-0813$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v4-pro$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v4-flash-0731$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v4-flash$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v3\\.2$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^internvl3-38b$",
+      "vendorId": "shanghai-ai-lab",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-x1\\.1-preview$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^ernie-x1\\.1$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-flash$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-v3\\.2-think$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen3\\.5-397b-a17b$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen3\\.5-122b-a10b$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen3\\.5-27b$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen3\\.5-35b-a3b$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^glm-5\\.3-flash$",
+      "vendorId": "zhipu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^glm-5\\.3$",
+      "vendorId": "zhipu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^glm-5\\.2$",
+      "vendorId": "zhipu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^glm-5\\.1$",
+      "vendorId": "zhipu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^glm-5$",
+      "vendorId": "zhipu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^kimi-k2\\.6$",
+      "vendorId": "moonshot",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^deepseek-ocr$",
+      "vendorId": "deepseek",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qianfan-ocr$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^musesteamer-air-image$",
+      "vendorId": "baidu",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen-image$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "qianfan"
+      ],
+      "pattern": "^qwen-image-edit$",
+      "vendorId": "alibaba",
+      "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^spark-x2\\.5$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^spark-x2\\.5-4b$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^spark-x2\\.5-1\\.7b$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopglm53$",
+      "vendorId": "zhipu",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopdeepseekv4pro0813$",
+      "vendorId": "deepseek",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopdeepseekv4flash0731$",
+      "vendorId": "deepseek",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopkimik27code$",
+      "vendorId": "moonshot",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopglm52$",
+      "vendorId": "zhipu",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopdeepseekv4flash$",
+      "vendorId": "deepseek",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopkimik26$",
+      "vendorId": "moonshot",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopdeepseekv4pro$",
+      "vendorId": "deepseek",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopqwen36v35b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xsparkx2flash$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopglm51$",
+      "vendorId": "zhipu",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xsparkx2$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop35qwen2b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopqwen35397b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xminimaxm25$",
+      "vendorId": "minimax",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopkimik25$",
+      "vendorId": "moonshot",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xopglmv47flash$",
+      "vendorId": "zhipu",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen32bvl$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen80bnext$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen30b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen32b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xdeepseekr1qwen32b$",
+      "vendorId": "deepseek",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen0b6$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen4b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen14b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xop3qwen8b$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xsparkprox$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xspark13b6k$",
+      "vendorId": "xunfei",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "iflytek"
+      ],
+      "pattern": "^xqwen14bchat$",
+      "vendorId": "alibaba",
+      "source": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+    },
+    {
+      "channels": [
+        "longcat"
+      ],
+      "pattern": "^LongCat-2\\.0$",
+      "vendorId": "meituan",
+      "source": "https://longcat.chat/platform/docs/zh/api/models.html"
     }
   ],
   "families": [
@@ -903,6 +1669,7 @@
       "id": "grok",
       "vendorId": "spacexai",
       "newestFirst": [
+        "grok[- ]?4\\.7",
         "grok-4[.]6",
         "grok-4[.]5",
         "grok-4[.]3",
@@ -969,6 +1736,7 @@
       "id": "claude",
       "vendorId": "anthropic",
       "newestFirst": [
+        "claude[- /]opus[- ]5[.-]5",
         "claude[- /](?:fable|opus|sonnet|haiku)[- ]5[.-]1",
         "claude[- /](?:fable|opus|sonnet|haiku)[- ]5",
         "claude[- /](?:opus|sonnet|haiku)[- ]4[.-]8",
@@ -1096,6 +1864,43 @@
     }
   ],
   "releases": [
+    {
+      "vendorId": "anthropic",
+      "pattern": "^claude-opus-5-5$",
+      "channels": [
+        "anthropic"
+      ],
+      "releasedAt": "2026-09-22",
+      "source": "https://platform.claude.com/docs/en/models/opus-5-5/overview"
+    },
+    {
+      "vendorId": "openai",
+      "pattern": "^gpt-6-luna$",
+      "channels": [
+        "openai"
+      ],
+      "releasedAt": "2026-09-22",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+    },
+    {
+      "vendorId": "openai",
+      "pattern": "^gpt-6-sol$",
+      "channels": [
+        "openai"
+      ],
+      "releasedAt": "2026-09-22",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-sol"
+    },
+    {
+      "vendorId": "spacexai",
+      "pattern": "^grok-4\\.7$",
+      "releasedAt": "2026-09-21",
+      "source": "https://x.ai/news/grok-4-7",
+      "channels": [
+        "xai"
+      ],
+      "lifecycle": "stable"
+    },
     {
       "vendorId": "deepseek",
       "pattern": "deepseek-v4-flash-0731$",

@@ -1947,6 +1947,8 @@ test('generated Squid policy permits only Hong Kong approved CONNECT traffic', (
       ['approved hostname with a private answer', { source: '10.77.0.1', authority: 'api.openai.com:443', resolved: ['198.51.100.10', '10.0.0.8'] }, 'deny'],
       ['Gemini from Hong Kong', { source: '10.77.0.1', authority: 'generativelanguage.googleapis.com:443', resolved: '198.51.100.10' }, 'allow'],
       ['OpenRouter from Hong Kong', { source: '10.77.0.1', authority: 'openrouter.ai:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Runware from Hong Kong', { source: '10.77.0.1', authority: 'api.runware.ai:443', resolved: '198.51.100.10' }, 'allow'],
+      ['Runware lookalike denied', { source: '10.77.0.1', authority: 'api.runware.ai.attacker.invalid:443', resolved: '198.51.100.10' }, 'deny'],
       ['TokenDance from Hong Kong', { source: '10.77.0.1', authority: 'tokendance.space:443', resolved: '198.51.100.10' }, 'allow'],
       ['TokenDance lookalike remains denied', { source: '10.77.0.1', authority: 'tokendance.space.attacker.invalid:443', resolved: '198.51.100.10' }, 'deny'],
       ['Ark from Hong Kong', { source: '10.77.0.1', authority: 'ark.cn-beijing.volces.com:443', resolved: '198.51.100.10' }, 'allow'],

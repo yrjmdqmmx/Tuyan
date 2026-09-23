@@ -185,7 +185,7 @@ Component({
         return {
           provider, label: PROVIDER_LABELS[provider] || provider, value: selectedKeys[provider] || '',
           placeholder: config?.keyPlaceholder || 'API Key',
-          guideSteps: provider === 'minimax' ? [`登录 MiniMax ${region.label}平台，进入 API Key 页面创建密钥。`, ...(config?.guideSteps || []).slice(1)] : config?.guideSteps || [],
+          guideSteps: provider === 'minimax' ? [`登录稀宇科技 ${region.label}平台，进入 API Key 页面创建密钥。`, ...(config?.guideSteps || []).slice(1)] : config?.guideSteps || [],
           guideUrl, guideHost: guideUrl.match(/^https:\/\/([^/]+)/)?.[1] || '',
         }
       })
@@ -195,7 +195,7 @@ Component({
       this.setData({
         draft, routeRows, ratioOptions, resolutionOptions, keyFields, tokenDanceConnected: connected,
         credentialSummary: [...new Set(routeRows.filter(row => row.required && !row.credentialReady).map(row => row.providerLabel + (row.provider === 'tokendance' ? ' 未连接' : ' 缺少 API Key')))].join('；') || '本次任务所需凭据已就绪',
-        normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.includes('tokendance'),
+        normalizationNotice: previousSize !== draft.imageSize || previousRatio !== draft.aspectRatio ? '已按当前模型调整不兼容的清晰度或比例，保存后生效。' : this.data.normalizationNotice, encryptedRecovery: providers.some(provider => ['tokendance', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'xai'].includes(provider)),
         providerOptions,
         minimaxRegionIndex: minimaxRegion(draft.providerRegions) === 'cn' ? 1 : 0,
         minimaxApiBase: MINIMAX_REGIONS[minimaxRegion(draft.providerRegions)].apiBase,
@@ -321,7 +321,7 @@ Component({
       if (!draft) return
       const region = Number(event.detail.value) === 1 ? 'cn' : 'global'
       if (region === 'cn' && !this.getRegistry()?.providerRegionContractVersion) {
-        this.setData({error: '当前服务端尚未支持 MiniMax 国内区域。'}); return
+        this.setData({error: '当前服务端尚未支持 稀宇科技国内区域。'}); return
       }
       draft.providerRegions = {minimax: region}
       if (region === 'global' && draft.modelRoutes.image.accessProvider === 'minimax' && draft.modelRoutes.image.modelId === 'image-01-live') draft.modelRoutes.image.modelId = 'image-01'

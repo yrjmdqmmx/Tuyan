@@ -1,0 +1,355 @@
+{
+  "provider": "longcat",
+  "label": "美团 LongCat",
+  "operator": "美团",
+  "brand": "LongCat",
+  "checkedAt": "2026-09-22",
+  "sources": [
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "title": "models",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/model.html",
+      "title": "model",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/chat.html",
+      "title": "chat",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/messages.html",
+      "title": "messages",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/APIDocs.html",
+      "title": "overview",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+      "title": "changelog",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/Pricing/LongCat-2.0.html",
+      "title": "price",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api-pay-as-you-go",
+      "title": "pay",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/token-pack",
+      "title": "pack",
+      "checkedAt": "2026-09-22"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/FAQ.html",
+      "title": "faq",
+      "checkedAt": "2026-09-22"
+    }
+  ],
+  "endpoints": {
+    "chat": "https://api.longcat.chat/openai/v1/chat/completions",
+    "anthropic": "https://api.longcat.chat/anthropic/v1/messages",
+    "models": "https://api.longcat.chat/openai/v1/models",
+    "anthropicModels": "https://api.longcat.chat/anthropic/v1/models",
+    "modelDetail": "https://api.longcat.chat/openai/v1/models/{model}",
+    "classification": "国内官方直连",
+    "regionNotes": "Unified api.longcat.chat host; Mainland/non-Mainland registration and payment differ, entitlement not checked."
+  },
+  "auth": {
+    "type": "bearer",
+    "header": "Authorization",
+    "sameKeyAcrossProtocols": true,
+    "keySource": "LongCat platform API Keys",
+    "notes": "No credential used or created in this audit."
+  },
+  "models": [
+    {
+      "id": "LongCat-2.0",
+      "label": "LongCat 2.0",
+      "developer": "美团",
+      "internalChannelId": "longcat",
+      "version": {
+        "kind": "unconfirmed",
+        "id": null,
+        "modelLabel": "LongCat-2.0",
+        "reason": "Current exact API name; no documented immutable snapshot binding."
+      },
+      "regions": null,
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat",
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "maxImages": 0,
+      "limits": {
+        "contextTokens": 1048576,
+        "maxOutputTokens": 131072,
+        "temperature": [
+          0,
+          1
+        ],
+        "requestsPerMinute": null,
+        "rateLimitScope": "API Key"
+      },
+      "size": null,
+      "price": {
+        "status": "public_reference_only",
+        "unit": "million_tokens",
+        "CNY": {
+          "inputList": 5,
+          "cacheInputList": 0.1,
+          "outputList": 20,
+          "inputDiscount": 2,
+          "cacheInputDiscount": 0.04,
+          "outputDiscount": 8
+        },
+        "USD": {
+          "inputList": 0.75,
+          "cacheInputList": 0.015,
+          "outputList": 2.95,
+          "inputDiscount": 0.3,
+          "cacheInputDiscount": 0.006,
+          "outputDiscount": 1.2
+        },
+        "discountEnd": null,
+        "billedAmount": null,
+        "note": "Limited promotion; actual settlement governs. Do not infer account currency/region."
+      },
+      "lifecycle": {
+        "status": "available_documented",
+        "releasedAt": "2026-06-30",
+        "retiredAt": null
+      },
+      "selectable": true,
+      "decision": "eligible_for_local_adapter",
+      "reason": "Official exact API identifier and protocol documented; no account entitlement or inference verification.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/api/models.html",
+        "https://longcat.chat/platform/docs/zh/api/model.html",
+        "https://longcat.chat/platform/docs/zh/api/chat.html",
+        "https://longcat.chat/platform/docs/zh/api/messages.html",
+        "https://longcat.chat/platform/docs/zh/APIDocs.html",
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+        "https://longcat.chat/platform/docs/zh/Pricing/LongCat-2.0.html",
+        "https://longcat.chat/platform/docs/zh/api-pay-as-you-go",
+        "https://longcat.chat/platform/docs/zh/token-pack",
+        "https://longcat.chat/platform/docs/zh/FAQ.html"
+      ],
+      "request": {
+        "endpoint": "https://api.longcat.chat/openai/v1/chat/completions",
+        "method": "POST",
+        "constants": {
+          "model": "LongCat-2.0",
+          "stream": false
+        },
+        "visionEncoding": null,
+        "optional": {
+          "thinking": {
+            "type": [
+              "enabled",
+              "disabled"
+            ]
+          },
+          "temperature": [
+            0,
+            1
+          ],
+          "max_tokens": {
+            "max": 131072
+          },
+          "top_p": "documented"
+        },
+        "messagesContent": "string only; image content arrays rejected locally",
+        "anthropicAlternative": {
+          "endpoint": "https://api.longcat.chat/anthropic/v1/messages",
+          "authorization": "Bearer same API Key",
+          "systemPlacement": "top-level system",
+          "textPath": "content[type=text].text"
+        }
+      },
+      "response": {
+        "mode": "sync_or_sse",
+        "textPath": "choices[0].message.content",
+        "streamTextPath": "choices[0].delta.content",
+        "reasoningPath": "choices[0].message.reasoning_content",
+        "usagePath": "usage",
+        "reasoningTokensPath": "usage.completion_tokens_details.reasoning_tokens",
+        "sampleUsageConsistency": "Official example reasoning_tokens exceeds completion_tokens; do not use example numbers as billing arithmetic."
+      },
+      "recovery": {
+        "mode": "synchronous_or_sse",
+        "queryEndpoint": null,
+        "idempotencyDocumented": false,
+        "unknownResult": "Do not replay a possibly billed request. Preserve partial output, response ID and successful earlier steps.",
+        "knownFailure": "Correct rejected input/auth/quota first; transport failure is not proof of no charge."
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "id": "LongCat-Flash-Chat",
+      "label": "LongCat-Flash-Chat",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-Flash-Thinking",
+      "label": "LongCat-Flash-Thinking",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-Flash-Thinking-2601",
+      "label": "LongCat-Flash-Thinking-2601",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-Flash-Lite",
+      "label": "LongCat-Flash-Lite",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-Flash-Omni-2603",
+      "label": "LongCat-Flash-Omni-2603",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-Flash-Chat-2602-Exp",
+      "label": "LongCat-Flash-Chat-2602-Exp",
+      "selectable": false,
+      "decision": "retired",
+      "lifecycle": {
+        "status": "retired",
+        "retiredAtDate": "2026-05-29",
+        "timezone": "Asia/Shanghai",
+        "exactTimeUnknown": true
+      },
+      "reason": "Explicit official service-stop announcement; preserve original identity/history, no silent replacement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html"
+      ]
+    },
+    {
+      "id": "LongCat-2.0-Preview",
+      "label": "LongCat 2.0 Preview",
+      "selectable": false,
+      "decision": "not_currently_documented",
+      "lifecycle": "unknown",
+      "reason": "Historical limited beta in changelog; current API request and pricing docs only advertise LongCat-2.0. Absence is not a retirement announcement.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/ChangeLog.html",
+        "https://longcat.chat/platform/docs/zh/api/chat.html",
+        "https://longcat.chat/platform/docs/zh/Pricing/LongCat-2.0.html"
+      ]
+    },
+    {
+      "id": null,
+      "label": "LongCat 视觉 / 生图 / 编辑",
+      "selectable": false,
+      "decision": "unsupported_current_public_api",
+      "reason": "Both current chat protocols explicitly allow text input only and text output. No current image generation/edit API is documented; do not infer from retired Omni or open model research releases.",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/api/chat.html",
+        "https://longcat.chat/platform/docs/zh/api/messages.html",
+        "https://longcat.chat/platform/docs/zh/api/model.html"
+      ]
+    }
+  ],
+  "evidence": {
+    "paidInferenceCalls": 0,
+    "authenticatedModelDirectoryCalled": false,
+    "accountEntitlementVerified": false,
+    "currentDocumentedApiModelCount": 1,
+    "roles": {
+      "main": 1,
+      "vision": 0,
+      "image": 0,
+      "refine": 0
+    }
+  },
+  "billingRecovery": {
+    "successfulHttp200": "Public billing docs say charged by actual tokens.",
+    "explicitFailure": "Public billing docs say 401/403/429/500 failed calls not charged.",
+    "unknownTransportResult": "Do not assume failure or zero charge; no query/idempotency endpoint documented.",
+    "recovery": "Reuse saved completed steps; no replay on timeout/connection loss.",
+    "tokenPack": "Separate 30-day package consumed before prepaid balance; cache hits do not consume package tokens; no coding-tool-only restriction seen."
+  },
+  "documentConflicts": [
+    {
+      "issue": "FAQ uses /openai/native/chat/completions while dedicated endpoint doc uses /openai/v1/chat/completions",
+      "decision": "Use dedicated API endpoint doc; retain discrepancy."
+    },
+    {
+      "issue": "Overview shorthand /v1/models omits protocol prefix",
+      "decision": "Use dedicated models doc /openai/v1/models or /anthropic/v1/models."
+    }
+  ]
+}

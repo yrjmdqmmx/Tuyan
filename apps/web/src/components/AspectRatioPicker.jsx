@@ -1,3 +1,4 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useId, useRef, useState } from 'react'
 import { Scan } from 'lucide-react'
 
@@ -11,6 +12,7 @@ export function ratioRectangle(value, bounds = { width: 48, height: 28 }) {
 }
 
 export default function AspectRatioPicker({ label, value, options, onChange, compact = false, maxVisible = Infinity, emptyMessage = '当前模型没有可用比例，请检查型号与清晰度。' }) {
+  const { t } = useAppLocale()
   const buttonRefs = useRef([])
   const [expanded, setExpanded] = useState(false)
   const groupId = useId()
@@ -35,9 +37,9 @@ export default function AspectRatioPicker({ label, value, options, onChange, com
 
   return (
     <fieldset className={`aspect-ratio-picker${compact ? ' compact' : ''}`}>
-      <legend>{label}</legend>
-      {!options.length ? <p className="model-picker-empty">{emptyMessage}</p> : null}
-      <div id={groupId} className="aspect-ratio-options" role="group" aria-label={label}>
+      <legend>{t(label)}</legend>
+      {!options.length ? <p className="model-picker-empty">{t(emptyMessage)}</p> : null}
+      <div id={groupId} className="aspect-ratio-options" role="group" aria-label={t(label)}>
         {options.map((option, index) => {
           const shape = ratioRectangle(option.value)
           const ariaLabel = option.disabled
@@ -66,12 +68,12 @@ export default function AspectRatioPicker({ label, value, options, onChange, com
             >
               {shape ? <svg className="aspect-ratio-shape" viewBox="0 0 64 36" aria-hidden="true"><rect x={(64 - shape.width) / 2} y={(36 - shape.height) / 2} width={shape.width} height={shape.height} /></svg> : <Scan className="aspect-ratio-auto" size={25} aria-hidden="true" />}
               <span className="aspect-ratio-label">{option.label}</span>
-              {option.disabled ? <small>不支持</small> : null}
+              {option.disabled ? <small>{t("不支持")}</small> : null}
             </button>
           )
         })}
       </div>
-      {total > maxVisible ? <button className="aspect-ratio-expand" type="button" aria-controls={groupId} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? '收起比例' : `展开全部 ${total} 种比例`}</button> : null}
+      {total > maxVisible ? <button className="aspect-ratio-expand" type="button" aria-controls={groupId} aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>{t(expanded ? '收起比例' : `展开全部 ${total} 种比例`)}</button> : null}
     </fieldset>
   )
 }

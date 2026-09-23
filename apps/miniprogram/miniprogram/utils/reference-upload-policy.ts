@@ -20,6 +20,12 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     requestMaxBytes: 20 * 1000000, mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
     status: 'unconfirmed', source: '', note: '该渠道和精确型号未公布完整图片限额，使用平台保守提交额度；上游仍可能拒绝。',
   }
+  if (auditedInputPolicy[provider+'/'+model]) {
+    Object.assign(p,auditedInputPolicy[provider+'/'+model],{status:'partial',note:'图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。'})
+    if(workflow==='refine'){p.maxCount=1;p.mimeTypes=['image/png']}
+    p.maxTotalBytes=p.maxBytes*Math.max(1,p.maxCount)
+    return p
+  }
   if (workflow === 'refine') {
     p.maxCount = 1
     // The product edits one source. Vendor multi-image support does not turn it into a multi-source editor.
@@ -52,7 +58,10 @@ export function referenceSubmissionPolicy(provider: string, model: string, workf
     p.mimeTypes = ['image/png'] // Current editing snapshots are lossless PNG.
     return p
   }
-  if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
+  if (['xiaomi','tokenhub','runware'].includes(provider)) {
+    Object.assign(p, {status:'partial', source:provider === 'xiaomi' ? 'https://mimo.mi.com/docs/en-US/api/chat/openai-api' : provider === 'tokenhub' ? 'https://cloud.tencent.com/document/product/1823/136956' : 'https://runware.ai/docs/models/google-gemini-3-1-flash-lite',
+      note:'所选型号支持图片输入；3 张、4MiB/张、12MiB 合计是平台保守额度。精确型号的全部输入与上下文限制待账号验证，不沿用旧型号或研发方直连接口额度。'})
+  } else if (provider === 'bailian' && /^qwen(?:3\.[5-8]|3-vl)/.test(model) && !model.includes('omni')) {
     Object.assign(p, { maxCount: 8, maxBytes: 8000000, maxTotalBytes: 32000000, maxDimension: 4096,
       maxPixels: 8000000, minDimension: 11, status: 'partial', source: 'https://help.aliyun.com/zh/model-studio/vision/',
       mimeTypes: ['image/png', 'image/jpeg'], note: 'URL 输入单图官方上限 20MB；平台同时兼容旧 VL 回退模型，采用二者较严格的提交额度，图文总量仍受上下文限制。' })
@@ -146,3 +155,7 @@ export function routeReferencePolicy(route: any, workflow = 'generation'): Refer
     ? { ...referenceSubmissionPolicy('custom', route.modelId, workflow), maxCount: 0, note: '通用 API 配置与提交请使用网页版；小程序支持查看和恢复已有任务。' }
     : referenceSubmissionPolicy(route?.accessProvider || '', route?.modelId || '', workflow)
 }
+
+// BEGIN GENERATED CHANNEL INPUT POLICY
+const auditedInputPolicy: Record<string, Partial<ReferenceSubmissionPolicy>> = require('./audited-input-policy.js')
+// END GENERATED CHANNEL INPUT POLICY

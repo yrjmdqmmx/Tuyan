@@ -1,3 +1,4 @@
+import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Link2, RefreshCw, Wallet, History } from 'lucide-react';
 import QRCode from 'qrcode';
@@ -16,14 +17,16 @@ function useMobilePayment() {
   return mobile;
 }
 export function TokenDanceStatus({ controller: td, onOpenAccount }) {
-  return <div className="td-compact" aria-label="观猹 TokenDance 连接状态">
-    <Link2 size={16} /><strong>观猹 TokenDance</strong>
-    <span className={td.connection.connected ? 'td-connected' : ''}>{td.connection.connected ? '已连接' : td.userId ? '未连接' : '登录后连接'}</span>
-    {td.connection.connected && td.wallet && <span className={td.wallet.balance <= 0 ? 'td-low-balance' : 'td-compact-balance'}>余额 ¥{formatTokenDanceMoney(td.wallet.balance)}</span>}
-    <button type="button" className="account-button account-button-quiet" onClick={onOpenAccount}>账户与钱包<ArrowUpRight size={15} /></button>
+  const { t } = useAppLocale()
+  return <div className="td-compact" aria-label={t("观猹 TokenDance 连接状态")}>
+    <Link2 size={16} /><strong>{t("观猹 TokenDance")}</strong>
+    <span className={td.connection.connected ? 'td-connected' : ''}>{t(td.connection.connected ? '已连接' : td.userId ? '未连接' : '登录后连接')}</span>
+    {td.connection.connected && td.wallet && <span className={td.wallet.balance <= 0 ? 'td-low-balance' : 'td-compact-balance'}>{t("余额 ¥")}{formatTokenDanceMoney(td.wallet.balance)}</span>}
+    <button type="button" className="account-button account-button-quiet" onClick={onOpenAccount}>{t("账户与钱包")}<ArrowUpRight size={15} /></button>
   </div>;
 }
 export default function TokenDancePanel({ controller: td }) {
+  const { t } = useAppLocale()
   const mobile = useMobilePayment();
   const [amount, setAmount] = useState('10'), [qr, setQr] = useState(''), [confirmDisconnect, setConfirmDisconnect] = useState(false);
   const session = td.payment?.session;
@@ -44,49 +47,50 @@ export default function TokenDancePanel({ controller: td }) {
     if (!mobile && session?.status === 'pending' && session.payment_url) QRCode.toDataURL(session.payment_url, { width: 240, margin: 4 }).then(url => { if (active) setQr(url); }).catch(() => {});
     return () => { active = false; };
   }, [mobile, session?.payment_url, session?.status]);
-  return <div className="account-channel" aria-label="观猹 TokenDance 连接与钱包">
-    {td.busy && <p role="status" className="account-feedback">正在处理，请稍候…</p>}
+  return <div className="account-channel" aria-label={t("观猹 TokenDance 连接与钱包")}>
+    {td.busy && <p role="status" className="account-feedback">{t("正在处理，请稍候…")}</p>}
     {td.error && <p role="alert" className="account-feedback account-feedback-error">{td.error}</p>}{td.notice && <p role="status" className="account-feedback">{td.notice}</p>}
     <section className="account-card">
-      <div className="account-card-title"><Link2 size={20} /><h3>渠道连接</h3></div>
-      <div className="td-heading"><strong>观猹 TokenDance</strong><span className={`account-status ${td.connection.connected ? 'td-connected' : ''}`}>{td.connection.connected ? '已连接' : '未连接'}</span></div>
-      <p>使用你自己的观猹 TokenDance 账户额度生成、精修图片和优化输入。</p>
+      <div className="account-card-title"><Link2 size={20} /><h3>{t("渠道连接")}</h3></div>
+      <div className="td-heading"><strong>{t("观猹 TokenDance")}</strong><span className={`account-status ${td.connection.connected ? 'td-connected' : ''}`}>{t(td.connection.connected ? '已连接' : '未连接')}</span></div>
+      <p>{t("使用你自己的观猹 TokenDance 账户额度生成、精修图片和优化输入。")}</p>
       <div className="td-actions">
-        <button type="button" className="account-button account-button-primary" disabled={td.busy || !td.userId || td.connection.available === false} onClick={td.authorize}>{td.connection.connected ? '重新授权' : '连接观猹 TokenDance'}</button>
-        {td.connection.connected && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={() => setConfirmDisconnect(true)}>解除连接</button>}
+        <button type="button" className="account-button account-button-primary" disabled={td.busy || !td.userId || td.connection.available === false} onClick={td.authorize}>{t(td.connection.connected ? '重新授权' : '连接观猹 TokenDance')}</button>
+        {td.connection.connected && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={() => setConfirmDisconnect(true)}>{t("解除连接")}</button>}
       </div>
-      {confirmDisconnect && <div className="account-inline-notice"><p>解除后将删除图研保存的授权，原任务和图片仍保留。</p><div className="td-actions"><button type="button" className="account-button" disabled={td.busy} onClick={async () => { await td.disconnect(); setConfirmDisconnect(false); }}>确认解除连接</button><button type="button" className="account-button account-button-quiet" onClick={() => setConfirmDisconnect(false)}>取消</button></div></div>}
-      {!td.userId && <p className="account-muted">请先登录图研。</p>}
-      {td.userId && td.connection.available === false && <p className="account-muted">正在确认渠道服务；若持续不可用，请稍后重试。</p>}
-      <small>授权 Key 加密保存。解除连接仅删除图研保存的授权，远端 Key 仍可在渠道后台管理。</small>
+      {confirmDisconnect && <div className="account-inline-notice"><p>{t("解除后将删除图研保存的授权，原任务和图片仍保留。")}</p><div className="td-actions"><button type="button" className="account-button" disabled={td.busy} onClick={async () => { await td.disconnect(); setConfirmDisconnect(false); }}>{t("确认解除连接")}</button><button type="button" className="account-button account-button-quiet" onClick={() => setConfirmDisconnect(false)}>{t("取消")}</button></div></div>}
+      {!td.userId && <p className="account-muted">{t("请先登录图研。")}</p>}
+      {td.userId && td.connection.available === false && <p className="account-muted">{t("正在确认渠道服务；若持续不可用，请稍后重试。")}</p>}
+      <small>{t("授权 Key 加密保存。解除连接仅删除图研保存的授权，远端 Key 仍可在渠道后台管理。")}</small>
     </section>
     <section className="account-card">
-      <div className="account-card-title"><Wallet size={20} /><h3>钱包与充值</h3>{td.connection.connected && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={td.balance}><RefreshCw size={14} />查询余额</button>}</div>
-      <div className="td-wallet"><span>钱包可用余额 · 人民币</span><strong>¥ {td.connection.connected ? formatTokenDanceMoney(td.wallet?.balance) : '—'}</strong></div>
-      <div className="td-quota-note"><strong>钱包余额与 Key 额度分别管理</strong><p>Key 额度需在观猹 TokenDance 查看；充值不会调整 Key 的额度限制。余额充足时，Key 仍可能因额度耗尽、到期或禁用而无法调用。</p><a href="https://tokendance.space/" target="_blank" rel="noreferrer">管理渠道额度与密钥<ArrowUpRight size={14} /></a></div>
-      {td.connection.connected ? <div className="td-recharge"><label htmlFor="td-recharge-amount">充值金额（人民币元）<input id="td-recharge-amount" aria-label="观猹 TokenDance 充值金额" type="number" inputMode="numeric" min="1" max="100000" step="1" value={amount} onChange={event => setAmount(event.target.value)} /></label><button type="button" className="account-button account-button-primary" disabled={td.busy || uncertainOrder || !/^\d+$/.test(amount) || Number(amount) < 1 || Number(amount) > 100000 || pendingOrder} onClick={() => td.createPayment(Number(amount))}>创建 ¥{amount || '0'} 充值单</button></div> : <p className="account-muted">连接渠道后可查询余额和充值。</p>}
-      {uncertainOrder && <p role="status" className="account-inline-notice">有订单创建结果待核对，请先在渠道后台确认，暂不重复创建。</p>}
+      <div className="account-card-title"><Wallet size={20} /><h3>{t("钱包与充值")}</h3>{td.connection.connected && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={td.balance}><RefreshCw size={14} />{t("查询余额")}</button>}</div>
+      <div className="td-wallet"><span>{t("钱包可用余额 · 人民币")}</span><strong>¥ {td.connection.connected ? formatTokenDanceMoney(td.wallet?.balance) : '—'}</strong></div>
+      <div className="td-quota-note"><strong>{t("钱包余额与 Key 额度分别管理")}</strong><p>{t("Key 额度需在观猹 TokenDance 查看；充值不会调整 Key 的额度限制。余额充足时，Key 仍可能因额度耗尽、到期或禁用而无法调用。")}</p><a href="https://tokendance.space/" target="_blank" rel="noreferrer">{t("管理渠道额度与密钥")}<ArrowUpRight size={14} /></a></div>
+      {td.connection.connected ? <div className="td-recharge"><label htmlFor="td-recharge-amount">{t("充值金额（人民币元）")}<input id="td-recharge-amount" aria-label={t("观猹 TokenDance 充值金额")} type="number" inputMode="numeric" min="1" max="100000" step="1" value={amount} onChange={event => setAmount(event.target.value)} /></label><button type="button" className="account-button account-button-primary" disabled={td.busy || uncertainOrder || !/^\d+$/.test(amount) || Number(amount) < 1 || Number(amount) > 100000 || pendingOrder} onClick={() => td.createPayment(Number(amount))}>{t("创建 ¥")}{amount || '0'}{t(" 充值单")}</button></div> : <p className="account-muted">{t("连接渠道后可查询余额和充值。")}</p>}
+      {uncertainOrder && <p role="status" className="account-inline-notice">{t("有订单创建结果待核对，请先在渠道后台确认，暂不重复创建。")}</p>}
       {session && <div className="td-payment" aria-live="polite"><strong>¥{session.amount} · {paymentStateLabel(td.payment)}</strong>
         {pendingOrder && (mobile ? <>
-          {session.alipay_url ? <a className="account-button account-button-primary" href={session.alipay_url}>支付宝支付 ¥{session.amount}</a> : <p>当前无法唤起支付宝，请改用电脑扫码或稍后重试。</p>}
-          <small>请用系统浏览器打开图研，并确认已安装支付宝。返回后查询支付状态确认到账。</small>
-        </> : <>{qr && <img src={qr} width="240" height="240" alt="观猹 TokenDance 充值二维码，支持微信和支付宝扫码" />}<small>使用微信或支付宝扫码，金额 ¥{session.amount}。</small></>)}
-        {session.status === 'pending' && !pendingOrder && <p>支付会话已过期，请查询最终状态后再操作。</p>}
-        <button type="button" className="account-button" disabled={td.busy} onClick={() => td.paymentStatus(td.payment.attemptId)}>查询支付状态</button>
+          {session.alipay_url ? <a className="account-button account-button-primary" href={session.alipay_url}>{t("支付宝支付 ¥")}{session.amount}</a> : <p>{t("当前无法唤起支付宝，请改用电脑扫码或稍后重试。")}</p>}
+          <small>{t("请用系统浏览器打开图研，并确认已安装支付宝。返回后查询支付状态确认到账。")}</small>
+        </> : <>{qr && <img src={qr} width="240" height="240" alt={t("观猹 TokenDance 充值二维码，支持微信和支付宝扫码")} />}<small>{t("使用微信或支付宝扫码，金额 ¥")}{session.amount}。</small></>)}
+        {session.status === 'pending' && !pendingOrder && <p>{t("支付会话已过期，请查询最终状态后再操作。")}</p>}
+        <button type="button" className="account-button" disabled={td.busy} onClick={() => td.paymentStatus(td.payment.attemptId)}>{t("查询支付状态")}</button>
       </div>}
     </section>
     <section className="account-card">
-      <div className="account-card-title"><History size={20} /><h3>充值记录</h3><button type="button" className="account-button account-button-quiet" disabled={td.busy || !td.userId} onClick={td.recoverPayment}>刷新记录</button></div>
-      <p className="account-muted">最近 10 笔通过图研创建的充值单；到账以支付状态查询为准。</p>
+      <div className="account-card-title"><History size={20} /><h3>{t("充值记录")}</h3><button type="button" className="account-button account-button-quiet" disabled={td.busy || !td.userId} onClick={td.recoverPayment}>{t("刷新记录")}</button></div>
+      <p className="account-muted">{t("最近 10 笔通过图研创建的充值单；到账以支付状态查询为准。")}</p>
       {payments.length ? <ul className="td-payment-history">{payments.map((row, index) => <li key={row.attemptId || index}>
         <div><strong>¥{row.session?.amount ?? row.amount}</strong><span>{paymentStateLabel(row)}</span>{row.createdAt && <time dateTime={row.createdAt}>{new Date(row.createdAt).toLocaleString('zh-CN', { hour12: false })}</time>}</div>
-        {row.session && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={() => td.paymentStatus(row.attemptId)} aria-label={`查询第 ${index + 1} 笔充值状态`}>查询状态</button>}
-      </li>)}</ul> : <div className="account-empty">{td.historyLoaded ? '暂无充值记录' : '登录并连接后可查询充值记录'}</div>}
+        {row.session && <button type="button" className="account-button account-button-quiet" disabled={td.busy} onClick={() => td.paymentStatus(row.attemptId)} aria-label={t("查询第 {v0} 笔充值状态", {v0: index + 1})}>{t("查询状态")}</button>}
+      </li>)}</ul> : <div className="account-empty">{t(td.historyLoaded ? '暂无充值记录' : '登录并连接后可查询充值记录')}</div>}
     </section>
   </div>;
 }
 
 export function TokenDanceRecovery({ job, controller: td, onResumed, onOpenAccount, customKeys }) {
+  const { t } = useAppLocale()
   const [now, setNow] = useState(Date.now);
   useEffect(() => {
     const retryAt = Date.parse(job?.recovery?.retryAt || '');
@@ -95,12 +99,12 @@ export function TokenDanceRecovery({ job, controller: td, onResumed, onOpenAccou
     return () => clearTimeout(timer);
   }, [job?.recovery?.retryAt]);
   if (!job?.recovery) return null;
-  if (job.status === 'running' || job.status === 'queued') return <p role="status">原任务已恢复，正在复用已保存结果并继续生成。</p>;
+  if (job.status === 'running' || job.status === 'queued') return <p role="status">{t("原任务已恢复，正在复用已保存结果并继续生成。")}</p>;
   const recovery = job.recovery;
-  return <section className="tokendance-panel td-recovery" aria-label="任务恢复"><strong>任务及成功步骤已保存</strong><p>{recovery.message}</p>{recovery.channel === 'custom' && <p>请先在服务商处处理余额或权限。若需更换密钥，在通用 API 设置中填写同一地址的新密钥，再继续原任务；恢复不会更改原模型与协议。</p>}
-    <div className="td-actions">{recovery.channel !== 'custom' && <button type="button" className="account-button" onClick={onOpenAccount}>前往账户处理</button>}
-    {recovery.canResume && <button type="button" className="account-button account-button-primary" disabled={td.busy || (recovery.retryAt && Date.parse(recovery.retryAt) > Math.max(now, Date.now()))} onClick={() => td.perform(async () => { const result = await td.request(recovery.channel === 'custom' ? 'providerResume' : 'tokenDanceResume', { jobId: job.id, ...(recovery.channel === 'custom' && customKeys ? {apiKeys:{custom:customKeys}} : {}) }); await onResumed(result.jobId); })}>从已完成步骤继续</button>}</div>
-    <small>{recovery.canResume ? '恢复原任务会复用已保存的模型结果，不重复执行已完成调用。' : recovery.requestState === 'not_sent' ? '本次失败步骤未发起模型请求；成功步骤仍保留。请修正配置或输入，已有费用以渠道记录为准。' : '存在结果不确定的调用，自动重试已停止。请先核对所用渠道的调用记录与费用。'}</small>
+  return <section className="tokendance-panel td-recovery" aria-label={t("任务恢复")}><strong>{t("任务及成功步骤已保存")}</strong><p>{recovery.message}</p>{recovery.channel === 'custom' && <p>{t("请先在服务商处处理余额或权限。若需更换密钥，在通用 API 设置中填写同一地址的新密钥，再继续原任务；恢复不会更改原模型与协议。")}</p>}
+    <div className="td-actions">{(!recovery.channel || recovery.channel === 'tokendance') && <button type="button" className="account-button" onClick={onOpenAccount}>{t("前往账户处理")}</button>}
+    {recovery.canResume && <button type="button" className="account-button account-button-primary" disabled={td.busy || (recovery.retryAt && Date.parse(recovery.retryAt) > Math.max(now, Date.now()))} onClick={() => td.perform(async () => { const result = await td.request((!recovery.channel || recovery.channel === 'tokendance') ? 'tokenDanceResume' : 'providerResume', { jobId: job.id, ...(recovery.channel === 'custom' && customKeys ? {apiKeys:{custom:customKeys}} : {}) }); await onResumed(result.jobId); })}>{t("从已完成步骤继续")}</button>}</div>
+    <small>{t(recovery.canResume ? '恢复原任务会复用已保存的模型结果，不重复执行已完成调用。' : recovery.requestState === 'not_sent' ? '本次失败步骤未发起模型请求；成功步骤仍保留。请修正配置或输入，已有费用以渠道记录为准。' : '存在结果不确定的调用，自动重试已停止。请先核对所用渠道的调用记录与费用。')}</small>
     {td.error && <p role="alert">{td.error}</p>}
   </section>;
 }

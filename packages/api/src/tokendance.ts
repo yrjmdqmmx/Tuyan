@@ -55,6 +55,7 @@ export async function tokenDanceResponse(fetcher: typeof fetch, path: string, ke
       signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(600_000)]) : AbortSignal.timeout(600_000),
     })
   } catch (error: any) {
+    if (error?.name === 'ThinkingConfigValidationError' && error?.localInputFailure && error?.requestState === 'not_sent') throw error
     if (error?.name === 'TimeoutError' || error?.name === 'AbortError') throw new TokenDanceError(504, '等待观猹 TokenDance 响应超时，请先核对调用记录。', body === undefined ? undefined : 'review_request', 0, body !== undefined, body === undefined ? 'not_sent' : 'unknown')
     throw new TokenDanceError(502, body === undefined ? '观猹 TokenDance 暂时无法连接。' : '观猹 TokenDance 连接失败或中断，请求结果不确定，请先核对调用或订单记录，避免重复扣费。', body === undefined ? undefined : 'review_request', 0, body !== undefined)
   }

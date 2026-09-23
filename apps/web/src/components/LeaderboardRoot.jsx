@@ -3,8 +3,8 @@ import WorkbenchHeader from './WorkbenchHeader.jsx'
 import PageNavigation from './PageNavigation.jsx'
 import BenchmarkMethodologyPage from './BenchmarkMethodologyPage.jsx'
 import BenchmarkPage from './BenchmarkPage.jsx'
-import { BenchmarkLocaleProvider, BenchmarkLanguageSwitch, useBenchmarkLocale } from './BenchmarkLocale.jsx'
-import SitePageShell, { SiteSessionProvider, useSiteSession } from './SitePageShell.jsx'
+import { BenchmarkLocaleProvider, useBenchmarkLocale } from './BenchmarkLocale.jsx'
+import SharedSitePageShell, { SiteSessionProvider, useSiteSession } from './SitePageShell.jsx'
 
 // Compatibility contract for every published leaderboard route consumer.
 export function LeaderboardSessionProvider(props) {
@@ -27,7 +27,7 @@ function activeNav(route) {
   return 'leaderboard'
 }
 
-export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onSignOut, onContact, onMiniProgram, onAgentConnection, onAdmin,
+export function BenchmarkSiteHeader({ route = {}, section = 'leaderboard', onFeedback, onLogin, onAccount, onSignOut, onContact, onMiniProgram, onAgentConnection, onAdmin,
   onWorkspaceAccount = () => window.location.assign(appPath('/?view=account')),
   onGuide = () => window.location.assign(appPath('/?view=guide')),
 }) {
@@ -35,10 +35,10 @@ export function BenchmarkSiteHeader({ route, onFeedback, onLogin, onAccount, onS
   const auth = useLeaderboardSession()
   const user = auth.session?.user
   return <div className="app-shell benchmark-navigation-shell">
-    <WorkbenchHeader section="leaderboard" currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
+    <WorkbenchHeader section={section} currentUser={user} onSignIn={onLogin} onSignOut={onSignOut}
       onAccount={onAccount} onWorkspaceAccount={onWorkspaceAccount} onGuide={onGuide} onAdmin={onAdmin}
       onContact={onContact} onFeedback={onFeedback} onMiniProgram={onMiniProgram} onAgentConnection={onAgentConnection} />
-    <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /><BenchmarkLanguageSwitch /></div>
+    {section === 'leaderboard' && <div className="bench-page-navigation"><PageNavigation label={t('排行榜导航')} items={navItems.map(item => ({ ...item, label: t(item.label) }))} activeId={activeNav(route)} /></div>}
   </div>
 }
 
@@ -47,10 +47,17 @@ export default function LeaderboardRoot(props) {
 }
 
 function LeaderboardContent({ apiBase, backendMode, enabled, pathname, route }) {
-  return <SitePageShell section="leaderboard" apiBase={apiBase} backendMode={backendMode} className="benchmark-site-shell"
-    renderHeader={(headerProps) => <BenchmarkSiteHeader {...headerProps} route={route} onLogin={headerProps.onSignIn} />}>
+  return <SitePageShell section="leaderboard" apiBase={apiBase} backendMode={backendMode} route={route}>
     {route.methodology
       ? <BenchmarkMethodologyPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} showNavigation={false} />
       : <BenchmarkPage apiBase={apiBase} backendMode={backendMode} enabled={enabled} pathname={pathname} showNavigation={false} />}
   </SitePageShell>
+}
+
+// Preserve the public-page interface introduced by 3.8 while sharing one session shell.
+export function SitePageShell({ route = {}, section = 'leaderboard', children, ...props }) {
+  return <SharedSitePageShell {...props} section={section} className="benchmark-site-shell"
+    renderHeader={(headerProps) => <BenchmarkSiteHeader {...headerProps} route={route} onLogin={headerProps.onSignIn} />}>
+    {children}
+  </SharedSitePageShell>
 }
