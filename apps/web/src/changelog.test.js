@@ -44,6 +44,19 @@ test('the deployed model supplement belongs to the original Tuyan v3.8.0 release
     assert.doesNotMatch(JSON.stringify(publishedVersions(data, product)), /GPT-6 Sol|Claude Opus 5.5/)
   }
 })
+
+test('published Pareto and bilingual improvements belong to Benchmark v2.5 only', () => {
+  const entry = publishedVersions(data, 'benchmark').find(entry => entry.version === '2.5')
+  assert.equal(entry.release.date, '2026-09-17')
+  assert.ok(entry.changes.some(change => change.text.includes('帕累托视图')))
+  assert.ok(entry.changes.some(change => change.text.includes('中英文切换')))
+  assert.ok(entry.changes.some(change => change.text.includes('缺少可比较成本的型号仍保留在排名视图')))
+  const pareto = entry.changes.find(change => change.text.includes('新增帕累托视图'))
+  assert.ok(entry.sources.some(source => pareto.sourceIds.includes(source.id) && source.kind === 'deployment'))
+  assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /新增帕累托视图/)
+  const pending = JSON.parse(readFileSync(new URL('../../../docs/changelog-audit/pending-updates.json', import.meta.url), 'utf8'))
+  assert.equal(pending.benchmark, null)
+})
 for (const [name, mutate, expected] of [
   ['draft version', copy => { copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased' }, /only released versions/],
   ['local change', copy => { copy.entries[0].changes[0].state = 'local-verified' }, /unreleased changes/],

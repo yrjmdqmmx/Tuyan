@@ -1,5 +1,14 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-23 · 公开排行榜恢复与 Benchmark v2.5 日志补齐
+
+- 回归原因：前次 Pages 发布传入 `bench_enabled=false`，实际关闭了公开排行榜、方法说明和证据页；它不等于后台评测执行器开关。线上只读 API 的 46 模型 / 9 题及 releaseHash 正常，未改评测数据。
+- [x] Web：公开页面改用 `VITE_PUBLIC_LEADERBOARD_ENABLED`，默认开启；Pages 输入改为 `public_leaderboard_enabled` 并明确仅控制公开内容。旧 `VITE_BENCH_ENABLED` 不再控制页面，显式新开关 false 仍可用于页面维护。
+- [x] 后端 / 小程序：无接口、模型、数据或任务变更；`PAPERBANANA_BENCH_ENABLED=false` 继续只控制后台执行器，本次不部署后端、不启动评测。
+- [x] 更新日志：负责人明确帕累托属于 Tuyan Benchmark v2.5，已将有部署证据的帕累托、成本说明、移动图表和双语内容从待归属草稿并回 v2.5；保留 09-17 首发日期及 09-20–21 的追加上线来源，不归入 Tuyan v3.8.0。
+- [x] 公开页面恢复：既有固定版本通过 [恢复发布](https://github.com/yrjmdqmmx/Tuyan/actions/runs/35811528627) 重新开启，只读线上桌面/390/320px 的九题方法、46 模型与帕累托验收通过；执行器和服务器配置不变。防回归与日志修改随本次代码发布，详见 [恢复与修复记录](docs/releases/2026-09-23-benchmark-public-pages.md)。不充值、不调用付费推理、不重跑任务、不发布微信版本。
+
+
 ## 2026-09-23 · GPT-6 Sol / Luna 与 Opus 5.5（v25，已并入 Tuyan v3.8.0 上线）
 
 - 官方 API 已核实：`gpt-6-sol`、`gpt-6-luna`、`claude-opus-5-5`，均只开放主模型/参考图识别；既有默认、Key 绑定和历史型号不迁移。目录 v25 共 1,032 个静态型号，OpenRouter 仍走动态目录。
