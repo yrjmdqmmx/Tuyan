@@ -1,11 +1,12 @@
 import LanguageSwitch from './LanguageSwitch.jsx'
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useState } from 'react'
-import { ArrowUpRight, BarChart3, BookOpen, Bot, LayoutDashboard, History, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react'
+import { ArrowUpRight, BookOpen, Bot, Menu, MessageSquare, QrCode, ShieldCheck, Wallet, X } from 'lucide-react'
 import { AUTH_UI_ENABLED, logoUrl } from '../config'
 import { appPath } from '../appPaths'
 import AccessibleDialog from './AccessibleDialog'
 import useCompactLayout from '../hooks/useCompactLayout'
+import { sitePageLinks } from './siteNavigation.js'
 
 function NavigationGroup({ id, title, children }) {
   const { t } = useBenchmarkLocale()
@@ -17,12 +18,9 @@ function NavigationGroup({ id, title, children }) {
 
 function PrimaryPageLinks({ section }) {
   const { t } = useBenchmarkLocale()
-  return <>
-    <a className="header-primary-link" href={appPath('/')} aria-current={section === 'workbench' ? 'page' : undefined}><LayoutDashboard />{t('工作台')}</a>
-    <a className="header-primary-link" href={appPath('/leaderboard')} aria-current={section === 'leaderboard' ? 'page' : undefined}><BarChart3 />{t('排行榜')}</a>
-    <a className="header-product-link" href="https://openacad.xyz/" target="_blank" rel="noreferrer">openacad<ArrowUpRight /></a>
-    <a className="header-primary-link" href={appPath('/changelog')} aria-current={section === 'changelog' ? 'page' : undefined}><History />{t('更新日志')}</a>
-  </>
+  return sitePageLinks().map(({ id, path, href, label, icon: Icon }) => href
+    ? <a key={id} className="header-product-link" href={href} target="_blank" rel="noreferrer">{label}<ArrowUpRight /></a>
+    : <a key={id} className="header-primary-link" href={appPath(path)} aria-current={section === id ? 'page' : undefined}><Icon />{t(label)}</a>)
 }
 
 export function SiteNavigation({ currentUser, onContact, onFeedback, onMiniProgram, onAgentConnection, onSignOut, onSignIn, onAccount, onWorkspaceAccount = onAccount, onGuide, onAdmin, onNavigate, showLanguage = true, inMenu = false, section = 'workbench' }) {
@@ -64,7 +62,8 @@ export function MobileMoreMenu({ open, onClose, ...navigationProps }) {
 
 export default function WorkbenchHeader(props) {
   const { t, locale } = useBenchmarkLocale()
-  const { currentUser, onSignIn, onAccount } = props
+  const { currentUser, onSignIn, onAccount, section = 'workbench' } = props
+  const figureStudio = section === 'figure-studio'
   const compact = useCompactLayout()
   const [moreOpen, setMoreOpen] = useState(false)
   useEffect(() => { if (!compact) setMoreOpen(false) }, [compact])
@@ -72,7 +71,7 @@ export default function WorkbenchHeader(props) {
     <header className="paper-header">
       <div className="brand">
         <img className="brand-logo" src={logoUrl} alt={t('图研Tuyan 标志')} />
-        <div className="site-brand-copy"><h1 aria-label={t('图研Tuyan工作台')}>{locale === 'en' ? 'Tuyan' : <>图研 <span>Tuyan</span></>}</h1><span>{t('学术图示工作台')}</span></div>
+        <div className="site-brand-copy"><h1 aria-label={t(figureStudio ? '图研 · 论文画布' : '图研Tuyan工作台')}>{locale === 'en' ? 'Tuyan' : <>图研 <span>Tuyan</span></>}</h1><span>{t(figureStudio ? '论文画布' : '学术图示工作台')}</span></div>
       </div>
       {compact ? <div className="mobile-header-actions">
         <LanguageSwitch compact />

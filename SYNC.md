@@ -1,5 +1,27 @@
 # 平台同步日志 (Platform Sync Log)
 
+## 2026-09-23 · 4.0.0 论文画布规则上下文、共享渠道与成品检查（开发分支，禁止本轮上线）
+
+- 用户最新指令：只允许开发分支提交/推送、草稿 PR #233 与 CI；不合并 main、不发布生产镜像、不部署、不发布正式版本。3.8.0 基线 `0b60f85` 和其他任务成果保留。
+- [x] Core / 共享契约：`generationContextVersion:1`；规划新增 `document`，服务端从校验源稿和内置官方规范生成有界上下文，不信任客户端规则文本。`documentContext.generationContextSha256` 绑定完整生成规则；有源稿的操作在准入、执行及恢复时核对，拒绝旧缓存或规则漂移，原记录仍可查询。旧无源稿规划仅为 unconfigured。
+- [x] Gateway / 端到端传输：规划保留 `document`，规划与编辑均保留 `documentContext.generationContextSha256`。仅当 Core 返回 `generationContextVersion:1` 时，Gateway 补充自身能力 `generationContextTransportVersion:1`；Web 提交和恢复须同时具备两项能力，避免旧网关丢弃源稿或规则绑定后继续付费调用。历史绑定不一致记录仅可查询真实状态、结果与费用证据，不能载入或恢复，保留客户端原绑定且不自动重发。
+- [x] 文本调用时限：画布异步操作的单次模型等待上限由 45 秒调整为 180 秒，继续续租原操作并遵守单次传输、不自动重试；超时仍按结果及费用未知处理，不将超时视为未调用。
+- [x] 公共接入：画布渠道能力由共享最终目录派生，复用账号/Key、协议适配和 `workflow.active()` 检查点；补齐此前遗漏的 8 个主模型渠道及 Runware 原任务轮询恢复。画布仍使用渠道默认思考行为，不开放未经不可变快照绑定的独立 thinking 参数。
+- [x] Web：发送并核对源稿及规则摘要；官方基线与用户工作覆盖独立；SVG 实际字节尺寸、文字属性、对象节点核验与服务端 PDF/EPS 成品报告分开显示，未支持/人工项不显示通过。共享导航和原工作台输入方式保留。
+- [x] Nature 证据：纠正字体/栏宽示例被误当完整白名单的问题；记录最终线宽、DPI/AI 政策来源差异和 2026-09-23 核对日期。只覆盖 Nature 主图最终制作；Science 官方正文访问不足，未伪造第二预设。
+- [x] 其他端：无需迁移，不将论文画布加入小程序 3.8.0；原图片任务、模型设置和旧请求接口不变。新字段仅为可选画布能力/历史记录字段，无新环境变量或旧任务回填。
+- [ ] 最终真实联调、文件回环、完整测试及 CI：结果持续记录于 [发布前验收](docs/figure-studio/2026-09-23-pre-release-acceptance.md)。通用 API 暂缺用户凭据；不能用模拟替代真实成功。费用严格沿用最多 6 次文本调用、总额 ¥1、不自动重试。
+
+## 2026-09-23 · 论文画布归属 4.0.0，完整同步 3.8.0 基线（开发集成，未发布）
+
+- 负责人明确：论文画布是后续 **Tuyan 4.0.0** 新功能，不能纳入 3.8.0。开发分支 `codex/tuyan-v4.0.0` 从画布 `99c194b` 保留全部历史，合并最新 `origin/main=0b60f85c8387ddc41b05b55c3952c36f685f42fa`；不修改 main，不部署。旧 `codex/figure-studio-20260921` 保留历史。
+- 保留 PR #226–#232：v23 精修与完整渠道、v24 官方渠道、三角色思考与恢复、双语和更新日志、v25 的 1,032 静态模型及 5 个 OpenRouter 同步路由、公开排行榜恢复和 Benchmark v2.5 正确归属；3.8.0 已发布数据/日期不改。
+- [x] 版本规划：`docs/changelog-audit/pending-updates.json` 建立未发布 4.0.0 草稿；公开日志不展示未发布版本。
+- [x] Web 集成：保留 3.8 分组公共导航，唯一入口配置中工作台右侧紧邻论文画布；桌面与手机复用同一顺序。保留公共语言、账号、设置、精修和更新日志，画布既有可滚动高度/缩放/面板功能不变。
+- [x] Core 集成：画布 scoped workflow 转发 3.8 新增 `thinking/thinkingAvailable/active/pending/checkpoint` 与 `call` 角色参数，防止全站思考能力降级和异步恢复遗漏；新组合回归覆盖工作台角色隔离、加密检查点以及画布上下文隔离。无新 API 字段、环境变量或客户端迁移。
+- [x] 本地集成验收：Web 625 项、Core API 1,055 项及导航 88 项通过；1440×900、390/320px Chrome 检查导航、会话、输入/精修切换、模型目录/思考、画布视口通过。随后新增版本草稿隔离断言。测试、界面证据与最终提交见 [4.0 开发记录](docs/figure-studio/2026-09-23-v4-development.md)。源码集成不等于真实付费联调或线上发布；后续真实通用 API 仍缺用户连接。
+- 本条替代下方画布条目中旧基线/未 push 状态；下方真实调用和 Inkscape 结果保留其原日期和格式边界。其他任务的小程序独立开发分支不在本轮合并范围。
+
 ## 2026-09-23 · 公开排行榜恢复与 Benchmark v2.5 日志补齐
 
 - 回归原因：前次 Pages 发布传入 `bench_enabled=false`，实际关闭了公开排行榜、方法说明和证据页；它不等于后台评测执行器开关。线上只读 API 的 46 模型 / 9 题及 releaseHash 正常，未改评测数据。
@@ -90,6 +112,50 @@
 - [x] Web / Core：后续 v23 已由用户授权发布，见顶部记录。
 - [ ] 微信上传 / 审核 / 发布：本轮未执行。
 - [实现与边界](docs/refinement/2026-09-22-controls-and-channels.md) · [国内渠道建议](docs/refinement/2026-09-22-domestic-channel-research.md) · [本地验收](/Users/a1-6/.codex/artifacts/tuyan-refine-channels-20260922/qa/README.md)。
+
+## 2026-09-22 · 论文画布接入观猹 / 通用 API 与持久操作恢复（开发验收中，未发布）
+
+- 保留独立 `/figure-studio/`，接入现有主模型目录、观猹账号授权、通用 API 连接描述符与渠道调用器；不把结构规划伪装成图片生成任务，不改工作台的生成 / 精修契约。
+- `figureStudioPlan` / `figureStudioEdit` 新增必填 `requestId` 和 `documentContext:{id,revision,sha256}`。SHA-256 针对 UTF-8 `JSON.stringify(document)`；编辑同时校验 document/baseRevision。相同账号与 ID 的不同输入返回 409，完成结果只读取，不重复调用。
+- 新增受认证的 `figureStudioOperation`（查询）与 `figureStudioResume`（明确恢复）。统一返回 `operation`、`queued/running/succeeded/blocked`、文档身份、经过结构验证的结果、真实调用记录和恢复状态。客户端网络异常仅查询原 ID；未知结果不得自动重发，原生 Key 的未知结果不开放恢复。
+- 观猹客户端 Key 被剥离，由当前账号的服务端授权解析；通用 API 保留完整 validated `mainRoute.custom`，凭据沿用连接绑定信封。复用 `provider-workflow` 的原子占用、加密检查点与恢复，引入画布专属集合，避免进入原图片队列；7 天 TTL，账号注销清理，公开记录不含材料、图稿像素或密钥。
+- `paperbanana_figure_admissions` 只保存调度租约，同账号跨实例最多 2 项在途操作；传输前同时校验账号代际与租约 fencing。画布观猹文本输出上限 4096 token，共享调用器新增可选 `maxOutputTokens`，原工作台未传时保持原行为。
+- Web 通用 API 面板支持仅主模型角色，保存时合并保留原工作台的其他角色；Key 仅在当前账号页面内存中。本机只保存操作指针，恢复结果在同账号查询后需作者重新确认，完整图稿 SHA 不同则禁止应用。
+- [x] Core / Gateway / 共享 API 与类型：本地实现和回归通过，本轮 API 全量 686/686；真实 Mongo 8.0.16 跨实例/新进程恢复检查已接入 CI，真实渠道集成另列。新增 action 只供论文画布，其他客户端无必需迁移。
+- [x] Web：公共模型与连接复用、操作记录、恢复及版本保护完成本地验收；本轮完整 Web 564/564 及 build 通过。桌面沿用公共导航，编辑区高 738 px、1440×900 整页高 1019 px 可滚动；390 px 手机验收通过。
+- [x] 真实观猹文本：用户正常登录并连接 TokenDance，Qwen3.8 Flash 规划/编辑各 1 次成功，共 2 次。18 对象规划、手动标签修改、自然语言单标签 patch、刷新恢复、旧版本拒绝和源稿保存重开通过；余额差 ¥0.002692 仅为观测差额，不是逐次账单核销。累计最多 6 次 / ¥1、无自动重试的授权仍有效。
+- [x] 生产转换器构建与本地服务导出：Inkscape 1.2.2、Liberation/WQY 字体已验证；PDF/EPS 转换输入隔离标签，EPS 修复受控 Type42 字体子集重名并加非绘制 pdfmark 边界，不改源稿/下载 SVG、不转曲。最终 figure-core/runtime 53、service 18、类型检查及真实受限 Linux smoke 通过；精确文字与普通/强制 fallback 像素一致性通过。实际图稿经安全 Linux wrapper 导出 PDF/EPS，13 个文字标签分别精确提取；尚未部署。
+- [x] Mac SVG：独立文字/模块编辑、另存重开通过。修复前 PDF 合并/遮挡、Mac Arial 中文 fallback 截断、缺字体替代为 Webdings，以及 EPS 科学符号编码失败仍保留条件证据，不因修复后样例通过而删除。
+- [x] Mac PDF：安装运行时 5 个同款字体到 `~/Library/Fonts` 后，GUI 单标签/矩形编辑、嵌入字体另存 PDF、Internal import 重开有条件通过；图稿字体设置未改。13 个文字绘制块、3 个独立矩形、其余全文 Unicode 与 3 个嵌入字体保留。外部另存使 183×70 mm 变为 183.091667×70.202778 mm，并对内容和字号轻微非等比缩放；原图研导出尺寸正确。该已知边界不作为跨软件无损门槛。Web 已提示另存后核对尺寸/字号、源稿/SVG 优先、字体依赖，以及外部修改文件暂不能回导。
+- 验收细节与实际失败边界见 [集成验收记录](docs/figure-studio/2026-09-22-integration-acceptance.md)。
+- [x] Mac EPS 有条件兼容：最终 80,304 字节服务导出首次可独立编辑 Measurement 及矩形；Embed fonts EPS level 3 另存 78,559 字节并重开，文字修改/外观保留，其他 Unicode 精确、3 字体嵌入、裁剪宽高不变。但重开后标签与下一行合并为 48 字符对象，13 个文字块变为 4；反复保持独立对象失败，Web 已提示，继续编辑优先源稿/SVG。最终证据已归档 `eps-final-runtime/`。
+- [ ] 通用 API 真实联调：仍缺用户连接与凭据，保持 blocked。
+- [ ] 最终提交与发布：实现提交 `f8d2a0e95c78c45d69044f6fc1884a7d3a926832`（含前端 `523ea6f`，未 push），PR #225 draft；main 基线 `0d8b0b4`。最终含文档提交的 CI/审查与发布门槛未关闭，未合并、未部署。
+
+## 2026-09-21 · 论文画布与公共 UI / 账号 / 模型能力统一（本地完成，未发布）
+
+- 已同步隔壁会话的 PR #224：`origin/main=0d8b0b4500eb9ca6d8b1b5180450276c7f78b2fb`，目录 v21、模型版本映射、排行榜双语与共享筛选均已合入；隔壁发布记录确认该 SHA 的 Web/Core 发布。下方目录和排行榜条目中的“本地未发布”是当时记录，已被这次发布状态更新；微信上传仍未执行。
+- 当前图稿分支 `codex/figure-studio-20260921` 保留原实现 `0374995`，以合并提交 `9ebba0f` 接入 main；论文画布本身仍在独立分支，未合入 main、未部署。未改其他会话工作树。
+- 名称统一为“论文画布”（英文 Figure Canvas），保留 `/figure-studio/` 地址。复用 WorkbenchHeader、移动更多菜单、公共设计变量、表单/主按钮、AccessibleDialog、GenerationSettingsDrawer / ModelPicker、NativeCredentialFields；原工作台生成、精修与设置流程保留。
+- 独立页面与排行榜共用 SitePageShell / SiteSessionProvider；工作台和独立页面共用 useAuthSession、既有登录/账号组件及模型目录展示链。模型选择不自动替换；Key 只在页面内存中保存，按账号和 MiniMax 区域隔离。
+- 共享 SDK `figureStudioRequest` 统一 768 KiB 请求预检，并新增可选第四参数 `{ signal }`；不改后端 action、请求字段或环境变量。账号切换使旧模型响应和导出结果失效。
+- [x] Web：518 项测试、生产 build、目录 760 项一致性检查通过；桌面与 390px 手机浏览器交互通过，修复手机导出弹窗溢出。
+- [x] 共享 API：665 项测试通过，含请求预检、凭据携带和取消信号；均为本地/模拟验证。
+- [x] 小程序 / Android / Windows / macOS / Core / Gateway：本条无接口迁移，不要求改现有消费者。
+- [ ] 论文画布生产发布、真实登录与模型调用、联网 PDF/EPS 导出：本轮未执行。仍仅支持受支持渠道的自带 Key 模型；观猹和通用 API 需适配其授权、连接凭据和任务恢复契约。
+- 复用映射、分支核对和剩余差异见 [本轮记录](docs/figure-studio/2026-09-21-product-integration.md)。
+
+## 2026-09-21 · 独立论文图稿页面（本地完成，尚未发布）
+
+- 新增 Web 同级入口 `/figure-studio/`，复用账号与受保护 API；原工作台任务、生成与精修流程保留。图稿采用独立 `tuyan.figure/v1` 源文件，与已有 PNG 任务记录分开；本阶段草稿仅保存在本机及用户下载的源文件中。
+- 新增共享 `@paperbanana/figure-core`：对象文档、带版本检查的编辑命令、安全 SVG、Nature 主图最终制作规则及独立官方核验基线。关闭工作规则不会关闭官方基线；结构和格式检查不代表科学内容或 AI 政策通过。
+- 新增认证 action：`figureStudioCapabilities`、`figureStudioPlan`、`figureStudioEdit`、`figureStudioExport`。模型仅使用用户明确选择并提供 Key 的受支持原生主模型；本版不支持观猹或通用 API，也不自动重试付费请求。PDF/EPS 仅接收经验证的对象文档，不接收任意 SVG 或远程资源。
+- 新增可选 Core 环境变量 `PAPERBANANA_INKSCAPE_PATH`（默认 `inkscape`）。运行环境未安装转换器时能力接口明确返回 PDF/EPS 不可用；本地 SVG 与源稿导出仍可使用。本次不修改生产镜像的软件安装或环境配置。
+- [x] Core / Gateway / 共享契约：实现及本地验证完成；Core 37、API 全量 661、最终针对测试 16、Gateway 45、HTTP 23、MCP 10、共享请求 1 项通过（范围有重叠）。模型仅 mock；鉴权、转换服务与浏览器验证分别记录。
+- [x] Web：独立页面、基础编辑与撤销、源稿保存重开、官方/工作规则、个人预设及带文件身份的四状态导出报告完成；最终 479 项测试及 build 通过，桌面/手机本地交互已验收。
+- [x] 小程序 / Android / Windows / macOS：本轮没有原生页面或既有接口迁移；保持原功能，后续接入新图稿功能时单独适配版本契约。
+- [ ] 生产发布、真实付费模型调用、联网端到端、Illustrator、PDF/EPS 同格式保存重开及外部改稿重导入：本轮未验证。
+- 真实 Inkscape 1.4.4：SVG 单文字/对象编辑保存重开通过；PDF/EPS 可改文字/路径，但部分标签合并、原分组丢失。PDF 科学符号精确提取通过，EPS 失败。不能将转换成功或视觉一致等同于完整编辑保真。详见 [本地验收记录](docs/figure-studio/2026-09-21-local-acceptance.md)。
 
 ## 2026-09-21 · 排行榜中英文、研发厂商与共享筛选（本地未发布）
 

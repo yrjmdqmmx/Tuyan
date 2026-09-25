@@ -21,10 +21,12 @@ import './components/header-navigation.css';
 const ChangelogRoot = lazy(() => import('./components/ChangelogRoot.jsx'));
 
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
+const FigureStudio = React.lazy(() => import('./figure-studio/FigureStudioPage.jsx'));
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);
 const leaderboardRoute = resolveLeaderboardRoute(leaderboardLocation?.pathname);
 const isChangelog = isChangelogPath(currentAppLocation.pathname);
-const pageTitle = isChangelog ? '更新日志 · 图研 Tuyan'
+const isFigureStudio = /^\/figure-studio(?:\/index\.html)?\/?$/.test(currentAppLocation.pathname);
+const pageTitle = isFigureStudio ? '论文画布 · 图研 Tuyan' : isChangelog ? '更新日志 · 图研 Tuyan'
   : leaderboardRoute.methodology ? '图研 Tuyan Benchmark · 方法说明'
   : leaderboardRoute.promptSubmission ? '提交评估题 · 图研 Tuyan Benchmark'
   : leaderboardRoute.promptAdmin ? '社区评估题审核 · 图研 Tuyan Benchmark'
@@ -34,7 +36,9 @@ const pageTitle = isChangelog ? '更新日志 · 图研 Tuyan'
   : '图研Tuyan工作台';
 
 createRoot(document.getElementById('root')).render(
-  <AppLocaleProvider title={pageTitle}>{isChangelog
+  <AppLocaleProvider title={pageTitle}>{isFigureStudio
+    ? <Suspense fallback={<p style={{ padding: 24 }}>正在打开论文画布…</p>}><FigureStudio /></Suspense>
+    : isChangelog
     ? <LeaderboardSessionProvider><Suspense fallback={<div className="changelog-page" role="status">正在载入更新日志…</div>}><ChangelogRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} /></Suspense></LeaderboardSessionProvider>
     : leaderboardRoute.isLeaderboard
     ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={PUBLIC_LEADERBOARD_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>

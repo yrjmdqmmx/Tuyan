@@ -136,3 +136,15 @@ test('new source records automatically appear in both views without dates or pub
   assert.ok(!publicEvents(copy).includes(copy.events[0]))
   assert.ok(!groupPublishedUpdates(copy).flatMap(g => g.items).some(item => item.entry === copy.events[0]))
 })
+
+test('paper canvas is an unreleased 4.0.0 draft and is absent from published 3.8.0', () => {
+  const draft = JSON.parse(readFileSync(new URL('../../../docs/changelog-audit/pending-updates.json', import.meta.url), 'utf8')).tuyan
+  assert.equal(draft.version, '4.0.0')
+  assert.equal(draft.release.status, 'unreleased')
+  assert.equal(draft.release.date, null)
+  assert.equal(draft.baseline.version, '3.8.0')
+  assert.ok(draft.changes.some(change => change.text.includes('论文画布')))
+  assert.ok(!publishedVersions(data, 'tuyan').some(entry => entry.version === '4.0.0'))
+  const released = publishedVersions(data, 'tuyan').find(entry => entry.version === '3.8.0')
+  assert.doesNotMatch(JSON.stringify(released.changes), /论文画布|figure-studio/)
+})

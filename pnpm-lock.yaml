@@ -107,6 +107,9 @@ importers:
       '@paperbanana/benchmark-core':
         specifier: workspace:*
         version: link:../../packages/benchmark-core
+      '@paperbanana/figure-core':
+        specifier: workspace:*
+        version: link:../../packages/figure-core
       '@resvg/resvg-wasm':
         specifier: 2.6.2
         version: 2.6.2
@@ -156,6 +159,9 @@ importers:
       '@paperbanana/api':
         specifier: workspace:*
         version: link:../../packages/api
+      '@paperbanana/figure-core':
+        specifier: workspace:*
+        version: link:../../packages/figure-core
       better-auth:
         specifier: ^1.6.11
         version: 1.6.11(mongodb@6.21.0(socks@2.8.9))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -214,6 +220,8 @@ importers:
   packages/business: {}
 
   packages/design-tokens: {}
+
+  packages/figure-core: {}
 
   packages/tuyan-knowledge:
     devDependencies:

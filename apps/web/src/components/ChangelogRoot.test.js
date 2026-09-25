@@ -78,8 +78,8 @@ test('changelog reuses shared header and account actions with only one session r
   await waitFor(() => assert.equal(requests, 1))
   const nav = screen.getByRole('navigation', { name: '网站导航' })
   const links = [...nav.querySelectorAll('.header-primary-link')]
-  assert.deepEqual(links.map(link => link.textContent.trim()), ['工作台', '排行榜', '更新日志'])
-  assert.equal(links[2].getAttribute('aria-current'), 'page')
+  assert.deepEqual(links.map(link => link.textContent.trim()), ['工作台', '论文画布', '排行榜', '更新日志'])
+  assert.equal(nav.querySelector('a[href="/changelog"]').getAttribute('aria-current'), 'page')
   assert.equal(links.filter(link => link.hasAttribute('aria-current')).length, 1)
   assert.equal(screen.queryByRole('navigation', { name: '排行榜导航' }), null)
   fireEvent.click(screen.getByRole('button', { name: '意见反馈' }))

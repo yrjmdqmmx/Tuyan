@@ -342,6 +342,93 @@ test('maintenance blocks optimizeInputs before it reaches the backend', async ()
   });
 });
 
+test('Figure Studio requires login, strips forged identity/unused keys and asserts the session over trusted transport', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    for (const action of ['figureStudioCapabilities', 'figureStudioPlan', 'figureStudioEdit', 'figureStudioExport', 'figureStudioOperation', 'figureStudioResume']) {
+      assert.equal((await post(baseUrl, { action, userId: 'forged' }, { 'x-paperbanana-auth-user-id': 'forged' })).status, 401);
+    }
+    assert.equal(backend.calls.length, 0);
+    const response = await post(baseUrl, { action: 'figureStudioPlan', materials: 'source', userId: 'forged', gatewayToken: 'forged', mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol', baseUrl: 'https://unsafe.invalid' }, apiKeys: { openai: 'selected-key', tokendance: 'forged-managed-key', gemini: 'unused' }, arbitrarySvg: '<svg/>' }, { 'x-test-session': 'actual-user|user@example.com' });
+    assert.equal(response.status, 200); assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.deepEqual(backend.calls[0].body, { action: 'figureStudioPlan', materials: 'source', mainRoute: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' }, apiKeys: { openai: 'selected-key' } });
+    assert.deepEqual(backend.calls[0].options, { authUserId: 'actual-user', timeoutMs: 55_000 });
+  });
+});
+
+test('Figure operation transport preserves immutable identity and custom binding, strips managed keys and keeps query read-only', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com' };
+    const documentContext = { id: 'source', revision: 2, sha256: 'a'.repeat(64) };
+    const custom = { version: 1, connectionId: 'connection', protocol: 'openai-chat', baseUrl: 'https://example.com/v1', auth: 'bearer' };
+    await post(baseUrl, { action: 'figureStudioPlan', requestId: 'figure-request-0001', documentContext, materials: 'source', mainRoute: { accessProvider: 'custom', modelId: 'exact-model', custom }, apiKeys: { custom: 'bound-envelope', tokendance: 'forged' } }, headers);
+    assert.deepEqual(backend.calls[0].body, { action: 'figureStudioPlan', requestId: 'figure-request-0001', documentContext, materials: 'source', mainRoute: { accessProvider: 'custom', modelId: 'exact-model', custom }, apiKeys: { custom: 'bound-envelope' } });
+    await post(baseUrl, { action: 'figureStudioPlan', requestId: 'figure-request-0002', documentContext, materials: 'source', mainRoute: { accessProvider: 'tokendance', modelId: 'exact-model' }, apiKeys: { tokendance: 'forged', openai: 'unneeded' } }, headers);
+    assert.deepEqual(backend.calls[1].body.apiKeys, {});
+    await post(baseUrl, { action: 'figureStudioOperation', requestId: 'figure-request-0001', apiKeys: { custom: 'must-not-forward' }, document: { forged: true }, userId: 'forged' }, headers);
+    assert.deepEqual(backend.calls[2].body, { action: 'figureStudioOperation', requestId: 'figure-request-0001' });
+    await post(baseUrl, { action: 'figureStudioResume', requestId: 'figure-request-0001', apiKeys: { custom: 'new-bound-key', tokendance: 'forged' }, materials: 'cannot-replace-input' }, headers);
+    assert.deepEqual(backend.calls[3].body, { action: 'figureStudioResume', requestId: 'figure-request-0001', apiKeys: { custom: 'new-bound-key' } });
+  });
+  await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com' };
+    assert.equal((await post(baseUrl, { action: 'figureStudioOperation', requestId: 'figure-request-0001' }, headers)).status, 200);
+    assert.equal((await post(baseUrl, { action: 'figureStudioResume', requestId: 'figure-request-0001' }, headers)).status, 503);
+  });
+});
+
+test('Figure HTTP transport preserves the source document and generation binding for both plan and edit', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const headers = { 'x-test-session': 'actual-user|user@example.com', 'x-paperbanana-auth-user-id': 'forged-user' };
+    const document = { id: 'source', revision: 4, canvas: { widthMm: 183, heightMm: 110 }, elements: [], rules: { profileId: 'nature-main-final-v1' } };
+    const documentContext = { id: document.id, revision: document.revision, sha256: 'a'.repeat(64), generationContextSha256: 'b'.repeat(64) };
+    for (const action of ['figureStudioPlan', 'figureStudioEdit']) {
+      const operationInput = action === 'figureStudioPlan' ? { materials: 'Three linked research stages' } : { instruction: 'Update the selected label', objectIds: ['label-1'], baseRevision: 4 };
+      const requestId = `figure-${action}-0001`;
+      const response = await post(baseUrl, {
+        action, requestId, document, documentContext: { ...documentContext, forgedRuleVersion: 1 }, ...operationInput,
+        mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash', baseUrl: 'https://unsafe.invalid' },
+        apiKeys: { tokendance: 'forged-managed-key', openai: 'unused-key' }, userId: 'forged-user', gatewayToken: 'forged-token',
+        generationContext: { officialBaseline: { rules: [] } }, arbitrarySvg: '<svg/>',
+      }, headers);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      const forwarded = backend.calls.at(-1);
+      assert.deepEqual(forwarded.body, { action, requestId, document, documentContext, ...operationInput, mainRoute: { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' }, apiKeys: {} });
+      assert.deepEqual(forwarded.options, { authUserId: 'actual-user', timeoutMs: 55_000 });
+    }
+  });
+});
+
+test('Figure capabilities acknowledge the gateway generation transport only for the supported Core version', async () => {
+  for (const generationContextVersion of [undefined, 1, 2]) {
+    const backend = fakeBackend(async () => ({ status: 200, data: { code: 0, generationContextVersion, generationContextTransportVersion: 999, modelPlanning: true } }));
+    await withApp({ backend }, async ({ baseUrl }) => {
+      const response = await post(baseUrl, { action: 'figureStudioCapabilities', generationContextTransportVersion: 999, document: { forged: true } }, { 'x-test-session': 'actual-user|user@example.com' });
+      const data = await response.json();
+      assert.equal(data.generationContextTransportVersion, generationContextVersion === 1 ? 1 : undefined);
+      assert.equal(data.generationContextVersion, generationContextVersion);
+      assert.deepEqual(backend.calls[0].body, { action: 'figureStudioCapabilities' });
+    });
+  }
+});
+
+test('Figure Studio maintenance, untrusted origin and pending deletion stop model/export dispatch', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend, isMaintenance: () => true }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioExport' }, { 'x-test-session': 'actual-user|user@example.com' })).status, 503);
+  });
+  await withApp({ backend }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioPlan' }, { 'x-test-session': 'actual-user|user@example.com', origin: 'https://untrusted.invalid' })).status, 403);
+  });
+  await withApp({ backend, auth: fakeAuth({ deletionStore: { async get() { return { status: 'deleting' }; } } }) }, async ({ baseUrl }) => {
+    assert.equal((await post(baseUrl, { action: 'figureStudioPlan' }, { 'x-test-session': 'actual-user|user@example.com' })).status, 409);
+  });
+  assert.equal(backend.calls.length, 0);
+});
+
 test('modelRegistry is a public read-only backend action', async () => {
   const backend = fakeBackend(async (body) => ({
     status: 200,

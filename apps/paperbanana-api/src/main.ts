@@ -5,6 +5,8 @@ import type { Db } from 'mongodb'
 import { createAdminOperations } from './admin-operations.js'
 import path from 'node:path'
 import { createHash } from 'node:crypto'
+import { createFigureStudioService } from './figure-studio.js'
+import { createFigureOperations } from './figure-operations.js'
 
 import { loadConfig } from './config.js'
 import { loadBuildProvenance } from './build-provenance.js'
@@ -66,11 +68,13 @@ async function main(): Promise<void> {
   const tokenDance = createTokenDanceService({ db: mongo.db, fetcher: providerEgress.fetch, secret: process.env.TOKENDANCE_ENCRYPTION_KEY, callbackUrl: process.env.TOKENDANCE_CALLBACK_URL, managementKey: process.env.TOKENDANCE_MANAGEMENT_KEY, applicationId: process.env.TOKENDANCE_APPLICATION_ID })
   const providerWorkflow = createProviderWorkflow({ db: mongo.db, service: tokenDance })
   const legacy = await import('./legacy-entry.mjs')
-  legacy.configureProviderWorkflow(providerWorkflow)
+  const figureOperations = createFigureOperations({ db: mongo.db, service: tokenDance, baseWorkflow: providerWorkflow, studio: createFigureStudioService({ modelText: legacy.figureStudioTextModel, supportedProviders: legacy.figureStudioTextProviders() }) })
+  legacy.configureProviderWorkflow(figureOperations.hooks)
   await tokenDance.ensureIndexes()
   await providerWorkflow.ensureIndexes()
+  await figureOperations.ensureIndexes()
   let removeBenchmarkData = async (_userId: string) => {}
-  configureDeletionCleanup(async userId => { await tokenDance.eraseUserData(userId); await providerWorkflow.remove(userId); await removeBenchmarkData(userId) })
+  configureDeletionCleanup(async userId => { await tokenDance.eraseUserData(userId); await providerWorkflow.remove(userId); await figureOperations.remove(userId); await removeBenchmarkData(userId) })
   let adminBenchmarkDb: Db | undefined
   let benchmarkService: ReturnType<typeof createBenchmarkService> | undefined
   let closeBenchmark = async () => {}
@@ -161,6 +165,7 @@ async function main(): Promise<void> {
     throw error
   }
   const server = createServer({
+    figureStudio: figureOperations,
     adminOperations,
     tokenDance, providerWorkflow, resumeTokenDanceJob: legacy.resumeTokenDanceJob, requiresTokenDanceCredential: legacy.requiresTokenDanceCredential,
     handler: runtime.handler,
@@ -189,8 +194,8 @@ async function main(): Promise<void> {
 
   const shutdown = createGracefulShutdown({
     server,
-    stopAdmission: legacyLifecycle.stop,
-    drainJobs: legacyLifecycle.drain,
+    stopAdmission() { legacyLifecycle.stop(); figureOperations.stop() },
+    async drainJobs() { await Promise.all([legacyLifecycle.drain(), figureOperations.drain()]) },
     closeRuntime: closeAll,
     logger,
     forceExit(code) { process.exit(code) },

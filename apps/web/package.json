@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@paperbanana/api": "workspace:*",
+    "@paperbanana/figure-core": "workspace:*",
     "better-auth": "^1.6.11",
     "jszip": "^3.10.1",
     "lucide-react": "^0.475.0",

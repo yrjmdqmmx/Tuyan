@@ -1140,8 +1140,8 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 0 0 auto;
-  min-width: max-content;
+  flex: 0 0 340px;
+  min-width: 340px;
 }
 
 .brand-logo {
@@ -3814,7 +3814,7 @@ figcaption {
 
 @media (min-width: 761px) and (max-width: 1180px) {
   .paper-header { gap: 20px; padding-inline: 20px; }
-  .brand { gap: 12px; }
+  .brand { gap: 12px; flex-basis: 304px; min-width: 304px; }
   .brand h1 { font-size: 24px; }
   .header-links a,
   .header-links button { font-size: 13px; padding-inline: 10px; }
@@ -5773,6 +5773,33 @@ figcaption {
 /* The desktop summary keeps its original grid; mobile uses a disclosure. */
 .generation-summary-details { display: contents; }
 .generation-summary-details > summary { display: none; }
+
+/* Independent pages use the same account form in a modal, leaving page state mounted. */
+.site-auth-dialog {
+  width: min(520px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-panel);
+  background: var(--paper-soft);
+  box-shadow: var(--shadow-soft);
+}
+.site-auth-dialog-head { display: flex; justify-content: flex-end; padding: 10px 12px 0; }
+.site-auth-dialog-head > button {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; min-height: 40px; padding: 0;
+  border: 1px solid var(--hairline); border-radius: 10px;
+  color: var(--ink); background: var(--paper); cursor: pointer;
+}
+.site-auth-dialog .auth-panel { width: 100%; margin: 0; padding: 8px 20px 20px; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.site-auth-dialog :focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; }
+@media (max-width: 760px) {
+  .accessible-dialog-backdrop.site-auth-backdrop { padding: 16px; place-items: center; }
+  .accessible-dialog.site-auth-dialog { max-height: calc(var(--workbench-viewport-height, 100dvh) - 32px); }
+  .site-auth-dialog input { min-height: 48px; font-size: 16px; }
+  .site-auth-dialog button { min-height: 44px; }
+}
 
 /* Refinement controls reuse the reference uploader, with the original kept separate. */
 .reference-purpose { display:grid; gap:8px; padding:0 10px 10px; }

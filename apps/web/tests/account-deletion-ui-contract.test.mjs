@@ -3,11 +3,9 @@ import { readFileSync } from 'node:fs'
 import test from 'node:test'
 
 const app = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8')
-const hook = readFileSync(new URL('../src/hooks/useAuthSession.js', import.meta.url), 'utf8')
 
 test('a committed account deletion signs out locally before best-effort session refresh', () => {
-  assert.match(hook, /function clear\(\)/)
-  assert.match(hook, /return \{ session, isPending, error, refresh, clear \}/)
+  // The controller's clear/refresh race is exercised by useAuthSession.test.jsx.
   const start = app.indexOf('async function handleAccountDeleted()')
   const end = app.indexOf('\n  function ', start + 1)
   const handler = app.slice(start, end)

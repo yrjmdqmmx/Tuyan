@@ -34,7 +34,7 @@ test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry 
     assert.match(source, /图研Tuyan|Tuyan/u)
   }
   const styles = read('src/styles.css')
-  assert.match(styles, /\.brand\s*\{[\s\S]*?flex:\s*0 0 auto;[\s\S]*?min-width:\s*max-content;/u)
+  assert.match(styles, /\.brand\s*\{[\s\S]*?flex:\s*0 0 340px;[\s\S]*?min-width:\s*340px;/u)
   assert.match(styles, /\.brand h1\s*\{[\s\S]*?white-space:\s*nowrap;/u)
   assert.match(read('404.html'), /返回图研Tuyan工作台/u)
 })

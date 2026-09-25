@@ -1,0 +1,22 @@
+/* Viewport geometry is independent of the document's millimetre coordinates. */
+.fs-stage.fs-viewport-stage{min-height:0;overflow:hidden}
+.fs-viewport-stage .fs-stage-scroll{position:relative;display:block;flex:1 1 0;min-width:0;min-height:0;padding:0;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.fs-viewport-stage .fs-page-space{position:relative;min-width:100%;min-height:100%}
+.fs-viewport-stage .fs-page{position:absolute;min-width:0;max-width:none;min-height:0;max-height:none;margin:0;aspect-ratio:auto;align-self:auto}
+.fs-viewport-stage .fs-canvas-heading{padding:12px 18px;gap:8px}
+.fs-viewport-stage .fs-canvas-heading>span:first-child{display:flex;align-items:center;gap:12px}
+.fs-viewport-stage .fs-viewport-help{color:var(--muted);font-size:11px;font-weight:400}
+.fs-viewport-stage .fs-canvas-footer{height:auto;min-height:46px;padding:6px 14px;gap:8px;flex-wrap:wrap}
+.fs-viewport-stage .fs-zoom{margin-left:auto;gap:4px}
+.figure-studio .fs-viewport-stage .fs-zoom button{min-width:32px;min-height:32px;padding:6px}
+.fs-viewport-stage .fs-zoom output{min-width:55px;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:12px}
+.figure-studio .fs-viewport-stage .fs-zoom button[aria-pressed="true"]{background:var(--accent-wash);color:var(--sage)}
+.fs-viewport-stage .fs-stage-scroll:focus-visible{outline:2px solid var(--sage);outline-offset:-2px}
+.fs-viewport-stage.is-pan-tool .fs-stage-scroll,.fs-viewport-stage.is-pan-tool .fs-svg-host,.fs-viewport-stage.is-pan-tool .fs-svg-host [data-element-id]{cursor:grab;touch-action:none}
+.fs-viewport-stage.is-panning .fs-stage-scroll,.fs-viewport-stage.is-panning .fs-svg-host,.fs-viewport-stage.is-panning .fs-svg-host [data-element-id]{cursor:grabbing;user-select:none;touch-action:none}
+@media(max-width:600px){
+  .fs-viewport-stage .fs-viewport-help{display:none}
+  .fs-viewport-stage .fs-canvas-heading{padding:10px 14px}
+  .fs-viewport-stage .fs-canvas-footer>span{font-size:11px}
+  .figure-studio .fs-viewport-stage .fs-zoom button{min-width:36px;min-height:40px}
+}

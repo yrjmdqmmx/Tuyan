@@ -16,14 +16,14 @@ test('main routes leaderboard and canonicalizes legacy bench before render', () 
 
 test('workspace header exposes leaderboard and mini-program without retired client links', () => {
   const source = readSource('../src/App.jsx') + readSource('../src/components/WorkbenchHeader.jsx')
-  for (const [section, active] of [['workbench', '工作台'], ['leaderboard', '排行榜'], ['changelog', '更新日志']]) {
+  for (const [section, active] of [['workbench', '工作台'], ['figure-studio', '论文画布'], ['leaderboard', '排行榜'], ['changelog', '更新日志']]) {
     const nav = document.createElement('div')
     nav.innerHTML = renderToStaticMarkup(React.createElement(SiteNavigation, { section }))
     const links = [...nav.querySelectorAll('.header-primary-link')]
-    assert.deepEqual(links.map(link => [link.textContent.trim(), link.getAttribute('href')]), [['工作台', '/'], ['排行榜', '/leaderboard'], ['更新日志', '/changelog']])
+    assert.deepEqual(links.map(link => [link.textContent.trim(), link.getAttribute('href')]), [['工作台', '/'], ['论文画布', '/figure-studio/'], ['排行榜', '/leaderboard'], ['更新日志', '/changelog']])
     assert.deepEqual(links.filter(link => link.getAttribute('aria-current') === 'page').map(link => link.textContent.trim()), [active])
     assert.deepEqual([...nav.querySelectorAll('.header-group')].map(group=>group.getAttribute('aria-label')), ['页面导航','工具与生态','支持与交流','语言与账户'])
-    assert.deepEqual([...nav.querySelectorAll('.header-group-pages a')].map(link=>link.textContent.trim()), ['工作台','排行榜','openacad','更新日志'])
+    assert.deepEqual([...nav.querySelectorAll('.header-group-pages a')].map(link=>link.textContent.trim()), ['工作台','论文画布','排行榜','openacad','更新日志'])
   }
   assert.match(source, /微信小程序/u)
   assert.match(source, /t\("论文方法内容"\)/u)

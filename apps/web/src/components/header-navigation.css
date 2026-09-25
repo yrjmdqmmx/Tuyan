@@ -1,6 +1,6 @@
 /* Shared navigation groups keep the same order in the mobile menu. */
 .paper-header { padding: 20px 24px; gap: 28px; }
-.paper-header .brand { gap: 14px; min-width: 0; flex: 0 0 auto; }
+.paper-header .brand { gap: 14px; min-width: 0; flex: 0 0 304px; }
 .paper-header .brand-logo { width: 96px; height: 96px; }
 .site-brand-copy { display: grid; gap: 7px; }
 .paper-header .site-brand-copy h1 { font-size: 30px; line-height: 1.2; letter-spacing: -.6px; }
@@ -33,7 +33,7 @@
 .header-group-items .auth-user-email span { overflow: hidden; text-overflow: ellipsis; }
 .header-group-items .auth-user .auth-sign-out { border-left: 1px solid #d4dfd3; border-radius: 0 10px 10px 0; color: #85603a; }
 .header-group-items .auth-entry-button { border-color: #d4dfd3; background: #fafcf7; }
-@media (max-width: 1200px) and (min-width: 761px) {
+@media (max-width: 1380px) and (min-width: 761px) {
   .paper-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 20px; }
   .paper-header .brand-logo { width: 84px; height: 84px; }
   .paper-header .header-navigation { display: contents; }
