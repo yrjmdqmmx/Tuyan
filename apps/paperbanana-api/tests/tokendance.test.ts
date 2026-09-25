@@ -36,7 +36,7 @@ test('all 95 reviewed IDs are accounted for, all eligible roles agree across cli
   for (const id of ['spark-x2.5-4b', 'dots-3-note-preview', 'qwen3.8-max-0902', 'deepseek-chat-v3-0324']) assert.ok(web.tokendance.models.some((m: any) => m.id === id))
   const live = { data: catalog.models.map((m: any) => ({ ...m })) }
   assert.deepEqual(compareTokenDanceCatalog(catalog, live).newModels, [])
-  live.data[0].supported_protocols = []
+  live.data[0].supported_protocols = ['fixture:changed-protocol']
   live.data.push({ id: 'new-unreviewed', supported_protocols: ['openai:chat-completions'] })
   const drift = compareTokenDanceCatalog(catalog, live)
   assert.deepEqual(drift.newModels, ['new-unreviewed']); assert.equal(drift.protocolChanges.length, 1)

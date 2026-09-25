@@ -1,0 +1,20 @@
+{
+  "missingModels": [
+    {
+      "id": "deepseek-chat-v3-0324",
+      "selectedProtocol": "openai:chat-completions",
+      "roles": ["main", "optimize"],
+      "reviewedAt": "2026-09-25",
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reason": "Current public catalog absence rechecked. The existing runtime catalog guard blocks invocation while missing. Preserve historical identity; no official retirement conclusion. See docs/tokendance/drift-review-20260925.md."
+    },
+    {
+      "id": "deepseek-v4-flash-vision-exp",
+      "selectedProtocol": "openai:chat-completions",
+      "roles": ["main", "optimize", "vision"],
+      "reviewedAt": "2026-09-25",
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reason": "Current public catalog absence rechecked and already recorded in the 2026-09-19 runtime isolation review. Keep invocation blocked while missing; do not substitute V4.1 or infer retirement. See docs/tokendance/drift-review-20260925.md."
+    }
+  ]
+}
