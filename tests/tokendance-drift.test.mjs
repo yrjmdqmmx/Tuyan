@@ -69,7 +69,10 @@ test('known absences stay visible; their exceptions never hide protocol loss on 
   const smallerReturn = buildTokenDanceDriftReport(approved, live({ ...model(), context_length: 500 }), review)
   assert.equal(tokenDanceDriftExitCode(smallerReturn), 2)
   assert.deepEqual(smallerReturn.recoveredModels, [])
-  assert.deepEqual(buildTokenDanceDriftReport(approved, live(model()), review).recoveredModels, ['active'])
+  const recovered = buildTokenDanceDriftReport(approved, live(model()), review)
+  assert.deepEqual(recovered.recoveredModels, ['active'])
+  assert.equal(recovered.status, 'review')
+  assert.equal(tokenDanceDriftExitCode(recovered), 0)
 })
 
 test('absence review is pinned to exact ID, role and selected protocol', () => {
@@ -97,8 +100,8 @@ test('malformed, empty and duplicate live catalogs cannot become a successful re
     { data: [model(), model()] }]) {
     assert.throws(() => buildTokenDanceDriftReport(approved, input))
   }
-  const noProtocols = buildTokenDanceDriftReport(approved, live({ ...model(), supported_protocols: [] }))
-  assert.equal(tokenDanceDriftExitCode(noProtocols), 2)
+  assert.throws(() => buildTokenDanceDriftReport(approved, live({ ...model(), supported_protocols: [] })), /Invalid TokenDance catalog/)
+  assert.throws(() => buildTokenDanceDriftReport(approved, { data: [model(), { ...model('new-model'), supported_protocols: [] }] }), /Invalid TokenDance catalog/)
 })
 
 test('invalid active execution baselines fail instead of losing monitoring coverage', () => {
@@ -148,6 +151,12 @@ test('CLI produces JSON, summary, warnings and nonzero failure codes with local 
     const run = (...args) => spawnSync(process.execPath, ['scripts/check-tokendance-catalog.mjs', '--file', file, ...args], {
       cwd: root, encoding: 'utf8', env: { ...process.env, GITHUB_ACTIONS: 'true', GITHUB_STEP_SUMMARY: summary },
     })
+    await fs.writeFile(file, JSON.stringify({ data: catalog.models }))
+    const recovery = run()
+    assert.equal(recovery.status, 0)
+    assert.equal(JSON.parse(recovery.stdout).status, 'review')
+    assert.equal(JSON.parse(recovery.stdout).recoveredModels.length, 2)
+    assert.match(recovery.stderr, /::warning::/)
     await fs.writeFile(file, JSON.stringify({ data: [...catalog.models, model('new-model')] }))
     let result = run()
     assert.equal(result.status, 0, result.stderr)

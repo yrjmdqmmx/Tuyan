@@ -6,7 +6,7 @@ import { parseArgs } from 'node:util'
 function validateModels(models) {
   if (!Array.isArray(models) || models.length > 5000 || models.some(m =>
     !m || typeof m.id !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9._:/-]{0,159}$/.test(m.id) ||
-    !Array.isArray(m.supported_protocols) || m.supported_protocols.length > 32 ||
+    !Array.isArray(m.supported_protocols) || !m.supported_protocols.length || m.supported_protocols.length > 32 ||
     m.supported_protocols.some(p => typeof p !== 'string' || p.length > 160 || !/^[a-zA-Z0-9._-]+:[a-zA-Z0-9._-]+$/.test(p))
   )) throw new Error('Invalid TokenDance catalog')
   const ids = new Set()
@@ -64,12 +64,13 @@ export function buildTokenDanceDriftReport(approved, live, review = { missingMod
       (!Number.isFinite(current.context_length) || current.context_length < m.context_length)
   }).map(m => m.id).sort()
   const critical = { newMissingModels, selectedProtocolMissing, contextReductions }
-  const hasDrift = Object.values(diff).some(value => Array.isArray(value) && value.length)
+  const recoveredModels = [...known].filter(id => next.has(id) && !selectedProtocolMissing.includes(id) && !contextReductions.includes(id)).sort()
+  const needsReview = recoveredModels.length > 0 || Object.values(diff).some(value => Array.isArray(value) && value.length)
   return {
     checkedAt: new Date().toISOString(),
-    status: Object.values(critical).some(ids => ids.length) ? 'critical' : hasDrift ? 'review' : 'ok',
+    status: Object.values(critical).some(ids => ids.length) ? 'critical' : needsReview ? 'review' : 'ok',
     ...diff, critical, knownMissingModels, unusedMissingModels,
-    recoveredModels: [...known].filter(id => next.has(id) && !selectedProtocolMissing.includes(id) && !contextReductions.includes(id)).sort(),
+    recoveredModels,
     autoPromotions: [],
     policy: 'Discovery is report-only; new execution regressions fail. Known absences remain runtime-blocked while missing. No automatic model or protocol changes.',
   }
