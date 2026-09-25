@@ -17,8 +17,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Review new, retired and changed TokenDance models
-        run: node scripts/check-tokendance-catalog.mjs
+      - name: Test drift severity and failure handling
+        run: node --test tests/tokendance-drift.test.mjs
+      - name: Report discovery changes and fail on new execution regressions
+        shell: bash
+        run: node scripts/check-tokendance-catalog.mjs | tee "$RUNNER_TEMP/tokendance-drift.json"
+      - name: Preserve TokenDance drift report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tokendance-drift-report
+          path: ${{ runner.temp }}/tokendance-drift.json
+          if-no-files-found: warn
+          retention-days: 30
   report-openrouter-drift:
     runs-on: ubuntu-latest
     steps:

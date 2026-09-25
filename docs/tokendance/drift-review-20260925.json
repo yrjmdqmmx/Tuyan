@@ -1,0 +1,82 @@
+{
+  "sourceUrl": "https://tokendance.space/gateway/v1/models",
+  "sha256": "579d92bb8a88dbf92212f825aea6700e3cadab57efdf69e0b44b009f05973639",
+  "canonicalVersion": "2026-09-21.1",
+  "paidCalls": 0,
+  "report": {
+    "checkedAt": "2026-09-25T11:58:02.184Z",
+    "status": "review",
+    "newModels": [
+      "bocha-jev-v1",
+      "cogevol-base",
+      "cogevol-interactive-0828",
+      "cogevol-slide-0828",
+      "mimo-v2.6-flash",
+      "mimo-v2.6-pro",
+      "mimo-v2.6-ultraspeed",
+      "qwen-audio-3.0-asr-flash",
+      "qwen-audio-3.1-asr-flash",
+      "qwen-audio-3.1-asr-flash-message",
+      "qwen3.5-ocr",
+      "qwen3.7-text-rerank",
+      "yc-song-4.0"
+    ],
+    "missingModels": [
+      "deepseek-chat-v3-0324",
+      "deepseek-ocr-2",
+      "deepseek-v4-flash-vision-exp"
+    ],
+    "protocolChanges": [
+      "deepseek-v4-flash",
+      "deepseek-v4-pro",
+      "kling-3.0"
+    ],
+    "metadataReview": [
+      "deepseek-v4-pro-0813",
+      "deepseek-v4.1-flash",
+      "glm-5.3-flash",
+      "kimi-k3",
+      "minimax-h3"
+    ],
+    "liveCount": 105,
+    "critical": {
+      "newMissingModels": [],
+      "selectedProtocolMissing": [],
+      "contextReductions": []
+    },
+    "knownMissingModels": [
+      "deepseek-chat-v3-0324",
+      "deepseek-v4-flash-vision-exp"
+    ],
+    "unusedMissingModels": [
+      "deepseek-ocr-2"
+    ],
+    "recoveredModels": [],
+    "autoPromotions": [],
+    "policy": "Discovery is report-only; new execution regressions fail. Known absences remain runtime-blocked while missing. No automatic model or protocol changes."
+  },
+  "validation": {
+    "driftTests": 12,
+    "catalogSourceContracts": 4,
+    "tokenDanceIntegrationAndIsolationTests": 41,
+    "coreTypeCheck": "passed",
+    "runtimeFixture": {
+      "input": "same captured public catalog",
+      "compatibleApprovedModels": 62,
+      "blockedModels": [
+        {
+          "id": "deepseek-chat-v3-0324",
+          "selectable": false,
+          "requestState": "not_sent"
+        },
+        {
+          "id": "deepseek-v4-flash-vision-exp",
+          "selectable": false,
+          "requestState": "not_sent"
+        }
+      ],
+      "inferenceRequests": 0
+    },
+    "productionInferenceVerified": false
+  }
+}

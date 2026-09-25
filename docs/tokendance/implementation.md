@@ -57,9 +57,11 @@ Seedream Pro 和 Lite 单独使用 Ark /gateway/ark/v3/images/generations。Pro 
 
 主源为 config/tokendance/catalog.json；生成器与现有 model-catalog-updates.json、image-size-contracts.json、model-presentation.json 联动。ID 去重，按模型创建时间及 ID 稳定排序，厂商不混入渠道身份。
 
-运行 node scripts/check-tokendance-catalog.mjs 获取公开目录并列出新增、下架、协议变化、描述/上下文变化；有变化以退出码 2 提醒。已接入现有每日 Model registry drift report 工作流的独立 job；无模型 Key、无付费调用。工作流尚未推送，因此 GitHub 上尚未运行本轮新检查。
+运行 `node scripts/check-tokendance-catalog.mjs` 获取公开目录并列出新增、目录缺失、协议集合变化、描述/上下文变化。每日 Model registry drift report 为发现类变化生成 warning、Job Summary 和 JSON artifact；新增已接入型号缺失、实际所选协议丢失、已接入型号上下文容量降低或不再声明，以退出码 2 失败。HTTP、网络、JSON、目录格式或审核配置错误以退出码 1 失败。`--strict` 保留任何目录差异均退出 2 的完整审核方式；`--file <json>` 可离线复现。
 
-公开 API 缺模态，新增型号必须复核详情与协议后更新 snapshot，不会自动把未知型号放入界面。随后运行 node scripts/sync-model-catalog.mjs 生成跨端目录，运行 --check 和全型号测试。运行时每 15 分钟刷新已审核型号的存在/协议状态，移除已下架或不再支持所选协议的型号，目录访问失败时停止选择和调用，不沿用未经确认能力。独立详情中的参数变化仍需人工审阅，不能仅靠 public models API 证明未变。
+`config/tokendance/drift-review.json` 只记录经复核的既有缺失，绑定准确 ID、角色和所选协议；不改变共享目录，不判定官方下线，也不解除运行时禁用。已知缺失仍出现在每日报告；未接入图研角色的条目缺失只作提示。恢复时会重新验证当前协议与上下文，不能沿用缺失例外掩盖能力退化。见 [2026-09-25 漂移复核](drift-review-20260925.md)。检查只读公开目录，不使用模型 Key、不调用付费推理。
+
+公开 API 缺模态，新增型号必须复核详情与协议后更新 snapshot，不会自动把未知型号放入界面。随后运行 node scripts/sync-model-catalog.mjs 生成跨端目录，运行 --check 和全型号测试。运行时展示缓存 60 秒，实际调用前强制刷新已审核型号的存在/协议状态；缺失或协议不兼容的历史型号保留 ID 并禁止调用，最长 15 分钟的旧快照仅供诊断。独立详情中的参数变化仍需人工审阅，不能仅靠 public models API 证明未变。
 
 ## 生产配置与发布顺序
 
