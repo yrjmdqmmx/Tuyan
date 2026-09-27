@@ -53,8 +53,8 @@ Sealos / Sealaf 已退役，没有平台回退路径。恢复仅在当前架构�
 
 ## 监控、缺口与发布前工作
 
-- 已看到健康、出口、DirectMail 出站规则刷新（五分钟）和每日 Mongo 备份 timers 启用。**但 2026-09-27 03:24–03:26 CST 的备份作业退出码 3：OSS PutObject 在内网目标 `100.115.61.4:443` 连接超时。** 健康监控明确报告 `last daily backup did not succeed`；不能将 timer 启用误当备份成功，也不能把该告警归咎于旧域名。网络/备份凭据/目标桶的进一步排障与重新备份尚未执行，不能假称已修复。健康监控覆盖 API/readiness、容器、Mongo、卡住的任务、备份时效、TLS 与 Nginx 5xx；事件通过独立 RAM 的 CloudMonitor 权限上报。
-- 本地已删除旧平台域名探测；安装在服务器的脚本不会因本地修改自动更新。发布时需通过已有安装流程同步监控资产。
+- 健康、出口、DirectMail 出站规则刷新（五分钟）和每日 Mongo 备份 timers 启用。2026-09-27 03:24 的备份失败已在用户追加授权后修复：Tailscale 丢弃 OSS 内网 CGNAT 回包，按准确 DNS IP 临时豁免已建立 HTTPS 回包后上传恢复；归档/校验文件完整回读一致、对象 AES256 加密、规则清理均核验。备份脚本安装于 checkout 外 `/opt/paperbanana/operations/backup`；本地完成文件只在两次上传成功后公开。详见[修复证据](2026-09-27-backup-benchmark-repair.md)。
+- 已按追加授权从现网监控中移除退役平台代理探针；备份修复后监控恢复健康。其他检查仍覆盖 API/readiness、容器、Mongo、任务、备份时效、TLS 和 Nginx 5xx。
 - 现网 SG ACL **尚无 `api.novita.ai`**。本地 v3.8.1 已增加，正式启用 Novita 前须单独批准同步出口并做无付费连通验收。
 - 现网仍有健康响应 `laf` 别名和 `PAPERBANANA_STRICT_OBJECT_STORAGE=true`。本次源码已删除别名与可切换的存储降级开关，正式更新时需同步网关/Core/监控，清理安装环境中无效的旧开关。生产严格存储行为保持。
 - 微信控制台合法域名、已发客户端版本、提供商账户权限和账单未在本轮重新登录核实；本地测试不代表真实调用或微信发布。

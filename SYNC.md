@@ -2,6 +2,15 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+## 2026-09-27 · 每日备份现网修复与完整 Benchmark 运行镜像
+
+- 用户追加授权修复现网每日备份；业务发布仍未授权。根因已实机复现：Tailscale CGNAT 防护丢弃 OSS 内网新 DNS 地址的宿主回包，旧固定网段豁免失效。
+- [x] 运维：按每次上传解析的准确 IP 临时放行 eth0 上已建立的 TCP/443 回包，正常/异常/退出清理；不改全局防火墙或 Tailscale 自有链。备份运行脚本安装到 checkout 外 `/opt/paperbanana/operations/backup`，systemd 增加受锁保护的退出清理与 AF_NETLINK。归档和 checksum 上传成功后才公开本地完成文件，避免备份期间误报。
+- [x] 生产备份：修复已安装，服务重跑成功；OSS 归档/校验文件完整回读 hash 一致，AES256 对象加密已核验。健康监控移除已退役域名探针。没有重启业务容器、改动数据库业务数据或恢复数据到生产库。
+- [x] Benchmark：完整 linux/amd64 运行镜像本地构建通过；HTTPS + Node 内置 CA 引导系统证书、Debian 签名验证、固定 CJK 字体保留，允许通过构建参数指定 HTTPS Debian 镜像。CI 加入完整镜像的无网络非 root 验证。
+- [x] Web / 小程序 / 共享契约：无需同步请求字段、模型目录或用户配置；仅部署资产与构建参数变化。无新增生产 secret / 环境变量。
+- [ ] v3.8.1 仍待发布；Benchmark 镜像未推送/替换生产容器，执行器仍关闭，没有模型/Judge 付费调用。安装清单和最终镜像来源见 [修复记录](docs/operations/2026-09-27-backup-benchmark-repair.md)。
+
 ## 2026-09-27 · 彻底退役旧云平台，迁移 Node 业务核心（本地待发布）
 
 - 以只读实机核查为准：香港 Debian 12 / 4 vCPU / 16 GB / Compose、Node 24 网关与 Core、自建 MongoDB、私有 OSS；新加坡 Ubuntu 24.04 / 2 vCPU / 4 GB / WireGuard + Squid。Sealos / Sealaf 不是运行、发布或回滚目标。见[架构](docs/operations/current-architecture.md)与[清理记录](docs/operations/2026-09-27-platform-retirement.md)。
@@ -11,8 +20,8 @@
 - [x] 小程序源码：健康读取改为 `backend`；TS/JS 一致并本地构建/测试。未覆盖独立原生工作树和微信开发者工具副本，未微信发布。
 - [x] CI / 运维源码：移除旧发布 workflow、Kubernetes NetworkPolicy 和旧域名监控；Core/Benchmark Docker COPY、守卫测试、目录生成路径同步。源平台对象导出器删除；校验既有对象包的 OSS 恢复器移至 `deploy/hk-single-host/object-restore`。
 - [x] 文档：AGENTS/README/部署/监控/环境示例按现役架构重写；旧审计/迁移材料加历史标识及归档索引，不改写当时的发布哈希。
-- [ ] 完整 Benchmark runtime 镜像：代码构建阶段和测试通过，最终字体安装阶段被本机访问 Debian 软件源 HTTP 502 阻断；未放宽签名验证，正式发布前补跑。
-- [ ] 生产同步：本轮未部署、未修改环境/监控/网络或删除资源。现网旧健康别名/旧域名探测及过时环境项需另行批准同步；Novita 尚需安装 SG ACL。实机每日备份 OSS PutObject 连接超时仍待排障，不得因本地清理而宣称已恢复备份。
+- [x] 完整 Benchmark runtime 镜像：此前 HTTP 502 阻塞已由本日后续修复解除，见上方修复条目；运行镜像本地验证通过，未生产发布。
+- [ ] 生产同步：本轮未部署、未修改环境/监控/网络或删除资源。现网旧健康别名及过时环境项需另行批准同步；Novita 尚需安装 SG ACL。后续追加授权已修复每日备份、移除旧域名监控探针，见上方修复条目；其余清理尚未部署。
 - [ ] v3.8.1 继续待发布；真实模型调用、支付/充值、生产部署、微信发布均未执行。旧云账户资源与账单未查询，不能据此断言云资源已清空或费用已停止。
 
 ## 2026-09-27 · v3.8.1 视觉契约复核 / Novita Ming（v27，待发布）

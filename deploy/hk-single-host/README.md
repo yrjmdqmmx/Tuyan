@@ -81,6 +81,26 @@ Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
 
+The HK host also runs Tailscale, whose CGNAT filter can drop replies from OSS
+internal addresses. `with-backup-oss-network.py` resolves the configured HK backup
+bucket for each upload, validates its CGNAT addresses and `eth0` routes, and
+temporarily accepts only established TCP/443 replies from those exact IPs before
+`ts-input`. It removes those individually tagged rules on success, error or
+SIGTERM; the service's locked `ExecStopPost` cleans up after forced exits too.
+No global ruleset, Tailscale chain, fixed provider subnet or other project is
+changed. `AF_NETLINK` permits this scoped iptables/route operation. Install the
+helper together with `backup-mongo.sh` and the service unit using
+`scripts/install-backup-timer.sh --apply`. The installer holds the backup lock
+and copies both scripts into root-only `/opt/paperbanana/operations/backup`,
+outside the replaceable application checkout. Start backups via
+`systemctl start paperbanana-backup.service` so locking and cleanup apply.
+The endpoint stays internal HTTPS, using the existing private bucket and keys.
+A running timer alone is not proof of a successful upload.
+New dumps/checksums use `.partial` files until both OSS uploads succeed; then
+the checksum and finally the archive become visible to the health check. Failed
+uploads retain their partial files for diagnosis and leave the service failed.
+The existing local two-day cleanup runs only after a successful backup.
+
 ## Benchmark credential staging
 
 The default deployment mode is `discovery-only`: Core Bench API access and the

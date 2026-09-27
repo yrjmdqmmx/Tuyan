@@ -10,7 +10,8 @@ Type=oneshot
 User=root
 Group=root
 WorkingDirectory=/opt/paperbanana/repo/deploy/hk-single-host
-ExecStart=/usr/bin/flock -n /run/lock/paperbanana-mongo-backup.lock /opt/paperbanana/repo/deploy/hk-single-host/scripts/backup-mongo.sh
+ExecStart=/usr/bin/flock -n /run/lock/paperbanana-mongo-backup.lock /opt/paperbanana/operations/backup/backup-mongo.sh
+ExecStopPost=/usr/bin/flock -w 5 /run/lock/paperbanana-mongo-backup.lock /usr/bin/python3 /opt/paperbanana/operations/backup/with-backup-oss-network.py --cleanup
 TimeoutStartSec=2h
 UMask=0077
 Nice=10
@@ -23,5 +24,4 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 LockPersonality=true
-RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
-
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK

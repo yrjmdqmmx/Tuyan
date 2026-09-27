@@ -41,15 +41,19 @@ test('daily Mongo backup timer is persistent, bounded and installed explicitly',
   const installer = read('scripts/install-backup-timer.sh');
 
   assert.match(service, /Type=oneshot/);
-  assert.match(service, /ExecStart=\/usr\/bin\/flock -n \/run\/lock\/paperbanana-mongo-backup\.lock \/opt\/paperbanana\/repo\/deploy\/hk-single-host\/scripts\/backup-mongo\.sh/);
+  assert.match(service, /ExecStart=\/usr\/bin\/flock -n \/run\/lock\/paperbanana-mongo-backup\.lock \/opt\/paperbanana\/operations\/backup\/backup-mongo\.sh/);
   assert.match(service, /TimeoutStartSec=2h/);
   assert.match(service, /UMask=0077/);
+  assert.match(service, /ExecStopPost=\/usr\/bin\/flock -w 5 .*with-backup-oss-network\.py --cleanup/);
+  assert.match(service, /RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK/);
   assert.match(timer, /OnCalendar=\*-\*-\* 19:17:00 UTC/);
   assert.match(timer, /RandomizedDelaySec=15m/);
   assert.match(timer, /Persistent=true/);
   assert.match(installer, /systemctl daemon-reload/);
   assert.match(installer, /systemctl enable --now paperbanana-backup\.timer/);
   assert.match(installer, /install -m 0644/);
+  assert.match(installer, /runtime_dir="\/opt\/paperbanana\/operations\/backup"/);
+  assert.match(installer, /flock -n 9/);
 });
 
 test('production health monitor covers application, data, backup, TLS and 5xx signals', () => {
@@ -197,9 +201,11 @@ test('verified evidence TOCTOU boundary requires immutable content-addressed Wor
 
 test('benchmark worker image pins CJK glyph support and renders calibration snapshots during build', () => {
   const dockerfile = read('../../apps/benchmark-worker/Dockerfile');
+  const fonts = read('../../apps/benchmark-worker/scripts/install-runtime-fonts.sh');
   const packageJson = read('../../apps/benchmark-worker/package.json');
   assert.match(dockerfile, /PAPERBANANA_BENCH_CJK_FONT_VERSION/);
-  assert.match(dockerfile, /fonts-noto-cjk=\$\{PAPERBANANA_BENCH_CJK_FONT_VERSION\}/);
+  assert.match(fonts, /fonts-noto-cjk=\$\{PAPERBANANA_BENCH_CJK_FONT_VERSION\}/);
+  assert.match(dockerfile, /sh \/tmp\/install-runtime-fonts\.sh/);
   assert.match(dockerfile, /fc-match[\s\S]*Noto Sans CJK/);
   assert.match(dockerfile, /node dist\/calibration-snapshot\.mjs/);
   assert.match(packageJson, /src\/calibration-snapshot\.ts[\s\S]*dist\/calibration-snapshot\.mjs/);

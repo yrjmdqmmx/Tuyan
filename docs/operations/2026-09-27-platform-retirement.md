@@ -1,5 +1,7 @@
 # 旧云平台退役清理交付（2026-09-27，本地待发布）
 
+> 后续状态更新：本记录保留清理阶段的只读/未发布边界。用户随后授权的每日备份现网修复、旧监控探针移除和 Benchmark 完整运行镜像验证均已完成，见[后续修复记录](2026-09-27-backup-benchmark-repair.md)。下方备份与镜像阻塞描述是修复前状态。
+
 工作树：`/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v381-20260927`，分支 `codex/tuyan-v3.8.1`；起点 `83d25a25a7b2a64111da2c97631a7945b7e3ff10`。开工核对的远端 main 为 `e2b70cfc849cc4de323df63827262b877083d1c0`。未改 Desktop 旧 checkout、独立小程序原生工作树或微信项目副本，未 push。
 
 ## 先纠正的前提
