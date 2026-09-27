@@ -1,5 +1,5 @@
-import { normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
-import { STATIC_MODEL_REGISTRY } from './staticModelCatalog.js'
+import { normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, universalMetadataSource, normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
+import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from './staticModelCatalog.js'
 import { referenceSubmissionPolicy } from './referenceUploadPolicy.js'
 import { resolveImageSize } from '../../../../packages/types/src/image-size-contract.ts'
 import sizeContracts from '../../../../config/image-size-contracts.json'
@@ -43,7 +43,8 @@ export function loadUniversalDrafts(storage = globalThis.localStorage ?? globalT
           return [key, fallback]
         }))
         const custom = restore(defaults[role].custom, d.custom)
-        defaults[role] = {ui:{baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
+        try { custom.limitPolicy = d.custom.limitPolicy ? normalizeUniversalLimitPolicy(d.custom.limitPolicy) : migrateUniversalLimitPolicy(custom) } catch {custom.limitPolicy=migrateUniversalLimitPolicy({...custom,limitPolicy:undefined});repaired=true}
+        defaults[role] = {ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:repaired || d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, evidence:sanitizeUniversalEvidence(d.evidence), modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
       }
     }
   } catch { /* An invalid saved draft must not break preset channels. */ }
@@ -57,9 +58,10 @@ export function hasSavedUniversalConfiguration(storage = globalThis.localStorage
 }
 export function serializeUniversalDrafts(drafts) {
   // Explicit allowlist. Keys and validation outcomes never enter localStorage.
-  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {modelId: d.modelId, declared: Boolean(d.declared), ui:{baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, custom: {
+  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {evidence:sanitizeUniversalEvidence(d.evidence), modelId: d.modelId, declared: Boolean(d.declared), ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, custom: {
     version: 1, connectionId: `custom_${role}`, protocol: d.custom.protocol, baseUrl: d.custom.baseUrl, auth: d.custom.auth, compatibility: d.custom.compatibility,
-    catalogFormat: d.custom.catalogFormat || 'auto', capabilities: d.custom.capabilities, inputLimits: d.custom.inputLimits, outputLimits: d.custom.outputLimits, outputSizes: d.custom.outputSizes,
+    catalogFormat: d.custom.catalogFormat || 'auto', capabilities: pickUniversalFields(d.custom.capabilities,['text','vision','imageGeneration','imageEditing']), inputLimits: pickUniversalFields(d.custom.inputLimits,['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']), outputLimits: pickUniversalFields(d.custom.outputLimits,['maxBytes','maxDimension','maxPixels','mimeTypes']), outputSizes: (d.custom.outputSizes||[]).slice(0,256).map(row=>pickUniversalFields(row,['resolution','aspectRatio','value'])),
+    ...(d.custom.limitPolicy ? {limitPolicy:{version:1,...Object.fromEntries(['service','user'].map(layer=>[layer,Object.fromEntries(['input','output'].filter(scope=>d.custom.limitPolicy[layer]?.[scope]!==undefined).map(scope=>[scope,pickUniversalFields(d.custom.limitPolicy[layer]?.[scope],scope==='input'?['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']:['maxBytes','maxDimension','maxPixels','mimeTypes'])]))]))}} : {}),
   }}]))
   return JSON.stringify({version:1,roles})
 }
@@ -93,7 +95,17 @@ export function officialDeclaration(draft) {
     if (!outputSizes.length) return null
   }
   return {...c, capabilities:{text:entry.roles.includes('main'),vision:entry.roles.includes('vision'),imageGeneration:Boolean(image),imageEditing:Boolean(editing && (!image || route.generation === route.editing))},
-    inputLimits:{...c.inputLimits,...policy,mimeTypes:policy.mimeTypes || c.inputLimits.mimeTypes},outputSizes}
+    inputLimits:{...c.inputLimits,...policy,mimeTypes:policy.mimeTypes || c.inputLimits.mimeTypes},limitPolicy:undefined,outputSizes}
+}
+export function officialDeclarationSources(draft) {
+  if(!officialDeclaration(draft))return null
+  const base=normalizeUniversalBaseUrl(draft.custom.baseUrl,draft.custom.protocol)
+  const provider=base==='https://api.openai.com/v1'?'openai':base==='https://api.anthropic.com/v1'?'anthropic':'gemini'
+  const modelId=provider==='gemini'?draft.modelId.replace(/^models\//,''):draft.modelId
+  const policy=referenceSubmissionPolicy(provider,modelId),sizes=sizeContracts.routes[`${provider}/${modelId}`]
+  return {provider,baseUrl:base,protocol:draft.custom.protocol,modelId,registryVersion:STATIC_MODEL_REGISTRY_VERSION,
+    inputSource:typeof policy.source==='string'&&policy.source.startsWith('https://')?policy.source:null,
+    sizeCheckedAt:sizes?.reviewedAt,sizeSources:(sizes?.sources||[]).filter(x=>typeof x==='string'&&x.startsWith('https://'))}
 }
 export function universalDraftRoute(draft) {
   if (!draft.modelId.trim()) throw new Error('请填写准确模型 ID，或先获取模型并选择。')
@@ -178,9 +190,41 @@ export function missingUniversalKeys(routes, roles, envelope) {
 }
 export function updateUniversalDraft(draft, patch) {
   const next = {...draft,...patch,ui:{...draft.ui,...patch.ui},custom:{...draft.custom,...patch.custom}}
+  if (draft.custom.limitPolicy && patch.custom && !Object.hasOwn(patch.custom,'limitPolicy') && (patch.custom.inputLimits || patch.custom.outputLimits)) {
+    next.custom.limitPolicy={...draft.custom.limitPolicy,user:{...draft.custom.limitPolicy.user,...(patch.custom.inputLimits?{input:{...draft.custom.limitPolicy.user.input,...patch.custom.inputLimits}}:{}),...(patch.custom.outputLimits?{output:{...draft.custom.limitPolicy.user.output,...patch.custom.outputLimits}}:{})}}
+  }
   if(patch.custom && Object.hasOwn(patch.custom,'baseUrl') && !patch.ui) next.ui={...next.ui,baseUrlSource:'user'}
   const changedFields = ['baseUrl','protocol','auth'].filter(k => draft.custom[k] !== next.custom[k])
   const changedBinding = changedFields.length > 0
   if (next.modelId !== draft.modelId || changedBinding || next.custom.compatibility !== draft.custom.compatibility) next.declared = false
   return {draft:next,clearKey:changedBinding,changedFields}
+}
+
+function pickUniversalFields(value,keys) { return Object.fromEntries(keys.filter(k=>value?.[k]!==undefined).map(k=>[k,Array.isArray(value[k])?value[k].filter(x=>typeof x==='string').slice(0,256):value[k]!==null&&typeof value[k]==='object'?undefined:value[k]])) }
+export function sanitizeUniversalEvidence(value) {
+  if(!value||value.version!==1||!value.source||!value.facts||Array.isArray(value.source)||Array.isArray(value.facts))return undefined
+  if(['kind','provider','baseUrl','protocol','auth','modelId','fetchedAt','checkedAt','url'].some(k=>typeof value.source[k]!=='string'||value.source[k].length>2048))return undefined
+  return {version:1,source:pickUniversalFields(value.source,['kind','provider','baseUrl','protocol','auth','modelId','fetchedAt','checkedAt','url']),facts:pickUniversalFields(value.facts,['imageInput','textOutput','imageOutput','thinking','inputTokenLimit','contextWindowTokens','outputTokenLimit','supportedParameters','generationMethods','reasoningEfforts','thinkingModes','reasoningMandatory','reasoningBudget']),review:['imported','user-confirmed'].includes(value.review)?value.review:'saved'}
+}
+export function catalogMetadataForDraft(value,draft,now=Date.now()) {
+  const metadata=sanitizeUniversalEvidence(value)
+  if(!metadata)return null
+  let expected;try{expected=universalMetadataSource(universalDraftConnection(draft))}catch{return null}
+  const s=metadata.source, age=now-Date.parse(s.fetchedAt)
+  if(!expected||s.provider!==expected.provider||s.kind!==expected.kind||s.url!==expected.url||s.baseUrl!==normalizeUniversalBaseUrl(draft.custom.baseUrl,draft.custom.protocol)||s.protocol!==draft.custom.protocol||s.auth!==draft.custom.auth||s.modelId!==draft.modelId||!Number.isFinite(age)||age< -300000||age>30*86400000)return null
+  for(const [key,v] of Object.entries(metadata.facts)) {
+    if(['imageInput','textOutput','imageOutput','thinking','reasoningMandatory','reasoningBudget'].includes(key)&&typeof v!=='boolean')return null
+    if(['inputTokenLimit','contextWindowTokens','outputTokenLimit'].includes(key)&&(!Number.isSafeInteger(v)||v<1||v>100000000))return null
+    if(['supportedParameters','generationMethods','reasoningEfforts','thinkingModes'].includes(key)&&(!Array.isArray(v)||v.length>64||v.some(x=>typeof x!=='string'||x.length>80)))return null
+  }
+  return metadata
+}
+export function catalogCapabilityPatch(metadata,draft) {
+  const m=catalogMetadataForDraft(metadata,draft);if(!m)throw new Error('目录来源已过期或不匹配当前连接，请重新获取。')
+  const f=m.facts,capabilities={...draft.custom.capabilities}
+  if(typeof f.textOutput==='boolean')capabilities.text=f.textOutput
+  if(typeof f.imageInput==='boolean'&&(capabilities.text||m.source.provider==='anthropic')) {capabilities.text=true;capabilities.vision=f.imageInput}
+  if(typeof f.imageOutput==='boolean'&&draft.custom.protocol==='openai-chat'&&draft.custom.compatibility==='openrouter-image')capabilities.imageGeneration=f.imageOutput
+  // Image input/output never implies an editing operation or a size/byte/pixel allowance.
+  return {custom:{capabilities},declared:false,evidence:{...m,review:'user-confirmed'},ui:{capabilityMode:'manual',manualDraftPresent:true}}
 }

@@ -1,5 +1,6 @@
 // Generated shared history types; configuration and execution are Web/Core-only.
 /** Versioned, user-declared BYOK contract. No model-name or vendor-name inference. */
+export const UNIVERSAL_TEXT_OUTPUT_TOKENS = 4096
 export const UNIVERSAL_PROTOCOLS = ['openai-chat', 'openai-responses', 'openai-images', 'anthropic-messages', 'gemini-generate-content', 'gemini-interactions', 'dashscope-multimodal'] as const
 export type UniversalProtocol = typeof UNIVERSAL_PROTOCOLS[number]
 export type UniversalAuth = 'bearer' | 'x-api-key' | 'x-goog-api-key'
@@ -17,10 +18,20 @@ export interface UniversalCatalogStrategy {
 }
 export interface UniversalOutputLimits { maxBytes: number; maxDimension: number; maxPixels: number; mimeTypes: string[] }
 export interface UniversalOutputSize { resolution: string; aspectRatio: string; value: string }
+export interface UniversalLimitLayer { input?: Partial<UniversalInputLimits>; output?: Partial<UniversalOutputLimits> }
+export interface UniversalLimitPolicy {
+  version: 1; service: UniversalLimitLayer; user: UniversalLimitLayer
+}
+export interface UniversalCatalogMetadata {
+  version: 1
+  source: { kind: 'official-api' | 'verified-service'; provider: string; baseUrl: string; protocol: string; auth: string; modelId: string; fetchedAt: string; checkedAt: string; url: string }
+  facts: { imageInput?: boolean; textOutput?: boolean; imageOutput?: boolean; thinking?: boolean; inputTokenLimit?: number; contextWindowTokens?: number; outputTokenLimit?: number; supportedParameters?: string[]; generationMethods?: string[]; reasoningEfforts?: string[]; thinkingModes?: string[]; reasoningMandatory?: boolean; reasoningBudget?: boolean }
+}
 export interface UniversalCustomConfig {
   version: 1; connectionId: string; protocol: UniversalProtocol; baseUrl: string; auth: UniversalAuth
   compatibility?: 'standard' | 'openrouter-image' | 'ark-images'
   capabilities: { text: boolean; vision: boolean; imageGeneration: boolean; imageEditing: boolean }
+  limitPolicy?: UniversalLimitPolicy
   inputLimits: UniversalInputLimits; outputLimits: UniversalOutputLimits; outputSizes?: UniversalOutputSize[]
 }
 export interface UniversalRoute { accessProvider: 'custom'; modelId: string; custom: UniversalCustomConfig }

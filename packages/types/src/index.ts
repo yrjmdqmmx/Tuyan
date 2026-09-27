@@ -22,7 +22,7 @@ export type ProviderCallRecord = TokenDanceCallRecord | import('./refine.js').Au
 export interface TokenDancePaymentAttempt { attemptId: string; amount: number; state: string; createdAt?: string; checkedAt?: string; session?: TokenDancePayment }
 
 /** Optional custom routes use the strict, versioned BYOK descriptor. Existing preset routes remain unchanged. */
-export type { UniversalRoute, UniversalCustomConfig, UniversalProtocol, UniversalInputLimits, UniversalOutputLimits } from '../../api/src/universal-api.js'
+export type { UniversalRoute, UniversalCustomConfig, UniversalProtocol, UniversalInputLimits, UniversalOutputLimits, UniversalLimitPolicy, UniversalCatalogMetadata } from '../../api/src/universal-api.js'
 
 export type { ModelVersion } from './model-presentation.js'
 

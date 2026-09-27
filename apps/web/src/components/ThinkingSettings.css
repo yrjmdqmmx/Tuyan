@@ -22,3 +22,5 @@
   .thinking-help > summary { min-width: 44px; min-height: 44px; }
   .thinking-help-content { top: 48px; }
 }
+/* Connection provenance is explanatory text, not a parameter column. */
+.model-thinking-controls > :is(.universal-hint, .universal-details) { grid-column: 1 / -1; margin: 0; overflow-wrap: anywhere; }

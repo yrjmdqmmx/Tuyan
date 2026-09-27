@@ -3,6 +3,7 @@ import test from 'node:test'
 import {createRefineRuntime} from '../../../test-support/refine-runtime.mjs'
 import {createUniversalRuntime} from '../src/universal-adapters.js'
 import {normalizeUniversalRoute,UniversalApiError} from '../../../packages/api/src/universal-api.js'
+import {universalThinkingIdentity} from '../../../packages/api/src/thinking.js'
 import {publicExecutionFailure} from '../../../packages/api/src/execution-errors.js'
 function route(role:string, overrides:any={}) {
  return normalizeUniversalRoute({accessProvider:'custom',modelId:'exact/same-ID:KeepCase',custom:{version:1,connectionId:role,protocol:role==='image'?'openai-images':'openai-chat',baseUrl:`https://${role}.example.com/prefix/v1`,auth:'bearer',capabilities:{text:role!=='image',vision:role!=='image',imageGeneration:role==='image',imageEditing:role==='image'},inputLimits:{maxCount:2,maxBytes:5e6,maxTotalBytes:10e6,maxDimension:4096,maxPixels:16e6,requestMaxBytes:32e6,mimeTypes:['image/png']},outputLimits:{maxBytes:10e6,maxDimension:4096,maxPixels:16e6,mimeTypes:['image/png']},outputSizes:role==='image'?[{resolution:'1K',aspectRatio:'1:1',value:'1024x1024'}]:[],...overrides}})
@@ -122,5 +123,24 @@ for(const main of ['antling','custom']) test(`existing vision route mixes LongCa
   const rendered=f.providerCalls.filter((c:any)=>c.url==='https://api.novita.ai/openai/v1/images/generations');assert.ok(rendered.length)
   for(const call of rendered){assert.equal(new Headers(call.options.headers).get('Authorization'),'Bearer fixture-novita-only');const b=JSON.parse(String(call.options.body));assert.equal(b.model,'ming-image-0.1-design');assert.equal(b.image,undefined);assert.equal(b.images,undefined);assert.equal(b.n,undefined)}
   assert.equal(JSON.stringify(job).includes('fixture-novita-only'),false);assert.equal(f.tokenDanceCalls.length,0)
+ }finally{await f.close()}
+})
+
+ test('custom thinking snapshot survives encrypted recovery and reuses successful planner without a second charge',async()=>{
+ const f=await fixture()
+ try {
+  const main=route('main',{baseUrl:'https://api.openai.com/v1'});main.modelId='gpt-5'
+  const routes={main,vision:route('vision'),image:route('image')},identity=universalThinkingIdentity(main)
+  const input={...body(routes),thinkingConfig:{version:1,roles:{main:{...identity,options:{effort:'low'}}}}}
+  f.fail(new UniversalApiError('UPSTREAM_REJECTED','rejected',402))
+  const created=await f.post(input);assert.equal(created.data.code,0,JSON.stringify(created));await f.legacy.drainJobAdmission()
+  const failed=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
+  assert.equal(failed.recovery.canResume,true);assert.equal(failed.thinkingConfig.roles.main.options.effort,'low')
+  const planning=f.calls.filter(c=>c.url==='https://api.openai.com/v1/chat/completions');assert.ok(planning.length)
+  for(const call of planning)assert.equal(JSON.parse(call.body).reasoning_effort,'low')
+  assert.equal(failed.thinkingSnapshot.roles.main.connection.baseUrl,main.custom.baseUrl)
+  f.fail();await f.post({action:'providerResume',jobId:created.data.jobId,apiKeys:{custom:envelope({image:routes.image},'rotated')}});await f.legacy.drainJobAdmission()
+  assert.equal((await f.post({action:'getJob',jobId:created.data.jobId})).data.job.status,'succeeded')
+  assert.equal(f.calls.filter(c=>c.url==='https://api.openai.com/v1/chat/completions').length,planning.length)
  }finally{await f.close()}
 })

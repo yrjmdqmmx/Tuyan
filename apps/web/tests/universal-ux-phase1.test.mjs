@@ -40,7 +40,7 @@ test('pure text hides image limits without mutating them; image input remains vi
 test('legacy limit objects, raw sizes and confirmed capability declarations round-trip exactly, without keys or verification',()=>{
  const ds=blank();for(const [role,d] of Object.entries(ds)){d.modelId='Legacy/'+role;d.declared=true;d.custom.inputLimits.maxCount=3;d.custom.outputSizes=[{resolution:'custom-2',aspectRatio:'7:5',value:'1433x1024'}];d.validation={verified:true};d.apiKey='not-persistent';delete d.ui}
  const store=storage();saveUniversalDrafts(ds,store);const restored=loadUniversalDrafts(store)
- for(const r of Object.keys(ds)){assert.deepEqual(restored[r].custom,ds[r].custom);assert.equal(restored[r].modelId,ds[r].modelId);assert.equal(restored[r].declared,true)}
+ for(const r of Object.keys(ds)){const {limitPolicy,...restoredCustom}=restored[r].custom;assert.deepEqual(restoredCustom,ds[r].custom);assert.deepEqual(limitPolicy.user,{input:ds[r].custom.inputLimits,output:ds[r].custom.outputLimits});assert.deepEqual(limitPolicy.service,{});assert.equal(restored[r].modelId,ds[r].modelId);assert.equal(restored[r].declared,true)}
  assert.doesNotMatch(store.getItem('tuyan.universal-api.v1'),/not-persistent|validation|verified/)
 })
 test('explicit connection-only copy excludes key and all model declarations; key copy preserves target connection ID',()=>{

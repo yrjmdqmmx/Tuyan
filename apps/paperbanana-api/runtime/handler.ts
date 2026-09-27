@@ -11,7 +11,7 @@ import decodeJpeg from 'jpeg-js/lib/decoder'
 
 import { ThinkingOptions, ThinkingSelection, ThinkingConfiguration, ThinkingSnapshotRole, ThinkingSnapshot } from '../../../packages/types/src/thinking.js'
 export * from '../../../packages/types/src/thinking.js'
-import { thinkingProfile, validateThinkingOptions, compileThinkingSelection, normalizeThinkingConfiguration, applyThinkingSnapshot, applyThinkingTransport, validateThinkingTask } from '../../../packages/api/src/thinking.js'
+import { universalThinkingIdentity, thinkingProfile, validateThinkingOptions, compileThinkingSelection, normalizeThinkingConfiguration, applyThinkingSnapshot, applyThinkingTransport, validateThinkingTask } from '../../../packages/api/src/thinking.js'
 export * from '../../../packages/api/src/thinking.js'
 
 sharp.cache(false)
@@ -347,6 +347,7 @@ export function resolveModelRouting(body: Record<string, any>): ModelRoutingMeta
     throw modelRouteError('Mixed model routes require advanced configuration mode', 'MODEL_ROUTE_MIXED_NOT_ALLOWED')
   }
   const thinkingIdentities = Object.fromEntries(Object.entries(modelRoutes).map(([role, route]) => {
+    if (route.accessProvider === 'custom') return [role, universalThinkingIdentity(normalizeUniversalRoute(route))]
     const entry = staticModelRegistry[route.accessProvider as Exclude<Provider, 'openrouter'>]?.models.find(item => item.id === route.modelId)
     const protocol = route.accessProvider === 'custom' ? route.custom?.protocol || 'unconfirmed'
       : entry?.roleProtocols?.[role as ModelRole] || (route.accessProvider === 'openrouter' ? role === 'image' ? 'openrouter-images' : 'openrouter-chat-completions' : entry?.protocol || 'unconfirmed')
@@ -1591,7 +1592,7 @@ import { RequestState, JOB_FAILURE_STAGES, atJobStage, isLocalInputFailure, publ
 export * from '../../../packages/api/src/execution-errors.js'
 import { distinctReferenceCandidates, relevantReferenceSelection } from '../../../packages/api/src/reference-selection.js'
 export * from '../../../packages/api/src/reference-selection.js'
-import { UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry } from '../../../packages/api/src/universal-api.js'
+import { UNIVERSAL_TEXT_OUTPUT_TOKENS, UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalLimitLayer, UniversalLimitPolicy, UniversalCatalogMetadata, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, effectiveUniversalLimits, universalMetadataSource, parseUniversalCatalogMetadata, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry } from '../../../packages/api/src/universal-api.js'
 export * from '../../../packages/api/src/universal-api.js'
 import { TokenDanceCatalogIssue, TokenDanceCatalogModel, TokenDanceCatalogSnapshot, TokenDanceCatalogError, tokenDanceCatalogIssueMessage, parseTokenDanceCatalog, tokenDanceCatalogModelReason, tokenDanceCatalogMessage, createTokenDanceCatalogCache } from '../../../packages/api/src/tokendance-catalog.js'
 export * from '../../../packages/api/src/tokendance-catalog.js'
@@ -3844,7 +3845,7 @@ async function universalInputImages(images: VisionImageInput[]) {
 async function universalText(routeValue: ModelRoute, apiKey: string, systemPrompt: string, prompt: string, images: VisionImageInput[], signal?: AbortSignal) {
   const route = normalizeUniversalRoute(routeValue)
   assertVisionInputBudget('custom', route.modelId, images, route.custom)
-  const text = await requiredUniversalRuntime().text(route, apiKey, {systemPrompt, prompt, images: await universalInputImages(images), signal})
+  const text = await requiredUniversalRuntime().text(route, apiKey, {systemPrompt, prompt, images: await universalInputImages(images), signal, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return text
 }
@@ -3852,7 +3853,7 @@ async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: st
   const route = normalizeUniversalRoute(routeValue)
   assertRouteImageSize(route, aspectRatio, imageSize, Boolean(source))
   const sourceImages = source ? await universalInputImages([{filename: 'source', mimeType: inferMimeTypeFromUrl(source), url: source}]) : []
-  const output = await requiredUniversalRuntime().image(route, apiKey, {prompt, sourceImages, aspectRatio, imageSize})
+  const output = await requiredUniversalRuntime().image(route, apiKey, {prompt, sourceImages, aspectRatio, imageSize, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return output.mimeType === 'image/png' ? output.base64 : (await sharp(Buffer.from(output.base64, 'base64'), {limitInputPixels: route.custom.outputLimits.maxPixels}).png().toBuffer()).toString('base64')
 }
@@ -4257,6 +4258,9 @@ async function modelRegistry(body: ModelRegistryBody) {
     thinkingContractVersion: providerWorkflow.thinking && providerWorkflow.thinkingAvailable?.() !== false ? 1 : 0,
     routeContractVersion,
     universalApiContractVersion: universalRuntime ? 1 : 0,
+    universalThinkingVersion: universalRuntime ? 1 : 0,
+    universalMetadataVersion: universalRuntime ? 1 : 0,
+    universalLimitsVersion: universalRuntime ? 1 : 0,
     inputOptimizationContractVersion,
     inputOptimizationTargets: ['methodContent', 'caption', 'negativePrompt', 'editInstruction'],
     referenceUpload: runtimeReferenceUploadContract(),

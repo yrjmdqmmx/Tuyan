@@ -103,7 +103,7 @@ export default function ModelRoutingSettings({
               renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
               onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
               : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
-            {renderThinkingSettings?.(role)}
+            {route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
           </div>
         })}
       </div>

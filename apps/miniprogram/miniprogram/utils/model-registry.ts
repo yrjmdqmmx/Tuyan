@@ -60,6 +60,9 @@ export interface ModelRegistry {
   referenceUpload?: { version: number; platform: Record<string, any> }
   providerRegionContractVersion?: number
   thinkingContractVersion?: number
+  universalThinkingVersion?: number
+  universalMetadataVersion?: number
+  universalLimitsVersion?: number
   registryVersion: string
   routeContractVersion: number
   supportsModelRoutes: boolean

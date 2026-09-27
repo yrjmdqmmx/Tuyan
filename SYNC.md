@@ -2,6 +2,19 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+## 2026-09-27 · 下一版本通用 API 完整配置与思考适配（仅本地待发布）
+
+- 基于已发布 v3.8.1 + 本地 `1f2d41a` / `67f1cd6`，没有改写公开已发布日志。详见[契约、迁移与官方核查](docs/universal-api/2026-09-27/implementation.md)。
+- Route v1 新增可选 `custom.limitPolicy.version=1`（service/user 分层，平台硬上限仍由共享代码控制）；提交保留物化 `inputLimits/outputLimits`，旧后端忽略扩展仍执行相同限制。旧 v1 值迁移为用户限制，不变成官方证据。
+- 目录行新增可选 `metadata.version=1`：仅精确 Anthropic / Gemini / OpenRouter 地址+协议+auth 的白名单事实，带来源/身份/日期；异常 metadata 隔离、不删除有效 ID；未知兼容地址仍只保留 ID。旧响应与手动配置路径保留。
+- ThinkingConfiguration v1 的 selection 新增可选 `connection={baseUrl,auth,compatibility}`。非默认通用思考须精确绑定，继续使用既有 profile、校验、服务器编译快照、adapter 和恢复链。旧客户端空 options 可用；客户端不得提交 wire/snapshot。
+- Registry 新增能力协商 `universalThinkingVersion` / `universalMetadataVersion` / `universalLimitsVersion`（当前均 1）；旧后端不支持时仅非默认通用思考阻止提交，其余手动路径和物化限制仍可用。
+- [x] Core / 共享：归一化、平台约束、目录元数据、真实请求体思考映射、旧空配置兼容、任务快照/恢复；本地模拟回归，不代表真实调用。
+- [x] Web：保留第一阶段；增加独立连接副本/显式管理、128 KiB 无密钥文件 v2（兼容旧 v1）、导入预览及复核、分层限额、目录来源和精确思考控件。视觉模型命名保持。
+- [x] 小程序共享类型 / 生成物：同步可选限额与目录类型及 registry 协商字段，保持读取历史任务；源码 TypeScript 与 121 项测试通过。未覆盖独立小程序工作树和微信副本。
+- [ ] 小程序原生 UI：合并其独立工作后再补命名连接、导入/导出、分层限额、来源及新思考控件；响应式 Web 验收不代替原生/实体手机验收。
+- [ ] 上线、生产后端能力协商与真实账户验证：本轮禁止推送/部署/付费探测/充值/微信发布，均未执行。v3.8.1 保持已发布状态。
+
 ## 2026-09-27 · Tuyan v3.8.1 Web / Core 正式上线
 
 - 用户追加授权“上线”；下方待发布/未授权描述保留为开发阶段时间线，以本条和[发布记录](docs/releases/2026-09-27-tuyan-v3.8.1.md)为当前状态。功能 PR #235 / `24ed37b`，Core/Gateway/Benchmark 运行来源及固定 digest 已核验。

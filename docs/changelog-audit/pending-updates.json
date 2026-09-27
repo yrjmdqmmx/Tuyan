@@ -1,7 +1,7 @@
 {
   "asOf": "2026-09-27",
   "tuyan": {
-    "id": "tuyan-next-universal-api-ux-phase1",
+    "id": "tuyan-next-universal-api-complete",
     "product": "tuyan",
     "version": null,
     "announcementDate": null,
@@ -9,20 +9,24 @@
       "status": "unreleased",
       "date": null,
       "surfaces": [
-        "Web"
+        "Web",
+        "Core",
+        "共享契约"
       ]
     },
-    "title": "通用 API 配置体验第一阶段",
-    "summary": "按连接、型号和实际能力渐进配置，保留 Universal Route v1。",
+    "title": "通用 API 配置、连接管理与思考参数",
+    "summary": "保留首阶段交互，补充可信目录来源、分层限额、无密钥连接配置与现有思考体系适配。",
     "baseline": "6b99a6f58e09b8e843c7442a9db177fc28f1f9ad",
     "branch": "codex/universal-api-ux-phase1",
     "surfaces": [
-      "Web"
+      "Web",
+      "Core",
+      "共享契约"
     ],
     "notes": [
       "下一版本号尚未确定。v3.8.1 仍为当前已发布版本。",
-      "仅 Web；未同步微信小程序原生界面。未生产部署、未执行真实模型调用。",
-      "无后端或共享契约变更；新增 ui 元数据只用于 Web 本地草稿，不进入 Universal Route v1 请求。"
+      "仅本地实现和模拟验证，未推送、未生产部署、未真实模型调用、未微信发布。",
+      "后端可选扩展保持 Route v1，共享生成物已同步；小程序原生 UI 沿用 SYNC 欠项。"
     ],
     "changes": [
       {
@@ -48,6 +52,21 @@
       {
         "kind": "优化",
         "text": "Web 将参考图识别模型统一称为视觉模型，覆盖设置、通用 API 表单、任务记录和使用指南；角色标识与历史配置保持不变。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "优化",
+        "text": "可信目录保留有界元数据及来源；服务方未知限额、平台硬上限和用户限制分开展示与执行。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "优化",
+        "text": "提供命名连接独立副本和无密钥配置文件预览导入/导出，三角色及凭据保持隔离。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "优化",
+        "text": "通用 API 复用现有思考规则、请求映射与任务快照；精确身份绑定、默认省略、错误组合发送前拦截。",
         "state": "local-verified"
       }
     ]

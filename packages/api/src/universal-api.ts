@@ -1,4 +1,5 @@
 /** Versioned, user-declared BYOK contract. No model-name or vendor-name inference. */
+export const UNIVERSAL_TEXT_OUTPUT_TOKENS = 4096
 export const UNIVERSAL_PROTOCOLS = ['openai-chat', 'openai-responses', 'openai-images', 'anthropic-messages', 'gemini-generate-content', 'gemini-interactions', 'dashscope-multimodal'] as const
 export type UniversalProtocol = typeof UNIVERSAL_PROTOCOLS[number]
 export type UniversalAuth = 'bearer' | 'x-api-key' | 'x-goog-api-key'
@@ -61,10 +62,20 @@ export interface UniversalCatalogStrategy {
 }
 export interface UniversalOutputLimits { maxBytes: number; maxDimension: number; maxPixels: number; mimeTypes: string[] }
 export interface UniversalOutputSize { resolution: string; aspectRatio: string; value: string }
+export interface UniversalLimitLayer { input?: Partial<UniversalInputLimits>; output?: Partial<UniversalOutputLimits> }
+export interface UniversalLimitPolicy {
+  version: 1; service: UniversalLimitLayer; user: UniversalLimitLayer
+}
+export interface UniversalCatalogMetadata {
+  version: 1
+  source: { kind: 'official-api' | 'verified-service'; provider: string; baseUrl: string; protocol: string; auth: string; modelId: string; fetchedAt: string; checkedAt: string; url: string }
+  facts: { imageInput?: boolean; textOutput?: boolean; imageOutput?: boolean; thinking?: boolean; inputTokenLimit?: number; contextWindowTokens?: number; outputTokenLimit?: number; supportedParameters?: string[]; generationMethods?: string[]; reasoningEfforts?: string[]; thinkingModes?: string[]; reasoningMandatory?: boolean; reasoningBudget?: boolean }
+}
 export interface UniversalCustomConfig {
   version: 1; connectionId: string; protocol: UniversalProtocol; baseUrl: string; auth: UniversalAuth
   compatibility?: 'standard' | 'openrouter-image' | 'ark-images'
   capabilities: { text: boolean; vision: boolean; imageGeneration: boolean; imageEditing: boolean }
+  limitPolicy?: UniversalLimitPolicy
   inputLimits: UniversalInputLimits; outputLimits: UniversalOutputLimits; outputSizes?: UniversalOutputSize[]
 }
 export interface UniversalRoute { accessProvider: 'custom'; modelId: string; custom: UniversalCustomConfig }
@@ -129,6 +140,85 @@ function universalMimes(value: unknown): string[] {
   if (!Array.isArray(value) || !value.length || value.some(x => !universalMimeTypes.includes(x)) || new Set(value).size !== value.length) throw new UniversalApiError('CONFIG_INVALID')
   return [...value]
 }
+/** Missing service facts remain unknown. v1 values migrate to user ceilings, never to vendor evidence. */
+export function normalizeUniversalLimitPolicy(value: unknown): UniversalLimitPolicy {
+  if (!universalRecord(value) || value.version !== 1) throw new UniversalApiError('CONFIG_INVALID')
+  const layer = (raw: unknown): UniversalLimitLayer => {
+    if (!universalRecord(raw)) throw new UniversalApiError('CONFIG_INVALID')
+    const result: UniversalLimitLayer = {}
+    for (const scope of ['input', 'output'] as const) {
+      if (raw[scope] === undefined) continue
+      if (!universalRecord(raw[scope])) throw new UniversalApiError('CONFIG_INVALID')
+      const allowed = scope === 'input' ? ['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes'] : ['maxBytes','maxDimension','maxPixels','mimeTypes']
+      const fields: any = {}
+      for (const key of Object.keys(raw[scope])) {
+        if (!allowed.includes(key)) throw new UniversalApiError('CONFIG_INVALID')
+        const v = raw[scope][key]
+        if (v === null || v === undefined) continue
+        if (key === 'mimeTypes') fields[key] = universalMimes(v)
+        else { if (!Number.isSafeInteger(v) || v < (key === 'maxCount' ? 0 : 1) || v > Number.MAX_SAFE_INTEGER) throw new UniversalApiError('CONFIG_INVALID'); fields[key] = v }
+      }
+      result[scope] = fields
+    }
+    return result
+  }
+  return {version:1, service:layer(value.service), user:layer(value.user)}
+}
+export function migrateUniversalLimitPolicy(c: Pick<UniversalCustomConfig, 'inputLimits' | 'outputLimits' | 'limitPolicy'>): UniversalLimitPolicy {
+  return c.limitPolicy ? normalizeUniversalLimitPolicy(c.limitPolicy) : normalizeUniversalLimitPolicy({version:1,service:{},user:{input:c.inputLimits,output:c.outputLimits}})
+}
+export function effectiveUniversalLimits(policy: UniversalLimitPolicy) {
+  const p = normalizeUniversalLimitPolicy(policy)
+  const effective = (scope: 'input' | 'output') => {
+    const hard: Record<string, any> = scope === 'input' ? {...UNIVERSAL_PLATFORM_LIMITS,mimeTypes:universalMimeTypes} : {maxBytes:UNIVERSAL_PLATFORM_LIMITS.maxBytes,maxDimension:UNIVERSAL_PLATFORM_LIMITS.maxDimension,maxPixels:UNIVERSAL_PLATFORM_LIMITS.maxPixels,mimeTypes:universalMimeTypes}
+    for (const [key, cap] of Object.entries(hard)) {
+      const a = (p.service[scope] as any)?.[key], b = (p.user[scope] as any)?.[key]
+      hard[key] = key === 'mimeTypes' ? cap.filter((x: string) => (!a || a.includes(x)) && (!b || b.includes(x))) : Math.min(cap, a ?? cap, b ?? cap)
+      if (key === 'mimeTypes' && !hard[key].length) throw new UniversalApiError('CONFIG_INVALID')
+    }
+    return hard
+  }
+  return {inputLimits:effective('input') as UniversalInputLimits, outputLimits:effective('output') as UniversalOutputLimits}
+}
+/** Only known endpoint/auth/protocol combinations can contribute catalog metadata. */
+export function universalMetadataSource(connection: UniversalConnection) {
+  const c = normalizeUniversalConnection(connection)
+  const matches: [string,string,string,string,string[]][] = [
+    ['anthropic','https://api.anthropic.com/v1','x-api-key','https://platform.claude.com/docs/en/api/models/list',['anthropic-messages']],
+    ['gemini','https://generativelanguage.googleapis.com/v1beta','x-goog-api-key','https://ai.google.dev/api/models',['gemini-generate-content','gemini-interactions']],
+    ['openrouter','https://openrouter.ai/api/v1','bearer','https://openrouter.ai/docs/api/api-reference/models/list-all-models-and-their-properties',['openai-chat']],
+  ]
+  const match = matches.find(([,base,auth,,protocols]) => c.baseUrl === base && c.auth === auth && protocols.includes(c.protocol))
+  return match ? {provider:match[0],kind:match[0] === 'openrouter' ? 'verified-service' as const : 'official-api' as const,url:match[3]} : undefined
+}
+export function parseUniversalCatalogMetadata(row: any, connection: UniversalConnection, modelId: string, fetchedAt: string): {metadata?: UniversalCatalogMetadata; invalid: boolean} {
+  connection = normalizeUniversalConnection(connection)
+  const source = universalMetadataSource(connection)
+  if (!source) return {invalid:false}
+  const facts: UniversalCatalogMetadata['facts'] = {}; let invalid = false
+  const boolean = (key: 'imageInput'|'textOutput'|'imageOutput'|'thinking'|'reasoningMandatory'|'reasoningBudget', value: unknown) => {if (value == null) return; if (typeof value === 'boolean') facts[key] = value; else invalid = true}
+  const number = (key: 'inputTokenLimit'|'contextWindowTokens'|'outputTokenLimit', value: unknown) => {if (value == null) return; if (Number.isSafeInteger(value) && (value as number) > 0 && (value as number) <= 100000000) facts[key] = value as number; else invalid = true}
+  const strings = (value: unknown): string[] | undefined => {if (value == null) return; if (Array.isArray(value) && value.length <= 64 && value.every(x => universalString(x,80))) return [...new Set(value)]; invalid = true}
+  for (const key of (source.provider === 'anthropic' ? ['capabilities'] : source.provider === 'openrouter' ? ['architecture','top_provider','reasoning'] : [])) if (row[key] != null && !universalRecord(row[key])) invalid = true
+  if (source.provider === 'anthropic') {
+    boolean('imageInput',row.capabilities?.image_input?.supported); boolean('thinking',row.capabilities?.thinking?.supported)
+    if (universalRecord(row.capabilities?.thinking?.types)) { const modes=['adaptive','enabled'].filter(k=>row.capabilities.thinking.types[k]?.supported === true); if(modes.length)facts.thinkingModes=modes }
+    if (universalRecord(row.capabilities?.effort)) { const efforts=['low','medium','high','xhigh','max'].filter(k=>row.capabilities.effort[k]?.supported === true); if(efforts.length)facts.reasoningEfforts=efforts }
+    number('inputTokenLimit',row.max_input_tokens); number('outputTokenLimit',row.max_tokens)
+  } else if (source.provider === 'gemini') {
+    number('inputTokenLimit',row.inputTokenLimit); number('outputTokenLimit',row.outputTokenLimit); boolean('thinking',row.thinking)
+    const methods = strings(row.supportedGenerationMethods); if (methods) facts.generationMethods = methods.filter(x => ['generateContent','countTokens','predict','embedContent','batchEmbedContents'].includes(x))
+  } else {
+    const input = strings(row.architecture?.input_modalities), output = strings(row.architecture?.output_modalities)
+    if (input) facts.imageInput = input.includes('image')
+    if (output) {facts.textOutput = output.includes('text'); facts.imageOutput = output.includes('image')}
+    number('contextWindowTokens',row.context_length); number('outputTokenLimit',row.top_provider?.max_completion_tokens)
+    const efforts = strings(row.reasoning?.supported_efforts); if(efforts)facts.reasoningEfforts=efforts.filter(x=>['none','minimal','low','medium','high','xhigh','max'].includes(x))
+    boolean('reasoningMandatory',row.reasoning?.mandatory); boolean('reasoningBudget',row.reasoning?.supports_max_tokens)
+    const params = strings(row.supported_parameters); if (params) facts.supportedParameters = params.filter(x=>['reasoning','reasoning_effort','max_tokens','max_completion_tokens'].includes(x))
+  }
+  return {invalid, ...(Object.keys(facts).length ? {metadata:{version:1 as const,source:{...source,baseUrl:connection.baseUrl,protocol:connection.protocol,auth:connection.auth,modelId,fetchedAt,checkedAt:'2026-09-27'},facts}} : {})}
+}
 export function normalizeUniversalRoute(value: unknown): UniversalRoute {
   if (!universalRecord(value) || value.accessProvider !== 'custom' || !universalString(value.modelId) || /(?:^|\/)\.\.?(?:\/|$)|\\/.test(value.modelId) || !universalRecord(value.custom)) throw new UniversalApiError('CONFIG_INVALID')
   const c = value.custom
@@ -145,7 +235,9 @@ export function normalizeUniversalRoute(value: unknown): UniversalRoute {
   const textOnly = c.protocol === 'anthropic-messages' || c.protocol === 'openai-responses' || c.protocol === 'openai-chat' && compatibility !== 'openrouter-image'
   if (textOnly && (capabilities.imageGeneration || capabilities.imageEditing) || c.protocol === 'openai-images' && (capabilities.text || capabilities.vision)) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
   if (!universalRecord(c.inputLimits) || !universalRecord(c.outputLimits)) throw new UniversalApiError('CONFIG_INVALID')
-  const i = c.inputLimits, o = c.outputLimits, caps = UNIVERSAL_PLATFORM_LIMITS
+  const limitPolicy = c.limitPolicy === undefined ? undefined : normalizeUniversalLimitPolicy(c.limitPolicy)
+  const effective = limitPolicy ? effectiveUniversalLimits(limitPolicy) : c
+  const i = effective.inputLimits, o = effective.outputLimits, caps = UNIVERSAL_PLATFORM_LIMITS
   const inputLimits: UniversalInputLimits = {
     maxCount: universalPositive(i.maxCount, caps.maxCount, true), maxBytes: universalPositive(i.maxBytes, caps.maxBytes), maxTotalBytes: universalPositive(i.maxTotalBytes, caps.maxTotalBytes),
     maxDimension: universalPositive(i.maxDimension, caps.maxDimension), maxPixels: universalPositive(i.maxPixels, caps.maxPixels), requestMaxBytes: universalPositive(i.requestMaxBytes, caps.requestMaxBytes), mimeTypes: universalMimes(i.mimeTypes),
@@ -164,7 +256,7 @@ export function normalizeUniversalRoute(value: unknown): UniversalRoute {
     if (new Set(outputSizes!.map(x => `${x.resolution}|${x.aspectRatio}`)).size !== outputSizes!.length) throw new UniversalApiError('CONFIG_INVALID')
   }
   if ((capabilities.imageGeneration || capabilities.imageEditing) && !outputSizes?.length) throw new UniversalApiError('CONFIG_INVALID')
-  return { accessProvider: 'custom', modelId: value.modelId, custom: { version: 1, connectionId: c.connectionId, protocol: c.protocol, baseUrl: normalizeUniversalBaseUrl(c.baseUrl, c.protocol), auth, compatibility, capabilities, inputLimits, outputLimits, ...(outputSizes ? { outputSizes } : {}) } }
+  return { accessProvider: 'custom', modelId: value.modelId, custom: { version: 1, connectionId: c.connectionId, protocol: c.protocol, baseUrl: normalizeUniversalBaseUrl(c.baseUrl, c.protocol), auth, compatibility, capabilities, inputLimits, outputLimits, ...(limitPolicy ? {limitPolicy} : {}), ...(outputSizes ? { outputSizes } : {}) } }
 }
 /** Credential envelopes are request-only; never persist them with task records. */
 export function universalCredential(routeValue: unknown, serializedCustomKeys: unknown): string {

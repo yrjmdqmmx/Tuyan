@@ -1,11 +1,12 @@
-import { thinkingProfile, validateThinkingOptions } from './thinking'
+import { selectionThinkingProfile, universalThinkingIdentity, sameThinkingConnection, validateThinkingOptions } from './thinking'
 
 export const THINKING_STORAGE_KEY = 'tuyan.thinking.v1'
 export const THINKING_ROLES = ['main', 'vision', 'image']
-const selectionKey = (role, value) => JSON.stringify([role,value.provider,value.modelId,value.protocol,value.region || ''])
+const selectionKey = (role, value) => JSON.stringify([role,value.provider,value.modelId,value.protocol,value.region || '',...(value.connection?[value.connection]:[])])
 export function thinkingIdentities(routes, entries, regions) {
   return Object.fromEntries(THINKING_ROLES.map(role => {
     const route = routes[role], entry = entries[role]
+    if (route.accessProvider === 'custom' && route.custom) { try { return [role, universalThinkingIdentity(route)] } catch { /* Incomplete drafts remain editable. */ } }
     const protocol = route.accessProvider === 'custom' ? route.custom?.protocol || 'unconfirmed'
       : entry?.roleProtocols?.[role] || (route.accessProvider === 'openrouter' ? role === 'image' ? 'openrouter-images' : 'openrouter-chat-completions' : entry?.protocol || 'unconfirmed')
     return [role, { provider: route.accessProvider, modelId: route.modelId, protocol, ...(route.accessProvider === 'minimax' ? {region: regions?.minimax || 'global'} : {}) }]
@@ -14,7 +15,7 @@ export function thinkingIdentities(routes, entries, regions) {
 export function reconcileThinkingSettings(saved, identities) {
   return {version: 1, roles: Object.fromEntries(THINKING_ROLES.map(role => {
     const identity = identities[role], previous = saved?.version === 1 ? saved.savedSelections?.[selectionKey(role,identity)] || saved.roles?.[role] : undefined
-    const same = previous && ['provider','modelId','protocol','region'].every(key => previous[key] === identity[key])
+    const same = previous && ['provider','modelId','protocol','region'].every(key => previous[key] === identity[key]) && sameThinkingConnection(previous?.connection, identity.connection)
     return [role, {...identity, options: same && previous.options && typeof previous.options === 'object' && !Array.isArray(previous.options) ? previous.options : {}}]
   }))}
 }
@@ -33,7 +34,7 @@ export function saveThinkingSettings(value, storage = globalThis.localStorage) {
   try { storage.setItem(THINKING_STORAGE_KEY, JSON.stringify(value)) } catch { /* Storage can be unavailable in private browsing. */ }
 }
 export function roleThinkingProfile(role, selection) {
-  return thinkingProfile(selection.provider, selection.modelId, role, selection.protocol, selection.region)
+  return selectionThinkingProfile(selection, role)
 }
 export function buildThinkingSubmission(settings, registry, roles, operation) {
   const hasSettings = Object.values(settings.roles).some(selection => Object.keys(selection.options).length)
@@ -43,9 +44,10 @@ export function buildThinkingSubmission(settings, registry, roles, operation) {
   }
   const selected = Object.fromEntries(roles.map(role => {
     const selection = settings.roles[role], profile = roleThinkingProfile(role, selection)
+    if (selection.provider === 'custom' && Object.keys(selection.options).length && !(Number(registry?.universalThinkingVersion) >= 1)) throw new Error('当前后端尚未支持通用 API 思考参数，草稿已保留；请升级后端或恢复服务商默认。')
     validateThinkingOptions(profile, selection.options)
     if (role === 'image' && operation === 'editing' && Object.keys(selection.options).length && !profile?.operations?.includes('editing')) throw new Error('此图片接口只在纯文生图时支持思考设置，精修请使用默认。')
-    return [role, selection]
+    return [role, selection.provider === 'custom' && !(Number(registry?.universalThinkingVersion) >= 1) ? {...selection, connection:undefined} : selection]
   }))
   return {thinkingConfig: {version: 1, roles: selected}}
 }

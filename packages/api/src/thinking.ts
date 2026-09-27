@@ -1,4 +1,5 @@
 import type { ThinkingOptions, ThinkingSelection, ThinkingConfiguration, ThinkingSnapshotRole, ThinkingSnapshot } from '../../types/src/thinking.js'
+import { UNIVERSAL_TEXT_OUTPUT_TOKENS, normalizeUniversalBaseUrl, type UniversalRoute } from './universal-api.js'
 import { THINKING_PROFILES } from './thinking-data.js'
 
 const thinkingRoles = ['main', 'vision', 'image'] as const
@@ -8,6 +9,29 @@ function thinkingError(message: string): never {
 }
 export function thinkingProfile(provider: string, modelId: string, role: string, protocol: string, region?: string): any {
   return THINKING_PROFILES.find((p: any) => p.provider === provider && p.modelIds.includes(modelId) && p.roles.includes(role) && p.protocols.includes(protocol) && (!p.regions || p.regions.includes(region || 'global')))
+}
+/** A custom route may reuse an audited parameter contract only at its exact service boundary. */
+export function universalThinkingIdentity(route: UniversalRoute) {
+  const c = route.custom
+  return { provider: 'custom', modelId: route.modelId, protocol: c.protocol,
+    connection: { baseUrl: normalizeUniversalBaseUrl(c.baseUrl, c.protocol), auth: c.auth, compatibility: c.compatibility || 'standard' } }
+}
+export function selectionThinkingProfile(selection: Omit<ThinkingSelection, 'options'>, role: string): any {
+  if (selection.provider !== 'custom') return thinkingProfile(selection.provider, selection.modelId, role, selection.protocol, selection.region)
+  const c = selection.connection
+  if (!c || selection.region) return undefined
+  let provider = '', protocol = selection.protocol, model = selection.modelId
+  if (c.baseUrl === 'https://api.openai.com/v1' && c.auth === 'bearer' && c.compatibility === 'standard' && ['openai-chat','openai-responses','openai-images'].includes(protocol)) {
+    provider = 'openai'; if (protocol === 'openai-chat') protocol = 'openai-chat-completions'
+  } else if (c.baseUrl === 'https://api.anthropic.com/v1' && c.auth === 'x-api-key' && c.compatibility === 'standard' && protocol === 'anthropic-messages') provider = 'anthropic'
+  else if (c.baseUrl === 'https://generativelanguage.googleapis.com/v1beta' && c.auth === 'x-goog-api-key' && c.compatibility === 'standard' && ['gemini-generate-content','gemini-interactions'].includes(protocol)) { provider = 'gemini'; model = model.replace(/^models\//, '') }
+  else if (c.baseUrl === 'https://openrouter.ai/api/v1' && c.auth === 'bearer' && protocol === 'openai-chat' && c.compatibility === (role === 'image' ? 'openrouter-image' : 'standard')) { provider = 'openrouter'; protocol = role === 'image' ? 'openrouter-images' : 'openrouter-chat-completions' }
+  else if ((/^https:\/\/(?:dashscope(?:-intl)?\.aliyuncs\.com|[a-z0-9][a-z0-9-]{0,62}\.(?:cn-beijing|ap-southeast-1)\.maas\.aliyuncs\.com)\/api\/v1$/.test(c.baseUrl)) && c.auth === 'bearer' && c.compatibility === 'standard' && protocol === 'dashscope-multimodal') { provider = 'bailian'; protocol = 'bailian-multimodal-generation' }
+  const profile = provider ? thinkingProfile(provider, model, role, protocol) : undefined
+  return profile && provider === 'anthropic' ? {...profile, controls:profile.controls.map((control: any) => control.key === 'budget' ? {...control,max:Math.min(control.max,UNIVERSAL_TEXT_OUTPUT_TOKENS-1)} : control)} : profile
+}
+export function sameThinkingConnection(a: ThinkingSelection['connection'], b: ThinkingSelection['connection']): boolean {
+  return a === undefined && b === undefined || Boolean(a && b && Object.keys(a).length === 3 && ['baseUrl','auth','compatibility'].every(key => (a as any)[key] === (b as any)[key]))
 }
 export function validateThinkingOptions(profile: any, value: unknown): ThinkingOptions {
   if (!ownRecord(value) || Object.keys(value).length > 8) thinkingError('思考设置必须是有效的参数对象。')
@@ -56,7 +80,7 @@ function deleteThinkingPath(body: any, path: string) {
 }
 function getThinkingPath(body: any, path: string) { return thinkingPath(path).reduce((value, key) => value?.[key], body) }
 export function compileThinkingSelection(selection: ThinkingSelection, role: 'main' | 'vision' | 'image'): ThinkingSnapshotRole {
-  const profile = thinkingProfile(selection.provider, selection.modelId, role, selection.protocol, selection.region)
+  const profile = selectionThinkingProfile(selection, role)
   const options = validateThinkingOptions(profile, selection.options)
   const wire: Record<string, unknown> = {}
   for (const control of profile?.controls || []) if (options[control.key] !== undefined) {
@@ -67,7 +91,7 @@ export function compileThinkingSelection(selection: ThinkingSelection, role: 'ma
   const mode = options.mode ?? profile?.controls.find((c: any) => c.key === 'mode')?.default
   const effort = options.effort ?? profile?.controls.find((c: any) => c.key === 'effort')?.default
   const thinkingOn = !['disabled', 'none', 'off', false].includes(mode as any) && !(profile?.disabledEffortValues || ['none','off']).includes(effort)
-  return { ...selection, options, role, profileId: profile?.id || 'unconfirmed', checkedAt: profile?.checkedAt || '2026-09-22', wire,
+  return { ...selection, options, role, profileId: profile?.id || 'unconfirmed', checkedAt: profile?.checkedAt || '2026-09-22', wire, sourceUrls: profile?.sourceUrls,
     clearFields: [...new Set<string>([...(profile?.clearFields || []), ...(profile?.controls || []).map((c: any) => c.field)])],
     dropSampling: Boolean(profile?.dropSamplingAlways || profile?.dropSamplingWhenThinking && thinkingOn || profile?.dropSamplingOnProviderDefault && !Object.keys(options).length),
     samplingFields: profile?.samplingFields, operations: profile?.operations,
@@ -82,9 +106,10 @@ export function normalizeThinkingConfiguration(input: unknown, identities: Recor
   if (!ownRecord(input) || input.version !== 1 || !ownRecord(input.roles) || Object.keys(input).some(k => !['version', 'roles'].includes(k))) thinkingError('思考设置版本或格式不受支持。')
   const roles: ThinkingConfiguration['roles'] = {}, snapshots: ThinkingSnapshot['roles'] = {}
   for (const [role, raw] of Object.entries(input.roles)) {
-    if (!thinkingRoles.includes(role as any) || !ownRecord(raw) || Object.keys(raw).some(k => !['provider', 'modelId', 'protocol', 'region', 'options'].includes(k))) thinkingError('思考设置角色或字段无效。')
+    if (!thinkingRoles.includes(role as any) || !ownRecord(raw) || Object.keys(raw).some(k => !['provider', 'modelId', 'protocol', 'region', 'connection', 'options'].includes(k))) thinkingError('思考设置角色或字段无效。')
     const expected = identities[role]
     if (!expected || ['provider', 'modelId', 'protocol', 'region'].some(key => (raw[key] || '') !== ((expected as any)[key] || ''))) thinkingError('思考参数不属于当前渠道、型号、协议或地区，请重新选择。')
+    if (!(raw.connection === undefined && ownRecord(raw.options) && !Object.keys(raw.options).length) && !sameThinkingConnection(raw.connection, expected.connection)) thinkingError('思考参数不属于当前连接地址、认证或兼容模式，请重新选择。')
     const selection = { ...expected, options: raw.options } as ThinkingSelection
     const snapshot = compileThinkingSelection(selection, role as any)
     roles[role as keyof typeof roles] = { ...selection, options: snapshot.options }

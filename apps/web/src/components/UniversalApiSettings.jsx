@@ -2,9 +2,10 @@ import { useAppLocale } from './BenchmarkLocale.jsx'
 import {useEffect, useRef, useState} from 'react'
 import {Check, Copy, Download, Loader2, Search, ShieldCheck} from 'lucide-react'
 import {universalApiCheckRequest} from '@paperbanana/api'
-import {UNIVERSAL_PROTOCOL_OPTIONS, universalDraftRoute, universalDraftConnection, universalDraftFeedback, updateUniversalDraft, universalKeyEnvelope, universalCheckErrorMessage, validateUniversalCatalogResult} from '../lib/universalApi.js'
+import {catalogMetadataForDraft, catalogCapabilityPatch, UNIVERSAL_PROTOCOL_OPTIONS, universalDraftRoute, universalDraftConnection, universalDraftFeedback, updateUniversalDraft, universalKeyEnvelope, universalCheckErrorMessage, validateUniversalCatalogResult} from '../lib/universalApi.js'
 import {resolveUniversalCatalogStrategy} from '../lib/universalContract.js'
 import {CONNECTION_TEMPLATES, connectionTemplate, templatePatch, protocolPatch, restoreProtocolPatch, catalogState, catalogRecovery} from '../lib/universalPresentation.js'
+import UniversalConnections from './UniversalConnections.jsx'
 import UniversalCapabilities from './UniversalCapabilities.jsx'
 
 const roles = {main:['主模型','规划与文字推理'], vision:['视觉模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
@@ -27,7 +28,7 @@ function ConnectionOptions({draft, label, onChange}) {
   </details>
 }
 
-export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStatus, onOpenLogin, renderThinkingSettings,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
+export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStatus, onOpenLogin, renderThinkingSettings,thinking,onImportThinking,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
   const { t } = useAppLocale()
   const [label,description] = roles[role].map(text => t(text)), c = draft.custom
   const root=useRef(null), connectionDetails=useRef(null), capabilityDetails=useRef(null)
@@ -87,11 +88,13 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
     } finally {if(isCurrent())setPending(null)}
   }
   const matches = visibleCatalog?.models.filter(({id})=>id.toLowerCase().includes(query.trim().toLowerCase()))||[]
+  const selectedMetadata=catalogMetadataForDraft(visibleCatalog?.models.find(row=>row.id===draft.modelId)?.metadata,draft)
   const selectedMissing = draft.modelId && visibleCatalog && !visibleCatalog.error && !visibleCatalog.models.some(({id})=>id===draft.modelId)
   const recoveries = visibleCatalog ? visibleCatalog.state==='catalog-empty'?['manual']:visibleCatalog.error||visibleCatalog.state!=='catalog-visible'?visibleCatalog.recovery||['manual']:[] : !strategy.supported?['catalog','manual']:[]
   return <fieldset ref={root} className="universal-role" aria-label={t(label)}>
     <legend>{t(label)}</legend>
     <div className="universal-role-heading"><p>{t(description)}</p></div>
+    <UniversalConnections role={role} label={label} draft={draft} thinking={thinking} onImportThinking={onImportThinking} onChange={change}/>
     <label className="field"><span>{t('连接模板')}</span><select aria-label={`${label} 连接模板`} value={template?.id||'custom'} onChange={e=>{const next=CONNECTION_TEMPLATES.find(x=>x.id===e.target.value);if(next){change(templatePatch(next,role));setConnectionOpen(false)}else{setConnectionOpen(true);change({ui:{baseUrlSource:'user',connectionMode:'custom'}})}}}>
       {CONNECTION_TEMPLATES.filter(x=>role!=='image'||!['anthropic','openrouter'].includes(x.id)).map(x=><option key={x.id} value={x.id}>{t(x.label)}</option>)}<option value="custom">{t('完全自定义 / 兼容服务')}</option>
     </select><small>{t('模板只填写连接参数，不决定型号能力。切换模板会替换连接参数；绑定变化时清除本角色 Key。')}</small></label>
@@ -123,6 +126,8 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
       </div>
     </div>}
     <label className="field"><span>{t("准确模型 ID ")}<small>{t("支持手动填写")}</small></span><input aria-label={t("{v0} 模型 ID", {v0: label})} data-universal-field="manual" value={draft.modelId} autoComplete="off" spellCheck={false} onFocus={()=>setEditing(true)} onBlur={()=>{setEditing(false);setFeedbackReady(true)}} onChange={e=>change({modelId:e.target.value})} placeholder={t("从目录选择，或粘贴服务提供的准确 ID")}/></label>
+    {selectedMetadata&&<section className="universal-status neutral" aria-label={`${label} 目录能力来源`}><p>来源：{selectedMetadata.source.kind==='official-api'?'精确官方接口':'已核验服务渠道'} · {selectedMetadata.source.provider} · {selectedMetadata.source.fetchedAt.slice(0,10)}</p><p>{Object.entries(selectedMetadata.facts).map(([k,v])=>`${{imageInput:'图片输入',textOutput:'文字输出',imageOutput:'图片输出',thinking:'思考能力（非参数契约）',inputTokenLimit:'输入 token 上限',contextWindowTokens:'上下文窗口 token',outputTokenLimit:'输出 token',supportedParameters:'参数名称',generationMethods:'生成方法',reasoningEfforts:'目录思考强度',thinkingModes:'目录思考模式',reasoningMandatory:'固定思考',reasoningBudget:'预算参数'}[k]}：${Array.isArray(v)?v.join('、'):typeof v==='boolean'?v?'支持':'不支持':v}`).join('；')}</p><p>未返回的字段保持未知；图片输入不等于编辑，token 长度不是图片数量/大小。目录可见不证明账号权益。已有审计或手动声明保持原样，下方操作才采用目录明确返回的能力。</p><div className="universal-recovery"><a className="universal-doc-link" href={selectedMetadata.source.url} target="_blank" rel="noopener noreferrer">目录字段官方说明</a><button type="button" className="universal-button" onClick={()=>change(catalogCapabilityPatch(selectedMetadata,draft))}>采用目录已知能力到当前角色并复核</button></div></section>}
+    {draft.evidence&&<p className="universal-hint">已保留能力来源线索：{draft.evidence.source.provider} · {draft.evidence.source.fetchedAt?.slice(0,10)}。{draft.evidence.review==='imported'?'导入声明待复核，不能作为官方认证。':'由你主动采用；修改后以当前手动声明为准。'}图片限额与编辑能力仍需单独核对。</p>}
     {renderThinkingSettings?.(role)}
     {!draft.modelId.trim()?<p className="universal-hint">{t(feedback.message)}</p>:<p className={`universal-status ${feedback.tone}`} style={{visibility:feedbackReady&&!editing?'visible':'hidden'}} aria-hidden={!feedbackReady||editing} role={feedbackReady&&!editing?(feedback.tone==='error'?'alert':'status'):undefined}>{t(feedback.message)}</p>}
     <details className="universal-details" ref={capabilityDetails}><summary>{t('能力与限额')}</summary><UniversalCapabilities draft={draft} role={role} label={label} onChange={change}/></details>
@@ -140,7 +145,7 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
   </fieldset>
 }
 
-export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, savedStatus, onOpenLogin, renderThinkingSettings,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
+export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, savedStatus, onOpenLogin, renderThinkingSettings,thinkingSettings,onImportThinking,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
   const { t } = useAppLocale()
   const [saved,setSaved]=useState('')
   const canCopyKey=Boolean(keys.main?.apiKey?.trim())&&['protocol','baseUrl','auth'].every(k=>keys.main[k]===drafts.main.custom[k])
@@ -148,7 +153,7 @@ export default function UniversalApiSettings({selectedRoles = Object.keys(roles)
     {!compact && <p className="universal-intro">{t("接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。")}</p>}
     {!contractSupported&&<p className="universal-status error" role="alert">{t("当前后端暂不支持通用 API，配置已保留，请稍后重试。")}</p>}
     {!compact && <details className="universal-privacy"><summary><ShieldCheck size={15}/>{t("密钥与验证说明")}</summary><p>{t("密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。")}</p><p>{t("配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。")}</p></details>}
-    {selectedRoles.map(role=><UniversalRole canCopyKey={canCopyKey} savedStatus={savedStatus} onOpenLogin={onOpenLogin} canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={includeKey=>onCopy(role,'main',includeKey)} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
+    {selectedRoles.map(role=><UniversalRole canCopyKey={canCopyKey} savedStatus={savedStatus} onOpenLogin={onOpenLogin} canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} thinking={thinkingSettings?.roles?.[role]} onImportThinking={onImportThinking} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={includeKey=>onCopy(role,'main',includeKey)} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
     {!compact && <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存到此浏览器（不含密钥）")}</button>}{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}
   </section>
 }

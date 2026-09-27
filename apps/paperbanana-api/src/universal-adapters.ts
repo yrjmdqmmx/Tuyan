@@ -1,17 +1,19 @@
 import sharp from 'sharp'
+import { applyThinkingSnapshot, sameThinkingConnection, universalThinkingIdentity } from '../../../packages/api/src/thinking.js'
+import type { ThinkingSnapshotRole } from '../../../packages/types/src/thinking.js'
 import { randomBytes } from 'node:crypto'
-import { normalizeUniversalRoute, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, UniversalApiError, universalModelEntry, type UniversalConnection, type UniversalCatalogFormat, type UniversalRoute, type UniversalInputLimits, type UniversalOutputLimits } from '../../../packages/api/src/universal-api.js'
+import { UNIVERSAL_TEXT_OUTPUT_TOKENS, parseUniversalCatalogMetadata, type UniversalCatalogMetadata, normalizeUniversalRoute, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, UniversalApiError, universalModelEntry, type UniversalConnection, type UniversalCatalogFormat, type UniversalRoute, type UniversalInputLimits, type UniversalOutputLimits } from '../../../packages/api/src/universal-api.js'
 import { createUniversalTransport, type UniversalTransport, type UniversalTransportOptions, type UniversalTransportRequest } from './universal-transport.js'
 
 export interface UniversalInputImage { data?: Uint8Array | string; base64?: string; mimeType: string; width?: number; height?: number }
-export interface UniversalTextInput { systemPrompt?: string; prompt: string; images?: UniversalInputImage[]; temperature?: number; maxTokens?: number; signal?: AbortSignal }
-export interface UniversalImageInput { prompt: string; sourceImages?: UniversalInputImage[]; aspectRatio: string; imageSize: string; signal?: AbortSignal }
+export interface UniversalTextInput { systemPrompt?: string; prompt: string; images?: UniversalInputImage[]; temperature?: number; maxTokens?: number; signal?: AbortSignal; thinking?: ThinkingSnapshotRole }
+export interface UniversalImageInput { prompt: string; sourceImages?: UniversalInputImage[]; aspectRatio: string; imageSize: string; signal?: AbortSignal; thinking?: ThinkingSnapshotRole }
 interface UniversalImageBytes { base64: string; mimeType: string; bytes: Uint8Array }
 export interface UniversalRuntimeOptions extends UniversalTransportOptions { transport?: UniversalTransport }
 export interface UniversalCatalogResult {
   state: 'catalog-visible' | 'catalog-partial' | 'catalog-empty' | 'catalog-invalid' | 'unsupported'
   verified: false; inferenceVerified: false; fetchedAt: string; complete: boolean; truncated: boolean
-  selectedModelVisible: boolean | null; models: { id: string }[]; warnings: { row: number; code: string }[]; message: string
+  selectedModelVisible: boolean | null; models: { id: string; metadata?: UniversalCatalogMetadata }[]; warnings: { row: number; code: string }[]; message: string
   error?: ReturnType<UniversalApiError['toJSON']>
 }
 export const UNIVERSAL_CATALOG_LIMITS = { maxPages: 10, maxRows: 10000, pageSize: 1000, maxPageBytes: 4 * 1024 * 1024, maxTotalBytes: 16 * 1024 * 1024, timeoutMs: 30000 } as const
@@ -103,7 +105,7 @@ function universalTextRequest(route: UniversalRoute, key: string, input: Univers
   if (system !== undefined && typeof system !== 'string') throw new UniversalApiError('CONFIG_INVALID')
   if (protocol === 'openai-chat') return universalJson(route, key, 'chat/completions', { model, stream: false, messages: [...(system ? [{ role: 'system', content: system }] : []), { role: 'user', content: [{ type: 'text', text: input.prompt }, ...universalParts(images, 'chat')] }], ...(maxTokens ? { max_completion_tokens: maxTokens } : {}) }, input.signal)
   if (protocol === 'openai-responses') return universalJson(route, key, 'responses', { model, stream: false, store: false, ...(system ? { instructions: system } : {}), input: [{ role: 'user', content: [{ type: 'input_text', text: input.prompt }, ...universalParts(images, 'responses')] }], ...(maxTokens ? { max_output_tokens: maxTokens } : {}) }, input.signal)
-  if (protocol === 'anthropic-messages') return universalJson(route, key, 'messages', { model, stream: false, ...(system ? { system } : {}), max_tokens: maxTokens || 4096, messages: [{ role: 'user', content: [...universalParts(images, 'anthropic'), { type: 'text', text: input.prompt }] }] }, input.signal)
+  if (protocol === 'anthropic-messages') return universalJson(route, key, 'messages', { model, stream: false, ...(system ? { system } : {}), max_tokens: maxTokens || UNIVERSAL_TEXT_OUTPUT_TOKENS, messages: [{ role: 'user', content: [...universalParts(images, 'anthropic'), { type: 'text', text: input.prompt }] }] }, input.signal)
   if (protocol === 'gemini-generate-content') return universalJson(route, key, ':generateContent', { ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}), contents: [{ role: 'user', parts: [{ text: input.prompt }, ...universalParts(images, 'gemini')] }], ...(maxTokens ? { generationConfig: { maxOutputTokens: maxTokens } } : {}) }, input.signal)
   if (protocol === 'gemini-interactions') return universalJson(route, key, 'interactions', { model, store: false, stream: false, ...(system ? { system_instruction: system } : {}), input: [{ type: 'text', text: input.prompt }, ...universalParts(images, 'interactions')], ...(maxTokens ? { generation_config: { max_output_tokens: maxTokens } } : {}) }, input.signal)
   if (protocol === 'dashscope-multimodal') return universalJson(route, key, 'services/aigc/multimodal-generation/generation', { model, input: { messages: [...(system ? [{ role: 'system', content: [{ text: system }] }] : []), { role: 'user', content: [...universalParts(images, 'dashscope'), { text: input.prompt }] }] }, parameters: { ...(maxTokens ? { max_tokens: maxTokens } : {}) } }, input.signal)
@@ -230,7 +232,7 @@ function universalImageDescriptor(route: UniversalRoute, data: any): { base64?: 
   return universalInvalidResponse()
 }
 /** Isolate malformed catalog rows; directory visibility never grants model capabilities. */
-export function universalCatalogRows(data: unknown, protocol: UniversalRoute['custom']['protocol'], format: Exclude<UniversalCatalogFormat, 'auto' | 'none'> = protocol.startsWith('gemini-') ? 'gemini' : 'openai'): Pick<UniversalCatalogResult, 'models' | 'warnings'> {
+export function universalCatalogRows(data: unknown, protocol: UniversalRoute['custom']['protocol'], format: Exclude<UniversalCatalogFormat, 'auto' | 'none'> = protocol.startsWith('gemini-') ? 'gemini' : 'openai', connection?: UniversalConnection, fetchedAt = new Date().toISOString()): Pick<UniversalCatalogResult, 'models' | 'warnings'> {
   if (!universalObject(data)) throw new UniversalApiError('CATALOG_RESPONSE_INVALID', 'not_sent', 502)
   const raw = format === 'gemini' ? (data as any).models : (data as any).data
   if (!Array.isArray(raw) || raw.length > UNIVERSAL_CATALOG_LIMITS.maxRows) throw new UniversalApiError('CATALOG_RESPONSE_INVALID', 'not_sent', 502)
@@ -250,7 +252,24 @@ export function universalCatalogRows(data: unknown, protocol: UniversalRoute['cu
     if (Array.isArray(value.supported_protocols) && !value.supported_protocols.some((p: string) => matchingProtocols[protocol].includes(p))) { warnings.push({ row, code: 'protocol_mismatch' }); return }
     candidates.push({ id, row })
   })
-  return { models: candidates.filter(row => { if (counts.get(row.id)! > 1) { warnings.push({ row: row.row, code: 'id_duplicate' }); return false } return true }).map(({ id }) => ({ id })), warnings }
+  return { models: candidates.filter(row => { if (counts.get(row.id)! > 1) { warnings.push({ row: row.row, code: 'id_duplicate' }); return false } return true }).map(({ id, row }) => {
+    const parsed = connection ? parseUniversalCatalogMetadata(raw[row], connection, id, fetchedAt) : {invalid:false,metadata:undefined}
+    if (parsed.invalid) warnings.push({row,code:'metadata_invalid'})
+    return {id,...(parsed.metadata ? {metadata:parsed.metadata} : {})}
+  }), warnings }
+}
+/** Snapshot is server-compiled and persisted with the task; never supplied as client wire fields. */
+function universalThinkingRequest(request: UniversalTransportRequest, route: UniversalRoute, thinking?: ThinkingSnapshotRole) {
+  if (!thinking || !thinking.connection && !Object.keys(thinking.options).length) return request
+  const identity = universalThinkingIdentity(route)
+  if (thinking.provider !== 'custom' || thinking.modelId !== route.modelId || thinking.protocol !== route.custom.protocol || !sameThinkingConnection(thinking.connection, identity.connection)) throw new UniversalApiError('CONFIG_INVALID')
+  if (typeof request.body !== 'string' || request.headers?.['Content-Type'] !== 'application/json') {
+    if (Object.keys(thinking.options).length) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
+    return request
+  }
+  const body = JSON.stringify(applyThinkingSnapshot(JSON.parse(request.body), thinking))
+  if (Buffer.byteLength(body) > route.custom.inputLimits.requestMaxBytes) throw new UniversalApiError('INPUT_LIMIT')
+  return { ...request, body }
 }
 export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
   const transport = options.transport || createUniversalTransport(options)
@@ -279,7 +298,7 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       universalPrompt(input.prompt)
       if (!route.custom.capabilities.text || input.images?.length && !route.custom.capabilities.vision) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
       const images = await universalImages(input.images, route)
-      const request = universalTextRequest(route, key, input, images)
+      const request = universalThinkingRequest(universalTextRequest(route, key, input, images), route, input.thinking)
       return universalParseText(route, await send(request))
     },
     async image(value: unknown, key: string, input: UniversalImageInput): Promise<{ base64: string; mimeType: string }> {
@@ -287,7 +306,7 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       universalPrompt(input.prompt)
       if (input.sourceImages?.length ? !route.custom.capabilities.imageEditing : !route.custom.capabilities.imageGeneration) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
       const images = await universalImages(input.sourceImages, route)
-      const data = await send(universalImageRequest(route, key, input, images))
+      const data = await send(universalThinkingRequest(universalImageRequest(route, key, input, images), route, input.thinking))
       const descriptor = universalImageDescriptor(route, data), limits = route.custom.outputLimits
       let bytes: Uint8Array, mimeType = descriptor.mimeType
       if (descriptor.base64) bytes = universalBase64(descriptor.base64, limits.maxBytes, true)
@@ -369,7 +388,7 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
         }
       }
       if (truncated) paginationWarnings.push({ row: -1, code: 'catalog_truncated' })
-      const rows = universalCatalogRows(format === 'gemini' ? { models: raw } : { data: raw }, connection.protocol, format)
+      const rows = universalCatalogRows(format === 'gemini' ? { models: raw } : { data: raw }, connection.protocol, format, connection, base.fetchedAt)
       rows.warnings.push(...paginationWarnings)
       const selectedModelVisible = selected ? rows.models.some(model => model.id === selected) : null
       const state = rows.models.length ? !complete || rows.warnings.length ? 'catalog-partial' : 'catalog-visible' : raw.length ? 'catalog-invalid' : complete ? 'catalog-empty' : 'catalog-partial'
