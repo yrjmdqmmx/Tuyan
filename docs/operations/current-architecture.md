@@ -41,7 +41,7 @@ Compose 项目名 `paperbanana-hk`，业务 API/Core/Mongo/Worker 不暴露公�
 
 Mongo 数据、备份、secret 与控制文件位于 `/opt/paperbanana`，不随 checkout 替换。Mongo 单成员副本集支持事务，但不具备多节点高可用。OSS 为 `oss-cn-hongkong`：服务端 `oss-cn-hongkong-internal.aliyuncs.com`，客户端签名 `oss-cn-hongkong.aliyuncs.com`，两者不能混用。实时 readiness 的 Mongo、私有 OSS 检查均 ready；本轮没有上传/删除生产对象。
 
-现网 Core/Benchmark 的代码版本为 `9a52aa7414c72a02fcaf285dbb020dbdc68c6c20`。本地 v3.8.1 与本次退役清理均未发布，不应由源码推断现网已更新。
+2026-09-27 经用户授权，Core、Gateway 与完整 Benchmark 镜像已部署 `24ed37b45c25d35581d92dfb412f412ebd5a3db0`，五个容器健康、运行来源与镜像 digest 核验一致。Mongo/Plot 镜像保持不变，Benchmark 执行器关闭；见[发布记录](../releases/2026-09-27-tuyan-v3.8.1.md)。
 
 ## 出口与部署
 
@@ -55,7 +55,7 @@ Sealos / Sealaf 已退役，没有平台回退路径。恢复仅在当前架构�
 
 - 健康、出口、DirectMail 出站规则刷新（五分钟）和每日 Mongo 备份 timers 启用。2026-09-27 03:24 的备份失败已在用户追加授权后修复：Tailscale 丢弃 OSS 内网 CGNAT 回包，按准确 DNS IP 临时豁免已建立 HTTPS 回包后上传恢复；归档/校验文件完整回读一致、对象 AES256 加密、规则清理均核验。备份脚本安装于 checkout 外 `/opt/paperbanana/operations/backup`；本地完成文件只在两次上传成功后公开。详见[修复证据](2026-09-27-backup-benchmark-repair.md)。
 - 已按追加授权从现网监控中移除退役平台代理探针；备份修复后监控恢复健康。其他检查仍覆盖 API/readiness、容器、Mongo、任务、备份时效、TLS 和 Nginx 5xx。
-- 现网 SG ACL **尚无 `api.novita.ai`**。本地 v3.8.1 已增加，正式启用 Novita 前须单独批准同步出口并做无付费连通验收。
-- 现网仍有健康响应 `laf` 别名和 `PAPERBANANA_STRICT_OBJECT_STORAGE=true`。本次源码已删除别名与可切换的存储降级开关，正式更新时需同步网关/Core/监控，清理安装环境中无效的旧开关。生产严格存储行为保持。
+- 用户授权上线后，SG ACL 已仅增加 `api.novita.ai`，Squid 配置校验/reload/active 通过。HK 经 SG 查询公开模型目录为 CONNECT 200 / HTTP 200，未批准域名仍 CONNECT 403；没有推理请求，连通不代表账户权限。
+- 生产健康响应已移除 `laf` 别名；Compose 的 `PAPERBANANA_STRICT_OBJECT_STORAGE` 和网关不再读取的 `ADMIN_TOKEN` 已清理。Core 内部业务 admin 凭据保留，生产严格存储行为保持；其余凭据文件指纹未变。
 - 微信控制台合法域名、已发客户端版本、提供商账户权限和账单未在本轮重新登录核实；本地测试不代表真实调用或微信发布。
 - 未查询旧云平台账户的资源/计费清单；也未改变其资源。无法据此声称已停止所有历史账单，后续资源销毁需要单独授权。

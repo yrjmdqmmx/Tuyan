@@ -2,9 +2,131 @@
   "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-09-23"
+    "through": "2026-09-27"
   },
   "entries": [
+    {
+      "id": "v3-8-1",
+      "version": "3.8.1",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-09-27",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "专业模式渠道与模型配置升级",
+      "summary": "通用 API 融入专业模式，三角色独立搭配渠道并在模型弹框中配置；新增百灵、LongCat 2.5 识图与 Novita Ming 生图。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [
+        "可选能力受协议、地区及账号权限限制；目录与代码已适配，新增渠道的真实模型调用尚未验证。"
+      ],
+      "changes": [
+        {
+          "kind": "优化",
+          "text": "保留普通与专业两种模式，将通用 API 放入主模型、识图和生图的渠道列表，支持与其他渠道独立组合。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "通用 API 固定排在渠道列表首位；首次使用仍默认观猹 TokenDance，已有用户恢复历史选择。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "在模型选择弹框内编辑协议、地址、密钥和型号，获取模型或手动填写 ID；外层设置只保留摘要和编辑入口。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "区分尚未获取、获取失败与没有适用模型；切换渠道和关闭弹框保留各角色草稿，沿用密钥保存规则。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增蚂蚁百灵文本与视觉型号，并将 LongCat-2.5-Preview 接入现有识图流程，保留历史型号和默认配置。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增独立 Novita 渠道的 Ming 文生图，使用单独账号与密钥，并按接口校验尺寸、格式和能力限制。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-code",
+            "v381-core",
+            "v381-web"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "v381-code",
+          "kind": "pull-request",
+          "label": "专业模式与渠道接入实现",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/235"
+        },
+        {
+          "id": "v381-core",
+          "kind": "deployment",
+          "label": "专业渠道配套服务发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296312499"
+        },
+        {
+          "id": "v381-web",
+          "kind": "deployment",
+          "label": "专业渠道 Web 发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296552975"
+        }
+      ],
+      "legacyAnchors": [],
+      "product": "tuyan"
+    },
     {
       "id": "v3-8-0",
       "version": "3.8.0",

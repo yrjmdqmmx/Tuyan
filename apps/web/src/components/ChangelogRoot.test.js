@@ -24,10 +24,10 @@ test('first load selects the overview and shows every public update in date grou
   assert.deepEqual(nav.getAllByRole('link').map(link => link.textContent), ['更新日志', '图研工作台', 'Tuyan Benchmark', 'OpenAcad', '生态事件'])
   assert.equal(nav.getByRole('link', { name: '更新日志', exact: true }).getAttribute('aria-current'), 'page')
   const overview = screen.getByRole('region', { name: '更新日志', exact: true })
-  assert.equal(within(overview).getAllByRole('article').length, 26)
+  assert.equal(within(overview).getAllByRole('article').length, 27)
   assert.equal(document.querySelectorAll('[id="date-2026-09-07"]').length, 1)
   assert.equal(within(screen.getByRole('region', { name: '2026-09-07' })).getAllByRole('article').length, 5)
-  assert.equal(overview.querySelector('time').dateTime, '2026-09-22')
+  assert.equal(overview.querySelector('time').dateTime, '2026-09-27')
   assert.ok(screen.getByRole('heading', { name: 'Tuyan v3.7.1' }))
   assert.ok(screen.getByRole('heading', { name: 'Tuyan Benchmark v2.5' }))
   assert.ok(screen.getByRole('heading', { name: 'OpenAcad v1.1.0' }))
@@ -46,7 +46,7 @@ test('first load selects the overview and shows every public update in date grou
 test('category selection shows only that category, updates selection and returns to the overview', async () => {
   render(React.createElement(ChangelogPage))
   const nav = within(screen.getByRole('navigation', { name: '更新分类' }))
-  for (const [label, count] of [['图研工作台', 13], ['Tuyan Benchmark', 5], ['OpenAcad', 4], ['生态事件', 4], ['更新日志', 26]]) {
+  for (const [label, count] of [['图研工作台', 14], ['Tuyan Benchmark', 5], ['OpenAcad', 4], ['生态事件', 4], ['更新日志', 27]]) {
     fireEvent.click(nav.getByRole('link', { name: label, exact: true }))
     await waitFor(() => assert.equal(nav.getByRole('link', { name: label, exact: true }).getAttribute('aria-current'), 'page'))
     assert.equal(nav.getAllByRole('link').filter(link => link.hasAttribute('aria-current')).length, 1)
