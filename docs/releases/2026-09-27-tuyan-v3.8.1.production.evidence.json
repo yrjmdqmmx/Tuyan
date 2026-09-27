@@ -1,0 +1,414 @@
+{
+  "version": "3.8.1",
+  "status": "released",
+  "releaseDate": "2026-09-27",
+  "observedAt": "2026-09-27",
+  "scope": [
+    "Web",
+    "Core",
+    "Gateway",
+    "Benchmark runtime image",
+    "SG Novita ACL"
+  ],
+  "featureCommit": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+  "sources": {
+    "implementation": "https://github.com/yrjmdqmmx/Tuyan/pull/235",
+    "ci": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296026381",
+    "coreImage": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296046373",
+    "gatewayImage": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296048645",
+    "benchmarkImage": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296050898",
+    "hkDeployment": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296312499",
+    "featureWebDeployment": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296552975"
+  },
+  "containers": {
+    "paperbanana-api": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:375f01bfae3993f4374d4b0772f04461bd6329b7a23067ce19506f0d8af7c3cd",
+      "imageId": "sha256:375f01bfae3993f4374d4b0772f04461bd6329b7a23067ce19506f0d8af7c3cd",
+      "health": "healthy",
+      "revision": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "codeSha": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "benchEnabled": null,
+      "provenance": {
+        "codeSha": "24ed37b45c25d35581d92dfb412f412ebd5a3db0"
+      }
+    },
+    "benchmark-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:2d18c5de4ce263ac1e7dbf1e6f7f8e6ef71df7e3dcbe48357d9e9b3b1726c327",
+      "imageId": "sha256:2d18c5de4ce263ac1e7dbf1e6f7f8e6ef71df7e3dcbe48357d9e9b3b1726c327",
+      "health": "healthy",
+      "revision": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "codeSha": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "benchEnabled": "false",
+      "provenance": {
+        "codeSha": "24ed37b45c25d35581d92dfb412f412ebd5a3db0"
+      }
+    },
+    "auth-gateway": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:97803f67dca036490f4571c485c8fe5714839710feddfd024bf5fdc98a29f0fb",
+      "imageId": "sha256:97803f67dca036490f4571c485c8fe5714839710feddfd024bf5fdc98a29f0fb",
+      "health": "healthy",
+      "revision": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "plot-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "health": "healthy",
+      "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "mongodb": {
+      "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "health": "healthy",
+      "revision": null,
+      "codeSha": null,
+      "benchEnabled": null
+    }
+  },
+  "flags": {
+    "recoveryEncryptionConfigured": true,
+    "maintenance": false
+  },
+  "health": {
+    "code": 0,
+    "ok": true,
+    "runtime": "gateway",
+    "auth": "better-auth",
+    "authReady": true,
+    "backend": {
+      "mode": "node",
+      "ok": true,
+      "checkedAt": "2026-09-27T05:12:55.749Z",
+      "status": 200,
+      "ready": true,
+      "dependencies": {
+        "mongodb": "ready",
+        "oss": "ready",
+        "providerEgress": "ready",
+        "benchmark": "ready"
+      }
+    },
+    "dependencies": {
+      "auth": {
+        "ok": true,
+        "checkedAt": "2026-09-27T05:12:55.731Z"
+      },
+      "backend": {
+        "mode": "node",
+        "ok": true,
+        "checkedAt": "2026-09-27T05:12:55.749Z",
+        "status": 200,
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      }
+    }
+  },
+  "ready": {
+    "code": 0,
+    "ok": true,
+    "runtime": "gateway",
+    "auth": "better-auth",
+    "authReady": true,
+    "backend": {
+      "ok": true,
+      "status": 200,
+      "data": {
+        "ok": true,
+        "service": "paperbanana-api",
+        "runtime": "node",
+        "version": "0.1.0",
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      }
+    },
+    "dependencies": {
+      "auth": {
+        "ok": true
+      },
+      "backend": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      }
+    }
+  },
+  "registryValidation": {
+    "version": "2026-09-27.v27",
+    "thinkingContractVersion": 1,
+    "counts": {
+      "deepseek": 4,
+      "kimi": 4,
+      "zhipu": 28,
+      "siliconflow": 66,
+      "anthropic": 12,
+      "recraft": 16,
+      "xai": 12,
+      "gemini": 15,
+      "bailian": 178,
+      "openai": 68,
+      "ark": 32,
+      "bfl": 12,
+      "stability": 6,
+      "ideogram": 13,
+      "minimax": 10,
+      "mistral": 16,
+      "together": 48,
+      "fireworks": 23,
+      "fal": 42,
+      "replicate": 97,
+      "tokendance": 64,
+      "runware": 138,
+      "tokenhub": 41,
+      "xiaomi": 4,
+      "sensenova": 7,
+      "stepfun": 7,
+      "qianfan": 36,
+      "iflytek": 32,
+      "longcat": 2,
+      "antling": 6,
+      "novita": 1
+    },
+    "preservedUnavailable": [
+      "deepseek-v4-flash-vision-exp",
+      "deepseek-chat-v3-0324"
+    ],
+    "total": 1040,
+    "diffs": []
+  },
+  "benchmarkImageSmoke": {
+    "ok": true,
+    "arch": "x64",
+    "uid": 1000,
+    "codeSha": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+    "calibrationSnapshots": "passed",
+    "coreImageRuntimeImport": "passed",
+    "resvgWasm": "passed",
+    "pngAndWebp": "passed",
+    "providerCalls": 0
+  },
+  "browserFeatureAcceptance": {
+    "checks": [
+      "All three roles retain fresh TokenDance default; custom API sorts first.",
+      "Ant Ling main, LongCat 2.5 vision and Novita Ming image are independently selectable.",
+      "Modal config, 390/320px layout, draft restoration, mixed roles and non-secret persistence verified."
+    ],
+    "actions": [
+      "modelRegistry",
+      "referenceLibrary",
+      "modelRegistry",
+      "referenceLibrary",
+      "benchmarkLeaderboard"
+    ],
+    "blocked": [],
+    "pageErrors": [],
+    "consoleErrors": [],
+    "httpErrors": []
+  },
+  "pagesFeatureArtifactValidation": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "751f50e60d01cf3f5a230307851c753f0ea70b0c6048541757f5e4629ec04521",
+      "matches": true
+    },
+    {
+      "path": "leaderboard/index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "4c719db6a0afc6ddefdb68cb5a9316d15904751ea3ac2cd437763553a4f0ec0c",
+      "matches": true
+    },
+    {
+      "path": "changelog/index.html",
+      "status": 200,
+      "bytes": 615,
+      "sha256": "e95c3e369c9f85afcff3fbdc3bc6165ed8bf16e3485e39798c34616e88e5412e",
+      "matches": true
+    },
+    {
+      "path": "assets/not-found-K_dFyY8s.js",
+      "status": 200,
+      "bytes": 489,
+      "sha256": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+      "matches": true
+    },
+    {
+      "path": "assets/AccountSettingsDialog-BABX2SXs.js",
+      "status": 200,
+      "bytes": 5779,
+      "sha256": "f3392db548823d4f63cd668fe3d1887d5576884940559f9e17562570025e26bf",
+      "matches": true
+    },
+    {
+      "path": "assets/ReferenceLibraryPanel-DfK4-PON.js",
+      "status": 200,
+      "bytes": 85966,
+      "sha256": "af9523dbd67641ed81833fad91dd50a14d80cfab2d52d35f3f356250dfcb43e7",
+      "matches": true
+    },
+    {
+      "path": "assets/jszip.min-CZG4Z723.js",
+      "status": 200,
+      "bytes": 97144,
+      "sha256": "d39702db0f5e7b72a47f1ffbd8bb9b4cca202aee73edab7621f5ab1f2c6e4376",
+      "matches": true
+    },
+    {
+      "path": "assets/main-CGY0hZOV.css",
+      "status": 200,
+      "bytes": 235249,
+      "sha256": "13da75e683ead6e132870ab92ae6bdf1d8fa87d7067094e9615f9b9a58db6a32",
+      "matches": true
+    },
+    {
+      "path": "assets/RefinePanel-B-azmutM.js",
+      "status": 200,
+      "bytes": 13159,
+      "sha256": "689989c59299f714086a89211ca59af19153c9c072e1fedda03ed9fe53c3bd2b",
+      "matches": true
+    },
+    {
+      "path": "assets/AdminWorkspace-UnTBnhQx.js",
+      "status": 200,
+      "bytes": 40658,
+      "sha256": "a373d49d04db79bee6902f55d31c16b6a63284d50ed508ca83d44d07681ba731",
+      "matches": true
+    },
+    {
+      "path": "assets/ChangelogRoot-CTkcllo8.js",
+      "status": 200,
+      "bytes": 56530,
+      "sha256": "58a32a9da278748dc8c1fb31dbe206cb41c9cede9c7b7106c312afb13ec2ed5c",
+      "matches": true
+    },
+    {
+      "path": "assets/trash-2-BGZEkSR8.js",
+      "status": 200,
+      "bytes": 357,
+      "sha256": "6ba4ea9f5fabea7fa51f4f377d81c355066c5ec2e2791534b067d18241670d69",
+      "matches": true
+    },
+    {
+      "path": "assets/appPaths-Ba0fLi8f.js",
+      "status": 200,
+      "bytes": 1473,
+      "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+      "matches": true
+    },
+    {
+      "path": "assets/upload-iR1kdqGa.js",
+      "status": 200,
+      "bytes": 257,
+      "sha256": "1f90e9178f4a4d1f608650d91ab28128802fd635c9b61410e01528c120183d20",
+      "matches": true
+    },
+    {
+      "path": "assets/main-Cz6kKlJa.js",
+      "status": 200,
+      "bytes": 3871769,
+      "sha256": "c535cfba3024bcf6336911a711af82a779983f11c7724de1fea06f28edb03cc3",
+      "matches": true
+    }
+  ],
+  "leaderboard": {
+    "releaseId": "bench-scientific-v2-release-8e6619b57c6979d9c568",
+    "releaseHash": "8e6619b57c6979d9c5687893afa64fa40a81b5976f49d1466506d3b4a9ddd2fc",
+    "eligibleModelCount": 46,
+    "sampleCount": 406
+  },
+  "gatewayEnvCleanup": {
+    "removedKey": "ADMIN_TOKEN",
+    "otherLinesUnchanged": true,
+    "coreInternalAdminPreserved": true,
+    "otherSecretFilesUnchanged": true
+  },
+  "sgAcl": {
+    "addedHosts": [
+      "api.novita.ai"
+    ],
+    "configurationParse": "passed",
+    "serviceReload": "passed",
+    "serviceActive": true,
+    "novitaUnauthenticatedModels": {
+      "connect": 200,
+      "http": 200
+    },
+    "unapprovedDomainConnect": 403,
+    "beforeSha256": "fdfd01f282eabfa37bdc5679213d6520a213c24b536e2fbd0b7d7575797e538b",
+    "afterSha256": "b907ccf844cfd5491c15cfd192a1262cafaa102a24ec9cd7a371359d106044b6"
+  },
+  "backup": {
+    "timerActive": true,
+    "serviceResult": "success",
+    "exitCode": 0,
+    "lastSuccessfulAt": "2026-09-27T12:10:56+08:00",
+    "installedScriptsMatchRelease": true,
+    "nextDailyRunObserved": false,
+    "restoreDrillPerformed": false
+  },
+  "localReleaseRecordChecks": {
+    "webTests": 532,
+    "webFailures": 0,
+    "webBuild": "passed",
+    "diffCheck": "passed"
+  },
+  "notPerformed": [
+    "Paid model or Judge inference",
+    "Account entitlement and billing validation",
+    "Production login/email round trip",
+    "Production generation/recovery task",
+    "Benchmark execution or rerun",
+    "Top-up",
+    "WeChat upload/review/publication",
+    "Cloud resource deletion",
+    "Production database restoration"
+  ],
+  "screenshots": [
+    {
+      "file": "features-custom-desktop.png",
+      "sha256": "637704d2835068b9559527f490cb818ca9ed88c10403ab04b54ee6df714646e4"
+    },
+    {
+      "file": "features-custom-mobile-320.png",
+      "sha256": "f3e3ac55d0c84a746bc2d90150a5e032182206c6a5b5f6bb339e7b52a80d18fa"
+    },
+    {
+      "file": "features-custom-mobile-390.png",
+      "sha256": "8b677e4865f30b0d901860a709693d4e0b9064188b508650bb435e6305a24a45"
+    },
+    {
+      "file": "features-leaderboard.png",
+      "sha256": "7828349113e490ce277b579dd6d6904525d68bb9076c1ee7c6156dd4d2169232"
+    },
+    {
+      "file": "features-mixed-roles.png",
+      "sha256": "6e11ec9442ee0a6fb718c7cdfa87884f02e41b1b07b85255b8d990356b7d0111"
+    }
+  ]
+}

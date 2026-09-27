@@ -161,5 +161,17 @@
   "模型详情展示合计和逐题费用，区分实际账单、历史估算和未调用；帕累托比较分别标注官方定价与已核对测试费用，缺少可比较成本的型号仍保留在排名视图。": "Show total and per-case costs in model details, distinguishing actual bills, historical estimates and uncalled cases. Pareto comparisons label official prices and reconciled test costs separately; models without comparable costs remain in the ranking view.",
   "排行榜、模型详情与方法说明支持中英文切换，统一研发方名称、搜索和筛选。": "Switch the leaderboard, model details and methodology between Chinese and English, with consistent developer names, search and filters.",
   "包含 2026-09-20–21 日已上线的帕累托与双语更新；版本原发布日期为 2026-09-17。": "Includes Pareto and bilingual updates published on September 20–21, 2026; the original release date remains September 17, 2026.",
-  "帕累托视图发布": "Pareto view deployment"
+  "帕累托视图发布": "Pareto view deployment",
+  "专业模式渠道与模型配置升级": "Professional channels and model picker configuration",
+  "通用 API 融入专业模式，三角色独立搭配渠道并在模型弹框中配置；新增百灵、LongCat 2.5 识图与 Novita Ming 生图。": "Custom APIs now live in professional mode, with independent channels and in-dialog configuration for each role. Adds Ant Ling, LongCat 2.5 vision and Novita Ming image generation.",
+  "可选能力受协议、地区及账号权限限制；目录与代码已适配，新增渠道的真实模型调用尚未验证。": "Available capabilities depend on the protocol, region and account. Catalog and code integration are complete; live inference through the new channels has not been verified.",
+  "保留普通与专业两种模式，将通用 API 放入主模型、识图和生图的渠道列表，支持与其他渠道独立组合。": "Keep normal and professional modes, and offer custom APIs in the main, vision and image channel lists so each role can use a different provider.",
+  "通用 API 固定排在渠道列表首位；首次使用仍默认观猹 TokenDance，已有用户恢复历史选择。": "Custom API appears first in each channel list. New users still default to Watcha TokenDance, while returning users retain their saved choices.",
+  "在模型选择弹框内编辑协议、地址、密钥和型号，获取模型或手动填写 ID；外层设置只保留摘要和编辑入口。": "Edit the protocol, endpoint, key and model inside the model picker. Fetch models or enter an ID manually; the settings panel shows a summary and edit entry.",
+  "区分尚未获取、获取失败与没有适用模型；切换渠道和关闭弹框保留各角色草稿，沿用密钥保存规则。": "Distinguish models not yet fetched, fetch failures and no matching models. Preserve role drafts when changing channels or closing the dialog, with existing key storage rules.",
+  "新增蚂蚁百灵文本与视觉型号，并将 LongCat-2.5-Preview 接入现有识图流程，保留历史型号和默认配置。": "Add Ant Ling text and vision models and LongCat-2.5-Preview to the existing vision workflow, while preserving historical models and defaults.",
+  "新增独立 Novita 渠道的 Ming 文生图，使用单独账号与密钥，并按接口校验尺寸、格式和能力限制。": "Add Ming text-to-image through the independent Novita channel, using separate credentials and API-specific size, format and capability validation.",
+  "专业模式与渠道接入实现": "Professional mode and channel integration",
+  "专业渠道配套服务发布": "Professional channel backend deployment",
+  "专业渠道 Web 发布": "Professional channel Web deployment"
 }
