@@ -20,7 +20,7 @@ function probeRoleLabel(role) {
 
 export default function ModelRoutingSettings({
   configurationMode,
-  renderUniversalSettings, renderThinkingSettings, renderRoutingPersistence,
+  renderUniversalSettings, universalSummaries, renderThinkingSettings, renderRoutingPersistence,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -100,9 +100,9 @@ export default function ModelRoutingSettings({
             {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route}
               outputFormat={role === 'image' && !executionRouteRoles.includes('image') ? '' : outputFormat}
               registry={modelRegistry} providerConfigs={providerConfigs} allowCustom
+              renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
               onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
               : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
-            {isAdvancedMode && route.accessProvider === 'custom' ? renderUniversalSettings?.(role) : null}
             {renderThinkingSettings?.(role)}
           </div>
         })}

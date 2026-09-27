@@ -5819,3 +5819,17 @@ html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }
 .routing-persistence { margin: 8px 0 18px; padding: 12px; border: 1px solid var(--hairline); border-radius: 10px; }
 .routing-persistence p { font-size: 12px; line-height: 1.65; color: var(--muted); }
 .universal-capabilities input:disabled + span { color: var(--muted); }
+
+/* Professional custom connections use the existing role picker, without an empty vendor rail. */
+.model-custom-editor { min-width: 0; min-height: 0; padding: 20px 24px; overflow-y: auto; overscroll-behavior: contain; }
+.model-custom-intro h3 { margin: 0 0 7px; color: var(--sage); }
+.model-custom-intro p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.model-custom-editor .universal-role { margin: 16px 0; }
+.model-custom-done { margin-bottom: 6px; }
+.model-picker-trigger .model-custom-summary { white-space: normal; overflow-wrap: anywhere; line-height: 1.6; }
+.universal-catalog-state { color: var(--sage); font-weight: 650; }
+@media (max-width: 1076px) {
+  .model-route-mobile-step .model-custom-editor { padding: 0; overflow: visible; }
+  .model-route-head h2 { font-size: 18px; }
+  .model-route-head button { flex-shrink: 0; }
+}

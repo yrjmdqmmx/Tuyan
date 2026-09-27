@@ -9,7 +9,7 @@ import PageNavigation from './components/PageNavigation';
 import GenerationSummaryDetails from './components/GenerationSummaryDetails';
 import useVisualViewport from './hooks/useVisualViewport';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
-import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
+import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
 import { uploadReferenceFiles } from './lib/referenceUpload';
 import { useTokenDance } from './hooks/useTokenDance';
@@ -1443,6 +1443,11 @@ export default function App() {
       <ModelRoutingSettings
         configurationMode={configurationMode}
         renderThinkingSettings={renderThinkingSettings}
+        universalSummaries={Object.fromEntries(Object.entries(universalDrafts).map(([role,draft]) => [role, [
+          UNIVERSAL_PROTOCOL_OPTIONS.find(([id]) => id === draft.custom.protocol)?.[1] || draft.custom.protocol,
+          universalDraftFeedback(draft,role).tone === 'success' ? '结构完整' : '待完善配置',
+          universalKeys[role]?.apiKey?.trim() ? '密钥已填写' : '未填写密钥',
+        ].join(' · ')]))}
         renderUniversalSettings={role => <UniversalApiSettings selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}

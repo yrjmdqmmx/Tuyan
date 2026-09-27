@@ -14,9 +14,8 @@ function ConnectionOptions({draft, label, onChange}) {
   const c = draft.custom
   const custom = patch => onChange({custom:patch})
   return <details className="universal-details">
-    <summary>{t("接入地址与兼容选项")}</summary>
+    <summary>{t("认证与兼容选项")}</summary>
     <div className="universal-detail-body">
-      <label className="field"><span>{t("Base URL（含版本，不含操作路径）")}</span><input aria-label={`${label} Base URL`} value={c.baseUrl} onChange={e=>custom({baseUrl:e.target.value})} spellCheck={false}/><small>{t("官方地址已预填。第三方服务请按文档填写，例如 https://example.com/v1，不含 /chat/completions 等操作路径。")}</small></label>
       {c.protocol==='dashscope-multimodal'&&<p className="universal-hint">{t("百炼新业务空间需填写对应地域的 Workspace 专属地址；默认值是旧版北京地址。")}</p>}
       <label className="field"><span>{t("认证方式")}</span><select aria-label={t("{v0} 认证方式", {v0: label})} value={c.auth} onChange={e=>custom({auth:e.target.value})}><option value="bearer">Authorization: Bearer</option><option value="x-api-key">x-api-key</option><option value="x-goog-api-key">x-goog-api-key</option></select></label>
       {['openai-chat','openai-images'].includes(c.protocol)&&<label className="field"><span>{t("调用兼容变体")}</span><select aria-label={t("{v0} 兼容变体", {v0: label})} value={c.compatibility} onChange={e=>custom({compatibility:e.target.value})}><option value="standard">{t("标准协议")}</option>{c.protocol==='openai-chat'?<option value="openrouter-image">{t("OpenRouter 图片输出扩展")}</option>:<option value="ark-images">{t("Ark JSON 图片输入")}</option>}</select></label>}
@@ -74,8 +73,10 @@ export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, 
     <legend>{t(label)}</legend>
     <div className="universal-role-heading"><p>{t(description)}</p>{role!=='main'&&canCopyMain&&<button type="button" className="universal-button universal-copy" onClick={()=>{setFeedbackReady(false);onCopy()}}><Copy size={14}/>{t("复制主模型接入与密钥")}</button>}</div>
     <label className="field"><span>{t("API 协议")}</span><select aria-label={t("{v0} API 协议", {v0: label})} value={c.protocol} onChange={e=>{const protocol=e.target.value;change({custom:{protocol,baseUrl:UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===protocol)[2],auth:universalDefaultAuth(protocol),compatibility:'standard',catalogFormat:'auto'}})}}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role === 'image' ? ['openai-responses','anthropic-messages'].includes(id) : id === 'openai-images'}>{name}</option>)}</select></label>
+    <label className="field"><span>{t("Base URL（含版本，不含操作路径）")}</span><input aria-label={`${label} Base URL`} value={c.baseUrl} onChange={e=>change({custom:{baseUrl:e.target.value}})} spellCheck={false}/><small>{t("官方地址已预填。第三方服务请按文档填写，例如 https://example.com/v1，不含 /chat/completions 等操作路径。")}</small></label>
     <label className="field"><span>API Key</span><input data-focus-setting="api-key" aria-label={`${label} API Key`} type="password" autoComplete="off" value={credential?.apiKey||''} onChange={e=>onKeyChange(e.target.value)}/></label>
     <ConnectionOptions draft={draft} label={t(label)} onChange={change}/>
+    <p className="universal-catalog-state" role="status">{t(busy === 'catalog' ? '正在获取模型…' : !visibleCatalog ? '尚未获取模型' : visibleCatalog.error || ['catalog-invalid','unsupported'].includes(visibleCatalog.state) ? '获取失败' : !visibleCatalog.models.length ? '没有适用模型：本次目录未返回可选 ID，仍可手动填写。' : '模型目录已获取')}</p>
     <div className="universal-catalog-toolbar"><button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported||!strategy.supported||!credential?.apiKey?.trim()} onClick={()=>check('catalog')}>{busy==='catalog'?<Loader2 className="universal-spinner" size={16}/>:<Download size={16}/>} {t(busy==='catalog'?'正在获取模型…':visibleCatalog&&!visibleCatalog.error?'重新获取模型':'获取模型')}</button><span>{t("只读目录 · 不触发生成")}</span></div>
     <p className="universal-hint">{t(!strategy.supported?t(strategy.message):!credential?.apiKey?.trim()?'填写当前服务的 API Key 后可获取模型，无需先填模型 ID。':strategy.message)}</p>
     {visibleCatalog&&<div className={`universal-status ${visibleCatalog.error?'error':visibleCatalog.warnings?.length?'warning':'neutral'}`} role={visibleCatalog.error?'alert':'status'}>
