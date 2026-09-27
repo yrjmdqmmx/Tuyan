@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const sourcePath = path.resolve(__dirname, '../paperbanana-api.ts');
+const sourcePath = path.resolve(__dirname, '../../runtime/handler.ts');
 const source = fs.readFileSync(sourcePath, 'utf8');
 
 const typeMatch = source.match(/type FeedbackPlatform = ([^\n]+)/);

@@ -20,8 +20,8 @@ happens. The boundary that actually contains the damage is, in order:
      anything sensitive. This is layer #1 of the boundary and lives in this
      file (run_render) + app.py (which deletes the token from os.environ at
      startup and keeps it only in a private module variable for auth).
-  2. CONTAINER NETWORK-EGRESS DENY. A Kubernetes NetworkPolicy
-     (networkpolicy.yaml) denies ALL egress from the pod. Even if escaped code
+  2. CONTAINER NETWORK-EGRESS DENY. The Compose internal bridge and project-scoped
+     DOCKER-USER firewall deny worker-initiated connections. Even if escaped code
      reaches a real socket, it cannot reach the internet or internal services,
      so it cannot phone home with whatever it scraped. See README.
   3. READ-ONLY ROOT FILESYSTEM + NON-ROOT UID + DROPPED CAPABILITIES, set at
@@ -368,7 +368,7 @@ def _child_render(code_text: str, result_q) -> None:
     """Runs in the CHILD process. Puts a dict on result_q and returns.
 
     Never raises out of the process: any failure is captured as an error
-    string so the caller (and the Laf critic loop) can revise the code.
+    string so the caller (and the Core critic loop) can revise the code.
     """
     try:
         _apply_resource_limits()
@@ -459,7 +459,7 @@ def run_render(code_text: str, timeout_s: int = WALL_CLOCK_TIMEOUT_S) -> Dict[st
     # Draining here lets the child finish its write and exit cleanly.
     #
     # We poll with short gets rather than one long blocking get so that a child
-    # killed early by a signal (RLIMIT_CPU SIGXCPU, RLIMIT_AS OOM, segfault)
+    # killed early by a signal (RLIMIT_CPU SIGXCPU, cgroup OOM, segfault)
     # is reported promptly instead of after the full wall-clock window. The
     # overall deadline still bounds sleep()/blocking code that RLIMIT_CPU can't
     # catch — that is the wall-clock backstop.
@@ -512,7 +512,7 @@ def run_render(code_text: str, timeout_s: int = WALL_CLOCK_TIMEOUT_S) -> Dict[st
         # a timeout. Treat as an empty render.
         return {"ok": False, "error": "render produced no result"}
     # Negative exitcode == killed by signal (e.g. SIGXCPU from RLIMIT_CPU, OOM
-    # from RLIMIT_AS, or a C-level segfault in numpy/matplotlib).
+    # from the container cgroup, or a C-level segfault in numpy/matplotlib).
     return {"ok": False, "error": f"render process exited abnormally (exitcode={proc.exitcode})"}
 
 

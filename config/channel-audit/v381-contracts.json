@@ -52,7 +52,10 @@
       "image/jpeg"
     ],
     "requestMaxBytes": 32000000,
-    "generateInputPolicy": false
+    "generateInputPolicy": false,
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "antling/Ling-3.0-flash": {
     "roles": [
@@ -107,7 +110,10 @@
     "requestSources": [
       "https://developer.ant-ling.com/zh-CN/docs/getting-started/quickstart/"
     ],
-    "outputBudgetNote": "max_tokens 字段由 Flash 官方 SDK 示例确认；8192 为图研输出预算，不是官方最大输出声明。"
+    "outputBudgetNote": "max_tokens 字段由 Flash 官方 SDK 示例确认；8192 为图研输出预算，不是官方最大输出声明。",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "antling/Ling-3.0-tiny": {
     "roles": [
@@ -146,7 +152,10 @@
         }
       },
       "x-constraints": []
-    }
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "antling/Ling-2.6-1T": {
     "roles": [
@@ -189,7 +198,10 @@
         }
       },
       "x-constraints": []
-    }
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "antling/Ling-2.6-flash": {
     "roles": [
@@ -232,7 +244,10 @@
         }
       },
       "x-constraints": []
-    }
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "antling/Ring-2.6-1T": {
     "roles": [
@@ -275,7 +290,10 @@
         }
       },
       "x-constraints": []
-    }
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "longcat/LongCat-2.5-Preview": {
     "roles": [
@@ -446,7 +464,10 @@
     "generateInputPolicy": false,
     "visionSource": "https://longcat.ai/platform/docs/zh/image-video-understanding",
     "visionWireEvidence": "Official visual-understanding page, present in VitePress page index but missing from current sidebar; exact request examples override generic content:string table and stale Cline guidance.",
-    "inputPolicyNotes": "3 images, 4MiB each, 4096 side, 8MP and 20MB encoded request are Tuyan caps, not provider maxima. GIF/video/remote-URL forwarding are not admitted in this product route."
+    "inputPolicyNotes": "3 images, 4MiB each, 4096 side, 8MP and 20MB encoded request are Tuyan caps, not provider maxima. GIF/video/remote-URL forwarding are not admitted in this product route.",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   },
   "novita/ming-image-0.1-design": {
     "roles": [
@@ -505,6 +526,9 @@
         }
       }
     },
-    "policyNotes": "Schema represents the admitted product subset. API also documents auto size, JPEG, URL response and optional watermark; n and enable_thinking are not documented."
+    "policyNotes": "Schema represents the admitted product subset. API also documents auto size, JPEG, URL response and optional watermark; n and enable_thinking are not documented.",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
   }
 }

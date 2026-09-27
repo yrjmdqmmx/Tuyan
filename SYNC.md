@@ -1,5 +1,20 @@
 # 平台同步日志 (Platform Sync Log)
 
+> 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
+
+## 2026-09-27 · 彻底退役旧云平台，迁移 Node 业务核心（本地待发布）
+
+- 以只读实机核查为准：香港 Debian 12 / 4 vCPU / 16 GB / Compose、Node 24 网关与 Core、自建 MongoDB、私有 OSS；新加坡 Ubuntu 24.04 / 2 vCPU / 4 GB / WireGuard + Squid。Sealos / Sealaf 不是运行、发布或回滚目标。见[架构](docs/operations/current-architecture.md)与[清理记录](docs/operations/2026-09-27-platform-retirement.md)。
+- [x] Core / 共享：原旧目录中的现役业务迁入 `apps/paperbanana-api/runtime/handler.ts`；直接绑定 Node Mongo/OSS 并导入共享协议模块，删除云函数 SDK 替身、动态依赖面板分支、无界准入和未配置网关放行。图片必须落 OSS、校验 HEAD、走内网有界读取；Plot 使用真正中止请求的超时。历史任务、data URL、模型 ID、恢复记录和客户端平台字段仍可读。
+- [x] 网关：仅接受 `PAPERBANANA_API_URL`；删除旧 URL/模式回退、旧 `laf` 健康别名、网关侧业务 admin token 和外部精修 URL 开关。健康明细使用 `backend` / `dependencies`；身份与任务 action 契约保持。
+- [x] Web / 共享 API：固定认证网关，取消旧云函数/FastAPI 自动探测与备用请求；保留普通/专业模式、通用 API 作为模型渠道的独立角色设置。
+- [x] 小程序源码：健康读取改为 `backend`；TS/JS 一致并本地构建/测试。未覆盖独立原生工作树和微信开发者工具副本，未微信发布。
+- [x] CI / 运维源码：移除旧发布 workflow、Kubernetes NetworkPolicy 和旧域名监控；Core/Benchmark Docker COPY、守卫测试、目录生成路径同步。源平台对象导出器删除；校验既有对象包的 OSS 恢复器移至 `deploy/hk-single-host/object-restore`。
+- [x] 文档：AGENTS/README/部署/监控/环境示例按现役架构重写；旧审计/迁移材料加历史标识及归档索引，不改写当时的发布哈希。
+- [ ] 完整 Benchmark runtime 镜像：代码构建阶段和测试通过，最终字体安装阶段被本机访问 Debian 软件源 HTTP 502 阻断；未放宽签名验证，正式发布前补跑。
+- [ ] 生产同步：本轮未部署、未修改环境/监控/网络或删除资源。现网旧健康别名/旧域名探测及过时环境项需另行批准同步；Novita 尚需安装 SG ACL。实机每日备份 OSS PutObject 连接超时仍待排障，不得因本地清理而宣称已恢复备份。
+- [ ] v3.8.1 继续待发布；真实模型调用、支付/充值、生产部署、微信发布均未执行。旧云账户资源与账单未查询，不能据此断言云资源已清空或费用已停止。
+
 ## 2026-09-27 · v3.8.1 视觉契约复核 / Novita Ming（v27，待发布）
 
 - 发现官网索引中未在侧栏显示的 [LongCat 视觉教程](https://longcat.ai/platform/docs/zh/image-video-understanding)，撤回“2.5 缺少识图契约”。目录/契约新增其 vision 角色，复用已有 `modelRoutes.vision` 与识图/评审/分析后重绘；LongCat 2.0 主默认保持，原来空的识图默认填入2.5。图研沿用3张/4MiB/8MP/20MB等更低额度，官方50张标明暂定。

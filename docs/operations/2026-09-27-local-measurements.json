@@ -1,0 +1,101 @@
+{
+  "baseline": {
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runs": [
+      {
+        "ms": 169.63887499999998,
+        "rss": 148881408
+      },
+      {
+        "ms": 142.36195800000002,
+        "rss": 148701184
+      },
+      {
+        "ms": 143.447875,
+        "rss": 148570112
+      },
+      {
+        "ms": 144.552792,
+        "rss": 149094400
+      },
+      {
+        "ms": 149.395334,
+        "rss": 149045248
+      },
+      {
+        "ms": 147.23649999999998,
+        "rss": 148963328
+      },
+      {
+        "ms": 143.871,
+        "rss": 148963328
+      }
+    ],
+    "coreBytes": 7041876,
+    "imageRuntimeBytes": 4168874
+  },
+  "after": {
+    "node": "v24.15.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runs": [
+      {
+        "ms": 168.56725,
+        "rss": 132104192
+      },
+      {
+        "ms": 147.454542,
+        "rss": 131694592
+      },
+      {
+        "ms": 150.015917,
+        "rss": 131792896
+      },
+      {
+        "ms": 149.224542,
+        "rss": 131923968
+      },
+      {
+        "ms": 153.298417,
+        "rss": 131989504
+      },
+      {
+        "ms": 154.24783399999998,
+        "rss": 131973120
+      },
+      {
+        "ms": 147.008833,
+        "rss": 131727360
+      }
+    ],
+    "coreBytes": 5972305,
+    "imageRuntimeBytes": 4180160
+  },
+  "method": "Seven fresh Node processes import the built image-runtime.mjs; Darwin arm64, Node 24.15.0. No provider requests. Concurrent machine load was not controlled; no production latency claim.",
+  "baselineCommit": "83d25a25a7b2a64111da2c97631a7945b7e3ff10",
+  "afterState": "uncommitted retirement changes in codex/tuyan-v3.8.1",
+  "summary": {
+    "coreBytes": {
+      "before": 7041876,
+      "after": 5972305,
+      "changePercent": -15.19
+    },
+    "imageRuntimeBytes": {
+      "before": 4168874,
+      "after": 4180160,
+      "changePercent": 0.27
+    },
+    "median_ms": {
+      "before": 144.552792,
+      "after": 150.015917,
+      "changePercent": 3.78
+    },
+    "median_rss": {
+      "before": 148963328,
+      "after": 131923968,
+      "changePercent": -11.44
+    }
+  }
+}

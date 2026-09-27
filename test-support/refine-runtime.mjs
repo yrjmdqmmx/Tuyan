@@ -37,13 +37,13 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   globalThis.__refineTestCloud = { mongo: { db }, storage: { bucket: () => bucket } };
   globalThis.__refineTestSharp = sharp;
   const result = await build({
-    entryPoints: [fileURLToPath(new URL('../apps/paperbanana-api/src/legacy-entry.mjs', import.meta.url))],
+    entryPoints: [fileURLToPath(new URL('../apps/paperbanana-api/src/core-entry.mjs', import.meta.url))],
     bundle: true, format: 'esm', platform: 'node', write: false,
     nodePaths: [fileURLToPath(new URL('../apps/paperbanana-api/node_modules', import.meta.url))],
     plugins: [{ name: 'local-infrastructure', setup(builder) {
-      builder.onResolve({ filter: /^(@lafjs\/cloud|sharp)$/ }, args => ({ path: args.path, namespace: 'local-test' }));
+      builder.onResolve({ filter: /(?:core-services\.(?:js|ts)|^sharp)$/ }, args => ({ path: args.path, namespace: 'local-test' }));
       builder.onLoad({ filter: /.*/, namespace: 'local-test' }, args => ({
-        loader: 'js', contents: 'export default globalThis.' + (args.path === 'sharp' ? '__refineTestSharp' : '__refineTestCloud'),
+        loader: 'js', contents: args.path === 'sharp' ? 'export default globalThis.__refineTestSharp' : 'export const database=globalThis.__refineTestCloud.mongo.db; export const objectStorage=globalThis.__refineTestCloud.storage;',
       }));
     } }],
   });

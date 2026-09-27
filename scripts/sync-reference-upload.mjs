@@ -36,13 +36,6 @@ const outputs = {
     platform: REFERENCE_UPLOAD_PLATFORM, models,
   }, null, 2) + '\n',
 };
-const backendPath = new URL('apps/laf-functions/paperbanana-api.ts', root);
-const backend = readFileSync(backendPath, 'utf8');
-const start = '// BEGIN SHARED REFERENCE UPLOAD POLICY', end = '// END SHARED REFERENCE UPLOAD POLICY';
-const block = `${start}\n${inlineSource}\n${end}`;
-outputs['apps/laf-functions/paperbanana-api.ts'] = backend.includes(start)
-  ? backend.slice(0, backend.indexOf(start)) + block + backend.slice(backend.indexOf(end) + end.length)
-  : backend.replace('declare const require: any', `${block}\n\ndeclare const require: any`);
 for (const [path, text] of Object.entries(outputs)) {
   const url = new URL(path, root);
   if (process.argv.includes('--check')) {

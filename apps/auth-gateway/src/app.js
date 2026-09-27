@@ -107,9 +107,6 @@ export function createApp({
       auth: 'better-auth',
       authReady: authStatus.ok === true,
       backend: backendStatus,
-      // One-release compatibility alias. This now describes whichever backend
-      // is selected and can therefore report mode=node.
-      laf: backendStatus,
       dependencies: {
         auth: authStatus,
         backend: backendStatus,
@@ -135,7 +132,6 @@ export function createApp({
         auth: 'better-auth',
         authReady: authStatus?.ok === true,
         backend: backendStatus,
-        laf: backendStatus,
         dependencies: {
           auth: authStatus,
           backend: backendStatus,
@@ -343,7 +339,6 @@ export function createApp({
           backendMode: backend.mode,
           bucket: config.oss.bucket,
           publicEndpoint: config.oss.publicEndpoint,
-          allowLegacyExternalUrl: config.oss.allowLegacyExternalRefineUrl,
         });
         if (source.jobId) {
           const sourceJob = await backend.call({ action: 'getJob', jobId: source.jobId }, context);

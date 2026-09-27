@@ -143,7 +143,6 @@ services:
       HOST: 0.0.0.0
       PORT: "3000"
       PAPERBANANA_SINGLE_REPLICA: "true"
-      PAPERBANANA_STRICT_OBJECT_STORAGE: "true"
       PLOT_WORKER_URL: http://plot-worker:8000
     depends_on:
       mongo-init:

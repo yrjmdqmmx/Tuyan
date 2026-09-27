@@ -1,11 +1,11 @@
 import type { createUniversalRuntime } from './universal-adapters.js'
-import type { LegacyHandler } from './server.js'
+import type { CoreHandler } from './server.js'
 
-declare const handler: LegacyHandler
+declare const handler: CoreHandler
 export function configureUniversalRuntime(runtime?: ReturnType<typeof createUniversalRuntime>): void
 export function configureRuntimeFetch(fetchImpl?: typeof fetch): void
 export function callImageModel(
-  provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'tokendance',
+  provider: 'openrouter' | 'gemini' | 'openai' | 'bailian' | 'ark' | 'deepseek' | 'kimi' | 'zhipu' | 'siliconflow' | 'anthropic' | 'recraft' | 'xai' | 'bfl' | 'stability' | 'ideogram' | 'minimax' | 'mistral' | 'together' | 'fireworks' | 'fal' | 'replicate' | 'runware' | 'tokenhub' | 'xiaomi' | 'sensenova' | 'stepfun' | 'qianfan' | 'iflytek' | 'longcat' | 'antling' | 'novita' | 'tokendance' | 'custom',
   model: string,
   apiKey: string,
   prompt: string,
@@ -14,6 +14,8 @@ export function callImageModel(
   imageSize?: string,
   strictImageSize?: boolean,
   region?: 'cn' | 'global',
+  custom?: unknown,
+  edit?: import('../../../packages/api/src/image-channel-adapters.js').ImageChannelInput['edit'],
 ): Promise<string>
 export function configureJobAdmission(config: {
   maxActive: number

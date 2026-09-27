@@ -39,7 +39,7 @@ function installBackend({ failFeatured = false, imageCapabilities } = {}) {
   globalThis.fetch = async (input, init = {}) => {
     const body = init.body ? JSON.parse(String(init.body)) : null
     requests.push({ url: String(input), body })
-    if (!body) return Response.json({ code: 0, runtime: 'laf' })
+    if (!body) return Response.json({ code: 0, runtime: 'gateway' })
     if (body.action === 'modelRegistry') {
       const result = structuredClone(registry)
       if (imageCapabilities) Object.assign(result.providers.bailian.models[2].capabilities, imageCapabilities)

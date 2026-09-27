@@ -175,7 +175,6 @@ apps/
   miniprogram/         微信小程序客户端
   auth-gateway/        登录网关、API 转发与匿名 MCP
   paperbanana-api/     Node 核心 API
-  laf-functions/       Sealaf 云函数源码与兼容实现
   plot-worker/         统计图渲染 Worker
   benchmark-worker/    Benchmark 执行 Worker
 packages/
@@ -194,7 +193,7 @@ skills/
 
 ## 本地开发
 
-要求：Node.js `>=20`、pnpm `10.28.2`。
+要求：Node.js `>=24`、pnpm `10.28.2`。
 
 ```bash
 pnpm install
@@ -224,13 +223,15 @@ pnpm --filter @paperbanana/miniprogram build
 node --test apps/miniprogram/tests/*.test.cjs
 ```
 
-微信公众平台需要配置合法域名：request 使用 `https://yifbnnzrwmxn.sealoshzh.site` 与 `https://objectstorageapi.hzh.sealos.run`，downloadFile 使用 `https://objectstorageapi.hzh.sealos.run`。
+微信公众平台 request 使用 `https://api.paperbanana.asia` 与香港 OSS 精确桶域名；downloadFile 使用同一 OSS 桶域名。当前值与微信侧验收要求见[小程序配置](apps/miniprogram/README.md)。仓库配置不代表微信后台已完成发布。
 
 ## CI 与部署
 
 - `.github/workflows/ci.yml` 验证 Web、小程序、共享包、后端和 Worker。
 - `.github/workflows/deploy-pages.yml` 发布 Web 与公开排行榜。
-- 后端发布与运维工作流保持独立，不因 README 或客户端产品线调整而改变 API、数据库或生产服务。
+- 香港 Debian 12 / 4 vCPU / 16 GB 主机通过 Docker Compose 运行网关、Node Core、MongoDB、Plot Worker 和关闭执行器的 Benchmark Worker；Nginx 暴露唯一 API 域名，图片存于香港私有 OSS。新加坡 Ubuntu 24.04 / 2 vCPU / 4 GB 运行 WireGuard 与 Squid，提供受控模型出口。
+- `.github/workflows/deploy-hk.yml` 手动构建固定版本并按镜像 digest 部署；`.github/workflows/deploy-sg-egress.yml` 单独管理出口。CI 构建不发布生产服务。
+- Sealos / Sealaf 已退役，不能作为回滚目标。当前入口：[架构与实机证据](docs/operations/current-architecture.md)、[香港部署与监控](deploy/hk-single-host/README.md)、[新加坡出口](deploy/sg-egress/README.md)。
 
 ## 贡献约定
 

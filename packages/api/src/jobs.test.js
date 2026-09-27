@@ -56,7 +56,7 @@ function mockJsonFetch(handler) {
   };
 }
 
-test('createJobRequest sends retrieval and task fields to gateway/Laf', async () => {
+test('createJobRequest sends retrieval and task fields to gateway', async () => {
   const fetchMock = mockJsonFetch(() => ({ body: { code: 0, jobId: 'job-1', status: 'queued' } }));
   try {
     const result = await createJobRequest('https://gateway.example', { backendMode: 'gateway' }, {
@@ -94,10 +94,10 @@ test('createJobRequest sends retrieval and task fields to gateway/Laf', async ()
   }
 });
 
-test('createJobRequest sends negative prompt with transport-specific casing', async () => {
+test('createJobRequest sends negative prompt through the gateway and rejects retired transports', async () => {
   const fetchMock = mockJsonFetch((_url, _options, index) => ({
     body: index === 0
-      ? { code: 0, jobId: 'laf-negative', status: 'queued' }
+      ? { code: 0, jobId: 'gateway-negative', status: 'queued' }
       : { id: 'fast-negative', status: 'queued' },
   }));
   const payload = {
@@ -112,14 +112,12 @@ test('createJobRequest sends negative prompt with transport-specific casing', as
   };
   try {
     await createJobRequest('https://gateway.example', { backendMode: 'gateway' }, payload);
-    await createJobRequest('https://fast.example', { backendMode: 'fastapi' }, payload);
+    await assert.rejects(createJobRequest('https://fast.example', { backendMode: 'fastapi' }, payload), /认证网关/);
 
-    const lafBody = JSON.parse(fetchMock.calls[0].options.body);
-    const fastBody = JSON.parse(fetchMock.calls[1].options.body);
-    assert.equal(lafBody.negativePrompt, payload.negativePrompt);
-    assert.equal('negative_prompt' in lafBody, false);
-    assert.equal(fastBody.negative_prompt, payload.negativePrompt);
-    assert.equal('negativePrompt' in fastBody, false);
+    const gatewayBody = JSON.parse(fetchMock.calls[0].options.body);
+    assert.equal(fetchMock.calls.length, 1);
+    assert.equal(gatewayBody.negativePrompt, payload.negativePrompt);
+    assert.equal('negative_prompt' in gatewayBody, false);
   } finally {
     fetchMock.restore();
   }
@@ -178,7 +176,7 @@ test('optimizeInputsRequest sends only the selected main route and key without m
 test('optimizeInputsRequest rejects legacy backends', async () => {
   await assert.rejects(
     optimizeInputsRequest('https://fast.example', { backendMode: 'fastapi' }, {}),
-    /输入优化需要使用 Laf 或登录网关后端。/,
+    /请使用图研认证网关。/,
   );
 });
 
@@ -188,7 +186,7 @@ test('getJobRequest normalizes negative prompt to canonical snake case and a cam
     job: { _id: 'job-negative', negativePrompt: 'Avoid gradients.' },
   } }));
   try {
-    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-negative');
+    const job = await getJobRequest('https://gateway.example/paperbanana-api', { backendMode: 'gateway' }, 'job-negative');
     assert.equal(job.negative_prompt, 'Avoid gradients.');
     assert.equal(job.negativePrompt, 'Avoid gradients.');
   } finally {
@@ -222,7 +220,7 @@ test('getJobRequest normalizes PaperBanana parity fields', async () => {
     },
   }));
   try {
-    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-2');
+    const job = await getJobRequest('https://gateway.example/paperbanana-api', { backendMode: 'gateway' }, 'job-2');
     assert.equal(job.client_platform, 'miniprogram');
     assert.equal(job.clientPlatform, 'miniprogram');
     assert.equal(job.task_name, 'diagram');
@@ -259,7 +257,7 @@ test('getJobRequest preserves Core routing metadata in camel and snake forms wit
     },
   } }));
   try {
-    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'job-routed');
+    const job = await getJobRequest('https://gateway.example/paperbanana-api', { backendMode: 'gateway' }, 'job-routed');
     const expectedRoutes = {
       main: { accessProvider: 'openai', modelId: 'gpt-5.6-sol' },
       image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
@@ -285,14 +283,14 @@ test('getJobRequest treats a missing historical configuration mode as simple', a
     job: { _id: 'legacy-simple-job', status: 'succeeded' },
   } }));
   try {
-    const job = await getJobRequest('https://laf.example/paperbanana-api', { backendMode: 'laf' }, 'legacy-simple-job');
+    const job = await getJobRequest('https://gateway.example/paperbanana-api', { backendMode: 'gateway' }, 'legacy-simple-job');
     assert.equal(job.configuration_mode, 'simple');
   } finally {
     fetchMock.restore();
   }
 });
 
-test('refineImageRequest sends image edit payload to gateway/Laf', async () => {
+test('refineImageRequest sends image edit payload to gateway', async () => {
   const fetchMock = mockJsonFetch(() => ({ body: {
     code: 0,
     jobId: 'refine-1',
@@ -725,19 +723,12 @@ test('admin and user task normalization retain both platform aliases without bac
   }
 });
 
-test('createJobRequest sends web on the FastAPI compatibility transport', async () => {
-  const fetchMock = mockJsonFetch(() => ({ body: { id: 'fast-job', status: 'queued' } }));
+test('unsupported transport fails before a network request', async () => {
+  const fetchMock = mockJsonFetch(() => ({ body: {} }));
   try {
-    await createJobRequest('https://fast.example', { backendMode: 'fastapi' }, {
-      configurationMode: 'advanced', provider: 'openai', apiKeys: { openai: 'key' }, taskName: 'diagram',
-      methodContent: 'A sufficiently long method section.', caption: 'Figure 1', infographicCategory: '方法框架图',
-      mainModelName: 'gpt-5.6-sol', imageGenModelName: 'gpt-image-2', pipelineMode: 'planner_critic',
-      retrievalSetting: 'none', aspectRatio: '16:9', numCandidates: 1, maxCriticRounds: 1,
-    });
-    assert.equal(JSON.parse(fetchMock.calls[0].options.body).clientPlatform, 'web');
-  } finally {
-    fetchMock.restore();
-  }
+    for (const backendMode of ['fastapi', 'laf', 'direct']) await assert.rejects(createJobRequest('https://retired.example', { backendMode }, {}), /认证网关/);
+    assert.equal(fetchMock.calls.length, 0);
+  } finally { fetchMock.restore(); }
 });
 
 test('userJobsRequest trusts the freshly signed list response without N+1 detail requests', async () => {

@@ -1,0 +1,36 @@
+# 退役平台历史资料索引（2026-09-27）
+
+以下记录保留在原路径，避免破坏既有发布/审计链接。每份已加历史标识；其中旧平台代码路径、发布方式、旧域名和回滚建议均失效，不可执行。历史 JSON/CSV 证据及 SYNC 时间线同样只说明记录时状态，哈希与实验数据不改写。旧实现可从 Git 追溯，无需在现役源树保留可执行入口。
+
+当前操作入口：[架构](../../operations/current-architecture.md)、[香港运维](../../../deploy/hk-single-host/README.md)。源码中的少量旧平台名称只用于拒绝旧配置/阻止残留回归的测试；历史任务内容和 data URL 的读取属于用户数据恢复，不依赖旧平台。
+
+- [docs/model-version-validation-20260921.md](../../../docs/model-version-validation-20260921.md)
+- [docs/model-catalog-repair-2026-09-07.md](../../../docs/model-catalog-repair-2026-09-07.md)
+- [docs/miniprogram-parity-2026-09-09.md](../../../docs/miniprogram-parity-2026-09-09.md)
+- [docs/model-picker-2026-09-07.md](../../../docs/model-picker-2026-09-07.md)
+- [docs/reference-selection-repair-2026-09-16.md](../../../docs/reference-selection-repair-2026-09-16.md)
+- [docs/account-lifecycle-v3-2026-09-07.md](../../../docs/account-lifecycle-v3-2026-09-07.md)
+- [docs/admin-operations-2026-09-08.md](../../../docs/admin-operations-2026-09-08.md)
+- [docs/releases/2026-09-09-tokendance.md](../../../docs/releases/2026-09-09-tokendance.md)
+- [docs/releases/2026-09-07-model-catalog-v14.md](../../../docs/releases/2026-09-07-model-catalog-v14.md)
+- [docs/releases/2026-09-07-account-lifecycle-v3.md](../../../docs/releases/2026-09-07-account-lifecycle-v3.md)
+- [docs/releases/2026-09-10-reference-upload.md](../../../docs/releases/2026-09-10-reference-upload.md)
+- [docs/releases/2026-09-19-tokendance-catalog-isolation.md](../../../docs/releases/2026-09-19-tokendance-catalog-isolation.md)
+- [docs/releases/2026-09-23-tuyan-v3.8.0-model-update.md](../../../docs/releases/2026-09-23-tuyan-v3.8.0-model-update.md)
+- [docs/releases/2026-09-22-tuyan-v3.8.0.md](../../../docs/releases/2026-09-22-tuyan-v3.8.0.md)
+- [docs/releases/2026-09-08-admin-operations.md](../../../docs/releases/2026-09-08-admin-operations.md)
+- [docs/releases/2026-09-22-refine-v23.md](../../../docs/releases/2026-09-22-refine-v23.md)
+- [docs/reference-upload/2026-09-10-audit.md](../../../docs/reference-upload/2026-09-10-audit.md)
+- [docs/universal-api/catalog-selection.md](../../../docs/universal-api/catalog-selection.md)
+- [docs/tokendance/implementation.md](../../../docs/tokendance/implementation.md)
+- [docs/tokendance/validation.md](../../../docs/tokendance/validation.md)
+- [docs/tokendance/integration-audit.md](../../../docs/tokendance/integration-audit.md)
+- [docs/tokendance/account-experience-2026-09-09.md](../../../docs/tokendance/account-experience-2026-09-09.md)
+- [docs/model-capabilities/2026-09-07-audit.md](../../../docs/model-capabilities/2026-09-07-audit.md)
+- [docs/model-capabilities/2026-09-07-catalog-v14.md](../../../docs/model-capabilities/2026-09-07-catalog-v14.md)
+- [docs/refinement/2026-09-22-controls-and-channels.md](../../../docs/refinement/2026-09-22-controls-and-channels.md)
+- [docs/thinking/2026-09-22/README.md](../../../docs/thinking/2026-09-22/README.md)
+- [docs/superpowers/plans/2026-09-20-universal-api.md](../../../docs/superpowers/plans/2026-09-20-universal-api.md)
+- [docs/superpowers/plans/2026-09-02-input-optimization.md](../../../docs/superpowers/plans/2026-09-02-input-optimization.md)
+- [docs/superpowers/plans/2026-08-23-miniprogram-account-copy-alignment.md](../../../docs/superpowers/plans/2026-08-23-miniprogram-account-copy-alignment.md)
+- [docs/changelog-audit/2026-09-22-history.md](../../../docs/changelog-audit/2026-09-22-history.md)

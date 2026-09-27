@@ -35,7 +35,7 @@ function uploadHarness(expiresAt = Date.now() + 900000) {
     return Response.json({ code: 0, source: { width: 120, height: 80 } })
   }
   restore = () => { Object.assign(globalThis, { fetch: before.fetch, Image: before.Image, XMLHttpRequest: before.XMLHttpRequest }); URL.createObjectURL = before.create; URL.revokeObjectURL = before.revoke }
-  const hook = renderHook(() => useRefineUpload({ apiBase: 'https://local.invalid/paperbanana-api', health: { runtime: 'laf' }, limits, authReady: true, ownerId: 'owner' }))
+  const hook = renderHook(() => useRefineUpload({ apiBase: 'https://local.invalid/paperbanana-api', health: { runtime: 'gateway' }, limits, authReady: true, ownerId: 'owner' }))
   return { hook, requests, xhrs, revoked }
 }
 

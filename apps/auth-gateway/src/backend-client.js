@@ -15,7 +15,6 @@ export function createBackendClient({
   url,
   timeoutMs,
   gatewayToken,
-  adminToken = '',
   adminTransportToken = '',
   fetchImpl = globalThis.fetch,
 }) {
@@ -71,14 +70,6 @@ export function createBackendClient({
         headers['x-paperbanana-admin-transport-token'] = adminTransportToken;
         headers['x-paperbanana-admin-user-id'] = safeHeader(options.adminUserId, 200);
       }
-    } else if (mode === 'laf') {
-      body.gatewayToken = gatewayToken;
-      if (options.adminAction) {
-        if (!adminToken) {
-          throw new BackendError(503, 'ADMIN_API_DISABLED', 'Admin API disabled: ADMIN_TOKEN is not configured');
-        }
-        body.adminToken = adminToken;
-      }
     } else {
       throw new BackendError(500, 'BACKEND_CONFIG_INVALID', `Unsupported backend mode: ${mode}`);
     }
@@ -99,9 +90,6 @@ export function createBackendClient({
         headers['x-paperbanana-gateway-token'] = gatewayToken;
         result = await requestJson(nodeReadinessUrl(url), { method: 'GET', headers });
         ok = isHttpSuccess(result.status) && result.data?.ready === true;
-      } else if (mode === 'laf') {
-        result = await call({ action: 'health' }, requestContext);
-        ok = isHttpSuccess(result.status) && Number(result.data?.code || 0) === 0 && result.data?.ok !== false;
       } else {
         throw new BackendError(500, 'BACKEND_CONFIG_INVALID', `Unsupported backend mode: ${mode}`);
       }
@@ -110,7 +98,7 @@ export function createBackendClient({
         ok,
         checkedAt: new Date().toISOString(),
         status: result.status,
-        ready: mode === 'node' ? result.data?.ready === true : ok,
+        ready: result.data?.ready === true,
         dependencies: result.data?.dependencies || {},
       };
       return { ok, ...result };

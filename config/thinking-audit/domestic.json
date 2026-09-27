@@ -3281,7 +3281,7 @@
         {
           "field": "parameters.thinking_mode",
           "value": true,
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "callBailianMultimodalImage"
         }
       ]
@@ -3669,7 +3669,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -3706,7 +3706,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -3781,7 +3781,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -3846,7 +3846,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -3932,7 +3932,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -4020,7 +4020,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]
@@ -4282,7 +4282,7 @@
         {
           "field": "thinking.type",
           "value": "disabled",
-          "sourceFile": "apps/laf-functions/paperbanana-api.ts",
+          "sourceFile": "apps/paperbanana-api/runtime/handler.ts",
           "function": "arkShouldDisableThinking"
         }
       ]

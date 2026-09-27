@@ -94,6 +94,19 @@ type LegacyPolicyModule = {
   resolveRetrievedReferences(body: Record<string, any>, apiKey: string): Promise<Array<Record<string, any>>>
 }
 
+// Models the Node server's authenticated handoff, without masking supplied bad tokens.
+async function invokeTrusted(core: LegacyPolicyModule, ctx: Record<string, any>) {
+  const previous = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const token = previous || 'composition-test-gateway'
+  process.env.PAPERBANANA_GATEWAY_TOKEN = token
+  try {
+    return await core.default({ ...ctx, body: { gatewayToken: token, ...ctx.body } })
+  } finally {
+    if (previous === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previous
+  }
+}
+
 function installProviderAccountTestGateway() {
   const previous = process.env.PAPERBANANA_GATEWAY_TOKEN
   const token = 'provider-account-test-gateway'
@@ -107,33 +120,18 @@ function installProviderAccountTestGateway() {
   }
 }
 
-test('legacy Laf defaults to global fetch and supports a Node-injected runtime fetch without importing Undici', async () => {
-  const legacy = await loadLegacy()
+test('Core requires its injected policy transport and never falls through to global fetch', async () => {
+  const core = await loadLegacy()
   const previousFetch = globalThis.fetch
   const calls: string[] = []
   try {
-    legacy.configureRuntimeFetch()
-    globalThis.fetch = async (input) => {
-      calls.push(`global:${String(input)}`)
-      return new Response('{}')
-    }
-    await legacy.fetchWithRetry('https://example.com/global', undefined, 'global', 1)
-
-    legacy.configureRuntimeFetch(async (input) => {
-      calls.push(`injected:${String(input)}`)
-      return new Response('{}')
-    })
-    await legacy.fetchWithRetry('https://example.com/injected', undefined, 'injected', 1)
-  } finally {
-    legacy.configureRuntimeFetch()
-    globalThis.fetch = previousFetch
-  }
-
-  assert.deepEqual(calls, [
-    'global:https://example.com/global',
-    'injected:https://example.com/injected',
-  ])
-  assert.doesNotMatch(fs.readFileSync(legacyPath, 'utf8'), /from\s+['"]undici['"]|require\(['"]undici['"]\)/)
+    core.configureRuntimeFetch()
+    globalThis.fetch = async () => { throw new Error('uncontrolled fetch must never run') }
+    await assert.rejects(core.fetchWithRetry('https://example.com/global', undefined, 'global', 1), /fetch.*(?:available|configured)|transport/i)
+    core.configureRuntimeFetch(async input => { calls.push(String(input)); return new Response('{}') })
+    await core.fetchWithRetry('https://example.com/injected', undefined, 'injected', 1)
+    assert.deepEqual(calls, ['https://example.com/injected'])
+  } finally { core.configureRuntimeFetch(); globalThis.fetch = previousFetch }
 })
 
 test('legacy bounded model response preserves non-2xx status on a real Response without enumerating provider response facts', async () => {
@@ -177,7 +175,6 @@ test('production build explicitly resolves and bundles the Ark JPEG decoder', as
     format: 'cjs',
     write: false,
     alias: {
-      '@lafjs/cloud': './src/laf-cloud.ts',
       'jpeg-js': './node_modules/jpeg-js',
     },
     external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb', 'sharp'],
@@ -198,7 +195,6 @@ test('production build ships the exact maintained WebP decoder as an external ru
     format: 'cjs',
     write: false,
     alias: {
-      '@lafjs/cloud': './src/laf-cloud.ts',
       'jpeg-js': './node_modules/jpeg-js',
     },
     external: ['@resvg/resvg-wasm', 'ali-oss', 'express', 'mongodb', 'sharp'],
@@ -244,7 +240,7 @@ test('OpenRouter model catalog failures expose only the stable provider egress m
     throw error
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelCapability', provider: 'openrouter', model: 'openai/gpt-5' },
       headers: {},
@@ -266,7 +262,7 @@ test('full modelRegistry preserves static providers when OpenRouter discovery is
     throw error
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelRegistry' },
       headers: {},
@@ -350,7 +346,7 @@ test('createJob rejects explicit route conflicts, malformed routes, wrong roles,
       vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
     },
   }
-  const invoke = (overrides: Record<string, unknown>) => legacy.default({
+  const invoke = (overrides: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { ...base, ...overrides },
     headers: {},
@@ -417,7 +413,7 @@ test('advanced explicit routing persists canonical public fields while retaining
   state.inserts = []
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob',
@@ -569,7 +565,7 @@ test('legacy high-resolution plot ignores caller-forged direct-edit capability',
   state.inserts = []
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'main-route-secret' },
@@ -597,7 +593,7 @@ test('mixed high-resolution plot accepts a valid analyze-redraw image route with
   state.inserts = []
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'openai', configurationMode: 'advanced',
@@ -645,7 +641,7 @@ test('explicit maxCriticRounds zero adds no vision key, call, or critic stage', 
     throw new Error(`unexpected zero-critic dispatch ${url}`)
   })
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
@@ -721,7 +717,7 @@ test('a visual critic download timeout retries once, then keeps the last success
     throw new Error(`unexpected critic fallback dispatch ${url}`)
   })
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
@@ -808,7 +804,7 @@ test('a plot critic download timeout retries once, then keeps the last successfu
     throw new Error(`unexpected plot critic fallback dispatch ${url}`)
   })
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
@@ -857,7 +853,7 @@ test('legacy create keeps main-only Bailian models valid when no vision stage wa
   state.inserts = []
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
@@ -882,7 +878,7 @@ test('legacy create validates the exact execution-required vision role before pe
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const previousInserts = state.inserts
   state.inserts = []
-  const invoke = (mainModelName: string, maxCriticRounds: number) => legacy.default({
+  const invoke = (mainModelName: string, maxCriticRounds: number) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'createJob', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
@@ -916,7 +912,7 @@ test('legacy analyze-redraw refine validates its derived vision role and preserv
   const previousStoredObjects = state.storedObjectBytes
   state.inserts = []
   state.storedObjectBytes = { 'owned/refine.png': referenceFixturePng }
-  const invoke = (mainModelName: string) => legacy.default({
+  const invoke = (mainModelName: string) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'legacy-key' },
@@ -960,7 +956,7 @@ test('explicit direct refine rejects invalid unused main and vision routes witho
       vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
     },
   }
-  const invoke = (modelRoutes: Record<string, unknown>) => legacy.default({
+  const invoke = (modelRoutes: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body: { ...base, modelRoutes }, headers: {}, response: { setHeader() {}, status() {} },
   })
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
@@ -1060,7 +1056,7 @@ test('mixed create dispatches main, image, and visual critic calls with only the
     throw new Error(`unexpected dispatch ${url}`)
   })
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'bailian', configurationMode: 'advanced',
@@ -1126,7 +1122,7 @@ test('refine dispatch retains image only for direct edit and vision plus image f
     if (url === 'https://cdn.invalid/refined.png') return new Response(Buffer.alloc(120, 3), { headers: { 'Content-Type': 'image/png' } })
     throw new Error(`unexpected dispatch ${url}`)
   })
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -1204,7 +1200,7 @@ test('analyze-redraw refinement preserves an explicitly requested canonical 1K s
     throw new Error(`unexpected analyze-redraw dispatch ${url}`)
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'analyze-redraw-secret' },
@@ -1242,7 +1238,7 @@ test('refinement rejects noncanonical image sizes before persistence or provider
   })
   try {
     for (const imageSize of ['8K', '', null, false, 0]) {
-      const result = await legacy.default({
+      const result = await invokeTrusted(legacy, {
         request: { method: 'POST' },
         body: {
           action: 'refineImage', provider: 'gemini', apiKeys: { gemini: 'invalid-size-secret' },
@@ -1280,7 +1276,7 @@ test('direct-edit refinement rejects registered but unsupported 4K before persis
     providerCalls += 1
     return new Response('unexpected provider dispatch', { status: 500 })
   })
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -1335,7 +1331,7 @@ test('analyze-redraw refinement rejects a canonical size absent from generation 
     return new Response('unexpected provider dispatch', { status: 500 })
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'refineImage', provider: 'bailian', apiKeys: { bailian: 'analyze-secret' },
@@ -1379,7 +1375,7 @@ test('refine persistence and public DTO preserve normalized configuration mode w
   legacy.configureRuntimeFetch(async () => Response.json({
     output_image: { data: Buffer.alloc(120, 4).toString('base64'), mime_type: 'image/png' },
   }))
-  const invoke = (configurationMode: unknown, sourceImageObjectKey: string) => legacy.default({
+  const invoke = (configurationMode: unknown, sourceImageObjectKey: string) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'refineImage', provider: 'gemini', apiKeys: { gemini: 'mode-secret' },
@@ -1392,7 +1388,9 @@ test('refine persistence and public DTO preserve normalized configuration mode w
   })
   try {
     const simple = await invoke('simple', 'owned/simple.png')
+    await legacy.drainJobAdmission()
     const advanced = await invoke('advanced', 'owned/advanced.png')
+    await legacy.drainJobAdmission()
     const legacyDefault = await invoke(undefined, 'owned/legacy.png')
     assert.equal(simple.code, 0, JSON.stringify(simple))
     assert.equal(advanced.code, 0, JSON.stringify(advanced))
@@ -1402,7 +1400,7 @@ test('refine persistence and public DTO preserve normalized configuration mode w
     assert.deepEqual(state.inserts.map((record: any) => record.routingMode), ['single', 'single', 'single'])
 
     for (const [response, expectedMode] of [[simple, 'simple'], [advanced, 'advanced'], [legacyDefault, 'simple']] as const) {
-      const detail = await legacy.default({
+      const detail = await invokeTrusted(legacy, {
         request: { method: 'POST' },
         body: { action: 'getJob', jobId: response.jobId, gatewayToken: 'refine-mode-gateway' },
         headers: {}, response: { setHeader() {}, status() {} },
@@ -1444,7 +1442,7 @@ test('mixed create and direct refine route Ark stages without substituting model
     image: { accessProvider: 'ark', modelId: 'doubao-seedream-4-0-250828' },
     vision: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-lite-260428' },
   }
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -1493,7 +1491,7 @@ test('filtered OpenRouter registry uses the same structured unavailable envelope
   const legacy = await loadLegacy()
   legacy.configureRuntimeFetch(async () => { throw new Error('catalog offline') })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelRegistry', provider: 'openrouter' },
       headers: {},
@@ -1509,7 +1507,7 @@ test('filtered OpenRouter registry uses the same structured unavailable envelope
 
 test('createJob rejects a registered model used in the wrong role before inserting a task', async () => {
   const legacy = await loadLegacy()
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'createJob',
@@ -1538,7 +1536,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
     response: { setHeader() {}, status() {} },
   })
 
-  const gemini = await legacy.default(context({ action: 'modelRegistry', provider: 'gemini' }))
+  const gemini = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'gemini' }))
   assert.equal(gemini.code, 0)
   assert.match(gemini.registryVersion, /^2026-09-/)
   assert.deepEqual(gemini.providers.gemini.defaults, {
@@ -1563,7 +1561,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.equal(geminiModels.has('gemini-3.1-pro'), false)
   assert.equal(geminiModels.has('gemini-3-flash'), false)
 
-  const bailian = await legacy.default(context({ action: 'modelRegistry', provider: 'bailian' }))
+  const bailian = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'bailian' }))
   assert.equal(bailian.code, 0)
   assert.deepEqual(bailian.providers.bailian.defaults, {
     main: 'qwen3.8-max',
@@ -1584,7 +1582,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.deepEqual(bailianModels.get('MiniMax/MiniMax-M3')?.roles, ['main', 'vision'])
   assert.equal(bailianModels.get('qwen-image-3.0-pro')?.lifecycle, 'invite-only')
 
-  const openai = await legacy.default(context({ action: 'modelRegistry', provider: 'openai' }))
+  const openai = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'openai' }))
   assert.equal(openai.code, 0)
   assert.deepEqual(openai.providers.openai.defaults, {
     main: 'gpt-5.6-sol',
@@ -1628,7 +1626,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   ])
   assert.equal(openaiOrdered[2].releaseOrder > openaiOrdered[3].releaseOrder, true)
 
-  const ark = await legacy.default(context({ action: 'modelRegistry', provider: 'ark' }))
+  const ark = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'ark' }))
   assert.equal(ark.code, 0)
   assert.equal(ark.providers.ark.accessKind, 'aggregator')
   assert.equal(ark.providers.ark.routeContractVersion, 1)
@@ -1734,7 +1732,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   } as const
 
   for (const [provider, providerExpected] of Object.entries(expected)) {
-    const result = await legacy.default(context(provider))
+    const result = await invokeTrusted(legacy, context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
     assert.equal(result.registryVersion, '2026-09-27.v27')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
@@ -1884,7 +1882,7 @@ test('modelCapability accepts Ark while unknown IDs and wrong route roles remain
   const context = (body: Record<string, unknown>) => ({
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
-  const capability = await legacy.default(context({
+  const capability = await invokeTrusted(legacy, context({
     action: 'modelCapability', provider: 'ark', model: 'doubao-seedream-4-0-250828',
   }))
   assert.equal(capability.code, 0)
@@ -1903,10 +1901,10 @@ test('modelCapability accepts Ark while unknown IDs and wrong route roles remain
       vision: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-lite-260428' },
     },
   }
-  const unknown = await legacy.default(context(base))
+  const unknown = await invokeTrusted(legacy, context(base))
   assert.equal(unknown.code, 400)
   assert.match(unknown.error, /not registered for image/)
-  const wrongRole = await legacy.default(context({
+  const wrongRole = await invokeTrusted(legacy, context({
     ...base,
     modelRoutes: { ...base.modelRoutes, image: { accessProvider: 'ark', modelId: 'doubao-seed-2-0-mini-260428' } },
   }))
@@ -2024,7 +2022,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
     if (url.endsWith('/images/generations')) return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
     throw new Error(`unexpected account probe: ${url}`)
   })
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body: { ...body, gatewayToken: gateway.token }, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -2104,7 +2102,7 @@ test('providerAccountCatalog truthfully uses only bounded Ark inference smoke pr
 test('providerAccountCatalog bounds probes and reports unknown, wrong-role, missing-key, and redacted failures', async () => {
   const legacy = await loadLegacy()
   const gateway = installProviderAccountTestGateway()
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body: { ...body, gatewayToken: gateway.token }, headers: {}, response: { setHeader() {}, status() {} },
   })
   let calls = 0
@@ -2166,7 +2164,7 @@ test('providerAccountCatalog never verifies empty or malformed successful Ark ch
     return Response.json({ choices: [{ message: { content: 'x'.repeat(70 * 1024) } }] })
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' },
@@ -2200,7 +2198,7 @@ test('providerAccountCatalog performs exactly one bounded dispatch per logical p
     throw new Error('network unavailable')
   })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' }, confirmPaidImageProbe: true,
@@ -2258,7 +2256,7 @@ test('providerAccountCatalog bounds concurrent probes by principal and client IP
     }
     return Response.json({ choices: [{ message: { content: 'OK' } }] })
   })
-  const invoke = (userId: string, ip: string) => legacy.default({
+  const invoke = (userId: string, ip: string) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: 'key' },
@@ -2299,7 +2297,7 @@ test('providerAccountCatalog aborts a hung Ark probe by deadline and immediately
     if (init?.signal) observedSignals.push(init.signal as AbortSignal)
     return await new Promise<Response>(() => {})
   })
-  const invoke = (probes = [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }]) => legacy.default({
+  const invoke = (probes = [{ role: 'main', modelId: 'doubao-seed-2-0-mini-260428' }]) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'providerAccountCatalog', provider: 'ark', apiKeys: { ark: secret }, gatewayToken: gateway.token,
@@ -2360,7 +2358,7 @@ test('admin evaluation routes Ark overrides exactly and rejects unknown provider
     })
     return Response.json({ choices: [{ message: { content: '{"score":8,"reasoning":"clear"}' } }] })
   })
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -2646,7 +2644,7 @@ test('September catalog distinguishes documented visual, text-only and image mod
       },
     }
     for (const [provider, models] of Object.entries(expected)) {
-      const registry = await legacy.default({
+      const registry = await invokeTrusted(legacy, {
         request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
         response: { setHeader() {}, status() {} },
       })
@@ -2700,7 +2698,7 @@ test('Required style-reference image models stay unavailable even with declared 
     throw new Error('Unavailable style models must not trigger inference')
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -2826,7 +2824,7 @@ test('OpenRouter routes every dedicated image catalog model to POST /images', as
       await legacy.callImageModel('openrouter', 'openrouter/google/gemini-3.1-flash-image', 'key', 'diagram', '16:9', '', '2K'),
       onePixelPngBase64,
     )
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelRegistry', provider: 'openrouter' },
       headers: {},
@@ -2926,7 +2924,7 @@ test('OpenRouter official releases sort first without promoting recommendation b
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -2984,7 +2982,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3034,13 +3032,13 @@ test('modelCapability returns UI-usable model-level refine mode and reason', asy
     request: { method: 'POST' }, body: { action: 'modelCapability', provider, model }, headers: {},
     response: { setHeader() {}, status() {} },
   })
-  const direct = await legacy.default(context('openai', 'gpt-image-2'))
+  const direct = await invokeTrusted(legacy, context('openai', 'gpt-image-2'))
   assert.equal(direct.status, 'supported')
   assert.equal(direct.refineMode, 'direct-edit')
   assert.equal(direct.supportsDirectEdit, true)
   assert.match(direct.refineReason, /source image/i)
 
-  const redraw = await legacy.default(context('bailian', 'z-image-turbo'))
+  const redraw = await invokeTrusted(legacy, context('bailian', 'z-image-turbo'))
   assert.equal(redraw.refineMode, 'analyze-redraw')
   assert.equal(redraw.supportsDirectEdit, false)
   assert.match(redraw.refineReason, /analy/i)
@@ -3071,7 +3069,7 @@ test('referenceLibrary paginates the full bench scope before signing only the cu
   state.referenceFindQueries = []
   state.signedReferenceKeys = []
 
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'referenceLibrary' },
     headers: {},
@@ -3118,7 +3116,7 @@ test('referenceLibrary applies English search and both facets before pagination 
   ]
   state.signedReferenceKeys = []
 
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: {
       action: 'referenceLibrary', scope: 'bench', query: 'biology',
@@ -3147,7 +3145,7 @@ test('referenceLibrary keeps legacy taskName and limit callers compatible', asyn
     visualCategory: '折线图', researchDomain: '综合研究', keywords: ['plot'],
     imageObjectKey: `references/bench/plot/${index}.jpg`, source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
   }))
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'referenceLibrary', taskName: 'plot', limit: 2 },
     headers: {},
@@ -3161,7 +3159,7 @@ test('referenceLibrary keeps legacy taskName and limit callers compatible', asyn
 
 test('referenceLibrary rejects malformed page and pageSize values with a stable 400 envelope', async () => {
   const legacy = await loadLegacy()
-  const context = (body: Record<string, unknown>) => legacy.default({
+  const context = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body: { action: 'referenceLibrary', ...body }, headers: {},
     response: { setHeader() {}, status() {} },
   })
@@ -3200,7 +3198,7 @@ test('referenceLibrary exact-ID mode queries only requested bench rows, preserve
   state.referenceFindQueries = []
   state.signedReferenceKeys = []
 
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'referenceLibrary', referenceIds: [' ref_9 ', 'ref_2'] },
     headers: {}, response: { setHeader() {}, status() {} },
@@ -3227,7 +3225,7 @@ test('referenceLibrary exact-ID mode rejects filters and malformed selections wi
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   state.referenceFindQueries = []
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body: { action: 'referenceLibrary', ...body }, headers: {},
     response: { setHeader() {}, status() {} },
   })
@@ -3258,7 +3256,7 @@ test('referenceLibrary exact-ID mode rejects scope with a stable 400 before quer
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   state.referenceFindQueries = []
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'referenceLibrary', referenceIds: ['ref_1'], scope: 'bench' },
     headers: {}, response: { setHeader() {}, status() {} },
@@ -3294,7 +3292,7 @@ test('referenceLibrary exact-ID mode returns a stable 422 when any requested ima
     source: 'paperbanana-bench', corpusVersion: 'zh-CN.v2',
   }]
   state.signedReferenceKeys = []
-  const result = await legacy.default({
+  const result = await invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'referenceLibrary', referenceIds: ['ref_no_image', 'ref_missing'] },
     headers: {}, response: { setHeader() {}, status() {} },
@@ -3439,7 +3437,7 @@ test('createJob returns a stable 4xx business error before admission for an unus
   state.referenceRows = []
   legacy.configureJobAdmission({ maxActive: 0, maxPending: 0, maxPerOwner: 1, maxPerIp: 1 })
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob',
@@ -3493,7 +3491,7 @@ test('OpenRouter vector image responses are rasterized before the PNG pipeline s
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3530,7 +3528,7 @@ test('OpenRouter paid-verified default image profiles expose all 34 routes as no
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelRegistry', provider: 'openrouter' },
       headers: {},
@@ -3576,7 +3574,7 @@ test('OpenRouter MAI 2.6 and Flash use documented PNG and exact Azure generation
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3747,7 +3745,7 @@ test('OpenRouter overrides Seedream 4.5 false 1K catalog metadata with its paid-
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3786,7 +3784,7 @@ test('OpenRouter disables Seedream 4.5 before dispatch when catalog drift offers
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3835,7 +3833,7 @@ test('OpenRouter omits incompatible image models while enabling an adapted norma
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'modelRegistry', provider: 'openrouter' },
       headers: {},
@@ -3887,7 +3885,7 @@ async function assertOpenRouterUnknownOutputFormatFailsClosed(model: Record<stri
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -3967,7 +3965,7 @@ test('OpenRouter GPT Image 2.5 is selectable from live schema without inventing 
     return Response.json({data:[{b64_json:onePixelPngBase64}]})
   })
   try {
-    const response=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    const response=await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
     for(const card of cards) {
       const model=response.providers.openrouter.models.find((m:any)=>m.id===card.id)
       assert.equal(model.selectable,true)
@@ -4011,7 +4009,7 @@ test('OpenRouter Image 2.5 native size never overrides an explicit or changed re
       return Response.json({data:[{b64_json:onePixelPngBase64}]})
     })
     try {
-      const registry=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+      const registry=await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
       const model=registry.providers.openrouter.models.find((entry:any)=>entry.id===card.id)
       assert.deepEqual(model.capabilities.refineResolutions,descriptor?.values || [])
       await assert.rejects(legacy.callImageModel('openrouter',card.id,'fixture-only','edit','16:9',`data:image/png;base64,${onePixelPngBase64}`,'auto',true),/no longer declares requested refinement resolution/)
@@ -4067,7 +4065,7 @@ test('OpenRouter image default stays recommended while exact paid-verified profi
     const context = (body: Record<string, any>) => ({
       request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
     })
-    const result = await legacy.default(context({ action: 'modelRegistry', provider: 'openrouter' }))
+    const result = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'openrouter' }))
     const models = new Map<string, any>(result.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     const imageDefault = result.providers.openrouter.defaults.image
     assert.equal(imageDefault, 'sourceful/riverflow-v2.5-pro')
@@ -4081,7 +4079,7 @@ test('OpenRouter image default stays recommended while exact paid-verified profi
     }
     assert.equal(models.get('sourceful/jpeg-only'), undefined)
 
-    const rejected = await legacy.default(context({
+    const rejected = await invokeTrusted(legacy, context({
       action: 'createJob', provider: 'openrouter', apiKeys: { openrouter: 'key' },
       methodContent: 'A sufficiently detailed method section for rejecting an incompatible image model.',
       caption: 'A valid caption.', mainModelName: 'openai/gpt-5.5', imageModelName: 'sourceful/jpeg-only',
@@ -4188,7 +4186,7 @@ test('refine prefers owned object bytes over a preview URL when both source fiel
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'refineImage',
@@ -4239,7 +4237,7 @@ test('owned refine outputs use the 20MiB provider-image cap instead of the 5MiB 
   const invoke = async (objectKey: string, bytes: Buffer) => {
     testState.deletedOwnerKeys = []
     testState.storedObjectBytes = { [objectKey]: bytes }
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'refineImage',
@@ -4274,8 +4272,8 @@ test('owned refine outputs use the 20MiB provider-image cap instead of the 5MiB 
 })
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const legacyPath = path.resolve(packageRoot, '../laf-functions/paperbanana-api.ts')
-const legacyBridgePath = path.resolve(packageRoot, 'src/legacy-entry.mjs')
+const legacyPath = path.resolve(packageRoot, 'runtime/handler.ts')
+const legacyBridgePath = path.resolve(packageRoot, 'src/core-entry.mjs')
 
 let legacyPromise: Promise<LegacyPolicyModule> | undefined
 
@@ -4291,14 +4289,14 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
         write: false,
         nodePaths: [path.resolve(packageRoot, 'node_modules')],
         plugins: [{
-          name: 'fake-laf-cloud',
+          name: 'fake-core-services',
           setup(builder) {
             builder.onResolve({ filter: /^sharp$/ }, () => ({ path: 'sharp', namespace: 'sharp-test' }))
             builder.onLoad({ filter: /.*/, namespace: 'sharp-test' }, () => ({
               loader: 'js',
               contents: 'export default globalThis.__paperbananaLegacySharp;',
             }))
-            builder.onResolve({ filter: /^@lafjs\/cloud$/ }, () => ({ path: 'fake-laf-cloud', namespace: 'fake' }))
+            builder.onResolve({ filter: /core-services\.(?:js|ts)$/ }, () => ({ path: 'fake-core-services', namespace: 'fake' }))
             builder.onLoad({ filter: /.*/, namespace: 'fake' }, () => ({
               loader: 'js',
               contents: `
@@ -4381,7 +4379,7 @@ async function loadLegacy(): Promise<LegacyPolicyModule> {
                   async listFiles() { return { Contents: [], IsTruncated: false } },
                   async deleteFile(key) { state.deletedObjects.push(key) }
                 };
-                export default { mongo: { db: { collection(name) { return collectionFor(name) } } }, storage: { bucket() { return bucket } } };
+                export const database = { collection(name) { return collectionFor(name) } }; export const objectStorage = { bucket() { return bucket } };
               `,
             }))
           },
@@ -4409,7 +4407,7 @@ test('public task detail and admin/user lists expose both normalized platform al
   ]
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
   process.env.ADMIN_TOKEN = 'test-admin'
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: { 'user-agent': 'Mobile client that must never be inferred' }, response: { setHeader() {}, status() {} },
   })
 
@@ -4458,7 +4456,7 @@ test('public task views expose negativePrompt alongside methodContent and captio
   }]
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'negative-gateway'
   process.env.ADMIN_TOKEN = 'negative-admin'
-  const invoke = (body: Record<string, unknown>) => legacy.default({
+  const invoke = (body: Record<string, unknown>) => invokeTrusted(legacy, {
     request: { method: 'POST' }, body, headers: {}, response: { setHeader() {}, status() {} },
   })
   try {
@@ -4485,7 +4483,7 @@ test('Harmony feedback is accepted while unknown feedback platforms remain rejec
   const previousGateway = process.env.PAPERBANANA_GATEWAY_TOKEN
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
   state.inserts.length = 0
-  const invoke = (platform: string) => legacy.default({
+  const invoke = (platform: string) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'submitFeedback', message: 'Harmony feedback contract', platform, gatewayToken: 'test-gateway' },
     headers: { 'x-real-ip': '203.0.113.30' },
@@ -4511,7 +4509,7 @@ test('invalid task platform is rejected without persistence and missing history 
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const insertCount = state.inserts.length
   for (const action of ['createJob', 'refineImage']) {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action, clientPlatform: 'desktop' },
       headers: { 'user-agent': 'Desktop UA must not become a platform' },
@@ -4553,7 +4551,7 @@ test('createJob trims and persists negativePrompt separately and counts it witho
   legacy.configureRuntimeFetch(async () => new Response('provider failed', { status: 400 }))
   const methodContent = 'A sufficiently detailed methodology that must remain byte-for-byte unchanged.'
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'openai', apiKeys: { openai: 'key' },
@@ -4589,7 +4587,7 @@ test('createJob rejects malformed and oversized negativePrompt before persistenc
     mainModelName: 'gpt-5.6-sol', imageModelName: 'gpt-image-2',
   }
   for (const negativePrompt of [42, 'x'.repeat(1001)]) {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { ...base, negativePrompt }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -4671,7 +4669,7 @@ test('public jobs expose stored routes and derive only complete legacy routing h
     },
   ]
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway'
-  const invoke = (jobId: string) => legacy.default({
+  const invoke = (jobId: string) => invokeTrusted(legacy, {
     request: { method: 'POST' },
     body: { action: 'getJob', jobId, gatewayToken: 'test-gateway' },
     headers: {},
@@ -4736,7 +4734,7 @@ test('persisted and public job errors and logs redact credential-bearing text', 
     },
   }, { status: 400 }))
   try {
-    const detail = await legacy.default({
+    const detail = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'getJob', jobId: 'secret-history', gatewayToken: 'test-gateway' },
       headers: {}, response: { setHeader() {}, status() {} },
@@ -4746,7 +4744,7 @@ test('persisted and public job errors and logs redact credential-bearing text', 
     assert.match(publicText, /visible/)
     assert.match(publicText, /REDACTED/)
 
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'openai', gatewayToken: 'test-gateway', apiKeys: { openai: 'request-secret' },
@@ -4839,9 +4837,9 @@ test('shared handler exports global admission lifecycle hooks for Node shutdown'
   assert.equal(typeof legacy.stopAccountDeletionSweep, 'function')
 })
 
-test('standalone Laf keeps immediate background admission until Node explicitly configures limits', () => {
+test('Core admission is bounded before the configured Node limits are installed', () => {
   const source = fs.readFileSync(legacyPath, 'utf8')
-  assert.match(source, /let jobAdmission = newGlobalJobAdmission\(\{\s*maxActive: Number\.MAX_SAFE_INTEGER,\s*maxPending: 0,\s*maxPerOwner: Number\.MAX_SAFE_INTEGER,\s*maxPerIp: Number\.MAX_SAFE_INTEGER,\s*\}\)/)
+  assert.match(source, /let jobAdmission = newGlobalJobAdmission\(\{\s*maxActive: 1,\s*maxPending: 2,\s*maxPerOwner: 1,\s*maxPerIp: 1,/)
 })
 
 test('job admission bounds active and FIFO pending work with stable saturation', async () => {
@@ -5021,7 +5019,7 @@ test('saturated legacy admission returns a 429 business envelope without inserti
   const previousFetch = globalThis.fetch
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-gateway-token'
   let resolveFetch!: (response: Response) => void
-  globalThis.fetch = async () => await new Promise<Response>((resolve) => { resolveFetch = resolve })
+  legacy.configureRuntimeFetch(async () => await new Promise<Response>((resolve) => { resolveFetch = resolve }))
   const context = (owner: string) => ({
     request: { method: 'POST' },
     headers: { 'x-real-ip': '203.0.113.10' },
@@ -5042,8 +5040,8 @@ test('saturated legacy admission returns a 429 business envelope without inserti
   })
 
   try {
-    const accepted = await legacy.default(context('owner-a'))
-    const rejected = await legacy.default(context('owner-b'))
+    const accepted = await invokeTrusted(legacy, context('owner-a'))
+    const rejected = await invokeTrusted(legacy, context('owner-b'))
     assert.equal(accepted.code, 0)
     assert.deepEqual(rejected, { code: 429, error: 'Job queue is full. Please try again later.' })
     assert.equal(testState.inserts.length, 1)
@@ -5053,6 +5051,7 @@ test('saturated legacy admission returns a 429 business envelope without inserti
     resolveFetch(new Response('provider failed', { status: 400 }))
     await legacy.drainJobAdmission()
   } finally {
+    legacy.configureRuntimeFetch()
     globalThis.fetch = previousFetch
     if (previousGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
     else process.env.PAPERBANANA_GATEWAY_TOKEN = previousGateway
@@ -5210,14 +5209,15 @@ test('strict object storage rejects result and stage writes instead of creating 
   }
 })
 
-test('legacy default retains the historical data URL fallback for rollback', async () => {
-  const legacy = await loadLegacy()
+test('an unset or false retired storage flag cannot enable database image writes', async () => {
+  const core = await loadLegacy()
   const previous = process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
-  delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
   try {
-    const result = await legacy.saveResult('job-1', 0, 'cG5n', 'image/png', 'base64')
-    assert.equal(result.storage, 'database-data-url')
-    assert.match(result.url, /^data:image\/png;base64,/)
+    for (const value of [undefined, 'false']) {
+      if (value === undefined) delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
+      else process.env.PAPERBANANA_STRICT_OBJECT_STORAGE = value
+      await assert.rejects(core.saveResult('job-1', 0, 'cG5n', 'image/png', 'base64'), /OSS write failed/)
+    }
   } finally {
     if (previous === undefined) delete process.env.PAPERBANANA_STRICT_OBJECT_STORAGE
     else process.env.PAPERBANANA_STRICT_OBJECT_STORAGE = previous
@@ -5272,7 +5272,7 @@ test('new and historical result DTOs expose the authoritative bucket object key'
     const saved = await legacy.saveResult('job-1', 0, 'cG5n', 'image/png', 'base64')
     assert.equal(saved.objectKey, 'job-1/candidate-0.png')
 
-    const detail = await legacy.default({
+    const detail = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: { action: 'getJob', jobId: 'historical-result-job', gatewayToken: 'test-gateway' },
       headers: {},
@@ -5322,7 +5322,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
   } as const
 
   for (const [provider, providerExpected] of Object.entries(expected)) {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -5369,7 +5369,7 @@ test('OpenRouter registry intersects declared ratios with the canonical set and 
     throw new Error(`unexpected request: ${url}`)
   })
   try {
-    const registry = await legacy.default({
+    const registry = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -5411,17 +5411,17 @@ test('invalid and unsupported ratios reject before account checks, credentials, 
     sourceImageObjectKey: 'owned/source.png', editInstruction: 'Make the labels clearer.', imageSize: '1K',
   }
   try {
-    assert.deepEqual(await legacy.default(context({ ...createBase, aspectRatio: '999:1' })), {
+    assert.deepEqual(await invokeTrusted(legacy, context({ ...createBase, aspectRatio: '999:1' })), {
       code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
     })
-    const unsupportedCreate = await legacy.default(context({ ...createBase, aspectRatio: '1:4' }))
+    const unsupportedCreate = await invokeTrusted(legacy, context({ ...createBase, aspectRatio: '1:4' }))
     assert.equal(unsupportedCreate.code, 400)
     assert.equal(unsupportedCreate.businessCode, 'ASPECT_RATIO_UNSUPPORTED')
 
-    assert.deepEqual(await legacy.default(context({ ...refineBase, aspectRatio: '999:1' })), {
+    assert.deepEqual(await invokeTrusted(legacy, context({ ...refineBase, aspectRatio: '999:1' })), {
       code: 400, error: 'Invalid aspectRatio', businessCode: 'INVALID_ASPECT_RATIO',
     })
-    const unsupportedRefine = await legacy.default(context({ ...refineBase, aspectRatio: '1:4' }))
+    const unsupportedRefine = await invokeTrusted(legacy, context({ ...refineBase, aspectRatio: '1:4' }))
     assert.equal(unsupportedRefine.code, 400)
     assert.equal(unsupportedRefine.businessCode, 'REFINE_ASPECT_RATIO_UNSUPPORTED')
 
@@ -5444,7 +5444,7 @@ test('unsupported create ratio rejects before manual-reference database lookup',
   state.referenceRows = []
   state.referenceFindQueries = []
   try {
-    const result = await legacy.default({
+    const result = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'openai', apiKeys: {}, aspectRatio: '1:4',
@@ -5474,7 +5474,7 @@ test('non-image create routes keep canonical fixed ratios and public jobs preser
   delete process.env.PAPERBANANA_GATEWAY_TOKEN
   legacy.configureRuntimeFetch(async () => Response.json({ choices: [{ message: { content: '<svg xmlns="http://www.w3.org/2000/svg"></svg>' } }] }))
   try {
-    const queued = await legacy.default({
+    const queued = await invokeTrusted(legacy, {
       request: { method: 'POST' },
       body: {
         action: 'createJob', provider: 'openai', apiKeys: { openai: 'key' }, aspectRatio: '4:1',
@@ -5490,7 +5490,7 @@ test('non-image create routes keep canonical fixed ratios and public jobs preser
 
     state.jobRows = [{ _id: 'auto-ratio', status: 'succeeded', aspectRatio: 'auto', resultImages: [], stages: [] }]
     process.env.PAPERBANANA_GATEWAY_TOKEN = 'ratio-gateway'
-    const detail = await legacy.default({
+    const detail = await invokeTrusted(legacy, {
       request: { method: 'POST' }, body: { action: 'getJob', jobId: 'auto-ratio', gatewayToken: 'ratio-gateway' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
@@ -5677,7 +5677,7 @@ test('input optimization gives each target conservative instructions and all thr
   })
   try {
     for (const target of ['methodContent', 'caption', 'negativePrompt'] as const) {
-      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ target })))
+      const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({ target })))
       assert.deepEqual(result, { code: 0, target, optimizedText: outputs[target] })
     }
   } finally {
@@ -5732,7 +5732,7 @@ test('input optimization dispatches each exact authoritative main route once wit
         return inputOptimizationChatResponse('A clearer encoder method.')
       })
 
-      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+      const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({
         mainRoute: { accessProvider: fixture.provider, modelId: fixture.modelId },
       })))
       assert.deepEqual(result, { code: 0, target: 'methodContent', optimizedText: 'A clearer encoder method.' })
@@ -5773,7 +5773,7 @@ test('input optimization rejects malformed, empty, and oversized inputs before i
   ]
   try {
     for (const body of invalidBodies) {
-      const result = await legacy.default(inputOptimizationContext(body))
+      const result = await invokeTrusted(legacy, inputOptimizationContext(body))
       assert.equal(result.code, 400)
       assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_REQUEST_INVALID')
       assert.equal(result.error, 'Invalid input optimization request.')
@@ -5805,7 +5805,7 @@ test('input optimization rejects non-main, non-selectable, unknown, and malforme
   ]
   try {
     for (const mainRoute of routes) {
-      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ mainRoute })))
+      const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({ mainRoute })))
       assert.equal(result.code, 400)
       assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_ROUTE_INVALID')
       assert.equal(result.error, 'Invalid input optimization route.')
@@ -5829,7 +5829,7 @@ test('input optimization requires one non-empty singular API key before inferenc
   })
   try {
     for (const apiKey of [undefined, null, 1, '', '   ']) {
-      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({ apiKey })))
+      const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({ apiKey })))
       assert.equal(result.code, 400)
       assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_KEY_REQUIRED')
       assert.equal(result.error, 'Input optimization API key is required.')
@@ -5851,7 +5851,7 @@ test('input optimization preserves scientific tokens byte-for-byte and rejects d
   let output = preserved
   legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
   try {
-    const success = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+    const success = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({
       inputs: { methodContent: original, caption: 'Overview.', negativePrompt: '' },
     })))
     assert.deepEqual(success, { code: 0, target: 'methodContent', optimizedText: preserved })
@@ -5867,7 +5867,7 @@ test('input optimization preserves scientific tokens byte-for-byte and rejects d
     ]
     for (const drifted of drifts) {
       output = drifted
-      const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+      const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({
         inputs: { methodContent: original, caption: 'Overview.', negativePrompt: '' },
       })))
       assert.equal(result.code, 422)
@@ -5889,7 +5889,7 @@ test('input optimization preserves URL and DOI tokens without freezing surroundi
   const output = 'See https://example.org/paper; DOI 10.1000/xyz-123 remains the source.'
   legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
   try {
-    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody({
+    const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody({
       inputs: { methodContent: original, caption: 'Source overview.', negativePrompt: '' },
     })))
     assert.deepEqual(result, { code: 0, target: 'methodContent', optimizedText: output })
@@ -5908,18 +5908,18 @@ test('input optimization rejects empty, unchanged, and oversized provider candid
   legacy.configureRuntimeFetch(async () => inputOptimizationChatResponse(output))
   try {
     output = '   '
-    const empty = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const empty = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.equal(empty.code, 422)
     assert.equal(empty.businessCode, 'INPUT_OPTIMIZATION_RESULT_INVALID')
 
     output = '  The encoder processes the input.  '
-    const unchanged = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const unchanged = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.equal(unchanged.code, 422)
     assert.equal(unchanged.businessCode, 'INPUT_OPTIMIZATION_NO_CHANGE')
     assert.equal(unchanged.error, 'Input optimization returned no change.')
 
     output = 'm'.repeat(12_001)
-    const oversized = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const oversized = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.equal(oversized.code, 422)
     assert.equal(oversized.businessCode, 'INPUT_OPTIMIZATION_RESULT_INVALID')
   } finally {
@@ -5940,7 +5940,7 @@ test('input optimization maps one network rejection to a stable redacted provide
     throw new Error(providerSecret)
   })
   try {
-    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.deepEqual(result, {
       code: 502,
       error: 'Input optimization provider request failed.',
@@ -5967,7 +5967,7 @@ test('input optimization maps one abort rejection to a stable redacted timeout',
     throw new DOMException(`timeout ${inputOptimizationApiKey} https://internal.invalid/timeout`, 'AbortError')
   })
   try {
-    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.deepEqual(result, {
       code: 504,
       error: 'Input optimization provider timed out.',
@@ -5993,7 +5993,7 @@ test('input optimization hides a non-2xx provider response body after one infere
     return Response.json({ error: { message: `raw ${inputOptimizationApiKey} https://internal.invalid/body` } }, { status: 500 })
   })
   try {
-    const result = await legacy.default(inputOptimizationContext(inputOptimizationBody()))
+    const result = await invokeTrusted(legacy, inputOptimizationContext(inputOptimizationBody()))
     assert.equal(result.code, 502)
     assert.equal(result.businessCode, 'INPUT_OPTIMIZATION_PROVIDER_FAILED')
     assert.equal(inferenceCalls, 1)
@@ -6026,7 +6026,7 @@ test('new native providers expose only documented roles and preserve exact model
   const legacy = await loadLegacy()
   legacy.configureRuntimeFetch(async () => { throw new Error('Catalog must not invoke a provider') })
   for (const provider of ['deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai']) {
-    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, response: { setHeader() {}, status() {} } })
+    const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, response: { setHeader() {}, status() {} } })
     assert.equal(result.code, 0)
     const registry = result.providers[provider]
     assert.ok(registry.models.length)
@@ -6161,7 +6161,7 @@ test('Recraft native SVG requires its own image key and rejects unsafe or non-ve
   const roles = legacy.requiredCreateRouteRoles({ outputFormat: 'svg', taskName: 'diagram', modelRoutes: routes }, 0)
   assert.deepEqual(roles, ['main', 'image'])
   assert.deepEqual(legacy.selectRequiredRouteSecrets(routes, { deepseek: 'main-key', recraft: 'image-key', kimi: 'unused' }, roles), { deepseek: 'main-key', recraft: 'image-key' })
-  const missingKey = await legacy.default({ request: { method: 'POST' }, body: { action: 'createJob', provider: 'deepseek', modelRoutes: routes, configurationMode: 'advanced', apiKeys: { deepseek: 'main-key' }, methodContent: 'A detailed method for the experimental workflow figure.', caption: 'Workflow', outputFormat: 'svg', maxCriticRounds: 0, retrievalSetting: 'none' }, response: { setHeader() {}, status() {} } })
+  const missingKey = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'createJob', provider: 'deepseek', modelRoutes: routes, configurationMode: 'advanced', apiKeys: { deepseek: 'main-key' }, methodContent: 'A detailed method for the experimental workflow figure.', caption: 'Workflow', outputFormat: 'svg', maxCriticRounds: 0, retrievalSetting: 'none' }, response: { setHeader() {}, status() {} } })
   assert.equal(missingKey.code, 400)
   assert.match(missingKey.error, /Missing API key for provider recraft/)
   let output = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><path d="M0 0L64 64"/></svg>'
@@ -6200,7 +6200,7 @@ test('Recraft SVG jobs execute the image route, preserve SVG assets and never pe
   try {
     for (const pipelineMode of ['planner_critic', 'vanilla']) {
       calls.length = 0
-      const result = await legacy.default({ request: { method: 'POST' }, body: {
+      const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: {
         action: 'createJob', userId: 'native-vector-owner', provider: 'deepseek', modelRoutes: routes, configurationMode: 'advanced',
         apiKeys: pipelineMode === 'vanilla' ? { recraft: 'rc-secret' } : { deepseek: 'ds-secret', recraft: 'rc-secret', kimi: 'unused-secret' },
         methodContent: 'A detailed method for the experimental workflow figure.', caption: 'Workflow',
@@ -6283,7 +6283,7 @@ test('catalog repair: every selectable static main and vision model dispatches i
   const legacy = await loadLegacy()
   const catalogs: Array<{ provider: string; model: any }> = []
   for (const provider of ['deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'xai', 'gemini', 'bailian', 'openai', 'ark']) {
-    const r = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
+    const r = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
     for (const model of r.providers[provider].models) if (model.selectable) catalogs.push({ provider, model })
   }
   let current: any
@@ -6333,7 +6333,7 @@ test('catalog repair: OpenRouter unions text and image roles, preserves dates an
     throw new Error(`unexpected URL ${input}`)
   })
   try {
-    const r = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
+    const r = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
     const models = new Map<string, any>(r.providers.openrouter.models.map((m: any) => [m.id, m]))
     const dual = models.get(ids[0])
     assert.deepEqual(dual.roles, ['main', 'vision', 'image'])
@@ -6374,7 +6374,7 @@ test('catalog repair: every native image model dispatches generation or edit wit
   const legacy = await loadLegacy()
   const catalogs: Array<{ provider: string; model: any }> = []
   for (const provider of ['zhipu', 'siliconflow', 'recraft', 'xai', 'bailian']) {
-    const r = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
+    const r = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
     for (const model of r.providers[provider].models) if (model.selectable && model.roles.includes('image')) catalogs.push({ provider, model })
   }
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
@@ -6556,7 +6556,7 @@ test('channel extensions: runtime dispatches every new selectable image option u
   let combinations=0
   try {
     for(const provider of Object.keys(extensions)) {
-      const registry=await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider},headers:{},response:{setHeader(){},status(){}}})
+      const registry=await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'modelRegistry',provider},headers:{},response:{setHeader(){},status(){}}})
       assert.equal(registry.code,0,provider)
       for(const model of registry.providers[provider].models) {
         if(!model.selectable)continue
@@ -6620,7 +6620,7 @@ test('Bailian scheduled retirement follows the official Beijing midnight boundar
   const legacy = await loadLegacy()
   const now = Date.now
   const inspect = async () => {
-    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'bailian' }, headers: {}, response: { setHeader() {}, status() {} } })
+    const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'bailian' }, headers: {}, response: { setHeader() {}, status() {} } })
     return result.providers.bailian.models.find((model: any) => model.id === 'qwen-turbo')
   }
   try {
@@ -6687,7 +6687,7 @@ test('reviewed OpenRouter public catalog accounts for every model at its snapsho
     return Response.json({ data: [{ b64_json: onePixelPngBase64 }] })
   })
   try {
-    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
+    const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
     assert.equal(result.code, 0)
     const registry = result.providers.openrouter
     const expected = new Set([...snapshot.text, ...snapshot.images].map((model: any) => model.id))
@@ -6725,7 +6725,7 @@ test('per-resolution combinations reject before account lookup, credentials or p
   legacy.configureRuntimeFetch(async () => { calls++; throw new Error('unexpected dispatch') })
   const shared = { provider:'openai',configurationMode:'advanced', userId:'fixture-owner', apiKeys:{}, imageSize:'1K', aspectRatio:'9:22',
     modelRoutes: { main:{accessProvider:'openai',modelId:'gpt-5.6-sol'}, image:{accessProvider:'ideogram',modelId:'ideogram-v4'}, vision:{accessProvider:'openai',modelId:'gpt-5.6-sol'} } }
-  const invoke = (body:any) => legacy.default({request:{method:'POST'},body,headers:{},response:{setHeader(){},status(){}}})
+  const invoke = (body:any) => invokeTrusted(legacy, {request:{method:'POST'},body,headers:{},response:{setHeader(){},status(){}}})
   try {
     const create = await invoke({...shared, action:'createJob',methodContent:'A sufficiently detailed method section for image size validation.',caption:'A scientific diagram.',outputFormat:'png',pipelineMode:'vanilla'})
     const refine = await invoke({...shared, action:'refineImage',sourceImageObjectKey:'owned/fixture.png',editInstruction:'Improve the labels.'})
@@ -6750,7 +6750,7 @@ test('refine admission preserves 512 and native-size requests through persistenc
   })
   try {
     for(const [provider,model,imageSize] of [['gemini','gemini-3.1-flash-image','512'],['recraft','recraftv4_1','auto']]) {
-      const result=await legacy.default({request:{method:'POST'},body:{action:'refineImage',provider:'openai',configurationMode:'advanced',apiKeys:{[provider]:'fixture-only'},aspectRatio:'auto',imageSize,sourceImageObjectKey:'owned/size-fixture.png',editInstruction:'Improve label clarity.',modelRoutes:{main:{accessProvider:'openai',modelId:'gpt-5.6-sol'},image:{accessProvider:provider,modelId:model},vision:{accessProvider:'openai',modelId:'gpt-5.6-sol'}}},headers:{},response:{setHeader(){},status(){}}})
+      const result=await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'refineImage',provider:'openai',configurationMode:'advanced',apiKeys:{[provider]:'fixture-only'},aspectRatio:'auto',imageSize,sourceImageObjectKey:'owned/size-fixture.png',editInstruction:'Improve label clarity.',modelRoutes:{main:{accessProvider:'openai',modelId:'gpt-5.6-sol'},image:{accessProvider:provider,modelId:model},vision:{accessProvider:'openai',modelId:'gpt-5.6-sol'}}},headers:{},response:{setHeader(){},status(){}}})
       assert.equal(result.code,0,JSON.stringify(result));await legacy.drainJobAdmission()
       assert.equal(state.inserts.at(-1).imageSize,imageSize)
     }
@@ -6799,7 +6799,7 @@ test('September retirement retains exact defaults and identities but refuses tra
       ['deepseek', ['deepseek-v4-flash', 'deepseek-v4-flash-vision-exp']],
       ['siliconflow', ['nex-agi/Nex-N2-Pro', 'Qwen/Qwen3.5-397B-A17B', 'MiniMaxAI/MiniMax-M2.5', 'Pro/MiniMaxAI/MiniMax-M2.5']],
     ] as const) {
-      const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
+      const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {}, response: { setHeader() {}, status() {} } })
       if (provider === 'deepseek') {
         assert.equal(result.providers.deepseek.defaults.vision, 'deepseek-v4-flash-vision-exp')
         assert.equal(result.providers.deepseek.models.find((m:any) => m.id === 'deepseek-v4-pro').selectable, true)
@@ -6825,7 +6825,7 @@ test('OpenRouter Batch variants are excluded from synchronous roles without chan
     ] })
   })
   try {
-    const result = await legacy.default({ request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
+    const result = await invokeTrusted(legacy, { request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {}, response: { setHeader() {}, status() {} } })
     const models = result.providers.openrouter.models
     assert.deepEqual(models.find((m:any) => m.id === 'fixture/live').roles, ['main','vision'])
     assert.equal(models.some((m:any) => m.id.endsWith(':batch')), false)
@@ -6842,7 +6842,7 @@ test('September OpenRouter discovery maps all 21 new synchronous IDs using chann
     return Response.json({data: String(url).includes('/images/') ? [] : latest.newModels})
   })
   try {
-    const result = await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    const result = await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
     const expected = latest.newModels.filter((m:any) => !m.id.endsWith(':batch'))
     assert.equal(expected.length, 21)
     assert.deepEqual(new Set(result.providers.openrouter.models.map((m:any) => m.id)), new Set(expected.map((m:any) => m.id)))
@@ -6869,7 +6869,7 @@ test('live modelRegistry preserves OpenRouter canonical versions without substit
     return new Response(JSON.stringify({data:rows.map(m=>({...m,architecture:{input_modalities:['text'],output_modalities:[imageCatalog?'image':'text']}}))}), {status:200})
   })
   try {
-    const result = await legacy.default({request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
+    const result = await invokeTrusted(legacy, {request:{method:'POST'},body:{action:'modelRegistry',provider:'openrouter'},headers:{},response:{setHeader(){},status(){}}})
     assert.equal(result.code,0)
     assert.equal(result.providers.openrouter.models.find((m:any)=>m.id==='google/gemini-3.1-flash-image').version.id,'', 'a text canonical slug cannot prove a dedicated image endpoint version')
     const models=result.providers.openrouter.models
@@ -6924,4 +6924,19 @@ test('v24 retired xAI identities cannot silently execute a redirected replacemen
     }
     assert.equal(calls,0)
   }finally{legacy.configureRuntimeFetch()}
+})
+
+test('Core identity actions fail closed with missing configuration or forged credentials', async () => {
+  const core = await loadLegacy()
+  const previous = process.env.PAPERBANANA_GATEWAY_TOKEN
+  const ctx = { request: { method: 'POST' }, body: { action: 'getJob', jobId: 'must-not-be-read', gatewayToken: 'forged' }, headers: {}, response: { setHeader() {}, status() {} } }
+  try {
+    delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    assert.equal((await core.default(ctx)).code, 503)
+    process.env.PAPERBANANA_GATEWAY_TOKEN = 'test-server-secret'
+    assert.equal((await core.default(ctx)).code, 401)
+  } finally {
+    if (previous === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN
+    else process.env.PAPERBANANA_GATEWAY_TOKEN = previous
+  }
 })

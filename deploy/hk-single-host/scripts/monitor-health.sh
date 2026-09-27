@@ -41,8 +41,6 @@ check_json_endpoint "API health" "https://api.paperbanana.asia/health" \
 check_json_endpoint "API readiness" "https://api.paperbanana.asia/ready" \
   '.ok == true and .runtime == "gateway" and .backend.ok == true and .backend.data.ready == true and
    (.backend.data.dependencies.providerEgress == "ready" or .backend.data.dependencies.providerEgress == "degraded")'
-check_json_endpoint "Legacy compatibility proxy" "https://yifbnnzrwmxn.sealoshzh.site/health" \
-  '.ok == true and .runtime == "gateway" and .backend.ok == true'
 
 for container_name in \
   paperbanana-hk-auth-gateway-1 \

@@ -2,7 +2,7 @@ const assert = require('node:assert/strict')
 const fs = require('node:fs')
 const path = require('node:path')
 
-const source = fs.readFileSync(path.resolve(__dirname, '../paperbanana-api.ts'), 'utf8')
+const source = fs.readFileSync(path.resolve(__dirname, '../../runtime/handler.ts'), 'utf8')
 
 assert.match(source, /methodContent\.trim\(\)\.length > 12000/)
 assert.match(source, /methodContent exceeds 12000 characters/)

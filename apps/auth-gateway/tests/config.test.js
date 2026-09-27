@@ -20,7 +20,7 @@ function validEnv(overrides = {}) {
 test('requires an explicit backend URL', () => {
   assert.throws(
     () => loadGatewayConfig(validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: '' })),
-    /PAPERBANANA_API_URL or LAF_API_URL is required/,
+    /PAPERBANANA_API_URL is required/,
   );
 });
 
@@ -31,13 +31,8 @@ test('prefers the Node API when both backend URLs are configured', () => {
   assert.equal(config.backend.url, 'http://paperbanana-api:3006/paperbanana-api');
 });
 
-test('uses Laf only as an explicit rollback backend', () => {
-  const config = loadGatewayConfig(
-    validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: 'https://legacy.example/paperbanana-api' }),
-  );
-
-  assert.equal(config.backend.mode, 'laf');
-  assert.equal(config.backend.url, 'https://legacy.example/paperbanana-api');
+test('retired backend URL cannot replace the required Node API', () => {
+  assert.throws(() => loadGatewayConfig(validEnv({ PAPERBANANA_API_URL: '', LAF_API_URL: 'https://retired.example/api' })), /PAPERBANANA_API_URL is required/);
 });
 
 test('rejects a missing shared gateway token', () => {

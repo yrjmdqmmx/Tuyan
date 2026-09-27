@@ -2,19 +2,19 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const sourcePath = path.resolve(__dirname, '../paperbanana-api.ts');
+const sourcePath = path.resolve(__dirname, '../../runtime/handler.ts');
 const source = fs.readFileSync(sourcePath, 'utf8');
 
-// The public Laf endpoint must enforce the auth-gateway trust boundary so that
+// The internal Core handler must enforce the auth-gateway trust boundary so that
 // direct callers cannot read/write another user's data with a forged userId.
 assert.ok(
   source.includes('PAPERBANANA_GATEWAY_TOKEN'),
-  'Laf backend must validate the shared PAPERBANANA_GATEWAY_TOKEN.',
+  'Core handler must validate the shared PAPERBANANA_GATEWAY_TOKEN.',
 );
 
 assert.ok(
   source.includes('function requireTrustedCaller'),
-  'Laf backend must define requireTrustedCaller as the gateway/IDOR guard.',
+  'Core handler must define requireTrustedCaller as the gateway/IDOR guard.',
 );
 
 assert.ok(
@@ -45,11 +45,11 @@ assert.ok(
   'Dispatch must reject identity-scoped actions that fail requireTrustedCaller.',
 );
 
-const clientIpMatch = source.match(/function getClientIp\(ctx: FunctionContext\) \{([\s\S]*?)\n\}/);
+const clientIpMatch = source.match(/function getClientIp\(ctx: CoreContext\) \{([\s\S]*?)\n\}/);
 assert.ok(clientIpMatch, 'getClientIp must exist.');
 assert.ok(
   clientIpMatch[1].includes("ctx.headers?.['x-paperbanana-client-ip']"),
-  'Laf compatibility must accept the gateway-authenticated client IP header.',
+  'Core transport must accept the gateway-authenticated client IP header.',
 );
 assert.ok(
   clientIpMatch[1].indexOf("ctx.headers?.['x-paperbanana-client-ip']") <

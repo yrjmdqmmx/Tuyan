@@ -94,12 +94,12 @@ await db.collection('local_uploads').createIndex({ expiresAt: 1 }, { expireAfter
 globalThis.__tuyanLocalCloud = { mongo: { db }, storage: { bucket: () => bucket } };
 globalThis.__tuyanLocalSharp = sharp;
 const bundle = await build({
-  entryPoints: [path.join(root, 'apps/paperbanana-api/src/legacy-entry.mjs')],
+  entryPoints: [path.join(root, 'apps/paperbanana-api/src/core-entry.mjs')],
   bundle: true, format: 'esm', platform: 'node', write: false,
   nodePaths: [path.join(root, 'apps/paperbanana-api/node_modules')],
   plugins: [{ name: 'local-persistent-storage', setup(builder) {
-    builder.onResolve({ filter: /^(@lafjs\/cloud|sharp)$/ }, args => ({ path: args.path, namespace: 'local-runtime' }));
-    builder.onLoad({ filter: /.*/, namespace: 'local-runtime' }, args => ({ loader: 'js', contents: 'export default globalThis.' + (args.path === 'sharp' ? '__tuyanLocalSharp' : '__tuyanLocalCloud') }));
+    builder.onResolve({ filter: /(?:core-services\.(?:js|ts)|^sharp)$/ }, args => ({ path: args.path, namespace: 'local-runtime' }));
+    builder.onLoad({ filter: /.*/, namespace: 'local-runtime' }, args => ({ loader: 'js', contents: args.path === 'sharp' ? 'export default globalThis.__tuyanLocalSharp' : 'export const database=globalThis.__tuyanLocalCloud.mongo.db; export const objectStorage=globalThis.__tuyanLocalCloud.storage;' }));
   } }],
 });
 const legacy = await import('data:text/javascript;base64,' + Buffer.from(bundle.outputFiles[0].text).toString('base64'));
@@ -162,7 +162,7 @@ api.get('/objects/*key', async (req, res) => {
 });
 api.use(createGateway({ config, auth, backend, isMaintenance: () => false, logger }));
 const server = http.createServer(api); server.listen(8791, '127.0.0.1'); await once(server, 'listening');
-Object.assign(process.env, { VITE_API_BASE: apiBase, VITE_AUTH_BASE: apiBase, VITE_BACKEND_MODE: 'gateway', VITE_AUTH_ENABLED: 'true', VITE_AUTH_REQUIRED: 'true', VITE_ALLOW_CUSTOM_API_BASE: 'true', VITE_LOCAL_CONSUMPTION_TEST: 'true' });
+Object.assign(process.env, { VITE_API_BASE: apiBase, VITE_AUTH_BASE: apiBase, VITE_AUTH_ENABLED: 'true', VITE_AUTH_REQUIRED: 'true', VITE_ALLOW_CUSTOM_API_BASE: 'true', VITE_LOCAL_CONSUMPTION_TEST: 'true' });
 const vite = await createVite({ root: path.join(root, 'apps/web'), server: { host: '127.0.0.1', port: 5173, strictPort: true }, logLevel: 'error' });
 await vite.listen();
 console.log('TokenDance real-consumption local preview ready: ' + webBase);

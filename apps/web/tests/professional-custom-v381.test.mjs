@@ -23,7 +23,7 @@ for(const role of ['main','vision','image'])test(`restored custom ${role} preser
 })
 test('legacy restoration, two modes, per-role channel changes, draft/key retention and explicit save survive remount',async()=>{
  saveUniversalDrafts(drafts());const requests=[]
- globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'laf'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,thinkingContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
+ globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,thinkingContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}))
  assert.equal(within(screen.getByRole('group',{name:'使用模式'})).getAllByRole('button').length,2)
@@ -47,7 +47,7 @@ test('legacy restoration, two modes, per-role channel changes, draft/key retenti
 })
 test('input optimization validates the custom main key and sends only its bound credential',async()=>{
  saveUniversalDrafts(drafts());const requests=[]
- globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'laf'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,inputOptimizationContractVersion:1,providers:STATIC_MODEL_REGISTRY}:b.action==='optimizeInputs'?{code:0,target:b.target,optimizedText:'优化后的科学描述'}:{code:0,jobs:[],references:[]})}
+ globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;requests.push(b);return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,inputOptimizationContractVersion:1,providers:STATIC_MODEL_REGISTRY}:b.action==='optimizeInputs'?{code:0,target:b.target,optimizedText:'优化后的科学描述'}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
  fireEvent.click(screen.getByRole('button',{name:'优化输入：方法栏'}))
  assert.equal(requests.some(x=>x?.action==='optimizeInputs'),false)

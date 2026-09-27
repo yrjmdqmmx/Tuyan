@@ -1,7 +1,5 @@
 import { fetchJson } from './client.js';
 
-const META_ENV = import.meta.env || {};
-const BACKEND_MODE = META_ENV.VITE_BACKEND_MODE || '';
 const CLIENT_PLATFORM = 'web';
 const CLIENT_PLATFORM_LABELS = Object.freeze({
   web: 'Web 网页',
@@ -14,226 +12,165 @@ const CLIENT_PLATFORM_LABELS = Object.freeze({
 });
 
 export async function fetchBackendHealth(apiBase) {
-  const candidates = BACKEND_MODE === 'gateway'
-    ? [{ mode: 'gateway', url: lafEndpoint(apiBase) }]
-    : lafEndpoint(apiBase) === apiBase
-    ? [{ mode: 'laf', url: apiBase }]
-    : [
-        { mode: 'laf', url: lafEndpoint(apiBase) },
-        { mode: 'fastapi', url: `${apiBase}/api/health` },
-      ];
-
-  let lastError = null;
-  for (const candidate of candidates) {
-    try {
-      const data = await fetchJson(candidate.url);
-      if (candidate.mode === 'laf' && data.runtime !== 'laf') throw new Error('当前地址不是 Laf 后端');
-      if (candidate.mode === 'gateway' && data.runtime !== 'gateway') throw new Error('当前地址不是认证网关');
-      if (candidate.mode === 'fastapi' && !data.ok) throw new Error('当前地址不是 FastAPI 后端');
-      return { ...data, backendMode: candidate.mode };
-    } catch (err) {
-      lastError = err;
-    }
-  }
-  throw lastError || new Error('后端暂时不可用');
+  const data = await fetchJson(apiEndpoint(apiBase));
+  if (data.runtime !== 'gateway') throw new Error('当前地址不是图研认证网关');
+  return { ...data, backendMode: 'gateway' };
 }
 
 export async function createJobRequest(apiBase, health, payload) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'createJob',
-        clientPlatform: CLIENT_PLATFORM,
-        configurationMode: payload.configurationMode,
-        provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
-        apiKeys: payload.apiKeys,
-        modelRoutes: payload.modelRoutes,
-        thinkingConfig: payload.thinkingConfig,
-        providerRegions: payload.providerRegions,
-        taskName: payload.taskName,
-        methodContent: payload.methodContent,
-        negativePrompt: payload.negativePrompt,
-        caption: payload.caption,
-        infographicCategory: payload.infographicCategory,
-        outputFormat: payload.outputFormat,
-        imageSize: payload.imageSize,
-        mainModelName: payload.mainModelName,
-        imageModelName: payload.imageGenModelName,
-        referenceVisionModelName: payload.referenceVisionModelName,
-        referenceImageMode: payload.referenceImageMode,
-        referenceImages: payload.referenceImages || [],
-        pipelineMode: toLafPipeline(payload.pipelineMode),
-        retrievalSetting: payload.retrievalSetting,
-        manualReferenceIds: payload.manualReferenceIds || [],
-        aspectRatio: payload.aspectRatio,
-        numCandidates: payload.numCandidates,
-        maxCriticRounds: payload.maxCriticRounds,
-      }),
-    });
-    return { id: data.jobId, status: data.status };
-  }
-
-  return fetchJson(`${apiBase}/api/jobs`, {
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      action: 'createJob',
       clientPlatform: CLIENT_PLATFORM,
-      provider: payload.provider,
-      configuration_mode: payload.configurationMode,
-      api_keys: payload.apiKeys,
-      task_name: payload.taskName,
-      method_content: payload.methodContent,
-      negative_prompt: payload.negativePrompt,
+      configurationMode: payload.configurationMode,
+      provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
+      apiKeys: payload.apiKeys,
+      modelRoutes: payload.modelRoutes,
+      thinkingConfig: payload.thinkingConfig,
+      providerRegions: payload.providerRegions,
+      taskName: payload.taskName,
+      methodContent: payload.methodContent,
+      negativePrompt: payload.negativePrompt,
       caption: payload.caption,
-      infographic_category: payload.infographicCategory,
-      output_format: payload.outputFormat,
-      image_size: payload.imageSize,
-      main_model_name: payload.mainModelName,
-      image_gen_model_name: payload.imageGenModelName,
-      reference_vision_model_name: payload.referenceVisionModelName,
-      reference_image_mode: payload.referenceImageMode,
-      reference_images: payload.referenceImages || [],
-      pipeline_mode: payload.pipelineMode,
-      retrieval_setting: payload.retrievalSetting,
-      aspect_ratio: payload.aspectRatio,
-      num_candidates: payload.numCandidates,
-      max_critic_rounds: payload.maxCriticRounds,
-      mock: payload.mock,
+      infographicCategory: payload.infographicCategory,
+      outputFormat: payload.outputFormat,
+      imageSize: payload.imageSize,
+      mainModelName: payload.mainModelName,
+      imageModelName: payload.imageGenModelName,
+      referenceVisionModelName: payload.referenceVisionModelName,
+      referenceImageMode: payload.referenceImageMode,
+      referenceImages: payload.referenceImages || [],
+      pipelineMode: toCorePipeline(payload.pipelineMode),
+      retrievalSetting: payload.retrievalSetting,
+      manualReferenceIds: payload.manualReferenceIds || [],
+      aspectRatio: payload.aspectRatio,
+      numCandidates: payload.numCandidates,
+      maxCriticRounds: payload.maxCriticRounds,
     }),
   });
+  return { id: data.jobId, status: data.status };
 }
 
 export async function referenceLibraryRequest(apiBase, health, opts = {}) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    if (opts.referenceIds !== undefined) {
-      const incompatibleFields = ['scope', 'limit'].filter((field) => opts[field] !== undefined);
-      if (incompatibleFields.length) {
-        throw new Error(`referenceIds cannot be combined with ${incompatibleFields.join(', ')}`);
-      }
+  assertGatewayBackend(health);
+  if (opts.referenceIds !== undefined) {
+    const incompatibleFields = ['scope', 'limit'].filter((field) => opts[field] !== undefined);
+    if (incompatibleFields.length) {
+      throw new Error(`referenceIds cannot be combined with ${incompatibleFields.join(', ')}`);
     }
-    const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain', 'referenceIds']
-      .some((field) => opts[field] !== undefined);
-    const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
-    const paginatedRequest = !legacyRequest;
-    const requestBody = paginatedRequest
-      ? {
-          action: 'referenceLibrary',
-          ...(opts.scope ? { scope: opts.scope } : {}),
-          ...(opts.page !== undefined ? { page: opts.page } : {}),
-          ...(opts.pageSize !== undefined ? { pageSize: opts.pageSize } : {}),
-          ...(opts.query !== undefined ? { query: opts.query || '' } : {}),
-          ...(opts.visualCategory ? { visualCategory: opts.visualCategory } : {}),
-          ...(opts.researchDomain ? { researchDomain: opts.researchDomain } : {}),
-          ...(opts.taskName ? { taskName: opts.taskName } : {}),
-          ...(opts.referenceIds !== undefined ? { referenceIds: opts.referenceIds } : {}),
-        }
-      : {
-          action: 'referenceLibrary',
-          taskName: opts.taskName || 'diagram',
-          query: opts.query || '',
-          limit: opts.limit || 24,
-        };
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody),
-      signal: opts.signal,
-    });
-    const references = (data.references || []).map(normalizeRetrievedReference);
-    const pageSize = positiveInteger(data.pageSize)
-      || positiveInteger(paginatedRequest ? opts.pageSize : opts.limit)
-      || 12;
-    const totalItems = nonNegativeInteger(data.totalItems, references.length);
-    return {
-      references,
-      totalItems,
-      totalPages: positiveInteger(data.totalPages) || Math.max(1, Math.ceil(totalItems / pageSize)),
-      page: positiveInteger(data.page) || 1,
-      pageSize,
-      facets: {
-        visualCategories: normalizeReferenceFacets(data.facets?.visualCategories),
-        researchDomains: normalizeReferenceFacets(data.facets?.researchDomains),
-      },
-      corpusVersion: String(data.corpusVersion || ''),
-    };
   }
-
-  throw new Error('参考案例库需要使用 Laf 或登录网关后端。');
+  const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain', 'referenceIds']
+    .some((field) => opts[field] !== undefined);
+  const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
+  const paginatedRequest = !legacyRequest;
+  const requestBody = paginatedRequest
+    ? {
+      action: 'referenceLibrary',
+      ...(opts.scope ? { scope: opts.scope } : {}),
+      ...(opts.page !== undefined ? { page: opts.page } : {}),
+      ...(opts.pageSize !== undefined ? { pageSize: opts.pageSize } : {}),
+      ...(opts.query !== undefined ? { query: opts.query || '' } : {}),
+      ...(opts.visualCategory ? { visualCategory: opts.visualCategory } : {}),
+      ...(opts.researchDomain ? { researchDomain: opts.researchDomain } : {}),
+      ...(opts.taskName ? { taskName: opts.taskName } : {}),
+      ...(opts.referenceIds !== undefined ? { referenceIds: opts.referenceIds } : {}),
+    }
+    : {
+      action: 'referenceLibrary',
+      taskName: opts.taskName || 'diagram',
+      query: opts.query || '',
+      limit: opts.limit || 24,
+    };
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody),
+    signal: opts.signal,
+  });
+  const references = (data.references || []).map(normalizeRetrievedReference);
+  const pageSize = positiveInteger(data.pageSize)
+    || positiveInteger(paginatedRequest ? opts.pageSize : opts.limit)
+    || 12;
+  const totalItems = nonNegativeInteger(data.totalItems, references.length);
+  return {
+    references,
+    totalItems,
+    totalPages: positiveInteger(data.totalPages) || Math.max(1, Math.ceil(totalItems / pageSize)),
+    page: positiveInteger(data.page) || 1,
+    pageSize,
+    facets: {
+      visualCategories: normalizeReferenceFacets(data.facets?.visualCategories),
+      researchDomains: normalizeReferenceFacets(data.facets?.researchDomains),
+    },
+    corpusVersion: String(data.corpusVersion || ''),
+  };
 }
 
 export async function refineImageRequest(apiBase, health, payload = {}) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'refineImage',
-        clientPlatform: CLIENT_PLATFORM,
-        configurationMode: payload.configurationMode,
-        provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
-        apiKeys: payload.apiKeys,
-        modelRoutes: payload.modelRoutes,
-        thinkingConfig: payload.thinkingConfig,
-        providerRegions: payload.providerRegions,
-        mainModelName: payload.mainModelName,
-        imageModelName: payload.imageModelName,
-        referenceVisionModelName: payload.referenceVisionModelName,
-        sourceImageUrl: payload.sourceImageUrl,
-        sourceImageObjectKey: payload.sourceImageObjectKey,
-        sourceImageUpload: payload.sourceImageUpload ? { objectKey: payload.sourceImageUpload.objectKey } : undefined,
-        refineInputs: payload.refineInputs,
-        editInstruction: payload.editInstruction,
-        aspectRatio: payload.aspectRatio,
-        imageSize: payload.imageSize,
-      }),
-    });
-    return {
-      id: data.jobId,
-      status: data.status,
-      refineCapability: data.refineCapability || {
-        mode: 'none',
-        directEdit: false,
-        reason: '当前后端未返回精修能力说明',
-      },
-    };
-  }
-
-  throw new Error('图片精修需要使用 Laf 或登录网关后端。');
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'refineImage',
+      clientPlatform: CLIENT_PLATFORM,
+      configurationMode: payload.configurationMode,
+      provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
+      apiKeys: payload.apiKeys,
+      modelRoutes: payload.modelRoutes,
+      thinkingConfig: payload.thinkingConfig,
+      providerRegions: payload.providerRegions,
+      mainModelName: payload.mainModelName,
+      imageModelName: payload.imageModelName,
+      referenceVisionModelName: payload.referenceVisionModelName,
+      sourceImageUrl: payload.sourceImageUrl,
+      sourceImageObjectKey: payload.sourceImageObjectKey,
+      sourceImageUpload: payload.sourceImageUpload ? { objectKey: payload.sourceImageUpload.objectKey } : undefined,
+      refineInputs: payload.refineInputs,
+      editInstruction: payload.editInstruction,
+      aspectRatio: payload.aspectRatio,
+      imageSize: payload.imageSize,
+    }),
+  });
+  return {
+    id: data.jobId,
+    status: data.status,
+    refineCapability: data.refineCapability || {
+      mode: 'none',
+      directEdit: false,
+      reason: '当前后端未返回精修能力说明',
+    },
+  };
 }
 
 export async function optimizeInputsRequest(apiBase, health, payload) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'optimizeInputs',
-        target: payload.target,
-        inputs: payload.inputs,
-        mainRoute: payload.mainRoute,
-        providerRegions: payload.providerRegions,
-        apiKey: payload.apiKey,
-      }),
-    });
-    return { target: data.target, optimizedText: data.optimizedText };
-  }
-
-  throw new Error('输入优化需要使用 Laf 或登录网关后端。');
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'optimizeInputs',
+      target: payload.target,
+      inputs: payload.inputs,
+      mainRoute: payload.mainRoute,
+      providerRegions: payload.providerRegions,
+      apiKey: payload.apiKey,
+    }),
+  });
+  return { target: data.target, optimizedText: data.optimizedText };
 }
 
 export async function prepareReferenceUploadRequest(apiBase, health, files) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'prepareReferenceUpload', files }),
-    });
-    return { uploads: data.uploads || [] };
-  }
-
-  throw new Error('参考图上传需要使用 Laf 或登录网关后端。');
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'prepareReferenceUpload', files }),
+  });
+  return { uploads: data.uploads || [] };
 }
 
 export async function finalizeReferenceUploadRequest(apiBase, health, uploads, options = {}) {
@@ -245,48 +182,35 @@ export async function abortReferenceUploadRequest(apiBase, health, uploads) {
 }
 
 async function referenceUploadLifecycleRequest(apiBase, health, action, uploads, options = {}) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    return fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, uploads, ...(options.purpose === 'refine' ? { purpose: 'refine' } : {}) }),
-    })
-  }
-  throw new Error('参考图上传生命周期需要使用 Laf 或登录网关后端。')
+  assertGatewayBackend(health);
+  return fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, uploads, ...(options.purpose === 'refine' ? { purpose: 'refine' } : {}) }),
+  })
 }
 
 export async function modelCapabilityRequest(apiBase, health, provider, model) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    return fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'modelCapability', provider, model }),
-    });
-  }
-
-  return {
-    status: 'unknown',
-    supportsReferenceImages: false,
-    reason: '当前后端不支持模型能力查询',
-    source: 'client-fallback',
-    cached: false,
-  };
+  assertGatewayBackend(health);
+  return fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'modelCapability', provider, model }),
+  });
 }
 
 export async function modelRegistryRequest(apiBase, health, provider = '') {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    return fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined }),
-    });
-  }
-  throw new Error('当前后端不支持服务端模型目录。');
+  assertGatewayBackend(health);
+  return fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined }),
+  });
 }
 
 async function benchmarkRequest(apiBase, health, body) {
-  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('模型横评需要使用正式 Node 或登录网关后端。');
-  return fetchJson(lafEndpoint(apiBase), {
+  if (!isGatewayBackend(health)) throw new Error('模型横评需要使用图研认证网关后端。');
+  return fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -344,8 +268,8 @@ export async function providerAccountCatalogRequest(apiBase, health, payload = {
   if (payload.provider !== 'ark') throw new Error('账号模型验证仅支持 Ark。');
   if (!Array.isArray(payload.probes)) throw new Error('Ark 验证模型列表必须是数组。');
   if (payload.probes.length > 3) throw new Error('Ark 每次最多验证 3 个模型。');
-  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('Ark 模型验证需要使用 Laf 或登录网关后端。');
-  return fetchJson(lafEndpoint(apiBase), {
+  if (!isGatewayBackend(health)) throw new Error('Ark 模型验证需要使用 图研认证网关后端。');
+  return fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -359,27 +283,25 @@ export async function providerAccountCatalogRequest(apiBase, health, payload = {
 }
 
 export async function getJobRequest(apiBase, health, jobId, options = {}) {
-  if (shouldUseLaf(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'getJob', jobId, adminToken: options.adminToken || undefined }),
-    });
-    return normalizeJob(data.job);
-  }
-  return fetchJson(`${apiBase}/api/jobs/${jobId}`);
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'getJob', jobId, adminToken: options.adminToken || undefined }),
+  });
+  return normalizeJob(data.job);
 }
 
 // Admin operations use the authenticated gateway and never accept a browser-supplied admin token.
 export async function adminOperationsRequest(apiBase, action, payload = {}, { signal } = {}) {
   const actions = ['adminOverview', 'adminUserList', 'adminUserDetail', 'adminTaskList', 'adminTaskDetail', 'adminTaskFollowup', 'adminCommunityList', 'adminCommunityDetail', 'adminCommunityEdit', 'adminFeedbackList', 'adminBenchmarkPromptDecision'];
   if (!actions.includes(action)) throw new Error('Unsupported admin operation');
-  return fetchJson(lafEndpoint(apiBase), { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, action }), signal });
+  return fetchJson(apiEndpoint(apiBase), { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...payload, action }), signal });
 }
 
 export async function adminStatusRequest(apiBase, health) {
-  if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
-    const data = await fetchJson(lafEndpoint(apiBase), {
+  if (isGatewayBackend(health)) {
+    const data = await fetchJson(apiEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'adminStatus' }),
@@ -390,8 +312,8 @@ export async function adminStatusRequest(apiBase, health) {
 }
 
 export async function adminJobsRequest(apiBase, health) {
-  if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
-    const data = await fetchJson(lafEndpoint(apiBase), {
+  if (isGatewayBackend(health)) {
+    const data = await fetchJson(apiEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'adminJobs', limit: 50 }),
@@ -403,8 +325,8 @@ export async function adminJobsRequest(apiBase, health) {
 }
 
 export async function adminUsersRequest(apiBase, health) {
-  if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
-    const data = await fetchJson(lafEndpoint(apiBase), {
+  if (isGatewayBackend(health)) {
+    const data = await fetchJson(apiEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'adminUsers', limit: 100 }),
@@ -415,28 +337,26 @@ export async function adminUsersRequest(apiBase, health) {
 }
 
 export async function submitFeedbackRequest(apiBase, health, payload = {}) {
-  if (shouldUsePaperbananaApi(apiBase, health)) {
-    const data = await fetchJson(lafEndpoint(apiBase), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'submitFeedback',
-        message: payload.message,
-        category: payload.category,
-        jobId: payload.jobId,
-        platform: payload.platform,
-        clientVersion: payload.clientVersion,
-        contact: payload.contact,
-      }),
-    });
-    return { ok: data.ok !== false, id: data.id };
-  }
-  throw new Error('意见反馈需要使用 Laf 或登录网关后端。');
+  assertGatewayBackend(health);
+  const data = await fetchJson(apiEndpoint(apiBase), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action: 'submitFeedback',
+      message: payload.message,
+      category: payload.category,
+      jobId: payload.jobId,
+      platform: payload.platform,
+      clientVersion: payload.clientVersion,
+      contact: payload.contact,
+    }),
+  });
+  return { ok: data.ok !== false, id: data.id };
 }
 
 export async function adminFeedbackRequest(apiBase, health, opts = {}) {
-  if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
-    const data = await fetchJson(lafEndpoint(apiBase), {
+  if (isGatewayBackend(health)) {
+    const data = await fetchJson(apiEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -447,12 +367,12 @@ export async function adminFeedbackRequest(apiBase, health, opts = {}) {
     });
     return { feedback: (data.feedback || []).map(normalizeFeedback) };
   }
-  throw new Error('反馈后台需要使用 Laf 或登录网关后端。');
+  throw new Error('反馈后台需要使用 图研认证网关后端。');
 }
 
 export async function userJobsRequest(apiBase, health) {
-  if (BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway') {
-    const data = await fetchJson(lafEndpoint(apiBase), {
+  if (isGatewayBackend(health)) {
+    const data = await fetchJson(apiEndpoint(apiBase), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'myJobs', limit: 50 }),
@@ -487,24 +407,20 @@ export async function hydrateRecordImages(apiBase, health, jobs, options = {}) {
   }));
 }
 
-function shouldUsePaperbananaApi(apiBase, health) {
-  return BACKEND_MODE === 'gateway' || health?.backendMode === 'gateway' || shouldUseLaf(apiBase, health);
+function isGatewayBackend(health) {
+  return (!health?.backendMode || health.backendMode === 'gateway')
+    && (!health?.runtime || health.runtime === 'gateway');
+}
+function assertGatewayBackend(health) {
+  if (!isGatewayBackend(health)) throw new Error('请使用图研认证网关。');
 }
 
-function shouldUseLaf(apiBase, health) {
-  if (BACKEND_MODE === 'fastapi') return false;
-  if (BACKEND_MODE === 'gateway') return true;
-  if (BACKEND_MODE === 'laf') return true;
-  if (health?.backendMode) return health.backendMode === 'laf';
-  return apiBase.includes('paperbanana-api') || apiBase === '';
-}
-
-function lafEndpoint(apiBase) {
+function apiEndpoint(apiBase) {
   if (apiBase.endsWith('/paperbanana-api')) return apiBase;
   return `${apiBase}/paperbanana-api`;
 }
 
-function toLafPipeline(mode) {
+function toCorePipeline(mode) {
   if (mode === 'demo_full') return 'full';
   if (mode === 'vanilla') return 'vanilla';
   return 'planner_critic';
@@ -604,7 +520,7 @@ function normalizeModelRoutes(value) {
     if (!route || typeof route !== 'object' || Array.isArray(route)) continue;
     const accessProvider = typeof route.accessProvider === 'string' ? route.accessProvider.trim() : '';
     const modelId = typeof route.modelId === 'string' ? route.modelId.trim() : '';
-    if (accessProvider && modelId) routes[role] = { accessProvider, modelId, ...(accessProvider === 'custom' && route.custom ? {custom:route.custom} : {}) };
+    if (accessProvider && modelId) routes[role] = { accessProvider, modelId, ...(accessProvider === 'custom' && route.custom ? { custom: route.custom } : {}) };
   }
   return Object.keys(routes).length ? routes : undefined;
 }
@@ -717,6 +633,6 @@ function normalizeFeedback(item = {}) {
 }
 
 export async function universalApiCheckRequest(apiBase, health, payload) {
-  if (!shouldUsePaperbananaApi(apiBase, health)) throw new Error('当前后端不支持通用 API 接入。');
-  return fetchJson(lafEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'universalApiCheck',route:payload.route,connection:payload.connection,selectedModelId:payload.selectedModelId,check:payload.check,apiKeys:payload.apiKeys})});
+  if (!isGatewayBackend(health)) throw new Error('当前后端不支持通用 API 接入。');
+  return fetchJson(apiEndpoint(apiBase), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'universalApiCheck', route: payload.route, connection: payload.connection, selectedModelId: payload.selectedModelId, check: payload.check, apiKeys: payload.apiKeys }) });
 }

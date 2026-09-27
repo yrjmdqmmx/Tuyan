@@ -73,7 +73,7 @@ try {
   const business = db.collection('paperbanana_jobs');
   await business.insertOne({ _id: 'old-job', userId, userEmail: user.email, status: 'succeeded', resultImages: [{ objectKey: 'old-job/result.png' }] });
   await business.insertOne({ _id: 'new-job', userId: 'another-id', userEmail: user.email, status: 'succeeded', resultImages: [{ objectKey: 'new-job/result.png' }] });
-  const source = fs.readFileSync(new URL('../../../laf-functions/paperbanana-api.ts', import.meta.url), 'utf8');
+  const source = fs.readFileSync(new URL('../../../paperbanana-api/runtime/handler.ts', import.meta.url), 'utf8');
   const names = ['accountIdQuery', 'accountDeletionStatus', 'deleteAccount', 'listAccountObjectKeys', 'completeAccountDeletion', 'storedObjectKeysForJob'];
   const extracts = names.map((name) => {
     const start = source.search(new RegExp(`^(?:export )?(?:async )?function ${name}\\(`, 'm'));
@@ -89,10 +89,10 @@ try {
     jobAdmission: { freezeOwners() {} }, bucketName: 'local-fake', randomId: randomUUID,
     referenceUploadStateRetentionMs: 86400000, deleteAdditionalAccountData: async () => {},
     ok: (data) => ({ code: 0, ...data }), fail: (error, code) => ({ code, error }),
-    cloud: { storage: { bucket: () => ({
+    objectStorage: { bucket: () => ({
       listFiles: async ({ Prefix }) => ({ Contents: [...files].filter((key) => key.startsWith(Prefix)).map((Key) => ({ Key })), IsTruncated: false }),
       deleteFile: async (key) => { if (failStorage) throw new Error('local simulated OSS outage'); files.delete(key); },
-    }) } },
+    }) },
   });
   vm.runInContext(stripTypeScriptTypes(extracts.join('\n')), context);
   const uidFingerprint = createHash('sha256').update(userId).digest('hex').slice(0, 12);

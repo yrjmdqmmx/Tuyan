@@ -16,7 +16,7 @@ const current = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog
 const channels = ['cn', 'runware'].flatMap(name => JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/${name}-directory.json`), 'utf8')))
 
 const officialContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/official-contracts.json'), 'utf8'))
-const refreshContracts = JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/frontier-refresh-contracts.json'), 'utf8'))
+const refreshContracts = { ...JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/frontier-refresh-contracts.json'), 'utf8')), ...JSON.parse(fs.readFileSync(path.join(root, 'config/channel-audit/v381-contracts.json'), 'utf8')) }
 const officialAudits = Object.fromEntries(['xai', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat'].map(provider => [provider, JSON.parse(fs.readFileSync(path.join(root, `config/channel-audit/v24/${provider}.json`), 'utf8'))]))
 
 function assertOfficialEvidence(provider, model) {

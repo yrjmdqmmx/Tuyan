@@ -19,15 +19,7 @@ export function parseList(value) {
 }
 
 export function loadGatewayConfig(env = process.env) {
-  const nodeApiUrl = stringValue(env.PAPERBANANA_API_URL);
-  const lafApiUrl = stringValue(env.LAF_API_URL);
-  if (!nodeApiUrl && !lafApiUrl) {
-    throw new Error('PAPERBANANA_API_URL or LAF_API_URL is required');
-  }
-
-  const backend = nodeApiUrl
-    ? { mode: 'node', url: validHttpUrl('PAPERBANANA_API_URL', nodeApiUrl) }
-    : { mode: 'laf', url: validHttpUrl('LAF_API_URL', lafApiUrl) };
+  const backend = { mode: 'node', url: validHttpUrl('PAPERBANANA_API_URL', required(env, 'PAPERBANANA_API_URL')) };
   backend.timeoutMs = boundedInteger(env.PAPERBANANA_BACKEND_TIMEOUT_MS, 15_000, 100, 120_000);
 
   const guestSecret = required(env, 'PAPERBANANA_GUEST_COOKIE_SECRET');
@@ -114,7 +106,6 @@ export function loadGatewayConfig(env = process.env) {
     cookieSameSite: sameSite || (production ? 'lax' : 'lax'),
     backend,
     gatewayToken: required(env, 'PAPERBANANA_GATEWAY_TOKEN'),
-    adminToken: stringValue(env.ADMIN_TOKEN),
     adminTransportToken: stringValue(env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN),
     adminUserIds: new Set(adminUserIds),
     guestCookie: {
@@ -132,7 +123,6 @@ export function loadGatewayConfig(env = process.env) {
     oss: {
       bucket: stringValue(env.PAPERBANANA_BUCKET),
       publicEndpoint: stringValue(env.OSS_PUBLIC_ENDPOINT),
-      allowLegacyExternalRefineUrl: parseBoolean(env.PAPERBANANA_ALLOW_LEGACY_EXTERNAL_REFINE_URL),
     },
     trustProxy: 1,
   };

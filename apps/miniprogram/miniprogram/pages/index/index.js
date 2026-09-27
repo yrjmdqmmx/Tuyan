@@ -897,8 +897,8 @@ Component({
             try {
                 // 公开只读探测不带登录 Cookie；仅连接被关闭时内部再探测一次。
                 const data = await (0, api_1.requestHealth)();
-                const laf = data.laf || {};
-                const ok = Boolean(data.ok || laf.ok || data.code === 0);
+                const backend = data.backend || {};
+                const ok = Boolean(data.ok || backend.ok || data.code === 0);
                 this.setData({
                     healthOk: ok,
                     healthChecked: true,

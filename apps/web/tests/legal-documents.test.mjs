@@ -20,7 +20,7 @@ test('privacy policy describes the current Web and WeChat Mini Program data flow
   assert.match(source, /失效前已经开始[\s\S]*后台持续重扫|后台持续重扫[\s\S]*失效前已经开始/,
     'privacy policy must disclose delayed cleanup for uploads that finish after URL expiry')
   assert.doesNotMatch(source, /仅存储在您设备本机的 iOS Keychain|stored ONLY in your device's local iOS Keychain/)
-  assert.doesNotMatch(source, /Sealos.*杭州|Sealos.*Hangzhou/)
+  assert.doesNotMatch(source, /Sealos|Sealaf/)
 })
 
 test('terms match the gateway transit-only API key behavior and contain no legal placeholders', async () => {
@@ -47,8 +47,8 @@ test('each canonical Web legal document makes the required current data disclosu
     assert.match(source, /短生命周期|临时|ephemeral/i, `${name} must disclose ephemeral BYOK forwarding`)
     assert.match(source, /不持久化.*(?:记录|日志|回显)|do not persist, log, or echo/is, `${name} must disclose no BYOK persistence, logging, or echoing`)
     assert.doesNotMatch(source, /never uploaded to our servers|从不上传我方服务器|初稿模板|DRAFT TEMPLATE|\[fill in/i)
-    assert.doesNotMatch(source, /Sealos.{0,80}(?:杭州|Hangzhou)|(?:杭州|Hangzhou).{0,80}Sealos/is,
-      `${name} must not move the primary Sealos service from Hong Kong to Hangzhou`)
+    assert.doesNotMatch(source, /Sealos|Sealaf/is,
+      `${name} must not describe the retired platform as a current service`)
     if (requiresNoTracking) {
       assert.match(source, /DirectMail.{0,80}(?:杭州|Hangzhou)|(?:杭州|Hangzhou).{0,80}DirectMail/is,
         `${name} must disclose that account-security email uses Hangzhou DirectMail`)

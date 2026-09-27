@@ -6,7 +6,6 @@ export type ServiceConfig = {
   adminTransportToken?: string
   benchmarkDiscoveryToken?: string
   singleReplica: true
-  strictObjectStorage: true
   admission: {
     maxActive: number
     maxPending: number
@@ -121,9 +120,6 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
   if (env.PAPERBANANA_SINGLE_REPLICA?.trim() !== 'true') {
     throw new Error('PAPERBANANA_SINGLE_REPLICA=true is required until job leases support multiple replicas')
   }
-  if (env.PAPERBANANA_STRICT_OBJECT_STORAGE !== 'true') {
-    throw new Error('PAPERBANANA_STRICT_OBJECT_STORAGE=true is required for the Node runtime')
-  }
 
   const port = Number(env.PORT || 3000)
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT must be an integer from 1 to 65535')
@@ -176,7 +172,6 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
     adminTransportToken,
     benchmarkDiscoveryToken,
     singleReplica: true,
-    strictObjectStorage: true,
     admission: {
       maxActive: boundedInteger(env, 'PAPERBANANA_MAX_ACTIVE_JOBS', 1, 1, 8),
       maxPending: boundedInteger(env, 'PAPERBANANA_MAX_PENDING_JOBS', 2, 0, 32),

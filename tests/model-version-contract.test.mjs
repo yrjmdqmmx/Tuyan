@@ -18,7 +18,7 @@ test('760 historical identities and capabilities remain unchanged except the exp
       historical[provider].models = historical[provider].models.filter(model => model.id !== id)
     }
   }
-  for (const p of ['tokenhub', 'xiaomi', 'runware', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat']) delete historical[p]
+  for (const p of ['tokenhub', 'xiaomi', 'runware', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita']) delete historical[p]
   for (const id of ['grok-4.7', 'grok-4.20-multi-agent-0309', 'grok-4.20-multi-agent']) {
     const added = historical.xai.models.find(m => m.id === id)
     assert.equal(added.selectable, true)

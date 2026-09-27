@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
-const source = fs.readFileSync(require('node:path').resolve(__dirname, '../paperbanana-api.ts'), 'utf8');
+const source = fs.readFileSync(require('node:path').resolve(__dirname, '../../runtime/handler.ts'), 'utf8');
 const scope = source.match(/const identityScopedActions = new Set\(\[([\s\S]*?)\]\)/)[1];
 for (const action of ['deleteAccount', 'completeAccountDeletion', 'accountDeletionStatus', 'finalizeReferenceUpload', 'abortReferenceUpload']) {
   assert.ok(scope.includes(`'${action}'`), `${action} must require the trusted gateway`);

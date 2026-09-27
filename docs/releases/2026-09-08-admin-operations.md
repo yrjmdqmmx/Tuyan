@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](../operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # 站长运营后台发布记录
 
 实现 PR：[#181](https://github.com/yrjmdqmmx/Tuyan/pull/181)。Web、Auth Gateway、Node Core 与 Benchmark companion 实际发布 SHA：`fc962212bfa497aab91c770a4edfa7050c027e93`。本记录为发布后的文档提交，不代表再次部署。

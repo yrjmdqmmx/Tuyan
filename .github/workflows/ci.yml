@@ -61,7 +61,8 @@ jobs:
       - name: Run retained client-platform contracts
         run: node --test tests/client-platform/*.test.mjs
       - run: node --test tests/*.test.mjs
-      - run: node --test apps/laf-functions/tests/*.test.cjs
+      - run: node --test apps/paperbanana-api/tests/guards/*.test.cjs
+      - run: node --test deploy/hk-single-host/object-restore/tests/*.test.mjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs
       - run: node --test deploy/sg-egress/tests/*.test.mjs
 

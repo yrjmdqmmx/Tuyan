@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-test('authoritative image runtime defaults Resvg WASM to the Worker package instead of the Laf-only path', async () => {
+test('authoritative image runtime defaults Resvg WASM to the Worker package without an external runtime asset path', async () => {
   const previous = process.env.RESVG_WASM_PATH
   const previousRuntime = process.env.PAPERBANANA_BENCH_IMAGE_RUNTIME_PATH
   delete process.env.RESVG_WASM_PATH

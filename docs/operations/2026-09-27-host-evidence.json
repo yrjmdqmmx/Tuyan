@@ -1,0 +1,251 @@
+{
+  "checkedAt": "2026-09-27T02:54:25.189831+00:00",
+  "method": "read-only SSH; selected Docker fields; local health/readiness; no paid requests or remote writes",
+  "hk": {
+    "kernel": "Linux 6.1.0-33-amd64 x86_64 GNU/Linux",
+    "cpuCount": 4,
+    "memory": "total        used        free      shared  buff/cache   available\nMem:     15936344064  3556716544   568340480    65945600 12229128192 12379627520\nSwap:     4294963200           0  4294963200",
+    "disk": "Filesystem       1B-blocks        Used   Available Use% Mounted on\n/dev/vda3      84161257472 58388570112 22118154240  73% /",
+    "dockerVersion": "29.7.1",
+    "composeVersion": "5.3.1",
+    "containers": [
+      {
+        "service": "benchmark-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:aaf190de846c5e6f4084e299d71f7c4831d0ab00877a4a5a1b0fd9019c871587",
+        "state": "running",
+        "health": "healthy",
+        "memoryLimit": 2147483648,
+        "nanoCpus": 1000000000,
+        "runtime": "runc",
+        "networks": [
+          "paperbanana-hk_backend",
+          "paperbanana-hk_egress"
+        ],
+        "ports": {},
+        "config": {
+          "PAPERBANANA_API_URL": "http://paperbanana-api:3000/paperbanana-api",
+          "PAPERBANANA_BENCH_ENABLED": "false",
+          "PAPERBANANA_CODE_SHA": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20"
+        }
+      },
+      {
+        "service": "paperbanana-api",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:9856c6e5e0de2102110218e6f1fa363f931932ee64d2bf1186359577a6b56bb2",
+        "state": "running",
+        "health": "healthy",
+        "memoryLimit": 3221225472,
+        "nanoCpus": 1500000000,
+        "runtime": "runc",
+        "networks": [
+          "paperbanana-hk_backend",
+          "paperbanana-hk_egress",
+          "paperbanana-hk_worker"
+        ],
+        "ports": {
+          "3000/tcp": null
+        },
+        "config": {
+          "PAPERBANANA_PROVIDER_EGRESS_MODE": "sg-required",
+          "PAPERBANANA_SG_PROXY_URL": "http://10.77.0.2:3128",
+          "OSS_REGION": "oss-cn-hongkong",
+          "OSS_INTERNAL_ENDPOINT": "https://oss-cn-hongkong-internal.aliyuncs.com",
+          "OSS_PUBLIC_ENDPOINT": "https://oss-cn-hongkong.aliyuncs.com",
+          "PAPERBANANA_SINGLE_REPLICA": "true",
+          "PAPERBANANA_STRICT_OBJECT_STORAGE": "true",
+          "PAPERBANANA_CODE_SHA": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20"
+        }
+      },
+      {
+        "service": "auth-gateway",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:1ad307c929e4663ce8011c6cb371d0ca33aeedde80e87fe78c8edd5035ef0cce",
+        "state": "running",
+        "health": "healthy",
+        "memoryLimit": 536870912,
+        "nanoCpus": 500000000,
+        "runtime": "runc",
+        "networks": [
+          "paperbanana-hk_backend",
+          "paperbanana-hk_edge"
+        ],
+        "ports": {
+          "3005/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "13005"
+            }
+          ]
+        },
+        "config": {
+          "OSS_PUBLIC_ENDPOINT": "https://oss-cn-hongkong.aliyuncs.com",
+          "PAPERBANANA_API_URL": "http://paperbanana-api:3000/paperbanana-api"
+        }
+      },
+      {
+        "service": "mongo-init",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "state": "exited",
+        "health": null,
+        "memoryLimit": 0,
+        "nanoCpus": 0,
+        "runtime": "runc",
+        "networks": [
+          "paperbanana-hk_backend"
+        ],
+        "ports": {}
+      },
+      {
+        "service": "plot-worker",
+        "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+        "state": "running",
+        "health": "healthy",
+        "memoryLimit": 2147483648,
+        "nanoCpus": 1000000000,
+        "runtime": "runsc",
+        "networks": [
+          "paperbanana-hk_worker"
+        ],
+        "ports": {
+          "8000/tcp": null
+        }
+      },
+      {
+        "service": "mongodb",
+        "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+        "state": "running",
+        "health": "healthy",
+        "memoryLimit": 3758096384,
+        "nanoCpus": 1000000000,
+        "runtime": "runc",
+        "networks": [
+          "paperbanana-hk_backend"
+        ],
+        "ports": {
+          "27017/tcp": null
+        }
+      }
+    ]
+  },
+  "sg": {
+    "checkedAt": "2026-09-27T02:58:23.000979+00:00",
+    "cpuCount": 2,
+    "memory": "total        used        free      shared  buff/cache   available\nMem:      3669192704   602288128  1797918720     2666496  1520754688  3066904576\nSwap:     1073737728           0  1073737728",
+    "disk": "Filesystem       1B-blocks       Used   Available Use% Mounted on\n/dev/vda3      84151820288 5075058688 75423080448   7% /",
+    "services": "active\nactive",
+    "dockerInstalled": false,
+    "squid": "Squid Cache: Version 6.14",
+    "squidPolicy": [
+      "http_port 10.77.0.2:3128",
+      "dns_nameservers 1.1.1.1 223.5.5.5",
+      "acl hk src 10.77.0.1/32",
+      "acl CONNECT method CONNECT",
+      "acl SSL_ports port 443",
+      "acl approved dstdomain -n api.openai.com generativelanguage.googleapis.com openrouter.ai ark.cn-beijing.volces.com api.anthropic.com api.x.ai external.api.recraft.ai .bfl.ai api.stability.ai api.ideogram.ai api.minimax.io api.mistral.ai api.together.ai api.fireworks.ai queue.fal.run api.replicate.com api.runware.ai tokendance.space",
+      "acl literal_ipv4 url_regex -i ^[0-9]{1,3}(\\.[0-9]{1,3}){3}:[0-9]+$",
+      "acl literal_ipv6 url_regex -i ^\\[[0-9a-f:.]+\\]:[0-9]+$",
+      "acl literal_ipv4_url url_regex -i ^https?://[0-9]{1,3}(\\.[0-9]{1,3}){3}[:/]",
+      "acl literal_ipv6_url url_regex -i ^https?://\\[[0-9a-f:.]+\\][:/]",
+      "acl private_dst dst 0.0.0.0/8",
+      "acl private_dst dst 10.0.0.0/8",
+      "acl private_dst dst 100.64.0.0/10",
+      "acl private_dst dst 127.0.0.0/8",
+      "acl private_dst dst 169.254.0.0/16",
+      "acl private_dst dst 172.16.0.0/12",
+      "acl private_dst dst 192.168.0.0/16",
+      "acl private_dst dst ::/128",
+      "acl private_dst dst ::1/128",
+      "acl private_dst dst fc00::/7",
+      "acl private_dst dst fe80::/10",
+      "http_access deny literal_ipv4",
+      "http_access deny literal_ipv6",
+      "http_access deny literal_ipv4_url",
+      "http_access deny literal_ipv6_url",
+      "http_access deny private_dst",
+      "http_access allow hk CONNECT SSL_ports approved",
+      "http_access deny all",
+      "cache deny all"
+    ]
+  },
+  "gateway": {
+    "checkedAt": "2026-09-27T03:01:02.775246+00:00",
+    "nginxVersion": "nginx version: nginx/1.22.1",
+    "nginxRouting": [
+      "listen 80;",
+      "listen [::]:80;",
+      "server_name api.paperbanana.asia;",
+      "listen 443 ssl http2;",
+      "listen [::]:443 ssl http2;",
+      "server_name api.paperbanana.asia;",
+      "proxy_pass http://127.0.0.1:13005;"
+    ],
+    "checkoutSha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20",
+    "ready": {
+      "code": 0,
+      "ok": true,
+      "runtime": "gateway",
+      "auth": "better-auth",
+      "authReady": true,
+      "backend": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      },
+      "laf": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      },
+      "dependencies": {
+        "auth": {
+          "ok": true
+        },
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Point-in-time observations; not performance/load test",
+    "No production writes, deployment, object upload or paid inference",
+    "Legacy cloud billing/resource console not inspected",
+    "Live Novita ACL is absent; local change not installed"
+  ]
+}

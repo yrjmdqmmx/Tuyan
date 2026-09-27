@@ -75,10 +75,10 @@ test('rejects external, unsigned, path-traversal, and reference-library refine s
   }
 });
 
-test('rejects arbitrary refine URLs even with the former Laf rollback switch', () => {
+test('rejects arbitrary refine URLs regardless of caller-supplied options', () => {
   for (const url of ['https://legacy-cdn.example/source.png', 'http://127.0.0.1/a', 'https://169.254.169.254/latest/meta-data/', 'https://10.0.0.1/image']) {
     for (const allowLegacyExternalUrl of [false, true]) assert.throws(
-      () => normalizeRefineSource({sourceImageUrl:url}, {backendMode:'laf',allowLegacyExternalUrl}), /REFINE_SOURCE_FORBIDDEN/,
+      () => normalizeRefineSource({sourceImageUrl:url}, {backendMode:'node',allowLegacyExternalUrl}), /REFINE_SOURCE_FORBIDDEN/,
     );
   }
 });

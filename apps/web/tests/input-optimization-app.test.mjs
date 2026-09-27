@@ -97,7 +97,7 @@ function installBackend(registry = capableRegistry, options = {}) {
   globalThis.fetch = async (input, init = {}) => {
     const body = init.body ? JSON.parse(String(init.body)) : null
     requests.push({ url: String(input), body })
-    if (!body) return Response.json({ code: 0, runtime: 'laf' })
+    if (!body) return Response.json({ code: 0, runtime: 'gateway' })
     if (body.action === 'modelRegistry') return Response.json({ code: 0, ...registry })
     if (body.action === 'referenceLibrary') return Response.json({ code: 0, references: [] })
     if (body.action === 'optimizeInputs') {

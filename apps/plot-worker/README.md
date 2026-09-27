@@ -37,7 +37,7 @@ Response (always HTTP 200 unless auth/size fails):
 ```
 
 `ok: false` with an `error` string is a **normal** outcome (bad code, timeout,
-no figure produced). It is returned as HTTP 200 on purpose so the Laf
+no figure produced). It is returned as HTTP 200 on purpose so the Core
 **critic/revise loop** can read the error and regenerate the code. Auth
 failures are `401`; oversized payloads are `413`.
 
@@ -57,7 +57,7 @@ with an explicit minimal env (`PATH`, `MPLBACKEND=Agg`, `HOME=/tmp`,
 allowed to see in these.
 
 Tunables (constants in `render_worker.py`): `WALL_CLOCK_TIMEOUT_S=20`,
-`CPU_LIMIT_S=10`, `ADDRESS_SPACE_LIMIT_BYTES=512MB`, `RENDER_DPI=200`.
+`CPU_LIMIT_S=10`, `RENDER_DPI=200`. RSS is bounded by the Compose cgroup (2 GiB in the verified deployment); `RLIMIT_AS` is intentionally not set because NumPy/OpenBLAS reserve large virtual address spaces.
 
 ## Run locally
 
@@ -97,12 +97,7 @@ no DB URL, no cloud creds. There is nothing to exfiltrate. (Implemented in
 `render_worker.run_render` — a lock-guarded `os.environ` swap around the spawn —
 and `app.py`'s `_PLOT_WORKER_TOKEN`.)
 
-**Layer 2 — Network-egress DENY.** A Kubernetes **NetworkPolicy**
-([`networkpolicy.yaml`](./networkpolicy.yaml)) **denies all egress** from the
-pod and allows only ingress from the trusted caller. Even if escaped code opens
-a real socket, it cannot reach the internet, internal services, or cloud
-metadata — so it cannot phone home with anything it scraped. The worker only
-needs **inbound** HTTP; it never originates a connection.
+**Layer 2 — Network-egress DENY.** The supported Compose deployment joins the worker only to the internal `172.29.0.0/24` bridge. `deploy/hk-single-host/scripts/install-worker-firewall.sh` installs project-scoped `DOCKER-USER` rules denying worker-initiated connections while allowing established replies. `scripts/smoke.sh` verifies this boundary. The worker needs inbound HTTP only. An internal Docker bridge alone is not proof that host services are unreachable; verify the firewall too.
 
 **Layer 3 — Read-only rootfs, non-root, dropped capabilities.** Deploy with a
 **read-only root filesystem** (`tmpfs` for `/tmp` and `/tmp/mpl`), **non-root**
@@ -112,7 +107,7 @@ image, persist, or escalate.
 
 **Layer 4 — Resource limits + wall-clock kill.** POSIX `RLIMIT_*` set in the
 child cap the blast radius: `RLIMIT_CPU≈10s` (CPU spin dies via `SIGXCPU`),
-`RLIMIT_AS≈512MB` (memory bomb killed), `RLIMIT_FSIZE≈16MB` (no large writes),
+`RLIMIT_FSIZE≈16MB` (no large writes),
 `RLIMIT_CORE=0`, `RLIMIT_NPROC≈64` where supported (fork-bomb mitigation). The
 parent enforces a hard **wall-clock timeout** (~20s) and `terminate()`/`kill()`s
 the child if it overruns — catching `sleep()`/blocking that CPU limits miss.
@@ -153,41 +148,17 @@ escaped code tried to smuggle out through an error.
   but could be used for DoS within the configured limits.
 - `RLIMIT_*` and `terminate/kill` are **POSIX-only**. On non-POSIX hosts only
   the wall-clock timeout applies.
-- NetworkPolicy (layer 2) is enforced only by a CNI that supports it (Cilium,
-  Calico, …). Verify your CNI; layer 1 (secret-free env) holds regardless.
+- The host firewall and gVisor runtime are deployment requirements; local Python unit tests do not prove either boundary.
 
 ### Deploy checklist — REQUIRED in any shared environment
 
 The deployment MUST apply all of the following. Layers 1 and 4 ship in the
 code/image; layers 2 and 3 are your responsibility at deploy time:
 
-1. **Apply the NetworkPolicy.** `kubectl apply -f networkpolicy.yaml` (adjust
-   namespace, `podSelector` labels, and the ingress source to your gateway/Laf).
-   Confirm your CNI enforces NetworkPolicy. On the supported Hong Kong
-   single-host deployment, use `deploy/hk-single-host/compose.yaml` plus
-   `scripts/install-worker-firewall.sh`; the worker joins only the internal
-   `172.29.0.0/24` bridge and `DOCKER-USER` rejects worker-initiated traffic.
-2. **Run read-only rootfs + non-root + drop capabilities** via the pod's
-   `securityContext`, e.g.:
-
-   ```yaml
-   securityContext:
-     runAsNonRoot: true
-     runAsUser: 10001
-     allowPrivilegeEscalation: false
-     readOnlyRootFilesystem: true
-     capabilities:
-       drop: ["ALL"]
-     seccompProfile:
-       type: RuntimeDefault     # stricter custom profile is better
-   volumes:
-     - name: tmp
-       emptyDir: { medium: Memory }    # tmpfs for /tmp + /tmp/mpl
-   # mount `tmp` at /tmp (MPLCONFIGDIR=/tmp/mpl) since rootfs is read-only.
-   ```
-
-3. **Require `PLOT_WORKER_TOKEN`.** Open mode is for local dev only.
-4. Consider **gVisor / Kata** for true kernel isolation if available.
+1. Use `deploy/hk-single-host/compose.yaml` with the installed `runsc` runtime and `scripts/install-worker-firewall.sh`; verify isolation before admitting jobs.
+2. Compose sets read-only rootfs, tmpfs, non-root UID 10001, dropped capabilities, `no-new-privileges` and bounded CPU/memory/PIDs. Keep these controls when changing the image.
+3. Require `PLOT_WORKER_TOKEN`. Open mode is for isolated local development only.
+4. Run the project deployment smoke after any runtime/firewall change. See [host operations](../../deploy/hk-single-host/README.md).
 
 ### Why a confirmed escape now yields nothing
 
@@ -200,6 +171,6 @@ network. After this redesign:
 - Even with a stolen secret (there is none) or scraped file contents, **egress
   is denied** — escaped code cannot send anything anywhere.
 - File reads are bounded by a **read-only, non-root, capability-dropped**
-  container; CPU/RAM/forks by **RLIMITs**; hangs by the **wall-clock kill**.
+  container; CPU/files/forks by **RLIMITs**, RSS by the container cgroup; hangs by the **wall-clock kill**.
 - Error messages are **sanitized** so a crafted exception cannot smuggle host
   paths or secrets back through the response.

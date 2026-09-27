@@ -11,7 +11,7 @@ const originalFetch=globalThis.fetch
 const blank=()=>Object.fromEntries(['main','vision','image'].map(role=>[role,emptyUniversalDraft(role)]))
 function Harness(){
  const [drafts,setDrafts]=useState(blank),[keys,setKeys]=useState({})
- return React.createElement(UniversalApiSettings,{drafts,keys,contractSupported:true,health:{backendMode:'laf'},apiBase:'https://api.example.com',
+ return React.createElement(UniversalApiSettings,{drafts,keys,contractSupported:true,health:{backendMode:'gateway'},apiBase:'https://api.example.com',
   onChange:(role,patch)=>{const result=updateUniversalDraft(drafts[role],patch);setDrafts(d=>({...d,[role]:result.draft}));if(result.clearKey)setKeys(k=>({...k,[role]:undefined}))},
   onKeyChange:(role,value)=>setKeys(k=>({...k,[role]:bindUniversalKey(drafts[role],value)})),
   onCopy:(role)=>{setDrafts(d=>({...d,[role]:{...d[role],custom:{...d[role].custom,protocol:d.main.custom.protocol,baseUrl:d.main.custom.baseUrl,auth:d.main.custom.auth}}}));setKeys(k=>({...k,[role]:k.main?{...k.main}:undefined}))},onSave:()=>true})

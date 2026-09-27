@@ -23,7 +23,7 @@ COPY app.py production_auth.py render_worker.py ./
 
 # Non-root user. The child render process inherits this uid; combined with the
 # RLIMIT_* caps and a deployment-level no-egress boundary this is the intended
-# posture (Kubernetes NetworkPolicy or the single-host Compose firewall).
+# posture (the single-host Compose firewall and gVisor runtime).
 RUN useradd --create-home --uid 10001 plot \
     && mkdir -p /tmp/mpl \
     && chown -R plot:plot /app /tmp/mpl

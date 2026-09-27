@@ -24,7 +24,6 @@ export async function startGateway({
     const backend = createBackendClientImpl({
       ...config.backend,
       gatewayToken: config.gatewayToken,
-      adminToken: config.adminToken,
       adminTransportToken: config.adminTransportToken,
     });
     const isMaintenance = createMaintenanceCheckImpl(config.maintenance);

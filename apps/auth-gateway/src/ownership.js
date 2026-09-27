@@ -34,7 +34,7 @@ export function normalizeRefineSource(body = {}, config = {}) {
   if (signedKey) return normalizedObjectKey(signedKey);
 
   // Core inspects image bytes. Legacy arbitrary URLs must not become server-side
-  // fetch destinations, including when restoring a Laf deployment.
+  // fetch destinations.
   throw forbidden();
 }
 

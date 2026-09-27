@@ -1,4 +1,4 @@
-import { configureLafCloud } from './laf-cloud.js'
+import { configureCoreServices } from './core-services.js'
 import { normalizeAuthoritativeImageRuntimeError } from './image-runtime-error.js'
 import { enableScientificBenchmarkRasterDecoders } from './image-runtime-sharp-policy.js'
 import { resolveScientificProviderTimeoutMs } from './image-runtime-timeout.js'
@@ -11,15 +11,15 @@ function forbiddenCollection() {
   })
 }
 
-configureLafCloud({
-  mongo: { db: { collection: forbiddenCollection } },
+configureCoreServices({
+  mongo: { db: { collection: forbiddenCollection } as any },
   storage: { bucket() { throw new Error('BENCHMARK_IMAGE_RUNTIME_STORAGE_ACCESS_FORBIDDEN') } },
 })
 
-const legacy = await import('./legacy-entry.mjs')
+const core = await import('./core-entry.mjs')
 enableScientificBenchmarkRasterDecoders()
 const failedRequests = new WeakSet<object>()
-legacy.configureRuntimeFetch(async (input: string | URL | Request, init?: RequestInit) => {
+core.configureRuntimeFetch(async (input: string | URL | Request, init?: RequestInit) => {
   if (init && failedRequests.has(init)) throw new Error('UNKNOWN_PROVIDER_OUTCOME_NO_REDISPATCH')
   const timeout = AbortSignal.timeout(resolveScientificProviderTimeoutMs(process.env.PAPERBANANA_BENCH_PROVIDER_TIMEOUT_MS))
   const signal = init?.signal ? AbortSignal.any([init.signal, timeout]) : timeout
@@ -31,9 +31,9 @@ legacy.configureRuntimeFetch(async (input: string | URL | Request, init?: Reques
   }
 })
 
-export const callImageModel: typeof legacy.callImageModel = async (...args: Parameters<typeof legacy.callImageModel>) => {
+export const callImageModel: typeof core.callImageModel = async (...args: Parameters<typeof core.callImageModel>) => {
   try {
-    return await legacy.callImageModel(...args)
+    return await core.callImageModel(...args)
   } catch (error) {
     throw normalizeAuthoritativeImageRuntimeError(error)
   }

@@ -7,7 +7,7 @@ const exists = (path) => existsSync(new URL(path, root))
 const read = (path) => readFileSync(new URL(path, root), 'utf8')
 
 const retiredClients = ['android', 'desktop', 'harmony', 'ios', 'macos', 'windows']
-const retainedApps = ['web', 'miniprogram', 'auth-gateway', 'paperbanana-api', 'laf-functions', 'plot-worker', 'benchmark-worker']
+const retainedApps = ['web', 'miniprogram', 'auth-gateway', 'paperbanana-api', 'plot-worker', 'benchmark-worker']
 
 test('repository retains only Web and WeChat Mini Program user clients', () => {
   for (const app of retainedApps) assert.equal(exists(`apps/${app}/`), true, `apps/${app} must remain`)

@@ -9,7 +9,7 @@ import { workspaceEntry, selectWorkspaceEntry } from '../src/lib/adminEntry.js';
 test('access mode switches retain the complete ordinary preset and allow incomplete custom drafts to be edited', async () => {
   const original=globalThis.fetch, actions=[];
   globalThis.fetch=async(_url,init={})=>{
-    if(!init.body)return Response.json({code:0,runtime:'laf'});
+    if(!init.body)return Response.json({code:0,runtime:'gateway'});
     const {action}=JSON.parse(init.body);actions.push(action);
     if(action==='modelRegistry')return Response.json({code:0,routeContractVersion:1,thinkingContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY});
     return Response.json({code:0,jobs:[],references:[]});
@@ -50,7 +50,7 @@ test('generation waits for selected image dimensions instead of submitting the o
   URL.revokeObjectURL = () => {};
   globalThis.Image = class {naturalWidth=1024;naturalHeight=768;set src(value) {if(value.startsWith('blob:')) pending.push(this);else queueMicrotask(()=>this.onload?.());}};
   globalThis.fetch = async (_url, init = {}) => {
-    if (!init.body) return Response.json({code:0,runtime:'laf'});
+    if (!init.body) return Response.json({code:0,runtime:'gateway'});
     const body = JSON.parse(init.body);actions.push(body.action);
     if (body.action==='modelRegistry') return Response.json({code:0,routeContractVersion:1,providers:STATIC_MODEL_REGISTRY});
     return Response.json({code:0,jobs:[],references:[]});
@@ -75,7 +75,7 @@ test('account entry keeps the actual generation/refine subtree and selected mode
   const actions = [];
   window.scrollTo = () => {};
   globalThis.fetch = async (_url, init = {}) => {
-    if (!init.body) return Response.json({ code: 0, runtime: 'laf' });
+    if (!init.body) return Response.json({ code: 0, runtime: 'gateway' });
     const body = JSON.parse(init.body); actions.push(body.action);
     if (body.action === 'modelRegistry') return Response.json({ code: 0, routeContractVersion: 1, providers: STATIC_MODEL_REGISTRY });
     return Response.json({ code: 0, jobs: [], references: [] });
@@ -141,7 +141,7 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
   });
   window.scrollTo = () => {};
   globalThis.fetch = async (_url, init = {}) => {
-    if (!init.body) return Response.json({ code: 0, runtime: 'laf' });
+    if (!init.body) return Response.json({ code: 0, runtime: 'gateway' });
     const { action } = JSON.parse(init.body);
     if (action === 'modelRegistry') {
       registryReads++;

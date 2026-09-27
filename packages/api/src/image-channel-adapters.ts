@@ -5,7 +5,7 @@ import { auditedChannelContract, assertChannelRequest, assertChannelSourceConstr
 import { IMAGE_CHANNEL_ROUTES } from './image-channel-routes.js'
 import { briaStructuredInstruction, refineControlsFor, refineInputIssue, type RefineInputs } from './refine-controls.js'
 
-/** Provider protocols shared with the standalone Core/Laf handler through catalog generation. */
+/** Provider protocols shared with the Node Core handler through direct imports. */
 export type ImageChannelInput = {
   provider: string; model: string; region?: 'cn' | 'global'; apiKey: string; prompt: string; aspectRatio: string; resolution: string
   size: {size?: string; width?: number; height?: number}
