@@ -20,7 +20,7 @@ function probeRoleLabel(role) {
 
 export default function ModelRoutingSettings({
   configurationMode,
-  accessMode = 'preset', onAccessModeChange, universalSettings, renderThinkingSettings,
+  renderUniversalSettings, universalSummaries, renderThinkingSettings, renderRoutingPersistence,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -46,7 +46,7 @@ export default function ModelRoutingSettings({
   onVerifyArk,
 }) {
   const { t } = useAppLocale()
-  const recoverableCredentials = Number(modelRegistry?.thinkingContractVersion) >= 1 || credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','xai'].includes(provider))
+  const recoverableCredentials = Number(modelRegistry?.thinkingContractVersion) >= 1 || credentialProviders.some(provider => ['tokendance','fal','replicate','runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat','antling','custom','xai'].includes(provider))
   const isAdvancedMode = configurationMode === 'advanced'
   const routeContractSupported = Number(modelRegistry?.routeContractVersion || 0) >= 1
   const arkImageProbeRequired = arkProbes.some((probe) => probe.role === 'image')
@@ -59,18 +59,16 @@ export default function ModelRoutingSettings({
       <div className="field" data-focus-setting="configuration-mode" tabIndex={-1}>
         <span>{t("使用模式")}</span>
         <div className="mode-switch" role="group" aria-label={t("使用模式")}>
-          <button type="button" aria-pressed={accessMode !== 'custom' && !isAdvancedMode} className={accessMode !== 'custom' && !isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
+          <button type="button" aria-pressed={!isAdvancedMode} className={!isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('simple')}>
             <Sparkles size={16} /><span>{t("普通模式")}</span><small>{t("预设渠道 · 单 Key")}</small>
           </button>
-          <button type="button" aria-pressed={accessMode !== 'custom' && isAdvancedMode} className={accessMode !== 'custom' && isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
-            <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("预设渠道 · 分角色配置")}</small>
+          <button type="button" aria-pressed={isAdvancedMode} className={isAdvancedMode ? 'active' : ''} onClick={() => onModeChange('advanced')}>
+            <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("分角色选择渠道与模型")}</small>
           </button>
-          <button type="button" aria-pressed={accessMode === 'custom'} className={accessMode === 'custom' ? 'active' : ''} onClick={()=>onAccessModeChange?.('custom')}><KeyRound size={16}/><span>{t("通用 API")}</span><small>{t("自有服务 · 按角色接入")}</small></button>
         </div>
         {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">{t("当前后端不支持专业模式的多渠道路由，提交会失败关闭。")}</p> : null}
       </div>
 
-      {accessMode === 'custom' ? <>{universalSettings}</> : <>
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>{t("API 接入渠道")}</span>
@@ -101,7 +99,8 @@ export default function ModelRoutingSettings({
           return <div className="model-role-settings" data-model-role={role} key={role}>
             {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route}
               outputFormat={role === 'image' && !executionRouteRoles.includes('image') ? '' : outputFormat}
-              registry={modelRegistry} providerConfigs={providerConfigs}
+              registry={modelRegistry} providerConfigs={providerConfigs} allowCustom
+              renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
               onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
               : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
             {renderThinkingSettings?.(role)}
@@ -109,7 +108,9 @@ export default function ModelRoutingSettings({
         })}
       </div>
 
-      <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
+      {isAdvancedMode ? renderRoutingPersistence?.() : null}
+
+      {credentialProviders.some(provider => provider !== 'custom') && <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} />{t(" 接入凭据")}</summary>
         <p>{t("填写当前任务所需的渠道密钥，或连接观猹 TokenDance 授权账户。")}{t(recoverableCredentials ? '可恢复任务所需的其他渠道密钥会在服务端加密保存，任务完成即删除，最长保留 7 天。' : '手动填写的密钥只保留在本页内存中。')}</p>
         {credentialProviders.map((provider) => {
@@ -176,8 +177,7 @@ export default function ModelRoutingSettings({
             {arkVerificationError ? <p className="ark-verification-error">{arkVerificationError}</p> : null}
           </section>
         ) : null}
-      </details>
-      </>}
+      </details>}
     </>
   )
 }

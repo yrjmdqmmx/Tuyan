@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-23.v25",
+  "version": "2026-09-27.v27",
   "providers": {
     "deepseek": [
       {
@@ -28332,6 +28332,293 @@
             "account-region"
           ]
         }
+      },
+      {
+        "id": "LongCat-2.5-Preview",
+        "label": "LongCat 2.5-Preview",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方视觉教程已核对并接入现有识图流程；支持文本及图片理解，不代表生图或编辑。官方暂定最多 50 张、10MB/张、比例不超过 200:1；图研保守限制 3 张、4MiB/张、8MP。真实调用和账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [],
+          "providerMaxReferenceImages": 50
+        },
+        "metadata": {
+          "vendor": "meituan",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ],
+          "roleReasons": {
+            "main": "官方 API 支持文本、思考与图片理解。",
+            "vision": "官方视觉教程给出精确 ID、image_url 内容块、Base64/URL 示例；复用既有识图流程。",
+            "image": "视觉理解不等于生图；原厂图片生成 API 的 ID 与调用契约尚未确认。"
+          }
+        }
+      }
+    ],
+    "antling": [
+      {
+        "id": "Ling-3.0-flash-VL",
+        "label": "Ling 3.0-flash-VL",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "providerMaxReferenceImages": 40,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ling-3.0-flash",
+        "label": "Ling 3.0-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ling-3.0-tiny",
+        "label": "Ling 3.0-tiny",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ling-2.6-1T",
+        "label": "Ling 2.6-1T",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ling-2.6-flash",
+        "label": "Ling 2.6-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ring-2.6-1T",
+        "label": "Ring 2.6-1T",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "官方目录与协议已核对；账号权限、真实调用及账单未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      }
+    ],
+    "novita": [
+      {
+        "id": "ming-image-0.1-design",
+        "label": "Ming Image 0.1 Design",
+        "roles": [
+          "image"
+        ],
+        "protocol": "novita-images-json",
+        "availabilityNotes": "Novita 托管 API，使用独立密钥；已适配文生图，账号权限、真实调用和账单未验证。暂按官方明确示例开放 1:1 的 1K / 2K；未接入分层模型。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "providerMaxReferenceImages": 0,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "analyze-redraw",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ant",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ]
+        }
       }
     ]
   },
@@ -28956,22 +29243,64 @@
     "longcat": {
       "label": "美团 LongCat",
       "accessKind": "direct",
-      "guideUrl": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "guideUrl": "https://longcat.ai/platform/docs/zh/",
       "textBaseUrl": "https://api.longcat.chat/openai/v1",
       "regions": [
         "account-region"
       ],
-      "reviewedAt": "2026-09-22",
+      "reviewedAt": "2026-09-27",
       "defaults": {
         "main": "LongCat-2.0",
         "image": "",
-        "vision": ""
+        "vision": "LongCat-2.5-Preview"
       },
       "keyPlaceholder": "LongCat API Key",
       "guideSteps": [
-        "当前普通 API 仅 LongCat-2.0 文本模型。旧 Flash/Thinking/Omni 已退役；生图和识图请另配渠道。",
-        "目录已接入，真实调用待验证。请选择该平台对应端点的凭据和已开通型号。",
-        "同步推理结果未知不会自动重发；已保存的输出可继续处理，价格记录与结算账单分开。"
+        "保留 LongCat-2.0 默认型号，新增 LongCat-2.5-Preview 文本与思考参数。",
+        "LongCat 2.5-Preview 可独立用于主模型或识图模型；沿用 LongCat 密钥与既有角色路由。LongCat 2.0 默认和历史配置保留。",
+        "目录与代码已适配；账号权限、真实调用和账单未验证。同步结果未知不会自动重发。"
+      ]
+    },
+    "antling": {
+      "label": "蚂蚁百灵",
+      "accessKind": "direct",
+      "guideUrl": "https://developer.ant-ling.com/zh-CN/docs/getting-started/prerequisites/",
+      "textBaseUrl": "https://api.ant-ling.com/v1",
+      "regions": [
+        "account-region"
+      ],
+      "reviewedAt": "2026-09-27",
+      "defaults": {
+        "main": "Ling-3.0-flash",
+        "vision": "Ling-3.0-flash-VL",
+        "image": ""
+      },
+      "keyPlaceholder": "百灵 API Key",
+      "guideSteps": [
+        "在百灵 API 控制台绑定个人支付宝并开通模型服务；地域与账号权限以控制台为准。 使用 api.ant-ling.com 的令牌；蚂蚁数科企业平台是独立服务，不能混用地址和密钥。",
+        "Ling / Ring 已接入文本，Ling-3.0-flash-VL 已接入图片理解；Ming 图像权重及 Novita 服务与百灵直连接口分别核对，不混用密钥。",
+        "目录与代码已适配；真实调用、额度和账单未验证。同步请求官方限时 90 秒、QPS 2，失败不自动重发。"
+      ]
+    },
+    "novita": {
+      "label": "Novita AI",
+      "accessKind": "aggregator",
+      "guideUrl": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+      "textBaseUrl": "",
+      "regions": [
+        "global-endpoint"
+      ],
+      "reviewedAt": "2026-09-27",
+      "defaults": {
+        "main": "",
+        "image": "ming-image-0.1-design",
+        "vision": ""
+      },
+      "keyPlaceholder": "Novita API Key",
+      "guideSteps": [
+        "在 Novita 控制台创建独立 API Key，并确认 Ming 型号的权限与额度。",
+        "本次接入 Ming 0.1 Design 文生图；百灵原厂密钥与 Novita 密钥不能混用。",
+        "支持 1:1 的 1K / 2K 输出，不接收参考图、遮罩或直接编辑；真实调用与账单未验证。"
       ]
     }
   },

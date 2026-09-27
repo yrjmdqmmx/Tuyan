@@ -70,16 +70,16 @@ test('shutdown still drains jobs and closes runtime if listener close reports an
   assert.deepEqual(calls, ['admission.stop', 'server.close', 'jobs.drain', 'runtime.close'])
 })
 
-test('service composition configures legacy admission, cached health, and tracked shutdown hooks', () => {
+test('service composition configures Core admission, cached health, and tracked shutdown hooks', () => {
   const source = fs.readFileSync(path.join(packageRoot, 'src/main.ts'), 'utf8')
-  assert.match(source, /legacy\.configureJobAdmission\(config\.admission\)/)
+  assert.match(source, /core\.configureJobAdmission\(config\.admission\)/)
   assert.match(source, /createProviderEgress\(config\.providerEgress\)/)
-  assert.match(source, /legacy\.configureRuntimeFetch\(providerEgress\.fetch\)/)
+  assert.match(source, /core\.configureRuntimeFetch\(providerEgress\.fetch\)/)
   assert.match(source, /providerEgress,/)
   assert.match(source, /readinessProbeTimeoutMs: config\.readinessProbeTimeoutMs/)
   assert.match(source, /healthSnapshot,/)
   assert.match(source, /closeRuntime: closeAll/)
-  assert.match(source, /stopAdmission: legacyLifecycle\.stop/)
-  assert.match(source, /drainJobs: legacyLifecycle\.drain/)
+  assert.match(source, /stopAdmission: coreLifecycle\.stop/)
+  assert.match(source, /drainJobs: coreLifecycle\.drain/)
   assert.match(source, /createGracefulShutdown\(/)
 })

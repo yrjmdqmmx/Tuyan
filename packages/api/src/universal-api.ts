@@ -109,7 +109,8 @@ export function resolveUniversalCatalogStrategy(value: unknown): UniversalCatalo
 }
 /** Catalog errors must never imply a charged inference request or uncertain generation. */
 export function universalCatalogError(error: unknown): UniversalApiError {
-  // Laf embeds this contract; accept its sibling error class by allowlisted fields, never raw text.
+  // Normalize the allowlisted error contract across Core/transport module boundaries.
+  // Never propagate the raw provider message or arbitrary error codes.
   const known = universalRecord(error) && error.name === 'UniversalApiError' && typeof error.code === 'string' && Object.prototype.hasOwnProperty.call(universalErrorMessages, error.code)
     ? new UniversalApiError(error.code as UniversalErrorCode, 'not_sent', Number.isInteger(error.status) && error.status >= 400 && error.status <= 599 ? error.status : undefined) : undefined
   if (known && (known.code.startsWith('CATALOG_') || ['ENDPOINT_UNSAFE', 'CREDENTIAL_MISMATCH'].includes(known.code))) return known

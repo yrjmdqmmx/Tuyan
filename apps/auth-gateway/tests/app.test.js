@@ -746,7 +746,7 @@ test('maintenance mode dynamically blocks the exact mutating set but preserves r
   });
 });
 
-test('health is cached liveness, ready probes dependencies, and compatibility routes retain laf alias', async () => {
+test('health is cached liveness, ready probes dependencies, and public routes expose the Node backend', async () => {
   const backend = fakeBackend();
   const auth = fakeAuth();
   await withApp({ backend, auth }, async ({ baseUrl }) => {
@@ -759,7 +759,6 @@ test('health is cached liveness, ready probes dependencies, and compatibility ro
       auth: 'better-auth',
       authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
-      laf: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
       dependencies: {
         auth: { ok: true, checkedAt: 'cached-auth' },
         backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },

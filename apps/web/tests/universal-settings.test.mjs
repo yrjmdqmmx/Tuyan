@@ -11,7 +11,7 @@ const originalFetch=globalThis.fetch
 const blank=()=>Object.fromEntries(['main','vision','image'].map(role=>[role,emptyUniversalDraft(role)]))
 function Harness(){
  const [drafts,setDrafts]=useState(blank),[keys,setKeys]=useState({})
- return React.createElement(UniversalApiSettings,{drafts,keys,contractSupported:true,health:{backendMode:'laf'},apiBase:'https://api.example.com',
+ return React.createElement(UniversalApiSettings,{drafts,keys,contractSupported:true,health:{backendMode:'gateway'},apiBase:'https://api.example.com',
   onChange:(role,patch)=>{const result=updateUniversalDraft(drafts[role],patch);setDrafts(d=>({...d,[role]:result.draft}));if(result.clearKey)setKeys(k=>({...k,[role]:undefined}))},
   onKeyChange:(role,value)=>setKeys(k=>({...k,[role]:bindUniversalKey(drafts[role],value)})),
   onCopy:(role)=>{setDrafts(d=>({...d,[role]:{...d[role],custom:{...d[role].custom,protocol:d.main.custom.protocol,baseUrl:d.main.custom.baseUrl,auth:d.main.custom.auth}}}));setKeys(k=>({...k,[role]:k.main?{...k.main}:undefined}))},onSave:()=>true})
@@ -99,7 +99,7 @@ test('unconfigured aspect ratio and persisted optional catalog rules have neutra
  const d=blank();d.main.custom.catalogFormat='openai';saveUniversalDrafts(d,window.localStorage)
  assert.equal(loadUniversalDrafts(window.localStorage).main.custom.catalogFormat,'openai')
 })
-test('three mode cards and every custom action use explicit responsive styles',()=>{
+test('mode cards and every custom action use explicit responsive styles',()=>{
  const css=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8')
  assert.match(css,/\.mode-switch\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/)
  assert.match(css,/\.universal-button\s*\{[^}]*border-radius:\s*8px/)

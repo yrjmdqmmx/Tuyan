@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](../operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # 默认模型、主导航与参考图上传 v2 生产发布
 
 2026-09-10，图研正式站发布代码 `487e3e07bbe368ebd4ec1cfaf66373b83bae8c56`（实现与上线修正 PR [#191](https://github.com/yrjmdqmmx/Tuyan/pull/191)）。此记录及 `SYNC.md` 是发布后的证据提交，不代表部署文档提交的 SHA。结构化证据见 `2026-09-10-reference-upload-evidence.json`。

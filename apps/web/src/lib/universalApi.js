@@ -22,7 +22,7 @@ export function emptyUniversalDraft(role) {
     inputLimits: {maxCount: 1, maxBytes: 5*1024*1024, maxTotalBytes: 10*1024*1024, maxDimension: 4096, maxPixels: 16000000, requestMaxBytes: 32*1024*1024, mimeTypes: ['image/png','image/jpeg','image/webp']},
     outputLimits: {maxBytes: 20*1024*1024, maxDimension: 8192, maxPixels: 32000000, mimeTypes: ['image/png','image/jpeg','image/webp']}, outputSizes: []}}
 }
-export function loadUniversalDrafts(storage = globalThis.localStorage) {
+export function loadUniversalDrafts(storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
   const defaults = Object.fromEntries(['main','vision','image'].map(role => [role, emptyUniversalDraft(role)]))
   try {
     const data = JSON.parse(storage?.getItem(storageKey) || 'null')
@@ -49,7 +49,7 @@ export function loadUniversalDrafts(storage = globalThis.localStorage) {
   } catch { /* An invalid saved draft must not break preset channels. */ }
   return defaults
 }
-export function saveUniversalDrafts(drafts, storage = globalThis.localStorage) {
+export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
   // Explicit allowlist. Keys and validation outcomes never enter localStorage.
   const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {modelId: d.modelId, declared: Boolean(d.declared), custom: {
     version: 1, connectionId: `custom_${role}`, protocol: d.custom.protocol, baseUrl: d.custom.baseUrl, auth: d.custom.auth, compatibility: d.custom.compatibility,

@@ -1,6 +1,6 @@
 import type { MongoAdapter } from './mongo-adapter.js'
 import type { OssAdapter } from './oss-adapter.js'
-import type { LegacyHandler, Readiness, ReadinessProbe, ServiceLogger } from './server.js'
+import type { CoreHandler, Readiness, ReadinessProbe, ServiceLogger } from './server.js'
 
 type RuntimeDependencies = {
   mongo: MongoAdapter
@@ -9,8 +9,8 @@ type RuntimeDependencies = {
     snapshot(): 'ready' | 'degraded'
     close(): Promise<void>
   }
-  configureCloud(adapters: { mongo: MongoAdapter; storage: OssAdapter }): void
-  loadHandler(): Promise<LegacyHandler>
+  configureServices(adapters: { mongo: MongoAdapter; storage: OssAdapter }): void
+  loadHandler(): Promise<CoreHandler>
   logger: ServiceLogger
   readinessProbeTimeoutMs?: number
 }
@@ -113,12 +113,12 @@ export async function prepareRuntime({
   mongo,
   oss,
   providerEgress,
-  configureCloud,
+  configureServices,
   loadHandler,
   logger,
   readinessProbeTimeoutMs = 2000,
 }: RuntimeDependencies): Promise<{
-  handler: LegacyHandler
+  handler: CoreHandler
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
   close(): Promise<void>
@@ -137,7 +137,7 @@ export async function prepareRuntime({
     }
     if (failure) throw failure
   }
-  let handler: LegacyHandler
+  let handler: CoreHandler
   try {
     await mongo.connect()
     const reconciledJobs = await mongo.reconcileInterruptedJobs()
@@ -147,7 +147,7 @@ export async function prepareRuntime({
       readinessProbeTimeoutMs,
       'Startup dependency readiness probe',
     )
-    configureCloud({ mongo, storage: oss })
+    configureServices({ mongo, storage: oss })
     handler = await loadHandler()
   } catch (error) {
     await closeResources().catch(() => {})

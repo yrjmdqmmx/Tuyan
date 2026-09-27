@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](../operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # 观猹 TokenDance 生产发布记录
 
 2026-09-09，观猹 TokenDance 渠道、账户页、钱包与充值、模型排序已发布到 [图研正式站](https://www.paperbanana.asia/)。Web、Node Core 和 Benchmark companion 实际发布 SHA 为 `2c518f97c06c3fc0149c299244c3489db232b531`；Gateway 镜像也从该 SHA 构建。实现 PR [#188](https://github.com/yrjmdqmmx/Tuyan/pull/188)，上线前修复 PR [#189](https://github.com/yrjmdqmmx/Tuyan/pull/189)。本记录是发布后的文档提交，不代表再次部署。

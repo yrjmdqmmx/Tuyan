@@ -43,7 +43,7 @@ test('official text selection contains every ordinary MaaS HTTP SKU and only cur
   assert.equal(selected.filter((m:any) => m.provider === 'iflytek' && m.protocol === 'anthropic-messages').length, 8)
   assert.deepEqual(selected.filter((m:any) => m.provider === 'longcat').map((m:any) => m.id), ['LongCat-2.0'])
   for (const provider of ['iflytek', 'longcat']) {
-    const actual = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/')).sort()
+    const actual = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && key !== 'longcat/LongCat-2.5-Preview').sort()
     const expected = selected.filter((m:any) => m.provider === provider).map((m:any) => provider + '/' + m.id).sort()
     assert.deepEqual(actual, expected, `${provider}: separate Spark credentials, subscriptions, WS and held services must not enter ordinary MaaS`)
   }

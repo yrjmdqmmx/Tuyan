@@ -124,13 +124,8 @@ test('startup config rejects multi-replica mode until job leases exist', () => {
   )
 })
 
-test('startup config requires strict object storage mode', () => {
-  for (const value of ['', 'false', ' true ']) {
-    assert.throws(
-      () => loadConfig({ ...validEnv, PAPERBANANA_STRICT_OBJECT_STORAGE: value }),
-      /PAPERBANANA_STRICT_OBJECT_STORAGE=true is required/,
-    )
-  }
+test('object storage is mandatory without a selectable fallback mode', () => {
+  assert.equal('strictObjectStorage' in loadConfig(validEnv), false)
 })
 
 test('startup config requires Mongo and private OSS settings', () => {

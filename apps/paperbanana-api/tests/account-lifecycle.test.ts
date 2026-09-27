@@ -7,7 +7,7 @@ import { memoryDb } from '../../../test-support/memory-db.mjs'
 
 // Execute the actual production lifecycle functions with only Mongo, OSS and
 // clock replaced. No network clients, credentials or production data are used.
-const source = fs.readFileSync(new URL('../../laf-functions/paperbanana-api.ts', import.meta.url), 'utf8')
+const source = fs.readFileSync(new URL('../runtime/handler.ts', import.meta.url), 'utf8')
 function extract(name: string) {
   const start = source.search(new RegExp(`^(?:export )?(?:async )?function ${name}\\(`, 'm'))
   assert.ok(start >= 0, name)
@@ -32,7 +32,7 @@ function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : an
   const context = vm.createContext({
     Date: Clock, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: db.collection('paperbanana_jobs'),
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
-    jobAdmission: { freezeOwners() {} }, cloud: { storage: { bucket: () => bucket } }, bucketName: 'fake',
+    jobAdmission: { freezeOwners() {} }, objectStorage: { bucket: () => bucket }, bucketName: 'fake',
     sanitizePathPart: (value: string) => value.replace(/[^A-Za-z0-9._-]+/g, '-'),
     randomId: () => 'lease-test', referenceUploadStateRetentionMs: 86400000,
     deleteAdditionalAccountData: async (userId: string) => db.collection('submissions').deleteMany({ userId }),

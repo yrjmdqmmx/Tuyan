@@ -6,6 +6,19 @@ Core `callImageModel` bundle, uses a dedicated Mongo database and a private OSS
 
 ## Safe startup
 
+The complete runtime image installs pinned `fonts-noto-cjk` and runs all local
+calibration SVG-to-PNG snapshots. Slim lacks an OS CA bundle, so the font installer
+uses Node's bundled Mozilla roots to bootstrap verified HTTPS, then installs
+`ca-certificates`. Debian Release/package signatures remain mandatory, failed
+index downloads fail the build, and transport retries are bounded at three.
+The default sources are official `https://deb.debian.org/debian` and
+`https://deb.debian.org/debian-security`. In restricted build networks, set
+`PAPERBANANA_BENCH_DEBIAN_MIRROR` and `PAPERBANANA_BENCH_DEBIAN_SECURITY_MIRROR`
+to HTTPS Debian mirrors (for example the equivalent paths on
+`https://mirrors.aliyun.com`). These are build arguments, not worker environment
+settings. Never disable TLS/signature checks or drop the fixed font version to
+get a successful build. Building the image does not enable or deploy the worker.
+
 - `PAPERBANANA_BENCH_ENABLED=false` is the required deployment default.
 - Candidate discovery runs every six hours and never calls a model.
 - A paid run needs an immutable-admin approval with entitlement, price snapshot,

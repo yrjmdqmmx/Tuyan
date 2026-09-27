@@ -14,11 +14,11 @@ const miniprogramRecords = source('apps/miniprogram/miniprogram/pages/records/re
 assert.match(miniprogramPayload, /clientPlatform: 'miniprogram'/)
 assert.match(miniprogramRecords, /history-meta[^\n]*client_platform_text/)
 
-const laf = source('apps/laf-functions/paperbanana-api.ts')
-assert.match(laf, /type ClientPlatform = 'web' \| 'miniprogram' \| 'android' \| 'ios' \| 'windows' \| 'macos' \| 'harmony'/)
-assert.match(laf, /clientPlatform:\s*normalizeClientPlatform\(body\.clientPlatform\)/)
-assert.match(laf, /const clientPlatform = normalizeClientPlatform\(job\.clientPlatform\) \|\| normalizeClientPlatform\(job\.client_platform\)/)
-assert.match(laf, /clientPlatform,\s*client_platform:\s*clientPlatform/)
-assert.match(laf, /Invalid clientPlatform/)
+const core = source('apps/paperbanana-api/runtime/handler.ts')
+assert.match(core, /type ClientPlatform = 'web' \| 'miniprogram' \| 'android' \| 'ios' \| 'windows' \| 'macos' \| 'harmony'/)
+assert.match(core, /clientPlatform:\s*normalizeClientPlatform\(body\.clientPlatform\)/)
+assert.match(core, /const clientPlatform = normalizeClientPlatform\(job\.clientPlatform\) \|\| normalizeClientPlatform\(job\.client_platform\)/)
+assert.match(core, /clientPlatform,\s*client_platform:\s*clientPlatform/)
+assert.match(core, /Invalid clientPlatform/)
 
 console.log('client-platform-source-contract.test.mjs passed')

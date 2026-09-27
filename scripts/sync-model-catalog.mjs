@@ -8,7 +8,7 @@ import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
-const backend = path.join(root, 'apps/laf-functions/paperbanana-api.ts')
+const backend = path.join(root, 'apps/paperbanana-api/runtime/handler.ts')
 let source = fs.readFileSync(backend, 'utf8')
 const start = '// BEGIN GENERATED AUDITED CATALOG'
 const end = '// END GENERATED AUDITED CATALOG'
@@ -39,7 +39,7 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
@@ -74,7 +74,7 @@ const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.S
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
 const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
-for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']]]) {
+for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']],['novita-image-channel.ts',['callNovitaImageChannel','buildNovitaImageRequest']]]) {
   const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
   lines.push(`const {${names.join(',')}} = (()=>{${moduleSource}\nreturn {${names.join(',')}}})()`)
 }
@@ -163,9 +163,53 @@ lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistr
 }`)
 lines.push(end)
 const block = lines.join('\n')
+// Client catalog evaluation stays isolated below; Node loads canonical modules
+// directly instead of compiling a second embedded copy of every contract.
+let runtimeBlock = block
+const runtimeImports = []
+const importedNames = new Set()
+function useModule(file, embedded) {
+  if (embedded) runtimeBlock = runtimeBlock.replace(embedded, '')
+  const text = fs.readFileSync(path.join(root, file), 'utf8')
+  const moduleAst = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true)
+  const names = []
+  for (const node of moduleAst.statements) {
+    if (!node.modifiers?.some(m => m.kind === ts.SyntaxKind.ExportKeyword)) continue
+    const declarations = ts.isVariableStatement(node) ? node.declarationList.declarations : [node]
+    for (const declaration of declarations) {
+      const name = declaration.name?.getText(moduleAst)
+      if (name && !importedNames.has(name)) { names.push(name); importedNames.add(name) }
+    }
+  }
+  const specifier = '../../../' + file.replace(/\.ts$/, '.js')
+  if (names.length) runtimeImports.push(`import { ${names.join(', ')} } from '${specifier}'`)
+  runtimeImports.push(`export * from '${specifier}'`)
+}
+useModule('packages/types/src/model-presentation.ts', presentationRuntime)
+useModule('packages/types/src/model-presentation-data.ts')
+useModule('packages/api/src/audited-channel-data.ts', auditData)
+useModule('packages/api/src/audited-channel-contracts.ts', fs.readFileSync(path.join(root,'packages/api/src/audited-channel-contracts.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
+runtimeBlock = runtimeBlock.replace(refineRuntime, '')
+useModule('packages/types/src/refine.ts')
+useModule('packages/api/src/refine-controls.ts')
+useModule('packages/types/src/provider-regions.ts', regionRuntime)
+for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']],['novita-image-channel.ts',['callNovitaImageChannel','buildNovitaImageRequest']]]) {
+  const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
+  runtimeBlock = runtimeBlock.replace(`const {${names.join(',')}} = (()=>{${moduleSource}\nreturn {${names.join(',')}}})()`, '')
+}
+useModule('packages/api/src/image-channel-routes.ts', routeModule)
+useModule('packages/api/src/image-channel-adapters.ts', channelRuntime)
+useModule('packages/api/src/text-channel-adapters.ts', textChannelRuntime)
+for (const file of ['execution-errors.ts','reference-selection.ts','universal-api.ts','tokendance-catalog.ts']) {
+  useModule('packages/api/src/'+file, fs.readFileSync(path.join(root,'packages/api/src',file),'utf8'))
+}
+useModule('packages/api/src/tokendance-models.ts', tokenDanceModels)
+useModule('packages/api/src/tokendance.ts', fs.readFileSync(path.join(root,'packages/api/src/tokendance.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
+useModule('packages/types/src/image-size-contract.ts', sizeRuntime)
+runtimeBlock = runtimeBlock.replace(start, start+'\n'+runtimeImports.join('\n'))
 source = source.includes(start)
-  ? source.slice(0, source.indexOf(start)) + block + source.slice(source.indexOf(end) + end.length)
-  : source.replace('const fallbackReferences:', block + '\n\nconst fallbackReferences:')
+  ? source.slice(0, source.indexOf(start)) + runtimeBlock + source.slice(source.indexOf(end) + end.length)
+  : source.replace('const fallbackReferences:', runtimeBlock + '\n\nconst fallbackReferences:')
 source = source.replace(/const modelRegistryVersion = '[^']+'/, `const modelRegistryVersion = '${config.version}'`)
 function write(file, content) {
   const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''

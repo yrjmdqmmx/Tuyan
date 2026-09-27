@@ -1,5 +1,52 @@
 # 平台同步日志 (Platform Sync Log)
 
+> 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
+
+## 2026-09-27 · 每日备份现网修复与完整 Benchmark 运行镜像
+
+- 用户追加授权修复现网每日备份；业务发布仍未授权。根因已实机复现：Tailscale CGNAT 防护丢弃 OSS 内网新 DNS 地址的宿主回包，旧固定网段豁免失效。
+- [x] 运维：按每次上传解析的准确 IP 临时放行 eth0 上已建立的 TCP/443 回包，正常/异常/退出清理；不改全局防火墙或 Tailscale 自有链。备份运行脚本安装到 checkout 外 `/opt/paperbanana/operations/backup`，systemd 增加受锁保护的退出清理与 AF_NETLINK。归档和 checksum 上传成功后才公开本地完成文件，避免备份期间误报。
+- [x] 生产备份：修复已安装，服务重跑成功；OSS 归档/校验文件完整回读 hash 一致，AES256 对象加密已核验。健康监控移除已退役域名探针。没有重启业务容器、改动数据库业务数据或恢复数据到生产库。
+- [x] Benchmark：完整 linux/amd64 运行镜像本地构建通过；HTTPS + Node 内置 CA 引导系统证书、Debian 签名验证、固定 CJK 字体保留，允许通过构建参数指定 HTTPS Debian 镜像。CI 加入完整镜像的无网络非 root 验证。
+- [x] Web / 小程序 / 共享契约：无需同步请求字段、模型目录或用户配置；仅部署资产与构建参数变化。无新增生产 secret / 环境变量。
+- [ ] v3.8.1 仍待发布；Benchmark 镜像未推送/替换生产容器，执行器仍关闭，没有模型/Judge 付费调用。安装清单和最终镜像来源见 [修复记录](docs/operations/2026-09-27-backup-benchmark-repair.md)。
+
+## 2026-09-27 · 彻底退役旧云平台，迁移 Node 业务核心（本地待发布）
+
+- 以只读实机核查为准：香港 Debian 12 / 4 vCPU / 16 GB / Compose、Node 24 网关与 Core、自建 MongoDB、私有 OSS；新加坡 Ubuntu 24.04 / 2 vCPU / 4 GB / WireGuard + Squid。Sealos / Sealaf 不是运行、发布或回滚目标。见[架构](docs/operations/current-architecture.md)与[清理记录](docs/operations/2026-09-27-platform-retirement.md)。
+- [x] Core / 共享：原旧目录中的现役业务迁入 `apps/paperbanana-api/runtime/handler.ts`；直接绑定 Node Mongo/OSS 并导入共享协议模块，删除云函数 SDK 替身、动态依赖面板分支、无界准入和未配置网关放行。图片必须落 OSS、校验 HEAD、走内网有界读取；Plot 使用真正中止请求的超时。历史任务、data URL、模型 ID、恢复记录和客户端平台字段仍可读。
+- [x] 网关：仅接受 `PAPERBANANA_API_URL`；删除旧 URL/模式回退、旧 `laf` 健康别名、网关侧业务 admin token 和外部精修 URL 开关。健康明细使用 `backend` / `dependencies`；身份与任务 action 契约保持。
+- [x] Web / 共享 API：固定认证网关，取消旧云函数/FastAPI 自动探测与备用请求；保留普通/专业模式、通用 API 作为模型渠道的独立角色设置。
+- [x] 小程序源码：健康读取改为 `backend`；TS/JS 一致并本地构建/测试。未覆盖独立原生工作树和微信开发者工具副本，未微信发布。
+- [x] CI / 运维源码：移除旧发布 workflow、Kubernetes NetworkPolicy 和旧域名监控；Core/Benchmark Docker COPY、守卫测试、目录生成路径同步。源平台对象导出器删除；校验既有对象包的 OSS 恢复器移至 `deploy/hk-single-host/object-restore`。
+- [x] 文档：AGENTS/README/部署/监控/环境示例按现役架构重写；旧审计/迁移材料加历史标识及归档索引，不改写当时的发布哈希。
+- [x] 完整 Benchmark runtime 镜像：此前 HTTP 502 阻塞已由本日后续修复解除，见上方修复条目；运行镜像本地验证通过，未生产发布。
+- [ ] 生产同步：本轮未部署、未修改环境/监控/网络或删除资源。现网旧健康别名及过时环境项需另行批准同步；Novita 尚需安装 SG ACL。后续追加授权已修复每日备份、移除旧域名监控探针，见上方修复条目；其余清理尚未部署。
+- [ ] v3.8.1 继续待发布；真实模型调用、支付/充值、生产部署、微信发布均未执行。旧云账户资源与账单未查询，不能据此断言云资源已清空或费用已停止。
+
+## 2026-09-27 · v3.8.1 视觉契约复核 / Novita Ming（v27，待发布）
+
+- 发现官网索引中未在侧栏显示的 [LongCat 视觉教程](https://longcat.ai/platform/docs/zh/image-video-understanding)，撤回“2.5 缺少识图契约”。目录/契约新增其 vision 角色，复用已有 `modelRoutes.vision` 与识图/评审/分析后重绘；LongCat 2.0 主默认保持，原来空的识图默认填入2.5。图研沿用3张/4MiB/8MP/20MB等更低额度，官方50张标明暂定。
+- 用户授权新增独立 `novita` 聚合渠道，准确生图 ID `ming-image-0.1-design`，独立 Key；两种已确认方图尺寸、PNG、单次提交、已完成结果恢复、unknown 不重发。分层 API 已确认但不伪装成单图编辑。目录 v27 共1,040个静态身份；无新 env/任务协议版本。
+- [x] Core / Laf 源码 / types：LongCat图文schema、思考角色、图片输入政策；百灵Flash的官方`max_tokens`补证；Novita传输/记录/恢复；独立凭据及混用模拟验证。
+- [x] Web：现有识图选择器可选LongCat2.5；图片选择器可选Novita Ming；共享生成物、桌面与窄屏本地交互验证，不新增独立视觉功能。
+- [x] 小程序共享目录 / TS / JS / 角色输入政策：同步两项能力、新渠道ID与排序，源码构建和测试；不覆盖独立原生3.8.0工作树或微信项目副本。
+- [ ] 小程序原生专业模式通用API UI及思考设置：沿用下条未合并原生工作依赖；未进行真机验收或微信发布。本仓库当前AGENTS只保留Web/小程序客户端，已纠正初核误列Android/Windows/macOS待办。
+- [x] 出口配置源码：Core精确目标与SG Squid白名单增加`api.novita.ai`，本地allow/deny回归。**生产安装未执行**，实际发布时需同步ACL。
+- [ ] 发布前：账号权益/地区/限流/真实推理/实际账单，及生图分层等明确未接入项见[复核矩阵](docs/channel-audit/2026-09-27-v381/REAUDIT.md)。仍unreleased；没有push、充值、生产部署、付费调用或微信上传/审核/发布。
+
+
+
+## 2026-09-27 · Tuyan v3.8.1 专业模式通用渠道 / 百灵 / LongCat 2.5（待发布）
+
+- 目录 v26 新增 `antling` 官方直连渠道六个准确 API ID（6 主模型 / 1 视觉），`longcat/LongCat-2.5-Preview` 新增文本/思考适配；旧 LongCat 2.0 默认与历史配置保持。无新 env；复用 route/custom/thinking v1 和加密恢复契约。见 [来源与能力审计](docs/channel-audit/2026-09-27-v381/README.md)。
+- [x] Core / Laf 共享源码 / API types：准入白名单、精确协议、角色能力、PNG/JPEG Base64、整包限制、思考字段、公开价/usage 与账单区分；三角色混合路由、加密任务恢复和收费 POST 防重模拟验证。
+- [x] Web：只保留普通/专业模式，通用 API 进入每个角色的渠道；旧 `tuyan.universal-api.v1` 草稿迁移，新增非敏感角色选择保存，密钥仍按接入绑定且只随所需角色发送。首次专业模式承接普通预设，之后切换保留各自组合。
+- [x] 小程序共享 TS / JS / 目录：生成 v26、渠道类型/排序、图片规则；不改小程序默认、不改微信项目工作副本。
+- [ ] 小程序原生通用 API 编辑器/专业模式入口整合、新 thinking 控件及真机验收：`miniprogram-v380-parity-20260923` 存在大量尚未合并的原生 3.8.0 改动（含通用 API 编辑器/思考运行时），本工作树未覆盖或混入。负责该端的会话应先合并既有原生工作，再应用本条角色路由与新目录，并重生成该分支的思考 runtime；不能把本条共享 JS 同步当作原生交互验收。
+- [x] 初核结论已复核纠正：LongCat 2.5 视觉教程和 Ming 托管链接此前漏查；最新状态以上方复核条目为准。百灵/LongCat 原厂生图编辑、真实账号验收仍有明确欠项，见复核记录。
+- [ ] 发布：v3.8.1 为待发布状态；无付费调用/充值、无生产部署、无微信上传/审核/发布。公开已发布版本日志保持不变。
+
 ## 2026-09-23 · 公开排行榜恢复与 Benchmark v2.5 日志补齐
 
 - 回归原因：前次 Pages 发布传入 `bench_enabled=false`，实际关闭了公开排行榜、方法说明和证据页；它不等于后台评测执行器开关。线上只读 API 的 46 模型 / 9 题及 releaseHash 正常，未改评测数据。

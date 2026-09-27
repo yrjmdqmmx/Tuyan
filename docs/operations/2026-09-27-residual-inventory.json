@@ -1,0 +1,626 @@
+{
+  "checkedAt": "2026-09-27",
+  "scope": "tracked and nonignored task files; no deleted paths, Git objects, dependencies or build outputs",
+  "remainingFiles": [
+    {
+      "file": "AGENTS.md",
+      "category": "retirement_rule",
+      "terms": [
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "explicit retirement prohibition and current architecture operations"
+    },
+    {
+      "file": "README.md",
+      "category": "retirement_rule",
+      "terms": [
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "explicit retirement prohibition and current architecture operations"
+    },
+    {
+      "file": "SYNC.md",
+      "category": "historical_evidence",
+      "terms": [
+        "@lafjs",
+        "LAF_API_URL",
+        "Laf",
+        "Sealaf",
+        "Sealos",
+        "laf",
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "apps/auth-gateway/tests/backend-client.test.js",
+      "category": "regression_guard",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "negative tests verify retired transports fail before any network call"
+    },
+    {
+      "file": "apps/auth-gateway/tests/config.test.js",
+      "category": "regression_guard",
+      "terms": [
+        "LAF_API_URL"
+      ],
+      "currentUse": "negative tests verify retired transports fail before any network call"
+    },
+    {
+      "file": "apps/miniprogram/CHANGELOG.md",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "apps/miniprogram/README.md",
+      "category": "retirement_rule",
+      "terms": [
+        "Sealos"
+      ],
+      "currentUse": "explicit retirement prohibition and current architecture operations"
+    },
+    {
+      "file": "apps/web/tests/legal-documents.test.mjs",
+      "category": "regression_guard",
+      "terms": [
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "negative regression assertions reject retired modes, variables, domains or build imports; no operational platform dependency"
+    },
+    {
+      "file": "deploy/hk-single-host/README.md",
+      "category": "retirement_rule",
+      "terms": [
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "explicit retirement prohibition and current architecture operations"
+    },
+    {
+      "file": "deploy/hk-single-host/tests/contracts.test.mjs",
+      "category": "regression_guard",
+      "terms": [
+        "@lafjs",
+        "LAF_API_URL",
+        "laf",
+        "sealos"
+      ],
+      "currentUse": "negative regression assertions reject retired modes, variables, domains or build imports; no operational platform dependency"
+    },
+    {
+      "file": "docs/account-lifecycle-v3-2026-09-07.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/admin-operations-2026-09-08.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/changelog-audit/2026-09-22-history.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.1.0/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.2.0/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.3.0/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.4.0/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.0/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.1/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.2/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.3/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.4/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/miniprogram-3.5.5/local-sync.json",
+      "category": "historical_evidence",
+      "terms": [
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/evidence/reference-selection-20260916/validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/miniprogram-parity-2026-09-09.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Sealaf",
+        "Sealos",
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-capabilities/2026-09-07-audit.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-capabilities/2026-09-07-catalog-v14.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-capabilities/2026-09-07-v14-validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-catalog-repair-2026-09-07.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-picker-2026-09-07.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/model-version-validation-20260921.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/operations/2026-09-27-host-evidence.json",
+      "category": "current_audit",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "retirement change report or sanitized observation of the still-unmodified production deployment"
+    },
+    {
+      "file": "docs/operations/2026-09-27-platform-retirement.md",
+      "category": "current_audit",
+      "terms": [
+        "@lafjs",
+        "LAF_API_URL",
+        "Laf",
+        "Sealaf",
+        "Sealos",
+        "laf"
+      ],
+      "currentUse": "retirement change report or sanitized observation of the still-unmodified production deployment"
+    },
+    {
+      "file": "docs/operations/current-architecture.md",
+      "category": "current_audit",
+      "terms": [
+        "Sealaf",
+        "Sealos",
+        "laf"
+      ],
+      "currentUse": "retirement change report or sanitized observation of the still-unmodified production deployment"
+    },
+    {
+      "file": "docs/reference-selection-repair-2026-09-16.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/reference-upload/2026-09-10-audit.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/reference-upload/final-validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/reference-upload/review-validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/reference-upload/review2-validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/reference-upload/validation.json",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/refinement/2026-09-22-controls-and-channels.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-07-account-lifecycle-v3.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-07-model-catalog-v14-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-07-model-catalog-v14.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-07-model-picker-v15-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-08-admin-operations-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-08-admin-operations.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-08-email-confirmation-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-08-email-verification-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-09-image25-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-09-tokendance.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-10-reference-upload-evidence.json",
+      "category": "historical_evidence",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-10-reference-upload.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-19-tokendance-catalog-isolation.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-22-refine-v23.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-22-tuyan-v3.8.0.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/releases/2026-09-23-tuyan-v3.8.0-model-update.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/superpowers/plans/2026-08-23-miniprogram-account-copy-alignment.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Sealaf",
+        "Sealos",
+        "sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/superpowers/plans/2026-09-02-input-optimization.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/superpowers/plans/2026-09-20-universal-api.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Sealaf",
+        "Sealos",
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/thinking/2026-09-22/README.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/tokendance/account-experience-2026-09-09.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/tokendance/implementation.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/tokendance/integration-audit.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/tokendance/validation.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos",
+        "laf"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "docs/universal-api/catalog-selection.md",
+      "category": "historical_evidence",
+      "terms": [
+        "Laf",
+        "Sealaf",
+        "Sealos"
+      ],
+      "currentUse": "dated migration/release/audit provenance; marked historical or covered by archive index, never current deployment instructions"
+    },
+    {
+      "file": "packages/api/src/jobs.test.js",
+      "category": "regression_guard",
+      "terms": [
+        "laf"
+      ],
+      "currentUse": "negative tests verify retired transports fail before any network call"
+    }
+  ],
+  "unclassified": []
+}

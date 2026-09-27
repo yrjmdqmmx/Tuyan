@@ -1,13 +1,15 @@
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Copy, Search, Sparkles, X } from 'lucide-react'
+import { DEFAULT_WEB_PROVIDER } from '../lib/modelRouting'
 import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
 import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels, modelVersionLabel, modelVersionDetail, modelLifecycleLabel } from '../lib/modelPresentation'
 
 const COMPATIBLE_PAGE_SIZE = 24
 const COMPACT_MEDIA_QUERY = '(max-width: 1076px)'
-const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), summary, a[href], [tabindex]:not([tabindex="-1"])'
+const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, a[href], [tabindex]:not([tabindex="-1"])'
 const MOBILE_FOCUS_SELECTORS = Object.freeze({
+  'custom-back': '[data-mobile-focus="custom-back"]',
   'providers-back': '[data-mobile-focus="providers-back"]',
   'models-back': '[data-mobile-focus="models-back"]',
   'selected-provider': '.model-provider-rail button[aria-pressed="true"]',
@@ -15,6 +17,7 @@ const MOBILE_FOCUS_SELECTORS = Object.freeze({
 })
 
 function providerDisplayName(provider, providerConfigs) {
+  if (provider === 'custom') return '通用 API'
   return MODEL_CHANNEL_LABELS[provider] || providerConfigs?.[provider]?.label || provider
 }
 
@@ -48,6 +51,9 @@ export default function ModelPicker({
   route,
   onRouteChange,
   providerConfigs,
+  allowCustom = false,
+  renderCustomSettings,
+  customSummary,
 }) {
   const { t } = useAppLocale()
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
@@ -62,14 +68,17 @@ export default function ModelPicker({
         },
       }
   const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => presentRegistryModel(id, model)) }])) }), [registry, models, provider])
-  const providerIds = useMemo(() => orderModelChannels(Object.keys(effectiveRegistry.providers || {})).filter((id) => {
-    const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
-    return available.compatible.length > 0 || id === effectiveRoute.accessProvider
-  }), [effectiveRegistry, role, outputFormat, effectiveRoute.accessProvider])
+  const providerIds = useMemo(() => [
+    ...(allowCustom ? ['custom'] : []),
+    ...orderModelChannels([...new Set([...Object.keys(effectiveRegistry.providers || {}), effectiveRoute.accessProvider].filter(id => id && id !== 'custom'))]).filter(id => {
+      const available = partitionRegistryModels(effectiveRegistry.providers[id]?.models || [], { role, outputFormat })
+      return available.compatible.length > 0 || id === effectiveRoute.accessProvider
+    }),
+  ], [effectiveRegistry, role, outputFormat, effectiveRoute.accessProvider, allowCustom])
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [copyStatus, setCopyStatus] = useState('')
-  const [selectedProvider, setSelectedProvider] = useState(effectiveRoute.accessProvider || providerIds[0] || '')
+  const [selectedProvider, setSelectedProvider] = useState(effectiveRoute.accessProvider || DEFAULT_WEB_PROVIDER)
   const [selectedVendor, setSelectedVendor] = useState('')
   const [mobileStep, setMobileStep] = useState('providers')
   const [compact, setCompact] = useState(false)
@@ -169,12 +178,12 @@ export default function ModelPicker({
   }, [activeVendor, compact, mobileStep, open, selectedProvider])
 
   function openPicker() {
-    const nextProvider = effectiveRoute.accessProvider || providerIds[0] || ''
+    const nextProvider = effectiveRoute.accessProvider || DEFAULT_WEB_PROVIDER
     const nextRegistry = effectiveRegistry.providers?.[nextProvider]
     const nextGroups = groupRegistryModels(partitionRegistryModels(nextRegistry?.models || [], { role, outputFormat }).compatible)
     setSelectedProvider(nextProvider)
     setSelectedVendor(nextGroups.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || nextGroups[0]?.vendor || '')
-    setMobileStep('providers')
+    setMobileStep(nextProvider === 'custom' ? 'custom' : 'providers')
     setQuery('')
     setCopyStatus('')
     resetModelList()
@@ -182,6 +191,13 @@ export default function ModelPicker({
   }
 
   function chooseProvider(nextProvider) {
+    if (nextProvider === 'custom') {
+      onRouteChange?.({accessProvider: 'custom', modelId: effectiveRoute.accessProvider === 'custom' ? effectiveRoute.modelId : ''});
+      setSelectedProvider('custom');
+      setQuery('');
+      if (compact) moveMobileStep('custom', 'custom-back');
+      return;
+    }
     const nextRegistry = effectiveRegistry.providers?.[nextProvider] || { models: [] }
     const nextGroups = groupRegistryModels(partitionRegistryModels(nextRegistry.models, { role, outputFormat }).compatible)
     setSelectedProvider(nextProvider)
@@ -226,7 +242,7 @@ export default function ModelPicker({
       {providerIds.map((id) => (
         <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} aria-pressed={selectedProvider === id} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
           <strong>{providerDisplayName(id, providerConfigs)}</strong>
-          <small>{t(effectiveRegistry.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连')}</small>
+          <small>{t(id === 'custom' ? '自定义接入' : effectiveRegistry.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连')}</small>
         </button>
       ))}
     </div>
@@ -241,6 +257,14 @@ export default function ModelPicker({
         </button>
       ))}
     </div>
+  )
+
+  const customEditor = (
+    <section className="model-custom-editor" aria-label={t("通用 API 配置")}>
+      <div className="model-custom-intro"><h3>{t("通用 API")}</h3><p>{t("此处只编辑当前角色。切换渠道或关闭弹框会保留本页草稿，密钥不会随配置保存。")}</p></div>
+      {renderCustomSettings?.()}
+      <button type="button" className="universal-button model-custom-done" onClick={() => setOpen(false)}>{t("完成编辑")}</button>
+    </section>
   )
 
   const modelBrowser = (
@@ -309,6 +333,7 @@ export default function ModelPicker({
         ) : null}
       </div>
       <p className="model-copy-status" role="status">{copyStatus}</p>
+      {!effectiveRegistry.providers?.[selectedProvider] ? <p className="model-picker-empty" role="status">{t("当前渠道目录暂不可用，已保留原渠道与模型选择。")}</p> : null}
       {!rows.length ? <p className="model-picker-empty">{t("没有匹配当前角色与输出格式的可用模型。")}</p> : null}
 
     </section>
@@ -321,6 +346,7 @@ export default function ModelPicker({
         <span>
           <strong>{t(selectedModel?.label || effectiveRoute.modelId || '请选择模型')}</strong>
           <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor].filter(Boolean))].join(' · ')}</small>
+          {effectiveRoute.accessProvider === 'custom' && customSummary ? <small className="model-custom-summary">{customSummary}</small> : null}
         </span>
         <ChevronDown size={17} />
       </button>
@@ -331,13 +357,19 @@ export default function ModelPicker({
         <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
           <aside ref={panelRef} className="model-route-drawer" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <header className="model-route-head">
-              <div><span>{t("API 接入渠道 → 模型厂商 → 服务端模型目录")}</span><h2 id={dialogTitleId}>{t(label)}{t(" · API 渠道与模型")}</h2></div>
+              <div><span>{t(selectedProvider === 'custom' ? "API 接入渠道 → 通用 API 配置" : "API 接入渠道 → 模型厂商 → 服务端模型目录")}</span><h2 id={dialogTitleId}>{t(label)}{t(" · API 渠道与模型")}</h2></div>
               <button type="button" aria-label={t("关闭模型选择")} onClick={() => setOpen(false)}><X size={20} /></button>
             </header>
             {compact ? (
               <div className={`model-route-mobile-step step-${mobileStep}`}>
                 {mobileStep === 'providers' ? (
                   <><h3>{t("选择 API 接入渠道")}</h3>{providerRail}</>
+                ) : null}
+                {mobileStep === 'custom' ? (
+                  <>
+                    <button type="button" className="model-route-back" data-mobile-focus="custom-back" onClick={() => moveMobileStep('providers', 'selected-provider')}><ArrowLeft size={16} />{t(" 返回 API 接入渠道")}</button>
+                    {customEditor}
+                  </>
                 ) : null}
                 {mobileStep === 'vendors' ? (
                   <>
@@ -353,7 +385,7 @@ export default function ModelPicker({
                 ) : null}
               </div>
             ) : (
-              <div className="model-route-desktop-layout has-vendor">{providerRail}{vendorRail}{modelBrowser}</div>
+              <div className={`model-route-desktop-layout ${selectedProvider === 'custom' ? 'has-custom' : 'has-vendor'}`}>{providerRail}{selectedProvider === 'custom' ? customEditor : <>{vendorRail}{modelBrowser}</>}</div>
             )}
           </aside>
         </div>

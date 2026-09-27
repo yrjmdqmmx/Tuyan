@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # 本地验证记录 · 2026-09-21 · 模型目录 v21
 
 工作目录：`/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/model-catalog-channels-20260921`，分支 `codex/model-catalog-channels-20260921`，基线 `ec24b730282c820881e206986df1f48b7dd98215`。桌面旧主 checkout 与微信上传副本未修改。

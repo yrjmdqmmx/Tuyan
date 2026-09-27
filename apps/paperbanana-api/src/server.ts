@@ -9,7 +9,7 @@ import express, { type Express, type NextFunction, type Request, type Response }
 
 import { redactLogValue } from './redaction.js'
 
-export type LegacyContext = {
+export type CoreContext = {
   request: { method: string }
   body: Record<string, unknown>
   headers: Request['headers']
@@ -19,7 +19,7 @@ export type LegacyContext = {
   }
 }
 
-export type LegacyHandler = (ctx: LegacyContext) => unknown | Promise<unknown>
+export type CoreHandler = (ctx: CoreContext) => unknown | Promise<unknown>
 export type Readiness = { ready: boolean; dependencies?: Record<string, unknown> }
 export type ReadinessProbe = () => Readiness | Promise<Readiness>
 export type ServiceLogger = {
@@ -42,7 +42,7 @@ type AppDependencies = {
   providerWorkflow?: ReturnType<typeof createProviderWorkflow>
   resumeTokenDanceJob?: (task: any) => Promise<any>
   requiresTokenDanceCredential?: (body: Record<string, any>) => Promise<boolean>
-  handler: LegacyHandler
+  handler: CoreHandler
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
   config: AppConfig
@@ -129,7 +129,7 @@ function safeLegacyHeader(value: string | undefined, maxLength: number): string 
   return normalized || undefined
 }
 
-function legacyHeaders(request: Request): Request['headers'] {
+function handlerHeaders(request: Request): Request['headers'] {
   const headers: Request['headers'] = {}
   const clientIp = safeLegacyHeader(request.get('x-paperbanana-client-ip'), 128)
   const userAgent = safeLegacyHeader(request.get('user-agent'), 512)
@@ -317,10 +317,10 @@ export function createApp({
         })
       }
     }
-    const ctx: LegacyContext = {
+    const ctx: CoreContext = {
       request: { method: request.method },
       body,
-      headers: legacyHeaders(request),
+      headers: handlerHeaders(request),
       response: {
         setHeader(name, value) { response.setHeader(name, value) },
         status(code) { response.status(code) },
@@ -331,7 +331,7 @@ export function createApp({
       const result = await handler(ctx)
       return response.status(200).send(result)
     } catch (error) {
-      logger.error('legacy handler failed', redactLogValue(error))
+      logger.error('Core handler failed', redactLogValue(error))
       return response.status(500).json({ code: 500, error: 'Internal server error' })
     }
   }

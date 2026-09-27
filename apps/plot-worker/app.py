@@ -89,7 +89,7 @@ def render(
         )
 
     # run_render returns {"ok": True, "image_base64": ...} or
-    # {"ok": False, "error": ...}. Both are HTTP 200 so the Laf critic loop can
+    # {"ok": False, "error": ...}. Both are HTTP 200 so the Core critic loop can
     # read the error string and revise (errors are an expected outcome, not a
     # transport failure).
     result = run_render(req.code, timeout_s=WALL_CLOCK_TIMEOUT_S)

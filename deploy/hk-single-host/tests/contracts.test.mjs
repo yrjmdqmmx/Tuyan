@@ -41,15 +41,19 @@ test('daily Mongo backup timer is persistent, bounded and installed explicitly',
   const installer = read('scripts/install-backup-timer.sh');
 
   assert.match(service, /Type=oneshot/);
-  assert.match(service, /ExecStart=\/usr\/bin\/flock -n \/run\/lock\/paperbanana-mongo-backup\.lock \/opt\/paperbanana\/repo\/deploy\/hk-single-host\/scripts\/backup-mongo\.sh/);
+  assert.match(service, /ExecStart=\/usr\/bin\/flock -n \/run\/lock\/paperbanana-mongo-backup\.lock \/opt\/paperbanana\/operations\/backup\/backup-mongo\.sh/);
   assert.match(service, /TimeoutStartSec=2h/);
   assert.match(service, /UMask=0077/);
+  assert.match(service, /ExecStopPost=\/usr\/bin\/flock -w 5 .*with-backup-oss-network\.py --cleanup/);
+  assert.match(service, /RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK/);
   assert.match(timer, /OnCalendar=\*-\*-\* 19:17:00 UTC/);
   assert.match(timer, /RandomizedDelaySec=15m/);
   assert.match(timer, /Persistent=true/);
   assert.match(installer, /systemctl daemon-reload/);
   assert.match(installer, /systemctl enable --now paperbanana-backup\.timer/);
   assert.match(installer, /install -m 0644/);
+  assert.match(installer, /runtime_dir="\/opt\/paperbanana\/operations\/backup"/);
+  assert.match(installer, /flock -n 9/);
 });
 
 test('production health monitor covers application, data, backup, TLS and 5xx signals', () => {
@@ -62,7 +66,7 @@ test('production health monitor covers application, data, backup, TLS and 5xx si
   assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/health/);
   assert.match(monitor, /https:\/\/api\.paperbanana\.asia\/ready/);
   assert.match(monitor, /\.backend\.data\.ready == true/);
-  assert.match(monitor, /https:\/\/yifbnnzrwmxn\.sealoshzh\.site\/health/);
+  assert.doesNotMatch(monitor, /sealoshzh|sealos\.run/);
   assert.match(monitor, /countDocuments/);
   assert.match(monitor, /getCollection\("paperbanana_jobs"\)/);
   assert.match(monitor, /queued/);
@@ -103,7 +107,7 @@ test('compose keeps the public edge on loopback and all data services private', 
   assert.match(compose, /PAPERBANANA_MAINTENANCE_FILE:\s*\/opt\/paperbanana\/control\/maintenance/);
   assert.match(compose, /stop_grace_period:\s*30m/);
   assert.match(compose, /PAPERBANANA_SINGLE_REPLICA:\s*["']?true["']?/);
-  assert.match(compose, /PAPERBANANA_STRICT_OBJECT_STORAGE:\s*["']?true["']?/);
+  assert.doesNotMatch(compose, /PAPERBANANA_STRICT_OBJECT_STORAGE/);
 });
 
 test('benchmark worker is opt-in, portless and disabled by its secret-file default', () => {
@@ -197,9 +201,11 @@ test('verified evidence TOCTOU boundary requires immutable content-addressed Wor
 
 test('benchmark worker image pins CJK glyph support and renders calibration snapshots during build', () => {
   const dockerfile = read('../../apps/benchmark-worker/Dockerfile');
+  const fonts = read('../../apps/benchmark-worker/scripts/install-runtime-fonts.sh');
   const packageJson = read('../../apps/benchmark-worker/package.json');
   assert.match(dockerfile, /PAPERBANANA_BENCH_CJK_FONT_VERSION/);
-  assert.match(dockerfile, /fonts-noto-cjk=\$\{PAPERBANANA_BENCH_CJK_FONT_VERSION\}/);
+  assert.match(fonts, /fonts-noto-cjk=\$\{PAPERBANANA_BENCH_CJK_FONT_VERSION\}/);
+  assert.match(dockerfile, /sh \/tmp\/install-runtime-fonts\.sh/);
   assert.match(dockerfile, /fc-match[\s\S]*Noto Sans CJK/);
   assert.match(dockerfile, /node dist\/calibration-snapshot\.mjs/);
   assert.match(packageJson, /src\/calibration-snapshot\.ts[\s\S]*dist\/calibration-snapshot\.mjs/);
@@ -498,7 +504,6 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
     '../../.github/workflows/build-auth-gateway.yml',
     '../../.github/workflows/build-plot-worker.yml',
     '../../.github/workflows/build-benchmark-worker.yml',
-    '../../.github/workflows/deploy-laf-functions.yml',
   ].map(read);
 
   for (const workflow of workflows) {
@@ -511,30 +516,13 @@ test('legacy production workflows cannot auto-deploy from a main push', () => {
   assert.match(workflows[0], /VITE_AUTH_BASE:\s*https:\/\/api\.paperbanana\.asia/);
 });
 
-test('legacy Laf rollback remains verification-only until the console dependency can be checked', () => {
-  const workflow = read('../../.github/workflows/deploy-laf-functions.yml');
-  const lafReadme = read('../../apps/laf-functions/README.md');
-  const coreReadme = read('../../apps/paperbanana-api/README.md');
-  const sync = read('../../SYNC.md');
-
-  assert.doesNotMatch(workflow, /\blaf\s+func\s+push\b/i);
-  assert.doesNotMatch(workflow, /\blaf\s+(?:login|app\s+init)\b|LAF_(?:PAT|APPID)/i);
-  assert.match(workflow, /environment:\s*legacy-sealos/);
-  assert.match(workflow, /verification[- ]only/i);
-  assert.match(workflow, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual/i);
-  assert.doesNotMatch(workflow, /(?:npm|pnpm|yarn)\s+(?:install|add)[^\n]*jpeg-js|laf\s+(?:dependency|deps?)\s+/i);
-  assert.match(lafReadme, /^# .*rollback only/im);
-  assert.match(lafReadme, /jpeg-js@0\.4\.4/);
-  assert.match(lafReadme, /sharp@0\.35\.3/);
-  assert.match(lafReadme, /custom dependency/i);
-  assert.match(lafReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|仅能[^\n]*Laf 控制台/i);
-  assert.match(coreReadme, /verification[- ]only/i);
-  assert.match(coreReadme, /sharp@0\.35\.3/);
-  assert.match(coreReadme, /manual(?:ly)?[^\n]*Laf console|Laf console[^\n]*manual|手动[^\n]*Laf 控制台/i);
-  assert.match(sync, /jpeg-js@0\.4\.4/);
-  assert.match(sync, /sharp@0\.35\.3/);
-  assert.match(sync, /仅验证[^\n]*不含[^\n]*push|仅能[^\n]*控制台手动/);
-  assert.match(workflow, /sharp/);
+test('retired platform cannot become a build or deployment dependency', () => {
+  assert.equal(existsSync(new URL('../../../../.github/workflows/deploy-laf-functions.yml', import.meta.url)), false);
+  for (const file of ['../../apps/paperbanana-api/Dockerfile', '../../apps/benchmark-worker/Dockerfile', '../../apps/paperbanana-api/package.json', '../../apps/auth-gateway/src/config.js']) {
+    assert.doesNotMatch(read(file), /@lafjs|laf-functions|LAF_API_URL|PAPERBANANA_ALLOW_LEGACY_EXTERNAL_REFINE_URL/);
+  }
+  assert.match(read('../../apps/paperbanana-api/src/core-entry.mjs'), /runtime\/handler\.ts/);
+  assert.match(read('../../apps/paperbanana-api/runtime/handler.ts'), /packages\/api\/src\/image-channel-adapters/);
 });
 
 test('Core operations documentation links the current overseas allowlist and distinguishes MiniMax regions', () => {

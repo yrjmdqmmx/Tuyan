@@ -46,7 +46,7 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/paperbanana-api build
-      - run: node --test apps/laf-functions/tests/*.test.cjs
+      - run: node --test apps/paperbanana-api/tests/guards/*.test.cjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs
       - run: node --test deploy/sg-egress/tests/*.test.mjs
       - name: Validate shell and committed-secret boundaries

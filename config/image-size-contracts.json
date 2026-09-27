@@ -7768,6 +7768,25 @@
       "minPixels": 262144,
       "maxPixels": 4194304,
       "maxRatio": 4
+    },
+    "novita-ming-design": {
+      "mode": "table",
+      "ratios": [
+        "1:1"
+      ],
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024"
+          }
+        },
+        "2K": {
+          "sizes": {
+            "1:1": "2048x2048"
+          }
+        }
+      },
+      "auto": "square"
     }
   },
   "routes": {
@@ -11702,6 +11721,15 @@
         "https://cloud.baidu.com/doc/qianfan-api/s/Rm9m76ekf",
         "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya"
       ]
+    },
+    "novita/ming-image-0.1-design": {
+      "generation": "novita-ming-design",
+      "editing": null,
+      "reviewedAt": "2026-09-27",
+      "sources": [
+        "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
+      ],
+      "notes": "Product subset: documented square 1K and 2K examples. No claim that other provider sizes are unsupported; no image inputs or layer decomposition."
     }
   }
 }

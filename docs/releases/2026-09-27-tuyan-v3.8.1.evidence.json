@@ -1,0 +1,224 @@
+{
+  "version": "3.8.1",
+  "status": "unreleased",
+  "checkedAt": "2026-09-27",
+  "branch": "codex/tuyan-v3.8.1",
+  "baseCommit": "e2b70cfc849cc4de323df63827262b877083d1c0",
+  "catalogVersion": "2026-09-27.v27",
+  "staticModelCount": 1040,
+  "tests": [
+    {
+      "suite": "Core",
+      "tests": 1038,
+      "passed": 1038,
+      "failed": 0,
+      "logPath": "/tmp/tuyan-v381-reaudit/tests-core-final.log",
+      "logSha256": "ce30a3129eb93935964779e211d3e921dacba0212c29667850b186062a9a9ee3"
+    },
+    {
+      "suite": "Web",
+      "tests": 529,
+      "passed": 529,
+      "failed": 0,
+      "logPath": "/tmp/tuyan-v381-reaudit/tests-web-final.log",
+      "logSha256": "c64f775173625084142247dd7c435d7c1401d45631197089373d89127e415795"
+    },
+    {
+      "suite": "Mini Program",
+      "tests": 121,
+      "passed": 121,
+      "failed": 0,
+      "logPath": "/tmp/tuyan-v381-reaudit/tests-mini-final.log",
+      "logSha256": "2c4fdaa6a1c85f6a7b6dadb23907e0a925dad435273976c0f0c03e4368bcec36"
+    },
+    {
+      "suite": "SG egress local fixtures",
+      "tests": 111,
+      "passed": 111,
+      "failed": 0,
+      "logPath": "/tmp/tuyan-v381-reaudit/tests-egress-final.log",
+      "logSha256": "ca15949e1659310e07562f9fdbcd754a345535181d95e2e5b66fe3d9523ec96f"
+    },
+    {
+      "suite": "catalog packing",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "logPath": "/tmp/tuyan-v381-reaudit/tests-packing-final.log",
+      "logSha256": "2da4aeccabf01994fe34be6008467e97677d689aede67def24805bb28f4dad1c"
+    }
+  ],
+  "checks": {
+    "coreTypecheck": true,
+    "coreBuild": true,
+    "webBuild": true,
+    "miniBuild": true,
+    "generatedDrift": false
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5181",
+    "backend": "local gateway/core with provider fixtures; no inference submitted",
+    "checks": [
+      {
+        "longcatVisionSelected": true,
+        "novitaImageSelected": true,
+        "mainCustomPreserved": true
+      },
+      {
+        "width": 390,
+        "horizontalOverflow": false,
+        "draftRetained": true,
+        "keyRetained": true
+      },
+      {
+        "width": 320,
+        "horizontalOverflow": false,
+        "draftRetained": true,
+        "keyRetained": true
+      },
+      {
+        "savedRoutes": {
+          "version": 1,
+          "mode": "advanced",
+          "roles": {
+            "main": {
+              "accessProvider": "custom",
+              "modelId": ""
+            },
+            "image": {
+              "accessProvider": "novita",
+              "modelId": "ming-image-0.1-design"
+            },
+            "vision": {
+              "accessProvider": "longcat",
+              "modelId": "LongCat-2.5-Preview"
+            }
+          }
+        },
+        "reloadRestored": true,
+        "keyNotPersisted": true
+      }
+    ],
+    "errors": []
+  },
+  "artifacts": [
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/browser-checks.json",
+      "sha256": "6cbde96d0928ef0df48e887fbd6644e94fec352000f0a823dee3dd22911ecf02"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/desktop.png",
+      "sha256": "67ceb3329c2c1ff4589a8b6bd94767d70919b55d154295567d355f59d3b16ebc"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/longcat-vision-picker-1440.png",
+      "sha256": "cd4d1523264fab0b36401f42ac13720f00c7ebe173a693a498dd32150c3d5650"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/longcat-vision-picker-320.png",
+      "sha256": "cb58109afd015c30f46f548542d7f37416e95b82c4e525ba252f1664e1b723dc"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/longcat-vision-picker-390.png",
+      "sha256": "f7258b2850125f8b6f1d24cd9c855154b87fd5eae813bb438ea2d6fa45d87652"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/native-mixed-1440.png",
+      "sha256": "0127a07605ee8a9907a4825b7d408759d59ef0803ec0491f6073f1773f049912"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/native-mixed-320.png",
+      "sha256": "c43627fef5e17ebaa758b295396bedd683b19a7b02982b322270e2f7c408b779"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/native-mixed-390.png",
+      "sha256": "c036c28dddbc49d53c0c6836aef65f3a9de5afb4d9441406ea45977432c81542"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/picker-320.png",
+      "sha256": "4dc5b263f33c80eabf36520d45fd04dc2f1e953895f23af1a2557ddcb33bfb30"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/picker-390.png",
+      "sha256": "522cb32783270e9499f6a3409196e68c1ab27b8dc69ca8de8fd79aa103cf3b5c"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/settings-320.png",
+      "sha256": "fd7af857ee1d64d2734e5170bcd9e6a68c4a1d41cfe90c345c6615d4d9ddbb9d"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381-reaudit/settings-390.png",
+      "sha256": "79aa3692b4c33ef3c3fdf8a0b58736f7095ce4146fef896187f46b7f54a6740b"
+    }
+  ],
+  "providerInferenceCalls": 0,
+  "recharge": false,
+  "deployment": false,
+  "wechatUploadReviewPublication": false,
+  "lineageId": "lin-8d844715eaed7a33",
+  "parentHandoffId": "20260923-111509-codex-tuyan-v380-benchmark-v25-production-hand-01a0cbc0-d71f-77c1-bea7-",
+  "baselineImplementationCommit": "5d32f1d7a2ead4b8c2a86f5bfdc614468526d6bc",
+  "checkEvidence": [
+    {
+      "path": "/tmp/tuyan-v381-reaudit/check-core-final.log",
+      "sha256": "00499d53dab42ffd57f8adc226e75c2e8ec54c3304c09f2eed746e19831d6741"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/check-catalog-final.log",
+      "sha256": "9f37039687edfda5d6c4c40b7aa54fe42789407716cd3b0f34bd87714abc6840"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/check-reference-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/check-thinking-final.log",
+      "sha256": "bd8d1652707c2b97e042e278139d84f6abbe6fdb80afa07f0d401b64a0bd7cf3"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/check-versions-final.log",
+      "sha256": "0a85204a5ec89dd73400560a23a0e21f92956977a1b1db96670ed6966877c0fc"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/build-core-final.log",
+      "sha256": "650d37bcebad40d63985b32987cbb3fe4a67adb3daa5f1ed2d0c6992a8b3c52e"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/build-web-final.log",
+      "sha256": "d8930ab0e6b2fda837f248ed7637d14ed30466e45844f2100b1b38cbe130d727"
+    },
+    {
+      "path": "/tmp/tuyan-v381-reaudit/build-mini-final.log",
+      "sha256": "1e1513b54e180d936e9c61d051b24dd5322303879aee640200294c0687166d2d"
+    }
+  ],
+  "capabilityVerification": [
+    {
+      "provider": "longcat",
+      "model": "LongCat-2.5-Preview",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "catalog": true,
+      "codeAdapted": true,
+      "realCallVerified": false
+    },
+    {
+      "provider": "novita",
+      "model": "ming-image-0.1-design",
+      "roles": [
+        "image"
+      ],
+      "catalog": true,
+      "codeAdapted": true,
+      "realCallVerified": false
+    }
+  ],
+  "limitations": [
+    "Provider keys, account entitlement, regional availability, inference and invoices not verified.",
+    "Native Mini Program UI depends on unmerged v3.8.0 worktree; only shared source synchronized.",
+    "Novita production egress ACL has not been installed.",
+    "Ming Layer multi-layer output workflow not integrated; MaaS is a separate channel not added."
+  ]
+}

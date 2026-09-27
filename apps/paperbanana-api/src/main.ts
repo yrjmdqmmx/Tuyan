@@ -10,14 +10,14 @@ import { loadConfig } from './config.js'
 import { loadBuildProvenance } from './build-provenance.js'
 import { createMongoBenchmarkRepository, verifyScientificV2EvidenceMetadata } from './benchmark-repository.js'
 import { createBenchmarkService } from './benchmark-service.js'
-import { configureLafCloud } from './laf-cloud.js'
+import { configureCoreServices } from './core-services.js'
 import { listenWithCleanup } from './listen.js'
 import { createLogger } from './logger.js'
 import { createMongoAdapter } from './mongo-adapter.js'
 import { createOssAdapter } from './oss-adapter.js'
 import { createProviderEgress } from './provider-egress.js'
 import { prepareRuntime } from './runtime.js'
-import { createServer, type LegacyHandler } from './server.js'
+import { createServer, type CoreHandler } from './server.js'
 import { createScientificV2RegistryAuthority } from './scientific-v2-production-bridge.js'
 import { createGracefulShutdown } from './shutdown.js'
 
@@ -34,7 +34,7 @@ async function main(): Promise<void> {
   const oss = createOssAdapter(config.oss)
   const providerEgress = createProviderEgress(config.providerEgress)
   let configureDeletionCleanup: (cleanup: (userId: string) => Promise<void>) => void = () => {}
-  let legacyLifecycle = {
+  let coreLifecycle = {
     stop() {},
     async drain() {},
   }
@@ -42,22 +42,22 @@ async function main(): Promise<void> {
     mongo,
     oss,
     providerEgress,
-    configureCloud: configureLafCloud,
+    configureServices: configureCoreServices,
     async loadHandler() {
-      const legacy = await import('./legacy-entry.mjs')
-      legacy.configureRuntimeFetch(providerEgress.fetch)
-      legacy.configureUniversalRuntime(createUniversalRuntime({officialFetch: providerEgress.fetch}))
-      legacy.configureJobAdmission(config.admission)
-      configureDeletionCleanup = legacy.configureAccountDeletionDataCleanup
-      legacy.startAccountDeletionSweep()
-      legacyLifecycle = {
+      const core = await import('./core-entry.mjs')
+      core.configureRuntimeFetch(providerEgress.fetch)
+      core.configureUniversalRuntime(createUniversalRuntime({officialFetch: providerEgress.fetch}))
+      core.configureJobAdmission(config.admission)
+      configureDeletionCleanup = core.configureAccountDeletionDataCleanup
+      core.startAccountDeletionSweep()
+      coreLifecycle = {
         stop() {
-          legacy.stopJobAdmission()
-          legacy.stopAccountDeletionSweep()
+          core.stopJobAdmission()
+          core.stopAccountDeletionSweep()
         },
-        drain: legacy.drainJobAdmission,
+        drain: core.drainJobAdmission,
       }
-      return legacy.default as unknown as LegacyHandler
+      return core.default as unknown as CoreHandler
     },
     logger,
     readinessProbeTimeoutMs: config.readinessProbeTimeoutMs,
@@ -65,8 +65,8 @@ async function main(): Promise<void> {
 
   const tokenDance = createTokenDanceService({ db: mongo.db, fetcher: providerEgress.fetch, secret: process.env.TOKENDANCE_ENCRYPTION_KEY, callbackUrl: process.env.TOKENDANCE_CALLBACK_URL, managementKey: process.env.TOKENDANCE_MANAGEMENT_KEY, applicationId: process.env.TOKENDANCE_APPLICATION_ID })
   const providerWorkflow = createProviderWorkflow({ db: mongo.db, service: tokenDance })
-  const legacy = await import('./legacy-entry.mjs')
-  legacy.configureProviderWorkflow(providerWorkflow)
+  const core = await import('./core-entry.mjs')
+  core.configureProviderWorkflow(providerWorkflow)
   await tokenDance.ensureIndexes()
   await providerWorkflow.ensureIndexes()
   let removeBenchmarkData = async (_userId: string) => {}
@@ -156,13 +156,13 @@ async function main(): Promise<void> {
   })
   try { await adminOperations.ensureIndexes() }
   catch (error) {
-    legacyLifecycle.stop()
+    coreLifecycle.stop()
     await closeAll().catch(() => {})
     throw error
   }
   const server = createServer({
     adminOperations,
-    tokenDance, providerWorkflow, resumeTokenDanceJob: legacy.resumeTokenDanceJob, requiresTokenDanceCredential: legacy.requiresTokenDanceCredential,
+    tokenDance, providerWorkflow, resumeTokenDanceJob: core.resumeTokenDanceJob, requiresTokenDanceCredential: core.requiresTokenDanceCredential,
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,
@@ -189,8 +189,8 @@ async function main(): Promise<void> {
 
   const shutdown = createGracefulShutdown({
     server,
-    stopAdmission: legacyLifecycle.stop,
-    drainJobs: legacyLifecycle.drain,
+    stopAdmission: coreLifecycle.stop,
+    drainJobs: coreLifecycle.drain,
     closeRuntime: closeAll,
     logger,
     forceExit(code) { process.exit(code) },

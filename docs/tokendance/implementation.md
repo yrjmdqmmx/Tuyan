@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](../operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # TokenDance 接口与运维说明
 
 实现基于 [官方核对记录](integration-audit.md) 和 [93 型号覆盖表](model-coverage.md)。验证与发布状态见 [validation.md](validation.md)。本轮新增独立渠道，不改变其他渠道的 ID 或默认推荐。

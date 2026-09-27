@@ -1,4 +1,4 @@
-// 后端统一走 auth-gateway 网关域名（SYNC.md：禁止直连 Laf 域名，身份动作会被拒）。
+// 后端统一走 auth-gateway 网关域名（SYNC.md：客户端只访问网关，身份动作必须通过认证边界）。
 export const API_BASE = 'https://api.paperbanana.asia'
 export const API_ENDPOINT = `${API_BASE}/paperbanana-api`
 export const AUTH_BASE = `${API_BASE}/api/auth`

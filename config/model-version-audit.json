@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-09-23",
+  "reviewedAt": "2026-09-27",
   "providerCalls": 0,
   "policy": "逐渠道、逐精确 ID 核对；未确认不删除、不替换、不以发布时间推断固定版本；目录身份不等于不可变权重。HTTP 200 不等于页面含模型证据，idEvidence 单独记录。",
   "sources": [
@@ -27178,6 +27178,110 @@
       ],
       "idEvidence": "exact-id",
       "notes": "Channel canonical_slug is metadata, not an upstream API ID. Batch variants are excluded from synchronous transport."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-3.0-flash-VL",
+      "displayName": "Ling 3.0-flash-VL",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-3.0-flash",
+      "displayName": "Ling 3.0-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-3.0-tiny",
+      "displayName": "Ling 3.0-tiny",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-2.6-1T",
+      "displayName": "Ling 2.6-1T",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ling-2.6-flash",
+      "displayName": "Ling 2.6-flash",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "antling",
+      "apiModelId": "Ring-2.6-1T",
+      "displayName": "Ring 2.6-1T",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "longcat",
+      "apiModelId": "LongCat-2.5-Preview",
+      "displayName": "LongCat 2.5-Preview",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/api/models"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "novita",
+      "apiModelId": "ming-image-0.1-design",
+      "displayName": "Ming Image 0.1 Design",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact hosted request ID; no immutable weights binding. Documented response model differs (StressTest); preserve the resolved ID in usage records."
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

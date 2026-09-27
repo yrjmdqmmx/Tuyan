@@ -1,6 +1,34 @@
 {
-  "asOf": "2026-09-23",
-  "tuyan": null,
+  "asOf": "2026-09-27",
+  "tuyan": {
+    "version": "3.8.1",
+    "release": {
+      "status": "unreleased",
+      "date": null
+    },
+    "changes": [
+      {
+        "kind": "优化",
+        "text": "通用 API 整合进专业模式，三角色可独立混用渠道，保留历史非敏感配置。",
+        "state": "local-verified",
+        "surfaces": [
+          "Web",
+          "Core"
+        ]
+      },
+      {
+        "kind": "新增",
+        "text": "蚂蚁百灵文本与视觉渠道；LongCat-2.5-Preview 接入现有主模型、识图及思考设置；独立 Novita 渠道支持 Ming 文生图。真实调用待验证。",
+        "state": "local-verified",
+        "surfaces": [
+          "Web",
+          "Core",
+          "小程序共享目录"
+        ]
+      }
+    ],
+    "localEvidence": "docs/releases/2026-09-27-tuyan-v3.8.1.md"
+  },
   "benchmark": null,
   "ecosystem": {
     "changes": [

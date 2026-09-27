@@ -1,31 +1,25 @@
 # PaperBanana Auth Gateway
 
 The public Node 24 gateway for Better Auth and the stable `/paperbanana-api`
-contract. In the Hong Kong deployment it talks to the internal Node core; Laf
-is retained only as an explicit rollback target.
+contract. It talks exclusively to the internal Node core on the Hong Kong Compose network.
 
 ## Trust boundaries
 
-- Set `PAPERBANANA_API_URL` for normal operation. `LAF_API_URL` is used only
-  when the Node URL is absent. Configuring both always selects Node; there is
-  no request-time fallback.
+- `PAPERBANANA_API_URL` is mandatory and targets the internal Node Core. There is no alternate backend or runtime fallback.
 - `PAPERBANANA_GATEWAY_TOKEN` is required. Node receives it only in
   `x-paperbanana-gateway-token`; caller-supplied gateway/admin tokens are
-  removed. Laf rollback receives an overwritten body token and a server-side
-  admin token only for authenticated admin actions.
+  removed. Admin calls additionally require the dedicated `PAPERBANANA_ADMIN_TRANSPORT_TOKEN` and an authenticated immutable admin ID.
 - The container accepts one trusted proxy hop. Production Compose must publish
-  it as `127.0.0.1:3020:3005`, and Nginx must overwrite (not append) the incoming
+  it as `127.0.0.1:13005:3005`, and Nginx must overwrite (not append) the incoming
   forwarding headers. The gateway derives `req.ip` and sends only
   `x-paperbanana-client-ip` to the core. The core removes all raw forwarding
-  and internal-auth headers before invoking the shared Laf handler.
+  and internal-auth headers before invoking the Core business handler.
 - Every JSON/auth request, including chunked `/api/auth/*` bodies, has a measured
   1 MiB ceiling. Oversized bodies return
   `413 {"code":413,"error":"Request body too large"}`.
 - Admin actions require a logged-in Better Auth user id listed in
   `ADMIN_USER_IDS`. Email addresses, request body `adminToken`, and
-  `X-Admin-Token` are never authorization inputs. `ADMIN_TOKEN` remains
-  server-only and is injected into a Laf rollback request only after the id
-  check succeeds.
+  `X-Admin-Token` are never authorization inputs. The gateway has no business-handler admin token; Core owns its internal `ADMIN_TOKEN`.
 
 ## Identity and ownership
 
@@ -45,10 +39,9 @@ Guest identity never grants `myJobs`, account deletion, or admin/list access.
 
 Before `refineImage`, result object keys are mapped to their first path segment
 (the source job id), fetched through `getJob`, and ownership checked. A source
-URL is accepted in Node mode only when it is a V4-signed virtual-hosted URL for
+URL is accepted only when it is a V4-signed virtual-hosted URL for
 the configured private OSS bucket; it is then converted back to the owned
-object key. Arbitrary URLs are rejected. The external-URL compatibility switch
-exists only for a deliberate Laf rollback.
+object key. Arbitrary URLs are rejected; there is no switch to bypass ownership.
 
 ## Maintenance and health
 
@@ -71,17 +64,16 @@ Authentication, `/health`, `/ready`, `getJob`, `myJobs`, `modelRegistry`,
 `modelCapability`, `referenceLibrary`, `adminJobs`, `adminFeedback`, `adminUsers`, and
 `pingPlotWorker` remain available. `/health` is cached liveness and never waits
 for dependencies. `/ready` probes MongoDB and the selected backend and returns
-503 unless both are ready. Node mode probes the core's authenticated
-`GET /ready` and requires both HTTP success and `ready:true`; Laf rollback uses
-its legacy `health` action. Ordinary business responses never change this
+503 unless both are ready. It probes the core's authenticated
+`GET /ready` and requires both HTTP success and `ready:true`. Ordinary business responses never change this
 probe-derived readiness cache. Health responses keep top-level
 `runtime:"gateway"` and `auth:"better-auth"`; dependency detail lives under
-`dependencies`, while `laf` is a one-release alias of `backend`.
+`backend` and `dependencies`.
 
 Account deletion verifies the current session password without signing in or
 creating another session. Before any destructive backend action, the gateway
 calls the read-only `accountDeletionCapability` action and requires
-`deletionContractVersion:2`; rollback runtimes that cannot prove this contract
+`deletionContractVersion:2`; Core versions that cannot prove this contract
 leave both business data and Auth untouched. Concurrent deletion requests for
 one account share a single in-flight cleanup. Only after an HTTP 2xx cleanup
 response with semantic `{code:0,ok:true,deletionContractVersion:2}` does it atomically remove the

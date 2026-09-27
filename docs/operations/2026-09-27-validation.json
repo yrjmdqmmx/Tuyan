@@ -1,0 +1,86 @@
+{
+  "checkedAt": "2026-09-27",
+  "scope": "local tests/builds; production inspection read-only",
+  "unitAndContractChecks": [
+    {
+      "check": "Core full suite",
+      "tests": 1041,
+      "passed": 1041,
+      "failed": 0,
+      "logSha256": "1752de132c86fe579df20084855430e1aa946942c87ab1a17f3f13f1f335af39"
+    },
+    {
+      "check": "Gateway + shared API",
+      "tests": 176,
+      "passed": 176,
+      "failed": 0,
+      "logSha256": "6321bc02ed88cc398d55baeb9b877c9ca75503fdc823cfc6b87580f6d09be171"
+    },
+    {
+      "check": "Web",
+      "tests": 529,
+      "passed": 529,
+      "failed": 0,
+      "logSha256": "5e37e601afbf317661c728d67c4a53e14bb44971393de9405a180b072ac607ee"
+    },
+    {
+      "check": "Mini Program",
+      "tests": 121,
+      "passed": 121,
+      "failed": 0,
+      "logSha256": "98249abd4cd2782b65239cc94a56da7c625bf3be924aa3a21f0cd9e8ca634bf3"
+    },
+    {
+      "check": "Benchmark Worker",
+      "tests": 200,
+      "passed": 200,
+      "failed": 0,
+      "logSha256": "aa59bc6d8d5ccc6ab3de2276ef5ac2111ede92ca19893ff554c7249b5f0ce0d2"
+    },
+    {
+      "check": "Operations, deployment, egress, restore and guards",
+      "tests": 353,
+      "passed": 353,
+      "failed": 0,
+      "logSha256": "8ae168db0b4043914b4ec2e635bf986b719ac13e8d3a593eceacbe17b4df569b"
+    },
+    {
+      "check": "Root + client contracts",
+      "tests": 36,
+      "passed": 36,
+      "failed": 0,
+      "logSha256": "c0f4ae4ec9539323c71c933f3b324088bd40218fdc8acedd82c935bff97dc46e"
+    }
+  ],
+  "totalUnitAndContractTests": 2456,
+  "plotAuthUnitTests": 2,
+  "integration": {
+    "accountLifecycle": "real isolated Mongo replica set + Better Auth + Core/Gateway; passed",
+    "adminOperations": {
+      "passed": 66,
+      "providerCalls": 0,
+      "productionWrites": 0
+    },
+    "encryptedRecovery": "real isolated Mongo; provider/payment fixtures; passed"
+  },
+  "builds": {
+    "nodeTypes": "passed Core and Benchmark",
+    "web": "passed (existing large-chunk warning)",
+    "mini": "TypeScript and generated JS passed",
+    "catalogThinkingReferenceDrift": "no drift",
+    "coreDocker": [
+      "linux/arm64 passed",
+      "linux/amd64 passed"
+    ],
+    "benchmarkDocker": "build stage passed; final runtime blocked twice by Debian HTTP 502 during apt font install; signature checks retained"
+  },
+  "production": {
+    "mutations": 0,
+    "deployments": 0,
+    "paidModelCalls": 0,
+    "wechatPublication": false,
+    "currentCodeSha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20",
+    "backup": "2026-09-27 03:24:17–03:26:39 CST failed (exit 3), OSS PutObject TCP timeout; unresolved"
+  },
+  "release": "v3.8.1 unreleased"
+}

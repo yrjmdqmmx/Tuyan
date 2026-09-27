@@ -1,0 +1,72 @@
+{
+  "readOnly": true,
+  "providerInferenceCalls": 0,
+  "sources": [
+    {
+      "url": "https://www.ant-ling.com/zh/",
+      "checkedAt": "2026-09-27",
+      "bytes": 57298,
+      "sha256": "9b5d237a0e5ed1e41207b2c789ee974e8c5ef3ebef000a33c1cb2e4ff8fc6317"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+      "checkedAt": "2026-09-27",
+      "bytes": 317316,
+      "sha256": "5afb909b847316564508c8f7a13f9458da6c9a0fa18ffc857ef1e435b53ac240"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+      "checkedAt": "2026-09-27",
+      "bytes": 161166,
+      "sha256": "cfa287d1af269f79dabf0a3b030149c9ea434d3b667d9697ec2284850bbd868a"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/getting-started/prerequisites/",
+      "checkedAt": "2026-09-27",
+      "bytes": 116642,
+      "sha256": "03a2a6947ea1182dabd1e0fba8a6745493210d044d0b524dde1db762271e305a"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/models/deprecation/",
+      "checkedAt": "2026-09-27",
+      "bytes": 149195,
+      "sha256": "f5f4ea1db8cf8b8f6cd68a1057f012194530a303096767254b46eccfcadff64e"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/api-reference/anthropic/",
+      "checkedAt": "2026-09-27",
+      "bytes": 332083,
+      "sha256": "8e483274e6f8636a132bab23f662abb8d25f89a846edc7d32b42070798cb3b89"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/",
+      "checkedAt": "2026-09-27",
+      "bytes": 51611,
+      "sha256": "e6b4ad51d8e9c19e2b556905967bf07149cb01b10c037fa4c41d3371b70fad41"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/chat",
+      "checkedAt": "2026-09-27",
+      "bytes": 48339,
+      "sha256": "9c401d4095b4176d30ef93863da20650b09a66a3355cdcd9d291b8287dc06997"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/messages",
+      "checkedAt": "2026-09-27",
+      "bytes": 47014,
+      "sha256": "53655211e50cdbcba781f0b8b7c683ff92d80f1035bb6328cb6e84f5ca0bb216"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/api/model",
+      "checkedAt": "2026-09-27",
+      "bytes": 42314,
+      "sha256": "1c4743ffb34d4963755f6a00d0ccbe3adfd0f770d6306ff58828601f05579c2c"
+    },
+    {
+      "url": "https://longcat.chat/platform/docs/zh/faq",
+      "checkedAt": "2026-09-27",
+      "bytes": 52597,
+      "sha256": "6718e343792c47715a85b5e4dfc58862a2a0d79c8e9e9364b32f024a995f894e"
+    }
+  ]
+}

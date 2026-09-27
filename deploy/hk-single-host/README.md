@@ -1,15 +1,15 @@
 # PaperBanana Hong Kong single-host production
 
 This deployment intentionally uses the existing 4 vCPU / 16 GiB Aliyun Hong
-Kong Lightweight server. It does not require a second ECS, managed MongoDB, or
-VPC peering.
+Kong Lightweight server. The separate Singapore ECS provides controlled model egress; it does not host business services. MongoDB is local, not managed.
+
+The 2026-09-27 read-only host verification, resource limits and current gaps are in [current architecture](../../docs/operations/current-architecture.md).
 
 ## Topology
 
 - Host Nginx terminates `api.paperbanana.asia` TLS and proxies only to
   `127.0.0.1:13005`.
-- `auth-gateway`, `paperbanana-api`, a single-member MongoDB replica set, and
-  `plot-worker` run under Compose project `paperbanana-hk`.
+- `auth-gateway`, `paperbanana-api`, a single-member MongoDB replica set, `plot-worker`, and the disabled `benchmark-worker` run under Compose project `paperbanana-hk`.
 - MongoDB, core API and plot worker publish no host ports.
 - The core alone joins an outbound network for OSS and BYOK providers.
 - The plot worker joins only an internal bridge, runs under gVisor, uses a
@@ -80,6 +80,26 @@ reference documents, images, jobs, or saved selections.
 Check the schedule with `systemctl list-timers paperbanana-backup.timer` and
 inspect each result with `systemctl status paperbanana-backup.service` plus the
 corresponding `backups/mongo/<UTC timestamp>/` objects in the backup bucket.
+
+The HK host also runs Tailscale, whose CGNAT filter can drop replies from OSS
+internal addresses. `with-backup-oss-network.py` resolves the configured HK backup
+bucket for each upload, validates its CGNAT addresses and `eth0` routes, and
+temporarily accepts only established TCP/443 replies from those exact IPs before
+`ts-input`. It removes those individually tagged rules on success, error or
+SIGTERM; the service's locked `ExecStopPost` cleans up after forced exits too.
+No global ruleset, Tailscale chain, fixed provider subnet or other project is
+changed. `AF_NETLINK` permits this scoped iptables/route operation. Install the
+helper together with `backup-mongo.sh` and the service unit using
+`scripts/install-backup-timer.sh --apply`. The installer holds the backup lock
+and copies both scripts into root-only `/opt/paperbanana/operations/backup`,
+outside the replaceable application checkout. Start backups via
+`systemctl start paperbanana-backup.service` so locking and cleanup apply.
+The endpoint stays internal HTTPS, using the existing private bucket and keys.
+A running timer alone is not proof of a successful upload.
+New dumps/checksums use `.partial` files until both OSS uploads succeed; then
+the checksum and finally the archive become visible to the health check. Failed
+uploads retain their partial files for diagnosis and leave the service failed.
+The existing local two-day cleanup runs only after a successful backup.
 
 ## Benchmark credential staging
 
@@ -245,20 +265,10 @@ Core `providerEgress: degraded` remains an explicit health signal but does not
 make `/ready` fail when MongoDB and OSS are ready; the separate HK egress timer
 is authoritative for tunnel/provider-path alerting.
 
-## Legacy hostname compatibility window
+## Rollback and retired infrastructure
 
-Through 2026-09-14, the existing Sealos application for
-`yifbnnzrwmxn.sealoshzh.site` is a credential-free reverse proxy to
-`https://api.paperbanana.asia`. It uses the immutable image
-`caddy@sha256:4c6e91c6ed0e2fa03efd5b44747b625fec79bc9cd06ac5235a779726618e530d`
-with `/bin/sh -c` and an `env -i` command that starts `caddy reverse-proxy` on
-port 3005. The production monitor checks this legacy hostname while the window
-is active. Do not restore the old Auth Gateway image or resume Laf. On or after
-the deadline, first confirm that no distributed client still uses the legacy
-hostname, then pause the proxy; resource deletion still requires a separate
-explicit approval.
+Sealos / Sealaf and their former proxy domains are retired. They are not deployment, failover or rollback targets. Production health monitoring checks only the current API, Compose services, database, backups, TLS, Nginx and provider egress.
 
-Rollback is an explicit image-tag change followed by the same project-scoped
-deploy script. After the new MongoDB accepts writes, do not point clients back
-to the old Laf database without first entering maintenance and reconciling the
-new records and objects.
+Rollback is a previously verified **current-architecture** image digest lock followed by the same project-scoped deployment script. Validate schema and object compatibility first; retain maintenance mode when restoration is necessary. Do not point a client at a former platform database. [OSS offline restore](object-restore/README.md) handles checksum-verified existing bundles into an explicitly authorized empty target; it never deploys an application.
+
+The local 2026-09-27 cleanup does not update installed timers, host checkout, containers or cloud resources. Apply reviewed code/config changes only during a separately authorized release. Old cloud resource existence, billing and decommissioning remain separate account operations; they are not a supported recovery plan.

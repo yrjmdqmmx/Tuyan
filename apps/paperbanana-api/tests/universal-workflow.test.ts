@@ -7,7 +7,7 @@ import {publicExecutionFailure} from '../../../packages/api/src/execution-errors
 function route(role:string, overrides:any={}) {
  return normalizeUniversalRoute({accessProvider:'custom',modelId:'exact/same-ID:KeepCase',custom:{version:1,connectionId:role,protocol:role==='image'?'openai-images':'openai-chat',baseUrl:`https://${role}.example.com/prefix/v1`,auth:'bearer',capabilities:{text:role!=='image',vision:role!=='image',imageGeneration:role==='image',imageEditing:role==='image'},inputLimits:{maxCount:2,maxBytes:5e6,maxTotalBytes:10e6,maxDimension:4096,maxPixels:16e6,requestMaxBytes:32e6,mimeTypes:['image/png']},outputLimits:{maxBytes:10e6,maxDimension:4096,maxPixels:16e6,mimeTypes:['image/png']},outputSizes:role==='image'?[{resolution:'1K',aspectRatio:'1:1',value:'1024x1024'}]:[],...overrides}})
 }
-function envelope(routes:any, key='fixture-custom-key') {return JSON.stringify(Object.fromEntries(Object.values(routes).map((r:any)=>[r.custom.connectionId,{baseUrl:r.custom.baseUrl,protocol:r.custom.protocol,auth:r.custom.auth,apiKey:key}])))}
+function envelope(routes:any, key='fixture-custom-key') {return JSON.stringify(Object.fromEntries(Object.values(routes).filter((r:any)=>r.accessProvider==='custom').map((r:any)=>[r.custom.connectionId,{baseUrl:r.custom.baseUrl,protocol:r.custom.protocol,auth:r.custom.auth,apiKey:key}])))}
 async function fixture() {
  const runtime=await createRefineRuntime({tokenDance:true}), calls:any[]=[]
  let failure:UniversalApiError|undefined, failureStage='image', imageCalls=0
@@ -81,5 +81,46 @@ for (const stage of ['critic','rerender']) test(`custom ${stage} failure cannot 
   assert.equal(failed.status,'failed',JSON.stringify(failed));assert.equal(failed.recovery.requestState,'unknown');assert.equal(failed.failure.billingStatus,'unknown')
   assert.equal(failed.recovery.canResume,false);assert.ok(failed.stages.some((s:any)=>s.type==='render'))
   const count=f.calls.length;await f.post({action:'providerResume',jobId:submitted.data.jobId});assert.equal(f.calls.length,count)
+ }finally{await f.close()}
+})
+
+for (const customRole of ['main','vision','image']) test(`professional role mixing: custom ${customRole} with native Ant Ling / LongCat / OpenAI routes`, async()=>{
+ const f=await fixture()
+ try {
+  const routes:any={main:{accessProvider:'antling',modelId:'Ling-3.0-flash'},vision:{accessProvider:'antling',modelId:'Ling-3.0-flash-VL'},image:{accessProvider:'openai',modelId:'gpt-image-2'}}
+  if(customRole==='vision')routes.main={accessProvider:'longcat',modelId:'LongCat-2.5-Preview'}
+  routes[customRole]=route(customRole)
+  const input={...body(routes),provider:routes.main.accessProvider,maxCriticRounds:1,apiKeys:{custom:envelope(routes),antling:'fixture-ant',openai:'fixture-openai',longcat:'fixture-longcat'}}
+  const created=await f.post(input);assert.equal(created.data.code,0,JSON.stringify(created.data));await f.legacy.drainJobAdmission()
+  const job=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
+  assert.equal(job.status,'succeeded',JSON.stringify(job).slice(0,2500));assert.deepEqual(job.modelRoutes,routes)
+  assert.ok(f.calls.some((c:any)=>c.url.includes(customRole+'.example.com')))
+  assert.equal(f.tokenDanceCalls.length,0)
+  assert.equal(JSON.stringify(job).includes('fixture-custom-key'),false)
+  if(customRole!=='vision') {
+    const sent=f.providerCalls.filter((c:any)=>c.url==='https://api.ant-ling.com/v1/chat/completions').map((c:any)=>JSON.parse(c.options.body))
+    const vision=sent.find((b:any)=>b.model==='Ling-3.0-flash-VL');assert.ok(vision,'critic reaches the independent Ant vision adapter')
+    assert.ok(vision.messages.at(-1).content.some((c:any)=>c.type==='image_url'&&c.image_url.url.startsWith('data:image/png;base64,')))
+  }
+ }finally{await f.close()}
+})
+
+for(const main of ['antling','custom']) test(`existing vision route mixes LongCat 2.5 with ${main} planning and Novita Ming rendering`,async()=>{
+ const f=await fixture()
+ try {
+  const routes:any={main:main==='custom'?route('main'):{accessProvider:'antling',modelId:'Ling-3.0-flash'},vision:{accessProvider:'longcat',modelId:'LongCat-2.5-Preview'},image:{accessProvider:'novita',modelId:'ming-image-0.1-design'}}
+  const request={...body(routes),provider:main,maxCriticRounds:1,apiKeys:{custom:envelope(routes),antling:'fixture-ant-only',novita:'fixture-novita-only',longcat:'fixture-longcat-only'}}
+  const created=await f.post(request);assert.equal(created.data.code,0,JSON.stringify(created.data));await f.legacy.drainJobAdmission()
+  const job=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
+  assert.equal(job.status,'succeeded',JSON.stringify(job).slice(0,4000));assert.deepEqual(job.modelRoutes,routes)
+  const vision=f.providerCalls.filter((c:any)=>c.url==='https://api.longcat.chat/openai/v1/chat/completions')
+  assert.ok(vision.length,'existing critic/vision workflow reached LongCat, no separate feature')
+  for(const call of vision){
+   assert.equal(new Headers(call.options.headers).get('Authorization'),'Bearer fixture-longcat-only')
+   const b=JSON.parse(String(call.options.body));assert.equal(b.model,'LongCat-2.5-Preview');assert.ok(b.messages.at(-1).content.some((c:any)=>c.type==='image_url'&&c.image_url.url.startsWith('data:image/png;base64,')))
+  }
+  const rendered=f.providerCalls.filter((c:any)=>c.url==='https://api.novita.ai/openai/v1/images/generations');assert.ok(rendered.length)
+  for(const call of rendered){assert.equal(new Headers(call.options.headers).get('Authorization'),'Bearer fixture-novita-only');const b=JSON.parse(String(call.options.body));assert.equal(b.model,'ming-image-0.1-design');assert.equal(b.image,undefined);assert.equal(b.images,undefined);assert.equal(b.n,undefined)}
+  assert.equal(JSON.stringify(job).includes('fixture-novita-only'),false);assert.equal(f.tokenDanceCalls.length,0)
  }finally{await f.close()}
 })

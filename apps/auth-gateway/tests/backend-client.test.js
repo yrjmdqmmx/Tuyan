@@ -52,42 +52,12 @@ test('Node admin transport uses a distinct assertion and immutable admin id', as
   assert.equal(captured.headers['x-paperbanana-admin-user-id'], 'immutable-admin-id');
 });
 
-test('Laf rollback transport overwrites the gateway token and injects admin only for admin actions', async () => {
-  const bodies = [];
-  const headers = [];
-  const client = createBackendClient({
-    mode: 'laf',
-    url: 'https://legacy.example/paperbanana-api',
-    timeoutMs: 500,
-    gatewayToken: 'server-gateway-token',
-    adminToken: 'server-admin-token',
-    fetchImpl: async (_url, init) => {
-      bodies.push(JSON.parse(init.body));
-      headers.push(init.headers);
-      return jsonResponse({ code: 0 });
-    },
-  });
-
-  await client.call(
-    { action: 'createJob', gatewayToken: 'forged', adminToken: 'forged' },
-    { clientIp: '203.0.113.22', userAgent: 'laf-client' },
-  );
-  await client.call(
-    { action: 'adminJobs', gatewayToken: 'forged', adminToken: 'forged' },
-    {},
-    { adminAction: true },
-  );
-
-  assert.deepEqual(bodies[0], { action: 'createJob', gatewayToken: 'server-gateway-token' });
-  assert.deepEqual(bodies[1], {
-    action: 'adminJobs',
-    gatewayToken: 'server-gateway-token',
-    adminToken: 'server-admin-token',
-  });
-  assert.equal(headers[0]['x-paperbanana-client-ip'], '203.0.113.22');
-  assert.equal(headers[0]['user-agent'], 'laf-client');
-  assert.equal(headers[0]['x-forwarded-for'], undefined);
-  assert.equal(headers[0]['x-real-ip'], undefined);
+test('retired backend mode fails before transmitting credentials', async () => {
+  let calls = 0;
+  const client = createBackendClient({ mode: 'laf', url: 'https://retired.example/api', gatewayToken: 'secret', fetchImpl: async () => { calls++; } });
+  await assert.rejects(client.call({ action: 'createJob' }), { code: 'BACKEND_CONFIG_INVALID' });
+  await assert.rejects(client.ready(), { code: 'BACKEND_CONFIG_INVALID' });
+  assert.equal(calls, 0);
 });
 
 test('relays upstream HTTP status and JSON envelope without flattening business codes', async () => {
@@ -229,24 +199,7 @@ test('Node readiness rejects ready false or a non-success HTTP status', async ()
   }
 });
 
-test('Laf rollback readiness uses the legacy health action', async () => {
-  let captured;
-  const client = createBackendClient({
-    mode: 'laf',
-    url: 'https://legacy.example/paperbanana-api',
-    timeoutMs: 500,
-    gatewayToken: 'gateway-token',
-    fetchImpl: async (url, init) => {
-      captured = { url, init, body: JSON.parse(init.body) };
-      return jsonResponse({ code: 0, ok: true });
-    },
-  });
 
-  assert.equal((await client.ready()).ok, true);
-  assert.equal(captured.url, 'https://legacy.example/paperbanana-api');
-  assert.equal(captured.init.method, 'POST');
-  assert.deepEqual(captured.body, { action: 'health', gatewayToken: 'gateway-token' });
-});
 
 test('business envelopes never poison or heal probe-derived readiness', async () => {
   let readinessHealthy = true;

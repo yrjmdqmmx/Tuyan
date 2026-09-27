@@ -125,9 +125,9 @@ test('client job helpers transmit optional settings for create and refine withou
   try {
     const config=buildThinkingSubmission(fresh(),{thinkingContractVersion:1},['main','vision','image'],'generation')
     for(const fn of [createJobRequest,refineImageRequest]) {
-      await fn('http://localhost/mock',{backendMode:'laf'},{provider:'fal',apiKeys:{fal:'fixture'},...config})
+      await fn('http://localhost/mock',{backendMode:'gateway'},{provider:'fal',apiKeys:{fal:'fixture'},...config})
       assert.deepEqual(calls.at(-1).thinkingConfig,config.thinkingConfig)
-      await fn('http://localhost/mock',{backendMode:'laf'},{provider:'fal'})
+      await fn('http://localhost/mock',{backendMode:'gateway'},{provider:'fal'})
       assert.equal('thinkingConfig' in calls.at(-1),false)
     }
   } finally {globalThis.fetch=fetcher}

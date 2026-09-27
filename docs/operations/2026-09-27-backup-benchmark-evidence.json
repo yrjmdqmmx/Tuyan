@@ -1,0 +1,178 @@
+{
+  "checkedDate": "2026-09-27",
+  "sourceCodeCommit": "f2d0eb5cef2ab6d90eed196d853b394ff8d0126a",
+  "production": {
+    "observedAt": "2026-09-27T04:12:44.725929+00:00",
+    "backupService": {
+      "Result": "success",
+      "ExecMainStartTimestamp": "Sun 2026-09-27 12:10:47 CST",
+      "ExecMainExitTimestamp": "Sun 2026-09-27 12:10:56 CST",
+      "ExecMainStatus": "0"
+    },
+    "healthMonitorService": {
+      "Result": "success",
+      "ExecMainStartTimestamp": "Sun 2026-09-27 12:12:20 CST",
+      "ExecMainExitTimestamp": "Sun 2026-09-27 12:12:20 CST",
+      "ExecMainStatus": "0"
+    },
+    "healthState": "healthy:1790482340",
+    "backupTimer": {
+      "active": "active",
+      "next": "Mon 2026-09-28 03:22:35 CST"
+    },
+    "backup": {
+      "archive": "paperbanana-mongo-20260927T041047Z.archive.gz",
+      "timestamp": "20260927T041047Z",
+      "archiveBytes": 68859943,
+      "sha256": "359f6e1f2113c7b8e9821b8ce370aed64278702406d519ce6c4637ea371a3654",
+      "roundTripArchiveAndChecksumMatch": true
+    },
+    "objectHeaders": [
+      {
+        "name": "paperbanana-mongo-20260927T041047Z.archive.gz",
+        "headers": {
+          "Content-Length": [
+            "68859943"
+          ],
+          "Last-Modified": [
+            "Sun, 27 Sep 2026 04:10:55 GMT"
+          ],
+          "X-Oss-Hash-Crc64ecma": [
+            "10999337816384109805"
+          ],
+          "X-Oss-Server-Side-Encryption": [
+            "AES256"
+          ]
+        }
+      },
+      {
+        "name": "paperbanana-mongo-20260927T041047Z.archive.gz.sha256",
+        "headers": {
+          "Content-Length": [
+            "137"
+          ],
+          "Last-Modified": [
+            "Sun, 27 Sep 2026 04:10:55 GMT"
+          ],
+          "X-Oss-Hash-Crc64ecma": [
+            "5167963810475703126"
+          ],
+          "X-Oss-Server-Side-Encryption": [
+            "AES256"
+          ]
+        }
+      }
+    ],
+    "remainingTemporaryRules": 0,
+    "installedSha256": {
+      "operations/backup/backup-mongo.sh": "2440afe1f325f9757f112fa4193b96f813cc45749d3f5e1cf28fe4dd846cbb47",
+      "operations/backup/with-backup-oss-network.py": "cf08537c9ed9cf38f15da1cb0eae2082f191b0bf4fa5e8b4a60cd78420fb2ad0",
+      "repo/deploy/hk-single-host/scripts/monitor-health.sh": "018917427c0fd57034d38570511c6be1748c80073460baea571cbfc63db1690d"
+    },
+    "containers": [
+      {
+        "name": "paperbanana-api",
+        "status": "running",
+        "health": "healthy",
+        "startedAt": "2026-09-23T02:13:18.593157721Z",
+        "imageId": "sha256:9856c6e5e0de2102110218e6f1fa363f931932ee64d2bf1186359577a6b56bb2"
+      },
+      {
+        "name": "auth-gateway",
+        "status": "running",
+        "health": "healthy",
+        "startedAt": "2026-09-23T02:13:24.359835894Z",
+        "imageId": "sha256:1ad307c929e4663ce8011c6cb371d0ca33aeedde80e87fe78c8edd5035ef0cce"
+      },
+      {
+        "name": "mongodb",
+        "status": "running",
+        "health": "healthy",
+        "startedAt": "2026-08-14T17:43:59.2723552Z",
+        "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd"
+      },
+      {
+        "name": "plot-worker",
+        "status": "running",
+        "health": "healthy",
+        "startedAt": "2026-08-19T03:03:07.109583832Z",
+        "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3"
+      },
+      {
+        "name": "benchmark-worker",
+        "status": "running",
+        "health": "healthy",
+        "startedAt": "2026-09-23T02:13:24.357925782Z",
+        "imageId": "sha256:aaf190de846c5e6f4084e299d71f7c4831d0ab00877a4a5a1b0fd9019c871587",
+        "enabled": [
+          "false"
+        ]
+      }
+    ],
+    "productionCodeSha": "9a52aa7414c72a02fcaf285dbb020dbdc68c6c20"
+  },
+  "monitorPassedDuringBackup": [
+    {
+      "timestampMicros": 1790482249086954,
+      "message": "PaperBanana production health check passed"
+    }
+  ],
+  "benchmarkImage": {
+    "Id": "sha256:5d618b442666bfef67fe3890ee6861cdfdf3e920bb84e3da0729b6f9074a2141",
+    "Architecture": "amd64",
+    "Os": "linux",
+    "Size": 179276308,
+    "RepoTags": [
+      "tuyan-benchmark-repair:sha-f2d0eb5cef2ab6d90eed196d853b394ff8d0126a"
+    ],
+    "RepoDigests": [
+      "tuyan-benchmark-repair@sha256:5d618b442666bfef67fe3890ee6861cdfdf3e920bb84e3da0729b6f9074a2141"
+    ]
+  },
+  "benchmarkRuntimeSmoke": {
+    "ok": true,
+    "arch": "x64",
+    "uid": 1000,
+    "codeSha": "f2d0eb5cef2ab6d90eed196d853b394ff8d0126a",
+    "calibrationSnapshots": "passed",
+    "coreImageRuntimeImport": "passed",
+    "resvgWasm": "passed",
+    "pngAndWebp": "passed",
+    "providerCalls": 0
+  },
+  "benchmarkIsolatedStartup": {
+    "ready": true,
+    "enabled": false,
+    "networkInternal": true,
+    "credentialsProvided": false,
+    "registryRequests": 1,
+    "detectedCandidates": 0,
+    "providerCalls": 0,
+    "image": "tuyan-benchmark-repair:sha-f2d0eb5cef2ab6d90eed196d853b394ff8d0126a"
+  },
+  "buildArguments": {
+    "PAPERBANANA_BENCH_DEBIAN_MIRROR": "https://mirrors.aliyun.com/debian",
+    "PAPERBANANA_BENCH_DEBIAN_SECURITY_MIRROR": "https://mirrors.aliyun.com/debian-security",
+    "PAPERBANANA_BENCH_CJK_FONT_VERSION": "1:20220127+repack1-1"
+  },
+  "validation": {
+    "hongKongOperationsTests": 228,
+    "benchmarkWorkerTests": 200,
+    "backupBehaviorTests": 12,
+    "totalTests": 440,
+    "failed": 0,
+    "shellSyntax": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "boundaries": {
+    "businessDeployment": false,
+    "imagePushed": false,
+    "productionBenchmarkImageReplaced": false,
+    "paidModelCalls": 0,
+    "restoreIntoProductionDatabase": false,
+    "fullRestoreDrillThisTurn": false,
+    "wechatPublication": false,
+    "v381Released": false,
+    "nextScheduledBackupObserved": false
+  }
+}

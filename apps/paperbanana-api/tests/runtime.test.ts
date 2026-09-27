@@ -21,7 +21,7 @@ test('runtime reconciles interrupted jobs before dependency readiness and legacy
   const runtime = await prepareRuntime({
     mongo: mongo as any,
     oss: oss as any,
-    configureCloud() { calls.push('cloud.configure') },
+    configureServices() { calls.push('cloud.configure') },
     async loadHandler() { calls.push('handler.load'); return handler },
     logger: { info() {}, warn() {}, error() {} },
   })
@@ -54,7 +54,7 @@ test('runtime readiness probe reports each dependency without throwing', async (
   const runtime = await prepareRuntime({
     mongo: mongo as any,
     oss: oss as any,
-    configureCloud() {},
+    configureServices() {},
     async loadHandler() { return async () => ({ code: 0 }) },
     logger: { info() {}, warn() {}, error() {} },
   })
@@ -80,7 +80,7 @@ test('runtime closes Mongo when startup readiness fails', async () => {
     prepareRuntime({
       mongo: mongo as any,
       oss: oss as any,
-      configureCloud() {},
+      configureServices() {},
       async loadHandler() { return async () => ({ code: 0 }) },
       logger: { info() {}, warn() {}, error() {} },
     }),
@@ -108,7 +108,7 @@ test('provider egress health is observable but never changes Mongo and OSS readi
     mongo: mongo as any,
     oss: oss as any,
     providerEgress,
-    configureCloud() {},
+    configureServices() {},
     async loadHandler() { return async () => ({ code: 0 }) },
     logger: { info() {}, warn() {}, error() {} },
   })
@@ -142,7 +142,7 @@ test('runtime closes provider egress when startup fails', async () => {
       snapshot: () => 'ready' as const,
       async close() { closed.push('providerEgress') },
     },
-    configureCloud() {},
+    configureServices() {},
     async loadHandler() { return async () => ({ code: 0 }) },
     logger: { info() {}, warn() {}, error() {} },
   }), /startup failed/)

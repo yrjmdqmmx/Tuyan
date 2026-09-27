@@ -8,7 +8,7 @@ test('Web and WeChat Mini Program send their exact platform identifiers', () => 
   const web = read('packages/api/src/jobs.js')
   const webCreate = web.slice(web.indexOf('export async function createJobRequest'), web.indexOf('export async function referenceLibraryRequest'))
   const webRefine = web.slice(web.indexOf('export async function refineImageRequest'), web.indexOf('export async function prepareReferenceUploadRequest'))
-  assert.equal((webCreate.match(/clientPlatform: CLIENT_PLATFORM/g) || []).length, 2)
+  assert.equal((webCreate.match(/clientPlatform: CLIENT_PLATFORM/g) || []).length, 1)
   assert.equal((webRefine.match(/clientPlatform: CLIENT_PLATFORM/g) || []).length, 1)
   assert.match(web, /const CLIENT_PLATFORM = 'web'/)
 

@@ -41,7 +41,7 @@ test('rendered SVG submit ignores the image model format because the main model 
   globalThis.fetch = async (input, init = {}) => {
     const body = init.body ? JSON.parse(String(init.body)) : null
     requests.push({ url: String(input), body })
-    if (!body) return Response.json({ code: 0, runtime: 'laf' })
+    if (!body) return Response.json({ code: 0, runtime: 'gateway' })
     if (body.action === 'modelRegistry') return Response.json({ code: 0, ...bailianRegistry })
     if (body.action === 'createJob') return Response.json({ code: 0, jobId: 'job-svg', status: 'queued' })
     if (body.action === 'getJob') return Response.json({ code: 0, job: { id: 'job-svg', status: 'succeeded', resultImages: [], stages: [] } })
@@ -341,7 +341,7 @@ for (const [retrievalValue, retrievalLabel] of [
     globalThis.fetch = async (input, init = {}) => {
       const body = init.body ? JSON.parse(String(init.body)) : null
       requests.push({ url: String(input), body })
-      if (!body) return Response.json({ code: 0, runtime: 'laf' })
+      if (!body) return Response.json({ code: 0, runtime: 'gateway' })
       if (body.action === 'modelRegistry') return Response.json({ code: 0, ...bailianRegistry })
       if (body.action === 'referenceLibrary') {
         return Response.json({

@@ -1,3 +1,5 @@
+> **历史记录（2026-09-27 归档标识）**：文中旧平台名称、源码位置和部署/回滚步骤仅保留作当时的证据，不是当前操作指引。Sealos / Sealaf 已退役；运行与发布以[当前架构](../operations/current-architecture.md)为准。原实验结论与发布哈希不作追溯改写。
+
 # TokenDance 接入核对与实施设计
 
 核对日期 2026-09-09；主线 `27aa954d168e7e0ed05d6b2251965161f8d66e30`；独立分支 `codex/tokendance-integration-20260909`。本文件记录设计和证据边界，完成状态另见[验证记录](validation.md)，接口与运维见[实现说明](implementation.md)。

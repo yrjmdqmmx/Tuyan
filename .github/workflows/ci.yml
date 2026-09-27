@@ -61,8 +61,10 @@ jobs:
       - name: Run retained client-platform contracts
         run: node --test tests/client-platform/*.test.mjs
       - run: node --test tests/*.test.mjs
-      - run: node --test apps/laf-functions/tests/*.test.cjs
+      - run: node --test apps/paperbanana-api/tests/guards/*.test.cjs
+      - run: node --test deploy/hk-single-host/object-restore/tests/*.test.mjs
       - run: node --test deploy/hk-single-host/tests/*.test.mjs
+      - run: python3 deploy/hk-single-host/tests/backup-network.test.py
       - run: node --test deploy/sg-egress/tests/*.test.mjs
 
   images:
@@ -87,8 +89,17 @@ jobs:
           context: .
           file: apps/benchmark-worker/Dockerfile
           push: false
+          load: true
+          platforms: linux/amd64
+          tags: paperbanana-benchmark-worker:ci
           build-args: |
             PAPERBANANA_CODE_SHA=${{ github.sha }}
+      - name: Verify complete Benchmark runtime without network or provider keys
+        run: >-
+          docker run --rm --platform linux/amd64 --network none
+          -e EXPECTED_CODE_SHA=${{ github.sha }}
+          --mount "type=bind,src=${{ github.workspace }}/apps/benchmark-worker/scripts/runtime-image-smoke.mjs,dst=/app/runtime-image-smoke.mjs,readonly"
+          paperbanana-benchmark-worker:ci node /app/runtime-image-smoke.mjs
       - uses: docker/build-push-action@v6
         with:
           context: apps/plot-worker

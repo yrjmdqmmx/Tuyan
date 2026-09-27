@@ -1,0 +1,534 @@
+{
+  "antling/Ling-3.0-flash-VL": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 40,
+    "productImageCap": 3,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 0.5,
+        "cacheInputList": 0.1,
+        "outputList": 1.5,
+        "inputDiscount": 0.14,
+        "cacheInputDiscount": 0.028,
+        "outputDiscount": 0.42
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false,
+      "max_completion_tokens": 8192
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-3.0-flash-VL"
+        }
+      },
+      "x-constraints": []
+    },
+    "requireDataUrl": true,
+    "allowedImageMimeTypes": [
+      "image/png",
+      "image/jpeg"
+    ],
+    "requestMaxBytes": 32000000,
+    "generateInputPolicy": false,
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "antling/Ling-3.0-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 0.5,
+        "cacheInputList": 0.1,
+        "outputList": 1.5,
+        "inputDiscount": 0.125,
+        "cacheInputDiscount": 0.025,
+        "outputDiscount": 0.375
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-3.0-flash"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "x-constraints": []
+    },
+    "requestSources": [
+      "https://developer.ant-ling.com/zh-CN/docs/getting-started/quickstart/"
+    ],
+    "outputBudgetNote": "max_tokens 字段由 Flash 官方 SDK 示例确认；8192 为图研输出预算，不是官方最大输出声明。",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "antling/Ling-3.0-tiny": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "unconfirmed",
+      "unit": "million_tokens",
+      "CNY": null,
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-3.0-tiny"
+        }
+      },
+      "x-constraints": []
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "antling/Ling-2.6-1T": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 4.5,
+        "cacheInputList": 0.9,
+        "outputList": 18
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-2.6-1T"
+        }
+      },
+      "x-constraints": []
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "antling/Ling-2.6-flash": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 0.6,
+        "cacheInputList": 0.12,
+        "outputList": 1.8
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ling-2.6-flash"
+        }
+      },
+      "x-constraints": []
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "antling/Ring-2.6-1T": {
+    "roles": [
+      "main"
+    ],
+    "maxImages": 0,
+    "minImages": 0,
+    "providerMaxImages": 0,
+    "productImageCap": 0,
+    "source": "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputList": 4.5,
+        "cacheInputList": 0.9,
+        "outputList": 18
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://developer.ant-ling.com/zh-CN/docs/models/price/",
+      "checkedAt": "2026-09-27"
+    },
+    "request": {
+      "stream": false
+    },
+    "textEndpoint": "https://api.ant-ling.com/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "Ring-2.6-1T"
+        }
+      },
+      "x-constraints": []
+    },
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "longcat/LongCat-2.5-Preview": {
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 50,
+    "productImageCap": 3,
+    "source": "https://longcat.ai/platform/docs/zh/api/chat",
+    "checkedAt": "2026-09-27",
+    "price": {
+      "status": "public_reference_only",
+      "unit": "million_tokens",
+      "CNY": {
+        "inputDiscount": 2,
+        "cacheInputDiscount": 0.04,
+        "outputDiscount": 8
+      },
+      "discountEnd": null,
+      "billedAmount": null,
+      "source": "https://longcat.ai/platform/docs/zh/pricing/longcat-2.5",
+      "checkedAt": "2026-09-27",
+      "USD": {
+        "inputDiscount": 0.3,
+        "cacheInputDiscount": 0.006,
+        "outputDiscount": 1.2
+      }
+    },
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "textEndpoint": "https://api.longcat.chat/openai/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "LongCat-2.5-Preview"
+        },
+        "messages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "role",
+              "content"
+            ],
+            "properties": {
+              "role": {
+                "enum": [
+                  "system",
+                  "user",
+                  "assistant"
+                ]
+              },
+              "content": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "text"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "type": {
+                              "const": "text"
+                            },
+                            "text": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "required": [
+                            "type",
+                            "image_url"
+                          ],
+                          "additionalProperties": false,
+                          "properties": {
+                            "type": {
+                              "const": "image_url"
+                            },
+                            "image_url": {
+                              "type": "object",
+                              "required": [
+                                "url"
+                              ],
+                              "additionalProperties": false,
+                              "properties": {
+                                "url": {
+                                  "type": "string",
+                                  "pattern": "^data:image/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 131072
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "stream": {
+          "type": "boolean"
+        },
+        "thinking": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "enabled",
+                "disabled"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "x-constraints": []
+    },
+    "providerMaxImagesTentative": true,
+    "providerMaxImageBytes": 10000000,
+    "providerMaxAspectRatio": 200,
+    "requireDataUrl": true,
+    "allowedImageMimeTypes": [
+      "image/png",
+      "image/jpeg",
+      "image/webp"
+    ],
+    "maxCombinedImageBytes": 12582912,
+    "requestMaxBytes": 20000000,
+    "generateInputPolicy": false,
+    "visionSource": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+    "visionWireEvidence": "Official visual-understanding page, present in VitePress page index but missing from current sidebar; exact request examples override generic content:string table and stale Cline guidance.",
+    "inputPolicyNotes": "3 images, 4MiB each, 4096 side, 8MP and 20MB encoded request are Tuyan caps, not provider maxima. GIF/video/remote-URL forwarding are not admitted in this product route.",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "novita/ming-image-0.1-design": {
+    "roles": [
+      "image"
+    ],
+    "generation": true,
+    "editing": false,
+    "maxImages": 0,
+    "providerMaxImages": 0,
+    "source": "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img",
+    "checkedAt": "2026-09-27",
+    "imageEndpoint": "https://api.novita.ai/openai/v1/images/generations",
+    "price": {
+      "status": "public_display_unconfirmed_terms",
+      "unit": "million_tokens",
+      "currency": "USD",
+      "displayedInput": 0,
+      "displayedOutput": 0,
+      "displayedOriginalInput": 1,
+      "displayedOriginalOutput": 1,
+      "promotionEnd": null,
+      "accountEligibility": null,
+      "billedAmount": null,
+      "source": "https://novita.ai/models?type=images",
+      "checkedAt": "2026-09-27"
+    },
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "prompt",
+        "size",
+        "output_format",
+        "response_format"
+      ],
+      "properties": {
+        "model": {
+          "const": "ming-image-0.1-design"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "size": {
+          "enum": [
+            "1024x1024",
+            "2048x2048"
+          ]
+        },
+        "output_format": {
+          "const": "png"
+        },
+        "response_format": {
+          "const": "b64_json"
+        }
+      }
+    },
+    "policyNotes": "Schema represents the admitted product subset. API also documents auto size, JPEG, URL response and optional watermark; n and enable_thinking are not documented.",
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  }
+}
