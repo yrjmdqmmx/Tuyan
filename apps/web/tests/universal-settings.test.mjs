@@ -26,10 +26,10 @@ test('empty fields and typing use guidance; unknown capability notice waits for 
  assert.equal(screen.queryByText(/暂无已核对的能力记录/),null)
  assert.ok(main().getByText(/先获取模型并选择/))
  const input=screen.getByLabelText('主模型 模型 ID');await user.type(input,'Private/Exact-v1')
- assert.equal(screen.queryByText(/暂无已核对的能力记录/),null)
+ assert.equal(screen.getByText(/暂无已核对的能力记录/).getAttribute('aria-hidden'),'true')
  await user.tab();assert.ok(main().getByText(/主模型需要文本生成能力/))
  assert.equal(input.closest('fieldset').querySelector('details[open]'),null)
- await user.click(input);await user.type(input,'2');assert.equal(screen.queryByText(/暂无已核对的能力记录/),null)
+ await user.click(input);await user.type(input,'2');assert.equal(screen.getByText(/暂无已核对的能力记录/).getAttribute('aria-hidden'),'true')
  const known=emptyUniversalDraft('main');known.modelId='gpt-4.1'
  assert.equal(universalDraftFeedback(known,'main').tone,'success')
  assert.equal(universalDraftRoute(known).modelId,'gpt-4.1')

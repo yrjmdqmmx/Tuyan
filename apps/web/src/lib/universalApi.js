@@ -17,7 +17,7 @@ const storageKey = 'tuyan.universal-api.v1'
 export const UNIVERSAL_PROVIDER = { label: '通用 API', mainModels: [], imageModels: [], visionModels: [], accessKind: 'direct', registryModels: [] }
 export function emptyUniversalDraft(role) {
   const protocol = role === 'image' ? 'openai-images' : 'openai-chat'
-  return { modelId: '', declared: false, custom: {version: 1, connectionId: `custom_${role}`, protocol, baseUrl: UNIVERSAL_PROTOCOL_OPTIONS.find(x => x[0] === protocol)[2], auth: universalDefaultAuth(protocol), compatibility: 'standard',
+  return { modelId: '', declared: false, ui:{baseUrlSource:'system',capabilityMode:'auto',manualDraftPresent:false,connectionMode:'template'}, custom: {version: 1, connectionId: `custom_${role}`, protocol, baseUrl: UNIVERSAL_PROTOCOL_OPTIONS.find(x => x[0] === protocol)[2], auth: universalDefaultAuth(protocol), compatibility: 'standard',
     catalogFormat: 'auto', capabilities: {text: false, vision: false, imageGeneration: false, imageEditing: false},
     inputLimits: {maxCount: 1, maxBytes: 5*1024*1024, maxTotalBytes: 10*1024*1024, maxDimension: 4096, maxPixels: 16000000, requestMaxBytes: 32*1024*1024, mimeTypes: ['image/png','image/jpeg','image/webp']},
     outputLimits: {maxBytes: 20*1024*1024, maxDimension: 8192, maxPixels: 32000000, mimeTypes: ['image/png','image/jpeg','image/webp']}, outputSizes: []}}
@@ -43,19 +43,28 @@ export function loadUniversalDrafts(storage = globalThis.localStorage ?? globalT
           return [key, fallback]
         }))
         const custom = restore(defaults[role].custom, d.custom)
-        defaults[role] = {modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
+        defaults[role] = {ui:{baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
       }
     }
   } catch { /* An invalid saved draft must not break preset channels. */ }
   return defaults
 }
-export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+export function hasSavedUniversalConfiguration(storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  try {
+    const routes=JSON.parse(storage?.getItem('tuyan.model-routing.v1')||'null'), drafts=JSON.parse(storage?.getItem(storageKey)||'null')
+    return routes?.version===1&&drafts?.version===1&&['simple','advanced'].includes(routes.mode)&&['main','vision','image'].every(role=>typeof routes.roles?.[role]?.accessProvider==='string'&&typeof routes.roles?.[role]?.modelId==='string'&&typeof drafts.roles?.[role]?.modelId==='string'&&drafts.roles[role].custom&&typeof drafts.roles[role].custom==='object')
+  } catch { return false }
+}
+export function serializeUniversalDrafts(drafts) {
   // Explicit allowlist. Keys and validation outcomes never enter localStorage.
-  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {modelId: d.modelId, declared: Boolean(d.declared), custom: {
+  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {modelId: d.modelId, declared: Boolean(d.declared), ui:{baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, custom: {
     version: 1, connectionId: `custom_${role}`, protocol: d.custom.protocol, baseUrl: d.custom.baseUrl, auth: d.custom.auth, compatibility: d.custom.compatibility,
     catalogFormat: d.custom.catalogFormat || 'auto', capabilities: d.custom.capabilities, inputLimits: d.custom.inputLimits, outputLimits: d.custom.outputLimits, outputSizes: d.custom.outputSizes,
   }}]))
-  try { storage?.setItem(storageKey, JSON.stringify({version:1,roles})); return true } catch { return false }
+  return JSON.stringify({version:1,roles})
+}
+export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  try { if(!storage) return false; storage.setItem(storageKey, serializeUniversalDrafts(drafts)); return true } catch { return false }
 }
 // Audit reuse is exact origin + protocol + model ID, never a name/prefix guess.
 export function officialDeclaration(draft) {
@@ -88,7 +97,7 @@ export function officialDeclaration(draft) {
 }
 export function universalDraftRoute(draft) {
   if (!draft.modelId.trim()) throw new Error('请填写准确模型 ID，或先获取模型并选择。')
-  const declared = draft.declared ? draft.custom : officialDeclaration(draft)
+  const declared = draft.declared ? draft.custom : draft.ui?.capabilityMode === 'manual' ? null : officialDeclaration(draft)
   if (!declared) throw new Error('该地址与型号没有可直接采用的精确能力记录，请在「能力与限额」中按服务文档补充并确认。')
   return normalizeUniversalRoute({accessProvider:'custom',modelId:draft.modelId,custom:declared})
 }
@@ -106,6 +115,7 @@ export function universalCheckErrorMessage(error, kind) {
   const status = error.code >= 400 && error.code <= 599 ? error.code : error.status
   if (status === 401) return `${step}失败：图研登录已过期，请重新登录后再试，配置已保留。`
   if (status === 403) return `${step}失败：访问被拒绝，请检查登录状态及账号权限。`
+  if (status === 404) return `${step}失败：请求路径不存在，请核对服务地址及目录规则；可以继续手动填写型号。`
   if (status === 429) return `${step}请求过于频繁，请稍后重试。`
   if (status === 408 || status === 504 || error.name === 'AbortError') return `${step}超时，请检查网络后重新操作。未触发生成。`
   if (status >= 500) return `${step}暂不可用，服务端返回异常，请稍后重试。未触发生成。`
@@ -133,6 +143,7 @@ export const UNIVERSAL_ROLE_REQUIREMENTS = {
 }
 export function universalDraftFeedback(draft, role) {
   if (!draft.modelId.trim()) return {tone:'neutral', message:'先获取模型并选择，或手动填写准确模型 ID。'}
+  if (!draft.declared && draft.ui?.capabilityMode === 'manual') return {tone:'warning', message:`手动能力草稿尚未确认。请展开「能力与限额」核对并勾选确认。${UNIVERSAL_ROLE_REQUIREMENTS[role]}`}
   if (!draft.declared && !officialDeclaration(draft)) return {tone:'warning', message:`此协议、地址与准确 ID 暂无已核对的能力记录。请展开「能力与限额」确认。${UNIVERSAL_ROLE_REQUIREMENTS[role]}`}
   const entry = universalDraftEntry(draft)
   if (!entry.selectable) return {tone:'error', message:entry.disabledReason}
@@ -166,8 +177,10 @@ export function missingUniversalKeys(routes, roles, envelope) {
   return roles.filter(role => {try {universalCredential(routes[role],envelope);return false} catch{return true}})
 }
 export function updateUniversalDraft(draft, patch) {
-  const next = {...draft,...patch,custom:{...draft.custom,...patch.custom}}
-  const changedBinding = ['baseUrl','protocol','auth'].some(k => draft.custom[k] !== next.custom[k])
+  const next = {...draft,...patch,ui:{...draft.ui,...patch.ui},custom:{...draft.custom,...patch.custom}}
+  if(patch.custom && Object.hasOwn(patch.custom,'baseUrl') && !patch.ui) next.ui={...next.ui,baseUrlSource:'user'}
+  const changedFields = ['baseUrl','protocol','auth'].filter(k => draft.custom[k] !== next.custom[k])
+  const changedBinding = changedFields.length > 0
   if (next.modelId !== draft.modelId || changedBinding || next.custom.compatibility !== draft.custom.compatibility) next.declared = false
-  return {draft:next,clearKey:changedBinding}
+  return {draft:next,clearKey:changedBinding,changedFields}
 }

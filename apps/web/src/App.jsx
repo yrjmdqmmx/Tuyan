@@ -8,8 +8,9 @@ import WorkbenchHeader from './components/WorkbenchHeader';
 import PageNavigation from './components/PageNavigation';
 import GenerationSummaryDetails from './components/GenerationSummaryDetails';
 import useVisualViewport from './hooks/useVisualViewport';
+import {copyUniversalConnection} from './lib/universalPresentation.js';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
-import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
+import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,serializeUniversalDrafts, hasSavedUniversalConfiguration,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
 import { uploadReferenceFiles } from './lib/referenceUpload';
 import { useTokenDance } from './hooks/useTokenDance';
@@ -213,6 +214,12 @@ export default function App() {
   const [imageSize, setImageSize] = useState('1K');
   const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
   const [modelRoutes, setModelRoutes] = useState(restoredRouting.routes);
+  const configurationFingerprint = JSON.stringify({mode:configurationMode, routes:modelRoutes, drafts:serializeUniversalDrafts(universalDrafts)});
+  const [savedConfiguration,setSavedConfiguration] = useState(() => {
+    return hasSavedUniversalConfiguration()?configurationFingerprint:''
+  });
+  const configurationSaved = savedConfiguration === configurationFingerprint;
+  const configurationSaveStatus = configurationSaved ? '已保存到此浏览器；Key 与验证结果不保存。' : '当前页配置尚未保存到浏览器；修改即时用于本页。';
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
@@ -1446,20 +1453,20 @@ export default function App() {
         universalSummaries={Object.fromEntries(Object.entries(universalDrafts).map(([role,draft]) => [role, [
           UNIVERSAL_PROTOCOL_OPTIONS.find(([id]) => id === draft.custom.protocol)?.[1] || draft.custom.protocol,
           universalDraftFeedback(draft,role).tone === 'success' ? '结构完整' : '待完善配置',
-          universalKeys[role]?.apiKey?.trim() ? '密钥已填写' : '未填写密钥',
+          universalKeys[role]?.apiKey?.trim() ? '密钥已填写 · 未验证' : '未填写密钥',
         ].join(' · ')]))}
-        renderUniversalSettings={role => <UniversalApiSettings selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
-          onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
+        renderUniversalSettings={role => <UniversalApiSettings savedStatus={configurationSaveStatus} onOpenLogin={()=>{setShowGenerationSettings(false);setShowAuthPanel(true)}} selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+          onChange={(role,patch)=>{setRoutingSaved('');const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
-          onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
+          onCopy={(role,source,includeKey)=>{setRoutingSaved('');const result=copyUniversalConnection(universalDrafts[role],universalDrafts[source],universalKeys[source],includeKey);setUniversalDrafts(current=>({...current,[role]:result.draft}));if(includeKey||result.clearKey)setUniversalKeys(current=>({...current,[role]:result.copiedKey}));}}
           onSave={()=>saveUniversalDrafts(universalDrafts)}/> }
         onModeChange={handleConfigurationModeChange}
         simpleProvider={provider}
         onSimpleProviderChange={handleSimpleProviderChange}
         renderRoutingPersistence={() => <div className="routing-persistence">
           <p>专业模式可为每个角色组合预设渠道和通用 API。保存包含渠道选择、地址、型号、协议与能力限额；密钥仅保留在当前页面。恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。</p>
-          <button type="button" className="universal-button" onClick={() => {const draftsSaved = saveUniversalDrafts(universalDrafts);const routesSaved = saveRoutingSelection(configurationMode, modelRoutes);setRoutingSaved(draftsSaved && routesSaved ? '非敏感配置已保存，未保存密钥或验证状态。' : '浏览器存储不可用，当前页面配置仍保留。')}}>保存非敏感配置</button>
-          {routingSaved && <p role="status">{routingSaved}</p>}
+          <button type="button" className="universal-button" onClick={() => {const draftsSaved = saveUniversalDrafts(universalDrafts);const routesSaved = saveRoutingSelection(configurationMode, modelRoutes);if(draftsSaved && routesSaved)setSavedConfiguration(configurationFingerprint);setRoutingSaved(draftsSaved && routesSaved ? '已保存到此浏览器，未保存密钥或验证状态。' : '浏览器存储不可用，当前页面配置仍保留。')}}>保存到此浏览器（不含密钥）</button>
+          <p role="status">{configurationSaveStatus}</p>{routingSaved && <p role="status">{routingSaved}</p>}
         </div>}
         modelRoutes={activeModelRoutes}
         onRouteChange={handleModelRouteChange}

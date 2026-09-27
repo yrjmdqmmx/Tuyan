@@ -1,23 +1,47 @@
 import { useAppLocale } from './BenchmarkLocale.jsx'
-// Capability declarations remain explicit and independent of catalog visibility.
-const mib = 1024 * 1024
-export default function UniversalCapabilities({draft:d, label, onChange:change}) {
-  const { t } = useAppLocale()
-  const c = d.custom
-  const textOnly = ['openai-responses','anthropic-messages'].includes(c.protocol) || c.protocol === 'openai-chat' && c.compatibility !== 'openrouter-image'
-  const allowed = key => ['text','vision'].includes(key) ? c.protocol !== 'openai-images' : !textOnly
-  const custom = patch => change({custom:patch})
-  const limits = (scope,key,value) => custom({[scope]:{...c[scope],[key]:value}})
-  return <div className="universal-capability-fields">
-          <p>{t("仅精确匹配官方地址、协议与已审计型号时采用已有声明。兼容服务需按其文档填写。下面的初始值是待确认草稿，不是对上游能力的保证。")}</p>
-          <p>{t("能力选项受当前协议约束；置灰能力不能通过此协议调用。切换协议后保留旧声明，请取消不适用的选项后重新确认。")}</p>
-          <div className="universal-capabilities">{Object.entries({text:'文本生成',vision:'图片理解',imageGeneration:'图片生成',imageEditing:'直接图片编辑'}).map(([key,title])=><label key={key}><input type="checkbox" checked={c.capabilities[key]} disabled={!allowed(key) && !c.capabilities[key]} onChange={e=>custom({capabilities:{...c.capabilities,[key]:e.target.checked}})}/>{t(title)}</label>)}</div>
-          <div className="model-grid">{[['maxCount','输入图片上限',1],['maxBytes','单图 MiB',mib],['maxTotalBytes','图片合计 MiB',mib],['maxDimension','输入单边 px',1],['maxPixels','输入百万像素',1e6],['requestMaxBytes','完整请求 MiB',mib]].map(([key,title,unit])=><label className="field" key={key}><span>{t(title)}</span><input type="number" aria-label={`${label} ${t(title)}`} min={key==='maxCount'?0:1/unit} step="any" value={c.inputLimits[key]/unit} onChange={e=>limits('inputLimits',key,Math.round(Number(e.target.value)*unit))}/></label>)}</div>
-          <label className="field"><span>{t("允许的输入格式")}</span><input aria-label={t("{v0} 输入格式", {v0: label})} value={c.inputLimits.mimeTypes.join(',')} onChange={e=>limits('inputLimits','mimeTypes',e.target.value.split(',').map(x=>x.trim()))}/><small>{t("逗号分隔 MIME，例如 image/png,image/jpeg,image/webp。")}</small></label>
-          {(c.capabilities.imageGeneration||c.capabilities.imageEditing) && <><div className="model-grid">{[['maxBytes','输出单图 MiB',mib],['maxDimension','输出单边 px',1],['maxPixels','输出百万像素',1e6]].map(([key,title,unit])=><label className="field" key={key}><span>{t(title)}</span><input type="number" aria-label={`${label} ${t(title)}`} min={1/unit} step="any" value={c.outputLimits[key]/unit} onChange={e=>limits('outputLimits',key,Math.round(Number(e.target.value)*unit))}/></label>)}</div>
-          <label className="field"><span>{t("允许的输出格式")}</span><input aria-label={t("{v0} 输出格式", {v0: label})} value={c.outputLimits.mimeTypes.join(',')} onChange={e=>limits('outputLimits','mimeTypes',e.target.value.split(',').map(x=>x.trim()))}/></label></>}
-          {(c.capabilities.imageGeneration||c.capabilities.imageEditing)&&<div><p>{t("输出尺寸映射：每一行表示一个可执行组合。像素协议填写 1024x1024（百炼可为 1024*1024）；Gemini 填 1K/2K 等实际支持的 image size。")}</p>{c.outputSizes.map((row,index)=><div className="universal-size-row" key={index}>{[['resolution','清晰度'],['aspectRatio','比例'],['value','接口尺寸值']].map(([key,title])=><label key={key}>{t(title)}<input aria-label={t("{v0} 尺寸 {v1} {v2}", {v0: label, v1: index+1, v2: t(title)})} value={row[key]} onChange={e=>custom({outputSizes:c.outputSizes.map((r,i)=>i===index?{...r,[key]:e.target.value}:r)})}/></label>)}<button type="button" className="universal-button" onClick={()=>custom({outputSizes:c.outputSizes.filter((_,i)=>i!==index)})}>{t("移除")}</button></div>)}<button type="button" className="universal-button" onClick={()=>custom({outputSizes:[...c.outputSizes,{resolution:'1K',aspectRatio:'1:1',value:''}]})}>{t("添加尺寸组合")}</button></div>}
-          <label className="universal-confirm"><input type="checkbox" checked={d.declared} onChange={e=>change({declared:e.target.checked})}/>{t("我已按此地址下的型号文档核对以上能力和限额")}</label>
+import { officialDeclaration } from '../lib/universalApi.js'
+import { allowedCapability, capabilityLabels, incompatibleCapabilities } from '../lib/universalPresentation.js'
 
+const mib=1024*1024
+export default function UniversalCapabilities({draft:d, role, label, onChange:change}) {
+  const {t}=useAppLocale()
+  const audited=officialDeclaration(d)
+  const automatic=Boolean(!d.declared&&d.ui?.capabilityMode!=='manual'&&audited)
+  const c=automatic?audited:d.custom
+  const custom=patch=>change({custom:patch,declared:false,ui:{capabilityMode:'manual',manualDraftPresent:true}})
+  const limits=(scope,key,value)=>custom({[scope]:{...c[scope],[key]:value}})
+  const inputImages=c.capabilities.vision||c.capabilities.imageEditing
+  const outputImages=c.capabilities.imageGeneration||c.capabilities.imageEditing
+  const relevant=role==='image'?['imageGeneration','imageEditing',...(allowedCapability(c,'vision')?['vision']:[])]:['text','vision']
+  const shown=[...new Set([...relevant,...Object.keys(capabilityLabels).filter(k=>c.capabilities[k])])]
+  const invalid=incompatibleCapabilities(c)
+  const field=(scope,key,title,unit=1)=><label className="field" key={key}><span>{t(title)}</span><input type="number" aria-label={`${label} ${t(title)}`} min={key==='maxCount'?0:1/unit} step="any" value={c[scope][key]/unit} onChange={e=>limits(scope,key,Math.round(Number(e.target.value)*unit))}/></label>
+  const format=scope=><label className="field"><span>{t(scope==='inputLimits'?'允许的输入格式':'允许的输出格式')}</span><input aria-label={`${label} ${scope==='inputLimits'?'输入格式':'输出格式'}`} value={c[scope].mimeTypes.join(',')} onChange={e=>limits(scope,'mimeTypes',e.target.value.split(',').map(x=>x.trim()))}/><small>{t('按服务文档填写 MIME，逗号分隔，例如 image/png,image/jpeg。示例不代表支持能力。')}</small></label>
+  return <div className="universal-capability-fields">
+    <p className="universal-source">{t(automatic?'来源：图研已有审计记录，精确匹配地址、协议与型号。':d.declared?'来源：你已确认的手动声明；未验证真实调用。':'来源：待确认草稿。初始限额不是服务商能力或最大值。')}</p>
+    {automatic?<>
+      <p>{Object.keys(capabilityLabels).filter(k=>c.capabilities[k]).map(k=>t(capabilityLabels[k])).join(' · ')}</p>
+      <p className="universal-hint">{t('使用图研已有的输入预算与尺寸映射，不表示服务商官方最大限额。无需重复填写；如需缩小范围，可改为手动声明。')}</p>
+      {inputImages&&<p>{t('图片输入预算')}：{c.inputLimits.maxCount} 张 · {c.inputLimits.maxBytes/mib} MiB / 张 · {c.inputLimits.mimeTypes.join(', ')}</p>}
+      {outputImages&&<div className="universal-size-options" aria-label={`${label} 已核对尺寸`}>{c.outputSizes.map((row,i)=><span key={i} className="universal-size-chip">{row.resolution} · {row.aspectRatio}<code>{row.value}</code></span>)}</div>}
+      <button type="button" className="universal-button" onClick={()=>change({...(d.ui?.manualDraftPresent?{}:{custom:audited}),declared:false,ui:{capabilityMode:'manual',manualDraftPresent:true}})}>{t(d.ui?.manualDraftPresent?'恢复手动草稿':'以当前记录开始手动调整')}</button>
+    </>:<>
+      <p className="universal-hint">{t('只确认服务文档明确支持的能力。勾选不会探测或授权模型；隐藏的历史限额仍保留，平台安全上限不变。')}</p>
+      <div className="universal-capabilities">{shown.map(key=><label key={key}><input type="checkbox" checked={c.capabilities[key]} disabled={!allowedCapability(c,key)&&!c.capabilities[key]} onChange={e=>custom({capabilities:{...c.capabilities,[key]:e.target.checked,...(key==='vision'&&e.target.checked?{text:true}:{})}})}/><span>{t(key==='vision'&&role==='image'?'参考图理解（含文字输出）':capabilityLabels[key])}</span></label>)}</div>
+      {invalid.length>0&&<div className="universal-status warning"><p>{t('当前协议无法使用这些已保存能力，未自动删除')}：{invalid.map(k=>t(capabilityLabels[k])).join('、')}。{t('可切回原协议，或明确取消这些能力后重新确认。')}</p><button type="button" className="universal-button" onClick={()=>custom({capabilities:{...c.capabilities,...Object.fromEntries(invalid.map(k=>[k,false]))}})}>{t('取消以上不兼容能力')}</button></div>}
+      {inputImages&&<section aria-label={`${label} 图片输入要求`}><h4>{t('图片输入要求')}</h4><div className="model-grid">{field('inputLimits','maxCount','输入图片上限')}{field('inputLimits','maxBytes','单图 MiB',mib)}</div>{format('inputLimits')}<details className="universal-details"><summary>{t('更多图片输入限制')}</summary><div className="model-grid">{field('inputLimits','maxTotalBytes','图片合计 MiB',mib)}{field('inputLimits','maxDimension','输入单边 px')}{field('inputLimits','maxPixels','输入百万像素',1e6)}</div></details></section>}
+      <details className="universal-details"><summary>{t('高级请求限制')}</summary>{field('inputLimits','requestMaxBytes','完整请求 MiB',mib)}</details>
+      {outputImages&&<section aria-label={`${label} 图片输出要求`}><h4>{t('图片输出与尺寸')}</h4><p className="universal-hint">{t('组合必须有文档中的准确接口值；清晰度与比例标签不能推导接口参数。')}</p>
+        {audited?.outputSizes.length>0&&<><p>{t('从此官方连接的图研已核对尺寸中选择；不会改动其他手填组合。同一组合已有不同值时，请先在高级编辑中核对或移除原值。')}</p><div className="universal-size-options" role="group" aria-label={`${label} 已核对尺寸选择`}>{audited.outputSizes.map((row,i)=>{const included=c.outputSizes.some(x=>JSON.stringify(x)===JSON.stringify(row));const conflict=!included&&c.outputSizes.some(x=>x.resolution===row.resolution&&x.aspectRatio===row.aspectRatio);return <button disabled={conflict} title={conflict?'此组合已有不同接口值；请在高级编辑中核对或移除原值后再选择。':undefined} type="button" className={`universal-button universal-size-chip ${included?'selected':''}`} key={i} aria-pressed={included} onClick={()=>custom({outputSizes:included?c.outputSizes.filter(x=>JSON.stringify(x)!==JSON.stringify(row)):[...c.outputSizes,{...row}]})}>{row.resolution} · {row.aspectRatio}<code>{row.value}</code></button>})}</div></>}
+        <p>{t('已配置组合')}：{c.outputSizes.length?c.outputSizes.map(r=>`${r.resolution} / ${r.aspectRatio} → ${r.value||'未填接口值'}`).join('；'):t('尚未填写。请展开高级手动编辑，按服务文档添加。')}</p>
+        <details className="universal-details"><summary>{t('高级手动编辑尺寸与输出限制')}</summary>
+          {c.outputSizes.map((row,index)=><div className="universal-size-row" key={index}>{[['resolution','清晰度'],['aspectRatio','比例'],['value','接口尺寸值']].map(([key,title])=><label key={key}>{t(title)}<input aria-label={`${label} 尺寸 ${index+1} ${t(title)}`} value={row[key]} onChange={e=>custom({outputSizes:c.outputSizes.map((r,i)=>i===index?{...r,[key]:e.target.value}:r)})}/></label>)}<button type="button" className="universal-button" aria-label={`${label} 移除尺寸 ${index+1}`} onClick={()=>custom({outputSizes:c.outputSizes.filter((_,i)=>i!==index)})}>{t('移除')}</button></div>)}
+          <button type="button" className="universal-button" onClick={()=>custom({outputSizes:[...c.outputSizes,{resolution:'',aspectRatio:'',value:''}]})}>{t('添加尺寸组合')}</button>
+          <div className="model-grid">{field('outputLimits','maxBytes','输出单图 MiB',mib)}{field('outputLimits','maxDimension','输出单边 px')}{field('outputLimits','maxPixels','输出百万像素',1e6)}</div>{format('outputLimits')}
+        </details>
+      </section>}
+      <label className="universal-confirm"><input type="checkbox" checked={d.declared} onChange={e=>change({declared:e.target.checked,ui:{capabilityMode:'manual',manualDraftPresent:true}})}/>{t('我已按此地址下的型号文档核对以上能力和限额')}</label>
+      {audited&&<button type="button" className="universal-button" onClick={()=>change({declared:false,ui:{capabilityMode:'auto'}})}>{t('使用图研已有审计记录（保留手动草稿）')}</button>}
+    </>}
   </div>
 }

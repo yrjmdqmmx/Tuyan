@@ -2,8 +2,9 @@ import { useAppLocale } from './BenchmarkLocale.jsx'
 import {useEffect, useRef, useState} from 'react'
 import {Check, Copy, Download, Loader2, Search, ShieldCheck} from 'lucide-react'
 import {universalApiCheckRequest} from '@paperbanana/api'
-import {UNIVERSAL_PROTOCOL_OPTIONS, universalDraftRoute, universalDraftConnection, universalDraftFeedback, universalKeyEnvelope, universalCheckErrorMessage, validateUniversalCatalogResult} from '../lib/universalApi.js'
-import {universalDefaultAuth, resolveUniversalCatalogStrategy} from '../lib/universalContract.js'
+import {UNIVERSAL_PROTOCOL_OPTIONS, universalDraftRoute, universalDraftConnection, universalDraftFeedback, updateUniversalDraft, universalKeyEnvelope, universalCheckErrorMessage, validateUniversalCatalogResult} from '../lib/universalApi.js'
+import {resolveUniversalCatalogStrategy} from '../lib/universalContract.js'
+import {CONNECTION_TEMPLATES, connectionTemplate, templatePatch, protocolPatch, restoreProtocolPatch, catalogState, catalogRecovery} from '../lib/universalPresentation.js'
 import UniversalCapabilities from './UniversalCapabilities.jsx'
 
 const roles = {main:['主模型','规划与文字推理'], vision:['识图模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
@@ -13,20 +14,30 @@ function ConnectionOptions({draft, label, onChange}) {
   const { t } = useAppLocale()
   const c = draft.custom
   const custom = patch => onChange({custom:patch})
+  const incompatibleVariant = c.compatibility !== 'standard' && !((c.protocol === 'openai-chat' && c.compatibility === 'openrouter-image') || (c.protocol === 'openai-images' && c.compatibility === 'ark-images'))
   return <details className="universal-details">
     <summary>{t("认证与兼容选项")}</summary>
     <div className="universal-detail-body">
       {c.protocol==='dashscope-multimodal'&&<p className="universal-hint">{t("百炼新业务空间需填写对应地域的 Workspace 专属地址；默认值是旧版北京地址。")}</p>}
       <label className="field"><span>{t("认证方式")}</span><select aria-label={t("{v0} 认证方式", {v0: label})} value={c.auth} onChange={e=>custom({auth:e.target.value})}><option value="bearer">Authorization: Bearer</option><option value="x-api-key">x-api-key</option><option value="x-goog-api-key">x-goog-api-key</option></select></label>
       {['openai-chat','openai-images'].includes(c.protocol)&&<label className="field"><span>{t("调用兼容变体")}</span><select aria-label={t("{v0} 兼容变体", {v0: label})} value={c.compatibility} onChange={e=>custom({compatibility:e.target.value})}><option value="standard">{t("标准协议")}</option>{c.protocol==='openai-chat'?<option value="openrouter-image">{t("OpenRouter 图片输出扩展")}</option>:<option value="ark-images">{t("Ark JSON 图片输入")}</option>}</select></label>}
-      <label className="field"><span>{t("模型目录接口规则")}</span><select aria-label={t("{v0} 目录接口规则", {v0: label})} value={c.catalogFormat||'auto'} onChange={e=>custom({catalogFormat:e.target.value})}>{catalogFormats.map(([id,title])=><option key={id} value={id}>{t(title)}</option>)}</select><small>{t("未知服务默认不探测接口。仅当服务文档明确兼容所选目录格式及 /models 路径时，才选择对应规则；否则手动填写 ID。")}</small></label>
+      {incompatibleVariant&&<div className="universal-status warning"><p>{t('已保留的兼容变体与当前协议不匹配，可切回原协议或明确改为标准模式。型号与能力草稿不会删除。')}</p><button type="button" className="universal-button" onClick={()=>custom({compatibility:'standard'})}>{t('改为标准兼容模式（保留能力草稿）')}</button></div>}
+      <label className="field"><span>{t("模型目录接口规则")}</span><select aria-label={t("{v0} 目录接口规则", {v0: label})} data-universal-field="catalog" value={c.catalogFormat||'auto'} onChange={e=>custom({catalogFormat:e.target.value})}>{catalogFormats.map(([id,title])=><option key={id} value={id}>{t(title)}</option>)}</select><small>{t("未知服务默认不探测接口。仅当服务文档明确兼容所选目录格式及 /models 路径时，才选择对应规则；否则手动填写 ID。")}</small></label>
     </div>
   </details>
 }
 
-export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
+export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStatus, onOpenLogin, renderThinkingSettings,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
   const { t } = useAppLocale()
   const [label,description] = roles[role].map(text => t(text)), c = draft.custom
+  const root=useRef(null), connectionDetails=useRef(null), capabilityDetails=useRef(null)
+  const [connectionOpen,setConnectionOpen]=useState(()=>!connectionTemplate(draft)), [notice,setNotice]=useState('')
+  const template=connectionTemplate(draft)
+  const focusField=target=>{
+    if(target==='login'){onOpenLogin?.();return}
+    if(target==='address'||target==='catalog') setConnectionOpen(true)
+    window.requestAnimationFrame(()=>{const el=root.current?.querySelector(`[data-universal-field="${target}"]`); if(!el)return; let parent=el.parentElement;while(parent){if(parent.tagName==='DETAILS')parent.open=true;parent=parent.parentElement} el.focus();el.scrollIntoView?.({block:'nearest'})})
+  }
   const [feedbackReady,setFeedbackReady] = useState(false), [editing,setEditing] = useState(false)
   const [catalog,setCatalog] = useState(null), [config,setConfig] = useState(null), [pending,setPending] = useState(null), [query,setQuery] = useState('')
   const mounted = useRef(true), sequence = useRef(0), identity = useRef({})
@@ -41,11 +52,18 @@ export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, 
   const visibleConfig = config?.snapshot===snapshot ? config : null
   const busy = pending?.epoch===epoch ? pending.kind : null
   const feedback = universalDraftFeedback(draft,role)
-  const change = patch => {setFeedbackReady(false);onChange(patch)}
+  const change = patch => {
+    const update=updateUniversalDraft(draft,patch)
+    if(update.clearKey&&credential?.apiKey) setNotice(`已清除当前角色的旧 Key：${update.changedFields.map(k=>({baseUrl:'接口地址',protocol:'API 协议',auth:'认证方式'}[k])).join('、')}发生变化。请重新填写此连接的密钥。`)
+    setFeedbackReady(false);onChange(patch)
+  }
+  const changeProtocol=protocol=>{if(draft.ui?.baseUrlSource!=='system'&&!credential?.apiKey)setNotice('协议已切换；保留你填写的接口地址、目录规则和兼容选项，请按服务文档核对。');change(protocolPatch(draft,protocol))}
+
   async function check(kind) {
     const requestId=++sequence.current, requestEpoch=epoch, requestSnapshot=snapshot
     setPending({epoch,kind});if(kind==='config'){setConfig(null);setFeedbackReady(true);setEditing(false)}
     const isCurrent = () => mounted.current && sequence.current===requestId && identity.current.epoch===requestEpoch
+    let submitted=false
     try {
       let payload
       if(kind==='catalog') payload={connection:universalDraftConnection(draft),selectedModelId:draft.modelId||undefined,check:kind,apiKeys:{custom:universalKeyEnvelope({[role]:draft},{[role]:credential})}}
@@ -53,38 +71,50 @@ export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, 
         if(feedback.tone!=='success') throw Object.assign(new Error(feedback.message),{localValidation:true})
         payload={route:universalDraftRoute(draft),check:kind}
       }
+      submitted=true
       const result=await universalApiCheckRequest(apiBase,health,payload)
       if(!isCurrent()) return
-      if(kind==='catalog'){validateUniversalCatalogResult(result);setCatalog({...result,epoch,models:result.models,partialError:result.error,error:false})}
+      if(kind==='catalog'){validateUniversalCatalogResult(result);setCatalog({...result,epoch,models:result.models,partialError:result.error,recovery:catalogRecovery({details:{catalogError:result.error||{code:result.state==='catalog-invalid'?'CATALOG_RESPONSE_INVALID':undefined}}}),error:false})}
       else {
         if(result.state!=='configuration-valid'||result.inferenceVerified!==false) throw Object.assign(new Error('配置检查返回格式异常，请稍后重试；尚未验证地址或真实调用。'),{localValidation:true})
         setConfig({snapshot:requestSnapshot,error:false,message:'配置与地址校验通过；尚未验证模型权限或真实调用。'})
       }
     } catch(error) {
       if(!isCurrent()) return
-      const result={message:universalCheckErrorMessage(error,kind),error:true}
+      const result={message:universalCheckErrorMessage(error,kind),error:true,notChecked:!submitted,recovery:catalogRecovery(error)}
       if(kind==='catalog') setCatalog({...result,epoch,models:[]})
       else setConfig({...result,snapshot:requestSnapshot})
     } finally {if(isCurrent())setPending(null)}
   }
   const matches = visibleCatalog?.models.filter(({id})=>id.toLowerCase().includes(query.trim().toLowerCase()))||[]
   const selectedMissing = draft.modelId && visibleCatalog && !visibleCatalog.error && !visibleCatalog.models.some(({id})=>id===draft.modelId)
-  return <fieldset className="universal-role" aria-label={t(label)}>
+  const recoveries = visibleCatalog ? visibleCatalog.state==='catalog-empty'?['manual']:visibleCatalog.error||visibleCatalog.state!=='catalog-visible'?visibleCatalog.recovery||['manual']:[] : !strategy.supported?['catalog','manual']:[]
+  return <fieldset ref={root} className="universal-role" aria-label={t(label)}>
     <legend>{t(label)}</legend>
-    <div className="universal-role-heading"><p>{t(description)}</p>{role!=='main'&&canCopyMain&&<button type="button" className="universal-button universal-copy" onClick={()=>{setFeedbackReady(false);onCopy()}}><Copy size={14}/>{t("复制主模型接入与密钥")}</button>}</div>
-    <label className="field"><span>{t("API 协议")}</span><select aria-label={t("{v0} API 协议", {v0: label})} value={c.protocol} onChange={e=>{const protocol=e.target.value;change({custom:{protocol,baseUrl:UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===protocol)[2],auth:universalDefaultAuth(protocol),compatibility:'standard',catalogFormat:'auto'}})}}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role === 'image' ? ['openai-responses','anthropic-messages'].includes(id) : id === 'openai-images'}>{name}</option>)}</select></label>
-    <label className="field"><span>{t("Base URL（含版本，不含操作路径）")}</span><input aria-label={`${label} Base URL`} value={c.baseUrl} onChange={e=>change({custom:{baseUrl:e.target.value}})} spellCheck={false}/><small>{t("官方地址已预填。第三方服务请按文档填写，例如 https://example.com/v1，不含 /chat/completions 等操作路径。")}</small></label>
-    <label className="field"><span>API Key</span><input data-focus-setting="api-key" aria-label={`${label} API Key`} type="password" autoComplete="off" value={credential?.apiKey||''} onChange={e=>onKeyChange(e.target.value)}/></label>
-    <ConnectionOptions draft={draft} label={t(label)} onChange={change}/>
-    <p className="universal-catalog-state" role="status">{t(busy === 'catalog' ? '正在获取模型…' : !visibleCatalog ? '尚未获取模型' : visibleCatalog.error || ['catalog-invalid','unsupported'].includes(visibleCatalog.state) ? '获取失败' : !visibleCatalog.models.length ? '没有适用模型：本次目录未返回可选 ID，仍可手动填写。' : '模型目录已获取')}</p>
-    <div className="universal-catalog-toolbar"><button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported||!strategy.supported||!credential?.apiKey?.trim()} onClick={()=>check('catalog')}>{busy==='catalog'?<Loader2 className="universal-spinner" size={16}/>:<Download size={16}/>} {t(busy==='catalog'?'正在获取模型…':visibleCatalog&&!visibleCatalog.error?'重新获取模型':'获取模型')}</button><span>{t("只读目录 · 不触发生成")}</span></div>
-    <p className="universal-hint">{t(!strategy.supported?t(strategy.message):!credential?.apiKey?.trim()?'填写当前服务的 API Key 后可获取模型，无需先填模型 ID。':strategy.message)}</p>
+    <div className="universal-role-heading"><p>{t(description)}</p></div>
+    <label className="field"><span>{t('连接模板')}</span><select aria-label={`${label} 连接模板`} value={template?.id||'custom'} onChange={e=>{const next=CONNECTION_TEMPLATES.find(x=>x.id===e.target.value);if(next){change(templatePatch(next,role));setConnectionOpen(false)}else{setConnectionOpen(true);change({ui:{baseUrlSource:'user',connectionMode:'custom'}})}}}>
+      {CONNECTION_TEMPLATES.filter(x=>role!=='image'||!['anthropic','openrouter'].includes(x.id)).map(x=><option key={x.id} value={x.id}>{t(x.label)}</option>)}<option value="custom">{t('完全自定义 / 兼容服务')}</option>
+    </select><small>{t('模板只填写连接参数，不决定型号能力。切换模板会替换连接参数；绑定变化时清除本角色 Key。')}</small></label>
+    <details className="universal-details universal-connection" ref={connectionDetails} open={connectionOpen} onToggle={e=>setConnectionOpen(e.currentTarget.open)}>
+      <summary>{t('连接详情')} · {UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===c.protocol)?.[1]||c.protocol}<small>{c.baseUrl}</small></summary>
+      <p className="universal-hint">{t(draft.ui?.baseUrlSource==='system'?'地址来源：系统预填，可展开修改。':'地址来源：你填写或恢复的配置；切换协议时保留。')}</p>
+      <label className="field"><span>{t('API 协议')}</span><select aria-label={`${label} API 协议`} value={c.protocol} onChange={e=>changeProtocol(e.target.value)}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role==='image'?['openai-responses','anthropic-messages'].includes(id):id==='openai-images'}>{name}</option>)}</select></label>
+      <label className="field"><span>{t('Base URL（含版本，不含操作路径）')}</span><input data-universal-field="address" aria-label={`${label} Base URL`} value={c.baseUrl} onChange={e=>change({custom:{baseUrl:e.target.value}})} spellCheck={false}/><small>{t('仅公网 HTTPS 地址。不含 /chat/completions 等操作路径、查询参数或密钥；兼容服务按自身文档填写。')}</small></label>
+      <ConnectionOptions draft={draft} label={label} onChange={change}/>
+      <button type="button" className="universal-button" onClick={()=>change(restoreProtocolPatch(c.protocol))}>{t('恢复此协议官方连接参数')}</button><p className="universal-hint">{t('将替换地址、鉴权、目录规则与兼容变体；绑定变化会清除当前角色 Key，型号与能力草稿保留。')}</p>
+    </details>
+    {template&&<a className="universal-doc-link" href={template.docs} target="_blank" rel="noopener noreferrer">{t('服务官方文档')} ↗</a>}
+    <label className="field"><span>API Key</span><input data-universal-field="key" data-focus-setting="api-key" aria-label={`${label} API Key`} type="password" autoComplete="off" value={credential?.apiKey||''} onChange={e=>{setNotice('');onKeyChange(e.target.value)}}/><small>{t(credential?.apiKey?.trim()?'已填写 · 未验证 · 仅当前页有效':'填写当前服务的密钥，仅留在当前页面。')}</small></label>
+    {notice&&<p className="universal-status warning" role="status">{t(notice)}</p>}
+    <div className="universal-catalog-toolbar"><button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported||!strategy.supported||!credential?.apiKey?.trim()} onClick={()=>check('catalog')}>{busy==='catalog'?<Loader2 className="universal-spinner" size={16}/>:<Download size={16}/>} {t(busy==='catalog'?'正在获取模型…':visibleCatalog&&!visibleCatalog.error?'重新获取模型':'获取模型')}</button><span>{t('可跳过，直接填写模型 ID')}</span></div>
+    <p className="universal-hint">{t(!strategy.supported?strategy.message:!credential?.apiKey?.trim()?'填 Key 后可读取目录；不触发生成，也不验证模型调用。':'只读目录，不触发生成。目录存在不代表模型权限或能力已验证。')}</p>
     {visibleCatalog&&<div className={`universal-status ${visibleCatalog.error?'error':visibleCatalog.warnings?.length?'warning':'neutral'}`} role={visibleCatalog.error?'alert':'status'}>
       <p>{visibleCatalog.message}</p>
       {visibleCatalog.partialError&&<p>{universalCheckErrorMessage({details:{catalogError:visibleCatalog.partialError}},'catalog')}</p>}
       {!visibleCatalog.error&&<small>{t("本次获取 ")}{visibleCatalog.models.length}{t(" 个有效 ID")}{visibleCatalog.warnings?.length?`，已隔离 ${visibleCatalog.warnings.length} 条异常`:''}。{visibleCatalog.fetchedAt?`读取时间：${new Date(visibleCatalog.fetchedAt).toLocaleTimeString('zh-CN')}。`:''}{t("目录可见不代表能力、权限或真实调用验证成功。")}</small>}
       {selectedMissing&&<p>{t("当前 ID「")}{draft.modelId}{t("」未出现在本次目录中，已保留。可核对文档后继续手动配置；目录可能不完整。")}</p>}
     </div>}
+    {recoveries.length>0&&<div className="universal-recovery" aria-label={`${label} 目录恢复操作`}>{recoveries.map(action=><button type="button" className="universal-button" key={action} disabled={action==='retry'&&Boolean(busy)||action==='login'&&!onOpenLogin} onClick={()=>action==='retry'?check('catalog'):focusField(action)}>{t({key:'重新填写 Key',manual:'手动填写模型 ID',address:'修改接口地址',catalog:'调整目录规则',retry:'重试读取目录',login:'重新登录图研'}[action])}</button>)}</div>}
     {visibleCatalog?.models.length>0&&<div className="universal-catalog-picker">
       <label className="universal-search"><Search size={16}/><input aria-label={t("{v0} 搜索模型", {v0: label})} placeholder={t("搜索准确模型 ID")} value={query} onChange={e=>setQuery(e.target.value)}/></label>
       <div className="universal-model-list" role="group" aria-label={t("{v0} 目录模型", {v0: label})}>
@@ -92,23 +122,33 @@ export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, 
         {!matches.length&&<p className="universal-hint">{t("没有匹配项，可修改搜索或手动填写。")}</p>}
       </div>
     </div>}
-    <label className="field"><span>{t("准确模型 ID ")}<small>{t("支持手动填写")}</small></span><input aria-label={t("{v0} 模型 ID", {v0: label})} value={draft.modelId} autoComplete="off" spellCheck={false} onFocus={()=>setEditing(true)} onBlur={()=>{setEditing(false);setFeedbackReady(true)}} onChange={e=>change({modelId:e.target.value})} placeholder={t("从目录选择，或粘贴服务提供的准确 ID")}/></label>
+    <label className="field"><span>{t("准确模型 ID ")}<small>{t("支持手动填写")}</small></span><input aria-label={t("{v0} 模型 ID", {v0: label})} data-universal-field="manual" value={draft.modelId} autoComplete="off" spellCheck={false} onFocus={()=>setEditing(true)} onBlur={()=>{setEditing(false);setFeedbackReady(true)}} onChange={e=>change({modelId:e.target.value})} placeholder={t("从目录选择，或粘贴服务提供的准确 ID")}/></label>
     {renderThinkingSettings?.(role)}
-    {!draft.modelId.trim()?<p className="universal-hint">{t(feedback.message)}</p>:feedbackReady&&!editing&&<p className={`universal-status ${feedback.tone}`} role={feedback.tone==='error'?'alert':'status'}>{t(feedback.message)}</p>}
-    <details className="universal-details"><summary>{t("能力与限额")}</summary><UniversalCapabilities draft={draft} label={t(label)} onChange={change}/></details>
+    {!draft.modelId.trim()?<p className="universal-hint">{t(feedback.message)}</p>:<p className={`universal-status ${feedback.tone}`} style={{visibility:feedbackReady&&!editing?'visible':'hidden'}} aria-hidden={!feedbackReady||editing} role={feedbackReady&&!editing?(feedback.tone==='error'?'alert':'status'):undefined}>{t(feedback.message)}</p>}
+    <details className="universal-details" ref={capabilityDetails}><summary>{t('能力与限额')}</summary><UniversalCapabilities draft={draft} role={role} label={label} onChange={change}/></details>
+    {feedback.tone!=='success'&&draft.modelId.trim()&&<button type="button" className="universal-button" onClick={()=>{capabilityDetails.current.open=true;capabilityDetails.current.querySelector('summary')?.focus();capabilityDetails.current.scrollIntoView?.({block:'nearest'})}}>{t('补充或修正角色能力')}</button>}
+    <dl className="universal-validation" aria-label={`${label} 验证状态`}>
+      <div><dt>{t('配置结构')}</dt><dd>{t(feedback.tone==='success'?'完整（本地检查）':!draft.modelId.trim()?'待填写型号':feedback.tone==='error'?'需要修正':'待确认能力')}</dd></div>
+      <div><dt>{t('地址检查')}</dt><dd>{t(busy==='config'?'检查中…':visibleConfig?visibleConfig.notChecked?'尚未检查（先修正配置）':visibleConfig.error?'未通过':'已通过安全检查':'尚未检查')}</dd></div>
+      <div><dt>{t('模型目录')}</dt><dd>{t(catalogState(visibleCatalog,busy))}</dd></div>
+      <div><dt>{t('真实调用')}</dt><dd>{t('未验证 · 本表单不执行模型调用')}</dd></div>
+    </dl>
     <button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported} onClick={()=>check('config')}>{busy==='config'?<Loader2 className="universal-spinner" size={16}/>:<ShieldCheck size={16}/>}{t("检查配置与地址")}</button>
+    {role!=='main'&&canCopyMain&&<details className="universal-details"><summary>{t('从主模型复制连接')}</summary><p>{t('仅复制协议、地址、鉴权、目录规则和兼容变体。不复制型号、能力、限额或尺寸；绑定变化会清除目标角色原 Key。可单独选择是否复制当前页密钥。')}</p><div className="universal-recovery">{[false,true].map(includeKey=><button type="button" disabled={includeKey&&!canCopyKey} className="universal-button" key={String(includeKey)} onClick={()=>{onCopy(includeKey);setNotice(includeKey?'已复制连接及当前页密钥，未复制型号和能力；请重新核对目标角色。':'已复制连接；未复制密钥。绑定变化时目标角色原 Key 已清除，请检查后填写。')}}><Copy size={14}/>{t(includeKey?'复制连接与当前页密钥':'仅复制连接（不含密钥）')}</button>)}</div>{!canCopyKey&&<p className="universal-hint">{t('主模型尚未填写有效绑定的 Key，目前只能复制连接参数。')}</p>}</details>}
+    {savedStatus&&<p className="universal-save-state" role="status">{t(savedStatus)}</p>}
     {visibleConfig&&<p className={`universal-status ${visibleConfig.error?'error':'success'}`} role={visibleConfig.error?'alert':'status'}>{visibleConfig.message}</p>}
   </fieldset>
 }
 
-export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, renderThinkingSettings,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
+export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, savedStatus, onOpenLogin, renderThinkingSettings,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
   const { t } = useAppLocale()
   const [saved,setSaved]=useState('')
+  const canCopyKey=Boolean(keys.main?.apiKey?.trim())&&['protocol','baseUrl','auth'].every(k=>keys.main[k]===drafts.main.custom[k])
   return <section className="universal-api-settings" aria-label={t("通用 API 接入")}>
     {!compact && <p className="universal-intro">{t("接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。")}</p>}
     {!contractSupported&&<p className="universal-status error" role="alert">{t("当前后端暂不支持通用 API，配置已保留，请稍后重试。")}</p>}
     {!compact && <details className="universal-privacy"><summary><ShieldCheck size={15}/>{t("密钥与验证说明")}</summary><p>{t("密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。")}</p><p>{t("配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。")}</p></details>}
-    {selectedRoles.map(role=><UniversalRole canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={()=>onCopy(role,'main')} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
-    {!compact && <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存非敏感配置")}</button>}{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}
+    {selectedRoles.map(role=><UniversalRole canCopyKey={canCopyKey} savedStatus={savedStatus} onOpenLogin={onOpenLogin} canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={includeKey=>onCopy(role,'main',includeKey)} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
+    {!compact && <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存到此浏览器（不含密钥）")}</button>}{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}
   </section>
 }
