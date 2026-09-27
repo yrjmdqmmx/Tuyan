@@ -7,7 +7,7 @@ import ResultFigure from './ResultFigure';
 import StatusBadge from './StatusBadge';
 import { formatClientPlatform } from '@paperbanana/api';
 
-export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, renderRecovery }) {
+export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, renderRecovery, onOpenTask, openingTask }) {
   const { t } = useAppLocale()
   return (
     <div className="job-table">
@@ -96,6 +96,7 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
           {item.status === 'failed' && (item.error || item.logs_tail) ? (
             <JobFailureNotice job={{ ...item, error: item.error || lastDiagnosticLine(item.logs_tail) }} />
           ) : null}
+          {onOpenTask&&<button type="button" className="universal-button" disabled={Boolean(openingTask)} onClick={()=>onOpenTask(item.id)}>{t(openingTask===item.id?'正在读取任务…':item.status==='running'||item.status==='queued'?'查看任务进度':'查看任务详情')}</button>}
           {renderRecovery?.(item)}
           {item.providerCalls?.length > 0 && <details><summary>{t("模型调用记录")}</summary>{item.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {t(call.actualModel || '未返回实际型号')}<br />{t("请求编号：")}{t(call.requestId || '未返回')}{t("；供应商：")}{t(call.supplier || '未返回')}</p>)}</details>}
 

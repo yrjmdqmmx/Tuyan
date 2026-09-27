@@ -61,6 +61,7 @@ test('custom thinking UI and submission share exact identity; changing connectio
 })
 test('named connection UI makes persistence and impact explicit',async()=>{
  globalThis.localStorage=window.localStorage
+ Object.defineProperty(globalThis.navigator,'locks',{configurable:true,value:{request:async(_name,callback)=>callback()}})
  const d=main();let patch
  render(React.createElement(UniversalConnections,{role:'main',label:'主模型',draft:d,onChange:p=>patch=p}))
  const u=userEvent.setup();await u.click(screen.getByText('已命名连接与无密钥配置文件'));fireEvent.change(screen.getByLabelText('主模型 连接名称'),{target:{value:'Research'}});await u.click(screen.getByRole('button',{name:'将当前连接另存到浏览器'}));assert.equal(readConnectionLibrary().length,1)

@@ -140,7 +140,7 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
     </dl>
     <button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported} onClick={()=>check('config')}>{busy==='config'?<Loader2 className="universal-spinner" size={16}/>:<ShieldCheck size={16}/>}{t("检查配置与地址")}</button>
     {role!=='main'&&canCopyMain&&<details className="universal-details"><summary>{t('从主模型复制连接')}</summary><p>{t('仅复制协议、地址、鉴权、目录规则和兼容变体。不复制型号、能力、限额或尺寸；绑定变化会清除目标角色原 Key。可单独选择是否复制当前页密钥。')}</p><div className="universal-recovery">{[false,true].map(includeKey=><button type="button" disabled={includeKey&&!canCopyKey} className="universal-button" key={String(includeKey)} onClick={()=>{onCopy(includeKey);setNotice(includeKey?'已复制连接及当前页密钥，未复制型号和能力；请重新核对目标角色。':'已复制连接；未复制密钥。绑定变化时目标角色原 Key 已清除，请检查后填写。')}}><Copy size={14}/>{t(includeKey?'复制连接与当前页密钥':'仅复制连接（不含密钥）')}</button>)}</div>{!canCopyKey&&<p className="universal-hint">{t('主模型尚未填写有效绑定的 Key，目前只能复制连接参数。')}</p>}</details>}
-    {savedStatus&&<p className="universal-save-state" role="status">{t(savedStatus)}</p>}
+    {savedStatus&&<section className="universal-save-state" aria-label={`${label} 保存状态`}><p role="status">{t(savedStatus)}</p><details className="universal-details"><summary>哪些设置会保存？</summary><p>角色连接、型号、能力与限额由「保存到此浏览器」保存；命名连接需在连接库内明确保存；思考偏好自动保存，结果显示在思考设置旁。Key 和验证状态始终不保存。</p></details></section>}
     {visibleConfig&&<p className={`universal-status ${visibleConfig.error?'error':'success'}`} role={visibleConfig.error?'alert':'status'}>{visibleConfig.message}</p>}
   </fieldset>
 }

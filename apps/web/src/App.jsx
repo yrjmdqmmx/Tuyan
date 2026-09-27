@@ -213,6 +213,7 @@ export default function App() {
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
   const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
+  const [thinkingSaveState, setThinkingSaveState] = useState('idle');
   const [modelRoutes, setModelRoutes] = useState(restoredRouting.routes);
   const configurationFingerprint = JSON.stringify({mode:configurationMode, routes:modelRoutes, drafts:serializeUniversalDrafts(universalDrafts)});
   const [savedConfiguration,setSavedConfiguration] = useState(() => {
@@ -326,14 +327,18 @@ export default function App() {
     if (!modelRegistry) return;
     setSavedThinking(current => {
       const next = rememberThinkingSettings(reconcileThinkingSettings(current, JSON.parse(thinkingIdentityKey)), current);
-      saveThinkingSettings(next);
       return next;
     });
   }, [thinkingIdentityKey, Boolean(modelRegistry)]);
+  useEffect(() => {
+    if (savedThinking) setThinkingSaveState(saveThinkingSettings(savedThinking) ? 'saved' : 'error');
+  }, [savedThinking]);
+  function retryThinkingSave() {
+    setThinkingSaveState(saveThinkingSettings(savedThinking) ? 'saved' : 'error');
+  }
   function changeThinking(role, selection) {
     const next = rememberThinkingSettings({...thinkingSettings, roles:{...thinkingSettings.roles,[role]:selection}}, savedThinking);
     setSavedThinking(next);
-    saveThinkingSettings(next);
   }
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].accessProvider === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
@@ -1428,7 +1433,9 @@ export default function App() {
   }
 
   async function showResumedTask(id) {
+    const generation = refineRequestGeneration.current;
     const resumed = await getJobRequest(apiBaseNormalized, health, id);
+    if (generation !== refineRequestGeneration.current) return;
     if (resumed.refine_mode) {
       setRefineJob(resumed);
       setRefineJobId(id);
@@ -1440,10 +1447,10 @@ export default function App() {
       setPollRetryNonce(value => value + 1);
       selectTab('generate');
     }
-    await loadUserJobs();
+    await loadUserJobs({cancelledRef: () => generation !== refineRequestGeneration.current});
   }
 
-  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} />;
+  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} saveState={thinkingSaveState} onRetrySave={retryThinkingSave} />;
 
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
@@ -1909,6 +1916,7 @@ export default function App() {
           apiBase={apiBaseNormalized}
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
+          onOpenTask={showResumedTask}
           onUseForRefine={useResultForRefine}
           renderRecovery={item => <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={item} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />}
         />

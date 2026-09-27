@@ -1,5 +1,5 @@
 import { UNIVERSAL_PROTOCOL_OPTIONS, updateUniversalDraft } from './universalApi.js'
-import { universalDefaultAuth } from './universalContract.js'
+import { universalDefaultAuth, effectiveUniversalLimits, UNIVERSAL_PLATFORM_LIMITS } from './universalContract.js'
 
 // Web-only form macros. No model capability, credential, or runtime contract fields.
 // Official sources reviewed 2026-09-27; OpenRouter /images is NOT a v1 template.
@@ -56,4 +56,25 @@ export function catalogRecovery(error) {
   if(['CATALOG_TIMEOUT','CATALOG_NETWORK_ERROR','ENDPOINT_UNSAFE','DNS_RESOLUTION_FAILED'].includes(code)||[408,504].includes(status)||error?.name==='AbortError') return ['address','retry','manual']
   if(status===401&&!code) return ['login','manual']
   return ['address','manual']
+}
+
+// Read-only explanation of the exact shared effective limits; never relaxes them.
+export function effectiveLimitSummary(policy, {inputImages, outputImages}) {
+  const effective=effectiveUniversalLimits(policy)
+  const mib=1024*1024
+  const fields=[...(inputImages?[
+    ['input','maxCount','输入图片','张',1],['input','maxBytes','输入单图','MiB',mib],
+    ['input','maxTotalBytes','输入图片合计','MiB',mib],['input','maxDimension','输入单边','px',1],['input','maxPixels','输入像素','百万像素',1e6],
+  ]:[]),['input','requestMaxBytes','完整请求','MiB',mib],...(outputImages?[
+    ['output','maxBytes','输出单图','MiB',mib],['output','maxDimension','输出单边','px',1],['output','maxPixels','输出像素','百万像素',1e6],
+  ]:[])]
+  const rows=fields.map(([part,key,label,unit,divisor])=>{
+    const value=effective[part==='input'?'inputLimits':'outputLimits'][key]
+    const constraints=[['平台',UNIVERSAL_PLATFORM_LIMITS[key]],['服务方声明',policy.service?.[part]?.[key]],['用户',policy.user?.[part]?.[key]]]
+    return {label,value:`${Number((value/divisor).toFixed(6))} ${unit}`,source:constraints.filter(([,limit])=>limit!=null&&limit===value).map(([name])=>name).join('、')}
+  })
+  for(const part of ['input','output']) if(part==='input'?inputImages:outputImages) {
+    rows.push({label:part==='input'?'输入格式':'输出格式',value:effective[part==='input'?'inputLimits':'outputLimits'].mimeTypes.join('、'),source:'平台与各层已声明格式的交集'})
+  }
+  return rows
 }

@@ -1,5 +1,5 @@
-import {normalizeUniversalConnection, normalizeUniversalLimitPolicy} from './universalContract.js'
-import {serializeUniversalDrafts, loadUniversalDrafts} from './universalApi.js'
+import {normalizeUniversalConnection, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy} from './universalContract.js'
+import {serializeUniversalDrafts, loadUniversalDrafts, updateUniversalDraft} from './universalApi.js'
 import {universalThinkingIdentity, selectionThinkingProfile, validateThinkingOptions, sameThinkingConnection} from './thinking.js'
 
 export const CONNECTION_LIBRARY_KEY='tuyan.universal-connections.v1'
@@ -19,8 +19,8 @@ export function cleanConnectionProfile(value) {
   if(!record(value)||!text(value.id,80)||!text(value.name,80))fail('连接名称或标识无效（最多 80 字）。')
   return {id:value.id,name:value.name.trim(),connection:connectionFacts(value.connection)}
 }
-export function readConnectionLibrary(storage=globalThis.localStorage) {
-  try {const x=JSON.parse(storage?.getItem(CONNECTION_LIBRARY_KEY)||'null');if(x?.version!==1||!Array.isArray(x.profiles)||x.profiles.length>50)return [];return x.profiles.flatMap(p=>{try{return [cleanConnectionProfile(p)]}catch{return []}})}catch{return []}
+export function readConnectionLibrary(storage) {
+  try {const x=JSON.parse((storage ?? globalThis.localStorage)?.getItem(CONNECTION_LIBRARY_KEY)||'null');if(x?.version!==1||!Array.isArray(x.profiles)||x.profiles.length>50)return [];return x.profiles.flatMap(p=>{try{return [cleanConnectionProfile(p)]}catch{return []}})}catch{return []}
 }
 export function saveConnectionLibrary(profiles,storage=globalThis.localStorage) {
   if(!Array.isArray(profiles)||profiles.length>50)fail('最多保存 50 个连接。')
@@ -28,6 +28,55 @@ export function saveConnectionLibrary(profiles,storage=globalThis.localStorage) 
   if(new Set(clean.map(p=>p.id)).size!==clean.length)fail('连接标识重复。')
   try {storage.setItem(CONNECTION_LIBRARY_KEY,JSON.stringify({version:1,profiles:clean}))}catch{fail('浏览器存储不可用，连接未保存。')}
   return clean
+}
+// A Web Lock serializes cooperating tabs; expected records detect edits made
+// while this role was open. Unrelated entries always come from current storage.
+export async function mutateConnectionLibrary(change, storage=globalThis.localStorage, locks=globalThis.navigator?.locks) {
+  if (!locks?.request) fail('此浏览器无法安全协调连接保存；当前草稿仍保留，可导出配置或使用支持 Web Locks 的浏览器。')
+  return locks.request(CONNECTION_LIBRARY_KEY, () => {
+    const raw=storage.getItem(CONNECTION_LIBRARY_KEY)
+    if(raw) {
+      let saved; try {saved=JSON.parse(raw)} catch {fail('连接库数据无法读取，未覆盖原数据。请先导出或备份浏览器数据。')}
+      if(saved?.version!==1 || !Array.isArray(saved.profiles) || saved.profiles.length>50) fail('连接库版本或结构异常，未覆盖原数据。')
+      saved.profiles.forEach(cleanConnectionProfile)
+    }
+    let current=readConnectionLibrary(storage)
+    if(change.type==='add') {
+      const additions=change.profiles.map(cleanConnectionProfile)
+      if(additions.some(p=>current.some(x=>x.id===p.id))) fail('连接标识已存在，请重新另存。')
+      current=[...current,...additions]
+    } else if(['update','delete'].includes(change.type)) {
+      const actual=current.find(p=>p.id===change.id)
+      if(!actual || JSON.stringify(actual)!==JSON.stringify(change.expected)) fail('此连接已在其他页面修改或删除。请重新载入已保存连接并核对；当前草稿未改变。')
+      current=change.type==='delete'?current.filter(p=>p.id!==change.id):current.map(p=>p.id===change.id?cleanConnectionProfile({...change.profile,id:change.id}):p)
+    } else fail('未知连接操作。')
+    return saveConnectionLibrary(current,storage)
+  })
+}
+export function universalImportDiff(current, imported, thinking) {
+  const before=JSON.parse(serializeUniversalDrafts({main:current})).roles.main, after=imported.draft
+  const changes=[]
+  const add=(label,a,b,display=x=>String(x??'未填写'))=>{
+    if(JSON.stringify(a)!==JSON.stringify(b)) changes.push({label,before:display(a),after:display(b)})
+  }
+  for(const [key,label] of [['baseUrl','接口地址'],['protocol','协议'],['auth','鉴权方式'],['catalogFormat','目录规则'],['compatibility','兼容选项']]) add(label,before.custom[key],after.custom[key])
+  add('型号',before.modelId,after.modelId)
+  for(const [key,label] of [['text','文字输出'],['vision','图片理解'],['imageGeneration','图片生成'],['imageEditing','直接编辑图片']]) add(label,before.custom.capabilities[key],after.custom.capabilities[key],x=>x?'声明支持':'未声明支持')
+  const policy=d=>{try{return migrateUniversalLimitPolicy(d.custom)}catch{return d.custom.limitPolicy||{service:{},user:{input:d.custom.inputLimits,output:d.custom.outputLimits}}}}
+  const from=policy(before),to=policy(after),mib=1024*1024
+  const numeric=[['maxCount','图片数量',1,'张'],['maxBytes','单图大小',mib,'MiB'],['maxTotalBytes','图片合计',mib,'MiB'],['maxDimension','单边尺寸',1,'px'],['maxPixels','像素数',1e6,'百万像素'],['requestMaxBytes','完整请求',mib,'MiB']]
+  for(const [layer,layerName] of [['service','服务方声明'],['user','用户限制']]) for(const [part,partName] of [['input','输入'],['output','输出']]) {
+    const old=from[layer]?.[part]||{},next=to[layer]?.[part]||{},unknown=layer==='service'?'未知':'不额外限制'
+    for(const [key,label,scale,unit] of numeric) add(`${layerName} · ${partName}${label}`,old[key]??null,next[key]??null,x=>x==null?unknown:`${Number((x/scale).toFixed(6))} ${unit}`)
+    add(`${layerName} · ${partName}格式`,old.mimeTypes??null,next.mimeTypes??null,x=>x?.length?x.map(type=>({'image/png':'PNG','image/jpeg':'JPEG','image/webp':'WebP'}[type]||type)).join('、'):unknown)
+  }
+  add('输出尺寸组合',before.custom.outputSizes,after.custom.outputSizes,rows=>rows?.length?rows.map(row=>`${row.resolution} / ${row.aspectRatio} → ${row.value}`).join('；'):'未配置')
+  if(imported.thinking) for(const key of new Set([...Object.keys(thinking?.options||{}),...Object.keys(imported.thinking.options)])) {
+    const names={mode:'思考模式',effort:'思考强度',budget:'思考预算'},labels={true:'开启',false:'关闭',enabled:'开启',disabled:'关闭',adaptive:'自适应',low:'低',medium:'中',high:'高',minimal:'极低'}
+    add(names[key]||key,thinking?.options?.[key],imported.thinking.options[key],x=>x===undefined?'服务商默认':labels[String(x)]||String(x))
+  }
+  return {changes,clearKey:updateUniversalDraft(current,after).clearKey,
+    thinking:imported.thinking?'将采用文件中的思考偏好，并按目标身份保存。':'文件未包含思考偏好：沿用目标身份的历史偏好或服务商默认，不会清除历史偏好。'}
 }
 export function profilePatch(profile) {
   return {custom:connectionFacts(profile.connection),ui:{baseUrlSource:'user',connectionMode:'custom'},declared:false}

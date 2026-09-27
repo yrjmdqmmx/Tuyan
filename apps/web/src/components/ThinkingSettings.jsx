@@ -27,7 +27,7 @@ function ThinkingHelp({ control, profile, label }) {
 }
 
 /** Inline controls for one exact model identity; hiding UI never changes saved options. */
-export default function ThinkingSettings({ role, settings, registry, operation, onChange }) {
+export default function ThinkingSettings({ role, settings, registry, operation, onChange, saveState, onRetrySave }) {
   const { t, locale } = useAppLocale()
   const id = useId()
   const selection = settings?.roles?.[role]
@@ -46,7 +46,8 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
   }
   const valueLabel = value => values[locale]?.[String(value)] || String(value)
   return <section className="model-thinking-controls" data-thinking-role={role} aria-label={t('{v0}思考设置', {v0:t(labels[role])})}>
-    {custom&&<p className="universal-hint">精确连接匹配图研参数记录 · {profile.checkedAt}。服务商默认不发送思考字段；偏好按连接和型号独立自动保存，不含密钥。{unavailable?'当前后端未接入通用思考参数；请升级或保留默认。':''}</p>}
+    {custom&&<p className="universal-hint">精确连接匹配图研参数记录 · {profile.checkedAt}。服务商默认不发送思考字段；偏好按连接和型号独立保存，不含密钥。{unavailable?'当前后端未接入通用思考参数；请升级或保留默认。':''}</p>}
+    {saveState && <div className={`universal-status ${saveState==='error'?'warning':'neutral'}`} role="status"><span>{t(saveState==='error'?'思考偏好保存失败，仅当前页有效；刷新前请重试或导出无密钥配置。':saveState==='saved'?'思考偏好已自动保存到浏览器（不含密钥）。':'思考偏好尚未保存。')}</span>{saveState==='error'&&onRetrySave&&<button type="button" className="universal-button" onClick={onRetrySave}>{t('重试保存思考偏好')}</button>}</div>}
     {custom&&profile.sourceUrls?.length>0&&<details className="universal-details"><summary>思考参数官方依据</summary>{profile.sourceUrls.map(url=><p key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></p>)}</details>}
     {custom&&selection.protocol==='anthropic-messages'&&profile.controls.some(c=>c.key==='budget')&&<p className="universal-hint">当前通用文字请求总输出额度为 4096 tokens；固定思考预算须小于 4096，不会自动提高输出额度。</p>}
     {profile.controls.map(control => {

@@ -9,12 +9,12 @@ function route(role:string, overrides:any={}) {
  return normalizeUniversalRoute({accessProvider:'custom',modelId:'exact/same-ID:KeepCase',custom:{version:1,connectionId:role,protocol:role==='image'?'openai-images':'openai-chat',baseUrl:`https://${role}.example.com/prefix/v1`,auth:'bearer',capabilities:{text:role!=='image',vision:role!=='image',imageGeneration:role==='image',imageEditing:role==='image'},inputLimits:{maxCount:2,maxBytes:5e6,maxTotalBytes:10e6,maxDimension:4096,maxPixels:16e6,requestMaxBytes:32e6,mimeTypes:['image/png']},outputLimits:{maxBytes:10e6,maxDimension:4096,maxPixels:16e6,mimeTypes:['image/png']},outputSizes:role==='image'?[{resolution:'1K',aspectRatio:'1:1',value:'1024x1024'}]:[],...overrides}})
 }
 function envelope(routes:any, key='fixture-custom-key') {return JSON.stringify(Object.fromEntries(Object.values(routes).filter((r:any)=>r.accessProvider==='custom').map((r:any)=>[r.custom.connectionId,{baseUrl:r.custom.baseUrl,protocol:r.custom.protocol,auth:r.custom.auth,apiKey:key}])))}
-async function fixture() {
+async function fixture(pauseImage?:()=>Promise<void>) {
  const runtime=await createRefineRuntime({tokenDance:true}), calls:any[]=[]
  let failure:UniversalApiError|undefined, failureStage='image', imageCalls=0
  const adapter=createUniversalRuntime({transport:{checkUrl:async()=>{},request:async request=>{
   calls.push(request)
-  if(request.url.includes('/images/')) {imageCalls++;if(failure && (failureStage==='image'||failureStage==='rerender'&&imageCalls>1))throw failure;return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({data:[{b64_json:runtime.output.toString('base64')}]}))}}
+  if(request.url.includes('/images/')) {imageCalls++;if(pauseImage)await pauseImage();if(failure && (failureStage==='image'||failureStage==='rerender'&&imageCalls>1))throw failure;return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({data:[{b64_json:runtime.output.toString('base64')}]}))}}
   if(failure&&failureStage==='critic'&&request.url.includes('vision.example.com'))throw failure
   return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({choices:[{finish_reason:'stop',message:{content:'A scientific workflow with input, analysis, planning and output; keep the source labels readable.'}}]}))}
  }}})
@@ -143,4 +143,25 @@ for(const main of ['antling','custom']) test(`existing vision route mixes LongCa
   assert.equal((await f.post({action:'getJob',jobId:created.data.jobId})).data.job.status,'succeeded')
   assert.equal(f.calls.filter(c=>c.url==='https://api.openai.com/v1/chat/completions').length,planning.length)
  }finally{await f.close()}
+})
+
+// No paid calls: the image transport is held locally while independent HTTP
+// requests reconnect using only the account and existing job ID.
+test('accepted custom job continues without browser polling; reopening reads the same running/completed task',async()=>{
+ let release!:()=>void,started!:()=>void
+ const held=new Promise<void>(resolve=>release=resolve),entered=new Promise<void>(resolve=>started=resolve)
+ const f=await fixture(async()=>{started();await held})
+ try {
+  const routes={main:route('main'),vision:route('vision'),image:route('image')}
+  const submitted=await f.post(body(routes));assert.equal(submitted.data.code,0)
+  await entered
+  const before=f.calls.length,id=submitted.data.jobId
+  const reentered=await f.post({action:'getJob',jobId:id})
+  assert.equal(reentered.data.job.status,'running');assert.equal(f.calls.length,before)
+  assert.equal(reentered.data.job.recovery, null)
+  release();await f.legacy.drainJobAdmission()
+  const finished=await f.post({action:'getJob',jobId:id})
+  assert.equal(finished.data.job.status,'succeeded');assert.equal(f.calls.length,before)
+  assert.equal(f.calls.filter(x=>x.url.includes('/images/')).length,1)
+ }finally{release();await f.legacy.drainJobAdmission();await f.close()}
 })

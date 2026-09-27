@@ -5854,3 +5854,10 @@ html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }
   .universal-validation > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
   .universal-role .model-grid { grid-template-columns: minmax(0,1fr); }
 }
+
+.universal-import-diff { margin: 8px 0; font-size: 12px; }
+.universal-import-diff > div { border-top: 1px solid var(--hairline); padding: 8px 0; }
+.universal-import-diff dt { font-weight: 600; }
+.universal-import-diff dd { margin: 4px 0; display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 8px; }
+.universal-import-diff code { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.universal-validation dd small { display: block; color: var(--muted); margin-top: 3px; }

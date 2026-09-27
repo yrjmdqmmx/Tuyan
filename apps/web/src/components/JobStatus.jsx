@@ -56,7 +56,7 @@ export default function JobStatus({ job, apiBase, onUseForRefine }) {
       <StageTimeline job={job} apiBase={apiBase} />
       {job.providerCalls?.length > 0 && <details><summary>{t("模型调用记录")}</summary>{job.providerCalls.map((call, index) => <p key={index}>{call.requestedModel} → {t(call.actualModel || '未返回实际型号')}<br />{t("请求编号：")}{t(call.requestId || '未返回')}{t("；供应商：")}{t(call.supplier || '未返回')}</p>)}</details>}
       {job.status === 'running' || job.status === 'queued' ? (
-        <div className="running-line"><Loader2 className="spin" size={17} />{t("生成中，页面会自动刷新。")}</div>
+        <div className="running-line"><Loader2 className="spin" size={17} />{t("任务在服务器继续执行，页面会自动刷新。关闭网页不会取消任务；提交时已登录的任务可从同一账号记录返回查看。")}</div>
       ) : null}
       {job.status === 'failed' && job.logs_tail ? <pre className="logs">{job.logs_tail}</pre> : null}
     </div>

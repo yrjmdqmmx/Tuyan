@@ -27,11 +27,11 @@ export function rememberThinkingSettings(settings, previous) {
   }
   return {...settings,savedSelections:Object.fromEntries(Object.entries(entries).slice(-120))}
 }
-export function readThinkingSettings(storage = globalThis.localStorage) {
-  try { return JSON.parse(storage.getItem(THINKING_STORAGE_KEY)) } catch { return null }
+export function readThinkingSettings(storage) {
+  try { return JSON.parse((storage ?? globalThis.localStorage).getItem(THINKING_STORAGE_KEY)) } catch { return null }
 }
-export function saveThinkingSettings(value, storage = globalThis.localStorage) {
-  try { storage.setItem(THINKING_STORAGE_KEY, JSON.stringify(value)) } catch { /* Storage can be unavailable in private browsing. */ }
+export function saveThinkingSettings(value, storage) {
+  try { (storage ?? globalThis.localStorage).setItem(THINKING_STORAGE_KEY, JSON.stringify(value)); return true } catch { return false }
 }
 export function roleThinkingProfile(role, selection) {
   return selectionThinkingProfile(selection, role)

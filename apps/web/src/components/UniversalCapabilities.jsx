@@ -1,7 +1,7 @@
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { migrateUniversalLimitPolicy, effectiveUniversalLimits, UNIVERSAL_PLATFORM_LIMITS } from '../lib/universalContract.js'
 import { officialDeclaration, officialDeclarationSources } from '../lib/universalApi.js'
-import { allowedCapability, capabilityLabels, incompatibleCapabilities } from '../lib/universalPresentation.js'
+import { allowedCapability, capabilityLabels, incompatibleCapabilities, effectiveLimitSummary } from '../lib/universalPresentation.js'
 
 const mib=1024*1024
 export default function UniversalCapabilities({draft:d, role, label, onChange:change}) {
@@ -19,6 +19,8 @@ export default function UniversalCapabilities({draft:d, role, label, onChange:ch
   }
   const inputImages=c.capabilities.vision||c.capabilities.imageEditing
   const outputImages=c.capabilities.imageGeneration||c.capabilities.imageEditing
+  let effectiveSummary=[], effectiveError=''
+  try {effectiveSummary=effectiveLimitSummary(policy,{inputImages,outputImages})} catch(error) {effectiveError=error.message}
   const relevant=role==='image'?['imageGeneration','imageEditing',...(allowedCapability(c,'vision')?['vision']:[])]:['text','vision']
   const shown=[...new Set([...relevant,...Object.keys(capabilityLabels).filter(k=>c.capabilities[k])])]
   const invalid=incompatibleCapabilities(c)
@@ -37,6 +39,10 @@ export default function UniversalCapabilities({draft:d, role, label, onChange:ch
       <p className="universal-hint">{t('只确认服务文档明确支持的能力。勾选不会探测或授权模型；隐藏的历史限额仍保留，平台安全上限不变。')}</p>
       <div className="universal-capabilities">{shown.map(key=><label key={key}><input type="checkbox" checked={c.capabilities[key]} disabled={!allowedCapability(c,key)&&!c.capabilities[key]} onChange={e=>custom({capabilities:{...c.capabilities,[key]:e.target.checked,...(key==='vision'&&e.target.checked?{text:true}:{})}})}/><span>{t(key==='vision'&&role==='image'?'参考图理解（含文字输出）':capabilityLabels[key])}</span></label>)}</div>
       {invalid.length>0&&<div className="universal-status warning"><p>{t('当前协议无法使用这些已保存能力，未自动删除')}：{invalid.map(k=>t(capabilityLabels[k])).join('、')}。{t('可切回原协议，或明确取消这些能力后重新确认。')}</p><button type="button" className="universal-button" onClick={()=>custom({capabilities:{...c.capabilities,...Object.fromEntries(invalid.map(k=>[k,false]))}})}>{t('取消以上不兼容能力')}</button></div>}
+      <section className="universal-details"><h4>当前实际执行的限制</h4>
+        {effectiveError?<p role="alert" className="universal-status error">{effectiveError}</p>:<dl className="universal-validation" aria-label={`${label} 有效限制`}>{effectiveSummary.map(row=><div key={row.label}><dt>{row.label}</dt><dd>{row.value}<small>由{row.source}约束</small></dd></div>)}</dl>}
+        <p className="universal-hint">服务方未知时仍受平台和你的限制约束，不代表服务方一定接受。完整请求包含编码后的图片和其他字段。</p>
+      </section>
       <p className="universal-hint">以下数值是你的主动限制，不是费用预算。旧配置的限额已保留为用户限制；服务方未知时仍执行图研硬上限与用户限制，且不会自动授权未知能力。</p>
       <details className="universal-details"><summary>服务方限制（可留空为未知）</summary><p>只有文档明确给出的字段才填写；本页手填信息标为用户声明。上下文 token 数不能用于推导图片限制。</p><div className="model-grid">{inputImages&&<>{field('inputLimits','maxCount','输入图片上限',1,'service')}{field('inputLimits','maxBytes','单图 MiB',mib,'service')}{field('inputLimits','maxTotalBytes','图片合计 MiB',mib,'service')}{field('inputLimits','maxDimension','输入单边 px',1,'service')}{field('inputLimits','maxPixels','输入百万像素',1e6,'service')}</>}{field('inputLimits','requestMaxBytes','完整请求 MiB',mib,'service')}{outputImages&&<>{field('outputLimits','maxBytes','输出单图 MiB',mib,'service')}{field('outputLimits','maxDimension','输出单边 px',1,'service')}{field('outputLimits','maxPixels','输出百万像素',1e6,'service')}</>}</div>{inputImages&&format('inputLimits','service')}{outputImages&&format('outputLimits','service')}</details>
       {inputImages&&<section aria-label={`${label} 图片输入要求`}><h4>{t('图片输入要求')}</h4><div className="model-grid">{field('inputLimits','maxCount','输入图片上限')}{field('inputLimits','maxBytes','单图 MiB',mib)}</div>{format('inputLimits')}<details className="universal-details"><summary>{t('更多图片输入限制')}</summary><div className="model-grid">{field('inputLimits','maxTotalBytes','图片合计 MiB',mib)}{field('inputLimits','maxDimension','输入单边 px')}{field('inputLimits','maxPixels','输入百万像素',1e6)}</div></details></section>}
