@@ -10,7 +10,7 @@ export default function ApiKeyGuide({ providerConfig, recoverable = false }) {
         <span>{t("API Key 申请指南")}</span>
       </div>
       <ol>
-        {providerConfig.guideSteps.map((step) => <li key={step}>{step}</li>)}
+        {providerConfig.guideSteps.map((step) => <li key={step}>{step.replaceAll(/参考图识别模型|识图模型/g, '视觉模型')}</li>)}
       </ol>
       <a href={providerConfig.guideUrl} target="_blank" rel="noreferrer">{t("打开")}{providerConfig.label}{t(" 官方申请/说明页面")}<ExternalLink size={14} />
       </a>

@@ -7,7 +7,7 @@ import {resolveUniversalCatalogStrategy} from '../lib/universalContract.js'
 import {CONNECTION_TEMPLATES, connectionTemplate, templatePatch, protocolPatch, restoreProtocolPatch, catalogState, catalogRecovery} from '../lib/universalPresentation.js'
 import UniversalCapabilities from './UniversalCapabilities.jsx'
 
-const roles = {main:['主模型','规划与文字推理'], vision:['识图模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
+const roles = {main:['主模型','规划与文字推理'], vision:['视觉模型','参考图理解与评审'], image:['图像模型','图片生成与精修']}
 const catalogFormats = [['auto','自动识别已核验服务'],['openai','OpenAI /models · data[].id'],['anthropic','Anthropic /models · data[].id'],['gemini','Gemini /models · models[].name'],['none','不获取目录，手动填写']]
 
 function ConnectionOptions({draft, label, onChange}) {

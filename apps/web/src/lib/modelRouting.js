@@ -114,7 +114,7 @@ export function firstInvalidRequiredRoute({ roles, entries, outputFormat }) {
   const messages = {
     main: '请选择可用的主模型。',
     image: '请选择可用的图像生成模型。',
-    vision: '请选择可用的参考图识别模型。',
+    vision: '请选择可用的视觉模型。',
   }
   for (const role of MODEL_ROUTE_ROLES) {
     const entry = entries?.[role]

@@ -397,7 +397,7 @@ export default function App() {
   const referenceCapabilityNote = referenceImages.length
     ? (mainModelCanRead
         ? '当前主模型支持图像理解，将用主模型直读参考图。'
-        : '当前主模型为文本模型，将使用独立识别模型读取参考图。')
+        : '当前主模型为文本模型，将使用独立视觉模型读取参考图。')
     : '';
   const effectivePipelineMode = isAdvancedMode ? pipelineMode : 'demo_planner_critic';
   const effectiveRetrievalSetting = isAdvancedMode && !referenceImages.length ? retrievalSetting : 'none';
@@ -522,7 +522,7 @@ export default function App() {
 
   // Preserve refinement inputs across route/catalog changes; admission explains incompatibilities.
 
-  // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
+  // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立视觉模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
   useEffect(() => {
     if (activeModelRoutes.main.accessProvider === 'custom') return;
@@ -1718,7 +1718,7 @@ export default function App() {
             <div className="generation-settings-facts">
               <div><span>{t("主模型")}</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
               <div><span>{t("图像模型")}</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
-              <div><span>{t("识图模型")}</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
+              <div><span>{t("视觉模型")}</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
               <div><span>{t("画面比例")}</span><strong>{t(aspectRatio === 'auto' ? '自动' : aspectRatio)}</strong></div>
               <div><span>{t("输出")}</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
@@ -1978,7 +1978,7 @@ function firstMissingGenerationSetting({
   });
   if (invalidRoute) return invalidRoute;
   if (isAdvancedMode && retrievalSetting === 'manual' && !manualReferenceIds.length) return { setting: 'manual-reference', message: '手动参考模式至少需要选用一个案例。' };
-  if (needsReferenceVisionModel && !visionEntry) return { setting: 'vision-model', message: '请选择参考图识别模型。' };
+  if (needsReferenceVisionModel && !visionEntry) return { setting: 'vision-model', message: '请选择视觉模型。' };
   if (mainModelDirectUnsupported) return { setting: 'main-model', message: '当前主模型不能直接读取参考图，请更换模型或处理方式。' };
   return null;
 }
@@ -1986,6 +1986,6 @@ function firstMissingGenerationSetting({
 function describeReferenceCapability(capability) {
   if (!capability || capability.status === 'loading') return '正在检查当前主模型是否支持直接理解参考图。';
   if (capability.status === 'supported') return '当前主模型支持直接理解参考图，可使用主模型直读。';
-  if (capability.status === 'unsupported') return '当前主模型不支持直接理解参考图，请使用独立识别模型或更换主模型。';
-  return '当前主模型的参考图能力无法确认；可以尝试主模型直读，失败时请改用独立识别模型或更换主模型。';
+  if (capability.status === 'unsupported') return '当前主模型不支持直接理解参考图，请使用独立视觉模型或更换主模型。';
+  return '当前主模型的参考图能力无法确认；可以尝试主模型直读，失败时请改用独立视觉模型或更换主模型。';
 }

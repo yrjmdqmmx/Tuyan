@@ -45,9 +45,9 @@ test('custom submit preserves exact IDs and scoped readonly catalog check makes 
  globalThis.localStorage=window.localStorage;saveUniversalDrafts(drafts());const requests=backend(),user=userEvent.setup();render(React.createElement(App))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
- for(const [label,trigger] of [['主模型','主模型'],['识图模型','参考图识别模型'],['图像模型','图像生成模型']]){
+ for(const [label,trigger] of [['主模型','主模型'],['视觉模型','视觉模型'],['图像模型','图像生成模型']]){
   await user.click(screen.getByRole('button',{name:trigger,exact:true}))
-  fireEvent.change(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','识图模型','图像模型'].indexOf(label)}`}})
+  fireEvent.change(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','视觉模型','图像模型'].indexOf(label)}`}})
   await user.click(screen.getByRole('button',{name:'返回生成设置'}))
  }
  await user.click(screen.getByRole('button',{name:'主模型',exact:true}))

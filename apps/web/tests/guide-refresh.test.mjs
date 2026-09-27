@@ -15,7 +15,7 @@ test('quick guide exposes the approved anchored directory and working top CTAs',
   render(React.createElement(GuidePanel, {
     onStart: () => { starts += 1 },
     registryVersion: 'registry-live-42',
-    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '识图模型 Live' },
+    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '视觉模型 Live' },
     providerLabels: ['OpenRouter', '阿里云百炼'],
   }))
   assert.ok(screen.getByRole('heading', { name: '60 秒快速开始' }))
@@ -34,13 +34,13 @@ test('guide derives registry and current routes from props and includes current 
   render(React.createElement(GuidePanel, {
     onStart() {},
     registryVersion: 'registry-live-42',
-    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '识图模型 Live' },
+    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '视觉模型 Live' },
     providerLabels: ['OpenRouter', '阿里云百炼'],
   }))
   assert.match(document.body.textContent, /registry-live-42/u)
   assert.match(document.body.textContent, /主模型 Live/u)
   assert.match(document.body.textContent, /图像模型 Live/u)
-  assert.match(document.body.textContent, /识图模型 Live/u)
+  assert.match(document.body.textContent, /视觉模型 Live/u)
   assert.match(document.body.textContent, /OpenRouter.*阿里云百炼/u)
   assert.match(document.body.textContent, /306/u)
   assert.match(document.body.textContent, /PNG.*统一/u)
@@ -54,13 +54,13 @@ test('generation settings guide explains every control with selection and cost g
   render(React.createElement(GuidePanel, {
     onStart() {},
     registryVersion: 'registry-live-42',
-    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '识图模型 Live' },
+    routeSummary: { main: '主模型 Live', image: '图像模型 Live', vision: '视觉模型 Live' },
     providerLabels: ['OpenRouter', '阿里云百炼'],
   }))
 
   assert.ok(screen.getByRole('heading', { name: '生成设置参数详解' }))
   for (const parameter of [
-    '使用模式', 'API 接入渠道与密钥', '主模型', '图像生成模型', '参考图识别模型',
+    '使用模式', 'API 接入渠道与密钥', '主模型', '图像生成模型', '视觉模型',
     '导出格式', '输出清晰度', '画面比例', '生成流程', '检索设置', '候选图数量', '评审轮数',
   ]) {
     assert.ok(screen.getByRole('heading', { name: parameter }))

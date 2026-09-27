@@ -67,7 +67,7 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
               <span title={item.image_gen_model_name}>{t(item.image_gen_model_name || '未记录')}</span>
             </div>
             <div>
-              <strong>{t("参考图识别模型")}</strong>
+              <strong>{t("视觉模型")}</strong>
               <span title={item.reference_image_mode_used === 'vision_model' ? item.reference_vision_model_name : ''}>
                 {t(item.reference_image_mode_used === 'vision_model' ? item.reference_vision_model_name || '未记录' : '未使用')}
               </span>

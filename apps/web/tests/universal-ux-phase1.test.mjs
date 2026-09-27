@@ -82,10 +82,10 @@ test('audited size chips use exact mappings; custom hosts never receive same-nam
 
 test('copy scopes are explicit before action and leave target role model and capability fields independent',async()=>{
  const ds=blank();ds.main.custom.baseUrl='https://shared.example.com/v1';ds.main.modelId='Source/Main';ds.vision.modelId='Target/Vision';ds.image.modelId='Target/Image'
- render(React.createElement(Harness,{initial:ds,initialKeys:{main:bindUniversalKey(ds.main,'source-fixture'),vision:bindUniversalKey(ds.vision,'old-vision')}}));const u=userEvent.setup();const vision=within(screen.getByRole('group',{name:'识图模型'}))
+ render(React.createElement(Harness,{initial:ds,initialKeys:{main:bindUniversalKey(ds.main,'source-fixture'),vision:bindUniversalKey(ds.vision,'old-vision')}}));const u=userEvent.setup();const vision=within(screen.getByRole('group',{name:'视觉模型'}))
  await u.click(vision.getByText('从主模型复制连接',{exact:true}));assert.ok(vision.getByText(/不复制型号、能力、限额或尺寸/))
- await u.click(vision.getByRole('button',{name:'仅复制连接（不含密钥）',exact:true}));assert.equal(screen.getByLabelText('识图模型 API Key').value,'');assert.equal(screen.getByLabelText('识图模型 模型 ID').value,'Target/Vision')
- await u.click(vision.getByRole('button',{name:'复制连接与当前页密钥',exact:true}));assert.equal(screen.getByLabelText('识图模型 API Key').value,'source-fixture');assert.equal(screen.getByLabelText('图像模型 API Key').value,'');assert.equal(screen.getByLabelText('图像模型 模型 ID').value,'Target/Image')
+ await u.click(vision.getByRole('button',{name:'仅复制连接（不含密钥）',exact:true}));assert.equal(screen.getByLabelText('视觉模型 API Key').value,'');assert.equal(screen.getByLabelText('视觉模型 模型 ID').value,'Target/Vision')
+ await u.click(vision.getByRole('button',{name:'复制连接与当前页密钥',exact:true}));assert.equal(screen.getByLabelText('视觉模型 API Key').value,'source-fixture');assert.equal(screen.getByLabelText('图像模型 API Key').value,'');assert.equal(screen.getByLabelText('图像模型 模型 ID').value,'Target/Image')
 })
 test('saved incompatible compatibility variant is retained with a visible repair, and raw dimension conflicts are not silently replaced',async()=>{
  const ds=blank();ds.main.custom.compatibility='openrouter-image';ds.main.custom.protocol='anthropic-messages';ds.main.custom.auth='x-api-key'

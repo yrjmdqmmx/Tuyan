@@ -138,7 +138,7 @@ export function validateUniversalCatalogResult(result) {
 }
 export const UNIVERSAL_ROLE_REQUIREMENTS = {
   main: '主模型需要文本生成能力；如果该角色接收参考图，还需确认图片理解和输入限额。',
-  vision: '识图模型需要图片理解与文本输出能力，请确认图片数量、格式、大小和请求限额。',
+  vision: '视觉模型需要图片理解与文本输出能力，请确认图片数量、格式、大小和请求限额。',
   image: '图像模型需要图片生成能力、输出限额及清晰度与比例映射；直接精修还需图片编辑能力。',
 }
 export function universalDraftFeedback(draft, role) {

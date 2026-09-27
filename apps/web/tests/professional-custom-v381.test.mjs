@@ -31,7 +31,7 @@ test('legacy restoration, two modes, per-role channel changes, draft/key retenti
  assert.equal(screen.getByLabelText('主模型 模型 ID').value,'Exact/main')
  fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture-retained'}})
  fireEvent.click(screen.getByRole('button',{name:'返回生成设置'}))
- for(const [role,channel,model] of [['图像生成模型','OpenAI',/^选择 GPT Image 2 ·/],['参考图识别模型','蚂蚁百灵',/^选择 Ling 3.0-flash-VL/]]){
+ for(const [role,channel,model] of [['图像生成模型','OpenAI',/^选择 GPT Image 2 ·/],['视觉模型','蚂蚁百灵',/^选择 Ling 3.0-flash-VL/]]){
   fireEvent.click(screen.getByRole('button',{name:role,exact:true}));fireEvent.click(screen.getByRole('button',{name:channel,exact:true}));fireEvent.click(screen.getByRole('button',{name:model,exact:true}))
  }
  assert.equal(document.querySelectorAll('.universal-role').length,0)
@@ -80,7 +80,7 @@ for(const missingTokenDance of [false,true])test(`custom sorts first without cha
  render(React.createElement(App))
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
  await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning')),false))
- for(const label of ['主模型','参考图识别模型','图像生成模型']){
+ for(const label of ['主模型','视觉模型','图像生成模型']){
   const trigger=screen.getByRole('button',{name:label,exact:true});assert.match(trigger.textContent,/观猹 TokenDance/)
   fireEvent.click(trigger)
   const rail=within(screen.getByRole('group',{name:'API 接入渠道'}))
@@ -97,7 +97,7 @@ test('three modal drafts remain isolated across provider switches, close/reopen 
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
  await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning')),false))
- const roles=[['主模型','主模型','main'],['参考图识别模型','识图模型','vision'],['图像生成模型','图像模型','image']]
+ const roles=[['主模型','主模型','main'],['视觉模型','视觉模型','vision'],['图像生成模型','图像模型','image']]
  for(const [trigger,label,role] of roles){
   fireEvent.click(screen.getByRole('button',{name:trigger,exact:true}));fireEvent.click(screen.getByRole('button',{name:'通用 API',exact:true}))
   const dialog=screen.getByRole('dialog',{name:trigger+' · API 渠道与模型'})
