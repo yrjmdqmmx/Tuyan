@@ -29,7 +29,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     const model = route?.modelId || task.body[role === 'main' ? 'mainModelName' : 'referenceVisionModelName']
     return auditedChannelContract(provider, model)?.refreshAccounting ? provider : undefined
   }).find(Boolean)
-  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat', 'antling','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel])) || refreshedChannel(task) || (task.body.thinkingSnapshot ? Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) : undefined)
+  const managedChannel = (task: Task) => ['runware','tokenhub','xiaomi','sensenova','stepfun','qianfan','iflytek','longcat', 'antling','novita','xai','fal','replicate','custom','tokendance'].find(channel => Boolean(task.routeSecrets[channel])) || refreshedChannel(task) || (task.body.thinkingSnapshot ? Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) : undefined)
   const isManaged = (task: Task) => Boolean(managedChannel(task) || task.body.thinkingSnapshot)
   const expires = () => new Date(now() + 7 * 86400_000)
   async function acceptingData(userId: string) {

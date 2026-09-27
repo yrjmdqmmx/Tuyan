@@ -74,7 +74,7 @@ const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.S
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
 const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
-for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']]]) {
+for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']],['novita-image-channel.ts',['callNovitaImageChannel','buildNovitaImageRequest']]]) {
   const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
   lines.push(`const {${names.join(',')}} = (()=>{${moduleSource}\nreturn {${names.join(',')}}})()`)
 }

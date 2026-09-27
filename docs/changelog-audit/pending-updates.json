@@ -18,7 +18,7 @@
       },
       {
         "kind": "新增",
-        "text": "蚂蚁百灵文本与视觉渠道、LongCat-2.5-Preview 文本与思考参数；真实调用待验证。",
+        "text": "蚂蚁百灵文本与视觉渠道；LongCat-2.5-Preview 接入现有主模型、识图及思考设置；独立 Novita 渠道支持 Ming 文生图。真实调用待验证。",
         "state": "local-verified",
         "surfaces": [
           "Web",

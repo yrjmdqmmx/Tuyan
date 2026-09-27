@@ -1736,7 +1736,7 @@ test('modelRegistry exposes adapter-truthful canonical refinement resolutions fo
   for (const [provider, providerExpected] of Object.entries(expected)) {
     const result = await legacy.default(context(provider))
     assert.equal(result.code, 0, JSON.stringify(result))
-    assert.equal(result.registryVersion, '2026-09-27.v26')
+    assert.equal(result.registryVersion, '2026-09-27.v27')
     const imageModels = result.providers[provider].models.filter((model: any) => model.roles.includes('image'))
     for (const [id, sizes] of Object.entries(providerExpected)) {
       assert.deepEqual(imageModels.find((model: any) => model.id === id)?.capabilities.refineResolutions, sizes, `${provider}/${id}`)
@@ -2988,7 +2988,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-27.v26')
+    assert.equal(registry.registryVersion, '2026-09-27.v27')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5326,7 +5326,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-09-27.v26')
+    assert.equal(registry.registryVersion, '2026-09-27.v27')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities
@@ -6542,7 +6542,7 @@ test('channel extensions: runtime dispatches every new selectable image option u
     if(url.includes('/v1/wand/'))return Response.json({id:'tokenhub-fixture',data:[{url:'https://asset.invalid/output.png'}]})
     if(url.includes('/chat/completions'))return Response.json({choices:[{message:{content:'A scientific diagram.'},finish_reason:'stop'}]})
     if(url==='https://maas-api.cn-huabei-1.xf-yun.com/anthropic/v1/messages')return Response.json({stop_reason:'end_turn',content:[{type:'text',text:'A scientific diagram.'}]})
-    if(/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com)\//.test(url))return Response.json({id:'fixture-official-image',data:[{url:'https://asset.invalid/output.png'}]})
+    if(/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com|api.novita.ai)\//.test(url))return Response.json({id:'fixture-official-image',data:[{url:'https://asset.invalid/output.png'}]})
     if(url.startsWith('https://api.bfl.ai/v1/'))return Response.json({id:'fixture',polling_url:'https://api.us1.bfl.ai/v1/get_result?id=fixture'})
     if(url.startsWith('https://api.us1.bfl.ai/'))return Response.json({status:'Ready',result:{sample:'https://asset.invalid/output.png'}})
     if(url.startsWith('https://queue.fal.run/'))return Response.json(init?.method==='POST'?{status:'IN_QUEUE',request_id:'fixture',status_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture/status',response_url:'https://queue.fal.run/fal-ai/flux-2-pro/requests/fixture'}:url.endsWith('/status')?{status:'COMPLETED'}:{images:[{url:'https://asset.invalid/output.png'}]})

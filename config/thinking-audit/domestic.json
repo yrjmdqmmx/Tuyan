@@ -7428,7 +7428,8 @@
         "LongCat-2.5-Preview"
       ],
       "roles": [
-        "main"
+        "main",
+        "vision"
       ],
       "protocols": [
         "openai-chat-completions"
@@ -7469,7 +7470,8 @@
         "默认不发送思考参数；仅显式选择时发送该精确型号支持的字段。"
       ],
       "sourceUrls": [
-        "https://longcat.chat/platform/docs/zh/api/chat"
+        "https://longcat.chat/platform/docs/zh/api/chat",
+        "https://longcat.ai/platform/docs/zh/image-video-understanding"
       ],
       "checkedAt": "2026-09-27"
     },

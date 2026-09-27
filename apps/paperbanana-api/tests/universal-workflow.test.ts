@@ -104,3 +104,23 @@ for (const customRole of ['main','vision','image']) test(`professional role mixi
   }
  }finally{await f.close()}
 })
+
+for(const main of ['antling','custom']) test(`existing vision route mixes LongCat 2.5 with ${main} planning and Novita Ming rendering`,async()=>{
+ const f=await fixture()
+ try {
+  const routes:any={main:main==='custom'?route('main'):{accessProvider:'antling',modelId:'Ling-3.0-flash'},vision:{accessProvider:'longcat',modelId:'LongCat-2.5-Preview'},image:{accessProvider:'novita',modelId:'ming-image-0.1-design'}}
+  const request={...body(routes),provider:main,maxCriticRounds:1,apiKeys:{custom:envelope(routes),antling:'fixture-ant-only',novita:'fixture-novita-only',longcat:'fixture-longcat-only'}}
+  const created=await f.post(request);assert.equal(created.data.code,0,JSON.stringify(created.data));await f.legacy.drainJobAdmission()
+  const job=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
+  assert.equal(job.status,'succeeded',JSON.stringify(job).slice(0,4000));assert.deepEqual(job.modelRoutes,routes)
+  const vision=f.providerCalls.filter((c:any)=>c.url==='https://api.longcat.chat/openai/v1/chat/completions')
+  assert.ok(vision.length,'existing critic/vision workflow reached LongCat, no separate feature')
+  for(const call of vision){
+   assert.equal(new Headers(call.options.headers).get('Authorization'),'Bearer fixture-longcat-only')
+   const b=JSON.parse(String(call.options.body));assert.equal(b.model,'LongCat-2.5-Preview');assert.ok(b.messages.at(-1).content.some((c:any)=>c.type==='image_url'&&c.image_url.url.startsWith('data:image/png;base64,')))
+  }
+  const rendered=f.providerCalls.filter((c:any)=>c.url==='https://api.novita.ai/openai/v1/images/generations');assert.ok(rendered.length)
+  for(const call of rendered){assert.equal(new Headers(call.options.headers).get('Authorization'),'Bearer fixture-novita-only');const b=JSON.parse(String(call.options.body));assert.equal(b.model,'ming-image-0.1-design');assert.equal(b.image,undefined);assert.equal(b.images,undefined);assert.equal(b.n,undefined)}
+  assert.equal(JSON.stringify(job).includes('fixture-novita-only'),false);assert.equal(f.tokenDanceCalls.length,0)
+ }finally{await f.close()}
+})

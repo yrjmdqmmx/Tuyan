@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-09-10",
-  "registryVersion": "2026-09-27.v26",
+  "registryVersion": "2026-09-27.v27",
   "scope": "Static selectable image consumers. Application ceilings are not undocumented vendor maxima. OpenRouter is dynamic and uses the unconfirmed fallback plus its live catalog.",
   "platform": {
     "maxCount": 8,
@@ -14087,6 +14087,32 @@
         "note": "图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。"
       },
       "channelGuide": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
+    },
+    {
+      "provider": "longcat",
+      "model": "LongCat-2.5-Preview",
+      "workflow": "generation",
+      "protocol": "openai-chat-completions",
+      "policy": {
+        "maxCount": 3,
+        "maxBytes": 4194304,
+        "maxTotalBytes": 12582912,
+        "maxDimension": 4096,
+        "maxPixels": 8000000,
+        "minDimension": 1,
+        "maxAspectRatio": 200,
+        "requestMaxBytes": 20000000,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "status": "partial",
+        "source": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+        "note": "官方支持 PNG/JPEG/WebP/GIF、Base64/URL、10MB/张、暂定50张及200:1比例；图研使用3张、4MiB/张、8MP、4096边长、整包20MB及静态PNG/JPEG/WebP，不接入视频。"
+      },
+      "channelGuide": "https://longcat.ai/platform/docs/zh/",
       "reviewScope": "Policy mapping; consult the dated audit for individually confirmed fields. Not an entitlement or successful inference check."
     },
     {

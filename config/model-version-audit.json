@@ -27269,6 +27269,19 @@
       ],
       "idEvidence": "exact-id",
       "notes": "Exact public API ID; no immutable snapshot binding documented. Preview is not a fixed weight version."
+    },
+    {
+      "channel": "novita",
+      "apiModelId": "ming-image-0.1-design",
+      "displayName": "Ming Image 0.1 Design",
+      "kind": "unconfirmed",
+      "versionId": "",
+      "checkedAt": "2026-09-27",
+      "sourceUrls": [
+        "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "Exact hosted request ID; no immutable weights binding. Documented response model differs (StressTest); preserve the resolved ID in usage records."
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

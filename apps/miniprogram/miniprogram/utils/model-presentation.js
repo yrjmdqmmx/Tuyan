@@ -36,7 +36,7 @@ function modelChannelCategoryOrder(channel) {
         ['tokendance', 'siliconflow', 'tokenhub'],
         ['bailian', 'ark', 'deepseek', 'kimi', 'zhipu', 'minimax', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling'],
         ['gemini', 'openai', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'mistral'],
-        ['openrouter', 'together', 'fireworks', 'fal', 'replicate', 'runware'],
+        ['openrouter', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'novita'],
     ];
     const index = groups.findIndex(group => group.includes(channel));
     return index < 0 ? groups.length : index;

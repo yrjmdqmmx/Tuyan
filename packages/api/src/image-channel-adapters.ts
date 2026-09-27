@@ -1,3 +1,4 @@
+import { callNovitaImageChannel } from './novita-image-channel.js'
 import { callOfficialImageChannel } from './official-image-channels.js'
 import { callQianfanImageChannel } from './qianfan-image-channel.js'
 import { auditedChannelContract, assertChannelRequest, assertChannelSourceConstraints } from './audited-channel-contracts.js'
@@ -158,6 +159,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   if (Boolean(input.edit?.mask) !== Boolean(input.edit?.inputs.mask)) throw new Error('遮罩传输与输入不一致。')
   try {
     if (input.provider==='sensenova'||input.provider==='stepfun') return await callOfficialImageChannel(input,io)
+    if (input.provider==='novita') return await callNovitaImageChannel(input,io)
     if (input.provider==='qianfan') return await callQianfanImageChannel(input,io)
     return await executeImageChannel(input, io)
   }

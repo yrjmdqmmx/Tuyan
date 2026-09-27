@@ -31,6 +31,9 @@ function referenceSubmissionPolicy(provider, model, workflow = 'generation') {
     if (provider === 'antling' && model === 'Ling-3.0-flash-VL') {
         return { ...p, mimeTypes: ['image/png', 'image/jpeg'], status: 'partial', source: 'https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/', note: '官方支持 Base64 PNG/JPEG、40 张、单图 12845056 像素、整包 32MB；图研采用 3 张、4MiB/张、8MP、整包 20MB 的更低额度。' };
     }
+    if (provider === 'longcat' && model === 'LongCat-2.5-Preview') {
+        return { ...p, status: 'partial', source: 'https://longcat.ai/platform/docs/zh/image-video-understanding', note: '官方支持 PNG/JPEG/WebP/GIF、Base64/URL、10MB/张、暂定50张及200:1比例；图研使用3张、4MiB/张、8MP、4096边长、整包20MB及静态PNG/JPEG/WebP，不接入视频。' };
+    }
     if (auditedInputPolicy[provider + '/' + model]) {
         Object.assign(p, auditedInputPolicy[provider + '/' + model], { status: 'partial', note: '图片数量按具体型号和产品上限共同限制；4MiB/张、4096边长及8MP是平台保守额度，真实服务待验证。' });
         if (workflow === 'refine') {

@@ -31,7 +31,8 @@
     "qianfan": "百度千帆",
     "iflytek": "讯飞星辰 MaaS",
     "longcat": "美团 LongCat",
-    "antling": "蚂蚁百灵"
+    "antling": "蚂蚁百灵",
+    "novita": "Novita AI"
   },
   "vendors": {
     "deepseek": {
@@ -1560,6 +1561,14 @@
       "pattern": "^LongCat-2\\.0$",
       "vendorId": "meituan",
       "source": "https://longcat.chat/platform/docs/zh/api/models.html"
+    },
+    {
+      "channels": [
+        "novita"
+      ],
+      "pattern": "^ming-image-",
+      "vendorId": "ant",
+      "source": "https://github.com/inclusionAI/Ming-Image"
     }
   ],
   "families": [

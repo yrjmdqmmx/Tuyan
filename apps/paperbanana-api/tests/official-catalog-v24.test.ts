@@ -62,7 +62,9 @@ for (const provider of providers) {
     }
     for (const role of ['main', 'vision', 'image']) {
       const value = STATIC_MODEL_REGISTRY[provider].defaults[role]
-      assert.ok(!value || selected.some(row => row.id === value && row.roles.includes(role)), `${provider}: invalid ${role} default`)
+      if (provider === 'longcat' && role === 'vision') {
+        assert.equal(value, 'LongCat-2.5-Preview', 'v3.8.1 fills the previously empty vision default; main remains v24')
+      } else assert.ok(!value || selected.some(row => row.id === value && row.roles.includes(role)), `${provider}: invalid ${role} default`)
     }
   })
 }

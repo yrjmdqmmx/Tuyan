@@ -20,7 +20,7 @@ test('the real dynamic catalog exposes five synchronous routes and excludes five
     })
     const result = (await r.post({ action: 'modelRegistry', provider: 'openrouter' })).data
     assert.equal(result.code, 0)
-    assert.equal(result.registryVersion, '2026-09-27.v26')
+    assert.equal(result.registryVersion, '2026-09-27.v27')
     const models = result.providers.openrouter.models
     assert.equal(models.length, 5)
     for (const model of models) {
