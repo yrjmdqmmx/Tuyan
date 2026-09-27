@@ -75,7 +75,13 @@ export function uniqueProvidersForRoles(modelRoutes, roles) {
 }
 
 export function scopedApiKeysForRoles(modelRoutes, roles, apiKeys) {
-  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).filter(provider => provider !== 'tokendance').map((provider) => [provider, apiKeys?.[provider] || '']))
+  return Object.fromEntries(uniqueProvidersForRoles(modelRoutes, roles).filter(provider => provider !== 'tokendance').map(provider => {
+    if (provider !== 'custom') return [provider, apiKeys?.[provider] || '']
+    let envelope = {}
+    try { envelope = JSON.parse(apiKeys?.custom || '{}') } catch { /* Admission reports missing credentials. */ }
+    const ids = orderedUniqueRoles(roles).map(role => modelRoutes?.[role]).filter(route => route?.accessProvider === 'custom').map(route => route.custom?.connectionId)
+    return [provider, JSON.stringify(Object.fromEntries(ids.filter(id => id && envelope?.[id]).map(id => [id, envelope[id]])))]
+  }))
 }
 
 export function arkProbesForRoles(modelRoutes, roles) {
@@ -135,4 +141,34 @@ function assertCompleteRoutes(modelRoutes) {
     const route = modelRoutes?.[role]
     if (!route?.accessProvider || !route?.modelId) throw new Error(`模型路线 ${role} 尚未完整选择。`)
   }
+}
+
+// The selection contains only role/provider/model identifiers. Connection drafts
+// keep their original v1 storage key; credentials and validation are never saved.
+const routingStorageKey = 'tuyan.model-routing.v1'
+export function loadRoutingSelection(defaultRoutes, legacyDrafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  const routes = {...defaultRoutes}
+  let saved
+  try { saved = JSON.parse(storage?.getItem(routingStorageKey) || 'null') } catch {}
+  if (saved?.version === 1) {
+    for (const role of MODEL_ROUTE_ROLES) {
+      const route = saved.roles?.[role]
+      if (route && typeof route.accessProvider === 'string' && /^[a-z][a-z0-9-]{0,39}$/.test(route.accessProvider) && typeof route.modelId === 'string' && route.modelId.length <= 256) {
+        routes[role] = {accessProvider:route.accessProvider, modelId:route.modelId}
+      }
+    }
+    return {mode:saved.mode === 'advanced' ? 'advanced' : 'simple', routes, hasProfessionalSelection:true}
+  }
+  // Earlier releases saved custom drafts without a mode. Restore every populated
+  // role into professional mode, leaving untouched roles on their preset.
+  for (const role of MODEL_ROUTE_ROLES) if (legacyDrafts?.[role]?.modelId?.trim()) routes[role] = {accessProvider:'custom',modelId:legacyDrafts[role].modelId}
+  const migrated = Object.values(routes).some(route => route.accessProvider === 'custom')
+  return {mode:migrated ? 'advanced' : 'simple', routes, hasProfessionalSelection:migrated}
+}
+export function saveRoutingSelection(mode, routes, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  const roles = Object.fromEntries(MODEL_ROUTE_ROLES.map(role => [role,{accessProvider:routes[role].accessProvider, modelId:routes[role].modelId}]))
+  try { storage?.setItem(routingStorageKey, JSON.stringify({version:1,mode:mode === 'advanced' ? 'advanced' : 'simple',roles})); return true } catch { return false }
+}
+export function mergeProfessionalRoutes(selection, customRoutes) {
+  return Object.fromEntries(MODEL_ROUTE_ROLES.map(role => [role, selection[role].accessProvider === 'custom' ? customRoutes[role] : selection[role]]))
 }

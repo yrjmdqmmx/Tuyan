@@ -25,7 +25,7 @@ function ConnectionOptions({draft, label, onChange}) {
   </details>
 }
 
-function UniversalRole({renderThinkingSettings,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
+export function UniversalRole({canCopyMain = true, renderThinkingSettings,role, draft, credential, onChange, onKeyChange, onCopy, apiBase, health, contractSupported}) {
   const { t } = useAppLocale()
   const [label,description] = roles[role].map(text => t(text)), c = draft.custom
   const [feedbackReady,setFeedbackReady] = useState(false), [editing,setEditing] = useState(false)
@@ -72,9 +72,9 @@ function UniversalRole({renderThinkingSettings,role, draft, credential, onChange
   const selectedMissing = draft.modelId && visibleCatalog && !visibleCatalog.error && !visibleCatalog.models.some(({id})=>id===draft.modelId)
   return <fieldset className="universal-role" aria-label={t(label)}>
     <legend>{t(label)}</legend>
-    <div className="universal-role-heading"><p>{t(description)}</p>{role!=='main'&&<button type="button" className="universal-button universal-copy" onClick={()=>{setFeedbackReady(false);onCopy()}}><Copy size={14}/>{t("复制主模型接入与密钥")}</button>}</div>
-    <label className="field"><span>{t("API 协议")}</span><select aria-label={t("{v0} API 协议", {v0: label})} value={c.protocol} onChange={e=>{const protocol=e.target.value;change({custom:{protocol,baseUrl:UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===protocol)[2],auth:universalDefaultAuth(protocol),compatibility:'standard',catalogFormat:'auto'}})}}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
-    <label className="field"><span>API Key</span><input aria-label={`${label} API Key`} type="password" autoComplete="off" value={credential?.apiKey||''} onChange={e=>onKeyChange(e.target.value)}/></label>
+    <div className="universal-role-heading"><p>{t(description)}</p>{role!=='main'&&canCopyMain&&<button type="button" className="universal-button universal-copy" onClick={()=>{setFeedbackReady(false);onCopy()}}><Copy size={14}/>{t("复制主模型接入与密钥")}</button>}</div>
+    <label className="field"><span>{t("API 协议")}</span><select aria-label={t("{v0} API 协议", {v0: label})} value={c.protocol} onChange={e=>{const protocol=e.target.value;change({custom:{protocol,baseUrl:UNIVERSAL_PROTOCOL_OPTIONS.find(x=>x[0]===protocol)[2],auth:universalDefaultAuth(protocol),compatibility:'standard',catalogFormat:'auto'}})}}>{UNIVERSAL_PROTOCOL_OPTIONS.map(([id,name])=><option key={id} value={id} disabled={role === 'image' ? ['openai-responses','anthropic-messages'].includes(id) : id === 'openai-images'}>{name}</option>)}</select></label>
+    <label className="field"><span>API Key</span><input data-focus-setting="api-key" aria-label={`${label} API Key`} type="password" autoComplete="off" value={credential?.apiKey||''} onChange={e=>onKeyChange(e.target.value)}/></label>
     <ConnectionOptions draft={draft} label={t(label)} onChange={change}/>
     <div className="universal-catalog-toolbar"><button type="button" className="universal-button" disabled={Boolean(busy)||!contractSupported||!strategy.supported||!credential?.apiKey?.trim()} onClick={()=>check('catalog')}>{busy==='catalog'?<Loader2 className="universal-spinner" size={16}/>:<Download size={16}/>} {t(busy==='catalog'?'正在获取模型…':visibleCatalog&&!visibleCatalog.error?'重新获取模型':'获取模型')}</button><span>{t("只读目录 · 不触发生成")}</span></div>
     <p className="universal-hint">{t(!strategy.supported?t(strategy.message):!credential?.apiKey?.trim()?'填写当前服务的 API Key 后可获取模型，无需先填模型 ID。':strategy.message)}</p>
@@ -100,14 +100,14 @@ function UniversalRole({renderThinkingSettings,role, draft, credential, onChange
   </fieldset>
 }
 
-export default function UniversalApiSettings({renderThinkingSettings,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
+export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, renderThinkingSettings,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
   const { t } = useAppLocale()
   const [saved,setSaved]=useState('')
   return <section className="universal-api-settings" aria-label={t("通用 API 接入")}>
-    <p className="universal-intro">{t("接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。")}</p>
+    {!compact && <p className="universal-intro">{t("接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。")}</p>}
     {!contractSupported&&<p className="universal-status error" role="alert">{t("当前后端暂不支持通用 API，配置已保留，请稍后重试。")}</p>}
-    <details className="universal-privacy"><summary><ShieldCheck size={15}/>{t("密钥与验证说明")}</summary><p>{t("密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。")}</p><p>{t("配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。")}</p></details>
-    {Object.keys(roles).map(role=><UniversalRole renderThinkingSettings={renderThinkingSettings} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={()=>onCopy(role,'main')} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
-    <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存非敏感配置")}</button>{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}
+    {!compact && <details className="universal-privacy"><summary><ShieldCheck size={15}/>{t("密钥与验证说明")}</summary><p>{t("密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。")}</p><p>{t("配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。")}</p></details>}
+    {selectedRoles.map(role=><UniversalRole canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={()=>onCopy(role,'main')} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
+    {!compact && <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存非敏感配置")}</button>}{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}
   </section>
 }

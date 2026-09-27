@@ -16,9 +16,10 @@
     "iflytek",
     "longcat",
     "tokendance",
-    "siliconflow"
+    "siliconflow",
+    "antling"
   ],
-  "catalogVersion": "2026-09-22.v24",
+  "catalogVersion": "2026-09-27.v26",
   "catalogSource": "apps/web/src/lib/staticModelCatalog.js",
   "policy": {
     "providerDefault": "omit all audited thinking fields; never serialize UI sentinel provider-default",
@@ -7419,6 +7420,194 @@
         "https://docs.siliconflow.cn/docs/api/chat-completions-post",
         "https://docs.siliconflow.cn/docs/userguide/capabilities/reasoning"
       ]
+    },
+    {
+      "id": "v381-longcat-longcat-2.5-preview",
+      "provider": "longcat",
+      "modelIds": [
+        "LongCat-2.5-Preview"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "enabled",
+            "disabled"
+          ],
+          "field": "thinking.type",
+          "default": "enabled"
+        }
+      ],
+      "clearFields": [
+        "thinking.type"
+      ],
+      "requestMappings": [
+        {
+          "key": "mode",
+          "field": "thinking.type",
+          "encoding": "identity",
+          "wireValues": [
+            "enabled",
+            "disabled"
+          ]
+        }
+      ],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "默认不发送思考参数；仅显式选择时发送该精确型号支持的字段。"
+      ],
+      "sourceUrls": [
+        "https://longcat.chat/platform/docs/zh/api/chat"
+      ],
+      "checkedAt": "2026-09-27"
+    },
+    {
+      "id": "v381-antling-ling-3.0-flash",
+      "provider": "antling",
+      "modelIds": [
+        "Ling-3.0-flash"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "enabled",
+            "disabled"
+          ],
+          "field": "thinking.type",
+          "default": "enabled"
+        }
+      ],
+      "clearFields": [
+        "thinking.type"
+      ],
+      "requestMappings": [
+        {
+          "key": "mode",
+          "field": "thinking.type",
+          "encoding": "identity",
+          "wireValues": [
+            "enabled",
+            "disabled"
+          ]
+        }
+      ],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "默认不发送思考参数；仅显式选择时发送该精确型号支持的字段。"
+      ],
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "checkedAt": "2026-09-27"
+    },
+    {
+      "id": "v381-antling-ring-2.6-1t",
+      "provider": "antling",
+      "modelIds": [
+        "Ring-2.6-1T"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "推理强度",
+          "type": "enum",
+          "values": [
+            "high",
+            "xhigh"
+          ],
+          "field": "reasoning.effort",
+          "default": "high"
+        }
+      ],
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "requestMappings": [
+        {
+          "key": "effort",
+          "field": "reasoning.effort",
+          "encoding": "identity",
+          "wireValues": [
+            "high",
+            "xhigh"
+          ]
+        }
+      ],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "默认不发送思考参数；仅显式选择时发送该精确型号支持的字段。"
+      ],
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "checkedAt": "2026-09-27"
+    },
+    {
+      "id": "v381-antling-unconfirmed",
+      "provider": "antling",
+      "modelIds": [
+        "Ling-3.0-flash-VL",
+        "Ling-3.0-tiny",
+        "Ling-2.6-1T",
+        "Ling-2.6-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "未证实此精确型号的可配置思考字段，不继承同系列型号参数。"
+      ],
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
+      ],
+      "checkedAt": "2026-09-27"
     }
   ],
   "excluded": [

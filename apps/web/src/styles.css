@@ -5815,3 +5815,7 @@ figcaption {
 .site-language-switch:hover { background: #e1eee5; border-color: #749b86; }
 .site-language-switch:focus-visible { outline: 3px solid #bd873e; outline-offset: 3px; }
 html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }
+
+.routing-persistence { margin: 8px 0 18px; padding: 12px; border: 1px solid var(--hairline); border-radius: 10px; }
+.routing-persistence p { font-size: 12px; line-height: 1.65; color: var(--muted); }
+.universal-capabilities input:disabled + span { color: var(--muted); }

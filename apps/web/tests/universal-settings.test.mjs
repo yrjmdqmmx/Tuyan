@@ -99,7 +99,7 @@ test('unconfigured aspect ratio and persisted optional catalog rules have neutra
  const d=blank();d.main.custom.catalogFormat='openai';saveUniversalDrafts(d,window.localStorage)
  assert.equal(loadUniversalDrafts(window.localStorage).main.custom.catalogFormat,'openai')
 })
-test('three mode cards and every custom action use explicit responsive styles',()=>{
+test('mode cards and every custom action use explicit responsive styles',()=>{
  const css=readFileSync(new URL('../src/styles.css',import.meta.url),'utf8')
  assert.match(css,/\.mode-switch\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/)
  assert.match(css,/\.universal-button\s*\{[^}]*border-radius:\s*8px/)

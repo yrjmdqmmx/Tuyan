@@ -28,9 +28,11 @@ test('access mode switches retain the complete ordinary preset and allow incompl
     assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
     assert.equal(screen.getByLabelText('视觉识别思考强度').value,'"high"');
     assert.equal(document.querySelectorAll('[data-model-role]').length,3);
-    fireEvent.click(screen.getByRole('button',{name:/通用 API/}));
-    assert.equal(document.querySelectorAll('.universal-role').length,3);
-    assert.equal(document.querySelectorAll('[data-thinking-role]').length,0);
+    fireEvent.click(screen.getByRole('button',{name:/专业模式/}));
+    fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
+    fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'通用 API',exact:true}));
+    assert.equal(document.querySelectorAll('.universal-role').length,1);
+    assert.equal(document.querySelector('.mode-switch').children.length,2);
     const customModel=document.querySelector('.universal-role input[placeholder="从目录选择，或粘贴服务提供的准确 ID"]');
     fireEvent.change(customModel,{target:{value:'draft-model'}});
     assert.equal(customModel.value,'draft-model');

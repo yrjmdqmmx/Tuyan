@@ -22,7 +22,8 @@ const presentation = read('config/model-presentation.json')
 const auditTime = Date.parse('2026-09-22T12:00:00+08:00')
 const image = { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB' }
 const roleSet = (roles: string[]) => [...new Set(roles.map(role => role.startsWith('image-') ? 'image' : role))].sort()
-const ids = (rows: any[]) => rows.map(row => row.id).sort()
+const isV24 = (row: any) => row.id !== 'LongCat-2.5-Preview' // v3.8.1 has an independent exact-set oracle.
+const ids = (rows: any[]) => rows.filter(isV24).map(row => row.id).sort()
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'
 const textInput = (provider: Provider, model: any, withImage = model.roles.includes('vision')): NewTextInput => ({ provider, model: model.id, apiKey: 'fixture-only-secret', system: '保留科研事实', user: '说明节点之间的关系', images: withImage ? [image] : [] })
 
@@ -35,7 +36,7 @@ for (const provider of providers) {
     assert.equal(new Set(selected.map(row => row.id)).size, selected.length, 'duplicate integration ID')
     assert.deepEqual(ids(web), ids(selected), 'Web must contain every selected ID and no additional IDs')
     assert.deepEqual(ids(config.providers[provider]), ids(selected), 'shared catalog must equal the integration list')
-    const contractIds = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/')).map(key => key.slice(provider.length + 1)).sort()
+    const contractIds = Object.keys(AUDITED_CHANNEL_CONTRACTS).filter(key => key.startsWith(provider + '/') && key !== 'longcat/LongCat-2.5-Preview').map(key => key.slice(provider.length + 1)).sort()
     assert.deepEqual(contractIds, ids(selected), 'no omitted or extra executable contracts')
     for (const row of selected) {
       const source = audit.models.find((model: any) => model.id === row.id)
@@ -70,10 +71,10 @@ test('v24 coverage totals are calculated from every manifest, with overlapping r
   const expected = { models: 0, main: 0, vision: 0, image: 0 }, actual = { ...expected }
   for (const provider of providers) {
     expected.models += integrations[provider].models.length
-    actual.models += STATIC_MODEL_REGISTRY[provider].models.length
+    actual.models += STATIC_MODEL_REGISTRY[provider].models.filter(isV24).length
     for (const role of ['main', 'vision', 'image'] as const) {
       expected[role] += integrations[provider].models.filter((row: any) => row.roles.includes(role)).length
-      actual[role] += STATIC_MODEL_REGISTRY[provider].models.filter((row: any) => row.roles.includes(role)).length
+      actual[role] += STATIC_MODEL_REGISTRY[provider].models.filter(isV24).filter((row: any) => row.roles.includes(role)).length
     }
   }
   assert.deepEqual(actual, expected)

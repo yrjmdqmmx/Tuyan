@@ -111,7 +111,7 @@ import {
   providerDefaultRoutes,
   requiredCreateRouteRoles,
   requiredRefineRouteRoles,
-  scopedApiKeysForRoles,
+  scopedApiKeysForRoles, loadRoutingSelection, saveRoutingSelection, mergeProfessionalRoutes,
   uniqueProvidersForRoles,
 } from './lib/modelRouting';
 import { isLoginEntry } from './appPaths';
@@ -177,11 +177,15 @@ export default function App() {
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
-  const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : 'simple');
+  const [restoredRouting] = useState(() => loadRoutingSelection(providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS), loadUniversalDrafts()));
+  const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : restoredRouting.mode);
+  const [routingSaved, setRoutingSaved] = useState('');
+  const professionalInitialized = useRef(restoredRouting.hasProfessionalSelection);
+
   const [provider, setProvider] = useState(DEFAULT_WEB_PROVIDER);
-  const [accessMode,setAccessMode] = useState('preset');
   const [universalDrafts,setUniversalDrafts] = useState(loadUniversalDrafts);
   const [universalKeys,setUniversalKeys] = useState({});
+  useEffect(() => setRoutingSaved(''), [universalDrafts]);
   const customRoutes = useMemo(()=>universalRoutes(universalDrafts),[universalDrafts]);
   const customEntries = useMemo(()=>Object.fromEntries(Object.entries(universalDrafts).map(([role,d])=>[role,universalDraftEntry(d)])),[universalDrafts]);
   const customEnvelope = useMemo(()=>universalKeyEnvelope(universalDrafts,universalKeys),[universalDrafts,universalKeys]);
@@ -208,7 +212,7 @@ export default function App() {
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
   const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
-  const [modelRoutes, setModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
+  const [modelRoutes, setModelRoutes] = useState(restoredRouting.routes);
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
@@ -234,7 +238,7 @@ export default function App() {
   const [rawModelRegistry, setModelRegistry] = useState(null);
   const [providerRegions, setProviderRegions] = useState({ minimax: 'global' });
   const modelRegistry = useMemo(() => registryForRegions(rawModelRegistry, providerRegions), [rawModelRegistry, providerRegions]);
-  const apiKeys = useMemo(() => ({...selectRegionApiKeys(apiKeyRing, providerRegions), ...(accessMode === 'custom' ? {custom:customEnvelope} : {})}), [apiKeyRing, providerRegions, accessMode, customEnvelope]);
+  const apiKeys = useMemo(() => ({...selectRegionApiKeys(apiKeyRing, providerRegions), custom:customEnvelope}), [apiKeyRing, providerRegions, customEnvelope]);
   const [modelRegistryRetryNonce, setModelRegistryRetryNonce] = useState(0);
   const [mock, setMock] = useState(false);
   const [currentJobId, setCurrentJobId] = useState('');
@@ -295,18 +299,19 @@ export default function App() {
     else if (activeTab !== 'account') selectTab('records');
   }
   const selectedInfographicCategory = INFOGRAPHIC_CATEGORIES.find(([id]) => id === infographicCategory) || INFOGRAPHIC_CATEGORIES[0];
-  const isAdvancedMode = accessMode === 'custom' || configurationMode === 'advanced';
+  const isAdvancedMode = configurationMode === 'advanced';
   const isPlotCategory = infographicCategory === 'data_stat';
   const [simpleModelRoutes, setSimpleModelRoutes] = useState(() => providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS));
-  const activeModelRoutes = accessMode === 'custom' ? customRoutes : isAdvancedMode ? modelRoutes : simpleModelRoutes;
-  const providerConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.main.accessProvider], modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]);
-  const imageProviderConfig = accessMode === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.image.accessProvider], modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]);
+  const activeModelRoutes = isAdvancedMode ? mergeProfessionalRoutes(modelRoutes, customRoutes) : simpleModelRoutes;
+  const hasCustomRoutes = Object.values(activeModelRoutes).some(route => route.accessProvider === 'custom');
+  const providerConfig = activeModelRoutes.main.accessProvider === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.main.accessProvider], modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]);
+  const imageProviderConfig = activeModelRoutes.image.accessProvider === 'custom' ? UNIVERSAL_PROVIDER : mergeProviderRegistry(PROVIDERS[activeModelRoutes.image.accessProvider], modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]);
   const activeMainModelName = activeModelRoutes.main.modelId;
   const activeImageGenModelName = activeModelRoutes.image.modelId;
   const activeReferenceVisionModelName = activeModelRoutes.vision.modelId;
-  const activeMainRegistryEntry = accessMode === 'custom' ? customEntries.main : modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
-  const activeImageRegistryEntry = accessMode === 'custom' ? customEntries.image : modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
-  const activeVisionRegistryEntry = accessMode === 'custom' ? customEntries.vision : modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
+  const activeMainRegistryEntry = activeModelRoutes.main.accessProvider === 'custom' ? customEntries.main : modelRegistry?.providers?.[activeModelRoutes.main.accessProvider]?.models?.find((model) => model.id === activeMainModelName);
+  const activeImageRegistryEntry = activeModelRoutes.image.accessProvider === 'custom' ? customEntries.image : modelRegistry?.providers?.[activeModelRoutes.image.accessProvider]?.models?.find((model) => model.id === activeImageGenModelName);
+  const activeVisionRegistryEntry = activeModelRoutes.vision.accessProvider === 'custom' ? customEntries.vision : modelRegistry?.providers?.[activeModelRoutes.vision.accessProvider]?.models?.find((model) => model.id === activeReferenceVisionModelName);
   const thinkingIdentity = thinkingIdentities(activeModelRoutes, {main:activeMainRegistryEntry, vision:activeVisionRegistryEntry, image:activeImageRegistryEntry}, providerRegions);
   const thinkingIdentityKey = JSON.stringify(thinkingIdentity);
   const thinkingSettings = reconcileThinkingSettings(savedThinking, thinkingIdentity);
@@ -324,12 +329,12 @@ export default function App() {
     saveThinkingSettings(next);
   }
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
-  const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, accessMode === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
+  const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].accessProvider === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
   const { source: refineSource, setSource: setRefineSource, upload: refineUpload, selectFiles: selectRefineFiles, retry: retryRefineUpload } = useRefineUpload({
     apiBase: apiBaseNormalized, health, limits: activeRefineUploadLimits, authReady, ownerId: currentUser?.id || '',
   });
   const refineControls = Number(modelRegistry?.refineControlsContractVersion) >= 1 ? activeImageRegistryEntry?.capabilities?.refineControls : null;
-  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,accessMode === 'custom' && !customEntries.image.selectable ? undefined : activeModelRoutes.image,'refine');
+  const refineReferencePolicy = activeReferenceUploadPolicy(modelRegistry?.referenceUpload,activeModelRoutes.image.accessProvider === 'custom' && !customEntries.image.selectable ? undefined : activeModelRoutes.image,'refine');
   refineReferencePolicy.maxCount = Math.min(refineReferencePolicy.platform.maxCount,Math.max(0,(refineControls?.maxImages || 1)-1));
   const refineReferences = useRefineReferences({apiBase:apiBaseNormalized,health,ownerId:currentUser?.id || '',policy:refineReferencePolicy});
   const refineInputDraft = {version:1,references:refineReferences.images.map(image=>({objectKey:image.id,purpose:image.purpose,note:image.note})),...(refineMask?.strokes?.length ? {mask:{objectKey:'pending-mask'}} : {}),...(refineStructuredEnabled ? {structured:refineStructured} : {})};
@@ -341,7 +346,7 @@ export default function App() {
   useEffect(()=>{setRefineMask(null);setRefineStructuredEnabled(false);setRefineStructured({object:'',attributes:'',relationship:'',preserve:''});},[currentUser?.id,apiBaseNormalized]);
   const inputOptimizationSupported = Number(modelRegistry?.inputOptimizationContractVersion) >= 1;
   const refineOptimizationSupported = inputOptimizationSupported && modelRegistry?.inputOptimizationTargets?.includes('editInstruction');
-  const selectedCatalogIssues = accessMode === 'custom' ? [] : [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
+  const selectedCatalogIssues = [...new Set([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(entry => entry?.selectable === false).map(entry => `${entry.label || entry.id}：${entry.disabledReason || '暂不可用'}`))];
   const selectedModelNotes = uniqueRegistryModels([activeMainRegistryEntry, activeImageRegistryEntry, activeVisionRegistryEntry].filter(Boolean));
   // 输出清晰度可选项随 provider/图像生成模型变化（自动精修由清晰度档位驱动）。
   const resolutionValues = activeImageRegistryEntry?.capabilities?.resolutions?.length
@@ -367,14 +372,15 @@ export default function App() {
     : ['2K'];
   const refineResolutionOptions = RESOLUTION_OPTIONS.filter(([value]) => refineResolutionValues.includes(value));
   // 有参考图时以后端能力目录为权威；能力未知时默认走独立识别，避免把文本模型误当视觉模型。
-  const mainModelCanRead = accessMode === 'custom' ? customEntries.main.selectable && customRoutes.main.custom.capabilities.vision : referenceImages.length
+  const customMainCanRead = Boolean(customEntries.main.selectable && customRoutes.main.custom.capabilities.vision);
+  const mainModelCanRead = activeModelRoutes.main.accessProvider === 'custom' ? customMainCanRead : referenceImages.length
     ? mainModelCapability?.status === 'supported' && mainModelCapability?.supportsReferenceImages !== false
     : mainModelCanReadImages(activeModelRoutes.main.accessProvider, activeMainModelName);
   const activeReferenceImageMode = isAdvancedMode
     ? referenceImageMode
     : (mainModelCanRead ? 'main_model' : 'vision_model');
   const referenceRole = activeReferenceImageMode === 'main_model' ? 'main' : 'vision';
-  const activeReferenceUpload = activeReferenceUploadPolicy(modelRegistry?.referenceUpload, accessMode === 'custom' && !customEntries[referenceRole].selectable ? undefined : activeModelRoutes[referenceRole]);
+  const activeReferenceUpload = activeReferenceUploadPolicy(modelRegistry?.referenceUpload, activeModelRoutes[referenceRole].accessProvider === 'custom' && !customEntries[referenceRole].selectable ? undefined : activeModelRoutes[referenceRole]);
   const referenceSelectionIssue = referenceUploadSelectionError(referenceImages, activeReferenceUpload);
   const mainModelDirectUnsupported = referenceImages.length > 0
     && activeReferenceImageMode === 'main_model'
@@ -411,7 +417,9 @@ export default function App() {
   const activeArkProbeSignature = activeArkProbes.map(arkVerificationKey).join('|');
   arkKeySnapshotRef.current = apiKeys.ark;
   arkProbeRoutesSnapshotRef.current = activeArkProbeSignature;
-  const missingCredentialProviders = accessMode === 'custom' ? (missingUniversalKeys(customRoutes,credentialRouteRoles,customEnvelope).length ? ['custom'] : []) : credentialProviders.filter((routeProvider) => routeProvider === 'tokendance' ? !tokenDance.connection.connected : !apiKeys[routeProvider]?.trim());
+  const missingCredentialProviders = credentialProviders.filter(routeProvider => routeProvider === 'custom'
+    ? missingUniversalKeys(activeModelRoutes, credentialRouteRoles.filter(role => activeModelRoutes[role].accessProvider === 'custom'), customEnvelope).length > 0
+    : routeProvider === 'tokendance' ? !tokenDance.connection.connected : !apiKeys[routeProvider]?.trim());
   const refineConfigSummary = `${imageProviderConfig.label} · ${activeImageRegistryEntry?.label || activeImageGenModelName}`;
   const refineRunning = isSubmittingRefine || refineJob?.status === 'queued' || refineJob?.status === 'running';
   const refineSourcePolicyIssue = activeRefineUploadLimits?.submissionPolicy
@@ -492,7 +500,7 @@ export default function App() {
 
   // provider / 图像生成模型变化时，若当前清晰度不再被支持则收敛到第一档。
   useEffect(() => {
-    if (accessMode === 'custom' || !activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
+    if (activeModelRoutes.image.accessProvider === 'custom' || !activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
     const supported = activeImageRegistryEntry?.capabilities?.resolutions?.length
       ? activeImageRegistryEntry.capabilities.resolutions
       : supportedResolutions(activeModelRoutes.image.accessProvider, activeImageGenModelName);
@@ -500,7 +508,7 @@ export default function App() {
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, imageSize, activeImageRegistryEntry]);
 
   useEffect(() => {
-    if (accessMode === 'custom' || !activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
+    if (activeModelRoutes.image.accessProvider === 'custom' || !activeImageRegistryEntry || activeImageRegistryEntry.selectable === false) return;
     const normalized = normalizeSelectedAspectRatio(aspectRatio, generationAspectRatioOptions);
     if (normalized !== aspectRatio) setAspectRatio(normalized);
   }, [activeModelRoutes.image.accessProvider, activeImageGenModelName, activeImageRegistryEntry, aspectRatio, imageSize]);
@@ -510,7 +518,7 @@ export default function App() {
   // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
   useEffect(() => {
-    if (accessMode === 'custom') return;
+    if (activeModelRoutes.main.accessProvider === 'custom') return;
     setReferenceImageMode(mainModelCanReadImages(activeModelRoutes.main.accessProvider, activeMainModelName) ? 'main_model' : 'vision_model');
   }, [activeModelRoutes.main.accessProvider, activeMainModelName]);
 
@@ -524,7 +532,7 @@ export default function App() {
       return undefined;
     }
 
-    if (accessMode === 'custom') {setMainModelCapability({status:mainModelCanRead?'supported':'unsupported',supportsReferenceImages:Boolean(mainModelCanRead),source:'user-declared'});return;}
+    if (activeModelRoutes.main.accessProvider === 'custom') {setMainModelCapability({status:mainModelCanRead?'supported':'unsupported',supportsReferenceImages:Boolean(mainModelCanRead),source:'user-declared'});return;}
     let cancelled = false;
     setMainModelCapability({ status: 'loading', reason: '正在检查主模型能力。' });
     modelCapabilityRequest(apiBaseNormalized, health, activeModelRoutes.main.accessProvider, activeMainModelName)
@@ -546,7 +554,7 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [apiBaseNormalized, health, activeModelRoutes.main.accessProvider, activeMainModelName, referenceImages.length]);
+  }, [apiBaseNormalized, health, activeModelRoutes.main.accessProvider, activeMainModelName, customMainCanRead, referenceImages.length]);
 
   useEffect(() => {
     if (!referenceImages.length || !mainModelCapability || mainModelCapability.status === 'loading') return;
@@ -860,9 +868,12 @@ export default function App() {
   }
 
   function handleConfigurationModeChange(nextMode) {
-    if (accessMode === 'custom') {setAccessMode('preset');setConfigurationMode(nextMode);return;}
     if (nextMode === configurationMode) return;
-    if (nextMode === 'advanced') setModelRoutes(simpleModelRoutes);
+    // Seed professional mode once from the current ordinary preset; subsequent switches restore it.
+    if (nextMode === 'advanced' && !professionalInitialized.current) {
+      setModelRoutes(simpleModelRoutes);
+      professionalInitialized.current = true;
+    }
     if (nextMode === 'simple') {
       const defaults = providerDefaultRoutes(activeModelRoutes.main.accessProvider, modelRegistry, PROVIDERS);
       // A text-only channel cannot supply a simple preset; retain the previous complete preset.
@@ -892,6 +903,8 @@ export default function App() {
   }
 
   function handleModelRouteChange(role, route) {
+    professionalInitialized.current = true;
+    setRoutingSaved('');
     setModelRoutes((current) => ({ ...current, [role]: route }));
     arkProbeGenerationRef.current += 1;
     arkActiveProbeRequestRef.current = 0;
@@ -972,8 +985,9 @@ export default function App() {
       setInputOptimizationGuidance('当前服务端尚未支持 稀宇科技国内区域，请等待服务端更新。');
       return null;
     }
-    const apiKey = apiKeys[mainRoute.accessProvider]?.trim();
-    if (!apiKey && !(mainRoute.accessProvider === 'tokendance' && tokenDance.connection.connected)) {
+    const apiKey = scopedApiKeysForRoles(activeModelRoutes, ['main'], apiKeys)[mainRoute.accessProvider]?.trim();
+    const missingCustomKey = mainRoute.accessProvider === 'custom' && missingUniversalKeys(activeModelRoutes, ['main'], apiKey).length > 0;
+    if ((missingCustomKey || !apiKey) && !(mainRoute.accessProvider === 'tokendance' && tokenDance.connection.connected)) {
       setInputOptimizationCredentialProvider(mainRoute.accessProvider);
       setInputOptimizationGuidance('请先在生成设置中填写当前主模型接入渠道的密钥。');
       setGenerationFocusSetting('api-key');
@@ -1114,7 +1128,7 @@ export default function App() {
     if (referenceSelectionIssue) { setReferenceUploadError(referenceSelectionIssue); return; }
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
       Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, createRouteRoles, 'generation'));
     } catch (routingError) {
       setGenerationFocusSetting('configuration-mode');
@@ -1335,7 +1349,7 @@ export default function App() {
       return;
     }
     if (missingCredentialProviders.length) {
-      setRefineError(`请先填写${missingCredentialProviders.map((item) => PROVIDERS[item]?.label || item).join('、')}接入密钥。`);
+      setRefineError(`请先填写${missingCredentialProviders.map((item) => (item === 'custom' ? '通用 API' : PROVIDERS[item]?.label || item)).join('、')}接入密钥。`);
       setGenerationFocusSetting('api-key');
       setShowGenerationSettings(true);
       return;
@@ -1353,7 +1367,7 @@ export default function App() {
     }
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode: accessMode === 'custom' ? 'advanced' : configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
       Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, refineRouteRoles, 'editing'));
     } catch (routingError) {
       setRefineError(routingError.message);
@@ -1428,10 +1442,8 @@ export default function App() {
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
       <ModelRoutingSettings
         configurationMode={configurationMode}
-        accessMode={accessMode}
-        onAccessModeChange={setAccessMode}
         renderThinkingSettings={renderThinkingSettings}
-        universalSettings={<UniversalApiSettings renderThinkingSettings={renderThinkingSettings} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+        renderUniversalSettings={role => <UniversalApiSettings selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
           onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
@@ -1439,6 +1451,11 @@ export default function App() {
         onModeChange={handleConfigurationModeChange}
         simpleProvider={provider}
         onSimpleProviderChange={handleSimpleProviderChange}
+        renderRoutingPersistence={() => <div className="routing-persistence">
+          <p>专业模式可为每个角色组合预设渠道和通用 API。保存包含渠道选择、地址、型号、协议与能力限额；密钥仅保留在当前页面。恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。</p>
+          <button type="button" className="universal-button" onClick={() => {const draftsSaved = saveUniversalDrafts(universalDrafts);const routesSaved = saveRoutingSelection(configurationMode, modelRoutes);setRoutingSaved(draftsSaved && routesSaved ? '非敏感配置已保存，未保存密钥或验证状态。' : '浏览器存储不可用，当前页面配置仍保留。')}}>保存非敏感配置</button>
+          {routingSaved && <p role="status">{routingSaved}</p>}
+        </div>}
         modelRoutes={activeModelRoutes}
         onRouteChange={handleModelRouteChange}
         modelRegistry={modelRegistry}
@@ -1479,7 +1496,7 @@ export default function App() {
             ? <div className="plot-note svg-output-note">{t("SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。")}</div>
             : <Select label={t("输出清晰度")} value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
         </div>
-        <AspectRatioPicker emptyMessage={t(accessMode === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined)} label={t("画面比例")} value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
+        <AspectRatioPicker emptyMessage={t(activeModelRoutes.image.accessProvider === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined)} label={t("画面比例")} value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
 
         {!isAdvancedMode ? (
         <div className="default-summary" aria-label={t("默认生成配置")}>
@@ -1495,7 +1512,7 @@ export default function App() {
               <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder={t("仅本地开发构建可修改")} />
             </label>
           ) : (
-            <div className="service-boundary-note"><ShieldCheck size={16} />{t(accessMode === 'custom' ? '请求经图研后端转发至你明确配置并通过安全校验的模型服务地址；密钥仅用于对应接入。' : '已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。')}</div>
+            <div className="service-boundary-note"><ShieldCheck size={16} />{t(hasCustomRoutes ? '请求经图研后端转发至你明确配置并通过安全校验的模型服务地址；密钥仅用于对应接入。' : '已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。')}</div>
           )}
 
           <div className="settings-grid">
@@ -1526,7 +1543,7 @@ export default function App() {
             </label>
           </div>
 
-          {accessMode !== 'custom' && selectedModelNotes.length ? (
+          {selectedModelNotes.length ? (
             <div className="model-availability-notes" aria-label={t("模型可用性说明")}>
               {selectedModelNotes.map((model) => (
                 <span key={`${model.id}-${model.protocol}`}><strong>{model.label}</strong>：{t(model.availabilityNotes || '服务端目录可用')} · {formatLifecycle(model.lifecycle)} · {formatVerification(model)}{t(model.entitlement ? ` · 权益：${model.entitlement}` : model.requiresEntitlement ? ' · 需开通模型权益' : ' · 无额外权益')}{model.roles?.includes('image') ? ` · ${modelRefinePresentation(model).label}` : ''}</span>
@@ -1594,7 +1611,7 @@ export default function App() {
       {healthError ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />{t("后端连接异常：")}{formatErrorMessage(healthError)}</div>
       ) : null}
-      {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">{t("已保留所选模型：")}{selectedCatalogIssues.join('；')} {t(accessMode === 'custom' ? '输入内容保持不变，请打开完整设置补充或修正当前接入配置。' : '输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。')}</div>}
+      {selectedCatalogIssues.length > 0 && <div className="notice warning" role="status">{t("已保留所选模型：")}{selectedCatalogIssues.join('；')} {t(hasCustomRoutes ? '输入内容保持不变，请打开完整设置补充或修正当前接入配置。' : '输入内容保持不变，可等待目录恢复或打开完整设置主动选择其他模型。')}</div>}
       {authSession.error ? (
         <div className="service-alert" role="status"><AlertTriangle size={16} />{t("登录状态检查失败：")}{formatErrorMessage(authSession.error.message || String(authSession.error))}</div>
       ) : null}
@@ -1941,7 +1958,7 @@ function firstMissingGenerationSetting({
   imageEntry,
   visionEntry,
 }) {
-  if (missingCredentialProviders.length) return { setting: 'api-key', message: `请填写${missingCredentialProviders.map((item) => PROVIDERS[item]?.label || item).join('、')}接入密钥。` };
+  if (missingCredentialProviders.length) return { setting: 'api-key', message: `请填写${missingCredentialProviders.map((item) => (item === 'custom' ? '通用 API' : PROVIDERS[item]?.label || item)).join('、')}接入密钥。` };
   const invalidRoute = firstInvalidRequiredRoute({
     roles: requiredRouteRoles,
     entries: { main: mainEntry, image: imageEntry, vision: visionEntry },

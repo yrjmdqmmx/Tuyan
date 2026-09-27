@@ -15,6 +15,7 @@ const MOBILE_FOCUS_SELECTORS = Object.freeze({
 })
 
 function providerDisplayName(provider, providerConfigs) {
+  if (provider === 'custom') return '通用 API'
   return MODEL_CHANNEL_LABELS[provider] || providerConfigs?.[provider]?.label || provider
 }
 
@@ -48,6 +49,7 @@ export default function ModelPicker({
   route,
   onRouteChange,
   providerConfigs,
+  allowCustom = false,
 }) {
   const { t } = useAppLocale()
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
@@ -62,10 +64,10 @@ export default function ModelPicker({
         },
       }
   const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => presentRegistryModel(id, model)) }])) }), [registry, models, provider])
-  const providerIds = useMemo(() => orderModelChannels(Object.keys(effectiveRegistry.providers || {})).filter((id) => {
+  const providerIds = useMemo(() => [...orderModelChannels(Object.keys(effectiveRegistry.providers || {})).filter((id) => {
     const available = partitionRegistryModels(effectiveRegistry.providers[id].models, { role, outputFormat })
     return available.compatible.length > 0 || id === effectiveRoute.accessProvider
-  }), [effectiveRegistry, role, outputFormat, effectiveRoute.accessProvider])
+  }), ...(allowCustom ? ['custom'] : [])], [effectiveRegistry, role, outputFormat, effectiveRoute.accessProvider, allowCustom])
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [copyStatus, setCopyStatus] = useState('')
@@ -182,6 +184,11 @@ export default function ModelPicker({
   }
 
   function chooseProvider(nextProvider) {
+    if (nextProvider === 'custom') {
+      onRouteChange?.({accessProvider: 'custom', modelId: effectiveRoute.accessProvider === 'custom' ? effectiveRoute.modelId : ''});
+      setOpen(false);
+      return;
+    }
     const nextRegistry = effectiveRegistry.providers?.[nextProvider] || { models: [] }
     const nextGroups = groupRegistryModels(partitionRegistryModels(nextRegistry.models, { role, outputFormat }).compatible)
     setSelectedProvider(nextProvider)
@@ -226,7 +233,7 @@ export default function ModelPicker({
       {providerIds.map((id) => (
         <button type="button" key={id} aria-label={providerDisplayName(id, providerConfigs)} aria-pressed={selectedProvider === id} className={selectedProvider === id ? 'active' : ''} onClick={() => chooseProvider(id)}>
           <strong>{providerDisplayName(id, providerConfigs)}</strong>
-          <small>{t(effectiveRegistry.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连')}</small>
+          <small>{t(id === 'custom' ? '自定义接入' : effectiveRegistry.providers[id]?.accessKind === 'aggregator' ? '聚合渠道' : '官方直连')}</small>
         </button>
       ))}
     </div>

@@ -1,0 +1,101 @@
+{
+  "version": "3.8.1",
+  "status": "unreleased",
+  "checkedAt": "2026-09-27",
+  "branch": "codex/tuyan-v3.8.1",
+  "baseCommit": "e2b70cfc849cc4de323df63827262b877083d1c0",
+  "catalogVersion": "2026-09-27.v26",
+  "staticModelCount": 1039,
+  "tests": [
+    {
+      "suite": "Core",
+      "tests": 1028,
+      "passed": 1028,
+      "failed": 0,
+      "logSha256": "b50ff153d588beec1beea1e6609143868ff73d9e61ade0136812130fd60cbf16"
+    },
+    {
+      "suite": "Web",
+      "tests": 529,
+      "passed": 529,
+      "failed": 0,
+      "logSha256": "dc07fb791752d8ef1a3e5257f6df0b436eff4f9e625e8344725b98c5a5569dfd"
+    },
+    {
+      "suite": "Mini Program",
+      "tests": 121,
+      "passed": 121,
+      "failed": 0,
+      "logSha256": "ab8dc66b0a6cc81a8c1a9689a2e980bda2b292fbc52954072ab4cff7e8017917"
+    },
+    {
+      "suite": "catalog packing",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "logSha256": "f21c5500508f707b666c19a726dbda1a88220bca2e9a9ef4b4ff6faa02bc532d"
+    }
+  ],
+  "checks": {
+    "coreTypecheck": true,
+    "coreBuild": true,
+    "webBuild": true,
+    "miniBuild": true,
+    "generatedDrift": false
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5181",
+    "backend": "local gateway/core with provider fixtures; no inference submitted",
+    "checks": [
+      {
+        "width": 390,
+        "horizontalOverflow": false,
+        "draftRetained": true,
+        "keyRetained": true
+      },
+      {
+        "width": 320,
+        "horizontalOverflow": false,
+        "draftRetained": true,
+        "keyRetained": true
+      },
+      {
+        "reloadRestored": true,
+        "keyNotPersisted": true
+      }
+    ],
+    "errors": []
+  },
+  "artifacts": [
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/browser-checks.json",
+      "sha256": "b611efc2936e8794469b6231b907696b48bc3a48cc063379b518eb82ec93a32d"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/desktop.png",
+      "sha256": "2fc4d976f05df9670e85a75f4ffb24d62f6907140a2ff08aeb29d6684858182c"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/picker-320.png",
+      "sha256": "4dc5b263f33c80eabf36520d45fd04dc2f1e953895f23af1a2557ddcb33bfb30"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/picker-390.png",
+      "sha256": "522cb32783270e9499f6a3409196e68c1ab27b8dc69ca8de8fd79aa103cf3b5c"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/settings-320.png",
+      "sha256": "fd7af857ee1d64d2734e5170bcd9e6a68c4a1d41cfe90c345c6615d4d9ddbb9d"
+    },
+    {
+      "path": "/Users/a1-6/.codex/visualizations/2026/09/27/01a0e061-ec5c-7e13-afee-4757246a7230/v381/settings-390.png",
+      "sha256": "79aa3692b4c33ef3c3fdf8a0b58736f7095ce4146fef896187f46b7f54a6740b"
+    }
+  ],
+  "providerInferenceCalls": 0,
+  "recharge": false,
+  "deployment": false,
+  "wechatUploadReviewPublication": false,
+  "lineageId": "lin-8d844715eaed7a33",
+  "parentHandoffId": "20260923-111509-codex-tuyan-v380-benchmark-v25-production-hand-01a0cbc0-d71f-77c1-bea7-"
+}

@@ -92,7 +92,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       if (channelFailure === 'download') return new Response('temporary fixture error',{status:503});
       return new Response(output,{headers:{'Content-Type':'image/png'}});
     }
-    if (/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com|maas-api.cn-huabei-1.xf-yun.com|api.longcat.chat)\//.test(url)) {
+    if (/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com|maas-api.cn-huabei-1.xf-yun.com|api.longcat.chat|api.ant-ling.com)\//.test(url)) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost official acknowledgment');
       if (url.includes('/images/')) return Response.json({id:'fixture-official-image',data:[{url:'https://fixture-assets.example.org/image.png'}],usage:{total_tokens:10}});
       if (url.includes('/messages')) return Response.json({id:'fixture-official-text',stop_reason:'end_turn',content:[{type:'text',text:'保留图中标签与连接关系。'}],usage:{input_tokens:8,output_tokens:10}});

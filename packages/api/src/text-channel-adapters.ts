@@ -1,6 +1,6 @@
 import { auditedChannelContract, assertChannelRequest } from './audited-channel-contracts.js'
 import type { ImageChannelTransport, ImageChannelCheckpoint } from './image-channel-adapters.js'
-export type NewTextInput = {provider:'xiaomi'|'tokenhub'|'runware'|'sensenova'|'stepfun'|'qianfan'|'iflytek'|'longcat'; model:string; apiKey:string; system:string; user:string; images:{url:string}[]; signal?:AbortSignal}
+export type NewTextInput = {provider:'xiaomi'|'tokenhub'|'runware'|'sensenova'|'stepfun'|'qianfan'|'iflytek'|'longcat' | 'antling'; model:string; apiKey:string; system:string; user:string; images:{url:string}[]; signal?:AbortSignal}
 function textPublicPrice(provider:string,model:string) { return auditedChannelContract(provider,model)?.price || {source:'',checkedAt:'2026-09-22',amount:null,status:'待确认'} }
 export function buildAuditedTextBody(input:NewTextInput,taskId?:string) {
   const {provider,model,system,user,images}=input
@@ -11,12 +11,14 @@ export function buildAuditedTextBody(input:NewTextInput,taskId?:string) {
     if(contract.taskType==='caption')body={model,taskType:'caption',taskUUID:taskId,prompt:system+'\n'+user,inputs:{image:images[0].url},deliveryMethod:'async',includeCost:true}
     else body={model,taskType:'textInference',taskUUID:taskId,messages:[{role:'user',content:contract.systemInSettings?user:system+'\n\n'+user}],settings:{...(contract.systemInSettings?{systemPrompt:system}:{}),maxTokens:contract.maxTokens},...(images.length?{inputs:{images:images.map(i=>i.url)}}:{}),outputFormat:'TEXT',deliveryMethod:'async',includeCost:true,includeUsage:true,numberResults:1}
   } else {
-    if((provider==='tokenhub'&&model==='kimi-k3'||contract.requireDataUrl)&&images.some(i=>!i.url.startsWith('data:image/')))throw Object.assign(new Error('Kimi K3 图片需要 Base64 Data URI；未发送。'),{localInputFailure:true,requestState:'not_sent'})
+    if((provider==='tokenhub'&&model==='kimi-k3'||contract.requireDataUrl)&&images.some(i=>!i.url.startsWith('data:image/')))throw Object.assign(new Error('所选型号图片需要 Base64 Data URI；未发送。'),{localInputFailure:true,requestState:'not_sent'})
     const prompt=contract.systemMode==='user-prefix'?system+'\n\n'+user:user
     const content=images.length?[{type:'text',text:prompt},...images.map(image=>({type:'image_url',image_url:{url:image.url}}))]:prompt
     body=contract.textProtocol==='anthropic-messages' ? {model,system,messages:[{role:'user',content:prompt}],max_tokens:8192,...contract.request} : {model,messages:[...(contract.systemMode==='user-prefix'?[]:[{role:'system',content:system}]),{role:'user',content}],stream:false,...contract.request}
     if(contract.maxCombinedImageBytes && images.reduce((n,i)=>n+(i.url.startsWith('data:')?Buffer.from(i.url.split(',')[1]||'','base64').length:0),0)>contract.maxCombinedImageBytes)throw Object.assign(new Error('图片总大小超过该型号上限，未发送。'),{localInputFailure:true,requestState:'not_sent'})
   }
+  if (contract.allowedImageMimeTypes && images.some(i=>!contract.allowedImageMimeTypes.includes(/^data:([^;,]+);base64,/.exec(i.url)?.[1]))) throw Object.assign(new Error('所选型号不支持此图片格式，未发送。'),{localInputFailure:true,requestState:'not_sent'})
+  if (contract.requestMaxBytes && Buffer.byteLength(JSON.stringify(body),'utf8')>contract.requestMaxBytes) throw Object.assign(new Error('完整请求超过型号上限，未发送。'),{localInputFailure:true,requestState:'not_sent'})
   assertChannelRequest(contract,body)
   return body
 }
