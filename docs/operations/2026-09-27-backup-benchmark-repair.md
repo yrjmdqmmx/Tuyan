@@ -12,7 +12,7 @@
 - 验收复现了“备份进行中 checksum 尚不存在”的监控误报。现在 dump 和 checksum 先使用 `.partial`，两次 OSS 上传成功后先公开 checksum、再原子公开归档；失败仍返回失败，保留 partial 用于诊断。
 - 从现网健康脚本精确删除两行旧平台代理探针。其他检查不变；安装后脚本 hash 与当前仓库完全一致。没有修改业务容器或数据库业务内容。
 
-已完成多次真实备份上传，并对归档和 checksum 完整回读后比较 SHA-256，执行 gzip 完整性检查，核验对象 SSE=AES256 和剩余临时规则数为 0。备份过程中及完成后的健康检查均作为最终验收项。详细时间、对象大小/hash、安装文件 hash、容器状态见同目录 `2026-09-27-backup-benchmark-evidence.json`。**本轮未向生产库恢复数据，也未做完整 Mongo 恢复演练**；回读校验不能替代恢复演练。次日定时触发尚未发生，不把手动启动同一服务称为已验证次日运行。
+已完成多次真实备份上传，并对归档和 checksum 完整回读后比较 SHA-256，执行 gzip 完整性检查，核验对象 SSE=AES256 和剩余临时规则数为 0。备份过程中及完成后的健康检查均作为最终验收项。最终备份于北京时间 **12:10:47–12:10:56** 完成，归档 **68,859,943 bytes**；SHA-256 为 `359f6e1f2113c7b8e9821b8ce370aed64278702406d519ce6c4637ea371a3654`。12:10:49 备份进行中的健康检查通过，12:12:20 完成后的检查也通过。详细对象/安装文件 hash、容器状态见[脱敏证据](2026-09-27-backup-benchmark-evidence.json)。**本轮未向生产库恢复数据，也未做完整 Mongo 恢复演练**；回读校验不能替代恢复演练。次日定时触发尚未发生，不把手动启动同一服务称为已验证次日运行。
 
 服务器审计/原文件副本位于 root-only `/opt/paperbanana/ops-repairs/20260927-backup`。该目录保留安装前脚本/unit、候选文件和私有对象元数据；仓库只保存脱敏证据。业务容器的镜像和启动时间保持不变。
 
@@ -28,7 +28,7 @@
 
 ## 验证与剩余边界
 
-本地香港运维 228 项、Benchmark 200 项、备份网络/发布时序 12 项通过；Shell 语法与 diff 检查通过。完整 amd64 镜像构建与离线 smoke、隔离 Worker 启动通过。代码与镜像不可变来源记录在证据 JSON 中；初步 working-tree 构建仅作排障，不作为最终来源。
+本地香港运维 228 项、Benchmark 200 项、备份网络/发布时序 12 项通过；Shell 语法与 diff 检查通过。完整 amd64 镜像构建与离线 smoke、隔离 Worker 启动通过。最终完整镜像由干净的代码提交 `f2d0eb5cef2ab6d90eed196d853b394ff8d0126a` 构建，镜像内 codeSha 核验一致；本地镜像 `tuyan-benchmark-repair:sha-f2d0eb5cef2ab6d90eed196d853b394ff8d0126a`，本地 manifest digest `sha256:5d618b442666bfef67fe3890ee6861cdfdf3e920bb84e3da0729b6f9074a2141`。最终镜像离线 smoke 与隔离 Worker 启动均再次通过。初步 working-tree 构建仅作排障，不作为最终来源；该 digest 不是 GHCR 发布证明。
 
 未推送 GHCR、运行发布 workflow 或替换现网 Benchmark 镜像；Worker 执行器继续关闭。未运行真实评测、付费模型调用或微信发布。v3.8.1 剩余业务发布、SG Novita ACL、旧环境项清理仍按已有待办处理。系统单元校验另提示现有第三方 CloudMonitor 的 KillMode/PIDFile 警告，与本次故障无关，本轮未改第三方服务。
 
