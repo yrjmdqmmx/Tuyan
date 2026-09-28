@@ -5,6 +5,7 @@ import { MINIMAX_REGIONS, minimaxRegion } from '../lib/providerRegions'
 import { KeyRound, Loader2, Settings2, ShieldCheck, Sparkles } from 'lucide-react'
 import ApiKeyGuide from './ApiKeyGuide'
 import ModelPicker from './ModelPicker'
+import ModelRegistryNotice from './ModelRegistryNotice.jsx'
 import { arkVerificationKey, providerDefaultRoutes } from '../lib/modelRouting'
 
 function providerLabel(provider, providerConfigs) {
@@ -27,6 +28,8 @@ export default function ModelRoutingSettings({
   modelRoutes,
   onRouteChange,
   modelRegistry,
+  registryStatus = modelRegistry ? 'ready' : 'loading',
+  onRetryRegistry,
   providerConfigs,
   outputFormat,
   executionRouteRoles = [],
@@ -66,7 +69,7 @@ export default function ModelRoutingSettings({
             <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("分角色选择渠道与模型")}</small>
           </button>
         </div>
-        {isAdvancedMode && !routeContractSupported ? <p className="route-contract-warning">{t("当前后端不支持专业模式的多渠道路由，提交会失败关闭。")}</p> : null}
+        {isAdvancedMode ? <ModelRegistryNotice status={registryStatus} supported={routeContractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端不支持专业模式的多渠道路由，请切回普通模式。" /> : null}
       </div>
 
       {!isAdvancedMode ? (

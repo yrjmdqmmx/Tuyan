@@ -24,8 +24,18 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
   }]))
 }
 
-export function buildModelSubmission({ configurationMode, modelRoutes, registry, providerRegions }) {
+export function registryReadinessMessage(status) {
+  if (status === 'loading') return '正在读取模型与渠道能力，请稍候…'
+  if (status === 'error') return '模型与渠道能力读取失败，请重试；当前配置已保留。'
+  return ''
+}
+
+export function buildModelSubmission({ configurationMode, modelRoutes, registry, registryStatus = registry ? 'ready' : 'loading', providerRegions }) {
   assertCompleteRoutes(modelRoutes)
+  if (configurationMode === 'advanced' || Object.values(modelRoutes).some(route => route.accessProvider === 'custom')) {
+    const readinessMessage = registryReadinessMessage(registryStatus)
+    if (readinessMessage) throw new Error(readinessMessage)
+  }
   if (Object.values(modelRoutes).some(route=>route.accessProvider === 'custom') && !(registry?.universalApiContractVersion >= 1)) throw new Error('当前后端尚未支持通用 API 接入；配置已保留。')
   if(Object.values(modelRoutes).some(r=>r.accessProvider==='custom'&&(r.custom?.imageTool||r.custom?.azure||r.custom?.protocol?.startsWith('bedrock-')||r.custom?.auth==='bearer-expiring'))&&!(registry?.universalExtensionsVersion>=1))throw new Error('当前后端尚未支持此图像工具或云接口扩展；草稿已保留，请升级后端。')
   const explicitRoutesSupported = Number(registry?.routeContractVersion || 0) >= 1

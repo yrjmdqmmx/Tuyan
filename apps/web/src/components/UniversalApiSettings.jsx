@@ -1,3 +1,4 @@
+import ModelRegistryNotice from './ModelRegistryNotice.jsx'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import {useEffect, useRef, useState} from 'react'
 import {Check, Copy, Download, Loader2, Search, ShieldCheck} from 'lucide-react'
@@ -149,13 +150,13 @@ export function UniversalRole({canCopyMain = true, canCopyKey = false, savedStat
   </fieldset>
 }
 
-export default function UniversalApiSettings({selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, savedStatus, onOpenLogin, renderThinkingSettings,thinkingSettings,onImportThinking,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
+export default function UniversalApiSettings({registryStatus = 'ready', onRetryRegistry, selectedRoles = Object.keys(roles), compact = false, canCopyMain = true, savedStatus, onOpenLogin, renderThinkingSettings,thinkingSettings,onImportThinking,drafts,keys,onChange,onKeyChange,onCopy,onSave,apiBase,health,contractSupported}) {
   const { t } = useAppLocale()
   const [saved,setSaved]=useState('')
   const canCopyKey=Boolean(keys.main?.apiKey?.trim())&&['protocol','baseUrl','auth'].every(k=>keys.main[k]===drafts.main.custom[k])
   return <section className="universal-api-settings" aria-label={t("通用 API 接入")}>
     {!compact && <p className="universal-intro">{t("接入地址决定服务渠道，API 协议决定请求格式，模型 ID 决定实际型号。各角色可复用接入信息。")}</p>}
-    {!contractSupported&&<p className="universal-status error" role="alert">{t("当前后端暂不支持通用 API，配置已保留，请稍后重试。")}</p>}
+    <ModelRegistryNotice status={registryStatus} supported={contractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端暂不支持通用 API，配置已保留，请稍后重试。" />
     {!compact && <details className="universal-privacy"><summary><ShieldCheck size={15}/>{t("密钥与验证说明")}</summary><p>{t("密钥仅留在当前页面；恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。地址或协议改变后需重新填密钥。保存配置不会保存密钥。")}</p><p>{t("配置校验、目录获取、真实调用是三个不同状态。本页检查不会触发付费生成。")}</p></details>}
     {selectedRoles.map(role=><UniversalRole canCopyKey={canCopyKey} savedStatus={savedStatus} onOpenLogin={onOpenLogin} canCopyMain={canCopyMain} renderThinkingSettings={renderThinkingSettings} thinking={thinkingSettings?.roles?.[role]} onImportThinking={onImportThinking} key={role} role={role} draft={drafts[role]} credential={keys[role]} onChange={patch=>{onChange(role,patch);setSaved('')}} onKeyChange={value=>onKeyChange(role,value)} onCopy={includeKey=>onCopy(role,'main',includeKey)} apiBase={apiBase} health={health} contractSupported={contractSupported}/>)}
     {!compact && <button type="button" className="universal-button universal-save" onClick={()=>setSaved(onSave()?'配置已保存，未保存密钥或验证状态。':'浏览器存储不可用，配置仍保留在当前页面。')}>{t("保存到此浏览器（不含密钥）")}</button>}{saved&&<p className="universal-status neutral" role="status">{t(saved)}</p>}

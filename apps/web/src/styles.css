@@ -1756,6 +1756,7 @@ button {
 .mode-switch button.active::after { background: var(--sage); border-color: var(--sage); box-shadow: inset 0 0 0 2px var(--surface); }
 .mode-switch button:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
 
+.route-contract-status,
 .route-contract-warning {
   margin: 8px 0 0;
   padding: 9px 10px;
@@ -1766,6 +1767,12 @@ button {
   font-size: 12px;
   line-height: 1.5;
 }
+.route-contract-status {
+  color: var(--muted);
+  background: var(--surface);
+  border-color: var(--hairline-strong);
+}
+.route-contract-warning .universal-button { display: block; margin-top: 8px; max-width: 100%; white-space: normal; }
 
 .refine-settings-note {
   padding: 11px 12px;
