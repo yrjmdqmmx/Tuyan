@@ -6940,3 +6940,25 @@ test('Core identity actions fail closed with missing configuration or forged cre
     else process.env.PAPERBANANA_GATEWAY_TOKEN = previous
   }
 })
+
+test('cancelled admission is not acknowledged and a stale executor cannot overwrite the resumed job', async () => {
+  const legacy = await loadLegacy()
+  let terminalWrites = 0, executions = 0
+  const controller = legacy.createJobAdmissionController(
+    { maxActive: 1, maxPending: 2, maxPerOwner: 2, maxPerIp: 2 },
+    { execute: async () => { executions++; throw Object.assign(new Error('stale snapshot claim'), { executionClaimLost: true }) },
+      markFailed: async () => { terminalWrites++ }, logError: () => {} },
+  )
+  const task = { jobId: 'claimed-by-restarted-instance', kind: 'create', body: {}, routeSecrets: {} }
+  const cancelled = controller.reserve({ ownerKey: 'owner', ipKey: 'ip' })
+  assert.equal(cancelled.ok, true)
+  controller.cancel(cancelled)
+  assert.equal(controller.commit(cancelled, task), false)
+  assert.equal(executions, 0)
+  const next = controller.reserve({ ownerKey: 'owner', ipKey: 'ip' })
+  assert.equal(controller.commit(next, task), true)
+  await controller.drain()
+  assert.equal(executions, 1)
+  assert.equal(terminalWrites, 0)
+  assert.equal(controller.snapshot().active, 0)
+})

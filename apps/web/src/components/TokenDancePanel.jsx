@@ -101,9 +101,10 @@ export function TokenDanceRecovery({ job, controller: td, onResumed, onOpenAccou
   if (!job?.recovery) return null;
   if (job.status === 'running' || job.status === 'queued') return <p role="status">{t("原任务已恢复，正在复用已保存结果并继续生成。")}</p>;
   const recovery = job.recovery;
-  return <section className="tokendance-panel td-recovery" aria-label={t("任务恢复")}><strong>{t("任务及成功步骤已保存")}</strong><p>{recovery.message}</p>{recovery.channel === 'custom' && <p>{t("请先在服务商处处理余额或权限。若需更换密钥，在通用 API 设置中填写同一地址的新密钥，再继续原任务；恢复不会更改原模型与协议。")}</p>}
-    <div className="td-actions">{(!recovery.channel || recovery.channel === 'tokendance') && <button type="button" className="account-button" onClick={onOpenAccount}>{t("前往账户处理")}</button>}
-    {recovery.canResume && <button type="button" className="account-button account-button-primary" disabled={td.busy || (recovery.retryAt && Date.parse(recovery.retryAt) > Math.max(now, Date.now()))} onClick={() => td.perform(async () => { const result = await td.request((!recovery.channel || recovery.channel === 'tokendance') ? 'tokenDanceResume' : 'providerResume', { jobId: job.id, ...(recovery.channel === 'custom' && customKeys ? {apiKeys:{custom:customKeys}} : {}) }); await onResumed(result.jobId); })}>{t("从已完成步骤继续")}</button>}</div>
+  const unstarted = recovery.canResume && recovery.action === 'resume' && recovery.requestState === 'not_sent' && recovery.billingStatus === 'not_called';
+  return <section className="tokendance-panel td-recovery" aria-label={t("任务恢复")}><strong>{t(unstarted ? "原任务已保存" : "任务及成功步骤已保存")}</strong><p>{recovery.message}</p>{!unstarted && recovery.channel === 'custom' && <p>{t("请先在服务商处处理余额或权限。若需更换密钥，在通用 API 设置中填写同一地址的新密钥，再继续原任务；恢复不会更改原模型与协议。")}</p>}
+    <div className="td-actions">{!unstarted && (!recovery.channel || recovery.channel === 'tokendance') && <button type="button" className="account-button" onClick={onOpenAccount}>{t("前往账户处理")}</button>}
+    {recovery.canResume && <button type="button" className="account-button account-button-primary" disabled={td.busy || (recovery.retryAt && Date.parse(recovery.retryAt) > Math.max(now, Date.now()))} onClick={() => td.perform(async () => { const result = await td.request((!recovery.channel || recovery.channel === 'tokendance') ? 'tokenDanceResume' : 'providerResume', { jobId: job.id, ...(recovery.channel === 'custom' && customKeys ? {apiKeys:{custom:customKeys}} : {}) }); await onResumed(result.jobId); })}>{t(unstarted ? "继续原任务" : "从已完成步骤继续")}</button>}</div>
     <small>{t(recovery.canResume ? '恢复原任务会复用已保存的模型结果，不重复执行已完成调用。' : recovery.requestState === 'not_sent' ? '本次失败步骤未发起模型请求；成功步骤仍保留。请修正配置或输入，已有费用以渠道记录为准。' : '存在结果不确定的调用，自动重试已停止。请先核对所用渠道的调用记录与费用。')}</small>
     {td.error && <p role="alert">{td.error}</p>}
   </section>;

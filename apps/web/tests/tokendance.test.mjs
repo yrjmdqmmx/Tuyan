@@ -142,3 +142,20 @@ test('account entry keeps a failed balance explanation instead of clearing it wi
     assert.equal(screen.getByRole('button', { name: '重新授权' }).disabled, false);
   } finally { globalThis.fetch = original; }
 });
+
+test('an unstarted interrupted task explains saved admission and resumes only on explicit action', async () => {
+  const requested = [], resumed = [];
+  const td = controller({ async perform(fn) { return fn(); }, async request(action, body) { requested.push({action, body}); return {jobId: body.jobId}; } });
+  render(React.createElement(TokenDanceRecovery, { job: { id: 'queued-before-crash', status: 'failed', recovery: {
+    channel: 'custom', action: 'resume', canResume: true, requestState: 'not_sent', billingStatus: 'not_called',
+    message: '服务中断时原任务尚未开始；可继续原任务，无需重新提交。',
+  } }, controller: td, onResumed: id => resumed.push(id) }));
+  assert.ok(screen.getByText('原任务已保存'));
+  assert.ok(screen.getByText(/原任务尚未开始/));
+  assert.equal(screen.queryByText(/请先在服务商处处理余额/), null);
+  assert.equal(screen.queryByRole('button', {name: '前往账户处理'}), null);
+  assert.deepEqual(requested, [], 'viewing history must never resume automatically');
+  fireEvent.click(screen.getByRole('button', {name: '继续原任务'}));
+  await waitFor(() => assert.deepEqual(resumed, ['queued-before-crash']));
+  assert.deepEqual(requested, [{action: 'providerResume', body: {jobId: 'queued-before-crash'}}]);
+});

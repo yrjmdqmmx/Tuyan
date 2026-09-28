@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-09-27",
+  "asOf": "2026-09-28",
   "tuyan": {
     "id": "tuyan-next-universal-api-complete",
     "product": "tuyan",
@@ -77,6 +77,11 @@
       {
         "kind": "优化",
         "text": "导入前逐项比较配置和密钥解绑影响，展示有效限制及来源；任务记录可只读返回已有任务进度或详情。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "修复",
+        "text": "已登录生成与精修任务在确认排队前保存加密恢复快照；服务中断后可明确继续原任务，未知调用不重发，修正重启后一律重新提交的提示。",
         "state": "local-verified"
       }
     ]

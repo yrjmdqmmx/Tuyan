@@ -24,9 +24,9 @@ export async function reconcileInterruptedJobs(
     {
       $set: {
         status: 'failed',
-        error: 'Service restarted before this job completed. Retry the request.',
-        errorCode: 'RUNTIME_RESTARTED_RETRY',
-        retryable: true,
+        error: '服务曾中断，请查看原任务恢复状态；不要直接重复提交。',
+        errorCode: 'RUNTIME_INTERRUPTED_REVIEW',
+        retryable: false,
         completedAt: now,
         updatedAt: now,
       },

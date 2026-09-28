@@ -2,6 +2,16 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+## 2026-09-28 · 排队任务准入持久化与原任务恢复（仅本地待发布）
+
+- [修复记录](docs/operations/2026-09-28-durable-job-admission.md)：已登录 createJob/refineImage 在加密快照以 majority+journal 写入成功后才提交队列并确认接收；精修记录冻结后的输入。内部新增 `admissionVersion: 1`，原 Route/执行版本/步骤指纹保持，无新增 env。
+- 启动中断使用 `RUNTIME_INTERRUPTED_REVIEW` / `retryable=false`；新建排队任务在实例丢失后可明确恢复同一 ID，`recovery` 复用现有字段标明 `not_sent/not_called`。新增 `JOB_ADMISSION_NOT_STARTED` 仅表示准入前失败；快照失败不会发起模型请求。已有 unknown 调用永不因该修复自动重发。
+- [x] Core：生成/精修、账号检查、失败释放、实例归属、并发恢复一次、原参数/思考与凭据恢复；全量模拟回归与检查/构建通过。没有自动重启收费任务。
+- [x] Web：现有恢复入口适配“尚未开始”，只在主动点击时调用原任务恢复；非敏感设置及三角色契约未变。
+- [x] 小程序源码错误指引：TS/JS 同步新旧重启错误码，构建及 121 项测试通过；既有 `recovery` 字段无需扩展共享类型。未覆盖独立小程序工作树和微信副本。
+- [ ] 小程序原生恢复界面/真机验收与微信发布：沿用独立工作流，本轮未执行；Web 检查不代表原生已验收。
+- [ ] 生产上线与实机故障演练：没有推送、部署、生产重启或付费调用。v3.8.1 保持已发布状态，此修复列入下一版本待发布内容。
+
 ## 2026-09-27 · 下一版本通用 API 完整配置与思考适配（仅本地待发布）
 
 - 基于已发布 v3.8.1 + 本地 `1f2d41a` / `67f1cd6`，没有改写公开已发布日志。详见[契约、迁移与官方核查](docs/universal-api/2026-09-27/implementation.md)。

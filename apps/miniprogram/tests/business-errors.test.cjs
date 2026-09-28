@@ -34,6 +34,10 @@ for (const [businessCode, setting] of Object.entries(expectedSettings)) {
   assert.equal(businessErrorGuidance(toBusinessError(400, { businessCode })).setting, setting)
 }
 assert.match(businessErrorGuidance(toBusinessError(429, { businessCode: 'CAPACITY_LIMIT' })).message, /稍后重试/)
-assert.match(businessErrorGuidance(toBusinessError(503, { businessCode: 'RUNTIME_RESTARTED_RETRY' })).message, /重新提交/)
+for (const businessCode of ['RUNTIME_RESTARTED_RETRY', 'RUNTIME_INTERRUPTED_REVIEW']) {
+  const guidance = businessErrorGuidance(toBusinessError(503, { businessCode }))
+  assert.match(guidance.message, /查看原任务恢复状态/)
+  assert.notEqual(guidance.setting, 'retry')
+}
 
 console.log('business-errors.test.cjs passed')

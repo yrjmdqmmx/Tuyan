@@ -400,6 +400,8 @@
   "登录并连接后可查询充值记录": "Sign in and connect to view top-up history",
   "原任务已恢复，正在复用已保存结果并继续生成。": "Task resumed. Saved results are being reused to continue generation.",
   "任务恢复": "Task recovery",
+  "原任务已保存": "Original task saved",
+  "继续原任务": "Resume original task",
   "任务及成功步骤已保存": "Task and completed steps saved",
   "请先在服务商处处理余额或权限。若需更换密钥，在通用 API 设置中填写同一地址的新密钥，再继续原任务；恢复不会更改原模型与协议。": "Resolve balance or access issues with the provider first. To replace a key, enter a new one for the same endpoint in Custom API settings, then resume. The model and protocol are preserved.",
   "前往账户处理": "Open account",

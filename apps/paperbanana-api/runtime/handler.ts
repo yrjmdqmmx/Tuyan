@@ -184,6 +184,7 @@ type JobAdmissionConfig = {
 }
 type JobPrincipal = { ownerKey: string; ipKey: string }
 type AdmittedJobTask = {
+  admissionVersion?: 1
   jobId: string
   kind: 'create' | 'refine'
   body: CreateExecutionBody | RefineExecutionBody
@@ -500,6 +501,7 @@ export function createJobAdmissionController(
       try {
         await dependencies.execute(task)
       } catch (error: any) {
+        if (error?.executionClaimLost === true) return
         const safeTaskError = redactSecretText(
           error?.message || String(error),
           Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
@@ -570,11 +572,12 @@ export function createJobAdmissionController(
     },
     commit(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
       const entry = entries.get(reservation.id)
-      if (!entry || entry.committed) return
+      if (!entry || entry.committed) return false
       entry.committed = true
       entry.task = task
       if (entry.slot === 'active') launch(entry)
       else pump()
+      return true
     },
     cancel(reservation: { ok: true; id: number }) {
       const entry = entries.get(reservation.id)
@@ -3880,6 +3883,8 @@ async function universalApiCheck(body: any) {
 }
 
 type ProviderWorkflowHooks = {
+  prepare?(task: AdmittedJobTask): Promise<void>
+  cancelPrepared?(task: AdmittedJobTask): Promise<void>
   thinking?(): ThinkingSnapshotRole | undefined
   thinkingAvailable?(): boolean
   active?(): boolean
@@ -3902,7 +3907,7 @@ export async function resumeTokenDanceJob(task: any) {
   if (!reservation.ok) throw new TokenDanceError(reservation.code, reservation.error)
   try {
     await jobs.updateOne({ _id: task.jobId, userId: task.body.userId }, { $set: { status: 'queued', error: '', errorCode: '', failure: null, updatedAt: new Date(), completedAt: null } })
-    jobAdmission.commit(reservation, task)
+    if (!jobAdmission.commit(reservation, task)) throw new TokenDanceError(409, '账号当前不可接收任务。')
     return { code: 0, jobId: task.jobId }
   } catch (error) { jobAdmission.cancel(reservation); throw error }
 }
@@ -5095,9 +5100,8 @@ async function createJob(body: CreateJobBody, ctx: CoreContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    // The persisted/execution body is secret-free. Only credentials for route
-    // providers reachable by this job remain in the in-memory admission closure.
-    startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
+    // Persist the encrypted recovery snapshot before acknowledging admission.
+    await startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
     committed = true
 
     return ok({ jobId, status: 'queued' })
@@ -5333,7 +5337,7 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
         return fail('精修参考图或遮罩保存失败，未发起模型请求。',503)
       }
     }
-    startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
+    await startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
     committed = true
 
     return ok({
@@ -5720,7 +5724,30 @@ export async function resolveReferenceImageMode(body: CreateExecutionBody & { re
   }
 }
 
-function startCreateJobInBackground(
+async function prepareAndCommitJob(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
+  try {
+    await providerWorkflow.prepare?.(task)
+    if (!(await ensureAccountAcceptingWork(task.body)) || !jobAdmission.commit(reservation, task)) {
+      throw new TokenDanceError(409, '账号当前不可接收任务，未发起模型请求。', undefined, 0, false, 'not_sent')
+    }
+  } catch (error: any) {
+    // Persistence can fail after writing but before acknowledging the write.
+    // Only our unstarted snapshot may be removed; never touch a resumed owner.
+    try { await providerWorkflow.cancelPrepared?.(task) } catch { /* DB outage: keep the encrypted snapshot for reconciliation. */ }
+    const message = error?.name === 'TokenDanceError' && [401, 409].includes(error.status)
+      ? '账号当前不可接收任务，未发起模型请求。' : '任务恢复信息未能保存，未开始模型调用；请稍后查看任务记录。'
+    const cause = new TokenDanceError(error?.name === 'TokenDanceError' && [401, 409].includes(error.status) ? error.status : 503, message, undefined, 0, false, 'not_sent')
+    const failure = { ...publicExecutionFailure(cause), code: 'JOB_ADMISSION_NOT_STARTED', reason: message, message, suggestion: '检查服务恢复后再操作；请先查看原任务记录。' }
+    try {
+      await jobs.updateOne({ _id: task.jobId, status: 'queued' }, { $set: {
+        status: 'failed', error: message, errorCode: failure.code, failure, completedAt: new Date(), updatedAt: new Date(),
+      } })
+    } catch { /* The unacknowledged job is reconciled on restart when Mongo returns. */ }
+    throw cause
+  }
+}
+
+async function startCreateJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: CreateExecutionBody,
@@ -5728,7 +5755,7 @@ function startCreateJobInBackground(
   numCandidates: number,
   maxCriticRounds: number,
 ) {
-  jobAdmission.commit(reservation, {
+  await prepareAndCommitJob(reservation, {
     jobId,
     kind: 'create',
     body,
@@ -5738,13 +5765,13 @@ function startCreateJobInBackground(
   })
 }
 
-function startRefineJobInBackground(
+async function startRefineJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: RefineExecutionBody,
   routeSecrets: RouteSecrets,
 ) {
-  jobAdmission.commit(reservation, {
+  await prepareAndCommitJob(reservation, {
     jobId,
     kind: 'refine',
     body,

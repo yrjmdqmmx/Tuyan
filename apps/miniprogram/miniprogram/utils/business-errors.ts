@@ -55,7 +55,8 @@ export function businessErrorGuidance(error: BusinessError): { setting: string; 
     REFERENCE_SELECTION_LIMIT: { setting: 'reference-library', message: '参考图片最多选择 10 项。' },
     REFINE_RESOLUTION_UNSUPPORTED: { setting: 'refine-resolution', message: '当前图像模型不支持这个精修清晰度。' },
     REFINE_ASPECT_RATIO_UNSUPPORTED: { setting: 'refine-aspect-ratio', message: '当前图像模型不支持这个精修比例。' },
-    RUNTIME_RESTARTED_RETRY: { setting: 'retry', message: '服务刚刚重启，请检查输入后重新提交。' },
+    RUNTIME_RESTARTED_RETRY: { setting: 'account', message: '服务曾中断，请查看原任务恢复状态；不要直接重复提交。' },
+    RUNTIME_INTERRUPTED_REVIEW: { setting: 'account', message: '服务曾中断，请查看原任务恢复状态；不要直接重复提交。' },
   }
   if (mapping[error.businessCode]) return mapping[error.businessCode]
   if (error.httpStatus === 429) return { setting: 'retry', message: '当前生成容量已满，请稍后重试。' }

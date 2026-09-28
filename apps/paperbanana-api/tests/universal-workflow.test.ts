@@ -165,3 +165,44 @@ test('accepted custom job continues without browser polling; reopening reads the
   assert.equal(f.calls.filter(x=>x.url.includes('/images/')).length,1)
  }finally{release();await f.legacy.drainJobAdmission();await f.close()}
 })
+
+ test('queued createJob is acknowledged only after its encrypted recovery snapshot is saved',async()=>{
+ let release!:()=>void, started!:()=>void
+ const blocked=new Promise<void>(resolve=>{release=resolve}), entered=new Promise<void>(resolve=>{started=resolve})
+ const f=await fixture(async()=>{started();await blocked})
+ try {
+  f.legacy.configureJobAdmission({maxActive:1,maxPending:2,maxPerOwner:3,maxPerIp:3})
+  const routes={main:route('main'),vision:route('vision'),image:route('image')}
+  const first=await f.post(body(routes));assert.equal(first.data.code,0)
+  await entered
+  const second=await f.post(body(routes));assert.equal(second.data.code,0,JSON.stringify(second.data))
+  const saved=await f.db.collection('paperbanana_provider_executions').findOne({_id:second.data.jobId})
+  assert.equal(saved.state,'queued');assert.equal(saved.admissionVersion,1)
+  assert.equal(await f.db.collection('paperbanana_provider_steps').countDocuments({jobId:second.data.jobId}),0)
+  const snapshot=f.tokenDanceService!.cipher!.open(saved.secret,second.data.jobId)
+  assert.deepEqual(snapshot.task.body.modelRoutes,routes)
+  assert.equal(snapshot.task.kind,'create');assert.equal(snapshot.task.jobId,second.data.jobId)
+  assert.equal(JSON.stringify(saved).includes('fixture-custom-key'),false)
+  release();await f.legacy.drainJobAdmission()
+  assert.equal((await f.post({action:'getJob',jobId:second.data.jobId})).data.job.status,'succeeded')
+ }finally{release();await f.close()}
+})
+
+ test('snapshot persistence failure refuses admission before model calls and frees queue capacity',async()=>{
+ const f=await fixture()
+ try {
+  const original=f.workflow!.prepare
+  f.legacy.configureProviderWorkflow({...f.workflow!,prepare:async(task:any)=>{await original(task);throw new Error('injected write acknowledgement failure fixture-secret')}})
+  const routes={main:route('main'),vision:route('vision'),image:route('image')}
+  const rejected=await f.post(body(routes));assert.equal(rejected.data.code,503,JSON.stringify(rejected))
+  assert.equal(rejected.data.jobId,undefined);assert.match(rejected.data.error,/未开始模型调用/)
+  assert.equal(JSON.stringify(rejected).includes('fixture-secret'),false);assert.equal(f.calls.length,0)
+  assert.equal(await f.db.collection('paperbanana_provider_executions').countDocuments({}),0)
+  const failed=(await f.db.collection('paperbanana_jobs').find({}).toArray())[0]
+  assert.equal(failed.status,'failed');assert.equal(failed.failure.requestState,'not_sent');assert.equal(failed.failure.billingStatus,'not_called')
+  f.legacy.configureJobAdmission({maxActive:1,maxPending:1,maxPerOwner:1,maxPerIp:1})
+  f.legacy.configureProviderWorkflow(f.workflow!)
+  const accepted=await f.post(body(routes));assert.equal(accepted.data.code,0);await f.legacy.drainJobAdmission()
+  assert.equal((await f.post({action:'getJob',jobId:accepted.data.jobId})).data.job.status,'succeeded')
+ }finally{await f.close()}
+})

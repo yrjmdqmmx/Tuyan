@@ -125,3 +125,37 @@ for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-imag
     assert.equal(submissions(),1);assert.equal(f.tokenDanceCalls.length,0)
   } finally {await f.close()}
 })
+
+test('refine admission saves frozen source, reference and mask paths before acknowledging; failed persistence makes no call', async()=>{
+  const f=await createRefineRuntime({tokenDance:true})
+  try {
+    const source=await upload(f), reference=await upload(f,await sharp(f.image).negate().png().toBuffer())
+    const mask=await upload(f,await sharp({create:{width:120,height:80,channels:3,background:'#fff'}}).png().toBuffer())
+    let fail=true, checked=0
+    f.legacy.configureProviderWorkflow({...f.workflow!,prepare:async(task:any)=>{
+      const callsBefore=f.providerCalls.length
+      await f.workflow!.prepare(task)
+      const row=await f.db.collection('paperbanana_provider_executions').findOne({_id:task.jobId})
+      const saved=f.tokenDanceService!.cipher!.open(row.secret,task.jobId).task
+      assert.equal(saved.kind,'refine')
+      assert.match(saved.body.sourceImageObjectKey,new RegExp('^'+task.jobId+'/'))
+      const paths=[saved.body.sourceImageObjectKey,...(saved.body.refineInputs.references||[]).map((ref:any)=>ref.objectKey),saved.body.refineInputs.mask?.objectKey].filter(Boolean)
+      for (const path of paths) {assert.match(path,new RegExp('^'+task.jobId+'/'));assert.ok(f.objects.has(path))}
+      assert.equal(f.providerCalls.length,callsBefore)
+      checked++
+      if (fail) throw new Error('fixture snapshot write failed')
+    }})
+    const withReference=request('fal','bria/fibo-edit-1.5/edit',source.objectKey,{version:1,references:[{objectKey:reference.objectKey,purpose:'color'}]})
+    const rejected=await f.post(withReference)
+    assert.equal(rejected.data.code,503,JSON.stringify(rejected))
+    assert.equal(f.providerCalls.length,0)
+    assert.equal(await f.db.collection('paperbanana_provider_executions').countDocuments({}),0)
+    fail=false
+    for (const body of [withReference,request('fal','bria/fibo-edit-1.5/edit',source.objectKey,{version:1,mask:{objectKey:mask.objectKey}})]) {
+      const accepted=await f.post(body);assert.equal(accepted.data.code,0,JSON.stringify(accepted))
+      await f.legacy.drainJobAdmission()
+      assert.equal((await f.post({action:'getJob',jobId:accepted.data.jobId})).data.job.status,'succeeded')
+    }
+    assert.equal(checked,3)
+  }finally{await f.close()}
+})

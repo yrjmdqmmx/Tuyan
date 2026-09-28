@@ -8,7 +8,7 @@ import { auditedChannelContract } from '../../../packages/api/src/audited-channe
 import type { createTokenDanceService } from './tokendance-service.js'
 
 type ConnectionService = ReturnType<typeof createTokenDanceService>
-type Task = { jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
+type Task = { admissionVersion?: 1; jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
 type Context = { task: Task; scope: string; counts: Map<string, number>; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image' }
 const version = 'tokendance-workflow-v2-reference-budget'
 const isReferenceValidationError = isLocalInputFailure
@@ -96,20 +96,48 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       throw error
     }
   }
+  function taskChannel(task: Task) {
+    return managedChannel(task) || Object.keys(task.routeSecrets).find(channel => Boolean(task.routeSecrets[channel])) || task.body.provider || 'tokendance'
+  }
+  async function saveSnapshot(task: Task) {
+    if (!service.cipher) throw new TokenDanceError(503, '任务恢复加密服务尚未配置，未发起模型请求。', undefined, 0, false, 'not_sent')
+    await service.accepting(task.body.userId)
+    const secrets = { ...task.routeSecrets }; delete secrets.tokendance
+    await executions.insertOne({ _id: task.jobId, userId: task.body.userId, state: 'queued', instanceId, version,
+      admissionVersion: task.admissionVersion, channel: taskChannel(task), needsTokenDance: Boolean(task.routeSecrets.tokendance),
+      secret: service.cipher.seal({ task: { ...task, routeSecrets: undefined }, secrets }, task.jobId), expiresAt: expires() },
+    { writeConcern: { w: 'majority', j: true, wtimeoutMS: 10_000 } })
+    await acceptingData(task.body.userId)
+  }
+  // New authenticated jobs must be recoverable BEFORE admission acknowledges
+  // them. Legacy direct run() callers retain their historical checkpoint path.
+  async function prepare(task: Task) {
+    if (!isManaged(task) && (!task.body.userId || task.body.userId.startsWith('guest:'))) return
+    task.admissionVersion = 1
+    await saveSnapshot(task)
+  }
+  async function cancelPrepared(task: Task) {
+    await executions.deleteOne({ _id: task.jobId, userId: task.body.userId, instanceId, admissionVersion: 1, state: 'queued' })
+  }
   async function run(task: Task, operation: () => Promise<void>) {
-    if (!isManaged(task)) return operation()
+    let old = await executions.findOne({ _id: task.jobId })
+    if (!old && !task.admissionVersion && !isManaged(task)) return operation()
     const userId = task.body.userId
-    if (!service.cipher) throw new TokenDanceError(503, '任务恢复加密服务尚未配置，未发起模型请求。')
+    if (!service.cipher) throw new TokenDanceError(503, '任务恢复加密服务尚未配置，未发起模型请求。', undefined, 0, false, 'not_sent')
     await service.accepting(userId)
     const owner = randomUUID()
-    const old = await executions.findOne({ _id: task.jobId })
     if (!old) {
-      const secrets = { ...task.routeSecrets }; delete secrets.tokendance
-      await executions.insertOne({ _id: task.jobId, userId, state: 'queued', instanceId, version, channel: managedChannel(task) || 'tokendance', needsTokenDance: Boolean(task.routeSecrets.tokendance), secret: service.cipher.seal({ task: { ...task, routeSecrets: undefined }, secrets }, task.jobId), expiresAt: expires() })
+      // Never recreate an expired/lost admitted snapshot as a fresh paid run.
+      if (task.admissionVersion) throw new TokenDanceError(409, '原任务恢复快照已过期或缺失，未发起新的模型请求。', 'review_request', 0, false, 'not_sent')
+      await saveSnapshot(task)
+      old = await executions.findOne({ _id: task.jobId })
     }
     await acceptingData(userId)
-    const claimed = await executions.findOneAndUpdate({ _id: task.jobId, userId, version, state: 'queued' }, { $set: { state: 'running', owner, leaseUntil: new Date(now() + 45_000) } }, { returnDocument: 'after' })
-    if (!claimed) throw new TokenDanceError(409, '原任务正在运行或不能恢复。')
+    const claimed = await executions.findOneAndUpdate({ _id: task.jobId, userId, version, instanceId, state: 'queued', expiresAt: { $gt: new Date(now()) } },
+      { $set: { state: 'running', owner, startedAt: new Date(now()), leaseUntil: new Date(now() + 45_000) } }, { returnDocument: 'after' })
+    // A stale in-memory entry must neither execute nor overwrite the current
+    // owner's job state after reconciliation/resume has claimed this snapshot.
+    if (!claimed) throw Object.assign(new TokenDanceError(409, '原任务正在运行或不能恢复。'), { executionClaimLost: true })
     const heartbeat = setInterval(() => { void executions.updateOne({ _id: task.jobId, owner, state: 'running' }, { $set: { leaseUntil: new Date(now() + 45_000) } }).catch(() => {}) }, 10_000)
     heartbeat.unref()
     try {
@@ -127,7 +155,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       // Keep all completed checkpoints, including on local validation failure.
       // Inputs are immutable: a deterministic bad input needs correction, not an
       // automatic replay. No old unknown claim is made safe by a later error.
-      const recovery = { channel: managedChannel(task) || 'tokendance', canResume: !unsafe && !local && Boolean(error?.recoveryAction) && error.recoveryAction !== 'review_request',
+      const recovery = { channel: old.channel || taskChannel(task), canResume: !unsafe && !local && Boolean(error?.recoveryAction) && error.recoveryAction !== 'review_request',
         action: unsafe ? 'review_request' : local ? 'change_input' : error.recoveryAction || 'check_request',
         message: local ? '本步骤在请求发出前校验失败，请调整输入或等待修复。已成功步骤保留；本次失败步骤未发起模型调用。'
           : unsafe ? '调用结果及费用尚未确认，请核对渠道记录；自动重试已停止，成功步骤已保留。' : failure.message,
@@ -150,15 +178,27 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
       return
     }
+    if ((!row.secret || row.expiresAt?.getTime() <= now()) && !(row.state === 'running' && (row.leaseUntil?.getTime() || 0) > now())) {
+      const recovery = { channel: row.channel || 'tokendance', canResume: false, action: 'review_request',
+        message: '原任务恢复快照已过期或缺失，不能继续执行；请核对已有结果及调用记录。', expiresAt: row.expiresAt }
+      const changed = await executions.updateOne({ _id: jobId, state: row.state, instanceId: row.instanceId }, { $set: { state: 'blocked', recovery } })
+      if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
+      return
+    }
     if (row.state === 'blocked') return
     if (row.state === 'queued' ? row.instanceId === instanceId : (row.leaseUntil?.getTime() || 0) > now()) return
     const uncertain = await steps.countDocuments({ jobId, state: { $in: ['running', 'unknown'] } })
-    const recovery = { channel: row.channel || 'tokendance', canResume: uncertain === 0, action: uncertain ? 'review_request' : 'resume', message: uncertain ? '服务中断时存在未确认调用，请核对记录。' : '服务曾中断，可从已保存步骤恢复。', expiresAt: row.expiresAt }
+    const neverStarted = row.admissionVersion === 1 && !row.startedAt && await steps.countDocuments({ jobId }) === 0
+    const recovery = { channel: row.channel || 'tokendance', canResume: uncertain === 0, action: uncertain ? 'review_request' : 'resume',
+      message: uncertain ? '服务中断时存在未确认调用，请核对记录。'
+        : neverStarted ? '服务中断时原任务尚未开始；可继续原任务，无需重新提交。' : '服务曾中断，可从已保存步骤恢复。',
+      ...(uncertain ? { requestState: 'unknown', billingStatus: 'unknown' }
+        : neverStarted ? { requestState: 'not_sent', billingStatus: 'not_called', billingMessage: '此任务尚未发起模型调用。' } : {}), expiresAt: row.expiresAt }
     const updated = await executions.updateOne({ _id: jobId, state: row.state, instanceId: row.instanceId, leaseUntil: row.leaseUntil }, { $set: { state: 'blocked', recovery } })
     if (updated.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery } })
   }
   return {
-    run, call, reconcile, active:()=>Boolean(context.getStore()),
+    prepare, cancelPrepared, run, call, reconcile, active:()=>Boolean(context.getStore()),
     thinkingAvailable: () => Boolean(service.cipher),
     thinking() { const current = context.getStore(); return current?.thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole] : undefined },
     async pending() {
@@ -176,7 +216,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     },
     async reconcileUser(userId: string) {
       if (!userId) return
-      const active = await executions.find({ userId, state: { $in: ['running', 'queued'] } }).limit(100).toArray()
+      const active = await executions.find({ userId, $or: [{ state: { $in: ['running', 'queued'] } }, { state: 'blocked', 'recovery.canResume': true, expiresAt: { $lte: new Date(now()) } }] }).limit(100).toArray()
       for (const row of active) await reconcile(row._id)
     },
     scope<T>(name: string, operation: () => Promise<T>) {
