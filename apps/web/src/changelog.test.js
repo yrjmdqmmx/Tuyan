@@ -108,7 +108,7 @@ test('direct, trailing-slash, static and base-path routes remain valid', () => {
 test('overview merges every public entry once and groups confirmed dates in descending order', () => {
   const before = structuredClone(data)
   const groups = groupPublishedUpdates(data)
-  assert.equal(groups[0].date, '2026-09-27')
+  assert.equal(groups[0].date, '2026-09-28')
   assert.deepEqual(groups.map(group => group.date), [...new Set(groups.map(group => group.date))].sort().reverse())
   const ids = groups.flatMap(group => group.items.map(item => item.entry.id))
   assert.equal(new Set(ids).size, 27)

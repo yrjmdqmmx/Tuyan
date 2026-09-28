@@ -27,7 +27,7 @@ test('first load selects the overview and shows every public update in date grou
   assert.equal(within(overview).getAllByRole('article').length, 27)
   assert.equal(document.querySelectorAll('[id="date-2026-09-07"]').length, 1)
   assert.equal(within(screen.getByRole('region', { name: '2026-09-07' })).getAllByRole('article').length, 5)
-  assert.equal(overview.querySelector('time').dateTime, '2026-09-27')
+  assert.equal(overview.querySelector('time').dateTime, '2026-09-28')
   assert.ok(screen.getByRole('heading', { name: 'Tuyan v3.7.1' }))
   assert.ok(screen.getByRole('heading', { name: 'Tuyan Benchmark v2.5' }))
   assert.ok(screen.getByRole('heading', { name: 'OpenAcad v1.1.0' }))
