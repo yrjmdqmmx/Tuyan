@@ -8,6 +8,8 @@ import WorkbenchHeader from './components/WorkbenchHeader';
 import PageNavigation from './components/PageNavigation';
 import GenerationSummaryDetails from './components/GenerationSummaryDetails';
 import useVisualViewport from './hooks/useVisualViewport';
+import useBackendRegistry from './hooks/useBackendRegistry';
+import { registryReadinessMessage } from './lib/modelRouting.js';
 import {copyUniversalConnection} from './lib/universalPresentation.js';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
 import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,serializeUniversalDrafts, hasSavedUniversalConfiguration,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
@@ -19,7 +21,7 @@ import { TokenDanceRecovery, TokenDanceStatus } from './components/TokenDancePan
 import AccountPage from './components/AccountPage';
 import TokenDancePricing from './components/admin/TokenDancePricing';
 import { workspaceEntry, selectWorkspaceEntry } from './lib/adminEntry';
-import { presentRegistryModel, sortModelsNewestFirst, orderModelChannels } from './lib/modelPresentation'
+import { orderModelChannels } from './lib/modelPresentation'
 import { minimaxRegion, regionApiKeySlot, selectRegionApiKeys, registryForRegions } from './lib/providerRegions'
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -37,10 +39,8 @@ import {
   adminStatusRequest,
   abortReferenceUploadRequest,
   createJobRequest,
-  fetchBackendHealth,
   getJobRequest,
   modelCapabilityRequest,
-  modelRegistryRequest,
   optimizeInputsRequest,
   providerAccountCatalogRequest,
   finalizeReferenceUploadRequest,
@@ -178,6 +178,13 @@ export default function App() {
   const [generationFocusSetting, setGenerationFocusSetting] = useState('');
   const [inputOptimizationCredentialProvider, setInputOptimizationCredentialProvider] = useState('');
   const [apiBase, setApiBase] = useState(() => API_BASE_DEFAULT || officialApiBase(globalThis.location?.origin));
+  const apiBaseNormalized = useMemo(() => {
+    try {
+      return validateApiBase(apiBase, CUSTOM_API_BASE_ENABLED);
+    } catch {
+      return officialApiBase(globalThis.location?.origin);
+    }
+  }, [apiBase]);
   const [restoredRouting] = useState(() => loadRoutingSelection(providerDefaultRoutes(DEFAULT_WEB_PROVIDER, null, PROVIDERS), loadUniversalDrafts()));
   const [configurationMode, setConfigurationMode] = useState(LOCAL_CONSUMPTION_TEST ? 'advanced' : restoredRouting.mode);
   const [routingSaved, setRoutingSaved] = useState('');
@@ -241,13 +248,10 @@ export default function App() {
   const [aspectRatio, setAspectRatio] = useState('16:9');
   const [numCandidates, setNumCandidates] = useState(1);
   const [maxCriticRounds, setMaxCriticRounds] = useState(LOCAL_CONSUMPTION_TEST ? 0 : 1);
-  const [health, setHealth] = useState(null);
-  const [healthError, setHealthError] = useState('');
-  const [rawModelRegistry, setModelRegistry] = useState(null);
+  const { health, healthError, registry: rawModelRegistry, registryStatus, retry: retryModelRegistry } = useBackendRegistry(apiBaseNormalized);
   const [providerRegions, setProviderRegions] = useState({ minimax: 'global' });
   const modelRegistry = useMemo(() => registryForRegions(rawModelRegistry, providerRegions), [rawModelRegistry, providerRegions]);
   const apiKeys = useMemo(() => ({...selectRegionApiKeys(apiKeyRing, providerRegions), custom:customEnvelope}), [apiKeyRing, providerRegions, customEnvelope]);
-  const [modelRegistryRetryNonce, setModelRegistryRetryNonce] = useState(0);
   const [mock, setMock] = useState(false);
   const [currentJobId, setCurrentJobId] = useState('');
   const [job, setJob] = useState(null);
@@ -288,13 +292,6 @@ export default function App() {
   const currentUser = AUTH_ENABLED ? authSession.session?.user : null;
   const isAdmin = Boolean(currentUser?.id && adminIdentity === currentUser.id);
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
-  const apiBaseNormalized = useMemo(() => {
-    try {
-      return validateApiBase(apiBase, CUSTOM_API_BASE_ENABLED);
-    } catch {
-      return officialApiBase(globalThis.location?.origin);
-    }
-  }, [apiBase]);
   const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
   const watcha = useWatcha(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {
     await authSession.refresh();
@@ -437,6 +434,7 @@ export default function App() {
   const refineSourcePolicyIssue = activeRefineUploadLimits?.submissionPolicy
     ? referenceModelDimensionsError(refineSource, activeRefineUploadLimits.submissionPolicy) : '';
   const refineSubmitHint = !authReady ? '请先登录，再提交精修。'
+    : isAdvancedMode && registryReadinessMessage(registryStatus) ? registryReadinessMessage(registryStatus)
     : refineRunning ? '正在处理当前精修，请等待完成。'
     : ['validating', 'uploading', 'checking'].includes(refineUpload.status) ? '请等待原图上传与校验完成。'
     : refineReferences.busy ? '请等待参考图检查或上传完成。'
@@ -448,44 +446,6 @@ export default function App() {
     : missingCredentialProviders.length ? '请在精修设置中填写所需接入密钥。'
     : refineInstruction.trim().length < 3 ? '请填写至少 3 个字符的精修指令。'
     : refineInstruction.length > 2000 ? '精修指令不能超过 2000 个字符。' : '';
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchBackendHealth(apiBaseNormalized)
-      .then((data) => {
-        if (!cancelled) {
-          setHealth(data);
-          setHealthError('');
-        }
-      })
-      .catch((healthRequestError) => {
-        if (!cancelled) {
-          setHealth(null);
-          setHealthError(healthRequestError?.message || '后端健康检查失败');
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [apiBaseNormalized]);
-
-  useEffect(() => {
-    if (!health) return undefined;
-    let cancelled = false;
-    modelRegistryRequest(apiBaseNormalized, health)
-      .then((registry) => {
-        if (cancelled) return;
-        setModelRegistry({ ...registry, providers: Object.fromEntries(Object.entries(registry.providers || {}).map(([id, entry]) => [id, { ...entry, models: sortModelsNewestFirst(entry.models.map((model) => presentRegistryModel(id, model))) }])) });
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setModelRegistry(null);
-        }
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [apiBaseNormalized, health, modelRegistryRetryNonce]);
 
   useEffect(() => {
     if (!health) return undefined;
@@ -503,12 +463,6 @@ export default function App() {
   }, [apiBaseNormalized, health]);
 
 
-
-  useEffect(() => {
-    if (!health) return undefined;
-    const timer = setInterval(() => setModelRegistryRetryNonce(value => value + 1), 60_000);
-    return () => clearInterval(timer);
-  }, [health]);
 
   // provider / 图像生成模型变化时，若当前清晰度不再被支持则收敛到第一档。
   useEffect(() => {
@@ -1140,7 +1094,7 @@ export default function App() {
     if (referenceSelectionIssue) { setReferenceUploadError(referenceSelectionIssue); return; }
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, registryStatus, providerRegions });
       Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, createRouteRoles, 'generation'));
     } catch (routingError) {
       setGenerationFocusSetting('configuration-mode');
@@ -1379,7 +1333,7 @@ export default function App() {
     }
     let modelSubmission;
     try {
-      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, providerRegions });
+      modelSubmission = buildModelSubmission({ configurationMode, modelRoutes: activeModelRoutes, registry: modelRegistry, registryStatus, providerRegions });
       Object.assign(modelSubmission, buildThinkingSubmission(thinkingSettings, modelRegistry, refineRouteRoles, 'editing'));
     } catch (routingError) {
       setRefineError(routingError.message);
@@ -1462,7 +1416,7 @@ export default function App() {
           universalDraftFeedback(draft,role).tone === 'success' ? '结构完整' : '待完善配置',
           universalKeys[role]?.apiKey?.trim() ? '密钥已填写 · 未验证' : '未填写密钥',
         ].join(' · ')]))}
-        renderUniversalSettings={role => <UniversalApiSettings renderThinkingSettings={renderThinkingSettings} thinkingSettings={thinkingSettings} onImportThinking={changeThinking} savedStatus={configurationSaveStatus} onOpenLogin={()=>{setShowGenerationSettings(false);setShowAuthPanel(true)}} selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+        renderUniversalSettings={role => <UniversalApiSettings renderThinkingSettings={renderThinkingSettings} thinkingSettings={thinkingSettings} onImportThinking={changeThinking} savedStatus={configurationSaveStatus} onOpenLogin={()=>{setShowGenerationSettings(false);setShowAuthPanel(true)}} selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} registryStatus={registryStatus} onRetryRegistry={retryModelRegistry} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
           onChange={(role,patch)=>{setRoutingSaved('');const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
           onCopy={(role,source,includeKey)=>{setRoutingSaved('');const result=copyUniversalConnection(universalDrafts[role],universalDrafts[source],universalKeys[source],includeKey);setUniversalDrafts(current=>({...current,[role]:result.draft}));if(includeKey||result.clearKey)setUniversalKeys(current=>({...current,[role]:result.copiedKey}));}}
@@ -1478,6 +1432,8 @@ export default function App() {
         modelRoutes={activeModelRoutes}
         onRouteChange={handleModelRouteChange}
         modelRegistry={modelRegistry}
+        registryStatus={registryStatus}
+        onRetryRegistry={retryModelRegistry}
         providerConfigs={PROVIDERS}
         outputFormat={workspaceTab === 'refine' ? 'png' : outputFormat}
         executionRouteRoles={credentialRouteRoles}
@@ -1515,7 +1471,7 @@ export default function App() {
             ? <div className="plot-note svg-output-note">{t("SVG 由主模型直接生成；图像路线仍保留在完整路由中，但本任务不会要求其 Key。")}</div>
             : <Select label={t("输出清晰度")} value={imageSize} onChange={setImageSize} options={resolutionOptions} />}
         </div>
-        <AspectRatioPicker emptyMessage={t(activeModelRoutes.image.accessProvider === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined)} label={t("画面比例")} value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
+        <AspectRatioPicker emptyMessage={t(registryReadinessMessage(registryStatus) || (activeModelRoutes.image.accessProvider === 'custom' ? !universalDrafts.image.modelId.trim() ? '配置图像模型后可选择画面比例。' : '确认图像模型的能力与尺寸映射后可选择画面比例。' : undefined))} label={t("画面比例")} value={aspectRatio} onChange={setAspectRatio} options={generationAspectRatioOptions} compact />
 
         {!isAdvancedMode ? (
         <div className="default-summary" aria-label={t("默认生成配置")}>

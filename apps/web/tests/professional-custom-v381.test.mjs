@@ -79,7 +79,7 @@ for(const missingTokenDance of [false,true])test(`custom sorts first without cha
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:registry}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App))
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
- await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning')),false))
+ await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning, .route-contract-status')),false))
  for(const label of ['主模型','视觉模型','图像生成模型']){
   const trigger=screen.getByRole('button',{name:label,exact:true});assert.match(trigger.textContent,/观猹 TokenDance/)
   fireEvent.click(trigger)
@@ -96,7 +96,7 @@ for(const missingTokenDance of [false,true])test(`custom sorts first without cha
 test('three modal drafts remain isolated across provider switches, close/reopen and explicit non-secret save',async()=>{
  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,routeContractVersion:1,universalApiContractVersion:1,providers:STATIC_MODEL_REGISTRY}:{code:0,jobs:[],references:[]})}
  render(React.createElement(App));fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));fireEvent.click(screen.getByRole('button',{name:/专业模式/}))
- await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning')),false))
+ await waitFor(()=>assert.equal(Boolean(document.querySelector('.route-contract-warning, .route-contract-status')),false))
  const roles=[['主模型','主模型','main'],['视觉模型','视觉模型','vision'],['图像生成模型','图像模型','image']]
  for(const [trigger,label,role] of roles){
   fireEvent.click(screen.getByRole('button',{name:trigger,exact:true}));fireEvent.click(screen.getByRole('button',{name:'通用 API',exact:true}))
