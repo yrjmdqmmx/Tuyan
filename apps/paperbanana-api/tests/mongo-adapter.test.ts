@@ -3,7 +3,7 @@ import test from 'node:test'
 
 import { createMongoAdapter, reconcileInterruptedJobs } from '../src/mongo-adapter.js'
 
-test('reconciliation idempotently fails only queued and running jobs with a retryable restart code', async () => {
+test('reconciliation idempotently fails only queued and running jobs without suggesting a fresh retry', async () => {
   const jobs = [
     { _id: 'queued', status: 'queued' },
     { _id: 'running', status: 'running' },
@@ -32,18 +32,18 @@ test('reconciliation idempotently fails only queued and running jobs with a retr
     {
       _id: 'queued',
       status: 'failed',
-      error: 'Service restarted before this job completed. Retry the request.',
-      errorCode: 'RUNTIME_RESTARTED_RETRY',
-      retryable: true,
+      error: '服务曾中断，请查看原任务恢复状态；不要直接重复提交。',
+      errorCode: 'RUNTIME_INTERRUPTED_REVIEW',
+      retryable: false,
       completedAt: now,
       updatedAt: now,
     },
     {
       _id: 'running',
       status: 'failed',
-      error: 'Service restarted before this job completed. Retry the request.',
-      errorCode: 'RUNTIME_RESTARTED_RETRY',
-      retryable: true,
+      error: '服务曾中断，请查看原任务恢复状态；不要直接重复提交。',
+      errorCode: 'RUNTIME_INTERRUPTED_REVIEW',
+      retryable: false,
       completedAt: now,
       updatedAt: now,
     },

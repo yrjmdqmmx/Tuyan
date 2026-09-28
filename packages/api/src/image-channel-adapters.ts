@@ -151,7 +151,7 @@ async function readImageEventStream(response:Response) {
 }
 /** Submission is never retried: a lost response may already represent a paid task. */
 export async function callExtendedImageChannel(input: ImageChannelInput, io: ImageChannelTransport): Promise<string> {
-  if (['runware','tokenhub'].includes(input.provider) && (!io.pending || !io.checkpoint)) throw Object.assign(new Error('当前后端缺少持久任务恢复能力，未发起渠道请求。'), {requestState:'not_sent', localInputFailure:true})
+  if (['runware','tokenhub','fal','replicate','bfl'].includes(input.provider) && (!io.pending || !io.checkpoint)) throw Object.assign(new Error('当前后端缺少持久任务恢复能力，未发起渠道请求。'), {requestState:'not_sent', localInputFailure:true})
   const issue = refineInputIssue(refineControlsFor(input.provider, input.model), input.edit?.inputs ?? (input.source ? {version:1} : undefined), input.aspectRatio, input.resolution)
   if (issue) throw Object.assign(new Error(issue), {requestState:'not_sent', localInputFailure:true})
   if (input.edit && !input.source) throw new Error('精修控制需要原图。')
@@ -166,6 +166,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   catch (error: any) {
     if (error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent') throw error
     const pending = await io.pending?.()
+    if(pending && ['fal','replicate','bfl'].includes(input.provider) && !pending.polling && !pending.result && !pending.failed) throw Object.assign(new Error('提交结果未知，尚未取得可查询的原任务地址；请核对渠道记录，不会重新提交。'),{name:'ImageChannelError',requestState:'unknown',uncertain:true,recoveryAction:'reconcile_provider',terminal:true})
     if (pending && !pending.failed && !error.terminal) {
       throw Object.assign(new Error('已保存原渠道任务；可恢复查询或下载，不会重新生成。'), {name:'ImageChannelError', recoveryAction:'resume', pollOnly:true, uncertain:false, requestState:'unknown'})
     }
@@ -208,7 +209,15 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     await io.record?.({provider, model, requestId:checkpoint?.taskId || null, publicPrice:auditedChannelContract(provider,model)?.price || {source:provider === 'tokenhub' ? 'https://cloud.tencent.com/document/product/1823/130055' : provider === 'runware' ? 'https://runware.ai/pricing' : `https://${provider === 'fal' ? 'fal.ai' : 'replicate.com'}/pricing`, checkedAt:'2026-09-22', amount:null,...(provider === 'tokenhub' && model === 'hy-image-v3' ? {currency:'CNY',unit:'million output tokens',rate:10,example:{outputTokens:20000,amount:0.2},conditions:'Guangzhou online postpaid; hy-image-v3 only; account tariff unverified'} : {})}, estimatedCost:null, reportedCost:metadata.reportedCost ?? null, invoiceCost:null, ...metadata})
     return asset(url)
   }
-  if (previous?.result) return completed(previous.result.url, previous.result.metadata)
+  let refreshResult=false
+  if (previous?.result) {
+    try {return await completed(previous.result.url, previous.result.metadata)} catch(error) {
+      if(!previous.polling && !(['runware','tokenhub'].includes(provider)&&previous.taskId))throw error
+      // A failed/expired download can refresh ONLY the recorded task. Never submit again.
+      refreshResult=true
+    }
+  }
+  if(previous && ['fal','replicate','bfl'].includes(provider) && !previous.polling)throw Object.assign(new Error('原提交结果未知，没有可查询任务地址；禁止重新提交。'),{terminal:true,requestState:'unknown',uncertain:true,recoveryAction:'reconcile_provider'})
   if (provider === 'runware') {
     if (!wire) throw new Error('Runware 型号或尺寸契约缺失。')
     if (!prompt.trim() || [...prompt].length > (wire.maxPromptLength || 32000)) throw Object.assign(new Error('Runware 提示词为空或超过型号限制，未发送。'), {localInputFailure:true, requestState:'not_sent'})
@@ -222,16 +231,18 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
       await save({state:data})
     }
     const deadline = io.now() + (io.pollTimeoutMs ?? 600000)
-    let state = checkpoint?.state, attempt = 0
+    let state = refreshResult ? undefined : checkpoint?.state, attempt = 0
     while (io.now() < deadline) {
       if (state?.errors?.length) return terminal('Runware 原任务失败，请核对渠道记录与费用。')
       const row = state?.data?.find((item:any) => item.taskUUID === checkpoint?.taskId && item.imageURL)
       if (row) return completed(row.imageURL, {reportedCost:typeof row.cost === 'number' && Number.isFinite(row.cost) ? {amount:row.cost,currency:'USD',source:'provider-response'} : null, seed:row.seed ?? null})
       await io.sleep(Math.min(io.pollIntervalMs ?? Math.min(15000,1500 * 2 ** Math.min(attempt++,3)), Math.max(0,deadline-io.now())))
       if (io.now() >= deadline) break
-      const response = await io.request('https://api.runware.ai/v1', {method:'POST',headers:jsonHeaders,body:JSON.stringify([{taskType:'getResponse',taskUUID:checkpoint!.taskId}]),redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' poll',1)
+      let response:Response
+      try {response = await io.request('https://api.runware.ai/v1', {method:'POST',headers:jsonHeaders,body:JSON.stringify([{taskType:'getResponse',taskUUID:checkpoint!.taskId}]),redirect:'error',signal:AbortSignal.timeout(Math.max(1,Math.min(30000,deadline-io.now())))},label+' poll',1)}
+      catch(error) {if(!['TimeoutError','AbortError','TypeError'].includes((error as any)?.name))throw error;continue}
       if (response.status === 429 || response.status >= 500) { const retry = Number(response.headers.get('retry-after')); await response.body?.cancel(); if (Number.isFinite(retry) && retry > 0) await io.sleep(Math.min(retry*1000,Math.max(0,deadline-io.now()))); continue }
-      state = await read(response)
+      state = await read(response);await save({state})
     }
     throw new Error('Runware 原任务仍未确认；仅可恢复查询。')
   }
@@ -256,7 +267,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
       if(!result)throw unknown()
       return completed(result,{requestId:String(data.request_id||data.id||''),usage:data.tokenhub_usage||data.usage||null,resolvedModel:data.model||null})
     }
-    let state=previous?.state
+    let state=refreshResult ? undefined : previous?.state
     if(!previous) {
       await save({state:{phase:'submitting'}})
       try {
@@ -275,7 +286,9 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
       }
       await io.sleep(Math.min(io.pollIntervalMs??4000,Math.max(0,deadline-io.now())))
       if(io.now()>=deadline)break
-      const response=await io.request('https://tokenhub.tencentmaas.com'+prepared.pollPrefix+encodeURIComponent(checkpoint!.taskId!),{method:'GET',headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' poll',1)
+      let response:Response
+      try {response=await io.request('https://tokenhub.tencentmaas.com'+prepared.pollPrefix+encodeURIComponent(checkpoint!.taskId!),{method:'GET',headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,Math.min(30000,deadline-io.now())))},label+' poll',1)}
+      catch(error) {if(!['TimeoutError','AbortError','TypeError'].includes((error as any)?.name))throw error;continue}
       if(response.status===429||response.status>=500){const retry=Number(response.headers.get('retry-after'));await response.body?.cancel();if(Number.isFinite(retry)&&retry>0)await io.sleep(Math.min(retry*1000,Math.max(0,deadline-io.now())));continue}
       state=await read(response);await save({state})
     }
@@ -336,11 +349,13 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
   if (!wire) throw new Error(`Unsupported ${provider} image operation`)
   const body = await buildImageChannelBody(input, wire, io)
   if (previous?.polling) {
-    state=previous.state || {}; polling=imageTaskUrl(previous.polling,provider); resultUrl=previous.resultUrl ? imageTaskUrl(previous.resultUrl,provider) : undefined
+    state=refreshResult ? {status:provider==='fal'?'IN_QUEUE':provider==='replicate'?'starting':'Pending'} : previous.state || {}; polling=imageTaskUrl(previous.polling,provider); resultUrl=previous.resultUrl ? imageTaskUrl(previous.resultUrl,provider) : undefined
   } else if (provider === 'bfl') {
+    await save({state:{phase:'submitting'}})
     state=await submit('https://api.bfl.ai'+wire.endpoint,body)
     polling=imageTaskUrl(state.polling_url,provider)
   } else if (provider === 'fal') {
+    await save({state:{phase:'submitting'}})
     state=await submit('https://queue.fal.run/'+wire.endpoint,body)
     let fallback: string | undefined
     if (state.status_url == null || state.response_url == null) {
@@ -355,6 +370,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     // A successful submission may only acknowledge request_id.
     if (state.status == null) state.status='IN_QUEUE'
   } else if (provider === 'replicate') {
+    await save({state:{phase:'submitting'}})
     state=await submit(wire.version ? 'https://api.replicate.com/v1/predictions' : `https://api.replicate.com/v1/models/${wire.endpoint}/predictions`,{...(wire.version?{version:wire.version}:{}),input:body})
     polling=imageTaskUrl(state.urls?.get,provider)
   } else throw new Error(`Unsupported image channel: ${provider}`)
@@ -364,7 +380,14 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
   const readTask = async (url:string, phase:string): Promise<any> => {
     let retries = 0
     while (io.now() < deadline) {
-      const response = await io.request(url,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,deadline-io.now()))},label+' '+phase,2)
+      let response:Response
+      try { response = await io.request(url,{headers,redirect:'error',signal:AbortSignal.timeout(Math.max(1,Math.min(30000,deadline-io.now())))},label+' '+phase,1) }
+      catch(error) {
+        // A read timeout is not an upstream terminal state. Bound every attempt and back off.
+        if(!['TimeoutError','AbortError','TypeError'].includes((error as any)?.name))throw error
+        await io.sleep(Math.min(30000,Math.max(1,io.pollIntervalMs??1500)*2**Math.min(retries++,5),Math.max(0,deadline-io.now())))
+        continue
+      }
       // Transport retries do not inspect HTTP status. Only these read-only requests can be repeated.
       if (response.status !== 408 && response.status !== 429 && response.status < 500) return read(response)
       const retryAfter = response.headers.get('retry-after')
@@ -385,6 +408,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
       return completed(first?.url || first, {metrics:state.metrics || null, modelVersion:state.version || null})
     }
     if (provider==='fal' && state.status==='COMPLETED') {
+      if(state.error || state.error_type)return terminal('fal 原任务返回失败状态；请核对渠道记录，未重新提交。')
       const result=await readTask(resultUrl!,'result')
       if (result.has_nsfw_concepts?.some(Boolean)) return terminal('fal 图片被安全策略拒绝。')
       return completed(result.images?.[0]?.url || result.image?.url, {structuredInstruction:result.structured_instruction || null, seed:result.seed ?? null})
@@ -394,6 +418,7 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     if (state.status && !pending.includes(state.status)) return terminal(`${provider} 原任务终止：${String(state.status).slice(0,100)}；请核对费用。`)
     if (!state.status && provider!=='bfl') throw new Error(`${provider} returned no task status`)
     state=await readTask(polling,'poll')
+    await save({state})
     if (!state.status) throw new Error(`${provider} returned no task status`)
     if (pending.includes(state.status)) await io.sleep(Math.min(io.pollIntervalMs ?? 1500, Math.max(0,deadline-io.now())))
   }

@@ -11,7 +11,7 @@ import decodeJpeg from 'jpeg-js/lib/decoder'
 
 import { ThinkingOptions, ThinkingSelection, ThinkingConfiguration, ThinkingSnapshotRole, ThinkingSnapshot } from '../../../packages/types/src/thinking.js'
 export * from '../../../packages/types/src/thinking.js'
-import { thinkingProfile, validateThinkingOptions, compileThinkingSelection, normalizeThinkingConfiguration, applyThinkingSnapshot, applyThinkingTransport, validateThinkingTask } from '../../../packages/api/src/thinking.js'
+import { universalThinkingIdentity, thinkingProfile, validateThinkingOptions, compileThinkingSelection, normalizeThinkingConfiguration, applyThinkingSnapshot, applyThinkingTransport, validateThinkingTask } from '../../../packages/api/src/thinking.js'
 export * from '../../../packages/api/src/thinking.js'
 
 sharp.cache(false)
@@ -184,6 +184,7 @@ type JobAdmissionConfig = {
 }
 type JobPrincipal = { ownerKey: string; ipKey: string }
 type AdmittedJobTask = {
+  admissionVersion?: 1
   jobId: string
   kind: 'create' | 'refine'
   body: CreateExecutionBody | RefineExecutionBody
@@ -347,6 +348,7 @@ export function resolveModelRouting(body: Record<string, any>): ModelRoutingMeta
     throw modelRouteError('Mixed model routes require advanced configuration mode', 'MODEL_ROUTE_MIXED_NOT_ALLOWED')
   }
   const thinkingIdentities = Object.fromEntries(Object.entries(modelRoutes).map(([role, route]) => {
+    if (route.accessProvider === 'custom') return [role, universalThinkingIdentity(normalizeUniversalRoute(route))]
     const entry = staticModelRegistry[route.accessProvider as Exclude<Provider, 'openrouter'>]?.models.find(item => item.id === route.modelId)
     const protocol = route.accessProvider === 'custom' ? route.custom?.protocol || 'unconfirmed'
       : entry?.roleProtocols?.[role as ModelRole] || (route.accessProvider === 'openrouter' ? role === 'image' ? 'openrouter-images' : 'openrouter-chat-completions' : entry?.protocol || 'unconfirmed')
@@ -421,7 +423,7 @@ export function selectRequiredRouteSecrets(
       const route = normalizeUniversalRoute(routes[role])
       const apiKey = universalCredential(route, apiKeys.custom || '')
       const scoped = selected.custom ? JSON.parse(selected.custom) : {}
-      scoped[route.custom.connectionId] = {baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey}
+      scoped[route.custom.connectionId] = {baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey, ...(route.custom.auth === 'bearer-expiring' ? {expiresAt:JSON.parse(apiKeys.custom!)[route.custom.connectionId].expiresAt} : {})}
       selected.custom = JSON.stringify(scoped)
     } else {
       const secret = selectApiKey(provider, apiKeys)
@@ -499,6 +501,7 @@ export function createJobAdmissionController(
       try {
         await dependencies.execute(task)
       } catch (error: any) {
+        if (error?.executionClaimLost === true) return
         const safeTaskError = redactSecretText(
           error?.message || String(error),
           Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
@@ -569,11 +572,12 @@ export function createJobAdmissionController(
     },
     commit(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
       const entry = entries.get(reservation.id)
-      if (!entry || entry.committed) return
+      if (!entry || entry.committed) return false
       entry.committed = true
       entry.task = task
       if (entry.slot === 'active') launch(entry)
       else pump()
+      return true
     },
     cancel(reservation: { ok: true; id: number }) {
       const entry = entries.get(reservation.id)
@@ -1591,7 +1595,7 @@ import { RequestState, JOB_FAILURE_STAGES, atJobStage, isLocalInputFailure, publ
 export * from '../../../packages/api/src/execution-errors.js'
 import { distinctReferenceCandidates, relevantReferenceSelection } from '../../../packages/api/src/reference-selection.js'
 export * from '../../../packages/api/src/reference-selection.js'
-import { UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry } from '../../../packages/api/src/universal-api.js'
+import { UNIVERSAL_TEXT_OUTPUT_TOKENS, UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalLimitLayer, UniversalLimitPolicy, UniversalCatalogMetadata, UniversalImageTool, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, effectiveUniversalLimits, universalMetadataSource, parseUniversalCatalogMetadata, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry, UNIVERSAL_EXTENSIONS_VERSION, RESPONSES_IMAGE_MODELS, RESPONSES_CALL_MODELS, AZURE_CALL_MODELS, BEDROCK_TEXT_MODEL, BEDROCK_IMAGE_MODELS, isAzureV1, universalExtensionIdentity, normalizeUniversalExtensions, universalExtensionDeclaration, universalRefineControls } from '../../../packages/api/src/universal-api.js'
 export * from '../../../packages/api/src/universal-api.js'
 import { TokenDanceCatalogIssue, TokenDanceCatalogModel, TokenDanceCatalogSnapshot, TokenDanceCatalogError, tokenDanceCatalogIssueMessage, parseTokenDanceCatalog, tokenDanceCatalogModelReason, tokenDanceCatalogMessage, createTokenDanceCatalogCache } from '../../../packages/api/src/tokendance-catalog.js'
 export * from '../../../packages/api/src/tokendance-catalog.js'
@@ -3844,15 +3848,21 @@ async function universalInputImages(images: VisionImageInput[]) {
 async function universalText(routeValue: ModelRoute, apiKey: string, systemPrompt: string, prompt: string, images: VisionImageInput[], signal?: AbortSignal) {
   const route = normalizeUniversalRoute(routeValue)
   assertVisionInputBudget('custom', route.modelId, images, route.custom)
-  const text = await requiredUniversalRuntime().text(route, apiKey, {systemPrompt, prompt, images: await universalInputImages(images), signal})
+  const preparedImages = await universalInputImages(images)
+  const key = route.custom.auth === 'bearer-expiring' ? universalCredential(route, apiKey) : apiKey
+  const text = await requiredUniversalRuntime().text(route, key, {systemPrompt, prompt, images: preparedImages, signal, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return text
 }
-async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: string, aspectRatio: string, source: string, imageSize: string) {
+async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: string, aspectRatio: string, source: string, imageSize: string, edit?: ImageChannelInput['edit']) {
   const route = normalizeUniversalRoute(routeValue)
   assertRouteImageSize(route, aspectRatio, imageSize, Boolean(source))
+  const issue=refineInputIssue(universalRefineControls(route),edit?.inputs,aspectRatio,imageSize)
+  if(issue || edit?.mask || Boolean(edit) && !source || (edit?.references?.length||0)!==(edit?.inputs.references?.length||0))throw new UniversalApiError('INPUT_LIMIT')
   const sourceImages = source ? await universalInputImages([{filename: 'source', mimeType: inferMimeTypeFromUrl(source), url: source}]) : []
-  const output = await requiredUniversalRuntime().image(route, apiKey, {prompt, sourceImages, aspectRatio, imageSize})
+  sourceImages.push(...(edit?.references||[]).map(image=>({base64:image.base64,mimeType:image.mimeType,width:undefined,height:undefined})))
+  const key = route.custom.auth === 'bearer-expiring' ? universalCredential(route, apiKey) : apiKey
+  const output = await requiredUniversalRuntime().image(route, key, {prompt:prompt+refineReferencePrompt(edit?.inputs), sourceImages, aspectRatio, imageSize, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return output.mimeType === 'image/png' ? output.base64 : (await sharp(Buffer.from(output.base64, 'base64'), {limitInputPixels: route.custom.outputLimits.maxPixels}).png().toBuffer()).toString('base64')
 }
@@ -3879,6 +3889,8 @@ async function universalApiCheck(body: any) {
 }
 
 type ProviderWorkflowHooks = {
+  prepare?(task: AdmittedJobTask): Promise<void>
+  cancelPrepared?(task: AdmittedJobTask): Promise<void>
   thinking?(): ThinkingSnapshotRole | undefined
   thinkingAvailable?(): boolean
   active?(): boolean
@@ -3901,7 +3913,7 @@ export async function resumeTokenDanceJob(task: any) {
   if (!reservation.ok) throw new TokenDanceError(reservation.code, reservation.error)
   try {
     await jobs.updateOne({ _id: task.jobId, userId: task.body.userId }, { $set: { status: 'queued', error: '', errorCode: '', failure: null, updatedAt: new Date(), completedAt: null } })
-    jobAdmission.commit(reservation, task)
+    if (!jobAdmission.commit(reservation, task)) throw new TokenDanceError(409, '账号当前不可接收任务。')
     return { code: 0, jobId: task.jobId }
   } catch (error) { jobAdmission.cancel(reservation); throw error }
 }
@@ -4257,6 +4269,10 @@ async function modelRegistry(body: ModelRegistryBody) {
     thinkingContractVersion: providerWorkflow.thinking && providerWorkflow.thinkingAvailable?.() !== false ? 1 : 0,
     routeContractVersion,
     universalApiContractVersion: universalRuntime ? 1 : 0,
+    universalExtensionsVersion: universalRuntime ? 1 : 0,
+    universalThinkingVersion: universalRuntime ? 1 : 0,
+    universalMetadataVersion: universalRuntime ? 1 : 0,
+    universalLimitsVersion: universalRuntime ? 1 : 0,
     inputOptimizationContractVersion,
     inputOptimizationTargets: ['methodContent', 'caption', 'negativePrompt', 'editInstruction'],
     referenceUpload: runtimeReferenceUploadContract(),
@@ -4439,7 +4455,7 @@ async function optimizeInputs(body: OptimizeInputsBody) {
     rawCandidate = await callTextModel(
       provider,
       modelId,
-      provider === 'custom' ? universalCredential(route, body.apiKey) : body.apiKey.trim(),
+      provider === 'custom' && route.custom?.auth !== 'bearer-expiring' ? universalCredential(route, body.apiKey) : body.apiKey.trim(),
       inputOptimizationSystemPrompt(target),
       inputOptimizationUserPrompt(target, target === 'editInstruction' ? { methodContent: '', caption: '', negativePrompt: '', editInstruction: inputs.editInstruction } : inputs),
       [],
@@ -5091,9 +5107,8 @@ async function createJob(body: CreateJobBody, ctx: CoreContext) {
       return fail('Account deletion is in progress. New jobs and uploads are disabled.', 409)
     }
 
-    // The persisted/execution body is secret-free. Only credentials for route
-    // providers reachable by this job remain in the in-memory admission closure.
-    startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
+    // Persist the encrypted recovery snapshot before acknowledging admission.
+    await startCreateJobInBackground(reservation, jobId, jobBody, routeSecrets, safeNumCandidates, safeCriticRounds)
     committed = true
 
     return ok({ jobId, status: 'queued' })
@@ -5186,7 +5201,7 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
       return { ...fail(error?.message || 'Unsupported image size combination', 400), businessCode: 'REFINE_IMAGE_SIZE_UNSUPPORTED' }
     }
   }
-  const controls = refineControlsFor(imageRoute.accessProvider, imageRoute.modelId)
+  const controls = imageRoute.accessProvider === 'custom' ? universalRefineControls(imageRoute) : refineControlsFor(imageRoute.accessProvider, imageRoute.modelId)
   const inputIssue = refineInputIssue(controls, body.refineInputs ?? (controls ? {version:1} : undefined), normalizedBodyWithSecrets.aspectRatio, normalizedBodyWithSecrets.imageSize)
   if (inputIssue) return {...fail(inputIssue,400), businessCode:'REFINE_INPUT_UNSUPPORTED'}
   await bindAccountGeneration(body)
@@ -5329,7 +5344,7 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
         return fail('精修参考图或遮罩保存失败，未发起模型请求。',503)
       }
     }
-    startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
+    await startRefineJobInBackground(reservation, jobId, normalizedBody, routeSecrets)
     committed = true
 
     return ok({
@@ -5716,7 +5731,30 @@ export async function resolveReferenceImageMode(body: CreateExecutionBody & { re
   }
 }
 
-function startCreateJobInBackground(
+async function prepareAndCommitJob(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
+  try {
+    await providerWorkflow.prepare?.(task)
+    if (!(await ensureAccountAcceptingWork(task.body)) || !jobAdmission.commit(reservation, task)) {
+      throw new TokenDanceError(409, '账号当前不可接收任务，未发起模型请求。', undefined, 0, false, 'not_sent')
+    }
+  } catch (error: any) {
+    // Persistence can fail after writing but before acknowledging the write.
+    // Only our unstarted snapshot may be removed; never touch a resumed owner.
+    try { await providerWorkflow.cancelPrepared?.(task) } catch { /* DB outage: keep the encrypted snapshot for reconciliation. */ }
+    const message = error?.name === 'TokenDanceError' && [401, 409].includes(error.status)
+      ? '账号当前不可接收任务，未发起模型请求。' : '任务恢复信息未能保存，未开始模型调用；请稍后查看任务记录。'
+    const cause = new TokenDanceError(error?.name === 'TokenDanceError' && [401, 409].includes(error.status) ? error.status : 503, message, undefined, 0, false, 'not_sent')
+    const failure = { ...publicExecutionFailure(cause), code: 'JOB_ADMISSION_NOT_STARTED', reason: message, message, suggestion: '检查服务恢复后再操作；请先查看原任务记录。' }
+    try {
+      await jobs.updateOne({ _id: task.jobId, status: 'queued' }, { $set: {
+        status: 'failed', error: message, errorCode: failure.code, failure, completedAt: new Date(), updatedAt: new Date(),
+      } })
+    } catch { /* The unacknowledged job is reconciled on restart when Mongo returns. */ }
+    throw cause
+  }
+}
+
+async function startCreateJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: CreateExecutionBody,
@@ -5724,7 +5762,7 @@ function startCreateJobInBackground(
   numCandidates: number,
   maxCriticRounds: number,
 ) {
-  jobAdmission.commit(reservation, {
+  await prepareAndCommitJob(reservation, {
     jobId,
     kind: 'create',
     body,
@@ -5734,13 +5772,13 @@ function startCreateJobInBackground(
   })
 }
 
-function startRefineJobInBackground(
+async function startRefineJobInBackground(
   reservation: { ok: true; id: number },
   jobId: string,
   body: RefineExecutionBody,
   routeSecrets: RouteSecrets,
 ) {
-  jobAdmission.commit(reservation, {
+  await prepareAndCommitJob(reservation, {
     jobId,
     kind: 'refine',
     body,
@@ -5773,7 +5811,9 @@ function modelRouteAccess(body: CreateExecutionBody | RefineExecutionBody, route
   }
   const apiKey = routeSecrets[route.accessProvider] || ''
   if (!apiKey) throw new Error(`Missing API key for provider ${route.accessProvider}`)
-  return { provider: route.accessProvider, model: route.modelId, apiKey: route.accessProvider === 'custom' ? universalCredential(normalizeUniversalRoute(route), apiKey) : apiKey, custom: route.custom, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
+  // Check now and preserve the envelope so long planning/processing cannot outlive expiry unchecked.
+  if(route.accessProvider === 'custom' && route.custom?.auth === 'bearer-expiring') universalCredential(normalizeUniversalRoute(route), apiKey)
+  return { provider: route.accessProvider, model: route.modelId, apiKey: route.accessProvider === 'custom' && route.custom?.auth !== 'bearer-expiring' ? universalCredential(normalizeUniversalRoute(route), apiKey) : apiKey, custom: route.custom, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
 }
 
 async function runJob(
@@ -7570,7 +7610,7 @@ async function callImageModelRaw(
   custom?: UniversalRoute['custom'],
   edit?: ImageChannelInput['edit'],
 ): Promise<string> {
-  if (provider === 'custom') return universalImage({accessProvider: 'custom', modelId: model, custom}, apiKey, prompt, aspectRatio, sourceImage, imageSize)
+  if (provider === 'custom') return universalImage({accessProvider: 'custom', modelId: model, custom}, apiKey, prompt, aspectRatio, sourceImage, imageSize, edit)
   model = normalizeModelName(provider, model)
   assertModelRegion(provider, model, region)
   const entry = provider === 'openrouter' ? undefined : staticModelRegistry[provider].models.find((item) => item.id === model)

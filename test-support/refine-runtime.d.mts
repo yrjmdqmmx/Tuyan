@@ -8,10 +8,13 @@ export function createRefineRuntime(options?: { port?: number; providerDelay?: n
   providerCalls: Array<{ url: string; options: RequestInit }>;
   image: Buffer;
   output: Buffer;
+  workflow: ReturnType<typeof import('../apps/paperbanana-api/src/provider-workflow.js').createProviderWorkflow> | undefined;
+  tokenDanceService: ReturnType<typeof import('../apps/paperbanana-api/src/tokendance-service.js').createTokenDanceService> | undefined;
   tokenDanceCalls: Array<{ url: string; options: any }>;
   setTokenDanceFailure(action: string): void;
   payTokenDance(): void;
   legacy: {
+    configureJobAdmission(config: {maxActive: number; maxPending: number; maxPerOwner: number; maxPerIp: number}): void;
     drainJobAdmission(): Promise<void>;
     preparePlanningReferences(body: any, proposed: any[], uploaded?: any[]): Promise<{references: any[]; images: any[]; visual: boolean; limit: number; omitted: {duplicate: number; unavailable: number; budget: number}}>;
     assertVisionInputBudget(provider: string, model: string, images: any[], custom?: import('../packages/api/src/universal-api.js').UniversalCustomConfig): void;

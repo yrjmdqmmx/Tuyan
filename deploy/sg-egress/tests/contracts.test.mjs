@@ -380,6 +380,9 @@ test('Singapore policy contains the reviewed overseas channels and keeps MiniMax
     'api.runware.ai',
     'api.novita.ai',
     'tokendance.space',
+    'bedrock-runtime.us-east-1.amazonaws.com',
+    'bedrock-runtime.us-east-2.amazonaws.com',
+    'bedrock-runtime.us-west-2.amazonaws.com',
   ]);
   assert.ok(!approved[1].split(' ').includes('api.minimax.cn'));
   assert.match(installer, /reviewed HTTPS provider hosts/);

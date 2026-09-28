@@ -8,8 +8,9 @@ import WorkbenchHeader from './components/WorkbenchHeader';
 import PageNavigation from './components/PageNavigation';
 import GenerationSummaryDetails from './components/GenerationSummaryDetails';
 import useVisualViewport from './hooks/useVisualViewport';
+import {copyUniversalConnection} from './lib/universalPresentation.js';
 import UniversalApiSettings from './components/UniversalApiSettings.jsx';
-import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
+import {loadUniversalDrafts,saveUniversalDrafts,universalRoutes,universalDraftEntry,universalKeyEnvelope,bindUniversalKey,updateUniversalDraft,missingUniversalKeys,universalDraftFeedback,serializeUniversalDrafts, hasSavedUniversalConfiguration,UNIVERSAL_PROTOCOL_OPTIONS,UNIVERSAL_PROVIDER} from './lib/universalApi.js';
 import { activeReferenceUploadPolicy, referenceUploadSelectionError, referenceModelDimensionsError } from './lib/referenceUploadPolicy';
 import { uploadReferenceFiles } from './lib/referenceUpload';
 import { useTokenDance } from './hooks/useTokenDance';
@@ -212,7 +213,14 @@ export default function App() {
   const [outputFormat, setOutputFormat] = useState('png');
   const [imageSize, setImageSize] = useState('1K');
   const [savedThinking, setSavedThinking] = useState(readThinkingSettings);
+  const [thinkingSaveState, setThinkingSaveState] = useState('idle');
   const [modelRoutes, setModelRoutes] = useState(restoredRouting.routes);
+  const configurationFingerprint = JSON.stringify({mode:configurationMode, routes:modelRoutes, drafts:serializeUniversalDrafts(universalDrafts)});
+  const [savedConfiguration,setSavedConfiguration] = useState(() => {
+    return hasSavedUniversalConfiguration()?configurationFingerprint:''
+  });
+  const configurationSaved = savedConfiguration === configurationFingerprint;
+  const configurationSaveStatus = configurationSaved ? '已保存到此浏览器；Key 与验证结果不保存。' : '当前页配置尚未保存到浏览器；修改即时用于本页。';
   const [referenceImageMode, setReferenceImageMode] = useState('vision_model');
   const [referenceImages, setReferenceImages] = useState([]);
   const [mainModelCapability, setMainModelCapability] = useState(null);
@@ -319,14 +327,18 @@ export default function App() {
     if (!modelRegistry) return;
     setSavedThinking(current => {
       const next = rememberThinkingSettings(reconcileThinkingSettings(current, JSON.parse(thinkingIdentityKey)), current);
-      saveThinkingSettings(next);
       return next;
     });
   }, [thinkingIdentityKey, Boolean(modelRegistry)]);
+  useEffect(() => {
+    if (savedThinking) setThinkingSaveState(saveThinkingSettings(savedThinking) ? 'saved' : 'error');
+  }, [savedThinking]);
+  function retryThinkingSave() {
+    setThinkingSaveState(saveThinkingSettings(savedThinking) ? 'saved' : 'error');
+  }
   function changeThinking(role, selection) {
     const next = rememberThinkingSettings({...thinkingSettings, roles:{...thinkingSettings.roles,[role]:selection}}, savedThinking);
     setSavedThinking(next);
-    saveThinkingSettings(next);
   }
   const refineCapability = modelRefinePresentation(activeImageRegistryEntry);
   const activeRefineUploadLimits = refineUploadLimits(modelRegistry?.refineUpload, activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].accessProvider === 'custom' && !customEntries[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'].selectable ? undefined : activeModelRoutes[refineCapability.mode === 'direct-edit' ? 'image' : 'vision'], refineCapability.mode === 'direct-edit' ? 'refine' : 'generation');
@@ -390,7 +402,7 @@ export default function App() {
   const referenceCapabilityNote = referenceImages.length
     ? (mainModelCanRead
         ? '当前主模型支持图像理解，将用主模型直读参考图。'
-        : '当前主模型为文本模型，将使用独立识别模型读取参考图。')
+        : '当前主模型为文本模型，将使用独立视觉模型读取参考图。')
     : '';
   const effectivePipelineMode = isAdvancedMode ? pipelineMode : 'demo_planner_critic';
   const effectiveRetrievalSetting = isAdvancedMode && !referenceImages.length ? retrievalSetting : 'none';
@@ -515,7 +527,7 @@ export default function App() {
 
   // Preserve refinement inputs across route/catalog changes; admission explains incompatibilities.
 
-  // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立识别模型。
+  // 参考图模式按固定能力派生：主模型能直读→主模型直读，否则→独立视觉模型。
   // provider/主模型变化时重算（之后用户仍可手动切换两种模式）。
   useEffect(() => {
     if (activeModelRoutes.main.accessProvider === 'custom') return;
@@ -1421,7 +1433,9 @@ export default function App() {
   }
 
   async function showResumedTask(id) {
+    const generation = refineRequestGeneration.current;
     const resumed = await getJobRequest(apiBaseNormalized, health, id);
+    if (generation !== refineRequestGeneration.current) return;
     if (resumed.refine_mode) {
       setRefineJob(resumed);
       setRefineJobId(id);
@@ -1433,10 +1447,10 @@ export default function App() {
       setPollRetryNonce(value => value + 1);
       selectTab('generate');
     }
-    await loadUserJobs();
+    await loadUserJobs({cancelledRef: () => generation !== refineRequestGeneration.current});
   }
 
-  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} />;
+  const renderThinkingSettings = role => <ThinkingSettings role={role} settings={thinkingSettings} registry={modelRegistry} operation={workspaceTab === 'refine' ? 'editing' : 'generation'} onChange={changeThinking} saveState={thinkingSaveState} onRetrySave={retryThinkingSave} />;
 
   const settingsDrawer = (
     <GenerationSettingsDrawer open={showGenerationSettings} onClose={closeGenerationSettings} focusSetting={generationFocusSetting}>
@@ -1446,20 +1460,20 @@ export default function App() {
         universalSummaries={Object.fromEntries(Object.entries(universalDrafts).map(([role,draft]) => [role, [
           UNIVERSAL_PROTOCOL_OPTIONS.find(([id]) => id === draft.custom.protocol)?.[1] || draft.custom.protocol,
           universalDraftFeedback(draft,role).tone === 'success' ? '结构完整' : '待完善配置',
-          universalKeys[role]?.apiKey?.trim() ? '密钥已填写' : '未填写密钥',
+          universalKeys[role]?.apiKey?.trim() ? '密钥已填写 · 未验证' : '未填写密钥',
         ].join(' · ')]))}
-        renderUniversalSettings={role => <UniversalApiSettings selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
-          onChange={(role,patch)=>{const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
+        renderUniversalSettings={role => <UniversalApiSettings renderThinkingSettings={renderThinkingSettings} thinkingSettings={thinkingSettings} onImportThinking={changeThinking} savedStatus={configurationSaveStatus} onOpenLogin={()=>{setShowGenerationSettings(false);setShowAuthPanel(true)}} selectedRoles={[role]} compact canCopyMain={activeModelRoutes.main.accessProvider === 'custom'} drafts={universalDrafts} keys={universalKeys} apiBase={apiBaseNormalized} health={health} contractSupported={modelRegistry?.universalApiContractVersion >= 1}
+          onChange={(role,patch)=>{setRoutingSaved('');const update=updateUniversalDraft(universalDrafts[role],patch);setUniversalDrafts(current=>({...current,[role]:update.draft}));if(update.clearKey)setUniversalKeys(current=>({...current,[role]:undefined}));}}
           onKeyChange={(role,key)=>setUniversalKeys(current=>({...current,[role]:bindUniversalKey(universalDrafts[role],key)}))}
-          onCopy={(role,source)=>{const from=universalDrafts[source].custom;setUniversalDrafts(current=>({...current,[role]:{...current[role],declared:false,custom:{...current[role].custom,protocol:from.protocol,baseUrl:from.baseUrl,auth:from.auth,compatibility:from.compatibility,catalogFormat:from.catalogFormat}}}));setUniversalKeys(current=>({...current,[role]:current[source]?{...current[source]}:undefined}));}}
+          onCopy={(role,source,includeKey)=>{setRoutingSaved('');const result=copyUniversalConnection(universalDrafts[role],universalDrafts[source],universalKeys[source],includeKey);setUniversalDrafts(current=>({...current,[role]:result.draft}));if(includeKey||result.clearKey)setUniversalKeys(current=>({...current,[role]:result.copiedKey}));}}
           onSave={()=>saveUniversalDrafts(universalDrafts)}/> }
         onModeChange={handleConfigurationModeChange}
         simpleProvider={provider}
         onSimpleProviderChange={handleSimpleProviderChange}
         renderRoutingPersistence={() => <div className="routing-persistence">
           <p>专业模式可为每个角色组合预设渠道和通用 API。保存包含渠道选择、地址、型号、协议与能力限额；密钥仅保留在当前页面。恢复任务所需密钥在服务端加密保存，完成后删除，最长 7 天。</p>
-          <button type="button" className="universal-button" onClick={() => {const draftsSaved = saveUniversalDrafts(universalDrafts);const routesSaved = saveRoutingSelection(configurationMode, modelRoutes);setRoutingSaved(draftsSaved && routesSaved ? '非敏感配置已保存，未保存密钥或验证状态。' : '浏览器存储不可用，当前页面配置仍保留。')}}>保存非敏感配置</button>
-          {routingSaved && <p role="status">{routingSaved}</p>}
+          <button type="button" className="universal-button" onClick={() => {const draftsSaved = saveUniversalDrafts(universalDrafts);const routesSaved = saveRoutingSelection(configurationMode, modelRoutes);if(draftsSaved && routesSaved)setSavedConfiguration(configurationFingerprint);setRoutingSaved(draftsSaved && routesSaved ? '已保存到此浏览器，未保存密钥或验证状态。' : '浏览器存储不可用，当前页面配置仍保留。')}}>保存到此浏览器（不含密钥）</button>
+          <p role="status">{configurationSaveStatus}</p>{routingSaved && <p role="status">{routingSaved}</p>}
         </div>}
         modelRoutes={activeModelRoutes}
         onRouteChange={handleModelRouteChange}
@@ -1711,7 +1725,7 @@ export default function App() {
             <div className="generation-settings-facts">
               <div><span>{t("主模型")}</span><strong>{activeMainRegistryEntry?.label || activeMainModelName}</strong></div>
               <div><span>{t("图像模型")}</span><strong>{activeImageRegistryEntry?.label || activeImageGenModelName}</strong></div>
-              <div><span>{t("识图模型")}</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
+              <div><span>{t("视觉模型")}</span><strong>{activeVisionRegistryEntry?.label || activeReferenceVisionModelName}</strong></div>
               <div><span>{t("画面比例")}</span><strong>{t(aspectRatio === 'auto' ? '自动' : aspectRatio)}</strong></div>
               <div><span>{t("输出")}</span><strong>{outputFormat === 'svg' ? 'SVG' : `${imageSize} · PNG`}</strong></div>
             </div>
@@ -1902,6 +1916,7 @@ export default function App() {
           apiBase={apiBaseNormalized}
           onLogin={() => setShowAuthPanel(true)}
           onRefresh={() => loadUserJobs()}
+          onOpenTask={showResumedTask}
           onUseForRefine={useResultForRefine}
           renderRecovery={item => <TokenDanceRecovery customKeys={Object.values(universalKeys).some(x=>x?.apiKey) ? customEnvelope : undefined} job={item} controller={tokenDance} onOpenAccount={openAccount} onResumed={showResumedTask} />}
         />
@@ -1971,7 +1986,7 @@ function firstMissingGenerationSetting({
   });
   if (invalidRoute) return invalidRoute;
   if (isAdvancedMode && retrievalSetting === 'manual' && !manualReferenceIds.length) return { setting: 'manual-reference', message: '手动参考模式至少需要选用一个案例。' };
-  if (needsReferenceVisionModel && !visionEntry) return { setting: 'vision-model', message: '请选择参考图识别模型。' };
+  if (needsReferenceVisionModel && !visionEntry) return { setting: 'vision-model', message: '请选择视觉模型。' };
   if (mainModelDirectUnsupported) return { setting: 'main-model', message: '当前主模型不能直接读取参考图，请更换模型或处理方式。' };
   return null;
 }
@@ -1979,6 +1994,6 @@ function firstMissingGenerationSetting({
 function describeReferenceCapability(capability) {
   if (!capability || capability.status === 'loading') return '正在检查当前主模型是否支持直接理解参考图。';
   if (capability.status === 'supported') return '当前主模型支持直接理解参考图，可使用主模型直读。';
-  if (capability.status === 'unsupported') return '当前主模型不支持直接理解参考图，请使用独立识别模型或更换主模型。';
-  return '当前主模型的参考图能力无法确认；可以尝试主模型直读，失败时请改用独立识别模型或更换主模型。';
+  if (capability.status === 'unsupported') return '当前主模型不支持直接理解参考图，请使用独立视觉模型或更换主模型。';
+  return '当前主模型的参考图能力无法确认；可以尝试主模型直读，失败时请改用独立视觉模型或更换主模型。';
 }

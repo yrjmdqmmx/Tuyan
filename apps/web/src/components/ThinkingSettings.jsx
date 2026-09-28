@@ -27,7 +27,7 @@ function ThinkingHelp({ control, profile, label }) {
 }
 
 /** Inline controls for one exact model identity; hiding UI never changes saved options. */
-export default function ThinkingSettings({ role, settings, registry, operation, onChange }) {
+export default function ThinkingSettings({ role, settings, registry, operation, onChange, saveState, onRetrySave }) {
   const { t, locale } = useAppLocale()
   const id = useId()
   const selection = settings?.roles?.[role]
@@ -35,6 +35,8 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
   const supported = Number(registry?.thinkingContractVersion) >= 1 && profile?.status === 'supported' && profile.controls?.length
     && !(role === 'image' && operation === 'editing' && !profile.operations?.includes('editing'))
   if (!supported) return null
+  const custom=selection.provider==='custom'
+  const unavailable=custom&&!(Number(registry?.universalThinkingVersion)>=1)
   let error = ''
   try { validateThinkingOptions(profile, selection.options) } catch (failure) { error = failure.message.replaceAll('服务商默认', '默认') }
   const update = (key, value) => {
@@ -44,15 +46,19 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
   }
   const valueLabel = value => values[locale]?.[String(value)] || String(value)
   return <section className="model-thinking-controls" data-thinking-role={role} aria-label={t('{v0}思考设置', {v0:t(labels[role])})}>
+    {custom&&<p className="universal-hint">精确连接匹配图研参数记录 · {profile.checkedAt}。服务商默认不发送思考字段；偏好按连接和型号独立保存，不含密钥。{unavailable?'当前后端未接入通用思考参数；请升级或保留默认。':''}</p>}
+    {saveState && <div className={`universal-status ${saveState==='error'?'warning':'neutral'}`} role="status"><span>{t(saveState==='error'?'思考偏好保存失败，仅当前页有效；刷新前请重试或导出无密钥配置。':saveState==='saved'?'思考偏好已自动保存到浏览器（不含密钥）。':'思考偏好尚未保存。')}</span>{saveState==='error'&&onRetrySave&&<button type="button" className="universal-button" onClick={onRetrySave}>{t('重试保存思考偏好')}</button>}</div>}
+    {custom&&profile.sourceUrls?.length>0&&<details className="universal-details"><summary>思考参数官方依据</summary>{profile.sourceUrls.map(url=><p key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></p>)}</details>}
+    {custom&&selection.protocol==='anthropic-messages'&&profile.controls.some(c=>c.key==='budget')&&<p className="universal-hint">当前通用文字请求总输出额度为 4096 tokens；固定思考预算须小于 4096，不会自动提高输出额度。</p>}
     {profile.controls.map(control => {
       const controlId = `${id}-${control.key}`
       const accessibleLabel = `${t(labels[role])}${locale === 'en' ? ' ' : ''}${t(control.label)}`
       return <div className="thinking-control" key={control.key}>
         <div className="thinking-control-label"><label htmlFor={controlId}>{t(control.label)}</label><ThinkingHelp control={control} profile={profile} label={accessibleLabel} /></div>
-        {control.type === 'integer' ? <input id={controlId} type="number" step="1" min={control.allowedSpecialValues?.length ? Math.min(control.min,...control.allowedSpecialValues) : control.min} max={control.max}
+        {control.type === 'integer' ? <input id={controlId} disabled={unavailable} type="number" step="1" min={control.allowedSpecialValues?.length ? Math.min(control.min,...control.allowedSpecialValues) : control.min} max={control.max}
           aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined} value={selection.options[control.key] ?? ''} placeholder={t('默认')}
           onChange={event=>update(control.key,event.target.value === '' ? undefined : Number(event.target.value))} />
-          : <select id={controlId} aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined}
+          : <select id={controlId} disabled={unavailable} aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined}
             value={selection.options[control.key] === undefined ? '' : JSON.stringify(selection.options[control.key])}
             onChange={event=>update(control.key,event.target.value === '' ? undefined : JSON.parse(event.target.value))}>
             <option value="">{t('默认')}</option>

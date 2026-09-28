@@ -6,8 +6,9 @@ const source={base64:'c291cmNl',mimeType:'image/png',dataUrl:'data:image/png;bas
 const defaults:ImageChannelInput={provider:'bfl',model:'flux-2-pro',apiKey:'fixture-secret',prompt:'scientific diagram',aspectRatio:'16:9',resolution:'1K',size:{width:1280,height:720,size:'1280x720'}}
 function fixture(respond:(url:string,init:RequestInit)=>Response) {
   const calls:Array<{url:string;init:RequestInit;attempts:number}>=[]
-  let now=0
+  let now=0, pending:any
   const io:ImageChannelTransport={
+    pending:async()=>pending,checkpoint:async value=>{pending=structuredClone(value)},
     request:async(url,init,_label,attempts)=>{calls.push({url,init,attempts});return respond(url,init)},
     json:async(response)=>{if(!response.ok) throw new Error(`HTTP ${response.status}`);return response.json()},
     download:async(url)=>{calls.push({url,init:{},attempts:1});return png},
@@ -128,11 +129,11 @@ test('fal accepts task-ID-only acknowledgements and polls the app root for gener
  }
  for(const request_id of [undefined,'','../other','x?key=secret','x#status','a'.repeat(201)]) {
   const {io,calls}=fixture(()=>Response.json({request_id}))
-  await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},io),/invalid task ID/)
+  await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},io),(e:any)=>e.requestState==='unknown'&&e.uncertain===true)
   assert.equal(calls.length,1)
  }
  const invalid=fixture(()=>Response.json({request_id:'fixture',status_url:'https://evil.invalid/status'}))
- await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},invalid.io),/invalid task URL/)
+ await assert.rejects(callExtendedImageChannel({...defaults,provider:'fal',model:'fal-ai/flux-2-pro'},invalid.io),(e:any)=>e.requestState==='unknown'&&e.uncertain===true)
  assert.equal(invalid.calls.length,1)
 })
 
@@ -188,12 +189,12 @@ test('async reads fail permanent HTTP errors immediately and bound transient err
  for(const provider of ['bfl','fal','replicate']) for(const phase of provider==='fal'?['poll','result']:['poll']) {
   for(const code of [400,401,403,404,422]) {
    const {io,calls}=asyncFixture(provider,current=>current===phase?new Response('',{status:code}):completed(provider))
-   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),new RegExp('HTTP '+code))
+   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),(e:any)=>e.pollOnly===true)
    assert.equal(calls.length,phase==='poll'?2:3)
   }
   for(const retryAfter of [null,'invalid','0','120','Thu, 01 Jan 1970 00:02:00 GMT']) {
    const {io,calls}=asyncFixture(provider,current=>current===phase?new Response('',{status:429,headers:retryAfter==null?{}:{'Retry-After':retryAfter}}):completed(provider))
-   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),/timed out; do not submit a duplicate/)
+   await assert.rejects(callExtendedImageChannel(asyncInput(provider),io),(e:any)=>e.pollOnly===true)
    assert.equal(io.now(),20)
    assert.equal(calls.filter(c=>c.init.method==='POST').length,1)
    const affected=calls.filter(c=>c.init.method!=='POST'&&(phase==='poll'||!c.url.endsWith('/status')))
@@ -205,20 +206,20 @@ test('async reads fail permanent HTTP errors immediately and bound transient err
 test('submission errors, task failures, missing results, timeout, and URL redirects never create duplicate work',async()=>{
  for(const code of [400,401,403,422,429,500,503]){
   const {io,calls}=fixture(()=>new Response('',{status:code}))
-  await assert.rejects(callExtendedImageChannel(defaults,io),new RegExp(`HTTP ${code}`));assert.equal(calls.length,1);assert.equal(calls[0].attempts,1)
+  await assert.rejects(callExtendedImageChannel(defaults,io),code<500?new RegExp(`HTTP ${code}`):(e:any)=>e.requestState==='unknown'&&e.uncertain===true);assert.equal(calls.length,1);assert.equal(calls[0].attempts,1)
  }
  for(const status of ['Error','Failed','Request Moderated','Content Moderated','Task not found']){
   const {io,calls}=fixture((_url,init)=>Response.json(init.method==='POST'?{polling_url:'https://api.bfl.ai/v1/get_result?id=fixture'}:{status}))
   await assert.rejects(callExtendedImageChannel(defaults,io),new RegExp(status));assert.equal(calls.filter(c=>c.init.method==='POST').length,1)
  }
  for(const url of ['https://evil.invalid/poll','https://api.bfl.ai.evil.invalid/poll','http://api.bfl.ai/poll','https://user:pass@api.bfl.ai/poll']){
-  const {io,calls}=fixture(()=>Response.json({polling_url:url}));await assert.rejects(callExtendedImageChannel(defaults,io),/invalid task URL/);assert.equal(calls.length,1)
+  const {io,calls}=fixture(()=>Response.json({polling_url:url}));await assert.rejects(callExtendedImageChannel(defaults,io),(e:any)=>e.requestState==='unknown'&&e.uncertain===true);assert.equal(calls.length,1)
  }
  const timeout=fixture((_u,init)=>Response.json(init.method==='POST'?{polling_url:'https://api.bfl.ai/v1/get_result?id=fixture'}:{status:'Pending'}))
- await assert.rejects(callExtendedImageChannel(defaults,timeout.io),/timed out; do not submit a duplicate/)
+ await assert.rejects(callExtendedImageChannel(defaults,timeout.io),(e:any)=>e.pollOnly===true)
  assert.equal(timeout.calls.filter(c=>c.init.method==='POST').length,1)
  const missing=fixture((_u,init)=>Response.json(init.method==='POST'?{polling_url:'https://api.bfl.ai/v1/get_result?id=fixture'}:{status:'Ready'}))
- await assert.rejects(callExtendedImageChannel(defaults,missing.io),/without an image/)
+ await assert.rejects(callExtendedImageChannel(defaults,missing.io),(e:any)=>e.pollOnly===true)
  const cancelled=fixture((_u,init)=>Response.json(init.method==='POST'?{status:'starting',urls:{get:'https://api.replicate.com/v1/predictions/x'}}:{status:'canceled'}))
  await assert.rejects(callExtendedImageChannel({...defaults,provider:'replicate',model:'black-forest-labs/flux-2-pro'},cancelled.io),/canceled/)
  const failed=fixture(()=>Response.json({base_resp:{status_code:1008},data:{image_base64:[png]}}))
@@ -243,6 +244,7 @@ test('MiniMax binds each region to its endpoint and keeps image-01-live fixed an
 test('new native channels require a durable journal; partial TokenHub checkpoints never resubmit',async()=>{
   for(const [provider,model] of [['tokenhub','hy-image-v3'],['runware','alibaba:qwen-image@2512']]) {
     const {io,calls}=fixture(()=>Response.json({}))
+    delete io.pending;delete io.checkpoint
     await assert.rejects(callExtendedImageChannel({...defaults,provider,model},io),/持久任务/)
     assert.equal(calls.length,0)
   }
@@ -268,4 +270,53 @@ test('Runware generation has native task fields and polls through rate limits wi
   const before=calls.length
   await assert.rejects(callExtendedImageChannel({...defaults,provider:'runware',model:'alibaba:qwen-image@2512',prompt:'x'.repeat(32001)}, {...io,pending:async()=>undefined}),/提示词/)
   assert.equal(calls.length,before)
+})
+
+test('fal, Replicate and BFL commit submitting before POST and never replay a lost acknowledgement',async()=>{
+ for(const provider of ['fal','replicate','bfl']) {
+  let pending:any,posts=0
+  const f=fixture((_url,init)=>{if(init.method==='POST'){posts++;assert.equal(pending.state.phase,'submitting');throw new TypeError('lost response')}throw new Error('must not poll without acknowledged ID')})
+  f.io.pending=async()=>pending;f.io.checkpoint=async value=>{pending=structuredClone(value)}
+  for(let attempt=0;attempt<2;attempt++)await assert.rejects(callExtendedImageChannel(asyncInput(provider),f.io),(e:any)=>e.uncertain===true&&e.recoveryAction==='reconcile_provider')
+  assert.equal(posts,1)
+ }
+})
+test('expired download refreshes the original task result and never makes another submit',async()=>{
+ for(const provider of ['fal','replicate','bfl']) {
+  let pending:any,reads=0,downloads=0
+  const f=asyncFixture(provider,phase=>{reads++;return provider==='fal'&&phase==='result'?Response.json({images:[{url:'https://asset.invalid/refreshed.png'}]}):provider==='fal'?Response.json({status:'COMPLETED'}):provider==='bfl'?Response.json({status:'Ready',result:{sample:'https://asset.invalid/refreshed.png'}}):Response.json({status:'succeeded',output:'https://asset.invalid/refreshed.png'})})
+  f.io.pending=async()=>pending;f.io.checkpoint=async value=>{pending=structuredClone(value)}
+  f.io.download=async()=>{downloads++;throw Object.assign(new Error('download offline'),{status:403})}
+  await assert.rejects(callExtendedImageChannel(asyncInput(provider),f.io),(e:any)=>e.pollOnly===true)
+  const initialReads=reads
+  f.io.download=async url=>{downloads++;if(downloads===2)throw Object.assign(new Error('expired URL'),{status:403});assert.equal(url,'https://asset.invalid/refreshed.png');return png}
+  assert.equal(await callExtendedImageChannel(asyncInput(provider),f.io),png);assert.ok(reads>initialReads);assert.equal(f.calls.filter(x=>x.init.method==='POST').length,1)
+ }
+})
+test('a single polling timeout backs off and retains queued task until original succeeds',async()=>{
+ for(const provider of ['fal','replicate','bfl']) {
+  let polls=0
+  const f=asyncFixture(provider,phase=>{if(phase==='poll'&&++polls===1)throw Object.assign(new Error('read timed out'),{name:'TimeoutError'});return provider==='fal'&&phase==='result'?Response.json({images:[{url:'https://asset.invalid/output.png'}]}):completed(provider)})
+  assert.equal(await callExtendedImageChannel(asyncInput(provider),f.io),png);assert.equal(f.calls.filter(x=>x.init.method==='POST').length,1);assert.ok(f.io.now()>0)
+ }
+})
+
+test('Runware and TokenHub query timeouts retain original IDs and resume within bounded poll loops',async()=>{
+ for(const provider of ['runware','tokenhub']) {
+  let polls=0,id='original',submits=0
+  const f=durableFixture((_url,init)=>{
+    const body=init.body?JSON.parse(String(init.body)):null
+    if(provider==='runware'?body?.[0]?.taskType==='imageInference':init.method==='POST') {submits++;id=body?.[0]?.taskUUID||id;return Response.json(provider==='runware'?{data:[{taskUUID:id}]}:{task_id:id})}
+    if(++polls===1)throw Object.assign(new Error('read timeout'),{name:'TimeoutError'})
+    return Response.json(provider==='runware'?{data:[{taskUUID:id,imageURL:'https://asset.invalid/result.png'}]}:{status:'completed',data:[{url:'https://asset.invalid/result.png'}]})
+  })
+  const input={...defaults,provider,model:provider==='runware'?'alibaba:qwen-image@2512':'wand-vega-image-lite',size:{size:'1024x1024',width:1024,height:1024}}
+  assert.equal(await callExtendedImageChannel(input,f.io),png);assert.equal(submits,1);assert.equal(polls,2);assert.equal(f.state().taskId,id)
+ }
+})
+test('fal completed with an explicit error is terminal, not a successful result or endless query failure',async()=>{
+ const f=asyncFixture('fal',()=>Response.json({status:'COMPLETED',error:'upstream task failed',error_type:'model_error'}))
+ await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
+ await assert.rejects(callExtendedImageChannel(asyncInput('fal'),f.io),(e:any)=>e.terminal===true)
+ assert.equal(f.calls.filter(x=>x.init.method==='POST').length,1)
 })

@@ -2,6 +2,43 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+
+## 2026-09-28 · v3.8.1 后续补充：Responses 图像工具 / Azure / Bedrock / 异步恢复（仅本地待发布）
+
+- 基线 `6ff4018`，v3.8.1 已发布状态不变；本轮内容按最新要求归入该版本后续补充，不提前回填公开日志。详见 [实现与迁移](docs/universal-api/2026-09-28/implementation.md)、[官方来源/差异](docs/universal-api/2026-09-28/sources.md)、[验收](docs/universal-api/2026-09-28/acceptance.md)。
+- Route v1 增加可选 `custom.imageTool`、`azure.deploymentModel`、`bedrock.strength`；协议新增 `bedrock-converse` / `bedrock-invoke`，鉴权新增 `api-key` / `bearer-expiring`。registry 增加 `universalExtensionsVersion:1`，旧后端收到新配置前由 Web 阻止发送，保留旧路由与草稿。
+- `ThinkingSelection.connection.extensions` 精确绑定工具/部署身份；复用原编译器、型号规则、任务快照与恢复。凭据 envelope 增加可选 `expiresAt`，仅与 Key 一起存在页面内存及服务端加密恢复资料，浏览器设置/文件导入导出不含它。
+- fal/Replicate/BFL 与已有 Runware/TokenHub 要求持久检查点，提交前保存 submitting、获得原任务 ID 后保存；单次读超时不终止原任务，下载恢复只查询原 ID；无查询凭据的未知提交不重发。
+- [x] Core / 共享：精确地址/型号/操作契约、Azure 版本和部署 header、原生 Converse/Invoke schema、图像输出校验、多参考图精修、思考及重启恢复、模拟回归。没有真实账号调用证据。
+- [x] Web：现有角色弹框模板/渐进字段/到期时间，独立密钥及配置副本、导入导出/保存恢复；桌面、390/320px 实际浏览器验证。通用 API 首位、TokenDance 默认保持。
+- [x] 小程序共享历史类型 / TS / JS / registry 协商字段：同步、编译和源码测试；不覆盖独立原生工作树或微信副本。
+- [ ] 小程序原生配置 UI、真机与软键盘验收：需负责端合并其现有工作后接入；本轮响应式 Web 不作为完成证据，未微信发布。
+- [x] 出口配置源码：SG ACL 加三处 Bedrock 精确 runtime 域名、allow/deny 测试；Core 对 Azure 资源仍强制受控出口。未新增生产环境变量。
+- [ ] 生产出口/真实账号：Bedrock ACL 尚未安装；Azure 需实际资源的精确主机名，未添加泛域名授权。账号/部署/地区权益、token audience、真实推理和账单均未验证。没有 push、部署、云权限/资源修改、付费调用或充值。
+
+## 2026-09-28 · 排队任务准入持久化与原任务恢复（仅本地待发布）
+
+- [修复记录](docs/operations/2026-09-28-durable-job-admission.md)：已登录 createJob/refineImage 在加密快照以 majority+journal 写入成功后才提交队列并确认接收；精修记录冻结后的输入。内部新增 `admissionVersion: 1`，原 Route/执行版本/步骤指纹保持，无新增 env。
+- 启动中断使用 `RUNTIME_INTERRUPTED_REVIEW` / `retryable=false`；新建排队任务在实例丢失后可明确恢复同一 ID，`recovery` 复用现有字段标明 `not_sent/not_called`。新增 `JOB_ADMISSION_NOT_STARTED` 仅表示准入前失败；快照失败不会发起模型请求。已有 unknown 调用永不因该修复自动重发。
+- [x] Core：生成/精修、账号检查、失败释放、实例归属、并发恢复一次、原参数/思考与凭据恢复；全量模拟回归与检查/构建通过。没有自动重启收费任务。
+- [x] Web：现有恢复入口适配“尚未开始”，只在主动点击时调用原任务恢复；非敏感设置及三角色契约未变。
+- [x] 小程序源码错误指引：TS/JS 同步新旧重启错误码，构建及 121 项测试通过；既有 `recovery` 字段无需扩展共享类型。未覆盖独立小程序工作树和微信副本。
+- [ ] 小程序原生恢复界面/真机验收与微信发布：沿用独立工作流，本轮未执行；Web 检查不代表原生已验收。
+- [ ] 生产上线与实机故障演练：没有推送、部署、生产重启或付费调用。v3.8.1 保持已发布状态，此修复列入下一版本待发布内容。
+
+## 2026-09-27 · 下一版本通用 API 完整配置与思考适配（仅本地待发布）
+
+- 基于已发布 v3.8.1 + 本地 `1f2d41a` / `67f1cd6`，没有改写公开已发布日志。详见[契约、迁移与官方核查](docs/universal-api/2026-09-27/implementation.md)。
+- Route v1 新增可选 `custom.limitPolicy.version=1`（service/user 分层，平台硬上限仍由共享代码控制）；提交保留物化 `inputLimits/outputLimits`，旧后端忽略扩展仍执行相同限制。旧 v1 值迁移为用户限制，不变成官方证据。
+- 目录行新增可选 `metadata.version=1`：仅精确 Anthropic / Gemini / OpenRouter 地址+协议+auth 的白名单事实，带来源/身份/日期；异常 metadata 隔离、不删除有效 ID；未知兼容地址仍只保留 ID。旧响应与手动配置路径保留。
+- ThinkingConfiguration v1 的 selection 新增可选 `connection={baseUrl,auth,compatibility}`。非默认通用思考须精确绑定，继续使用既有 profile、校验、服务器编译快照、adapter 和恢复链。旧客户端空 options 可用；客户端不得提交 wire/snapshot。
+- Registry 新增能力协商 `universalThinkingVersion` / `universalMetadataVersion` / `universalLimitsVersion`（当前均 1）；旧后端不支持时仅非默认通用思考阻止提交，其余手动路径和物化限制仍可用。
+- [x] Core / 共享：归一化、平台约束、目录元数据、真实请求体思考映射、旧空配置兼容、任务快照/恢复；本地模拟回归，不代表真实调用。
+- [x] Web：保留第一阶段；增加独立连接副本/显式管理、128 KiB 无密钥文件 v2（兼容旧 v1）、导入预览及复核、分层限额、目录来源和精确思考控件。视觉模型命名保持。
+- [x] 小程序共享类型 / 生成物：同步可选限额与目录类型及 registry 协商字段，保持读取历史任务；源码 TypeScript 与 121 项测试通过。未覆盖独立小程序工作树和微信副本。
+- [ ] 小程序原生 UI：合并其独立工作后再补命名连接、导入/导出、分层限额、来源及新思考控件；响应式 Web 验收不代替原生/实体手机验收。
+- [ ] 上线、生产后端能力协商与真实账户验证：本轮禁止推送/部署/付费探测/充值/微信发布，均未执行。v3.8.1 保持已发布状态。
+
 ## 2026-09-27 · Tuyan v3.8.1 Web / Core 正式上线
 
 - 用户追加授权“上线”；下方待发布/未授权描述保留为开发阶段时间线，以本条和[发布记录](docs/releases/2026-09-27-tuyan-v3.8.1.md)为当前状态。功能 PR #235 / `24ed37b`，Core/Gateway/Benchmark 运行来源及固定 digest 已核验。

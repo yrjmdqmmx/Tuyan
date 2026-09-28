@@ -114,3 +114,12 @@ test('known billing codes are separated from rate limits without leaking arbitra
     assert.equal(calls,1)
   }
 })
+
+test('cloud endpoints retain controlled egress and only Azure Images accepts the exact generated preview query',async()=>{
+  const urls:string[]=[],direct:string[]=[]
+  const t=createUniversalTransport({resolve:async()=>publicDns,officialFetch:async url=>{urls.push(url);return Response.json({})},fetch:async url=>{direct.push(url);return Response.json({})}})
+  for(const url of ['https://my-resource.openai.azure.com/openai/v1/images/generations?api-version=preview','https://my-resource.services.ai.azure.com/openai/v1/images/edits?api-version=preview','https://bedrock-runtime.us-west-2.amazonaws.com/model/stability.sd3-5-large-v1%3A0/invoke'])await t.request({...request,url})
+  assert.equal(urls.length,3);assert.equal(direct.length,0)
+  for(const url of ['https://my-resource.openai.azure.com/openai/v1/responses?api-version=preview','https://my-resource.openai.azure.com/openai/v1/images/edits?api-version=preview&key=hidden-secret','https://my-resource.openai.azure.com/openai/v1/images/edits?api-version=2025-04-01-preview','https://my-resource.openai.azure.com.evil.com/openai/v1/images/edits?api-version=preview'])await assert.rejects(t.request({...request,url}),state('not_sent'))
+  assert.equal(urls.length,3);assert.equal(direct.length,0)
+})

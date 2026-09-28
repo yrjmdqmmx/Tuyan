@@ -5833,3 +5833,31 @@ html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }
   .model-route-head h2 { font-size: 18px; }
   .model-route-head button { flex-shrink: 0; }
 }
+
+/* Universal configuration: connection first, evidence and advanced limits separate. */
+.universal-connection > summary { overflow-wrap: anywhere; }
+.universal-connection > summary small { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; }
+.universal-doc-link { display: inline-block; font-size: 12px; margin: 0 0 12px; color: var(--sage); }
+.universal-source, .universal-save-state { color: var(--ink-soft); background: #f0f4ef; padding: 9px 11px; border-radius: 8px; }
+.universal-recovery, .universal-size-options { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.universal-validation { padding: 12px; border: 1px solid var(--hairline); border-radius: 10px; margin: 16px 0; font-size: 12px; }
+.universal-validation > div { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: 8px; margin: 8px 0; }
+.universal-validation dt { color: var(--muted); }
+.universal-validation dd { margin: 0; overflow-wrap: anywhere; }
+.universal-size-chip { display: inline-flex; flex-direction: column; padding: 8px 10px; border: 1px solid var(--hairline); border-radius: 8px; font-size: 12px; }
+.universal-size-chip code { display: block; font-size: 11px; font-weight: 400; overflow-wrap: anywhere; }
+.universal-size-chip.selected { box-shadow: inset 0 0 0 1px var(--sage); background: #dfece2; }
+.universal-capability-fields h4 { font-size: 13px; margin: 16px 0 10px; }
+.universal-capability-fields p { overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  .universal-size-row { grid-template-columns: minmax(0,1fr); }
+  .universal-validation > div { grid-template-columns: minmax(0,1fr); gap: 3px; }
+  .universal-role .model-grid { grid-template-columns: minmax(0,1fr); }
+}
+
+.universal-import-diff { margin: 8px 0; font-size: 12px; }
+.universal-import-diff > div { border-top: 1px solid var(--hairline); padding: 8px 0; }
+.universal-import-diff dt { font-weight: 600; }
+.universal-import-diff dd { margin: 4px 0; display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 8px; }
+.universal-import-diff code { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.universal-validation dd small { display: block; color: var(--muted); margin-top: 3px; }

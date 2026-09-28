@@ -72,7 +72,7 @@ export default function ModelRoutingSettings({
       {!isAdvancedMode ? (
         <div className="field" data-focus-setting="provider" tabIndex={-1}>
           <span>{t("API 接入渠道")}</span>
-          <small>{t("更多渠道可在专业模式中分别选择主模型、图像模型和识别模型。")}</small>
+          <small>{t("更多渠道可在专业模式中分别选择主模型、图像模型和视觉模型。")}</small>
           <div data-focus-setting="main-model" tabIndex={-1}>
             <div className="segmented provider-segmented" role="group" aria-label={t("API 接入渠道")}>
               {orderModelChannels(Object.keys(providerConfigs)).filter(id => providerDefaultRoutes(id, modelRegistry, providerConfigs)).map(id => (
@@ -93,7 +93,7 @@ export default function ModelRoutingSettings({
         </div>
       ) : null}
       <div className="model-grid model-route-grid">
-        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','参考图识别模型','vision-model']].map(([role,label,focusSetting]) => {
+        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','视觉模型','vision-model']].map(([role,label,focusSetting]) => {
           const route = modelRoutes[role]
           const model = modelRegistry?.providers?.[route.accessProvider]?.models?.find(entry => entry.id === route.modelId)
           return <div className="model-role-settings" data-model-role={role} key={role}>
@@ -103,7 +103,7 @@ export default function ModelRoutingSettings({
               renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
               onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
               : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
-            {renderThinkingSettings?.(role)}
+            {route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
           </div>
         })}
       </div>

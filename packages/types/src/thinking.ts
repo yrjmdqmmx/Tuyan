@@ -1,11 +1,11 @@
 /** Optional v1 settings. Missing means the historical request behavior. */
 export type ThinkingOptions = Record<string, string | number | boolean>
 export type ThinkingSelection = {
-  provider: string; modelId: string; protocol: string; region?: string; options: ThinkingOptions
+  provider: string; modelId: string; protocol: string; region?: string; connection?: { baseUrl: string; auth: string; compatibility: string; extensions?: string }; options: ThinkingOptions
 }
 export type ThinkingConfiguration = { version: 1; roles: Partial<Record<'main' | 'vision' | 'image', ThinkingSelection>> }
 export type ThinkingSnapshotRole = ThinkingSelection & {
-  role: 'main' | 'vision' | 'image'; profileId: string; checkedAt: string;
+  role: 'main' | 'vision' | 'image'; profileId: string; checkedAt: string; sourceUrls?: string[];
   wire: Record<string, unknown>; clearFields: string[]; dropSampling: boolean;
   budgetRelation?: string; budgetField?: string; budgetOutputField?: string;
   samplingFields?: string[]; operations?: string[]; requiresNoInputImages?: boolean; requiresNonSequentialGeneration?: boolean;

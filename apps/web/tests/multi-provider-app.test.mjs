@@ -214,7 +214,7 @@ test('advanced mode selects mixed provider routes and deduplicates involved cred
   await user.click(screen.getByRole('button', { name: '主模型' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.click(screen.getByRole('button', { name: '选择 OpenAI Main' }))
-  await user.click(screen.getByRole('button', { name: '参考图识别模型' }))
+  await user.click(screen.getByRole('button', { name: '视觉模型' }))
   await user.click(screen.getByRole('button', { name: 'Google' }))
   await user.click(screen.getByRole('button', { name: '选择 Google Vision' }))
 

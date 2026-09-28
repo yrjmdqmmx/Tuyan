@@ -86,6 +86,14 @@ export default function ModelPicker({
   const windowRef = useRef(null)
   const listRef = useRef(null)
   const panelRef = useRef(null)
+  const customEditorRef = useRef(null)
+  const mobileScrollerRef = useRef(null)
+  const customScrollRef = useRef({desktop:0,mobile:0})
+  const customDetailsRef = useRef(new Map())
+  const detailKey = element => element.classList.contains('universal-connection') ? 'connection' : element.querySelector(':scope > summary')?.textContent
+  const rememberCustomDetails = event => {
+    if (event.target.tagName === 'DETAILS') customDetailsRef.current.set(detailKey(event.target), event.target.open)
+  }
   const previousFocusRef = useRef(null)
   const pendingMobileFocusRef = useRef('')
   const labelId = useId()
@@ -145,11 +153,11 @@ export default function ModelPicker({
       if (event.key === 'Escape') {
         event.preventDefault()
         event.stopPropagation()
-        setOpen(false)
+        closePicker()
         return
       }
       if (event.key !== 'Tab') return
-      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])].filter((element) => !element.closest('details:not([open])') || element.tagName === 'SUMMARY')
+      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])].filter(element => {let ancestor=element.parentElement;while(ancestor&&ancestor!==panelRef.current){if(ancestor.tagName==='DETAILS'&&!ancestor.open&&!(element.tagName==='SUMMARY'&&element.parentElement===ancestor))return false;ancestor=ancestor.parentElement}return true})
       if (!focusable.length) return
       const first = focusable[0]
       const last = focusable.at(-1)
@@ -165,7 +173,7 @@ export default function ModelPicker({
     return () => {
       window.cancelAnimationFrame(frame)
       window.removeEventListener('keydown', handleKeyDown)
-      previousFocusRef.current?.focus?.()
+      previousFocusRef.current?.focus?.({preventScroll:true})
     }
   }, [open])
 
@@ -176,6 +184,36 @@ export default function ModelPicker({
     const frame = window.requestAnimationFrame(() => panelRef.current?.querySelector(selector)?.focus())
     return () => window.cancelAnimationFrame(frame)
   }, [activeVendor, compact, mobileStep, open, selectedProvider])
+
+  useEffect(() => {
+    if (!open || selectedProvider !== 'custom' || compact && mobileStep !== 'custom') return undefined
+    for (const details of customEditorRef.current?.querySelectorAll('details') || []) {
+      const saved = customDetailsRef.current.get(detailKey(details))
+      if (saved !== undefined) details.open = saved
+    }
+    const position = customScrollRef.current[compact ? 'mobile' : 'desktop']
+    let secondFrame
+    const frame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        const scroller = compact ? mobileScrollerRef.current : customEditorRef.current
+        if (scroller) scroller.scrollTop = position
+      })
+    })
+    return () => { window.cancelAnimationFrame(frame); window.cancelAnimationFrame(secondFrame) }
+  }, [open, selectedProvider, compact, mobileStep])
+
+  function rememberCustomPosition() {
+    // A focus/keyboard scroll may not have emitted its scroll event yet.
+    // Capture the live DOM before unmounting instead of saving the last event.
+    const editor = customEditorRef.current
+    if (editor) {
+      const mobile = mobileScrollerRef.current
+      customScrollRef.current[mobile ? 'mobile' : 'desktop'] = (mobile || editor).scrollTop
+      for (const details of editor.querySelectorAll('details')) customDetailsRef.current.set(detailKey(details), details.open)
+    }
+  }
+
+  function closePicker() { rememberCustomPosition(); setOpen(false) }
 
   function openPicker() {
     const nextProvider = effectiveRoute.accessProvider || DEFAULT_WEB_PROVIDER
@@ -191,6 +229,7 @@ export default function ModelPicker({
   }
 
   function chooseProvider(nextProvider) {
+    rememberCustomPosition()
     if (nextProvider === 'custom') {
       onRouteChange?.({accessProvider: 'custom', modelId: effectiveRoute.accessProvider === 'custom' ? effectiveRoute.modelId : ''});
       setSelectedProvider('custom');
@@ -217,7 +256,7 @@ export default function ModelPicker({
     const nextRoute = { accessProvider: selectedProvider, modelId: model.id }
     if (onRouteChange) onRouteChange(nextRoute)
     else onChange?.(model.id)
-    setOpen(false)
+    closePicker()
   }
 
   function backFromModels() {
@@ -260,10 +299,10 @@ export default function ModelPicker({
   )
 
   const customEditor = (
-    <section className="model-custom-editor" aria-label={t("通用 API 配置")}>
-      <div className="model-custom-intro"><h3>{t("通用 API")}</h3><p>{t("此处只编辑当前角色。切换渠道或关闭弹框会保留本页草稿，密钥不会随配置保存。")}</p></div>
+    <section ref={customEditorRef} onToggleCapture={rememberCustomDetails} onScroll={event=>{if(!compact)customScrollRef.current.desktop=event.currentTarget.scrollTop}} className="model-custom-editor" aria-label={t("通用 API 配置")}>
+      <div className="model-custom-intro"><h3>{t("通用 API")}</h3><p>{t("修改即时用于当前角色。关闭弹框保留本页草稿；保存到浏览器需使用设置中的保存按钮，不含密钥。")}</p></div>
       {renderCustomSettings?.()}
-      <button type="button" className="universal-button model-custom-done" onClick={() => setOpen(false)}>{t("完成编辑")}</button>
+      <button type="button" className="universal-button model-custom-done" onClick={() => closePicker()}>{t("返回生成设置")}</button>
     </section>
   )
 
@@ -354,20 +393,20 @@ export default function ModelPicker({
         <p className="model-picker-empty" role="status">{selectedModel.disabledReason}</p>
       ) : null}
       {open ? (
-        <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false) }}>
+        <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) closePicker() }}>
           <aside ref={panelRef} className="model-route-drawer" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <header className="model-route-head">
               <div><span>{t(selectedProvider === 'custom' ? "API 接入渠道 → 通用 API 配置" : "API 接入渠道 → 模型厂商 → 服务端模型目录")}</span><h2 id={dialogTitleId}>{t(label)}{t(" · API 渠道与模型")}</h2></div>
-              <button type="button" aria-label={t("关闭模型选择")} onClick={() => setOpen(false)}><X size={20} /></button>
+              <button type="button" aria-label={t("关闭模型选择")} onClick={() => closePicker()}><X size={20} /></button>
             </header>
             {compact ? (
-              <div className={`model-route-mobile-step step-${mobileStep}`}>
+              <div ref={mobileScrollerRef} onScroll={event=>{if(mobileStep==='custom')customScrollRef.current.mobile=event.currentTarget.scrollTop}} className={`model-route-mobile-step step-${mobileStep}`}>
                 {mobileStep === 'providers' ? (
                   <><h3>{t("选择 API 接入渠道")}</h3>{providerRail}</>
                 ) : null}
                 {mobileStep === 'custom' ? (
                   <>
-                    <button type="button" className="model-route-back" data-mobile-focus="custom-back" onClick={() => moveMobileStep('providers', 'selected-provider')}><ArrowLeft size={16} />{t(" 返回 API 接入渠道")}</button>
+                    <button type="button" className="model-route-back" data-mobile-focus="custom-back" onClick={() => {rememberCustomPosition();moveMobileStep('providers', 'selected-provider')}}><ArrowLeft size={16} />{t(" 返回 API 接入渠道")}</button>
                     {customEditor}
                   </>
                 ) : null}

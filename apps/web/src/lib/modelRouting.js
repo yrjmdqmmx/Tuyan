@@ -27,6 +27,7 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
 export function buildModelSubmission({ configurationMode, modelRoutes, registry, providerRegions }) {
   assertCompleteRoutes(modelRoutes)
   if (Object.values(modelRoutes).some(route=>route.accessProvider === 'custom') && !(registry?.universalApiContractVersion >= 1)) throw new Error('当前后端尚未支持通用 API 接入；配置已保留。')
+  if(Object.values(modelRoutes).some(r=>r.accessProvider==='custom'&&(r.custom?.imageTool||r.custom?.azure||r.custom?.protocol?.startsWith('bedrock-')||r.custom?.auth==='bearer-expiring'))&&!(registry?.universalExtensionsVersion>=1))throw new Error('当前后端尚未支持此图像工具或云接口扩展；草稿已保留，请升级后端。')
   const explicitRoutesSupported = Number(registry?.routeContractVersion || 0) >= 1
   if (configurationMode === 'advanced' && !explicitRoutesSupported) {
     throw new Error('当前后端不支持专业模式的多渠道模型路由，请切回普通模式。')
@@ -114,7 +115,7 @@ export function firstInvalidRequiredRoute({ roles, entries, outputFormat }) {
   const messages = {
     main: '请选择可用的主模型。',
     image: '请选择可用的图像生成模型。',
-    vision: '请选择可用的参考图识别模型。',
+    vision: '请选择可用的视觉模型。',
   }
   for (const role of MODEL_ROUTE_ROLES) {
     const entry = entries?.[role]

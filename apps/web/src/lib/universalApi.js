@@ -1,5 +1,5 @@
-import { normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
-import { STATIC_MODEL_REGISTRY } from './staticModelCatalog.js'
+import { universalExtensionDeclaration, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, universalMetadataSource, normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
+import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from './staticModelCatalog.js'
 import { referenceSubmissionPolicy } from './referenceUploadPolicy.js'
 import { resolveImageSize } from '../../../../packages/types/src/image-size-contract.ts'
 import sizeContracts from '../../../../config/image-size-contracts.json'
@@ -11,13 +11,15 @@ export const UNIVERSAL_PROTOCOL_OPTIONS = [
   ['anthropic-messages', 'Anthropic Messages', 'https://api.anthropic.com/v1'],
   ['gemini-generate-content', 'Gemini GenerateContent', 'https://generativelanguage.googleapis.com/v1beta'],
   ['gemini-interactions', 'Gemini Interactions', 'https://generativelanguage.googleapis.com/v1beta'],
+  ['bedrock-converse', 'Bedrock Converse · 已审计型号', 'https://bedrock-runtime.us-west-2.amazonaws.com'],
+  ['bedrock-invoke', 'Bedrock InvokeModel · 已审计图像 schema', 'https://bedrock-runtime.us-west-2.amazonaws.com'],
   ['dashscope-multimodal', 'DashScope 原生多模态', 'https://dashscope.aliyuncs.com/api/v1'],
 ]
 const storageKey = 'tuyan.universal-api.v1'
 export const UNIVERSAL_PROVIDER = { label: '通用 API', mainModels: [], imageModels: [], visionModels: [], accessKind: 'direct', registryModels: [] }
 export function emptyUniversalDraft(role) {
   const protocol = role === 'image' ? 'openai-images' : 'openai-chat'
-  return { modelId: '', declared: false, custom: {version: 1, connectionId: `custom_${role}`, protocol, baseUrl: UNIVERSAL_PROTOCOL_OPTIONS.find(x => x[0] === protocol)[2], auth: universalDefaultAuth(protocol), compatibility: 'standard',
+  return { modelId: '', declared: false, ui:{baseUrlSource:'system',capabilityMode:'auto',manualDraftPresent:false,connectionMode:'template'}, custom: {version: 1, connectionId: `custom_${role}`, protocol, baseUrl: UNIVERSAL_PROTOCOL_OPTIONS.find(x => x[0] === protocol)[2], auth: universalDefaultAuth(protocol), compatibility: 'standard',
     catalogFormat: 'auto', capabilities: {text: false, vision: false, imageGeneration: false, imageEditing: false},
     inputLimits: {maxCount: 1, maxBytes: 5*1024*1024, maxTotalBytes: 10*1024*1024, maxDimension: 4096, maxPixels: 16000000, requestMaxBytes: 32*1024*1024, mimeTypes: ['image/png','image/jpeg','image/webp']},
     outputLimits: {maxBytes: 20*1024*1024, maxDimension: 8192, maxPixels: 32000000, mimeTypes: ['image/png','image/jpeg','image/webp']}, outputSizes: []}}
@@ -42,24 +44,37 @@ export function loadUniversalDrafts(storage = globalThis.localStorage ?? globalT
           repaired = true
           return [key, fallback]
         }))
-        const custom = restore(defaults[role].custom, d.custom)
-        defaults[role] = {modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
+        const custom = {...restore(defaults[role].custom, d.custom),...serializedUniversalExtensions(d.custom)}
+        try { custom.limitPolicy = d.custom.limitPolicy ? normalizeUniversalLimitPolicy(d.custom.limitPolicy) : migrateUniversalLimitPolicy(custom) } catch {custom.limitPolicy=migrateUniversalLimitPolicy({...custom,limitPolicy:undefined});repaired=true}
+        defaults[role] = {ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:repaired || d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, evidence:sanitizeUniversalEvidence(d.evidence), modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
       }
     }
   } catch { /* An invalid saved draft must not break preset channels. */ }
   return defaults
 }
-export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+export function hasSavedUniversalConfiguration(storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  try {
+    const routes=JSON.parse(storage?.getItem('tuyan.model-routing.v1')||'null'), drafts=JSON.parse(storage?.getItem(storageKey)||'null')
+    return routes?.version===1&&drafts?.version===1&&['simple','advanced'].includes(routes.mode)&&['main','vision','image'].every(role=>typeof routes.roles?.[role]?.accessProvider==='string'&&typeof routes.roles?.[role]?.modelId==='string'&&typeof drafts.roles?.[role]?.modelId==='string'&&drafts.roles[role].custom&&typeof drafts.roles[role].custom==='object')
+  } catch { return false }
+}
+export function serializeUniversalDrafts(drafts) {
   // Explicit allowlist. Keys and validation outcomes never enter localStorage.
-  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {modelId: d.modelId, declared: Boolean(d.declared), custom: {
+  const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {evidence:sanitizeUniversalEvidence(d.evidence), modelId: d.modelId, declared: Boolean(d.declared), ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, custom: {
     version: 1, connectionId: `custom_${role}`, protocol: d.custom.protocol, baseUrl: d.custom.baseUrl, auth: d.custom.auth, compatibility: d.custom.compatibility,
-    catalogFormat: d.custom.catalogFormat || 'auto', capabilities: d.custom.capabilities, inputLimits: d.custom.inputLimits, outputLimits: d.custom.outputLimits, outputSizes: d.custom.outputSizes,
+    ...serializedUniversalExtensions(d.custom),
+    catalogFormat: d.custom.catalogFormat || 'auto', capabilities: pickUniversalFields(d.custom.capabilities,['text','vision','imageGeneration','imageEditing']), inputLimits: pickUniversalFields(d.custom.inputLimits,['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']), outputLimits: pickUniversalFields(d.custom.outputLimits,['maxBytes','maxDimension','maxPixels','mimeTypes']), outputSizes: (d.custom.outputSizes||[]).slice(0,256).map(row=>pickUniversalFields(row,['resolution','aspectRatio','value'])),
+    ...(d.custom.limitPolicy ? {limitPolicy:{version:1,...Object.fromEntries(['service','user'].map(layer=>[layer,Object.fromEntries(['input','output'].filter(scope=>d.custom.limitPolicy[layer]?.[scope]!==undefined).map(scope=>[scope,pickUniversalFields(d.custom.limitPolicy[layer]?.[scope],scope==='input'?['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']:['maxBytes','maxDimension','maxPixels','mimeTypes'])]))]))}} : {}),
   }}]))
-  try { storage?.setItem(storageKey, JSON.stringify({version:1,roles})); return true } catch { return false }
+  return JSON.stringify({version:1,roles})
+}
+export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ?? globalThis.window?.localStorage) {
+  try { if(!storage) return false; storage.setItem(storageKey, serializeUniversalDrafts(drafts)); return true } catch { return false }
 }
 // Audit reuse is exact origin + protocol + model ID, never a name/prefix guess.
 export function officialDeclaration(draft) {
   const c = draft.custom
+  try { const ext=universalExtensionDeclaration(c,draft.modelId); if(ext)return ext } catch {return null}
   let base
   try { base = normalizeUniversalBaseUrl(c.baseUrl, c.protocol) } catch { return null }
   const provider = base === 'https://api.openai.com/v1' ? 'openai' : base === 'https://api.anthropic.com/v1' ? 'anthropic' : base === 'https://generativelanguage.googleapis.com/v1beta' ? 'gemini' : ''
@@ -84,11 +99,22 @@ export function officialDeclaration(draft) {
     if (!outputSizes.length) return null
   }
   return {...c, capabilities:{text:entry.roles.includes('main'),vision:entry.roles.includes('vision'),imageGeneration:Boolean(image),imageEditing:Boolean(editing && (!image || route.generation === route.editing))},
-    inputLimits:{...c.inputLimits,...policy,mimeTypes:policy.mimeTypes || c.inputLimits.mimeTypes},outputSizes}
+    inputLimits:{...c.inputLimits,...policy,mimeTypes:policy.mimeTypes || c.inputLimits.mimeTypes},limitPolicy:undefined,outputSizes}
+}
+export function officialDeclarationSources(draft) {
+  if(!officialDeclaration(draft))return null
+  if(draft.custom.imageTool||draft.custom.azure||draft.custom.protocol.startsWith('bedrock-'))return {provider:draft.custom.imageTool?.provider|| (draft.custom.azure?'azure':'bedrock'),baseUrl:draft.custom.baseUrl,protocol:draft.custom.protocol,modelId:draft.modelId,registryVersion:'extensions-v1',sizeCheckedAt:'2026-09-28',sizeSources:[draft.custom.azure?'https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/responses':draft.custom.imageTool?.provider==='xai'?'https://docs.x.ai/developers/tools/image-generation':draft.custom.imageTool?'https://developers.openai.com/api/docs/guides/tools-image-generation':draft.custom.protocol==='bedrock-converse'?'https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html':'https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-stability-diffusion.html'],inputSource:null}
+  const base=normalizeUniversalBaseUrl(draft.custom.baseUrl,draft.custom.protocol)
+  const provider=base==='https://api.openai.com/v1'?'openai':base==='https://api.anthropic.com/v1'?'anthropic':'gemini'
+  const modelId=provider==='gemini'?draft.modelId.replace(/^models\//,''):draft.modelId
+  const policy=referenceSubmissionPolicy(provider,modelId),sizes=sizeContracts.routes[`${provider}/${modelId}`]
+  return {provider,baseUrl:base,protocol:draft.custom.protocol,modelId,registryVersion:STATIC_MODEL_REGISTRY_VERSION,
+    inputSource:typeof policy.source==='string'&&policy.source.startsWith('https://')?policy.source:null,
+    sizeCheckedAt:sizes?.reviewedAt,sizeSources:(sizes?.sources||[]).filter(x=>typeof x==='string'&&x.startsWith('https://'))}
 }
 export function universalDraftRoute(draft) {
   if (!draft.modelId.trim()) throw new Error('请填写准确模型 ID，或先获取模型并选择。')
-  const declared = draft.declared ? draft.custom : officialDeclaration(draft)
+  const declared = draft.declared ? draft.custom : draft.ui?.capabilityMode === 'manual' ? null : officialDeclaration(draft)
   if (!declared) throw new Error('该地址与型号没有可直接采用的精确能力记录，请在「能力与限额」中按服务文档补充并确认。')
   return normalizeUniversalRoute({accessProvider:'custom',modelId:draft.modelId,custom:declared})
 }
@@ -106,6 +132,7 @@ export function universalCheckErrorMessage(error, kind) {
   const status = error.code >= 400 && error.code <= 599 ? error.code : error.status
   if (status === 401) return `${step}失败：图研登录已过期，请重新登录后再试，配置已保留。`
   if (status === 403) return `${step}失败：访问被拒绝，请检查登录状态及账号权限。`
+  if (status === 404) return `${step}失败：请求路径不存在，请核对服务地址及目录规则；可以继续手动填写型号。`
   if (status === 429) return `${step}请求过于频繁，请稍后重试。`
   if (status === 408 || status === 504 || error.name === 'AbortError') return `${step}超时，请检查网络后重新操作。未触发生成。`
   if (status >= 500) return `${step}暂不可用，服务端返回异常，请稍后重试。未触发生成。`
@@ -128,11 +155,12 @@ export function validateUniversalCatalogResult(result) {
 }
 export const UNIVERSAL_ROLE_REQUIREMENTS = {
   main: '主模型需要文本生成能力；如果该角色接收参考图，还需确认图片理解和输入限额。',
-  vision: '识图模型需要图片理解与文本输出能力，请确认图片数量、格式、大小和请求限额。',
+  vision: '视觉模型需要图片理解与文本输出能力，请确认图片数量、格式、大小和请求限额。',
   image: '图像模型需要图片生成能力、输出限额及清晰度与比例映射；直接精修还需图片编辑能力。',
 }
 export function universalDraftFeedback(draft, role) {
   if (!draft.modelId.trim()) return {tone:'neutral', message:'先获取模型并选择，或手动填写准确模型 ID。'}
+  if (!draft.declared && draft.ui?.capabilityMode === 'manual') return {tone:'warning', message:`手动能力草稿尚未确认。请展开「能力与限额」核对并勾选确认。${UNIVERSAL_ROLE_REQUIREMENTS[role]}`}
   if (!draft.declared && !officialDeclaration(draft)) return {tone:'warning', message:`此协议、地址与准确 ID 暂无已核对的能力记录。请展开「能力与限额」确认。${UNIVERSAL_ROLE_REQUIREMENTS[role]}`}
   const entry = universalDraftEntry(draft)
   if (!entry.selectable) return {tone:'error', message:entry.disabledReason}
@@ -160,14 +188,53 @@ export function universalKeyEnvelope(drafts, keys) {
 }
 export function bindUniversalKey(draft, apiKey) {
   const c = draft.custom
-  return {baseUrl:c.baseUrl,protocol:c.protocol,auth:c.auth,apiKey}
+  return {baseUrl:c.baseUrl,protocol:c.protocol,auth:c.auth,apiKey:typeof apiKey==='object'?String(apiKey?.apiKey||''):apiKey,...(c.auth==='bearer-expiring'&&typeof apiKey==='object'?{expiresAt:apiKey?.expiresAt||''}:{})}
 }
 export function missingUniversalKeys(routes, roles, envelope) {
   return roles.filter(role => {try {universalCredential(routes[role],envelope);return false} catch{return true}})
 }
 export function updateUniversalDraft(draft, patch) {
-  const next = {...draft,...patch,custom:{...draft.custom,...patch.custom}}
-  const changedBinding = ['baseUrl','protocol','auth'].some(k => draft.custom[k] !== next.custom[k])
+  const next = {...draft,...patch,ui:{...draft.ui,...patch.ui},custom:{...draft.custom,...patch.custom}}
+  if (draft.custom.limitPolicy && patch.custom && !Object.hasOwn(patch.custom,'limitPolicy') && (patch.custom.inputLimits || patch.custom.outputLimits)) {
+    next.custom.limitPolicy={...draft.custom.limitPolicy,user:{...draft.custom.limitPolicy.user,...(patch.custom.inputLimits?{input:{...draft.custom.limitPolicy.user.input,...patch.custom.inputLimits}}:{}),...(patch.custom.outputLimits?{output:{...draft.custom.limitPolicy.user.output,...patch.custom.outputLimits}}:{})}}
+  }
+  if(patch.custom && Object.hasOwn(patch.custom,'baseUrl') && !patch.ui) next.ui={...next.ui,baseUrlSource:'user'}
+  const changedFields = ['baseUrl','protocol','auth'].filter(k => draft.custom[k] !== next.custom[k])
+  const changedBinding = changedFields.length > 0
   if (next.modelId !== draft.modelId || changedBinding || next.custom.compatibility !== draft.custom.compatibility) next.declared = false
-  return {draft:next,clearKey:changedBinding}
+  return {draft:next,clearKey:changedBinding,changedFields}
+}
+
+function pickUniversalFields(value,keys) { return Object.fromEntries(keys.filter(k=>value?.[k]!==undefined).map(k=>[k,Array.isArray(value[k])?value[k].filter(x=>typeof x==='string').slice(0,256):value[k]!==null&&typeof value[k]==='object'?undefined:value[k]])) }
+export function sanitizeUniversalEvidence(value) {
+  if(!value||value.version!==1||!value.source||!value.facts||Array.isArray(value.source)||Array.isArray(value.facts))return undefined
+  if(['kind','provider','baseUrl','protocol','auth','modelId','fetchedAt','checkedAt','url'].some(k=>typeof value.source[k]!=='string'||value.source[k].length>2048))return undefined
+  return {version:1,source:pickUniversalFields(value.source,['kind','provider','baseUrl','protocol','auth','modelId','fetchedAt','checkedAt','url']),facts:pickUniversalFields(value.facts,['imageInput','textOutput','imageOutput','thinking','inputTokenLimit','contextWindowTokens','outputTokenLimit','supportedParameters','generationMethods','reasoningEfforts','thinkingModes','reasoningMandatory','reasoningBudget']),review:['imported','user-confirmed'].includes(value.review)?value.review:'saved'}
+}
+export function catalogMetadataForDraft(value,draft,now=Date.now()) {
+  const metadata=sanitizeUniversalEvidence(value)
+  if(!metadata)return null
+  let expected;try{expected=universalMetadataSource(universalDraftConnection(draft))}catch{return null}
+  const s=metadata.source, age=now-Date.parse(s.fetchedAt)
+  if(!expected||s.provider!==expected.provider||s.kind!==expected.kind||s.url!==expected.url||s.baseUrl!==normalizeUniversalBaseUrl(draft.custom.baseUrl,draft.custom.protocol)||s.protocol!==draft.custom.protocol||s.auth!==draft.custom.auth||s.modelId!==draft.modelId||!Number.isFinite(age)||age< -300000||age>30*86400000)return null
+  for(const [key,v] of Object.entries(metadata.facts)) {
+    if(['imageInput','textOutput','imageOutput','thinking','reasoningMandatory','reasoningBudget'].includes(key)&&typeof v!=='boolean')return null
+    if(['inputTokenLimit','contextWindowTokens','outputTokenLimit'].includes(key)&&(!Number.isSafeInteger(v)||v<1||v>100000000))return null
+    if(['supportedParameters','generationMethods','reasoningEfforts','thinkingModes'].includes(key)&&(!Array.isArray(v)||v.length>64||v.some(x=>typeof x!=='string'||x.length>80)))return null
+  }
+  return metadata
+}
+export function catalogCapabilityPatch(metadata,draft) {
+  const m=catalogMetadataForDraft(metadata,draft);if(!m)throw new Error('目录来源已过期或不匹配当前连接，请重新获取。')
+  const f=m.facts,capabilities={...draft.custom.capabilities}
+  if(typeof f.textOutput==='boolean')capabilities.text=f.textOutput
+  if(typeof f.imageInput==='boolean'&&(capabilities.text||m.source.provider==='anthropic')) {capabilities.text=true;capabilities.vision=f.imageInput}
+  if(typeof f.imageOutput==='boolean'&&draft.custom.protocol==='openai-chat'&&draft.custom.compatibility==='openrouter-image')capabilities.imageGeneration=f.imageOutput
+  // Image input/output never implies an editing operation or a size/byte/pixel allowance.
+  return {custom:{capabilities},declared:false,evidence:{...m,review:'user-confirmed'},ui:{capabilityMode:'manual',manualDraftPresent:true}}
+}
+
+// Non-sensitive extension allowlist. Invalid drafts remain editable; request normalization is stricter.
+export function serializedUniversalExtensions(c) {
+  return {...(c.imageTool&&typeof c.imageTool==='object'?{imageTool:pickUniversalFields(c.imageTool,['provider','model','deployment','quality','format'])}:{}),...(c.azure&&typeof c.azure==='object'?{azure:pickUniversalFields(c.azure,['deploymentModel'])}:{}),...(c.bedrock&&typeof c.bedrock==='object'?{bedrock:pickUniversalFields(c.bedrock,['strength'])}:{})}
 }

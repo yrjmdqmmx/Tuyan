@@ -74,7 +74,7 @@ export default function GuidePanel({
               <ParameterGuide title={t("API 接入渠道与密钥")}>{t("选择渠道并填写其 API Key，仅需提供当前任务实际使用的凭据。可恢复任务所需密钥会在服务端加密保存，任务完成或过期后删除。")}</ParameterGuide>
               <ParameterGuide title={t("主模型 ")}>{t("负责理解论文方法、规划图中模块和文字内容，并执行文字层面的评审。复杂方法或长文本优先选择规划能力更强的模型；SVG 默认由主模型输出；选择 Recraft Vector 时，由主模型规划、Recraft 生成矢量图。")}</ParameterGuide>
               <ParameterGuide title={t("图像生成模型")}>{t("负责 PNG 的绘制、重渲染与支持时的直接精修，决定画面风格、比例和可用清晰度。先看模型卡的格式、比例、分辨率和权益状态，不要只按模型名称选择。")}</ParameterGuide>
-              <ParameterGuide title={t("参考图识别模型")}>{t("负责读取上传图片或图库参考，并在启用评审时检查结果图的结构与语义。没有参考图且不需要视觉评审时调用会更少；复杂机制图或强参考风格更依赖其识图能力。")}</ParameterGuide>
+              <ParameterGuide title={t("视觉模型")}>{t("负责读取上传图片或图库参考，并在启用评审时检查结果图的结构与语义。没有参考图且不需要视觉评审时调用会更少；复杂机制图或强参考风格更依赖其识图能力。")}</ParameterGuide>
               <ParameterGuide title={t("导出格式")}><strong>PNG</strong>{t("适合包含真实质感、复杂配色或需要直接投稿的插图，由图像模型生成并统一为 PNG。")}<strong>SVG</strong>{t("适合流程图和架构图，便于后续矢量编辑，默认由主模型生成；选择 Recraft Vector 时需要同时填写主模型和 Recraft 的 Key。")}</ParameterGuide>
               <ParameterGuide title={t("输出清晰度")}><strong>1K</strong>{t("用于快速草稿和低成本试错；")}<strong>2K</strong>{t("适合论文正文、汇报与大多数正式图片；")}<strong>4K</strong>{t("用于最终导出、海报或细节密集图。分辨率越高通常等待越久、文件越大，也可能增加费用；只会开放模型明确支持的档位。")}</ParameterGuide>
               <ParameterGuide title={t("画面比例")}><strong>{t("自动")}</strong>{t("让模型按内容决定；1:1 适合概念总览，4:3 / 3:2 适合论文常规图，16:9 适合横向流程和演示，3:4 / 2:3 / 9:16 适合纵向通路，21:9、1:4、4:1 适合超长链路。禁用项表示当前图像模型不支持。")}</ParameterGuide>
@@ -98,9 +98,9 @@ export default function GuidePanel({
               <span>{t("当前渠道 ")}<strong>{providerLabels.length ? providerLabels.join(' / ') : t(providers)}</strong></span>
               <span>{t("主模型 ")}<strong>{t(routeSummary.main || '等待选择')}</strong></span>
               <span>{t("图像模型 ")}<strong>{t(routeSummary.image || '等待选择')}</strong></span>
-              <span>{t("识图模型 ")}<strong>{t(routeSummary.vision || '等待选择')}</strong></span>
+              <span>{t("视觉模型 ")}<strong>{t(routeSummary.vision || '等待选择')}</strong></span>
             </div>
-            <p>{t("主模型负责规划与文字评审，图像模型负责生成或直接编辑，识图模型负责理解参考图与视觉评审。目录由服务端权威注册表校验；模型不支持某个角色、格式、分辨率或比例时会显示精确禁用原因，不从模型名称猜测能力。")}</p>
+            <p>{t("主模型负责规划与文字评审，图像模型负责生成或直接编辑，视觉模型负责理解参考图与视觉评审。目录由服务端权威注册表校验；模型不支持某个角色、格式、分辨率或比例时会显示精确禁用原因，不从模型名称猜测能力。")}</p>
             <p><KeyRound size={15} aria-hidden="true" />{t(" 凭据仅用于你选择的模型渠道。可恢复任务所需密钥会加密保存至任务完成或过期；退出或注销会清空页面私密状态。")}</p>
           </GuideSection>
 

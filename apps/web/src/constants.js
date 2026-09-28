@@ -653,7 +653,7 @@ export function supportedResolutions(provider, imageModel) {
 
 export const REFERENCE_IMAGE_MODES = [
   ['main_model', '主模型直读'],
-  ['vision_model', '独立识别模型'],
+  ['vision_model', '独立视觉模型'],
 ];
 
 export const QUICK_START_EXAMPLES = [

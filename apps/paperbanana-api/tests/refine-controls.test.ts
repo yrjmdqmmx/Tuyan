@@ -125,3 +125,61 @@ for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-imag
     assert.equal(submissions(),1);assert.equal(f.tokenDanceCalls.length,0)
   } finally {await f.close()}
 })
+
+test('refine admission saves frozen source, reference and mask paths before acknowledging; failed persistence makes no call', async()=>{
+  const f=await createRefineRuntime({tokenDance:true})
+  try {
+    const source=await upload(f), reference=await upload(f,await sharp(f.image).negate().png().toBuffer())
+    const mask=await upload(f,await sharp({create:{width:120,height:80,channels:3,background:'#fff'}}).png().toBuffer())
+    let fail=true, checked=0
+    f.legacy.configureProviderWorkflow({...f.workflow!,prepare:async(task:any)=>{
+      const callsBefore=f.providerCalls.length
+      await f.workflow!.prepare(task)
+      const row=await f.db.collection('paperbanana_provider_executions').findOne({_id:task.jobId})
+      const saved=f.tokenDanceService!.cipher!.open(row.secret,task.jobId).task
+      assert.equal(saved.kind,'refine')
+      assert.match(saved.body.sourceImageObjectKey,new RegExp('^'+task.jobId+'/'))
+      const paths=[saved.body.sourceImageObjectKey,...(saved.body.refineInputs.references||[]).map((ref:any)=>ref.objectKey),saved.body.refineInputs.mask?.objectKey].filter(Boolean)
+      for (const path of paths) {assert.match(path,new RegExp('^'+task.jobId+'/'));assert.ok(f.objects.has(path))}
+      assert.equal(f.providerCalls.length,callsBefore)
+      checked++
+      if (fail) throw new Error('fixture snapshot write failed')
+    }})
+    const withReference=request('fal','bria/fibo-edit-1.5/edit',source.objectKey,{version:1,references:[{objectKey:reference.objectKey,purpose:'color'}]})
+    const rejected=await f.post(withReference)
+    assert.equal(rejected.data.code,503,JSON.stringify(rejected))
+    assert.equal(f.providerCalls.length,0)
+    assert.equal(await f.db.collection('paperbanana_provider_executions').countDocuments({}),0)
+    fail=false
+    for (const body of [withReference,request('fal','bria/fibo-edit-1.5/edit',source.objectKey,{version:1,mask:{objectKey:mask.objectKey}})]) {
+      const accepted=await f.post(body);assert.equal(accepted.data.code,0,JSON.stringify(accepted))
+      await f.legacy.drainJobAdmission()
+      assert.equal((await f.post({action:'getJob',jobId:accepted.data.jobId})).data.job.status,'succeeded')
+    }
+    assert.equal(checked,3)
+  }finally{await f.close()}
+})
+
+test('Responses image tool follows existing refine workflow with owned source and auxiliary reference',async()=>{
+  const {createUniversalRuntime}=await import('../src/universal-adapters.js')
+  const {universalExtensionDeclaration}=await import('../../../packages/api/src/universal-api.js')
+  const f=await createRefineRuntime({tokenDance:true}), calls:any[]=[]
+  try {
+    f.legacy.configureUniversalRuntime(createUniversalRuntime({transport:{checkUrl:async()=>{},request:async r=>{calls.push(r);return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({status:'completed',output:[{type:'image_generation_call',status:'completed',result:f.output.toString('base64')}]}))}}}}))
+    const source=await upload(f),ref=await upload(f,await sharp(f.image).negate().png().toBuffer())
+    const custom=universalExtensionDeclaration({version:1,connectionId:'custom_image',baseUrl:'https://api.openai.com/v1',protocol:'openai-responses',auth:'bearer',compatibility:'standard',imageTool:{provider:'openai',model:'gpt-image-1.5'},capabilities:{text:false,vision:false,imageGeneration:true,imageEditing:true},outputLimits:{maxBytes:10000000,maxDimension:8192,maxPixels:32000000,mimeTypes:['image/png']},inputLimits:{maxCount:8,maxBytes:5000000,maxTotalBytes:20000000,maxDimension:4096,maxPixels:16000000,requestMaxBytes:30000000,mimeTypes:['image/png']}},'gpt-4.1')!
+    const body:any=request('custom','gpt-4.1',source.objectKey,{version:1,references:[{objectKey:ref.objectKey,purpose:'color',note:'只参考配色'}]})
+    body.imageSize='auto';body.modelRoutes.image.custom=custom
+    body.apiKeys={custom:JSON.stringify({custom_image:{baseUrl:custom.baseUrl,protocol:custom.protocol,auth:custom.auth,apiKey:'fixture-image-role'}})}
+    const submitted=await f.post(body);assert.equal(submitted.data.code,0,JSON.stringify(submitted))
+    await f.post({action:'abortReferenceUpload',uploads:[source,ref]});await f.legacy.drainJobAdmission()
+    const done=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
+    assert.equal(done.status,'succeeded',JSON.stringify(done));assert.equal(done.refineInputMetadata.referenceCount,1)
+    assert.equal(calls.length,1);const wire=JSON.parse(calls[0].body),images=wire.input[0].content.filter((x:any)=>x.type==='input_image')
+    assert.equal(images.length,2);assert.notEqual(images[0].image_url,images[1].image_url)
+    assert.equal(wire.tools[0].action,'edit');assert.equal(wire.tools[0].size,undefined);assert.match(JSON.stringify(wire),/只参考配色/)
+    assert.equal(wire.store,false);assert.equal(wire.previous_response_id,undefined)
+    assert.match(done.refineInputs.references[0].objectKey,new RegExp('^'+done.id+'/'))
+    assert.equal(JSON.stringify(done).includes('fixture-image-role'),false)
+  } finally {await f.close()}
+})
