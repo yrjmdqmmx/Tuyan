@@ -80,16 +80,16 @@ function universalDataUrl(image: UniversalImageBytes) { return `data:${image.mim
 function universalHeaders(route: { custom: Pick<UniversalConnection, 'auth' | 'protocol'> }, key: string): Record<string, string> {
   if (typeof key !== 'string' || !key || key.length > 16384 || /[^\x21-\x7e]/.test(key)) throw new UniversalApiError('CREDENTIAL_MISMATCH')
   const c = route.custom
-  return { ...(c.auth === 'bearer' ? { Authorization: `Bearer ${key}` } : { [c.auth]: key }), ...(c.protocol === 'anthropic-messages' ? { 'anthropic-version': '2023-06-01' } : {}) }
+  return { ...(['bearer','bearer-expiring'].includes(c.auth) ? { Authorization: `Bearer ${key}` } : { [c.auth]: key }), ...(c.protocol === 'anthropic-messages' ? { 'anthropic-version': '2023-06-01' } : {}) }
 }
 function universalPrompt(value: unknown): asserts value is string { if (typeof value !== 'string' || !value.trim()) throw new UniversalApiError('CONFIG_INVALID') }
 function universalTokens(value: number | undefined) { if (value !== undefined && (!Number.isSafeInteger(value) || value < 1 || value > 1000000)) throw new UniversalApiError('CONFIG_INVALID'); return value }
-function universalEndpoint(route: UniversalRoute, suffix: string) { return `${route.custom.baseUrl}/${suffix}` }
+function universalEndpoint(route: UniversalRoute, suffix: string) { return `${route.custom.baseUrl}/${suffix}${route.custom.azure && route.custom.protocol==='openai-images' ? '?api-version=preview' : ''}` }
 function universalGeminiEndpoint(route: UniversalRoute) { return universalEndpoint(route, `models/${encodeURIComponent(route.modelId.startsWith('models/') ? route.modelId.slice(7) : route.modelId)}:generateContent`) }
 function universalJson(route: UniversalRoute, key: string, suffix: string, body: unknown, signal?: AbortSignal): UniversalTransportRequest {
   const encoded = JSON.stringify(body)
   if (Buffer.byteLength(encoded) > route.custom.inputLimits.requestMaxBytes) throw new UniversalApiError('INPUT_LIMIT')
-  return { url: suffix === ':generateContent' ? universalGeminiEndpoint(route) : universalEndpoint(route, suffix), method: 'POST', headers: { ...universalHeaders(route, key), 'Content-Type': 'application/json' }, body: encoded, maxRequestBytes: route.custom.inputLimits.requestMaxBytes, maxResponseBytes: Math.max(1024 * 1024, Math.ceil(route.custom.outputLimits.maxBytes * 4 / 3) + 1024 * 1024), signal, kind: 'inference' }
+  return { url: suffix === ':generateContent' ? universalGeminiEndpoint(route) : universalEndpoint(route, suffix), method: 'POST', headers: { ...universalHeaders(route, key), 'Content-Type': 'application/json' }, body: encoded, maxRequestBytes: route.custom.inputLimits.requestMaxBytes, maxResponseBytes: Math.min(120*1024*1024, Math.max(1024 * 1024, Math.ceil(route.custom.outputLimits.maxBytes * (route.custom.imageTool ? 4 : 1) * 4 / 3) + 1024 * 1024)), signal, kind: 'inference' }
 }
 function universalParts(images: UniversalImageBytes[], kind: 'chat' | 'responses' | 'anthropic' | 'gemini' | 'interactions' | 'dashscope'): any[] {
   return images.map(image => kind === 'chat' ? { type: 'image_url', image_url: { url: universalDataUrl(image) } }
@@ -103,6 +103,10 @@ function universalTextRequest(route: UniversalRoute, key: string, input: Univers
   const { protocol } = route.custom, model = route.modelId, maxTokens = universalTokens(input.maxTokens)
   const system = input.systemPrompt
   if (system !== undefined && typeof system !== 'string') throw new UniversalApiError('CONFIG_INVALID')
+  if (protocol === 'bedrock-converse' && maxTokens && maxTokens > 64000) throw new UniversalApiError('INPUT_LIMIT')
+  if (protocol === 'bedrock-converse') return universalJson(route,key,`model/${encodeURIComponent(model)}/converse`,{
+    ...(system ? {system:[{text:system}]}:{}), messages:[{role:'user',content:[{text:input.prompt},...images.map(image=>({image:{format:image.mimeType==='image/jpeg'?'jpeg':image.mimeType.split('/')[1],source:{bytes:image.base64}}}))]}],inferenceConfig:{maxTokens:maxTokens||UNIVERSAL_TEXT_OUTPUT_TOKENS},
+  },input.signal)
   if (protocol === 'openai-chat') return universalJson(route, key, 'chat/completions', { model, stream: false, messages: [...(system ? [{ role: 'system', content: system }] : []), { role: 'user', content: [{ type: 'text', text: input.prompt }, ...universalParts(images, 'chat')] }], ...(maxTokens ? { max_completion_tokens: maxTokens } : {}) }, input.signal)
   if (protocol === 'openai-responses') return universalJson(route, key, 'responses', { model, stream: false, store: false, ...(system ? { instructions: system } : {}), input: [{ role: 'user', content: [{ type: 'input_text', text: input.prompt }, ...universalParts(images, 'responses')] }], ...(maxTokens ? { max_output_tokens: maxTokens } : {}) }, input.signal)
   if (protocol === 'anthropic-messages') return universalJson(route, key, 'messages', { model, stream: false, ...(system ? { system } : {}), max_tokens: maxTokens || UNIVERSAL_TEXT_OUTPUT_TOKENS, messages: [{ role: 'user', content: [...universalParts(images, 'anthropic'), { type: 'text', text: input.prompt }] }] }, input.signal)
@@ -134,7 +138,35 @@ function universalMultipart(route: UniversalRoute, key: string, input: Universal
 }
 function universalImageRequest(route: UniversalRoute, key: string, input: UniversalImageInput, images: UniversalImageBytes[]) {
   const c = route.custom, model = route.modelId, size = universalSize(route, input), ratio = input.aspectRatio === 'auto' ? undefined : input.aspectRatio
+  if (c.protocol === 'openai-responses' && c.imageTool) {
+    const t=c.imageTool
+    if (images.length > (t.provider==='xai'?1:8)) throw new UniversalApiError('INPUT_LIMIT')
+    const tool:any = {type:'image_generation',action:images.length?'edit':'generate'}
+    if (t.provider!=='xai') {
+      if(t.provider==='openai') tool.model=t.model
+      if(size!=='auto')tool.size=size
+      if(t.quality)tool.quality=t.quality
+      if(t.format)tool.output_format=t.format
+    } else if(size!=='auto') throw new UniversalApiError('OUTPUT_SIZE_UNSUPPORTED')
+    const request=universalJson(route,key,'responses',{model,stream:false,store:false,input:[{role:'user',content:[{type:'input_text',text:input.prompt},...universalParts(images,'responses')]}],tools:[tool],...(t.provider==='xai'?{}:{tool_choice:{type:'image_generation'}})},input.signal)
+    if(t.provider==='azure') request.headers={...request.headers,'x-ms-oai-image-generation-deployment':t.deployment!,'api_version':'preview'}
+    return request
+  }
+  if (c.protocol === 'bedrock-invoke') {
+    if (input.prompt.length>10000 || images.length>1) throw new UniversalApiError('INPUT_LIMIT')
+    if(size!=='auto'||ratio)throw new UniversalApiError('OUTPUT_SIZE_UNSUPPORTED')
+    const body:any={prompt:input.prompt,output_format:'png'}
+    if (model==='stability.sd3-5-large-v1:0') {
+      body.mode=images.length?'image-to-image':'text-to-image'
+      if(images.length) {
+        if(c.bedrock?.strength===undefined)throw new UniversalApiError('CONFIG_INVALID')
+        body.image=images[0].base64;body.strength=c.bedrock.strength
+      }
+    } else if(images.length)throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
+    return universalJson(route,key,`model/${encodeURIComponent(model)}/invoke`,body,input.signal)
+  }
   if (c.protocol === 'openai-images') {
+    if(c.azure && input.prompt.length>32000)throw new UniversalApiError('INPUT_LIMIT')
     if (c.compatibility === 'ark-images') return universalJson(route, key, 'images/generations', { model, prompt: input.prompt, size, response_format: 'b64_json', ...(images.length ? { image: images.length === 1 ? universalDataUrl(images[0]) : images.map(universalDataUrl) } : {}) }, input.signal)
     return images.length ? universalMultipart(route, key, input, images, size) : universalJson(route, key, 'images/generations', { model, prompt: input.prompt, size, n: 1 }, input.signal)
   }
@@ -155,7 +187,7 @@ function universalToolFields(value: any): boolean {
 function universalToolPart(value: any): boolean {
   return universalToolFields(value) || typeof value?.type === 'string' && /(?:^|_)(?:tool|function|search|computer|code_execution|code_interpreter|mcp|shell|apply_patch)(?:_|$)|_call(?:_|$)|_result$/.test(value.type)
 }
-function universalHasUnhandledTools(data: any, protocol: UniversalRoute['custom']['protocol']): boolean {
+function universalHasUnhandledTools(data: any, protocol: UniversalRoute['custom']['protocol'], imageTool = false): boolean {
   if (universalToolFields(data)) return true
   const array = (value: any): any[] => Array.isArray(value) ? value : []
   const messageHasTools = (message: any) => universalToolFields(message) || array(message?.content).some(universalToolPart)
@@ -163,7 +195,7 @@ function universalHasUnhandledTools(data: any, protocol: UniversalRoute['custom'
   if (protocol === 'openai-responses') return array(data.output).some(item =>
     // Fail closed for all builtin/custom/future action items, rather than
     // treating status=completed as proof that this adapter handled the tool.
-    !['message', 'reasoning'].includes(item?.type) || universalToolFields(item) || array(item?.content).some(universalToolPart))
+    !['message', 'reasoning', ...(imageTool ? ['image_generation_call'] : [])].includes(item?.type) || universalToolFields(item) || array(item?.content).some(universalToolPart))
   if (protocol === 'anthropic-messages') return array(data.content).some(part => universalToolPart(part) || !['text', 'thinking', 'redacted_thinking'].includes(part?.type))
   if (protocol === 'gemini-generate-content') return array(data.candidates).some(candidate => array(candidate?.content?.parts).some(universalToolPart))
   if (protocol === 'gemini-interactions') return array(data.steps).some(step =>
@@ -171,13 +203,14 @@ function universalHasUnhandledTools(data: any, protocol: UniversalRoute['custom'
   if (protocol === 'dashscope-multimodal') return universalToolFields(data.output) || array(data.output?.choices).some(choice => messageHasTools(choice?.message))
   return array(data.data).some(universalToolPart)
 }
-function universalComplete(data: any, route: UniversalRoute) {
+function universalComplete(data: any, route: UniversalRoute, imageOperation = false) {
   if (!universalObject(data) || data.error || data.code) universalInvalidResponse()
   if (['queued', 'pending', 'running', 'in_progress', 'incomplete', 'processing'].includes(String(data.status || data.output?.task_status || '').toLowerCase()) || data.task_id || data.output?.task_id) universalInvalidResponse('ASYNC_UNSUPPORTED')
   const status = String(data.status || data.output?.task_status || '').toLowerCase()
   if (status && !['completed', 'succeeded', 'success'].includes(status)) universalInvalidResponse()
   const protocol = route.custom.protocol
-  if (universalHasUnhandledTools(data, protocol)) universalInvalidResponse()
+  if (universalHasUnhandledTools(data, protocol, imageOperation && Boolean(route.custom.imageTool))) universalInvalidResponse()
+  if (protocol === 'bedrock-converse' && (!['end_turn','stop_sequence'].includes(data.stopReason) || data.output?.message?.content?.some((x:any)=>Object.keys(x).some(k=>!['text','reasoningContent'].includes(k))))) universalInvalidResponse()
   if (protocol === 'openai-responses' && data.status !== 'completed' || protocol === 'gemini-interactions' && data.status !== 'completed') universalInvalidResponse()
   if (protocol === 'openai-chat' && data.choices?.[0]?.finish_reason !== 'stop') universalInvalidResponse()
   if (protocol === 'anthropic-messages' && !['end_turn', 'stop_sequence'].includes(data.stop_reason)) universalInvalidResponse()
@@ -189,7 +222,7 @@ function universalTextContent(content: any, typed?: string): string { return typ
 function universalParseText(route: UniversalRoute, data: any): string {
   universalComplete(data, route)
   const p = route.custom.protocol
-  const result = p === 'openai-chat' ? universalTextContent(data.choices?.[0]?.message?.content, 'text')
+  const result = p === 'bedrock-converse' ? universalTextContent(data.output?.message?.content) : p === 'openai-chat' ? universalTextContent(data.choices?.[0]?.message?.content, 'text')
     : p === 'openai-responses' ? (Array.isArray(data.output) ? data.output : []).filter((x: any) => x.type === 'message' && (!x.status || x.status === 'completed')).map((x: any) => universalTextContent(x.content, 'output_text')).join('')
       : p === 'anthropic-messages' ? universalTextContent(data.content, 'text')
         : p === 'gemini-generate-content' ? universalTextContent(data.candidates?.[0]?.content?.parts?.filter((p: any) => !p.thought))
@@ -200,8 +233,21 @@ function universalParseText(route: UniversalRoute, data: any): string {
   return result
 }
 function universalImageDescriptor(route: UniversalRoute, data: any): { base64?: string; mimeType?: string; url?: string } {
-  universalComplete(data, route)
+  universalComplete(data, route, true)
   const p = route.custom.protocol
+  if(p==='openai-responses' && route.custom.imageTool) {
+    if(!Array.isArray(data.output)||data.output.length>64)universalInvalidResponse()
+    if(data.output.some((x:any)=>x.error || x.status && x.status!=='completed' || x.type==='message' && (!Array.isArray(x.content)||x.content.some((part:any)=>part.type!=='output_text'))))universalInvalidResponse()
+    const calls=data.output.filter((x:any)=>x.type==='image_generation_call')
+    if(!calls.length||calls.length>4||calls.some((x:any)=>x.status!=='completed'||typeof x.result!=='string'||!x.result))universalInvalidResponse()
+    // A workflow candidate is one image. The last fully completed tool call is the final revision.
+    // The runtime validates every earlier image as well; partial failure never masquerades as success.
+    return {base64:calls.at(-1).result}
+  }
+  if(p==='bedrock-invoke') {
+    if(!Array.isArray(data.images)||data.images.length!==1||!Array.isArray(data.finish_reasons)||data.finish_reasons.length!==1||data.finish_reasons[0]!==null)universalInvalidResponse()
+    return {base64:data.images[0]}
+  }
   if (p === 'openai-images') {
     const item = data.data?.[0]
     if (typeof item?.b64_json === 'string') return { base64: item.b64_json }
@@ -298,6 +344,7 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       universalPrompt(input.prompt)
       if (!route.custom.capabilities.text || input.images?.length && !route.custom.capabilities.vision) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
       const images = await universalImages(input.images, route)
+      if(route.custom.protocol==='bedrock-converse' && (images.length>8||images.some(image=>image.bytes.length>3750000)))throw new UniversalApiError('INPUT_LIMIT')
       const request = universalThinkingRequest(universalTextRequest(route, key, input, images), route, input.thinking)
       return universalParseText(route, await send(request))
     },
@@ -306,8 +353,13 @@ export function createUniversalRuntime(options: UniversalRuntimeOptions = {}) {
       universalPrompt(input.prompt)
       if (input.sourceImages?.length ? !route.custom.capabilities.imageEditing : !route.custom.capabilities.imageGeneration) throw new UniversalApiError('CAPABILITY_UNSUPPORTED')
       const images = await universalImages(input.sourceImages, route)
+      if(route.custom.protocol==='bedrock-invoke') for(const image of images) {
+        const metadata=await sharp(image.bytes).metadata()
+        if(!metadata.width||!metadata.height||metadata.width<64||metadata.height<64)throw new UniversalApiError('IMAGE_INVALID')
+      }
       const data = await send(universalThinkingRequest(universalImageRequest(route, key, input, images), route, input.thinking))
       const descriptor = universalImageDescriptor(route, data), limits = route.custom.outputLimits
+      if(route.custom.imageTool) for(const call of data.output.filter((x:any)=>x.type==='image_generation_call')) await universalValidateImage(universalBase64(call.result,limits.maxBytes,true),undefined,limits,true)
       let bytes: Uint8Array, mimeType = descriptor.mimeType
       if (descriptor.base64) bytes = universalBase64(descriptor.base64, limits.maxBytes, true)
       else if (descriptor.url?.startsWith('data:')) {

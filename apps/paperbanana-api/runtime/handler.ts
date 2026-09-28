@@ -423,7 +423,7 @@ export function selectRequiredRouteSecrets(
       const route = normalizeUniversalRoute(routes[role])
       const apiKey = universalCredential(route, apiKeys.custom || '')
       const scoped = selected.custom ? JSON.parse(selected.custom) : {}
-      scoped[route.custom.connectionId] = {baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey}
+      scoped[route.custom.connectionId] = {baseUrl: route.custom.baseUrl, protocol: route.custom.protocol, auth: route.custom.auth, apiKey, ...(route.custom.auth === 'bearer-expiring' ? {expiresAt:JSON.parse(apiKeys.custom!)[route.custom.connectionId].expiresAt} : {})}
       selected.custom = JSON.stringify(scoped)
     } else {
       const secret = selectApiKey(provider, apiKeys)
@@ -1595,7 +1595,7 @@ import { RequestState, JOB_FAILURE_STAGES, atJobStage, isLocalInputFailure, publ
 export * from '../../../packages/api/src/execution-errors.js'
 import { distinctReferenceCandidates, relevantReferenceSelection } from '../../../packages/api/src/reference-selection.js'
 export * from '../../../packages/api/src/reference-selection.js'
-import { UNIVERSAL_TEXT_OUTPUT_TOKENS, UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalLimitLayer, UniversalLimitPolicy, UniversalCatalogMetadata, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, effectiveUniversalLimits, universalMetadataSource, parseUniversalCatalogMetadata, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry } from '../../../packages/api/src/universal-api.js'
+import { UNIVERSAL_TEXT_OUTPUT_TOKENS, UNIVERSAL_PROTOCOLS, UniversalProtocol, UniversalAuth, UniversalRequestState, UniversalErrorCode, UniversalApiError, UniversalInputLimits, UniversalCatalogFormat, UniversalConnection, UniversalCatalogStrategy, UniversalOutputLimits, UniversalOutputSize, UniversalLimitLayer, UniversalLimitPolicy, UniversalCatalogMetadata, UniversalImageTool, UniversalCustomConfig, UniversalRoute, UNIVERSAL_PLATFORM_LIMITS, universalDefaultAuth, normalizeUniversalBaseUrl, normalizeUniversalConnection, resolveUniversalCatalogStrategy, universalCatalogError, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, effectiveUniversalLimits, universalMetadataSource, parseUniversalCatalogMetadata, normalizeUniversalRoute, universalCredential, universalConnectionCredential, universalReferencePolicy, universalModelEntry, UNIVERSAL_EXTENSIONS_VERSION, RESPONSES_IMAGE_MODELS, RESPONSES_CALL_MODELS, AZURE_CALL_MODELS, BEDROCK_TEXT_MODEL, BEDROCK_IMAGE_MODELS, isAzureV1, universalExtensionIdentity, normalizeUniversalExtensions, universalExtensionDeclaration, universalRefineControls } from '../../../packages/api/src/universal-api.js'
 export * from '../../../packages/api/src/universal-api.js'
 import { TokenDanceCatalogIssue, TokenDanceCatalogModel, TokenDanceCatalogSnapshot, TokenDanceCatalogError, tokenDanceCatalogIssueMessage, parseTokenDanceCatalog, tokenDanceCatalogModelReason, tokenDanceCatalogMessage, createTokenDanceCatalogCache } from '../../../packages/api/src/tokendance-catalog.js'
 export * from '../../../packages/api/src/tokendance-catalog.js'
@@ -3848,15 +3848,21 @@ async function universalInputImages(images: VisionImageInput[]) {
 async function universalText(routeValue: ModelRoute, apiKey: string, systemPrompt: string, prompt: string, images: VisionImageInput[], signal?: AbortSignal) {
   const route = normalizeUniversalRoute(routeValue)
   assertVisionInputBudget('custom', route.modelId, images, route.custom)
-  const text = await requiredUniversalRuntime().text(route, apiKey, {systemPrompt, prompt, images: await universalInputImages(images), signal, thinking: providerWorkflow.thinking?.()})
+  const preparedImages = await universalInputImages(images)
+  const key = route.custom.auth === 'bearer-expiring' ? universalCredential(route, apiKey) : apiKey
+  const text = await requiredUniversalRuntime().text(route, key, {systemPrompt, prompt, images: preparedImages, signal, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return text
 }
-async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: string, aspectRatio: string, source: string, imageSize: string) {
+async function universalImage(routeValue: ModelRoute, apiKey: string, prompt: string, aspectRatio: string, source: string, imageSize: string, edit?: ImageChannelInput['edit']) {
   const route = normalizeUniversalRoute(routeValue)
   assertRouteImageSize(route, aspectRatio, imageSize, Boolean(source))
+  const issue=refineInputIssue(universalRefineControls(route),edit?.inputs,aspectRatio,imageSize)
+  if(issue || edit?.mask || Boolean(edit) && !source || (edit?.references?.length||0)!==(edit?.inputs.references?.length||0))throw new UniversalApiError('INPUT_LIMIT')
   const sourceImages = source ? await universalInputImages([{filename: 'source', mimeType: inferMimeTypeFromUrl(source), url: source}]) : []
-  const output = await requiredUniversalRuntime().image(route, apiKey, {prompt, sourceImages, aspectRatio, imageSize, thinking: providerWorkflow.thinking?.()})
+  sourceImages.push(...(edit?.references||[]).map(image=>({base64:image.base64,mimeType:image.mimeType,width:undefined,height:undefined})))
+  const key = route.custom.auth === 'bearer-expiring' ? universalCredential(route, apiKey) : apiKey
+  const output = await requiredUniversalRuntime().image(route, key, {prompt:prompt+refineReferencePrompt(edit?.inputs), sourceImages, aspectRatio, imageSize, thinking: providerWorkflow.thinking?.()})
   await providerWorkflow.record({channel: 'custom', model: route.modelId, protocol: route.custom.protocol, status: 'succeeded', billingStatus: 'unconfirmed'})
   return output.mimeType === 'image/png' ? output.base64 : (await sharp(Buffer.from(output.base64, 'base64'), {limitInputPixels: route.custom.outputLimits.maxPixels}).png().toBuffer()).toString('base64')
 }
@@ -4263,6 +4269,7 @@ async function modelRegistry(body: ModelRegistryBody) {
     thinkingContractVersion: providerWorkflow.thinking && providerWorkflow.thinkingAvailable?.() !== false ? 1 : 0,
     routeContractVersion,
     universalApiContractVersion: universalRuntime ? 1 : 0,
+    universalExtensionsVersion: universalRuntime ? 1 : 0,
     universalThinkingVersion: universalRuntime ? 1 : 0,
     universalMetadataVersion: universalRuntime ? 1 : 0,
     universalLimitsVersion: universalRuntime ? 1 : 0,
@@ -4448,7 +4455,7 @@ async function optimizeInputs(body: OptimizeInputsBody) {
     rawCandidate = await callTextModel(
       provider,
       modelId,
-      provider === 'custom' ? universalCredential(route, body.apiKey) : body.apiKey.trim(),
+      provider === 'custom' && route.custom?.auth !== 'bearer-expiring' ? universalCredential(route, body.apiKey) : body.apiKey.trim(),
       inputOptimizationSystemPrompt(target),
       inputOptimizationUserPrompt(target, target === 'editInstruction' ? { methodContent: '', caption: '', negativePrompt: '', editInstruction: inputs.editInstruction } : inputs),
       [],
@@ -5194,7 +5201,7 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
       return { ...fail(error?.message || 'Unsupported image size combination', 400), businessCode: 'REFINE_IMAGE_SIZE_UNSUPPORTED' }
     }
   }
-  const controls = refineControlsFor(imageRoute.accessProvider, imageRoute.modelId)
+  const controls = imageRoute.accessProvider === 'custom' ? universalRefineControls(imageRoute) : refineControlsFor(imageRoute.accessProvider, imageRoute.modelId)
   const inputIssue = refineInputIssue(controls, body.refineInputs ?? (controls ? {version:1} : undefined), normalizedBodyWithSecrets.aspectRatio, normalizedBodyWithSecrets.imageSize)
   if (inputIssue) return {...fail(inputIssue,400), businessCode:'REFINE_INPUT_UNSUPPORTED'}
   await bindAccountGeneration(body)
@@ -5804,7 +5811,9 @@ function modelRouteAccess(body: CreateExecutionBody | RefineExecutionBody, route
   }
   const apiKey = routeSecrets[route.accessProvider] || ''
   if (!apiKey) throw new Error(`Missing API key for provider ${route.accessProvider}`)
-  return { provider: route.accessProvider, model: route.modelId, apiKey: route.accessProvider === 'custom' ? universalCredential(normalizeUniversalRoute(route), apiKey) : apiKey, custom: route.custom, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
+  // Check now and preserve the envelope so long planning/processing cannot outlive expiry unchecked.
+  if(route.accessProvider === 'custom' && route.custom?.auth === 'bearer-expiring') universalCredential(normalizeUniversalRoute(route), apiKey)
+  return { provider: route.accessProvider, model: route.modelId, apiKey: route.accessProvider === 'custom' && route.custom?.auth !== 'bearer-expiring' ? universalCredential(normalizeUniversalRoute(route), apiKey) : apiKey, custom: route.custom, region: route.accessProvider === 'minimax' ? minimaxRegion(body.providerRegions) : undefined }
 }
 
 async function runJob(
@@ -7601,7 +7610,7 @@ async function callImageModelRaw(
   custom?: UniversalRoute['custom'],
   edit?: ImageChannelInput['edit'],
 ): Promise<string> {
-  if (provider === 'custom') return universalImage({accessProvider: 'custom', modelId: model, custom}, apiKey, prompt, aspectRatio, sourceImage, imageSize)
+  if (provider === 'custom') return universalImage({accessProvider: 'custom', modelId: model, custom}, apiKey, prompt, aspectRatio, sourceImage, imageSize, edit)
   model = normalizeModelName(provider, model)
   assertModelRegion(provider, model, region)
   const entry = provider === 'openrouter' ? undefined : staticModelRegistry[provider].models.find((item) => item.id === model)

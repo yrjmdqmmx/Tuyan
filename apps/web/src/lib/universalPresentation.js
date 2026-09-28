@@ -1,9 +1,14 @@
 import { UNIVERSAL_PROTOCOL_OPTIONS, updateUniversalDraft } from './universalApi.js'
 import { universalDefaultAuth, effectiveUniversalLimits, UNIVERSAL_PLATFORM_LIMITS } from './universalContract.js'
 
-// Web-only form macros. No model capability, credential, or runtime contract fields.
-// Official sources reviewed 2026-09-27; OpenRouter /images is NOT a v1 template.
+// Web form presets select independently audited contracts; never carry credentials or verified state.
+// Existing sources reviewed 2026-09-27; cloud/image-tool additions 2026-09-28.
 export const CONNECTION_TEMPLATES = [
+  {id:'openai-image-tool',label:'OpenAI Responses 图像工具',roles:['image'],protocols:['openai-responses'],baseUrl:'https://api.openai.com/v1',auth:'bearer',modelId:'gpt-4.1',imageTool:{provider:'openai',model:'gpt-image-1.5'},docs:'https://developers.openai.com/api/docs/guides/tools-image-generation'},
+  {id:'xai-image-tool',label:'xAI Responses 图像工具',roles:['image'],protocols:['openai-responses'],baseUrl:'https://api.x.ai/v1',auth:'bearer',modelId:'grok-4.7',imageTool:{provider:'xai'},docs:'https://docs.x.ai/developers/tools/image-generation'},
+  {id:'azure',label:'Azure OpenAI v1 · 已有部署',protocols:['openai-responses','openai-chat','openai-images'],baseUrl:'https://your-resource.openai.azure.com/openai/v1',auth:'api-key',catalogFormat:'none',docs:'https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/responses'},
+  {id:'bedrock-text',label:'Amazon Bedrock · 文字与视觉',roles:['main','vision'],protocols:['bedrock-converse'],baseUrl:'https://bedrock-runtime.us-west-2.amazonaws.com',auth:'bearer-expiring',catalogFormat:'none',modelId:'us.anthropic.claude-sonnet-4-5-20250929-v1:0',docs:'https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html'},
+  {id:'bedrock-image',label:'Amazon Bedrock · 原生图像',roles:['image'],protocols:['bedrock-invoke'],baseUrl:'https://bedrock-runtime.us-west-2.amazonaws.com',auth:'bearer-expiring',catalogFormat:'none',modelId:'stability.stable-image-core-v1:1',docs:'https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-stability-diffusion.html'},
   {id:'openai', label:'OpenAI 官方连接', protocols:['openai-chat','openai-responses','openai-images'], baseUrl:'https://api.openai.com/v1', auth:'bearer', docs:'https://developers.openai.com/api/reference/resources/models/methods/list'},
   {id:'anthropic', label:'Anthropic 官方连接', protocols:['anthropic-messages'], baseUrl:'https://api.anthropic.com/v1', auth:'x-api-key', docs:'https://platform.claude.com/docs/en/api/models/list'},
   {id:'gemini', label:'Gemini 官方连接', protocols:['gemini-generate-content'], baseUrl:'https://generativelanguage.googleapis.com/v1beta', auth:'x-goog-api-key', docs:'https://ai.google.dev/api'},
@@ -12,11 +17,11 @@ export const CONNECTION_TEMPLATES = [
 export function connectionTemplate(draft) {
   const c=draft.custom
   if(draft.ui?.connectionMode==='custom')return undefined
-  return CONNECTION_TEMPLATES.find(x=>x.baseUrl===c.baseUrl&&x.protocols.includes(c.protocol)&&x.auth===c.auth&&c.compatibility==='standard'&&c.catalogFormat==='auto')
+  return CONNECTION_TEMPLATES.find(x=>(x.id==='azure'? /\.(?:openai\.azure\.com|services\.ai\.azure\.com)\/openai\/v1$/.test(c.baseUrl):x.baseUrl===c.baseUrl)&&x.protocols.includes(c.protocol)&&x.auth===c.auth&&c.compatibility==='standard'&&c.catalogFormat===(x.catalogFormat||'auto')&&Boolean(x.imageTool)===Boolean(c.imageTool))
 }
 export function templatePatch(template, role) {
   const protocol=template.id==='openai'&&role==='image'?'openai-images':template.protocols[0]
-  return {ui:{baseUrlSource:'system',connectionMode:'template'}, custom:{protocol,baseUrl:template.baseUrl,auth:template.auth,compatibility:'standard',catalogFormat:'auto'}}
+  return {...(template.modelId?{modelId:template.modelId}:{}),declared:false,ui:{baseUrlSource:'system',connectionMode:'template',capabilityMode:'auto'}, custom:{protocol,baseUrl:template.baseUrl,auth:template.auth,compatibility:'standard',catalogFormat:template.catalogFormat||'auto',imageTool:template.imageTool?{...template.imageTool}:undefined,azure:undefined,bedrock:undefined}}
 }
 export function protocolPatch(draft, protocol) {
   const patch={protocol,auth:universalDefaultAuth(protocol)}
@@ -29,8 +34,8 @@ export function restoreProtocolPatch(protocol) {
 }
 export const capabilityLabels={text:'生成文字',vision:'接收图片并理解内容',imageGeneration:'生成图片',imageEditing:'直接编辑图片'}
 export function allowedCapability(custom,key) {
-  const textOnly=['openai-responses','anthropic-messages'].includes(custom.protocol)||custom.protocol==='openai-chat'&&custom.compatibility!=='openrouter-image'
-  return ['text','vision'].includes(key)?custom.protocol!=='openai-images':!textOnly
+  const textOnly=['anthropic-messages','bedrock-converse'].includes(custom.protocol)||custom.protocol==='openai-responses'&&!custom.imageTool||custom.protocol==='openai-chat'&&custom.compatibility!=='openrouter-image'
+  return ['text','vision'].includes(key)?!['openai-images','bedrock-invoke'].includes(custom.protocol):!textOnly
 }
 export function incompatibleCapabilities(custom) {return Object.keys(capabilityLabels).filter(k=>custom.capabilities[k]&&!allowedCapability(custom,k))}
 export function copyUniversalConnection(target, source, credential, includeKey=false) {

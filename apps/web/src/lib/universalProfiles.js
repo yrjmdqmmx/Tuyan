@@ -61,6 +61,7 @@ export function universalImportDiff(current, imported, thinking) {
   }
   for(const [key,label] of [['baseUrl','接口地址'],['protocol','协议'],['auth','鉴权方式'],['catalogFormat','目录规则'],['compatibility','兼容选项']]) add(label,before.custom[key],after.custom[key])
   add('型号',before.modelId,after.modelId)
+  for(const [key,label] of [['imageTool','Responses 图像工具'],['azure','Azure 部署映射'],['bedrock','Bedrock 图像参数']])add(label,before.custom[key],after.custom[key],x=>JSON.stringify(x||{}))
   for(const [key,label] of [['text','文字输出'],['vision','图片理解'],['imageGeneration','图片生成'],['imageEditing','直接编辑图片']]) add(label,before.custom.capabilities[key],after.custom.capabilities[key],x=>x?'声明支持':'未声明支持')
   const policy=d=>{try{return migrateUniversalLimitPolicy(d.custom)}catch{return d.custom.limitPolicy||{service:{},user:{input:d.custom.inputLimits,output:d.custom.outputLimits}}}}
   const from=policy(before),to=policy(after),mib=1024*1024

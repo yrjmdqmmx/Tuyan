@@ -27,7 +27,7 @@ test('protocol changes distinguish typed official URL from prefill; legacy addre
  const legacy={...d};delete legacy.ui;store.setItem('tuyan.universal-api.v1',JSON.stringify({version:1,roles:{main:legacy}}));assert.equal(loadUniversalDrafts(store).main.ui.baseUrlSource,'user')
 })
 test('connection templates never copy model capabilities or guess unknown provider abilities',()=>{
- for(const template of CONNECTION_TEMPLATES){const d=emptyUniversalDraft('main');d.modelId='gpt-4.1';const changed=updateUniversalDraft(d,templatePatch(template,'main')).draft;assert.deepEqual(changed.custom.capabilities,d.custom.capabilities);assert.equal(changed.modelId,d.modelId);assert.equal(changed.custom.connectionId,'custom_main');if(template.id==='openrouter')assert.equal(officialDeclaration(changed),null)}
+ for(const template of CONNECTION_TEMPLATES.filter(x=>!x.modelId&&!x.imageTool)){const d=emptyUniversalDraft('main');d.modelId='gpt-4.1';const changed=updateUniversalDraft(d,templatePatch(template,'main')).draft;assert.deepEqual(changed.custom.capabilities,d.custom.capabilities);assert.equal(changed.modelId,d.modelId);assert.equal(changed.custom.connectionId,'custom_main');if(template.id==='openrouter')assert.equal(officialDeclaration(changed),null)}
 })
 test('pure text hides image limits without mutating them; image input remains visible on main and reference generation',()=>{
  let d=emptyUniversalDraft('main');d.declared=true;d.custom.capabilities.text=true

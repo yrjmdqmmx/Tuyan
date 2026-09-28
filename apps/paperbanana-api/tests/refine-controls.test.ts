@@ -159,3 +159,27 @@ test('refine admission saves frozen source, reference and mask paths before ackn
     assert.equal(checked,3)
   }finally{await f.close()}
 })
+
+test('Responses image tool follows existing refine workflow with owned source and auxiliary reference',async()=>{
+  const {createUniversalRuntime}=await import('../src/universal-adapters.js')
+  const {universalExtensionDeclaration}=await import('../../../packages/api/src/universal-api.js')
+  const f=await createRefineRuntime({tokenDance:true}), calls:any[]=[]
+  try {
+    f.legacy.configureUniversalRuntime(createUniversalRuntime({transport:{checkUrl:async()=>{},request:async r=>{calls.push(r);return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({status:'completed',output:[{type:'image_generation_call',status:'completed',result:f.output.toString('base64')}]}))}}}}))
+    const source=await upload(f),ref=await upload(f,await sharp(f.image).negate().png().toBuffer())
+    const custom=universalExtensionDeclaration({version:1,connectionId:'custom_image',baseUrl:'https://api.openai.com/v1',protocol:'openai-responses',auth:'bearer',compatibility:'standard',imageTool:{provider:'openai',model:'gpt-image-1.5'},capabilities:{text:false,vision:false,imageGeneration:true,imageEditing:true},outputLimits:{maxBytes:10000000,maxDimension:8192,maxPixels:32000000,mimeTypes:['image/png']},inputLimits:{maxCount:8,maxBytes:5000000,maxTotalBytes:20000000,maxDimension:4096,maxPixels:16000000,requestMaxBytes:30000000,mimeTypes:['image/png']}},'gpt-4.1')!
+    const body:any=request('custom','gpt-4.1',source.objectKey,{version:1,references:[{objectKey:ref.objectKey,purpose:'color',note:'只参考配色'}]})
+    body.imageSize='auto';body.modelRoutes.image.custom=custom
+    body.apiKeys={custom:JSON.stringify({custom_image:{baseUrl:custom.baseUrl,protocol:custom.protocol,auth:custom.auth,apiKey:'fixture-image-role'}})}
+    const submitted=await f.post(body);assert.equal(submitted.data.code,0,JSON.stringify(submitted))
+    await f.post({action:'abortReferenceUpload',uploads:[source,ref]});await f.legacy.drainJobAdmission()
+    const done=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
+    assert.equal(done.status,'succeeded',JSON.stringify(done));assert.equal(done.refineInputMetadata.referenceCount,1)
+    assert.equal(calls.length,1);const wire=JSON.parse(calls[0].body),images=wire.input[0].content.filter((x:any)=>x.type==='input_image')
+    assert.equal(images.length,2);assert.notEqual(images[0].image_url,images[1].image_url)
+    assert.equal(wire.tools[0].action,'edit');assert.equal(wire.tools[0].size,undefined);assert.match(JSON.stringify(wire),/只参考配色/)
+    assert.equal(wire.store,false);assert.equal(wire.previous_response_id,undefined)
+    assert.match(done.refineInputs.references[0].objectKey,new RegExp('^'+done.id+'/'))
+    assert.equal(JSON.stringify(done).includes('fixture-image-role'),false)
+  } finally {await f.close()}
+})

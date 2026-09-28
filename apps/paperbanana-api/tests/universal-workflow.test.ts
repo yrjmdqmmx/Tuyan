@@ -11,15 +11,16 @@ function route(role:string, overrides:any={}) {
 function envelope(routes:any, key='fixture-custom-key') {return JSON.stringify(Object.fromEntries(Object.values(routes).filter((r:any)=>r.accessProvider==='custom').map((r:any)=>[r.custom.connectionId,{baseUrl:r.custom.baseUrl,protocol:r.custom.protocol,auth:r.custom.auth,apiKey:key}])))}
 async function fixture(pauseImage?:()=>Promise<void>) {
  const runtime=await createRefineRuntime({tokenDance:true}), calls:any[]=[]
- let failure:UniversalApiError|undefined, failureStage='image', imageCalls=0
+ let failure:UniversalApiError|undefined, failureStage='image', imageCalls=0, afterText:(()=>void)|undefined
  const adapter=createUniversalRuntime({transport:{checkUrl:async()=>{},request:async request=>{
   calls.push(request)
-  if(request.url.includes('/images/')) {imageCalls++;if(pauseImage)await pauseImage();if(failure && (failureStage==='image'||failureStage==='rerender'&&imageCalls>1))throw failure;return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({data:[{b64_json:runtime.output.toString('base64')}]}))}}
+  if(request.url.includes('/images/') || JSON.parse(String(request.body||'{}')).tools?.[0]?.type==='image_generation') {imageCalls++;if(pauseImage)await pauseImage();if(failure && (failureStage==='image'||failureStage==='rerender'&&imageCalls>1))throw failure;return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify(request.url.endsWith('/responses')?{status:'completed',output:[{type:'image_generation_call',status:'completed',result:runtime.output.toString('base64')}]}:{data:[{b64_json:runtime.output.toString('base64')}]}))}}
   if(failure&&failureStage==='critic'&&request.url.includes('vision.example.com'))throw failure
+  afterText?.()
   return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({choices:[{finish_reason:'stop',message:{content:'A scientific workflow with input, analysis, planning and output; keep the source labels readable.'}}]}))}
  }}})
  runtime.legacy.configureUniversalRuntime(adapter)
- return {...runtime,calls,fail(error?:UniversalApiError,stage='image'){failure=error;failureStage=stage}}
+ return {...runtime,calls,afterText(fn:()=>void){afterText=fn},fail(error?:UniversalApiError,stage='image'){failure=error;failureStage=stage}}
 }
 function body(routes:any) {return {action:'createJob',provider:'custom',configurationMode:'advanced',modelRoutes:routes,apiKeys:{custom:envelope(routes)},methodContent:'研究一种通过输入、分析、规划和输出多个阶段完成科研图示生成的系统。',caption:'图一：科研图示生成系统。',outputFormat:'png',pipelineMode:'planner_critic',retrievalSetting:'none',imageSize:'1K',aspectRatio:'1:1',numCandidates:1,maxCriticRounds:0}}
 
@@ -205,4 +206,42 @@ test('accepted custom job continues without browser polling; reopening reads the
   const accepted=await f.post(body(routes));assert.equal(accepted.data.code,0);await f.legacy.drainJobAdmission()
   assert.equal((await f.post({action:'getJob',jobId:accepted.data.jobId})).data.job.status,'succeeded')
  }finally{await f.close()}
+})
+
+test('Responses tool traverses real create admission and original-task recovery with frozen parameters',async()=>{
+ const f=await fixture()
+ try {
+  const base=route('image')
+  const image=normalizeUniversalRoute({...base,modelId:'gpt-4.1',custom:{...base.custom,protocol:'openai-responses',baseUrl:'https://api.openai.com/v1',imageTool:{provider:'openai',model:'gpt-image-1.5',quality:'high'},outputSizes:[{resolution:'auto',aspectRatio:'auto',value:'auto'}]}})
+  const routes={main:route('main'),vision:route('vision'),image}
+  f.fail(new UniversalApiError('UPSTREAM_REJECTED','rejected',401))
+  const submitted=await f.post({...body(routes),imageSize:'auto',aspectRatio:'auto'});assert.equal(submitted.data.code,0,JSON.stringify(submitted));await f.legacy.drainJobAdmission()
+  const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
+  assert.equal(failed.recovery.canResume,true,JSON.stringify(failed));const planners=f.calls.filter(x=>x.url.includes('main.example')).length
+  f.fail();const resumed=await f.post({action:'providerResume',jobId:submitted.data.jobId,apiKeys:{custom:envelope({image},'renewed-image-role-key')}})
+  assert.equal(resumed.data.jobId,submitted.data.jobId,JSON.stringify(resumed));await f.legacy.drainJobAdmission()
+  const done=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job;assert.equal(done.status,'succeeded',JSON.stringify(done))
+  assert.equal(f.calls.filter(x=>x.url.includes('main.example')).length,planners)
+  const request=f.calls.filter(x=>x.url.endsWith('/responses')).at(-1),wire=JSON.parse(String(request.body))
+  assert.equal(wire.tools[0].quality,'high');assert.equal(wire.tools[0].model,'gpt-image-1.5');assert.equal(wire.model,'gpt-4.1');assert.equal(wire.tools[0].size,undefined);assert.equal(wire.store,false);assert.equal(request.headers.Authorization,'Bearer renewed-image-role-key')
+  const before=f.calls.length;assert.notEqual((await f.post({action:'providerResume',jobId:submitted.data.jobId})).data.code,0);assert.equal(f.calls.length,before)
+ } finally {await f.close()}
+})
+
+test('expiring image token is checked again after a long planner and renewed only for the original safe task',async()=>{
+ const f=await fixture(),now=Date.now
+ try {
+  const image=route('image',{auth:'bearer-expiring'}),routes={main:route('main'),vision:route('vision'),image}
+  const credentials=(expiry:number)=>JSON.stringify({...JSON.parse(envelope(routes)),image:{baseUrl:image.custom.baseUrl,protocol:image.custom.protocol,auth:image.custom.auth,apiKey:'fixture-expiring-key',expiresAt:new Date(expiry).toISOString()}})
+  const initial=now();f.afterText(()=>{Date.now=()=>initial+120000})
+  const submitted=await f.post({...body(routes),apiKeys:{custom:credentials(initial+60000)}});assert.equal(submitted.data.code,0,JSON.stringify(submitted))
+  await f.legacy.drainJobAdmission()
+  const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
+  assert.equal(failed.status,'failed');assert.equal(failed.failure.requestState,'not_sent');assert.match(failed.error||failed.failure.reason,/到期|过期/)
+  assert.equal(f.calls.filter(x=>x.url.includes('/images/')).length,0)
+  f.afterText(()=>{});const planners=f.calls.length
+  const resumed=await f.post({action:'providerResume',jobId:submitted.data.jobId,apiKeys:{custom:credentials(now()+3600000)}})
+  assert.equal(resumed.data.jobId,submitted.data.jobId,JSON.stringify(resumed));await f.legacy.drainJobAdmission()
+  const done=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job;assert.equal(done.status,'succeeded',JSON.stringify(done));assert.equal(f.calls.length,planners+1)
+ } finally {Date.now=now;await f.close()}
 })

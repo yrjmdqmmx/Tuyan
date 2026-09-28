@@ -1,7 +1,7 @@
 /** Optional v1 settings. Missing means the historical request behavior. */
 export type ThinkingOptions = Record<string, string | number | boolean>
 export type ThinkingSelection = {
-  provider: string; modelId: string; protocol: string; region?: string; connection?: { baseUrl: string; auth: string; compatibility: string }; options: ThinkingOptions
+  provider: string; modelId: string; protocol: string; region?: string; connection?: { baseUrl: string; auth: string; compatibility: string; extensions?: string }; options: ThinkingOptions
 }
 export type ThinkingConfiguration = { version: 1; roles: Partial<Record<'main' | 'vision' | 'image', ThinkingSelection>> }
 export type ThinkingSnapshotRole = ThinkingSelection & {

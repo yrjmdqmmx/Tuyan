@@ -3,7 +3,7 @@
   "tuyan": {
     "id": "tuyan-next-universal-api-complete",
     "product": "tuyan",
-    "version": null,
+    "version": "3.8.1",
     "announcementDate": null,
     "release": {
       "status": "unreleased",
@@ -14,8 +14,8 @@
         "共享契约"
       ]
     },
-    "title": "通用 API 配置、连接管理与思考参数",
-    "summary": "保留首阶段交互，补充可信目录来源、分层限额、无密钥连接配置与现有思考体系适配。",
+    "title": "v3.8.1 后续补充：通用 API、云接口与恢复",
+    "summary": "本地补齐通用 API 配置与思考体系、Responses 图像工具、Azure/Bedrock 已审计能力及异步任务恢复。",
     "baseline": "6b99a6f58e09b8e843c7442a9db177fc28f1f9ad",
     "branch": "codex/universal-api-ux-phase1",
     "surfaces": [
@@ -24,7 +24,7 @@
       "共享契约"
     ],
     "notes": [
-      "下一版本号尚未确定。v3.8.1 仍为当前已发布版本。",
+      "按本轮最新要求归入 v3.8.1 后续补充，仍待发布；现有已发布 v3.8.1 记录不改写。",
       "仅本地实现和模拟验证，未推送、未生产部署、未真实模型调用、未微信发布。",
       "后端可选扩展保持 Route v1，共享生成物已同步；小程序原生 UI 沿用 SYNC 欠项。"
     ],
@@ -82,6 +82,21 @@
       {
         "kind": "修复",
         "text": "已登录生成与精修任务在确认排队前保存加密恢复快照；服务中断后可明确继续原任务，未知调用不重发，修正重启后一律重新提交的提示。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "新增",
+        "text": "Responses 协议内接入 OpenAI/xAI 图像工具，分离调用模型与图像型号，复用多参考图精修和原任务恢复。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "新增",
+        "text": "可信模板接入 Azure OpenAI v1 部署与 Bedrock Converse/原生图像 schema，凭据有效期只留当前页及服务端加密恢复资料。",
+        "state": "local-verified"
+      },
+      {
+        "kind": "修复",
+        "text": "异步渠道提交前及取得任务号后保存检查点，查询超时可恢复，过期下载只查询原任务，未知提交不重发。",
         "state": "local-verified"
       }
     ]

@@ -147,3 +147,23 @@ test('TokenDance admission stores only a connection reference and rechecks its c
   const restarted = f.restart()
   await restarted.resume(original.jobId, original.body.userId, async value => { assert.equal(value.routeSecrets.tokendance, 'private-current-connection-key') })
 })
+
+test('cloud/tool extensions and expiring credentials survive queued crash as exact immutable snapshot', async()=>{
+ const f=fixture(),original:any=task('cloud-tool')
+ original.body.modelRoutes.image={accessProvider:'custom',modelId:'call-deployment',custom:{version:1,connectionId:'custom_image',protocol:'openai-responses',baseUrl:'https://example-resource.openai.azure.com/openai/v1',auth:'bearer-expiring',azure:{deploymentModel:'gpt-5'},imageTool:{provider:'azure',model:'gpt-image-1.5',deployment:'image-deployment',quality:'high'}}}
+ original.routeSecrets.custom=JSON.stringify({custom_image:{baseUrl:original.body.modelRoutes.image.custom.baseUrl,protocol:'openai-responses',auth:'bearer-expiring',apiKey:'private-cloud-token',expiresAt:'2026-09-29T00:00:00Z'}})
+ original.body.thinkingSnapshot={version:1,roles:{image:{provider:'custom',modelId:'call-deployment',protocol:'openai-responses',role:'image',options:{effort:'low'},wire:{reasoning:{effort:'low'}}}}}
+ await f.jobs.insertOne({_id:original.jobId,userId:original.body.userId,status:'queued'})
+ await f.workflow.prepare(original)
+ const saved=await f.executions.findOne({_id:original.jobId});assert.equal(JSON.stringify(saved).includes('private-cloud-token'),false)
+ await reconcileInterruptedJobs(f.jobs as any);const restart=f.restart();await restart.reconcileUser(original.body.userId)
+ let restored:any;await restart.resume(original.jobId,original.body.userId,async value=>{restored=value;return {jobId:value.jobId}})
+ assert.deepEqual(restored,JSON.parse(JSON.stringify(original)))
+})
+
+test('BFL-only legacy executions also require durable workflow context before their async submission',async()=>{
+ const f=fixture(),original:any=task('bfl-only');original.routeSecrets={bfl:'private-bfl-key'}
+ let active=false
+ await f.workflow.run(original,async()=>{active=f.workflow.active();await f.workflow.call(['image','bfl','flux-2-pro'],async()=>{await f.workflow.checkpoint({provider:'bfl',model:'flux-2-pro',state:{phase:'submitting'}});assert.equal((await f.workflow.pending()).state.phase,'submitting');return 'fixture-result'})})
+ assert.equal(active,true);assert.equal((await f.executions.findOne({_id:original.jobId})).state,'complete')
+})

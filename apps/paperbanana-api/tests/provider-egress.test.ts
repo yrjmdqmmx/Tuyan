@@ -82,6 +82,9 @@ test('canonical providers use proxy while Bailian, OSS, Plot, signed URLs and lo
   await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
     const proxied = [
       ['https://api.openai.com', '/v1/models'],
+      ['https://bedrock-runtime.us-west-2.amazonaws.com', '/model/example/converse'],
+      ['https://fixture.openai.azure.com', '/openai/v1/responses'],
+      ['https://fixture.services.ai.azure.com', '/openai/v1/responses'],
       ['https://api.bfl.ai', '/v1/flux-2-pro'],
       ['https://api.us1.bfl.ai', '/v1/get_result?id=fixture'],
       ['https://api.stability.ai', '/v2beta/stable-image/generate/ultra'],

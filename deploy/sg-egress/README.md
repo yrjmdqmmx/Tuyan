@@ -13,6 +13,12 @@ Squid listens only on `10.77.0.2:3128`. Its **only** allowed client source is `1
 
 The managed Squid configuration uses the fixed public resolvers `1.1.1.1` and `223.5.5.5` for provider lookups instead of inheriting the host resolver. This keeps the narrowly scoped provider proxy available when the Alibaba VPC-provided resolver is unreachable; exact destination ACLs, private-address rejection and end-to-end provider TLS remain authoritative.
 
+## Cloud extension source status — 2026-09-28, not deployed
+
+The installer source now includes only these Bedrock runtime hosts: `bedrock-runtime.us-east-1.amazonaws.com`, `bedrock-runtime.us-east-2.amazonaws.com`, `bedrock-runtime.us-west-2.amazonaws.com`. The new Converse contract uses a US cross-region inference profile; the image InvokeModel contract is limited to us-west-2. No IAM credentials, policies or cloud resources are provisioned. Existing production ACL installation has not changed.
+
+Azure OpenAI v1 calls are marked **proxy-required** in Core. The shared Squid policy intentionally does not grant a suffix wildcard for customer Azure resources. Before a separately authorized release, obtain the actual resource hostname, review it as a public Azure endpoint, add that exact hostname to the managed installer ACL and tests, and verify the effective proxy rule. A valid URL in the form `RESOURCE.openai.azure.com` or `RESOURCE.services.ai.azure.com` does not mean the production proxy or Azure account has authorized it. Until the exact resource ACL is installed, the request fails closed; there is no direct Hong Kong fallback. The runtime does not issue or refresh Microsoft Entra tokens.
+
 ## Before deployment
 
 Create cloud firewall/security-group rules before running these scripts:

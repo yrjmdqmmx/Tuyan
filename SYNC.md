@@ -2,6 +2,20 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+
+## 2026-09-28 · v3.8.1 后续补充：Responses 图像工具 / Azure / Bedrock / 异步恢复（仅本地待发布）
+
+- 基线 `6ff4018`，v3.8.1 已发布状态不变；本轮内容按最新要求归入该版本后续补充，不提前回填公开日志。详见 [实现与迁移](docs/universal-api/2026-09-28/implementation.md)、[官方来源/差异](docs/universal-api/2026-09-28/sources.md)、[验收](docs/universal-api/2026-09-28/acceptance.md)。
+- Route v1 增加可选 `custom.imageTool`、`azure.deploymentModel`、`bedrock.strength`；协议新增 `bedrock-converse` / `bedrock-invoke`，鉴权新增 `api-key` / `bearer-expiring`。registry 增加 `universalExtensionsVersion:1`，旧后端收到新配置前由 Web 阻止发送，保留旧路由与草稿。
+- `ThinkingSelection.connection.extensions` 精确绑定工具/部署身份；复用原编译器、型号规则、任务快照与恢复。凭据 envelope 增加可选 `expiresAt`，仅与 Key 一起存在页面内存及服务端加密恢复资料，浏览器设置/文件导入导出不含它。
+- fal/Replicate/BFL 与已有 Runware/TokenHub 要求持久检查点，提交前保存 submitting、获得原任务 ID 后保存；单次读超时不终止原任务，下载恢复只查询原 ID；无查询凭据的未知提交不重发。
+- [x] Core / 共享：精确地址/型号/操作契约、Azure 版本和部署 header、原生 Converse/Invoke schema、图像输出校验、多参考图精修、思考及重启恢复、模拟回归。没有真实账号调用证据。
+- [x] Web：现有角色弹框模板/渐进字段/到期时间，独立密钥及配置副本、导入导出/保存恢复；桌面、390/320px 实际浏览器验证。通用 API 首位、TokenDance 默认保持。
+- [x] 小程序共享历史类型 / TS / JS / registry 协商字段：同步、编译和源码测试；不覆盖独立原生工作树或微信副本。
+- [ ] 小程序原生配置 UI、真机与软键盘验收：需负责端合并其现有工作后接入；本轮响应式 Web 不作为完成证据，未微信发布。
+- [x] 出口配置源码：SG ACL 加三处 Bedrock 精确 runtime 域名、allow/deny 测试；Core 对 Azure 资源仍强制受控出口。未新增生产环境变量。
+- [ ] 生产出口/真实账号：Bedrock ACL 尚未安装；Azure 需实际资源的精确主机名，未添加泛域名授权。账号/部署/地区权益、token audience、真实推理和账单均未验证。没有 push、部署、云权限/资源修改、付费调用或充值。
+
 ## 2026-09-28 · 排队任务准入持久化与原任务恢复（仅本地待发布）
 
 - [修复记录](docs/operations/2026-09-28-durable-job-admission.md)：已登录 createJob/refineImage 在加密快照以 majority+journal 写入成功后才提交队列并确认接收；精修记录冻结后的输入。内部新增 `admissionVersion: 1`，原 Route/执行版本/步骤指纹保持，无新增 env。

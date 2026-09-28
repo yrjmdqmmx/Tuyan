@@ -1,4 +1,4 @@
-import { normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, universalMetadataSource, normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
+import { universalExtensionDeclaration, normalizeUniversalLimitPolicy, migrateUniversalLimitPolicy, universalMetadataSource, normalizeUniversalRoute, normalizeUniversalBaseUrl, universalDefaultAuth, universalCredential, universalModelEntry, UniversalApiError } from './universalContract.js'
 import { STATIC_MODEL_REGISTRY, STATIC_MODEL_REGISTRY_VERSION } from './staticModelCatalog.js'
 import { referenceSubmissionPolicy } from './referenceUploadPolicy.js'
 import { resolveImageSize } from '../../../../packages/types/src/image-size-contract.ts'
@@ -11,6 +11,8 @@ export const UNIVERSAL_PROTOCOL_OPTIONS = [
   ['anthropic-messages', 'Anthropic Messages', 'https://api.anthropic.com/v1'],
   ['gemini-generate-content', 'Gemini GenerateContent', 'https://generativelanguage.googleapis.com/v1beta'],
   ['gemini-interactions', 'Gemini Interactions', 'https://generativelanguage.googleapis.com/v1beta'],
+  ['bedrock-converse', 'Bedrock Converse · 已审计型号', 'https://bedrock-runtime.us-west-2.amazonaws.com'],
+  ['bedrock-invoke', 'Bedrock InvokeModel · 已审计图像 schema', 'https://bedrock-runtime.us-west-2.amazonaws.com'],
   ['dashscope-multimodal', 'DashScope 原生多模态', 'https://dashscope.aliyuncs.com/api/v1'],
 ]
 const storageKey = 'tuyan.universal-api.v1'
@@ -42,7 +44,7 @@ export function loadUniversalDrafts(storage = globalThis.localStorage ?? globalT
           repaired = true
           return [key, fallback]
         }))
-        const custom = restore(defaults[role].custom, d.custom)
+        const custom = {...restore(defaults[role].custom, d.custom),...serializedUniversalExtensions(d.custom)}
         try { custom.limitPolicy = d.custom.limitPolicy ? normalizeUniversalLimitPolicy(d.custom.limitPolicy) : migrateUniversalLimitPolicy(custom) } catch {custom.limitPolicy=migrateUniversalLimitPolicy({...custom,limitPolicy:undefined});repaired=true}
         defaults[role] = {ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:repaired || d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, evidence:sanitizeUniversalEvidence(d.evidence), modelId:d.modelId, declared:d.declared === true && !repaired, custom:{...custom,connectionId:`custom_${role}`}}
       }
@@ -60,6 +62,7 @@ export function serializeUniversalDrafts(drafts) {
   // Explicit allowlist. Keys and validation outcomes never enter localStorage.
   const roles = Object.fromEntries(Object.entries(drafts).map(([role,d]) => [role, {evidence:sanitizeUniversalEvidence(d.evidence), modelId: d.modelId, declared: Boolean(d.declared), ui:{connectionProfileId:typeof d.ui?.connectionProfileId==='string'?d.ui.connectionProfileId.slice(0,80):'',connectionName:typeof d.ui?.connectionName==='string'?d.ui.connectionName.slice(0,80):'',baseUrlSource:d.ui?.baseUrlSource === 'system' ? 'system' : 'user',capabilityMode:d.ui?.capabilityMode === 'manual' ? 'manual' : 'auto',manualDraftPresent:d.ui?.manualDraftPresent !== false,connectionMode:d.ui?.connectionMode === 'custom' ? 'custom' : 'template'}, custom: {
     version: 1, connectionId: `custom_${role}`, protocol: d.custom.protocol, baseUrl: d.custom.baseUrl, auth: d.custom.auth, compatibility: d.custom.compatibility,
+    ...serializedUniversalExtensions(d.custom),
     catalogFormat: d.custom.catalogFormat || 'auto', capabilities: pickUniversalFields(d.custom.capabilities,['text','vision','imageGeneration','imageEditing']), inputLimits: pickUniversalFields(d.custom.inputLimits,['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']), outputLimits: pickUniversalFields(d.custom.outputLimits,['maxBytes','maxDimension','maxPixels','mimeTypes']), outputSizes: (d.custom.outputSizes||[]).slice(0,256).map(row=>pickUniversalFields(row,['resolution','aspectRatio','value'])),
     ...(d.custom.limitPolicy ? {limitPolicy:{version:1,...Object.fromEntries(['service','user'].map(layer=>[layer,Object.fromEntries(['input','output'].filter(scope=>d.custom.limitPolicy[layer]?.[scope]!==undefined).map(scope=>[scope,pickUniversalFields(d.custom.limitPolicy[layer]?.[scope],scope==='input'?['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes','mimeTypes']:['maxBytes','maxDimension','maxPixels','mimeTypes'])]))]))}} : {}),
   }}]))
@@ -71,6 +74,7 @@ export function saveUniversalDrafts(drafts, storage = globalThis.localStorage ??
 // Audit reuse is exact origin + protocol + model ID, never a name/prefix guess.
 export function officialDeclaration(draft) {
   const c = draft.custom
+  try { const ext=universalExtensionDeclaration(c,draft.modelId); if(ext)return ext } catch {return null}
   let base
   try { base = normalizeUniversalBaseUrl(c.baseUrl, c.protocol) } catch { return null }
   const provider = base === 'https://api.openai.com/v1' ? 'openai' : base === 'https://api.anthropic.com/v1' ? 'anthropic' : base === 'https://generativelanguage.googleapis.com/v1beta' ? 'gemini' : ''
@@ -99,6 +103,7 @@ export function officialDeclaration(draft) {
 }
 export function officialDeclarationSources(draft) {
   if(!officialDeclaration(draft))return null
+  if(draft.custom.imageTool||draft.custom.azure||draft.custom.protocol.startsWith('bedrock-'))return {provider:draft.custom.imageTool?.provider|| (draft.custom.azure?'azure':'bedrock'),baseUrl:draft.custom.baseUrl,protocol:draft.custom.protocol,modelId:draft.modelId,registryVersion:'extensions-v1',sizeCheckedAt:'2026-09-28',sizeSources:[draft.custom.azure?'https://learn.microsoft.com/en-us/rest/api/microsoft-foundry/azureopenai/responses':draft.custom.imageTool?.provider==='xai'?'https://docs.x.ai/developers/tools/image-generation':draft.custom.imageTool?'https://developers.openai.com/api/docs/guides/tools-image-generation':draft.custom.protocol==='bedrock-converse'?'https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html':'https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-stability-diffusion.html'],inputSource:null}
   const base=normalizeUniversalBaseUrl(draft.custom.baseUrl,draft.custom.protocol)
   const provider=base==='https://api.openai.com/v1'?'openai':base==='https://api.anthropic.com/v1'?'anthropic':'gemini'
   const modelId=provider==='gemini'?draft.modelId.replace(/^models\//,''):draft.modelId
@@ -183,7 +188,7 @@ export function universalKeyEnvelope(drafts, keys) {
 }
 export function bindUniversalKey(draft, apiKey) {
   const c = draft.custom
-  return {baseUrl:c.baseUrl,protocol:c.protocol,auth:c.auth,apiKey}
+  return {baseUrl:c.baseUrl,protocol:c.protocol,auth:c.auth,apiKey:typeof apiKey==='object'?String(apiKey?.apiKey||''):apiKey,...(c.auth==='bearer-expiring'&&typeof apiKey==='object'?{expiresAt:apiKey?.expiresAt||''}:{})}
 }
 export function missingUniversalKeys(routes, roles, envelope) {
   return roles.filter(role => {try {universalCredential(routes[role],envelope);return false} catch{return true}})
@@ -227,4 +232,9 @@ export function catalogCapabilityPatch(metadata,draft) {
   if(typeof f.imageOutput==='boolean'&&draft.custom.protocol==='openai-chat'&&draft.custom.compatibility==='openrouter-image')capabilities.imageGeneration=f.imageOutput
   // Image input/output never implies an editing operation or a size/byte/pixel allowance.
   return {custom:{capabilities},declared:false,evidence:{...m,review:'user-confirmed'},ui:{capabilityMode:'manual',manualDraftPresent:true}}
+}
+
+// Non-sensitive extension allowlist. Invalid drafts remain editable; request normalization is stricter.
+export function serializedUniversalExtensions(c) {
+  return {...(c.imageTool&&typeof c.imageTool==='object'?{imageTool:pickUniversalFields(c.imageTool,['provider','model','deployment','quality','format'])}:{}),...(c.azure&&typeof c.azure==='object'?{azure:pickUniversalFields(c.azure,['deploymentModel'])}:{}),...(c.bedrock&&typeof c.bedrock==='object'?{bedrock:pickUniversalFields(c.bedrock,['strength'])}:{})}
 }

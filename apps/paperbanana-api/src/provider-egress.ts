@@ -15,6 +15,7 @@ type ProviderEgressConfig = ServiceConfig['providerEgress']
 type CompatibleRequest = string | URL | globalThis.Request | UndiciRequest
 
 const targetHosts = new Set([
+  'bedrock-runtime.us-east-1.amazonaws.com', 'bedrock-runtime.us-east-2.amazonaws.com', 'bedrock-runtime.us-west-2.amazonaws.com',
   'api.openai.com',
   'api.anthropic.com',
   'api.x.ai',
@@ -62,7 +63,9 @@ function normalizedTargetOrigin(origin: string | URL | undefined): boolean {
   // Strip exactly one DNS root label. Multiple trailing dots and IDNA
   // lookalikes remain non-targets instead of being widened into the allowlist.
   if (!hostname || hostname.endsWith('.')) return false
-  return targetHosts.has(hostname) || /^api\.[a-z0-9.-]+\.bfl\.ai$/.test(hostname)
+  // Azure resource names vary. Classify them for REQUIRED proxy routing only;
+  // the proxy still requires an operator-added exact resource hostname ACL. No wildcard egress grant.
+  return targetHosts.has(hostname) || /^[a-z0-9][a-z0-9-]{1,62}\.(?:openai\.azure\.com|services\.ai\.azure\.com)$/.test(hostname) || /^api\.[a-z0-9.-]+\.bfl\.ai$/.test(hostname)
 }
 
 function requestHeaders(request: { headers?: { forEach?(callback: (value: string, key: string) => void): void } }) {

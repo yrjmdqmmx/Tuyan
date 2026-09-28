@@ -41,7 +41,8 @@ export function universalPublicIp(address: string): boolean {
 function universalTransportUrl(value: string, asset: boolean, catalog = false): URL {
   let url: URL
   try { url = new URL(value) } catch { throw new UniversalApiError('ENDPOINT_UNSAFE') }
-  if (url.protocol !== 'https:' || url.port && url.port !== '443' || url.username || url.password || url.hash || !asset && !catalog && url.search || /[\x00-\x20\\]/.test(value)) throw new UniversalApiError('ENDPOINT_UNSAFE')
+  const azureImagePreview = /^https:\/\/[a-z0-9][a-z0-9-]{1,62}\.(?:openai\.azure\.com|services\.ai\.azure\.com)\/openai\/v1\/images\/(?:generations|edits)$/.test(url.origin+url.pathname) && url.search === '?api-version=preview'
+  if (url.protocol !== 'https:' || url.port && url.port !== '443' || url.username || url.password || url.hash || !asset && !catalog && url.search && !azureImagePreview || /[\x00-\x20\\]/.test(value)) throw new UniversalApiError('ENDPOINT_UNSAFE')
   if (catalog && url.search) {
     const entries = [...url.searchParams.entries()], keys = entries.map(([key]) => key)
     const anthropic = keys.every(key => ['limit', 'after_id'].includes(key)), gemini = keys.every(key => ['pageSize', 'pageToken'].includes(key))
@@ -109,7 +110,7 @@ export function createUniversalTransport(options: UniversalTransportOptions = {}
         rejectUnauthorized: true,
       } })
       const init: any = { method: input.method, headers, ...(input.body === undefined ? {} : { body: input.body }), redirect: 'manual', signal: AbortSignal.any([AbortSignal.timeout(input.kind === 'inference' ? 180000 : 30000), ...(input.signal ? [input.signal] : [])]) }
-      const official = input.kind !== 'asset' && universalOfficialHosts.has(url.hostname) && options.officialFetch
+      const official = input.kind !== 'asset' && (universalOfficialHosts.has(url.hostname) || /^bedrock-runtime\.(us-east-1|us-east-2|us-west-2)\.amazonaws\.com$/.test(url.hostname) || /^[a-z0-9][a-z0-9-]{1,62}\.(?:openai\.azure\.com|services\.ai\.azure\.com)$/.test(url.hostname)) && options.officialFetch
       try {
         const response = official ? await options.officialFetch!(url.href, init) : await (options.fetch || undiciFetch as any)(url.href, { ...init, dispatcher })
         if (response.status >= 300 && response.status < 400) { await response.body?.cancel(); throw new UniversalApiError('ENDPOINT_UNSAFE', state, response.status) }

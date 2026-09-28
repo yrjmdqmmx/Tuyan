@@ -62,6 +62,7 @@ export interface ModelRegistry {
   thinkingContractVersion?: number
   universalThinkingVersion?: number
   universalMetadataVersion?: number
+  universalExtensionsVersion?: number
   universalLimitsVersion?: number
   registryVersion: string
   routeContractVersion: number
