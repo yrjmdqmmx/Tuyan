@@ -1,5 +1,7 @@
 # 当前架构与运行核查
 
+> 2026-09-28 发布复核：Core 与 Benchmark 运行来源更新到 `f3bc73ed9a039e1cabf467c3cb12d338b5729377`，Gateway/Plot/Mongo 镜像保持原 digest，容器与依赖健康。SG 已增加三个精确 Bedrock runtime 域名；Azure 资源域名仍需单独配置。见[补充发布记录](../releases/2026-09-28-tuyan-v3.8.1-supplement.md)。下方带日期的核查保留当时状态。
+
 核查日期：**2026-09-27**，只读 SSH、Docker inspect/stats、systemd、Nginx 配置及当前 `/health`、`/ready`。实机配置优先于旧部署文档。证据摘要见 [JSON](2026-09-27-host-evidence.json)；本次代码清理见[交付记录](2026-09-27-platform-retirement.md)。
 
 | 项目 | 香港业务主机 | 新加坡出口主机 |
