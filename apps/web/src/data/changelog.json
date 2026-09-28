@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-09-27"
+    "through": "2026-09-28"
   },
   "entries": [
     {
@@ -16,13 +16,15 @@
           "Web"
         ]
       },
-      "title": "专业模式渠道与模型配置升级",
-      "summary": "通用 API 融入专业模式，三角色独立搭配渠道并在模型弹框中配置；新增百灵、LongCat 2.5 识图与 Novita Ming 生图。",
+      "title": "专业模式、通用 API 与任务恢复升级",
+      "summary": "三角色独立搭配渠道，完善通用 API 配置、连接复用、思考设置和任务恢复；扩展已核实的图像工具与云模型接口。",
       "surfaces": [
         "Web"
       ],
       "notes": [
-        "可选能力受协议、地区及账号权限限制；目录与代码已适配，新增渠道的真实模型调用尚未验证。"
+        "2026-09-28 追加配置体验、云接口和任务恢复更新，统一纳入 v3.8.1；保留 2026-09-27 首次发布日期。",
+        "新增接口已完成代码适配与模拟回归；实际可用范围仍取决于服务地区、账号权限和模型部署，未执行真实付费调用验证。",
+        "Azure 连接还需为具体资源地址配置受控出口；不支持的型号、工具参数与未知能力不会自动启用。"
       ],
       "changes": [
         {
@@ -102,6 +104,136 @@
             "v381-core",
             "v381-web"
           ]
+        },
+        {
+          "kind": "优化",
+          "text": "通用 API 增加连接模板，按角色和实际能力渐进展示配置；参考图识别模型统一称为视觉模型，保留三角色独立配置和历史选择。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "提供命名连接和不含密钥的配置文件导入、导出；应用前预览影响范围，连接与密钥分别显式复制，避免跨角色自动复用凭据。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "协议切换保留自定义地址和历史草稿，明确密钥解绑原因；区分当前页修改与浏览器保存，提示保存失败并阻止跨页面覆盖冲突。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "分别展示配置、地址、目录与真实调用状态；目录失败、为空或不完整时保留手填型号，并提供明确恢复指引和直观尺寸选择。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "展示可信目录元数据及来源，区分服务方限制、平台硬上限和用户限制；旧配置保留原有约束，不把未知限制当作无限制。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "通用 API 接入现有思考参数体系，按精确连接、协议、型号和角色提供已适配控件；服务商默认不发送额外参数，恢复任务保留原设置。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "在 Responses 协议内支持 OpenAI 与 xAI 已确认的图像工具，区分调用模型与图像型号，复用生成、原图输入精修及已支持的参考图流程。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "增加 Azure OpenAI v1 部署连接，以及 Amazon Bedrock Converse 和已适配型号的 InvokeModel 图像接口；按地域、部署、鉴权有效期和型号规则校验。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "已登录生成与精修任务在确认接收前保存恢复资料，服务中断后可主动恢复同一任务；任务记录可重新打开已有进度，结果未知的调用不会自动重发。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "完善异步渠道原任务查询与产物下载恢复：保存上游任务号，单次查询超时不直接判失败，下载失败优先复用已有结果或查询原任务。",
+          "state": "released",
+          "surfaces": [
+            "Web"
+          ],
+          "sourceIds": [
+            "v381-supplement-code",
+            "v381-supplement-core",
+            "v381-supplement-web"
+          ]
         }
       ],
       "sources": [
@@ -122,6 +254,24 @@
           "kind": "deployment",
           "label": "专业渠道 Web 发布",
           "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36296552975"
+        },
+        {
+          "id": "v381-supplement-code",
+          "kind": "pull-request",
+          "label": "通用 API 与任务恢复补充实现",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/pull/237"
+        },
+        {
+          "id": "v381-supplement-core",
+          "kind": "deployment",
+          "label": "v3.8.1 补充服务发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380646995"
+        },
+        {
+          "id": "v381-supplement-web",
+          "kind": "deployment",
+          "label": "v3.8.1 补充 Web 发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380824882"
         }
       ],
       "legacyAnchors": [],

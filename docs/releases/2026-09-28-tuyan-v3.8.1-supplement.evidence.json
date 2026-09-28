@@ -1,0 +1,429 @@
+{
+  "version": "3.8.1",
+  "status": "released",
+  "originalReleaseDate": "2026-09-27",
+  "supplementDate": "2026-09-28",
+  "featureCommit": "f3bc73ed9a039e1cabf467c3cb12d338b5729377",
+  "sources": {
+    "pr": "https://github.com/yrjmdqmmx/Tuyan/pull/237",
+    "ci": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380416984",
+    "coreImage": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380451419",
+    "benchmarkImage": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380455004",
+    "hkDeployment": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380646995",
+    "webFeatureDeployment": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/36380824882"
+  },
+  "containers": {
+    "paperbanana-api": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-core-api@sha256:1974972db375807304fdc96872053d9487726137f6a3a9c9e46d1435135b6a20",
+      "imageId": "sha256:1974972db375807304fdc96872053d9487726137f6a3a9c9e46d1435135b6a20",
+      "health": "healthy",
+      "revision": "f3bc73ed9a039e1cabf467c3cb12d338b5729377",
+      "codeSha": "f3bc73ed9a039e1cabf467c3cb12d338b5729377",
+      "benchEnabled": null,
+      "provenance": {
+        "codeSha": "f3bc73ed9a039e1cabf467c3cb12d338b5729377"
+      }
+    },
+    "benchmark-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-benchmark-worker@sha256:92761e403768654480f2592c8de52c50d8440224d3b6a3f32dae25a482a8a1f7",
+      "imageId": "sha256:92761e403768654480f2592c8de52c50d8440224d3b6a3f32dae25a482a8a1f7",
+      "health": "healthy",
+      "revision": "f3bc73ed9a039e1cabf467c3cb12d338b5729377",
+      "codeSha": "f3bc73ed9a039e1cabf467c3cb12d338b5729377",
+      "benchEnabled": "false",
+      "provenance": {
+        "codeSha": "f3bc73ed9a039e1cabf467c3cb12d338b5729377"
+      }
+    },
+    "auth-gateway": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-auth-gateway@sha256:97803f67dca036490f4571c485c8fe5714839710feddfd024bf5fdc98a29f0fb",
+      "imageId": "sha256:97803f67dca036490f4571c485c8fe5714839710feddfd024bf5fdc98a29f0fb",
+      "health": "healthy",
+      "revision": "24ed37b45c25d35581d92dfb412f412ebd5a3db0",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "plot-worker": {
+      "image": "ghcr.io/yrjmdqmmx/paperbanana-plot-worker@sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "imageId": "sha256:23894f4844c4145046f882a8eff7665c907d1e433d1afaa8edc8fcdab337d2e3",
+      "health": "healthy",
+      "revision": "3ae61e52523b9b2e8d620d925505483eb641047a",
+      "codeSha": null,
+      "benchEnabled": null
+    },
+    "mongodb": {
+      "image": "mongo:8.0.16-noble@sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "imageId": "sha256:5dda65a823a0d73d9caae4f449ab01973cf9884cea4ef56f9cb84dbe5e00acbd",
+      "health": "healthy",
+      "revision": null,
+      "codeSha": null,
+      "benchEnabled": null
+    }
+  },
+  "flags": {
+    "recoveryEncryptionConfigured": true,
+    "maintenance": false
+  },
+  "secretFilesUnchanged": true,
+  "health": {
+    "code": 0,
+    "ok": true,
+    "runtime": "gateway",
+    "auth": "better-auth",
+    "authReady": true,
+    "backend": {
+      "mode": "node",
+      "ok": true,
+      "checkedAt": "2026-09-28T05:11:33.633Z",
+      "status": 200,
+      "ready": true,
+      "dependencies": {
+        "mongodb": "ready",
+        "oss": "ready",
+        "providerEgress": "ready",
+        "benchmark": "ready"
+      }
+    },
+    "dependencies": {
+      "auth": {
+        "ok": true,
+        "checkedAt": "2026-09-28T05:11:33.614Z"
+      },
+      "backend": {
+        "mode": "node",
+        "ok": true,
+        "checkedAt": "2026-09-28T05:11:33.633Z",
+        "status": 200,
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      }
+    }
+  },
+  "ready": {
+    "code": 0,
+    "ok": true,
+    "runtime": "gateway",
+    "auth": "better-auth",
+    "authReady": true,
+    "backend": {
+      "ok": true,
+      "status": 200,
+      "data": {
+        "ok": true,
+        "service": "paperbanana-api",
+        "runtime": "node",
+        "version": "0.1.0",
+        "ready": true,
+        "dependencies": {
+          "mongodb": "ready",
+          "oss": "ready",
+          "providerEgress": "ready",
+          "benchmark": "ready"
+        }
+      }
+    },
+    "dependencies": {
+      "auth": {
+        "ok": true
+      },
+      "backend": {
+        "ok": true,
+        "status": 200,
+        "data": {
+          "ok": true,
+          "service": "paperbanana-api",
+          "runtime": "node",
+          "version": "0.1.0",
+          "ready": true,
+          "dependencies": {
+            "mongodb": "ready",
+            "oss": "ready",
+            "providerEgress": "ready",
+            "benchmark": "ready"
+          }
+        }
+      }
+    }
+  },
+  "registry": {
+    "version": "2026-09-27.v27",
+    "thinkingContractVersion": 1,
+    "counts": {
+      "deepseek": 4,
+      "kimi": 4,
+      "zhipu": 28,
+      "siliconflow": 66,
+      "anthropic": 12,
+      "recraft": 16,
+      "xai": 12,
+      "gemini": 15,
+      "bailian": 178,
+      "openai": 68,
+      "ark": 32,
+      "bfl": 12,
+      "stability": 6,
+      "ideogram": 13,
+      "minimax": 10,
+      "mistral": 16,
+      "together": 48,
+      "fireworks": 23,
+      "fal": 42,
+      "replicate": 97,
+      "tokendance": 64,
+      "runware": 138,
+      "tokenhub": 41,
+      "xiaomi": 4,
+      "sensenova": 7,
+      "stepfun": 7,
+      "qianfan": 36,
+      "iflytek": 32,
+      "longcat": 2,
+      "antling": 6,
+      "novita": 1
+    },
+    "preservedUnavailable": [
+      "gpt-3.5-turbo-1106",
+      "deepseek-v4-flash-vision-exp",
+      "deepseek-chat-v3-0324"
+    ],
+    "total": 1040,
+    "diffs": []
+  },
+  "universalVersions": {
+    "universalThinkingVersion": 1,
+    "universalMetadataVersion": 1,
+    "universalLimitsVersion": 1,
+    "universalExtensionsVersion": 1
+  },
+  "sgAcl": {
+    "added": [
+      "bedrock-runtime.us-east-1.amazonaws.com",
+      "bedrock-runtime.us-east-2.amazonaws.com",
+      "bedrock-runtime.us-west-2.amazonaws.com"
+    ],
+    "beforeSha256": "b907ccf844cfd5491c15cfd192a1262cafaa102a24ec9cd7a371359d106044b6",
+    "afterSha256": "a43e9774f69cc03925a975dcf6c2dda434ef872efab4132afa3a2ebfae142f8f",
+    "squid": "active",
+    "wireguardAndFirewallChanged": false
+  },
+  "sgConnect": [
+    "bedrock-runtime.us-east-1.amazonaws.com connect=200 http=404",
+    "bedrock-runtime.us-east-2.amazonaws.com connect=200 http=404",
+    "bedrock-runtime.us-west-2.amazonaws.com connect=200 http=404",
+    "example.com connect=403 http=000"
+  ],
+  "sgInstallerMatchesRelease": true,
+  "leaderboardUnchanged": true,
+  "browser": [
+    {
+      "freshDefault": "tokendance",
+      "universalFirst": true
+    },
+    {
+      "screenshot": "desktop-openai-tool"
+    },
+    {
+      "screenshot": "desktop-bedrock-expiry"
+    },
+    {
+      "screenshot": "desktop-azure"
+    },
+    {
+      "threeRoleMix": true,
+      "roleSecretsIndependent": true,
+      "imageOrchestratorThinking": true,
+      "azureDeployment": true,
+      "bedrockExpiry": true
+    },
+    {
+      "refreshRestoresNonSecrets": true,
+      "expiryNotPersisted": true
+    },
+    {
+      "screenshot": "mobile-390-openai"
+    },
+    {
+      "screenshot": "mobile-390-xai"
+    },
+    {
+      "screenshot": "mobile-390-bedrock"
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "keyboardTrap": true,
+      "escapeFocus": true,
+      "draftReopen": true,
+      "xaiUnsupportedFieldsHidden": true
+    },
+    {
+      "screenshot": "mobile-320-openai"
+    },
+    {
+      "screenshot": "mobile-320-xai"
+    },
+    {
+      "screenshot": "mobile-320-bedrock"
+    },
+    {
+      "width": 320,
+      "overflow": false,
+      "keyboardTrap": true,
+      "escapeFocus": true,
+      "draftReopen": true,
+      "xaiUnsupportedFieldsHidden": true
+    },
+    {
+      "consoleErrors": [],
+      "requests": [
+        {
+          "action": "modelRegistry"
+        },
+        {
+          "action": "referenceLibrary"
+        },
+        {
+          "action": "modelRegistry"
+        },
+        {
+          "action": "referenceLibrary"
+        }
+      ],
+      "noPaidCalls": true,
+      "noUpstreamProbes": true
+    }
+  ],
+  "webArtifacts": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "41febd740c14ce8dcf74454dd6d51ce5bd16035252eadd8924f73294486f5b77",
+      "matches": true
+    },
+    {
+      "path": "leaderboard/index.html",
+      "status": 200,
+      "bytes": 658,
+      "sha256": "dfb0d1e25695743f1b1f62e264dc15fc7bf43beeff15cee9939c47fbcfaff919",
+      "matches": true
+    },
+    {
+      "path": "changelog/index.html",
+      "status": 200,
+      "bytes": 615,
+      "sha256": "8ad615f356f05b712cbafb0817674070c92265b3887c859a3e82824f4be6f637",
+      "matches": true
+    },
+    {
+      "path": "assets/not-found-K_dFyY8s.js",
+      "status": 200,
+      "bytes": 489,
+      "sha256": "c7ae696534b58ce86f367d452a4eb0a7f757860be1804c548200e015cbd15962",
+      "matches": true
+    },
+    {
+      "path": "assets/AdminWorkspace-BpVZVik3.js",
+      "status": 200,
+      "bytes": 40658,
+      "sha256": "19bd8cb97f957c2ef602adc6e64f015a96f14222279d87da70cce797f0236e36",
+      "matches": true
+    },
+    {
+      "path": "assets/main-D3oRLF2l.css",
+      "status": 200,
+      "bytes": 237244,
+      "sha256": "2b6894c1564aeb48d3b869195585e382b38866f4db4b3180fd1ba14fc7addfe7",
+      "matches": true
+    },
+    {
+      "path": "assets/RefinePanel-B_bfDtHu.js",
+      "status": 200,
+      "bytes": 13159,
+      "sha256": "e02d2ac57b7543bdb059ff5c8c704606a9068d33d18542ee726cfe35c4c78372",
+      "matches": true
+    },
+    {
+      "path": "assets/jszip.min-vNyxEVZK.js",
+      "status": 200,
+      "bytes": 97144,
+      "sha256": "b9764475ce34f07a351c09051cf71ed889ce6e722f9727433b0a1e956b6c3465",
+      "matches": true
+    },
+    {
+      "path": "assets/ChangelogRoot-4wFcdzrc.js",
+      "status": 200,
+      "bytes": 59000,
+      "sha256": "b3826d5f9877c83e2598f7a2e68047373db6b314033207beb58a1fec91f74002",
+      "matches": true
+    },
+    {
+      "path": "assets/ReferenceLibraryPanel-n57IFyJ9.js",
+      "status": 200,
+      "bytes": 85966,
+      "sha256": "2b06c7b2ea9850feeb00f0b9759d78ecacd8dae6e4a7dbee38b2961628cf95d2",
+      "matches": true
+    },
+    {
+      "path": "assets/upload-C53FPOVW.js",
+      "status": 200,
+      "bytes": 257,
+      "sha256": "ffef37cbedd42f834e3f95dc1679b24132ae2a1833b333a58eabe761d92d9d3c",
+      "matches": true
+    },
+    {
+      "path": "assets/appPaths-Ba0fLi8f.js",
+      "status": 200,
+      "bytes": 1473,
+      "sha256": "bc24cd9caec4112c896d1eb56605af9790b3362f36b6fe3bd912aebffb27e1c4",
+      "matches": true
+    },
+    {
+      "path": "assets/main-BtFVFe2-.js",
+      "status": 200,
+      "bytes": 4071080,
+      "sha256": "284fdb0f84e7dbb0628fc874823c27ff4207d0a736401edda67a3d34b190a4d4",
+      "matches": true
+    },
+    {
+      "path": "assets/AccountSettingsDialog-C-9xC5Mb.js",
+      "status": 200,
+      "bytes": 5779,
+      "sha256": "14b29a54fa454f9df68e8b838ac3e80c6e4dd7088b80d81d07499331920fdd64",
+      "matches": true
+    },
+    {
+      "path": "assets/trash-2-CMJt0p6M.js",
+      "status": 200,
+      "bytes": 357,
+      "sha256": "dd0121393eb2b317aca769937d9e050df378bb8154bb9146b8ee065aace030fa",
+      "matches": true
+    }
+  ],
+  "notPerformed": [
+    "paid inference or Judge calls",
+    "top-up",
+    "WeChat release",
+    "production login and email round trip",
+    "production generation or failure recovery exercise",
+    "real provider entitlement check",
+    "physical phone soft keyboard test",
+    "cloud permission or resource creation"
+  ],
+  "remaining": [
+    "Azure exact resource host egress authorization",
+    "real provider account capabilities",
+    "Mini Program native UI and release"
+  ],
+  "releaseRecordChecks": {
+    "webTests": 577,
+    "webFailures": 0,
+    "webBuild": "passed",
+    "diffCheck": "passed"
+  }
+}
