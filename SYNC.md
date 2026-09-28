@@ -3,6 +3,15 @@
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
 
+## 2026-09-28 · v3.8.1 附加更新统一归版并上线
+
+- 用户明确授权将已发布 3.8.1 后的本会话六个附加提交统一纳入 3.8.1，并更新日志、上线。下方“下一版本 / 本地待发布 / 未授权”保留开发时点含义；本条和[发布记录](docs/releases/2026-09-28-tuyan-v3.8.1-supplement.md)为当前状态。功能 PR #237 / `f3bc73ed9a039e1cabf467c3cb12d338b5729377`。
+- [x] Core / Web / 共享：通用配置、来源/分层限额、思考、命名连接/无密钥导入导出、保存可靠性、Responses/Azure/Bedrock 适配及排队/异步恢复已上线；Route v1 可选扩展协商通过生产只读检查。密钥规则和 unknown 不重发不变。
+- [x] SG 出口：追加三个精确 Bedrock runtime 主机并验证 CONNECT allow/deny；没有 Azure 泛域名授权、WireGuard/全局防火墙修改或账号权限创建。
+- [x] 版本日志：中英文内容追加到唯一的 Tuyan v3.8.1，保留首次日期 2026-09-27，notes 标注 2026-09-28 追加；不修改 Benchmark 独立版本和评测数据。
+- [ ] Azure 实际资源主机出口与真实账号权限/付费调用：缺实际资源域名及用户账户证据，本轮没有推理/充值，不承诺账号可调用。
+- [ ] 小程序原生 UI / 真机 / 微信发行：共享类型已同步，独立小程序工作树和微信副本未覆盖，未上传、审核或发布。
+
 ## 2026-09-28 · v3.8.1 后续补充：Responses 图像工具 / Azure / Bedrock / 异步恢复（仅本地待发布）
 
 - 基线 `6ff4018`，v3.8.1 已发布状态不变；本轮内容按最新要求归入该版本后续补充，不提前回填公开日志。详见 [实现与迁移](docs/universal-api/2026-09-28/implementation.md)、[官方来源/差异](docs/universal-api/2026-09-28/sources.md)、[验收](docs/universal-api/2026-09-28/acceptance.md)。
