@@ -29,7 +29,9 @@
 
 Agent 能力已拆分为两个可独立使用的开源仓库：[Tuyan-Skill](https://github.com/yrjmdqmmx/Tuyan-Skill) 提供本地科研图示工作流，[Tuyan-MCP](https://github.com/yrjmdqmmx/Tuyan-MCP) 提供匿名只读公共知识服务。主仓库继续保留现有生产部署使用的源码。
 
-![图研 Tuyan 工作台](docs/readme/workbench.png)
+![图研 Tuyan 工作台](docs/readme/workbench-2026-10-09.png)
+
+> 本页界面截图采集于 2026-10-09，来自[线上工作台](https://www.paperbanana.asia/)与公开排行榜。
 
 ## 功能特点
 
@@ -38,7 +40,7 @@ Agent 能力已拆分为两个可独立使用的开源仓库：[Tuyan-Skill](htt
 | 科研图示生成 | 输入论文方法、目标图注、参考图和负向约束，生成论文方法图、流程图、机制图或统计图等候选结果。 |
 | 八类图示工作流 | 覆盖方法框架图、流程图、系统架构图、机制示意图、对比图、时间线、数据统计图和概念关系图。 |
 | 局部精修与任务记录 | 对已有图像提出目标修改，保留非目标内容，并在任务记录中查看输入、模型、状态和输出。 |
-| 多模型与 BYOK | Web 工作台支持按任务配置主模型、图像模型、识图模型和输出规格；密钥由用户自行提供。 |
+| 多模型与 BYOK | Web 工作台支持按任务配置主模型、图像模型、视觉模型和输出规格；密钥由用户自行提供。 |
 | 模板与参考检索 | 可从精选科研模板开始；Agent Skill 可在用户同意后下载固定版本的 PaperBananaBench 并在本地检索。 |
 | Tuyan Benchmark | 使用固定科研题集、十维指标、双盲审核与模型证据，对生成和编辑模型进行公开比较。 |
 | Agent Skill | 在用户 Agent 本地完成分类、FigureSpec、生成、定性评审、精修和可复现产物归档。 |
@@ -75,19 +77,19 @@ Agent 工作流默认把 `figure-spec.json`、实际提示词、参考来源、�
 
 ## Tuyan Benchmark 排行榜
 
-[Tuyan Benchmark](https://www.paperbanana.asia/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。当前榜单包含 41 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁。
+[Tuyan Benchmark](https://www.paperbanana.asia/leaderboard/) 面向真实科研图示任务公开题集、评分标准、审核机制和逐模型证据。截至 2026-10-09，公开榜单包含 46 个合格模型、固定 9 题（6 个生成题、3 个编辑题），采用十维等权评分，失败记 0，并提供双盲审核与争议仲裁；最新模型数量与排名以在线榜单为准。
 
-### 综合总矩阵
+### 排行榜与维度榜
 
-矩阵同时显示综合排名，以及科研忠实度、结构拓扑、文字符号、数值图表、指令遵从、信息层级、信息密度、发表级美观、编辑目标命中和非目标保持等维度。
+排行榜支持模型搜索、筛选与帕累托视图，并提供十维 Top10 和综合总矩阵。各维度覆盖科研忠实度、结构拓扑、文字符号、数值图表、指令遵从、信息层级、信息密度、发表级美观、编辑目标命中和非目标保持。
 
-[![图研 Tuyan Benchmark 综合总矩阵](docs/readme/benchmark-matrix.png)](https://www.paperbanana.asia/leaderboard/)
+[![图研 Tuyan Benchmark 排行榜与维度榜](docs/readme/benchmark-overview-2026-10-09.png)](https://www.paperbanana.asia/leaderboard/)
 
 ### 具体题目与模型证据
 
 每个模型页面公开固定题目的生成结果、尝试摘要、分维度结果、审核依据、完整要求、负向约束与文件 SHA-256。编辑题还会并列展示 before / after。
 
-[![复杂科研方法流程题与模型证据](docs/readme/benchmark-case-method-flow.png)](https://www.paperbanana.asia/leaderboard/models/qwen-image-3.0-pro%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1)
+[![复杂科研方法流程题与模型证据](docs/readme/benchmark-case-method-flow-2026-10-09.png)](https://www.paperbanana.asia/leaderboard/models/qwen-image-3.0-pro%3Acodex_scientific_v2%3Acodex-scientific-2026-09-v1)
 
 ## 安装 Agent Skill 与 MCP
 
