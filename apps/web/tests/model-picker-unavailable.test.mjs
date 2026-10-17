@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React from 'react'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ModelPicker from '../src/components/ModelPicker.jsx'
 
@@ -71,6 +71,9 @@ test('title selection remains keyboard accessible and fires once', async () => {
   const changes = [], user = userEvent.setup()
   render(React.createElement(ModelPicker, { label: '主模型', role: 'main', provider: 'bailian', value: '', models: [selected], onChange: id => changes.push(id) }))
   await user.click(screen.getByRole('button', { name: '主模型', exact: true }))
+  // Opening the dialog focuses its first control on the next animation frame.
+  // Wait for that focus before exercising keyboard selection inside the dialog.
+  await waitFor(() => assert.ok(document.activeElement === screen.getByRole('button', { name: '关闭模型选择' }), 'dialog initial focus is ready'))
   screen.getByRole('button', { name: '选择 Existing model' }).focus()
   await user.keyboard('{Enter}')
   assert.deepEqual(changes, [selected.id])
