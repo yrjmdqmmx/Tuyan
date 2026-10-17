@@ -27282,6 +27282,437 @@
       ],
       "idEvidence": "exact-id",
       "notes": "Exact hosted request ID; no immutable weights binding. Documented response model differs (StressTest); preserve the resolved ID in usage records."
+    },
+    {
+      "channel": "openai",
+      "apiModelId": "gpt-6.1-sol",
+      "displayName": "GPT-6.1 Sol",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "anthropic",
+      "apiModelId": "claude-sonnet-5-5",
+      "displayName": "Claude Sonnet 5.5",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "anthropic",
+      "apiModelId": "claude-haiku-5-5",
+      "displayName": "Claude Haiku 5.5",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/haiku-5-5/overview"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "mistral",
+      "apiModelId": "mistral-large-4",
+      "displayName": "Mistral Large 4",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://docs.mistral.ai/models/mistral-large-4-0"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "gemini",
+      "apiModelId": "gemini-nano-banana-2.1",
+      "displayName": "Nano Banana 2.1",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "recraft",
+      "apiModelId": "recraftv4_1_flash",
+      "displayName": "Recraft V4.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "ark",
+      "apiModelId": "doubao-seedream-5-0-flash-260915",
+      "displayName": "Seedream 5.0 Flash (260915)",
+      "kind": "unconfirmed",
+      "versionId": null,
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "准确 API ID 已确认；未推断为固定快照或滚动别名。"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "google/nano-banana-2.1",
+      "displayName": "Nano Banana 2.1",
+      "kind": "fixed",
+      "versionId": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/google/nano-banana-2.1/api/schema"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "本轮新身份固定已审核version，使用/v1/predictions；未升级或替换旧身份。",
+      "observedVersion": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83",
+      "transport": {
+        "generation": {
+          "endpoint": "google/nano-banana-2.1",
+          "version": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83"
+        },
+        "editing": {
+          "endpoint": "google/nano-banana-2.1",
+          "version": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83"
+        }
+      },
+      "apiIdentifier": "/v1/predictions · version=38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "black-forest-labs/flux-3-image",
+      "displayName": "FLUX 3 Image",
+      "kind": "fixed",
+      "versionId": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "本轮新身份固定已审核version，使用/v1/predictions；未升级或替换旧身份。",
+      "observedVersion": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28",
+      "transport": {
+        "generation": {
+          "endpoint": "black-forest-labs/flux-3-image",
+          "version": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28"
+        },
+        "editing": {
+          "endpoint": "black-forest-labs/flux-3-image",
+          "version": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28"
+        }
+      },
+      "apiIdentifier": "/v1/predictions · version=b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "ideogram-ai/ideogram-4-5",
+      "displayName": "Ideogram 4.5",
+      "kind": "fixed",
+      "versionId": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "本轮新身份固定已审核version，使用/v1/predictions；未升级或替换旧身份。",
+      "observedVersion": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d",
+      "transport": {
+        "generation": {
+          "endpoint": "ideogram-ai/ideogram-4-5",
+          "version": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d"
+        },
+        "editing": {
+          "endpoint": "ideogram-ai/ideogram-4-5",
+          "version": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d"
+        }
+      },
+      "apiIdentifier": "/v1/predictions · version=2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "ideogram-ai/ideogram-4-5-precise-edit",
+      "displayName": "Ideogram 4.5 Precise Edit",
+      "kind": "fixed",
+      "versionId": "59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
+      ],
+      "idEvidence": "exact-id",
+      "notes": "本轮新身份固定已审核version，使用/v1/predictions；未升级或替换旧身份。",
+      "observedVersion": "59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021",
+      "transport": {
+        "editing": {
+          "endpoint": "ideogram-ai/ideogram-4-5-precise-edit",
+          "version": "59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021"
+        }
+      },
+      "apiIdentifier": "/v1/predictions · version=59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "cogevol-base",
+      "displayName": "CogEvol Base",
+      "kind": "unconfirmed",
+      "versionId": "cogevol-base",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-base"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {},
+      "apiIdentifier": "cogevol-base"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "cogevol-interactive-0828",
+      "displayName": "CogEvol Interactive 0828",
+      "kind": "unconfirmed",
+      "versionId": "cogevol-interactive-0828",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-interactive-0828"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {},
+      "apiIdentifier": "cogevol-interactive-0828"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "cogevol-slide-0828",
+      "displayName": "CogEvol Slide 0828",
+      "kind": "unconfirmed",
+      "versionId": "cogevol-slide-0828",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-slide-0828"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {},
+      "apiIdentifier": "cogevol-slide-0828"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "blackforestlabs/flux-3/text-to-image",
+      "displayName": "FLUX.3",
+      "kind": "unconfirmed",
+      "versionId": "blackforestlabs/flux-3/text-to-image",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "generation": {
+          "endpoint": "blackforestlabs/flux-3/text-to-image"
+        },
+        "editing": {
+          "endpoint": "blackforestlabs/flux-3/edit-image"
+        }
+      },
+      "apiIdentifier": "blackforestlabs/flux-3/text-to-image"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "ideogram/v4.5",
+      "displayName": "Ideogram 4.5",
+      "kind": "unconfirmed",
+      "versionId": "ideogram/v4.5",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://fal.ai/models/ideogram/v4.5/api"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "generation": {
+          "endpoint": "ideogram/v4.5"
+        },
+        "editing": {
+          "endpoint": "ideogram/v4.5/edit"
+        }
+      },
+      "apiIdentifier": "ideogram/v4.5"
+    },
+    {
+      "channel": "fal",
+      "apiModelId": "bytedance/seedream/v5/flash/text-to-image",
+      "displayName": "Seedream v5 Flash",
+      "kind": "unconfirmed",
+      "versionId": "bytedance/seedream/v5/flash/text-to-image",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "generation": {
+          "endpoint": "bytedance/seedream/v5/flash/text-to-image"
+        },
+        "editing": {
+          "endpoint": "bytedance/seedream/v5/flash/edit"
+        }
+      },
+      "apiIdentifier": "bytedance/seedream/v5/flash/text-to-image"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "google/gemini-3.5-flash",
+      "displayName": "gemini-3.5-flash",
+      "kind": "fixed",
+      "versionId": "570150b6a75f4814dca9dee143419cfe94f6df555acb7c10dd69fd14a5792523",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-3.5-flash/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "570150b6a75f4814dca9dee143419cfe94f6df555acb7c10dd69fd14a5792523"
+        }
+      },
+      "apiIdentifier": "google/gemini-3.5-flash"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "google/gemini-3-flash",
+      "displayName": "gemini-3-flash",
+      "kind": "fixed",
+      "versionId": "c0a19130fe0c39f825c7321779080836edad7a82792ab144fb58adcadfc03145",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-3-flash/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "c0a19130fe0c39f825c7321779080836edad7a82792ab144fb58adcadfc03145"
+        }
+      },
+      "apiIdentifier": "google/gemini-3-flash"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "google/gemini-2.5-flash",
+      "displayName": "gemini-2.5-flash",
+      "kind": "fixed",
+      "versionId": "c1ee402081bea718d8328da9fcbb98bb1344a21573782b95b7f5af07489c2d54",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-2.5-flash/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "c1ee402081bea718d8328da9fcbb98bb1344a21573782b95b7f5af07489c2d54"
+        }
+      },
+      "apiIdentifier": "google/gemini-2.5-flash"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "qwen/qwen3-7-plus",
+      "displayName": "qwen3-7-plus",
+      "kind": "fixed",
+      "versionId": "35cfa60fb962574a80d8d4dead5269d5ed0469b07ca0850779e3303cf9ec25c6",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/qwen/qwen3-7-plus/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "35cfa60fb962574a80d8d4dead5269d5ed0469b07ca0850779e3303cf9ec25c6"
+        }
+      },
+      "apiIdentifier": "qwen/qwen3-7-plus"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "deepseek-ai/deepseek-v3.1",
+      "displayName": "deepseek-v3.1",
+      "kind": "fixed",
+      "versionId": "3a67d0d316067084ccf47ea0dfd9499ecacc422f2a17773a3e06e402388ab2be",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/deepseek-ai/deepseek-v3.1/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "3a67d0d316067084ccf47ea0dfd9499ecacc422f2a17773a3e06e402388ab2be"
+        }
+      },
+      "apiIdentifier": "deepseek-ai/deepseek-v3.1"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "moonshotai/kimi-k2-thinking",
+      "displayName": "kimi-k2-thinking",
+      "kind": "fixed",
+      "versionId": "3298c7a0489e18d80fb092ea077cb7d3ce3d00eb4cdc270d758ea85b50a46b01",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/moonshotai/kimi-k2-thinking/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "3298c7a0489e18d80fb092ea077cb7d3ce3d00eb4cdc270d758ea85b50a46b01"
+        }
+      },
+      "apiIdentifier": "moonshotai/kimi-k2-thinking"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "qwen/qwen3-235b-a22b-instruct-2507",
+      "displayName": "qwen3-235b-a22b-instruct-2507",
+      "kind": "fixed",
+      "versionId": "10e10290802d58ffb8878cb56199896c1d9f290109a66bbdd35b404006f6eb3a",
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "仅公开文档/schema核实；账户与真实调用未验证。",
+      "transport": {
+        "text": {
+          "version": "10e10290802d58ffb8878cb56199896c1d9f290109a66bbdd35b404006f6eb3a"
+        }
+      },
+      "apiIdentifier": "qwen/qwen3-235b-a22b-instruct-2507"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

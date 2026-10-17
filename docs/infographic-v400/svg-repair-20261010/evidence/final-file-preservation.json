@@ -1,0 +1,16 @@
+{
+  "finalFrozenCode": {
+    "files": 30,
+    "mismatches": []
+  },
+  "protectedBaseline": {
+    "files": 238,
+    "mismatches": [],
+    "excludedAuthorizedImplementationFiles": [
+      "apps/paperbanana-api/runtime/handler.ts",
+      "apps/paperbanana-api/src/figure-composition.ts",
+      "packages/types/src/workflow.ts",
+      "pnpm-lock.yaml"
+    ]
+  }
+}

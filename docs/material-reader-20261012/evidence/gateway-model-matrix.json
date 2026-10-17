@@ -1,0 +1,2045 @@
+{
+  "simulatedProviders": true,
+  "realFiles": true,
+  "realGatewayCore": true,
+  "realModelUnderstandingVerified": false,
+  "matrix": [
+    {
+      "format": "png",
+      "retrieval": "none",
+      "originals": [
+        {
+          "id": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+          "filename": "mixed-research.pdf",
+          "format": "pdf",
+          "size": 11200,
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:50.065Z"
+        },
+        {
+          "id": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+          "filename": "research-slides.pptx",
+          "format": "pptx",
+          "size": 47135,
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:50.128Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc",
+            "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc",
+            "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "8d997d67ef76d3e3f7c66f4a8f6080eb0fb6ccecfca4953be9c30ada0b4addc7",
+            "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+            "038da1967c92454fecdea3395f75456532472850cacb08a41c64cfa47fa20fcc",
+            "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "67616907aa73e5fe297ab3d1ae83a12210cdf13c1892a3ccb5649a01c96ce0e7",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "68538c80417b7e6668c6d55ee699e9b7537fd7fe76356f04693cd7144289529a",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "png",
+      "retrieval": "auto",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "cd924c3e95ac901a4edd52553b5ae9fe405c9905e83e745a6208064d12f3003d"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "cd924c3e95ac901a4edd52553b5ae9fe405c9905e83e745a6208064d12f3003d"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "cd924c3e95ac901a4edd52553b5ae9fe405c9905e83e745a6208064d12f3003d"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "retrieval",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "plan",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "png",
+      "retrieval": "random",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "0931f5331b837bf7b63cdb855435e07a0b9acaddf6552644518fbefc36b8c064"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "0931f5331b837bf7b63cdb855435e07a0b9acaddf6552644518fbefc36b8c064"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "0931f5331b837bf7b63cdb855435e07a0b9acaddf6552644518fbefc36b8c064"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 8,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "png",
+      "retrieval": "manual",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "issues_found",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":1,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "pngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "status": "passed",
+            "submittedImageHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+            "assessment": "{\"version\":2,\"pngHash\":\"7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "reviewedVersion": 2,
+        "reviewedPngHash": "7b9bcef4f0661a45ab8412dc006c93bfd8b3cf884c357cfa084996bd159ebf28",
+        "note": "主模型已检查当前 PNG v2 实际画面并判定通过。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "ac8e21e36081b3e8bff4a1d38db658dfe1fbdd42bb6a3d8e0df479cf1415b518"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "ac8e21e36081b3e8bff4a1d38db658dfe1fbdd42bb6a3d8e0df479cf1415b518"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "png-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "ac8e21e36081b3e8bff4a1d38db658dfe1fbdd42bb6a3d8e0df479cf1415b518"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "image"
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "png-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "svg",
+      "retrieval": "none",
+      "originals": [
+        {
+          "id": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+          "filename": "mixed-research.pdf",
+          "format": "pdf",
+          "size": 11200,
+          "sha256": "29cd502af62024084f881064a68489266f5a6cde1a804f5b915633184f7ea7ab",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:50.065Z"
+        },
+        {
+          "id": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+          "filename": "research-slides.pptx",
+          "format": "pptx",
+          "size": 47135,
+          "sha256": "dacf49f5b4671a6e38029becd216d5ba720422f9536e5aefee4f48e202b379c8",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:50.128Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70",
+            "pngHash": "f9b144fffb1bc572b40b9a081957eea9d006ab8c881f31fb10fe4bb1935c1ce1",
+            "status": "issues_found",
+            "submittedImageHash": "da5834e4d8600ec18ea4ec1e3c5d12135f72242bc8157022b002c27b2f8c43cc",
+            "assessment": "{\"version\":1,\"svgHash\":\"7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+            "pngHash": "fc6c54d1093889df8da042c6d428564d96797c9e9098f66b5bab273da531dc68",
+            "status": "passed",
+            "submittedImageHash": "e8135381ec5d8293b33e980852876733c3e4961a00963a519f893c602ed2fe81",
+            "assessment": "{\"version\":2,\"svgHash\":\"12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380",
+            "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380",
+            "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 2,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 3,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 4,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "63d2b8815e6ef521f2813991ae3fde7f099dcbbc0a9acb6c437861e91b2ff2c3",
+            "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+            "274e1f5c819759d8be6e3b6cba0a5aa50bd92066adf5464f2c7f4319c11a5380",
+            "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0"
+          ],
+          "pageImages": [
+            {
+              "materialId": "5b59401a-7afc-4aea-b49b-4437e9f5e358",
+              "recordId": "b41af5d5952662c81255fed486630f7c393eeb50902c0247d154261f71a43f98",
+              "page": 3,
+              "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070"
+            },
+            {
+              "materialId": "2d471d06-a854-421b-b1a5-b96e0a7a029c",
+              "recordId": "efeff4301ddcaf8d73b31d23d09a29c6a2d446855746a72a421fe3c5a7a6b8c0",
+              "page": 1,
+              "sha256": "78de767ec44bd34dda050b70158ff83f3e077746fae68d01c605bc2aca635e0c"
+            }
+          ],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "svg",
+      "retrieval": "auto",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70",
+            "pngHash": "f9b144fffb1bc572b40b9a081957eea9d006ab8c881f31fb10fe4bb1935c1ce1",
+            "status": "issues_found",
+            "submittedImageHash": "da5834e4d8600ec18ea4ec1e3c5d12135f72242bc8157022b002c27b2f8c43cc",
+            "assessment": "{\"version\":1,\"svgHash\":\"7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+            "pngHash": "fc6c54d1093889df8da042c6d428564d96797c9e9098f66b5bab273da531dc68",
+            "status": "passed",
+            "submittedImageHash": "e8135381ec5d8293b33e980852876733c3e4961a00963a519f893c602ed2fe81",
+            "assessment": "{\"version\":2,\"svgHash\":\"12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "4b067d53f2b613f10de1382aac008224000a0475a58ef619fc1fc11e0033bec0"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "4b067d53f2b613f10de1382aac008224000a0475a58ef619fc1fc11e0033bec0"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "4b067d53f2b613f10de1382aac008224000a0475a58ef619fc1fc11e0033bec0"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "retrieval",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "plan",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "svg",
+      "retrieval": "random",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70",
+            "pngHash": "f9b144fffb1bc572b40b9a081957eea9d006ab8c881f31fb10fe4bb1935c1ce1",
+            "status": "issues_found",
+            "submittedImageHash": "da5834e4d8600ec18ea4ec1e3c5d12135f72242bc8157022b002c27b2f8c43cc",
+            "assessment": "{\"version\":1,\"svgHash\":\"7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+            "pngHash": "fc6c54d1093889df8da042c6d428564d96797c9e9098f66b5bab273da531dc68",
+            "status": "passed",
+            "submittedImageHash": "e8135381ec5d8293b33e980852876733c3e4961a00963a519f893c602ed2fe81",
+            "assessment": "{\"version\":2,\"svgHash\":\"12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "3b71509fc94c26ce20d5fc2d45b25a9b1bd2eb539d875090708de0b036ac73c4"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "3b71509fc94c26ce20d5fc2d45b25a9b1bd2eb539d875090708de0b036ac73c4"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "3b71509fc94c26ce20d5fc2d45b25a9b1bd2eb539d875090708de0b036ac73c4"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 8,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "format": "svg",
+      "retrieval": "manual",
+      "originals": [
+        {
+          "id": "92c2def0-55c4-475f-a395-bcad27b9bcbc",
+          "filename": "observations.csv",
+          "format": "csv",
+          "size": 50,
+          "sha256": "e1c3c7477d4638d98092f7b3ef52c30d8c05b8da6a9a45089031bd056112fb70",
+          "status": "uploaded",
+          "expiresAt": "2026-11-11T06:20:49.908Z"
+        }
+      ],
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70",
+            "pngHash": "f9b144fffb1bc572b40b9a081957eea9d006ab8c881f31fb10fe4bb1935c1ce1",
+            "status": "issues_found",
+            "submittedImageHash": "da5834e4d8600ec18ea4ec1e3c5d12135f72242bc8157022b002c27b2f8c43cc",
+            "assessment": "{\"version\":1,\"svgHash\":\"7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+            "pngHash": "fc6c54d1093889df8da042c6d428564d96797c9e9098f66b5bab273da531dc68",
+            "status": "passed",
+            "submittedImageHash": "e8135381ec5d8293b33e980852876733c3e4961a00963a519f893c602ed2fe81",
+            "assessment": "{\"version\":2,\"svgHash\":\"12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "delivery": [
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "input-understanding",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "12264ec99a050302b63ae785b9586ecba1002cfffaecbf019ec7df05884be43f"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-1",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "12264ec99a050302b63ae785b9586ecba1002cfffaecbf019ec7df05884be43f"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 0,
+          "protocol": "application-json-v1",
+          "recordIds": [],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        },
+        {
+          "phase": "svg-review-0-2",
+          "type": "model_received",
+          "step": 1,
+          "protocol": "application-json-v1",
+          "recordIds": [
+            "12264ec99a050302b63ae785b9586ecba1002cfffaecbf019ec7df05884be43f"
+          ],
+          "pageImages": [],
+          "delivery": "main-model-text-and-page-images"
+        }
+      ],
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "review",
+          "images": 1,
+          "originalText": false
+        }
+      ]
+    },
+    {
+      "scenario": "visual main receives original pages directly even with auxiliary review enabled",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "passed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70",
+            "pngHash": "f9b144fffb1bc572b40b9a081957eea9d006ab8c881f31fb10fe4bb1935c1ce1",
+            "status": "issues_found",
+            "submittedImageHash": "da5834e4d8600ec18ea4ec1e3c5d12135f72242bc8157022b002c27b2f8c43cc",
+            "assessment": "{\"version\":1,\"svgHash\":\"7a1bcf976c04151f11c5e7e6686bf1b696c00e7c2953460d3b9b7122fe6e8c70\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"issues_found\",\"findings\":[{\"issue\":\"Spacing\",\"location\":\"labels\",\"evidence\":\"Simulated fixture\",\"suggestion\":\"Move apart\"}]},\"uncertainties\":[],\"revised_description\":\"Preserve original Alpha 35 and Beta 12; move labels apart.\"}"
+          },
+          {
+            "round": 2,
+            "version": 2,
+            "svgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+            "pngHash": "fc6c54d1093889df8da042c6d428564d96797c9e9098f66b5bab273da531dc68",
+            "status": "passed",
+            "submittedImageHash": "e8135381ec5d8293b33e980852876733c3e4961a00963a519f893c602ed2fe81",
+            "assessment": "{\"version\":2,\"svgHash\":\"12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e\",\"code\":{\"status\":\"passed\",\"findings\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"revised_description\":\"No changes needed.\"}"
+          }
+        ],
+        "deliveredVersion": 2,
+        "deliveredSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "reviewedVersion": 2,
+        "reviewedSvgHash": "12af212768bbfb944161bb1096e8f975c27f417d2c41c3d447f18791c045411e",
+        "note": "主模型已检查当前交付 SVG 的实际画面和完整代码。"
+      },
+      "calls": [
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "input-understanding",
+          "originalText": true
+        },
+        {
+          "kind": "plan",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "svg-review-0-1",
+          "originalText": true
+        },
+        {
+          "kind": "observation",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "review",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "svg",
+          "images": 0,
+          "originalText": false
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 0,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 1,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "material",
+          "images": 2,
+          "phase": "svg-review-0-2",
+          "originalText": true
+        },
+        {
+          "kind": "observation",
+          "images": 1,
+          "originalText": false
+        },
+        {
+          "kind": "review",
+          "images": 0,
+          "originalText": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,420 @@
+{
+  "filename": "research-slides.pptx",
+  "format": "pptx",
+  "operation": {
+    "op": "render",
+    "pages": [
+      1,
+      2
+    ]
+  },
+  "status": "partial",
+  "warnings": [
+    "LibreOffice 转换视图，可能与 PowerPoint/Word 的布局不同；动画/音视频/嵌入对象不执行。",
+    "字体 Calibri 不匹配可用字体 Noto Sans，页面可能替换字体。"
+  ],
+  "chunks": [
+    {
+      "page": 1,
+      "text": "研究材料：   Alpha 35   ，   Beta 12 \n输入   检查   输出 ",
+      "positionedText": [
+        {
+          "text": "研究材料：",
+          "x": 43.058,
+          "y": 378.879,
+          "width": 139.833958,
+          "height": 28.006
+        },
+        {
+          "text": " ",
+          "x": 182.891958,
+          "y": 378.879,
+          "width": 6.689042000000001,
+          "height": 0
+        },
+        {
+          "text": "Alpha 35",
+          "x": 189.581,
+          "y": 378.879,
+          "width": 112.30405999999998,
+          "height": 28.006
+        },
+        {
+          "text": " ",
+          "x": 301.88506,
+          "y": 378.879,
+          "width": 6.694939999999974,
+          "height": 0
+        },
+        {
+          "text": "，",
+          "x": 308.58,
+          "y": 378.879,
+          "width": 28.006,
+          "height": 28.006
+        },
+        {
+          "text": " ",
+          "x": 336.586,
+          "y": 378.879,
+          "width": 6.661000000000001,
+          "height": 0
+        },
+        {
+          "text": "Beta 12",
+          "x": 343.247,
+          "y": 378.879,
+          "width": 96.50867599999998,
+          "height": 28.006
+        },
+        {
+          "text": "",
+          "x": 82.545,
+          "y": 244.828,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "输入",
+          "x": 82.545,
+          "y": 244.828,
+          "width": 36.00000000000001,
+          "height": 18
+        },
+        {
+          "text": " ",
+          "x": 118.545,
+          "y": 244.828,
+          "width": 180,
+          "height": 0
+        },
+        {
+          "text": "检查",
+          "x": 298.545,
+          "y": 244.828,
+          "width": 36.00000000000001,
+          "height": 18
+        },
+        {
+          "text": " ",
+          "x": 334.545,
+          "y": 244.828,
+          "width": 179.99999999999994,
+          "height": 0
+        },
+        {
+          "text": "输出",
+          "x": 514.545,
+          "y": 244.828,
+          "width": 36.00000000000001,
+          "height": 18
+        }
+      ],
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。",
+      "source": "ppt/slides/slide1.xml",
+      "notes": {
+        "visibility": "speaker_notes_not_visible_on_slide",
+        "text": "备注专属：这是合成测试材料，不是研究结论。样本单位为个。"
+      },
+      "charts": []
+    },
+    {
+      "page": 2,
+      "text": "名称   原值 \nAlpha   35 \nBeta   12 \nAlpha   Beta \n0 \n10 \n20 \n30 \n40 \nObserved samples ",
+      "positionedText": [
+        {
+          "text": "名称",
+          "x": 367.2,
+          "y": 374.4,
+          "width": 36.00000000000001,
+          "height": 18
+        },
+        {
+          "text": " ",
+          "x": 403.2,
+          "y": 374.4,
+          "width": 108,
+          "height": 0
+        },
+        {
+          "text": "原值",
+          "x": 511.2,
+          "y": 374.4,
+          "width": 36.00000000000001,
+          "height": 18
+        },
+        {
+          "text": "",
+          "x": 367.2,
+          "y": 326.409,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "Alpha",
+          "x": 367.2,
+          "y": 326.409,
+          "width": 42.03000000000004,
+          "height": 18
+        },
+        {
+          "text": " ",
+          "x": 409.23,
+          "y": 326.409,
+          "width": 101.96999999999997,
+          "height": 0
+        },
+        {
+          "text": "35",
+          "x": 511.2,
+          "y": 326.409,
+          "width": 18.216,
+          "height": 18
+        },
+        {
+          "text": "",
+          "x": 367.2,
+          "y": 278.419,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "Beta",
+          "x": 367.2,
+          "y": 278.419,
+          "width": 33.04800000000002,
+          "height": 18
+        },
+        {
+          "text": " ",
+          "x": 400.24800000000005,
+          "y": 278.419,
+          "width": 110.95199999999994,
+          "height": 0
+        },
+        {
+          "text": "12",
+          "x": 511.2,
+          "y": 278.419,
+          "width": 18.216,
+          "height": 18
+        },
+        {
+          "text": "",
+          "x": 219.731,
+          "y": 37.109,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "Alpha",
+          "x": 219.731,
+          "y": 37.109,
+          "width": 42.02729085529375,
+          "height": 17.997
+        },
+        {
+          "text": " ",
+          "x": 261.75829085529375,
+          "y": 37.109,
+          "width": 226.09359643288926,
+          "height": 0
+        },
+        {
+          "text": "Beta",
+          "x": 487.875,
+          "y": 37.109,
+          "width": 33.3518500877342,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 92.66,
+          "y": 53.15,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "0",
+          "x": 92.66,
+          "y": 53.15,
+          "width": 9.107412921960876,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 83.533,
+          "y": 80.415,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "10",
+          "x": 83.533,
+          "y": 80.415,
+          "width": 18.196827004155033,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 83.533,
+          "y": 107.681,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "20",
+          "x": 83.533,
+          "y": 107.681,
+          "width": 18.196827004155033,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 83.533,
+          "y": 134.946,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "30",
+          "x": 83.533,
+          "y": 134.946,
+          "width": 18.196827004155033,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 83.533,
+          "y": 162.211,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "40",
+          "x": 83.533,
+          "y": 162.211,
+          "width": 18.196827004155033,
+          "height": 17.997
+        },
+        {
+          "text": "",
+          "x": 277.356,
+          "y": 188.286,
+          "width": 0,
+          "height": 0
+        },
+        {
+          "text": "Observed samples",
+          "x": 277.356,
+          "y": 188.286,
+          "width": 164.88835220321604,
+          "height": 21.597
+        }
+      ],
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。",
+      "source": "ppt/slides/slide2.xml",
+      "notes": {
+        "visibility": "speaker_notes_not_visible_on_slide",
+        "text": "图表使用原始保存数值 35 和 12，不含误差线或显著性。"
+      },
+      "charts": [
+        {
+          "source": "ppt/charts/chart1.xml",
+          "valueSource": "original_saved_chart_cache_not_visual_estimate",
+          "series": [
+            {
+              "label": "Sheet1!$B$1Observed samples",
+              "formulas": [
+                "Sheet1!$B$1",
+                "Sheet1!$A$2:$A$3",
+                "Sheet1!$B$2:$B$3"
+              ],
+              "savedValues": [
+                {
+                  "index": "0",
+                  "value": "35"
+                },
+                {
+                  "index": "1",
+                  "value": "12"
+                }
+              ],
+              "categories": [
+                {
+                  "index": "0",
+                  "value": "Observed samples"
+                },
+                {
+                  "index": "0",
+                  "value": "Alpha"
+                },
+                {
+                  "index": "1",
+                  "value": "Beta"
+                }
+              ]
+            }
+          ],
+          "embeddedWorkbooks": [
+            {
+              "source": "ppt/embeddings/Microsoft_Excel_Sheet1.xlsx",
+              "sheets": [
+                {
+                  "sheet": "Sheet1",
+                  "rows": "1-100",
+                  "cells": [
+                    {
+                      "address": "B1",
+                      "value": "Observed samples",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "A2",
+                      "value": "Alpha",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "B2",
+                      "value": "35",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "A3",
+                      "value": "Beta",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "B3",
+                      "value": "12",
+                      "valueSource": "original_cell"
+                    }
+                  ],
+                  "warning": "仅该范围；完整嵌入工作簿未读取"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "page": 1,
+      "mimeType": "image/png",
+      "sha256": "d2205ddc6b321b6d5d11e4933709bfe4e7bff6b6befbe927a18d85d84ffdef50",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1440,
+      "height": 864
+    },
+    {
+      "page": 2,
+      "mimeType": "image/png",
+      "sha256": "e66517e3a3469a4d0dd8997815cbec03d5e949579840ad50282d9f09e9c15100",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1440,
+      "height": 864
+    }
+  ]
+}

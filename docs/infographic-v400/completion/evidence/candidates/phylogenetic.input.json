@@ -1,0 +1,40 @@
+{
+  "figureTypeId": "phylogenetic",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "source": "Root",
+        "target": "Internal",
+        "length": 0.2
+      },
+      {
+        "source": "Internal",
+        "target": "A",
+        "length": 0.3
+      },
+      {
+        "source": "Internal",
+        "target": "B",
+        "length": 0.4
+      },
+      {
+        "source": "Root",
+        "target": "C",
+        "length": 0.5
+      }
+    ],
+    "units": {
+      "length": "substitutions/site"
+    },
+    "options": {
+      "root": "Root",
+      "rooting": "Supplied synthetic root",
+      "branchLengthUnit": "substitutions/site"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

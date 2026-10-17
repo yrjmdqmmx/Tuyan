@@ -17,6 +17,11 @@ const root = new URL('../../../', import.meta.url)
 const read = (path: string) => JSON.parse(fs.readFileSync(new URL(path, root), 'utf8'))
 const audits = Object.fromEntries(providers.map(provider => [provider, read(`config/channel-audit/v24/${provider}.json`)])) as Record<Provider, any>
 const integrations = Object.fromEntries(providers.map(provider => [provider, read(`config/channel-audit/v24/${provider}-integration.json`)])) as Record<Provider, any>
+// Preserve the dated v24 baseline; later independently sourced additions extend
+// the exact-set oracle without rewriting historical audit dates or exclusions.
+for (const provider of providers) for (const manifest of [audits[provider], integrations[provider]]) {
+  manifest.models = [...manifest.models, ...(manifest.incrementalReviews || []).flatMap((review:any) => review.models)]
+}
 const config = read('config/model-catalog-updates.json')
 const presentation = read('config/model-presentation.json')
 const auditTime = Date.parse('2026-09-22T12:00:00+08:00')

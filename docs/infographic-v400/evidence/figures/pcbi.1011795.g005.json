@@ -1,0 +1,54 @@
+{
+  "id": "pcbi.1011795.g005",
+  "paper": "pcbi.1011795",
+  "figure": {
+    "id": "pcbi.1011795.g005",
+    "label": "Fig 5",
+    "caption": "A. Counts of unique SARS-CoV-2 mutations for each epidemic week, with colours representing which continent the mutations came from. B. Counts of unique mutations per week that are part of the mutational signature substitution-context features (i.e., no indel mutations included). Colours represent which lineage/group of lineages the mutations belong to. C. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 variant-defined subsets. Exposures are coloured by the signature they have been attributed to. D. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 continent-defined subsets.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011795.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011795.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p><bold>A</bold>. Counts of unique SARS-CoV-2 mutations for each epidemic week, with colours representing which continent the mutations came from. <bold>B</bold>. Counts of unique mutations per week that are part of the mutational signature substitution-context features (i.e., no indel mutations included). Colours represent which lineage/group of lineages the mutations belong to. <bold>C</bold>. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 variant-defined subsets. Exposures are coloured by the signature they have been attributed to. <bold>D</bold>. Ridgeline plot showing the exposure of mutational signatures in SARS-CoV-2 continent-defined subsets.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011795.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011795.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011795",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011795",
+    "title": "Mutational signature dynamics indicate SARS-CoV-2’s evolutionary capacity is driven by host antiviral molecules",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Kieran D. Lamb",
+      "Martha M. Luka",
+      "Megan Saathoff",
+      "Richard J. Orton",
+      "My V. T. Phan",
+      "Matthew Cotten",
+      "Ke Yuan",
+      "David L. Robertson"
+    ],
+    "year": "2024",
+    "license": "2024\nLamb et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011795.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011795.g005.png",
+      "bytes": 639566,
+      "sha256": "7e4656227cccb044d0262b28e03cfc916a4681ace276721b5c196cd4b3d2dbff"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011795.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011795.g005.tif",
+      "bytes": 883136,
+      "sha256": "5b2225ae797e73d75dad027d81ec0a5f7afc56a949256ab16583cc0e7972fcd8"
+    }
+  }
+}

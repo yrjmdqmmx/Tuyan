@@ -1,0 +1,48 @@
+{
+  "id": "pcbi.1012374.g001",
+  "paper": "pcbi.1012374",
+  "figure": {
+    "id": "pcbi.1012374.g001",
+    "label": "Fig 1",
+    "caption": "Enterocyte iron absorption model, SBGN process diagram.A model encapsulating iron transport from the intestinal lumen through a single enterocyte was constructed using COPASI [24–26]. Species inclusion is motivated by the intent to capture a minimal, but sufficient detail needed to reproduce the mucosal block phenomenon in duodenal enterocytes. The model has 5 compartments (lumen, cytoplasm, and blood, which are three-dimensional, and the apical and basal membranes, which are two-dimensional). Thirteen model variables are included to track the concentrations and densities of the relevant chemical species. Abbreviations: DMT1: divalent metal transporter 1, FT: ferritin, DFP: diferric peroxo complex ferric intermediate (ferric iron in FT), core: FT mineralized core iron, IRPs: iron regulatory proteins, FPN: ferroportin, LIP: labile iron pool, Fe: iron (lumen, blood, and body forms). Figure created with Cell Designer [99] and Inkscape, adopting the Systems Biology Graphical Notation standard (SBGN) [100,101].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1012374.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1012374.g001</object-id><label>Fig 1</label><caption><title>Enterocyte iron absorption model, SBGN process diagram.</title><p>A model encapsulating iron transport from the intestinal lumen through a single enterocyte was constructed using COPASI [<xref ref-type=\"bibr\" rid=\"pcbi.1012374.ref024\">24</xref>–<xref ref-type=\"bibr\" rid=\"pcbi.1012374.ref026\">26</xref>]. Species inclusion is motivated by the intent to capture a minimal, but sufficient detail needed to reproduce the mucosal block phenomenon in duodenal enterocytes. The model has 5 compartments (lumen, cytoplasm, and blood, which are three-dimensional, and the apical and basal membranes, which are two-dimensional). Thirteen model variables are included to track the concentrations and densities of the relevant chemical species. Abbreviations: DMT1: divalent metal transporter 1, FT: ferritin, DFP: diferric peroxo complex ferric intermediate (ferric iron in FT), core: FT mineralized core iron, IRPs: iron regulatory proteins, FPN: ferroportin, LIP: labile iron pool, Fe: iron (lumen, blood, and body forms). Figure created with Cell Designer [<xref ref-type=\"bibr\" rid=\"pcbi.1012374.ref099\">99</xref>] and Inkscape, adopting the Systems Biology Graphical Notation standard (SBGN) [<xref ref-type=\"bibr\" rid=\"pcbi.1012374.ref100\">100</xref>,<xref ref-type=\"bibr\" rid=\"pcbi.1012374.ref101\">101</xref>].</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1012374.g001\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1012374.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1012374",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012374",
+    "title": "Mathematical modeling reveals ferritin as the strongest cellular driver of dietary iron transfer block in enterocytes",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Joseph Masison",
+      "Pedro Mendes"
+    ],
+    "year": "2025",
+    "license": "2025\nMasison, Mendes\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1012374.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1012374.g001.png",
+      "bytes": 905535,
+      "sha256": "0a0464ee3e0a26173221313a687e93a1d6de66a572f76bf47f3b48483e19baa7"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1012374.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1012374.g001.tif",
+      "bytes": 1872040,
+      "sha256": "e121d28dbe28969b9b9c7fda0e4e94ee8c8439433efac43cbb8b67d210b60bab"
+    }
+  }
+}

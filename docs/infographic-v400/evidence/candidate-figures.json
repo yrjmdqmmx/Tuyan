@@ -1,0 +1,616 @@
+[
+  {
+    "id": "pbio.1002128.g001",
+    "label": "Fig 1",
+    "caption": "Many different datasets can lead to the same bar graph.\nThe full data may suggest different conclusions from the summary statistics. The means and SEs for the four example datasets shown in Panels B–E are all within 0.5 units of the means and SEs shown in the bar graph (Panel A). p-values were calculated in R (version 3.0.3) using an unpaired t-test, an unpaired t-test with Welch’s correction for unequal variances, or a Wilcoxon rank sum test. In Panel B, the distribution in both groups appears symmetric. Although the data suggest a small difference between groups, there is substantial overlap between groups. In Panel C, the apparent difference between groups is driven by an outlier. Panel D suggests a possible bimodal distribution. Additional data are needed to confirm that the distribution is bimodal and to determine whether this effect is explained by a covariate. In Panel E, the smaller range of values in group two may simply be due to the fact that there are only three observations. Additional data for group two would be needed to determine whether the groups are actually different.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.1002128.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.1002128.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Many different datasets can lead to the same bar graph.</title>\n<p>The full data may suggest different conclusions from the summary statistics. The means and SEs for the four example datasets shown in Panels B–E are all within 0.5 units of the means and SEs shown in the bar graph (Panel A). <italic>p</italic>-values were calculated in R (version 3.0.3) using an unpaired t-test, an unpaired t-test with Welch’s correction for unequal variances, or a Wilcoxon rank sum test. In Panel B, the distribution in both groups appears symmetric. Although the data suggest a small difference between groups, there is substantial overlap between groups. In Panel C, the apparent difference between groups is driven by an outlier. Panel D suggests a possible bimodal distribution. Additional data are needed to confirm that the distribution is bimodal and to determine whether this effect is explained by a covariate. In Panel E, the smaller range of values in group two may simply be due to the fact that there are only three observations. Additional data for group two would be needed to determine whether the groups are actually different.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pbio.1002128.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.1002128.g001",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pbio.1002128"
+  },
+  {
+    "id": "pbio.1002128.g002",
+    "label": "Fig 2",
+    "caption": "Additional problems with using bar graphs to show paired data.\nThe bar graph (mean ± SE) suggests that the groups are independent and provides no information about whether changes are consistent across individuals (Panel A). The scatterplots shown in the Panels B–D clearly demonstrate that the data are paired. Each scatterplot reveals very different patterns of change, even though the means and SEs differ by less than 0.3 units. The lower scatterplots showing the differences between measurements allow readers to quickly assess the direction, magnitude, and distribution of the changes. The solid lines show the median difference. In Panel B, values for every subject are higher in the second condition. In Panel C, there are no consistent differences between the two conditions. Panel D suggests that there may be distinct subgroups of “responders” and “nonresponders.”",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.1002128.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.1002128.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Additional problems with using bar graphs to show paired data.</title>\n<p>The bar graph (mean ± SE) suggests that the groups are independent and provides no information about whether changes are consistent across individuals (Panel A). The scatterplots shown in the Panels B–D clearly demonstrate that the data are paired. Each scatterplot reveals very different patterns of change, even though the means and SEs differ by less than 0.3 units. The lower scatterplots showing the differences between measurements allow readers to quickly assess the direction, magnitude, and distribution of the changes. The solid lines show the median difference. In Panel B, values for every subject are higher in the second condition. In Panel C, there are no consistent differences between the two conditions. Panel D suggests that there may be distinct subgroups of “responders” and “nonresponders.”</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pbio.1002128.g002\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.1002128.g002",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pbio.1002128"
+  },
+  {
+    "id": "pbio.1002128.g003",
+    "label": "Fig 3",
+    "caption": "Bar graphs and scatterplots convey very different information.\nWhile scatterplots prompt the reader to critically evaluate the statistical tests and the authors’ interpretation of the data, bar graphs discourage the reader from thinking about these issues. Placental endothelin 1 (EDN1) mRNA data for four different groups of participants is presented in bar graphs showing mean ± SE (Panel A), or mean ± SD (Panel B), and in a univariate scatterplot (Panel C). Panel A (mean ± SE) suggests that the second group has higher values than the remaining groups; however, Panel B (mean ± SD) reveals that there is considerable overlap between groups. Showing SE rather than SD magnifies the apparent visual differences between groups, and this is exacerbated by the fact that SE obscures any effect of unequal sample size. The scatterplot (Panel C) clearly shows that the sample sizes are small, group one has a much larger variance than the other groups, and there is an outlier in group three. These problems are not apparent in the bar graphs shown in Panels A and B.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.1002128.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.1002128.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Bar graphs and scatterplots convey very different information.</title>\n<p>While scatterplots prompt the reader to critically evaluate the statistical tests and the authors’ interpretation of the data, bar graphs discourage the reader from thinking about these issues. Placental endothelin 1 (<italic>EDN1</italic>) mRNA data for four different groups of participants is presented in bar graphs showing mean ± SE (Panel A), or mean ± SD (Panel B), and in a univariate scatterplot (Panel C). Panel A (mean ± SE) suggests that the second group has higher values than the remaining groups; however, Panel B (mean ± SD) reveals that there is considerable overlap between groups. Showing SE rather than SD magnifies the apparent visual differences between groups, and this is exacerbated by the fact that SE obscures any effect of unequal sample size. The scatterplot (Panel C) clearly shows that the sample sizes are small, group one has a much larger variance than the other groups, and there is an outlier in group three. These problems are not apparent in the bar graphs shown in Panels A and B.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pbio.1002128.g003\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.1002128.g003",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pbio.1002128"
+  },
+  {
+    "id": "pbio.2003779.g001",
+    "label": "Fig 1",
+    "caption": "The Experimental Design Assistant (EDA) workflow.\nThe workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see Table 2) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see Table 2). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.2003779.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.2003779.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Experimental Design Assistant (EDA) workflow.</title>\n<p>The workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see <xref ref-type=\"table\" rid=\"pbio.2003779.t002\">Table 2</xref>). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.2003779.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.2003779.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pbio.2003779"
+  },
+  {
+    "id": "pbio.2003779.g002",
+    "label": "Fig 2",
+    "caption": "Example of an Experimental Design Assistant (EDA) diagram.\nEDA diagrams are composed of nodes and links to represent an entire experimental plan. Each node contains properties where specific details are captured (properties are not shown in this picture, but in the EDA they are accessible by clicking on the specific node). This particular example is a simple 2-group comparison. The grey nodes contain high-level information about the experiment, such as the null and alternative hypotheses, the effect of interest (via the experiment node), the experimental unit, or the animal characteristics. The blue and purple nodes represent the practical steps carried out in the laboratory, such as the allocation to groups (allocation node) and the group sizes and role in the experiment (group nodes), the treatments (via the intervention nodes), and the measurements taken (measurement nodes). The green and red nodes represent the analysis, the outcome measures, and the independent variables.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.2003779.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.2003779.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Example of an Experimental Design Assistant (EDA) diagram.</title>\n<p>EDA diagrams are composed of nodes and links to represent an entire experimental plan. Each node contains properties where specific details are captured (properties are not shown in this picture, but in the EDA they are accessible by clicking on the specific node). This particular example is a simple 2-group comparison. The grey nodes contain high-level information about the experiment, such as the null and alternative hypotheses, the effect of interest (via the experiment node), the experimental unit, or the animal characteristics. The blue and purple nodes represent the practical steps carried out in the laboratory, such as the allocation to groups (allocation node) and the group sizes and role in the experiment (group nodes), the treatments (via the intervention nodes), and the measurements taken (measurement nodes). The green and red nodes represent the analysis, the outcome measures, and the independent variables.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.2003779.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.2003779.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pbio.2003779"
+  },
+  {
+    "id": "pcbi.1009809.g002",
+    "label": "Fig 2",
+    "caption": "Flowchart.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009809.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009809.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Flowchart.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009809.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009809.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1009809"
+  },
+  {
+    "id": "pcbi.1009809.g003",
+    "label": "Fig 3",
+    "caption": "Entity-relationship diagram.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009809.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009809.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Entity-relationship diagram.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009809.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009809.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1009809"
+  },
+  {
+    "id": "pcbi.1009809.g004",
+    "label": "Fig 4",
+    "caption": "Concept map.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009809.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009809.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Concept map.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009809.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009809.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1009809"
+  },
+  {
+    "id": "pcbi.1011436.g001",
+    "label": "Fig 1",
+    "caption": "The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.\n(Design) An experimental design space, denoted as Q, is a set of individual experimental conditions, q, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, q, are evaluated by an acquisition function, f, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (Test) The optimal experimental design, q*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (Learn) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1011436.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.</title>\n<p>(<bold>Design</bold>) An experimental design space, denoted as <inline-formula id=\"pcbi.1011436.e003\"><alternatives><graphic id=\"pcbi.1011436.e003g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.e003\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M3\"><ns1:mi mathvariant=\"script\">Q</ns1:mi></ns1:math></alternatives></inline-formula>, is a set of individual experimental conditions, <bold>q</bold>, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, <bold>q</bold>, are evaluated by an acquisition function, <italic>f</italic>, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (<bold>Test</bold>) The optimal experimental design, <bold>q</bold>*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (<bold>Learn</bold>) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1011436.e003g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.e003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1011436"
+  },
+  {
+    "id": "pcbi.1011436.g002",
+    "label": "Fig 2",
+    "caption": "The predictive capability of the MiRNN outperforms an unconstrained RNN model using simulated data over a range of sparsity levels.\n(a.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (b.) Schematic of simulated data generation, indicating that a ground truth computational bioreactor model is used to simulate species abundances over a time span of 130 hours, with measurements of species abundances taken at 26 hour intervals. (c.) Comparison of RNN (green) and MiRNN (orange) performance in species predictions according to the average Pearson correlation coefficient (R) over all species between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 10-fold cross-validation over 5 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that RMSE instead of Pearson correlation is shown.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>The predictive capability of the MiRNN outperforms an unconstrained RNN model using simulated data over a range of sparsity levels.</title>\n<p>(a.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (b.) Schematic of simulated data generation, indicating that a ground truth computational bioreactor model is used to simulate species abundances over a time span of 130 hours, with measurements of species abundances taken at 26 hour intervals. (c.) Comparison of RNN (green) and MiRNN (orange) performance in species predictions according to the average Pearson correlation coefficient (R) over all species between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 10-fold cross-validation over 5 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that RMSE instead of Pearson correlation is shown.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1011436"
+  },
+  {
+    "id": "pcbi.1011436.g003",
+    "label": "Fig 3",
+    "caption": "The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.\n(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The predictive capability of the MiRNN outperforms an unconstrained RNN model using experimental data.</title>\n<p>(a.) Schematic of experiment in which 95 unique microbial consortia were selected from a set of 25 health-relevant human gut bacteria. After inoculation, species abundances and metabolite concentrations were measured at 16 hour intervals over a course of 48 hours. (b.) A comparison of the MiRNN architecture to a standard RNN, where the constraint highlighted in blue prevents the model from predicting the spontaneous emergence of a species. (c.) Comparison RNN and MiRNN performance in species predictions according to the Pearson correlation coefficient between predictions and measured values. The height of the bars and error bars correspond to the median and interquartile range in prediction performance after running 20-fold cross-validation over 10 trials, where samples were randomly shuffled in each trial. (d.) Same as in panel (c.), except that metabolite prediction performance is shown. (e.) Representative temporal changes in MiRNN predicted metabolite concentrations, where measured values are shown as dots, the mean predicted value is shown as a line, and the uncertainty region shows ± 1 standard deviation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1011436"
+  },
+  {
+    "id": "pcbi.1011436.g004",
+    "label": "Fig 4",
+    "caption": "Optimization of resources and feed rate to maximize product.\n(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point t − 1. The model predicts species abundances and metabolite concentration at the next time step, t. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Optimization of resources and feed rate to maximize product.</title>\n<p>(a.) A schematic of the fed-batch bioreactor to be optimized, where the rate of a feed stream and the presence of resources in the feed (depicted as yellow and pink shapes) can both be adjusted in order to maximize production. Species (green shapes) that produce a valuable metabolite (orange star) compete for resources with species that do not produce the metabolite. (b.) A diagram that shows the inputs to the MiRNN model including species abundances, metabolite concentration, resource concentrations, and feed rate at time point <italic>t</italic> − 1. The model predicts species abundances and metabolite concentration at the next time step, <italic>t</italic>. Predicted species abundances and metabolite concentration are used as inputs to predict the next time step. (c.) A comparison of prediction performance (Pearson correlation coefficient) of end-point metabolite concentration between the proposed experimental design strategy that combines exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple). Solid lines show the median of the best recorded production (y-axis) up to each DTL cycle (x-axis) and uncertainty regions show the interquartile range computed over 30 trials each with random initial experimental designs. (d.) A comparison of metabolite maximization (showing median and interquartile range over 30 trials) between proposed exploration and exploitation (blue) to pure exploitation (green), pure exploration (orange), and random sampling (purple).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1011436"
+  },
+  {
+    "id": "pcbi.1011436.g005",
+    "label": "Fig 5",
+    "caption": "Microbiome Recurrent Neural Network architecture.\nInputs to the RNN at time step t − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, t. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Microbiome Recurrent Neural Network architecture.</title>\n<p>Inputs to the RNN at time step <italic>t</italic> − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, <italic>t</italic>. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1011436"
+  },
+  {
+    "id": "pcbi.1013027.g001",
+    "label": "Fig 1",
+    "caption": "Overview of scSDNE.(A) Overview of the LRdb. (B) Construction of adjacency matrix (including adjacency matrices of gene regulatory networks and crosstalk score matrices of cell types). (C) Learning of latent representations for each gene pair through graph embedding. (D) Detection and visualization of significant L-R pairs based on the distances observed in the latent space.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g001</object-id><label>Fig 1</label><caption><title>Overview of scSDNE.</title><p>(A) Overview of the LRdb. (B) Construction of adjacency matrix (including adjacency matrices of gene regulatory networks and crosstalk score matrices of cell types). (C) Learning of latent representations for each gene pair through graph embedding. (D) Detection and visualization of significant L-R pairs based on the distances observed in the latent space.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g001\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1013027"
+  },
+  {
+    "id": "pcbi.1013027.g003",
+    "label": "Fig 3",
+    "caption": "Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.(A) Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). (B) Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). (C) Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. (D) Enrichment analysis of the KEGG pathways. (E) Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. (F) Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g003</object-id><label>Fig 3</label><caption><title>Comparison analysis of intercellular communication between HCC and tumor-adjacent tissues.</title><p><bold>(A)</bold> Overview of the cell clusters derived from scRNA-seq data of tumor-adjacent and HCC tissues (UMAP). <bold>(B)</bold> Heatmap illustrates intercellular communication from hepatocytes to other immune cell types (normalized score greater than 0. 5). <bold>(C)</bold> Dot plot shows the predicted interactions between hepatocyte and the specified immune cell types in both HCC and tumor-adjacent tissues. <bold>(D)</bold> Enrichment analysis of the KEGG pathways. <bold>(E)</bold> Comparison of the number of significant L-R pairs from hepatocytes to immune cell types. <bold>(F)</bold> Sankey plot represents intercellular communication from hepatocytes to Mono/Macro in HCC where the thickness of the connecting bands reflects the intensity of L-R interactions.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g003\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1013027"
+  },
+  {
+    "id": "pcbi.1013027.g004",
+    "label": "Fig 4",
+    "caption": "A case study on the application of scSDNE in the human lymph node microenvironment.(A) Spatial plots show cell abundance (color intensity) for the specified cell types. (B) Dot plot shows the predicted interactions between the immune cell types. (C) The edge width represents the strength of intercellular communication between the cell types. (D) Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g004</object-id><label>Fig 4</label><caption><title>A case study on the application of scSDNE in the human lymph node microenvironment.</title><p><bold>(A)</bold> Spatial plots show cell abundance (color intensity) for the specified cell types. <bold>(B)</bold> Dot plot shows the predicted interactions between the immune cell types. <bold>(C)</bold> The edge width represents the strength of intercellular communication between the cell types. <bold>(D)</bold> Circos plot. The arrow points from the ligands in the sending cells to the receptors in the receiving cells.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g004\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1013027"
+  },
+  {
+    "id": "pcbi.1013027.g005",
+    "label": "Fig 5",
+    "caption": "Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).(A) Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. (B) UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. (C) UpSetR plot shows the results from the five tools using a common LRdb. (D) ROC curves plot depicts the performance of the five methods in assessing intercellular communication. (E) Overlap analysis of the LR database. (F) Comparison of literature support rates for scSDNE using different databases.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1013027.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1013027.g005</object-id><label>Fig 5</label><caption><title>Comparison of the performance of scSDNE with CellChat, CellPhoneDB, iTALK and scTenifoldXct on the scRNA-seq dataset of gastric cancer (from fibroblasts to macrophages).</title><p><bold>(A)</bold> Circos plot depicts the strength of intercellular communication from fibroblasts to other cell types in TME. <bold>(B)</bold> UpSetR plot illustrates the results from the five tools utilizing their respective LR database. The horizontal bar graph in the lower left corner represents the total number of L-R pairs detected by each method. The intercellular communication results obtained by the different methods are represented by multiple black dots and connecting lines, and the number of intersections displayed in the bar graph above. <bold>(C)</bold> UpSetR plot shows the results from the five tools using a common LRdb. <bold>(D)</bold> ROC curves plot depicts the performance of the five methods in assessing intercellular communication. <bold>(E)</bold> Overlap analysis of the LR database. <bold>(F)</bold> Comparison of literature support rates for scSDNE using different databases.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1013027.g005\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1013027.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1013027"
+  },
+  {
+    "id": "pcbi.1005857.g002",
+    "label": "Fig 2",
+    "caption": "Visualizing rules of an enzyme-substrate system.\n(A) Structured molecule types Enz and Sub, their respective components (enclosed in ‘()’) and their available internal states (prefixed by ~), shown in BioNetGen syntax and graphic. (B) Reaction rules specifying the adding and removing of an enzyme-substrate bond (binding partners tagged by !1) and phosphorylation of components p1 and p2, shown in BioNetGen syntax. The reactants and products of a reaction rule are called patterns. (C) Conventional rule visualization by drawing reactant and product patterns separately. (D) Compact rule visualization displays operations (purple nodes) that transform the reactant patterns in each rule. On operation nodes, outward edges indicate that a new structure is produced (bond in R1, state pY in R2 and R3) and inward edges indicate that a structure is consumed (bond in _reverse_R1, state Y in R2 and R3). To see operation nodes with their labels, see S1 Fig.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Visualizing rules of an enzyme-substrate system.</title>\n<p>(A) Structured molecule types Enz and Sub, their respective components (enclosed in ‘()’) and their available internal states (prefixed by ~), shown in BioNetGen syntax and graphic. (B) Reaction rules specifying the adding and removing of an enzyme-substrate bond (binding partners tagged by !1) and phosphorylation of components <italic>p1</italic> and <italic>p2</italic>, shown in BioNetGen syntax. The reactants and products of a reaction rule are called patterns. (C) Conventional rule visualization by drawing reactant and product patterns separately. (D) Compact rule visualization displays operations (purple nodes) that transform the reactant patterns in each rule. On operation nodes, outward edges indicate that a new structure is produced (bond in R1, state <italic>pY</italic> in R2 and R3) and inward edges indicate that a structure is consumed (bond in _reverse_R1, state <italic>Y</italic> in R2 and R3). To see operation nodes with their labels, see <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s001\">S1 Fig</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1005857"
+  },
+  {
+    "id": "pcbi.1005857.g003",
+    "label": "Fig 3",
+    "caption": "Atom-rule (AR) graphs.\n(A) Atoms, which are elementary structural features, shown in BioNetGen syntax and graphic. (B) Atom-rule graphs derived from the individual rules in Fig 2B. (C) The full atom-rule graph of the model, merged from individual graphs in panel B. AR graphs have three edge types: reactant (dark color, pointed towards rule), product (dark color, pointed away from rule), and context (light color, pointed towards rule), which indicate whether an instance of an atom is present in the rule’s reaction center (reactant/product) or reaction context.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Atom-rule (AR) graphs.</title>\n<p>(A) Atoms, which are elementary structural features, shown in BioNetGen syntax and graphic. (B) Atom-rule graphs derived from the individual rules in <xref ref-type=\"fig\" rid=\"pcbi.1005857.g002\">Fig 2B</xref>. (C) The full atom-rule graph of the model, merged from individual graphs in panel B. AR graphs have three edge types: reactant (dark color, pointed towards rule), product (dark color, pointed away from rule), and context (light color, pointed towards rule), which indicate whether an instance of an atom is present in the rule’s reaction center (reactant/product) or reaction context.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1005857"
+  },
+  {
+    "id": "pcbi.1005857.g004",
+    "label": "Fig 4",
+    "caption": "Compressing AR graphs.\n(A) The full model AR graph from Fig 3C. (B) Removing atoms and rules with low priority, such as free binding sites, unphosphorylated states and the unbinding rule. (C) Grouping structurally similar atoms, e.g., Sub_pY = phosphorylated states of p1 and p2, Enz|Sub = bond linking Enz and Sub. (D) Grouping rules with similar edge signatures, e.g., rules R2 and R3 both have a context edge from Enz|Sub and a product edge into Sub_pY. (E) Each group is merged into a single node that combines all incident edges. Panels B-C are semi-automated, whereas panels D-E are fully automated.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Compressing AR graphs.</title>\n<p>(A) The full model AR graph from <xref ref-type=\"fig\" rid=\"pcbi.1005857.g003\">Fig 3C</xref>. (B) Removing atoms and rules with low priority, such as free binding sites, unphosphorylated states and the unbinding rule. (C) Grouping structurally similar atoms, e.g., Sub_pY = phosphorylated states of <italic>p1</italic> and <italic>p2</italic>, Enz|Sub = bond linking Enz and Sub. (D) Grouping rules with similar edge signatures, e.g., rules R2 and R3 both have a context edge from Enz|Sub and a product edge into Sub_pY. (E) Each group is merged into a single node that combines all incident edges. Panels B-C are semi-automated, whereas panels D-E are fully automated.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1005857"
+  },
+  {
+    "id": "pcbi.1005857.g009",
+    "label": "Fig 9",
+    "caption": "Signaling motifs in the FcεRI library recovered from the compressed AR graph.\n(A) Positive feedback loops enhance binding of Src family kinases Lyn and Fyn (denoted SFK) to receptor and Pag1 scaffold as well as Syk auto-phosphorylation. (B) Pag1 phosphorylated by SFKs recruits Csk, which negatively regulates SFKs by phosphorylation. (C) A coherent feed-forward loop activates Plcg1 from phosphorylated Lat. (D) An incoherent feed-forward loop involving enzymes PI3K and Inpp5d (a.k.a. SHP2) regulates levels of phosphoinositide PIP3, which is phosphorylated at both 3’ and 5’ hydroxyl positions (denoted PI_3P and PI_5P respectively).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Signaling motifs in the FcεRI library recovered from the compressed AR graph.</title>\n<p>(A) Positive feedback loops enhance binding of Src family kinases Lyn and Fyn (denoted SFK) to receptor and Pag1 scaffold as well as Syk auto-phosphorylation. (B) Pag1 phosphorylated by SFKs recruits Csk, which negatively regulates SFKs by phosphorylation. (C) A coherent feed-forward loop activates Plcg1 from phosphorylated Lat. (D) An incoherent feed-forward loop involving enzymes PI3K and Inpp5d (a.k.a. SHP2) regulates levels of phosphoinositide PIP3, which is phosphorylated at both 3’ and 5’ hydroxyl positions (denoted PI_3P and PI_5P respectively).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g009\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1005857"
+  },
+  {
+    "id": "pcbi.1005857.g011",
+    "label": "Fig 11",
+    "caption": "Other visualization approaches applied to the enzyme-substrate phosphorylation model of Fig 2.\n(A) The binding rule drawn using SBGN Process Description conventions, which require visual graph comparison. (B) Kappa story, showing the causal order of rules that produces sub_pp, which refers to doubly phosphorylated substrate. (C) Simmune Network Viewer diagram, which merges patterns across rules and hides certain causal dependencies (details in S4 Fig). Here, the Enz.Sub node merges all enzyme-substrate patterns shown in Fig 2. (D) SBGN Entity Relationship. (E) Molecular Interaction Map. Panels D-E require manual interpretation of the model, like the extended contact map. (F) rxncon regulatory graph visualization of the rxncon model format, which can only depict a limited subset of reaction rules (details in S5 Fig).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005857.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005857.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Other visualization approaches applied to the enzyme-substrate phosphorylation model of <xref ref-type=\"fig\" rid=\"pcbi.1005857.g002\">Fig 2</xref>.</title>\n<p>(A) The binding rule drawn using SBGN Process Description conventions, which require visual graph comparison. (B) Kappa story, showing the causal order of rules that produces sub_pp, which refers to doubly phosphorylated substrate. (C) Simmune Network Viewer diagram, which merges patterns across rules and hides certain causal dependencies (details in <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s004\">S4 Fig</xref>). Here, the Enz.Sub node merges all enzyme-substrate patterns shown in <xref ref-type=\"fig\" rid=\"pcbi.1005857.g002\">Fig 2</xref>. (D) SBGN Entity Relationship. (E) Molecular Interaction Map. Panels D-E require manual interpretation of the model, like the extended contact map. (F) <italic>rxncon</italic> regulatory graph visualization of the <italic>rxncon</italic> model format, which can only depict a limited subset of reaction rules (details in <xref ref-type=\"supplementary-material\" rid=\"pcbi.1005857.s005\">S5 Fig</xref>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005857.g011\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005857.g011",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1005857"
+  },
+  {
+    "id": "pcbi.1010086.g007",
+    "label": "Fig 7",
+    "caption": "Connectivity patterns reflecting the most common rules.\nThe ordered set of sources S is depicted by the green squares on the left. They are connected to the ordered set of targets T, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with Kin connections per target node. (D) Random, fixed out-degree with Kout connections per source node. (E) Random, fixed total number of connections Nsyn. (F) Pairwise Bernoulli with connection probability p. (G) Autapse (self-connection). (H) Multapse (multi-connection).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Connectivity patterns reflecting the most common rules.</title>\n<p>The ordered set of sources <inline-formula id=\"pcbi.1010086.e001\"><alternatives><graphic id=\"pcbi.1010086.e001g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e001\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M1\"><ns1:mi mathvariant=\"script\">S</ns1:mi></ns1:math></alternatives></inline-formula> is depicted by the green squares on the left. They are connected to the ordered set of targets <inline-formula id=\"pcbi.1010086.e002\"><alternatives><graphic id=\"pcbi.1010086.e002g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e002\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M2\"><ns1:mi mathvariant=\"script\">T</ns1:mi></ns1:math></alternatives></inline-formula>, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with <italic>K</italic><sub>in</sub> connections per target node. (D) Random, fixed out-degree with <italic>K</italic><sub>out</sub> connections per source node. (E) Random, fixed total number of connections <italic>N</italic><sub>syn</sub>. (F) Pairwise Bernoulli with connection probability <italic>p</italic>. (G) Autapse (self-connection). (H) Multapse (multi-connection).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1010086.e001g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1010086"
+  },
+  {
+    "id": "pcbi.1010086.g008",
+    "label": "Fig 8",
+    "caption": "Quick reference for the proposed graphical notation for network models in computational neuroscience.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Quick reference for the proposed graphical notation for network models in computational neuroscience.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g008\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g008",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1010086"
+  },
+  {
+    "id": "pcbi.1010086.g010",
+    "label": "Fig 10",
+    "caption": "Multi-layer microcircuit model with three inhibitory neuron types.\n(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in Fig 8. The connectivity is described with the rules “one-to-one” (δ) and “pairwise Bernoulli” (p), and the constraints autapses allowed (A) and multapses prohibited (M). The synaptic weights (w) and delays (d) are specified as either constant (i.e., w ¯) or sampled from lognormal distributions (i.e., w ∼ LN). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Multi-layer microcircuit model with three inhibitory neuron types.</title>\n<p>(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g008\">Fig 8</xref>. The connectivity is described with the rules “one-to-one” (<italic>δ</italic>) and “pairwise Bernoulli” (<italic>p</italic>), and the constraints autapses allowed (<italic>A</italic>) and multapses prohibited (<inline-formula id=\"pcbi.1010086.e102\"><alternatives><graphic id=\"pcbi.1010086.e102g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e102\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M102\"><ns1:menclose notation=\"updiagonalstrike\"><ns1:mi>M</ns1:mi></ns1:menclose></ns1:math></alternatives></inline-formula>). The synaptic weights (<italic>w</italic>) and delays (<italic>d</italic>) are specified as either constant (i.e., <inline-formula id=\"pcbi.1010086.e103\"><alternatives><graphic id=\"pcbi.1010086.e103g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e103\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M103\"><ns1:mover><ns1:mi>w</ns1:mi> <ns1:mo>¯</ns1:mo></ns1:mover></ns1:math></alternatives></inline-formula>) or sampled from lognormal distributions (i.e., <inline-formula id=\"pcbi.1010086.e104\"><alternatives><graphic id=\"pcbi.1010086.e104g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e104\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M104\"><ns1:mi>w</ns1:mi> <ns1:mo>∼</ns1:mo> <ns1:mrow><ns1:mi mathvariant=\"script\">L</ns1:mi><ns1:mi mathvariant=\"script\">N</ns1:mi></ns1:mrow></ns1:math></alternatives></inline-formula>). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g010\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1010086.e102g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e102",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1010086"
+  },
+  {
+    "id": "pcbi.1010086.g011",
+    "label": "Fig 11",
+    "caption": "Two-dimensional spatial network with patchy long-range connections.\n(A) Spatial networks need to be defined in terms of dimension, layout, metric, boundary conditions, and the spatial or distance dependence of the connectivity, where applicable. In this example, neurons have both local and structured long-range connections [97]. Θ(x) = 0 if x < 0, 1 otherwise. (B) Sketch of patchy connectivity and parameters needed to define ppatch. (C) Graphical notation of network connectivity corresponding to Fig 8.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Two-dimensional spatial network with patchy long-range connections.</title>\n<p>(A) Spatial networks need to be defined in terms of dimension, layout, metric, boundary conditions, and the spatial or distance dependence of the connectivity, where applicable. In this example, neurons have both local and structured long-range connections [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref097\">97</xref>]. Θ(<italic>x</italic>) = 0 if <italic>x</italic> &lt; 0, 1 otherwise. (B) Sketch of patchy connectivity and parameters needed to define <italic>p</italic><sub>patch</sub>. (C) Graphical notation of network connectivity corresponding to <xref ref-type=\"fig\" rid=\"pcbi.1010086.g008\">Fig 8</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g011\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g011",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pcbi.1010086"
+  },
+  {
+    "id": "pone.0242453.g001",
+    "label": "Fig 1",
+    "caption": "A representation of the steps in iterative abductive analysis.\nThe process begins with conducting experiments and flows clockwise through reasoning about data and what experiments to perform next, whereupon the process repeats. Deductive analyses include these steps, but modeling occurs before experiments, so that the steps are rearranged. Parts of many of these steps (e.g., computing model properties) can be automated, and this automation is the focus of this paper. Other steps are not automated, such as the process of developing a model, because this requires a significant element of human reasoning. Thus, our software system requires human-in-the-loop execution. The process can be used in a purely experimental approach (i.e., no modeling). See the text for a description of this graphic.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>A representation of the steps in iterative abductive analysis.</title>\n<p>The process begins with conducting experiments and flows clockwise through reasoning about data and what experiments to perform next, whereupon the process repeats. Deductive analyses include these steps, but modeling occurs before experiments, so that the steps are rearranged. Parts of many of these steps (e.g., computing model properties) can be automated, and this automation is the focus of this paper. Other steps are not automated, such as the process of developing a model, because this requires a significant element of human reasoning. Thus, our software system requires human-in-the-loop execution. The process can be used in a purely experimental approach (i.e., no modeling). See the text for a description of this graphic.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g003",
+    "label": "Fig 3",
+    "caption": "Five software pipelines (in gray) for NESS experiments.\nThe five pipelines are itemized and described in Table 1. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See Table 1 for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [34], Fig 1.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Five software pipelines (in gray) for NESS experiments.</title>\n<p>The five pipelines are itemized and described in <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref>. In this human-in-the-analysis loop, experiments (upper left in figure) are performed. Any experiment whose data can be cast in terms of the data model specification can be analyzed with this system. These pipelines are the focus of this work. The pipeline composition shown here, for abductive looping, is one of several possibilities. See <xref ref-type=\"table\" rid=\"pone.0242453.t001\">Table 1</xref> for descriptions of the pipelines in this figure. The first, second, and fifth pipelines can be used with a purely experimental approach (omitting modeling). An earlier version of the pipeline system is provided in [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>], <xref ref-type=\"fig\" rid=\"pone.0242453.g001\">Fig 1</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g005",
+    "label": "Fig 5",
+    "caption": "An application-specific pipeline is composed of an invariant framework that performs general operations (see text) and application-specific h-functions.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>An application-specific pipeline is composed of an invariant framework that performs general operations (see text) and application-specific <italic>h</italic>-functions.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g007",
+    "label": "Fig 7",
+    "caption": "Data model of Table 3 translated into a entity-relationship diagram in unified modeling language (UML) form.\nThis illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Data model of <xref ref-type=\"table\" rid=\"pone.0242453.t003\">Table 3</xref> translated into a entity-relationship diagram in unified modeling language (UML) form.</title>\n<p>This illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g009",
+    "label": "Fig 9",
+    "caption": "Conceptual view of a pipeline that is composed of the pipeline framework (represented by the bounding box) and the h-functions that provide the application-based functionality of a particular pipeline.\nFunctions, or h-function, hi, 1 ≤ i ≤ 3 are implemented as software within a pipeline. The pipeline framework (red box) controls the execution order of functions and the inputs and outputs for each function, through a pipeline job specification. Circles in the figure denote input and output digital objects, such as ASCII files or database tables. This figure is a more detailed representation of Fig 4. Adapted from [34] Fig 3.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Conceptual view of a pipeline that is composed of the pipeline framework (represented by the bounding box) and the <italic>h</italic>-functions that provide the application-based functionality of a particular pipeline.</title>\n<p>Functions, or <italic>h</italic>-function, <italic>h</italic><sub><italic>i</italic></sub>, 1 ≤ <italic>i</italic> ≤ 3 are implemented as software within a pipeline. The pipeline framework (red box) controls the execution order of functions and the inputs and outputs for each function, through a pipeline job specification. Circles in the figure denote input and output digital objects, such as ASCII files or database tables. This figure is a more detailed representation of <xref ref-type=\"fig\" rid=\"pone.0242453.g004\">Fig 4</xref>. Adapted from [<xref ref-type=\"bibr\" rid=\"pone.0242453.ref034\">34</xref>] <xref ref-type=\"fig\" rid=\"pone.0242453.g003\">Fig 3</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g009\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g011",
+    "label": "Fig 11",
+    "caption": "Two pipelines are shown to illustrate similarities and differences between them.\nTo run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies h-functions and their order of execution, as well as required input files to the pipeline. Here we show how function h1 is executed in a pipeline 1 and how h4 is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the h-function. There may be one transformation function for each direct input to an h-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The h-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional h-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function h1 execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function h4 in pipeline 2 is executed in a similar fashion to function h1 in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See Table 5 for implementation details of the elements in this figure.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Two pipelines are shown to illustrate similarities and differences between them.</title>\n<p>To run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies <italic>h</italic>-functions and their order of execution, as well as required input files to the pipeline. Here we show how function <italic>h</italic><sub>1</sub> is executed in a pipeline 1 and how <italic>h</italic><sub>4</sub> is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the <italic>h</italic>-function. There may be one transformation function for each direct input to an <italic>h</italic>-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The <italic>h</italic>-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional <italic>h</italic>-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function <italic>h</italic><sub>1</sub> execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function <italic>h</italic><sub>4</sub> in pipeline 2 is executed in a similar fashion to function <italic>h</italic><sub>1</sub> in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See <xref ref-type=\"table\" rid=\"pone.0242453.t005\">Table 5</xref> for implementation details of the elements in this figure.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g011\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g011",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g014",
+    "label": "Fig 14",
+    "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe time series of number of words formed by player for experiment #2 is generated by function h3.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g014\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g014</object-id>\n<label>Fig 14</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The time series of number of words formed by player for experiment #2 is generated by function <italic>h</italic><sub>3</sub>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g014\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g014",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g015",
+    "label": "Fig 15",
+    "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe histogram for the number of actions “letter request” for three experiments is generated by function h5. The x-axis is time in the group anagram game, binned in 30 seconds intervals.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g015\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g015</object-id>\n<label>Fig 15</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The histogram for the number of actions “letter request” for three experiments is generated by function <italic>h</italic><sub>5</sub>. The x-axis is time in the group anagram game, binned in 30 seconds intervals.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g015\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g015",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0242453.g016",
+    "label": "Fig 16",
+    "caption": "The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with n = 6 and d = 5.\nThe discrete time actions for all three experiments is generates by function h7. This latter output will inform the Property Inference pipeline for computing parameters for simulation models. Time (in seconds) is shown in the first row as 1, 2, 3, …, and counts of the z vector components, per player and per experiment are given.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g016\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g016</object-id>\n<label>Fig 16</label>\n<caption>\n<title>The Data Analytics Pipeline (DAP) was executed to analyze phase 2 of three experiments with <italic>n</italic> = 6 and <italic>d</italic> = 5.</title>\n<p>The discrete time actions for all three experiments is generates by function <italic>h</italic><sub>7</sub>. This latter output will inform the Property Inference pipeline for computing parameters for simulation models. Time (in seconds) is shown in the first row as 1, 2, 3, …, and counts of the <italic>z</italic> vector components, per player and per experiment are given.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g016\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g016",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0242453"
+  },
+  {
+    "id": "pone.0281854.g001",
+    "label": "Fig 1",
+    "caption": "Annotation analysis of microbial composition in different soil and rhizosphere samples.\n(a, b, c) and (d, e, f) are the annotation analysis results of fungal and bacterial taxa respectively. (a, d) The number of ASVs in each sample that can be annotated to domains, phyla, classes, orders, families, genera and species. (b, e) The number of taxa contained in different samples at each classification level obtained from the flattened statistical data. (c, f) The abundance of the top 10 taxa at the phylum level. All data shown in the figure are averaged within the group.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Annotation analysis of microbial composition in different soil and rhizosphere samples.</title>\n<p>(a, b, c) and (d, e, f) are the annotation analysis results of fungal and bacterial taxa respectively. (a, d) The number of ASVs in each sample that can be annotated to domains, phyla, classes, orders, families, genera and species. (b, e) The number of taxa contained in different samples at each classification level obtained from the flattened statistical data. (c, f) The abundance of the top 10 taxa at the phylum level. All data shown in the figure are averaged within the group.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g002",
+    "label": "Fig 2",
+    "caption": "Circle packing of different soil and rhizosphere samples for fungi (a) and bacteria (b). The largest circle represents the phylum level, and the gradually shrinking circle represents class, order, family, and genus according to the gradient. The area of the fan in the circle represents the corresponding abundance and the top 20 genera have been identified with short lines.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Circle packing of different soil and rhizosphere samples for fungi (a) and bacteria (b). The largest circle represents the phylum level, and the gradually shrinking circle represents class, order, family, and genus according to the gradient. The area of the fan in the circle represents the corresponding abundance and the top 20 genera have been identified with short lines.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g003",
+    "label": "Fig 3",
+    "caption": "Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the p value according to the Kruskal-Wallis test.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Alpha diversity analysis for fungi (a) and bacteria (b) in different soil and rhizosphere samples. The significance is expressed by the <italic>p</italic> value according to the Kruskal-Wallis test.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g004",
+    "label": "Fig 4",
+    "caption": "Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>Venn diagram of unique and shared fungal (a) and bacterial (b) ASVs among different soil and rhizosphere samples. Each colour represents a group, and the numbers indicate the quantities of ASVs contained in the block.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g005",
+    "label": "Fig 5",
+    "caption": "PCoA of fungi (a) and bacteria (b). Using the normalized functional unit abundance table (abundance sum of 1 M per sample), the distance matrix was calculated and PCoA analysis was performed by R Script. The percentage in the brackets on the axis represents the proportion of the sample variation that can be explained.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>PCoA of fungi (a) and bacteria (b). Using the normalized functional unit abundance table (abundance sum of 1 M per sample), the distance matrix was calculated and PCoA analysis was performed by R Script. The percentage in the brackets on the axis represents the proportion of the sample variation that can be explained.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g006",
+    "label": "Fig 6",
+    "caption": "Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title />\n<p>Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g007",
+    "label": "Fig 7",
+    "caption": "Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, p≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Co-occurrence network among the first 100 genera of fungi (a) and bacteria (b). The correlation matrix is constructed using the SparCC algorithm, but ASVs with a total number of sequences less than 10 are filtered based on random matrix theory (RMT) before matrix construction, with thresholds of 0.33 (fungi) and 0.6 (bacteria) (Chi-Square, <italic>p</italic>≤0.05). The top 100 ASVs were extracted to construct a network by the induced_subgraph function of igraph R package. The deeper and thicker lines represent stronger correlations between genera.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0281854.g008",
+    "label": "Fig 8",
+    "caption": "Contribution of fungal genera to different metabolic pathways.\nDifferent colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Contribution of fungal genera to different metabolic pathways.</title>\n<p>Different colours represent the contributions of different taxa to the glycolysis pathway (a), the glyoxylic acid pathway (b), the phosphopantothenic acid biosynthesis (c) and the non-oxidative pentose phosphate pathway (d) at the genus level (the first 20 genera).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g008\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g008",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0281854"
+  },
+  {
+    "id": "pone.0327607.g001",
+    "label": "Fig 1",
+    "caption": "Excerpt from a provenance graph depicting the refinement process of a simulation model (SM1) during a simulation study.This includes the incorporation of references (R) in the refinement, followed by testing the model’s ability to reproduce wet-lab data (WD) through a simulation experiment (E) in which the resulting simulation data (SD) is then analyzed using a Python script (S) to obtain the validation result (VR).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g001</object-id><label>Fig 1</label><caption><title>Excerpt from a provenance graph depicting the refinement process of a simulation model (SM1) during a simulation study.</title><p>This includes the incorporation of references (R) in the refinement, followed by testing the model’s ability to reproduce wet-lab data (WD) through a simulation experiment (E) in which the resulting simulation data (SD) is then analyzed using a Python script (S) to obtain the validation result (VR).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g001\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0327607"
+  },
+  {
+    "id": "pone.0327607.g003",
+    "label": "Fig 3",
+    "caption": "An example for a provenance pattern for the activity Specifying Experiment.The activity always uses a simulation model (SM). Optionally (denoted in gray), it can also use an already existing simulation experiment, an assumption (A), and/or a requirement (R). The attributes required or optional (gray) for the entities and agents are annotated next to the dashed lines. So, if an activity uses a requirement, then the requirement must have attribute values for its name and file path—its specification can be blank.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g003</object-id><label>Fig 3</label><caption><title>An example for a provenance pattern for the activity Specifying Experiment.</title><p>The activity always uses a simulation model (SM). Optionally (denoted in gray), it can also use an already existing simulation experiment, an assumption (A), and/or a requirement (R). The attributes required or optional (gray) for the entities and agents are annotated next to the dashed lines. So, if an activity uses a requirement, then the requirement must have attribute values for its name and file path—its specification can be blank.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g003\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0327607"
+  },
+  {
+    "id": "pone.0327607.g004",
+    "label": "Fig 4",
+    "caption": "Overview of the SIMPROV software architecture.Provenance capturers record information on the tools used by the modeler. The provenance builder collects and combines the captured information into a provenance graph.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g004</object-id><label>Fig 4</label><caption><title>Overview of the <italic>SIMPROV</italic> software architecture.</title><p>Provenance capturers record information on the tools used by the modeler. The provenance builder collects and combines the captured information into a provenance graph.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g004\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0327607"
+  },
+  {
+    "id": "pone.0327607.g009",
+    "label": "Fig 9",
+    "caption": "Comparative visualization of the 100 trajectories of the simulation model for a fixed and varying amount of mRNA per lipoplex particle.The colors indicate the number of lipoplexes that unpack their mRNA in the cell.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0327607.g009\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0327607.g009</object-id><label>Fig 9</label><caption><title>Comparative visualization of the 100 trajectories of the simulation model for a fixed and varying amount of mRNA per lipoplex particle.</title><p>The colors indicate the number of lipoplexes that unpack their mRNA in the cell.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0327607.g009\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0327607.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    },
+    "paper": "pone.0327607"
+  }
+]

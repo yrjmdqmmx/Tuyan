@@ -1,0 +1,30 @@
+[
+  {
+    "scenario": "state-diagram-svg",
+    "format": "SVG",
+    "input_preservation": "original unchanged except credential/review limit",
+    "reference_pixels": "actual Qwen planning request",
+    "drawing": "main-model topology + ELK",
+    "local_checks": "7 exact original links; unique named nodes; geometry passed",
+    "pipeline_review": "passed",
+    "independent_real_review": "passed",
+    "true_vector": true,
+    "editable_text": true,
+    "svg_sha256": "823457e7eec5acb29ff771938d9b1bcadbd114f8fa7c785cc724a1acc478f296",
+    "png_sha256": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865"
+  },
+  {
+    "scenario": "mixed-workflow-bar-svg",
+    "format": "SVG",
+    "input_preservation": "original unchanged except credential/review limit",
+    "reference_pixels": "actual Qwen planning request",
+    "drawing": "main-model topology + ELK / real Python numeric renderer / fixed assembly",
+    "local_checks": "7 exact original links; unique named nodes; geometry passed; data 2/5/3 unchanged",
+    "pipeline_review": "passed",
+    "independent_real_review": "passed",
+    "true_vector": true,
+    "editable_text": true,
+    "svg_sha256": "5842ea993cd0f855393b7e429ab9cbaad041e850925f7a7b9cd1a9152a0df41a",
+    "png_sha256": "8d492ff762333fb594fb4a9f40b2ed13a3278b5492dca9d562e8a9543a4fd1ad"
+  }
+]

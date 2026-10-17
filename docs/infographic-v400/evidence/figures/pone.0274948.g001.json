@@ -1,0 +1,50 @@
+{
+  "id": "pone.0274948.g001",
+  "paper": "pone.0274948",
+  "figure": {
+    "id": "pone.0274948.g001",
+    "label": "Fig 1",
+    "caption": "Conceptual framework describing a general model of exposure pathways to nature engagement identified through qualitative methods.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0274948.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0274948.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Conceptual framework describing a general model of exposure pathways to nature engagement identified through qualitative methods.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0274948.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0274948.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0274948",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274948",
+    "title": "Implications of disparities in social and built environment antecedents to adult nature engagement",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Linda Powers Tomasso",
+      "Jose Guillermo Cedeño Laurent",
+      "Jarvis T. Chen",
+      "John D. Spengler"
+    ],
+    "year": "2022",
+    "license": "2022\nTomasso et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0274948.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0274948.g001.png",
+      "bytes": 299525,
+      "sha256": "74cc5d6eb3172f408e665d17ecfd6b13a38f72b96fdba605a6e4f518485119aa"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0274948.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0274948.g001.tif",
+      "bytes": 443852,
+      "sha256": "7a1e2fdccdb5a7b0b74f38a8d96fc5fb978beab00b5ba8d8cfb972e2c99b12a5"
+    }
+  }
+}

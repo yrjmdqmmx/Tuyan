@@ -1,0 +1,50 @@
+{
+  "id": "pbio.1002128.g002",
+  "paper": "pbio.1002128",
+  "figure": {
+    "id": "pbio.1002128.g002",
+    "label": "Fig 2",
+    "caption": "Additional problems with using bar graphs to show paired data.\nThe bar graph (mean ± SE) suggests that the groups are independent and provides no information about whether changes are consistent across individuals (Panel A). The scatterplots shown in the Panels B–D clearly demonstrate that the data are paired. Each scatterplot reveals very different patterns of change, even though the means and SEs differ by less than 0.3 units. The lower scatterplots showing the differences between measurements allow readers to quickly assess the direction, magnitude, and distribution of the changes. The solid lines show the median difference. In Panel B, values for every subject are higher in the second condition. In Panel C, there are no consistent differences between the two conditions. Panel D suggests that there may be distinct subgroups of “responders” and “nonresponders.”",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.1002128.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.1002128.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Additional problems with using bar graphs to show paired data.</title>\n<p>The bar graph (mean ± SE) suggests that the groups are independent and provides no information about whether changes are consistent across individuals (Panel A). The scatterplots shown in the Panels B–D clearly demonstrate that the data are paired. Each scatterplot reveals very different patterns of change, even though the means and SEs differ by less than 0.3 units. The lower scatterplots showing the differences between measurements allow readers to quickly assess the direction, magnitude, and distribution of the changes. The solid lines show the median difference. In Panel B, values for every subject are higher in the second condition. In Panel C, there are no consistent differences between the two conditions. Panel D suggests that there may be distinct subgroups of “responders” and “nonresponders.”</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pbio.1002128.g002\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.1002128.g002",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pbio.1002128",
+    "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128",
+    "title": "Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm",
+    "journal": "PLOS Biology",
+    "authors": [
+      "Tracey L. Weissgerber",
+      "Natasa M. Milic",
+      "Stacey J. Winham",
+      "Vesna D. Garovic"
+    ],
+    "year": "2015",
+    "license": "2015\nWeissgerber et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.1002128.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.1002128.g002.png",
+      "bytes": 81374,
+      "sha256": "6c908c18ddb5819b480400f1edc4d3446e84eb2ca9ca470ab50b174175a73530"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.1002128.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.1002128.g002.tif",
+      "bytes": 387880,
+      "sha256": "57af63027874e522a9da8bb3ca7ebadc10a0bf03cb4c318d8d7efbe6a2aa40a8"
+    }
+  }
+}

@@ -1,0 +1,593 @@
+{
+  "scope": "representative; real model requests with local infrastructure and synthetic input",
+  "requests": 16,
+  "byModel": {
+    "qwen3.7-plus": {
+      "requests": 15,
+      "reportedUsage": [
+        {
+          "completion_tokens": 771,
+          "completion_tokens_details": {
+            "text_tokens": 771
+          },
+          "prompt_tokens": 5516,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 2480,
+            "text_tokens": 3036
+          },
+          "total_tokens": 6287
+        },
+        {
+          "completion_tokens": 1558,
+          "prompt_tokens": 2944,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "text_tokens": 2944
+          },
+          "total_tokens": 4502
+        },
+        {
+          "completion_tokens": 1046,
+          "completion_tokens_details": {
+            "text_tokens": 1046
+          },
+          "prompt_tokens": 6152,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1402,
+            "text_tokens": 4750
+          },
+          "total_tokens": 7198
+        },
+        {
+          "completion_tokens": 1529,
+          "prompt_tokens": 4730,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "text_tokens": 4730
+          },
+          "total_tokens": 6259
+        },
+        {
+          "completion_tokens": 1180,
+          "completion_tokens_details": {
+            "text_tokens": 1180
+          },
+          "prompt_tokens": 4580,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1521,
+            "text_tokens": 3059
+          },
+          "total_tokens": 5760
+        },
+        {
+          "completion_tokens": 2185,
+          "prompt_tokens": 3355,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "text_tokens": 3355
+          },
+          "total_tokens": 5540
+        },
+        {
+          "completion_tokens": 1356,
+          "completion_tokens_details": {
+            "text_tokens": 1356
+          },
+          "prompt_tokens": 7096,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1402,
+            "text_tokens": 5694
+          },
+          "total_tokens": 8452
+        },
+        {
+          "completion_tokens": 1799,
+          "prompt_tokens": 5713,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "text_tokens": 5713
+          },
+          "total_tokens": 7512
+        },
+        {
+          "completion_tokens": 520,
+          "completion_tokens_details": {
+            "text_tokens": 520
+          },
+          "prompt_tokens": 5199,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1521,
+            "text_tokens": 3678
+          },
+          "total_tokens": 5719
+        },
+        {
+          "completion_tokens": 254,
+          "completion_tokens_details": {
+            "text_tokens": 254
+          },
+          "prompt_tokens": 12705,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 578,
+            "text_tokens": 12127
+          },
+          "total_tokens": 12959
+        },
+        {
+          "completion_tokens": 3073,
+          "completion_tokens_details": {
+            "text_tokens": 3073
+          },
+          "prompt_tokens": 12287,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 578,
+            "text_tokens": 11709
+          },
+          "total_tokens": 15360
+        },
+        {
+          "completion_tokens": 954,
+          "completion_tokens_details": {
+            "text_tokens": 954
+          },
+          "prompt_tokens": 4556,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1521,
+            "text_tokens": 3035
+          },
+          "total_tokens": 5510
+        },
+        {
+          "completion_tokens": 608,
+          "completion_tokens_details": {
+            "text_tokens": 608
+          },
+          "prompt_tokens": 4687,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1521,
+            "text_tokens": 3166
+          },
+          "total_tokens": 5295
+        },
+        {
+          "completion_tokens": 574,
+          "completion_tokens_details": {
+            "text_tokens": 574
+          },
+          "prompt_tokens": 4681,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1521,
+            "text_tokens": 3160
+          },
+          "total_tokens": 5255
+        },
+        {
+          "completion_tokens": 126,
+          "completion_tokens_details": {
+            "text_tokens": 126
+          },
+          "prompt_tokens": 3810,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "image_tokens": 1010,
+            "text_tokens": 2800
+          },
+          "total_tokens": 3936
+        }
+      ],
+      "summedFields": {
+        "completion_tokens": 17533,
+        "prompt_tokens": 88011,
+        "total_tokens": 105544
+      }
+    },
+    "wan2.7-image-pro": {
+      "requests": 1,
+      "reportedUsage": [
+        {
+          "image_count": 1,
+          "input_tokens": 1131,
+          "output_tokens": 2,
+          "size": "1360*765",
+          "total_tokens": 1133
+        }
+      ],
+      "summedFields": {
+        "image_count": 1,
+        "input_tokens": 1131,
+        "output_tokens": 2,
+        "total_tokens": 1133
+      }
+    }
+  },
+  "runs": [
+    {
+      "batch": "live-bailian",
+      "scenario": "workflow-png",
+      "typeId": "workflow",
+      "format": "png",
+      "status": "failed",
+      "review": null,
+      "evidence": "evidence/live-bailian/summary.json",
+      "calls": [],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian",
+      "scenario": "state-diagram-svg",
+      "typeId": "state_transition",
+      "format": "svg",
+      "status": "succeeded",
+      "review": "modified_unreviewed",
+      "evidence": "evidence/live-bailian/summary.json",
+      "calls": [
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-a961283f-285f-9249-be03-af160af319ca",
+          "usage": {
+            "completion_tokens": 771,
+            "completion_tokens_details": {
+              "text_tokens": 771
+            },
+            "prompt_tokens": 5516,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 2480,
+              "text_tokens": 3036
+            },
+            "total_tokens": 6287
+          }
+        },
+        {
+          "kind": "svg",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-f60e428d-0cdc-995b-a220-9fc82c9c5c9e",
+          "usage": {
+            "completion_tokens": 1558,
+            "prompt_tokens": 2944,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "text_tokens": 2944
+            },
+            "total_tokens": 4502
+          }
+        },
+        {
+          "kind": "review",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-9a33ac62-6243-9991-bda6-ebb0f7cb84eb",
+          "usage": {
+            "completion_tokens": 1046,
+            "completion_tokens_details": {
+              "text_tokens": 1046
+            },
+            "prompt_tokens": 6152,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1402,
+              "text_tokens": 4750
+            },
+            "total_tokens": 7198
+          }
+        },
+        {
+          "kind": "svg",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-81d4e931-8abb-94e7-9c06-5f3fa9cdb95e",
+          "usage": {
+            "completion_tokens": 1529,
+            "prompt_tokens": 4730,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "text_tokens": 4730
+            },
+            "total_tokens": 6259
+          }
+        }
+      ],
+      "references": [
+        "journal_pcbi.1009702.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian",
+      "scenario": "mixed-workflow-bar-svg",
+      "typeId": "multipanel",
+      "format": "svg",
+      "status": "succeeded",
+      "review": "issues_found",
+      "evidence": "evidence/live-bailian/summary.json",
+      "calls": [
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-aa937e69-ccdc-9446-8771-2713f3069e15",
+          "usage": {
+            "completion_tokens": 1180,
+            "completion_tokens_details": {
+              "text_tokens": 1180
+            },
+            "prompt_tokens": 4580,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1521,
+              "text_tokens": 3059
+            },
+            "total_tokens": 5760
+          }
+        },
+        {
+          "kind": "svg",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-b00a3bf4-947c-9ca0-9acb-15dbaf7fb702",
+          "usage": {
+            "completion_tokens": 2185,
+            "prompt_tokens": 3355,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "text_tokens": 3355
+            },
+            "total_tokens": 5540
+          }
+        },
+        {
+          "kind": "review",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-1144c256-69a8-9ead-ada9-f4fdbc4a110a",
+          "usage": {
+            "completion_tokens": 1356,
+            "completion_tokens_details": {
+              "text_tokens": 1356
+            },
+            "prompt_tokens": 7096,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1402,
+              "text_tokens": 5694
+            },
+            "total_tokens": 8452
+          }
+        },
+        {
+          "kind": "svg",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-5e32196e-bbd8-9b4b-a12d-389f6be73112",
+          "usage": {
+            "completion_tokens": 1799,
+            "prompt_tokens": 5713,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "text_tokens": 5713
+            },
+            "total_tokens": 7512
+          }
+        },
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-46d6bc92-fac7-9b3d-bf56-20abc3452749",
+          "usage": {
+            "completion_tokens": 520,
+            "completion_tokens_details": {
+              "text_tokens": 520
+            },
+            "prompt_tokens": 5199,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1521,
+              "text_tokens": 3678
+            },
+            "total_tokens": 5719
+          }
+        },
+        {
+          "kind": "review",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-b49268c9-6e03-9d35-9cd4-f7bf010759f6",
+          "usage": {
+            "completion_tokens": 254,
+            "completion_tokens_details": {
+              "text_tokens": 254
+            },
+            "prompt_tokens": 12705,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 578,
+              "text_tokens": 12127
+            },
+            "total_tokens": 12959
+          }
+        },
+        {
+          "kind": "review",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-28e0896d-229a-965d-892c-47f07018373c",
+          "usage": {
+            "completion_tokens": 3073,
+            "completion_tokens_details": {
+              "text_tokens": 3073
+            },
+            "prompt_tokens": 12287,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 578,
+              "text_tokens": 11709
+            },
+            "total_tokens": 15360
+          }
+        }
+      ],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian-png-plan-overrun",
+      "scenario": "workflow-png",
+      "typeId": "workflow",
+      "format": "png",
+      "status": "failed",
+      "review": null,
+      "evidence": "evidence/live-bailian-png-plan-overrun/summary.json",
+      "calls": [
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-69cb22a9-b6f0-9135-89cb-a3d755275bec",
+          "usage": {
+            "completion_tokens": 954,
+            "completion_tokens_details": {
+              "text_tokens": 954
+            },
+            "prompt_tokens": 4556,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1521,
+              "text_tokens": 3035
+            },
+            "total_tokens": 5510
+          }
+        }
+      ],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian-png-plan-overrun-system",
+      "scenario": "workflow-png",
+      "typeId": "workflow",
+      "format": "png",
+      "status": "failed",
+      "review": null,
+      "evidence": "evidence/live-bailian-png-plan-overrun-system/summary.json",
+      "calls": [
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-bde0647a-bafd-9517-b447-bd0ceebca65c",
+          "usage": {
+            "completion_tokens": 608,
+            "completion_tokens_details": {
+              "text_tokens": 608
+            },
+            "prompt_tokens": 4687,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1521,
+              "text_tokens": 3166
+            },
+            "total_tokens": 5295
+          }
+        }
+      ],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian-png-preflight",
+      "scenario": "workflow-png",
+      "typeId": "workflow",
+      "format": "png",
+      "status": "failed",
+      "review": null,
+      "evidence": "evidence/live-bailian-png-preflight/summary.json",
+      "calls": [],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    },
+    {
+      "batch": "live-bailian-png-retry",
+      "scenario": "workflow-png",
+      "typeId": "workflow",
+      "format": "png",
+      "status": "succeeded",
+      "review": "passed",
+      "evidence": "evidence/live-bailian-png-retry/summary.json",
+      "calls": [
+        {
+          "kind": "plan",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-f0b4fcf2-c5ef-9d73-a983-5837e2ebf161",
+          "usage": {
+            "completion_tokens": 574,
+            "completion_tokens_details": {
+              "text_tokens": 574
+            },
+            "prompt_tokens": 4681,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1521,
+              "text_tokens": 3160
+            },
+            "total_tokens": 5255
+          }
+        },
+        {
+          "kind": "image",
+          "model": "wan2.7-image-pro",
+          "httpStatus": 200,
+          "usage": {
+            "image_count": 1,
+            "input_tokens": 1131,
+            "output_tokens": 2,
+            "size": "1360*765",
+            "total_tokens": 1133
+          }
+        },
+        {
+          "kind": "review",
+          "model": "qwen3.7-plus",
+          "httpStatus": 200,
+          "requestId": "chatcmpl-4f11f62c-e427-9038-8865-cbe9577c4ce2",
+          "usage": {
+            "completion_tokens": 126,
+            "completion_tokens_details": {
+              "text_tokens": 126
+            },
+            "prompt_tokens": 3810,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "image_tokens": 1010,
+              "text_tokens": 2800
+            },
+            "total_tokens": 3936
+          }
+        }
+      ],
+      "references": [
+        "journal_pbio.2003779.g001"
+      ]
+    }
+  ],
+  "currencyCost": "not_verified_against_provider_bill"
+}

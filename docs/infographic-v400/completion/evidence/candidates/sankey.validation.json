@@ -1,0 +1,113 @@
+{
+  "typeId": "sankey",
+  "computations": {
+    "nodeTotals": {
+      "A": 5,
+      "B": 4,
+      "C": 3,
+      "D": 6
+    },
+    "totalFlow": 9,
+    "dataSpaceWidthPerValue": 1
+  },
+  "checks": {
+    "A_node_height": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "B_node_height": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "C_node_height": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "D_node_height": {
+      "actual": 6.0,
+      "expected": 6.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_5_width": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_6_width": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_7_width": {
+      "actual": 3.999999999999999,
+      "expected": 4.0,
+      "absoluteError": 8.881784197001252e-16
+    },
+    "A_allocated_flow": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    },
+    "B_allocated_flow": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "C_allocated_flow": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "D_allocated_flow": {
+      "actual": 6.0,
+      "expected": 6.0,
+      "absoluteError": 0.0
+    },
+    "both_column_total": {
+      "actual": 18.0,
+      "expected": 18.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "source",
+      "target",
+      "value"
+    ],
+    "options": {
+      "nodes": [
+        {
+          "id": "A",
+          "stage": 0
+        },
+        {
+          "id": "B",
+          "stage": 0
+        },
+        {
+          "id": "C",
+          "stage": 1
+        },
+        {
+          "id": "D",
+          "stage": 1
+        }
+      ],
+      "layout": "bipartite",
+      "flowSemantics": "Observed people moving once from origin to destination"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

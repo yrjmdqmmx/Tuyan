@@ -17,6 +17,10 @@ export function authorizeJobOwner(job, principal = {}) {
 }
 
 export function normalizeRefineSource(body = {}, config = {}) {
+  if (body.sourceImageUpload?.materialId !== undefined) {
+    const id=body.sourceImageUpload.materialId;if(typeof id!=='string'||!/^[-\w]{1,80}$/.test(id))throw forbidden();
+    return {objectKey:'',jobId:'',uploaded:true,payload:{sourceImageUpload:{materialId:id}}};
+  }
   if (body.sourceImageUpload !== undefined) {
     const key = body.sourceImageUpload?.objectKey;
     if (typeof key !== 'string' || key.length > 300 || !/^references\/[A-Za-z0-9._/-]+$/.test(key)

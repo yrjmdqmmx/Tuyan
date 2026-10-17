@@ -1,0 +1,60 @@
+{
+  "id": "pgen.1011738.g009",
+  "paper": "pgen.1011738",
+  "figure": {
+    "id": "pgen.1011738.g009",
+    "label": "Fig 9",
+    "caption": "Synteny plot surrounding the Telomerase RNA (TR) gene.Each panel is showing a focal species (A) M. aurantiacus ssp. puniceus, (B) M. guttatus, and (C) M. verbenaceus, and its TR chromosomal location (indicated with a red arrow) is plotted in the central position and highlighted with red letters. Orange arrows indicate genes and gray boxes indicate orthology between genes. For each focal species TR gene, we show the five genes upstream and downstream with an orthology. In each plot there is clear synteny between species surrounding a focal species TR gene, but in the non-focal species there is no TR gene and instead it is located at a different chromosome (compare the TR locations in panel A, B, and C).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1011738.g009\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgen.1011738.g009</object-id><label>Fig 9</label><caption><title>Synteny plot surrounding the Telomerase RNA (TR) gene.</title><p>Each panel is showing a focal species (A) <italic>M. aurantiacus</italic> ssp. <italic>puniceus</italic>, (B) <italic>M. guttatus</italic>, and (C) <italic>M. verbenaceus</italic>, and its TR chromosomal location (indicated with a red arrow) is plotted in the central position and highlighted with red letters. Orange arrows indicate genes and gray boxes indicate orthology between genes. For each focal species TR gene, we show the five genes upstream and downstream with an orthology. In each plot there is clear synteny between species surrounding a focal species TR gene, but in the non-focal species there is no TR gene and instead it is located at a different chromosome (compare the TR locations in panel A, B, and C).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1011738.g009\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1011738.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1011738",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1011738",
+    "title": "Monkeyflower (Mimulus) uncovers the evolutionary basis of the eukaryote telomere sequence variation",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Surbhi Kumawat",
+      "Askhan Shametov",
+      "Liia R. Valeeva",
+      "Yoonha Ju",
+      "Irene Martinez",
+      "Dhenugen Logeswaran",
+      "Hongfei Chen",
+      "Jenn M. Coughlan",
+      "Julian J.-L. Chen",
+      "Yao-Wu Yuan",
+      "James M. Sobel",
+      "Dal-Hoe Koo",
+      "Eugene V. Shakirov",
+      "Jae Young Choi"
+    ],
+    "year": "2025",
+    "license": "2025\nKumawat et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1011738.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1011738.g009.png",
+      "bytes": 1830905,
+      "sha256": "b4013333235bf308c31e27aff1da5b90b2acb587f524ba547d654fff1d335a67"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1011738.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1011738.g009.tif",
+      "bytes": 2375364,
+      "sha256": "4a3d68d02ca60856e41f19c4d3af740a6aa4319ae34fe1c8fe95e1840a27b92f"
+    }
+  }
+}

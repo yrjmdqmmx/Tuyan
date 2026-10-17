@@ -1,0 +1,52 @@
+{
+  "id": "pone.0332415.g002",
+  "paper": "pone.0332415",
+  "figure": {
+    "id": "pone.0332415.g002",
+    "label": "Fig 2",
+    "caption": "Forest plot for pooled magnitude of workplace violence.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g002</object-id><label>Fig 2</label><caption><title>Forest plot for pooled magnitude of workplace violence.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g002\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0332415",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0332415",
+    "title": "Magnitude of workplace violence and associated factors among healthcare professionals in East Africa: A systematic review and meta-analysis",
+    "journal": "PLOS One",
+    "authors": [
+      "Yeshiambaw Eshetie",
+      "Astewle Andargie Baye",
+      "Mengistu Ewunetu",
+      "Gashaw Kerebeh",
+      "Worku Necho Asferie",
+      "Demewoz Kefale"
+    ],
+    "year": "2025",
+    "license": "2025\nEshetie et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0332415.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0332415.g002.png",
+      "bytes": 463485,
+      "sha256": "d25c2e4bee9835915f309c2445cc0057837b084572f52bdd3feaa0b874ecd893"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0332415.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0332415.g002.tif",
+      "bytes": 440316,
+      "sha256": "573f32dfa25d41ab817f62bb9f90f57b49c2434c76a1121fa7849835c596156f"
+    }
+  }
+}

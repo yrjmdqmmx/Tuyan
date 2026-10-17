@@ -4,6 +4,7 @@ const FOCUSABLE_SELECTOR = [
   '[data-autofocus]',
   'button:not([disabled])',
   'a[href]',
+  'summary',
   'input:not([disabled])',
   'select:not([disabled])',
   'textarea:not([disabled])',
@@ -41,7 +42,7 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
       }
       if (event.key !== 'Tab') return;
       const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE_SELECTOR) || [])]
-        .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true');
+        .filter((element) => !element.hasAttribute('disabled') && element.getAttribute('aria-hidden') !== 'true' && !element.closest('[hidden],[inert]') && (!element.closest('details:not([open])') || element.tagName === 'SUMMARY'));
       if (!focusable.length) {
         event.preventDefault();
         panelRef.current?.focus();

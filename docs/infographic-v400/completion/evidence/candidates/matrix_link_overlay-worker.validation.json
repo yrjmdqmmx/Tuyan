@@ -1,0 +1,79 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "3c7a76405156acf9e2ace409af4c6888751b517c9223eac8cb23933a08c83e9a",
+  "pngHash": "386099f4b6c6e41151e0c69ba57eacb35e3fb769b445247eb1a1c48f7a6bb54a",
+  "svgHash": "e6670f390b3a5dd7da4829f3ab1af83ba61e230c1f1f8db344d8f88023faf2d0",
+  "numeric": {
+    "typeId": "matrix_link_overlay",
+    "computations": {
+      "matrix": [
+        [
+          1.0,
+          0.2,
+          0.4
+        ],
+        [
+          0.2,
+          1.0,
+          0.6000000000000001
+        ],
+        [
+          0.4,
+          0.6000000000000001,
+          1.0
+        ]
+      ],
+      "linkWidthPerAbsoluteValue": 8.88888888888889,
+      "suppliedLinks": [
+        {
+          "source": "A",
+          "target": "C",
+          "value": 0.45
+        }
+      ]
+    },
+    "checks": {
+      "link_0_width": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "matrix_value_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 9.0,
+        "expected": 9.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "row",
+        "column",
+        "value"
+      ],
+      "options": {
+        "links": [
+          {
+            "source": "A",
+            "target": "C",
+            "value": 0.45
+          }
+        ],
+        "matrixStatistic": "Supplied Pearson correlation",
+        "linkStatistic": "Supplied association estimate; no test calculated",
+        "linkUnit": "dimensionless"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

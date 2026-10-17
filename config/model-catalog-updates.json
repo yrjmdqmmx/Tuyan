@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-27.v27",
+  "version": "2026-10-16.v34",
   "providers": {
     "deepseek": [
       {
@@ -2052,6 +2052,62 @@
           ],
           "releasedAt": "2026-09-17"
         }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "label": "DeepSeek V4.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。中国站；账号须完成实名。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "zai-org/GLM-5.3-Flash",
+        "label": "GLM 5.3 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。中国站；账号须完成实名。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://www.siliconflow.cn/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "anthropic": [
@@ -2203,6 +2259,66 @@
             "text"
           ],
           "releasedAt": "2026-09-22"
+        }
+      },
+      {
+        "id": "claude-sonnet-5-5",
+        "label": "Claude Sonnet 5.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+          "lifecycle": "stable",
+          "releasedAt": "2026-09-28",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "earliestRetirementDate": "2027-09-28"
+        }
+      },
+      {
+        "id": "claude-haiku-5-5",
+        "label": "Claude Haiku 5.5",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "anthropic-messages",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+          "lifecycle": "stable",
+          "releasedAt": "2026-10-07",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "earliestRetirementDate": "2027-10-07"
         }
       }
     ],
@@ -3142,6 +3258,37 @@
             "image"
           ]
         }
+      },
+      {
+        "id": "recraftv4_1_flash",
+        "label": "Recraft V4.1 Flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+          "lifecycle": "stable",
+          "releasedAt": null,
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
       }
     ],
     "xai": [
@@ -3599,6 +3746,72 @@
           ],
           "maxReferenceImages": 1,
           "providerMaxReferenceImages": 14
+        }
+      },
+      {
+        "id": "gemini-nano-banana-2.1",
+        "label": "Nano Banana 2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "gemini-interactions",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 14,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "Google",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "lifecycle": "stable",
+          "releasedAt": "2026-10-06",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "gemini-4-argon",
+        "label": "Gemini 4 Argon",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "gemini-generate-content",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。同步文本/识图；1M 是输入、思考与输出共享窗口；未开启后台长输出。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+          "inputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "document"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "releasedAt": "2026-10-13"
         }
       }
     ],
@@ -8412,6 +8625,74 @@
           "requiresEntitlement": true,
           "entitlement": "以渠道当前账号开通权限为准"
         }
+      },
+      {
+        "id": "qwen-image-2.1-pro",
+        "label": "Qwen Image 2.1 Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "qwen-image-2.1-turbo",
+        "label": "Qwen Image 2.1 Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "bailian-multimodal-generation",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
       }
     ],
     "openai": [
@@ -10204,6 +10485,35 @@
           ],
           "releasedAt": "2026-09-22"
         }
+      },
+      {
+        "id": "gpt-6.1-sol",
+        "label": "GPT-6.1 Sol",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-responses",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "openai",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+          "lifecycle": "stable",
+          "releasedAt": "2026-09-29",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "ark": [
@@ -10756,6 +11066,44 @@
           "requiresEntitlement": true,
           "entitlement": "以渠道当前账号开通权限为准"
         }
+      },
+      {
+        "id": "doubao-seedream-5-0-flash-260915",
+        "label": "Seedream 5.0 Flash (260915)",
+        "roles": [
+          "image"
+        ],
+        "protocol": "ark-images",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "providerMaxReferenceImages": 10,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ByteDance",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh",
+          "lifecycle": "stable",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "ark-account-access",
+          "regions": [
+            "cn-beijing"
+          ]
+        }
       }
     ],
     "bfl": [
@@ -11164,6 +11512,74 @@
           ],
           "vendor": "Black Forest Labs"
         }
+      },
+      {
+        "id": "flux-3-image",
+        "label": "FLUX 3 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "按本接入渠道官方 API 参数适配；账户权限与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://api.bfl.ai/openapi.json",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "Black Forest Labs"
+        }
+      },
+      {
+        "id": "flux-3-image-klein",
+        "label": "FLUX.3 Image Klein",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。原生支持最多 10 张参考图；当前沿用单张原图编辑。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://api.bfl.ai/openapi.json",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
       }
     ],
     "stability": [
@@ -11378,6 +11794,42 @@
       }
     ],
     "ideogram": [
+      {
+        "id": "ideogram-4-5",
+        "label": "Ideogram 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "原生 v2：生图仅开放文档明确列举尺寸；精确编辑单图、继承原图比例。未验证账户调用。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "Ideogram",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+          "regions": [
+            "global-endpoint"
+          ],
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
       {
         "id": "ideogram-v4",
         "label": "Ideogram 4.0",
@@ -12540,6 +12992,35 @@
             "text"
           ],
           "releasedAt": "2026-09-15"
+        }
+      },
+      {
+        "id": "mistral-large-4",
+        "label": "Mistral Large 4",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "渠道公开目录与接口资料已核查；图研本地适配，账户、地区权益和真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "mistral",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.mistral.ai/models/mistral-large-4-0",
+          "lifecycle": "preview",
+          "releasedAt": "2026-10-06",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
         }
       }
     ],
@@ -13933,6 +14414,57 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "meta-models/Muse-Spark-Open-816B-A42B",
+        "label": "Muse Spark Open 816B A42B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。仅开放此渠道目录明确列出的角色；输出上限未单独确认。",
+        "capabilities": {},
+        "metadata": {
+          "vendor": "meta",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+        "label": "NVIDIA Nemotron 3.5 Super VL",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。仅开放此渠道目录明确列出的角色；输出上限未单独确认。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "nvidia",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "fireworks": [
@@ -14554,6 +15086,34 @@
           "verified": false,
           "verificationState": "catalog",
           "officialSourceUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/muse-spark-open",
+        "label": "Muse Spark Open",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。Serverless 为截至 2026-10-29 的限时预览，仅美国容量；之后需重新核验渠道可用性。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "meta",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://fireworks.ai/models/fireworks/muse-spark-open",
           "inputModalities": [
             "text",
             "image"
@@ -15921,6 +16481,240 @@
           "vendor": "openai",
           "recommended": false
         }
+      },
+      {
+        "id": "google/nano-banana-2.1",
+        "label": "Nano Banana 2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "按本接入渠道官方 API 参数适配；账户权限与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/google/nano-banana-2.1/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "vendor": "google"
+        }
+      },
+      {
+        "id": "blackforestlabs/flux-3/text-to-image",
+        "label": "FLUX.3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "精确fal OpenAPI已核对；单原图编辑；真实账户未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "ideogram/v4.5",
+        "label": "Ideogram 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "精确fal OpenAPI已核对；单原图编辑；真实账户未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://fal.ai/models/ideogram/v4.5/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "bytedance/seedream/v5/flash/text-to-image",
+        "label": "Seedream v5 Flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "精确fal OpenAPI已核对；单原图编辑；真实账户未验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "blackforestlabs/flux-3/klein/text-to-image",
+        "label": "FLUX.3 Klein",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。沿用单张原图精修；高级布局参数未开放。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "blackforestlabs/flux-3/klein/base/text-to-image",
+        "label": "FLUX.3 Klein Base",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。沿用单张原图精修；高级布局参数未开放。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 10
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "krea/v3/text-to-image",
+        "label": "Krea 3",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。沿用单张原图精修；高级布局参数未开放。默认 berry / low，不自动启用联网 high 推理。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ],
+          "providerMaxReferenceImages": 8
+        },
+        "metadata": {
+          "vendor": "krea",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
       }
     ],
     "replicate": [
@@ -16024,20 +16818,16 @@
       {
         "id": "alibaba/wan-3",
         "label": "alibaba/wan-3",
-        "roles": [
-          "image"
-        ],
+        "roles": [],
         "protocol": "provider-images",
-        "availabilityNotes": "按本接入渠道官方 API 参数适配；账户权限与真实输出待验证。",
+        "availabilityNotes": "已核实为视频生成；图片输入是首帧，不是原图编辑。图研未适配视频任务。",
         "capabilities": {
-          "imageGeneration": true,
-          "imageEditing": true,
-          "referenceImages": true,
-          "maxReferenceImages": 1,
-          "imageEditMode": "direct-edit",
-          "outputFormats": [
-            "png"
-          ]
+          "imageGeneration": false,
+          "imageEditing": false,
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageEditMode": "none",
+          "outputFormats": []
         },
         "metadata": {
           "verified": false,
@@ -16049,9 +16839,11 @@
             "image"
           ],
           "outputModalities": [
-            "image"
+            "video"
           ],
-          "vendor": "alibaba"
+          "vendor": "alibaba",
+          "selectable": false,
+          "disabledReason": "该型号生成视频，不支持图研图像任务；历史选择已保留，请手动选择图像模型。"
         }
       },
       {
@@ -19077,6 +19869,354 @@
           ],
           "outputModalities": [
             "image"
+          ]
+        }
+      },
+      {
+        "id": "google/nano-banana-2.1",
+        "label": "Nano Banana 2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "Replicate 独立契约，固定已审核版本；仅单原图编辑，账户与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "black-forest-labs/flux-3-image",
+        "label": "FLUX 3 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "Replicate 独立契约，固定已审核版本；仅单原图编辑，账户与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://replicate.com/black-forest-labs/flux-3-image/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "ideogram-ai/ideogram-4-5",
+        "label": "Ideogram 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "Replicate 独立契约，固定已审核版本；仅单原图编辑，账户与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": true,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram-ai",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "ideogram-ai/ideogram-4-5-precise-edit",
+        "label": "Ideogram 4.5 Precise Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "Replicate 独立契约，固定已审核版本；仅单原图编辑，账户与真实输出待验证。",
+        "capabilities": {
+          "imageGeneration": false,
+          "imageEditing": true,
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram-ai",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "id": "google/gemini-3.5-flash",
+        "label": "gemini-3.5-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/google/gemini-3.5-flash/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "google/gemini-3-flash",
+        "label": "gemini-3-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/google/gemini-3-flash/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "google/gemini-2.5-flash",
+        "label": "gemini-2.5-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/google/gemini-2.5-flash/api/schema",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "qwen/qwen3-7-plus",
+        "label": "qwen3-7-plus",
+        "roles": [
+          "main"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/qwen/qwen3-7-plus/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-ai/deepseek-v3.1",
+        "label": "deepseek-v3.1",
+        "roles": [
+          "main"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "deepseek-ai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/deepseek-ai/deepseek-v3.1/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "moonshotai/kimi-k2-thinking",
+        "label": "kimi-k2-thinking",
+        "roles": [
+          "main"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "moonshotai",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/moonshotai/kimi-k2-thinking/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "qwen/qwen3-235b-a22b-instruct-2507",
+        "label": "qwen3-235b-a22b-instruct-2507",
+        "roles": [
+          "main"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "固定已审核Replicate版本；仅文本输出，不开放音视频。真实账户未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "qwen",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "unknown",
+          "officialSourceUrl": "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
           ]
         }
       }
@@ -24016,6 +25156,366 @@
           ],
           "releasedAt": "2023-07-28"
         }
+      },
+      {
+        "id": "alibaba:qwen-image@2.1-pro",
+        "label": "Runware - Qwen-Image-2.1-Pro",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-20"
+        }
+      },
+      {
+        "id": "bfl:flux@3-image",
+        "label": "Runware - FLUX 3 Image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-3-image",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-10-01"
+        }
+      },
+      {
+        "id": "bytedance:seedream@5.0-flash",
+        "label": "Runware - Seedream 5.0 Flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "bytedance",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-28"
+        }
+      },
+      {
+        "id": "google:nano-banana@2.1",
+        "label": "Runware - Nano Banana 2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 14,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "google",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-1",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-10-06"
+        }
+      },
+      {
+        "id": "ideogram:4.5@precise-edit",
+        "label": "Runware - Ideogram 4.5 Precise Edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": false,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-30"
+        }
+      },
+      {
+        "id": "ideogram:4.5@0",
+        "label": "Runware - Ideogram 4.5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "ideogram",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/ideogram-4-5",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-30"
+        }
+      },
+      {
+        "id": "recraft:v4.1@flash",
+        "label": "Runware - Recraft V4.1 Flash",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "recraft",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/recraft-v4-1-flash",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [
+            "global-endpoint"
+          ],
+          "releasedAt": "2026-09-23"
+        }
+      },
+      {
+        "id": "bfl:flux@3-image-klein",
+        "label": "FLUX 3 Image Klein",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "releasedAt": "2026-10-15"
+        }
+      },
+      {
+        "id": "bfl:flux@3-image-klein-base",
+        "label": "FLUX 3 Image Klein Base",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 4,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "black-forest-labs",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "releasedAt": "2026-10-15"
+        }
+      },
+      {
+        "id": "alibaba:qwen-image@2.1-turbo",
+        "label": "Qwen-Image-2.1-Turbo",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 10,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "alibaba",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "releasedAt": "2026-10-09"
+        }
       }
     ],
     "tokenhub": [
@@ -25290,6 +26790,118 @@
             "cn-endpoint"
           ]
         }
+      },
+      {
+        "id": "deepseek-v4.1-flash",
+        "label": "DeepSeek V4.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。腾讯云托管渠道；不等同于原厂直供 ID。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "mimo-v2.6-pro",
+        "label": "MiMo V2.6 Pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。腾讯云托管渠道；不等同于原厂直供 ID。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "mimo-v2.6-flash",
+        "label": "MiMo V2.6 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。腾讯云托管渠道；不等同于原厂直供 ID。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "step-5-preview",
+        "label": "Step 5 Preview",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。腾讯云托管渠道；不等同于原厂直供 ID。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "stepfun",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "preview",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "xiaomi": [
@@ -25395,6 +27007,34 @@
           "verified": false,
           "verificationState": "catalog",
           "lifecycle": "legacy",
+          "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "mimo-v2.6-pro-ultraspeed",
+        "label": "MiMo V2.6 Pro Ultraspeed",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。定制服务，需厂商单独开通；普通账户不保证可用。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
           "officialSourceUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
           "inputModalities": [
             "text",
@@ -25652,6 +27292,35 @@
           ],
           "regions": [
             "cn"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-flash",
+        "label": "DeepSeek V4.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "商汤 Token Plan Chat 接口，模型 ID 为 deepseek-flash；支持图片理解，视频未接入。账户权限待验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "unknown",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.sensenova.cn/docs",
+          "inputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "outputModalities": [
+            "text"
           ]
         }
       }
@@ -28716,13 +30385,68 @@
         "lifecycle": "legacy",
         "expirationDate": "2026-10-23",
         "replacementModelId": "gpt-image-2"
+      },
+      "gpt-4o-2024-08-06": {
+        "expirationDate": "2027-01-14",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-14-gpt-4-series-model-deprecations"
+      },
+      "gpt-4o-2024-11-20": {
+        "expirationDate": "2027-01-14",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-14-gpt-4-series-model-deprecations"
+      },
+      "gpt-4o-mini-2024-07-18": {
+        "expirationDate": "2027-01-14",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-14-gpt-4-series-model-deprecations"
+      },
+      "gpt-4.1-2025-04-14": {
+        "expirationDate": "2027-01-14",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-14-gpt-4-series-model-deprecations"
+      },
+      "gpt-4.1-mini-2025-04-14": {
+        "expirationDate": "2027-01-14",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-14-gpt-4-series-model-deprecations"
+      },
+      "gpt-5.3-codex": {
+        "expirationDate": "2027-04-01",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-sol",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-01-gpt-53-codex-gpt-51-gpt-54-nano"
+      },
+      "gpt-5.4-nano": {
+        "expirationDate": "2027-04-01",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-luna",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-01-gpt-53-codex-gpt-51-gpt-54-nano"
+      },
+      "gpt-5.1": {
+        "expirationDate": "2027-04-01",
+        "lifecycle": "legacy",
+        "replacementModelId": "gpt-6-sol",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-01-gpt-53-codex-gpt-51-gpt-54-nano"
       }
     },
     "gemini": {
       "gemini-2.5-flash-image": {
         "lifecycle": "legacy",
-        "expirationDate": "2026-10-02",
-        "replacementModelId": "gemini-3.1-flash-image"
+        "expirationDate": "2027-03-15",
+        "replacementModelId": "gemini-3.1-flash-lite-image",
+        "lifecycleSourceUrl": "https://ai.google.dev/gemini-api/docs/deprecations"
+      },
+      "gemini-3.1-flash-image": {
+        "lifecycle": "legacy",
+        "expirationDate": null,
+        "replacementModelId": "gemini-nano-banana-2.1",
+        "lifecycleSourceUrl": "https://ai.google.dev/gemini-api/docs/changelog"
       }
     },
     "deepseek": {
@@ -28730,17 +30454,19 @@
         "lifecycle": "legacy",
         "selectable": false,
         "disabledReason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
-        "expirationDate": "2026-09-10",
-        "lifecycleSourceUrl": "https://api-docs.deepseek.com/updates",
-        "replacementModelId": "deepseek-flash"
+        "expirationDate": null,
+        "lifecycleSourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+        "replacementModelId": "deepseek-flash",
+        "availabilityNotes": "原模型已退役；该历史 API ID 仍被接受，现由 V4.1 Flash 服务。保存的型号不自动改写。"
       },
       "deepseek-v4-flash-vision-exp": {
         "lifecycle": "legacy",
         "selectable": false,
         "disabledReason": "渠道已确认于 2026-09-10 停用此型号；保留原配置和历史记录，请手动选择可用型号。官方仍接收旧 ID，但会路由到 DeepSeek V4.1 Flash；平台不静默替换。",
-        "expirationDate": "2026-09-10",
-        "lifecycleSourceUrl": "https://api-docs.deepseek.com/updates",
-        "replacementModelId": "deepseek-flash"
+        "expirationDate": null,
+        "lifecycleSourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+        "replacementModelId": "deepseek-flash",
+        "availabilityNotes": "原模型已退役；该历史 API ID 仍被接受，现由 V4.1 Flash 服务。保存的型号不自动改写。"
       }
     },
     "siliconflow": {
@@ -28773,6 +30499,14 @@
         "selectable": false,
         "disabledReason": "渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。",
         "expirationDate": "2026-09-11",
+        "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+        "replacementModelId": ""
+      },
+      "baidu/ERNIE-Image-Turbo": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "disabledReason": "硅基流动公告此型号于2026-09-30停用；历史ID保留，请手动选择可用型号。",
+        "expirationDate": "2026-09-30",
         "lifecycleSourceUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
         "replacementModelId": ""
       }
@@ -28811,18 +30545,26 @@
         "expirationDate": "2026-10-08",
         "expirationAt": "2026-10-08T00:00:00+08:00",
         "lifecycle": "legacy"
+      },
+      "deepseek-v4-flash-0731": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-10-31",
+        "expirationAt": "2026-10-31T00:00:00+08:00",
+        "lifecycleSourceUrl": "https://intl.cloud.tencent.com/zh/announce/detail/101537"
       }
     },
     "xiaomi": {
       "mimo-v2.5-pro": {
         "expirationDate": "2026-10-21",
         "expirationAt": "2026-10-21T10:00:00+08:00",
-        "lifecycle": "legacy"
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://mimo.mi.com/docs/en-US/updates/deprecate"
       },
       "mimo-v2.5": {
         "expirationDate": "2026-10-21",
         "expirationAt": "2026-10-21T10:00:00+08:00",
-        "lifecycle": "legacy"
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://mimo.mi.com/docs/en-US/updates/deprecate"
       }
     },
     "runware": {
@@ -28855,6 +30597,53 @@
         "expirationAt": "2026-10-23T00:00:00Z",
         "lifecycle": "legacy",
         "lifecycleSourceUrl": "https://runware.ai/docs/models/openai-gpt-image-1"
+      },
+      "deepseek:v4@flash": {
+        "selectable": false,
+        "recommended": false,
+        "disabledReason": "Runware 完整托管目录已不再提供 deepseek:v4@flash，单型号介绍及 schema 均返回 404；已暂停选择与调用，保留原配置。",
+        "lifecycleSourceUrl": "https://runware.ai/docs/models/index.json"
+      }
+    },
+    "mistral": {
+      "labs-leanstral-1-5": {
+        "lifecycle": "legacy",
+        "selectable": false,
+        "expirationDate": "2026-09-30",
+        "disabledReason": "官方已于 2026-09-30 退役；历史任务和型号 ID 保留。",
+        "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
+      },
+      "zai-glm-5-2": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-10-31",
+        "replacementModelId": "zai-glm-5-3",
+        "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
+      },
+      "zai-glm-5-3": {
+        "lifecycle": "stable",
+        "lifecycleSourceUrl": "https://docs.mistral.ai/resources/changelogs"
+      }
+    },
+    "anthropic": {
+      "claude-sonnet-4-5-20250929": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-30",
+        "replacementModelId": "claude-sonnet-5-5",
+        "lifecycleSourceUrl": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+      }
+    },
+    "tokendance": {
+      "mimo-v2.5": {
+        "expirationDate": "2026-10-21",
+        "expirationAt": "2026-10-21T10:00:00+08:00",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
+      },
+      "mimo-v2.5-pro": {
+        "expirationDate": "2026-10-21",
+        "expirationAt": "2026-10-21T10:00:00+08:00",
+        "lifecycle": "legacy",
+        "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
       }
     }
   },

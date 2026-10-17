@@ -60,3 +60,11 @@ test('the full catalog round-trips through the shipped decoder and stays below t
   const projected = bytes(packageRoot) + Buffer.byteLength(generated)
   assert.ok(projected < 1.5 * 1024 * 1024, `projected source package ${projected} bytes exceeds existing 1.5 MiB budget`)
 })
+
+
+test('shared presentation metadata remains lossless with the existing shipped codec', () => {
+  const original = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
+  const {restored} = verify(original)
+  assert.deepEqual(restored, original)
+  assert.deepEqual(require('../apps/miniprogram/miniprogram/utils/model-presentation-data.js'), original)
+})

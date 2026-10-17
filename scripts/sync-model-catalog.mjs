@@ -7,6 +7,12 @@ import ts from '../apps/paperbanana-api/node_modules/typescript/lib/typescript.j
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const check = process.argv.includes('--check')
+// Explicit opt-out for isolated Web/Core work while the Mini Program stream is paused.
+// The default still checks/generates every client and therefore exposes pending drift.
+const skipMiniprogram = process.argv.includes('--skip-miniprogram')
+const specifications = JSON.parse(fs.readFileSync(path.join(root, 'config/model-specifications.json'), 'utf8'))
+const specificationsRuntime = fs.readFileSync(path.join(root, 'packages/types/src/model-specifications.ts'), 'utf8')
+write(path.join(root, 'apps/web/src/lib/modelSpecifications.js'), '// Generated from packages/types/src/model-specifications.ts\n' + ts.transpileModule(specificationsRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 const config = JSON.parse(fs.readFileSync(path.join(root, 'config/model-catalog-updates.json'), 'utf8'))
 const backend = path.join(root, 'apps/paperbanana-api/runtime/handler.ts')
 let source = fs.readFileSync(backend, 'utf8')
@@ -29,7 +35,7 @@ const presentationRuntime = presentationData + fs.readFileSync(path.join(root, '
 lines.push(presentationRuntime)
 write(path.join(root, 'apps/web/src/lib/modelPresentation.js'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + ts.transpileModule(presentationRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 // Keep the dictionary once, rather than in both Mini TS and compiled JS.
-write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json\nmodule.exports = ' + JSON.stringify(presentation) + '\n')
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation-data.js'), '// Generated from config/model-presentation.json; existing lossless catalog codec.\nmodule.exports = require("./unpack-model-catalog.js").unpackModelCatalog(' + JSON.stringify(packModelCatalog(presentation)) + ')\n')
 const miniPresentation = presentationRuntime.replace(JSON.stringify(presentation), "require('./model-presentation-data.js')")
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-presentation.ts'), '// Generated from packages/types/src/model-presentation.ts and config/model-presentation.json\n' + miniPresentation)
 const aspectRuntime = fs.readFileSync(path.join(root, 'packages/types/src/aspect-ratios.ts'), 'utf8')
@@ -39,8 +45,8 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
-const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json','catalog-20261016-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
   const policy = {maxCount:c.productImageCap ?? Math.min(3,c.maxImages || 0),source:c.source}
@@ -154,6 +160,18 @@ lines.push(`for (const [key, route] of Object.entries(imageSizeRoutes)) {
   }
 }`)
 const versionAudit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-version-audit.json'), 'utf8'))
+for (const row of specifications.models) {
+  const facts = row.specifications
+  if (facts.version !== 1 || !facts.sourceUrls?.length || !/^\d{4}-\d{2}-\d{2}$/.test(facts.checkedAt)) throw new Error('Invalid specification provenance: ' + row.provider + '/' + row.modelId)
+  for (const key of ['contextWindowTokens','maxInputTokens','maxOutputTokens']) if (facts[key] !== undefined && (!Number.isSafeInteger(facts[key]) || facts[key] <= 0)) throw new Error('Invalid token limit: ' + row.modelId)
+  if (facts.manufacturer) {
+    const reference = facts.manufacturer
+    if (!reference.modelId || !['matched', 'reference-only'].includes(reference.identity) || !reference.sourceUrls?.length || !/^\d{4}-\d{2}-\d{2}$/.test(reference.checkedAt)) throw new Error('Invalid manufacturer provenance: ' + row.modelId)
+    for (const url of reference.sourceUrls) if (new URL(url).protocol !== 'https:') throw new Error('Invalid manufacturer source: ' + row.modelId)
+    for (const key of ['contextWindowTokens','maxInputTokens','maxOutputTokens']) if (reference[key] !== undefined && (!Number.isSafeInteger(reference[key]) || reference[key] <= 0)) throw new Error('Invalid manufacturer token limit: ' + row.modelId)
+  }
+  lines.push(`{ const model = staticModelRegistry[${JSON.stringify(row.provider)}]?.models.find(model => model.id === ${JSON.stringify(row.modelId)}); if (!model || model.protocol !== ${JSON.stringify(row.protocol)}) throw new Error('Specification identity mismatch: ${row.provider}/${row.modelId}'); model.specifications = ${JSON.stringify(facts)} }`)
+}
 for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter')) {
   const version = {kind:row.kind, id:row.versionId, checkedAt:row.checkedAt, sourceUrl:row.sourceUrls[0]}
   lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
@@ -212,6 +230,7 @@ source = source.includes(start)
   : source.replace('const fallbackReferences:', runtimeBlock + '\n\nconst fallbackReferences:')
 source = source.replace(/const modelRegistryVersion = '[^']+'/, `const modelRegistryVersion = '${config.version}'`)
 function write(file, content) {
+  if (skipMiniprogram && path.relative(root, file).startsWith('apps/miniprogram/')) return
   const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
   if (previous === content) return
   if (check) throw new Error(`Generated model catalog drift: ${path.relative(root, file)}`)
@@ -227,7 +246,8 @@ const selected = ast.statements.filter((statement) =>
   || ts.isVariableStatement(statement) && statement.declarationList.declarations.some((node) => names.has(node.name.getText(ast))))
 const js = ts.transpileModule(selected.map((node) => node.getText(ast)).join('\n') + '\n' + block.replace(/^export /gm, '') + '\nglobalThis.catalog = staticModelRegistry', { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None } }).outputText
 const context = vm.createContext({})
-vm.runInContext(js, context, { timeout: 5000 })
+// Full catalog schema evaluation can exceed 5s while other isolated builds are running.
+vm.runInContext(js, context, { timeout: 30000 })
 const providers = JSON.parse(JSON.stringify(context.catalog))
 for (const [provider, registry] of Object.entries(providers)) {
   const ids = new Set()
@@ -252,4 +272,4 @@ export const EXTENDED_MODEL_CHANNELS: Record<string, any> = catalog.channels
 export const STATIC_MODEL_REGISTRY_VERSION = ${JSON.stringify(config.version)}
 export const STATIC_MODEL_REGISTRY: Record<string, any> = catalog.registry
 `)
-console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}`)
+console.log(`Catalog ${config.version}: ${Object.values(providers).reduce((n, p) => n + p.models.length, 0)} static models; ${check ? 'no drift' : 'generated'}${skipMiniprogram ? ' (Web/Core only; Mini Program skipped)' : ''}`)

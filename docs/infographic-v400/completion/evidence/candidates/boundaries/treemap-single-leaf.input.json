@@ -1,0 +1,24 @@
+{
+  "figureTypeId": "treemap",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "only",
+        "label": "Only leaf",
+        "parent": null,
+        "value": 4
+      }
+    ],
+    "units": {
+      "value": "count"
+    },
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="'Noto Sans CJK SC', 'Noto Sans', 'Noto Sans Math', sans-serif">
+  <rect width="1280" height="720" fill="#ffffff"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0,0 10,3.5 0,7" fill="#555555"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="100" y="260" width="300" height="120" rx="16" ry="16" fill="#E8F4FD" stroke="#4A90D9" stroke-width="2.5"/>
+  <text x="250" y="310" text-anchor="middle" font-size="22" fill="#2C5F8A" font-weight="normal" font-style="normal">样品输入</text>
+  <text x="250" y="345" text-anchor="middle" font-size="18" fill="#4A90D9" font-weight="normal" font-style="normal">n = 12</text>
+
+  
+  <line x1="400" y1="320" x2="470" y2="320" stroke="#555555" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  
+  <rect x="490" y="260" width="320" height="120" rx="16" ry="16" fill="#E8F8E8" stroke="#4CAF50" stroke-width="2.5"/>
+  <text x="650" y="305" text-anchor="middle" font-size="22" fill="#2E7D32" font-weight="normal" font-style="normal">数据标准化</text>
+  <text x="650" y="345" text-anchor="middle" font-size="20" fill="#4CAF50" font-weight="normal" font-style="normal">
+    <tspan font-family="'Noto Sans Math', 'Noto Sans CJK SC', 'Noto Sans', sans-serif">x / x</tspan>
+    <tspan font-family="'Noto Sans Math', 'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="14" dy="5">0</tspan>
+  </text>
+
+  
+  <line x1="810" y1="320" x2="880" y2="320" stroke="#555555" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  
+  <rect x="900" y="260" width="300" height="120" rx="16" ry="16" fill="#FDE8E8" stroke="#E57373" stroke-width="2.5"/>
+  <text x="1050" y="305" text-anchor="middle" font-size="22" fill="#C62828" font-weight="normal" font-style="normal">结果输出</text>
+  <text x="1050" y="345" text-anchor="middle" font-size="18" fill="#E57373" font-weight="normal" font-style="normal">均值 = 1.0</text>
+</svg>

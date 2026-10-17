@@ -1,0 +1,122 @@
+[
+  {
+    "provider": "gemini",
+    "modelId": "gemini-4-argon",
+    "source": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+    "notes": "同步文本/识图；1M 是输入、思考与输出共享窗口；未开启后台长输出。"
+  },
+  {
+    "provider": "together",
+    "modelId": "meta-models/Muse-Spark-Open-816B-A42B",
+    "source": "https://docs.together.ai/docs/serverless/models",
+    "notes": "仅开放此渠道目录明确列出的角色；输出上限未单独确认。"
+  },
+  {
+    "provider": "together",
+    "modelId": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+    "source": "https://docs.together.ai/docs/serverless/models",
+    "notes": "仅开放此渠道目录明确列出的角色；输出上限未单独确认。"
+  },
+  {
+    "provider": "siliconflow",
+    "modelId": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "source": "https://www.siliconflow.cn/models",
+    "notes": "中国站；账号须完成实名。"
+  },
+  {
+    "provider": "siliconflow",
+    "modelId": "zai-org/GLM-5.3-Flash",
+    "source": "https://www.siliconflow.cn/models",
+    "notes": "中国站；账号须完成实名。"
+  },
+  {
+    "provider": "fireworks",
+    "modelId": "accounts/fireworks/models/muse-spark-open",
+    "source": "https://fireworks.ai/models/fireworks/muse-spark-open",
+    "notes": "Serverless 为截至 2026-10-29 的限时预览，仅美国容量；之后需重新核验渠道可用性。"
+  },
+  {
+    "provider": "tokenhub",
+    "modelId": "deepseek-v4.1-flash",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "notes": "腾讯云托管渠道；不等同于原厂直供 ID。"
+  },
+  {
+    "provider": "tokenhub",
+    "modelId": "mimo-v2.6-pro",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "notes": "腾讯云托管渠道；不等同于原厂直供 ID。"
+  },
+  {
+    "provider": "tokenhub",
+    "modelId": "mimo-v2.6-flash",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "notes": "腾讯云托管渠道；不等同于原厂直供 ID。"
+  },
+  {
+    "provider": "tokenhub",
+    "modelId": "step-5-preview",
+    "source": "https://cloud.tencent.com/document/product/1823/130051",
+    "notes": "腾讯云托管渠道；不等同于原厂直供 ID。"
+  },
+  {
+    "provider": "xiaomi",
+    "modelId": "mimo-v2.6-pro-ultraspeed",
+    "source": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+    "notes": "定制服务，需厂商单独开通；普通账户不保证可用。"
+  },
+  {
+    "provider": "bfl",
+    "modelId": "flux-3-image-klein",
+    "source": "https://api.bfl.ai/openapi.json",
+    "notes": "原生支持最多 10 张参考图；当前沿用单张原图编辑。"
+  },
+  {
+    "provider": "bailian",
+    "modelId": "qwen-image-2.1-pro",
+    "source": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+    "notes": "官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。"
+  },
+  {
+    "provider": "bailian",
+    "modelId": "qwen-image-2.1-turbo",
+    "source": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+    "notes": "官方最多 10 张参考图，图研当前沿用单张原图精修；最高 2K 总像素档位。"
+  },
+  {
+    "provider": "runware",
+    "modelId": "bfl:flux@3-image-klein",
+    "source": "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+    "notes": "尺寸及参考图数量按 Runware schema，独立于原厂。"
+  },
+  {
+    "provider": "runware",
+    "modelId": "bfl:flux@3-image-klein-base",
+    "source": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+    "notes": "尺寸及参考图数量按 Runware schema，独立于原厂。"
+  },
+  {
+    "provider": "runware",
+    "modelId": "alibaba:qwen-image@2.1-turbo",
+    "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+    "notes": "尺寸及参考图数量按 Runware schema，独立于原厂。"
+  },
+  {
+    "provider": "fal",
+    "modelId": "blackforestlabs/flux-3/klein/text-to-image",
+    "source": "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+    "notes": "沿用单张原图精修；高级布局参数未开放。"
+  },
+  {
+    "provider": "fal",
+    "modelId": "blackforestlabs/flux-3/klein/base/text-to-image",
+    "source": "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+    "notes": "沿用单张原图精修；高级布局参数未开放。"
+  },
+  {
+    "provider": "fal",
+    "modelId": "krea/v3/text-to-image",
+    "source": "https://fal.ai/models/krea/v3/text-to-image/api",
+    "notes": "沿用单张原图精修；高级布局参数未开放。默认 berry / low，不自动启用联网 high 推理。"
+  }
+]

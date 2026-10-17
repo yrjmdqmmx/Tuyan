@@ -1,0 +1,146 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "0a58288b7dcafc7178586fdc9d575d1b002280b9848f750d22fe4679e1cdf4d2",
+  "pngHash": "d918fd79ebc88c82132737f087a067fa086a122e3ae95d2ac6ae253c17fed4db",
+  "svgHash": "415afeb659a3a1ea737c688ed13edd02cdced0e66bb953f5e53ae2b10d6db83c",
+  "numeric": {
+    "typeId": "choropleth",
+    "computations": {
+      "suppliedValues": {
+        "A": 12,
+        "B": 28
+      },
+      "polygonAreasSquareDegrees": {
+        "A": 4.0,
+        "B": 4.0,
+        "Missing": 2.0
+      },
+      "missingRegions": [
+        "Missing"
+      ],
+      "classBoundaries": [
+        0,
+        10,
+        20,
+        30
+      ]
+    },
+    "checks": {
+      "A_vertices": {
+        "actual": 5.0,
+        "expected": 5.0,
+        "absoluteError": 0.0
+      },
+      "B_vertices": {
+        "actual": 5.0,
+        "expected": 5.0,
+        "absoluteError": 0.0
+      },
+      "Missing_vertices": {
+        "actual": 5.0,
+        "expected": 5.0,
+        "absoluteError": 0.0
+      },
+      "region_count": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "region",
+        "value"
+      ],
+      "options": {
+        "regions": [
+          {
+            "id": "A",
+            "polygon": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                0,
+                2
+              ]
+            ]
+          },
+          {
+            "id": "B",
+            "polygon": [
+              [
+                2,
+                0
+              ],
+              [
+                4,
+                0
+              ],
+              [
+                4,
+                2
+              ],
+              [
+                2,
+                2
+              ]
+            ]
+          },
+          {
+            "id": "Missing",
+            "polygon": [
+              [
+                0,
+                2
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                0,
+                3
+              ]
+            ]
+          }
+        ],
+        "crs": "EPSG:4326",
+        "projection": "plate_carree",
+        "valueSemantics": "Supplied rates per 1000; population denominator from source",
+        "boundarySource": "Synthetic rectangles, CC0 teaching fixture",
+        "boundaries": [
+          0,
+          10,
+          20,
+          30
+        ]
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

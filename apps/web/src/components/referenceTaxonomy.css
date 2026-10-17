@@ -1,0 +1,21 @@
+.reference-gallery-dialog .reference-gallery-toolbar{display:grid;grid-template-columns:minmax(170px,1fr) repeat(3,minmax(120px,.55fr)) auto;gap:10px}
+.reference-gallery-dialog .reference-facet{min-width:0}.reference-gallery-dialog .reference-facet select{min-width:0;width:100%}
+.reference-gallery-dialog .reference-gallery-toolbar{align-items:end}
+.reference-gallery-dialog .reference-gallery-eyebrow{font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:none}
+.reference-gallery-dialog .reference-gallery-dialog-head h2{font-size:26px;font-weight:600;line-height:1.35}
+.reference-gallery-dialog .reference-facet{gap:6px}
+.reference-gallery-dialog .reference-facet>span{font-size:12px;font-weight:500}
+.reference-gallery-dialog .reference-facet select{box-sizing:border-box;min-height:44px;padding:10px 36px 10px 12px;font-size:14px;font-weight:400;line-height:1.5}
+.reference-gallery-dialog .reference-gallery-search{box-sizing:border-box;min-height:44px}
+.reference-gallery-dialog .reference-gallery-search input{font-size:14px;line-height:1.5}
+.reference-gallery-dialog .reference-card-copy{gap:8px}
+.reference-gallery-dialog .reference-card-copy strong{font-size:15px;font-weight:600;line-height:1.5}
+.reference-gallery-dialog .reference-card-copy p{font-size:13px;line-height:1.65}
+.reference-gallery-dialog .reference-card-copy .reference-card-source{font-size:12px;line-height:1.5}
+.reference-gallery-dialog .reference-card-tags span{font-size:11px;font-weight:500;line-height:1.5}
+.reference-gallery-dialog .reference-card-select{font-size:14px;font-weight:600;line-height:1.5;padding:9px 12px}
+.reference-gallery-dialog .reference-pagination button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-width:44px;height:44px;padding:0 10px;font-size:14px;font-weight:500;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.reference-gallery-dialog .reference-pagination{flex-shrink:0}
+.reference-gallery-dialog .reference-selection-tray>div:first-child>strong{font-size:15px;font-weight:600}
+.reference-provenance{font-size:12px;line-height:1.7;overflow-wrap:anywhere;border-top:1px solid #e1e5db;margin-top:12px;padding-top:10px}.reference-provenance a{color:#557b39}.reference-license-tag{font-size:11px!important;color:#58754a!important}.reference-card-tags span{overflow-wrap:anywhere}
+@media(max-width:900px){.reference-gallery-dialog .reference-gallery-toolbar{grid-template-columns:1fr 1fr auto}.reference-gallery-dialog .reference-gallery-search{grid-column:1/-1}.reference-gallery-dialog .reference-facet:nth-of-type(4){grid-column:1/3}}

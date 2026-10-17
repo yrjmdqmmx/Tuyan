@@ -1,0 +1,1019 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "http://jats.nlm.nih.gov/publishing/1.3/JATS-journalpublishing1-3.dtd">
+<article article-type="research-article" dtd-version="1.3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<processing-meta>
+<custom-meta-group content-type="composition">
+<custom-meta specific-use="newgen" xlink:href="https://www.newgen.co/">
+<meta-name>Composition Vendor</meta-name>
+<meta-value>Newgen KnowledgeWorks (P) Ltd.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</processing-meta>
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-23-25076</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Industrial engineering</subject><subj-group><subject>Control engineering</subject><subj-group><subject>Automation</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Epidemiology</subject><subj-group><subject>Medical risk factors</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Cohort studies</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Geographical locations</subject><subj-group><subject>Europe</subject><subj-group><subject>Norway</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Education</subject><subj-group><subject>Educational attainment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Economics</subject><subj-group><subject>Labor economics</subject><subj-group><subject>Employment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Economics</subject><subj-group><subject>Labor economics</subject><subj-group><subject>Labor markets</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>The distribution of technology induced job loss: Evidence from a population-wide study in Norway</article-title>
+<alt-title alt-title-type="running-head">The distribution of technology induced job loss</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-1554-0996</contrib-id>
+<name name-style="western">
+<surname>Reme</surname>
+<given-names>Bjørn-Atle</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Røgeberg</surname>
+<given-names>Ole</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Wörn</surname>
+<given-names>Jonathan</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Bratsberg</surname>
+<given-names>Bernt</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Skirbekk</surname>
+<given-names>Vegard Fykse</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Center for Fertility and Health, Norwegian Institute of Public Health, Oslo, Norway</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Cluster for Health Services Research, Norwegian Institute of Public Health, Oslo, Norway</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Health Management and Health Economics, University of Oslo, Oslo, Norway</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Frisch Centre, Oslo, Norway</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Psychology, University of Oslo, Oslo, Norway</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>KPC Medical College and Hospital, INDIA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>We declare no competing interests.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">bjorn-atle.reme@fhi.no</email></corresp>
+</author-notes>
+<pub-date pub-type="epub"><day>15</day><month>4</month><year>2025</year></pub-date>
+<pub-date pub-type="collection"><year>2025</year></pub-date>
+<volume>20</volume>
+<issue>4</issue>
+<elocation-id>e0321072</elocation-id>
+<history>
+<date date-type="received"><day>24</day><month>8</month><year>2023</year></date>
+<date date-type="accepted"><day>28</day><month>2</month><year>2025</year></date>
+</history>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Reme et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0321072">
+</self-uri>
+<abstract>
+<p>Globalization and automation are leading to skill-biased structural changes in the labor market, resulting in the polarization of employment opportunities. These shifts are raising concerns about growing earnings inequality and gender disparities, particularly in occupations characterized by routine cognitive and physical tasks. This study utilizes comprehensive individual-level data from Norway to analyze gender differences in the routine intensity of occupations. The findings reveal significant and growing gender disparities. These disparities are most pronounced among individuals with low socioeconomic status. The analysis further identifies increasing gender differences in educational attainment as the primary contributor to the growing gender differences. Our results highlight the role of educational inequality in driving labor market disparities, emphasizing the need for targeted policy interventions to address these gendered dynamics, particularly among lower socioeconomic groups.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100005416</institution-id>
+<institution>Norges Forskningsråd</institution>
+</institution-wrap>
+</funding-source><award-id>296297</award-id>
+<principal-award-recipient><name name-style="western">
+<surname>Skirbekk</surname><given-names>Vegard Fykse</given-names></name></principal-award-recipient></award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100005416</institution-id>
+<institution>Norges Forskningsråd</institution>
+</institution-wrap>
+</funding-source><award-id>262700</award-id>
+<principal-award-recipient><name name-style="western">
+<surname>Skirbekk</surname><given-names>Vegard Fykse</given-names></name></principal-award-recipient></award-group>
+<funding-statement>This work was financed by the Research Council of Norway through its Centres of Excellence funding scheme (project number 262700) and the project DIMJOB (project number 296297). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="1"/>
+<page-count count="13"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The data used in this study encompasses educational outcomes, income, employment records, health records and demographic information for entire cohorts of the Norwegian population. These data were made available on loan for research purposes. Other researchers may apply for access to the same sources - see “<ext-link ext-link-type="uri" xlink:href="http://helsedata.no/en" xlink:type="simple">helsedata.no/en</ext-link>” and “<ext-link ext-link-type="uri" xlink:href="https://www.ssb.no/en/data-til-forskning/utlan-av-data-til-forskere" xlink:type="simple">https://www.ssb.no/en/data-til-forskning/utlan-av-data-til-forskere</ext-link>”.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>In recent decades, skill-biased technological change has allowed firms to automate and offshore routine-intensive tasks. This process has resulted in the erosion of low-skilled and mid-level jobs, while simultaneously increasing returns to education [<xref ref-type="bibr" rid="pone.0321072.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0321072.ref004">4</xref>]. These trends are expected to continue. According to a study from the Organisation for Economic Co-operation and Development (OECD) covering 32 member countries, 14% of jobs were classified as highly automatable [<xref ref-type="bibr" rid="pone.0321072.ref005">5</xref>]. The disappearance of routine-intensive occupations may not necessarily result in an increase in long-term unemployment, as it is also expected to generate new opportunities and product markets that could drive labor demand [<xref ref-type="bibr" rid="pone.0321072.ref006">6</xref>]. From a classical economics perspective, labor saving automation frees up labor for new tasks, though the reconfiguration of the economy may involve a slow and painful shift in the labor market structure [<xref ref-type="bibr" rid="pone.0321072.ref007">7</xref>,<xref ref-type="bibr" rid="pone.0321072.ref008">8</xref>]. In fact, a recent OECD policy-brief found that countries with higher investments in robotics experienced <italic>higher</italic> employment growth [<xref ref-type="bibr" rid="pone.0321072.ref009">9</xref>], but also heightened job instability among workers in roles requiring less formal education. This raises the question of whether a continuation of these trends will serve to amplify or dampen pre-existing inequalities [<xref ref-type="bibr" rid="pone.0321072.ref010">10</xref>,<xref ref-type="bibr" rid="pone.0321072.ref011">11</xref>], such as differences between individuals with low and high education levels.</p>
+<p>Several studies have identified men in occupations requiring less formal education as a group that has experienced stagnation or declines in both wage level and labor market participation [<xref ref-type="bibr" rid="pone.0321072.ref012">12</xref>,<xref ref-type="bibr" rid="pone.0321072.ref013">13</xref>]. This development has coincided with a decline in marriage rates, fertility, and health outcomes [<xref ref-type="bibr" rid="pone.0321072.ref013">13</xref>–<xref ref-type="bibr" rid="pone.0321072.ref015">15</xref>]. While the reasons behind these developments are largely unknown, it has stirred debates among policy makers and academics as to the role of technological development.</p>
+<p>Norway is a small, open economy with a highly educated workforce, extensive social safety net, and a compressed wage structure with centralized wage bargaining and strong labor unions. These factors have been argued to promote the adoption of technological innovations by industry [<xref ref-type="bibr" rid="pone.0321072.ref016">16</xref>]. Over recent decades, Norway has experienced both an increase in employment within high-skill occupations and a rise in automation through the use of industrial robots, reflecting broader trends observed in other developed economies [<xref ref-type="bibr" rid="pone.0321072.ref017">17</xref>]. Recent evidence from Norway’s manufacturing sector, which leverages import data on industrial robots, suggests that occupational groups particularly vulnerable to automation experience a decline in employment share and wages but also show an increase in unionization [<xref ref-type="bibr" rid="pone.0321072.ref018">18</xref>]. This suggests that labor unions may play a role in mitigating some of the negative impacts of automation. While previous studies primarily have focused on the negative impacts of automation on employment or inequality, less is known regarding the distribution of this risk across the population and to what extent we should expect it to dampen or amplify pre-existing socioeconomic differences. In particular, evidence on the development over time within subgroups and its association with other known risk factors of social marginalization, is scarce. We hypothesize that men with lower education, who are more likely to be in routine-based occupations requiring fewer social skills, are at an increasingly higher risk of automation. Such a trend could exacerbate existing social inequalities [<xref ref-type="bibr" rid="pone.0321072.ref019">19</xref>].</p>
+<p>The study aimed to investigate how a widely used indicator of occupational automation risk is associated and aligned at the individual level with measures of socioeconomic status in a register based study of the full population of Norwegian 45-year-olds, and how this differs for men and women. Our specific objectives were to (i) examine and explain the development in gender-specific risk across birth cohorts, and (ii) to estimate the association with other risk factors of social marginalization, including educational attainment, income, family background and health measures.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec003">
+<title>Data and analytical sample</title>
+<p>We used linked population-wide administrative register data, covering information from several national registries. The registers were linked by Statistics Norway and then deidentified before researchers were allowed access. The acquisition of the data was part of the data structure at the Center for Fertility at the Norwegian Institute of Public Health, where data sets from the different registers were linked and stored at a secure server hosted by the Services for sensitive data (TSD), University of Oslo.</p>
+<p>In this study we used demographic information and family status (national population register), labor market history (employer and employee register), educational attainment (national educational database), and physician visits (Norway Control and Payment of Health Reimbursements database; KUHR). The data were accessed by the researchers on March 1st, 2020.</p>
+<p>Our study period covers 2003–2018, as this was the period where we had population wide records of occupational codes. Given the considerable differences in early-career labor market trajectories and the timing of family establishment across education levels, we included individuals at age 45 in each year. This approach, choosing mid-career, minimizes the risk of misleading associations arising from such variations in timing, driven by education. Hence, our sample consisted of the full population of individuals born 1958–1973 who were employed in the year they turned 45 and living in Norway (N =  900,559).</p>
+<p>To measure structural risk of automation at the occupation level, we use the routine task intensity (RTI) index suggested in Acemoglu and Autor (2011) [<xref ref-type="bibr" rid="pone.0321072.ref020">20</xref>]. This approach to measuring routine intensity has been applied extensively in the labor economics literature on the impacts of skill based technological change, starting with the seminal contribution of Autor et al. (2003) [<xref ref-type="bibr" rid="pone.0321072.ref021">21</xref>]. The measure is a theoretically informed indicator of structural economic risk, classifying occupations based on the tasks performed in it. In particular, the index captures the extent to which an occupation is characterized by routine tasks in the cognitive, manual or interpersonal domain. This reflects an economic theory of automation predicting that routine tasks are more easily automated, an assumption that has received extensive empirical support in work employing the RTI index [<xref ref-type="bibr" rid="pone.0321072.ref021">21</xref>]. Measurement of the content of job tasks were retrieved from the O*NET database. This database consists of a highly detailed description of tasks performed in an occupation. From the large set of measurements in O*NET, Acemoglu and Autor (2011) suggests a subset of items which describe these dimensions. To summarize these items to a one-dimensional RTI measure for each occupation, we used the method suggested by Lewandowski et al. (2017) [<xref ref-type="bibr" rid="pone.0321072.ref022">22</xref>]. Last, to ease interpretation, we standardized the RTI score distribution in the sample to be mean zero with a standard deviation of 1 (RTI z-score). For further details on the construction of the Routine Intensity Index (RTI), see Supporting Information (“<bold>Constructing the routine intensity index (RTI)</bold>” in <xref ref-type="supplementary-material" rid="pone.0321072.s001">S1 File</xref>).</p>
+<p>The RTI is one of two commonly used measures used to assess the risk of automation, with the other being the Frey-Osborne index (FOI) [<xref ref-type="bibr" rid="pone.0321072.ref021">21</xref>,<xref ref-type="bibr" rid="pone.0321072.ref023">23</xref>]. Although these measures are strongly correlated (see <xref ref-type="supplementary-material" rid="pone.0321072.s002">S1 Table</xref>), we based our analysis on the RTI for the following reasons. First, the RTI is task-based – it assesses to what extent a job consists of tasks that could be automated – while the FOI is based on expert assessment of occupations. Hence, the RTI has a more robust theoretical foundation, as it allows for occupational scores to change with their task content [<xref ref-type="bibr" rid="pone.0321072.ref024">24</xref>]. Additionally, the RTI has done comparatively better in predictive tests [<xref ref-type="bibr" rid="pone.0321072.ref025">25</xref>], and has been used in an extensive literature on skill biased technological change [<xref ref-type="bibr" rid="pone.0321072.ref002">2</xref>,<xref ref-type="bibr" rid="pone.0321072.ref021">21</xref>,<xref ref-type="bibr" rid="pone.0321072.ref026">26</xref>–<xref ref-type="bibr" rid="pone.0321072.ref028">28</xref>] (see [<xref ref-type="bibr" rid="pone.0321072.ref029">29</xref>] and [<xref ref-type="bibr" rid="pone.0321072.ref030">30</xref>] for a description and discussion of the difference between these measures, and other alternative measures used in the literature).</p>
+<p>The main analysis in this paper is based on the 2003 version of the RTI – the first year of our study period. However, in the Supplementary material we also present all main results using both the FOI and the RTI based on 2019 O*NET data to assess robustness of our conclusions against changes in task content over time. <xref ref-type="supplementary-material" rid="pone.0321072.s002">S1 Table</xref> shows that all these measures of structural change are highly correlated, and our main conclusions are therefore independent of the selected measure.</p>
+<p>Other measures used as covariates for stratification in the analysis were the following:</p>
+<p><bold>Education:</bold> The highest level of completed education, available from the National Education Database. There are 9 levels within the ISCED classification, where level 9 is “unknown”. In the analysis we either use 4 categories: primary (1–2), secondary (3–5), 1–4-year university education (6) and master and higher university education (7–8), or dichotomize by whether or not the individual had university level education or not, i.e., 1–5 vs 6–8, referred to as “low” and “high” education, respectively.</p>
+<p><bold>Own income:</bold> Own income was retrieved from the income tax register. We calculated birthyear- and gender-stratified income quintiles. In the main part of the analysis, we use a binary variable indicating whether the individual belonged to the lowest income quintile.</p>
+<p><bold>Father income</bold>: Father’s income was retrieved from the income tax register. We calculated the father’s income quintile at age 40, stratified on his birth cohort. In the main part of the analysis, we use a binary variable indicating whether the father belonged to the lowest income quintile.</p>
+<p><bold>Marital status</bold>: Marital status was retrieved from the official marriage register. This contains complete records of marriages in Norway since 1974. For the analysis we used a binary indicator for whether the individual was registered as married at age 45. Hence, separated couples, or couples that for other reasons did report to the register, were not captured by our measure.</p>
+<p><bold>Childlessness</bold>: Using the population register we created a binary indicator for whether the individual was childless at age 45.</p>
+<p><bold>Musculoskeletal/psychological problems</bold>: We used the register of primary care utilization (KUHR) to create a binary indicator for whether the individual had visited primary health care (general practitioner) for musculoskeletal (L-chapter symptoms or diagnoses) and/or psychological (P-chapter symptoms or diagnoses) problems during the year when being 45-years old. These two chapters were chosen, as they are the most common reasons for both health problems and sick leave among 45-year-olds in Norway.</p>
+<p><xref ref-type="table" rid="pone.0321072.t001">Table 1</xref> provides summary statistics across covariates, excluding covariates based on creating groups based on the underlying distribution (quintiles for own income and parental income).</p>
+<table-wrap id="pone.0321072.t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0321072.t001</object-id><label>Table 1</label><caption><title>Summary statistic for covariates.</title></caption>
+<alternatives><graphic id="pone.0321072.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.t001" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Covariate</th>
+<th align="left">Proportion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Female</td>
+<td align="left">49%</td>
+</tr>
+<tr>
+<td align="left">Childless</td>
+<td align="left">15%</td>
+</tr>
+<tr>
+<td align="left">Married</td>
+<td align="left">57%</td>
+</tr>
+<tr>
+<td align="left">Primary education</td>
+<td align="left">25%</td>
+</tr>
+<tr>
+<td align="left">Secondary education</td>
+<td align="left">36%</td>
+</tr>
+<tr>
+<td align="left">Low university education (Bachelor’s)</td>
+<td align="left">29%</td>
+</tr>
+<tr>
+<td align="left">High university (Master’s or or PhD)</td>
+<td align="left">10%</td>
+</tr>
+<tr>
+<td align="left">Visit to doctor for psychological problem</td>
+<td align="left">9%</td>
+</tr>
+<tr>
+<td align="left">Visit to doctor for musculoskeletal problem</td>
+<td align="left">22%</td>
+</tr>
+<tr>
+<td align="left">Number of observations (N)</td>
+<td align="left">900,559</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+</sec>
+<sec id="sec004">
+<title>Statistical methods</title>
+<p>All analyses were conducted using R, version 4.1.2.</p>
+<sec id="sec005">
+<title>Data curation and organization.</title>
+<p>Our sample included all individuals born between 1958 and 1973 who were employed in the year they turned 45 and resided in Norway. The database contains all registered employer-employee relationships in Norway each year, hence covering all employed wage earners. Occupational RTI scores were assigned to individuals based on their main occupation in their employment records at age 45.</p>
+</sec>
+<sec id="sec006">
+<title>Statistical models.</title>
+<p>Our aim was to examine how the risk of automation at the occupational level was associated with gender and various measures of socioeconomic status. This was achieved by estimating RTI z-score in different bivariate and multivariate regression models, stratified by gender. Hence, with this approach we both estimate RTI z-scores, and assess to what extent RTI z-scores can be explained by our explanatory variables.</p>
+<p>First, to assess time trends, we estimated the year- and gender-specific average RTI z-scores using regression models. Year and gender were included as binary indicators, hence the approach is equivalent to the conditional means. Since we used binary indicators, the method is semi-parametric, not resting on strict assumptions related to functional form.</p>
+<p>Second, we examined how the structural risk of automation (RTI z-score) was associated with our measures of socioeconomic status and health (see Data and analytical sample). These models also included birth cohort dummies to adjust for potential time trends.</p>
+<p>Third, we performed an attribution analysis where we estimated how much of the increase in automation risk gender gap could be explained by the various covariates included in the regression models. This analysis was carried out in two steps. First, the gender-specific change in covariate levels over the period 2003–2018 was calculated. Then, to estimate the contribution, we multiplied these changes by the corresponding covariate regression coefficients from the multivariate model to estimate the relative impact of each risk factor to the evolving gender-specific risk of automation.</p>
+<p>Finally, to provide a detailed description of the variation in occupational risk scores in the most current population of 45-year-olds in our data - birth cohort 1973 - we estimated the RTI z-score for each observed combination of covariate values, separately for each gender. The results were plotted, ordered from low to high, in a bubble scatter plot where the bubble size reflects the size of the covariate group. To examine how these patterns have evolved over time, we also reproduced the plot for the first birth cohort in our data (born in 1958).</p>
+</sec>
+</sec>
+<sec id="sec007">
+<title>Ethical considerations</title>
+<p>The ethical approval for this study was given by The Ethics Committee of South-East Norway (#2018/434). Based on Section 35 of the Health Research Act, participant consent was waived by the Committee. Data from the different registers were linked by certified researchers who only had access to encrypted personal ID-variable. Extensive measures were taken to maintain the security and confidential handling of the research data. Throughout the process of analyzing data and presenting findings, we are committed to preventing stigmatization and to upholding ethical principles of honesty and transparency in reporting our findings. To achieve this, we used neutral language and avoided portraying vulnerable groups in ways that might be perceived as burdensome. Additionally, the study does not report on group sizes that could potentially disclose information about individual statistical units, in accordance with the recommendations outlined in the Handbook on Statistical Disclosure Control [<xref ref-type="bibr" rid="pone.0321072.ref031">31</xref>].</p>
+</sec>
+</sec>
+<sec id="sec008" sec-type="results">
+<title>Results</title>
+<sec id="sec009">
+<title>Gender specific time trends in routine intensity</title>
+<p>Our data covers the 15-year period 2003–2018. We first examined the development in routine intensity across this period, separately for each gender (<xref ref-type="fig" rid="pone.0321072.g001">Fig 1</xref>). In the supplementary materials we also present the development in RTI z-score for different levels of each covariate used in the analysis (<xref ref-type="supplementary-material" rid="pone.0321072.s003">S1 Fig</xref>).</p>
+<fig id="pone.0321072.g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0321072.g001</object-id><label>Fig 1</label><caption><title>The yearly average routine intensity index among 45-year-olds by gender.</title><p>The figure shows the yearly average RTI z-score, stratified by year, for 45-year-olds (birth cohorts 1958 to 1973) by gender. The 95% confidence intervals are indicated by the error bars. See <xref ref-type="supplementary-material" rid="pone.0321072.s004">S2 Table</xref> in the Supplementary Material for a corresponding table.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.g001" xlink:type="simple"/></fig>
+<p>While there already was a substantial gender difference in standardized routine intensity in 2003 - the score was 0.13 [95% CI, 0.12–0.14] for men and -0.13 [95% CI, (-0.14)-(-0.12)] for women - the difference gradually increased up until 2018, to 0.18 [95% CI, 0.17–0.19] for men and -0.20 [95% CI, (-0.21)-(-0.19)] for women. In the Supplementary material we also present the average risk score using the Frey-Osbourne index (<xref ref-type="supplementary-material" rid="pone.0321072.s005">S2 Fig</xref>), RTI 2019 z-score (<xref ref-type="supplementary-material" rid="pone.0321072.s006">S3 Fig</xref>), and not z-standardized RTI scores (<xref ref-type="supplementary-material" rid="pone.0321072.s007">S4 Fig</xref>). It should be noted that when presenting time trends with the FOI or raw RTI-score, the time trend is downward sloping, indicating that the overall risk of automation is falling during the study period. However, the decrease is smaller for men, causing an increasing gender gap.</p>
+</sec>
+<sec id="sec010">
+<title>The association between structural risk and socioeconomic status</title>
+<p>In bivariate analyses, RTI z-score was most strongly associated with low education (education below university level) with coefficients of 1.11 (p &lt;  0.001) for women and 0.82 for men (p &lt;  0.001) (<xref ref-type="fig" rid="pone.0321072.g002">Fig 2A</xref>). Regarding gender, the association between RTI z-score and socioeconomic risk factors were higher among men for almost all socioeconomic indicators assessed. See the Supplementary material for models using the Frey-Osbourne index (<xref ref-type="supplementary-material" rid="pone.0321072.s008">S5 Fig</xref>) and RTI 2019 z-score (<xref ref-type="supplementary-material" rid="pone.0321072.s009">S6 Fig</xref>).</p>
+<fig id="pone.0321072.g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0321072.g002</object-id><label>Fig 2</label><caption><title>Routine intensity risk factors by gender.</title><p>The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars. Detailed regression tables are provided in the Supplementary Material (<xref ref-type="supplementary-material" rid="pone.0321072.s010">S3 Table</xref>).</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.g002" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec011">
+<title>Explaining the increasing gender gap – attribution analysis</title>
+<p>The gender differences in regression coefficients shown in <xref ref-type="fig" rid="pone.0321072.g002">Fig 2</xref> could explain a gender gap in the RTI. However, to understand why this gap has increased over time, we also need to consider gender-specific changes in the prevalence of relevant risk factors. To explore this further, we conduct an attribution analysis to assess how the gender-specific development of each risk factor contributes to the overall change in the gap. This analysis was carried out in two steps. First, the gender-specific change in prevalence over the period 2003–2018 was calculated (<xref ref-type="fig" rid="pone.0321072.g003">Fig 3A</xref>). Second, to estimate the contribution, we multiplied these changes by the regression coefficients from the multivariate model (see <xref ref-type="fig" rid="pone.0321072.g002">Fig 2B</xref>) to estimate the relative impact of each risk factor to the evolving gender-specific risk of automation. These results are shown in <xref ref-type="fig" rid="pone.0321072.g003">Fig 3B</xref>.</p>
+<fig id="pone.0321072.g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0321072.g003</object-id><label>Fig 3</label><caption><title>Attribution analysis of routine intensity risk factors among 45-year-olds in 2003 and 2018, by gender.</title><p>(A) Share of 45-year-olds in 2003 and 2018 exposed to various risk factors. (B) Estimated impact of changes in exposure, calculated by multiplying the change in share (from Panel A) by the corresponding regression coefficient for each characteristic, based on a multivariate regression of the RTI z-score on all risk factors (see <xref ref-type="fig" rid="pone.0321072.g002">Fig 2B</xref>).</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.g003" xlink:type="simple"/></fig>
+<p>The largest change in risk factor exposure was related to an increase in higher education (and correspondingly a decline in the share with low education; <xref ref-type="fig" rid="pone.0321072.g003">Fig 3A</xref>), especially among women (from 33 to 58 percent). There was also a substantial increase in the share of the sample that were unmarried, both among men (from 37 to 49 percent) and women (from 35 to 47 percent). Regarding the impact of the change in exposure on RTI z-score, i.e., when combining the strength of association (<xref ref-type="fig" rid="pone.0321072.g002">Fig 2B</xref>) with the change in exposure (<xref ref-type="fig" rid="pone.0321072.g003">Fig 3A</xref>), the strongest impact was found for education with an estimated impact on the RTI z-score of -0.117 (95% CI (-0.116)-(-0.118)) for men and -0.197 (95% CI (-0.195)-(-0.198)) for women.</p>
+</sec>
+<sec id="sec012">
+<title>Distribution of structural risk across population groups</title>
+<p>The estimated RTI z-scores from a multivariate model applied to the 2018 cohort of 45 years old individuals (birth cohort 1973) showed substantial variation across combinations of risk factors (<xref ref-type="fig" rid="pone.0321072.g004">Fig 4</xref>). While the predicted RTI z-scores were -0.75 [95% CI (-0.78)-(-0.72)] and -0.80 [95% CI (-0.83)-(-0.77)] among highly educated married men and women with children and from high SES families, the corresponding RTI z-scores were 0.82 [95% CI 0.69–0.95] and 0.37 [95% CI 0.17–0.58] among less educated unmarried men and women without children from low SES families (see <xref ref-type="supplementary-material" rid="pone.0321072.s012">S4 Table</xref> and <xref ref-type="supplementary-material" rid="pone.0321072.s013">S5 Table</xref> for corresponding tables). To examine how this distribution has developed over time, we also estimated this model for the 2003 cohort (1958 birth cohort). The comparison across cohorts reveals that while the gender difference in automation risk declined among highly educated individuals, it has remained substantial among those of lower education. Hence, considering the increasing share of women taking higher education, it supports our finding that the increasing gender gap is due to a large shift in the share of women with university education (<xref ref-type="supplementary-material" rid="pone.0321072.s011">S7 Fig</xref>).</p>
+<fig id="pone.0321072.g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0321072.g004</object-id><label>Fig 4</label><caption><title>Predicted RTI z-scores from multivariate regression by gender.</title><p>The figure presents predicted RTI z-scores based on gender-specific models estimated for the 1973 birth cohort (i.e., those aged 45 in 2018). The explanatory variables were indicators for educational level (Primary educ =  primary education; Secondary educ =  secondary education; Low uni =  lower university (Bachelor’s degree); High uni =  higher university (Master’s degree or higher)), indicators for childlessness (Childless), marital status (Married), and whether the father’s average income rank between ages 40 and 50 was within the lowest quintile among men of the same age group (Low parental income). See Supplementary Material (<xref ref-type="supplementary-material" rid="pone.0321072.s012">S4 Table</xref> and <xref ref-type="supplementary-material" rid="pone.0321072.s013">S5 Table</xref>) for detailed tables and the average RTI z-scores for each group.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.g004" xlink:type="simple"/></fig>
+</sec>
+</sec>
+<sec id="sec013" sec-type="conclusions">
+<title>Discussion</title>
+<p>Our study has three main findings. First, the risk of automation was higher among men than women. This difference increased from 2003 to 2018. Second, the risk of automation was higher among individuals with low socioeconomic status and less social support in the form of a partner and children. Third, the main reason for the increasing gender gap was the growing gender differences in educational attainment. In summary, our study suggests that automation may exacerbate existing social inequalities and create a more unstable job market situation for men that may already struggle financially and socially. And, if disparities in economic and social opportunity are allowed to grow without mitigating policies, they have the potential to create social unrest and political polarization. At the same time, the nature of technological development changes rapidly, as evidenced by the introduction of large language models (LLMs) and multimodal models in recent years. These new developments may have further increased the scope of automation, potentially increasing the scope of routine tasks to also cover language-based tasks such as report writing and analysis.</p>
+<p>Our study of Norway provides insights into automation risks within advanced economies, characterized by high educational attainment, strong norms of gender equality, and a well-developed technical infrastructure. A recent study covering 47 countries identified technology adoption and workforce skill levels as key factors driving cross-country variation in routine task intensity [<xref ref-type="bibr" rid="pone.0321072.ref032">32</xref>]. Therefore, developing countries, where larger shares of the population lack formal education, training, or work experience with information and communication technologies, were found to be more exposed to automation risks.</p>
+<p>Gender disparities in automation risk have been examined across various regions, with mixed findings regarding which gender is more vulnerable [<xref ref-type="bibr" rid="pone.0321072.ref030">30</xref>,<xref ref-type="bibr" rid="pone.0321072.ref033">33</xref>–<xref ref-type="bibr" rid="pone.0321072.ref035">35</xref>]. We have found that the growing gender gap in the risk of automation can be attributed, in large part, to the increasing levels of education among women. It is interesting to note that this gap in education continues to widen, and Statistics Norway reported in 2019 that in many municipalities the share of highly educated women is more than twice that of men [<xref ref-type="bibr" rid="pone.0321072.ref036">36</xref>]. The gap found in this study likely reflects the significant rise in educational attainment among women in the Nordic countries over recent decades. However, the trend of increasing gender differences has, to the authors’ knowledge, not yet been shown in population-wide data covering a long time period. As these developments are likely to continue, it is important for policy makers to understand their implications and carefully consider the best ways to address and mitigate the negative impacts.</p>
+<p>Automation risk varies significantly across sectors, depending on the extent to which occupations consist of more routine tasks, or require interpersonal and emotional skills. The recent Future of Jobs Report by the World Economic Forum, finds that jobs within the care economy and technology sector are growing, while clerical secretarial workers are expected to see the largest declines [<xref ref-type="bibr" rid="pone.0321072.ref037">37</xref>]. In short, industries requiring a combination of emotional intelligence, complex problem-solving, and adaptability will remain challenging to automate in the foreseeable future. However, even within sectors assumed to grow over the coming decades, certain tasks (e.g., diagnostic imaging in healthcare or administrative work in education) are increasingly automated. In summary, the structure of the labor markets, educational trajectories chosen by different genders, cultural norms, technological readiness, industrial composition, will together determine how countries and genders, and other subgroups of the population, are differentially affected by technological developments over the coming decades.</p>
+<sec id="sec014">
+<title>Strengths and weaknesses</title>
+<p>The main strength of our study is that it covers the full population of employed 45-year-old individuals in Norway over a 15-year period across several important characteristics related to health, financial position, education, and family formation. Hence, in contrast to most other studies on this topic which uses survey data, our study does not suffer from selection bias. At the same time, our study has several weaknesses. First, the study has limited generalizability due to its focus on Norway, a country with unique characteristics related to gender roles, institutional environments, and industry structure. For example, Norway has an extensive welfare system that compensates 62.4 percent of the income in the case of job loss. Hence, the external validity of the results is limited, and likely most relevant for Northern European countries with similar institutions and social norms. At the same time, similar gender-based occupational patterns are likely to exist in diverse geographic contexts. Consequently, the widening gender gap in automation risk and its association with social risk factors are likely present in countries also far from Norway. Second, the scope of the study is limited to what can be quantitatively measured in administrative registers and may not capture important experiential aspects related to technological development that could be measured with qualitative methods.</p>
+</sec>
+</sec>
+<sec id="sec015" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The gender difference in the risk of automation has been increasing, with a particular high risk among lower educated men with fewer family ties. This potentially has significant and far-reaching negative impacts on individuals and society as it could exacerbate the concentration of economic, social and health exclusion in the coming decades. Given the increasing disparities identified in this study, policy makers should monitor the development in job market opportunities for various subgroups of the working-age population, and evaluate programs aimed at supporting individuals that are particularly negatively affected. For example, given the heightened risk faced by individuals in jobs that require less formal education, policymakers should consider implementing targeted upskilling programs that equip these workers—especially younger individuals—with skills that are in high demand and less likely to be at risk of automation. Last, provided the recent rapid developments in generative AI, future research should also explore how the risk distribution is evolving over time across age-groups, industries and social risk factors.</p>
+</sec>
+<sec id="sec016" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0321072.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Constructing the routine intensity index (RTI).</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s002" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Correlation matrix.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s003" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>The yearly average routine intensity index among 45-year-olds by gender, for different subgroups of the sample.</title>
+<p>The figure shows the average RTI z-score, stratified by year for 45-year-olds (birth cohorts 1958–1973) by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s004" xlink:type="simple">
+<label>S2 Table</label>
+<caption>
+<title>Gender-specific average RTI-z score among 45-year-olds, 2003–2018.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s005" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s005" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Gender-specific yearly average Frey-Osborne index (FOI) among 45-year olds.</title>
+<p>The figure shows the yearly average FOI, for 45-year-olds (birth cohorts 1958–1973) by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s006" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s006" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Gender-specific yearly average routine intensity among 45-year olds, RTI-2019 z-score.</title>
+<p>The figure shows the yearly average RTI-2019 z-score, for 45-year-olds (birth cohorts 1958–1973) by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s007" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s007" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Gender-specific yearly average routine intensity among 45-year olds, raw RTI-2003 score.</title>
+<p>The figure shows the yearly average RTI score, for 45-year-olds (birth cohorts 1958–1973) by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s008" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s008" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>Frey-Osborne index (FOI) risk factors by gender.</title>
+<p>The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the FOI as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s009" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s009" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title>Routine intensity risk factors by gender, RTI-2019 z-score.</title>
+<p>The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI-2019 z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s010" xlink:type="simple">
+<label>S3 Table</label>
+<caption>
+<title>Results from bivariate and multivariate regression models.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s011" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s011" xlink:type="simple">
+<label>S7 Fig</label>
+<caption>
+<title>Predicted RTI-score from a multivariate regression, for 2003 (birth cohort 1958).</title>
+<p>The figure shows the predicted RTI-z-score from a model estimated on the 1958 birth cohort (45 years old in 2003) explaining RTI-z-score with four educational levels, a dummy for childless, a dummy for whether married and a dummy for whether father’s income average income rank between ages 40 and 50 was within the lowest quintile of men of similar age.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s012" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s012" xlink:type="simple">
+<label>S4 Table</label>
+<caption>
+<title>Predicted and average RTI z-scores for men (cf. Fig 4).</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0321072.s013" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s013" xlink:type="simple">
+<label>S5 Table</label>
+<caption>
+<title>Predicted and average RTI z-scores for women (cf. Fig 4).</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0321072.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Autor</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>Dorn</surname> <given-names>D</given-names></name>. <article-title>The Growth of Low-Skill Service Jobs and the Polarization of the US Labor Market</article-title>. <source>American Economic Review</source>. <year>2013</year>;<volume>103</volume>(<issue>5</issue>):<fpage>1553</fpage>–<lpage>97</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1257/aer.103.5.1553" xlink:type="simple">10.1257/aer.103.5.1553</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goos</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Manning</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Salomons</surname> <given-names>A</given-names></name>. <article-title>Job polarization in Europe</article-title>. <source>American Economic Review</source>. <year>2009</year>;<volume>99</volume>(<issue>2</issue>):<fpage>58</fpage>–<lpage>63</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goos</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Manning</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Salomons</surname> <given-names>A</given-names></name>. <article-title>Explaining job polarization: Routine-biased technological change and offshoring</article-title>. <source>The American Economic Review</source>. <year>2014</year>;104(8):2509-26).</mixed-citation></ref>
+<ref id="pone.0321072.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Graetz</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Michaels</surname> <given-names>G</given-names></name>. <article-title>Robots at Work</article-title>. <source>The Review of Economics and Statistics</source>. <year>2018</year>;<volume>100</volume>(<issue>5</issue>):<fpage>753</fpage>–<lpage>68</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1162/rest_a_00754" xlink:type="simple">10.1162/rest_a_00754</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref005"><label>5</label><mixed-citation publication-type="other" xlink:type="simple">Nedelkoska L, Quintini G. Automation, skills use and training. 2018.</mixed-citation></ref>
+<ref id="pone.0321072.ref006"><label>6</label><mixed-citation publication-type="other" xlink:type="simple">Genz S, et al. How Do Workers Adjust When Firms Adopt New Technologies? 2021.</mixed-citation></ref>
+<ref id="pone.0321072.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Acemoglu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Lelarge</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Restrepo</surname> <given-names>P</given-names></name>. <article-title>Competing with robots: Firm-level evidence from France</article-title>. <source>AEA Papers and Proceedings</source>. <year>2020</year>;<volume>110</volume>:<fpage>383</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Acemoglu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Restrepo</surname> <given-names>P</given-names></name>. <article-title>Robots and jobs: Evidence from US labor markets</article-title>. <source>Journal of Political Economy</source>. <year>2020</year>;<volume>128</volume>(<issue>6</issue>):<fpage>2188</fpage>–<lpage>244</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gregory</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Salomons</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zierahn</surname> <given-names>U</given-names></name>. <article-title>Racing with or against the machine? Evidence on the role of trade in Europe</article-title>. <source>Journal of the European Economic Association</source>. <year>2022</year>;<volume>20</volume>(<issue>2</issue>):<fpage>869</fpage>–<lpage>906</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bessen</surname> <given-names>J</given-names></name>. <article-title>Automation and jobs: when technology boosts employment*</article-title>. <source>Economic Policy</source>. <year>2019</year>;<volume>34</volume>(<issue>100</issue>):<fpage>589</fpage>–<lpage>626</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/epolic/eiaa001" xlink:type="simple">10.1093/epolic/eiaa001</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmidpeter</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Winter-Ebmer</surname> <given-names>R</given-names></name>. <article-title>Automation, unemployment, and the role of labor market training</article-title>. <source>European Economic Review</source>. <year>2021</year>;<volume>137</volume>:<fpage>103808</fpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Binder</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Bound</surname> <given-names>J</given-names></name>. <article-title>The Declining Labor Market Prospects of Less-Educated Men</article-title>. <source>J Econ Perspect</source>. <year>2019</year>;<volume>33</volume>(<issue>2</issue>):<fpage>163</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1257/jep.33.2.163" xlink:type="simple">10.1257/jep.33.2.163</ext-link></comment> <object-id pub-id-type="pmid">33343082</object-id></mixed-citation></ref>
+<ref id="pone.0321072.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bratsberg</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Kotsadam</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Walther</surname> <given-names>S</given-names></name>.<article-title> Male Fertility: Facts, Distribution and Drivers of Inequality</article-title>. <source>SSRN Electronic Journal</source>. <year>2021</year>.</mixed-citation></ref>
+<ref id="pone.0321072.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lundberg</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Pollak</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Stearns</surname> <given-names>J</given-names></name>. <article-title>Family Inequality: Diverging Patterns in Marriage, Cohabitation, and Childbearing</article-title>. <source>J Econ Perspect</source>. <year>2016</year>;<volume>30</volume>(<issue>2</issue>):<fpage>79</fpage>–<lpage>102</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1257/jep.30.2.79" xlink:type="simple">10.1257/jep.30.2.79</ext-link></comment> <object-id pub-id-type="pmid">27170828</object-id></mixed-citation></ref>
+<ref id="pone.0321072.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Case</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Deaton</surname> <given-names>A</given-names></name>. <article-title>Rising morbidity and mortality in midlife among white non-Hispanic Americans in the 21st century</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2015</year>;<volume>112</volume>(<issue>49</issue>):<fpage>15078</fpage>–<lpage>83</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.1518393112" xlink:type="simple">10.1073/pnas.1518393112</ext-link></comment> <object-id pub-id-type="pmid">26575631</object-id></mixed-citation></ref>
+<ref id="pone.0321072.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Barth</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Moene</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Willumsen</surname> <given-names>F</given-names></name>. <article-title>The Scandinavian model—An interpretation</article-title>. <source>Journal of Public Economics</source>. <year>2014</year>;<volume>117</volume>:<fpage>60</fpage>–<lpage>72</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jpubeco.2014.04.001" xlink:type="simple">10.1016/j.jpubeco.2014.04.001</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref017"><label>17</label><mixed-citation publication-type="other" xlink:type="simple">Alasoini T, et al. Digital transformations of traditional work in the Nordic countries- Edited by Bertil Rolandsson. 2020.</mixed-citation></ref>
+<ref id="pone.0321072.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Umblijs</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schone</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Finseraas</surname> <given-names>H</given-names></name>. <article-title>Automation and worker organisation</article-title>. <source>Applied Economics Letters</source>, <year>2024</year>:<fpage>1</fpage>–<lpage>5</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moll</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rachel</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Restrepo</surname> <given-names>P</given-names></name>. <article-title>Uneven Growth: Automation’s Impact on Income and Wealth Inequality</article-title>. <source>ECTA</source>. <year>2022</year>;<volume>90</volume>(<issue>6</issue>):<fpage>2645</fpage>–<lpage>83</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3982/ecta19417" xlink:type="simple">10.3982/ecta19417</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref020"><label>20</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Acemoglu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Autor</surname> <given-names>D.</given-names></name> <article-title>Chapter 12 - Skills, Tasks and Technologies: Implications for Employment and Earnings,</article-title> in <source>Handbook of Labor Economics</source>, <name name-style="western"><surname>Card</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Ashenfelter</surname> <given-names>O</given-names></name>, Editors. <publisher-name>Elsevier</publisher-name>. <year>2011</year>:<fpage>1043</fpage>–<lpage>171</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref021"><label>21</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Autor</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Levy</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Murnane</surname> <given-names>R</given-names></name>. <article-title>The Skill Content Of Recent Technological Change: An Empirical Exploration</article-title>. <source>Quarterly Journal of Economics</source>, <volume>118</volume>(<issue>3</issue>):<fpage>1279</fpage>–<lpage>1333.</lpage></mixed-citation></ref>
+<ref id="pone.0321072.ref022"><label>22</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Szymon</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Hardy</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Keister</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Lewandowski</surname> <given-names>P</given-names></name>. <source>Tasks and skills in European labour markets. Background paper for the World Bank report “Growing United: Upgrading Europe’s Convergence Machine”</source>. <year>2017</year>, <publisher-name>Instytut Badan Strukturalnych, 03/2017</publisher-name>.</mixed-citation></ref>
+<ref id="pone.0321072.ref023"><label>23</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Frey</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Osborne</surname> <given-names>M</given-names></name>. <article-title>The Future of Employment: How Susceptible Are Jobs to Computerisation?</article-title> <source>Technological Forecasting and Social Change</source>. <year>2017</year>;<volume>114</volume>:<fpage>254</fpage>–<lpage>280</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Arntz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gregory</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Zierahn</surname> <given-names>U</given-names></name>. <article-title>Revisiting the risk of automation</article-title>. <source>Economics Letters</source>. <year>2017</year>;<volume>159</volume>:<fpage>157</fpage>–<lpage>60</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Borland</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Coelli</surname> <given-names>M</given-names></name>. <article-title>Are robots taking our jobs?</article-title> <source>Australian Economic Review</source>. <year>2017</year>;<volume>50</volume>:<fpage>377</fpage>–<lpage>97</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Autor</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Dorn</surname> <given-names>D</given-names></name>. <article-title>This Job Is “Getting Old”: Measuring Changes in Job Opportunities Using Occupational Age Structure</article-title>. <source>American Economic Review</source>. <year>2009</year>;99(2):<fpage>45</fpage>–<lpage>51</lpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dorn</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hanson</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Autor</surname> <given-names>D</given-names></name>. <article-title>Untangling trade and technology: Evidence from local labour markets</article-title>. <source>Economic Journal</source>. <year>2015</year>;125(584):621-646.</mixed-citation></ref>
+<ref id="pone.0321072.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rica</surname> <given-names>SDL</given-names></name>, <name name-style="western"><surname>Gortazar</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lewandowski</surname> <given-names>P</given-names></name>. <article-title>Job Tasks and Wages in Developed Countries: Evidence from PIAAC</article-title>. <source>Labour Economics</source>. <year>2020</year>;<volume>65</volume>:<fpage>101845</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.labeco.2020.101845" xlink:type="simple">10.1016/j.labeco.2020.101845</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref029"><label>29</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Mean</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mochel</surname> <given-names>MG</given-names></name>. <source>Job automation risk and the future of skills: Skills and competency change in the US workforce</source>. <year>2023</year>, <publisher-name>Technical report, US Bureau of Labor Statistics</publisher-name>.</mixed-citation></ref>
+<ref id="pone.0321072.ref030"><label>30</label><mixed-citation publication-type="other" xlink:type="simple">Arntz M, Gregory T, Zierahn U. The risk of automation for jobs in OECD countries. 2016.</mixed-citation></ref>
+<ref id="pone.0321072.ref031"><label>31</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Hundepool</surname> <given-names>A</given-names></name>. <source>Handbook on Statistical Disclosure Control</source>. <year>2023</year>. <publisher-name>Statistical Disclosure Control Tools Consortium</publisher-name>.</mixed-citation></ref>
+<ref id="pone.0321072.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewandowski</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hardy</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Du</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>S</given-names></name>. <article-title>Technology, Skills, and Globalization: Explaining International Differences in Routine and Nonroutine Work Using Survey Data</article-title>. <source>The World Bank Economic Review</source>. <year>2022</year>;<volume>36</volume>(<issue>3</issue>):<fpage>687</fpage>–<lpage>708</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/wber/lhac005" xlink:type="simple">10.1093/wber/lhac005</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Egana-delSol</surname> <given-names>P</given-names></name>. <article-title>Automation in Latin America: Are Women at Higher Risk of Losing Their Jobs?</article-title> <source>Technological Forecasting and Social Change</source>. <year>2022</year>;<volume>175</volume>:<fpage>121333</fpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Filippi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Bannò</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Trento</surname> <given-names>S</given-names></name>. <article-title>Automation technologies and the risk of substitution of women: Can gender equality in the institutional context reduce the risk?</article-title> <source>Technological Forecasting and Social Change</source>. <year>2023</year>;<volume>191</volume>:<fpage>122528</fpage>.</mixed-citation></ref>
+<ref id="pone.0321072.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brussevich</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Dabla-Norris</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Khalid</surname> <given-names>S</given-names></name>. <article-title>Is Technology Widening the Gender Gap? Automation and the Future of Female Employment</article-title>. <source>IMF Working Papers</source>. <year>2019</year>;<volume>19</volume>(<issue>91</issue>):<fpage>1</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5089/9781498303743.001" xlink:type="simple">10.5089/9781498303743.001</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0321072.ref036"><label>36</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Norway</surname> <given-names>S</given-names></name>. <source>Utdanningsgapet bare øker</source>. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.ssb.no/befolkning/artikler-og-publikasjoner/utdanningsgapet-bare-oker" xlink:type="simple">https://www.ssb.no/befolkning/artikler-og-publikasjoner/utdanningsgapet-bare-oker</ext-link></mixed-citation></ref>
+<ref id="pone.0321072.ref037"><label>37</label><mixed-citation publication-type="other" xlink:type="simple">Forum WE. The Future of Jobs Report 2025. 2025.</mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="author-comment" id="pone.0321072.r001" specific-use="rebutted-decision-letter-unavailable">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r001</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">24 Aug 2023</named-content></p>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0321072.r002" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r002</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Satabdi Mitra</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="article" id="rel-obj002" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">17 May 2024</named-content></p>
+<p>Dear Dr. Reme,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>Please submit your revised manuscript by  Jul 01 2024 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email> . When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p>
+</list-item>
+<list-item>
+<p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+</list-item>
+<list-item>
+<p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+</list-item>
+</list>
+</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link> . Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link> .</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Satabdi Mitra, M.D(Community Medicine )</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link> and</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2. Thank you for stating the following financial disclosure:</p>
+<p>"This work was financed by the Research Council of Norway through its Centres of Excellence funding scheme (project number 262700) and the project DIMJOB (project number 296297)."              </p>
+<p>Please state what role the funders took in the study.  If the funders had no role, please state: "The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript."</p>
+<p>If this statement is not correct you must amend it as needed.</p>
+<p>Please include this amended Role of Funder statement in your cover letter; we will change the online submission form on your behalf.</p>
+<p>3. Thank you for stating the following in your Competing Interests section: </p>
+<p>"We declare no competing interests."</p>
+<p>Please complete your Competing Interests on the online submission form to state any Competing Interests. If you have no competing interests, please state "The authors have declared that no competing interests exist.", as detailed online in our guide for authors at <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submit-now">http://journals.plos.org/plosone/s/submit-now</ext-link></p>
+<p> This information should be included in your cover letter; we will change the online submission form on your behalf.</p>
+<p>4. We note that you have indicated that there are restrictions to data sharing for this study. PLOS only allows data to be available upon request if there are legal or ethical restrictions on sharing data publicly. For more information on unacceptable data access restrictions, please see <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/data-availability#loc-unacceptable-data-access-restrictions.">http://journals.plos.org/plosone/s/data-availability#loc-unacceptable-data-access-restrictions</ext-link>.</p>
+<p>Before we proceed with your manuscript, please address the following prompts:</p>
+<p>a) If there are ethical or legal restrictions on sharing a de-identified data set, please explain them in detail (e.g., data contain potentially identifying or sensitive patient information, data are owned by a third-party organization, etc.) and who has imposed them (e.g., a Research Ethics Committee or Institutional Review Board, etc.). Please also provide contact information for a data access committee, ethics committee, or other institutional body to which data requests may be sent.</p>
+<p>b) If there are no restrictions, please upload the minimal anonymized data set necessary to replicate your study findings to a stable, public repository and provide us with the relevant URLs, DOIs, or accession numbers. For a list of recommended repositories, please see</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/recommended-repositories.">https://journals.plos.org/plosone/s/recommended-repositories</ext-link>. You also have the option of uploading the data as Supporting Information files, but we would recommend depositing data directly to a data repository if possible.</p>
+<p>We will update your Data Availability statement on your behalf to reflect the information</p>
+<p>Please review your reference list to ensure that it is complete and correct. If you have cited papers that have been retracted, please include the rationale for doing so in the manuscript text, or remove these references and replace them with relevant current references. Any changes to the reference list should be mentioned in the rebuttal letter that accompanies your revised manuscript. If you need to cite a retracted article, indicate the article’s retracted status in the References list and also include a citation and full reference for the retraction notice.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>2. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>3. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>4. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>Reviewer #1: Comprehensive Data: The paper uses a rich dataset that includes multiple dimensions like education, income, employment, health, and demographics. This allows for a nuanced analysis.</p>
+<p>Methodological Rigor: The paper employs both bivariate and multivariate regression models, allowing for a more robust understanding of the variables affecting the risk of automation.</p>
+<p>Timely Topic: The paper addresses a very current and pressing issue—automation and its impact on the labour market, particularly in terms of gender disparities.</p>
+<p>Attribution Analysis: The paper goes beyond merely identifying associations to actually estimating the relative importance of different risk factors over time.</p>
+<p>Policy Relevance: The findings have significant policy implications, particularly for education and labour market policies.</p>
+<p>Areas for Improvement:</p>
+<p>Limited Generalizability: The study focuses solely on Norway, which might limit its applicability to other socio-economic contexts.</p>
+<p>Data Sensitivity: The paper uses sensitive data that cannot be shared, which might limit the reproducibility of the study.</p>
+<p>Complexity: The paper seems to be quite dense and might benefit from a simplified explanation of the key findings for a broader audience.</p>
+<p>Lack of Qualitative Insights: While the paper is strong in its quantitative analysis, incorporating qualitative data could provide a more holistic view.</p>
+<p>Future Projections: The paper could be strengthened by including future projections based on current trends, which would be valuable for policymakers.</p>
+<p>Ethical Considerations: Given that the paper deals with sensitive data and has potential policy implications, a section discussing the ethical considerations would be beneficial.</p>
+<p>Comparative Analysis: It might be useful to compare the situation in Norway with other countries to provide a more comprehensive view.</p>
+<p>Reviewer #2: Strengths:</p>
+<p>Comprehensive Data: The paper utilizes a robust dataset from Statistics Norway, which covers a wide range of demographic and socioeconomic indicators. This lends credibility to the findings and conclusions drawn from the analysis.</p>
+<p>Relevance: The topic of automation and its impact on the labor market is timely and of significant importance, especially in the context of the ongoing technological revolution.</p>
+<p>Detailed Analysis: The paper conducts a thorough analysis, including bivariate and multivariate regression models, to understand the relationship between automation risk and various socioeconomic indicators.</p>
+<p>Clear Findings: The paper presents clear and well-structured findings, highlighting the increasing gender disparity in the risk of automation, especially among lower-educated men.</p>
+<p>Policy Implications: The discussion section effectively ties the findings to potential policy implications, emphasizing the need for interventions to mitigate the negative impacts of automation.</p>
+<p>Areas for Improvement:</p>
+<p>Methodological Clarification: While the paper uses the RTI index and mentions the Frey-Osborne index, it would benefit from a more detailed explanation of why the RTI was chosen over other indices and the specific advantages it offers.</p>
+<p>Comparative Analysis: It might be beneficial to compare the situation in Norway with other countries to provide a broader context and understand if the findings are unique to Norway or part of a global trend.</p>
+<p>Potential Bias: The paper could address potential biases in the data, especially given that the data is from administrative registers. Are there any groups that might be underrepresented?</p>
+<p>Future Implications: While the paper touches upon the potential negative impacts, a more in-depth exploration of the long-term implications of these findings would be valuable. For instance, what might be the societal consequences if these trends continue?</p>
+<p>Recommendations: The conclusion section could benefit from specific policy recommendations based on the findings. For instance, what kind of educational or training programs might help mitigate the risks identified?</p>
+<p>Recommendation:</p>
+<p>Accept with Minor Changes.</p>
+<p>The paper is well-researched, relevant, and provides valuable insights into the impact of automation on the labor market in Norway. However, addressing the areas of improvement mentioned above would strengthen the paper and make it more comprehensive.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: No</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link> . PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email></p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0321072.r003">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r003</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 1</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj003" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0321072.r002" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">25 Jun 2024</named-content></p>
+<p>See separate attached file</p>
+<supplementary-material id="pone.0321072.s016" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s016" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0321072.r004" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r004</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Satabdi Mitra</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">25 Sep 2024</named-content></p>
+<p>Please submit your revised manuscript by Nov 09 2024 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email> . When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p>
+</list-item>
+<list-item>
+<p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+</list-item>
+<list-item>
+<p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+</list-item>
+</list>
+</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link> . Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link> .</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Satabdi Mitra, M.D(Community Medicine )</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>Please review your reference list to ensure that it is complete and correct. If you have cited papers that have been retracted, please include the rationale for doing so in the manuscript text, or remove these references and replace them with relevant current references. Any changes to the reference list should be mentioned in the rebuttal letter that accompanies your revised manuscript. If you need to cite a retracted article, indicate the article’s retracted status in the References list and also include a citation and full reference for the retraction notice.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>Reviewer #3: All comments have been addressed</p>
+<p>Reviewer #4: (No Response)</p>
+<p>**********</p>
+<p>2. Is the manuscript technically sound, and do the data support the conclusions??&gt;</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>**********</p>
+<p>3. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: (No Response)</p>
+<p>**********</p>
+<p>4. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>**********</p>
+<p>5. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>**********</p>
+<p>Reviewer #3: 1. Introduction</p>
+<p>- Clarification of research background: While the introduction already mentions the impact of technological changes on the labor market, further refinement of this background, particularly in the context of Norway, would be beneficial. For instance, specific Norwegian policies or trends in automation and globalization could be highlighted.</p>
+<p>- Precision in stating research questions: In the introduction, it would be clearer to delineate the research questions, such as specifying which gender and socioeconomic disparities are to be investigated and how these disparities evolve over time.</p>
+<p>2. Literature Review</p>
+<p>- Exhaustiveness of literature citations: Although the paper references some relevant literature, incorporating more recent and authoritative sources to support the arguments, especially studies related to Norway or other European countries, would strengthen the review.</p>
+<p>- Critical analysis of existing studies: When reviewing existing literature, a critical analysis of previous research should be conducted, identifying their limitations or research gaps, thereby clearly articulating the contribution of this study.</p>
+<p>3. Methods</p>
+<p>- Detailed description of data: When describing the data sources and analysis sample, provide a more detailed account of the data acquisition process, processing methods, and measures taken to ensure data quality.</p>
+<p>- Explanation of analytical methods: For the RTI index and other statistical methods employed, offer more explanations and theoretical rationale to help readers better understand the applicability and advantages of these methods.</p>
+<p>- Robustness checks: Although supplementary materials mention conducting robustness checks using different indicators, briefly mentioning these results in the main text would enhance the reliability of the conclusions.</p>
+<p>4. Results</p>
+<p>- Clarity in presentation of results: When presenting study results, use figures or tables to visually display the disparities between gender and socioeconomic status more intuitively.</p>
+<p>5. Discussion and Conclusion</p>
+<p>- Comprehensive discussion: In the discussion section, consider a more comprehensive examination of other potential explanatory factors, such as cultural and policy environments, to eliminate other potential confounding factors.</p>
+<p>- Clarity of conclusions: The conclusion should explicitly state the main findings, contributions, and implications for policymakers and researchers.</p>
+<p>- Future research directions: It would be beneficial to propose future research directions, such as further exploring differences across different age groups or industries, or studying the impact of technological changes on various social welfare indicators.</p>
+<p>Reviewer #4: The manuscript titled “The Distribution of Technology-Induced Job Loss: Evidence from a Population-wide Study in Norway” explores a significant and timely topic—the impact of automation on job loss and socioeconomic disparities, with a particular focus on gender inequality. The study uses a large and comprehensive dataset from Norway, providing robust evidence to support its conclusions. Overall, the manuscript is well-written, but some revisions are required to improve clarity, expand the discussion, and address methodological details.</p>
+<p>Strengths:</p>
+<p>Using a comprehensive individual-level dataset allows for detailed analysis and lends credibility to the findings. The longitudinal nature of the data (2003-2018) enhances the robustness of the conclusions. The paper successfully highlights growing gender disparities in occupational routine intensity, particularly among individuals with low socioeconomic status, making a valuable contribution to labor economics and automation literature. The attribution analysis in explaining the increasing gender gap is a strong aspect of the paper, offering insight into the reasons behind these disparities.</p>
+<p>Abstract Structure: The abstract should clearly outline the research objective, methodology, key findings, and implications. Consider adding a brief sentence at the end regarding policy implications or next steps to round it off.</p>
+<p>1. Introduction: Ensure the introduction highlights the research gap more explicitly. This will better establish the context for the study and its relevance to the field. Furthermore, summarizing the hypothesis or key research questions can sharpen the focus.</p>
+<p>Methodology Clarification:</p>
+<p>1. Clearly specify the reasoning behind using the RTI index over other measures of automation risk like the Frey-Osborne Index, even though both are discussed. Include a brief comparison in the methodology section, not just in the results section, to improve clarity for readers.</p>
+<p>2. Add more detail about how data access and linkage were done (e.g., anonymization procedures and encryption).</p>
+<p>Data Presentation:</p>
+<p>1. Ensure consistency in reporting the variables. The terms used for categories (e.g., education, income) should remain consistent throughout.</p>
+<p>2. Consider providing more detailed tables or visual aids in the results section for critical variables to enhance clarity.</p>
+<p>Discussion Section:</p>
+<p>1. Address the limitations more extensively, particularly focusing on the external validity of the findings outside of Norway.</p>
+<p>2. Expand on the implications of automation beyond just Norway to make the discussion more globally relevant. Including comparisons to other European countries or worldwide trends would enhance the broader significance of the findings.</p>
+<p>Figures and Tables:</p>
+<p>1. Ensure all figures and tables are fully labelled and include clear legends. Some figures (like those comparing gender over time) could benefit from a more detailed description in the figure caption to ensure they are standalone and clear to readers.</p>
+<p>2. Ethical Considerations: Although the ethical aspects are addressed, adding a brief mention of any steps taken to minimize bias or stigmatization would further enhance transparency in research ethics.</p>
+<p>Conclusions: Strengthen the conclusions by linking the findings more explicitly to potential policy responses or interventions. Mention any ongoing or future research that might address gaps left by this study. This would also help connect the study’s relevance to broader public and governmental policies.</p>
+<p>Standardizing these sections will help align the paper more closely with scientific conventions and increase its clarity and impact.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #3: No</p>
+<p>Reviewer #4: <bold>Yes: </bold> RAPURU RUSHENDRAN</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link> . PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email></p>
+<supplementary-material id="pone.0321072.s015" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s015" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Comments to authors.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0321072.r005">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r005</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 2</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj005" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0321072.r004" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">20 Nov 2024</named-content></p>
+<p>See separate attachment with response to reviewers letter.</p>
+<supplementary-material id="pone.0321072.s018" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s018" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response letter.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0321072.r006" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r006</article-id>
+<title-group>
+<article-title>Decision Letter 2</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Satabdi Mitra</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="article" id="rel-obj006" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">29 Dec 2024</named-content></p>
+<p>Dear Dr. Reme,</p>
+<p><email xlink:type="simple">plosone@plos.org</email> . When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p>
+</list-item>
+<list-item>
+<p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+</list-item>
+<list-item>
+<p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+</list-item>
+</list>
+</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link> . Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link> .</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Satabdi Mitra, M.D(Community Medicine )</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>Please review your reference list to ensure that it is complete and correct. If you have cited papers that have been retracted, please include the rationale for doing so in the manuscript text, or remove these references and replace them with relevant current references. Any changes to the reference list should be mentioned in the rebuttal letter that accompanies your revised manuscript. If you need to cite a retracted article, indicate the article’s retracted status in the References list and also include a citation and full reference for the retraction notice.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>Reviewer #5: (No Response)</p>
+<p>Reviewer #6: (No Response)</p>
+<p>**********</p>
+<p>2. Is the manuscript technically sound, and do the data support the conclusions??&gt;</p>
+<p>Reviewer #5: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>3. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #5: No</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>4. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #5: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>5. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #5: No</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>Reviewer #5: Abstract line 1-28: The abstract seems unclear. Are you focusing on automation or gender differences? Please emphasize the most critical aspect of your manuscript.</p>
+<p>Line 32: The phrase "increasing return to education" does not flow well. Consider breaking it into two sentences or simplifying it.</p>
+<p>Line 33: What is OECD? Please provide the full form before introducing the abbreviation.</p>
+<p>Line 33: By what year are 14% of jobs expected to be at risk?</p>
+<p>Line 34: How will automation not cause changes in long-term unemployment? Please elaborate on this in the next sentence.</p>
+<p>Line 40: What are the pre-existing inequalities? Consider adding examples such as gender disparities or differences between individuals with low and high education levels for clarity.</p>
+<p>Line 41: Rephrase this sentence in a more scientifically acceptable manner.</p>
+<p>Line 52: Does the negative impact affect low-skilled or high-skilled labor? Please clarify.</p>
+<p>Line 82: Why did you choose individuals born between 1958 and 1973 and those who turned 45? Why were individuals under 45 not included?</p>
+<p>Line 182: Include a statistical section in the manuscript with details on how the data was curated, organized, and analyzed. Specify the tools used, describe assumption testing conducted, and explain how the results can be interpreted from these tools (e.g., RTI and other risk tools). Mention the assumption testing conducted for regression analysis.</p>
+<p>Line 269: The discussion section is too brief. Provide a more detailed description of the risk of automation, with references to automation risks in both developing and developed countries. Additionally, discuss which sectors are more or less likely to be affected.</p>
+<p>Reviewer #6: Comments may be found in the attached document, but here are the same for convenience:</p>
+<p>1. Please try and make the abstract structure. i.e., in sections Abstract, Materials and Methods, Results and Conclusion</p>
+<p>If unstructured. Please quantitatively mention the “significant” findings of the result.</p>
+<p>2. Regarding "low-education", Consider reframing</p>
+<p>3. Please mention the sampling technique and then proceed to describe the details of the sample</p>
+<p>4. Please clarify marital status a bit more clearly, or add the fallacy in the limitation: Separated couples, problem families may not always report to the register, and the register may not reflect the change in social contract</p>
+<p>5.Regarding the final sentence in the Ethical considerations paragraph: Additionally, we</p>
+<p>refrained from reporting on groups small enough to risk identifying individuals</p>
+<p>“Small enough” is a vague term. Please mention what was the cutoff for considering a group “Small enough”</p>
+<p>6. Large language models may be abbreviated as LLMs as the usage is more than once in the manuscript</p>
+<p>7. Consider reframing sentences corresponding to 328 to 331.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #5: <bold>Yes: </bold> Faizan Kashoo</p>
+<p>Reviewer #6: <bold>Yes: </bold> Vighnesh Devulapalli</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link> . PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email></p>
+<supplementary-material id="pone.0321072.s017" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s017" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">PONE-D-23-25076_R2_reviewer (1).docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0321072.r007">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r007</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 3</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj007" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0321072.r006" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>3</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">24 Jan 2025</named-content></p>
+<p>Please see the attached response letter.</p>
+<supplementary-material id="pone.0321072.s019" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0321072.s019" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response_letter_auresp_3.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0321072.r008" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r008</article-id>
+<title-group>
+<article-title>Decision Letter 3</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Satabdi Mitra</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="article" id="rel-obj008" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>3</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">2 Mar 2025</named-content></p>
+<p>The Distribution of Technology Induced Job Loss: Evidence from a Population-wide Study in Norway</p>
+<p>PONE-D-23-25076R3</p>
+<p>Dear Dr. Bjørn-Atle Reme,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice will be generated when your article is formally accepted. Please note, if your institution has a publishing partnership with PLOS and your article meets the relevant criteria, all or part of your publication costs will be covered. Please make sure your user information is up-to-date by logging into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">Editorial Manager®</ext-link>  and clicking the ‘Update My Information' link at the top of the page. If you have any questions relating to publication charges, please contact our Author Billing department directly at authorbilling@plos.org.</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact onepress@plos.org.</p>
+<p>Kind regards,</p>
+<p>Satabdi Mitra, M.D(Community Medicine )</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Additional Editor Comments (optional):</p>
+<p>Reviewers' comments:</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0321072.r009" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0321072.r009</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Mitra</surname>
+<given-names>Satabdi</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2025</copyright-year>
+<copyright-holder>Satabdi Mitra</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0321072" document-id-type="doi" document-type="article" id="rel-obj009" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>PONE-D-23-25076R3</p>
+<p>PLOS ONE</p>
+<p>Dear Dr. Reme,</p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS ONE. Congratulations! Your manuscript is now being handed over to our production team.</p>
+<p>At this stage, our production department will prepare your paper for publication. This includes ensuring the following:</p>
+<p>* All references, tables, and figures are properly cited</p>
+<p>* All relevant supporting information is included in the manuscript submission,</p>
+<p>* There are no issues that prevent the paper from being properly typeset</p>
+<p>If revisions are needed, the production department will contact you directly to resolve them. If no revisions are needed, you will receive an email when the publication date has been set. At this time, we do not offer pre-publication proofs to authors during production of the accepted work. Please keep in mind that we are working through a large volume of accepted articles, so please give us a few weeks to review your paper and let you know the next and final steps.</p>
+<p>Lastly, if your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact onepress@plos.org.</p>
+<p>If we can help with anything else, please email us at customercare@plos.org.</p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access.</p>
+<p>Kind regards,</p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr Satabdi Mitra</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+</body>
+</sub-article>
+</article>

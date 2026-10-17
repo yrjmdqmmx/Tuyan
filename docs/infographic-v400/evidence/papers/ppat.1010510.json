@@ -1,0 +1,142 @@
+{
+  "doi": "10.1371/journal.ppat.1010510",
+  "sourceUrl": "https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010510",
+  "title": "Identification of a novel AP2 transcription factor in zygotes with an essential role in Plasmodium ookinete development",
+  "journal": "PLOS Pathogens",
+  "authors": [
+    "Tsubasa Nishi",
+    "Izumi Kaneko",
+    "Shiroh Iwanaga",
+    "Masao Yuda"
+  ],
+  "year": "2022",
+  "license": "2022\nNishi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "ppat.1010510.g001",
+      "label": "Fig 1",
+      "caption": "Identification of possible AP2-Z orthologs in Apicomplexan parasites.\n(A) A schematic illustration of AP2-Z. Blue box shows the AP2 domain. Beta-sheet and α-helix regions in the AP2 domain were predicted using PSIPRED (http://bioinf.cs.ucl.ac.uk/psipred/) and indicated in orange and green boxes, respectively. (B) Alignment of conserved amino acid sequences from AP2-Z and blastp-searched proteins by the ClustalW program in Mega X. Positions at which all sequences have an identical amino acid are indicated by two asterisks, whereas positions with amino acid residues of the same property are indicated by one asterisk. Amino acid sequences were retrieved from PlasmoDB or the NCBI database (P. berghei, PBANKA_0612400; P. falciparum, PF3D7_0411000; Hepatocystis, VWU49277; Cardiosporidium cionae, KAF8822898; Toxoplasma gondii, XP_018635762; Neospora caninum, XP_003884720; Eimeria tenella, XP_013229162; Cyclospora cayetanensis, OEH74626). (C) Phylogenetic tree of AP2-Z and blastp-searched proteins, which was inferred from their whole amino acid sequences using the Maximum Likelihood method and JTT matrix-based model. Tree is drawn to scale, with branch lengths measured according to the number of substitutions per site. Species of the same family, order, and class are enclosed by thin, thick, and dashed lines, respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Identification of possible AP2-Z orthologs in Apicomplexan parasites.</title>\n<p>(A) A schematic illustration of AP2-Z. Blue box shows the AP2 domain. Beta-sheet and α-helix regions in the AP2 domain were predicted using PSIPRED (<ext-link ext-link-type=\"uri\" ns0:href=\"http://bioinf.cs.ucl.ac.uk/psipred/\" ns0:type=\"simple\">http://bioinf.cs.ucl.ac.uk/psipred/</ext-link>) and indicated in orange and green boxes, respectively. (B) Alignment of conserved amino acid sequences from AP2-Z and blastp-searched proteins by the ClustalW program in Mega X. Positions at which all sequences have an identical amino acid are indicated by two asterisks, whereas positions with amino acid residues of the same property are indicated by one asterisk. Amino acid sequences were retrieved from PlasmoDB or the NCBI database (<italic>P</italic>. <italic>berghei</italic>, PBANKA_0612400; <italic>P</italic>. <italic>falciparum</italic>, PF3D7_0411000; <italic>Hepatocystis</italic>, VWU49277; <italic>Cardiosporidium cionae</italic>, KAF8822898; <italic>Toxoplasma gondii</italic>, XP_018635762; <italic>Neospora caninum</italic>, XP_003884720; <italic>Eimeria tenella</italic>, XP_013229162; <italic>Cyclospora cayetanensis</italic>, OEH74626). (C) Phylogenetic tree of AP2-Z and blastp-searched proteins, which was inferred from their whole amino acid sequences using the Maximum Likelihood method and JTT matrix-based model. Tree is drawn to scale, with branch lengths measured according to the number of substitutions per site. Species of the same family, order, and class are enclosed by thin, thick, and dashed lines, respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g002",
+      "label": "Fig 2",
+      "caption": "Expression profile of AP2-Z during sexual development and its translational repression in females.\n(A) Expression of AP2-Z in gametocytes of the AP2-Z::mNG (left) and the AP2-Z::GFP parasite (right). Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (B) Schematic illustrations of fluorescent protein-tagging strategies of AP2-Z. In the AP2-Z::mNG parasite, the 3’ UTR of ap2-z was substituted upon fusion with mNG (left). In the AP2-Z::GFP parasite, the endogenous 3’UTR was retained upon gfp-fusion performed by CRISPR/Cas9 (right). (C) Enrichment of DOZI-associated transcripts evaluated by RNA immunoprecipitation-qPCR analysis. Pre-immunoprecipitated samples were used as the input. Enrichment of p28 and p47 transcripts was analyzed as a positive and negative control, respectively. The p-value on the graph was calculated by Student’s t-test. Error bars indicate the standard error of the mean (n = 3). (D) Schematic illustration of zygote/ookinete development in ookinete cultures for P. berghei. When gametocytes are subjected to ookinete culture medium, gamete activation is induced by low temperature and rise in pH, which completes within 15 min. The gametes then find a mate and complete fertilization process, including cell fusion and nuclear fusion, within 60 min after starting ookinete cultures. After fertilization, zygote development takes for 6–8 h, and then the zygotes become retort-form ookinetes starting formation of apical protrusion. Finally, the parasites develop into mature ookinetes in approximately 20 hoc. (E) Expression of AP2-Z and AP2-O during ookinete culture using the AP2-Z::GFP parasite and the parasite expressing GFP-fused AP2-O, which generated in the previous study [23], respectively. Nuclei were stained with Hoechst 33342. Apical protrusion of the retort-form ookinete at 16 hoc is highlighted with a white dashed line. Scale bar = 5 μm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Expression profile of AP2-Z during sexual development and its translational repression in females.</title>\n<p>(A) Expression of AP2-Z in gametocytes of the AP2-Z::mNG (left) and the AP2-Z::GFP parasite (right). Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (B) Schematic illustrations of fluorescent protein-tagging strategies of AP2-Z. In the AP2-Z::mNG parasite, the 3’ UTR of <italic>ap2-z</italic> was substituted upon fusion with <italic>mNG</italic> (left). In the AP2-Z::GFP parasite, the endogenous 3’UTR was retained upon <italic>gfp</italic>-fusion performed by CRISPR/Cas9 (right). (C) Enrichment of DOZI-associated transcripts evaluated by RNA immunoprecipitation-qPCR analysis. Pre-immunoprecipitated samples were used as the input. Enrichment of <italic>p28</italic> and <italic>p47</italic> transcripts was analyzed as a positive and negative control, respectively. The <italic>p</italic>-value on the graph was calculated by Student’s t-test. Error bars indicate the standard error of the mean (n = 3). (D) Schematic illustration of zygote/ookinete development in ookinete cultures for <italic>P</italic>. <italic>berghei</italic>. When gametocytes are subjected to ookinete culture medium, gamete activation is induced by low temperature and rise in pH, which completes within 15 min. The gametes then find a mate and complete fertilization process, including cell fusion and nuclear fusion, within 60 min after starting ookinete cultures. After fertilization, zygote development takes for 6–8 h, and then the zygotes become retort-form ookinetes starting formation of apical protrusion. Finally, the parasites develop into mature ookinetes in approximately 20 hoc. (E) Expression of AP2-Z and AP2-O during ookinete culture using the AP2-Z::GFP parasite and the parasite expressing GFP-fused AP2-O, which generated in the previous study [<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref023\">23</xref>], respectively. Nuclei were stained with Hoechst 33342. Apical protrusion of the retort-form ookinete at 16 hoc is highlighted with a white dashed line. Scale bar = 5 μm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g003",
+      "label": "Fig 3",
+      "caption": "Transcriptional activation of ap2-z by AP2-G and AP2-FG.\n(A) Integrative Genomics Viewer images from the ChIP-seq data of AP2-G and AP2-FG for the upstream region of ap2-z. Binding motifs of AP2-G and AP2-FG in the peak region are indicated by orange and purple bars, respectively. Mutations introduced to these motifs are described on the right. The same mutations were introduced to both of the two AP2-G motifs. (B) Expression of AP2-Z in the AP2-Z::GFP_cismut at 6 hoc. Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (C) Representative Giemsa-stained image of ookinete in AP2-Z::GFP, AP2-Z::GFP_cismut, and ap2-z(-) parasites at 20 hoc. (D) Rate of conversion to ookinetes against all female-derived cells in AP2-Z::GFP and AP2-Z::GFP_cismut at 20 hoc. (E) Relative amounts of ap2-z transcripts in gametocyte assessed by RT-qPCR analysis. The p28 gene was used as the internal control. Value for AP2-Z::GFP_cismut is given in brackets as it is too small to be depicted in the graph. The p-value on the graph was calculated by the Student’s t-test. Error bars indicate the standard error of the mean (n = 3).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Transcriptional activation of <italic>ap2-z</italic> by AP2-G and AP2-FG.</title>\n<p>(A) Integrative Genomics Viewer images from the ChIP-seq data of AP2-G and AP2-FG for the upstream region of <italic>ap2-z</italic>. Binding motifs of AP2-G and AP2-FG in the peak region are indicated by orange and purple bars, respectively. Mutations introduced to these motifs are described on the right. The same mutations were introduced to both of the two AP2-G motifs. (B) Expression of AP2-Z in the AP2-Z::GFP_cismut at 6 hoc. Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (C) Representative Giemsa-stained image of ookinete in AP2-Z::GFP, AP2-Z::GFP_cismut, and <italic>ap2-z</italic>(-) parasites at 20 hoc. (D) Rate of conversion to ookinetes against all female-derived cells in AP2-Z::GFP and AP2-Z::GFP_cismut at 20 hoc. (E) Relative amounts of <italic>ap2-z</italic> transcripts in gametocyte assessed by RT-qPCR analysis. The <italic>p28</italic> gene was used as the internal control. Value for AP2-Z::GFP_cismut is given in brackets as it is too small to be depicted in the graph. The <italic>p</italic>-value on the graph was calculated by the Student’s t-test. Error bars indicate the standard error of the mean (n = 3).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g004",
+      "label": "Fig 4",
+      "caption": "ChIP-seq analysis of AP2-Z.\n(A) Integrative Genomics Viewer images from ChIP-seq experiment 1 and 2 of AP2-Z in a part of chromosome 6. Histograms show sequence coverage of ChIP data at each base. (B) Venn diagram of number of peaks identified in ChIP-seq experiment 1 and 2. (C) Classification of peak locations. Light green and gray bars around the pie chart indicate the intergenic region and gene body region, respectively. (D) Ratio of peaks located on the gene body and intergenic region for ChIP-seq of AP2-G, AP2-FG, AP2-Z, and AP2-O. (E) Sequence logo constructed from TGAAC motifs in the peak regions (top) and predicted binding motif of AP2-Z (bottom). Sequence logos are depicted using WebLogo 3 (http://weblogo.threeplusone.com/create.cgi). (F) Histogram showing the distance between the peak summit and the nearest (T/C)(A/C)TG(A/T)AC(A/G) motif for each ChIP peak.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>ChIP-seq analysis of AP2-Z.</title>\n<p>(A) Integrative Genomics Viewer images from ChIP-seq experiment 1 and 2 of AP2-Z in a part of chromosome 6. Histograms show sequence coverage of ChIP data at each base. (B) Venn diagram of number of peaks identified in ChIP-seq experiment 1 and 2. (C) Classification of peak locations. Light green and gray bars around the pie chart indicate the intergenic region and gene body region, respectively. (D) Ratio of peaks located on the gene body and intergenic region for ChIP-seq of AP2-G, AP2-FG, AP2-Z, and AP2-O. (E) Sequence logo constructed from TGAAC motifs in the peak regions (top) and predicted binding motif of AP2-Z (bottom). Sequence logos are depicted using WebLogo 3 (<ext-link ext-link-type=\"uri\" ns0:href=\"http://weblogo.threeplusone.com/create.cgi\" ns0:type=\"simple\">http://weblogo.threeplusone.com/create.cgi</ext-link>). (F) Histogram showing the distance between the peak summit and the nearest (T/C)(A/C)TG(A/T)AC(A/G) motif for each ChIP peak.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g005",
+      "label": "Fig 5",
+      "caption": "Target analysis of AP2-Z using ChIP-seq data.\n(A) Classification of the target genes of AP2-Z into 14 functional groups according to their product description annotated on PlasmoDB. (B) Transcription factor genes in the targets of AP2-Z. Histograms show sequence coverage of the ChIP sample in experiment 1. Gray bars indicate a partial open reading frame. Positions of the AP2-Z binding motifs are indicated in red. (C) Representative peak images of target genes essential for ookinete development. (D) GO analysis showing enrichment of genes with specific functions in the targets of AP2-Z. Terms with p-value < 0.01 were shown. CC = Cellular Components, BP = Biological Process.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Target analysis of AP2-Z using ChIP-seq data.</title>\n<p>(A) Classification of the target genes of AP2-Z into 14 functional groups according to their product description annotated on PlasmoDB. (B) Transcription factor genes in the targets of AP2-Z. Histograms show sequence coverage of the ChIP sample in experiment 1. Gray bars indicate a partial open reading frame. Positions of the AP2-Z binding motifs are indicated in red. (C) Representative peak images of target genes essential for ookinete development. (D) GO analysis showing enrichment of genes with specific functions in the targets of AP2-Z. Terms with <italic>p</italic>-value &lt; 0.01 were shown. CC = Cellular Components, BP = Biological Process.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g006",
+      "label": "Fig 6",
+      "caption": "Differential expression analysis between gametocytes and zygotes at 6 hoc.\n(A) Volcano plot showing differential expression analysis between gametocytes and zygotes at 6 hoc. Red dot represents ap2-z and blue dots represent the target genes of AP2-Z. Green horizontal line indicates a p-value of 0.05 and a vertical line indicates a log_{2}(fold change) of 1. (B) Histogram of the number of AP2-Z targets against the log_{2}(fold change) value (bin = 0.5) in the differential expression analysis. Red vertical line indicates a log_{2}(fold change) of 0. (C) Eight-base motifs enriched in the upstream of zygote-upregulated genes. AP2-Z motifs are indicated in blue and AP2-O motifs are indicated in green. Motifs were ranked according to their p-values.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Differential expression analysis between gametocytes and zygotes at 6 hoc.</title>\n<p>(A) Volcano plot showing differential expression analysis between gametocytes and zygotes at 6 hoc. Red dot represents <italic>ap2-z</italic> and blue dots represent the target genes of AP2-Z. Green horizontal line indicates a <italic>p</italic>-value of 0.05 and a vertical line indicates a log<sub>2</sub>(fold change) of 1. (B) Histogram of the number of AP2-Z targets against the log<sub>2</sub>(fold change) value (bin = 0.5) in the differential expression analysis. Red vertical line indicates a log<sub>2</sub>(fold change) of 0. (C) Eight-base motifs enriched in the upstream of zygote-upregulated genes. AP2-Z motifs are indicated in blue and AP2-O motifs are indicated in green. Motifs were ranked according to their <italic>p</italic>-values.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g007",
+      "label": "Fig 7",
+      "caption": "Differential expression analysis between WT and ap2-z(-) at 6 hoc.\n(A) Volcano plot showing differential expression analysis between WT and ap2-z(-) at 6 hoc. Blue dots represent the target genes of AP2-Z. Green horizontal line indicates a p-value of 0.05. Two vertical lines indicate log_{2}(fold change) values of 1 and −1. The plot for ap2-z is omitted from the graph [log_{2}(fold change) = −4.5, p-value adj = 4.9 × 10^{−300}]. (B) MA plot showing differential expression analysis between WT and ap2-z(-) at 6 hoc. The p-value in the box represents a statistically significant difference between the mean values of log_{2}(fold change) for AP2-Z targets and the other genes. Two green lines indicate log_{2}(fold change) values of 1 and −1, and the red line indicates a log_{2}(fold change) of 0. (C) Venn diagram showing the overlap between AP2-Z targets downregulated in ap2-z(-) and the common targets of AP2-Z and AP2-FG.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Differential expression analysis between WT and <italic>ap2-z</italic>(-) at 6 hoc.</title>\n<p>(A) Volcano plot showing differential expression analysis between WT and <italic>ap2-z</italic>(-) at 6 hoc. Blue dots represent the target genes of AP2-Z. Green horizontal line indicates a <italic>p</italic>-value of 0.05. Two vertical lines indicate log<sub>2</sub>(fold change) values of 1 and −1. The plot for <italic>ap2-z</italic> is omitted from the graph [log<sub>2</sub>(fold change) = −4.5, <italic>p</italic>-value adj = 4.9 × 10<sup>−300</sup>]. (B) MA plot showing differential expression analysis between WT and <italic>ap2-z</italic>(-) at 6 hoc. The <italic>p</italic>-value in the box represents a statistically significant difference between the mean values of log<sub>2</sub>(fold change) for AP2-Z targets and the other genes. Two green lines indicate log<sub>2</sub>(fold change) values of 1 and −1, and the red line indicates a log<sub>2</sub>(fold change) of 0. (C) Venn diagram showing the overlap between AP2-Z targets downregulated in <italic>ap2-z</italic>(-) and the common targets of AP2-Z and AP2-FG.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g008",
+      "label": "Fig 8",
+      "caption": "Comparison of the target genes between AP2-Z, AP2-O, and AP2-FG.\n(A) Venn diagrams showing the overlap between the target genes of AP2-Z and AP2-O (top) and AP2-Z and AP2-FG (bottom). Genes were assigned according to previous literature [24,36–44,50–75]. (B) Distance between ChIP peaks of AP2-Z and AP2-O in the upstream region of their common targets. (C) Representative peak images of the common target genes of AP2-Z and AP2-O. Positions of AP2-Z and AP2-O binding motifs are indicated in blue and green, respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Comparison of the target genes between AP2-Z, AP2-O, and AP2-FG.</title>\n<p>(A) Venn diagrams showing the overlap between the target genes of AP2-Z and AP2-O (top) and AP2-Z and AP2-FG (bottom). Genes were assigned according to previous literature [<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref024\">24</xref>,<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref036\">36</xref>–<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref044\">44</xref>,<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref050\">50</xref>–<xref ref-type=\"bibr\" rid=\"ppat.1010510.ref075\">75</xref>]. (B) Distance between ChIP peaks of AP2-Z and AP2-O in the upstream region of their common targets. (C) Representative peak images of the common target genes of AP2-Z and AP2-O. Positions of AP2-Z and AP2-O binding motifs are indicated in blue and green, respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g009",
+      "label": "Fig 9",
+      "caption": "Investigation of one of the unique targets of AP2-Z, omg1.\n(A) Expression of OMG1 in the OMG1::mNG parasite during sexual development. Arrow heads indicate the apical end of the ookinete. Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (B) Ratio of ookinetes and retort-form/abnormal zygotes to all fertilized cells in PbCas9 and omg1(-) at 16 hoc. Right side of the figure shows Giemsa-stained images of ookinetes at 16 hoc in PbCas9 (top) and omg1(-) (bottom). Error bars indicate the standard error of the mean (n = 3). (C) Number of midgut oocysts at 14 days post infection for PbCas9 and omg1(-). Lines indicate the mean values and the standard error (n = 20). The p-value on the graph was calculated by Student’s t-test.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Investigation of one of the unique targets of AP2-Z, <italic>omg1</italic>.</title>\n<p>(A) Expression of OMG1 in the OMG1::mNG parasite during sexual development. Arrow heads indicate the apical end of the ookinete. Nuclei were stained with Hoechst 33342. Scale bar = 5 μm. (B) Ratio of ookinetes and retort-form/abnormal zygotes to all fertilized cells in PbCas9 and <italic>omg1</italic>(-) at 16 hoc. Right side of the figure shows Giemsa-stained images of ookinetes at 16 hoc in PbCas9 (top) and <italic>omg1</italic>(-) (bottom). Error bars indicate the standard error of the mean (n = 3). (C) Number of midgut oocysts at 14 days post infection for PbCas9 and <italic>omg1</italic>(-). Lines indicate the mean values and the standard error (n = 20). The <italic>p</italic>-value on the graph was calculated by Student’s t-test.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "ppat.1010510.g010",
+      "label": "Fig 10",
+      "caption": "Cascade of transcription factors during the sexual development of Plasmodium.\n(A) Schematic illustration of the sequential expression of sexual transcription factors: AP2-G, AP2-FG, AP2-Z, and AP2-O. Blue arrows indicate a period of protein expression and dashed lines indicate a period of translational repression. (B) Schematic illustration showing the hierarchical relationship of sexual transcription factors during Plasmodium sexual development.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"ppat.1010510.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.ppat.1010510.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Cascade of transcription factors during the sexual development of <italic>Plasmodium</italic>.</title>\n<p>(A) Schematic illustration of the sequential expression of sexual transcription factors: AP2-G, AP2-FG, AP2-Z, and AP2-O. Blue arrows indicate a period of protein expression and dashed lines indicate a period of translational repression. (B) Schematic illustration showing the hierarchical relationship of sexual transcription factors during <italic>Plasmodium</italic> sexual development.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.ppat.1010510.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.ppat.1010510.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

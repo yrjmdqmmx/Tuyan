@@ -18,7 +18,7 @@ export function mountEmailConfirmation({ document, location, history, fetch, tim
     button.textContent = '正在验证…';
     message.textContent = '';
     try {
-      const response = await fetch('https://api.paperbanana.asia/api/auth/verify-email', {
+      const response = await fetch(`${location.origin === 'https://tuyansci.cn' ? 'https://tuyansci.cn' : 'https://api.paperbanana.asia'}/api/auth/verify-email`, {
         method: 'POST', credentials: 'omit', cache: 'no-store', referrerPolicy: 'no-referrer',
         headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }), signal: timeout(),
       });

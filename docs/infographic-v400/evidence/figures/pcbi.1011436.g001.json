@@ -1,0 +1,50 @@
+{
+  "id": "pcbi.1011436.g001",
+  "paper": "pcbi.1011436",
+  "figure": {
+    "id": "pcbi.1011436.g001",
+    "label": "Fig 1",
+    "caption": "The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.\n(Design) An experimental design space, denoted as Q, is a set of individual experimental conditions, q, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, q, are evaluated by an acquisition function, f, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (Test) The optimal experimental design, q*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (Learn) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1011436.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The Microbiome Recurrent Neural Network (MiRNN) learns system dynamics and proposes new designs.</title>\n<p>(<bold>Design</bold>) An experimental design space, denoted as <inline-formula id=\"pcbi.1011436.e003\"><alternatives><graphic id=\"pcbi.1011436.e003g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.e003\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M3\"><ns1:mi mathvariant=\"script\">Q</ns1:mi></ns1:math></alternatives></inline-formula>, is a set of individual experimental conditions, <bold>q</bold>, where a particular condition could, for example, be a set of species in a community or the initial concentrations of resources. MiRNN predictions of outcomes for a set of experimental conditions, <bold>q</bold>, are evaluated by an acquisition function, <italic>f</italic>, which balances the expected information gain (EIG) of an experimental design and its expected profit to evaluate the optimality of experimental designs. (<bold>Test</bold>) The optimal experimental design, <bold>q</bold>*, defines a set of experimental conditions to be observed experimentally. Measurements of these conditions are collected in the test phase. (<bold>Learn</bold>) Data collected in the test phase, and all previously collected data, are used to fit an updated MiRNN model. Once fit to the newly acquired data, the updated MiRNN model can be used again in the design phase to complete the design, test, learn cycle.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "id": "pcbi.1011436.e003g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.e003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011436",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011436",
+    "title": "Integrating a tailored recurrent neural network with Bayesian experimental design to optimize microbial community functions",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jaron C. Thompson",
+      "Victor M. Zavala",
+      "Ophelia S. Venturelli"
+    ],
+    "year": "2023",
+    "license": "2023\nThompson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011436.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g001.png",
+      "bytes": 647527,
+      "sha256": "8554b448cd19bc05103bbed42df1cd4efa7cc0f7397b97867894c383a84c5c6e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011436.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g001.tif",
+      "bytes": 806828,
+      "sha256": "94aa25a5d75f496a9959a29aa635ebaea87c685d1d95679cbb613c58c7a838bc"
+    }
+  }
+}

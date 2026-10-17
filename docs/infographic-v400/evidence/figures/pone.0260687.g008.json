@@ -1,0 +1,58 @@
+{
+  "id": "pone.0260687.g008",
+  "paper": "pone.0260687",
+  "figure": {
+    "id": "pone.0260687.g008",
+    "label": "Fig 8",
+    "caption": "Variation of diversity indices between the four plant communities of moist temperate forests in the Northwestern Himalaya, Pakistan.\nFigures represent ridgeline plots with raw data (black dots below each density distribution) and the first, second and third quartiles (vertical red lines). Lowercase letters on the left differ from each other by an estimated marginal mean. The Y-axis is displayed in an ascendant altitudinal gradient. IHC: Indigofera heterantha- Heracleum candicans-Cynodon dactylon, VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus, and PCP: Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Variation of diversity indices between the four plant communities of moist temperate forests in the Northwestern Himalaya, Pakistan.</title>\n<p>Figures represent ridgeline plots with raw data (black dots below each density distribution) and the first, second and third quartiles (vertical red lines). Lowercase letters on the left differ from each other by an estimated marginal mean. The Y-axis is displayed in an ascendant altitudinal gradient. <bold>IHC</bold>: <italic>Indigofera heterantha- Heracleum candicans-Cynodon dactylon</italic>, <bold>VIP:</bold> <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, <bold>CPI:</bold> <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic>, and <bold>PCP:</bold> <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g008\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g008",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0260687",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0260687",
+    "title": "Environmental variables drive plant species composition and distribution in the moist temperate forests of Northwestern Himalaya, Pakistan",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Inayat Ur Rahman",
+      "Robbie E. Hart",
+      "Farhana Ijaz",
+      "Aftab Afzal",
+      "Zafar Iqbal",
+      "Eduardo S. Calixto",
+      "Elsayed Fathi Abd_Allah",
+      "Abdulaziz A. Alqarawi",
+      "Abeer Hashem",
+      "Al-Bandari Fahad Al-Arjani",
+      "Rukhsana Kausar",
+      "Shiekh Marifatul Haq"
+    ],
+    "year": "2022",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0260687.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0260687.g008.png",
+      "bytes": 399615,
+      "sha256": "d44f61e6d5a48ee60bc38f9b3acfc968a9023dd2b4d26e1e6842b32fc04a464b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0260687.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0260687.g008.tif",
+      "bytes": 551152,
+      "sha256": "76f3f41c99bcb10933d10eb71659bd918e7efb58c37e3d1d5a1ec69e28fe4ce2"
+    }
+  }
+}

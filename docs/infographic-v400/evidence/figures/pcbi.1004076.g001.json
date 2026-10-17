@@ -1,0 +1,52 @@
+{
+  "id": "pcbi.1004076.g001",
+  "paper": "pcbi.1004076",
+  "figure": {
+    "id": "pcbi.1004076.g001",
+    "label": "Fig 1",
+    "caption": "Actin cytoskeleton and traction force microscopy.\n(A) Schematics of a cell cultured on a soft elastic substrate with embedded fluorescent marker beads. Three different kinds of stress fibers and the actin network result in forces being transmitted to the substrate through focal adhesions. (B) Experimental data for a representative U2OS-cell. Actin and paxillin images show stress fibers and focal adhesions, respectively. Displacement data is extracted form the movement of the marker beads. Scale bar 10 microns. (C) Reconstruction of the traction forces with regularized Fourier Transform Traction Cytometry depends on the choice of a regularization parameter. The standard choice based on a Bayesian estimate is marked by the red box.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1004076.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1004076.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Actin cytoskeleton and traction force microscopy.</title>\n<p>(A) Schematics of a cell cultured on a soft elastic substrate with embedded fluorescent marker beads. Three different kinds of stress fibers and the actin network result in forces being transmitted to the substrate through focal adhesions. (B) Experimental data for a representative U2OS-cell. Actin and paxillin images show stress fibers and focal adhesions, respectively. Displacement data is extracted form the movement of the marker beads. Scale bar 10 microns. (C) Reconstruction of the traction forces with regularized Fourier Transform Traction Cytometry depends on the choice of a regularization parameter. The standard choice based on a Bayesian estimate is marked by the red box.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pcbi.1004076.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1004076.g001",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1004076",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004076",
+    "title": "Model-based Traction Force Microscopy Reveals Differential Tension in Cellular Actin Bundles",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jérôme R. D. Soiné",
+      "Christoph A. Brand",
+      "Jonathan Stricker",
+      "Patrick W. Oakes",
+      "Margaret L. Gardel",
+      "Ulrich S. Schwarz"
+    ],
+    "year": "2015",
+    "license": "2015\nSoiné et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1004076.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1004076.g001.png",
+      "bytes": 1371501,
+      "sha256": "72ea96585a99df6e57327ea4edf6ff3a46400d67988b90709e7cd6ce4b4054b2"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1004076.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1004076.g001.tif",
+      "bytes": 1714712,
+      "sha256": "65b4da1f83e6aaba1ccb673264f22870caf02ba8406b0c229d87b14eb6980661"
+    }
+  }
+}

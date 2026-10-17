@@ -1,0 +1,76 @@
+{
+  "doi": "10.1371/journal.pone.0310962",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0310962",
+  "title": "Examination of yield, bacteriolytic activity and cold storage of linker deletion mutants based on endolysin S6_ORF93 derived from Staphylococcus giant bacteriophage S6",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Sosuke Munetomo",
+    "Jumpei Uchiyama",
+    "Iyo Takemura-Uchiyama",
+    "Thamonwan Wanganuttara",
+    "Yumiko Yamamoto",
+    "Toshihiro Tsukui",
+    "Hideharu Hagiya",
+    "Shuji Kanamaru",
+    "Hideyuki Kanda",
+    "Osamu Matsushita"
+  ],
+  "year": "2024",
+  "license": "2024\nMunetomo et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0310962.g001",
+      "label": "Fig 1",
+      "caption": "Description of ORF93 and its mutants.\nThe domains and linker are colored as follows: CHAP domain in green, linker in red, and SH3 domain in yellow. (A) Schematic diagram of ORF93 based on the primary structure. Each number represents the amino acid position from the N-terminus at both ends of the domain, counted from the N-terminus. (B) Predicted protein structure of ORF93. (C) Schematic diagram of ORF93 mutants based on the primary structure. The linker deletions are shown as shadowed areas. The numbers around shadowed areas represent the amino acid position from the N-terminus at both ends of the deletion area. ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20 are the ORF93 mutants which 5, 10, 15, and 20 amino acids were deleted in the upstream direction from the 157^{th} amino acid from the N-terminus. The predicted linker lengths are 21, 16, 11, and 6 amino acids, respectively. (D) Predicted protein structures of ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15. These protein structures were overlapped based on the CHAP domain. (E) Predicted protein structure of ORF93-Δ20.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0310962.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0310962.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Description of ORF93 and its mutants.</title>\n<p>The domains and linker are colored as follows: CHAP domain in green, linker in red, and SH3 domain in yellow. (A) Schematic diagram of ORF93 based on the primary structure. Each number represents the amino acid position from the N-terminus at both ends of the domain, counted from the N-terminus. (B) Predicted protein structure of ORF93. (C) Schematic diagram of ORF93 mutants based on the primary structure. The linker deletions are shown as shadowed areas. The numbers around shadowed areas represent the amino acid position from the N-terminus at both ends of the deletion area. ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20 are the ORF93 mutants which 5, 10, 15, and 20 amino acids were deleted in the upstream direction from the 157<sup>th</sup> amino acid from the N-terminus. The predicted linker lengths are 21, 16, 11, and 6 amino acids, respectively. (D) Predicted protein structures of ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15. These protein structures were overlapped based on the CHAP domain. (E) Predicted protein structure of ORF93-Δ20.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0310962.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0310962.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0310962.g002",
+      "label": "Fig 2",
+      "caption": "Production of ORF93 and its mutants.\n(A) SDS-PAGE image. We used the protein marker (XL-Ladder Broad protein molecular weight, APRO Life Science Institute) as a standard, of which thin bands at 20, 40, 50, 60, and 100 kDa and thick bands at 30 and 80 kDa contain 0.15 μg and 0.6 μg proteins, respectively. After elution from the affinity chromatography and filtration, 10 μL of elutes were electrophoresed. (B) Yields of ORF93 and its mutants. We evaluated a yield as a relative rate, of which the ORF93 is set as 100%. Error bars indicate SD (n = 4). The yield of ORF93 was statistically compared with those of linker deletion mutants. A double asterisk shows statistical significance (**, P < 0.01).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0310962.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0310962.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Production of ORF93 and its mutants.</title>\n<p>(A) SDS-PAGE image. We used the protein marker (XL-Ladder Broad protein molecular weight, APRO Life Science Institute) as a standard, of which thin bands at 20, 40, 50, 60, and 100 kDa and thick bands at 30 and 80 kDa contain 0.15 μg and 0.6 μg proteins, respectively. After elution from the affinity chromatography and filtration, 10 μL of elutes were electrophoresed. (B) Yields of ORF93 and its mutants. We evaluated a yield as a relative rate, of which the ORF93 is set as 100%. Error bars indicate SD (n = 4). The yield of ORF93 was statistically compared with those of linker deletion mutants. A double asterisk shows statistical significance (**, <italic>P</italic> &lt; 0.01).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0310962.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0310962.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0310962.g003",
+      "label": "Fig 3",
+      "caption": "Bacteriolytic activities of ORF93 and its mutants against Staphylococcus spp.\nError bars indicate SD (n = 12). We compared the bacteriolytic activities of ORF93 with those of linker deletion mutants. Statistical significance is shown on the graph as asterisks (****, P < 0.0001; **, P < 0.01; *, P < 0.05).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0310962.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0310962.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Bacteriolytic activities of ORF93 and its mutants against <italic>Staphylococcus</italic> spp.</title>\n<p>Error bars indicate SD (n = 12). We compared the bacteriolytic activities of ORF93 with those of linker deletion mutants. Statistical significance is shown on the graph as asterisks (****, <italic>P</italic> &lt; 0.0001; **, <italic>P</italic> &lt; 0.01; *, <italic>P</italic> &lt; 0.05).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0310962.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0310962.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0310962.g004",
+      "label": "Fig 4",
+      "caption": "Cold storage of ORF93 and its mutants.\nError bars indicate SD (n = 3). (A) Protein quantity changes over time. The protein quantity is presented as a relative rate, which at the first day was set to be 100%. (B) The protein quantity of the endolysin solution on day 14 and day 56. We compared protein quantity of ORF93 with those of linker deletion mutants on days 14 and 56. Statistical significance is shown on the graph with a double asterisk (**, P < 0.01). (C) SDS-PAGE image. We analyzed 10 μL of endolysin solutions by SDS-PAGE together with a protein marker (5 μL of XL-Ladder Broad protein molecular weight, APRO Life Science Institute) on day 56.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0310962.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0310962.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Cold storage of ORF93 and its mutants.</title>\n<p>Error bars indicate SD (n = 3). (A) Protein quantity changes over time. The protein quantity is presented as a relative rate, which at the first day was set to be 100%. (B) The protein quantity of the endolysin solution on day 14 and day 56. We compared protein quantity of ORF93 with those of linker deletion mutants on days 14 and 56. Statistical significance is shown on the graph with a double asterisk (**, <italic>P</italic> &lt; 0.01). (C) SDS-PAGE image. We analyzed 10 μL of endolysin solutions by SDS-PAGE together with a protein marker (5 μL of XL-Ladder Broad protein molecular weight, APRO Life Science Institute) on day 56.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0310962.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0310962.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

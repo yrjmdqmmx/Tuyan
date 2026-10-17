@@ -1,0 +1,56 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "0fb860106b60b84a6205d82388fae94300b238cfccc4d74e3dfb6a9cf493b16d",
+  "pngHash": "44f259167ca31cd3206183a69ebd9244d8bc2bca6110c5d512b899a39b22e0ec",
+  "svgHash": "bacbb09d9c19cb2f833f857a76ffaca445e4733534859de230615b3ad0f4ad1e",
+  "numeric": {
+    "typeId": "point_map",
+    "computations": {
+      "coordinates": [
+        [
+          110,
+          30
+        ],
+        [
+          116,
+          34
+        ],
+        [
+          113,
+          28
+        ]
+      ],
+      "projection": "Plate Carree; no equal-area or distance claim"
+    },
+    "checks": {
+      "coordinate_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "label",
+        "x",
+        "y"
+      ],
+      "options": {
+        "crs": "EPSG:4326",
+        "projection": "plate_carree"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

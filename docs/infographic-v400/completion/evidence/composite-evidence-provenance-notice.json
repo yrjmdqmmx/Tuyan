@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-10",
+  "incident": "A topology repair focused test ran without TUYAN_QA_EVIDENCE_DIR and overwrote nine pre-existing untracked mock-composition evidence files. Original bytes have not been recovered.",
+  "scope": "Only the four composite PNG/SVG scenario output pairs and composite-core-matrix.json. Prior live-bailian paid evidence and data/schematic matrices were not written by this test.",
+  "status": "Do not use these current files as evidence of the earlier completion run; they were regenerated during the later repair. The historical log remains but does not establish original output hashes.",
+  "preservedCopy": ".superpowers/sdd/2026-10-10-svg-topology-repair/composite-evidence-write-incident/",
+  "files": [
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/multipanel-png.png",
+      "sha256": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/multipanel-png.svg",
+      "sha256": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/multipanel-svg.png",
+      "sha256": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/multipanel-svg.svg",
+      "sha256": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/small_multiples-png.png",
+      "sha256": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/small_multiples-png.svg",
+      "sha256": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/small_multiples-svg.png",
+      "sha256": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core/small_multiples-svg.svg",
+      "sha256": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd"
+    },
+    {
+      "path": "docs/infographic-v400/completion/evidence/composite-core-matrix.json",
+      "sha256": "cba4ae8b8b90c74f433fa5ad363b7525c84eaa38f3b6088b4a28a1f791a294c5"
+    }
+  ]
+}

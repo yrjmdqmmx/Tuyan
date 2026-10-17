@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PONE-D-22-19703</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pone.0272825</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Epidemiology</subject><subj-group><subject>Medical risk factors</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Biomarkers</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Endocrinology</subject><subj-group><subject>Endocrine disorders</subject><subj-group><subject>Diabetes mellitus</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Metabolic disorders</subject><subj-group><subject>Diabetes mellitus</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Cardiovascular disease risk</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Cardiology</subject><subj-group><subject>Cardiovascular medicine</subject><subj-group><subject>Cardiovascular diseases</subject><subj-group><subject>Cardiovascular disease risk</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Vascular medicine</subject><subj-group><subject>Blood pressure</subject><subj-group><subject>Hypertension</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Lipids</subject><subj-group><subject>Cholesterol</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Endocrinology</subject><subj-group><subject>Endocrine disorders</subject><subj-group><subject>Diabetes mellitus</subject><subj-group><subject>Type 2 diabetes</subject><subj-group><subject>Type 2 diabetes risk</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Metabolic disorders</subject><subj-group><subject>Diabetes mellitus</subject><subj-group><subject>Type 2 diabetes</subject><subj-group><subject>Type 2 diabetes risk</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Survey research</subject><subj-group><subject>Surveys</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>A novel method to derive personalized minimum viable recommendations for type 2 diabetes prevention based on counterfactual explanations</article-title>
+<alt-title alt-title-type="running-head">Individualized recommendations for type 2 diabetes prevention</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-0731-7505</contrib-id>
+<name name-style="western">
+<surname>Lenatti</surname> <given-names>Marta</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-7206-5511</contrib-id>
+<name name-style="western">
+<surname>Carlevaro</surname> <given-names>Alberto</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Guergachi</surname> <given-names>Aziz</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-1317-7035</contrib-id>
+<name name-style="western">
+<surname>Keshavjee</surname> <given-names>Karim</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Mongelli</surname> <given-names>Maurizio</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-1341-2560</contrib-id>
+<name name-style="western">
+<surname>Paglialonga</surname> <given-names>Alessia</given-names></name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<label>1</label>
+<addr-line>Institute of Electronics, Information Engineering and Telecommunications (IEIIT), National Research Council of Italy (CNR), Rome, Italy</addr-line>
+</aff>
+<aff id="aff002">
+<label>2</label>
+<addr-line>Department of Electrical, Electronics and Telecommunications Engineering and Naval Architecture (DITEN), University of Genoa, Genoa, Italy</addr-line>
+</aff>
+<aff id="aff003">
+<label>3</label>
+<addr-line>Ted Rogers School of Management, Toronto Metropolitan University, Toronto, Canada</addr-line>
+</aff>
+<aff id="aff004">
+<label>4</label>
+<addr-line>Ted Rogers School of Information Technology Management, Toronto Metropolitan University, Toronto, Canada</addr-line>
+</aff>
+<aff id="aff005">
+<label>5</label>
+<addr-line>Department of Mathematics and Statistics, York University, Toronto, Canada</addr-line>
+</aff>
+<aff id="aff006">
+<label>6</label>
+<addr-line>Institute of Health Policy, Management and Evaluation, Dalla Lana School of Public Health, University of Toronto, Toronto, Canada</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ijaz</surname> <given-names>Muhammad Fazal</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Sejong University, KOREA, REPUBLIC OF</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">karim.keshavjee@utoronto.ca</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<year>2022</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>17</day>
+<month>11</month>
+<year>2022</year>
+</pub-date>
+<volume>17</volume>
+<issue>11</issue>
+<elocation-id>e0272825</elocation-id>
+<history>
+<date date-type="received">
+<day>26</day>
+<month>7</month>
+<year>2022</year>
+</date>
+<date date-type="accepted">
+<day>2</day>
+<month>11</month>
+<year>2022</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2022</copyright-year>
+<copyright-holder>Lenatti et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0272825"/>
+<abstract>
+<p>Despite the growing availability of artificial intelligence models for predicting type 2 diabetes, there is still a lack of personalized approaches to quantify minimum viable changes in biomarkers that may help reduce the individual risk of developing disease. The aim of this article is to develop a new method, based on counterfactual explanations, to generate personalized recommendations to reduce the one-year risk of type 2 diabetes. Ten routinely collected biomarkers extracted from Electronic Medical Records of 2791 patients at low risk and 2791 patients at high risk of type 2 diabetes were analyzed. Two regions characterizing the two classes of patients were estimated using a Support Vector Data Description classifier. Counterfactual explanations (i.e., minimal changes in input features able to change the risk class) were generated for patients at high risk and evaluated using performance metrics (availability, validity, actionability, similarity, and discriminative power) and a qualitative survey administered to seven expert clinicians. Results showed that, on average, the requested minimum viable changes implied a significant reduction of fasting blood sugar, systolic blood pressure, and triglycerides and a significant increase of high-density lipoprotein in patients at risk of diabetes. A significant reduction in body mass index was also recommended in most of the patients at risk, except in females without hypertension. In general, greater changes were recommended in hypertensive patients compared to non-hypertensive ones. The experts were overall satisfied with the proposed approach although in some cases the proposed recommendations were deemed insufficient to reduce the risk in a clinically meaningful way. Future research will focus on a larger set of biomarkers and different comorbidities, also incorporating clinical guidelines whenever possible. Development of additional mathematical and clinical validation approaches will also be of paramount importance.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>Fondazione Compagnia di San Paolo</institution>
+</funding-source>
+<award-id>2020.AAI22.U41/SD/pv</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Mongelli</surname> <given-names>Maurizio</given-names></name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution>NSERC</institution>
+</funding-source>
+<award-id>RGPIN-2019-05522</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Guergachi</surname> <given-names>Aziz</given-names></name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>The work was partially supported by grant No. 2020.AAI22.U41/SD/pv from Fondazione Compagnia di San Paolo (<ext-link ext-link-type="uri" xlink:href="https://www.compagniadisanpaolo.it/en/" xlink:type="simple">https://www.compagniadisanpaolo.it/en/</ext-link>) to M.M. (principal investigator) and by grant No. RGPIN-2019-05522 from Natural Science and Engineering Research Council of Canada (NSERC) (<ext-link ext-link-type="uri" xlink:href="https://www.nserc-crsng.gc.ca/index_eng.asp" xlink:type="simple">https://www.nserc-crsng.gc.ca/index_eng.asp</ext-link>) to A.G. (principal investigator). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="4"/>
+<page-count count="24"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>This study involves third-party data that cannot be shared because of data sharing agreement restrictions by the data holder. The entire source database is available from the Canadian Primary Care Sentinel Surveillance Network (<ext-link ext-link-type="uri" xlink:href="https://cpcssn.ca/join-cpcssn/for-researchers/" xlink:type="simple">https://cpcssn.ca/join-cpcssn/for-researchers/</ext-link>) for researchers who meet the criteria for access to deidentified patient data. The minimal dataset used to reach the conclusions drawn in the manuscript can be accessed upon a specific agreement to be signed with the institution holding data access rights (Toronto Metropolitan University). The code is available at: Alberto Carlevaro, A. C., &amp; Marta Lenatti, M. L. (2022). CounterfactualSVDD [Computer software]. <ext-link ext-link-type="uri" xlink:href="https://github.com/AlbiCarle/CounterfactualSVDD" xlink:type="simple">https://github.com/AlbiCarle/CounterfactualSVDD</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Diabetes mellitus is a chronic metabolic disorder associated with hyperglycemia, i.e. an increase in blood glucose level that may lead to life-threatening damages to the circulatory and nervous systems. This abnormal rise may be caused by a variety of factors, either related to limited insulin production (Type I diabetes) or to deficiency of cell response to insulin, often referred to as ‘insulin resistance’ (Type II diabetes, T2DM). According to the International Diabetes Federation 2021 Report [<xref ref-type="bibr" rid="pone.0272825.ref001">1</xref>], around 536.6 million people (10.5% of the global population) are affected by diabetes, and the global prevalence of this disease is estimated to increase by 16% by 2045. Diabetes-related health expenditures have dramatically increased in the last few years, reaching an estimated cost of 966 billion dollars in 2021. Particularly, T2DM accounts for 90% of diabetes cases worldwide. Developing prevention strategies to reduce the risk of having T2DM is of paramount importance to avoid the potentially serious complications of this disease. However, early detection can be challenging as patients with T2DM may not develop clearly identifiable symptoms in the initial stages of the disease. As such, data-driven predictive models may help identifying individuals at early risk of developing T2DM.</p>
+<sec id="sec002">
+<title>Machine learning approaches for T2DM prediction</title>
+<p>Several machine learning (ML) models have been proposed to predict the onset of T2DM from clinical measures. ML can help investigate possible hidden patterns in the available data (e.g., clinical information, risk factors, and individual characteristics) to uncover possible mechanisms of disease onset and development [<xref ref-type="bibr" rid="pone.0272825.ref002">2</xref>, <xref ref-type="bibr" rid="pone.0272825.ref003">3</xref>]. For example, Perveen et al. [<xref ref-type="bibr" rid="pone.0272825.ref004">4</xref>] investigated different ML methods to predict the onset of T2DM using information about individual risk factors of metabolic syndrome including abdominal obesity, cholesterol levels and glucose concentration. Results showed that the highest prediction performance (i.e., sensitivity and F-measure of about 80%) was achieved with a Naïve Bayes classifier coupled with K-medoids under sampling to obtain a balanced dataset. Alghamdi et al. [<xref ref-type="bibr" rid="pone.0272825.ref005">5</xref>] investigated ML ensemble techniques for predicting diabetes by using clinical importance and information Gain Ranking methods to select a subset of features from an initial set of 62 attributes related to cardiorespiratory fitness data. Even in this case the dataset was balanced using sampling techniques (i.e., SMOTE-Synthetic Minority Over-sampling Technique). Different ML models to predict the onset of T2DM using different types of input data (e.g., medical records, lifestyle, socio-demographic factors, family history…) have been explored in recent years, overall achieving satisfactory levels of classification performance (i.e., 80% or higher). In this context, transparent ML techniques like decision trees or logistic regression have been applied to obtain decision rules and feature rankings that highlight the overall importance of different risk factors and clinical features [<xref ref-type="bibr" rid="pone.0272825.ref002">2</xref>]. Moreover, personalized strategies for monitoring the health status of T2DM patients have been proposed. For example, Alfian et al, [<xref ref-type="bibr" rid="pone.0272825.ref006">6</xref>] presented a real-time monitoring system based on Bluetooth Low Energy (BLE)-based sensors and ML models to predict the onset of diabetes and to predict future blood glucose levels. Nevertheless, to the best of our knowledge, there is still a lack of fully interpretable ML approaches able to define personalized preventive recommendations to help patients lower their risk of developing T2DM by targeting individualized changes in biomarkers and modifiable risk factors. The personalized approach is more specific and therefore may be more effective than sample-based ML approaches generating average recommendations across the population.</p>
+</sec>
+<sec id="sec003">
+<title>Counterfactual explanations</title>
+<p>EXplainable Artificial Intelligence (XAI) is a field of artificial intelligence comprising several techniques which are able to provide insights about the inner logic of ML models, ensuring transparency of decision-making processes, therefore fulfilling the “right for explanation” demanded, for example, by the European Union General Data Protection Regulation (GDPR) [<xref ref-type="bibr" rid="pone.0272825.ref007">7</xref>]. XAI techniques either focus on the representation of the overall behavior of the model, providing <italic>global explanations</italic>, or describe the decision-making process of the model for a single specific instance providing <italic>local explanations</italic> [<xref ref-type="bibr" rid="pone.0272825.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0272825.ref009">9</xref>]. Explainability, transparency and trustworthiness are extremely important requirements, especially when it comes to automated solutions that could make life-critical decisions (e.g., clinical decision support systems, medical robotic systems, or autonomous vehicles) and, as such, XAI techniques have been extensively applied to medical case studies in recent years [<xref ref-type="bibr" rid="pone.0272825.ref010">10</xref>–<xref ref-type="bibr" rid="pone.0272825.ref012">12</xref>]. However, transparency of a model is only one of the several components of trustworthiness and even a fully explainable AI system should be compliant with several other requirements in order to be considered trustworthy [<xref ref-type="bibr" rid="pone.0272825.ref013">13</xref>, <xref ref-type="bibr" rid="pone.0272825.ref014">14</xref>]. For example, when dealing with medical decision support systems, particular attention must be paid to <italic>Human agency and oversight</italic> as a requirement for Trustworthy AI [<xref ref-type="bibr" rid="pone.0272825.ref013">13</xref>], meaning that AI systems must not limit human autonomy and the decision-making process must guarantee that fundamental rights are respected, without causing any harm.</p>
+<p><italic>Counterfactual explanations</italic> (from now on simply referred to as <italic>counterfactuals</italic>) belong to the family of local XAI techniques. In a binary classification problem, a counterfactual explanation is defined as the set of minimal changes that can be applied to the input features related to a specific instance in order to change its predicted class. In the last few years, different methods for the generation of realistic and feasible counterfactuals able to increase transparency of automated decision making processes have been proposed in the literature [<xref ref-type="bibr" rid="pone.0272825.ref015">15</xref>]. The concept of counterfactual was first adapted to the AI field by Wachter et al. [<xref ref-type="bibr" rid="pone.0272825.ref016">16</xref>]. Since then, various methods for generating counterfactuals have been proposed for tabular data, images, and text and applied to several application domains including, for example, vehicle platooning [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>], job hiring platforms [<xref ref-type="bibr" rid="pone.0272825.ref018">18</xref>], and disease prediction [<xref ref-type="bibr" rid="pone.0272825.ref016">16</xref>, <xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>, <xref ref-type="bibr" rid="pone.0272825.ref020">20</xref>]. Among the use cases reported by [<xref ref-type="bibr" rid="pone.0272825.ref016">16</xref>], one was related to predicting the probability of developing diabetes by performing a logistic regression. To do so, eight features were extracted from the Pima Indians Diabetes Database [<xref ref-type="bibr" rid="pone.0272825.ref021">21</xref>] and counterfactuals were generated to explain the changes in the input features able to provide a probability of having diabetes of 0.5. The same dataset was also used by White et al. [<xref ref-type="bibr" rid="pone.0272825.ref022">22</xref>] to demonstrate their proposed method, called CLEAR (Counterfactual Local Explanations via Regression), to generate counterfactuals through regression coefficients. Specifically, in [<xref ref-type="bibr" rid="pone.0272825.ref022">22</xref>] counterfactuals are generated for each observation by following a brute force approach where small perturbations are applied to each input feature separately and independently. Then, a linear regressor is trained on a balanced neighborhood around the observations. Finally, the regressor is used to determine the counterfactuals and the accuracy of these regressions with respect to the generated counterfactuals is estimated. By applying the CLEAR method, a perturbation of -0.557 in glucose concentration was identified as the minimal change able to generate a decrease in the probability of having diabetes from 0.69 to less than 0.5. However, all the aforementioned studies aimed at developing general methods for counterfactuals generation and did not specifically address constraints related to diabetes prevention for possible application in clinical practice.</p>
+</sec>
+<sec id="sec004">
+<title>Rationale and contribution</title>
+<p>The aim of this study is the development of a novel method based on counterfactual explanations to produce <italic>personalized</italic> minimum viable modifications of routinely measured biomarkers potentially able to reduce the risk of developing T2DM. As a first step in this direction, we recently introduced and validated a method for building counterfactual explanations starting from non-linear envelopes enclosing the points of each output class, using a Two-Class Support Vector Data Descriptor (TC-SVDD) [<xref ref-type="bibr" rid="pone.0272825.ref023">23</xref>] on data from vehicle platooning collision detection [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>]. In the same contribution, we extracted a fully transparent, rule-based description of the identified regions to characterize the two output classes and demonstrated the ability of the proposed counterfactuals generation method to determine changes in output class. In [<xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>], we applied the proposed method to characterize T2DM using an unbalanced set of 1857 subjects (428 diagnosed with T2DM and 1429 without the disease) and biomarkers derived from electronic medical records (EMRs). We demonstrated that the minimal variations in the input features associated with a change in the output class were coherent with the literature related to T2DM. Specifically, diabetic patients were on average associated with higher fasting blood sugar (FBS), higher body mass index (BMI), and lower high-density lipoproteins (HDL), compared to their non-diabetic counterfactuals. The method relied on the definition of two TC-SVDD classification regions named “T2DM” and “No T2DM” and on the generation of a set of counterfactuals that, being by definition at minimum distance, were located near the decision boundary of the “No T2DM” class. However, the method developed in [<xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>] is nor readily applicable to diabetes prevention and risk reduction for the following reasons. First, the boundaries of the two regions are very close to each other and, as a result, the observed changes in biomarkers may not be able to decrease the risk of disease and, as such, may not be translated into practical preventive recommendations. In principle, larger changes may be obtained by using smaller regions to define the “No T2DM” class. For example, by reducing the false negative rate (FNR) of the TC-SVDD classifier, a smaller, more conservative, “No T2DM” region can be obtained and used to characterize patients without the disease that are inherently different from those in the “T2DM” region. Second, in [<xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>], the counterfactuals were assessed only in terms of average differences and no human validation of the observed changes in biomarkers was performed. Last, in [<xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>] we focused on characterization of patients already diagnosed with T2DM, rather than on the investigation of preventive recommendations on individuals at risk of developing T2DM in the future. For a clear identification of actionable counterfactuals able to reduce the risk of developing disease, a different dataset than the one used in [<xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>] is needed.</p>
+<p>The main contributions and advancements of the present study compared to previous literature and, particularly, compared to [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>, <xref ref-type="bibr" rid="pone.0272825.ref019">19</xref>] are summarized in the followings:</p>
+<list list-type="bullet">
+<list-item>
+<p>selection of a dataset including individual observations before the onset of T2DM to investigate which biomarkers and which change in biomarkers can help reduce the risk of developing T2DM;</p>
+</list-item>
+<list-item>
+<p>development of a novel methodology for the generation of <italic>actionable</italic> counterfactual explanations from numerical and categorical tabular data by varying only a subset of <italic>controllable</italic> features and constraining <italic>non controllable</italic> features such as age and sex;</p>
+</list-item>
+<list-item>
+<p>generalization of the TC-SVDD classifier that defines the two regions of the output classes by controlling the FNR to modulate the risk associated with the “low” risk output class and obtain “more conservative” minimal changes towards a lower risk of developing T2DM;</p>
+</list-item>
+<list-item>
+<p>assessment of the proposed XAI framework through an <italic>ad-hoc</italic> survey delivered to medical experts, in line with the <italic>Human agency and oversight</italic> requirement of trustworthy AI;</p>
+</list-item>
+<list-item>
+<p>comparison of the newly proposed methodology with two state-of-the-art local XAI techniques.</p>
+</list-item>
+</list>
+</sec>
+<sec id="sec005">
+<title>Structure of the article</title>
+<p>The rest of the article is structured as follows. Section <italic>Materials and Methods</italic> introduces the dataset, the proposed counterfactuals generation process and the approach used for counterfactual analysis, including computational and expert based validation. Section <italic>Results</italic> shows the characterization of counterfactuals generated using both the original TC-SVDD and a modified version based on FNR control. The section also presents the main outcomes of the expert assessment and the comparison with two local XAI techniques. In section <italic>Discussion</italic>, the main findings are examined in the context of available literature and knowledge, highlighting limitations and possible future research. Finally, the last section (<italic>Conclusion</italic>) summarizes the main remarks and outlines directions for further development.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec007">
+<title>Dataset</title>
+<p>The dataset analyzed in this study includes a set of records extracted from the Canadian Primary Care Sentinel Surveillance Network (CPCSSN), a Canadian longitudinal database of EMRs [<xref ref-type="bibr" rid="pone.0272825.ref024">24</xref>]. The protocol was submitted to the Toronto Metropolitan University (formerly Ryerson University) Review Ethics Board (REB 2013–261) and the Board provided a waiver of review as the portion of CPCSSN database used includes de-identified and anonymized records. Specifically, the CPCSSN database here used includes primary care EMR data collected from January 1, 2002 to June 31, 2015 from 1’283’154 patients overall, 90’278 of which diagnosed with diabetes (including T2DM, Type I diabetes, and gestational diabetes). Each patient is associated with several records in the database including, for example, data from medical encounters, laboratory results, results of physical examinations, and medical prescriptions. In this study, in addition to general patient characteristics such as <italic>age</italic> and <italic>gender</italic>, eight biomarkers, routinely measured in primary care, have been considered. We selected the following features based on their relevance to T2DM risk prediction [<xref ref-type="bibr" rid="pone.0272825.ref001">1</xref>, <xref ref-type="bibr" rid="pone.0272825.ref025">25</xref>, <xref ref-type="bibr" rid="pone.0272825.ref026">26</xref>] and their large availability in the general population: <italic>fasting blood sugar</italic> (FBS, mmol/L), <italic>body mass index</italic> (BMI, kg/m2), <italic>systolic blood pressure</italic> (sBP, mmHg), <italic>high-density lipoprotein</italic> (HDL, mmol/L), <italic>low-density lipoprotein</italic> (LDL, mmol/L), <italic>triglycerides</italic> (TG, mmol/L), <italic>Total Cholesterol</italic> (Total Chol, mmol/L), and <italic>presence of hypertension</italic>(HTN, {0,1}). The hypertension variable in CPCSSN codifies the presence of essential hypertension, hypertensive heart disease, hypertensive chronic kidney disease, hypertensive heart and kidney disease, and secondary hypertension. In all cases there must be a clear diagnosis of hypertension.</p>
+<p>Inclusion criteria for diabetic patients were: age ≥ 30, diagnosis of T2DM, presence of at least one medical encounter up to one year before the onset of T2DM, and presence of at least one value for <italic>each</italic> biomarker in a time window from six years to one year before diagnosis. By applying these criteria, 2791 T2DM patients were selected. Inclusion criteria for non diabetic patients were: age ≥ 30, absence of any kind of diabetes diagnosis, presence of at least two encounters (with a difference of at least one year), and presence of at least one value for <italic>each</italic> biomarker in a time window from six years to one year before the last encounter. In order to obtain a balanced dataset, 2791 non diabetic patients were randomly selected from about 58000 eligible non diabetic patients.</p>
+<p>For each patient, a single record was obtained by averaging all the available readings for each biomarker in the observation window. Records related to T2DM patients were labeled as “high risk” (i.e., output class <italic>highT2DM</italic>) whereas records related to patients who did not develop diabetes in the observation window were labeled as “low risk” (i.e., output class (<italic>lowT2DM</italic>). As a result, the final balanced dataset consisted of 5882 records, each including 10 input features and one binary output related to the risk of developing T2DM. The <italic>highT2DM</italic> class included data from 1510 females (age: 57 ± 13 years) and 1281 males (age: 58 ± 11 years), whereas the <italic>lowT2DM</italic> class included data from 1710 females (age: 58 ± 11 years) and 1081 males (age: 60 ± 11 years).</p>
+</sec>
+<sec id="sec008">
+<title>Counterfactuals generation process</title>
+<p><xref ref-type="fig" rid="pone.0272825.g001">Fig 1</xref> shows a schematic workflow of the proposed counterfactuals generation method. First, the regions characterizing patients in the two ouput classes are identified (see <italic>Step 1. Classification using</italic> TC-SVDD), then counterfactuals are estimated (see <italic>Step 2. Counterfactuals search algorithm</italic>). The counterfactual generation process code (<ext-link ext-link-type="uri" xlink:href="https://github.com/AlbiCarle/CounterfactualSVDD" xlink:type="simple">https://github.com/AlbiCarle/CounterfactualSVDD</ext-link>) was implemented in Matlab R2021a.</p>
+<fig id="pone.0272825.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Workflow.</title>
+<p>Schematic workflow of the counterfactuals generation process.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.g001" xlink:type="simple"/>
+</fig>
+<sec id="sec009">
+<title>Step 1. Classification using TC-SVDD</title>
+<p>The dataset is divided into training (70%) and test (30%) sets by applying stratification to maintain class balancing in the partitions. Then, a TC-SVDD [<xref ref-type="bibr" rid="pone.0272825.ref023">23</xref>] is trained over training data to learn the decision boundaries of two classification regions, i.e. <italic>S</italic><sub>1</sub> (<italic>highT2DM</italic> class) and <italic>S</italic><sub>2</sub> (<italic>lowT2DM</italic> class), with <italic>S</italic><sub>2</sub> being the target region, where searching for counterfactuals.</p>
+<p>More specifically, given a set of data points {(<bold>x</bold><sub><italic>i</italic></sub>, <italic>y</italic><sub><italic>i</italic></sub>)} (where <italic>y</italic><sub><italic>i</italic></sub> is the label that determines to which class, I or II, the observation belongs) and a binary classification problem, the aim of the TC-SVDD is to find a region (i.e. an hypersphere with center <bold>a</bold> and radius <italic>R</italic>) for each class that encloses as many points of that class as possible, while limiting the volume of the region. This is achieved by solving an optimization problem:
+<disp-formula id="pone.0272825.e001"><alternatives><graphic id="pone.0272825.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e001" xlink:type="simple"/><mml:math display="block" id="M1"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mtext>min</mml:mtext><mml:mspace width="2pt"/><mml:mi>F</mml:mi> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi>R</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi>R</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mo>;</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo>,</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>=</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>1</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mo>+</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>2</mml:mn> <mml:mn>2</mml:mn></mml:msubsup></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(1)</label></disp-formula>
+under the constraints
+<disp-formula id="pone.0272825.e002"><alternatives><graphic id="pone.0272825.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e002" xlink:type="simple"/><mml:math display="block" id="M2"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd><mml:mrow><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:msup><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≤</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>1</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mrow><mml:mspace width="4pt"/><mml:mo>∀</mml:mo> <mml:mi>i</mml:mi> <mml:mspace width="4pt"/><mml:mtext>s.t.</mml:mtext> <mml:mspace width="4pt"/><mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mspace width="4pt"/><mml:mtext>belongs</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>to</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>class</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>I</mml:mtext> <mml:mo>,</mml:mo> <mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mo>∥</mml:mo></mml:mrow> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:msup><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≤</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>2</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mrow><mml:mspace width="4pt"/><mml:mo>∀</mml:mo> <mml:mi>i</mml:mi> <mml:mspace width="4pt"/><mml:mtext>s.t.</mml:mtext> <mml:mspace width="4pt"/><mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mspace width="4pt"/><mml:mtext>belongs</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>to</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>class</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>II</mml:mtext></mml:mrow></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:msup><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≥</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>2</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mrow><mml:mspace width="4pt"/><mml:mo>∀</mml:mo> <mml:mi>i</mml:mi> <mml:mspace width="4pt"/><mml:mtext>s.t.</mml:mtext> <mml:mspace width="4pt"/><mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mspace width="4pt"/><mml:mtext>belongs</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>to</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>class</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>I</mml:mtext> <mml:mo>,</mml:mo> <mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mo>∥</mml:mo></mml:mrow> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:msup><mml:mrow><mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≥</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>1</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mspace width="4pt"/><mml:mo>∀</mml:mo> <mml:mi>i</mml:mi> <mml:mspace width="4pt"/><mml:mtext>s.t.</mml:mtext> <mml:mspace width="4pt"/><mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mspace width="4pt"/><mml:mtext>belongs</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>to</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>class</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>II</mml:mtext></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives></disp-formula></p>
+<p>Since the algorithm tries to maximize the number of correctly classified points by minimizing the volume of the spheres, the TC-SVDD algorithm abstains from making a final decision on a subset of data points, namely the <italic>unclassified</italic> points, i.e., not belonging to either region as they represent data in an overlapping region between the two classes. Although the feature space is not entirely mapped into two classes, the TC-SVDD algorithm generates two closed, dense regions (<italic>S</italic><sub>1</sub> and <italic>S</italic><sub>2</sub>) with high reliability in classifying points belonging to the <italic>highT2DM</italic> and <italic>lowT2DM</italic> class, respectively. As a result, the TC-SVDD yields high positive predictive value (PPV) and negative predictive value (NPV). The TC-SVDD algorithm fits our goal since the search for counterfactuals must be performed in a well-specified closed region to maximize the reliability of the counterfactuals generated. The aforementioned optimization problem can be relaxed and be solved analytically by introducing slack variables and regularization parameters (please refer to [<xref ref-type="bibr" rid="pone.0272825.ref023">23</xref>] for further details). However, it is worth mentioning that the regularization parameters play a relevant role in training the classifier, as they handle the amount of error allowed between classes. The introduction of a radial basis function kernel allows to map the input data points into a high dimensional feature space, to increase flexibility. A set of hyperparameters has been selected for the TC-SVDD training, including the width of the kernel (<italic>σ</italic> = 5) and the regularization terms <italic>C</italic><sub>1</sub> = 1, <italic>C</italic><sub>2</sub> = 1, <italic>C</italic><sub>3</sub> = 1/(<italic>νN</italic><sub><italic>highT</italic>2<italic>DM</italic></sub>), <italic>C</italic><sub>4</sub> = 1/(<italic>νN</italic><sub><italic>lowT</italic>2<italic>DM</italic></sub>), where <italic>ν</italic> is equal to 0.05 [<xref ref-type="bibr" rid="pone.0272825.ref023">23</xref>] and <italic>N</italic><sub><italic>highT</italic>2<italic>DM</italic></sub> and <italic>N</italic><sub><italic>lowT</italic>2<italic>DM</italic></sub> are the number of training points belonging to the two output classes, respectively. These latter terms establish a trade-off between volume and classification errors of <italic>S</italic><sub>1</sub> and <italic>S</italic><sub>2</sub>, respectively.</p>
+<p>It is worth noting that maximization of classification accuracy may not lead to sufficiently reliable counterfactuals in some applications, for example those characterized by fluctuating data or inherent overlap between classes, such as typical disease prediction problems. In these cases, reducing the descriptive regions to characterize a smaller but more stable set of points in the target classes can help increase the reliability of the generated counterfactuals. This could be obtained by implementing a <italic>reliable</italic> version of the TC-SVDD which tries to minimize the number of misclassified points in one or both classes. A possibility is to limit the false positive rate (FPR) and/or the FNR i.e., the conditional probability of a positive prediction given a negative observation and/or the conditional probability of a negative prediction given a positive observation. In our task of disease risk reduction, for example, implementing such an approach may be useful to define a “more conservative” <italic>lowT2DM</italic> region which includes data from patients with presumably better health, i.e. points at a higher distance from points in the opposite class. Let’s consider <italic>lowT2DM</italic> as the negative class and <italic>highT2DM</italic> as the positive class. To define a “more conservative” <italic>lowT2DM</italic> region (<italic>S</italic><sub>2_<italic>red</italic></sub>), the FNR can be kept below a given threshold (at the expense of accuracy). In the specific version of the SVDD here used (i.e. <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>), the center <italic>a</italic> and radius <italic>R</italic> characterizing the shape of the SVDD region <italic>S</italic><sub>2</sub> are modified iteratively during the training phase until the FNR reaches a value below a certain threshold <italic>τ</italic> [<xref ref-type="bibr" rid="pone.0272825.ref027">27</xref>, <xref ref-type="bibr" rid="pone.0272825.ref028">28</xref>]. The threshold <italic>τ</italic> depends on the specific application. In a disease classification and prediction problem based on routinely collected biomarkers, like the one presented in this study, typically there is inherent overlap between the two classes and the distributions of features exhibit high variability. Hence, values of FNR close to zero could lead to an excessively small <italic>S</italic><sub>2</sub> region, poorly descriptive of the <italic>lowT2DM</italic> class, thus causing loss of meaningful information regarding healthy patients. In this study, <italic>τ</italic> was set at 8% following a preliminary analysis to establish a trade-off between the percentage of true negative points within the region (e.g., &gt;35% of the training set) and FNR value.</p>
+</sec>
+<sec id="sec010">
+<title>Step 2. Counterfactuals search algorithm</title>
+<p>Once the two classification regions <italic>S</italic><sub>1</sub> and <italic>S</italic><sub>2</sub> have been defined, <italic>S</italic><sub>2</sub> is discretized with a low-discrepancy method based on the quasi-random Halton sequence [<xref ref-type="bibr" rid="pone.0272825.ref029">29</xref>] to obtain the set of candidate counterfactuals. The use of a low discrepancy method allows to obtain a spatially balanced sampling of the features space and ensures convergence. Indeed, if we assume to sample <italic>L</italic> points starting from the continuous set of points <italic>S</italic><sub>2</sub>, convergence is guaranteed with a rate of <inline-formula id="pone.0272825.e003"><alternatives><graphic id="pone.0272825.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e003" xlink:type="simple"/><mml:math display="inline" id="M3"><mml:mtext>O</mml:mtext><mml:mo>(</mml:mo> <mml:mfrac><mml:mn>1</mml:mn> <mml:mi>L</mml:mi></mml:mfrac> <mml:mo>)</mml:mo></mml:math></alternatives></inline-formula>, which is faster with respect to the convergence rate ensured by random discretization of points (i.e., <inline-formula id="pone.0272825.e004"><alternatives><graphic id="pone.0272825.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mtext>O</mml:mtext><mml:mo>(</mml:mo> <mml:mfrac><mml:mn>1</mml:mn> <mml:msup><mml:mi>L</mml:mi> <mml:mrow><mml:mn>1</mml:mn> <mml:mo>/</mml:mo> <mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:mfrac> <mml:mo>)</mml:mo></mml:math></alternatives></inline-formula>) [<xref ref-type="bibr" rid="pone.0272825.ref030">30</xref>]. Specifically, <italic>L</italic> was set equal to 10000 in this study. Counterfactuals are generated from real <italic>highT2DM</italic> observations, called <italic>factuals</italic>. Specifically, for each factual <bold>x</bold><sub><italic>i</italic></sub>, the corresponding counterfactual is defined as the point <inline-formula id="pone.0272825.e005"><alternatives><graphic id="pone.0272825.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:mrow><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup> <mml:mo>=</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:math></alternatives></inline-formula> belonging to the sampled region <italic>S</italic><sub>2</sub> (and not belonging to <italic>S</italic><sub>1</sub>) that lies at minimum distance (i.e., Euclidean distance in our study) from the factual:
+<disp-formula id="pone.0272825.e006"><alternatives><graphic id="pone.0272825.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e006" xlink:type="simple"/><mml:math display="block" id="M6"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:munder><mml:mtext>min</mml:mtext> <mml:mrow><mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>∈</mml:mo> <mml:msup><mml:mi mathvariant="double-struck">R</mml:mi> <mml:mi>n</mml:mi></mml:msup></mml:mrow></mml:munder> <mml:mi>d</mml:mi> <mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>)</mml:mo> <mml:mspace width="0.277778em"/><mml:mtext>subject</mml:mtext> <mml:mspace width="4pt"/><mml:mtext>to</mml:mtext> <mml:mspace width="0.277778em"/><mml:msup><mml:mrow><mml:mo>∥</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>1</mml:mn></mml:msub> <mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≥</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>1</mml:mn> <mml:mn>2</mml:mn></mml:msubsup> <mml:mspace width="0.277778em"/><mml:mtext>and</mml:mtext> <mml:mspace width="0.277778em"/><mml:msup><mml:mrow><mml:mo>∥</mml:mo> <mml:mrow><mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>+</mml:mo> <mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>)</mml:mo></mml:mrow> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">a</mml:mi> <mml:mn>2</mml:mn></mml:msub> <mml:mo>∥</mml:mo></mml:mrow> <mml:mn>2</mml:mn></mml:msup> <mml:mo>≤</mml:mo> <mml:msubsup><mml:mi>R</mml:mi> <mml:mn>2</mml:mn> <mml:mn>2</mml:mn></mml:msubsup></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(2)</label></disp-formula>
+where <bold>a</bold><sub>1</sub> and <inline-formula id="pone.0272825.e007"><alternatives><graphic id="pone.0272825.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e007" xlink:type="simple"/><mml:math display="inline" id="M7"><mml:msubsup><mml:mi>R</mml:mi> <mml:mn>1</mml:mn> <mml:mn>2</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula>, <bold>a</bold><sub>2</sub> and <inline-formula id="pone.0272825.e008"><alternatives><graphic id="pone.0272825.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e008" xlink:type="simple"/><mml:math display="inline" id="M8"><mml:msubsup><mml:mi>R</mml:mi> <mml:mn>2</mml:mn> <mml:mn>2</mml:mn></mml:msubsup></mml:math></alternatives></inline-formula> are the centers and the radii of the hyperspheres describing regions <italic>S</italic><sub>1</sub> and <italic>S</italic><sub>2</sub>, respectively.</p>
+<p>Indeed, unless for the presence of discontinuity points, counterfactuals will be found, by definition, near the boundary of <italic>S</italic><sub>2</sub>. As such, if no limit on the FNR is applied, the counterfactuals might be characterized by small differences in features compared to their factuals, therefore they may have potentially limited benefit in terms of reducing the risk of developing disease. Moreover, as the counterfactual would be close to points that characterize patients with high risk of disease, a patient with the biomarkers variation described by the counterfactual might be in an unstable situation, since a small fluctuation in biomarkers would bring the patient back to the high-risk region. A more conservative risk reduction can be obtained by searching inside the reduced region <italic>S</italic><sub>2_<italic>red</italic></sub>, characterized by FNR below <italic>τ</italic>, while keeping the definition of counterfactual generated at minimum distance. Moreover, the number of available factuals increases (<italic>N</italic><sub><italic>red</italic></sub> ≥ <italic>N</italic>) as reducing the volume of region <italic>S</italic><sub>2</sub> also reduces the overlap region between <italic>S</italic><sub>1</sub> and <italic>S</italic><sub>2</sub>.</p>
+<p>As discussed in [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>], the set of input variables <bold>x</bold> can be subdivided in two groups: <italic>controllable</italic> variables <bold>u</bold> = (<italic>u</italic><sub>1</sub>, …, <italic>u</italic><sub><italic>n</italic></sub>) and <italic>non controllable</italic> variables <bold>z</bold> = (<italic>z</italic><sub>1</sub>, …, <italic>z</italic><sub><italic>m</italic></sub>). Regarding T2DM, controllable variables can be referred to as biomarkers that can be manipulated such as through medications, lifestyle changes, or medical treatments. Non-controllable variables are instead non-manipulable features such as age, sex, and family history. In this study, age, sex and the presence of hypertension were constrained during counterfactual generation. In particular, the presence of hypertension has been considered as partially non-controllable because hypertension is a chronic disease. Although it can be treated with medications and lifestyle changes, its treatment requires long-term interventions, whereas we are focusing on a narrower window of time. Moreover, the CPCSSN codifies an onset date for the disease, but it doesn’t codify an offset date. For this reason, in the proposed framework, if the <italic>highT2DM</italic> factual presents hypertension, its related counterfactual (<italic>lowT2DM</italic>) will also present hypertension due to the chronic nature of this condition. However, although counterintuitive towards the goal of reducing the risk of disease, the algorithm hypothetically allows a non-hypertensive factual to have an hypertensive counterfactual.</p>
+</sec>
+</sec>
+<sec id="sec011">
+<title>Counterfactuals analysis</title>
+<sec id="sec012">
+<title>Analysis of performance</title>
+<p>The performance of the TC-SVDD in terms of ability to enclose the two output classes was assessed using common ML metrics like accuracy, specificity, sensitivity, PPV, NPV, FNR, and FPR. The generated counterfactuals were evaluated according to the following properties [<xref ref-type="bibr" rid="pone.0272825.ref015">15</xref>]:</p>
+<list list-type="bullet">
+<list-item>
+<p><italic>Availability</italic>. The counterfactual <inline-formula id="pone.0272825.e009"><alternatives><graphic id="pone.0272825.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e009" xlink:type="simple"/><mml:math display="inline" id="M9"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> is available if it is returned by the search algorithm. Availability can be defined as the ratio of the number of counterfactuals to the total number of factuals.</p>
+</list-item>
+<list-item>
+<p><italic>Validity</italic>. The counterfactual <inline-formula id="pone.0272825.e010"><alternatives><graphic id="pone.0272825.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e010" xlink:type="simple"/><mml:math display="inline" id="M10"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> should belong to a different class from that of the factual. Hence, validity is defined as the ratio between the number of counterfactuals that have the desired class label (i.e., <italic>lowT2DM</italic>) and the total number of counterfactuals generated.</p>
+</list-item>
+<list-item>
+<p><italic>Actionability</italic>. To guarantee feasibility, the counterfactual <inline-formula id="pone.0272825.e011"><alternatives><graphic id="pone.0272825.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e011" xlink:type="simple"/><mml:math display="inline" id="M11"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> should never change non controllable features. Actionability is the ratio between the number of constrained features and the total number of non controllable input features.</p>
+</list-item>
+<list-item>
+<p><italic>Similarity</italic>. The counterfactual <inline-formula id="pone.0272825.e012"><alternatives><graphic id="pone.0272825.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e012" xlink:type="simple"/><mml:math display="inline" id="M12"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> should be close to <bold>x</bold><sub><italic>i</italic></sub>, given a distance function d. The lower the distance, the higher the similarity. Specifically, the distance between <bold>x</bold><sub><italic>i</italic></sub> and <inline-formula id="pone.0272825.e013"><alternatives><graphic id="pone.0272825.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e013" xlink:type="simple"/><mml:math display="inline" id="M13"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> should be lower than a predefined threshold <italic>ϵ</italic>, i.e., <inline-formula id="pone.0272825.e014"><alternatives><graphic id="pone.0272825.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e014" xlink:type="simple"/><mml:math display="inline" id="M14"><mml:mrow><mml:mi>d</mml:mi> <mml:mo>(</mml:mo> <mml:msub><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>,</mml:mo> <mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup> <mml:mo>)</mml:mo> <mml:mo>&lt;</mml:mo> <mml:mi>ε</mml:mi></mml:mrow></mml:math></alternatives></inline-formula>. To assess similarity, we normalized data between 0 and 1. Then, we calculated the Euclidean distance between each counterfactual and the corresponding factual and we computed the ratio between the distance and the maximum theoretical distance in the standardized feature space (i.e., <inline-formula id="pone.0272825.e015"><alternatives><graphic id="pone.0272825.e015g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e015" xlink:type="simple"/><mml:math display="inline" id="M15"><mml:msqrt><mml:msub><mml:mi>n</mml:mi> <mml:mrow><mml:mi>f</mml:mi> <mml:mi>e</mml:mi> <mml:mi>a</mml:mi> <mml:mi>t</mml:mi> <mml:mi>u</mml:mi> <mml:mi>r</mml:mi> <mml:mi>e</mml:mi> <mml:mi>s</mml:mi></mml:mrow></mml:msub></mml:msqrt></mml:math></alternatives></inline-formula>). The distance distribution observed over the factual-counterfactual pairs was summarized in terms of average and 95% confidence interval (C.I.).</p>
+</list-item>
+<list-item>
+<p><italic>Discriminative Power</italic>. Despite being close to <bold>x</bold><sub><italic>i</italic></sub> based on the desired property of similarity, the counterfactual <inline-formula id="pone.0272825.e016"><alternatives><graphic id="pone.0272825.e016g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e016" xlink:type="simple"/><mml:math display="inline" id="M16"><mml:msubsup><mml:mi mathvariant="bold">x</mml:mi> <mml:mi>i</mml:mi> <mml:mo>*</mml:mo></mml:msubsup></mml:math></alternatives></inline-formula> should be distinguishable from the points of the class to which <bold>x</bold><sub><italic>i</italic></sub> belongs. Discriminative Power was assessed by evaluating the accuracy of a k-Nearest Neighbor (KNN) classifier (k = 5) trained on a dataset including the counterfactuals and the real <italic>highT2DM</italic> data points. 5-Fold cross-validation was used and the average accuracy on the test set was estimated. Discriminative power was also investigated from a subjective point of view through specific questions incorporated in an Expert survey (see subsection <italic>Expert assessment</italic>).</p>
+</list-item>
+</list>
+</sec>
+<sec id="sec013">
+<title>Characterization of counterfactuals</title>
+<p>Four different, non overlapping groups of patients have been considered in the analysis of the generated counterfactuals: females with hypertension (<italic>F_HTN</italic>), females without hypertension (<italic>F_noHTN</italic>), males with hypertension (<italic>M_HTN</italic>), males without hypertension (<italic>M_noHTN</italic>). Females and males were considered separately because of the presence of well known gender-related differences in biomarkers, for example BMI and cardiovascular risk factors (e.g., HDL, LDL) [<xref ref-type="bibr" rid="pone.0272825.ref031">31</xref>]. Hypertensive and non-hypertensive patients were considered separately to assess whether the presence of this comorbidity may influence the changes determined by counterfactuals towards a reduced risk of developing T2DM. In each group of patients, the changes for each controllable biomarker <bold>u</bold><sub><italic>i</italic></sub> have been computed as follows:
+<disp-formula id="pone.0272825.e017"><alternatives><graphic id="pone.0272825.e017g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0272825.e017" xlink:type="simple"/><mml:math display="block" id="M17"><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mo>Δ</mml:mo> <mml:msub><mml:mi mathvariant="bold">u</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:msubsup><mml:mi mathvariant="bold">u</mml:mi> <mml:mrow><mml:mi>i</mml:mi></mml:mrow> <mml:mo>*</mml:mo></mml:msubsup> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">u</mml:mi> <mml:mi>i</mml:mi></mml:msub> <mml:mo>=</mml:mo> <mml:msub><mml:mi mathvariant="bold">u</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>l</mml:mi> <mml:mi>o</mml:mi> <mml:mi>w</mml:mi> <mml:mi>T</mml:mi> <mml:mn>2</mml:mn> <mml:mi>D</mml:mi> <mml:mi>M</mml:mi></mml:mrow></mml:msub> <mml:mo>-</mml:mo> <mml:msub><mml:mi mathvariant="bold">u</mml:mi> <mml:mrow><mml:mi>i</mml:mi> <mml:mo>,</mml:mo> <mml:mi>h</mml:mi> <mml:mi>i</mml:mi> <mml:mi>g</mml:mi> <mml:mi>h</mml:mi> <mml:mi>T</mml:mi> <mml:mn>2</mml:mn> <mml:mi>D</mml:mi> <mml:mi>M</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:math></alternatives> <label>(3)</label></disp-formula></p>
+<p>The Lilliefors test was performed to check for normality of the distributions of the changes for each biomarker, in the four groups. If the variables were not normally distributed, non-parametric tests were used. Specifically, the paired samples Wilcoxon signed-rank test was performed to test the presence of significant differences between factuals and counterfactuals for each biomarker and for each group. The Wilcoxon rank-sum test was applied to assess possible differences in the observed changes for each biomarker between different groups of patients. A significance level <italic>alpha</italic> = 0.05 was considered in this study. Bonferroni correction was applied to correct for multiple comparisons. Statistical analysis was performed in Python version 3.7.</p>
+</sec>
+<sec id="sec014">
+<title>Expert assessment</title>
+<p>Changes in input features suggested by the counterfactuals may be validated by using domain-specific approaches. In some cases, the observed phenomenon may be simulated (see for example [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>]) and/or validated with respect to a known or computationally estimated gold standard. In other cases, for example in disease prediction and prevention applications, validation of model predictions against computational simulations is, in general, not possible. A possible way to analyse the quality of the proposed approach is to perform an application-grounded evaluation by asking domain experts (i.e., clinicians) to assess the perceived usefulness and effectiveness of the changes in biomarkers suggested by the counterfactuals, for the purpose of T2DM risk reduction [<xref ref-type="bibr" rid="pone.0272825.ref032">32</xref>].</p>
+<p>To perform a preliminary evaluation of the proposed approach, a group of 7 medical experts based in Canada was asked to fill out a survey. All the respondents participated to this phase of the study on a voluntary basis. All data were collected anonymously. The experts were blinded to any details on the proposed method to limit possible bias.</p>
+<p>The survey consisted of four sections and is reported in full detail in the supplementary material (<xref ref-type="supplementary-material" rid="pone.0272825.s001">S1 File</xref>). The first section included general questions about the experts’ clinical background, and their opinion on AI. The second section (<italic>risk evaluation</italic>) included five examples of patients with related input features: 3 real <italic>highT2DM</italic> patients, 1 real <italic>lowT2DM</italic> patient, and 1 <italic>lowT2DM</italic> patient representing a candidate counterfactual in <italic>S</italic><sub>2_<italic>red</italic></sub>. The task was to assess the risk the patient had of developing T2DM in 1 year and to provide a confidence level associated with that assessment. Both patient risk and confidence level were selected from a marked five-item scale. The third section (<italic>counterfactuals evaluation</italic>) included four examples of patients with high risk of developing T2DM (i.e., factuals) and the related changes in biomarkers proposed by the algorithm based on <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> in order to reduce the risk (i.e., counterfactuals). Each expert was asked to specify the level of agreement with the target values proposed by the algorithm on a marked five-item scale. In the final section, each expert was asked to provide overall feedback on the proposed methodology (e.g., quality, usefulness). The survey was administered online using Microsoft Forms.</p>
+</sec>
+<sec id="sec015">
+<title>Comparison with state-of-the-art techniques</title>
+<p>We compared our method with two different techniques, a commonly used XAI technique (SHapley Additive exPlanations-SHAP [<xref ref-type="bibr" rid="pone.0272825.ref033">33</xref>]) and a different method for the generation of counterfactuals (Diverse Counterfactual Explanations-DiCE [<xref ref-type="bibr" rid="pone.0272825.ref034">34</xref>]).</p>
+<p>SHAP [<xref ref-type="bibr" rid="pone.0272825.ref033">33</xref>] is a local XAI technique derived from game theory that quantifies the marginal contribution that each single feature (i.e., a single player) brings to the model’s outcome (i.e., the game) for a given instance <italic>X</italic> in the sample. SHAP values can be visualized in different ways. For example, the waterfall plot allows to explain why a specific record receives a certain prediction. The plot sums up the positive or negative contribution of each input feature to get the model’s output probability <italic>f</italic>(<italic>X</italic>), starting from a baseline expected value <italic>E</italic>[<italic>f</italic>(<italic>X</italic>)] that is the model output when no features are present, i.e. the initial proportion of classification (0.5 in our balanced dataset). The summary plot instead combines single explanations to get a global insight of the model reasoning in terms of feature relevance and feature effects on the prediction.</p>
+<p>Different methods for the generation of counterfactuals have been proposed in the literature [<xref ref-type="bibr" rid="pone.0272825.ref015">15</xref>], however no common benchmark models have been established yet. The DiCE technique [<xref ref-type="bibr" rid="pone.0272825.ref034">34</xref>] was used in this study because it has similar properties to the method here proposed. Specifically, DiCE is defined for tabular datasets, it can handle categorical features, and it allows to define controllable and non controllable features, in line with the desired property of actionability. Counterfactuals were generated using a Random Forest classifier and the model-agnostic implementation of DiCE with independent random sampling of features [<xref ref-type="bibr" rid="pone.0272825.ref035">35</xref>]. The total number of counterfactuals for each factual was set to 1 and the desired class of the counterfactuals was set to “lowT2DM”. To allow for a fair comparison with our method, the same set of factuals (i.e., real highT2DM points) was considered and the same counterfactuals properties were evaluated.</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec016" sec-type="results">
+<title>Results</title>
+<sec id="sec017">
+<title>Analysis of performance</title>
+<p>A set of factuals and related counterfactuals was generated following the process described in <xref ref-type="fig" rid="pone.0272825.g001">Fig 1</xref>. <xref ref-type="table" rid="pone.0272825.t001">Table 1</xref> shows the classification performance of the canonical TC-SVDD on both training and test sets. From an initial set of 734 factuals, 731 counterfactuals were generated (availability = 99.6%; F_HTN: 154, F_noHTN: 237, M_HTN: 134, M_noHTN: 206). All the counterfactuals belonged to the desired class (validity = 100%). The set of counterfactual showed a high discriminative power characterized by an average accuracy of 94% of the KNN classifier. The average distance between factual-counterfactual pairs is 13% of the maximum theoretical distance in the standardized feature space (C.I.: 4%-21%), suggesting high similarity.</p>
+<table-wrap id="pone.0272825.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Classification performance of the TC-SVDD.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0272825.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.t001" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom-width:thick"/>
+<th align="left" style="border-bottom-width:thick">Accuracy</th>
+<th align="left" style="border-bottom-width:thick">Specificity</th>
+<th align="left" style="border-bottom-width:thick">Sensitivity</th>
+<th align="left" style="border-bottom-width:thick">PPV</th>
+<th align="left" style="border-bottom-width:thick">NPV</th>
+<th align="left" style="border-bottom-width:thick">FNR</th>
+<th align="left" style="border-bottom-width:thick">FPR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Training</td>
+<td align="left">69%</td>
+<td align="left">91%</td>
+<td align="left">48%</td>
+<td align="left">95%</td>
+<td align="left">73%</td>
+<td align="left">34%</td>
+<td align="left">2%</td>
+</tr>
+<tr>
+<td align="left">Test</td>
+<td align="left">59%</td>
+<td align="left">76%</td>
+<td align="left">41%</td>
+<td align="left">86%</td>
+<td align="left">68%</td>
+<td align="left">36%</td>
+<td align="left">7%</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001">
+<p>PPV = Positive Predictive Value; NPV = Negative Predictive Value; FNR = False Negative Rate; FPR = False Positive Rate.</p>
+</fn>
+</table-wrap-foot>
+</table-wrap>
+<p><italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> generated a region <italic>S</italic><sub>2_<italic>red</italic></sub> that included 750 out of 1954 real <italic>lowT2DM</italic> patients in the training set and 260 out of 837 in the test set, providing a precision of 71% and a negative predictive value (NPV) of 83% on both the training set and the test set. Using <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>, the number of admissible factuals and, in turn, the number of generated counterfactuals increased because the number of <italic>highT2DM</italic> patients outside the <italic>S</italic><sub>2_<italic>red</italic></sub> region increased compared to those outside the <italic>S</italic><sub>2</sub>. As a result, a total of 882 counterfactuals was generated starting from 1361 factuals (availability = 65%; F_HTN: 104, F_noHTN: 358, M_HTN: 95, M_noHTN: 325). As observed with the canonical TC-SVDD, all the counterfactuals obtained using <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> belonged to the desired class (validity = 100%). As expected, the set of counterfactuals obtained using <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> showed a higher discriminative power than that obtained using the canonical TC-SVDD (average accuracy of 97% with the KNN classifier). The average distance between factual-counterfactual pairs is 12% of the maximum theoretical distance in the standardized feature space (C.I.: 4%-21%), suggesting high similarity.</p>
+</sec>
+<sec id="sec018">
+<title>Characterization of counterfactuals</title>
+<p>To analyze the differences between the two versions of the TC-SVDD, the changes in biomarkers Δ<italic>u</italic><sub><italic>i</italic></sub> derived from <italic>S</italic><sub>2</sub> and <italic>S</italic><sub>2_<italic>red</italic></sub> have been analyzed. To allow for a fair comparison, only counterfactuals derived from common factuals (i.e., 475) have been considered. As an example, <xref ref-type="fig" rid="pone.0272825.g002">Fig 2</xref> shows the distributions of the changes in FBS, BMI and sBP obtained with a canonical TC-SVDD and <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>, in the four groups of subjects. Statistically significant differences in median changes in sBP and BMI between the two different TC-SVDD classifiers are observed in hypertensive patients (both F_HTN and M_HTN) and in males without hypertension (sBP—F_HTN: p = 0.006; M_HTN: p &lt;0.001; M_noHTN: p = 0.009; BMI—F_HTN: p = 0.009; M_HTN: p = 0.022; M_noHTN: p = 0.019). Statistically significant differences in median changes between TC-SVDD and <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>, for the same groups of subjects, have been also found in terms of HDL and Total Cholesterol, whereas no significant changes have been found in terms of FBS, LDL and TG.</p>
+<fig id="pone.0272825.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Comparison between Canonical TC-SVDD and TC-SVDD with FNR reduction.</title>
+<p>Comparison between the changes in FBS, sBP, and BMI derived from counterfactuals generated from a canonical TC-SVDD and TC-SVDD with FNR reductionB(<italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>) in the four groups of subjects: F_HTN, F_noHTN, M_HTN, M_noHTN.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.g002" xlink:type="simple"/>
+</fig>
+<p><xref ref-type="fig" rid="pone.0272825.g003">Fig 3</xref> depicts the SVDD representation of the training set points in the FBS-sBP plane, together with two examples of factual-counterfactual pairs. The area of the <italic>lowT2DM</italic> region identified by <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> is sensibly reduced with respect to the area identified by the canonical TC-SVDD. As a result, the number of unclassified points increases and the generated counterfactuals are different. For example, considering the factual F1 (FBS = 6.2 mmol/L, sBP = 133 mmHg) the counterfactual generated by <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> is associated with lower target values than those generated by the TC-SVDD (i.e., FBS = 4.5 mmol/L, sBP = 114 mmHg vs FBS = 5.3 mmol/L, sBP = 124 mmHg).</p>
+<fig id="pone.0272825.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction.</title>
+<p>Visualization of classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction (<italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>) in the plane FBS-sBP with two examples of factuals (black circle markers) and related counterfactuals (black cross markers).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.g003" xlink:type="simple"/>
+</fig>
+<p>The relationship between reduction in sBP and FBS and potential reduction of risk also proves valid when generalizing from individual cases to the entire population since statistically significant differences in median changes of FBS (F_HTN, F_noHTN, M_HTN, M_noHTN: p &lt;0.001) and sBP (F_HTN, F_noHTN, M_HTN, M_noHTN: p &lt;0.001) were found between factuals and counterfactuals for each group of patients, when the <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> was applied. Similarly, statistically significant differences in median changes of HDL (F_HTN, F_noHTN, M_HTN, M_noHTN: p &lt;0.001) and TG (F_HTN, F_noHTN, M_noHTN: p &lt;0.001; M_HTN: p = 0.004) were observed for all the four groups, whereas observed differences in median changes of BMI were significant for F_HTN, M_HTN, and M_noHTN (p &lt;0.001), differences in LDL were significant for F_HTN (p = 0.004) and F_noHTN (p &lt;0.001) only, and differences in Total Cholesterol were significant for M_HTN (p = 0.003) and M_noHTN (p = 0.009) only.</p>
+<p><xref ref-type="table" rid="pone.0272825.t002">Table 2</xref> shows medians and 25th-75th percentile range of the changes (<xref ref-type="disp-formula" rid="pone.0272825.e017">Eq (3)</xref>) for each controllable biomarker in the four different groups of patients. Concerning females, the changes in 4 out of 7 controllable biomarkers were significantly different between hypertensive and non-hypertensive patients (FBS, sBP, BMI, TG: p &lt;0.001). Concerning males, 2 out of 7 controllable biomarkers were significantly different between hypertensive and non-hypertensive patients (FBS, sBP: p &lt;0.001).</p>
+<table-wrap id="pone.0272825.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.t002</object-id>
+<label>Table 2</label>
+<caption>
+<title>Change in biomarkers derived from the counterfactuals generated by <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>, in four different group of patients: Median (25th percentile; 75th percentile).</title>
+</caption>
+<alternatives>
+<graphic id="pone.0272825.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.t002" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom-width:thick"/>
+<th align="center" style="border-bottom-width:thick">FBS<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="center" style="border-bottom-width:thick">sBP<break/>[<italic>mmHg</italic>]</th>
+<th align="center" style="border-bottom-width:thick">BMI<break/>[<italic>kg</italic>/<italic>m</italic><sup>2</sup>]</th>
+<th align="center" style="border-bottom-width:thick">HDL<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="center" style="border-bottom-width:thick">LDL<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="center" style="border-bottom-width:thick">TG<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="center" style="border-bottom-width:thick">Total Chol<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><italic>F_HTN</italic></td>
+<td align="center">-1.25<break/>(-1.74; -0.51)</td>
+<td align="center">-4.90<break/>(-15.06; 0.86)</td>
+<td align="center">-5.26<break/>(-9.29; 0.48)</td>
+<td align="center">0.41<break/>(-0.22; 0.85)</td>
+<td align="center">-0.24<break/>(-0.81; 0.31)</td>
+<td align="center">-0.49<break/>(-1.10; 0.28)</td>
+<td align="center">-0.39<break/>(-1.17; 0.6)</td>
+</tr>
+<tr>
+<td align="left"><italic>F_noHTN</italic></td>
+<td align="center">-0.50<break/>(-1.05; 0.13)</td>
+<td align="center">-1.19<break/>(-5.41; 2.82)</td>
+<td align="center">0.05<break/>(-3.64; 3.08)</td>
+<td align="center">0.22<break/>(-0.34; 0.77)</td>
+<td align="center">-0.26<break/>(-1.08; 0.57)</td>
+<td align="center">0.14<break/>(-0.43; 0.81)</td>
+<td align="center">0.04<break/>(-0.90; 0.68)</td>
+</tr>
+<tr>
+<td align="left"><italic>M_HTN</italic></td>
+<td align="center">-1.31<break/>(-1.92; -0.70)</td>
+<td align="center">-7.5<break/>(-15.59; 0.08)</td>
+<td align="center">-2.20<break/>(-7.05; 1.46)</td>
+<td align="center">0.68<break/>(0.09; 1.17)</td>
+<td align="center">0.10<break/>(-0.79; 0.77)</td>
+<td align="center">-0.24<break/>(-0.83; 0.31)</td>
+<td align="center">0.52<break/>(-0.43; 1.24)</td>
+</tr>
+<tr>
+<td align="left"><italic>M_noHTN</italic></td>
+<td align="center">-0.80<break/>(-1.41; -0.21)</td>
+<td align="center">-2.43<break/>(-9.56; 1.37)</td>
+<td align="center">-1.98<break/>(-5.12; 1.35)</td>
+<td align="center">0.76<break/>(0.17; 1.26)</td>
+<td align="center">0.06<break/>(-0.75; 0.75)</td>
+<td align="center">-0.23<break/>(-0.91; 0.35)</td>
+<td align="center">0.13<break/>(-0.58; 1.07)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec019">
+<title>Expert assessment</title>
+<p>The group of respondents included 7 clinicians with a diverse range of professional backgrounds: primary care (2), endocrinology, surgery, health informatics, emergency medicine, and dermatology. The survey took on average 29 minutes to complete.</p>
+<p>As concerns the first section, all the surveyed experts reported some degree of experience with AI (2 minimal, 2 basic, 3 adequate). The impact AI will have on medical decisions in the coming years was rated as moderate or higher (2 moderate, 3 major, 2 important). Experts had varying opinions on whether an AI-based medical decision support system capable of providing quantitative explanations (through XAI) could be considered fully trustable. Specifically, 1 expert strongly disagreed, 3 were neutral and 3 moderately agreed.</p>
+<p>The <italic>risk evaluation</italic> section dealt with the assessment of the patient risk, given a set of biomarkers. Two examples of questions are shown in <xref ref-type="table" rid="pone.0272825.t003">Table 3</xref>. The patient described in EX1 is a female individual, 84 years old, whose FBS is above the clinical prediabetes threshold (i.e., 5.6 mmol/L [<xref ref-type="bibr" rid="pone.0272825.ref001">1</xref>]). The BMI value is in the overweight range (i.e., 25≤ BMI &lt;30). This patient will actually develop diabetes in a year. In this first example, 4 experts rated the patient as having a minor risk, 2 as moderate risk, and 1 as major risk. The majority of the experts claimed to be confident about their evaluation (1 Somewhat confident; 4 Fairly confident). The values reported in EX2 are related to a 56-year-old male patient whose FBS is below the prediabetes threshold. All the other biomarkers are quite similar to those of EX1. This subject will not develop diabetes in a year. In this second example, 1 expert rated the patient as no risk, 3 as minor risk, and 3 as moderate risk.</p>
+<table-wrap id="pone.0272825.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.t003</object-id>
+<label>Table 3</label>
+<caption>
+<title>Risk evaluation: Examples of subjects at high (EX1) and low risk (EX2) of developing T2DM.</title>
+</caption>
+<alternatives>
+<graphic id="pone.0272825.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.t003" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom-width:thick;border-right-width:thick"/>
+<th align="left" style="border-bottom-width:thick">Gender</th>
+<th align="left" style="border-bottom-width:thick">Age</th>
+<th align="left" style="border-bottom-width:thick">FBS<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">BMI<break/>[<italic>kg</italic>/<italic>m</italic><sup>2</sup>]</th>
+<th align="left" style="border-bottom-width:thick">sBP<break/>[<italic>mmHg</italic>]</th>
+<th align="left" style="border-bottom-width:thick">LDL<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">HDL<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">TG<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">Total Chol<break/>[<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">HTN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>EX</italic>1: <italic>highT</italic>2<italic>DM</italic></td>
+<td align="left">Female</td>
+<td align="left">84</td>
+<td align="left">6</td>
+<td align="left">27</td>
+<td align="left">124</td>
+<td align="char" char=".">2.6</td>
+<td align="char" char=".">2.1</td>
+<td align="char" char=".">1.3</td>
+<td align="char" char=".">4.7</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>EX</italic>2: <italic>lowT</italic>2<italic>DM</italic></td>
+<td align="left">Male</td>
+<td align="left">56</td>
+<td align="left">4.7</td>
+<td align="left">27.4</td>
+<td align="left">126.5</td>
+<td align="char" char=".">3.2</td>
+<td align="char" char=".">1.1</td>
+<td align="char" char=".">0.9</td>
+<td align="char" char=".">4.8</td>
+<td align="left">No</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>The <italic>counterfactuals evaluation</italic> section of the survey dealt with the assessment of some examples of <italic>highT2DM</italic> patients (factuals) and the corresponding target changes in biomarkers proposed by the algorithm in order to reduce the risk. Two examples of this kind of questions are shown in <xref ref-type="table" rid="pone.0272825.t004">Table 4</xref> where two factuals (F1 and F2) and their counterfactuals (C1 and C2) are reported. These factual-counterfactual pairs are the same shown in <xref ref-type="fig" rid="pone.0272825.g003">Fig 3</xref> in the FBS-sBP plane. F1 represents a 63-year-old female patient with hypertension, with FBS above the prediabetes threshold, and slightly elevated BMI (i.e., overweight class). LDL is near the desired range (i.e., optimal if LDL &lt;2.6 mmol/L), HDL is acceptable (i.e., optimal if HDL &gt;1.3 mmol/L in women), TG and Total Cholesterol are in the desired range (i.e., TG &lt;1.7 mmol/L and Total Cholesterol &lt;5.18 mmol/L) according to general guidelines [<xref ref-type="bibr" rid="pone.0272825.ref036">36</xref>]. The algorithm proposes to lower the risk of developing T2DM by targeting the values in C1, namely by reducing FBS, BMI, sBP, TG and Total Cholesterol by keeping the LDL and TG levels almost constant. All the experts agreed that the proposed target values are reasonable to obtain a risk reduction when focusing on T2DM (i.e., 5 Moderately agree; 2 Strongly agree).</p>
+<table-wrap id="pone.0272825.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.t004</object-id>
+<label>Table 4</label>
+<caption>
+<title>Counterfactuals evaluation: Examples of subjects at high risk of developing T2DM (factuals, F1 and F2) and corresponding counterfactuals (C1 and C2).</title>
+</caption>
+<alternatives>
+<graphic id="pone.0272825.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.t004" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" style="border-bottom-width:thick;border-right-width:thick"/>
+<th align="left" style="border-bottom-width:thick">Gender</th>
+<th align="left" style="border-bottom-width:thick">Age</th>
+<th align="left" style="border-bottom-width:thick">FBS [<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">BMI [<italic>kg</italic>/<italic>m</italic><sup>2</sup>]</th>
+<th align="left" style="border-bottom-width:thick">sBP [<italic>mmHg</italic>]</th>
+<th align="left" style="border-bottom-width:thick">LDL [<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">HDL [<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">TG [<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">Total Chol [<italic>mmol</italic>/<italic>L</italic>]</th>
+<th align="left" style="border-bottom-width:thick">HTN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>F</italic>1: <italic>highT</italic>2<italic>DM</italic></td>
+<td align="left">Female</td>
+<td align="left">63</td>
+<td align="left">6.2</td>
+<td align="left">28.7</td>
+<td align="left">133</td>
+<td align="char" char=".">3.1</td>
+<td align="char" char=".">1.1</td>
+<td align="char" char=".">1.5</td>
+<td align="char" char=".">4.9</td>
+<td align="left">Yes</td>
+</tr>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>C</italic>1: <italic>lowT</italic>2<italic>DM</italic></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left">4.5</td>
+<td align="left">25</td>
+<td align="left">114</td>
+<td align="char" char=".">3.0</td>
+<td align="char" char=".">0.8</td>
+<td align="char" char=".">0.4</td>
+<td align="char" char=".">3.8</td>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>F</italic>2: <italic>highT</italic>2<italic>DM</italic></td>
+<td align="left">Male</td>
+<td align="left">55</td>
+<td align="left">5.8</td>
+<td align="left">44.1</td>
+<td align="left">157</td>
+<td align="char" char=".">3.0</td>
+<td align="char" char=".">1.2</td>
+<td align="char" char=".">2.3</td>
+<td align="char" char=".">5.9</td>
+<td align="left">Yes</td>
+</tr>
+<tr>
+<td align="left" style="border-right-width:thick"><italic>C</italic>2: <italic>lowT</italic>2<italic>DM</italic></td>
+<td align="left"/>
+<td align="left"/>
+<td align="left">5</td>
+<td align="left">40</td>
+<td align="left">134</td>
+<td align="char" char=".">3.0</td>
+<td align="char" char=".">1.2</td>
+<td align="char" char=".">2.0</td>
+<td align="char" char=".">6.2</td>
+<td align="left"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>F2 represents a 55-year-old male patient living with hypertension, with FBS slightly above the prediabetes threshold and very high BMI (i.e., in the severe obesity range). LDL is near optimal, HDL is optimal (i.e., optimal if HDL &gt;1.0 mmol/L in men), TG and Total Cholesterol are above the desired range. The algorithm proposes to lower the risk of developing T2DM by targeting the values in C2, namely by reducing FBS, BMI, sBP and TG while keeping the other values almost constant. In this case, experts expressed different opinions about the proposed risk reduction strategy (i.e., 3 Moderately disagree; 2 Moderately agree; 2 Strongly agree).</p>
+<p>After counterfactuals evaluation, experts were asked to specify which biomarkers were the the most relevant for their assessments (multiple responses were permitted). The following biomarkers were identified as relevant, ordered based on the number of experts who selected them: BMI (7/7), FBS (5/7), Diagnosis of hypertension (3/7), HDL and TG (2/7), sBP and LDL (1/7), Total Cholesterol (0/7).</p>
+<p>Expert responses regarding relevant features are largely aligned with the feature ranking obtained by applying the rule based description of the TC-SVDD (following [<xref ref-type="bibr" rid="pone.0272825.ref027">27</xref>]). Specifically, BMI, sBP, FBS, HDL, and diagnosis of Hypertension were the most relevant, whereas TG, Total Cholesterol, LDL were the least relevant.</p>
+</sec>
+<sec id="sec020">
+<title>Comparison with state-of-the-art techniques</title>
+<p><xref ref-type="fig" rid="pone.0272825.g004">Fig 4</xref> represents individual explanations for the prediction of F1 (left panel) and F2 (right panel) in terms of SHAP values. This waterfall representation shows the positive or negative contribution of each feature in determining the output. Features are ordered according to their relevance, from the most relevant (top) to the least relevant (bottom). The SHAP analysis of patient F1 shows that the majority of the features have a positive contribution to the final prediction probability (<italic>highT2DM</italic> class), with the presence of hypertension being the most important. The high value of FBS is also crucial for the prediction, whereas BMI contributes in a slightly negative way as it lowers the output probability. Similarly, when considering patient F2, most of the features have a positive contribution towards the probability of <italic>highT2DM</italic> classification. In particular, the most relevant features are presence of hypertension, BMI, FBS and TG. SHAP values related to different individual explanations can be combined to get a comprehensive view of the features contribution over the whole set of data, as shown in <xref ref-type="fig" rid="pone.0272825.g005">Fig 5</xref>. This plot provides indications about the relationship between feature values and model output. Specifically, a higher probability to be in the <italic>highT2DM</italic> class is associated with high FBS, BMI, TG, LDL and Total Cholesterol, low HDL, and the presence of hypertension. The marginal contribution of Sex is almost negligible since the absolute SHAP value is always lower than 0.05.</p>
+<fig id="pone.0272825.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>SHAP waterfall plots for individual predictions.</title>
+<p>Waterfall visualization of SHAP values related to factuals F1 (left panel) and F2 (right panel). Red bar: positive contribution; blue bar: negative contribution. <italic>E</italic>[<italic>f</italic>(<italic>X</italic>)]: baseline expected output; <italic>f</italic>(<italic>X</italic>): output predicted by the model. Features are ordered by importance.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.g004" xlink:type="simple"/>
+</fig>
+<fig id="pone.0272825.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0272825.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>SHAP summary plot.</title>
+<p>Each point in the plot represents the SHAP value for a feature in an individual record of the dataset. The color represents the feature value from high (red) to low (blue). Features are ordered by importance.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.g005" xlink:type="simple"/>
+</fig>
+<p>By using DiCE as counterfactuals generation technique on the same set of 734 factuals, only 454 counterfactuals were found (availability = 62%). A not negligible portion of the factuals (i.e., about 20%) were misclassified by the Random Forest algorithm, therefore yielding to invalid counterfactuals. The discriminative power was high (average accuracy = 94%), whereas the similarity was equal, on average, to 16.2% of the maximum distance in the standardized features space (C.I.: 0%—32%).</p>
+</sec>
+</sec>
+<sec id="sec021" sec-type="conclusions">
+<title>Discussion</title>
+<p>The field of XAI has grown steadily in recent years, including applications in disease characterization and prediction. However, there is still lack of transparent approaches to generate personalized recommendations for T2DM prevention. This study addresses this research gap by introducing a new approach based on counterfactual explanations to quantify, in a personalized way, the minimum viable changes needed to improve a patient’s health status.</p>
+<p>In this article, a TC-SVDD was trained and tested on a set of routinely collected biomarkers representing patients at high and low risk of developing T2DM, achieving a specificity of 91% and a sensitivity of 60%. It should be noted that, in this study, we focused on maximizing the ability to characterize the region where to identify counterfactuals (i.e., specificity and negative predictive value of the <italic>lowT2DM</italic> region) rather than on maximizing sensitivity as the class of the factuals was known by definition. Sensitivity may be increased in future studies by considering larger datasets and more specific biomarkers in addition to the primary care measures here used. The observed classification performance is in line with that of other predictive methods for T2DM available from the literature (i.e., sensitivity = 81%, 95% C.I.: 67%-90%; specificity = 82%, 95% C.I.: 74%-88% [<xref ref-type="bibr" rid="pone.0272825.ref003">3</xref>]). However, existing methods are typically able to provide general global recommendations that are not tailored to the individual patient’s characteristics, whereas the proposed approach defines personalized recommendations aimed at lowering the individual risk of developing T2DM on an individual basis.</p>
+<sec id="sec022">
+<title>Counterfactuals generation and analysis</title>
+<p>As described in the diagram shown in <xref ref-type="fig" rid="pone.0272825.g001">Fig 1</xref>, two different versions of the TC-SVDD were implemented. The canonical TC-SVDD provides very good results in defining regions that accurately enclose data points [<xref ref-type="bibr" rid="pone.0272825.ref017">17</xref>, <xref ref-type="bibr" rid="pone.0272825.ref023">23</xref>, <xref ref-type="bibr" rid="pone.0272825.ref027">27</xref>], whereas the <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> enables identification of more conservative minimum viable changes to lower the risk of developing T2DM because it identifies a smaller, but more reliable, target region for the <italic>lowT2DM</italic> class (FNR = 9% on the test set).</p>
+<p>The distributions of the biomarkers changes suggested by the two versions of TC-SVDD have been investigated in four groups of patients, subdivided based on sex (male/female) and diagnosis of HTN (presence/absence) (<xref ref-type="fig" rid="pone.0272825.g002">Fig 2</xref>). Results have shown that <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> allows for more noticeable changes for almost all biomarkers (including for example sBP and BMI, as shown in <xref ref-type="fig" rid="pone.0272825.g002">Fig 2</xref>), for three out of four patient groups (i.e., F_HTN, M_HTN, and M_noHTN). More pronounced differences are observed when considering hypertensive patients (both females and males) with respect to non-hypertensives. Hence, counterfactuals generated from <italic>S</italic><sub>2_<italic>red</italic></sub> turn out to be potentially more viable for generating possible recommendations than those generated from <italic>S</italic>2. For example, to lower the risk of developing T2DM, patient F1 shown in <xref ref-type="fig" rid="pone.0272825.g001">Fig 1</xref> should achieve lower FBS and sBP values with both canonical TC-SVDD and <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>, but the changes targeted by the latter are greater and presumably move the patient in a state that is further away from developing the disease compared to those targeted by the classical version of the classifier. Similar considerations can be made for patient F2, as shown in <xref ref-type="fig" rid="pone.0272825.g001">Fig 1</xref>.</p>
+<p>A deeper analysis of counterfactuals generated using <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub> showed that, in general, patients of all the four groups are, on average, suggested to reduce FBS, sBP and TG and increase HDL by an amount substantially different than 0 (<xref ref-type="table" rid="pone.0272825.t002">Table 2</xref>). These changes relate to a global improvement in biomarker values. The demand to lower TG and increase HDL may coincide with the fact that a large number of T2DM patients suffer from dyslipidemia (abnormalities in lipid levels), notably characterized by elevated TG and LDL and reduced HDL, that may occur before the onset of the disease [<xref ref-type="bibr" rid="pone.0272825.ref025">25</xref>]. Moreover, the treatment of this condition may reduce the risk of developing cardiovascular disease which is the main cause of mortality in patients with T2DM [<xref ref-type="bibr" rid="pone.0272825.ref026">26</xref>]. Moreover, hypertensive patients are generally required to change their biomarkers to a greater extent than non-hypertensive patients. Specifically, as expected, <italic>HTN</italic> patients are asked to reduce their sBP values by a greater amount (i.e., median changes of about 5 mmHg for female patients and 7.5 mmHg for male patients) with respect to <italic>noHTN</italic> patients. In addition, also a greater reduction in FBS (i.e., median changes of about 1.25 mmol/L for female patients and 1.31 mmol/L for males patients) is required for <italic>HTN</italic> patients with respect to <italic>noHTN</italic> ones, suggesting a longitudinal connection between blood pressure values and T2DM [<xref ref-type="bibr" rid="pone.0272825.ref037">37</xref>] and highlighting the importance of keeping both blood pressure and blood glucose under control in order to reduce T2DM risk [<xref ref-type="bibr" rid="pone.0272825.ref001">1</xref>]. Considering the female groups, greater reductions in BMI and TG values were also found in hypertensives vs non-hypertensives patients. A possible future application of the proposed methodology may be the following: a patient goes to the primary care physician and all the necessary biomarkers are routinely measured and recorded into the EMR. The set of input features is fed to the previously trained <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>. If the patient is classified in the <italic>highT2DM</italic> region, its counterfactual is generated and the doctor, based on medical expertise, may recommend a specific, individualized prevention strategy to target the proposed target values and reduce the T2DM risk. Several encounters may be scheduled to monitor the evolution of patient’s biomarkers in time until the patient is finally and effctively classified as <italic>lowT2DM</italic> by the <italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>.</p>
+<p>One of the advantages of the proposed approach compared to global prediction models is that the counterfactual generation method takes into account all the controllable features for each real patient whereas global rule-sets derived from classic fully interpretable ML algorithms may involve only a subset of features, i.e. those that are representative of a sufficiently large part of the population, to limit overfitting. For example, a hypothetical rule-based model may classify patients in the <italic>highT2DM</italic> class if their age and blood pressure are above certain cutoffs. However, there may be specific patients with high age and high blood pressure that actually belong to the <italic>lowT2DM</italic> class because of the values of other features that are not taken into account by the main decision rules determined by the algorithm. Thus, the personalized approach presented in this study may provide a higher degree of flexibility and personalization as it allows us to identify (and therefore act) on specific features that are relevant for the individual case and to potentially apply tailored interventions.</p>
+<p>When implementing new medical decision support methods, continuous interaction with the end users i.e., clinicians, is of paramount importance. For this reason, to gain a deeper insight into the feasibility and applicability of the proposed method, feedback from experts was collected in the form of an online survey.</p>
+<p>To gather information regarding how medical experts evaluate the risk of T2DM given a pretty restricted set of routinely collected biomarkers, a <italic>risk assessment</italic> section was introduced in the survey. In this section, examples of subjects with the corresponding biomarkers were proposed, without making explicit whether or not these subjects will develop T2DM in one year (i.e., their “real” output class). Two of these examples are reported in <xref ref-type="table" rid="pone.0272825.t003">Table 3</xref> and briefly discussed below.</p>
+<p>Surprisingly, EX1 was rated by the interviewed experts as having minor risk of developing T2DM with a pretty high confidence level despite having FBS higher than prediabetes threshold. Actually, EX1 is an example of instance belonging to <italic>highT2DM</italic> class. Presumably, this low rating is due to two main reasons. First, BMI is not too high and there may be lack of meaningful additional information like A1c, family history and exercise level. Second, assessing clinical risk is a task characterized by some degree of uncertainty due to the fact that there is a natural overlap between classes and <italic>lowT2DM</italic> and <italic>highT2DM</italic> patients cannot always be perfectly distinguished, especially when considering a limited set of features.</p>
+<p>EX2 was coherently evaluated by clinicians based on what was stated for EX1. Indeed, EX2 is younger and his FBS is lower with respect to EX1 whereas BMI and Total Cholesterol values are comparable between the two patients and, because of this, EX2 risk was rated as lower or equal, compared with EX1, by 6 of 7 clinicians.</p>
+<p>More generally, when experts were asked to assess the risk of patients, some variability in responses was observed. The heterogeneity characterizing the evaluations is also evident in the remaining survey responses, which are not explicitly reported in the “Results” section.</p>
+<p>General questions regarding prior experience with AI and its perceived importance in the medical field were also included in the survey. As one might expect, the surveyed clinicians foresee that AI techniques will play a not negligible role in medicine in the upcoming years because of their many possible applications in supporting diagnosis, prognosis, prevention and management of diseases. However, the ability of these techniques to provide quantitative explanations is not enough to make the decision support system fully trustable. In this regard, several other requirements must be considered to implement Trustworthy AI solutions (e.g., [<xref ref-type="bibr" rid="pone.0272825.ref013">13</xref>, <xref ref-type="bibr" rid="pone.0272825.ref014">14</xref>]) and decrease the skepticism that stakeholders (i.e., clinicians and patients) may have toward systems that can make decisions on their own.</p>
+<p>To evaluate examples of target values derived from minimum viable changes in biomarkers, factual-counterfactual pairs were also included in the survey. Two out of five examples proposed to the experts are reported in the Results section (<xref ref-type="table" rid="pone.0272825.t004">Table 4</xref>). All the experts agreed with the target values proposed to reduce the T2DM risk of patient F1 as the target goals were considered reasonable. In particular, lowering FBS was considered as a very important mechanism. The treatments proposed to achieve these goals included moderate healthy diet and regular exercise. In some cases, however, lowering T2DM risk may not be the priority for the clinician when looking at the biomarkers. For example, a very high LDL value may suggest high cardiovascular risk for the patient under examination. In this case, it could be more important to act on LDL reduction with respect to other features more associated with T2DM (e.g., FBS), as the presence of cardiovascular risk may lead to potential life-critical situations (e.g., miocardial infarction or stroke). Hence, future studies may propose a set of different counterfactuals for each patient generated according to different categories of risk.</p>
+<p>The surveyed experts were in general agreement also with the values proposed to lower the risk of patient F2, since the targets to be achieved point towards the right direction with regard to risk reduction (i.e., lower FBS, sBP and BMI). However, in this case the respondents were particularly skeptical with concern to the BMI value. In fact, patient F2, who is severely obese according his BMI value (i.e., class 3 obesity), is asked for a reduction of 4<italic>kg</italic>/<italic>m</italic><sup>2</sup> which is judged too small and therefore ineffective in reducing T2DM risk. It is important to note that the proposed reduction still involves a 9% change in BMI, and furthermore, what we are aiming for is to find minimum viable changes that can be implemented in a relatively short time and not drastic changes. Nevertheless, it will be crucial in the future to introduce medical guidelines in the generation of counterfactuals, to be followed (when feasible) to achieve clinically sufficient changes.</p>
+<p>When experts were asked to select the most significant biomarkers for their assessments, BMI and FBS were found to be the most relevant. Notably, FBS was not chosen by all respondents perhaps because it is subject to more day to day fluctuations than BMI, which is a well-known primary risk factor for T2DM and was considered more stable. In addition, FBS value might be more affected by external factors with respect to other correlated diagnostic markers like for example glycosylated hemoglobin (HbA1c). It should be emphasized that the experts responded based on the assessments proposed in the survey, so the obtained result is specific and may depend on the provided examples.</p>
+<p>The majority of the respondents evaluated the proposed counterfactuals as realistic (4) and/or consistent (2). Skepticism is mostly due to the fact that the proposed target values may not be applicable to everyone. Indeed, patients with restricted mobility may not be able to exercise to achieve the necessary targets. Moreover, also patients stuck on a particular diet, may not be able to achieve the clinical goal. Metformin may be prescribed for T2DM prevention to lower FBS level and therefore contrast hyperglycemia by targeting the proposed values when lifestyle changes are not considered sufficient, however this medicine is not suitable for all people. Indeed, its prescription is not advised when the patient has liver or kidney diseases or if the patient has heart failure. Therefore, we need to have access to more information about the patients and eventually define a set of patients for which this kind of AI-supported strategy is applicable. This may lead to possible ethical biases in contrast with EU requirements for trustworthy AI (e.g., <italic>Diversity, non-discrimination and fairness</italic> requirement [<xref ref-type="bibr" rid="pone.0272825.ref013">13</xref>]).</p>
+<p>For this reason, it should not be the automated medical decision support system to choose if the method is applicable but it is up to the clinicians employing the tool to choose whether or not to apply the proposed strategy based on their own experience. In any case, the patients keep the right to decide if they wish to proceed with the proposed prevention strategy.</p>
+<p>We have compared the proposed method with different local XAI techniques. SHAP is a very useful technique to study the effect of specific feature values in predicting a certain output. As such, it may be used to identify relevant features for specific patients and indicate the desired direction for change in controllable characteristics (e.g., decrease in FBS in F1, decrease in BMI in F2) toward a reduced risk of developing T2DM. However, the SHAP technique is not able to directly provide quantitative personalized recommendations, in the form of target values, as counterfactuals do. For example, looking at <xref ref-type="fig" rid="pone.0272825.g004">Fig 4</xref> we can say that patient F1 should mainly lower her FBS value and cure hypertension to lower the risk of having T2DM. Patient F2, in addition to cure hypertension and lower FBS of a smaller amount with respect to F1, should also lower BMI and TG. Although these suggestions are helpful, the generation of counterfactuals allows us to make a further step and define target biomarkers values that may be used as a basis to make personalized therapeutic recommendations. Comparative analysis of our method with respect to DiCE using the same set of 734 <italic>highT2DM</italic> patients showed that DiCE was worse in terms of availability of counterfactuals (i.e., 62% vs 99%) and in terms of similarity, as the average distance between factuals and counterfactuals was greater. The discriminative power was 94% in both cases, proving the ability of both methods to distinguish counterfactuals, that are ‘virtual’ <italic>lowT2DM</italic> patients, from real <italic>highT2DM</italic> patients. Based on these analyses, we can conclude that our method is more suitable for the purpose of generating minimum feasible changes.</p>
+</sec>
+<sec id="sec023">
+<title>Limitations</title>
+<p>This study presents some limitations. The first one relates to the data sample. In particular, the dataset considered includes a limited set of common primary care biomarkers which reflects the characteristics of a specific population based in Canada and may not be generalizable to other populations. Another limitation of this study relates to the classification using TC-SVDD. The optimization of the TC-SVDD was focused on the characterization of region <italic>S</italic><sub>2</sub> based on retrospective data with known output labels. For this reason, specificity was maximized, at the expense of sensitivity, and factuals were selected among real <italic>highT2DM</italic> patients. However, since in future we will deal with prospective data related to patients with unknown risk, an accurate representation of <italic>S</italic><sub>1</sub> will be important to find patients with a predicted high risk of developing <italic>T2DM</italic> (i.e., factuals). Therefore, a trade-off between these performance metrics must be found. Another limitation concerns the formulation of the survey. To avoid possible sources of bias and to ensure that responses were not guided in any way, the respondents received minimal information with respect to the proposed method. Therefore, different experts may have interpreted the questions differently. In addition, the questionnaire did not specify the time frame in which patients should achieve the target values. Interviewed experts often referred to larger changes to obtain a substantial risk reduction, not realistically achievable with short-term treatments. Finally, in this preliminary study, only a reduced number of counterfactuals were included in the survey to limit the completion time and the expert survey did not include specific comparison of counterfactuals generated using the proposed method with respect to DiCE.</p>
+</sec>
+<sec id="sec024">
+<title>Future developments</title>
+<p>Starting from the previously discussed limitations, several potential research lines can be explored in future studies. First of all, to achieve a more precise characterization of patients and target biomarkers values, a larger set of input features should be considered, including family history, medications, level of exercise, diet, alcohol consumption, cardiovascular risk (e.g., Framingham score [<xref ref-type="bibr" rid="pone.0272825.ref038">38</xref>]), presence of comorbidities, and socio-economic status. Moreover, causal relationships between features should be investigated to asses causation beyond association. It will be also necessary to validate the proposed method on patients from different geographical areas using data from longitudinal datasets, like e.g., the English Longitudinal Study of Ageing (ELSA) [<xref ref-type="bibr" rid="pone.0272825.ref039">39</xref>]. Further research will target the optimization of the TC-SVDD through the choice of hyperparameters that can minimize unclassified points and improve prediction performance. Currently, there is no standard metric to evaluate counterfactuals from a computational perspective, although some measures have been proposed in the literature [<xref ref-type="bibr" rid="pone.0272825.ref015">15</xref>] and applied in this study. Future works may focus on the application and further development of these metrics to compare our method with other existing techniques for counterfactuals generation. As a further development, the structure of the survey could be refined to limit possible biases, for instance by introducing a set of examples to help respondents familiarize themselves with the questions and by specifying more clearly that the method focuses on minimum viable changes. In the next studies, it will be also necessary to focus on a more extensive human-based evaluation. Moreover, the risk reduction obtained by applying counterfactuals should be evaluated also with respect to common clinical risk estimators such as the Canadian Diabetes Risk Questionnaire (cANRISK) [<xref ref-type="bibr" rid="pone.0272825.ref040">40</xref>]. Finally, future developments should take into account continuous interaction with a team of clinical experts to develop and validate a platform able to generate realistic personalized strategies that aim at lowering T2DM risk by targeting specific values.</p>
+</sec>
+</sec>
+<sec id="sec025" sec-type="conclusions">
+<title>Conclusion</title>
+<p>To our knowledge, this is the first study in which an XAI framework based on counterfactual explanations is specifically applied to reduce the risk of a chronic disease, based on personalized minimum viable recommendations. As an added value, the methodology here introduced has been compared to other solutions for the generation of local explanations and preliminarily evaluated by experienced clinicians. Results showed that the proposed method performed better than an alternative method for counterfactuals generation (i.e., DiCE) in terms of availability and similarity of counterfactuals. Moreover, changes in biomarkers recommended by the proposed method were consistent with local XAI analysis using SHAP and with medical knowledge, as suggested by the expert assessment and related literature. In principle, the proposed approach is able to define regions with various levels of confidence associated with different FNR cut-off thresholds, that can be easily controlled by changing the radius of the <italic>S</italic><sub>2</sub> region. In future, it may be useful to search for a path of step-wise individualized minimal changes in biomarkers’ values that may be readily achievable but at the same time enable progressive reduction of risk. This may be helpful to facilitate adherence to therapy which is an imperative factor for the success of any prevention strategy. Further research will focus on the examination of a larger set of modifiable risk factors in populations with different characteristics and on more extensive evaluation of the explanations from both methodological and clinical perspectives.</p>
+</sec>
+<sec id="sec026" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0272825.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0272825.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Survey.</title>
+<p>Text of the online survey proposed to a team of clinical experts.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors would like to thank Davide Simeone for his support in T2DM data extraction. The authors are also grateful to the clinical experts who completed the online survey.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0272825.ref001">
+<label>1</label>
+<mixed-citation publication-type="other" xlink:type="simple">International Diabetes Federation (2021). IDF Diabetes Atlas 10th edition. [Cited 2022 May 17] Available from: <ext-link ext-link-type="uri" xlink:href="https://diabetesatlas.org" xlink:type="simple">https://diabetesatlas.org</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref002">
+<label>2</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Fregoso-Aparicio</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Noguez</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Montesinos</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Machine learning and deep learning predictive models for type 2 diabetes: a systematic review</article-title>. <source>Diabetology &amp; Metabolic Syndrome</source>. <year>2021</year>; <volume>13</volume>, <fpage>148</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s13098-021-00767-9" xlink:type="simple">10.1186/s13098-021-00767-9</ext-link></comment> <object-id pub-id-type="pmid">34930452</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref003">
+<label>3</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Kodama</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fujihara</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Horikawa</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kitazawa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Iwanaga</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kato</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>Predictive ability of current machine learning algorithms for type 2 diabetes mellitus: A meta-analysis</article-title>. <source>Journal of Diabetes Investigation</source>. <year>2022</year> <month>May</month>;<volume>13</volume>(<issue>5</issue>):<fpage>900</fpage>–<lpage>908</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/jdi.13736" xlink:type="simple">10.1111/jdi.13736</ext-link></comment> <object-id pub-id-type="pmid">34942059</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref004">
+<label>4</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Perveen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Shahbaz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Keshavjee</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Guergachi</surname> <given-names>A</given-names></name>. <article-title>Metabolic syndrome and development of diabetes mellitus: predictive modeling based on machine learning techniques</article-title>. <source>IEEE Access</source>. <year>2019</year>;<volume>7</volume>:<fpage>1365</fpage>–<lpage>75</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/ACCESS.2018.2884249" xlink:type="simple">10.1109/ACCESS.2018.2884249</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref005">
+<label>5</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Alghamdi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Al-Mallah</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Keteyian</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Predicting diabetes mellitus using SMOTE and ensemble machine learning approach: the Henry Ford ExercIse Testing (FIT) project</article-title>. <source>PLoS One</source> <year>2017</year>; <volume>12</volume>: <fpage>e0179805</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0179805" xlink:type="simple">10.1371/journal.pone.0179805</ext-link></comment> <object-id pub-id-type="pmid">28738059</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref006">
+<label>6</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Alfian</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Syafrudin</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ijaz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Syaekhoni</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fitriyani</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Rhee</surname> <given-names>J</given-names></name>. <article-title>A Personalized Healthcare Monitoring System for Diabetic Patients by Utilizing BLE-Based Sensors and Real-Time Data Processing</article-title>. In <source>Sensors</source>. <year>2018</year>: <volume>18</volume>(<issue>7</issue>):<fpage>2183</fpage>. MDPI AG. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/s18072183" xlink:type="simple">10.3390/s18072183</ext-link></comment> <object-id pub-id-type="pmid">29986473</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref007">
+<label>7</label>
+<mixed-citation publication-type="other" xlink:type="simple">General Data Protection Regulation (GDPR). [Cited 2022 May 15] Available from: <ext-link ext-link-type="uri" xlink:href="https://gdpr.eu/tag/gdpr/" xlink:type="simple">https://gdpr.eu/tag/gdpr/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref008">
+<label>8</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Belle</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Papantonis</surname> <given-names>I</given-names></name>. <article-title>Principles and Practice of Explainable Machine Learning. Frontiers in Big Data</article-title>. <source>Frontiers Media SA</source>. <year>2021</year>; <volume>4</volume>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref009">
+<label>9</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Guidotti</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Monreale</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Ruggieri</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Turini</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Giannotti</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Pedreschi</surname> <given-names>D</given-names></name>. <article-title>A survey of methods for explaining black box models</article-title>. <source>ACM Computing Surveys</source>. <year>2019</year>: <volume>51</volume>(<issue>5</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1145/3236009" xlink:type="simple">10.1145/3236009</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref010">
+<label>10</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Srinivasu</surname> <given-names>PN</given-names></name>, <name name-style="western"><surname>Sandhya</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Jhaveri</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Raut</surname> <given-names>R</given-names></name>. <chapter-title>From Blackbox to Explainable AI in Healthcare: Existing Tools and Case Studies</chapter-title>. In <name name-style="western"><surname>Hakak</surname> <given-names>S.</given-names></name> (Ed.), <source>Mobile Information Systems</source>. <year>2022</year>; <fpage>1</fpage>–<lpage>20</lpage>). <publisher-name>Hindawi Limited</publisher-name>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref011">
+<label>11</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Hakkoum</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Abnane</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Idri</surname> <given-names>A</given-names></name>. <article-title>Interpretability in the medical field: A systematic mapping and review study</article-title>. <source>Applied Soft Computing</source>. <year>2022</year>; <volume>117</volume>: <fpage>108391</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.asoc.2021.108391" xlink:type="simple">10.1016/j.asoc.2021.108391</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref012">
+<label>12</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Cabitza</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Campagner</surname> <given-names>A</given-names></name>. <article-title>The need to separate the wheat from the chaff in medical informatics: Introducing a comprehensive checklist for the (self)-assessment of medical AI studies</article-title>, <source>International Journal of Medical Informatics</source>. <year>2021</year> <month>Sep</month>;<volume>153</volume>:<fpage>104510</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijmedinf.2021.104510" xlink:type="simple">10.1016/j.ijmedinf.2021.104510</ext-link></comment> <object-id pub-id-type="pmid">34108105</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref013">
+<label>13</label>
+<mixed-citation publication-type="other" xlink:type="simple">European Commission, Directorate-General for Communications Networks, Content and Technology, Ethics guidelines for trustworthy AI. Publications Office; 2019.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref014">
+<label>14</label>
+<mixed-citation publication-type="other" xlink:type="simple">US National Artificial Intelligence Initiative. [Cited 2022 May 15] Available from: <ext-link ext-link-type="uri" xlink:href="https://www.ai.gov/strategic-pillars/advancing-trustworthy-ai/" xlink:type="simple">https://www.ai.gov/strategic-pillars/advancing-trustworthy-ai/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref015">
+<label>15</label>
+<mixed-citation publication-type="other" xlink:type="simple">Guidotti R. Counterfactual explanations and how to find them: literature review and benchmarking. Data Min Knowl Disc; 2022.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref016">
+<label>16</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wachter S, Mittelstadt BD, Russell C. Counterfactual explanations without opening the black box: Automated decisions and the gdpr. Cybersecurity, 2017.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref017">
+<label>17</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Carlevaro</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lenatti</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Paglialonga</surname> <given-names>A</given-names></name> and <name name-style="western"><surname>Mongelli</surname> <given-names>M</given-names></name>, <article-title>Counterfactual building and evaluation via eXplainable Support Vector Data Description</article-title>, in <source>IEEE Access</source>. <year>2022</year>; <volume>10</volume>: <fpage>60849</fpage>–<lpage>60861</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/ACCESS.2022.3180026" xlink:type="simple">10.1109/ACCESS.2022.3180026</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref018">
+<label>18</label>
+<mixed-citation publication-type="other" xlink:type="simple">Nemirovsky D, Thiebaut N, Xu Y, Gupta A. Providing Actionable Feedback in Hiring Marketplaces using Generative Adversarial Networks. In Proceedings of the 14th ACM International Conference on Web Search and Data Mining (WSDM’21); 2021. Association for Computing Machinery, New York, NY, USA, 1089–1092.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref019">
+<label>19</label>
+<mixed-citation publication-type="other" xlink:type="simple">Lenatti M, Carlevaro A, Keshavjee K, Guergachi A, Paglialonga A, Mongelli M. Characterization of Type 2 Diabetes using Counterfactuals and Explainable AI. Proceedings of the 32nd Medical Informatics Europe (EFMI MIE 2022) Conference, May 27–30, 2022, Nice, France. Published in Studies in Health Technology and Informatics, vol. 294 “Challenges of Trustable AI and Added-Value on Health,” pp. 98—103.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Mertes</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Huber</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Weitz</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Heimerl</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>André</surname> <given-names>E</given-names></name>. <article-title>GANterfactual—Counterfactual Explanations for Medical Non-experts Using Generative Adversarial Learning</article-title>. In <source>Frontiers in Artificial Intelligence</source>. <year>2022</year>; <volume>5</volume>. Frontiers Media SA. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/frai.2022.825565" xlink:type="simple">10.3389/frai.2022.825565</ext-link></comment> <object-id pub-id-type="pmid">35464995</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref021">
+<label>21</label>
+<mixed-citation publication-type="other" xlink:type="simple">Pima Indians Diabetes Database. [Cited 2022 June 13] Available from: <ext-link ext-link-type="uri" xlink:href="https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database" xlink:type="simple">https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref022">
+<label>22</label>
+<mixed-citation publication-type="other" xlink:type="simple">White A, d’Avila Garcez AS. Measurable counterfactual local explanations for any classifier. In: ECAI 2020—24th European conference on artificial intelligence, 29 August–8 September 2020, Santiago de Compostela, Spain. IOS Press, Frontiers in Artificial Intelligence and Applications.2020; 325: 2529–2535.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref023">
+<label>23</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Huang</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Zhou</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Yin</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>K</given-names></name>. <article-title>Two-class support vector data description</article-title>. <source>Pattern Recognition</source>. <year>2011</year>;<volume>44</volume> (<issue>2</issue>):<fpage>320</fpage>–<lpage>329</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.patcog.2010.08.025" xlink:type="simple">10.1016/j.patcog.2010.08.025</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref024">
+<label>24</label>
+<mixed-citation publication-type="other" xlink:type="simple">Canadian Primary Care Sentinel Surveillance Network (CPCSSN). [Cited 2022 June 13] Available from: <ext-link ext-link-type="uri" xlink:href="http://cpcssn.ca/" xlink:type="simple">http://cpcssn.ca/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref025">
+<label>25</label>
+<mixed-citation publication-type="other" xlink:type="simple">Feingold KR. Dyslipidemia in Diabetes. [Updated 2020 Aug 10]. In: Feingold KR, Anawalt B, Boyce A, et al., editors. Endotext. South Dartmouth (MA): MDText.com, Inc.; 2000. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/books/NBK305900/" xlink:type="simple">https://www.ncbi.nlm.nih.gov/books/NBK305900/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref026">
+<label>26</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Farbstein</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Levy</surname> <given-names>AP</given-names></name>. <article-title>HDL dysfunction in diabetes: causes and possible treatments</article-title>. <source>Expert Rev Cardiovasc Ther</source>. <year>2012</year>;<volume>10</volume>(<issue>3</issue>):<fpage>353</fpage>–<lpage>361</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1586/erc.11.182" xlink:type="simple">10.1586/erc.11.182</ext-link></comment> <object-id pub-id-type="pmid">22390807</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref027">
+<label>27</label>
+<mixed-citation publication-type="other" xlink:type="simple">Carlevaro A, Mongelli M. Reliable AI trough SVDD and rule extraction. In Machine Learning and Knowledge Extraction: 5th IFIP TC 5, TC 12, WG 8.4, WG 8.9, WG 12.9 International Cross-Domain Conference, CD-MAKE 2021, Virtual Event,August 17–20, 2021, Proceedings. 2021:153–171.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref028">
+<label>28</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Carlevaro</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Mongelli</surname> <given-names>M</given-names></name>. <article-title>A New SVDD Approach to Reliable and eXplainable AI</article-title>. <source>IEEE Intelligent Systems</source>. <year>2022</year>; <volume>37</volume>(<issue>2</issue>): <fpage>55</fpage>–<lpage>68</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/MIS.2021.3123669" xlink:type="simple">10.1109/MIS.2021.3123669</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref029">
+<label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Wang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Hickernell</surname> <given-names>FJ</given-names></name>. <article-title>Randomized Halton sequences</article-title>. <source>Mathematical and Computer Modelling</source>. <year>2000</year>; <volume>32</volume> (<issue>7</issue>): <fpage>887</fpage>–<lpage>899</lpage>. issn: 0895–7177. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0895-7177(00)00178-3" xlink:type="simple">10.1016/S0895-7177(00)00178-3</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref030">
+<label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Cervellera</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Muselli</surname> <given-names>M</given-names></name>. <article-title>Deterministic design for neural network learning: an approach based on discrepancy</article-title>. <source>IEEE Trans Neural Netw</source>. <year>2004</year>; <volume>15</volume>(<issue>3</issue>):<fpage>533</fpage>–<lpage>44</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/TNN.2004.824413" xlink:type="simple">10.1109/TNN.2004.824413</ext-link></comment> <object-id pub-id-type="pmid">15384544</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref031">
+<label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Lew</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Sanghavi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ayers</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>McGuire</surname> <given-names>DK</given-names></name>, <name name-style="western"><surname>Omland</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Atzler</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Gore</surname> <given-names>MO</given-names></name>, <etal>et al</etal>. <article-title>Sex-Based Differences in Cardiometabolic Biomarkers</article-title>. <source>In Circulation</source>. <year>2017</year>;<volume>135</volume>:<fpage>544</fpage>–<lpage>555</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1161/CIRCULATIONAHA.116.023005" xlink:type="simple">10.1161/CIRCULATIONAHA.116.023005</ext-link></comment> <object-id pub-id-type="pmid">28153991</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref032">
+<label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Valente</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Paredes</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Henriques</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rocha</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>de Carvalho</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Morais</surname> <given-names>J</given-names></name>. <article-title>Interpretability, personalization and reliability of a machine learning based clinical decision support system</article-title>. <source>Data Mining and Knowledge Discovery</source>. <year>2022</year>; <volume>36</volume>(<issue>3</issue>),<fpage>1140</fpage>–<lpage>1173</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10618-022-00821-8" xlink:type="simple">10.1007/s10618-022-00821-8</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref033">
+<label>33</label>
+<mixed-citation publication-type="other" xlink:type="simple">Lundberg SM, Lee SI. A Unified Approach to Interpreting Model Predictions. In Proceedings of the 31st International Conference on Neural Information Processing Systems (NIPS’17). 2017; 4768–4777. url:<ext-link ext-link-type="uri" xlink:href="http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf" xlink:type="simple">http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref034">
+<label>34</label>
+<mixed-citation publication-type="other" xlink:type="simple">Mothilal RK, Sharma A, Tan C. Explaining machine learning classifiers through diverse counterfactual explanations. In Proceedings of the 2020 Conference on Fairness, Accountability, and Transparency. 2020; 607–617.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref035">
+<label>35</label>
+<mixed-citation publication-type="other" xlink:type="simple">[Cited 2022 September 10] Available from: <ext-link ext-link-type="uri" xlink:href="https://github.com/interpretml/DiCE/blob/master/docs/source/notebooks/DiCE_model_agnostic_CFs.ipynb" xlink:type="simple">https://github.com/interpretml/DiCE/blob/master/docs/source/notebooks/DiCE_model_agnostic_CFs.ipynb</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref036">
+<label>36</label>
+<mixed-citation publication-type="other" xlink:type="simple">[Cited 2022 June 13] Available from: <ext-link ext-link-type="uri" xlink:href="https://www.mayoclinic.org/tests-procedures/cholesterol-test/about/pac-20384601" xlink:type="simple">https://www.mayoclinic.org/tests-procedures/cholesterol-test/about/pac-20384601</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref037">
+<label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Tsimihodimos</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Gonzalez-Villalpando</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Meigs</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Ferrannini</surname> <given-names>E</given-names></name>. <article-title>Hypertension and Diabetes Mellitus</article-title>. In <source>Hypertension</source>. <year>2018</year>; <volume>71</volume>(<issue>3</issue>): <fpage>422</fpage>–<lpage>428</lpage>). Ovid Technologies (Wolters Kluwer Health). <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1161/HYPERTENSIONAHA.117.10546" xlink:type="simple">10.1161/HYPERTENSIONAHA.117.10546</ext-link></comment> <object-id pub-id-type="pmid">29335249</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref038">
+<label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Wannamethee</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Shaper</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Lennon</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>RW</given-names></name>. <article-title>Metabolic syndrome vs Framingham Risk Score for prediction of coronary heart disease, stroke, and type 2 diabetes mellitus</article-title>. <source>Archives Intern Med</source>. <year>2005</year>;<volume>165</volume>(<issue>22</issue>):<fpage>2644</fpage>–<lpage>2650</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1001/archinte.165.22.2644" xlink:type="simple">10.1001/archinte.165.22.2644</ext-link></comment> <object-id pub-id-type="pmid">16344423</object-id></mixed-citation>
+</ref>
+<ref id="pone.0272825.ref039">
+<label>39</label>
+<mixed-citation publication-type="other" xlink:type="simple">The English Longitudinal Study of Ageing. [Cited 2022 June 13] Available from: <ext-link ext-link-type="uri" xlink:href="https://www.elsa-project.ac.uk/" xlink:type="simple">https://www.elsa-project.ac.uk/</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0272825.ref040">
+<label>40</label>
+<mixed-citation publication-type="other" xlink:type="simple">The Canadian Diabetes Risk Questionnaire [Cited 2022 June 13] Available from: <ext-link ext-link-type="uri" xlink:href="https://health.canada.ca/apps/canrisk-standalone/pdf/canrisk-en.pdf" xlink:type="simple">https://health.canada.ca/apps/canrisk-standalone/pdf/canrisk-en.pdf</ext-link>.</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

@@ -1,0 +1,146 @@
+{
+  "typeId": "motif_logo",
+  "computations": {
+    "positions": [
+      1,
+      2,
+      3
+    ],
+    "frequencies": [
+      [
+        0.8,
+        0.1,
+        0.1,
+        0.0
+      ],
+      [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      [
+        0.0,
+        0.0,
+        0.1,
+        0.9
+      ]
+    ],
+    "informationBits": [
+      1.0780719051126377,
+      0,
+      1.5310044064107187
+    ],
+    "letterHeights": [
+      [
+        0.8,
+        0.1,
+        0.1,
+        0.0
+      ],
+      [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      [
+        0.0,
+        0.0,
+        0.1,
+        0.9
+      ]
+    ],
+    "background": "uniform",
+    "smallSampleCorrection": "none"
+  },
+  "checks": {
+    "position_1_C_height": {
+      "actual": 0.10000000000000002,
+      "expected": 0.1,
+      "absoluteError": 1.3877787807814457e-17
+    },
+    "position_1_G_height": {
+      "actual": 0.1,
+      "expected": 0.1,
+      "absoluteError": 0.0
+    },
+    "position_1_A_height": {
+      "actual": 0.8,
+      "expected": 0.8,
+      "absoluteError": 0.0
+    },
+    "position_1_stack": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "position_2_A_height": {
+      "actual": 0.25,
+      "expected": 0.25,
+      "absoluteError": 0.0
+    },
+    "position_2_C_height": {
+      "actual": 0.25,
+      "expected": 0.25,
+      "absoluteError": 0.0
+    },
+    "position_2_G_height": {
+      "actual": 0.25000000000000006,
+      "expected": 0.25,
+      "absoluteError": 5.551115123125783e-17
+    },
+    "position_2_T_height": {
+      "actual": 0.25,
+      "expected": 0.25,
+      "absoluteError": 0.0
+    },
+    "position_2_stack": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "position_3_G_height": {
+      "actual": 0.10000000000000002,
+      "expected": 0.1,
+      "absoluteError": 1.3877787807814457e-17
+    },
+    "position_3_T_height": {
+      "actual": 0.9,
+      "expected": 0.9,
+      "absoluteError": 0.0
+    },
+    "position_3_stack": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 12.0,
+      "expected": 12.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "position",
+      "symbol",
+      "value"
+    ],
+    "options": {
+      "alphabet": [
+        "A",
+        "C",
+        "G",
+        "T"
+      ],
+      "input": "counts",
+      "mode": "frequency",
+      "correction": "none"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

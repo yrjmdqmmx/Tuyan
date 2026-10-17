@@ -60,7 +60,7 @@ export function assertChannelSourceConstraints(contract:any,images:{base64:strin
     const width=png?bytes.readUInt32BE(16):0,height=png?bytes.readUInt32BE(20):0
     for(const c of contract?.schema?.['x-constraints']||[]) {
       if(c.scope!=='each'||c.when)continue
-      const n=c.operation==='fileSize'?bytes.length:c.operation==='width'?width:c.operation==='height'?height:c.operation==='ratio'?width/height:NaN
+      const n=c.operation==='fileSize'?bytes.length:c.operation==='width'?width:c.operation==='height'?height:c.operation==='area'?width*height:c.operation==='ratio'?width/height:NaN
       if(!Number.isFinite(n)||n<(c.minimum??-Infinity)||n>(c.maximum??Infinity))throw Object.assign(new Error('原图或辅助图不符合所选型号的像素、比例或大小限制；未压缩或裁切，未发送。'),{localInputFailure:true,requestState:'not_sent'})
     }
     if(contract?.taskType==='vidu'&&(!width||!height||Math.min(width,height)<128||width/height<.25||width/height>4))throw Object.assign(new Error('Vidu 图片两边均须至少128像素，比例在1:4至4:1之间；未发送。'),{localInputFailure:true,requestState:'not_sent'})

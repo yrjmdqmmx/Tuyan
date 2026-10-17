@@ -1,0 +1,56 @@
+{
+  "doi": "10.1371/journal.pone.0141039",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0141039",
+  "title": "A Standardised Vocabulary for Identifying Benthic Biota and Substrata from Underwater Imagery: The CATAMI Classification Scheme",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Franziska Althaus",
+    "Nicole Hill",
+    "Renata Ferrari",
+    "Luke Edwards",
+    "Rachel Przeslawski",
+    "Christine H. L. Schönberg",
+    "Rick Stuart-Smith",
+    "Neville Barrett",
+    "Graham Edgar",
+    "Jamie Colquhoun",
+    "Maggie Tran",
+    "Alan Jordan",
+    "Tony Rees",
+    "Karen Gowlett-Holmes"
+  ],
+  "year": "2015",
+  "license": "2015\nAlthaus et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0141039.g001",
+      "label": "Fig 1",
+      "caption": "Overview of the coarsest levels of the CATAMI Classification Scheme for (a) physical and (b) biological annotations in imagery; (c) and (d) show details of the ‘bryozoa’ and the ‘echinoderms’ branches.\nThe biological classification at coarsest level is into phyla or broad groups, which are then divided using either taxonomy or morphology (as shown here), depending on what can be more consistently determined from imagery. The number of categories (C) and levels (L) defined under each branch are shown. The full classification scheme can be viewed at http://www.catami.org/classification [53].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0141039.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0141039.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Overview of the coarsest levels of the CATAMI Classification Scheme for (a) physical and (b) biological annotations in imagery; (c) and (d) show details of the ‘bryozoa’ and the ‘echinoderms’ branches.</title>\n<p>The biological classification at coarsest level is into phyla or broad groups, which are then divided using either taxonomy or morphology (as shown here), depending on what can be more consistently determined from imagery. The number of categories (C) and levels (L) defined under each branch are shown. The full classification scheme can be viewed at <ext-link ext-link-type=\"uri\" ns0:href=\"http://www.catami.org/classification\" ns0:type=\"simple\">http://www.catami.org/classification</ext-link> [<xref rid=\"pone.0141039.ref053\" ref-type=\"bibr\">53</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pone.0141039.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0141039.g001",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0141039.g002",
+      "label": "Fig 2",
+      "caption": "Comparison of the classification of two underwater images using a habitat/biotope classification (EUNIS–[33, 34]), the CATAMI Classification Scheme (CCS) and a taxonomic classification (WoRMS–[37]).\nThe figure illustrates the level of detail achieved within each classification system. Image 1: taken by IMAS with the ACFR AUV off the east coast of Tasmania, Australia at 24 m depth; Image 2 taken by CSIRO with the ‘Deep Camera Platform’ at Hill U Seamount south of Tasmania, Australia at 1167 m depth.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0141039.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0141039.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Comparison of the classification of two underwater images using a habitat/biotope classification (EUNIS–[<xref rid=\"pone.0141039.ref033\" ref-type=\"bibr\">33</xref>, <xref rid=\"pone.0141039.ref034\" ref-type=\"bibr\">34</xref>]), the CATAMI Classification Scheme (CCS) and a taxonomic classification (WoRMS–[<xref rid=\"pone.0141039.ref037\" ref-type=\"bibr\">37</xref>]).</title>\n<p>The figure illustrates the level of detail achieved within each classification system. Image 1: taken by IMAS with the ACFR AUV off the east coast of Tasmania, Australia at 24 m depth; Image 2 taken by CSIRO with the ‘Deep Camera Platform’ at Hill U Seamount south of Tasmania, Australia at 1167 m depth.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pone.0141039.g002\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0141039.g002",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "pbio.1002128.g001",
+  "paper": "pbio.1002128",
+  "figure": {
+    "id": "pbio.1002128.g001",
+    "label": "Fig 1",
+    "caption": "Many different datasets can lead to the same bar graph.\nThe full data may suggest different conclusions from the summary statistics. The means and SEs for the four example datasets shown in Panels B–E are all within 0.5 units of the means and SEs shown in the bar graph (Panel A). p-values were calculated in R (version 3.0.3) using an unpaired t-test, an unpaired t-test with Welch’s correction for unequal variances, or a Wilcoxon rank sum test. In Panel B, the distribution in both groups appears symmetric. Although the data suggest a small difference between groups, there is substantial overlap between groups. In Panel C, the apparent difference between groups is driven by an outlier. Panel D suggests a possible bimodal distribution. Additional data are needed to confirm that the distribution is bimodal and to determine whether this effect is explained by a covariate. In Panel E, the smaller range of values in group two may simply be due to the fact that there are only three observations. Additional data for group two would be needed to determine whether the groups are actually different.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.1002128.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.1002128.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Many different datasets can lead to the same bar graph.</title>\n<p>The full data may suggest different conclusions from the summary statistics. The means and SEs for the four example datasets shown in Panels B–E are all within 0.5 units of the means and SEs shown in the bar graph (Panel A). <italic>p</italic>-values were calculated in R (version 3.0.3) using an unpaired t-test, an unpaired t-test with Welch’s correction for unequal variances, or a Wilcoxon rank sum test. In Panel B, the distribution in both groups appears symmetric. Although the data suggest a small difference between groups, there is substantial overlap between groups. In Panel C, the apparent difference between groups is driven by an outlier. Panel D suggests a possible bimodal distribution. Additional data are needed to confirm that the distribution is bimodal and to determine whether this effect is explained by a covariate. In Panel E, the smaller range of values in group two may simply be due to the fact that there are only three observations. Additional data for group two would be needed to determine whether the groups are actually different.</p>\n</caption>\n<graphic mimetype=\"image\" ns0:href=\"info:doi/10.1371/journal.pbio.1002128.g001\" position=\"float\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.1002128.g001",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pbio.1002128",
+    "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002128",
+    "title": "Beyond Bar and Line Graphs: Time for a New Data Presentation Paradigm",
+    "journal": "PLOS Biology",
+    "authors": [
+      "Tracey L. Weissgerber",
+      "Natasa M. Milic",
+      "Stacey J. Winham",
+      "Vesna D. Garovic"
+    ],
+    "year": "2015",
+    "license": "2015\nWeissgerber et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=large&id=10.1371/journal.pbio.1002128.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.1002128.g001.png",
+      "bytes": 67313,
+      "sha256": "367ea9ee2faa278b4eaae90d6d83ea374ca2635fe18da7b211c3cc94408f5f5b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosbiology/article/figure/image?size=original&id=10.1371/journal.pbio.1002128.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pbio.1002128.g001.tif",
+      "bytes": 353330,
+      "sha256": "7a5023ce1cf71945bb01c054eef1b232c596f9d52b21fb9a80ce1b9923bfb007"
+    }
+  }
+}

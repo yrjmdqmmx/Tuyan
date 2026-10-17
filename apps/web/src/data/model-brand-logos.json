@@ -1,0 +1,543 @@
+{
+  "deepseek": {
+    "src": "/brand/catalog/deepseek.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/deepseek-color.svg",
+    "license": "MIT",
+    "sha256": "deba5f98a5c1796e20fcac3149bcd7eb8a32f0bdd04d048819400b1f28bd1439"
+  },
+  "moonshot": {
+    "src": "/brand/catalog/moonshot.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/moonshot.svg",
+    "license": "MIT",
+    "sha256": "435f41b74e6a87639b6bf860e9628f20cbe7d6229bece412d548f4cea3081852"
+  },
+  "zhipu": {
+    "src": "/brand/catalog/zhipu.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/zhipu-color.svg",
+    "license": "MIT",
+    "sha256": "8174e65ff71647d5c705c920c953a82bd723d9e3e42887bdd4ffc9dfe51207a0"
+  },
+  "tencent": {
+    "src": "/brand/catalog/tencent.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/tencent-color.svg",
+    "license": "MIT",
+    "sha256": "7c370ad4b75e3f30d0fa7da71f90466a0ee95a887189479aa9df414079b50eb6"
+  },
+  "alibaba": {
+    "src": "/brand/catalog/alibaba.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/alibaba-color.svg",
+    "license": "MIT",
+    "sha256": "48ee796c5b1da5f5f11dbd70c5c64a3f7efcb9eeb9022ae687d81fc813e942ee"
+  },
+  "minimax": {
+    "src": "/brand/catalog/minimax.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/minimax-color.svg",
+    "license": "MIT",
+    "sha256": "7f7187fa6d9b341ac5f22f6c5a970523afb439dc45566d64eb4f4b9b604d6b01"
+  },
+  "stepfun": {
+    "src": "/brand/catalog/stepfun.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/stepfun-color.svg",
+    "license": "MIT",
+    "sha256": "f55afc0e6004c8854f76bd5bbcc0fce9fc0ed9316691d54fb02d088c24fab40d"
+  },
+  "bytedance": {
+    "src": "/brand/catalog/bytedance.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/bytedance-color.svg",
+    "license": "MIT",
+    "sha256": "3d37647be262c79b044e293bb1a4993202537e9f9ffdbd2bbe7e9fc5378d1005"
+  },
+  "baidu": {
+    "src": "/brand/catalog/baidu.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/baidu-color.svg",
+    "license": "MIT",
+    "sha256": "1059750a2069aec6080ff48732931e87a99bd3d22db3e8471cebe255b6014b75"
+  },
+  "anthropic": {
+    "src": "/brand/catalog/anthropic.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/anthropic.svg",
+    "license": "MIT",
+    "sha256": "e833fdfa7e7187a86a05b870925067556a506dcd4239089aed73e1e58c9366a3"
+  },
+  "recraft": {
+    "src": "/brand/catalog/recraft.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/recraft.svg",
+    "license": "MIT",
+    "sha256": "ccb97a588aebf55a78bbc6ef6416cb0d9c5862a180dfada2713e0b6fc3245d08"
+  },
+  "google": {
+    "src": "/brand/catalog/google.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/google-color.svg",
+    "license": "MIT",
+    "sha256": "4e6aa8892ef15a6b431f40f2c9045979bf7e2357524e7bbb89b353cf4f32a5ac"
+  },
+  "openai": {
+    "src": "/brand/catalog/openai.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/openai.svg",
+    "license": "MIT",
+    "sha256": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186"
+  },
+  "bfl": {
+    "src": "/brand/catalog/bfl.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/bfl.svg",
+    "license": "MIT",
+    "sha256": "c08f545c77c40f2447fb91d75f78db81dc2aeebb7291bb51ad2a982276219dc7"
+  },
+  "stability": {
+    "src": "/brand/catalog/stability.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/stability-color.svg",
+    "license": "MIT",
+    "sha256": "61c4593effe20b4fa1f0811861bb6ac199348d955b21a5c3f719bc07c9d27d3a"
+  },
+  "ideogram": {
+    "src": "/brand/catalog/ideogram.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/ideogram.svg",
+    "license": "MIT",
+    "sha256": "4025876b532d087ddecdaac90deef5a48addde8ca14bbdd408970ac395992103"
+  },
+  "mistral": {
+    "src": "/brand/catalog/mistral.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/mistral-color.svg",
+    "license": "MIT",
+    "sha256": "722f74b289d95486b43662fe24fa883b333701296f618406cd0ed502299170b6"
+  },
+  "meta": {
+    "src": "/brand/catalog/meta.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/meta-color.svg",
+    "license": "MIT",
+    "sha256": "adf9f2c1a646ccd3a37ca8c2e7e5985d64630cd633f4b95fba393d1d44e0578c"
+  },
+  "nvidia": {
+    "src": "/brand/catalog/nvidia.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/nvidia-color.svg",
+    "license": "MIT",
+    "sha256": "8c941e4eb8b782eccaaea1240c059d20be33ab8eda28d7c9ed9b53ac802fe683"
+  },
+  "krea": {
+    "src": "/brand/catalog/krea.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/krea.svg",
+    "license": "MIT",
+    "sha256": "05d722278e4fcca5f24a3919241beabf7b9f3e233a1e6bd9a47028e116aa7832"
+  },
+  "luma": {
+    "src": "/brand/catalog/luma.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/luma-color.svg",
+    "license": "MIT",
+    "sha256": "84b5c8214fd89a8b46e33eeb15f02d266c3d49e0716664a82fb2e3711e1ceec6"
+  },
+  "runway": {
+    "src": "/brand/catalog/runway.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/runway.svg",
+    "license": "MIT",
+    "sha256": "dba3459264af7b4fffb5c4bfc909748e1ec1f122ffcaf0a8fbb626781888eaf2"
+  },
+  "cohere": {
+    "src": "/brand/catalog/cohere.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/cohere-color.svg",
+    "license": "MIT",
+    "sha256": "84d0ee3cbe66f030e5a18cb2c86da9166ab2137c7a98781693bb1fbf31e392b9"
+  },
+  "ibm": {
+    "src": "/brand/catalog/ibm.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/ibm.svg",
+    "license": "MIT",
+    "sha256": "62c37af8c3f191572921197a29c90687079e62d3033f503faae59cdc96af0fb2"
+  },
+  "inception": {
+    "src": "/brand/catalog/inception.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/inception.svg",
+    "license": "MIT",
+    "sha256": "aa491f544e8b77f520e7d7d1dc2362a2212dc6cd1a9373b97bb447c3f848d213"
+  },
+  "liquid": {
+    "src": "/brand/catalog/liquid.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/liquid.svg",
+    "license": "MIT",
+    "sha256": "4727b1cbd33bd256aca5be79a7d91a4f2753b2feb0dcfbb7b9fb3f23928c2467"
+  },
+  "microsoft": {
+    "src": "/brand/catalog/microsoft.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/microsoft-color.svg",
+    "license": "MIT",
+    "sha256": "5cfb0ffa3231313c2968b5e3fedfcce8e2e96c61bde4572384c3889a77a80350"
+  },
+  "morph": {
+    "src": "/brand/catalog/morph.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/morph-color.svg",
+    "license": "MIT",
+    "sha256": "994eb5b52da00eca9f4fa4d4c11a7fa1c1fa37dd9f58f9a97b951f0ea23a9f59"
+  },
+  "nousresearch": {
+    "src": "/brand/catalog/nousresearch.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/nousresearch.svg",
+    "license": "MIT",
+    "sha256": "4dc3c7cdf13d2f0bdf16b872d76293f048010a00f580df68a85e1f9c4e500e5d"
+  },
+  "perceptron": {
+    "src": "/brand/catalog/perceptron.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/perceptron.svg",
+    "license": "MIT",
+    "sha256": "a4e8b5f06318c9027f62874fb0a125b9d10eceda3fe2e3acd85faf7b6a5b9c26"
+  },
+  "perplexity": {
+    "src": "/brand/catalog/perplexity.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/perplexity-color.svg",
+    "license": "MIT",
+    "sha256": "8353f3ab20822f1a933224b0ea32cc39f0c32d5740f4af8c254b0f418e0a3a70"
+  },
+  "poolside": {
+    "src": "/brand/catalog/poolside.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/poolside-color.svg",
+    "license": "MIT",
+    "sha256": "5df24fb33e364f9762952088b1ffd9b537dd3ddb6d3e1e5fec6893898eb29667"
+  },
+  "relace": {
+    "src": "/brand/catalog/relace.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/relace.svg",
+    "license": "MIT",
+    "sha256": "06f3327a757c927e828f9328b8587f38aa350b3582ba62bcbf8371243e05a6f6"
+  },
+  "sakana": {
+    "src": "/brand/catalog/sakana.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/sakana-color.svg",
+    "license": "MIT",
+    "sha256": "a635d8f584502c97d16b7682664c2420331c770445ae181f1c2673d6d97d0f38"
+  },
+  "upstage": {
+    "src": "/brand/catalog/upstage.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/upstage-color.svg",
+    "license": "MIT",
+    "sha256": "206e23f9143cd308998cddae36b674651d7435eebc357c596dacb2b39228a485"
+  },
+  "openrouter": {
+    "src": "/brand/catalog/openrouter-ink.svg",
+    "source": "https://openrouter.ai/brand/logos/transparent/glyph/svg/glyph-ink.svg",
+    "license": "Official brand asset; OpenRouter trademark",
+    "sha256": "91be6b8a91745f089bfe42b89a5cbcd4b666fca6473610f9a6c11a31bd7523bc"
+  },
+  "replicate": {
+    "src": "/brand/catalog/replicate.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/replicate.svg",
+    "license": "MIT",
+    "sha256": "ff02158db5bc4a693d7f690c36cd7d547b8ca3313accba0783b2d3af28dae1e6"
+  },
+  "bailian": {
+    "src": "/brand/catalog/bailian.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/bailian-color.svg",
+    "license": "MIT",
+    "sha256": "5cc26dc961b2ecd0912f4e023c8ce745bcc52ac45b1c4baeadd7201f6b60de25"
+  },
+  "novita": {
+    "src": "/brand/catalog/novita.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/novita-color.svg",
+    "license": "MIT",
+    "sha256": "e41321ff6a421b958c7f402f11ffcf44dbcef9c703c952736bcc92c0fd6624c4"
+  },
+  "ant": {
+    "src": "/brand/catalog/ant.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/antgroup-color.svg",
+    "license": "MIT",
+    "sha256": "d8ee74ad28e56310258002abf3c4194f4a962ffa51bc5e4d615818750eab04c0"
+  },
+  "spacexai": {
+    "src": "/brand/catalog/spacexai.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/xai.svg",
+    "license": "MIT",
+    "sha256": "89eb7de9f0d02a41cfecd9109e253d7fd3529e27467dee4254faa67f3ac21451"
+  },
+  "pruna": {
+    "src": "/brand/catalog/pruna.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/prunaai-color.svg",
+    "license": "MIT",
+    "sha256": "a460ffc988060c6a4d82b67a5a9615ecd0dd6a06a9ccb6198908707ecfc9a609"
+  },
+  "bria": {
+    "src": "/brand/catalog/bria.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/briaai-color.svg",
+    "license": "MIT",
+    "sha256": "1adda45d2d747dbf2a463cd528f566af256c9b0f061469a564c7b76368548ed3"
+  },
+  "dots": {
+    "src": "/brand/catalog/dots.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/dotsstudio.svg",
+    "license": "MIT",
+    "sha256": "ed4e9c618a27ac16f2e1e8c16e6d217f3f7c01665afb068fe2f12164298b2310"
+  },
+  "xunfei": {
+    "src": "/brand/catalog/xunfei.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/spark-color.svg",
+    "license": "MIT",
+    "sha256": "4068581452b808e4d9f8c5b43b42d324512d6801de26e57cf848125c28db85bc"
+  },
+  "klingai": {
+    "src": "/brand/catalog/klingai.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/kling-color.svg",
+    "license": "MIT",
+    "sha256": "a8aa4def0eb1c3ca0f0528597d28fa495249aa710aa403d3c571c47c81c6150c"
+  },
+  "vidu": {
+    "src": "/brand/catalog/vidu.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/vidu-color.svg",
+    "license": "MIT",
+    "sha256": "66024ae1b72a813287a82bd02ee218258265386ef350c3995ca7bd966e36ec56"
+  },
+  "aion-labs": {
+    "src": "/brand/catalog/aion-labs.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/aionlabs-color.svg",
+    "license": "MIT",
+    "sha256": "952136a5655ac70b3c6a2c9fe93dfc9b22591d0d415b1fa9afbe618bda815b91"
+  },
+  "amazon": {
+    "src": "/brand/catalog/amazon.png",
+    "source": "https://assets.aboutamazon.com/dims4/default/fc15576/2147483647/strip/true/crop/6110x2047+0+0/resize/645x216!/quality/90/?url=https%3A%2F%2Fassets.aboutamazon.com%2F2e%2Fd7%2Fac71f1f344c39f8949f48fc89e71%2Famazon-logo-squid-ink-smile-orange.png",
+    "page": "https://press.aboutamazon.com/logos",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "de494dfdc9a6b8676a852597e1bb0961e9ec6aec945c018d85af6110f9c6c607"
+  },
+  "arcee-ai": {
+    "src": "/brand/catalog/arcee-ai.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/arcee-color.svg",
+    "license": "MIT",
+    "sha256": "41a8ed8278ec89d6a12ba5c96172ee30d6fadc93474792a8c95732ad7466233e"
+  },
+  "rekaai": {
+    "src": "/brand/catalog/rekaai.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/reka.svg",
+    "license": "MIT",
+    "sha256": "533ae212f32db47ffc179c272fb6c7fb0cc71e516a68ad3b58c435b0e8f20063"
+  },
+  "siliconflow": {
+    "src": "/brand/catalog/siliconflow.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/siliconcloud-color.svg",
+    "license": "MIT",
+    "sha256": "a02d8d7ccb81739fbc720e2e5daaf149013dd5088605dc2dce1b71df0784d424"
+  },
+  "ark": {
+    "src": "/brand/catalog/ark.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/volcengine-color.svg",
+    "license": "MIT",
+    "sha256": "84f9e2cd1da7e73dc6c9a0f2521745d39cae96c008752cdb1baf57a8c94393a1"
+  },
+  "together": {
+    "src": "/brand/catalog/together.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/together-color.svg",
+    "license": "MIT",
+    "sha256": "27ccaf118a431c386b88418a34a4346afd9638dde10e3f2295db2eec1fa5898a"
+  },
+  "fireworks": {
+    "src": "/brand/catalog/fireworks.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/fireworks-color.svg",
+    "license": "MIT",
+    "sha256": "f1c4782b86bc03a36323fd68ad6cc376c6b2ebe57b701cc958ebd6b8d37effd6"
+  },
+  "fal": {
+    "src": "/brand/catalog/fal.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/fal-color.svg",
+    "license": "MIT",
+    "sha256": "577d952ac6f863d6b0dd129918597692230b2fe0633cb4ea0e0a5085aa3f8c7d"
+  },
+  "sensenova": {
+    "src": "/brand/catalog/sensenova.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/sensenova-color.svg",
+    "license": "MIT",
+    "sha256": "bd2e0f8e310ff6a5edcc56a85560221923262767ba76b660a193f45c40c123fa"
+  },
+  "qianfan": {
+    "src": "/brand/catalog/qianfan.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/baiducloud-color.svg",
+    "license": "MIT",
+    "sha256": "2269f4c82a3a810f42691c82d0d5086961c2b684a2dcc1e7523cd9f8564e2f35"
+  },
+  "iflytek": {
+    "src": "/brand/catalog/iflytek.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/iflytekcloud-color.svg",
+    "license": "MIT",
+    "sha256": "0012c7c24cf8d987a9e2fd17e9b555ff8082e4a7369b3e57dc0a827146bb0868"
+  },
+  "longcat": {
+    "src": "/brand/catalog/longcat.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/longcat-color.svg",
+    "license": "MIT",
+    "sha256": "227f808520d700bc4dc762d8978a737ab149fb53cecb581d71548bacfd26722a"
+  },
+  "antling": {
+    "src": "/brand/catalog/antling.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/antgroup-color.svg",
+    "license": "MIT",
+    "sha256": "d8ee74ad28e56310258002abf3c4194f4a962ffa51bc5e4d615818750eab04c0"
+  },
+  "tokenhub": {
+    "src": "/brand/catalog/tokenhub.svg",
+    "source": "https://unpkg.com/@lobehub/icons-static-svg@1.95.1/icons/tencentcloud-color.svg",
+    "license": "MIT",
+    "sha256": "f860dae064a3afd24970efd2bc5892f39438526bf52c3a9748f61fc05c1cfd58"
+  },
+  "xingchen": {
+    "src": "/brand/catalog/xingchen.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/64368160eef1f55654ab21dc/HGow19-5fgUcp_IEMZoXG.png",
+    "page": "https://huggingface.co/XingChen-AGI",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "b795c5d8e7f2f7b217137866509eb5c3c2668437a722362c5a8ddc10701ef85a"
+  },
+  "meituan": {
+    "src": "/brand/catalog/meituan.ico",
+    "source": "https://s3plus.meituan.net/v1/mss_e2821d7f0cfe4ac1bf9202ecf9590e67/cdn-prod/file:1040877d/favicon-mt.ico",
+    "page": "https://www.meituan.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "a6f4dd99edf8c49563be4c90ed0b509adb6b890d1a3c35caaa6d799a21c022de"
+  },
+  "nex": {
+    "src": "/brand/catalog/nex.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/65435cad429b80b14922ab8d/a_O9jT_daz_NXTfxtcw6S.png",
+    "page": "https://huggingface.co/nex-agi",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "e663c3c20d8d0dcdcc6ae2908d60f8130548ec011c3652b0b3c739bd0d3ebe60"
+  },
+  "unisound": {
+    "src": "/brand/catalog/unisound.png",
+    "source": "https://www.unisound.com/static/icons.png",
+    "page": "https://www.unisound.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "91b32d2fc9cc1e9532a1deb19287efc656ddd41e41419c507fac863062c8b522"
+  },
+  "prism": {
+    "src": "/brand/catalog/prism.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/6920b71747acb07530915d41/mEaEo0tgAYZn-NB6S-nuP.png",
+    "page": "https://huggingface.co/Prism-ML",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "43fa7f1cbe97d795ab83b07aea1f081e72a90a2029da522a8d75e0f144a13694"
+  },
+  "rundiffusion": {
+    "src": "/brand/catalog/rundiffusion.ico",
+    "source": "https://rundiffusion.com/icon.ico",
+    "page": "https://rundiffusion.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "0159cac1adb05e34c4c45dc5b6d226691b7877b5ba17b959d4054f43e9354651"
+  },
+  "thinkingmachines": {
+    "src": "/brand/catalog/thinkingmachines.png",
+    "source": "https://thinkingmachines.ai/images/apple-touch-icon.png",
+    "page": "https://thinkingmachines.ai/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "ef907e01669290064ce1db3d7902203fb2786dc110d2c496a8a02ad912d32e7e"
+  },
+  "imagineart": {
+    "src": "/brand/catalog/imagineart.ico",
+    "source": "https://cdn-imagine.vyro.ai/imagine-static-pages/overview/media/favicon/favicon.ico",
+    "page": "https://www.imagine.art/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "2a2c22a07a323200f32713d99009d5833aded962641e79313dc451a5ee08bc54"
+  },
+  "sber": {
+    "src": "/brand/catalog/sber.jpeg",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/5f91b1208a61a359f44e1851/4hQd2Bt8AeSnQsluli5f1.jpeg",
+    "page": "https://huggingface.co/ai-forever",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "af688909ff2812486b66b1fadb1e2346509bb66d30b12202793849e2bffc6cda"
+  },
+  "segmind": {
+    "src": "/brand/catalog/segmind.svg",
+    "source": "https://www.segmind.com/favicon.svg",
+    "page": "https://www.segmind.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "14fa5e50a58cd262bf65022cb4aefcb1267cc066bd9d82092172d8caeba40b07"
+  },
+  "playground": {
+    "src": "/brand/catalog/playground.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/62c627c4644269e788cfee34/mV0Cwic2o92LNKiFBbraJ.png",
+    "page": "https://huggingface.co/playgroundai",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "d71712af11bd63bfababa0f376d8516722c124818debff7b256eabff2aada683"
+  },
+  "hidream": {
+    "src": "/brand/catalog/hidream.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/63743880e75ef9e965353987/Mmc0LXiTjBQEpw85ZIYoQ.png",
+    "page": "https://huggingface.co/HiDream-ai",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "c6f60a3c8ebaaae2875044624ed48d2f40920101d6c3bcc20fcc2b99c03778e8"
+  },
+  "sourceful": {
+    "src": "/brand/catalog/sourceful.ico",
+    "source": "https://www.sourceful.com/favicon.ico",
+    "page": "https://www.sourceful.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "e645b76282be60eb878149b796a6bb1b122a04d9073e35e7d6d0be2405a523ee"
+  },
+  "cogevol": {
+    "src": "/brand/catalog/cogevol.png",
+    "source": "https://cdn-avatars.huggingface.co/v1/production/uploads/648c48d8c0ddeee6df5b6d22/z95C6e3gbYmdwNxinzUbC.png",
+    "page": "https://huggingface.co/CogEvol",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "09b764b5124e60892493373794b8cade7c3c9c97d4aa26a89302def5bbaadffd"
+  },
+  "unifuncs": {
+    "src": "/brand/catalog/unifuncs.png",
+    "source": "https://unifuncs.com/common/favicon.png",
+    "page": "https://unifuncs.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "dee671075a8975ca958ee38e69b55ee0cdac01bda001981d17da717f6269c0e3"
+  },
+  "sensetime": {
+    "src": "/brand/catalog/sensetime.ico",
+    "source": "https://www.sensetime.com/assets/favicon.ico",
+    "page": "https://www.sensetime.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "2462d101ad257d534f19fb1d72f6312a5791f0e55e013d2dd35d28941e59c7b7"
+  },
+  "shanghai-ai-lab": {
+    "src": "/brand/catalog/shanghai-ai-lab.ico",
+    "source": "https://www.shlab.org.cn/static/asset/img/favicon.ico",
+    "page": "https://www.shlab.org.cn/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "409c95cc5f4bf46ca7dd44ee3c792565e0e22e4e7c65da16fa1feaaf86c0ac83"
+  },
+  "writer": {
+    "src": "/brand/catalog/writer.png",
+    "source": "https://writer.com/wp-content/uploads/2021/08/writer-w-logo-1.png?w=192",
+    "page": "https://writer.com/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "4650b3917a14fc8958d79823b695173747d3acc3d77736f9439a44c8b10cc7fe"
+  },
+  "tokendance": {
+    "src": "/brand/catalog/tokendance.svg",
+    "source": "https://tokendance.space/TokenDance品牌图标-单logo.svg",
+    "page": "https://tokendance.space/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "4384698ff41422065583fe7cdb4d4302fc47d5a2ce4a2d40488f38f6af2e63a1"
+  },
+  "runware": {
+    "src": "/brand/catalog/runware.svg",
+    "source": "https://website.runware.ai/favicon.svg",
+    "page": "https://runware.ai/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "5ef399d2b89a93aee2e5df75134abf6c24f7e4b227aaaf009129ee62f1deaf03"
+  },
+  "xiaomi": {
+    "src": "/brand/catalog/xiaomi.ico",
+    "source": "https://www.mi.com/favicon.ico",
+    "page": "https://www.mi.com",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "e59b4a96433a0b039f223dd98100b9b0edcda6fe7d96f74808bc5fda41a44ca7"
+  },
+  "leonardo": {
+    "src": "/brand/catalog/leonardo.png",
+    "source": "https://files.readme.io/e6fd24fe6d94d90d5c885217bfc7e206f382cccef4e950586465ac1a3750f90d-Leonardo_Icon_ElectricPurple_1.png",
+    "page": "https://docs.leonardo.ai/docs/getting-started",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "b1f570d5ca90eb35991121c831913eb81f9c960764fa113f71dbd0591f64063e"
+  },
+  "kwai": {
+    "src": "/brand/catalog/kwai.png",
+    "source": "https://cdn-static.kwai.net/kos/s101/nlav11312/icon/kwai/2/favicon.ico",
+    "page": "https://www.kwai.com",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "83ad0cf1e24c2ef29d352a36b8572b3ad8b6a3d96ddbc33eefda216fd0df4992"
+  },
+  "shengshu": {
+    "src": "/brand/catalog/shengshu.png",
+    "source": "https://lf3-atsx-tob.feishucdn.com/obj/static-atsx-online-ee-tob/90f1e41e73ef9516b696276ff44f645d/36c37734115a5d2d6dd87844e0394071e3ca8838fc2b98b26456f11d5193782c.png",
+    "page": "https://shengshu.jobs.feishu.cn/",
+    "license": "Brand asset; respective owner retains rights",
+    "sha256": "089119bd88ccc578396708f74c4297bc4aed054d219e9a02440eafa4ae1a01d9"
+  }
+}

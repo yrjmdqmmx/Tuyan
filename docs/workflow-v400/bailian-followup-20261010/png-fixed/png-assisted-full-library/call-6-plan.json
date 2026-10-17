@@ -1,0 +1,38 @@
+{
+  "endpoint": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  "number": 6,
+  "kind": "plan",
+  "model": "deepseek-v4-pro",
+  "request": {
+    "model": "deepseek-v4-pro",
+    "messages": [
+      {
+        "role": "system",
+        "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+      },
+      {
+        "role": "user",
+        "content": "Methodology Section:\n这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\n\nFigure Caption:\n从样品输入到标准化结果的三步方法流程。\n\nDetailed description of the target figure:\n\nReference image analysis for VISUAL STYLE guidance (not structure):\n```json\n{\n  \"content\": \"图像展示了一个简单的水平流程图，包含两个圆角矩形框和一个连接箭头。左侧框为浅蓝色，右侧框为浅绿色。右上角有一个文本标识。\",\n  \"actual_text\": [\n    \"REF-73\",\n    \"样品输入\",\n    \"结果输出\"\n  ],\n  \"layout\": \"水平线性布局（左至右）。两个节点框垂直居中对齐，间距适中。右上角标识独立于流程之外。\",\n  \"connections\": \"一个深灰色单向箭头从左侧框右边缘指向右侧框左边缘。\",\n  \"problems\": [\n    \"步骤缺失：原图仅包含2个节点（样品输入、结果输出），而请求明确要求绘制“三步科学流程”，缺少中间的“数据标准化（x / x₀）”步骤。\",\n    \"标签内容不完整：左侧框仅显示“样品输入”，缺少请求要求的参数“(n=12)”；右侧框仅显示“结果输出”，缺少请求要求的数值“(均值 1.0)”。\",\n    \"数学表达式缺失：由于中间步骤完全缺失，关键的数学表达式“x / x₀”未出现在图中。\"\n  ],\n  \"suggestions\": [\n    \"在“样品输入”和“结果输出”之间插入第三个圆角矩形框，填入文字“数据标准化”及数学表达式“x / x₀”。\",\n    \"更新左侧框文字为“样品输入 (n=12)”。\",\n    \"更新右侧框文字为“结果输出 (均值 1.0)”。\",\n    \"调整箭头连接顺序，确保流向为：样品输入 → 数据标准化 → 结果输出。\",\n    \"保持现有的配色方案（蓝/绿圆角框）和右上角“REF-73”标识不变，以符合参考图要求。\"\n  ],\n  \"uncertainties\": \"无不确定项，图像内容与文本请求之间的差异清晰可见。\"\n}\n```\n\nAdopt the reference's visual style — its color palette, shape/line language, iconography, and typography — so the final figure clearly and strongly feels stylistically consistent with the reference. However, do NOT copy the reference's spatial layout or composition: the figure's structure — the number, type, and arrangement of blocks and the overall flow — MUST be derived from the provided methodology and caption, not from the reference. Let the content drive the layout so the result stays internally coherent, even when the reference depicts an unrelated subject.\n\nRetrieved 图研 reference examples for layout/style guidance:\nReference 1 (live-svg-reference): 双节点方法图参考\n观察该图的颜色、布局和右上角标识，作为版式参考。\n\nUse these examples as high-level few-shot guidance. Do not copy their scientific content unless it matches the provided methodology.\n\nInfographic category: method — emphasize the conventions of this figure type.\n\n<avoidance_constraints>\n禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"methodology\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"visualIntent\": \"从样品输入到标准化结果的三步方法流程。\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"16:9\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"png\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"manual\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"```json\\n{\\n  \\\"content\\\": \\\"图像展示了一个简单的水平流程图，包含两个圆角矩形框和一个连接箭头。左侧框为浅蓝色，右侧框为浅绿色。右上角有一个文本标识。\\\",\\n  \\\"actual_text\\\": [\\n    \\\"REF-73\\\",\\n    \\\"样品输入\\\",\\n    \\\"结果输出\\\"\\n  ],\\n  \\\"layout\\\": \\\"水平线性布局（左至右）。两个节点框垂直居中对齐，间距适中。右上角标识独立于流程之外。\\\",\\n  \\\"connections\\\": \\\"一个深灰色单向箭头从左侧框右边缘指向右侧框左边缘。\\\",\\n  \\\"problems\\\": [\\n    \\\"步骤缺失：原图仅包含2个节点（样品输入、结果输出），而请求明确要求绘制“三步科学流程”，缺少中间的“数据标准化（x / x₀）”步骤。\\\",\\n    \\\"标签内容不完整：左侧框仅显示“样品输入”，缺少请求要求的参数“(n=12)”；右侧框仅显示“结果输出”，缺少请求要求的数值“(均值 1.0)”。\\\",\\n    \\\"数学表达式缺失：由于中间步骤完全缺失，关键的数学表达式“x / x₀”未出现在图中。\\\"\\n  ],\\n  \\\"suggestions\\\": [\\n    \\\"在“样品输入”和“结果输出”之间插入第三个圆角矩形框，填入文字“数据标准化”及数学表达式“x / x₀”。\\\",\\n    \\\"更新左侧框文字为“样品输入 (n=12)”。\\\",\\n    \\\"更新右侧框文字为“结果输出 (均值 1.0)”。\\\",\\n    \\\"调整箭头连接顺序，确保流向为：样品输入 → 数据标准化 → 结果输出。\\\",\\n    \\\"保持现有的配色方案（蓝/绿圆角框）和右上角“REF-73”标识不变，以符合参考图要求。\\\"\\n  ],\\n  \\\"uncertainties\\\": \\\"无不确定项，图像内容与文本请求之间的差异清晰可见。\\\"\\n}\\n```\",\n  \"retrievalContext\": \"Reference 1 (live-svg-reference): 双节点方法图参考\\n观察该图的颜色、布局和右上角标识，作为版式参考。\",\n  \"planningMode\": \"full\",\n  \"planningConstraint\": \"Image API limit: 5000 Unicode characters for the ENTIRE final request prompt. Write a compact, complete drawing plan in the user language, at most 1882 characters; preserve every required fact/label and relationship. Avoid repeating the original prose, metadata or long explanations. This applies to initial, styled and revised plans.\"\n}"
+      }
+    ],
+    "stream": true,
+    "enable_thinking": false,
+    "max_tokens": 8192,
+    "stream_options": {
+      "include_usage": true
+    }
+  },
+  "originalParameters": {},
+  "httpStatus": 200,
+  "elapsedMs": 12343,
+  "requestId": "chatcmpl-2e0a5b2a-b22b-9e9c-b4f2-f63c009718f9",
+  "responseText": "好的，这是根据你的要求生成的目标图详细描述。我将遵循参考图分析的各项建议，确保三步流程完整、标签准确，并严格采用参考图的视觉风格。\n\n---\n\n**画面布局与背景**\n*   **整体布局**：采用自左向右的水平线性流程，所有元素在垂直方向上居中对齐。\n*   **画布背景**：纯白色，简洁干净，无任何装饰元素。\n*   **参考标识**：在画布右上角，放置一个独立的文本标识“REF-73”。其样式、颜色与参考图完全一致，与下方流程图的三个节点保持适当距离，互不干扰。\n\n**流程节点（共三个圆角矩形框）**\n所有框均采用大圆角矩形样式，带有柔和的阴影效果，增强立体感。框内文字使用无衬线中文字体，黑色，居中对齐。\n\n1.  **左侧节点：样品输入 (n=12)**\n    *   **颜色填充**：使用与参考图左侧框一致的浅蓝色。\n    *   **框内文字**：分行居中显示。第一行“样品输入”；第二行“(n=12)”。字体粗细与参考图保持一致。\n\n2.  **中间节点：数据标准化 (x / x₀)**\n    *   **颜色填充**：使用一种与左右框协调的柔和中间色，例如浅黄色，以示流程的过渡和区分。\n    *   **框内文字**：分行居中显示。第一行“数据标准化”；第二行数学表达式“x / x₀”，使用斜体数学字体准确保留。\n\n3.  **右侧节点：结果输出 (均值 1.0)**\n    *   **颜色填充**：使用与参考图右侧框一致的浅绿色。\n    *   **框内文字**：分行居中显示。第一行“结果输出”；第二行“(均值 1.0)”。\n\n**连接箭头（共两个）**\n*   **箭头样式**：深灰色（与参考图颜色相同）、实心单向箭头，线条流畅，粗细适中。\n*   **位置与方向**：\n    *   箭头1：从“样品输入 (n=12)”框的右边缘中心点发出，指向“数据标准化 (x / x₀)”框的左边缘中心点。\n    *   箭头2：从“数据标准化 (x / x₀)”框的右边缘中心点发出，指向“结果输出 (均值 1.0)”框的左边缘中心点。\n*   三个节点框和两个箭头之间的间距均匀相等，确保视觉平衡。",
+  "usage": {
+    "prompt_tokens": 1940,
+    "completion_tokens": 541,
+    "total_tokens": 2481,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}

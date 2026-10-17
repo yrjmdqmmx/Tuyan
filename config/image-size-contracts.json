@@ -7787,6 +7787,732 @@
         }
       },
       "auto": "square"
+    },
+    "runware:alibaba-qwen-image-2-1-pro": {
+      "mode": "pixels",
+      "tiers": {
+        "512": {
+          "targetPixels": 262144
+        },
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "auto": {}
+      },
+      "minSide": 192,
+      "maxSide": 4096,
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "maxRatio": 8,
+      "alignment": 1,
+      "auto": "square"
+    },
+    "runware:bfl-flux-3-image": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "21:9": "1568x672",
+            "2:1": "1440x720",
+            "16:9": "1360x768",
+            "3:2": "1248x832",
+            "7:5": "1216x864",
+            "4:3": "1184x880",
+            "5:4": "1152x912",
+            "1:1": "1024x1024",
+            "4:5": "912x1152",
+            "3:4": "880x1184",
+            "5:7": "864x1216",
+            "2:3": "832x1248",
+            "9:16": "768x1360",
+            "1:2": "720x1440",
+            "9:21": "672x1568"
+          }
+        },
+        "2K": {
+          "sizes": {
+            "21:9": "3136x1344",
+            "2:1": "2896x1440",
+            "16:9": "2736x1536",
+            "3:2": "2512x1664",
+            "7:5": "2416x1728",
+            "4:3": "2368x1776",
+            "5:4": "2288x1824",
+            "1:1": "2048x2048",
+            "4:5": "1824x2288",
+            "3:4": "1776x2368",
+            "5:7": "1728x2416",
+            "2:3": "1664x2512",
+            "9:16": "1536x2736",
+            "1:2": "1440x2896",
+            "9:21": "1344x3136"
+          }
+        },
+        "4K": {
+          "sizes": {
+            "21:9": "6256x2688",
+            "2:1": "5792x2896",
+            "16:9": "5456x3072",
+            "3:2": "5024x3344",
+            "7:5": "4848x3456",
+            "4:3": "4736x3552",
+            "5:4": "4576x3664",
+            "1:1": "4096x4096",
+            "4:5": "3664x4576",
+            "3:4": "3552x4736",
+            "5:7": "3456x4848",
+            "2:3": "3344x5024",
+            "9:16": "3072x5456",
+            "1:2": "2896x5792",
+            "9:21": "2688x6256"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "runware:bytedance-seedream-5-0-flash": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "auto": {}
+      },
+      "minSide": 128,
+      "maxSide": 4096,
+      "minPixels": 921600,
+      "maxPixels": 4624220,
+      "maxRatio": 16,
+      "alignment": 1,
+      "auto": "square"
+    },
+    "runware:google-nano-banana-2-1": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "3:2": "1264x848",
+            "2:3": "848x1264",
+            "4:3": "1200x896",
+            "3:4": "896x1200",
+            "4:5": "928x1152",
+            "5:4": "1152x928",
+            "9:16": "768x1376",
+            "16:9": "1376x768",
+            "21:9": "1584x672",
+            "4:1": "2064x512",
+            "1:4": "512x2064",
+            "8:1": "2928x352",
+            "1:8": "352x2928"
+          }
+        },
+        "2K": {
+          "sizes": {
+            "1:1": "2048x2048",
+            "3:2": "2528x1696",
+            "2:3": "1696x2528",
+            "4:3": "2400x1792",
+            "3:4": "1792x2400",
+            "4:5": "1856x2304",
+            "5:4": "2304x1856",
+            "9:16": "1536x2752",
+            "16:9": "2752x1536",
+            "21:9": "3168x1344",
+            "4:1": "4128x1024",
+            "1:4": "1024x4128",
+            "8:1": "5856x704",
+            "1:8": "704x5856"
+          }
+        },
+        "4K": {
+          "sizes": {
+            "1:1": "4096x4096",
+            "3:2": "5056x3392",
+            "2:3": "3392x5056",
+            "4:3": "4800x3584",
+            "3:4": "3584x4800",
+            "4:5": "3712x4608",
+            "5:4": "4608x3712",
+            "9:16": "3072x5504",
+            "16:9": "5504x3072",
+            "21:9": "6336x2688",
+            "4:1": "8256x2048",
+            "1:4": "2048x8256",
+            "8:1": "11712x1408",
+            "1:8": "1408x11712"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "runware:ideogram-4-5-precise-edit": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "omit"
+    },
+    "runware:ideogram-4-5": {
+      "mode": "table",
+      "tiers": {
+        "2K": {
+          "sizes": {
+            "1:1": "2048x2048",
+            "1:2": "1440x2880",
+            "2:1": "2880x1440",
+            "2:3": "1664x2496",
+            "3:2": "2496x1664",
+            "4:5": "1792x2240",
+            "5:4": "2240x1792",
+            "9:16": "1440x2560",
+            "16:9": "2560x1440",
+            "5:8": "1600x2560",
+            "8:5": "2560x1600",
+            "3:4": "1728x2304",
+            "4:3": "2304x1728",
+            "9:23": "1152x2944",
+            "23:9": "2944x1152",
+            "3:8": "1248x3328",
+            "8:3": "3328x1248",
+            "5:12": "1280x3072",
+            "12:5": "3072x1280",
+            "1:3": "1024x3072",
+            "3:1": "3072x1024"
+          }
+        },
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "4:5": "896x1120",
+            "5:4": "1120x896",
+            "3:4": "864x1152",
+            "4:3": "1152x864",
+            "2:3": "832x1248",
+            "3:2": "1248x832",
+            "5:8": "800x1280",
+            "8:5": "1280x800"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "runware:recraft-v4-1-flash": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "2:1": "1536x768",
+            "1:2": "768x1536",
+            "3:2": "1280x832",
+            "2:3": "832x1280",
+            "4:3": "1216x896",
+            "3:4": "896x1216",
+            "5:4": "1152x896",
+            "4:5": "896x1152",
+            "6:10": "832x1344",
+            "14:10": "1280x896",
+            "10:14": "896x1280",
+            "16:9": "1344x768",
+            "9:16": "768x1344"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "gemini-nano-banana-2.1": {
+      "mode": "ratio",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "ratios": [
+        "1:1",
+        "3:2",
+        "2:3",
+        "4:3",
+        "3:4",
+        "16:9",
+        "9:16",
+        "21:9",
+        "1:4",
+        "4:1",
+        "4:5",
+        "5:4",
+        "1:8",
+        "8:1"
+      ],
+      "auto": "omit"
+    },
+    "fal:google-nano-banana-2.1": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "16:9",
+        "3:2",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "2:3",
+        "9:16",
+        "4:1",
+        "1:4",
+        "8:1",
+        "1:8"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "square"
+    },
+    "bfl:flux-3-image": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "2:1",
+        "16:9",
+        "3:2",
+        "7:5",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "5:7",
+        "2:3",
+        "9:16",
+        "1:2",
+        "9:21"
+      ],
+      "tiers": {
+        "1K": {},
+        "1.5K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "omit"
+    },
+    "ideogram45DocumentedPresets": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024"
+          }
+        },
+        "2K": {
+          "sizes": {
+            "1:1": "2048x2048",
+            "1:2": "1440x2880"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "ideogram45PreciseEdit": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "omit"
+    },
+    "replicate/google/nano-banana-2.1:20261009": {
+      "mode": "ratio",
+      "ratios": [
+        "1:1",
+        "1:4",
+        "1:8",
+        "2:3",
+        "3:2",
+        "3:4",
+        "4:1",
+        "4:3",
+        "4:5",
+        "5:4",
+        "8:1",
+        "9:16",
+        "16:9",
+        "21:9"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "square"
+    },
+    "replicate/black-forest-labs/flux-3-image:20261009": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "2:1",
+        "16:9",
+        "3:2",
+        "7:5",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "5:7",
+        "2:3",
+        "9:16",
+        "1:2",
+        "9:21"
+      ],
+      "tiers": {
+        "1K": {},
+        "1.5K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "omit"
+    },
+    "replicate/ideogram-ai/ideogram-4-5:20261009": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "10:7": "1280x896",
+            "7:10": "896x1280",
+            "7:4": "1344x768",
+            "4:7": "768x1344",
+            "12:5": "1536x640",
+            "5:12": "640x1536"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "replicate/ideogram-ai/ideogram-4-5-precise-edit:20261009": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "omit"
+    },
+    "fal/blackforestlabs/flux-3/text-to-image:20261009:g": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "2:1",
+        "16:9",
+        "3:2",
+        "7:5",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "5:7",
+        "2:3",
+        "9:16",
+        "1:2"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "omit"
+    },
+    "fal/blackforestlabs/flux-3/text-to-image:20261009:e": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "2:1",
+        "16:9",
+        "3:2",
+        "7:5",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "5:7",
+        "2:3",
+        "9:16",
+        "1:2"
+      ],
+      "tiers": {
+        "1K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "omit"
+    },
+    "fal/ideogram/v4.5:20261009:g": {
+      "mode": "table",
+      "tiers": {
+        "1K": {
+          "sizes": {
+            "1:1": "1024x1024",
+            "4:3": "1152x864",
+            "3:4": "864x1152",
+            "16:9": "1280x720",
+            "9:16": "720x1280"
+          }
+        },
+        "2K": {
+          "sizes": {
+            "1:1": "2048x2048",
+            "1:2": "1440x2880",
+            "2:1": "2880x1440",
+            "16:9": "2560x1440",
+            "9:16": "1440x2560"
+          }
+        }
+      },
+      "auto": "square"
+    },
+    "fal/ideogram/v4.5:20261009:e": {
+      "mode": "inherit",
+      "tiers": {
+        "auto": {}
+      },
+      "auto": "omit"
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image:20261009:g": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minPixels": 1048576,
+      "maxPixels": 4194304,
+      "maxSide": 4096,
+      "maxRatio": 16,
+      "alignment": 1,
+      "auto": "square"
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image:20261009:e": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minPixels": 1048576,
+      "maxPixels": 4194304,
+      "maxSide": 4096,
+      "maxRatio": 16,
+      "alignment": 1,
+      "auto": "square"
+    },
+    "bfl/flux-3-image-klein:20261016": {
+      "mode": "ratio",
+      "ratios": [
+        "21:9",
+        "2:1",
+        "16:9",
+        "3:2",
+        "7:5",
+        "4:3",
+        "5:4",
+        "1:1",
+        "4:5",
+        "3:4",
+        "5:7",
+        "2:3",
+        "9:16",
+        "1:2",
+        "9:21"
+      ],
+      "tiers": {
+        "1K": {},
+        "1.5K": {},
+        "2K": {},
+        "4K": {}
+      },
+      "auto": "omit"
+    },
+    "bailian/qwen-image-2.1-pro:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "auto": "square",
+      "maxRatio": 8,
+      "separator": "*"
+    },
+    "bailian/qwen-image-2.1-turbo:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "auto": "square",
+      "maxRatio": 8,
+      "separator": "*"
+    },
+    "runware/bfl:flux@3-image-klein:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "minSide": 128,
+      "maxSide": 4096,
+      "minPixels": 16384,
+      "maxPixels": 16777216,
+      "alignment": 16,
+      "auto": "square"
+    },
+    "runware/bfl:flux@3-image-klein-base:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "minSide": 128,
+      "maxSide": 4096,
+      "minPixels": 16384,
+      "maxPixels": 16777216,
+      "alignment": 16,
+      "auto": "square"
+    },
+    "runware/alibaba:qwen-image@2.1-turbo:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "1.5K": {
+          "targetPixels": 2359296
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minSide": 192,
+      "maxSide": 4096,
+      "minPixels": 262144,
+      "maxPixels": 4194304,
+      "alignment": 1,
+      "auto": "square",
+      "maxRatio": 8
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "minSide": 256,
+      "maxSide": 4096,
+      "alignment": 16,
+      "minPixels": 65536,
+      "maxPixels": 16777216,
+      "auto": "square"
+    },
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        },
+        "4K": {
+          "targetPixels": 16777216
+        }
+      },
+      "minSide": 256,
+      "maxSide": 4096,
+      "alignment": 16,
+      "minPixels": 65536,
+      "maxPixels": 16777216,
+      "auto": "square"
+    },
+    "fal/krea/v3/text-to-image:20261016": {
+      "mode": "pixels",
+      "tiers": {
+        "1K": {
+          "targetPixels": 1048576
+        },
+        "2K": {
+          "targetPixels": 4194304
+        }
+      },
+      "minSide": 256,
+      "maxSide": 3200,
+      "alignment": 16,
+      "minPixels": 65536,
+      "maxPixels": 4220160,
+      "auto": "square"
     }
   },
   "routes": {
@@ -9284,15 +10010,6 @@
         "https://replicate.com/ai-forever/kandinsky-2.2/api/schema"
       ],
       "notes": "精修使用识图后重绘；不向生成 API 发送参考图。"
-    },
-    "replicate/alibaba/wan-3": {
-      "generation": "replicate_alibaba_wan-3_ratios",
-      "editing": "replicate_alibaba_wan-3_ratios",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://replicate.com/alibaba/wan-3/api/schema"
-      ],
-      "notes": "直接编辑。"
     },
     "replicate/black-forest-labs/flux-1.1-pro": {
       "generation": "replicate_black-forest-labs_flux-1.1-pro_pixels",
@@ -11730,6 +12447,287 @@
         "https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"
       ],
       "notes": "Product subset: documented square 1K and 2K examples. No claim that other provider sizes are unsupported; no image inputs or layer decomposition."
+    },
+    "runware/alibaba:qwen-image@2.1-pro": {
+      "generation": "runware:alibaba-qwen-image-2-1-pro",
+      "editing": "runware:alibaba-qwen-image-2-1-pro",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/bfl:flux@3-image": {
+      "generation": "runware:bfl-flux-3-image",
+      "editing": "runware:bfl-flux-3-image",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/bfl-flux-3-image",
+        "https://runware.ai/docs/models/bfl-flux-3-image/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/bytedance:seedream@5.0-flash": {
+      "generation": "runware:bytedance-seedream-5-0-flash",
+      "editing": "runware:bytedance-seedream-5-0-flash",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/google:nano-banana@2.1": {
+      "generation": "runware:google-nano-banana-2-1",
+      "editing": "runware:google-nano-banana-2-1",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/google-nano-banana-2-1",
+        "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/ideogram:4.5@precise-edit": {
+      "generation": null,
+      "editing": "runware:ideogram-4-5-precise-edit",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+        "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/ideogram:4.5@0": {
+      "generation": "runware:ideogram-4-5",
+      "editing": "runware:ideogram-4-5",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/ideogram-4-5",
+        "https://runware.ai/docs/models/ideogram-4-5/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "runware/recraft:v4.1@flash": {
+      "generation": "runware:recraft-v4-1-flash",
+      "editing": null,
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://runware.ai/docs/models/recraft-v4-1-flash",
+        "https://runware.ai/docs/models/recraft-v4-1-flash/schema.json"
+      ],
+      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+    },
+    "gemini/gemini-nano-banana-2.1": {
+      "generation": "gemini-nano-banana-2.1",
+      "editing": "gemini-nano-banana-2.1",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+        "https://ai.google.dev/gemini-api/docs/image-generation"
+      ],
+      "notes": "官方 1K/2K/4K 和比例枚举；图研保留单原图编辑限制，不开放视频/PDF输入。"
+    },
+    "recraft/recraftv4_1_flash": {
+      "generation": "recraft-recraftv4_1",
+      "editing": null,
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+        "https://www.recraft.ai/docs/api-reference/appendix"
+      ],
+      "notes": "官方同一 1K 比例/像素表；仅位图生成，不接入风格和编辑。"
+    },
+    "ark/doubao-seedream-5-0-flash-260915": {
+      "generation": "arkPro",
+      "editing": "arkPro",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
+      ],
+      "notes": "同一官方 API 表明确将 pro/flash 尺寸及10图限制并列；图研保持单原图与单图输出，未接图层拆分。"
+    },
+    "fal/google/nano-banana-2.1": {
+      "generation": "fal:google-nano-banana-2.1",
+      "editing": "fal:google-nano-banana-2.1",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://fal.ai/models/google/nano-banana-2.1/api",
+        "https://fal.ai/models/google/nano-banana-2.1/edit/api"
+      ],
+      "notes": "fal exact endpoint schema; single original image, PNG. Optional video/PDF inputs are not integrated."
+    },
+    "bfl/flux-3-image": {
+      "generation": "bfl:flux-3-image",
+      "editing": "bfl:flux-3-image",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "notes": "Native FLUX 3 async response. Explicit grounding=false retains a local prompt workflow. Unsupported 768sq preset is not advertised."
+    },
+    "ideogram/ideogram-4-5": {
+      "generation": "ideogram45DocumentedPresets",
+      "editing": "ideogram45PreciseEdit",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+        "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+      ],
+      "notes": "生图仅列举明确的1024方图、2048方图和1440×2880；不借用4.0或Runware枚举。精确编辑不传size/ratio，超大原图可能由渠道等比缩小。"
+    },
+    "replicate/google/nano-banana-2.1": {
+      "generation": "replicate/google/nano-banana-2.1:20261009",
+      "editing": "replicate/google/nano-banana-2.1:20261009",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://replicate.com/google/nano-banana-2.1/api/schema"
+      ],
+      "notes": "仅本渠道schema；单原图，未接入mask/auxiliary。"
+    },
+    "replicate/black-forest-labs/flux-3-image": {
+      "generation": "replicate/black-forest-labs/flux-3-image:20261009",
+      "editing": "replicate/black-forest-labs/flux-3-image:20261009",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+      ],
+      "notes": "仅本渠道schema；单原图，未接入mask/auxiliary。"
+    },
+    "replicate/ideogram-ai/ideogram-4-5": {
+      "generation": "replicate/ideogram-ai/ideogram-4-5:20261009",
+      "editing": "replicate/ideogram-ai/ideogram-4-5:20261009",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+      ],
+      "notes": "仅本渠道schema；单原图，未接入mask/auxiliary。"
+    },
+    "replicate/ideogram-ai/ideogram-4-5-precise-edit": {
+      "generation": null,
+      "editing": "replicate/ideogram-ai/ideogram-4-5-precise-edit:20261009",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
+      ],
+      "notes": "仅本渠道schema；单原图，未接入mask/auxiliary。"
+    },
+    "fal/blackforestlabs/flux-3/text-to-image": {
+      "generation": "fal/blackforestlabs/flux-3/text-to-image:20261009:g",
+      "editing": "fal/blackforestlabs/flux-3/text-to-image:20261009:e",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+      ],
+      "notes": "单原图直接编辑；仅开放已核对尺寸子集，未开放mask/辅助图。"
+    },
+    "fal/ideogram/v4.5": {
+      "generation": "fal/ideogram/v4.5:20261009:g",
+      "editing": "fal/ideogram/v4.5:20261009:e",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://fal.ai/models/ideogram/v4.5/api",
+        "https://fal.ai/models/ideogram/v4.5/edit/api"
+      ],
+      "notes": "单原图直接编辑；仅开放已核对尺寸子集，未开放mask/辅助图。"
+    },
+    "fal/bytedance/seedream/v5/flash/text-to-image": {
+      "generation": "fal/bytedance/seedream/v5/flash/text-to-image:20261009:g",
+      "editing": "fal/bytedance/seedream/v5/flash/text-to-image:20261009:e",
+      "reviewedAt": "2026-10-09",
+      "sources": [
+        "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+      ],
+      "notes": "单原图直接编辑；仅开放已核对尺寸子集，未开放mask/辅助图。"
+    },
+    "bfl/flux-3-image-klein": {
+      "generation": "bfl/flux-3-image-klein:20261016",
+      "editing": "bfl/flux-3-image-klein:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "notes": "按 Klein 的独立 OpenAPI，仅开放显式 1K/1.5K/2K/4K 比例档位。"
+    },
+    "bailian/qwen-image-2.1-pro": {
+      "generation": "bailian/qwen-image-2.1-pro:20261016",
+      "editing": "bailian/qwen-image-2.1-pro:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "notes": "独立 2.1 文档：262144–4194304 总像素、1:8–8:1；不照搬其他渠道 4K。"
+    },
+    "bailian/qwen-image-2.1-turbo": {
+      "generation": "bailian/qwen-image-2.1-turbo:20261016",
+      "editing": "bailian/qwen-image-2.1-turbo:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "notes": "独立 2.1 文档：262144–4194304 总像素、1:8–8:1；不照搬其他渠道 4K。"
+    },
+    "runware/bfl:flux@3-image-klein": {
+      "generation": "runware/bfl:flux@3-image-klein:20261016",
+      "editing": "runware/bfl:flux@3-image-klein:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json"
+      ],
+      "notes": "仅导入此型号 schema；PNG、单次单图；不启用自动选模。"
+    },
+    "runware/bfl:flux@3-image-klein-base": {
+      "generation": "runware/bfl:flux@3-image-klein-base:20261016",
+      "editing": "runware/bfl:flux@3-image-klein-base:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json"
+      ],
+      "notes": "仅导入此型号 schema；PNG、单次单图；不启用自动选模。"
+    },
+    "runware/alibaba:qwen-image@2.1-turbo": {
+      "generation": "runware/alibaba:qwen-image@2.1-turbo:20261016",
+      "editing": "runware/alibaba:qwen-image@2.1-turbo:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json"
+      ],
+      "notes": "仅导入此型号 schema；PNG、单次单图；不启用自动选模。"
+    },
+    "fal/blackforestlabs/flux-3/klein/text-to-image": {
+      "generation": "fal/blackforestlabs/flux-3/klein/text-to-image:20261016",
+      "editing": "fal/blackforestlabs/flux-3/klein/text-to-image:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+      ],
+      "notes": "fal 两端均允许256–4096边长；显式传 image_size，避免多图默认缩小。"
+    },
+    "fal/blackforestlabs/flux-3/klein/base/text-to-image": {
+      "generation": "fal/blackforestlabs/flux-3/klein/base/text-to-image:20261016",
+      "editing": "fal/blackforestlabs/flux-3/klein/base/text-to-image:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+      ],
+      "notes": "fal 两端均允许256–4096边长；显式传 image_size，避免多图默认缩小。"
+    },
+    "fal/krea/v3/text-to-image": {
+      "generation": "fal/krea/v3/text-to-image:20261016",
+      "editing": "fal/krea/v3/text-to-image:20261016",
+      "reviewedAt": "2026-10-16",
+      "sources": [
+        "https://fal.ai/models/krea/v3/text-to-image/api",
+        "https://fal.ai/models/krea/v3/edit/api"
+      ],
+      "notes": "按 fal 独立端点文档；显式尺寸。Krea 3 上限4,220,160总像素，不能显示4K。"
     }
   }
 }

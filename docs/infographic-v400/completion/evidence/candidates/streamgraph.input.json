@@ -1,0 +1,49 @@
+{
+  "figureTypeId": "streamgraph",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "x": 0,
+        "y": 2,
+        "group": "A"
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "group": "B"
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "group": "A"
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "group": "B"
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "group": "A"
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "group": "B"
+      }
+    ],
+    "units": {
+      "x": "day",
+      "y": "count"
+    },
+    "options": {
+      "baseline": "symmetric"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

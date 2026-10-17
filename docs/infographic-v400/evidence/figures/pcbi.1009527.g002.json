@@ -1,0 +1,48 @@
+{
+  "id": "pcbi.1009527.g002",
+  "paper": "pcbi.1009527",
+  "figure": {
+    "id": "pcbi.1009527.g002",
+    "label": "Fig 2",
+    "caption": "An electrical circuit for the prespike.\n(A) Drawing of the calyx of Held synapse. The calyx of Held terminal (‘pre’) covers a large part of the soma of its target neuron (‘post’). In between is the synaptic cleft (not drawn to scale), a small space where membrane currents will flow during a presynaptic AP. (B) Electrical circuit to reproduce the prespike. Presynaptic membrane currents can leave the synaptic cleft via the cleft conductance (g_{cl}) or through the postsynaptic cell. It is assumed that the conductance from the edge of the cleft to ground is relatively large compared to the cleft conductance itself [38,39].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009527.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009527.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>An electrical circuit for the prespike.</title>\n<p>(A) Drawing of the calyx of Held synapse. The calyx of Held terminal (‘pre’) covers a large part of the soma of its target neuron (‘post’). In between is the synaptic cleft (not drawn to scale), a small space where membrane currents will flow during a presynaptic AP. (B) Electrical circuit to reproduce the prespike. Presynaptic membrane currents can leave the synaptic cleft via the cleft conductance (<italic>g</italic><sub>cl</sub>) or through the postsynaptic cell. It is assumed that the conductance from the edge of the cleft to ground is relatively large compared to the cleft conductance itself [<xref ref-type=\"bibr\" rid=\"pcbi.1009527.ref038\">38</xref>,<xref ref-type=\"bibr\" rid=\"pcbi.1009527.ref039\">39</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009527.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1009527.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1009527",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009527",
+    "title": "Using ephaptic coupling to estimate the synaptic cleft resistivity of the calyx of Held synapse",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Martijn C. Sierksma",
+      "J. Gerard G. Borst"
+    ],
+    "year": "2021",
+    "license": "2021\nSierksma, Borst\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009527.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009527.g002.png",
+      "bytes": 52728,
+      "sha256": "4bac58308737c2a7fc999ba141178ee05cbcb725d1a2e8ea1e2c1849ed8db943"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009527.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009527.g002.tif",
+      "bytes": 85700,
+      "sha256": "85c96cdb552b4b4c6e9a661283bdcfa7d3586425e983a4386398c31024fcceba"
+    }
+  }
+}

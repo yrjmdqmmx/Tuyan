@@ -1,0 +1,65 @@
+{
+  "id": "pdig.0000364.g001",
+  "paper": "pdig.0000364",
+  "figure": {
+    "id": "pdig.0000364.g001",
+    "label": "Fig 1",
+    "caption": "Uniform manifold approximation and projections (UMAP) highlighting the relative distributions of the datasets, devices and geographies investigated in this work.\nEach subplot highlights a different representation of the UMAP, where the color coding (highlighted in the corresponding legend at the top of each subplot) is at the (a) dataset-level, (b) device-level and (c) geography-level. The datasets and devices occupy distinct clusters in (a) and (b), while the geographies are all clustered together within the same device in (c). The x- and y-axes are in arbitrary units, representing the two UMAP components on which the higher dimensional data was projected.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pdig.0000364.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pdig.0000364.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Uniform manifold approximation and projections (UMAP) highlighting the relative distributions of the datasets, devices and geographies investigated in this work.</title>\n<p>Each subplot highlights a different representation of the UMAP, where the color coding (highlighted in the corresponding legend at the top of each subplot) is at the (a) dataset-level, (b) device-level and (c) geography-level. The datasets and devices occupy distinct clusters in (a) and (b), while the geographies are all clustered together within the same device in (c). The x- and y-axes are in arbitrary units, representing the two UMAP components on which the higher dimensional data was projected.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pdig.0000364.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pdig.0000364.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pdig.0000364",
+    "sourceUrl": "https://journals.plos.org/digitalhealth/article?id=10.1371/journal.pdig.0000364",
+    "title": "Assessing generalizability of an AI-based visual test for cervical cancer screening",
+    "journal": "PLOS Digital Health",
+    "authors": [
+      "Syed Rakin Ahmed",
+      "Didem Egemen",
+      "Brian Befano",
+      "Ana Cecilia Rodriguez",
+      "Jose Jeronimo",
+      "Kanan Desai",
+      "Carolina Teran",
+      "Karla Alfaro",
+      "Joel Fokom-Domgue",
+      "Kittipat Charoenkwan",
+      "Chemtai Mungo",
+      "Rebecca Luckett",
+      "Rakiya Saidu",
+      "Taina Raiol",
+      "Ana Ribeiro",
+      "Julia C. Gage",
+      "Silvia de Sanjose",
+      "Jayashree Kalpathy-Cramer",
+      "Mark Schiffman"
+    ],
+    "year": "2024",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/digitalhealth/article/figure/image?size=large&id=10.1371/journal.pdig.0000364.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pdig.0000364.g001.png",
+      "bytes": 1902652,
+      "sha256": "d70af79f88140e5690a93616114f69e02515e6d96b14427564c7a23b5b67431a"
+    },
+    "original": {
+      "url": "https://journals.plos.org/digitalhealth/article/figure/image?size=original&id=10.1371/journal.pdig.0000364.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pdig.0000364.g001.tif",
+      "bytes": 2636544,
+      "sha256": "219d28828fda5095ebc3d224c1097a7fdafda827cf31abe489cc0f1179f74f21"
+    }
+  }
+}

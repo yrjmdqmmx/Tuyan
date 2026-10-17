@@ -7,7 +7,7 @@ test('upload policy follows the image consumer, keeps originals on stricter mode
   const qwen = activeReferenceUploadPolicy(referenceUploadContract(), { accessProvider: 'tokendance', modelId: 'qwen3.8-flash' });
   const files = Array.from({ length: 8 }, (_, i) => ({ filename: `${i}.png`, size: 6 * 1024 * 1024 }));
   assert.equal(referenceUploadSelectionError(files, qwen), '');
-  assert.equal(qwen.platform.maxBytes, 20 * 1024 * 1024);
+  assert.equal(qwen.platform.maxBytes, 10_000_000);
   const small = activeReferenceUploadPolicy(referenceUploadContract(), { accessProvider: 'zhipu', modelId: 'glm-4v-flash' });
   assert.match(referenceUploadSelectionError(files, small), /最多提交 3 张.*文件已保留/);
   assert.equal(files.length, 8);
@@ -16,7 +16,7 @@ test('upload policy follows the image consumer, keeps originals on stricter mode
   assert.equal(old.platform.maxBytes, 5 * 1024 * 1024);
   assert.equal(old.maxCount, 3);
   assert.match(referenceUploadSelectionError([{ size: qwen.platform.maxBytes + 1 }], qwen), /单张原图/);
-  assert.match(referenceUploadSelectionError(Array.from({length: 5}, () => ({ size: qwen.platform.maxBytes })), qwen), /合计/);
+  assert.match(referenceUploadSelectionError(Array.from({length: 5}, () => ({ size: qwen.platform.maxBytes })), {...qwen,platform:{...qwen.platform,maxTotalBytes:40_000_000}}), /合计/);
   assert.match(referenceUploadSelectionError([{ size: 100, width: 8001, height: 4000 }], qwen), /32MP/);
   const refine = activeReferenceUploadPolicy(referenceUploadContract(), { accessProvider: 'recraft', modelId: 'recraftv4_1' }, 'refine');
   const smallSource = [{ size: 100, width: 120, height: 80 }];

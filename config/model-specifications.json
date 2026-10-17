@@ -1,0 +1,3224 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "provider": "openai",
+      "modelId": "gpt-6.1-sol",
+      "protocol": "openai-responses",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+        ],
+        "contextWindowTokens": 1050000,
+        "maxOutputTokens": 128000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ]
+      }
+    },
+    {
+      "provider": "anthropic",
+      "modelId": "claude-sonnet-5-5",
+      "protocol": "anthropic-messages",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.claude.com/docs/en/models/sonnet-5-5/overview"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+          "不发送非默认 temperature、top_p、top_k。",
+          "between_tools 仅关闭前置思考，只能搭配 low/medium/high；不支持 disabled。"
+        ]
+      }
+    },
+    {
+      "provider": "anthropic",
+      "modelId": "claude-haiku-5-5",
+      "protocol": "anthropic-messages",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.claude.com/docs/en/models/haiku-5-5/overview"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+          "不发送非默认 temperature、top_p、top_k。",
+          "disabled 仅能搭配 low/medium/high；xhigh/max 需要 adaptive。"
+        ]
+      }
+    },
+    {
+      "provider": "anthropic",
+      "modelId": "claude-opus-5-5",
+      "protocol": "anthropic-messages",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.claude.com/docs/en/models/overview"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "图研 Messages 总输出额度保持 16,384 tokens。"
+        ]
+      }
+    },
+    {
+      "provider": "anthropic",
+      "modelId": "claude-fable-5-1",
+      "protocol": "anthropic-messages",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.claude.com/docs/en/models/overview"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "图研 Messages 总输出额度保持 16,384 tokens。"
+        ]
+      }
+    },
+    {
+      "provider": "mistral",
+      "modelId": "mistral-large-4",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.mistral.ai/models/mistral-large-4-0"
+        ],
+        "contextWindowTokens": 1000000,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方模型卡以 1M 表述窗口；最大输出和可调思考未获本渠道明确资料。公开预览；开放权重仍标注 coming soon。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-nano-banana-2.1",
+      "protocol": "gemini-interactions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+          "https://ai.google.dev/gemini-api/docs/image-generation",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 131072,
+        "maxOutputTokens": 32768,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text",
+          "image"
+        ],
+        "notes": [
+          "131,072 是最大输入，不是已确认的合计上下文。官方支持 PDF 文件输入；PDF 是格式，图研此图像接口未接入。",
+          "官方最多 14 张参考图；图研此接口保留 1 张原图。输出只取图片，不作为通用文本模型开放。",
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图像生成型号的 token 上限不是图像像素数；尺寸、比例、原图编辑和参考图数量继续按当前接口合同执行。"
+        ],
+        "inputFormats": [
+          "PDF"
+        ]
+      }
+    },
+    {
+      "provider": "recraft",
+      "modelId": "recraftv4_1_flash",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "仅 1K 位图；官方格式 WebP/PNG，图研归一化 PNG。无 SVG 或风格接口。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "modelId": "doubao-seedream-5-0-flash-260915",
+      "protocol": "ark-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "渠道最多 10 张参考图；图研沿用 1 张原图和单张 PNG，不将图层拆分或组图声明为已适配。"
+        ]
+      }
+    },
+    {
+      "provider": "deepseek",
+      "modelId": "deepseek-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://api-docs.deepseek.com/quick_start/pricing"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 384000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "deepseek",
+      "modelId": "deepseek-v4-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://api-docs.deepseek.com/quick_start/pricing"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
+          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash 服务。图研不替换保存的 ID。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 384000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "deepseek",
+      "modelId": "deepseek-v4-flash-vision-exp",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://api-docs.deepseek.com/quick_start/pricing"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
+          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash 服务。图研不替换保存的 ID。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 384000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "deepseek",
+      "modelId": "deepseek-v4-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://api-docs.deepseek.com/quick_start/pricing"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 384000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "zhipu",
+      "modelId": "glm-5.3",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方概览标注 1M 上下文 / 128K 最大输出，精确整数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "zhipu",
+      "modelId": "glm-5.3-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方概览标注 1M 上下文 / 128K 最大输出，精确整数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "zhipu",
+      "modelId": "glm-5.3-flashx",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方概览标注 1M 上下文 / 128K 最大输出，精确整数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "zhipu",
+      "modelId": "glm-5.2",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+        ],
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方概览标注 1M 上下文 / 128K 最大输出，精确整数待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 128000,
+        "contextWindowApproximate": true,
+        "maxOutputApproximate": true
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k3",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k3-quickstart"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方目录窗口：100 万 tokens；最大输出待确认。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": false,
+        "reasoning": "supported"
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.7-code",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方目录窗口：256K tokens；最大输出待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。",
+          "官方 max_tokens=32,768 是默认值，文档未给出独立最大输出上限。",
+          "官方图片数量无单列限制，但请求体不得超过 100M；图片只接受 base64，不接受 URL。推荐图片不超过 4096×2160；推荐值不是硬性最大分辨率。图研保留自己的提交限制。"
+        ],
+        "contextWindowTokens": 256000,
+        "contextWindowApproximate": true,
+        "reasoning": "supported",
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "GIF",
+          "MP4",
+          "MPEG",
+          "MOV",
+          "AVI",
+          "X-FLV",
+          "MPG",
+          "WebM",
+          "WMV",
+          "3GPP"
+        ]
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.7-code-highspeed",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方目录窗口：256K tokens；最大输出待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。",
+          "K2.7 Code 指南给出的 32,768 是默认输出；highspeed 独立输出上限未单列，不作为已确认最大值。"
+        ],
+        "contextWindowTokens": 256000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.6",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方目录窗口：256K tokens；最大输出待确认。",
+          "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。",
+          "官方 max_tokens=32,768 是默认值，文档未给出独立最大输出上限。",
+          "官方图片数量无单列限制，但请求体不得超过 100M；图片只接受 base64，不接受 URL。推荐图片不超过 4096×2160；推荐值不是硬性最大分辨率。图研保留自己的提交限制。"
+        ],
+        "contextWindowTokens": 256000,
+        "contextWindowApproximate": true,
+        "reasoning": "supported",
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "GIF",
+          "MP4",
+          "MPEG",
+          "MOV",
+          "AVI",
+          "X-FLV",
+          "MPG",
+          "WebM",
+          "WMV",
+          "3GPP"
+        ]
+      }
+    },
+    {
+      "provider": "xai",
+      "modelId": "grok-imagine-image-quality",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://docs.x.ai/developers/migration/imagine-image-quality-nov-2"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "2026-11-02 原模型退役，渠道将旧 ID 转到 grok-imagine-image-2.0 的 low quality；图研不静默改写 ID。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "recraft:v4.1@flash",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/recraft-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "ideogram:4.5@precise-edit",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/ideogram-4-5-precise-edit"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。",
+          "仅编辑：原图使用 seedImage，辅助图独立 referenceImages；保留原图尺寸，图研最多原图加3张辅助图。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "bytedance:seedream@5.0-flash",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/bytedance-seedream-5-0-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "ideogram:4.5@0",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/ideogram-4-5"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。",
+          "图研最多4图，生图/编辑仅开放共有合法尺寸；此常规接口未开放遮罩，请使用独立 Precise Edit 身份。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "alibaba:qwen-image@2.1-pro",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "google:nano-banana@2.1",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/google-nano-banana-2-1"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "bfl:flux@3-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/bfl-flux-3-image"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "型号专用公开 schema 已核对；只接单张 PNG 输出和已验证的图像字段，其余高级参数不开放。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "google/nano-banana-2.1",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://fal.ai/models/google/nano-banana-2.1/api",
+          "https://fal.ai/models/google/nano-banana-2.1/edit/api"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "fal schema uses resolution 1K / 2K / 4K, thinking_level minimal / medium / high (default medium).",
+          "图研保留单张原图编辑、单张 PNG 输出。可选 video_url、pdf_url、web search、system_prompt 尚未接入；PDF 是文件格式。渠道未提供独立 token 上限。"
+        ]
+      }
+    },
+    {
+      "provider": "bfl",
+      "modelId": "flux-3-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://api.bfl.ai/openapi.json"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "原生 API 的 version 仅提供 latest；正式版/预览版状态与发布日期未单独确认。",
+          "官方最多10张参考图，图研保留单张原图编辑。仅开放 1K / 1.5K / 2K / 4K；768sq 不属于现有标准清晰度。",
+          "原生 grounding 默认启用外部搜索；图研此路由明确关闭，图片响应沿用现有格式检测和 PNG 归一化。未进行真实账户调用。"
+        ]
+      }
+    },
+    {
+      "provider": "ideogram",
+      "modelId": "ideogram-4-5",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+          "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+        ],
+        "notes": [
+          "原生 v2，正式版/预览版与精确发布日期未单独确认。生图仅开放文档明确列举的3个尺寸。",
+          "精确编辑：图研接收1张原图，不接辅助图/遮罩；自动比例和清晰度。渠道限制原图JPEG/PNG/WebP、25MB、1:6至6:1，超大图片可能等比缩小。",
+          "上游返回图片URL，图研检测后归一化为PNG；无可调思考字段，quality和magic_prompt不等于思考档位。"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ]
+      }
+    },
+    {
+      "provider": "sensenova",
+      "modelId": "deepseek-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://platform.sensenova.cn/docs"
+        ],
+        "notes": [
+          "商汤 Chat 文档写上下文1M；最大输出393216 tokens（含思考），图研请求额度仍8192。",
+          "渠道图片上限200张、单图50MB、请求体64MB；图研更严格的3张/现有上传上限保持。视频与GIF未接入。",
+          "仅开放渠道原生effort none/low/high/max，不暴露兼容别名或另建思考开关。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 393216,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "ling-3.1-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/ling-3.1-flash",
+          "https://tokendance.space/portal/api/models/ling-3.1-flash",
+          "https://tokendance.space/docs/protocol-openai-chat-completions.md",
+          "https://tokendance.space/portal/api/models/ling-3.1-flash/endpoints/stats?window=30m"
+        ],
+        "notes": [
+          "渠道端点明确256000 tokens；顶层目录1000000冲突，不作为当前可用窗口。最大输出与可调思考未确认。"
+        ],
+        "contextWindowTokens": 256000,
+        "contextWindowApproximate": false,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "manufacturer": {
+          "modelId": "Ling-3.1-flash（文档名称；直连 API ID 待确认）",
+          "identity": "reference-only",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": true,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原厂区分模型能力上限 1M 与当前官方服务开放 256K；TokenDance 精确端点值仍保留 256,000。",
+            "型号介绍不等于精确请求枚举；官方直连 3.1 API ID、最大输出和可调思考字段尚未确认。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/mimo-v2.6-pro",
+          "https://tokendance.space/portal/api/models/mimo-v2.6-pro",
+          "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+        ],
+        "notes": [
+          "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+          "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+        ],
+        "contextWindowTokens": 1000000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+            "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": true,
+          "maxOutputTokens": 131072,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "最大输出含思考与答案；图研仍使用8192预算和原有思考默认，不因卡片参数改变请求。",
+            "图研最多3张图；原生URL图片≤50MB，Base64编码后的字符串≤50MB。音视频未适配。",
+            "官方 max_completion_tokens 范围为 1–131,072，包含可见输出和思考 tokens；默认 131,072。图研现有每请求额度不变。",
+            "原厂 thinking.type 支持 enabled / disabled；不能由此认定 TokenDance 透传同样字段。"
+          ],
+          "modelId": "mimo-v2.6-pro",
+          "identity": "matched"
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/mimo-v2.6-flash",
+          "https://tokendance.space/portal/api/models/mimo-v2.6-flash",
+          "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+        ],
+        "notes": [
+          "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+          "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+        ],
+        "contextWindowTokens": 1000000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+            "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": true,
+          "maxOutputTokens": 131072,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "最大输出含思考与答案；图研仍使用8192预算和原有思考默认，不因卡片参数改变请求。",
+            "图研最多3张图；原生URL图片≤50MB，Base64编码后的字符串≤50MB。音视频未适配。",
+            "官方 max_completion_tokens 范围为 1–131,072，包含可见输出和思考 tokens；默认 131,072。图研现有每请求额度不变。",
+            "原厂 thinking.type 支持 enabled / disabled；不能由此认定 TokenDance 透传同样字段。"
+          ],
+          "modelId": "mimo-v2.6-flash",
+          "identity": "matched"
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-ultraspeed",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+          "https://tokendance.space/portal/api/models/mimo-v2.6-ultraspeed",
+          "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+        ],
+        "notes": [
+          "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+          "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+        ],
+        "contextWindowTokens": 1000000,
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "manufacturer": {
+          "modelId": "mimo-v2.6-pro-ultraspeed",
+          "identity": "reference-only",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+            "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": true,
+          "maxOutputTokens": 131072,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原厂 API 枚举及示例已确认此 ID；RPM/TPM 标注定制服务。",
+            "TokenDance ID 缺少 pro；底层变体映射未确认。原厂上限和控制字段不写入渠道上限。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/nano-banana-2.1",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/google/nano-banana-2.1/api/schema"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "Replicate 独立字段与版本已核对；固定已审核版本 38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83。",
+          "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+          "关闭本渠道搜索增强，保留原有任务检索选择。",
+          "官方参考图上限14张；图研1张。"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+            "https://ai.google.dev/gemini-api/docs/image-generation",
+            "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+          ],
+          "maxInputTokens": 131072,
+          "maxOutputTokens": 32768,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text",
+            "image"
+          ],
+          "inputFormats": [
+            "PDF"
+          ],
+          "modelId": "gemini-nano-banana-2.1",
+          "identity": "matched",
+          "notes": [
+            "原厂最大输入不证明 Replicate 的上下文上限；原厂模态不自动开放图研音频或视频功能。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "black-forest-labs/flux-3-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "Replicate 独立字段与版本已核对；固定已审核版本 b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28。",
+          "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+          "关闭本渠道搜索增强，保留原有任务检索选择。",
+          "官方参考图上限10张；图研1张。每图至少256×256且最多16MP；768sq未在图研开放。"
+        ]
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "ideogram-ai/ideogram-4-5",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "Replicate 独立字段与版本已核对；固定已审核版本 2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d。",
+          "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+          "按Replicate的7个明确尺寸，不能套用原生2K预设。size=source与mask模式未开放；上游结果由图研归一化为PNG。"
+        ]
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "ideogram-ai/ideogram-4-5-precise-edit",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "Replicate 独立字段与版本已核对；固定已审核版本 59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021。",
+          "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+          "该独立身份仅精确编辑，不能选择为首次生图模型；不传size/aspect_ratio。Replicate schema未列文件/像素上限，沿用图研现有上传校验。"
+        ]
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "alibaba/wan-3",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/alibaba/wan-3/api/schema"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "video"
+        ],
+        "notes": [
+          "该型号生成视频，不支持图研图像任务；历史选择已保留，请手动选择图像模型。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "cogevol-base",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/cogevol-base",
+          "https://tokendance.space/portal/api/models/cogevol-base"
+        ],
+        "contextWindowTokens": 65536,
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "标准Chat文本适配；最大输出与可调思考未确认。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "cogevol-interactive-0828",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/cogevol-interactive-0828",
+          "https://tokendance.space/portal/api/models/cogevol-interactive-0828"
+        ],
+        "contextWindowTokens": 32768,
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "标准Chat文本适配；最大输出与可调思考未确认。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "cogevol-slide-0828",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/cogevol-slide-0828",
+          "https://tokendance.space/portal/api/models/cogevol-slide-0828"
+        ],
+        "contextWindowTokens": 32768,
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "标准Chat文本适配；最大输出与可调思考未确认。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k3",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/docs/kimi-thinking-models.md",
+          "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+        ],
+        "contextWindowTokens": 1048576,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "K3始终推理并可调low/high/max；K2.7 Code固定思考。",
+          "真实账户与代理默认行为未验证。"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.kimi.com/docs/models",
+            "https://platform.kimi.com/docs/guide/kimi-k3-quickstart"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方目录窗口：100 万 tokens；最大输出待确认。"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": false,
+          "reasoning": "supported",
+          "modelId": "kimi-k3",
+          "identity": "matched"
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k2.7-code",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/docs/kimi-thinking-models.md",
+          "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+        ],
+        "contextWindowTokens": 262144,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "K3始终推理并可调low/high/max；K2.7 Code固定思考。",
+          "真实账户与代理默认行为未验证。"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.kimi.com/docs/models",
+            "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方目录窗口：256K tokens；最大输出待确认。",
+            "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。",
+            "官方 max_tokens=32,768 是默认值，文档未给出独立最大输出上限。",
+            "官方图片数量无单列限制，但请求体不得超过 100M；图片只接受 base64，不接受 URL。推荐图片不超过 4096×2160；推荐值不是硬性最大分辨率。图研保留自己的提交限制。"
+          ],
+          "contextWindowTokens": 256000,
+          "contextWindowApproximate": true,
+          "reasoning": "supported",
+          "inputFormats": [
+            "PNG",
+            "JPEG",
+            "WebP",
+            "GIF",
+            "MP4",
+            "MPEG",
+            "MOV",
+            "AVI",
+            "X-FLV",
+            "MPG",
+            "WebM",
+            "WMV",
+            "3GPP"
+          ],
+          "modelId": "kimi-k2.7-code",
+          "identity": "matched"
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k2.6",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/docs/kimi-thinking-models.md",
+          "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+        ],
+        "contextWindowTokens": 262144,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "可调思考开关；图研独立请求不提供保留历史思考的控制。",
+          "真实账户与代理默认行为未验证。"
+        ],
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.kimi.com/docs/models",
+            "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方目录窗口：256K tokens；最大输出待确认。",
+            "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。",
+            "官方 max_tokens=32,768 是默认值，文档未给出独立最大输出上限。",
+            "官方图片数量无单列限制，但请求体不得超过 100M；图片只接受 base64，不接受 URL。推荐图片不超过 4096×2160；推荐值不是硬性最大分辨率。图研保留自己的提交限制。"
+          ],
+          "contextWindowTokens": 256000,
+          "contextWindowApproximate": true,
+          "reasoning": "supported",
+          "inputFormats": [
+            "PNG",
+            "JPEG",
+            "WebP",
+            "GIF",
+            "MP4",
+            "MPEG",
+            "MOV",
+            "AVI",
+            "X-FLV",
+            "MPG",
+            "WebM",
+            "WMV",
+            "3GPP"
+          ],
+          "modelId": "kimi-k2.6",
+          "identity": "matched"
+        }
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k2.5",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/docs/kimi-thinking-models.md",
+          "https://platform.kimi.com/docs/guide/use-thinking-models",
+          "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+        ],
+        "contextWindowTokens": 256000,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "可调思考开关；图研独立请求不提供保留历史思考的控制。",
+          "真实账户与代理默认行为未验证。"
+        ]
+      }
+    },
+    {
+      "provider": "xiaomi",
+      "modelId": "mimo-v2.6-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+          "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 131072,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "最大输出含思考与答案；图研仍使用8192预算和原有思考默认，不因卡片参数改变请求。",
+          "图研最多3张图；原生URL图片≤50MB，Base64编码后的字符串≤50MB。音视频未适配。",
+          "官方 max_completion_tokens 范围为 1–131,072，包含可见输出和思考 tokens；默认 131,072。图研现有每请求额度不变。"
+        ]
+      }
+    },
+    {
+      "provider": "xiaomi",
+      "modelId": "mimo-v2.6-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+          "https://mimo.mi.com/docs/zh-CN/usage-guide/multimodal-understanding/image-understanding"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 131072,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "最大输出含思考与答案；图研仍使用8192预算和原有思考默认，不因卡片参数改变请求。",
+          "图研最多3张图；原生URL图片≤50MB，Base64编码后的字符串≤50MB。音视频未适配。",
+          "官方 max_completion_tokens 范围为 1–131,072，包含可见输出和思考 tokens；默认 131,072。图研现有每请求额度不变。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "blackforestlabs/flux-3/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+          "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "仅图研1张原图子集；更多参考图和遮罩未接入。",
+          "FLUX编辑大图自动缩至最多4MP；不是4MP上传拒绝线。未开放512sq/768sq。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "ideogram/v4.5",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://fal.ai/models/ideogram/v4.5/api",
+          "https://fal.ai/models/ideogram/v4.5/edit/api"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "仅图研1张原图子集；更多参考图和遮罩未接入。",
+          "编辑继承原图，供应商可能缩图；不强行传生成尺寸。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "bytedance/seedream/v5/flash/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+          "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+        ],
+        "reasoning": "unknown",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "仅图研1张原图子集；更多参考图和遮罩未接入。",
+          "本渠道1K/2K，图像面积1..4MP；不复用Seedream Pro或其他渠道参数。"
+        ]
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-3.5-flash",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/google/gemini-3.5-flash/api/schema"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "maxOutputTokens": 65535,
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+            "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+            "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+          ],
+          "maxInputTokens": 1048576,
+          "maxOutputTokens": 65536,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "inputFormats": [
+            "PNG",
+            "JPEG",
+            "WebP",
+            "HEIC",
+            "HEIF",
+            "PDF"
+          ],
+          "modelId": "gemini-3.5-flash",
+          "identity": "matched",
+          "notes": [
+            "原厂最大输入不证明 Replicate 的上下文上限；原厂模态不自动开放图研音频或视频功能。",
+            "Google 最大输出 65,536 tokens；Replicate schema 最大输出 65,535 tokens。渠道原值保留，图研请求额度仍为 8,192。",
+            "Google 与 Replicate 的思考枚举不同；当前渠道控件仍只按已审核的 Replicate schema 提供。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-3-flash",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/google/gemini-3-flash/api/schema"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "maxOutputTokens": 65535,
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview",
+            "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+            "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+          ],
+          "maxInputTokens": 1048576,
+          "maxOutputTokens": 65536,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "inputFormats": [
+            "PNG",
+            "JPEG",
+            "WebP",
+            "HEIC",
+            "HEIF",
+            "PDF"
+          ],
+          "modelId": "gemini-3-flash-preview",
+          "identity": "reference-only",
+          "notes": [
+            "原厂最大输入不证明 Replicate 的上下文上限；原厂模态不自动开放图研音频或视频功能。",
+            "Replicate 名称未带 preview；本轮未确认其底层修订与 Google preview 的精确映射，不将参考参数用于摘要或调用。",
+            "Google 最大输出 65,536 tokens；Replicate schema 最大输出 65,535 tokens。渠道原值保留，图研请求额度仍为 8,192。",
+            "Google 与 Replicate 的思考枚举不同；当前渠道控件仍只按已审核的 Replicate schema 提供。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-2.5-flash",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/google/gemini-2.5-flash/api/schema"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "maxOutputTokens": 65535,
+        "manufacturer": {
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+            "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+            "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+          ],
+          "maxInputTokens": 1048576,
+          "maxOutputTokens": 65536,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "inputFormats": [
+            "PNG",
+            "JPEG",
+            "WebP",
+            "HEIC",
+            "HEIF",
+            "PDF"
+          ],
+          "modelId": "gemini-2.5-flash",
+          "identity": "matched",
+          "notes": [
+            "原厂最大输入不证明 Replicate 的上下文上限；原厂模态不自动开放图研音频或视频功能。",
+            "Google 最大输出 65,536 tokens；Replicate schema 最大输出 65,535 tokens。渠道原值保留，图研请求额度仍为 8,192。",
+            "Google GenerateContent 预算为 0–24,576，-1 为动态思考；Replicate 使用 thinking_budget 与 dynamic_thinking，不混用参数。Google 2.5 账户限制不直接归因于 Replicate。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "qwen/qwen3-7-plus",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/qwen/qwen3-7-plus/api/schema"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "unknown",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "maxOutputTokens": 65536,
+        "manufacturer": {
+          "modelId": "qwen3.7-plus",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+          ],
+          "contextWindowTokens": 1000000,
+          "maxOutputTokens": 131072,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原厂最大输入随模式变化：非思考 991,808 tokens；思考 983,616 tokens。思考过程另列 262,144 tokens，不作为可见输出或相加为上下文。",
+            "Replicate 的最大输出为 65,536 tokens；其他渠道的额度和控制字段需分别确认。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "deepseek-ai/deepseek-v3.1",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/deepseek-ai/deepseek-v3.1/api/schema"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "manufacturer": {
+          "modelId": "DeepSeek-V3.1",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+            "https://huggingface.co/deepseek-ai/DeepSeek-V3.1/raw/main/config.json"
+          ],
+          "contextWindowTokens": 128000,
+          "contextWindowApproximate": true,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原厂模型卡标称 128K 上下文；配置文件 max_position_embeddings=163840 不作为 API 可用窗口。",
+            "思考与非思考由原厂聊天模板区分；不替代 Replicate 的独立输入字段。模型卡未单列最大输出，不借用新版 DeepSeek API 的额度。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "moonshotai/kimi-k2-thinking",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/moonshotai/kimi-k2-thinking/api/schema"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "manufacturer": {
+          "modelId": "Kimi-K2-Thinking",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+            "https://huggingface.co/moonshotai/Kimi-K2-Thinking/raw/main/config.json"
+          ],
+          "contextWindowTokens": 262144,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "模型卡标称 256K，公开配置 max_position_embeddings=262144；仅作为权重模型参考，不证明渠道服务上限。",
+            "模型卡中的评测思考预算及配置 max_length 默认值不是 API 最大输出；最大输出继续待确认。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "qwen/qwen3-235b-a22b-instruct-2507",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507/api/schema"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "unknown",
+        "notes": [
+          "图研仅单轮文本/已登记视觉角色；音视频未接入。上下文未在本渠道schema确认。",
+          "最大输出默认值不冒充上限；固定已审核版本。"
+        ],
+        "maxOutputTokens": 16384,
+        "manufacturer": {
+          "modelId": "Qwen3-235B-A22B-Instruct-2507",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507"
+          ],
+          "contextWindowTokens": 262144,
+          "reasoning": "unsupported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方权重模型卡明确仅非思考模式；原生窗口 262,144 tokens。扩展至 1,010,000 需要额外长上下文部署配置，不认为当前渠道已启用。",
+            "官方推荐 max_new_tokens=16,384 是建议，不是模型最大输出。Replicate 的 16,384 上限来自本渠道 schema；保留渠道控制边界。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.8-flash",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
+          "此型号仅支持 low / medium / high 思考档位；minimal 会报错。图研控件继续复用既有规则。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.7-flash",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
+          "此型号仅支持 low / medium / high 思考档位；minimal 会报错。图研控件继续复用既有规则。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.6-flash",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.5-flash-lite",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-lite-image",
+      "protocol": "gemini-interactions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+          "https://ai.google.dev/gemini-api/docs/image-generation",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 65536,
+        "maxOutputTokens": 4096,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text",
+          "image"
+        ],
+        "inputFormats": [
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图像生成型号的 token 上限不是图像像素数；尺寸、比例、原图编辑和参考图数量继续按当前接口合同执行。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-image",
+      "protocol": "gemini-interactions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+          "https://ai.google.dev/gemini-api/docs/image-generation",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 131072,
+        "maxOutputTokens": 32768,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text",
+          "image"
+        ],
+        "inputFormats": [
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图像生成型号的 token 上限不是图像像素数；尺寸、比例、原图编辑和参考图数量继续按当前接口合同执行。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3-pro-image",
+      "protocol": "gemini-interactions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+          "https://ai.google.dev/gemini-api/docs/image-generation",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 65536,
+        "maxOutputTokens": 32768,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text",
+          "image"
+        ],
+        "inputFormats": [],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图像生成型号的 token 上限不是图像像素数；尺寸、比例、原图编辑和参考图数量继续按当前接口合同执行。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.5-flash",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-lite",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-pro-preview",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3-flash-preview",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
+          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；官方明确尚未弃用。不自动替换历史选择或默认模型。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash-image",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+          "https://ai.google.dev/gemini-api/docs/image-generation",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 65536,
+        "maxOutputTokens": 32768,
+        "reasoning": "unsupported",
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text",
+          "image"
+        ],
+        "inputFormats": [],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图像生成型号的 token 上限不是图像像素数；尺寸、比例、原图编辑和参考图数量继续按当前接口合同执行。",
+          "此精确图像型号的参数页明确不支持思考；不套用 2.5 Flash 文本型号的思考预算。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash-lite",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
+          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；官方明确尚未弃用。不自动替换历史选择或默认模型。"
+        ]
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-pro",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro",
+          "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "inputFormats": [
+          "PNG",
+          "JPEG",
+          "WebP",
+          "HEIC",
+          "HEIF",
+          "PDF"
+        ],
+        "notes": [
+          "输入上限与输出上限分别来自此精确型号的 Google 参数页；不相加或改写为合计上下文。",
+          "Google API 公开规格；账户开通、地区权益与真实调用未验证。",
+          "图片理解文档允许最多 3,600 张图片；GenerateContent 内联请求总大小上限 20MB（含文本和内联数据）。图研仍执行自身图片数量、格式与上传限制。",
+          "官方输出为文本；生成 SVG 或绘图代码不代表原生图像输出。",
+          "Google 当前将 2.5 API 限于过去活跃使用过该系列的用户；官方明确尚未弃用。不自动替换历史选择或默认模型。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "qwen3.7-plus",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://tokendance.space/models/qwen3.7-plus"
+        ],
+        "manufacturer": {
+          "modelId": "qwen3.7-plus",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+          ],
+          "contextWindowTokens": 1000000,
+          "maxOutputTokens": 131072,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "原厂最大输入随模式变化：非思考 991,808 tokens；思考 983,616 tokens。思考过程另列 262,144 tokens，不作为可见输出或相加为上下文。",
+            "Replicate 的最大输出为 65,536 tokens；其他渠道的额度和控制字段需分别确认。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen3.7-plus",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/qwen3-7-plus"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 131072,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "最大输入随模式变化：非思考 991,808 tokens；思考 983,616 tokens。思考过程另列 262,144 tokens，不能相加为上下文。",
+          "以上适用于文档标注的部署模式；账号、地区及真实调用未验证，图研请求额度保持原值。"
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen3-235b-a22b-instruct-2507",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/models"
+        ],
+        "manufacturer": {
+          "modelId": "Qwen3-235B-A22B-Instruct-2507",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507"
+          ],
+          "contextWindowTokens": 262144,
+          "reasoning": "unsupported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "官方权重模型卡明确仅非思考模式；原生窗口 262,144 tokens。扩展至 1,010,000 需要额外长上下文部署配置，不认为当前渠道已启用。",
+            "官方推荐 max_new_tokens=16,384 是建议，不是模型最大输出。Replicate 的 16,384 上限来自本渠道 schema；保留渠道控制边界。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "kimi-k2-thinking",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-09",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/models"
+        ],
+        "manufacturer": {
+          "modelId": "Kimi-K2-Thinking",
+          "identity": "matched",
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+            "https://huggingface.co/moonshotai/Kimi-K2-Thinking/raw/main/config.json"
+          ],
+          "contextWindowTokens": 262144,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ],
+          "notes": [
+            "模型卡标称 256K，公开配置 max_position_embeddings=262144；仅作为权重模型参考，不证明渠道服务上限。",
+            "模型卡中的评测思考预算及配置 max_length 默认值不是 API 最大输出；最大输出继续待确认。"
+          ]
+        }
+      }
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-4-argon",
+      "protocol": "gemini-generate-content",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "reasoning": "supported",
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video",
+          "document"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "同步默认输出上限 65,536；1,048,576 为共享上下文，不作为独立输入额度。后台 long decode 尚未接入。",
+          "思考支持 low/medium/high，不支持关闭或混用 thinkingBudget；省略时使用官方 medium 默认。"
+        ]
+      }
+    },
+    {
+      "provider": "together",
+      "modelId": "meta-models/Muse-Spark-Open-816B-A42B",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "contextWindowTokens": 1048576,
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "上下文来自 Together 对应型号表；不继承其他渠道的输出长度或视觉能力。"
+        ]
+      }
+    },
+    {
+      "provider": "together",
+      "modelId": "nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "contextWindowTokens": 262144,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "上下文来自 Together 对应型号表；不继承其他渠道的输出长度或视觉能力。"
+        ]
+      }
+    },
+    {
+      "provider": "siliconflow",
+      "modelId": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://www.siliconflow.cn/models",
+          "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions"
+        ],
+        "contextWindowTokens": 1048576,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道目录明确视觉输入及 1024K 上下文；最大输出未单独确认，不套用原厂值。"
+        ]
+      }
+    },
+    {
+      "provider": "siliconflow",
+      "modelId": "zai-org/GLM-5.3-Flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://www.siliconflow.cn/models",
+          "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions"
+        ],
+        "contextWindowTokens": 1048576,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道目录明确视觉输入及 1024K 上下文；最大输出未单独确认，不套用原厂值。"
+        ]
+      }
+    },
+    {
+      "provider": "fireworks",
+      "modelId": "accounts/fireworks/models/muse-spark-open",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://fireworks.ai/models/fireworks/muse-spark-open"
+        ],
+        "contextWindowTokens": 1048576,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "美国容量限时预览至 2026-10-29；未推断精确关闭时刻，未启用专属部署或更换路由。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "deepseek-v4.1-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079"
+        ],
+        "contextWindowTokens": 1048576,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "保留 8192 请求输出额度；公开规格不代表本次调用长度或账户限额。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "mimo-v2.6-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 131072,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "保留 8192 请求输出额度；公开规格不代表本次调用长度或账户限额。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "mimo-v2.6-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 131072,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "保留 8192 请求输出额度；公开规格不代表本次调用长度或账户限额。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "step-5-preview",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 65536,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "保留 8192 请求输出额度；公开规格不代表本次调用长度或账户限额。"
+        ]
+      }
+    },
+    {
+      "provider": "xiaomi",
+      "modelId": "mimo-v2.6-pro-ultraspeed",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 131072,
+        "officialInputModalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "定制服务需单独开通；未发起开通或真实推理。"
+        ]
+      }
+    },
+    {
+      "provider": "bfl",
+      "modelId": "flux-3-image-klein",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://api.bfl.ai/openapi.json"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "Klein 独立 schema；不发送 grounding/version。固定 PNG；暂不开放精确 width/height、steps 或 768sq。"
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen-image-2.1-pro",
+      "protocol": "bailian-multimodal-generation",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "同步 DashScope；官方最多 10 张输入，本次仅接入单张原图；输出仍按 1K/2K 及现有 PNG 管线处理。"
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen-image-2.1-turbo",
+      "protocol": "bailian-multimodal-generation",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "同步 DashScope；官方最多 10 张输入，本次仅接入单张原图；输出仍按 1K/2K 及现有 PNG 管线处理。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "bfl:flux@3-image-klein",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/bfl-flux-3-image-klein",
+          "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "按渠道 schema；Klein 系列最多4张参考图，Qwen 2.1 Turbo最多10张，产品仍执行自身上限。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "bfl:flux@3-image-klein-base",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/bfl-flux-3-image-klein-base",
+          "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "按渠道 schema；Klein 系列最多4张参考图，Qwen 2.1 Turbo最多10张，产品仍执行自身上限。"
+        ]
+      }
+    },
+    {
+      "provider": "runware",
+      "modelId": "alibaba:qwen-image@2.1-turbo",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo",
+          "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "按渠道 schema；Klein 系列最多4张参考图，Qwen 2.1 Turbo最多10张，产品仍执行自身上限。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "blackforestlabs/flux-3/klein/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api",
+          "https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "独立 generation/edit 端点绑定，原图计入参考图数。按当前 fal schema，不继承 BFL 原生参数。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "blackforestlabs/flux-3/klein/base/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api",
+          "https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "独立 generation/edit 端点绑定，原图计入参考图数。按当前 fal schema，不继承 BFL 原生参数。"
+        ]
+      }
+    },
+    {
+      "provider": "fal",
+      "modelId": "krea/v3/text-to-image",
+      "protocol": "provider-images",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-16",
+        "sourceUrls": [
+          "https://fal.ai/models/krea/v3/text-to-image/api",
+          "https://fal.ai/models/krea/v3/edit/api"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "image"
+        ],
+        "notes": [
+          "独立 generation/edit 端点绑定，原图计入参考图数。仅 berry 默认变体与 low 推理；不自动产生 high 模式额外开销或联网。"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "ec49c5ce0f0b4d1ee967d1bfd2bd7d94b9aa9756652da6b7b6b9064c01f2ab0b",
+  "pngHash": "f35fc511873119c4dcfe06069bb8df57142f0031f6723749cadd72ca692c31f2",
+  "svgHash": "c13664a4babf452d34b5b8dfdbb6d901690573206de4af12777931f83eaac447",
+  "numeric": {
+    "typeId": "euler",
+    "computations": {
+      "intersection": 2,
+      "onlyA": 1,
+      "onlyB": 0,
+      "union": 3,
+      "topology": "containment",
+      "areaMode": "schematic"
+    },
+    "checks": {
+      "union_count": {
+        "actual": 3.0,
+        "expected": 3.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "set",
+        "members"
+      ],
+      "options": {
+        "areaMode": "schematic"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

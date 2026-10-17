@@ -1,0 +1,143 @@
+{
+  "doi": "10.1371/journal.pone.0292861",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0292861",
+  "title": "Development and optimization of sustained release triptolide microspheres",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Hui-lin Zeng",
+    "Qian Qiu",
+    "Ting-xiong Fu",
+    "Ai-ping Deng",
+    "Xiang-yang Xie"
+  ],
+  "year": "2023",
+  "license": "2023\nZeng et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0292861.g001",
+      "label": "Fig 1",
+      "caption": "Chemical structure of triptolide: A bioactive diterpene triepoxide isolated from Tripterygium wilfordii Hook F.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Chemical structure of triptolide: A bioactive diterpene triepoxide isolated from <italic>Tripterygium wilfordii Hook F</italic>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g002",
+      "label": "Fig 2",
+      "caption": "Predicted vs. actual value plots for (A) drug content, (B) encapsulation efficiency, (C) mean diameter, and (D) initial release.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Predicted vs. actual value plots for (A) drug content, (B) encapsulation efficiency, (C) mean diameter, and (D) initial release.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g003",
+      "label": "Fig 3",
+      "caption": "Response surface (A&B) and contour plots (C&D) of PVA concentration (X_{1}), PLGA concentration (X_{2}) and theoretical drug content (X_{3}) on drug content (Y_{1}).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on drug content (Y<sub>1</sub>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g004",
+      "label": "Fig 4",
+      "caption": "Response surface (A&B) and contour plots (C&D) of PVA concentration (X_{1}), PLGA concentration (X_{2}) and theoretical drug content (X_{3}) on encapsulation efficiency (Y_{2}).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on encapsulation efficiency (Y<sub>2</sub>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g005",
+      "label": "Fig 5",
+      "caption": "Response surface (A&B) and contour plots (C&D) of PVA concentration (X_{1}), PLGA concentration (X_{2}) and theoretical drug content (X_{3}) on mean diameter (Y_{3}).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title />\n<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on mean diameter (Y<sub>3</sub>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g006",
+      "label": "Fig 6",
+      "caption": "Response surface (A&B) and contour plots (C&D) of PVA concentration (X_{1}), PLGA concentration (X_{2}) and theoretical drug content (X_{3}) on initial release (Y_{4}).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title />\n<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on initial release (Y<sub>4</sub>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g007",
+      "label": "Fig 7",
+      "caption": "Response surface (A) and contour plots (B) of PLGA concentration (X_{2}) and theoretical drug content (X_{3}) on the desirability function. At a PVA concentration (X_{1}) of 4.48%.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Response surface (A) and contour plots (B) of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on the desirability function. At a PVA concentration (X<sub>1</sub>) of 4.48%.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g008",
+      "label": "Fig 8",
+      "caption": "Micrograph of triptolide loaded PLGA microspheres by scanning electron microscopy.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Micrograph of triptolide loaded PLGA microspheres by scanning electron microscopy.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g009",
+      "label": "Fig 9",
+      "caption": "Particle size distribution of triptolide loaded PLGA microspheres.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Particle size distribution of triptolide loaded PLGA microspheres.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0292861.g010",
+      "label": "Fig 10",
+      "caption": "In vitro cumulative drug release from triptolide loaded PLGA microspheres in PBS pH 7.4 at 37°C (mean± SD, n = 3).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0292861.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0292861.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title><italic>In vitro</italic> cumulative drug release from triptolide loaded PLGA microspheres in PBS pH 7.4 at 37°C (mean± SD, n = 3).</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0292861.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0292861.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

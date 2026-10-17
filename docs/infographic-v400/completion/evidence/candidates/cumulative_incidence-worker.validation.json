@@ -1,0 +1,137 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "107ee038b57f91a4f33f7ff634c2c345774858312888e3ed552484011de91291",
+  "pngHash": "9bd417c09bc8badd85f714f1bfe5c20bf98bc5f26bff6fbb63ae74f6c8889966",
+  "svgHash": "246302cb509eae8513d5b35c13b196dcb6e3bc671ede4acce2bcd5301b64c41a",
+  "numeric": {
+    "typeId": "cumulative_incidence",
+    "computations": {
+      "estimator": "Aalen-Johansen, common time-zero entry, right censoring, simultaneous cause jumps",
+      "groups": {
+        "Data": {
+          "time": [
+            0.0,
+            1,
+            2,
+            3
+          ],
+          "cif": {
+            "A": [
+              0.0,
+              0.25,
+              0.25,
+              0.75
+            ],
+            "B": [
+              0.0,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "eventFreeSurvival": [
+            1.0,
+            0.5,
+            0.5,
+            0.0
+          ],
+          "riskSets": [
+            {
+              "time": 1,
+              "atRisk": 4,
+              "eventsByCause": [
+                1,
+                1
+              ],
+              "censored": 0
+            },
+            {
+              "time": 2,
+              "atRisk": 2,
+              "eventsByCause": [
+                0,
+                0
+              ],
+              "censored": 1
+            },
+            {
+              "time": 3,
+              "atRisk": 1,
+              "eventsByCause": [
+                1,
+                0
+              ],
+              "censored": 0
+            }
+          ]
+        }
+      }
+    },
+    "checks": {
+      "Data_mass_at_1": {
+        "actual": 1.0,
+        "expected": 1.0,
+        "absoluteError": 0.0
+      },
+      "Data_mass_at_2": {
+        "actual": 1.0,
+        "expected": 1.0,
+        "absoluteError": 0.0
+      },
+      "Data_mass_at_3": {
+        "actual": 1.0,
+        "expected": 1.0,
+        "absoluteError": 0.0
+      },
+      "Data_A_curve_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "Data_A_monotonic_violations": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "Data_B_curve_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "Data_B_monotonic_violations": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "id",
+        "time",
+        "event",
+        "cause"
+      ],
+      "options": {
+        "causes": [
+          "A",
+          "B"
+        ],
+        "estimator": "aalen_johansen",
+        "censoring": "right",
+        "entry": "zero"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

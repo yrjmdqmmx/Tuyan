@@ -1,0 +1,71 @@
+{
+  "doi": "10.1371/journal.pcbi.1005562",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005562",
+  "title": "ROTS: An R package for reproducibility-optimized statistical testing",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Tomi Suomi",
+    "Fatemeh Seyednasrollah",
+    "Maria K. Jaakkola",
+    "Thomas Faux",
+    "Laura L. Elo"
+  ],
+  "year": "2017",
+  "license": "2017\nSuomi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1005562.g001",
+      "label": "Fig 1",
+      "caption": "Visualizations provided by ROTS.\n(A) Volcano plot of the features, where the differentially expressed features are coloured red. (B) MA plot of the features, where the differentially expressed features are coloured red. (C) ROTS reproducibility Z-score as function of top list size. The highest score is marked with red dot together with its value. (D) Histogram of p-values. (E) Principal component analysis (PCA) plot of the differentially expressed features. (F) Heatmap and hierarchical clustering of the samples (columns) and the differentially expressed features (rows) using euclidean distance and the complete-linkage agglomerative clustering method.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005562.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005562.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Visualizations provided by ROTS.</title>\n<p>(A) Volcano plot of the features, where the differentially expressed features are coloured red. (B) MA plot of the features, where the differentially expressed features are coloured red. (C) ROTS reproducibility Z-score as function of top list size. The highest score is marked with red dot together with its value. (D) Histogram of <italic>p</italic>-values. (E) Principal component analysis (PCA) plot of the differentially expressed features. (F) Heatmap and hierarchical clustering of the samples (columns) and the differentially expressed features (rows) using euclidean distance and the complete-linkage agglomerative clustering method.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005562.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005562.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1005562.g002",
+      "label": "Fig 2",
+      "caption": "Performance of ROTS and current state-of-the-art methods for proteomics in the spike-in proteomics data from the Clinical Proteomic Tumor Analysis Consortium (CPTAC technology assessment study 6).\nPerformance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005562.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005562.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Performance of ROTS and current state-of-the-art methods for proteomics in the spike-in proteomics data from the Clinical Proteomic Tumor Analysis Consortium (CPTAC technology assessment study 6).</title>\n<p>Performance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005562.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005562.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1005562.g003",
+      "label": "Fig 3",
+      "caption": "Performance of ROTS and current state-of-the-art methods for bulk RNA-seq in the spike-in data from the SEQC project.\nPerformance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005562.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005562.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Performance of ROTS and current state-of-the-art methods for bulk RNA-seq in the spike-in data from the SEQC project.</title>\n<p>Performance was evaluated using receiver operating characteristic (ROC) curves and the areas under the curves (AUC).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005562.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005562.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1005562.g004",
+      "label": "Fig 4",
+      "caption": "Precision, recall, and false positive ratios of ROTS and current state-of-the-art methods for single-cell RNA-seq in the innate lymphoid cell data.\n(A) Precision of the findings in reduced data. Precision was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the reduced data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (B) Recall of the findings in reduced data. Recall was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the full data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (C) False positive ratios of the findings in ten randomly generated mock datasets. The false positive ratio was defined as the ratio between the number of differentially expressed genes in the mock comparison and the average number of differentially expressed genes in the actual comparison. Limma was visualized separately because of the different scale compared to the other methods and jittering was used to separate overlapping points.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005562.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005562.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Precision, recall, and false positive ratios of ROTS and current state-of-the-art methods for single-cell RNA-seq in the innate lymphoid cell data.</title>\n<p>(A) Precision of the findings in reduced data. Precision was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the reduced data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (B) Recall of the findings in reduced data. Recall was defined as the ratio between the number of common detections in the reduced and full data, and the total number of detections in the full data. Median values over ten randomly generated subsets are indicated by lines across the different numbers of cells per group. (C) False positive ratios of the findings in ten randomly generated mock datasets. The false positive ratio was defined as the ratio between the number of differentially expressed genes in the mock comparison and the average number of differentially expressed genes in the actual comparison. Limma was visualized separately because of the different scale compared to the other methods and jittering was used to separate overlapping points.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005562.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005562.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

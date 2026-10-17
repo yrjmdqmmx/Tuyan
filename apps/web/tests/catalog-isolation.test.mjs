@@ -8,7 +8,7 @@ import ModelPicker from '../src/components/ModelPicker.jsx'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 
 let restore
-function backend() {
+function backend({alternateVisualMain = false} = {}) {
   let state = 'partial', requests = 0, submissions = 0
   const old = globalThis.fetch, oldInterval = globalThis.setInterval
   let refresh
@@ -24,6 +24,10 @@ function backend() {
       requests++
       if (state === 'network') throw new Error('目录请求网络超时，请重试')
       const providers = structuredClone(STATIC_MODEL_REGISTRY)
+      if (alternateVisualMain) {
+        for (const model of providers.tokendance.models) if (model.roles.includes('main')) model.capabilities.referenceImages = false
+        providers.tokendance.models.push({id:'live-visual-main',label:'Live Visual Main',roles:['main','vision'],selectable:true,capabilities:{referenceImages:true}})
+      }
       const message = state === 'partial' ? '已隔离 deepseek-chat-v3-0324：supported_protocols 返回 null，其他正常模型仍可用。' : '目录读取超时，已保留原选择，请重试目录。'
       if (state === 'missing') delete providers.tokendance
       else if (state !== 'ready') for (const model of providers.tokendance.models) {
@@ -39,6 +43,21 @@ function backend() {
   return { set: value => { state = value }, requests: () => requests, submissions: () => submissions, refresh: () => act(async () => { assert.ok(refresh, 'automatic catalog refresh remains scheduled'); refresh() }) }
 }
 afterEach(() => { cleanup(); document.body.innerHTML = ''; restore?.() })
+
+test('ordinary mode adopts a newly confirmed visual main but retains that route through a catalog outage', async () => {
+  const f=backend({alternateVisualMain:true})
+  render(React.createElement(App))
+  const summary=screen.getByRole('region',{name:'当前生成设置'})
+  await waitFor(()=>assert.match(summary.textContent,/Live Visual Main/))
+  assert.match(summary.textContent,/由主模型理解图片/)
+  f.set('unavailable');await f.refresh()
+  await waitFor(()=>assert.match(document.body.textContent,/已保留所选模型/))
+  assert.match(summary.textContent,/Live Visual Main/)
+  assert.match(summary.textContent,/Seedream[ -]5\.0[ -]Pro/i)
+  f.set('ready');await f.refresh()
+  await waitFor(()=>assert.match(summary.textContent,/由主模型理解图片/))
+  assert.equal(f.submissions(),0)
+})
 
 test('catalog partial, unavailable, missing, network failure and recovery preserve default channel, model IDs and exact inputs', async () => {
   const f = backend(), user = userEvent.setup()
@@ -129,10 +148,10 @@ test('compact picker hides quarantined choices while explaining the saved select
       { id: 'deepseek-chat-v3-0324', label: 'DeepSeek V3', vendor: '深度求索', roles: ['main'], selectable: false, disabledReason: '目录读取超时，请稍后重试目录。' },
     ] }))
     await user.click(screen.getByRole('button', { name: '主模型', exact: true }))
-    await user.click(screen.getByRole('button', { name: /观猹/ }))
+    assert.equal(screen.queryByRole('button', { name: /观猹/ }), null)
     assert.equal(screen.queryByRole('button', { name: '厂商 深度求索' }), null)
     assert.equal(screen.queryByRole('region', { name: '暂不可用的模型' }), null)
-    assert.ok(screen.getByText(/目录读取超时/))
+    assert.ok(screen.getByText('所选模型当前不可用，请重新选择。'))
     assert.equal(screen.queryByRole('button', { name: '选择 DeepSeek V3' }), null)
   } finally { window.matchMedia = previous }
 })

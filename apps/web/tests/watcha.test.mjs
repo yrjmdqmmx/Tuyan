@@ -17,7 +17,7 @@ test('status failures keep a visible retry and preserve the pending signup form'
     render(React.createElement(Fixture));
     await waitFor(() => assert.ok(screen.getByRole('alert')));
     assert.ok(screen.getByRole('button', { name: '刷新登录状态' }));
-    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }), null);
+    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }) === null, true);
     failed = false;
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '刷新登录状态' })));
     fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'keep@example.test' } });
@@ -71,6 +71,22 @@ test('disabled login is hidden and unverified existing users can verify before b
     assert.ok(screen.getByRole('button', { name: '发送图研邮箱验证邮件' }));
     assert.equal(screen.queryByRole('button', { name: '绑定观猹账号' }), null);
   } finally { cleanup(); }
+});
+
+test('new-domain disabled Watcha keeps email login and the original-site fallback visible', () => {
+  const originalLocation = globalThis.location;
+  try {
+    Object.defineProperty(globalThis, 'location', { configurable: true, value: { origin: 'https://tuyansci.cn' } });
+    render(React.createElement(AuthPanel, { watcha: { status: { available: false, pending: null } } }));
+    assert.equal(screen.getByRole('link', { name: '前往原站使用观猹登录' }).href, 'https://www.paperbanana.asia/');
+    assert.ok(screen.getByLabelText('邮箱'));
+    assert.ok(screen.getByLabelText('密码'));
+    assert.equal(document.body.textContent.includes('尚待开通'), false);
+    assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }) === null, true);
+  } finally {
+    cleanup();
+    Object.defineProperty(globalThis, 'location', { configurable: true, value: originalLocation });
+  }
 });
 
 test('passwordless deletion verifies a purpose-specific code and submits only its one-use confirmation', async () => {

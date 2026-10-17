@@ -1,0 +1,387 @@
+[
+  {
+    "sourceTemplateId": "bar-grouped",
+    "sourceLabel": "分组柱状图",
+    "figureTypeId": "bar",
+    "configuration": "分组",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "scatter",
+    "sourceLabel": "散点图",
+    "figureTypeId": "scatter",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "line",
+    "sourceLabel": "折线图与分组折线图",
+    "figureTypeId": "line",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "heatmap",
+    "sourceLabel": "数值热图",
+    "figureTypeId": "heatmap",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "box",
+    "sourceLabel": "箱线图",
+    "figureTypeId": "boxplot",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "pie",
+    "sourceLabel": "饼图与环图",
+    "figureTypeId": "pie",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar",
+    "sourceLabel": "柱状图",
+    "figureTypeId": "bar",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-category",
+    "sourceLabel": "分类柱状图",
+    "figureTypeId": "bar",
+    "configuration": "分组",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-error",
+    "sourceLabel": "误差柱状图",
+    "figureTypeId": "bar",
+    "configuration": "误差区间",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-grouped-error",
+    "sourceLabel": "分组误差柱状图",
+    "figureTypeId": "bar",
+    "configuration": "分组+误差区间",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "scatter-error",
+    "sourceLabel": "散点误差图",
+    "figureTypeId": "scatter",
+    "configuration": "误差棒",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-stacked",
+    "sourceLabel": "堆叠柱状图",
+    "figureTypeId": "bar",
+    "configuration": "堆叠",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-grouped-stacked",
+    "sourceLabel": "分组堆叠柱状图",
+    "figureTypeId": "bar",
+    "configuration": "分组+堆叠",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bar-line",
+    "sourceLabel": "柱状图与折线组合",
+    "figureTypeId": "multipanel",
+    "configuration": "bar+line",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "lollipop",
+    "sourceLabel": "棒棒糖图",
+    "figureTypeId": "lollipop",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "lollipop-category",
+    "sourceLabel": "分类棒棒糖图",
+    "figureTypeId": "lollipop",
+    "configuration": "分组棒棒糖",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "line-error",
+    "sourceLabel": "分组误差折线图",
+    "figureTypeId": "line",
+    "configuration": "误差带",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "box-grouped",
+    "sourceLabel": "分组箱线图",
+    "figureTypeId": "boxplot",
+    "configuration": "分组箱线",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "violin",
+    "sourceLabel": "小提琴图",
+    "figureTypeId": "violin",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "raincloud",
+    "sourceLabel": "云雨图",
+    "figureTypeId": "raincloud",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "ridgeline",
+    "sourceLabel": "峰峦图",
+    "figureTypeId": "ridgeline",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "upset",
+    "sourceLabel": "UpSet 集合交集图",
+    "figureTypeId": "upset",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "rose",
+    "sourceLabel": "玫瑰图",
+    "figureTypeId": "rose",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "radar",
+    "sourceLabel": "雷达图",
+    "figureTypeId": "radar",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "dumbbell",
+    "sourceLabel": "哑铃图",
+    "figureTypeId": "dumbbell",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "scatter-grouped",
+    "sourceLabel": "分组散点图",
+    "figureTypeId": "scatter",
+    "configuration": "分组散点",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "circle-heatmap",
+    "sourceLabel": "圈形热图",
+    "figureTypeId": "heatmap",
+    "configuration": "环形热图",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "binary-dot",
+    "sourceLabel": "圆点二值图",
+    "figureTypeId": "binary_matrix",
+    "configuration": "圆点图元",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "binary-rect",
+    "sourceLabel": "方格二值图",
+    "figureTypeId": "binary_matrix",
+    "configuration": "方格图元",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "bubble-matrix",
+    "sourceLabel": "数值气泡矩阵",
+    "figureTypeId": "bubble_matrix",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "correlation",
+    "sourceLabel": "组内相关性热图",
+    "figureTypeId": "correlation_matrix",
+    "configuration": "组内相关",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "double-correlation",
+    "sourceLabel": "组间相关性热图",
+    "figureTypeId": "correlation_matrix",
+    "configuration": "组间相关",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "mantel",
+    "sourceLabel": "Mantel 关联热图",
+    "figureTypeId": "matrix_link_overlay",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "venn",
+    "sourceLabel": "韦恩集合交集图",
+    "figureTypeId": "venn",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "packing",
+    "sourceLabel": "分组圆堆砌图",
+    "figureTypeId": "circle_packing",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "sankey",
+    "sourceLabel": "桑基流向图",
+    "figureTypeId": "sankey",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "network",
+    "sourceLabel": "动态关系网络图",
+    "figureTypeId": "network",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "map",
+    "sourceLabel": "地理采样点地图",
+    "figureTypeId": "point_map",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "volcano",
+    "sourceLabel": "差异表达火山图",
+    "figureTypeId": "volcano",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "enrichment-dot",
+    "sourceLabel": "富集气泡图",
+    "figureTypeId": "enrichment",
+    "configuration": "气泡",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "enrichment-bar",
+    "sourceLabel": "富集条形图",
+    "figureTypeId": "enrichment",
+    "configuration": "条形",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "enrichment-circle",
+    "sourceLabel": "富集圈图",
+    "figureTypeId": "enrichment",
+    "configuration": "圈形",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "gene-cluster",
+    "sourceLabel": "基因簇排列图",
+    "figureTypeId": "gene_track",
+    "configuration": "基因簇",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "protein-domains",
+    "sourceLabel": "蛋白保守结构域图",
+    "figureTypeId": "protein_domain",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "protein-motifs",
+    "sourceLabel": "蛋白保守基序图",
+    "figureTypeId": "protein_domain",
+    "configuration": "基序位置轨道",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "genome-circos",
+    "sourceLabel": "基因组圈图",
+    "figureTypeId": "genome_circos",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "synteny",
+    "sourceLabel": "MCScanX 共线性图",
+    "figureTypeId": "synteny",
+    "configuration": "",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "pca",
+    "sourceLabel": "主成分分析 PCA",
+    "figureTypeId": "ordination",
+    "configuration": "method:pca",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "pcoa",
+    "sourceLabel": "主坐标分析 PCoA",
+    "figureTypeId": "ordination",
+    "configuration": "method:pcoa",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "nmds",
+    "sourceLabel": "非度量多维尺度 NMDS",
+    "figureTypeId": "ordination",
+    "configuration": "method:nmds",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "cca",
+    "sourceLabel": "典范对应分析 CCA",
+    "figureTypeId": "ordination",
+    "configuration": "method:cca",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "rda",
+    "sourceLabel": "冗余分析 RDA",
+    "figureTypeId": "ordination",
+    "configuration": "method:rda",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "tree-normal",
+    "sourceLabel": "矩形进化树工作台",
+    "figureTypeId": "phylogenetic",
+    "configuration": "有根树;layout:rectangular",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "tree-circle",
+    "sourceLabel": "环形进化树工作台",
+    "figureTypeId": "phylogenetic",
+    "configuration": "有根树;layout:circular",
+    "status": "candidate_mapping_not_imported_renderer"
+  },
+  {
+    "sourceTemplateId": "tree-unrooted",
+    "sourceLabel": "无根进化树工作台",
+    "figureTypeId": "phylogenetic",
+    "configuration": "无根树",
+    "status": "candidate_mapping_not_imported_renderer"
+  }
+]

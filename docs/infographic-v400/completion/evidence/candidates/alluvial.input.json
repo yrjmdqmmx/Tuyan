@@ -1,0 +1,77 @@
+{
+  "figureTypeId": "alluvial",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "p1",
+        "stage": "Before",
+        "category": "A",
+        "value": 3
+      },
+      {
+        "id": "p1",
+        "stage": "During",
+        "category": "C",
+        "value": 3
+      },
+      {
+        "id": "p1",
+        "stage": "After",
+        "category": "E",
+        "value": 3
+      },
+      {
+        "id": "p2",
+        "stage": "Before",
+        "category": "A",
+        "value": 2
+      },
+      {
+        "id": "p2",
+        "stage": "During",
+        "category": "D",
+        "value": 2
+      },
+      {
+        "id": "p2",
+        "stage": "After",
+        "category": "F",
+        "value": 2
+      },
+      {
+        "id": "p3",
+        "stage": "Before",
+        "category": "B",
+        "value": 4
+      },
+      {
+        "id": "p3",
+        "stage": "During",
+        "category": "D",
+        "value": 4
+      },
+      {
+        "id": "p3",
+        "stage": "After",
+        "category": "E",
+        "value": 4
+      }
+    ],
+    "units": {
+      "value": "people"
+    },
+    "options": {
+      "stages": [
+        "Before",
+        "During",
+        "After"
+      ],
+      "cohortSemantics": "One fixed cohort; no loss to follow-up"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

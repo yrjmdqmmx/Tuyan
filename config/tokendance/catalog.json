@@ -1,8 +1,8 @@
 {
-  "version": "2026-09-21.1",
+  "version": "2026-10-09.2",
   "appUrl": "https://www.paperbanana.asia/",
   "apiSource": "https://tokendance.space/gateway/v1/models",
-  "reviewedAt": "2026-09-21",
+  "reviewedAt": "2026-10-09",
   "models": [
     {
       "id": "bocha-web-search",
@@ -1202,14 +1202,16 @@
         "vision"
       ],
       "excludedReason": "",
-      "conflicts": [],
+      "conflicts": [
+        "TokenDance公告：2026-10-21 10:00北京时间停止服务，不重定向；保留历史选择，请手动迁移。"
+      ],
       "sourceUrl": "https://tokendance.space/models/mimo-v2.5",
       "reviewedAt": "2026-09-09",
       "verification": "catalog",
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "xiaomi",
-      "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/mimo-v2.5"
+      "lifecycle": "legacy",
+      "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
     },
     {
       "id": "mimo-v2.5-pro",
@@ -1233,14 +1235,16 @@
         "optimize"
       ],
       "excludedReason": "",
-      "conflicts": [],
+      "conflicts": [
+        "TokenDance公告：2026-10-21 10:00北京时间停止服务，不重定向；保留历史选择，请手动迁移。"
+      ],
       "sourceUrl": "https://tokendance.space/models/mimo-v2.5-pro",
       "reviewedAt": "2026-09-09",
       "verification": "catalog",
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "xiaomi",
-      "lifecycle": "stable",
-      "lifecycleSourceUrl": "https://tokendance.space/models/mimo-v2.5-pro"
+      "lifecycle": "legacy",
+      "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
     },
     {
       "id": "mimo-v2.5-tts",
@@ -2797,6 +2801,232 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "stepfun",
       "lifecycle": "preview"
+    },
+    {
+      "id": "ling-3.1-flash",
+      "name": "Ling: Ling-3.1-flash",
+      "created": 1790783281,
+      "description": "【限时两周的免费体验，免费体验期间模型服务长度为 256K】Ling-3.1-flash 拥有约 560B 总参数，每个 Token 激活约 25B 参数；模型上下文窗口上限为 1M，可容纳更长的文档、代码和任务历史。在研发过程中，我们围绕通用智能体、搜索、日常办公和软件研发等任务持续优化，并在医疗、金融和材料科学研究等场景持续提升模型能力。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "顶层目录1000000与端点256000冲突；卡片采用渠道端点256000，最大输出和思考字段未知。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/ling-3.1-flash",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "ant",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "name": "Xiaomi: Mimo-V2.6-Pro",
+      "created": 1790041197,
+      "description": "小米最强大的旗舰推理模型，全模态、超高性能、万亿参数的旗舰推理模型，覆盖复杂项目、长程任务、高价值工作、网络安全与科研需求。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-pro",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "name": "Xiaomi: Mimo-V2.6-Flash",
+      "created": 1790041620,
+      "description": "全模态、高智能、低成本的高效推理模型，面向专业办公中的高频调用与规模化任务的最佳均衡之选。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-flash",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "mimo-v2.6-ultraspeed",
+      "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+      "created": 1790042702,
+      "description": "兼顾 V2.6-Pro 旗舰性能，提供最高 20 倍输出速度，服务强实时交互与对响应速度敏感的生产场景。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "xiaomi",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-base",
+      "name": "CogEvol: CogEvol Base",
+      "created": 1788453964,
+      "description": "通用内容生成模型，适合复杂指令理解、内容创作、结构化生成和多步骤任务。",
+      "context_length": 65536,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-base",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-interactive-0828",
+      "name": "CogEvol: CogEvol Interactive 0828",
+      "created": 1788454036,
+      "description": "面向交互式内容生成优化的专项模型，适合页面结构、组件内容和交互逻辑生成。",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-interactive-0828",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
+    },
+    {
+      "id": "cogevol-slide-0828",
+      "name": "CogEvol: CogEvol Slide 0828",
+      "created": 1788454001,
+      "description": "面向演示文稿生成优化的专项模型，适合大纲组织、页面内容规划和幻灯片结构生成。",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "生成HTML/SVG/幻灯片代码属于文本输出，不代表原生图像输出。"
+      ],
+      "sourceUrl": "https://tokendance.space/models/cogevol-slide-0828",
+      "reviewedAt": "2026-10-09",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "cogevol",
+      "lifecycle": "unknown"
     }
   ]
 }

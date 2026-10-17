@@ -1,0 +1,68 @@
+{
+  "figureTypeId": "radar",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "label": "Speed",
+        "group": "A",
+        "value": 6
+      },
+      {
+        "label": "Yield",
+        "group": "A",
+        "value": 80
+      },
+      {
+        "label": "Cost",
+        "group": "A",
+        "value": 3
+      },
+      {
+        "label": "Speed",
+        "group": "B",
+        "value": 8
+      },
+      {
+        "label": "Yield",
+        "group": "B",
+        "value": 60
+      },
+      {
+        "label": "Cost",
+        "group": "B",
+        "value": 5
+      }
+    ],
+    "units": {
+      "value": "per-axis; see options.axes"
+    },
+    "options": {
+      "axes": [
+        {
+          "id": "Speed",
+          "min": 0,
+          "max": 10,
+          "unit": "m/s"
+        },
+        {
+          "id": "Yield",
+          "min": 0,
+          "max": 100,
+          "unit": "%"
+        },
+        {
+          "id": "Cost",
+          "min": 0,
+          "max": 10,
+          "unit": "USD"
+        }
+      ],
+      "normalization": "axis_range"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

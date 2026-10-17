@@ -1,0 +1,105 @@
+{
+  "doi": "10.1371/journal.pcbi.1006024",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006024",
+  "title": "Free energy profiles for unwrapping the outer superhelical turn of nucleosomal DNA",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Hidetoshi Kono",
+    "Shun Sakuraba",
+    "Hisashi Ishida"
+  ],
+  "year": "2018",
+  "license": "2018\nKono et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1006024.g001",
+      "label": "Fig 1",
+      "caption": "The initial and final conformations in the outer DNA unwrapping simulations.\nShown are DNA numbering and unwrapped DNA regions in stages 1 (a) and 2 (b). H3: blue, H4: green, H2A: yellow and H2B: red.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>The initial and final conformations in the outer DNA unwrapping simulations.</title>\n<p>Shown are DNA numbering and unwrapped DNA regions in stages 1 (a) and 2 (b). H3: blue, H4: green, H2A: yellow and H2B: red.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g002",
+      "label": "Fig 2",
+      "caption": "Free energy profiles plotted as a function of DNA end-to-end distance.\nFree energies were calculated using the ensembles obtained with umbrella sampling durations of 5, 10, 12, 14 and 15 ns from black to blue. (a) stage 1. (b) stage 2.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Free energy profiles plotted as a function of DNA end-to-end distance.</title>\n<p>Free energies were calculated using the ensembles obtained with umbrella sampling durations of 5, 10, 12, 14 and 15 ns from black to blue. (a) stage 1. (b) stage 2.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g003",
+      "label": "Fig 3",
+      "caption": "Free energy profiles plotted as a function of the total number of unwrapped bps (a) and (b), or as a function of the total number of unwrapped bps and end-to-end distance (c) and (d). (a) and (c) stage 1. (b) and (d) stage 2. Colors in (c) and (d) denote the relative free energy in each stage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p><bold>Free energy profiles plotted as a function of the total number of unwrapped bps (a) and (b), or as a function of the total number of unwrapped bps and end-to-end distance (c) and (d).</bold> (a) and (c) stage 1. (b) and (d) stage 2. Colors in (c) and (d) denote the relative free energy in each stage.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g004",
+      "label": "Fig 4",
+      "caption": "Histone-DNA contacts changing as a function of the number of unwrapped bps at one DNA end during stage 1.\n(a) H3a-DNA end2 contacts. (b) H3b-DNA end2 contacts. Plotted are the contact probabilities of each residue in the conformational ensemble. Contact is counted if at least one pair of atoms in the histone and DNA is within 4 Å of each other. (c) Close-up view of the H3-DNA end interface. Residues 46 to 60 of H3 are located between DNA end2 and the inner DNA. The DNA and residues 46 to 60 are shown as space filling and stick models, respectively. H3 is shown as a cartoon model and colored blue.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Histone-DNA contacts changing as a function of the number of unwrapped bps at one DNA end during stage 1.</title>\n<p>(a) H3a-DNA end2 contacts. (b) H3b-DNA end2 contacts. Plotted are the contact probabilities of each residue in the conformational ensemble. Contact is counted if at least one pair of atoms in the histone and DNA is within 4 Å of each other. (c) Close-up view of the H3-DNA end interface. Residues 46 to 60 of H3 are located between DNA end2 and the inner DNA. The DNA and residues 46 to 60 are shown as space filling and stick models, respectively. H3 is shown as a cartoon model and colored blue.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g005",
+      "label": "Fig 5",
+      "caption": "Histone-DNA contacts changing as a function of the number of unwrapped bps at one DNA end during stage 2.\n(a) H2Aa-DNA end2 contacts. (b) H2Ba-DNA end2 contacts. Plotted are the contact probabilities of each residue in the conformational ensemble. Contact is counted if at least one pair of atoms in the histone and DNA is within 4 Å of each other. (c) Close-up view of the H2Aa-DNA end2 interface. Residues 16 to 32 and 75 to 77 are shown as stick models. H2A and H2B are shown as cartoon models and are colored yellow and red, respectively. (d) Close-up view of the H2Ba-DNA end2 interface. The DNA and residues 36 to 43 are shown as space filling and stick models, respectively. H2A and H2B are shown as cartoon models and are colored yellow and red, respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Histone-DNA contacts changing as a function of the number of unwrapped bps at one DNA end during stage 2.</title>\n<p>(a) H2Aa-DNA end2 contacts. (b) H2Ba-DNA end2 contacts. Plotted are the contact probabilities of each residue in the conformational ensemble. Contact is counted if at least one pair of atoms in the histone and DNA is within 4 Å of each other. (c) Close-up view of the H2Aa-DNA end2 interface. Residues 16 to 32 and 75 to 77 are shown as stick models. H2A and H2B are shown as cartoon models and are colored yellow and red, respectively. (d) Close-up view of the H2Ba-DNA end2 interface. The DNA and residues 36 to 43 are shown as space filling and stick models, respectively. H2A and H2B are shown as cartoon models and are colored yellow and red, respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g006",
+      "label": "Fig 6",
+      "caption": "Differences in unwrapped bps between the two DNA ends.\nThe differences are plotted as a function of the total number of unwrapped bps. The bp differences are normalized to the number of conformations with the same total number of unwrapped bps. (a) stage 1. (b) stage 2.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Differences in unwrapped bps between the two DNA ends.</title>\n<p><bold>The differences are plotted as a function of the total number of unwrapped bps.</bold> The bp differences are normalized to the number of conformations with the same total number of unwrapped bps. (a) stage 1. (b) stage 2.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1006024.g007",
+      "label": "Fig 7",
+      "caption": "Schematic view of the dominant pathway to the unwrapping of outer DNA with estimated changes in free energy.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Schematic view of the dominant pathway to the unwrapping of outer DNA with estimated changes in free energy.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

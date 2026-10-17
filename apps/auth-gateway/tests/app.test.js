@@ -1095,3 +1095,13 @@ test('account deletion confirmation replaces only password reauthentication and 
     assert.equal(confirmations, 2);
   });
 });
+
+test('metadata catalog forwards only the selected channel key and explicit directory credentials', async () => {
+ await withApp({},async({baseUrl,backend})=>{
+  const response=await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'openai',apiKeys:{openai:'selected',ark:'unrelated'},catalogCredentials:{secretAccessKey:'unrelated-admin'},continuation:{page:2},accessToken:'discard'})
+  assert.equal(response.status,200);const body=backend.calls[0].body
+  assert.deepEqual(body.apiKeys,{openai:'selected'});assert.equal(body.catalogCredentials,undefined);assert.equal(body.accessToken,undefined);assert.deepEqual(body.continuation,{page:2});assert.match(body.userId,/^guest:/)
+  await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'ark',apiKeys:{ark:'inference'},catalogCredentials:{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS',unrelated:'discard'}})
+  assert.deepEqual(backend.calls[1].body.catalogCredentials,{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS'})
+ })
+})

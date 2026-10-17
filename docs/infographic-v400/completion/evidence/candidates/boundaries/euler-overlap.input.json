@@ -1,0 +1,31 @@
+{
+  "figureTypeId": "euler",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "set": "A",
+        "members": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      {
+        "set": "B",
+        "members": [
+          "c",
+          "d"
+        ]
+      }
+    ],
+    "units": {},
+    "options": {
+      "areaMode": "schematic"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

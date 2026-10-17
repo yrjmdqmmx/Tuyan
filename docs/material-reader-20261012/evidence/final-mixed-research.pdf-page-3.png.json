@@ -1,0 +1,29 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "render",
+    "pages": [
+      3
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 3,
+      "text": "VECTOR FIGURE: Input -> Check -> Output\nInput   Check   Output ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    }
+  ],
+  "images": [
+    {
+      "page": 3,
+      "mimeType": "image/png",
+      "sha256": "527317ec48a74e38e904e3ea708b68f85aca410f598cefc5ec86aab803c97070",
+      "renderer": "PDFium 2.1.13, whole page",
+      "width": 1224,
+      "height": 1584
+    }
+  ]
+}

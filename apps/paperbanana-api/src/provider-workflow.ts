@@ -1,3 +1,4 @@
+import {sourceProtocolMismatch,assertSourceProtocolTask,type SourceProtocolSnapshot} from './source-provenance.js'
 import { normalizeUniversalRoute, universalCredential, UniversalApiError } from '../../../packages/api/src/universal-api.js'
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { createHash, randomUUID } from 'node:crypto'
@@ -8,10 +9,29 @@ import { auditedChannelContract } from '../../../packages/api/src/audited-channe
 import type { createTokenDanceService } from './tokendance-service.js'
 
 type ConnectionService = ReturnType<typeof createTokenDanceService>
-type Task = { admissionVersion?: 1; jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
-type Context = { task: Task; scope: string; counts: Map<string, number>; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image' }
+type Task = { sourceProtocol?: SourceProtocolSnapshot; admissionVersion?: 1; jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
+type FatalState = { error?: unknown; onFatal?: (error: unknown) => void }
+type Context = { task: Task; scope: string; counts: Map<string, number>; fatal: FatalState; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image' }
 const version = 'tokendance-workflow-v2-reference-budget'
 const isReferenceValidationError = isLocalInputFailure
+
+function uncertainCallError(error: unknown) {
+  const cause = error instanceof Error ? error : new Error(String(error))
+  const uncertainty = { uncertain: true, requestState: 'unknown', recoveryAction: 'review_request' }
+  try { return Object.assign(cause, uncertainty) }
+  catch { return Object.assign(new Error(cause.message, { cause }), uncertainty) }
+}
+
+function stopCalls(current: Context, error: unknown) {
+  if (!current.fatal.error) {
+    current.fatal.error = error
+    current.fatal.onFatal?.(error)
+  }
+}
+
+function assertCallsAllowed(current: Context) {
+  if (current.fatal.error) throw Object.assign(new Error('任务已暂停，未发起新的模型调用。', { cause: current.fatal.error }), { workflowStopped: true, requestState: 'not_sent' })
+}
 
 /** Paid calls are durably claimed BEFORE transport and committed AFTER their
  * complete result is stored. An abandoned claim is never automatically retried. */
@@ -62,6 +82,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   async function call<T>(descriptor: unknown, operation: () => Promise<T>, role?: 'main'|'vision'|'image'): Promise<T> {
     const current = context.getStore()
     if (!current) return operation()
+    assertCallsAllowed(current)
     const thinkingRole = role || (Array.isArray(descriptor) ? ({text:'main',vision:'vision',image:'image'} as const)[descriptor[0] as 'text'|'vision'|'image'] : undefined)
     const thinking = thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[thinkingRole] : undefined
     if (thinking && Array.isArray(descriptor) && (thinking.provider !== descriptor[1] || thinking.modelId !== descriptor[2])) throw Object.assign(new Error('模型调用与原任务思考配置不一致，未发送。'), {name:'ThinkingConfigValidationError',localInputFailure:true,requestState:'not_sent'})
@@ -78,10 +99,13 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       const claim = await steps.updateOne({ _id: id, state: existing.state }, { $set: { state: existing.state === 'awaiting' ? 'awaiting' : 'running', startedAt: new Date(now()) } })
       if (!claim.modifiedCount) throw new TokenDanceError(409, '该调用正在处理。', 'review_request', 0, true)
     } else {
-      try { await steps.insertOne({ _id: id, userId: current.task.body.userId, jobId: current.task.jobId, state: 'running', startedAt: new Date(now()), expiresAt: expires() }) }
+      try { await steps.insertOne({ _id: id, userId: current.task.body.userId, jobId: current.task.jobId, taskMaterialCache: Array.isArray(descriptor)&&['materials','refine-source','refine-assets'].includes(String(descriptor[0])), state: 'running', startedAt: new Date(now()), expiresAt: expires() }) }
       catch { throw new TokenDanceError(409, '该调用已被占用，请核对任务。', 'review_request', 0, true) }
     }
     try {
+      // Journal preparation can yield to another candidate. Recheck just before
+      // starting this operation, without interrupting already submitted work.
+      assertCallsAllowed(current)
       // Composite steps (e.g. reference selection) may contain multiple paid
       // calls. Keep their own checkpoints when the enclosing step fails later.
       const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id, thinkingRole: thinkingRole || current.thinkingRole }, operation)
@@ -89,11 +113,27 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await steps.updateOne({ _id: id, state: { $in: ['running','awaiting'] } }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       return result
     } catch (error: any) {
-      const saved = await steps.findOne({_id:id})
-      const polling = error?.pollOnly && !saved?.pendingFailed
-      const rejected = polling || isReferenceValidationError(error) || (['TokenDanceError', 'UniversalApiError'].includes(error?.name) && !error.uncertain && (error.requestState === 'not_sent' || Boolean(error.recoveryAction) || error.requestState === 'rejected'))
-      await steps.updateOne({ _id: id }, { $set: { state: polling && saved?.pending ? 'awaiting' : rejected ? 'rejected' : 'unknown', retryAt: new Date(now() + (error.retryAfterSeconds || 0) * 1000) } })
-      throw error
+      const rejected = error?.workflowStopped || isReferenceValidationError(error) || (['TokenDanceError', 'UniversalApiError'].includes(error?.name) && !error.uncertain && (error.requestState === 'not_sent' || Boolean(error.recoveryAction) || error.requestState === 'rejected'))
+      let failure = rejected || error?.pollOnly ? error : uncertainCallError(error)
+      // Publish the fatal outcome synchronously, before any journal read/write
+      // can yield or fail. Sibling candidates must not begin another paid call.
+      if (!rejected || ['TokenDanceError', 'UniversalApiError'].includes(error?.name)) stopCalls(current, failure)
+      try {
+        const saved = await steps.findOne({_id:id})
+        const polling = error?.pollOnly && !saved?.pendingFailed
+        const state = polling && saved?.pending ? 'awaiting' : rejected || polling ? 'rejected' : 'unknown'
+        if (state === 'unknown') {
+          failure = uncertainCallError(error)
+          stopCalls(current, failure)
+        }
+        await steps.updateOne({ _id: id }, { $set: { state, retryAt: new Date(now() + (error?.retryAfterSeconds || 0) * 1000) } })
+      } catch {
+        // The original request outcome stays unknown if its journal cannot be
+        // finalized; a database error must not turn it into a safe fallback.
+        failure = uncertainCallError(error)
+        stopCalls(current, failure)
+      }
+      throw failure
     }
   }
   function taskChannel(task: Task) {
@@ -119,7 +159,17 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   async function cancelPrepared(task: Task) {
     await executions.deleteOne({ _id: task.jobId, userId: task.body.userId, instanceId, admissionVersion: 1, state: 'queued' })
   }
-  async function run(task: Task, operation: () => Promise<void>) {
+  async function blockSourceProtocol(task: Task) {
+    if(!sourceProtocolMismatch(task))return
+    const message='原任务来源协议版本或原文快照不匹配，成功调用已保留；为避免重复付费，不能自动跨版本恢复，未发起新的模型请求。'
+    const prior=await executions.findOne({_id:task.jobId})
+    const recovery={channel:prior?.channel||task.body.provider||'unknown',canResume:false,action:'review_request',message,...(prior?.recovery?.requestState==='unknown'?{requestState:'unknown',billingStatus:'unknown'}:{requestState:'not_sent'}),billingMessage:'本次恢复未发起新调用；原调用结果与费用记录保持不变。'}
+    await executions.updateOne({_id:task.jobId},{$set:{state:'blocked',recovery}})
+    await jobs.updateOne({_id:task.jobId},{$set:{status:'failed',error:message,recovery,updatedAt:new Date(now())}})
+    assertSourceProtocolTask(task)
+  }
+  async function run(task: Task, operation: () => Promise<void>, onFatal?: (error: unknown) => void) {
+    await blockSourceProtocol(task)
     let old = await executions.findOne({ _id: task.jobId })
     if (!old && !task.admissionVersion && !isManaged(task)) return operation()
     const userId = task.body.userId
@@ -140,8 +190,13 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     if (!claimed) throw Object.assign(new TokenDanceError(409, '原任务正在运行或不能恢复。'), { executionClaimLost: true })
     const heartbeat = setInterval(() => { void executions.updateOne({ _id: task.jobId, owner, state: 'running' }, { $set: { leaseUntil: new Date(now() + 45_000) } }).catch(() => {}) }, 10_000)
     heartbeat.unref()
+    const fatal: FatalState = { onFatal }
     try {
-      await context.run({ task, scope: 'root', counts: new Map() }, operation)
+      await context.run({ task, scope: 'root', counts: new Map(), fatal }, operation)
+      if (fatal.error) throw fatal.error
+      if (await steps.countDocuments({ jobId: task.jobId, state: { $in: ['running', 'unknown'] } })) {
+        throw uncertainCallError(new Error('存在结果未确认的模型调用，任务不能认定为完成；请核对渠道调用记录。'))
+      }
       await executions.updateOne({ _id: task.jobId, owner }, { $set: { state: 'complete' }, $unset: { secret: '' } })
       await jobs.updateOne({ _id: task.jobId }, { $unset: { recovery: '' } })
     } catch (error: any) {
@@ -184,6 +239,10 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       const changed = await executions.updateOne({ _id: jobId, state: row.state, instanceId: row.instanceId }, { $set: { state: 'blocked', recovery } })
       if (changed.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery, updatedAt: new Date(now()) } })
       return
+    }
+    if(row.secret&&service.cipher&&!(row.state==='running'&&(row.leaseUntil?.getTime()||0)>now())){
+      const snapshot=service.cipher.open(row.secret,jobId)
+      if(sourceProtocolMismatch(snapshot.task)){await blockSourceProtocol(snapshot.task).catch(error=>{if(error?.name!=='SourceProtocolVersionError')throw error});return}
     }
     if (row.state === 'blocked') return
     if (row.state === 'queued' ? row.instanceId === instanceId : (row.leaseUntil?.getTime() || 0) > now()) return
@@ -232,6 +291,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await reconcile(jobId); await service.accepting(userId)
       const existing = await executions.findOne({ _id: jobId, userId })
       if (existing && existing.version !== version) throw new TokenDanceError(409, '原任务使用旧执行版本，成功步骤已保留；请核对原调用记录后处理，不能自动重放。', 'review_request', 0, true)
+      if(existing?.secret&&service.cipher)await blockSourceProtocol(service.cipher.open(existing.secret,jobId).task)
       const pending = await executions.findOne({ _id: jobId, userId, state: 'blocked', version, 'recovery.canResume': true })
       if (!pending && existing?.needsTokenDance === false) throw new TokenDanceError(409, '原任务不可恢复，请核对原调用记录；不会重新发送请求。', 'review_request', 0, true)
       const retryAt = pending?.recovery?.retryAt?.getTime() || 0
@@ -256,6 +316,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
           snapshot.secrets.custom = JSON.stringify(merged)
           await executions.updateOne({_id:jobId,state:'queued'},{$set:{secret:service.cipher!.seal(snapshot,jobId)}})
         }
+        assertSourceProtocolTask(snapshot.task)
         const task = { ...snapshot.task, routeSecrets: { ...snapshot.secrets, ...(connected ? { tokendance: connected.key } : {}) } }
         return await enqueue(task)
       } catch (error) { await executions.updateOne({ _id: jobId, state: 'queued' }, { $set: { state: 'blocked' } }); throw error }

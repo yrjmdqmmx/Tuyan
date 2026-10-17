@@ -1,0 +1,71 @@
+{
+  "doi": "10.1371/journal.pone.0321072",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0321072",
+  "title": "The distribution of technology induced job loss: Evidence from a population-wide study in Norway",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Bjørn-Atle Reme",
+    "Ole Røgeberg",
+    "Jonathan Wörn",
+    "Bernt Bratsberg",
+    "Vegard Fykse Skirbekk"
+  ],
+  "year": "2025",
+  "license": "2025\nReme et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0321072.g001",
+      "label": "Fig 1",
+      "caption": "The yearly average routine intensity index among 45-year-olds by gender.The figure shows the yearly average RTI z-score, stratified by year, for 45-year-olds (birth cohorts 1958 to 1973) by gender. The 95% confidence intervals are indicated by the error bars. See S2 Table in the Supplementary Material for a corresponding table.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0321072.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0321072.g001</object-id><label>Fig 1</label><caption><title>The yearly average routine intensity index among 45-year-olds by gender.</title><p>The figure shows the yearly average RTI z-score, stratified by year, for 45-year-olds (birth cohorts 1958 to 1973) by gender. The 95% confidence intervals are indicated by the error bars. See <xref ref-type=\"supplementary-material\" rid=\"pone.0321072.s004\">S2 Table</xref> in the Supplementary Material for a corresponding table.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0321072.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0321072.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0321072.g002",
+      "label": "Fig 2",
+      "caption": "Routine intensity risk factors by gender.The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars. Detailed regression tables are provided in the Supplementary Material (S3 Table).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0321072.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0321072.g002</object-id><label>Fig 2</label><caption><title>Routine intensity risk factors by gender.</title><p>The figure displays regression coefficients from (A) bivariate and (B) multivariate regression models, with the RTI z-score as the outcome variable for all 45-year-olds between 2003 and 2018, separately by gender. The 95% confidence intervals are indicated by the error bars. Detailed regression tables are provided in the Supplementary Material (<xref ref-type=\"supplementary-material\" rid=\"pone.0321072.s010\">S3 Table</xref>).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0321072.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0321072.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0321072.g003",
+      "label": "Fig 3",
+      "caption": "Attribution analysis of routine intensity risk factors among 45-year-olds in 2003 and 2018, by gender.(A) Share of 45-year-olds in 2003 and 2018 exposed to various risk factors. (B) Estimated impact of changes in exposure, calculated by multiplying the change in share (from Panel A) by the corresponding regression coefficient for each characteristic, based on a multivariate regression of the RTI z-score on all risk factors (see Fig 2B).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0321072.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0321072.g003</object-id><label>Fig 3</label><caption><title>Attribution analysis of routine intensity risk factors among 45-year-olds in 2003 and 2018, by gender.</title><p>(A) Share of 45-year-olds in 2003 and 2018 exposed to various risk factors. (B) Estimated impact of changes in exposure, calculated by multiplying the change in share (from Panel A) by the corresponding regression coefficient for each characteristic, based on a multivariate regression of the RTI z-score on all risk factors (see <xref ref-type=\"fig\" rid=\"pone.0321072.g002\">Fig 2B</xref>).</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0321072.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0321072.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0321072.g004",
+      "label": "Fig 4",
+      "caption": "Predicted RTI z-scores from multivariate regression by gender.The figure presents predicted RTI z-scores based on gender-specific models estimated for the 1973 birth cohort (i.e., those aged 45 in 2018). The explanatory variables were indicators for educational level (Primary educ =  primary education; Secondary educ =  secondary education; Low uni =  lower university (Bachelor’s degree); High uni =  higher university (Master’s degree or higher)), indicators for childlessness (Childless), marital status (Married), and whether the father’s average income rank between ages 40 and 50 was within the lowest quintile among men of the same age group (Low parental income). See Supplementary Material (S4 Table and S5 Table) for detailed tables and the average RTI z-scores for each group.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0321072.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0321072.g004</object-id><label>Fig 4</label><caption><title>Predicted RTI z-scores from multivariate regression by gender.</title><p>The figure presents predicted RTI z-scores based on gender-specific models estimated for the 1973 birth cohort (i.e., those aged 45 in 2018). The explanatory variables were indicators for educational level (Primary educ =  primary education; Secondary educ =  secondary education; Low uni =  lower university (Bachelor’s degree); High uni =  higher university (Master’s degree or higher)), indicators for childlessness (Childless), marital status (Married), and whether the father’s average income rank between ages 40 and 50 was within the lowest quintile among men of the same age group (Low parental income). See Supplementary Material (<xref ref-type=\"supplementary-material\" rid=\"pone.0321072.s012\">S4 Table</xref> and <xref ref-type=\"supplementary-material\" rid=\"pone.0321072.s013\">S5 Table</xref>) for detailed tables and the average RTI z-scores for each group.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0321072.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0321072.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

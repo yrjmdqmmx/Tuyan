@@ -1,0 +1,50 @@
+{
+  "freezeManifest": "source-ref-code-hashes.json",
+  "freezeSha256": "c8f7a745e88ee8c0989af9805b2eb37941e89e301cb580bed453443fd57b8e9f",
+  "frozenFiles": 29,
+  "handlerSha256": "f8788a765c3b94f48a307b9b68cac1051230fe7fe49b11326afe6601d9ab9535",
+  "finalFocusedTests": {
+    "command": "node --import tsx --test tests/source-provenance.test.ts tests/diagram-topology.test.ts tests/diagram-topology-runtime.test.ts tests/protocol-correction.test.ts tests/svg-workflow.test.ts",
+    "log": "source-ref-final-tests.log",
+    "tests": 63,
+    "passed": 63,
+    "failed": 0,
+    "exitCode": 0,
+    "durationMs": 95183.861417
+  },
+  "migrationAndCapacityFollowup": {
+    "log": "source-ref-final-guards-tests.log",
+    "tests": 2,
+    "passed": 2,
+    "exitCode": 0,
+    "note": "Followup before final generic-child scope preservation; both included again in final63."
+  },
+  "intermediateBroaderTests": {
+    "log": "source-ref-tests-before-final-guards.log",
+    "tests": 89,
+    "passed": 89,
+    "exitCode": 0,
+    "note": "Includes durable-admission and TokenDance tests, pre-final source guards; not final freeze."
+  },
+  "check": {
+    "command": "pnpm check",
+    "log": "source-ref-check.log",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "pnpm build",
+    "log": "source-ref-build.log",
+    "exitCode": 0
+  },
+  "diffCheck": {
+    "command": "git diff --check",
+    "log": "source-ref-diff-check.log",
+    "exitCode": 0
+  },
+  "protectedFiles": {
+    "checked": 238,
+    "unchanged": 238,
+    "differences": []
+  },
+  "paidCalls": 0
+}

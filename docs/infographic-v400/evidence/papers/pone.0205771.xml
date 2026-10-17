@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="publisher-id">PONE-D-18-23051</article-id>
+<article-id pub-id-type="doi">10.1371/journal.pone.0205771</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Science policy</subject><subj-group><subject>Science and technology workforce</subject><subj-group><subject>Careers in research</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Communications</subject><subj-group><subject>Mass media</subject><subj-group><subject>Encyclopedias</subject><subj-group><subject>Online encyclopedias</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Telecommunications</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Instrumental variable analysis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Instrumental variable analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Anthropology</subject><subj-group><subject>Cultural anthropology</subject><subj-group><subject>Religion</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Religion</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Behavior</subject><subj-group><subject>Recreation</subject><subj-group><subject>Sports</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Behavior</subject><subj-group><subject>Recreation</subject><subj-group><subject>Sports</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Sports science</subject><subj-group><subject>Sports</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Communications</subject><subj-group><subject>Social communication</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>How the medium shapes the message: Printing and the rise of the arts and sciences</article-title>
+<alt-title alt-title-type="running-head">How the medium shapes the message</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-0890-5536</contrib-id>
+<name name-style="western">
+<surname>Jara-Figueroa</surname> <given-names>C.</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Yu</surname> <given-names>Amy Z.</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Hidalgo</surname> <given-names>César A.</given-names></name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Visualization</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001">
+<addr-line>The MIT Media Lab, Massachusetts Institute of Technology, Cambridge, Massachusetts, United States of America</addr-line>
+</aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Wray</surname> <given-names>K. Brad</given-names></name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1">
+<addr-line>Aarhus Universitet, DENMARK</addr-line>
+</aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">hidalgo@mit.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="collection">
+<year>2019</year>
+</pub-date>
+<pub-date pub-type="epub">
+<day>20</day>
+<month>2</month>
+<year>2019</year>
+</pub-date>
+<volume>14</volume>
+<issue>2</issue>
+<elocation-id>e0205771</elocation-id>
+<history>
+<date date-type="received">
+<day>6</day>
+<month>8</month>
+<year>2018</year>
+</date>
+<date date-type="accepted">
+<day>1</day>
+<month>10</month>
+<year>2018</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2019</copyright-year>
+<copyright-holder>Jara-Figueroa et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0205771"/>
+<abstract>
+<p>Communication technologies, from printing to social media, affect our historical records by changing the way ideas are spread and recorded. Yet, finding statistical evidence of this fact has been challenging. Here we combine a common causal inference technique (instrumental variable estimation) with a dataset on nearly forty thousand biographies from Wikipedia (Pantheon 2.0), to study the effect of the introduction of printing in European cities on Wikipedia’s digital biographical records. By using a city’s distance to Mainz as an instrument for the adoption of the movable type press, we show that European cities that adopted printing earlier were more likely to become the birthplace of a famous scientist or artist during the years following the invention of printing. We bring these findings to recent communication technologies by showing that the number of radios and televisions in a country correlates with the number of globally famous performing artists and sports players born in that country, even after controlling for GDP, population, and including country and year fixed effects. These findings support the hypothesis that the introduction of communication technologies can bias historical records in the direction of the content that is best suited for each technology.</p>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="3"/>
+<table-count count="3"/>
+<page-count count="14"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>Data are available from Harvard Dataverse, DOI: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7910/DVN/TBMIXT" xlink:type="simple">https://doi.org/10.7910/DVN/TBMIXT</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The societal effects of communication technologies have been a matter of much discussion. Communication technologies have been argued to affect society by shaping institutions [<xref ref-type="bibr" rid="pone.0205771.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0205771.ref005">5</xref>], changing the way people think [<xref ref-type="bibr" rid="pone.0205771.ref006">6</xref>–<xref ref-type="bibr" rid="pone.0205771.ref009">9</xref>], biasing the content that people transmit and record [<xref ref-type="bibr" rid="pone.0205771.ref010">10</xref>–<xref ref-type="bibr" rid="pone.0205771.ref013">13</xref>], and facilitating access to knowledge [<xref ref-type="bibr" rid="pone.0205771.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0205771.ref019">19</xref>]. Yet, statistically identifying the effects of communication technologies in society has been challenging because of both, a lack of structured data on historical events and a lack of statistical instruments that can be used to address the endogeneity of the relationship between communication technology and content. Here, we use biographies of historical figures collected from online sources as a source of structured information on historical events, to study the effects of three changes in communication technologies: printing, radio, and television. The dataset we crated for this study can be accessed at <italic>pantheon.world</italic>.</p>
+<p>The challenge of studying the relationship between the introduction of a communication technology, and its impact in the forms of culture produced, is one of endogeneity. Here, endogeneity refers to the challenge of knowing whether the correlation between the adoption of new communication technologies and the content produced in a given place occurs because: (i) printing causes a city to produce famous scientists and artist, (ii) because the production of famous scientists and artists causes cities to adopt printing technology, or (iii) because there are unobserved characteristics of a place that contribute to both, producing famous scientists and artists and adopting printing.</p>
+<p>We tackle the endogeneity of the relation between communication technologies and content in the context of the invention of the movable type press by using an instrumental variable (IV), a technique that relies on an exogenous form of variation to infer the causal link between two variables. The exogenous form of variation in this case is a city’s distance to Mainz (the birthplace of printing in Europe). A priori, there is no reason to think that a city’s distance to Mainz should correlate with the probability of being the birthplace of a famous scientist or artist. In fact, prior to printing, a city’s distance to Mainz does not correlate with the probability that a city will produce a famous artist or scientists (see Section A.4 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>). After the invention of printing, however, the distance between a city and Mainz predicts the adoption of printing, and this predicted adoption time, subsequently, predicts the probability that a city will produce a famous scientist or artist. Of course, this does not mean that printing is the only factor that contributes to a city’s probability of producing a famous scientist or artist, but it does provide evidence in support of printing being a causal factor contributing to the probability that a city will become the birthplace of a famous scientist or artist.</p>
+<p>For our empirical analysis, we follow Yu et al. [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>] and collect data on all biographies with a presence on 15 or more Wikipedia language editions as of July 2016. The focus on historical figures as a way to measure the focus of society is justified because historical figures can be argued to embody a society’s culture and ideas [<xref ref-type="bibr" rid="pone.0205771.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0205771.ref022">22</xref>]. In particular, we collect biographical data from Wikipedia and Wikidata to study how three historical changes in media—printing (1450-1550), radio (1890-1950), and television (1950-1970)—changed the occupations of the people associated to the biographies we find in our modern digital historical records (Wikipedia and Wikidata). Only in the case of printing, however, we are able to identify the causal relationship because in that case we have an IV. What these changes in media have in common is that they had global—or at least continental—impact, and that they had relatively short adoption times [<xref ref-type="bibr" rid="pone.0205771.ref012">12</xref>–<xref ref-type="bibr" rid="pone.0205771.ref015">15</xref>, <xref ref-type="bibr" rid="pone.0205771.ref019">19</xref>].</p>
+<p>Before conducting our instrumental variable analysis we use changepoint analysis to identify discontinuities in the time series of the per-capita number of biographies associated with each year. We find that the only statistically significant discontinuity identified by this method between 500 and 1650 coincides with the introduction of Gutenberg’s movable type printing press. Then, we use distance to Mainz as an instrumental variable to measure the effect of the adoption of printing in a city’s ability to produce memorable scientists and artists. We must emphasize that there are many factors that determine the adoption of a technology such as printing, and predicting the adoption of such a technology is beyond the scope of our research. Yet, we can use the variation of the adoption of printing due to a city’s distance to Mainz to estimate the effect of printing in a city’s production of famous scientists and artists [<xref ref-type="bibr" rid="pone.0205771.ref023">23</xref>]. While a city’s ability to produce famous scientists and artists may depend on a large number of variables, such as its population and wealth, that city’s distance to Mainz can only affect the number of famous people born in that city through the adoption of printing: a necessary condition for an instrumental variable, often referred to as the <italic>exclusion restriction</italic> [<xref ref-type="bibr" rid="pone.0205771.ref023">23</xref>]. While it is rarely possible to prove the exclusion restriction, the fact that the correlation between a city’s distance to Mainz and the number of scientists and artists born in that city only appears after the invention of printing, helps rule out other mechanisms, such as the distance to Mainz correlating with the presence of universities that provide infrastructure for the arts and sciences. Hence, a city’s distance to Mainz is an exogenous form of variation that increases the likelihood of being an early adopter of printing technology. In fact, between 1450 and 1500, printing diffused in concentric circles as printers set out to establish presses in other cities [<xref ref-type="bibr" rid="pone.0205771.ref018">18</xref>]. Therefore, it is not surprising that distance to Mainz has been used to establish the impact of the printing press in economic growth [<xref ref-type="bibr" rid="pone.0205771.ref018">18</xref>], and on the spread of Protestantism [<xref ref-type="bibr" rid="pone.0205771.ref024">24</xref>]. Our two stage least square estimate using distance to Mainz as an instrumental variable confirms the hypothesis that cities that adopted printing earlier produced famous scientists and famous artists earlier, indicating that printing promoted the emergence of a scientific and artistic elite.</p>
+<p>To bring these findings to other eras we explore the occupations associated to biographies from each communication era (writing, printing, radio, and television), finding that each era is characterized by its own composition of famous occupations. Finally, we use data at the country level on the number of radios and the number of televisions available each year in each country [<xref ref-type="bibr" rid="pone.0205771.ref025">25</xref>] to show that countries with more radios and with more televisions, were the birthplace of more famous artists and sports players. The correlation remains strong even after controlling for GDP, population, and including country and year fixed effects, which control for unobserved time-invariant country characteristics and for unobserved time-varying world characteristics respectively. The same is not true for occupations such as scientists, that experienced an increase with the rise of printing, but not with radio or television. While we are not able to identify the causal effect for radio and television, we show correlational evidence that complements the causal identification for the effect of printing. These results support the idea that communication technologies shape our historical records by biasing their content towards the type of information best suited for the media of each time.</p>
+</sec>
+<sec id="sec002">
+<title>Data</title>
+<p>We use biographical data from two different datasets: the <italic>Pantheon 2.0</italic> dataset, which we have collected for this project, and the <italic>Human Accomplishments</italic> dataset [<xref ref-type="bibr" rid="pone.0205771.ref026">26</xref>]. The <italic>Human Accomplishments</italic> dataset [<xref ref-type="bibr" rid="pone.0205771.ref026">26</xref>] contains more than three thousand biographies of individuals from the Arts and Sciences that are recorded in authoritative printed texts in six different languages. The Pantheon 2.0 is an extension of the Pantheon 1.0 dataset [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>]. Pantheon 1.0 is a peer-reviewed dataset containing the 11,337 biographies that had a presence in more than 25 different language editions of Wikipedia as of May 2013 (for more details see [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>]). Pantheon 2.0 extends the 1.0 version to include people with 15 language editions or more in Wikipedia as of July 2016. As in Pantheon 1.0, a biography is any Wikipedia page about a single individual. The Wikipedia page about the “Wright brothers,” for example, is not considered a biography because it is not about a single person. The Pantheon 2.0 dataset associates each biography with a city of birth, a date of birth, and an occupation. The place and date of birth are taken from the information provided in each biography’s Wikipedia infobox, complemented with the information present in each biography’s Wikidata page. The city of birth is obtained by associating each place of birth to a city from the GeoNames database [<xref ref-type="bibr" rid="pone.0205771.ref027">27</xref>] (we use cities over 5000 people). We assign occupations using a machine learning classifier that extracts features from the biography’s text on Wikipedia. We trained the classifier on the Pantheon 1.0 dataset. By using information from the entire Wikipedia page of a person’s biography, our algorithm captures how this person is remembered by the people who have edited this biography. For example, Pablo Neruda is described as both a diplomat and a poet in his Wikipedia page, but most of the text is about his career as a writer and not as a diplomat. Therefore, our algorithm correctly detects the focus of the biography and assigns Neruda to the “writer” occupation. For our analysis, we aggregate occupations into 8 categories: political leaders, religious figures, scientists, performing artists, fine artist, humanities, and sports. We must note that classical composers such as Beethoven and Mozart are included under the fine artists category. More details about the data collection for Pantheon 2.0 can be found in Section A.1 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>.</p>
+<p>Both of these datasets add to a recent stream of literature focused on the use and development of quantitative methods to explore historical patterns and the success of creative efforts [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>, <xref ref-type="bibr" rid="pone.0205771.ref026">26</xref>, <xref ref-type="bibr" rid="pone.0205771.ref028">28</xref>–<xref ref-type="bibr" rid="pone.0205771.ref035">35</xref>]. Examples of these studies include the evolution of language and ideas as recorded in printed books [<xref ref-type="bibr" rid="pone.0205771.ref029">29</xref>], patterns of historical migration [<xref ref-type="bibr" rid="pone.0205771.ref032">32</xref>], the importance of language translations in the global diffusion of information [<xref ref-type="bibr" rid="pone.0205771.ref036">36</xref>], the emotional content of global languages [<xref ref-type="bibr" rid="pone.0205771.ref037">37</xref>], and the dynamics of fame [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>, <xref ref-type="bibr" rid="pone.0205771.ref028">28</xref>, <xref ref-type="bibr" rid="pone.0205771.ref038">38</xref>]. These studies are made possible thanks to new digital sources such as Wikipedia, Freebase, Wikidata, and digitized books [<xref ref-type="bibr" rid="pone.0205771.ref039">39</xref>].</p>
+<p>Data on technology adoption comes from two sources. For printing, we use the <italic>Incunabula Short Title Catalogue</italic> [<xref ref-type="bibr" rid="pone.0205771.ref040">40</xref>], a dataset comprising all books printed between 1450 and 1500. This data is suitable to understand the adoption of printing because the period 1450–1500 (the “first infancy” of printing [<xref ref-type="bibr" rid="pone.0205771.ref041">41</xref>]) was a period of rapid expansion of printing among European cities, with the price of books falling by nearly two thirds [<xref ref-type="bibr" rid="pone.0205771.ref042">42</xref>, <xref ref-type="bibr" rid="pone.0205771.ref043">43</xref>]. For radio and for television we use the Historical Cross-Country Technology Adoption (HCCTA) dataset [<xref ref-type="bibr" rid="pone.0205771.ref025">25</xref>], a dataset collected to analyze the adoption patterns of some of the major technologies introduced in the past 250 years. The HCCTA dataset also has historical GDP and population information.</p>
+<p>Population data comes from two sources. At the global level we use data from the historical world population estimates of the US Census Bureau [<xref ref-type="bibr" rid="pone.0205771.ref044">44</xref>], which reports an aggregated dataset of world population estimates starting from the year 10,000 BC. At the city level we use a dataset on population of urban settlements from 3700 BC to AD 2000 [<xref ref-type="bibr" rid="pone.0205771.ref045">45</xref>]. We matched the cities present in [<xref ref-type="bibr" rid="pone.0205771.ref045">45</xref>] with the ones in [<xref ref-type="bibr" rid="pone.0205771.ref027">27</xref>] based on their name and coordinates.</p>
+<p>All of our data sets have limitations that need to be considered when interpreting our results. Therefore, we emphasize the need to interpret our results as valid only in the narrow context of the sources used to compile these datasets. The Pantheon 2.0 dataset has all the biases inherent in using Wikipedia as our main data source [<xref ref-type="bibr" rid="pone.0205771.ref020">20</xref>], therefore our results should be interpreted as a reflection of the historical records that are representative only of the people who edit the more than 250 language editions of Wikipedia—a literate and digitally empowered elite of knowledge enthusiasts [<xref ref-type="bibr" rid="pone.0205771.ref046">46</xref>]. Moreover, Wikipedia is not a primary data source for historical research. Nevertheless, Wikipedia editors have developed a complex set of rules and criteria to decide what information gets recorded [<xref ref-type="bibr" rid="pone.0205771.ref047">47</xref>, <xref ref-type="bibr" rid="pone.0205771.ref048">48</xref>], and thus Wikipedia data can be used to map the focus of society [<xref ref-type="bibr" rid="pone.0205771.ref049">49</xref>, <xref ref-type="bibr" rid="pone.0205771.ref050">50</xref>]. The Human Accomplishments dataset is compiled from printed encyclopedias in six different languages, and is representative of the people who participated in the creation of printed encyclopedias. An extended discussion of the biases and validation of the Human Accomplishments dataset can be found in [<xref ref-type="bibr" rid="pone.0205771.ref026">26</xref>].</p>
+</sec>
+<sec id="sec003" sec-type="results">
+<title>Results</title>
+<p>We study the global effects of printing by looking at the number of biographies <italic>B</italic> born in a given time window Δ<italic>T</italic> for both the Pantheon 2.0 and the Human Accomplishment datasets. To make these estimates comparable across time we normalize <italic>B</italic> by the average world population <italic>N</italic> and the size of its respective time window. Hence, we define <inline-formula id="pone.0205771.e001"><alternatives><graphic id="pone.0205771.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0205771.e001" xlink:type="simple"/><mml:math display="inline" id="M1"><mml:mrow><mml:mi>m</mml:mi> <mml:mo>=</mml:mo> <mml:mfrac><mml:mi>B</mml:mi> <mml:mrow><mml:mi>N</mml:mi> <mml:mo>Δ</mml:mo> <mml:mi>T</mml:mi></mml:mrow></mml:mfrac></mml:mrow></mml:math></alternatives></inline-formula>. <italic>m</italic> is an estimate of the per-capita number of births occurring in a given year that resulted in a biography that is prominently recorded in each of our datasets. <italic>m</italic> is measured in units of births per year per billion people in the world, or [bpyb].</p>
+<p>
+<xref ref-type="fig" rid="pone.0205771.g001">Fig 1A and 1C</xref> show the temporal evolution of <italic>m</italic> as observed in both datasets between year 1 and 1730, using a 20-years time window. In both datasets <italic>m</italic> is constant for the 1,500 years preceding the introduction of the movable type press but increases by more than 50% together with the introduction of printing according to our changepoint analysis [<xref ref-type="bibr" rid="pone.0205771.ref051">51</xref>]. Furthermore, we find that once we limit the Pantheon 2.0 dataset to only political and religious leaders–the two categories that were prominently present in the dataset prior to printing (see <xref ref-type="fig" rid="pone.0205771.g003">Fig 3A</xref>)–there is no statistically significant break (see <xref ref-type="fig" rid="pone.0205771.g001">Fig 1B</xref>). This suggests that the increase in the number of per-capita biographies observed with the rise of printing was the result of a new pattern in reading habits that was genre specific.</p>
+<fig id="pone.0205771.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Per-capita births of globally memorable people.</title>
+<p>The per-capita births of globally memorable people (<italic>m</italic>) is measured using a 20-years time window for (A) the full Pantheon 2.0 dataset, (B) Pantheon 2.0 dataset restricted to <bold>government</bold>, <bold>humanities</bold>, and <bold>religion</bold>, and (C) the Human Accomplishments dataset. The horizontal lines correspond to the average for each part of the time series, as detected by the changepoint analysis.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.g001" xlink:type="simple"/>
+</fig>
+<p>Next we address endogeneity concerns by using the distance to Mainz as an instrumental variable [<xref ref-type="bibr" rid="pone.0205771.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0205771.ref023">23</xref>, <xref ref-type="bibr" rid="pone.0205771.ref024">24</xref>, <xref ref-type="bibr" rid="pone.0205771.ref052">52</xref>]. The need for such an approach is highlighted in <xref ref-type="fig" rid="pone.0205771.g002">Fig 2A</xref> and comes from potential unobserved city characteristics that can correlate with both: the likelihood of adopting printing and the number of memorable characters of each occupation born in each city. For example, the wealth of a city can lead both to the city being an early adopter of printing and the city being the birthplace of many scientists. When introducing a city’s distance to Mainz as an instrument for the adoption of printing (<xref ref-type="fig" rid="pone.0205771.g002">Fig 2B</xref>), we use the correlation between the adoption of printing and a city’s distance to Mainz as a first stage to estimate the effect of printing in a city’s ability to produce memorable characters in different occupations. In other words, we first regress the adoption of printing on the distance to Mainz, and then use the predicted values for the adoption of printing as independent variables in a regression with the number of memorable characters as outcome variable. This approach correctly identifies the causal effect without the need of controlling for confounders [<xref ref-type="bibr" rid="pone.0205771.ref023">23</xref>, <xref ref-type="bibr" rid="pone.0205771.ref052">52</xref>]. In practice, we use two different outcome variables calculated at the city level to quantify early adoption of printing (i.e., as treatment variables): a dummy variable for adopting printing between 1450 and 1500, and the year of the first printed book (for a third empirical specification see Section B.1 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>).</p>
+<fig id="pone.0205771.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Directed acyclic graph (DAG) diagram of our instrumental variable strategy.</title>
+<p>(A) shows the potential for confounding factors arising from unobserved city characteristics that correlate with the adoption of printing and with the number of memorable characters born in each city. In this situation, a simple regression of <italic>Y</italic> on <italic>X</italic> would not yield the correct estimation of the causal effect of <italic>X</italic> on <italic>Y</italic> because of the “backdoor path” introduced by <italic>U</italic>. (B) shows the introduction of an instrumental variable <italic>Z</italic> that correlates with <italic>X</italic>, but does not correlate with <italic>Y</italic> directly nor through <italic>U</italic>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.g002" xlink:type="simple"/>
+</fig>
+<p>Our first instrumental variable analysis uses a city’s distance to Mainz as an instrument for adopting printing between 1450 and 1500. Data on printing adoption is obtained from the Incunabula Short Title Catalogue [<xref ref-type="bibr" rid="pone.0205771.ref040">40</xref>]. As dependent variables we use the number of scientists, artists, and political leaders born in each city between 1450 and 1550, right after the invention of printing (for the other occupations see Section B.1 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>). If the introduction of printing increased the probability that a city would become the birthplace of a famous scientist or artist, then we should observe a significant effect in the number of scientists and artists, but not in the number of political leaders born in a city. Political leaders were already prominent prior to printing. <xref ref-type="table" rid="pone.0205771.t001">Table 1</xref> shows the first stage, and the OLS and IV estimators for each dependent variable. We see that adopting printing earlier (before 1500) has a significant, positive, and strong effect on the number of scientists and artists, but does not have a significant effect on the number of political leaders born in a city, meaning that early adopters of printing were more likely to become the birthplace of famous scientists and artists than late adopters of printing.</p>
+<table-wrap id="pone.0205771.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.t001</object-id>
+<label>Table 1</label>
+<caption>
+<title>Instrumental variable analysis of the effect of printing on European cities.</title>
+<p>Here, we use the distance to Mainz as an instrument for a dummy variable for adopting printing between 1450 and 1500. We use a two stage least squared regression to estimate the effect of adopting printing between 1450 and 1500 on the number of scientists, artists, and political leaders born in each city between 1400 and 1550. All dependent variables are in logarithmic scale.</p>
+</caption>
+<alternatives>
+<graphic id="pone.0205771.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.t001" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3"/>
+<th align="center" colspan="8"><italic>Dependent variable</italic>:</th>
+</tr>
+<tr>
+<th align="center" colspan="2">printing before 1500</th>
+<th align="center" colspan="2">number of scientists</th>
+<th align="center" colspan="2">number of artists</th>
+<th align="center" colspan="2">number of political leaders</th>
+</tr>
+<tr>
+<th align="center"><italic>probit</italic><break/>(1)</th>
+<th align="center"><italic>First Stage</italic><break/>(2)</th>
+<th align="center"><italic>OLS</italic><break/>(3)</th>
+<th align="center"><italic>IV</italic><break/>(4)</th>
+<th align="center"><italic>OLS</italic><break/>(5)</th>
+<th align="center"><italic>IV</italic><break/>(6)</th>
+<th align="center"><italic>OLS</italic><break/>(7)</th>
+<th align="center"><italic>IV</italic><break/>(8)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">distance to Mainz</td>
+<td align="center">−0.273<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.033)</td>
+<td align="center">−0.022<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.003)</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">printing before 1500</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center">0.089<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.004)</td>
+<td align="center">0.222<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.043)</td>
+<td align="center">0.202<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.007)</td>
+<td align="center">0.302<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.067)</td>
+<td align="center">0.188<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.009)</td>
+<td align="center">0.130<break/>(0.081)</td>
+</tr>
+<tr>
+<td align="left">constant</td>
+<td align="center">−0.014<break/>(0.212)</td>
+<td align="center">0.186<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.018)</td>
+<td align="center">0.002<xref ref-type="table-fn" rid="t001fn002">*</xref><break/>(0.001)</td>
+<td align="center">−0.003<break/>(0.002)</td>
+<td align="center">0.003<xref ref-type="table-fn" rid="t001fn002">*</xref><break/>(0.001)</td>
+<td align="center">−0.0002<break/>(0.003)</td>
+<td align="center">0.010<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.002)</td>
+<td align="center">0.012<xref ref-type="table-fn" rid="t001fn004">***</xref><break/>(0.003)</td>
+</tr>
+<tr>
+<td align="left">Observations</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+<td align="center">5,335</td>
+</tr>
+<tr>
+<td align="left">Log Likelihood</td>
+<td align="center">−804.19</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">AIC</td>
+<td align="center">1,612</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Residual SE</td>
+<td align="center"/>
+<td align="center">0.187</td>
+<td align="center">0.061</td>
+<td align="center">0.066</td>
+<td align="center">0.100</td>
+<td align="center">0.102</td>
+<td align="center">0.124</td>
+<td align="center">0.124</td>
+</tr>
+<tr>
+<td align="left">R<sup>2</sup></td>
+<td align="center"/>
+<td align="center">0.012</td>
+<td align="center">0.070</td>
+<td align="center"/>
+<td align="center">0.125</td>
+<td align="center"/>
+<td align="center">0.075</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Adjusted R<sup>2</sup></td>
+<td align="center"/>
+<td align="center">0.012</td>
+<td align="center">0.070</td>
+<td align="center"/>
+<td align="center">0.125</td>
+<td align="center"/>
+<td align="center">0.075</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">F Statistic</td>
+<td align="center"/>
+<td align="center">66.57<xref ref-type="table-fn" rid="t001fn004">***</xref></td>
+<td align="center">399.43<xref ref-type="table-fn" rid="t001fn004">***</xref></td>
+<td align="center"/>
+<td align="center">762.57<xref ref-type="table-fn" rid="t001fn004">***</xref></td>
+<td align="center"/>
+<td align="center">435.08<xref ref-type="table-fn" rid="t001fn004">***</xref></td>
+<td align="center"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001">
+<p>Note:</p>
+</fn>
+<fn id="t001fn002">
+<p>*p&lt;0.05;</p>
+</fn>
+<fn id="t001fn003">
+<p>**p&lt;0.01;</p>
+</fn>
+<fn id="t001fn004">
+<p>***p&lt;0.001</p>
+</fn>
+</table-wrap-foot>
+</table-wrap>
+<p>For our second instrumental variable analysis we use distance to Mainz as an instrument for the year of the first printed book. This analysis is restricted to cities that adopted printing, so the number of observations decreases considerably. As dependent variables we use the year of the first recorded scientist born in each city, the year of the first recorded artist born in each city, and the year of the first political leader born in each city (for the other occupations see Section B.1 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>). Adding to our previous results, <xref ref-type="table" rid="pone.0205771.t002">Table 2</xref> shows that the year of the first printed book has a significant, positive, and strong effect on the birth of famous scientists and artists, but does not have a significant effect on the birth of famous political leaders.</p>
+<table-wrap id="pone.0205771.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.t002</object-id>
+<label>Table 2</label>
+<caption>
+<title>Instrumental variable analysis of the effect of printing on European cities that adopted printing.</title>
+<p>Here, we use the distance to Mainz as an instrument for the year of the first printing press in each city, and use it to estimate the effect of printing in the birth of scientists, artists, and political leaders.</p>
+</caption>
+<alternatives>
+<graphic id="pone.0205771.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.t002" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3"/>
+<th align="center" colspan="7"><italic>Dependent variable</italic>:</th>
+</tr>
+<tr>
+<th align="center">year of first printer</th>
+<th align="center" colspan="2">year of first scientist</th>
+<th align="center" colspan="2">year of first artist</th>
+<th align="center" colspan="2">year of first political leader</th>
+</tr>
+<tr>
+<th align="center"><italic>First Stage</italic><break/>(1)</th>
+<th align="center"><italic>OLS</italic><break/>(2)</th>
+<th align="center"><italic>IV</italic><break/>(3)</th>
+<th align="center"><italic>OLS</italic><break/>(4)</th>
+<th align="center"><italic>IV</italic><break/>(5)</th>
+<th align="center"><italic>OLS</italic><break/>(6)</th>
+<th align="center"><italic>IV</italic><break/>(7)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">distance to Mainz</td>
+<td align="center">0.010<xref ref-type="table-fn" rid="t002fn003">**</xref><break/>(0.003)</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">year of first printer</td>
+<td align="center"/>
+<td align="center">4.870<xref ref-type="table-fn" rid="t002fn003">**</xref><break/>(1.425)</td>
+<td align="center">12.900<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(5.655)</td>
+<td align="center">6.552<xref ref-type="table-fn" rid="t002fn004">***</xref><break/>(1.740)</td>
+<td align="center">12.956<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(6.194)</td>
+<td align="center">3.036<break/>(1.809)</td>
+<td align="center">−1.955<break/>(4.988)</td>
+</tr>
+<tr>
+<td align="left">population</td>
+<td align="center">−3.280<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(1.644)</td>
+<td align="center">−18.507<break/>(19.035)</td>
+<td align="center">−5.089<break/>(24.651)</td>
+<td align="center">−37.476<break/>(21.950)</td>
+<td align="center">−38.083<break/>(24.072)</td>
+<td align="center">−64.311<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(26.015)</td>
+<td align="center">−68.651<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(27.613)</td>
+</tr>
+<tr>
+<td align="left">constant<break/></td>
+<td align="center">55.853<xref ref-type="table-fn" rid="t002fn004">***</xref><break/>(16.207)</td>
+<td align="center">294.220<break/>(203.821)</td>
+<td align="center">−69.230<break/>(346.180)</td>
+<td align="center">383.895<break/>(231.540)</td>
+<td align="center">215.241<break/>(297.534)</td>
+<td align="center">719.812<xref ref-type="table-fn" rid="t002fn002">*</xref><break/>(275.779)</td>
+<td align="center">908.366<xref ref-type="table-fn" rid="t002fn003">**</xref><break/>(337.974)</td>
+</tr>
+<tr>
+<td align="left">Observations</td>
+<td align="center">82</td>
+<td align="center">73</td>
+<td align="center">73</td>
+<td align="center">70</td>
+<td align="center">70</td>
+<td align="center">77</td>
+<td align="center">77</td>
+</tr>
+<tr>
+<td align="left">R<sup>2</sup></td>
+<td align="center">0.132</td>
+<td align="center">0.163</td>
+<td align="center"/>
+<td align="center">0.202</td>
+<td align="center"/>
+<td align="center">0.113</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">Adjusted R<sup>2</sup></td>
+<td align="center">0.111</td>
+<td align="center">0.139</td>
+<td align="center"/>
+<td align="center">0.178</td>
+<td align="center"/>
+<td align="center">0.089</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">F Statistic</td>
+<td align="center">6.032<xref ref-type="table-fn" rid="t002fn003">**</xref></td>
+<td align="center">6.833<xref ref-type="table-fn" rid="t002fn003">**</xref></td>
+<td align="center"/>
+<td align="center">8.496<xref ref-type="table-fn" rid="t002fn004">***</xref></td>
+<td align="center"/>
+<td align="center">4.732<xref ref-type="table-fn" rid="t002fn002">*</xref></td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">F Statistic df</td>
+<td align="center">2; 79</td>
+<td align="center">2; 70</td>
+<td align="center"/>
+<td align="center">2; 67</td>
+<td align="center"/>
+<td align="center">2; 74</td>
+<td align="center"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001">
+<p>Note:</p>
+</fn>
+<fn id="t002fn002">
+<p>*p&lt;0.05;</p>
+</fn>
+<fn id="t002fn003">
+<p>**p&lt;0.01;</p>
+</fn>
+<fn id="t002fn004">
+<p>***p&lt;0.001</p>
+</fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Next, we look at the occupations associated with the biographies in Pantheon 2.0 dataset at each period in time. <xref ref-type="fig" rid="pone.0205771.g003">Fig 3</xref> shows the fraction of biographies corresponding to each occupation category for each period split into the technological eras defined by the introduction of communication technologies. First, comparing <xref ref-type="fig" rid="pone.0205771.g003">Fig 3A and 3B</xref> we see that printing is associated with an increase in the fraction of painters, composers, and scientists (such as physicists, mathematicians, and astronomers), in Wikipedia’s biographical records. It is also, associated with a decrease in the fraction of religious figures. Second, radio, a technology spread at about the same time as film, (<xref ref-type="fig" rid="pone.0205771.g003">Fig 3B and 3C</xref>) was accompanied by a shift towards the performing arts and an increase in the fraction of actors, singers, and musicians in Wikipedia’s biographical records. Finally, with the introduction of television (<xref ref-type="fig" rid="pone.0205771.g003">Fig 3C and 3D</xref>) we see the rise of sports players—such as soccer players, basketball players, and race-car drivers—and the consolidation of performing artists.</p>
+<fig id="pone.0205771.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Composition of occupations for the biographies in Pantheon 2.0.</title>
+<p>For the period between (A) 1-1450, (B) 1450-1880, (C) 1880-1950, and (D) 1950-2000.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.g003" xlink:type="simple"/>
+</fig>
+<p>
+<xref ref-type="table" rid="pone.0205771.t003">Table 3</xref> shows the results of regressing the number of performing artists born each year in each country, the number of sports players, and the number of scientists, on the number of radios, and the number of televisions. Since we are dealing with panel data, all models in <xref ref-type="table" rid="pone.0205771.t003">Table 3</xref> include country fixed effects and year fixed effects. Country fixed effects control for unobserved time-invariant country characteristics, and year fixed effects control for time-varying world characteristics. The results show that, after controlling for GDP and population, countries that had more radios and television were the birthplace of more famous performing artists, and sports players. Moreover, radios and televisions have no correlation with the number of scientists born each year in each country. In fact, the difference in the explanatory between models (8) and (9) from <xref ref-type="table" rid="pone.0205771.t003">Table 3</xref> is not significant (p-value∼0.19), while the difference between models (2) and (3), and (5) and (6) are significant (p-value∼10<sup>−16</sup>). Despite the fact we have added two time-varying country level controls (population and GDP), there may be other unobserved confounding factors that may render our correlations spurious. Nevertheless, our results provide evidence of the link between radio and performing arts, and between television and sports, which could be the matter of future studies.</p>
+<table-wrap id="pone.0205771.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0205771.t003</object-id>
+<label>Table 3</label>
+<caption>
+<title>Correlation between number of radios and television and the birth of memorable characters.</title>
+<p>We explore the correlation between the number of radios and televisions a country has each year, with the number of performing artists, sports players, and scientists born each year, after controlling for GDP, population, and adding country fixed effects and year fixed effects. Reported errors correspond to robust standard errors. All quantities are calculated yearly between 1850 and 1973, and are in log scale.</p>
+</caption>
+<alternatives>
+<graphic id="pone.0205771.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.t003" xlink:type="simple"/>
+<table border="0" frame="box" rules="all">
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="3"/>
+<th align="center" colspan="9"><italic>Dependent variable</italic>:</th>
+</tr>
+<tr>
+<th align="center" colspan="3">number of performing artists</th>
+<th align="center" colspan="3">number of sports players</th>
+<th align="center" colspan="3">number of scientists</th>
+</tr>
+<tr>
+<th align="center">(1)</th>
+<th align="center">(2)</th>
+<th align="center">(3)</th>
+<th align="center">(4)</th>
+<th align="center">(5)</th>
+<th align="center">(6)</th>
+<th align="center">(7)</th>
+<th align="center">(8)</th>
+<th align="center">(9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">n. of radios</td>
+<td align="center">0.037<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.005)</td>
+<td align="center"/>
+<td align="center">0.031<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.005)</td>
+<td align="center">0.027<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.004)</td>
+<td align="center"/>
+<td align="center">0.029<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.004)</td>
+<td align="center">0.003<break/>(0.004)</td>
+<td align="center"/>
+<td align="center">−0.003<break/>(0.004)</td>
+</tr>
+<tr>
+<td align="left">n. of televisions</td>
+<td align="center">0.079<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.009)</td>
+<td align="center"/>
+<td align="center">0.072<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.009)</td>
+<td align="center">0.040<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.006)</td>
+<td align="center"/>
+<td align="center">0.042<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.006)</td>
+<td align="center">−0.001<break/>(0.006)</td>
+<td align="center"/>
+<td align="center">−0.007<break/>(0.006)</td>
+</tr>
+<tr>
+<td align="left">GDP</td>
+<td align="center"/>
+<td align="center">0.477<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.069)</td>
+<td align="center">0.312<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.067)</td>
+<td align="center"/>
+<td align="center">0.091<break/>(0.050)</td>
+<td align="center">−0.033<break/>(0.050)</td>
+<td align="center"/>
+<td align="center">0.218<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.043)</td>
+<td align="center">0.235<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.044)</td>
+</tr>
+<tr>
+<td align="left">population</td>
+<td align="center"/>
+<td align="center">−0.283<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.070)</td>
+<td align="center">−0.158<xref ref-type="table-fn" rid="t003fn002">*</xref><break/>(0.068)</td>
+<td align="center"/>
+<td align="center">−0.135<xref ref-type="table-fn" rid="t003fn002">*</xref><break/>(0.053)</td>
+<td align="center">−0.041<break/>(0.052)</td>
+<td align="center"/>
+<td align="center">−0.044<break/>(0.044)</td>
+<td align="center">−0.056<break/>(0.044)</td>
+</tr>
+<tr>
+<td align="left">constant</td>
+<td align="center">−0.144<break/>(0.099)</td>
+<td align="center">0.154<break/>(0.573)</td>
+<td align="center">−0.310<break/>(0.538)</td>
+<td align="center">−0.198<xref ref-type="table-fn" rid="t003fn004">***</xref><break/>(0.052)</td>
+<td align="center">0.965<xref ref-type="table-fn" rid="t003fn002">*</xref><break/>(0.377)</td>
+<td align="center">0.599<break/>(0.366)</td>
+<td align="center">−0.017<break/>(0.101)</td>
+<td align="center">−1.046<xref ref-type="table-fn" rid="t003fn003">**</xref><break/>(0.362)</td>
+<td align="center">−1.001<xref ref-type="table-fn" rid="t003fn003">**</xref><break/>(0.364)</td>
+</tr>
+<tr>
+<td align="left">fixed effects:</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="left">country</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td align="left">year</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td align="left">Obs.</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+<td align="center">3,011</td>
+</tr>
+<tr>
+<td align="left">R<sup>2</sup></td>
+<td align="center">0.638</td>
+<td align="center">0.622</td>
+<td align="center">0.645</td>
+<td align="center">0.576</td>
+<td align="center">0.551</td>
+<td align="center">0.578</td>
+<td align="center">0.539</td>
+<td align="center">0.556</td>
+<td align="center">0.557</td>
+</tr>
+<tr>
+<td align="left">Adj. R<sup>2</sup></td>
+<td align="center">0.615</td>
+<td align="center">0.599</td>
+<td align="center">0.623</td>
+<td align="center">0.549</td>
+<td align="center">0.523</td>
+<td align="center">0.552</td>
+<td align="center">0.511</td>
+<td align="center">0.529</td>
+<td align="center">0.529</td>
+</tr>
+<tr>
+<td align="left">F Statistic</td>
+<td align="center">28.49<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">26.65<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">29.10<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">21.97<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">19.90<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">21.92<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">18.98<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">20.29<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+<td align="center">20.09<xref ref-type="table-fn" rid="t003fn004">***</xref></td>
+</tr>
+<tr>
+<td align="left">F Statistic df</td>
+<td align="center">175</td>
+<td align="center">175</td>
+<td align="center">177</td>
+<td align="center">175</td>
+<td align="center">175</td>
+<td align="center">177</td>
+<td align="center">175</td>
+<td align="center">175</td>
+<td align="center">177</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001">
+<p>Note:</p>
+</fn>
+<fn id="t003fn002">
+<p>*p&lt;0.05;</p>
+</fn>
+<fn id="t003fn003">
+<p>**p&lt;0.01;</p>
+</fn>
+<fn id="t003fn004">
+<p>***p&lt;0.001</p>
+</fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec004" sec-type="conclusions">
+<title>Discussion</title>
+<p>The famous Canadian philosopher of communication Marshall McLuhan coined the phrase “the medium is the message” to convey his belief that communication technologies were more consequential to society than the messages uttered through them. In this paper we follow this tradition by statistically studying how communication technologies affect the biographies present in our modern digital historical records. As noted earlier, we are by no means the first ones to tackle this question [<xref ref-type="bibr" rid="pone.0205771.ref006">6</xref>–<xref ref-type="bibr" rid="pone.0205771.ref019">19</xref>, <xref ref-type="bibr" rid="pone.0205771.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0205771.ref031">31</xref>, <xref ref-type="bibr" rid="pone.0205771.ref053">53</xref>–<xref ref-type="bibr" rid="pone.0205771.ref057">57</xref>]. Nevertheless, we contribute to this literature by using two large biographical datasets (one of them for the first time), together with an instrumental variable approach to quantify the effect of the introduction of printing, radio, and television in the volume and composition of the biographies present in modern digital historical records.</p>
+<p>As previously noted by Lance Strate [<xref ref-type="bibr" rid="pone.0205771.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0205771.ref057">57</xref>], communication technologies change the characteristics of our “heroes.” From oral culture to broadcasting, the “hero” is a human figure that serves as an object of admiration, aspiration, and at times, worship [<xref ref-type="bibr" rid="pone.0205771.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0205771.ref022">22</xref>, <xref ref-type="bibr" rid="pone.0205771.ref057">57</xref>]. Strate notes that because oral culture was concerned with the preservation of information, oral heroes are “heavy” figures; memorable, larger than life, mythological, and characterized by their incredible actions. Most of them are either kings in charge of ruling vast empires, or religious figures that have performed impossible deeds (see <xref ref-type="fig" rid="pone.0205771.g003">Fig 3A</xref>). With the introduction of the printing press literacy replaced orality and heavy figures were no longer necessary. Literacy allowed for a greater number of heroes (see <xref ref-type="fig" rid="pone.0205771.g001">Fig 1</xref>), each of whom were more realistic and sensible. The tales of kings and saints became enriched with stories of ordinary people pursuing a larger diversity of careers [<xref ref-type="bibr" rid="pone.0205771.ref015">15</xref>] (see <xref ref-type="fig" rid="pone.0205771.g003">Fig 3B</xref>). During this time, ideas became more important than actions, giving way to printing heroes such as the author, inventor, composer, and scientist [<xref ref-type="bibr" rid="pone.0205771.ref022">22</xref>].</p>
+<p>The spread of printing was fast across Europe. In less than forty years the price of books fell by two-thirds, transforming the ways in which ideas and data were disseminated, and thus the conditions for intellectual work. The social and economic effects of printing were discussed in detail by the printing historian Elizabeth Eisenstein [<xref ref-type="bibr" rid="pone.0205771.ref014">14</xref>, <xref ref-type="bibr" rid="pone.0205771.ref015">15</xref>] who argued that printing not only changed the number of books printed during the Renaissance, but also who the authors of these books were and what these books were about. According to Eisenstein, printing shifted the relative focus of society away from religious texts—which were a staple output of the scribal culture that preceded printing—and towards more art and science books. Printing scaled up the production of all texts, including religious texts, but the access to secular books grew at a much higher rate than the access to religious books.</p>
+<p>Printing not only provided a new complementary media for scientists and artists to better disseminate their work, but it also enabled the proliferation of academic resources. These two mechanisms contributed to making cities that were early adopters of printing the birthplaces of scientists and artists (see <xref ref-type="table" rid="pone.0205771.t002">Table 2</xref>). Our results show precisely that. Moreover, we find that printing had no effect in a city’s chance of being the birthplace of a memorable political or religious leader (see Tables <xref ref-type="table" rid="pone.0205771.t001">1</xref> and <xref ref-type="table" rid="pone.0205771.t002">2</xref>, for religious leaders see Section B.1 in <xref ref-type="supplementary-material" rid="pone.0205771.s001">S1 Appendix</xref>).</p>
+<p>Printing is often argued to be one of the most “access cost-reducing inventions” in history [<xref ref-type="bibr" rid="pone.0205771.ref016">16</xref>]. Because of this, historians have argued that printing boosted the sciences and arts by facilitating a “combinatory intellectual activity” [<xref ref-type="bibr" rid="pone.0205771.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0205771.ref016">16</xref>, <xref ref-type="bibr" rid="pone.0205771.ref058">58</xref>]. In fact, the same specification strategy used in this paper was used to show that early adoption of printing led to higher GDP growth rates [<xref ref-type="bibr" rid="pone.0205771.ref018">18</xref>]. In economic terms, cities that adopted printing earlier benefited from localized spillovers in human capital accumulation, leading to a higher chance of producing a successful scientist or artist. Despite the impact of printing being a generally accepted fact, it would be unfair to say that printing created the modern world [<xref ref-type="bibr" rid="pone.0205771.ref016">16</xref>]. Our work contributes to this debate by showing that printing was indeed one factor, without claiming it was the only one.</p>
+<p>The second and third changes in media studied here were the introduction of radio and film in the early twentieth century, and the introduction of television in the second half of the twentieth. Film gave rise to the star system, when after 1910 certain identifiable movie actors began to be preferred over others [<xref ref-type="bibr" rid="pone.0205771.ref055">55</xref>]. Radio and television, on the other hand, favor fast dissemination of information over space, rather than preservation over time [<xref ref-type="bibr" rid="pone.0205771.ref013">13</xref>, <xref ref-type="bibr" rid="pone.0205771.ref021">21</xref>]. When content is quickly flashing in and out of attention, there is little time to focus on ideas. Instead, images and performances become more relevant. This is something we observe in our data, as society moves to broadcasting technologies, performers take a bigger portion of history (see <xref ref-type="fig" rid="pone.0205771.g003">Fig 3C</xref>).</p>
+<p>Television has been argued to strongly favor entertainment content [<xref ref-type="bibr" rid="pone.0205771.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0205771.ref053">53</xref>, <xref ref-type="bibr" rid="pone.0205771.ref054">54</xref>]. Neil Postman discussed the societal effect of television in the United States, and argued that television not only created new types of content, such as sports, but also affected existing types of content. News reporting on television, for example, favored simple sentences to make reading on the air more effective [<xref ref-type="bibr" rid="pone.0205771.ref054">54</xref>], as opposed to the more complex sentences that were common in newspapers. Because television favored entertainment, it should be associated with the biographies of performers, such as actors and singers, and with biographies of sports players, but not with the biographies of scientists, whose content is not as fitting for television as that of entertainers. Our results show that even after controlling for population and GDP, the number of televisions and radios present in a country correlate with the number of performers and sports players born in each country. Moreover, the correlation between television and sports players is stronger than between radios and sports players (see <xref ref-type="table" rid="pone.0205771.t003">Table 3</xref>). In some sense, television “invented” sports stars, since due to its immediate nature [<xref ref-type="bibr" rid="pone.0205771.ref012">12</xref>] it favored entertainment content that was more valuable when consumed live.</p>
+<p>We have discussed the impact of three major changes in media: printing press, film and radio, and television. Something these changes in media have in common is that the changes in the content that was recorded following each one always favored the occupations of those who can best express their work using the new media. The rise of printing, for instance, was followed by more composers recorded in our historical records, but not by more singers or musicians (see <xref ref-type="fig" rid="pone.0205771.g003">Fig 3</xref>). In the same way, film promoted the actor over the play-writer. In fact, changes in media helped include in our historical records occupations that had long existed, but that were not prominently recorded. For example, both Ancient Greek and Elizabethan English playwrights employed actors, but performers were not recorded in the absence of a technology capable of recording performances—such as film.</p>
+<p>Our findings also contribute to the discussion around the idea of technological determinism [<xref ref-type="bibr" rid="pone.0205771.ref059">59</xref>]. Technological determinism is the problem of identifying causal relations between technology and society [<xref ref-type="bibr" rid="pone.0205771.ref060">60</xref>], and is marked by a tension between two opposing views [<xref ref-type="bibr" rid="pone.0205771.ref059">59</xref>]. On the “hard” end of the spectrum, we have the idea that the power to affect change is in the technology itself. On the “soft” end, the agency is not in the technology, but in a far more complex array of social, political, economical, and cultural factors. Under this soft view, technology is as a mediating factor, rather than the driving force since it mostly reflects the influence of socioeconomic forces that drive history [<xref ref-type="bibr" rid="pone.0205771.ref061">61</xref>]. Our work clearly identifies a causal relation between the spread of printing and the occupations of people that are recorded by history, thus documenting a clear societal impact of a new technology. This impact is not economic or political, but cultural, and can thus add to the debate about technological determinism.</p>
+<p>Finally, we note that observations for most recent years need to be interpreted carefully for two reasons. First, the more recent biographies in our dataset contain a mix of characters that are memorable (e.g. Barack Obama, as the first African American president of the United States) with characters whose presence in today’s biographical records may not necessarily be long lasting (like teen pop icons and reality show celebrities). So the picture obtained for recent decades is not the one we expect to be representative of those decades in the future. Nevertheless, we can safely assume that this issue does not affect our historical data prior to the twentieth century, since these transient effects should not last for centuries after a person’s death. Second, we note that data for the most recent years is also affected by differences in the life cycle of an individual’s memorability, since individuals with different careers peak at different ages. Soccer players, for example, peak around their late twenties or early thirties [<xref ref-type="bibr" rid="pone.0205771.ref062">62</xref>], so our dataset should contain all soccer players born in the 1950s that became memorable players. Political leaders and scientists, on the other hand, often become globally memorable much later in life [<xref ref-type="bibr" rid="pone.0205771.ref063">63</xref>], and hence, we may be missing some influential individuals who are yet to reach global recognition. Both of these effects imply that fifty years from now the fraction of our biographical records allocated to sports players will be smaller than what we observe in our data today. In other words, we expect the biographical records to change as time continues to elapse.</p>
+<p>Prior to printing, our heroes were part of the most powerful institutional elites in the world. Now, we live in a world in which history is almost personalized, since billions of individuals now leave traces that could be used to reconstruct biographical data through personal acts of communication (emails, text messages, and social media posts). Of course, this does not mean that everyone will become memorable, but maybe that memorability will now have a chance to spread over a wider number of people who may now enjoy intermediate levels of memorability and fame. This is an effect that has already been observed in the context of creative industries [<xref ref-type="bibr" rid="pone.0205771.ref064">64</xref>]. Going forward, the rise of digitized historical records will help us continue the statistical study of these and other hypotheses, and maybe guide our speculation about the nature of the heroes of the future.</p>
+</sec>
+<sec id="sec005">
+<title>Supporting information</title>
+<supplementary-material id="pone.0205771.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0205771.s001" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title>Online Appendix includes: 1) Extended data and methods, 2) Supplementary results, and 3) Table of occupations for Pantheon 2.0.</title>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0205771.ref001">
+<label>1</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Innis</surname> <given-names>H</given-names></name>. <source>The Bias of Communication</source>. <publisher-loc>Toronto</publisher-loc>: <publisher-name>Toronto University Press</publisher-name>; <year>1951</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref002">
+<label>2</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Peters</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Buxton</surname> <given-names>WJ</given-names></name>, <name name-style="western"><surname>Cheney</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Heyer</surname> <given-names>P</given-names></name>. <source>Harold Innis’s History of Communications: Paper and Printing—Antiquity to Early Modernity</source>. <publisher-name>Rowman &amp; Littlefield</publisher-name>; <year>2014</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref003">
+<label>3</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Adorno</surname> <given-names>TW</given-names></name>, <name name-style="western"><surname>Horkheimer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tiedemann</surname> <given-names>R</given-names></name>. <source>Dialektik der Aufklärung: Philosophische Fragmente</source>. <publisher-name>Suhrkamp</publisher-name>; <year>1997</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref004">
+<label>4</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Marcuse</surname> <given-names>H</given-names></name>. <source>One-dimensional man: Studies in the ideology of advanced industrial society</source>. <publisher-name>Routledge</publisher-name>; <year>2013</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref005">
+<label>5</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Herman</surname> <given-names>ES</given-names></name>, <name name-style="western"><surname>Chomsky</surname> <given-names>N</given-names></name>. <source>Manufacturing consent: The political economy of the mass media</source>. <publisher-name>Random House</publisher-name>; <year>2010</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref006">
+<label>6</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Ong</surname> <given-names>WJR</given-names></name>, <name name-style="western"><surname>Ramus</surname> <given-names>S</given-names></name>. <source>Method, and the Decay of Dialogue: From the Art of Discourse to the Art of Reason</source>. <year>1958</year>. <publisher-loc>Cambridge</publisher-loc>: <publisher-name>Harvard UP</publisher-name>. 1983.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref007">
+<label>7</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Ong</surname> <given-names>WJ</given-names></name>. <source>Orality and literacy</source>. <publisher-name>Routledge</publisher-name>; <year>2013</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref008">
+<label>8</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Havelock</surname> <given-names>EA</given-names></name>. <source>Preface to plato</source>. <volume>vol. 1</volume>. <publisher-name>Harvard University Press</publisher-name>; <year>2009</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref009">
+<label>9</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Goody</surname> <given-names>J</given-names></name>. <source>The domestication of the savage mind</source>. <publisher-name>Cambridge University Press</publisher-name>; <year>1977</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref010">
+<label>10</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Parry</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Parry</surname> <given-names>A</given-names></name>. <source>The making of Homeric verse: The collected papers of Milman Parry</source>. <publisher-name>Oxford University Press</publisher-name> on Demand; <year>1987</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref011">
+<label>11</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Lord</surname> <given-names>AB</given-names></name>, <name name-style="western"><surname>Mitchell</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Nagy</surname> <given-names>G</given-names></name>. <source>The singer of tales</source>. <volume>vol. 24</volume>. <publisher-name>Harvard University Press</publisher-name>; <year>2000</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref012">
+<label>12</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Postman</surname> <given-names>N</given-names></name>. <source>Amusing ourselves to death: Public discourse in the age of television</source>. <publisher-name>Penguin Books</publisher-name>; <year>1985</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref013">
+<label>13</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>McLuhan</surname> <given-names>M</given-names></name>. <source>Understanding Media: The Extensions of Man</source>. <publisher-loc>London</publisher-loc>: <publisher-name>Routledge &amp; K</publisher-name>; <year>1964</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref014">
+<label>14</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Eisenstein</surname> <given-names>EL</given-names></name>. <source>The Printing Revolution in Early Modern Europe</source>. <publisher-loc>Cambridge</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>; <year>1983</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref015">
+<label>15</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Eisenstein</surname> <given-names>EL</given-names></name>. <source>The Printing Press as an Agent of Change</source>. <publisher-loc>Cambridge, United Kingdom</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>; <year>1979</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref016">
+<label>16</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Mokyr</surname> <given-names>J</given-names></name>. <article-title>Long-term economic growth and the history of technology</article-title>. <source>Handbook of economic growth</source>. <year>2005</year>;<volume>1</volume>:<fpage>1113</fpage>–<lpage>1180</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S1574-0684(05)01017-8" xlink:type="simple">10.1016/S1574-0684(05)01017-8</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref017">
+<label>17</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Mokyr</surname> <given-names>J</given-names></name>. <chapter-title>Urbanization, technological progress, and economic history</chapter-title>. In: <source>Urban agglomeration and economic growth</source>. <publisher-name>Springer</publisher-name>; <year>1995</year>. p. <fpage>3</fpage>–<lpage>37</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref018">
+<label>18</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Dittmar</surname> <given-names>JE</given-names></name>. <article-title>Information technology and economic change: the impact of the printing press</article-title>. <source>The Quarterly Journal of Economics</source>. <year>2011</year>;<volume>126</volume>(<issue>3</issue>):<fpage>1133</fpage>–<lpage>1172</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/qje/qjr035" xlink:type="simple">10.1093/qje/qjr035</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref019">
+<label>19</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Poe</surname> <given-names>MT</given-names></name>. <source>A History of Communications: Media and Society from the Evolution of Speech to the Internet</source>. <publisher-name>Cambridge University Press</publisher-name>; <year>2010</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref020">
+<label>20</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Yu</surname> <given-names>AZ</given-names></name>, <name name-style="western"><surname>Ronen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Hidalgo</surname> <given-names>CA</given-names></name>. <article-title>Pantheon 1.0, a manually verified dataset of globally famous biographies</article-title>. <source>Scientific Data</source>. <year>2016</year>;<volume>3</volume>:<fpage>150075</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sdata.2015.75" xlink:type="simple">10.1038/sdata.2015.75</ext-link></comment> <object-id pub-id-type="pmid">26731133</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref021">
+<label>21</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Strate</surname> <given-names>L</given-names></name>. <article-title>Heroes, fame and the media</article-title>. <source>Et cetera</source>. <year>1985</year>;<volume>42</volume>:<fpage>47</fpage>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref022">
+<label>22</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Carlyle</surname> <given-names>T</given-names></name>. <source>On heroes, hero-worship, and the heroic in history</source>. <volume>vol. 1</volume>. <publisher-name>Univ of California Press</publisher-name>; <year>1993</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref023">
+<label>23</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Angrist</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Pischke</surname> <given-names>JS</given-names></name>. <chapter-title>Instrumental Variables in Action: Sometimes You Get What You Need</chapter-title>. In: <source>Mostly harmless econometrics: An empiricist’s companion</source>. <publisher-name>Princeton university press</publisher-name>; <year>2008</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref024">
+<label>24</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Rubin</surname> <given-names>J</given-names></name>. <article-title>Printing and Protestants: an empirical test of the role of printing in the Reformation</article-title>. <source>Review of Economics and Statistics</source>. <year>2014</year>;<volume>96</volume>(<issue>2</issue>):<fpage>270</fpage>–<lpage>286</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1162/REST_a_00368" xlink:type="simple">10.1162/REST_a_00368</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref025">
+<label>25</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Comin</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hobijn</surname> <given-names>B</given-names></name>. <article-title>Cross-country technology adoption: making the theories face the facts</article-title>. <source>Journal of monetary Economics</source>. <year>2004</year>;<volume>51</volume>(<issue>1</issue>):<fpage>39</fpage>–<lpage>83</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jmoneco.2003.07.003" xlink:type="simple">10.1016/j.jmoneco.2003.07.003</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref026">
+<label>26</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Murray</surname> <given-names>C</given-names></name>. <source>Human Accomplishment</source>. <publisher-loc>New York City</publisher-loc>: <publisher-name>Harper Collins</publisher-name>; <year>2003</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref027">
+<label>27</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wick M, Vatant B. The geonames geographical database. Available from World Wide Web: <ext-link ext-link-type="uri" xlink:href="http://geonames.org" xlink:type="simple">http://geonames.org</ext-link>. 2012.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref028">
+<label>28</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Skiena</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Ward</surname> <given-names>CB</given-names></name>. <source>Who’s Bigger?: Where Historical Figures Really Rank</source>. <publisher-name>Cambridge University Press</publisher-name>; <year>2013</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref029">
+<label>29</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Michel</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>YK</given-names></name>, <name name-style="western"><surname>Aiden</surname> <given-names>AP</given-names></name>, <name name-style="western"><surname>Veres</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gray</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Pickett</surname> <given-names>JP</given-names></name>, <etal>et al</etal>. <article-title>Quantitative analysis of culture using millions of digitized books</article-title>. <source>Science</source>. <year>2011</year>;<volume>331</volume>(<issue>6014</issue>):<fpage>176</fpage>–<lpage>182</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1199644" xlink:type="simple">10.1126/science.1199644</ext-link></comment> <object-id pub-id-type="pmid">21163965</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref030">
+<label>30</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Turchin</surname> <given-names>P</given-names></name>. <article-title>Arise ‘cliodynamics’</article-title>. <source>Nature</source>. <year>2008</year>;<volume>454</volume>(<issue>7200</issue>):<fpage>34</fpage>–<lpage>35</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/454034a" xlink:type="simple">10.1038/454034a</ext-link></comment> <object-id pub-id-type="pmid">18596791</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref031">
+<label>31</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Spinney</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>History as science</article-title>. <source>Nature</source>. <year>2012</year>;<volume>488</volume>(<issue>7409</issue>):<fpage>24</fpage>–<lpage>26</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/488024a" xlink:type="simple">10.1038/488024a</ext-link></comment> <object-id pub-id-type="pmid">22859185</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref032">
+<label>32</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Schich</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Song</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Ahn</surname> <given-names>YY</given-names></name>, <name name-style="western"><surname>Mirsky</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Martino</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Barabási</surname> <given-names>AL</given-names></name>, <etal>et al</etal>. <article-title>A network framework of cultural history</article-title>. <source>Science</source>. <year>2014</year>;<volume>345</volume>(<issue>6196</issue>):<fpage>558</fpage>–<lpage>562</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1240064" xlink:type="simple">10.1126/science.1240064</ext-link></comment> <object-id pub-id-type="pmid">25082701</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref033">
+<label>33</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Wuchty</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Jones</surname> <given-names>BF</given-names></name>, <name name-style="western"><surname>Uzzi</surname> <given-names>B</given-names></name>. <article-title>The increasing dominance of teams in production of knowledge</article-title>. <source>Science</source>. <year>2007</year>;<volume>316</volume>(<issue>5827</issue>):<fpage>1036</fpage>–<lpage>1039</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1136099" xlink:type="simple">10.1126/science.1136099</ext-link></comment> <object-id pub-id-type="pmid">17431139</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref034">
+<label>34</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Sinatra</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Deville</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Song</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Barabási</surname> <given-names>AL</given-names></name>. <article-title>Quantifying the evolution of individual scientific impact</article-title>. <source>Science</source>. <year>2016</year>;<volume>354</volume>(<issue>6312</issue>):<fpage>aaf5239</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.aaf5239" xlink:type="simple">10.1126/science.aaf5239</ext-link></comment> <object-id pub-id-type="pmid">27811240</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref035">
+<label>35</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Fortunato</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Bergstrom</surname> <given-names>CT</given-names></name>, <name name-style="western"><surname>Börner</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Evans</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Helbing</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Milojević</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Science of science</article-title>. <source>Science</source>. <year>2018</year>;<volume>359</volume>(<issue>6379</issue>):<fpage>eaao0185</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.aao0185" xlink:type="simple">10.1126/science.aao0185</ext-link></comment> <object-id pub-id-type="pmid">29496846</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref036">
+<label>36</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Ronen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Gonçalves</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>KZ</given-names></name>, <name name-style="western"><surname>Vespignani</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Pinker</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hidalgo</surname> <given-names>CA</given-names></name>. <article-title>Links that speak: The global language network and its association with global fame</article-title>. <source>Proceedings of the National Academy of Sciences</source>. <year>2014</year>;<volume>111</volume>(<issue>52</issue>):<fpage>E5616</fpage>–<lpage>E5622</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.1410931111" xlink:type="simple">10.1073/pnas.1410931111</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref037">
+<label>37</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Dodds</surname> <given-names>PS</given-names></name>, <name name-style="western"><surname>Clark</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Desu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Frank</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Reagan</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>JR</given-names></name>, <etal>et al</etal>. <article-title>Human language reveals a universal positivity bias</article-title>. <source>Proceedings of the National Academy of Sciences</source>. <year>2015</year>;<volume>112</volume>(<issue>8</issue>):<fpage>2389</fpage>–<lpage>2394</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.1411678112" xlink:type="simple">10.1073/pnas.1411678112</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref038">
+<label>38</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Van de Rijt</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Shor</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ward</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Skiena</surname> <given-names>S</given-names></name>. <article-title>Only 15 minutes? The social stratification of fame in printed media</article-title>. <source>American Sociological Review</source>. <year>2013</year>;<volume>78</volume>(<issue>2</issue>):<fpage>266</fpage>–<lpage>289</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/0003122413480362" xlink:type="simple">10.1177/0003122413480362</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref039">
+<label>39</label>
+<mixed-citation publication-type="other" xlink:type="simple">Karimi F, Bohlin L, Samoilenko A, Rosvall M, Lancichinetti A. Quantifying national information interests using the activity of Wikipedia editors. arXiv preprint arXiv:150305522. 2015.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref040">
+<label>40</label>
+<mixed-citation publication-type="other" xlink:type="simple">ISTC. Incunabula Short Title Catalogue. British Library; 1998.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref041">
+<label>41</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Füssel</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Martin</surname> <given-names>D</given-names></name>. <source>Gutenberg and the Impact of Printing</source>. <volume>vol. 9</volume>. <publisher-name>Ashgate Burlington</publisher-name>; <year>2005</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref042">
+<label>42</label>
+<mixed-citation publication-type="other" xlink:type="simple">Van Zanden JL. Common workmen, philosophers and the birth of the European knowledge economy: about the price and the production of useful knowledge in Europe 1350-1800. In: GEHN Conference on Useful Knowledge, Leiden; 2004.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref043">
+<label>43</label>
+<mixed-citation publication-type="other" xlink:type="simple">Clark G. Lifestyles of the Rich and Famous: Living Costs of the Rich versus the Poor in England, 1209-1869,” Paper presented in conference, Towards a global history of prices and wages (2004). Available on-line at: <ext-link ext-link-type="uri" xlink:href="http://www.iisg.nl/hpw/papers/clark.pdf" xlink:type="simple">http://www.iisg.nl/hpw/papers/clark.pdf</ext-link>. 2004.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref044">
+<label>44</label>
+<mixed-citation publication-type="other" xlink:type="simple">Bureau USC. World Population; 2015. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.census.gov/population/international/data/worldpop/table_population.php" xlink:type="simple">http://www.census.gov/population/international/data/worldpop/table_population.php</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref045">
+<label>45</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Reba</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Reitsma</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Seto</surname> <given-names>KC</given-names></name>. <article-title>Spatializing 6,000 years of global urbanization from 3700 BC to AD 2000</article-title>. <source>Scientific data</source>. <year>2016</year>;<volume>3</volume>:<fpage>160034</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sdata.2016.34" xlink:type="simple">10.1038/sdata.2016.34</ext-link></comment> <object-id pub-id-type="pmid">27271481</object-id></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref046">
+<label>46</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wikipedia. Wikipedia:Systemic bias; 2011. Available from: <ext-link ext-link-type="uri" xlink:href="https://en.wikipedia.org/wiki/Wikipedia:Systemic_bias" xlink:type="simple">https://en.wikipedia.org/wiki/Wikipedia:Systemic_bias</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref047">
+<label>47</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Heaberlin</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>DeDeo</surname> <given-names>S</given-names></name>. <article-title>The evolution of Wikipedia’s norm network</article-title>. <source>Future Internet</source>. <year>2016</year>;<volume>8</volume>(<issue>2</issue>):<fpage>14</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/fi8020014" xlink:type="simple">10.3390/fi8020014</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref048">
+<label>48</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wikipedia. Wikipedia:Notability (people); 2005. Available from: <ext-link ext-link-type="uri" xlink:href="https://en.wikipedia.org/wiki/Wikipedia:Notability_(people)" xlink:type="simple">https://en.wikipedia.org/wiki/Wikipedia:Notability_(people)</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref049">
+<label>49</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Pentzold</surname> <given-names>C</given-names></name>. <article-title>Fixing the floating gap: The online encyclopaedia Wikipedia as a global memory place</article-title>. <source>Memory Studies</source>. <year>2009</year>;<volume>2</volume>(<issue>2</issue>):<fpage>255</fpage>–<lpage>272</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1750698008102055" xlink:type="simple">10.1177/1750698008102055</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref050">
+<label>50</label>
+<mixed-citation publication-type="other" xlink:type="simple">Ferron M, Massa P. Collective memory building in Wikipedia: the case of North African uprisings. In: Proceedings of the 7th International Symposium on Wikis and Open Collaboration. ACM; 2011. p. 114–123.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref051">
+<label>51</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Killick</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Eckley</surname> <given-names>I</given-names></name>. <article-title>Changepoint: An R package for changepoint analysis</article-title>. <source>Journal of Statistical Software</source>. <year>2014</year>;<volume>58</volume>(<issue>3</issue>):<fpage>1</fpage>–<lpage>19</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.18637/jss.v058.i03" xlink:type="simple">10.18637/jss.v058.i03</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref052">
+<label>52</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Morgan</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Winship</surname> <given-names>C</given-names></name>. <source>Counterfactuals and causal inference</source>. <publisher-name>Cambridge University Press</publisher-name>; <year>2015</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref053">
+<label>53</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Moran</surname> <given-names>TP</given-names></name>. <article-title>Politics 1984: That’s Entertainment</article-title>. <source>ETC: A Review of General Semantics</source>. <year>1984</year>; p. <fpage>117</fpage>–<lpage>129</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref054">
+<label>54</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Stephens</surname> <given-names>M</given-names></name>. <chapter-title>Television transforms the news</chapter-title>. <source>Communication in History, Technology, Culture, Society</source>. <year>1991</year>; p. <fpage>237</fpage>–<lpage>43</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref055">
+<label>55</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Fowles</surname> <given-names>J</given-names></name>. <chapter-title>Mass media and the star system</chapter-title>. <year>1999</year>), <source>Communication in history–Technology, culture, society</source>. 1999;<volume>3</volume>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref056">
+<label>56</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Crowley</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Heyer</surname> <given-names>P</given-names></name>. <source>Communication in history: Technology, culture, society</source>. <publisher-name>Routledge</publisher-name>; <year>2015</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref057">
+<label>57</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Strate</surname> <given-names>L</given-names></name>. <article-title>The faces of a thousand heroes: The impact of visual communication technologies on the culture hero</article-title>. <source>New Jersey Journal of Communication</source>. <year>1995</year>;<volume>3</volume>(<issue>1</issue>):<fpage>26</fpage>–<lpage>39</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/15456879509367275" xlink:type="simple">10.1080/15456879509367275</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref058">
+<label>58</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Gilmore</surname> <given-names>MP</given-names></name>. <source>The World Of Humanism</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Harper</publisher-name>. <year>1952</year>; p. <fpage>1453</fpage>–<lpage>1517</lpage>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref059">
+<label>59</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Smith</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Marx</surname> <given-names>L</given-names></name>. <source>Does technology drive history?: The dilemma of technological determinism</source>. <publisher-name>Mit Press</publisher-name>; <year>1994</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref060">
+<label>60</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>CHANT</surname> <given-names>C</given-names></name>. <source>Does Technology Drive History? The Dilemma of Technological Determinism</source>; <year>1996</year>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref061">
+<label>61</label>
+<mixed-citation publication-type="journal" xlink:type="simple">
+<name name-style="western"><surname>Heilbroner</surname> <given-names>RL</given-names></name>. <article-title>Do machines make history?</article-title> <source>Technology and culture</source>. <year>1967</year>;<volume>8</volume>(<issue>3</issue>):<fpage>335</fpage>–<lpage>345</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2307/3101719" xlink:type="simple">10.2307/3101719</ext-link></comment></mixed-citation>
+</ref>
+<ref id="pone.0205771.ref062">
+<label>62</label>
+<mixed-citation publication-type="other" xlink:type="simple">Carter B. When do footballers reach their peak?; 2014. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.bbc.com/news/magazine-28254123" xlink:type="simple">http://www.bbc.com/news/magazine-28254123</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref063">
+<label>63</label>
+<mixed-citation publication-type="other" xlink:type="simple">Wikipedia. List of US Presidents by age; 2016. Available from: <ext-link ext-link-type="uri" xlink:href="http://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States_by_age" xlink:type="simple">http://en.wikipedia.org/wiki/List_of_Presidents_of_the_United_States_by_age</ext-link>.</mixed-citation>
+</ref>
+<ref id="pone.0205771.ref064">
+<label>64</label>
+<mixed-citation publication-type="book" xlink:type="simple">
+<name name-style="western"><surname>Hitt</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Anderson</surname> <given-names>C</given-names></name>. <source>The Long Tail: Why the Future of Business Is Selling Less of More</source>; <year>2007</year>.</mixed-citation>
+</ref>
+</ref-list>
+</back>
+</article>

@@ -10,17 +10,21 @@
     "test": "node --import tsx --test tests/*.test.ts",
     "check:model-drift": "tsx scripts/check-openrouter-model-drift.ts",
     "check": "tsc --noEmit",
-    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='\"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js\"' --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp && esbuild src/scientific-v2-lineage-inspector.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/scientific-v2-lineage-inspector.mjs --external:mongodb",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='\"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js\"' --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp && esbuild src/scientific-v2-lineage-inspector.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/scientific-v2-lineage-inspector.mjs --external:mongodb && esbuild src/svg-review.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/svg-review.cjs --define:import.meta.url='\"file:///app/dist/svg-review.cjs\"'",
     "start": "node dist/server.cjs"
   },
   "dependencies": {
+    "@hyzyla/pdfium": "2.1.13",
     "@paperbanana/benchmark-core": "workspace:*",
     "@resvg/resvg-wasm": "2.6.2",
     "ali-oss": "^6.23.0",
+    "elkjs": "0.12.0",
     "express": "^5.1.0",
     "fflate": "0.8.3",
     "jpeg-js": "0.4.4",
     "mongodb": "^6.18.0",
+    "pdfjs-dist": "5.4.624",
+    "saxes": "6.0.0",
     "sharp": "0.35.3",
     "undici": "7.29.0"
   },

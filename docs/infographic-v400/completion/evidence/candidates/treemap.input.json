@@ -1,0 +1,48 @@
+{
+  "figureTypeId": "treemap",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "root",
+        "label": "All",
+        "parent": null,
+        "value": 10
+      },
+      {
+        "id": "a",
+        "label": "Group A",
+        "parent": "root",
+        "value": 6
+      },
+      {
+        "id": "b",
+        "label": "Group B",
+        "parent": "root",
+        "value": 4
+      },
+      {
+        "id": "a1",
+        "label": "A1",
+        "parent": "a",
+        "value": 2
+      },
+      {
+        "id": "a2",
+        "label": "A2",
+        "parent": "a",
+        "value": 4
+      }
+    ],
+    "units": {
+      "value": "count"
+    },
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

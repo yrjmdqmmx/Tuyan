@@ -1,0 +1,211 @@
+{
+  "doi": "10.1371/journal.pcbi.1010086",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010086",
+  "title": "Connectivity concepts in neuronal network modeling",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Johanna Senk",
+    "Birgit Kriener",
+    "Mikael Djurfeldt",
+    "Nicole Voges",
+    "Han-Jia Jiang",
+    "Lisa Schüttler",
+    "Gabriele Gramelsberger",
+    "Markus Diesmann",
+    "Hans E. Plesser",
+    "Sacha J. van Albada"
+  ],
+  "year": "2022",
+  "license": "2022\nSenk et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1010086.g001",
+      "label": "Fig 1",
+      "caption": "Spiking neuron network simulations of a balanced random network with (A) fixed in-degree and (B) fixed out-degree.\nTop left: Raster plots show spike times of 50 out of 10, 000 excitatory (E) and 50 out of 2, 500 inhibitory (I) neurons. Bottom left: Time-resolved spike rate from spike-count histogram across time with temporal bin width of 5 ms. Top right: Per-neuron spike rate from spike-count histogram for individual neurons. Bottom right: Normalized distribution of per-neuron spike rates with bin width of 2/s. Model details are given in Section “Materials and methods”.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Spiking neuron network simulations of a balanced random network with (A) fixed in-degree and (B) fixed out-degree.</title>\n<p>Top left: Raster plots show spike times of 50 out of 10, 000 excitatory (E) and 50 out of 2, 500 inhibitory (I) neurons. Bottom left: Time-resolved spike rate from spike-count histogram across time with temporal bin width of 5 ms. Top right: Per-neuron spike rate from spike-count histogram for individual neurons. Bottom right: Normalized distribution of per-neuron spike rates with bin width of 2/s. Model details are given in Section “<xref ref-type=\"sec\" rid=\"sec042\">Materials and methods</xref>”.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g002",
+      "label": "Fig 2",
+      "caption": "Metadata: When, where, and by whom were article and code published?\n(A) Pie chart of repositories storing model code. “ModelDB”: section Microcircuit DB Connectionist Networks of ModelDB. “OSB”: Open Source Brain. (B) Abbreviated journal name in stacked, horizontal bar plot. (C) Year of publication in bar plot. (D) Location of all authors’ labs based on affiliations as Venn diagram. Intersections indicate collaborations between labs situated on different continents. Not included in the diagram are two publications of which all authors are affiliated with labs only in Australia and South America, respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Metadata: When, where, and by whom were article and code published?</title>\n<p>(A) Pie chart of repositories storing model code. “ModelDB”: section Microcircuit DB <italic>Connectionist Networks</italic> of ModelDB. “OSB”: Open Source Brain. (B) Abbreviated journal name in stacked, horizontal bar plot. (C) Year of publication in bar plot. (D) Location of all authors’ labs based on affiliations as Venn diagram. Intersections indicate collaborations between labs situated on different continents. Not included in the diagram are two publications of which all authors are affiliated with labs only in Australia and South America, respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g003",
+      "label": "Fig 3",
+      "caption": "Description: How does the article describe the connectivity and is the description complete?\n(A) Location of connectivity description. “Main”: in main manuscript; “Reference”: reference to other publication; “Supplement”: in separate file belonging to the same publication. (B) Means used to describe connectivity. Descriptions of the parameterization of connections are only counted if they are crucial for understanding whether connections exist. (C) Reference to model implementation in manuscript. “Software”: name of software given; “URL”: explicit hyperlink or DOI referencing published code; “Version”: software version given; “None”: implementation not mentioned (number of occurrences given in legend). Intersections in panels A–C mean that the connectivity is described in different locations, a combination of different means is used, and different references to the model implementation are given, respectively. (D) Whether connectivity is just specified as “random” or a connection probability is given without defining the connection rule. (E) Whether description is insufficient or inconclusive for implementing the network model.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Description: How does the article describe the connectivity and is the description complete?</title>\n<p>(A) Location of connectivity description. “Main”: in main manuscript; “Reference”: reference to other publication; “Supplement”: in separate file belonging to the same publication. (B) Means used to describe connectivity. Descriptions of the parameterization of connections are only counted if they are crucial for understanding whether connections exist. (C) Reference to model implementation in manuscript. “Software”: name of software given; “URL”: explicit hyperlink or DOI referencing published code; “Version”: software version given; “None”: implementation not mentioned (number of occurrences given in legend). Intersections in panels A–C mean that the connectivity is described in different locations, a combination of different means is used, and different references to the model implementation are given, respectively. (D) Whether connectivity is just specified as “random” or a connection probability is given without defining the connection rule. (E) Whether description is insufficient or inconclusive for implementing the network model.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g004",
+      "label": "Fig 4",
+      "caption": "Implementation: How is the connectivity technically implemented?\n(A) Name of software framework (dedicated simulator or general-purpose software). (B) Implementation of connections. “Custom”: hard-coded; “Built-in”: routine from dedicated simulator. The intersection means that a part of the network connectivity is explicitly coded in a general-purpose language and another part uses built-in simulator functionality.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Implementation: How is the connectivity technically implemented?</title>\n<p>(A) Name of software framework (dedicated simulator or general-purpose software). (B) Implementation of connections. “Custom”: hard-coded; “Built-in”: routine from dedicated simulator. The intersection means that a part of the network connectivity is explicitly coded in a general-purpose language and another part uses built-in simulator functionality.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g005",
+      "label": "Fig 5",
+      "caption": "Network: How are network nodes and edges characterized?\n(A) Interpretation of network nodes. “Single neuron”: connections exist between single neuronal units; “Population”: connections are established between nodes that represent multiple neurons. (B) Dynamics of the nodes. “Rate”: continuous signal; “Spiking”: spiking mechanism; “Binary”: on-off mechanism. (C) Plasticity. “Static”: identity of connections and weight values fixed; “Plastic”: potential changes of connections and weights during simulation. The intersections in panels A and C refer to models which have both properties in different parts of the networks.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Network: How are network nodes and edges characterized?</title>\n<p>(A) Interpretation of network nodes. “Single neuron”: connections exist between single neuronal units; “Population”: connections are established between nodes that represent multiple neurons. (B) Dynamics of the nodes. “Rate”: continuous signal; “Spiking”: spiking mechanism; “Binary”: on-off mechanism. (C) Plasticity. “Static”: identity of connections and weight values fixed; “Plastic”: potential changes of connections and weights during simulation. The intersections in panels A and C refer to models which have both properties in different parts of the networks.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g006",
+      "label": "Fig 6",
+      "caption": "Concepts: Which connectivity concepts are realized?\n(A) Whether connections in the model are probabilistic or deterministic. (B) Whether at least some part of the model contains distance-dependent connections. (C) Name of deterministic connectivity rule specifying the connectivity in at least a part of the model network (compare Fig 7A and 7B). (D) Name of probabilistic connectivity rule specifying the connectivity in at least a part of the model network (compare Fig 7C–7F). One network model can use multiple deterministic and probabilistic rules or may use none of the given rules; therefore the numbers of models in panels C and D do not add up to the total number of studies. (E) Whether self-connections are allowed (illustrated in Fig 7G). The intersections in panels A, B, and E refer to models which have different properties in different parts of the networks. (F) Whether multiple connections from a source node to a target node are allowed (illustrated in Fig 7H).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Concepts: Which connectivity concepts are realized?</title>\n<p>(A) Whether connections in the model are probabilistic or deterministic. (B) Whether at least some part of the model contains distance-dependent connections. (C) Name of deterministic connectivity rule specifying the connectivity in at least a part of the model network (compare <xref ref-type=\"fig\" rid=\"pcbi.1010086.g007\">Fig 7A and 7B</xref>). (D) Name of probabilistic connectivity rule specifying the connectivity in at least a part of the model network (compare <xref ref-type=\"fig\" rid=\"pcbi.1010086.g007\">Fig 7C–7F</xref>). One network model can use multiple deterministic and probabilistic rules or may use none of the given rules; therefore the numbers of models in panels C and D do not add up to the total number of studies. (E) Whether self-connections are allowed (illustrated in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g007\">Fig 7G</xref>). The intersections in panels A, B, and E refer to models which have different properties in different parts of the networks. (F) Whether multiple connections from a source node to a target node are allowed (illustrated in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g007\">Fig 7H</xref>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g007",
+      "label": "Fig 7",
+      "caption": "Connectivity patterns reflecting the most common rules.\nThe ordered set of sources S is depicted by the green squares on the left. They are connected to the ordered set of targets T, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with K_{in} connections per target node. (D) Random, fixed out-degree with K_{out} connections per source node. (E) Random, fixed total number of connections N_{syn}. (F) Pairwise Bernoulli with connection probability p. (G) Autapse (self-connection). (H) Multapse (multi-connection).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Connectivity patterns reflecting the most common rules.</title>\n<p>The ordered set of sources <inline-formula id=\"pcbi.1010086.e001\"><alternatives><graphic id=\"pcbi.1010086.e001g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e001\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M1\"><ns1:mi mathvariant=\"script\">S</ns1:mi></ns1:math></alternatives></inline-formula> is depicted by the green squares on the left. They are connected to the ordered set of targets <inline-formula id=\"pcbi.1010086.e002\"><alternatives><graphic id=\"pcbi.1010086.e002g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e002\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M2\"><ns1:mi mathvariant=\"script\">T</ns1:mi></ns1:math></alternatives></inline-formula>, depicted by the orange squares on the right. The respective in- and out-degrees are given next to the nodes. (A) One-to-one. (B) All-to-all. (C) Random, fixed in-degree with <italic>K</italic><sub>in</sub> connections per target node. (D) Random, fixed out-degree with <italic>K</italic><sub>out</sub> connections per source node. (E) Random, fixed total number of connections <italic>N</italic><sub>syn</sub>. (F) Pairwise Bernoulli with connection probability <italic>p</italic>. (G) Autapse (self-connection). (H) Multapse (multi-connection).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pcbi.1010086.e001g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g008",
+      "label": "Fig 8",
+      "caption": "Quick reference for the proposed graphical notation for network models in computational neuroscience.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Quick reference for the proposed graphical notation for network models in computational neuroscience.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g009",
+      "label": "Fig 9",
+      "caption": "Different means to describe connectivity of a balanced random network.\nExample descriptions for the model used in Fig 1A with description means similar to Fig 3B. (A) Network diagram according to the graphical notation introduced in Section “Proposal for a graphical notation for network models”. Symbols in annotations refer to the concepts and not the explicit parameters. (B) Textual description of the model layout. Subscript “T E” labels connections from source population E to target population T ∈ { E , I }; the same applies to “T I” with source population I. K in, T E and K in, T I represent the explicit values used for the in-degrees. (C) Table according to the guidelines by Nordlie et al. [84]. (D) Equations according to the Connection Set Algebra (CSA) [58] using the index sets E and I. (E) PyNEST source code [63] specifying connections from source (pre) to target (post) populations with a connection dictionary (conn_spec). The use of all-to-all instead of one-to-one connectivity here is due to the specific implementation of the external drive in NEST.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Different means to describe connectivity of a balanced random network.</title>\n<p>Example descriptions for the model used in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g001\">Fig 1A</xref> with description means similar to <xref ref-type=\"fig\" rid=\"pcbi.1010086.g003\">Fig 3B</xref>. (A) Network diagram according to the graphical notation introduced in Section “Proposal for a graphical notation for network models”. Symbols in annotations refer to the concepts and not the explicit parameters. (B) Textual description of the model layout. Subscript “<inline-formula id=\"pcbi.1010086.e093\"><alternatives><graphic id=\"pcbi.1010086.e093g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e093\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M93\"><ns1:mrow><ns1:mi mathvariant=\"script\">T</ns1:mi> <ns1:mspace width=\"0.166667em\" /><ns1:mtext>E</ns1:mtext></ns1:mrow></ns1:math></alternatives></inline-formula>” labels connections from source population E to target population <inline-formula id=\"pcbi.1010086.e094\"><alternatives><graphic id=\"pcbi.1010086.e094g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e094\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M94\"><ns1:mrow><ns1:mi mathvariant=\"script\">T</ns1:mi> <ns1:mo>∈</ns1:mo> <ns1:mo>{</ns1:mo> <ns1:mtext>E</ns1:mtext> <ns1:mo>,</ns1:mo> <ns1:mspace width=\"0.166667em\" /><ns1:mtext>I</ns1:mtext> <ns1:mo>}</ns1:mo></ns1:mrow></ns1:math></alternatives></inline-formula>; the same applies to “<inline-formula id=\"pcbi.1010086.e095\"><alternatives><graphic id=\"pcbi.1010086.e095g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e095\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M95\"><ns1:mrow><ns1:mi mathvariant=\"script\">T</ns1:mi> <ns1:mspace width=\"0.166667em\" /><ns1:mtext>I</ns1:mtext></ns1:mrow></ns1:math></alternatives></inline-formula>” with source population I. <inline-formula id=\"pcbi.1010086.e096\"><alternatives><graphic id=\"pcbi.1010086.e096g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e096\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M96\"><ns1:msub><ns1:mi>K</ns1:mi> <ns1:mrow><ns1:mtext>in,</ns1:mtext> <ns1:mi mathvariant=\"script\">T</ns1:mi> <ns1:mspace width=\"0.166667em\" /><ns1:mtext>E</ns1:mtext></ns1:mrow></ns1:msub></ns1:math></alternatives></inline-formula> and <inline-formula id=\"pcbi.1010086.e097\"><alternatives><graphic id=\"pcbi.1010086.e097g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e097\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M97\"><ns1:msub><ns1:mi>K</ns1:mi> <ns1:mrow><ns1:mtext>in,</ns1:mtext> <ns1:mi mathvariant=\"script\">T</ns1:mi> <ns1:mspace width=\"0.166667em\" /><ns1:mtext>I</ns1:mtext></ns1:mrow></ns1:msub></ns1:math></alternatives></inline-formula> represent the explicit values used for the in-degrees. (C) Table according to the guidelines by Nordlie et al. [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref084\">84</xref>]. (D) Equations according to the Connection Set Algebra (CSA) [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref058\">58</xref>] using the index sets <italic>E</italic> and <italic>I</italic>. (E) PyNEST source code [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref063\">63</xref>] specifying connections from source (<monospace>pre</monospace>) to target (<monospace>post</monospace>) populations with a connection dictionary (<monospace>conn_spec</monospace>). The use of all-to-all instead of one-to-one connectivity here is due to the specific implementation of the external drive in NEST.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pcbi.1010086.e093g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e093",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g010",
+      "label": "Fig 10",
+      "caption": "Multi-layer microcircuit model with three inhibitory neuron types.\n(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in Fig 8. The connectivity is described with the rules “one-to-one” (δ) and “pairwise Bernoulli” (p), and the constraints autapses allowed (A) and multapses prohibited (M). The synaptic weights (w) and delays (d) are specified as either constant (i.e., w ¯) or sampled from lognormal distributions (i.e., w ∼ LN). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pcbi.1010086.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Multi-layer microcircuit model with three inhibitory neuron types.</title>\n<p>(A) Schematic overview of all neuronal populations, external inputs, and main connections. Inhibitory populations are grouped by boxes. In panels A and B, for probabilistic connections, only those with a probability of at least 4% are shown (thin lines: 4 to 8%, thick lines: ≥8%). (B) Detailed L2/3 connectivity between excitatory population and all three inhibitory populations; in panel A these connections are combined in two arrows (from and to the box). (C) Excitatory-inhibitory subnetwork with external inputs depicted with annotations according to the graphical notation in <xref ref-type=\"fig\" rid=\"pcbi.1010086.g008\">Fig 8</xref>. The connectivity is described with the rules “one-to-one” (<italic>δ</italic>) and “pairwise Bernoulli” (<italic>p</italic>), and the constraints autapses allowed (<italic>A</italic>) and multapses prohibited (<inline-formula id=\"pcbi.1010086.e102\"><alternatives><graphic id=\"pcbi.1010086.e102g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e102\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M102\"><ns1:menclose notation=\"updiagonalstrike\"><ns1:mi>M</ns1:mi></ns1:menclose></ns1:math></alternatives></inline-formula>). The synaptic weights (<italic>w</italic>) and delays (<italic>d</italic>) are specified as either constant (i.e., <inline-formula id=\"pcbi.1010086.e103\"><alternatives><graphic id=\"pcbi.1010086.e103g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e103\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M103\"><ns1:mover><ns1:mi>w</ns1:mi> <ns1:mo>¯</ns1:mo></ns1:mover></ns1:math></alternatives></inline-formula>) or sampled from lognormal distributions (i.e., <inline-formula id=\"pcbi.1010086.e104\"><alternatives><graphic id=\"pcbi.1010086.e104g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.e104\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M104\"><ns1:mi>w</ns1:mi> <ns1:mo>∼</ns1:mo> <ns1:mrow><ns1:mi mathvariant=\"script\">L</ns1:mi><ns1:mi mathvariant=\"script\">N</ns1:mi></ns1:mrow></ns1:math></alternatives></inline-formula>). Interneuron types: somatostatin expressing (SOM), vasoactive intestinal peptide expressing (VIP), parvalbumin expressing (PV).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pcbi.1010086.e102g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.e102",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g011",
+      "label": "Fig 11",
+      "caption": "Two-dimensional spatial network with patchy long-range connections.\n(A) Spatial networks need to be defined in terms of dimension, layout, metric, boundary conditions, and the spatial or distance dependence of the connectivity, where applicable. In this example, neurons have both local and structured long-range connections [97]. Θ(x) = 0 if x < 0, 1 otherwise. (B) Sketch of patchy connectivity and parameters needed to define p_{patch}. (C) Graphical notation of network connectivity corresponding to Fig 8.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Two-dimensional spatial network with patchy long-range connections.</title>\n<p>(A) Spatial networks need to be defined in terms of dimension, layout, metric, boundary conditions, and the spatial or distance dependence of the connectivity, where applicable. In this example, neurons have both local and structured long-range connections [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref097\">97</xref>]. Θ(<italic>x</italic>) = 0 if <italic>x</italic> &lt; 0, 1 otherwise. (B) Sketch of patchy connectivity and parameters needed to define <italic>p</italic><sub>patch</sub>. (C) Graphical notation of network connectivity corresponding to <xref ref-type=\"fig\" rid=\"pcbi.1010086.g008\">Fig 8</xref>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g011\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g011",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g012",
+      "label": "Fig 12",
+      "caption": "Description of balanced random network models following the guidelines of Nordlie et al. [84].\nDistinction between “fixed in-degree” and “fixed out-degree” versions.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g012\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g012</object-id>\n<label>Fig 12</label>\n<caption>\n<title>Description of balanced random network models following the guidelines of Nordlie et al. [<xref ref-type=\"bibr\" rid=\"pcbi.1010086.ref084\">84</xref>].</title>\n<p>Distinction between “fixed in-degree” and “fixed out-degree” versions.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g012\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g012",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g013",
+      "label": "Fig 13",
+      "caption": "Continuation of Fig 12.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g013\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g013</object-id>\n<label>Fig 13</label>\n<caption>\n<title>Continuation of <xref ref-type=\"fig\" rid=\"pcbi.1010086.g012\">Fig 12</xref>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g013\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g013",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g014",
+      "label": "Fig 14",
+      "caption": "Continuation of Fig 13.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g014\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g014</object-id>\n<label>Fig 14</label>\n<caption>\n<title>Continuation of <xref ref-type=\"fig\" rid=\"pcbi.1010086.g013\">Fig 13</xref>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g014\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g014",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1010086.g015",
+      "label": "Fig 15",
+      "caption": "Simulation and network parameters.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g015\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g015</object-id>\n<label>Fig 15</label>\n<caption>\n<title>Simulation and network parameters.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g015\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g015",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

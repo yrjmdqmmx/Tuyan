@@ -1,0 +1,64 @@
+{
+  "typeId": "qq",
+  "computations": {
+    "probabilities": [
+      0.1,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "referenceQuantiles": [
+      2.0,
+      6.0,
+      10.0,
+      14.0,
+      18.0
+    ],
+    "sampleQuantiles": [
+      -1.2,
+      -0.4,
+      0.0,
+      0.7,
+      1.4
+    ],
+    "plottingPosition": "(i - 0.5) / n",
+    "parameterSource": "supplied; not fitted"
+  },
+  "checks": {
+    "sample_order_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "quantile_order_violations": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "value"
+    ],
+    "options": {
+      "reference": "sample",
+      "referenceValues": [
+        0,
+        10,
+        20
+      ],
+      "referenceUnit": "dimensionless",
+      "plottingPosition": "hazen"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

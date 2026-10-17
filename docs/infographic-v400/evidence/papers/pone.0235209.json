@@ -1,0 +1,69 @@
+{
+  "doi": "10.1371/journal.pone.0235209",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0235209",
+  "title": "Assisting students’ writing with computer-based concept map feedback: A validation study of the CohViz feedback system",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Christian Burkhart",
+    "Andreas Lachner",
+    "Matthias Nückles"
+  ],
+  "year": "2020",
+  "license": "2020\nBurkhart et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0235209.g001",
+      "label": "Fig 1",
+      "caption": "Example of a concept map generated from CohViz.\nColored fragments indicate concepts that are not related to the rest of the concepts and are thus indicative of a problem in cohesion. For example, the writer did not relate the first two sentences, leading to a fragmented concept map. The concept map contains three fragments, 13 concepts, and 13 relations.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0235209.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0235209.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a concept map generated from CohViz.</title>\n<p>Colored fragments indicate concepts that are not related to the rest of the concepts and are thus indicative of a problem in cohesion. For example, the writer did not relate the first two sentences, leading to a fragmented concept map. The concept map contains three fragments, 13 concepts, and 13 relations.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0235209.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0235209.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0235209.g002",
+      "label": "Fig 2",
+      "caption": "Depiction of the four step procedure of the CohViz feedback.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0235209.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0235209.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Depiction of the four step procedure of the CohViz feedback.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0235209.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0235209.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0235209.g003",
+      "label": "Fig 3",
+      "caption": "Convergent and divergent features of the validity study.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0235209.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0235209.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Convergent and divergent features of the validity study.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0235209.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0235209.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0235209.g004",
+      "label": "Fig 4",
+      "caption": "Depiction of the data analysis procedure for the reliability and validity study.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0235209.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0235209.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Depiction of the data analysis procedure for the reliability and validity study.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0235209.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0235209.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

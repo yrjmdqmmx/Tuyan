@@ -1,0 +1,46 @@
+{
+  "doi": "10.1371/journal.pone.0274948",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274948",
+  "title": "Implications of disparities in social and built environment antecedents to adult nature engagement",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Linda Powers Tomasso",
+    "Jose Guillermo Cedeño Laurent",
+    "Jarvis T. Chen",
+    "John D. Spengler"
+  ],
+  "year": "2022",
+  "license": "2022\nTomasso et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0274948.g001",
+      "label": "Fig 1",
+      "caption": "Conceptual framework describing a general model of exposure pathways to nature engagement identified through qualitative methods.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0274948.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0274948.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Conceptual framework describing a general model of exposure pathways to nature engagement identified through qualitative methods.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0274948.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0274948.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0274948.g002",
+      "label": "Fig 2",
+      "caption": "Focus group locations.\nTen focus groups were held in four metropolitan regions and at a national conference of federal conservation officials. U.S. map is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0274948.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0274948.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Focus group locations.</title>\n<p>Ten focus groups were held in four metropolitan regions and at a national conference of federal conservation officials. U.S. map is made available under the Creative Commons CC0 1.0 Universal Public Domain Dedication.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0274948.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0274948.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

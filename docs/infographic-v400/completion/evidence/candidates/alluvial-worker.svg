@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="432pt" viewBox="0 0 648 432" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 432  L 648 432  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 3.00024 409.43976  L 644.99976 409.43976  L 644.99976 27.80024  L 3.00024 27.80024  z " style="fill: #ffffff" />
+   </g>
+   <g id="patch_3">
+    <path d="M 70.904035 392.846737  L 83.25018 392.846737  L 83.25018 208.47982  L 70.904035 208.47982  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_4">
+    <path d="M 70.904035 191.886797  L 83.25018 191.886797  L 83.25018 44.393263  L 70.904035 44.393263  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_5">
+    <path d="M 317.826928 392.846737  L 330.173072 392.846737  L 330.173072 282.226587  L 317.826928 282.226587  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_6">
+    <path d="M 317.826928 265.633564  L 330.173072 265.633564  L 330.173072 44.393263  L 317.826928 44.393263  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_7">
+    <path d="M 564.74982 392.846737  L 577.095965 392.846737  L 577.095965 134.733052  L 564.74982 134.733052  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_8">
+    <path d="M 564.74982 118.14003  L 577.095965 118.14003  L 577.095965 44.393263  L 564.74982 44.393263  z " clip-path="url(#p2ca93ef158)" style="fill: #506956; opacity: 0.8; stroke: #506956; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_9">
+    <path d="M 83.25018 392.846737  C 188.809716 392.846737 212.267391 392.846737 317.826928 392.846737  L 317.826928 282.226587  C 212.267391 282.226587 188.809716 282.226587 83.25018 282.226587  z " clip-path="url(#p2ca93ef158)" style="fill: #487968; opacity: 0.45" />
+   </g>
+   <g id="patch_10">
+    <path d="M 330.173072 392.846737  C 435.732609 392.846737 459.190284 392.846737 564.74982 392.846737  L 564.74982 282.226587  C 459.190284 282.226587 435.732609 282.226587 330.173072 282.226587  z " clip-path="url(#p2ca93ef158)" style="fill: #487968; opacity: 0.45" />
+   </g>
+   <g id="patch_11">
+    <path d="M 83.25018 282.226587  C 188.809716 282.226587 212.267391 265.633564 317.826928 265.633564  L 317.826928 191.886797  C 212.267391 191.886797 188.809716 208.47982 83.25018 208.47982  z " clip-path="url(#p2ca93ef158)" style="fill: #c58b53; opacity: 0.45" />
+   </g>
+   <g id="patch_12">
+    <path d="M 330.173072 265.633564  C 435.732609 265.633564 459.190284 118.14003 564.74982 118.14003  L 564.74982 44.393263  C 459.190284 44.393263 435.732609 191.886797 330.173072 191.886797  z " clip-path="url(#p2ca93ef158)" style="fill: #c58b53; opacity: 0.45" />
+   </g>
+   <g id="patch_13">
+    <path d="M 83.25018 191.886797  C 188.809716 191.886797 212.267391 191.886797 317.826928 191.886797  L 317.826928 44.393263  C 212.267391 44.393263 188.809716 44.393263 83.25018 44.393263  z " clip-path="url(#p2ca93ef158)" style="fill: #647da6; opacity: 0.45" />
+   </g>
+   <g id="patch_14">
+    <path d="M 330.173072 191.886797  C 435.732609 191.886797 459.190284 282.226587 564.74982 282.226587  L 564.74982 134.733052  C 459.190284 134.733052 435.732609 44.393263 330.173072 44.393263  z " clip-path="url(#p2ca93ef158)" style="fill: #647da6; opacity: 0.45" />
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="77.077108" y="409.43976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 11px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="426.11976" transform="rotate(-0 77.077108 426.11976)">Before</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="324" y="409.43976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 11px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="426.11976" transform="rotate(-0 324 426.11976)">During</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m783222674b" x="570.922892" y="409.43976" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 11px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="426.11976" transform="rotate(-0 570.922892 426.11976)">After</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2" />
+   <g id="patch_15">
+    <path d="M 3.00024 409.43976  L 3.00024 27.80024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_16">
+    <path d="M 3.00024 409.43976  L 644.99976 409.43976  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="text_4">
+    <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="11.80024" transform="rotate(-0 324 11.80024)">Fixed cohort; ribbon width: people</text>
+   </g>
+   <g id="text_5">
+    <g id="patch_17">
+     <path d="M 73.685233 305.623278  L 80.468983 305.623278  L 80.468983 295.703278  L 73.685233 295.703278  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="303.703278" transform="rotate(-0 77.077108 303.703278)">A</text>
+   </g>
+   <g id="text_6">
+    <g id="patch_18">
+     <path d="M 73.488983 123.10003  L 80.665233 123.10003  L 80.665233 113.18003  L 73.488983 113.18003  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="77.077108" y="121.18003" transform="rotate(-0 77.077108 121.18003)">B</text>
+   </g>
+   <g id="text_7">
+    <g id="patch_19">
+     <path d="M 320.488125 342.496662  L 327.511875 342.496662  L 327.511875 332.576662  L 320.488125 332.576662  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="340.576662" transform="rotate(-0 324 340.576662)">C</text>
+   </g>
+   <g id="text_8">
+    <g id="patch_20">
+     <path d="M 320.288125 159.973413  L 327.711875 159.973413  L 327.711875 150.053413  L 320.288125 150.053413  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="158.053413" transform="rotate(-0 324 158.053413)">D</text>
+   </g>
+   <g id="text_9">
+    <g id="patch_21">
+     <path d="M 567.606642 268.749895  L 574.239142 268.749895  L 574.239142 258.829895  L 567.606642 258.829895  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="266.829895" transform="rotate(-0 570.922892 266.829895)">E</text>
+   </g>
+   <g id="text_10">
+    <g id="patch_22">
+     <path d="M 567.754767 86.226646  L 574.091017 86.226646  L 574.091017 76.306646  L 567.754767 76.306646  z " style="fill: #ffffff; opacity: 0.8" />
+    </g>
+    <text style="font-size: 8px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="570.922892" y="84.306646" transform="rotate(-0 570.922892 84.306646)">F</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2ca93ef158">
+   <rect x="3.00024" y="27.80024" width="641.99952" height="381.63952" />
+  </clipPath>
+ </defs>
+</svg>

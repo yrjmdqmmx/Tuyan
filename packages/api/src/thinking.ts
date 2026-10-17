@@ -194,6 +194,8 @@ export function applyThinkingTransport(url: string, options: RequestInit | undef
       : snapshot.protocol === 'gemini-interactions' ? path.endsWith('/interactions')
       : snapshot.protocol === 'bailian-multimodal-generation' ? path.endsWith('/multimodal-generation/generation')
       : snapshot.protocol === 'runware-text' ? ['textInference','caption'].includes(request.taskType)
+      : snapshot.protocol === 'replicate-predictions' && ['main','vision'].includes(snapshot.role)
+        ? snapshot.provider === 'replicate' && parsed.hostname === 'api.replicate.com' && (path === '/v1/predictions' || /^\/v1\/models\/.+\/predictions$/.test(path))
       : ['provider-images','replicate-predictions'].includes(snapshot.protocol) && snapshot.role === 'image'
         ? snapshot.provider === 'fal' ? parsed.hostname === 'queue.fal.run'
           : snapshot.provider === 'replicate' ? parsed.hostname === 'api.replicate.com'

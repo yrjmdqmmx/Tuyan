@@ -3,6 +3,7 @@ import test from 'node:test'
 import fs from 'node:fs'
 import vm from 'node:vm'
 import { stripTypeScriptTypes } from 'node:module'
+import {createMaterialFiles} from '../src/material-files.js'
 import { memoryDb } from '../../../test-support/memory-db.mjs'
 
 // Execute the actual production lifecycle functions with only Mongo, OSS and
@@ -29,7 +30,8 @@ function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : an
     async listFiles({ Prefix, Marker }: any) { assert.equal(Marker, undefined); listed.push(Prefix); return { Contents: [...files].filter((key) => key.startsWith(Prefix)).map((Key) => ({ Key })), IsTruncated: false } },
     async deleteFile(key: string) { if (key === failureKey) throw new Error('mock OSS outage'); deleted.push(key); files.delete(key) },
   }
-  const context = vm.createContext({
+  const materialFilesService=createMaterialFiles({db,bucket:()=>bucket,ownerPrefix:o=>o.userId,assertOwner:async()=>{}})
+  const context = vm.createContext({materialFilesService,
     Date: Clock, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: db.collection('paperbanana_jobs'),
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
     jobAdmission: { freezeOwners() {} }, objectStorage: { bucket: () => bucket }, bucketName: 'fake',
@@ -62,11 +64,13 @@ test('same-email new identity survives old identity deletion, acknowledgement an
   const f = fixture({ jobs: [oldJob, newJob], objects: ['old-job/result.png', 'new-job/result.png', 'references/old-id/a.png', 'references/new-id/a.png', 'references/same-example.test/legacy.png'] })
   await f.db.collection('feedback').insertOne({ _id: 'old-feedback', userId: 'old-id' })
   await f.db.collection('feedback').insertOne({ _id: 'new-feedback', userId: 'new-id', userEmail: 'same@example.test' })
+  for(const userId of ['old-id','new-id']){await f.db.collection('paperbanana_material_files').insertOne({_id:userId,userId,status:'uploaded',expiresAt:new Date('2099-01-01')});await f.db.collection('paperbanana_material_reads').insertOne({_id:userId,userId});}
   await f.db.collection('submissions').insertOne({ _id: 'old-submission', userId: 'old-id' })
   assert.equal((await f.run()).phase, 'awaiting_auth')
   assert.deepEqual(f.db.collection('paperbanana_jobs').rows, [newJob])
   assert.equal(f.db.collection('feedback').rows.length, 1)
   assert.equal(f.db.collection('submissions').rows.length, 0)
+  assert.deepEqual(f.db.collection('paperbanana_material_files').rows.map((r:any)=>r.userId),['new-id']);assert.deepEqual(f.db.collection('paperbanana_material_reads').rows.map((r:any)=>r.userId),['new-id'])
   assert.equal((await f.context.completeAccountDeletion(f.body)).phase, 'completed')
   await f.context.sweepDeletedAccountObjects()
   assert.deepEqual([...f.files].sort(), ['new-job/result.png', 'references/new-id/a.png', 'references/same-example.test/legacy.png'].sort())

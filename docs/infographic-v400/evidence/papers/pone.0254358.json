@@ -1,0 +1,49 @@
+{
+  "doi": "10.1371/journal.pone.0254358",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0254358",
+  "title": "Predicting self-intercepted medication ordering errors using machine learning",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Christopher Ryan King",
+    "Joanna Abraham",
+    "Bradley A. Fritz",
+    "Zhicheng Cui",
+    "William Galanter",
+    "Yixin Chen",
+    "Thomas Kannampallil"
+  ],
+  "year": "2021",
+  "license": "2021\nKing et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0254358.g001",
+      "label": "Fig 1",
+      "caption": "Model performance.\nReceiver operating characteristic curves (left panel) and precision-recall curves (right panel) demonstrating performance of each model in the testing set.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0254358.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0254358.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Model performance.</title>\n<p>Receiver operating characteristic curves (left panel) and precision-recall curves (right panel) demonstrating performance of each model in the testing set.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0254358.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0254358.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0254358.g002",
+      "label": "Fig 2",
+      "caption": "Example partial tree from the DT model showing the causal patterns for medication errors.\nIn this tree, if the decision is false (i.e., not a voided order), take the right branch; similarly, if the decision is true (i.e., voided order), take the left branch. Red and green boxes highlight the positive rates of greater than and less than 5% respectively. Note that this is a small portion of the total tree.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0254358.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0254358.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Example partial tree from the DT model showing the causal patterns for medication errors.</title>\n<p>In this tree, if the decision is false (i.e., not a voided order), take the right branch; similarly, if the decision is true (i.e., voided order), take the left branch. Red and green boxes highlight the positive rates of greater than and less than 5% respectively. Note that this is a small portion of the total tree.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0254358.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0254358.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

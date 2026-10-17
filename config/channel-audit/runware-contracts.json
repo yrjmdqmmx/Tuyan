@@ -72034,5 +72034,4752 @@
     "roles": [
       "image"
     ]
+  },
+  "runware/alibaba:qwen-image@2.1-pro": {
+    "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+    "schemaSource": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json",
+    "schemaSha256": "9b77a0ce4649a0fd74f49dcea205785303483586509a50a53ac53bc566529620",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "x-constraints": [
+        {
+          "operation": "area",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "minimum": 262144,
+          "maximum": 4194304
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "minimum": 0.125,
+          "maximum": 8
+        },
+        {
+          "operation": "fileSize",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "maximum": 10485760,
+          "scope": "each"
+        }
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "alibaba:qwen-image@2.1-pro"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 10
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3000
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 192,
+          "maximum": 4096
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 192,
+          "maximum": 4096
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "promptExtend": {
+              "type": "boolean"
+            },
+            "promptExtendMode": {
+              "type": "string",
+              "oneOf": [
+                {
+                  "const": "direct"
+                },
+                {
+                  "const": "agent"
+                }
+              ]
+            },
+            "thinking": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "promptExtend": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "promptExtend"
+                ]
+              }
+            },
+            "required": [
+              "settings"
+            ]
+          },
+          "then": {
+            "not": {
+              "properties": {
+                "settings": {
+                  "required": [
+                    "thinking"
+                  ]
+                }
+              },
+              "required": [
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "promptExtendMode": {
+                    "const": "direct"
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "width": {},
+              "height": {}
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.075,
+            "unit": "output",
+            "display": "$0.075 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "airport-falconer-editorial-portrait",
+            "configuration": "text-to-image · 1536×1024",
+            "price": 0.075,
+            "latencyMs": 63384
+          },
+          {
+            "id": "abyssal-cable-repair-game-key-art",
+            "configuration": "text-to-image · 1536×1024",
+            "price": 0.075,
+            "latencyMs": 69651
+          },
+          {
+            "id": "sheep-shearing-docuseries-poster",
+            "configuration": "reference-to-image · 1024×1536",
+            "price": 0.075,
+            "latencyMs": 59450
+          },
+          {
+            "id": "antique-automaton-auction-cleanup",
+            "configuration": "reference-to-image · 1024×1536",
+            "price": 0.075,
+            "latencyMs": 27622
+          }
+        ]
+      }
+    },
+    "sourceField": "referenceImages",
+    "maskField": null,
+    "maxImages": 10,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ]
+  },
+  "runware/bfl:flux@3-image": {
+    "source": "https://runware.ai/docs/models/bfl-flux-3-image",
+    "schemaSource": "https://runware.ai/docs/models/bfl-flux-3-image/schema.json",
+    "schemaSha256": "9c167ff79ba454d13cc00c11378ef716b1b9967d5439ad1de9a96d51c34cf41a",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "x-constraints": [
+        {
+          "operation": "width",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 128,
+          "scope": "each"
+        },
+        {
+          "operation": "height",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 128,
+          "scope": "each"
+        }
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bfl:flux@3-image"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 10
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 32000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "0.75K",
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "boundingBoxes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "referenceIndex": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 9
+                  },
+                  "sourceBox": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  },
+                  "targetBox": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1000
+                    },
+                    "minItems": 4,
+                    "maxItems": 4
+                  }
+                },
+                "dependentRequired": {
+                  "sourceBox": [
+                    "referenceIndex"
+                  ]
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "grounding": {
+              "type": "boolean"
+            },
+            "safetyTolerance": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "not": {
+            "allOf": [
+              {
+                "required": [
+                  "resolution"
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "required": [
+                      "width"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "height"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1168
+                  },
+                  "height": {
+                    "const": 496
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1088
+                  },
+                  "height": {
+                    "const": 544
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 576
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 944
+                  },
+                  "height": {
+                    "const": 624
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 912
+                  },
+                  "height": {
+                    "const": 656
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 880
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 688
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 768
+                  },
+                  "height": {
+                    "const": 768
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 688
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 880
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 656
+                  },
+                  "height": {
+                    "const": 912
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 624
+                  },
+                  "height": {
+                    "const": 944
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 576
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 544
+                  },
+                  "height": {
+                    "const": 1088
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 496
+                  },
+                  "height": {
+                    "const": 1168
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1568
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1360
+                  },
+                  "height": {
+                    "const": 768
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1216
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1184
+                  },
+                  "height": {
+                    "const": 880
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 912
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 912
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 880
+                  },
+                  "height": {
+                    "const": 1184
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1216
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 768
+                  },
+                  "height": {
+                    "const": 1360
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 672
+                  },
+                  "height": {
+                    "const": 1568
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3136
+                  },
+                  "height": {
+                    "const": 1344
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2896
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2736
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2512
+                  },
+                  "height": {
+                    "const": 1664
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2416
+                  },
+                  "height": {
+                    "const": 1728
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2368
+                  },
+                  "height": {
+                    "const": 1776
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2288
+                  },
+                  "height": {
+                    "const": 1824
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1824
+                  },
+                  "height": {
+                    "const": 2288
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1776
+                  },
+                  "height": {
+                    "const": 2368
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1728
+                  },
+                  "height": {
+                    "const": 2416
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1664
+                  },
+                  "height": {
+                    "const": 2512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2736
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 2896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1344
+                  },
+                  "height": {
+                    "const": 3136
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 6256
+                  },
+                  "height": {
+                    "const": 2688
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5792
+                  },
+                  "height": {
+                    "const": 2896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5456
+                  },
+                  "height": {
+                    "const": 3072
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5024
+                  },
+                  "height": {
+                    "const": 3344
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4848
+                  },
+                  "height": {
+                    "const": 3456
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4736
+                  },
+                  "height": {
+                    "const": 3552
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4576
+                  },
+                  "height": {
+                    "const": 3664
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4096
+                  },
+                  "height": {
+                    "const": 4096
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3664
+                  },
+                  "height": {
+                    "const": 4576
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3552
+                  },
+                  "height": {
+                    "const": 4736
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3456
+                  },
+                  "height": {
+                    "const": 4848
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3344
+                  },
+                  "height": {
+                    "const": 5024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3072
+                  },
+                  "height": {
+                    "const": 5456
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2896
+                  },
+                  "height": {
+                    "const": 5792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2688
+                  },
+                  "height": {
+                    "const": 6256
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "resolution"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          },
+          "then": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "boundingBoxes": {
+                    "items": {
+                      "properties": {
+                        "referenceIndex": false,
+                        "sourceBox": false,
+                        "targetBox": {
+                          "type": "array"
+                        }
+                      },
+                      "required": [
+                        "targetBox"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/bfl-flux-3-image",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.041,
+            "unit": "output",
+            "label": "0.75K",
+            "display": "$0.041 per image"
+          },
+          {
+            "amount": 0.048,
+            "unit": "output",
+            "label": "1K",
+            "display": "$0.048 per image"
+          },
+          {
+            "amount": 0.1,
+            "unit": "output",
+            "label": "2K",
+            "display": "$0.10 per image"
+          },
+          {
+            "amount": 0.607,
+            "unit": "output",
+            "label": "4K",
+            "display": "$0.607 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "circular-linen-campaign-key-visual",
+            "configuration": "bounding-boxes · 1360×768",
+            "price": 0.024,
+            "latencyMs": 50189
+          },
+          {
+            "id": "rare-manuscript-conservator-portrait",
+            "configuration": "text-to-image · 1360×768",
+            "price": 0.048,
+            "latencyMs": 44132
+          },
+          {
+            "id": "geothermal-utility-campaign-key-visual",
+            "configuration": "text-to-image · 1360×768",
+            "price": 0.048,
+            "latencyMs": 40011
+          },
+          {
+            "id": "maritime-museum-robot-headshot",
+            "configuration": "background-replacement · 2K",
+            "price": 0.05,
+            "latencyMs": 80172
+          },
+          {
+            "id": "library-returns-station-catalogue",
+            "configuration": "reference-bounding-boxes · 2K",
+            "price": 0.05,
+            "latencyMs": 59230
+          },
+          {
+            "id": "grain-inspector-staff-profile-portrait",
+            "configuration": "identity-preservation · 2K",
+            "price": 0.05,
+            "latencyMs": 46423
+          },
+          {
+            "id": "floating-sauna-social-campaign-post",
+            "configuration": "reference-to-image · 2K",
+            "price": 0.1,
+            "latencyMs": 295841
+          },
+          {
+            "id": "seed-library-supper-invitation",
+            "configuration": "reference-to-image · 2K",
+            "price": 0.1,
+            "latencyMs": 363076
+          },
+          {
+            "id": "festival-poster-title-retouch",
+            "configuration": "local-editing · 4K",
+            "price": 0.303,
+            "latencyMs": 99885
+          }
+        ]
+      }
+    },
+    "sourceField": "referenceImages",
+    "maskField": null,
+    "maxImages": 10,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ]
+  },
+  "runware/bytedance:seedream@5.0-flash": {
+    "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+    "schemaSource": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json",
+    "schemaSha256": "a8739385150c79cb6b0dfe53fdf667b813d71fb4e159fb077ba55aa1b4695941",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "x-constraints": [
+        {
+          "operation": "area",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "minimum": 921600,
+          "maximum": 4624220
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "minimum": 0.0625,
+          "maximum": 16
+        },
+        {
+          "operation": "fileSize",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "maximum": 31457280,
+          "scope": "each"
+        },
+        {
+          "operation": "width",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 15,
+          "scope": "each"
+        },
+        {
+          "operation": "height",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 15,
+          "scope": "each"
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 0.0625,
+          "maximum": 16,
+          "scope": "each"
+        },
+        {
+          "operation": "area",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "when": {
+            "absent": [
+              "settings.layerDecomposition"
+            ]
+          },
+          "minimum": 196,
+          "maximum": 36000000,
+          "scope": "each"
+        },
+        {
+          "operation": "area",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "when": {
+            "present": [
+              "settings.layerDecomposition"
+            ]
+          },
+          "minimum": 262144,
+          "maximum": 36000000,
+          "scope": "each"
+        }
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "bytedance:seedream@5.0-flash"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 10
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "1K",
+            "1.5K",
+            "2K"
+          ]
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string",
+              "oneOf": [
+                {
+                  "const": "opaque"
+                },
+                {
+                  "const": "transparent"
+                }
+              ]
+            },
+            "layerDecomposition": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "width",
+              "height"
+            ]
+          }
+        },
+        {
+          "not": {
+            "allOf": [
+              {
+                "properties": {
+                  "settings": {
+                    "properties": {
+                      "background": {
+                        "const": "transparent"
+                      }
+                    },
+                    "required": [
+                      "background"
+                    ]
+                  }
+                },
+                "required": [
+                  "settings"
+                ]
+              },
+              {
+                "properties": {
+                  "settings": {
+                    "properties": {
+                      "layerDecomposition": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "layerDecomposition"
+                    ]
+                  }
+                },
+                "required": [
+                  "settings"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "layerDecomposition": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "layerDecomposition"
+                ]
+              }
+            },
+            "required": [
+              "settings"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "width"
+                  ]
+                },
+                {
+                  "required": [
+                    "height"
+                  ]
+                },
+                {
+                  "required": [
+                    "positivePrompt"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "resolution"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              },
+              "settings": {
+                "properties": {
+                  "layerDecomposition": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "layerDecomposition"
+                ]
+              }
+            },
+            "required": [
+              "inputs",
+              "settings"
+            ]
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "settings": {
+                  "properties": {
+                    "layerDecomposition": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "layerDecomposition"
+                  ]
+                }
+              },
+              "required": [
+                "settings"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "positivePrompt"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "layerDecomposition": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "layerDecomposition"
+                ]
+              }
+            },
+            "required": [
+              "settings"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "maxItems": 1
+                  }
+                },
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "background": {
+                    "const": "transparent"
+                  }
+                },
+                "required": [
+                  "background"
+                ]
+              }
+            },
+            "required": [
+              "settings"
+            ]
+          },
+          "then": {
+            "properties": {
+              "outputFormat": {
+                "enum": [
+                  "PNG",
+                  "WEBP"
+                ]
+              },
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "maxItems": 1
+                  }
+                },
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false,
+      "required": [
+        "taskType",
+        "taskUUID",
+        "model"
+      ]
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.01926,
+            "unit": "output",
+            "display": "$0.0193 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "fresnel-lens-museum-wall-art",
+            "configuration": "transparent-background · 1024×1024",
+            "price": 0.0193,
+            "latencyMs": 20338
+          },
+          {
+            "id": "subsea-cable-repair-blog-hero",
+            "configuration": "text-to-image · 1536×1024",
+            "price": 0.0193,
+            "latencyMs": 18880
+          },
+          {
+            "id": "forensic-entomologist-profile-avatar",
+            "configuration": "reference-to-image · 1024×1536",
+            "price": 0.0193,
+            "latencyMs": 19076
+          },
+          {
+            "id": "kissaten-listening-room-wall-print",
+            "configuration": "layer-decomposition · 2K",
+            "price": 0.193,
+            "latencyMs": 86919
+          }
+        ]
+      }
+    },
+    "sourceField": "referenceImages",
+    "maskField": null,
+    "maxImages": 10,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ]
+  },
+  "runware/google:nano-banana@2.1": {
+    "source": "https://runware.ai/docs/models/google-nano-banana-2-1",
+    "schemaSource": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+    "schemaSha256": "60c033c4e4d536c962961da801583f6f26f4c360b818276cdc8084bdc40c25a4",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "google:nano-banana@2.1"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 14
+            },
+            "referenceVideos": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  }
+                ]
+              },
+              "maxItems": 10
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 45000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "systemPrompt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50000
+            },
+            "temperature": {
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 2
+            },
+            "topP": {
+              "type": "number",
+              "multipleOf": 0.01,
+              "minimum": 0,
+              "maximum": 1
+            },
+            "imageSearch": {
+              "type": "boolean"
+            },
+            "safetyTolerance": {
+              "type": "string",
+              "enum": [
+                "high",
+                "medium",
+                "low",
+                "none",
+                "off"
+              ]
+            },
+            "thinkingLevel": {
+              "type": "string",
+              "enum": [
+                "minimal",
+                "medium",
+                "high"
+              ]
+            },
+            "webSearch": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "not": {
+            "allOf": [
+              {
+                "required": [
+                  "resolution"
+                ]
+              },
+              {
+                "anyOf": [
+                  {
+                    "required": [
+                      "width"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "height"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1264
+                  },
+                  "height": {
+                    "const": 848
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 848
+                  },
+                  "height": {
+                    "const": 1264
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1200
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1200
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 928
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 928
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 768
+                  },
+                  "height": {
+                    "const": 1376
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1376
+                  },
+                  "height": {
+                    "const": 768
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1584
+                  },
+                  "height": {
+                    "const": 672
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2064
+                  },
+                  "height": {
+                    "const": 512
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 512
+                  },
+                  "height": {
+                    "const": 2064
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2928
+                  },
+                  "height": {
+                    "const": 352
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 352
+                  },
+                  "height": {
+                    "const": 2928
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2528
+                  },
+                  "height": {
+                    "const": 1696
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1696
+                  },
+                  "height": {
+                    "const": 2528
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2400
+                  },
+                  "height": {
+                    "const": 1792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1792
+                  },
+                  "height": {
+                    "const": 2400
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1856
+                  },
+                  "height": {
+                    "const": 2304
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2304
+                  },
+                  "height": {
+                    "const": 1856
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 2752
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2752
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3168
+                  },
+                  "height": {
+                    "const": 1344
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4128
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 4128
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5856
+                  },
+                  "height": {
+                    "const": 704
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 704
+                  },
+                  "height": {
+                    "const": 5856
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4096
+                  },
+                  "height": {
+                    "const": 4096
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5056
+                  },
+                  "height": {
+                    "const": 3392
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3392
+                  },
+                  "height": {
+                    "const": 5056
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4800
+                  },
+                  "height": {
+                    "const": 3584
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3584
+                  },
+                  "height": {
+                    "const": 4800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3712
+                  },
+                  "height": {
+                    "const": 4608
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 4608
+                  },
+                  "height": {
+                    "const": 3712
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3072
+                  },
+                  "height": {
+                    "const": 5504
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 5504
+                  },
+                  "height": {
+                    "const": 3072
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 6336
+                  },
+                  "height": {
+                    "const": 2688
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 8256
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 8256
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 11712
+                  },
+                  "height": {
+                    "const": 1408
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1408
+                  },
+                  "height": {
+                    "const": 11712
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "resolution"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/google-nano-banana-2-1",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "basis": "floor",
+        "rates": [
+          {
+            "amount": 1.5e-06,
+            "unit": "inputToken",
+            "display": "$1.50 per 1M input tokens"
+          },
+          {
+            "amount": 7.5e-06,
+            "unit": "outputToken",
+            "label": "Text output",
+            "display": "$7.50 per 1M output tokens"
+          },
+          {
+            "amount": 3e-05,
+            "unit": "outputToken",
+            "label": "Image output",
+            "display": "$30.00 per 1M output tokens"
+          }
+        ],
+        "examples": [
+          {
+            "id": "autumn-dusk-memorial-garden-visualization",
+            "configuration": "text-to-image · 1376×768",
+            "price": 0.0341,
+            "latencyMs": 13098
+          },
+          {
+            "id": "geothermal-plant-operations-icon-set",
+            "configuration": "text-to-image · 1376×768",
+            "price": 0.0342,
+            "latencyMs": 32103
+          },
+          {
+            "id": "pipe-organ-restoration-social-still",
+            "configuration": "video-reference · 1376×768",
+            "price": 0.0346,
+            "latencyMs": 49530
+          },
+          {
+            "id": "marine-radio-housing-colorway-variant",
+            "configuration": "image-to-image · 2K",
+            "price": 0.0524,
+            "latencyMs": 24650
+          },
+          {
+            "id": "tidal-sound-festival-press-portrait",
+            "configuration": "identity-preservation · 2K",
+            "price": 0.0544,
+            "latencyMs": 21751
+          },
+          {
+            "id": "artemis-ii-crew-shirt-graphic",
+            "configuration": "search-grounded · 1200×896",
+            "price": 0.0905,
+            "latencyMs": 35054
+          },
+          {
+            "id": "antarctic-snowcat-exhibition-key-visual",
+            "configuration": "reference-to-image · 4K",
+            "price": 0.122,
+            "latencyMs": 85269
+          }
+        ]
+      }
+    },
+    "sourceField": "referenceImages",
+    "maskField": null,
+    "maxImages": 14,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ]
+  },
+  "runware/ideogram:4.5@precise-edit": {
+    "source": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+    "schemaSource": "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json",
+    "schemaSha256": "8cab66f9fd6e9bca60a5e785df39316ed6f42d211f4c87d287b9e5ac36670edb",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "x-constraints": [
+        {
+          "operation": "fileSize",
+          "parameters": [
+            "inputs.seedImage",
+            "inputs.referenceImages",
+            "inputs.maskImage"
+          ],
+          "maximum": 26214400,
+          "scope": "each"
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "inputs.seedImage",
+            "inputs.referenceImages"
+          ],
+          "minimum": 0.1666,
+          "maximum": 6,
+          "scope": "each"
+        }
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "ideogram:4.5@precise-edit"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "seedImage": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            },
+            "maskImage": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            },
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 4
+            }
+          },
+          "required": [
+            "seedImage"
+          ],
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "copyrightDetection": {
+              "type": "boolean"
+            },
+            "quality": {
+              "type": "string",
+              "enum": [
+                "very_low",
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "inputs",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "maskImage"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "maxItems": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.008,
+            "unit": "output",
+            "label": "Very low",
+            "display": "$0.008 per image"
+          },
+          {
+            "amount": 0.03,
+            "unit": "output",
+            "label": "Low",
+            "display": "$0.03 per image"
+          },
+          {
+            "amount": 0.06,
+            "unit": "output",
+            "label": "Medium",
+            "display": "$0.06 per image"
+          },
+          {
+            "amount": 0.2,
+            "unit": "output",
+            "label": "High",
+            "display": "$0.20 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "municipal-telephone-exchange-photo-restoration",
+            "configuration": "image-to-image",
+            "price": 0.2,
+            "latencyMs": 28158
+          },
+          {
+            "id": "heritage-railcar-interior-cleanup",
+            "configuration": "reference-to-image",
+            "price": 0.2,
+            "latencyMs": 39578
+          },
+          {
+            "id": "offshore-survival-suit-night-relight",
+            "configuration": "inpaint",
+            "price": 0.2,
+            "latencyMs": 36153
+          },
+          {
+            "id": "historic-glasshouse-visitor-free-hero-image",
+            "configuration": "image-to-image",
+            "price": 0.2,
+            "latencyMs": 30232
+          }
+        ]
+      }
+    },
+    "auxiliaryField": "referenceImages",
+    "sourceField": "seedImage",
+    "maskField": "maskImage",
+    "maxImages": 4,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": false,
+    "editing": true,
+    "roles": [
+      "image"
+    ],
+    "productImageCap": 4
+  },
+  "runware/ideogram:4.5@0": {
+    "source": "https://runware.ai/docs/models/ideogram-4-5",
+    "schemaSource": "https://runware.ai/docs/models/ideogram-4-5/schema.json",
+    "schemaSha256": "b01e6ae6e20d73834ca54170276a73a7d375890a8b725733a7d22d223a9dc414",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "x-constraints": [
+        {
+          "operation": "fileSize",
+          "parameters": [
+            "inputs.referenceImages",
+            "inputs.maskImage"
+          ],
+          "maximum": 26214400,
+          "scope": "each"
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "inputs.referenceImages"
+          ],
+          "minimum": 0.1666,
+          "maximum": 6,
+          "scope": "each"
+        },
+        {
+          "operation": "area",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "when": {
+            "present": [
+              "inputs.referenceImages"
+            ]
+          },
+          "maximum": 4194304
+        },
+        {
+          "operation": "ratio",
+          "parameters": [
+            "width",
+            "height"
+          ],
+          "when": {
+            "present": [
+              "inputs.referenceImages"
+            ]
+          },
+          "minimum": 0.1666,
+          "maximum": 6
+        }
+      ],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "ideogram:4.5@0"
+        },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "maskImage": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "format": "uuid"
+                },
+                {
+                  "format": "uri"
+                },
+                {
+                  "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                },
+                {
+                  "pattern": "^[a-zA-Z0-9+/=]+$"
+                }
+              ]
+            },
+            "referenceImages": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "format": "uuid"
+                  },
+                  {
+                    "format": "uri"
+                  },
+                  {
+                    "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                  },
+                  {
+                    "pattern": "^[a-zA-Z0-9+/=]+$"
+                  }
+                ]
+              },
+              "maxItems": 5
+            }
+          },
+          "additionalProperties": false
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "copyrightDetection": {
+              "type": "boolean"
+            },
+            "magicPrompt": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "on",
+                "off"
+              ]
+            },
+            "quality": {
+              "type": "string",
+              "enum": [
+                "very_low",
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "maskImage"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "width"
+                  ]
+                },
+                {
+                  "required": [
+                    "height"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "not": {
+              "properties": {
+                "settings": {
+                  "required": [
+                    "magicPrompt"
+                  ]
+                }
+              },
+              "required": [
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "maskImage"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "properties": {
+              "inputs": {
+                "properties": {
+                  "referenceImages": {
+                    "maxItems": 4
+                  }
+                },
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "inputs": {
+                "required": [
+                  "referenceImages"
+                ]
+              }
+            },
+            "required": [
+              "inputs"
+            ]
+          },
+          "then": {
+            "properties": {
+              "width": {
+                "minimum": 256,
+                "multipleOf": 32
+              },
+              "height": {
+                "minimum": 256,
+                "multipleOf": 32
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          },
+          "then": {
+            "properties": {
+              "settings": {
+                "properties": {
+                  "quality": {
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ],
+            "not": {
+              "properties": {
+                "inputs": {
+                  "required": [
+                    "referenceImages"
+                  ]
+                }
+              },
+              "required": [
+                "inputs"
+              ]
+            }
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 2048
+                  },
+                  "height": {
+                    "const": 2048
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 2880
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2880
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1664
+                  },
+                  "height": {
+                    "const": 2496
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2496
+                  },
+                  "height": {
+                    "const": 1664
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1792
+                  },
+                  "height": {
+                    "const": 2240
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2240
+                  },
+                  "height": {
+                    "const": 1792
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 2560
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2560
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1600
+                  },
+                  "height": {
+                    "const": 2560
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2560
+                  },
+                  "height": {
+                    "const": 1600
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1728
+                  },
+                  "height": {
+                    "const": 2304
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2304
+                  },
+                  "height": {
+                    "const": 1728
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1296
+                  },
+                  "height": {
+                    "const": 3168
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3168
+                  },
+                  "height": {
+                    "const": 1296
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 2944
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 2944
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 3328
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3328
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 3072
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3072
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 3072
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 3072
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1120
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1120
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 864
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 864
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1248
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1248
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 800
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 800
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 720
+                  },
+                  "height": {
+                    "const": 1440
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1440
+                  },
+                  "height": {
+                    "const": 720
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/ideogram-4-5",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.008,
+            "unit": "output",
+            "label": "Very low",
+            "display": "$0.008 per image"
+          },
+          {
+            "amount": 0.03,
+            "unit": "output",
+            "label": "Low",
+            "display": "$0.03 per image"
+          },
+          {
+            "amount": 0.06,
+            "unit": "output",
+            "label": "Medium",
+            "display": "$0.06 per image"
+          },
+          {
+            "amount": 0.2,
+            "unit": "output",
+            "label": "High",
+            "display": "$0.20 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "regional-polka-album-cover",
+            "configuration": "text-to-image · 2048×2048",
+            "price": 0.2,
+            "latencyMs": 25717
+          },
+          {
+            "id": "industrial-ambient-album-cover",
+            "configuration": "text-to-image · 2048×2048",
+            "price": 0.2,
+            "latencyMs": 23619
+          },
+          {
+            "id": "nocturnal-moth-count-social-post",
+            "configuration": "reference-to-image · 1536×1024",
+            "price": 0.2,
+            "latencyMs": 32008
+          },
+          {
+            "id": "marine-archaeologist-linocut-portrait",
+            "configuration": "inpaint",
+            "price": 0.2,
+            "latencyMs": 26193
+          }
+        ]
+      }
+    },
+    "sourceField": "referenceImages",
+    "maskField": null,
+    "maxImages": 4,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": true,
+    "roles": [
+      "image"
+    ],
+    "productImageCap": 4
+  },
+  "runware/recraft:v4.1@flash": {
+    "source": "https://runware.ai/docs/models/recraft-v4-1-flash",
+    "schemaSource": "https://runware.ai/docs/models/recraft-v4-1-flash/schema.json",
+    "schemaSha256": "f35b55780e33146a1bfd63910b04aa60230afe55d2b367cae7d23ec9421e68d1",
+    "taskType": "imageInference",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "recraft:v4.1@flash"
+        },
+        "positivePrompt": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "backgroundColor": {
+              "type": "object",
+              "properties": {
+                "rgb": {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  }
+                }
+              },
+              "required": [
+                "rgb"
+              ],
+              "additionalProperties": false
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "rgb": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 255
+                    }
+                  }
+                },
+                "required": [
+                  "rgb"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "taskType": {
+          "type": "string",
+          "const": "imageInference"
+        },
+        "taskUUID": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "webhookURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "includeCost": {
+          "type": "boolean"
+        },
+        "numberResults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "uploadEndpoint": {
+          "type": "string",
+          "format": "uri"
+        },
+        "ttl": {
+          "type": "integer",
+          "minimum": 60
+        },
+        "outputType": {
+          "type": "string",
+          "enum": [
+            "URL",
+            "base64Data",
+            "dataURI"
+          ]
+        },
+        "outputFormat": {
+          "type": "string",
+          "enum": [
+            "JPG",
+            "PNG",
+            "WEBP"
+          ]
+        },
+        "outputQuality": {
+          "type": "integer",
+          "minimum": 20,
+          "maximum": 99
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "sync"
+            },
+            {
+              "const": "async"
+            }
+          ]
+        },
+        "safety": {
+          "type": "object",
+          "properties": {
+            "checkContent": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "advancedFeatures": {
+          "type": "object",
+          "properties": {
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 2,
+                  "maxLength": 32
+                },
+                "image": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "format": "uuid"
+                    },
+                    {
+                      "format": "uri"
+                    },
+                    {
+                      "pattern": "^data:image\\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$"
+                    },
+                    {
+                      "pattern": "^[a-zA-Z0-9+/=]+$"
+                    }
+                  ]
+                },
+                "displayPosition": {
+                  "type": "string",
+                  "enum": [
+                    "top-left",
+                    "top-center",
+                    "top-right",
+                    "center-left",
+                    "center-center",
+                    "center-right",
+                    "bottom-left",
+                    "bottom-center",
+                    "bottom-right",
+                    "tiled"
+                  ]
+                },
+                "opacity": {
+                  "type": "number",
+                  "multipleOf": 0.01,
+                  "minimum": 0.1,
+                  "maximum": 1
+                },
+                "fontColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                },
+                "bgColor": {
+                  "type": "string",
+                  "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                }
+              },
+              "oneOf": [
+                {
+                  "required": [
+                    "text"
+                  ]
+                },
+                {
+                  "required": [
+                    "image"
+                  ]
+                }
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positivePrompt",
+        "taskType",
+        "taskUUID",
+        "model"
+      ],
+      "allOf": [
+        {
+          "dependentRequired": {
+            "width": [
+              "height"
+            ],
+            "height": [
+              "width"
+            ]
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "width"
+                ]
+              },
+              {
+                "required": [
+                  "height"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "oneOf": [
+              {
+                "properties": {
+                  "width": {
+                    "const": 1024
+                  },
+                  "height": {
+                    "const": 1024
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1536
+                  },
+                  "height": {
+                    "const": 768
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 768
+                  },
+                  "height": {
+                    "const": 1536
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 832
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1216
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1216
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1152
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1152
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 832
+                  },
+                  "height": {
+                    "const": 1344
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1280
+                  },
+                  "height": {
+                    "const": 896
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 896
+                  },
+                  "height": {
+                    "const": 1280
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 1344
+                  },
+                  "height": {
+                    "const": 768
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "width": {
+                    "const": 768
+                  },
+                  "height": {
+                    "const": 1344
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "price": {
+      "source": "https://runware.ai/docs/models/recraft-v4-1-flash",
+      "checkedAt": "2026-10-09",
+      "currency": "USD",
+      "amount": null,
+      "accountTariffConfirmed": false,
+      "quote": {
+        "currency": "USD",
+        "docs": "https://runware.ai/docs/models-api/pricing",
+        "rates": [
+          {
+            "amount": 0.007,
+            "unit": "output",
+            "display": "$0.007 per image"
+          }
+        ],
+        "examples": [
+          {
+            "id": "wildlife-culvert-retrofit-explainer",
+            "configuration": "text-to-image",
+            "price": 0.007,
+            "latencyMs": 3695
+          },
+          {
+            "id": "circular-brickmaker-editorial-portrait",
+            "configuration": "text-to-image",
+            "price": 0.007,
+            "latencyMs": 3412
+          },
+          {
+            "id": "deep-sea-robotics-engineer-portrait",
+            "configuration": "text-to-image",
+            "price": 0.007,
+            "latencyMs": 3851
+          },
+          {
+            "id": "rare-book-conservator-profile-avatar",
+            "configuration": "text-to-image",
+            "price": 0.007,
+            "latencyMs": 3327
+          }
+        ]
+      }
+    },
+    "sourceField": null,
+    "maskField": null,
+    "maxImages": 1,
+    "minImages": 1,
+    "maskRequired": false,
+    "generation": true,
+    "editing": false,
+    "roles": [
+      "image"
+    ]
   }
 }

@@ -1,0 +1,86 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "9f1f44431c3cbdd685696ac0f3040d165595628fa2b55aa9beb826ed3651f3f3",
+  "pngHash": "4945b6559297c2894c014341105d42cbb8c0dcc4681cc79fb03b643b5592da4d",
+  "svgHash": "e83d1dc7c9ab261e5276929aa6314d4dd4ca8ddf4256ad26c8cc4f59e80deee5",
+  "numeric": {
+    "typeId": "phylogenetic",
+    "computations": {
+      "nodePositions": {
+        "A": [
+          0.5,
+          0
+        ],
+        "B": [
+          0.6000000000000001,
+          1
+        ],
+        "Internal": [
+          0.2,
+          0.5
+        ],
+        "C": [
+          0.5,
+          2
+        ],
+        "Root": [
+          0,
+          1.25
+        ]
+      },
+      "tipOrder": [
+        "A",
+        "B",
+        "C"
+      ],
+      "root": "Root",
+      "branchLengthSource": "supplied"
+    },
+    "checks": {
+      "Internal_branch_length": {
+        "actual": 0.2,
+        "expected": 0.2,
+        "absoluteError": 0.0
+      },
+      "C_branch_length": {
+        "actual": 0.5,
+        "expected": 0.5,
+        "absoluteError": 0.0
+      },
+      "A_branch_length": {
+        "actual": 0.3,
+        "expected": 0.3,
+        "absoluteError": 0.0
+      },
+      "B_branch_length": {
+        "actual": 0.4000000000000001,
+        "expected": 0.4,
+        "absoluteError": 5.551115123125783e-17
+      },
+      "source_row_count": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "source",
+        "target",
+        "length"
+      ],
+      "options": {
+        "root": "Root",
+        "rooting": "Supplied synthetic root",
+        "branchLengthUnit": "substitutions/site"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

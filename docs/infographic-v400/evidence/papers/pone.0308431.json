@@ -1,0 +1,86 @@
+{
+  "doi": "10.1371/journal.pone.0308431",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0308431",
+  "title": "Camera traps unable to determine whether plasticine models of caterpillars reliably measure bird predation",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Laura Schillé",
+    "Nattan Plat",
+    "Luc Barbaro",
+    "Hervé Jactel",
+    "Frédéric Raspail",
+    "Jean-Baptiste Rivoal",
+    "Bastien Castagneyrol",
+    "Anna Mrazova"
+  ],
+  "year": "2025",
+  "license": "2025\nSchillé et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0308431.g001",
+      "label": "Fig 1",
+      "caption": "Photographs of the experimental design in the field.Red arrows point toward the camera traps. Blue and yellow arrows point toward five plasticine models (a) and three corpses (b), respectively.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0308431.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0308431.g001</object-id><label>Fig 1</label><caption><title>Photographs of the experimental design in the field.</title><p>Red arrows point toward the camera traps. Blue and yellow arrows point toward five plasticine models (a) and three corpses (b), respectively.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0308431.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0308431.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0308431.g002",
+      "label": "Fig 2",
+      "caption": "Camera trap photographs of birds taken in various contexts.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0308431.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0308431.g002</object-id><label>Fig 2</label><caption><title>Camera trap photographs of birds taken in various contexts.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0308431.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0308431.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0308431.g003",
+      "label": "Fig 3",
+      "caption": "The experimental design testing the four hypotheses.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0308431.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0308431.g003</object-id><label>Fig 3</label><caption><title>The experimental design testing the four hypotheses.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0308431.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0308431.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0308431.g004",
+      "label": "Fig 4",
+      "caption": "Main results of the study.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0308431.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0308431.g004</object-id><label>Fig 4</label><caption><title>Main results of the study.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0308431.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0308431.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0308431.g005",
+      "label": "Fig 5",
+      "caption": "Photographs with mark details.Seven caterpillars that observers considered to have bird predation clues.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0308431.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0308431.g005</object-id><label>Fig 5</label><caption><title>Photographs with mark details.</title><p>Seven caterpillars that observers considered to have bird predation clues.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0308431.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0308431.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

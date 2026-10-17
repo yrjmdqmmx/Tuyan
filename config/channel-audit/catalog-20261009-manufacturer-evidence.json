@@ -1,0 +1,430 @@
+{
+  "checkedAt": "2026-10-09",
+  "baseline": "26424cb",
+  "rawSnapshotDirectory": "/Users/a1-6/.codex/artifacts/tuyan-model-catalog-20261009/manufacturer",
+  "sources": [
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "file": "31da74bc16fe0ecd.html",
+      "sha256": "864772656e07a428d070a4609363dba4f91a3db25108474154377afe4e28bf7f"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+      "file": "116c1a7f3be0904b.html",
+      "sha256": "6ef1bb31e24841eb8c911bea5b8fd2a20ef85a55f4022f66ced3762e3d332347"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash",
+      "file": "7ff10c9817628b0c.html",
+      "sha256": "d354e054efddf6348b91c34d4ed35171399fc572b18799c8e6ed24365ef4e213"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash",
+      "file": "c66e091ddd119277.html",
+      "sha256": "0dc11c05836dc521397d4ffa3e7bc291793217d90ddaf7fe8f3bb2a71ef8560b"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite",
+      "file": "f7fe39222f116e2c.html",
+      "sha256": "9bfbcf8f4575b5b3445438848f3e3c6280336021aaa735597711bd3f81b60ac7"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image",
+      "file": "32769317e2f4370d.html",
+      "sha256": "257d3f5f2bcd6980adbf31130047e6afb37c2828370d6738633797e22c0fde3e"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image",
+      "file": "a2e31992cadfa890.html",
+      "sha256": "97694c784ba50f626be6e6bb6c68ea9cb1a1d66655c39f46b2992864c2dceabe"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+      "file": "21fe0d4c63a78031.html",
+      "sha256": "6076a202c698840660136c91d1fb9d5763f3b649c6268bf316470a6eabd1c679"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash",
+      "file": "872d1a79ef5fc07f.html",
+      "sha256": "616cb14c332d693939c493e0f3ee2b1aa694067d8a5d02c025e5e9714aa08d89"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite",
+      "file": "a84a0adcc86da7f0.html",
+      "sha256": "3ea1bd2d4b2b9114ec38082206a5ae2c0d7d10c4e0a9f072e7caf612bd370623"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview",
+      "file": "07ba3e0f52cc0df0.html",
+      "sha256": "2166e6c6b08f87daffe2e17f51b4f680c490a4f5f2ca857702c9d815af7c1cd6"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview",
+      "file": "51d94b2aaea316a1.html",
+      "sha256": "778089d8ed5ec00644e11ee909355632509dbccadd22286d4ed5b3e9e1fac9b4"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash",
+      "file": "21b68069857f299e.html",
+      "sha256": "5c2f5099e0b4005aab4378c22e190b078318f1c403ea17feedba5cc6d976431a"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image",
+      "file": "b0cfe123fe70adc9.html",
+      "sha256": "7ecf334fca2c2e3417fd951bcacb02a75e2639e4884669ec289bf4d03493f0dd"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite",
+      "file": "620a0d65876a40c9.html",
+      "sha256": "1b85e43de52fb6cb6dbda8b3412380ad5a94efa5200e7dbaa7d1983b35141076"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro",
+      "file": "a9cb7e5e43bf465f.html",
+      "sha256": "f3e4eda52bca3da11ea3b743928563388f2bbfcdd334628cc6d68d338e304eec"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/generate-content/image-understanding",
+      "file": "779523f5cc9a7458.html",
+      "sha256": "1a5c1e7a6c51139b2d077b93aa01bca295da3a524a59b2a932f843fb0c127a11"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/generate-content/thinking",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/generate-content/thinking",
+      "file": "4ee0ae76e2731b6a.html",
+      "sha256": "a60ee99744f94f93a73b4e4ccf32f98feb35ea8421d80ac8ae1d2074aed7cf26"
+    },
+    {
+      "url": "https://ai.google.dev/gemini-api/docs/image-generation",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/image-generation",
+      "file": "5d0514efd1003d12.html",
+      "sha256": "9fdb1d3a74748f6923d718a6b9701620e68e8356160d1cb4495b8c0136aaf9b0"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-7-plus",
+      "file": "0d873e3827f0cf7c.html",
+      "sha256": "a8be4240f70482acab0ba1cbd36c9848fe5946f549b26f54daf584b9383ae0ef"
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "file": "a152c367426a5a76.html",
+      "sha256": "8f2dbdda5e42dfcd6e432db394c923fbf3467f80a29ab3f307c2c587fd9f3218"
+    },
+    {
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1",
+      "file": "d11ae4473ac06aa9.html",
+      "sha256": "5aeb529e2a53cd42f48a41ad8d0222ff578504670c4a1b36c786afb7bb6a413c"
+    },
+    {
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1/raw/main/config.json",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V3.1/raw/main/config.json",
+      "file": "4d28fdb578577a59.html",
+      "sha256": "3e5d192d745758862b0a3e6338ee181991db49933dbbd3185e1bde34944e7bad"
+    },
+    {
+      "url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
+      "file": "b47ca20cc743c320.html",
+      "sha256": "71202441ca16838b6f65f09fc9c4bb4d20af89cafcc58605e92c3f042774bc8c"
+    },
+    {
+      "url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking/raw/main/config.json",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/moonshotai/Kimi-K2-Thinking/raw/main/config.json",
+      "file": "99f9e5e487f2cbf9.html",
+      "sha256": "666ee58fc3871ecc369a22bc8c100075c2ad24ccbe8b3e336fa5f726e6111c15"
+    },
+    {
+      "url": "https://platform.kimi.com/docs/models",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/models",
+      "file": "9ee5a02499f461d1.html",
+      "sha256": "01d6265cde365bb82c635799df4928bb03c2e8a1fbae217ea51311f0d6785391"
+    },
+    {
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-quickstart",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k3-quickstart",
+      "file": "ea26b12a0c827c7c.html",
+      "sha256": "9d01255fb4c09c6b0672b09e279c96b9307534e8d634ea089e1494925482111b"
+    },
+    {
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart",
+      "file": "04371b803f970047.html",
+      "sha256": "9a1c264ff45552c18bd08d058d67b6823f028c15f244b51a34c9ddd931f0d959"
+    },
+    {
+      "url": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart",
+      "file": "137e6725f87193b8.html",
+      "sha256": "d1ede0b35f60e74959f4bc6ea08b12c129e5c5b94d0909b01a5efabceff81f3e"
+    },
+    {
+      "url": "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://mimo.mi.com/docs/zh-CN/api/chat/openai-api",
+      "file": "03b7de75556b91fe.html",
+      "sha256": "9b2933ae5e745b8cf9e4463183ff7e6f0b498a6331ec67412eb18b5de157cded"
+    },
+    {
+      "url": "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed",
+      "file": "5cb1077c9447d4d2.html",
+      "sha256": "3199389e1872c6fd576c73a2b22cb0065d6a00aa2732495e3f29af19ecb0187d"
+    },
+    {
+      "url": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "checkedAt": "2026-10-09",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+      "file": "56574ae09878bae9.html",
+      "sha256": "0047d71652ff84680a909bca8bb04a65748d1b0fc53710609945173bb28435a8"
+    }
+  ],
+  "changedIdentities": [
+    {
+      "provider": "gemini",
+      "modelId": "gemini-nano-banana-2.1"
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k3"
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.7-code"
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.7-code-highspeed"
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k2.6"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "ling-3.1-flash"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-pro"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-flash"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "mimo-v2.6-ultraspeed"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/nano-banana-2.1"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k3"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k2.7-code"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k2.6"
+    },
+    {
+      "provider": "xiaomi",
+      "modelId": "mimo-v2.6-pro"
+    },
+    {
+      "provider": "xiaomi",
+      "modelId": "mimo-v2.6-flash"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-3.5-flash"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-3-flash"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "google/gemini-2.5-flash"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "qwen/qwen3-7-plus"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "deepseek-ai/deepseek-v3.1"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "moonshotai/kimi-k2-thinking"
+    },
+    {
+      "provider": "replicate",
+      "modelId": "qwen/qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.8-flash"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.7-flash"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.6-flash"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.5-flash-lite"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-lite-image"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-image"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3-pro-image"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.5-flash"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-flash-lite"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3.1-pro-preview"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-3-flash-preview"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash-image"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-flash-lite"
+    },
+    {
+      "provider": "gemini",
+      "modelId": "gemini-2.5-pro"
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "qwen3.7-plus"
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    {
+      "provider": "bailian",
+      "modelId": "qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "provider": "bailian",
+      "modelId": "kimi-k2-thinking"
+    }
+  ],
+  "realAccountCallsVerified": false
+}

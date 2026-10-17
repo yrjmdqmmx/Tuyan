@@ -1,0 +1,26 @@
+{
+  "filename": "mixed-research.pdf",
+  "format": "pdf",
+  "operation": {
+    "op": "read",
+    "pages": [
+      1,
+      3
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 1,
+      "text": "Ordinary text: Alpha 35; Beta 12. Units: samples.\nNo significance or additional conclusions are supplied. ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    },
+    {
+      "page": 3,
+      "text": "VECTOR FIGURE: Input -> Check -> Output\nInput   Check   Output ",
+      "warning": "文字顺序和表格结构以整页画面核对；坐标为 PDF 原始坐标。"
+    }
+  ],
+  "images": []
+}

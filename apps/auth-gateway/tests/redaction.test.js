@@ -82,3 +82,8 @@ test('does not redact unrelated key-like words', () => {
   assert.match(value, /tokenizer/);
   assert.match(value, /visible/);
 });
+
+test('catalog management credentials are redacted as a complete map',()=>{
+ const text=redactText(JSON.stringify({catalogCredentials:{accessKeyId:'EXAMPLE_AK',secretAccessKey:'EXAMPLE_SK',sessionToken:'EXAMPLE_STS'},apiKeys:{openai:'EXAMPLE_KEY'}}))
+ assert.doesNotMatch(text,/EXAMPLE_/)
+})

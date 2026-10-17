@@ -1,0 +1,77 @@
+✔ workflow defaults restore conservatively and valid bounds persist with explicit vision mode (7.676375ms)
+✔ missing vision preferences default to none while a saved explicit assistant is restored (0.408792ms)
+✔ new workflow preflight rejects old backend and invalid integers before any role call (0.75225ms)
+✔ actual task needs distinguish references, visual review, SVG code review and all refinements (0.450125ms)
+✔ disabled vision drafts have no credential, probe or custom extension requirement and are retained (0.801208ms)
+✔ review presentation never turns an unreviewed revision into passed (0.567292ms)
+✔ blocked localStorage getter cannot crash initial state or setting changes (0.27825ms)
+✔ version labels match delivered PNG and SVG formats (0.362459ms)
+✔ model-authored SVG ignores dormant incompatible Recraft image drafts (0.224708ms)
+✔ every selectable type has a decodable, bounded thumbnail with accurate provenance (5783.061167ms)
+✔ enlarging a paper panel does not select it; full context and source remain accessible (968.624875ms)
+✔ teaching preview labels simulated data without claiming a generation guarantee (174.194125ms)
+✔ real paper previews keep base render support separate from unverified variants and model quality (153.524ms)
+✔ missing and failed images show an explicit state, without unrelated replacements (12.685958ms)
+✔ logging out invalidates pending saved-record restore before a late reply can write UI or browser storage (3534.971333ms)
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+✔ SVG result edit restores original inputs and editable source into SVG generation, without entering image refinement (2428.97525ms)
+✔ navigation does not select parents; alias search chooses a concrete type directly (1870.656ms)
+✔ Escape cancels selection and old labels resolve on restore (194.152958ms)
+✔ CSV quoting, explicit missing values, units and independent type drafts (39.360666ms)
+✔ library shares stable types, aliases, and explicit empty coverage (41.653ms)
+✔ API normalizers preserve type/data provenance and zero-case filters (43.562709ms)
+✔ uploads/removal/parse failures preserve none, and preferences are auto-only (6927.170084ms)
+✔ uploads/removal/parse failures preserve auto, and preferences are auto-only (3414.567042ms)
+✔ uploads/removal/parse failures preserve random, and preferences are auto-only (3311.032042ms)
+✔ uploads/removal/parse failures preserve manual, and preferences are auto-only (2599.87425ms)
+✔ SVG hides unused image model, retains PNG selection, and no specialized data form is shown (659.799209ms)
+✔ txt preserves original text and data (11.853541ms)
+✔ md preserves original text and data (6.361458ms)
+✔ csv preserves original text and data (0.923ms)
+✔ tsv preserves original text and data (0.844625ms)
+✔ json preserves original text and data (0.822666ms)
+✔ DOCX reads text/tables and reports unread parts (13.995542ms)
+✔ XLSX preserves sheet/cell coordinates and cached formula values, rejects missing cache (17.007375ms)
+✔ actual PDF.js reads a PDF text layer and explicitly flags missing visual content (2747.869375ms)
+✔ scanned or mixed PDF empty pages fail explicitly; document is released (1.089292ms)
+✔ errors and limits never silently truncate content (1.637041ms)
+✔ refine uses a file uploader or owned results instead of arbitrary URL input (7.672125ms)
+✔ refine submits the authoritative object key and displays server model capability (0.398958ms)
+✔ private workspace cleanup clears the complete refine source without a removed setter (0.223625ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22339.652042

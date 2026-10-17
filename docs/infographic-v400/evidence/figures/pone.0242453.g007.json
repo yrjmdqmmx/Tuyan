@@ -1,0 +1,62 @@
+{
+  "id": "pone.0242453.g007",
+  "paper": "pone.0242453",
+  "figure": {
+    "id": "pone.0242453.g007",
+    "label": "Fig 7",
+    "caption": "Data model of Table 3 translated into a entity-relationship diagram in unified modeling language (UML) form.\nThis illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Data model of <xref ref-type=\"table\" rid=\"pone.0242453.t003\">Table 3</xref> translated into a entity-relationship diagram in unified modeling language (UML) form.</title>\n<p>This illustrates that the abstract data model can be translated to customary forms of data models (e.g., UML) that are more amenable for software development.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0242453",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242453",
+    "title": "Data analysis and modeling pipelines for controlled networked social science experiments",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Vanessa Cedeno-Mieles",
+      "Zhihao Hu",
+      "Yihui Ren",
+      "Xinwei Deng",
+      "Noshir Contractor",
+      "Saliya Ekanayake",
+      "Joshua M. Epstein",
+      "Brian J. Goode",
+      "Gizem Korkmaz",
+      "Chris J. Kuhlman",
+      "Dustin Machi",
+      "Michael Macy",
+      "Madhav V. Marathe",
+      "Naren Ramakrishnan",
+      "Parang Saraf",
+      "Nathan Self"
+    ],
+    "year": "2020",
+    "license": "2020\nCedeno-Mieles et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0242453.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g007.png",
+      "bytes": 823703,
+      "sha256": "12072bed62e98f13c59d22bebf112a1149b57722d0f95692957fc7b6163ccdad"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0242453.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g007.tif",
+      "bytes": 1022476,
+      "sha256": "6a0b4048dbb676de0629dd13428111c98392b49d91c9f1b3fe94747b66768a89"
+    }
+  }
+}

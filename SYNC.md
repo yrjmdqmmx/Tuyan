@@ -2,6 +2,501 @@
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
 
+## 2026-10-17 · 4.0 发布快照准备
+
+- 用户已明确授权当前整合版本上线，解除此前本轮代码“不提交、不推送、不部署”的限制；发布来源为独立 `codex/tuyan-v400-release-20261017` 快照，原开发工作区、索引和所有未提交改动保持。
+- 范围：Web、Core、旧站与新站独立 Gateway，包含双域名 TokenDance 自动回跳、目录 v34、期刊 v10、材料与绘图工作流及最新期刊书架。公开模型目录读取不代表真实模型调用验收。
+- [x] 本地快照：保留现有源码和必要运行资产；排除暂停的小程序变更、临时浏览器输出；历史响应证据中的过期签名 URL 仅在发布副本脱敏。
+- [ ] 生产：以固定提交和不可变镜像发布；保留 Mongo、OSS、既有密钥、两套观猹客户端及旧归因。生产结果与回滚版本另记于发布记录。
+- [ ] 小程序：仍暂停，未修改、同步、构建或发布；现有未提交改动留在原工作区。
+- 不调用真实或付费模型；Benchmark Worker 保持关闭。
+
+## 2026-10-17 · TokenDance 新域名真实授权回跳验收
+
+- 用户明确允许创建密钥。从新站已登录账户发起真实 PKCE S256 流程，仅将本次授权请求的回调主机指定为 `tuyansci.cn`；原 `app_url=https://www.paperbanana.asia/`、state 与 challenge 保持。现网按钮仍生成旧回调，本次未改服务器配置或部署本地 4.0。
+- [x] 浏览器 / 现网接口：创建“图研 Tuyan · 新域名 2026-10-17”后成功回跳新站并交换授权码；刷新后 `tokenDanceStatus` 为 `code=0`、`connected=true`，连接时间为北京时间 09:26:41，原归因地址不变。TokenDance 原有两把密钥仍在，新钥由既有后端加密保存，未读取或输出明文。
+- [ ] 线上发布：自动按来源选择回调的 4.0 代码仍仅本地，后续部署需另行授权。此实机结果不代表飞书申请、项目方后台或分红审批已处理。
+- 无模型调用、无充值付款、无提交/推送/部署；小程序未修改。验收材料位于工作区外 `2026/10/17/tokendance-callback/verification.md`，更新下方此前“未创建密钥/未交换授权码”的历史状态。
+
+## 2026-10-17 · 4.0 双域名整合与跨会话回归（仅本地）
+
+- 将独立 ICP 工作树的新站接入合入 `tuyan-v400-workflow-20261009` 的现有工作区：新域名 API 同源、观猹登录入口、验证邮件/重置密码地址、严格账号 URL 白名单和备案页脚；保留旧域名及其他会话的目录 v34、期刊 v10/封面、材料工作流、评审规则与 SVG 编辑变更。`deploy/icp-domains-20261015` 仅作为历史配置归档，其旧镜像与 Watcha 关闭状态不能用于发布 4.0；10 月 16 日新站观猹凭据以独立运维记录为准。
+- **可选请求字段**：`tokenDanceAuthorize` 新增 `callbackOrigin`，仅接受精确 `https://tuyansci.cn`、`https://www.paperbanana.asia`、`https://paperbanana.asia`。新站回调根路径为 `https://tuyansci.cn/`，旧站仍回调 `https://www.paperbanana.asia/`；无字段时沿用服务端原配置，未知来源在写入/替换授权流程前拒绝。`app_url` / `X-App-URL` 继续保持原归因 `https://www.paperbanana.asia/`，PKCE、state、账号所有权及一次性交换不变。小程序仍为手工授权码模式，无回调跳转。
+- 补齐目录会话生成副本遗漏：10 个新型号的图片输入限制进入 Web `referenceUploadPolicy.js` 和参考矩阵；Runware 停用型号在版本 CSV 中与现有目录状态一致。没有新增模型、替换调用 ID 或扩张权限。
+- 补齐智能体安装包的离线知识快照，使其与现有 4.0 图型目录和知识版本 1.1.0 一致；未改变知识源或公开 API。修复文件保存期间可提交任务的竞态：浏览器原件保存/恢复完成前禁用提交，并在上传准备入口再次拦截，避免旧材料列表被提交。
+- 离线测试夹具改为可回收的独立 CommonJS 实例，避免大型运行时的独立 data URL 模块被永久缓存；公开目录读取独立记账，不再被当作推理提交。旧测试同步既有的材料规划格式、参考许可索引、目录版本以及“每轮评审一次、必要时修改一次，末轮不追加复审”的契约。
+- [x] Web / Gateway / Core：254 个 Node 测试文件共 2,642 项通过，另有 Plot Worker 鉴权 2 项通过；类型检查、Web/Core 构建及 5 类生成副本检查通过。浏览器验证两模式首次自动检索＋完整生成，手动改选切换/刷新保留；本地桩验证 1 轮只评审一次、必要时修改一次，画布不显示末轮未复审文案；SVG 编辑保存后刷新恢复。详细范围与记录见本次工作区外验收报告，不代表真实模型图像质量或生产验收。
+- [ ] 小程序及其他客户端：小程序继续暂停；Web 之外可不传该可选字段，沿用旧行为。若以后支持新站浏览器回跳，须使用上述精确 origin，不接受任意返回 URL。
+- [ ] 线上与平台：本轮不提交、不推送、不部署、不调用真实模型。TokenDance 授权页已接受新域名回调并显示新站返回地址，但未创建新密钥/交换授权码；飞书提交记录需登录，不能据此认定归因或分红审批完成。用户已于 10 月 16 日亲自提交，不重复提交表单。
+
+## 2026-10-16 · 目录 v34：单型号续核与渠道停用同步（本地）
+
+- 按精确渠道＋调用 ID 补证：完整输入输出模态增加 457 条、数值上下文增加 239 条、生图/编辑提示词上限增加 123 条。共享规格新增可选 `sourceScope`、`resolvedModel`，用于区分渠道规格和原厂参考值、显示官方明确的实际服务版本；原请求 ID、模型角色、调用适配和额度不因补证扩大。来源优先指向对应型号或明确列出该 ID 的 API 文档。
+- Runware `deepseek:v4@flash` 按完整托管索引及原专页/schema 核查暂停；OpenAI 8 个精确型号补录未来停用日期，到期自动禁用。账户目录 `shutdown_date` 进入该账户展示，不写公开缓存。已有停用及未适配边界保持。
+- 动态停用仅用于已确认范围的完整公开目录；fal 缺项先逐 ID 查询，Runware 限托管目录，Novita 限 LLM。分页未完、临时错误、账户/地区/私有目录缺项不判全渠道下架。刷新失败保留上次完整可用性；已暂停型号在服务端发送推理前拦截。新增目录内部可选字段 `availabilityScope`、`confirmedAbsentIds`，供完整性判定，不作为调用权限。
+- [x] Core / shared：单型号证据、动态停用、生命周期及调用隔离定向测试、类型检查通过；生成器无漂移。未调用真实模型、未提交、推送或部署。
+- [x] Web / 本地服务：来源、模态图标、提示词单位及实际服务版本展示；29 项定向回归、构建通过，桌面/手机共 20 项实页检查通过，停用型号不能选择。
+- [ ] 小程序及其他客户端：小程序继续暂停。恢复后兼容可选字段，按精确渠道身份展示生命周期及规格，不从原厂参考值推断渠道额度，不自动替换旧选择。
+- [ ] 账户与未决规格：仍有 171 条当前可选记录存在规格缺项；版本映射未取得证据的继续保留待确认。真实账户目录需各渠道合法凭据核验；本轮仅公开文档、元数据与本地桩测试。
+- [续核结果及具体来源](docs/model-catalog/2026-10-16-model-page-followup.md) · [生命周期清单](docs/model-catalog/2026-10-16-lifecycle-followup.csv)。
+
+## 2026-10-16 · 目录 v33：全渠道动态读取、单模型规格与提示词上限（本地）
+
+- `modelRegistry` 新增 `catalogContractVersion=1`、32 渠道的 `catalogProviders` 访问方式及 `catalogHealth` / `catalogWarnings`；公开目录覆盖 OpenRouter 文本/图像、TokenDance、fal 全分页、Runware schema 索引、Novita LLM。账户目录统一使用 `providerAccountCatalog` 的 `mode=catalog`，只读元数据，拒绝混入 inference probes；填选中渠道的凭据后可读取 18 个 API Key 目录、百炼业务空间、Ark AK/SK 管理目录及 SenseCore JWT 目录。Runware 私有/社区、Novita 图像/私有有补充入口；Fireworks 可选账户 ID。
+- 共享展示字段新增 `specificModelSpecifications` 及 `promptLimits[{kind,max,unit,field?,sourceUrls}]`、`contextWindowStatus`、`modalitiesComplete`。先核查精确型号与版本；生图模型未有数值上下文时可展示生图/编辑提示词上限，字符、字节与 token 不互换。所有字段仅用于展示，不扩大调用能力、请求额度或已验证状态。
+- 新发现型号保留在目录，未适配条目禁用选择；故障渠道继续可见。完整目录更新中途失败/限流时保留上次完整目录；尊重 Retry-After，支持分页续读。账户结果仅存当前页面，密钥/账户/工作区变化清空；不写入公开缓存。
+- [x] Core / shared：32 渠道描述、固定官方目的地、分页/管理签名/字段解析、单型号来源与完整目录保留；定向目录/脱敏测试及类型检查通过。海外出口 ACL 新增目录所需主机，仓库配置完成，**未部署**。
+- [x] Gateway / API client：仅传选中渠道凭据，管理字段脱敏，元数据读取与调用探测隔离；对应定向测试通过。
+- [x] Web / 本地服务：动态渠道、账户入口、完整目录翻页、图标/来源/提示词替代展示；桌面 1440px 与手机 390px 实页检查、定向测试、构建通过。
+- [ ] 小程序及其他客户端：小程序继续暂停。恢复后按 v33 兼容未知字段，独立适配只读目录入口、分页状态和提示词单位，不把目录条目当作调用已通过。
+- [ ] 真实账户目录：需要各渠道合法凭据后再核验实际权限与完整目录；本轮只验证公开读取、官方文档与离线契约，未调用付费模型，未提交、推送或部署。
+- [核查清单](docs/model-catalog/2026-10-16-dynamic-directories.md) · [逐路由规格 CSV](docs/model-catalog/2026-10-16-dynamic-coverage.csv)。
+
+## 2026-10-16 · 本地实时渠道目录与动态渠道故障展示
+
+- 本地 `5196` 页面此前使用仅含静态模型的目录服务，遗漏 OpenRouter。现在本地服务复用当前 Core `modelRegistry`，读取 OpenRouter 文本/图像目录及 TokenDance 官方公开目录；不再用静态副本代替动态渠道。Core 仅新增命名导出，既有 API 字段、缓存、模型角色/格式校验与请求 ID 均保持。
+- [x] Core / 本地服务：实时返回 v32、32 渠道，OpenRouter 426 条。仅允许三个官方目录 URL 的无凭据 GET；不开放生成、账户或存储操作。公开目录测试 2/2 与 Core 类型检查通过。
+- [x] Web：`unavailableProviders` 中的渠道继续展示故障原因，恢复后可选，不改原选择；桌面/手机主模型、图像、视觉路由选择与目录故障状态通过，相关回归 41/41。OpenRouter logo 改用官网适合浅色背景的 Ink SVG。
+- [ ] 小程序及其他端：小程序继续暂停；恢复后可复用现有 `unavailableProviders` 字段，避免将目录故障误显示为渠道不存在。
+- 本次为本地实现与实时目录读取；无付费模型调用、提交、推送或部署。旧线上接口仍为 v27，未使用它覆盖本地 v32 目录。
+
+## 2026-10-16 · 新域名观猹登录独立凭据（运行配置）
+
+- 用户提供观猹为 `https://tuyansci.cn/api/auth/oauth2/callback/watcha` 新增的客户端，并授权配置。仅在新站独立 `tuyan-cn-gateway` 中启用该凭据；旧站 `api.paperbanana.asia` 继续使用原客户端、回调与共享凭据文件。
+- 新站 Compose 在原 `gateway.env` 后追加权限为 0600 的专用 `tuyan-cn-watcha.env`，只覆盖已有 `WATCHA_CLIENT_ID` / `WATCHA_CLIENT_SECRET`；`WATCHA_OAUTH_ENABLED=true`。密钥未写入仓库、前端或表单。没有新增 API 字段或修改数据库契约。
+- [x] Gateway / 运维：新站沿用原镜像，只重新创建新站网关；healthy、ready 和观猹可用状态通过。旧网关与 Core 的容器 ID、启动时间、镜像和旧凭据文件指纹保持不变。
+- [x] Web：用户明确授权后已完成新客户端首次观猹授权，浏览器成功回跳 `tuyansci.cn` 并登录原图研账号；账户页显示“已绑定观猹”，原 TokenDance 连接保留。
+- [ ] TokenDance：用户已明确告知于 10 月 16 日亲自提交表单，随后又按新域名重新填写；原“仅草稿、未提交”记录不再成立。平台开通结果须另行核实。现网 Core 仍回跳旧站；登记通过后另行实施新站回调，不用观猹登录凭据替代 TokenDance 配置。
+- [ ] 小程序及其他端：本次无客户端改动，原入口保持；小程序继续暂停。
+- [操作记录](docs/operations/2026-10-16-tuyan-watcha-client.md)。未发布 4.0 代码、更新镜像、提交或推送，未调用模型。
+
+## 2026-10-16 · 4.0 生成评审轮数按上游执行（本地）
+
+- 按用户新指令，`generationPath=model-v1` 的 PNG / SVG 快速生成、完整生成统一按 `maxCriticRounds=N` 最多评审 N 次，每轮必要时修改一次，通过即提前结束；移除原先额外的第 N+1 次最终复审。字段名、默认值及 1–5 范围不变，普通/专业模式采用相同执行语义。
+- 结果 `review.limit=N`、`roundsUsed<=N`。最后一轮若修改成功，交付新版标为 `modified_unreviewed`；`reviewedVersion` 和对应哈希仍指向实际评审过的上一版，`deliveredVersion` 和哈希指向新版，不继承通过结论。修改失败保留上一张成功图片及其评审记录。历史结果不重写；独立图片精修的改后评审不变。
+- 共享 `workflowCallEstimate` 移除额外最终复审预算；Gateway/Web 生成副本已同步。Web 名称保留“评审轮数”，帮助、指南及英文说明同步解释一次评审和一次必要修改的关系。
+- [x] shared / Core / Gateway：26 项离线主测试通过，包含 78 组流程场景及完整生成/材料矩阵；覆盖 PNG/SVG、快速/完整、1/2/5 轮、提前通过、末轮修改、失败保留和实际调用预算。类型检查通过，生成副本检查无漂移。
+- [x] Web：17 项定向回归通过，覆盖流程帮助、历史结果、设置提交恢复与停用视觉草稿。
+- [ ] 小程序：继续暂停，不修改或同步；恢复后核对轮数说明、预算估算和新版未复审状态。
+- [ ] Android / Windows / macOS 等客户端：采用此语义时，轮数与评审上限一致；最后一轮修改后展示未复审状态，不把任务完成视为质量通过。
+- 本轮使用本地桩响应，不调用真实/付费模型，不提交、推送或部署；保留其他会话已有改动。
+
+## 2026-10-16 · 模型目录 v32 与新增渠道契约（本地）
+
+- 静态目录 1,079 → 1,099，10 个渠道新增 20 个身份：Gemini 4 Argon、FLUX.3 Klein / Base、Qwen Image 2.1、Krea 3，以及 Muse / Nemotron / DeepSeek / GLM / MiMo / Step 的新渠道身份。原默认选择保留，新增项仅为 catalog，未标真实调用通过。
+- 共享契约补各型号精确端点、独立尺寸/参考图限制、PNG、思考审计与来源。Gemini 4 省略采样参数且不混用旧 thinkingBudget；Krea 3 固定 berry/low、每边 ≤3200、仅 1K/2K；BFL Klein 不发送 grounding/version；Qwen 2.1 沿用同步单图请求。
+- TokenHub 托管 `deepseek-v4-flash-0731` 记录 10 月 31 日北京时间零点到期，不迁移 ID 或影响原厂直供身份。TokenDance 两项新缺失具名记录但仍运行时拦截；OpenRouter 新图像格式未确认，继续暂缓。
+- [x] shared / Core：317 项本地回归、类型检查及构建通过；目录/思考生成器无漂移。新条目并不代表付费实测或生产质量通过。
+- [x] Web：目录、规格、思考及隔离回归 38 项、构建通过；原默认值保留。
+- [ ] 小程序：继续暂停；不修改、同步、构建或测试。以后恢复时需显式同步 v32 并验收，不推断本轮已完成。
+- [ ] Android / Windows / macOS 等客户端：采用 v32 时遵守精确渠道身份、思考/尺寸限制、未验证状态及生命周期，不按名称继承能力。
+- [新增清单、官方来源和限制](docs/model-catalog/2026-10-16-update.md)；[验证清单](docs/model-catalog/2026-10-16-validation.json)。保留已有脏改动；没有真实/付费调用、上游同步、提交、推送或部署。
+
+## 2026-10-14 · HSSC 位图范围、Cell 说明图精修与国内期刊补证 v10（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-14.v10`，v1–v9 数据文件保留；仍为 17 刊。本轮补心理学报、心理科学进展当前自检附件与各刊数据政策，人口研究图线辨识、图书情报工作表格例外及数据来源要求；无新 HTTP 必填字段。
+- 可选宽度约束新增 `value.rasterOneOf:number[]`，`journalWidthStatus` 的可选 `content` 增加 `'raster'`。Core 仅在实际解码 PNG / 核对导出 TIFF 后使用；HSSC 位图按专节 88/180 mm、简单矢量按一般段 87/180 mm 建议检查，未知/混合单栏仍提示；不改像素、不凭扩展名或元数据认证质量。
+- Cell 说明图精修改为有来源的 conditional + 人工判断，将忠实改绘按说明图辅助创作类别解释，明确不等于官方逐项批准任意精修；数据图模型重绘及特殊用途边界保持。HSSC 先核本刊专项条件是适用解释，集团撤销本刊条款的官方声明仍未找到，未假称优先级冲突已被官方解决。
+- [x] shared / Core / Gateway：28 组集成及 56 项规则/文件检查通过，560 次本地桩响应、真实调用 0；类型检查通过。旧快照、生成精修上下文、身份绑定、历史和实际导出均覆盖；本地 fixture 注册表 v10。
+- [x] Web：54 项选择、取消、保存、请求、原图设置复用、换图隔离及历史回归通过；构建通过，Chrome 已核验规则展示和取消。并行 SVG 临时热更新错误另行记录，未回退其他会话改动。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：兼容可选 `rasterOneOf` 与实际内容类型，保留旧任务版本；区分范围解释、人工条件、未规定与官方禁令。
+- [核验依据及未决边界](docs/journal-rules-20261014/rules-v10-verification.md)；[本地验证](docs/journal-rules-20261014/rules-v10-validation.md)。不调用付费/真实模型，不同步上游、提交、推送或部署。
+
+## 2026-10-14 · HSSC 宽度适用范围与国内人文社科增刊 v9（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-14.v9`，v1–v8 数据文件原字节保留。新增 `population-research`（人口研究）、`acta-psychologica-sinica`（心理学报）、`advances-psychological-science`（心理科学进展）、`library-information-service`（图书情报工作），共 17 刊，均按已核实能力标部分支持；没有新 HTTP 必填字段。
+- 新增可选宽度数据 `value.vectorOneOf:number[]`；`journalWidthStatus(value,widthMm,content?:'unknown'|'simple-vector')` 仅在实际文件范围可判明时使用。Core SVG 事实可含 `simpleVector:boolean`，仅用于排除 HSSC 位图专节；不等于可编辑/字体/内容质量认证。预检不会凭 SVG 扩展名启用，未知内容继续沿用 `oneOf/pendingOneOf`。
+- HSSC 一般制作建议 87/180 mm 与位图专节 88/180 mm 已按范围拆开，位图单栏重叠仍待确认。AI 续查取得本刊投稿指南直接引用自身有限例外的证据，未伪造其被集团条款替代。Cell 增加官方培训、速查表和 2026-08-18 说明文章，精修许可仍未被逐项确认；没有把披露或类别表改成任意重绘许可。
+- [x] shared / Core / Gateway：26 组全链路通过，520 次本地桩响应、真实调用 0；历史测试修正后规则/实际文件 50/50，类型检查通过。缺少单位/适用条件不补成数值阈值；本地 fixture 注册表已载入 v9。
+- [x] Web：54 项定向回归、构建通过；桌面/390 px 搜索查看、原图型复用、取消保留原选择已核验。复用既有请求、快照、历史与导出报告，不另造重复配置。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：兼容新增期刊 ID、可选宽度范围和事实字段，保留原任务版本；不从扩展名断言矢量，不将未知 AI 操作当作许可或官方禁止。
+- [官方依据及剩余问题](docs/journal-rules-20261014/rules-v9-verification.md)；[回归与保留核查](docs/journal-rules-20261014/rules-v9-validation.md)。未同步上游、提交、推送、部署或调用真实/付费模型。
+
+## 2026-10-14 · Cell Reports 现行规则与按操作判断 AI 政策 v8（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-14.v8`，v1–v7 目录原字节保持；Cell Reports 为部分支持。已通过 Chrome 读取本刊现行政策、最终提交页、图件指南及其直接链接 PDF。正文终稿 TIFF/PDF；GA 1200×1200 px、300 dpi，现行 Arial 8–12 pt，旧 12–16 pt 不作为当前依据。PDF 导出能力未新增。
+- 本刊与出版社的继承关系已有直接来源；说明图生成有条件、说明图生成式精修未单独规定、数据图须由原数据可复现产生、数据图模型重绘受限、通用 AI 制作 GA 和封面受本刊限制。研究方法/专用工具/编辑特批的例外不能由现有通用模型冒充。
+- 共享函数新增可选操作参数：`journalPolicyIssues(snapshot, operation?)`、`journalPreflight(snapshot, format?, operation?)`、`admitJournal(selection, format?, path?, figureTypeId?, operation='generate')`。完整证据仍保留，两类操作只按当前动作决定阻断；Core/Web 精修显式传 `generative-refine`，不能让精修限制误伤生成。无新 HTTP 必填字段，不接受客户端自定义操作绕过路由判断。
+- HSSC 补集团编辑指导的实施期来源，仍未确认本刊旧 AI 条款的撤销/优先关系；87/88 mm 单栏疑点、180 mm 共同值及各阶段 PDF 规则保持，不伪造冲突已消除。
+- [x] shared / Core / Gateway：64 项通过，含 20 组生成、精修、上传身份绑定、历史恢复与实际文件导出链路；400 次本地桩响应，真实调用 0。类型检查通过；旧快照和实际 PNG/SVG/TIFF 检查回归。
+- [x] Web：53 项定向回归、构建通过；Chrome 桌面及 390 px 操作核验。重复 AI 提示合并；修复窄屏期刊列表行高挤压导致名称/状态溢出，取消保留原选择。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：采用 v8 时按实际操作传递可选参数，保留原任务规则版本；不能将当前部分支持、格式通过或披露解释为投稿许可。
+- [官方核验和剩余缺口](docs/journal-rules-20261014/rules-v8-verification.md)；[本地验证与保留核查](docs/journal-rules-20261014/rules-v8-validation.md)。无真实/付费模型调用、同步上游、提交、推送或部署。
+
+## 2026-10-14 · HSSC 阶段与局部宽度判定、Cell 附件续查 v7（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-14.v7`；v1–v6 文件原字节保留。没有新必填请求字段。HSSC 根据本刊指南明确引用的投稿清单排除初投/修改 PDF；最终制作的矢量 PDF 条目不扩大实际导出能力，也不覆盖原则录用后修改清单。
+- 宽度规则新增可选 `value.pendingOneOf:number[]`。共享 `journalWidthStatus` 供预检/实际文件检查使用：HSSC 180 mm 双栏可判定，87/88 mm 仅单栏待确认，其他值不满足已列建议；不能把一部分疑点扩大到整条要求。
+- HSSC 加入本刊的集团政策声明、2026-09-10 公告及现行视觉/FAQ 证据；适用关系已补证，较宽条件取代本刊有限例外仍未证实。Cell 转查旧官方 PDF 主机、带版本号 GA PDF、作者模板；正文未取得，保持待核实。v7 去重旧版重复来源，不改历史。
+- [x] shared / Core / Gateway：56 项回归通过，含 18 组完整链路、360 次本地桩响应、真实调用 0；类型检查通过。旧任务原版本精修/历史/导出均回归。
+- [x] Web：52 项选择、取消、保存、请求、换图隔离、历史与交互回归；构建通过。浏览器确认 v7、87 mm 局部提示、180 mm 取消该提示及取消保留原选择。本地模拟服务注册表同步 v7。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：兼容 `pendingOneOf` 并保留建议强度、逐值待确认与历史版本；未知条件不得当作许可或自行生成禁令。
+- [证据和未决范围](docs/journal-rules-20261014/rules-v7-verification.md)；[验证与保留核查](docs/journal-rules-20261014/rules-v7-validation.md)。未调用真实/付费模型，未同步上游、提交、推送或部署。
+
+## 2026-10-14 · Sage Open / HSSC 规则接入与 Cell 续查 v6（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-14.v6`，目录增至 13 刊；Sage Open 与 Humanities and Social Sciences Communications（`hssc`）已进入生成、精修、历史和实际文件检查，均为部分支持。v1–v5 文件原字节保留；旧来源/规则未因版本更新而重写核验日期。没有新增必填请求字段。
+- Sage 的本刊直接链接通用图件和 AI 政策；300/800 dpi 按图像构成检查，代表性生成有条件，生成式精修仍未逐项规定。HSSC 用本刊有限例外，保留集团政策范围、87/88 mm 和审稿 PDF 接收差异；不将人工判断或非阻断状态当作许可证明。
+- Cell 新增官方中文导航、作者支持及投稿系统入口证据；现行指南仍未取得，历史 GA 与专项 AI 覆盖关系未确证，不生成虚假的技术通过阈值。
+- [x] shared / Core / Gateway：49 项回归，含 15 组完整合成链路（300 次本地桩响应、真实调用 0）；末次来源补充后数据/文件相关 14 项再验通过，集合重叠不相加；类型检查通过。
+- [x] Web：51 项设置、请求、原图绑定、历史与交互回归通过；线稿选择依据当前有效规则显示；桌面/390px 与构建通过。本地注册表 v6。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：兼容新增期刊 ID 与规则版本；沿用既有可选快照契约和 `pendingFormats`；按阶段/用途检查，不外推正文阈值或将 PDF、矢量例外自动认证。
+- [官方核验与未决项](docs/journal-rules-20261014/rules-v6-verification.md)；[本地回归及保留核查](docs/journal-rules-20261014/rules-v6-validation.md)。未调用付费/真实模型，未提交、推送、同步上游或部署。
+
+## 2026-10-13 · 中文人文社科期刊与 Cell 续查 v5（开发环境）
+
+- 默认 `journalRuleVersion=2026-10-13.v5`，v1–v4 目录原字节保留；新增经济学家、财经论丛、山西财经大学学报、中国社会科学（中文刊），共 11 刊，均不因列入菜单视为完整适配。未知 AI 操作非阻断、非许可；Cell 现行本刊清单及专项政策覆盖仍未证实，保留历史参考和新渠道范围证据。
+- 期刊快照新增可选 `subjects:string[]`，用于 Web 学科搜索；来源可保留月精度 `updatedOn=2026-06`。新增色彩规则 `value.achromatic=true` 表示实际可见内容黑白，不等于文件头灰度或 1-bit。当前 Core 的 PNG 检查实际像素；TIFF 解码受限时报告 `uncheckable` 并正常导出，不降低解码限制或从源图推定结果。
+- [x] shared / Core / Gateway：v5 数据与旧版本、规划生成精修上下文、历史和实际文件检查；42 项通过，含 12 组本地合成链路；类型检查通过。
+- [x] Web：学科搜索、关键规范与来源、选择取消及历史；47 项通过，展示调整后相关 21 项再验通过；桌面/390px 与构建通过。两组测试有重叠，不合计。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：兼容可选学科/色彩规则字段和 v5；保留未知政策、不可检查字体及 TIFF 黑白检查的能力边界；不得把 Word 稿件要求当作独立图片格式要求。
+- [官方依据与候选清单](docs/journal-rules-20261013/rules-v5-verification.md)；[回归及保留核查](docs/journal-rules-20261013/rules-v5-validation.md)。未调用真实/付费模型，未提交、推送或部署。
+
+## 2026-10-13 · Scientific Reports 政策适用关系与 Cell 官方资料 v4（开发环境）
+
+- 默认 `journalRuleVersion` 为 `2026-10-13.v4`，v1/v2/v3 原目录与旧任务含义保留。来源新增可选 `publishedOn/updatedOn`，必须区别于核验日期 `verifiedOn`；未标明的页面修订日期不推测。
+- Scientific Reports FAQ 将例外指向正式期刊政策，正文/补充图的生成和生成式精修改为有来源依据的 `conditional`，保留两份出处及解释依据；这不是官方替代声明，也不是任务合规证明。报告列人工条件为 uncheckable，图形摘要限制不变，TOC/封面不自动获得许可。
+- Cell Reports 补入 2018 年 GA 规格和 2019 年图像筛查官方指导及 2026 年相邻刊物社论来源。历史 GA 仅限 production/graphical_abstract，仍为 pending 参考，不用作现行通过阈值或正文图规则。
+- [x] shared / Core / Gateway：v4 快照、生成/精修上下文、历史及实际 PNG/SVG/TIFF 检查；33 项回归含 7 组模拟链路通过。
+- [x] Web：日期分开展示，条件/历史范围及原设置恢复；46 项回归通过。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：显示可选日期与 conditional 人工条件，不把非阻断、格式通过或历史资料当成已获许可。
+- [复核依据与剩余缺口](docs/journal-rules-20261013/rules-v4-verification.md)；[验证边界](docs/journal-rules-20261013/rules-v4-validation.md)。无真实/付费模型调用、提交、推送或部署。
+
+## 2026-10-13 · 期刊 AI 操作政策续查 v3（开发环境）
+
+- 默认 `journalRuleVersion` 为 `2026-10-13.v3`，v1/v2 目录逐字节保留。可选规则字段 `aiPolicy:{operation,status}` 区分生成、生成式精修、非生成式调整；状态为 conditional / prohibited / unspecified / conflict / unverified。快照与模型上下文保存此证据，不从披露条款生成许可。
+- IEEE Access 已核读 PSPB 正式手册，图像操作边界标未逐项规定；Scientific Reports 保留正式细则与 AI Hub FAQ 冲突；Cell Reports 已换官方渠道，仍缺本刊正文与适用关系。v3 的未知/冲突只提示，不冒充官方禁令；明确用途限制和原始科研图像能力限制不变。旧任务继续保留原版本含义。
+- `journalCheck.policy` 可选增加 `operation/policyStatus/sourceIds`。PNG/SVG/TIFF 转换不消除待确认或冲突状态；结果不能因此宣称投稿合规。
+- [x] shared / Core / Gateway：规则、上下文、准入、历史及实际文件报告；28 项含 6 组模拟链路通过。
+- [x] Web：选择器显示冲突继承关系；45 项回归及构建通过。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端：接入可选政策证据字段与 v3 语义；不得把非阻断当已获官方许可。
+- 本轮无真实/付费模型调用、提交、推送或部署；[续查结论与未决项](docs/journal-rules-20261013/rules-v3-verification.md)、[本地验证](docs/journal-rules-20261013/rules-v3-validation.md)。
+
+## 2026-10-13 · 期刊规则 v2 官方复核（开发环境）
+
+- 默认 `journalRuleVersion` 更新为 `2026-10-13.v2`；任务仍记录完整选择与快照。v1 原目录逐字节保留，仅追溯已有开发任务；没有线上迁移。旧版任务的生成、精修、历史和导出继续使用原版本。
+- 规则新增可选适用条件 `formats/rasterKinds/contentTypes`、`openFormatList` 与来源 `note`；条件允许 AI 与待确认/禁止分别表达。正文、补充图、TOC/GA、封面不共用未经核实的规则；ACS EPS / IEEE PNG 接收争议保留，Scientific Reports 明确不支持 GA，Cell Reports 继续待核实。
+- 实际文件检查增加按格式的 DPI、GA 像素尺寸、KB 上限和按图像构成的色彩规则；不放大像素、不把格式转换当 AI 许可。技术支持状态与生成/精修准入分开。
+- [x] shared / Core：v2 数据、来源/适用域、准入、版本追溯、实际文件检查；本地模拟两版任务全链路回归。
+- [x] Web：默认新选 v2，显示来源访问备注；已有设置、图型复用、精修来源与取消操作保持；本地回归及构建通过。
+- [ ] 小程序：继续暂停，不改动/同步/构建；恢复后按以上可选规则字段与版本边界适配。
+- [ ] 其他客户端：采用 v2 时保留来源、适用域与待确认状态；字体、科学真实性及完整投稿材料仍需人工判断。
+- 本轮没有付费模型调用、提交、推送或部署。证据与未确认项：[官方复核](docs/journal-rules-20261013/rules-v2-verification.md)；[本地验证](docs/journal-rules-20261013/rules-v2-validation.md)。
+
+## 2026-10-13 · SVG 结果画布与浏览器手工稿（本地，未发布）
+
+- Web 的 SVG 生成结果直接使用原生 SVG 编辑画布；沿用现有 `svg_source` 阶段及最终结果，展示真实完整版本，未新增逐 token 传输协议。生成/评审/修订期间只读，任务结束后自动编辑；原始评审仅属于原件。
+- Core 仅补充 SVG 文档生成提示：独立 Unicode 文字、语义分组、稳定唯一元素 ID、marker 箭头；不改变期刊规则、模型路由、任务字段或数值数据，不保证模型一定遵从。手工稿仅在浏览器保存，按 API/账号/任务/候选图隔离，未增加账号草稿接口。
+- [x] Web：原生文档编辑、历史、候选稿隔离、恢复与同源 SVG 导出接入；验证范围见 `docs/svg-workbench/validation.md`。
+- [x] Core：提示词局部补充，其他客户端仍兼容原接口；未改变生成任务的费用或评审调用机制。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收。
+- [ ] 其他客户端 / 真实模型质量 / 生产：未验收；无付费模型调用、提交、推送或部署。
+
+## 2026-10-13 · 精修原图与原任务设置绑定（本地，未发布）
+
+- 精修请求和任务记录新增可选 `sourceContentType`（schematic/data/primary/illustration）与 `sourceTaskId`。`sourceTaskId` 仅用于重新上传历史任务的浏览器原图，必须同时提供 `sourceImageUpload.materialId`；Core 核对任务归属、账号生命周期及原记录 `taskSourceMaterial.sha256` 与当前材料哈希后才继承上下文。普通新上传不因夹带旧结果 objectKey 而继承原任务。
+- 已有任务结果沿用其图型、期刊与规则版本；期刊选择省略时继承、显式 null 保持通用流程。保存解析后的原图性质并沿精修、历史及实际文件检查传递；明确声明 primary 即使未选期刊也不能进入生成式精修。字段可选，旧客户端仍沿原协议运行，不将缺失记录补成已核实性质。
+- [x] Web：原图身份、任务上下文和期刊设置绑定保存，与生成区设置独立；已有记录免重复确认，新上传或旧记录缺失才确认。有效换图立即清除旧判断，过期读取/弹窗回调失效；浏览器草稿按原件哈希恢复，取消选择不修改设置。
+- [x] Core / shared / Gateway：字段传递、所有权/哈希负例、显式 null、历史记录和实际 TIFF 哈希通过本地模拟验证。新增字段未改变官方规则版本、模型选择或研究数据。
+- [ ] 小程序：继续暂停，不改动、同步、构建或验收；恢复时遵循上述可选字段与来源绑定条件。
+- [ ] 其他客户端 / 真实模型质量 / 生产：未验收；没有付费调用、同步上游、提交、推送或部署。本地与模拟检查不代表这些环节通过。
+
+## 2026-10-13 · 期刊设置复用信息图类别（本地，未发布）
+
+- `journalSelection` 新增可选 `contentSource:'figure-type'` 与 `figureTypeId`，同时保留解析后的 `contentType`。Web 新选期刊默认沿用现有信息图类别；数据图及组合图保留数值人工核对提示，示意/领域图按示意图处理。这是任务分类，不证明素材不是原始科研证据。
+- Core 生成入口按请求的实际 `figureTypeId` 重算已绑定的选择，再冻结任务快照；精修继承与历史/导出保留当时的判断。不带新字段的旧任务及人工选择保持原含义，未知规则版本仍拒绝自动升级。原始科研图像的显式声明优先，不会因换图型或期刊解除限制。
+- [x] Web：固定弹窗高度、列表与正文独立滚动、固定底部操作区；弹窗移出设置容器避免样式污染。常规生成取消重复的内容类型表单，特殊声明折叠展示；精修原图独立确认，不从生成页图型推断。桌面与 390px 实测、取消/键盘/设置保存/历史恢复等 38 项回归通过。
+- [x] Core / shared / Gateway：可选字段透传、规范化、任务/规划/精修/历史/真实文件检查，13 项本地及模拟链路回归通过。没有修改官方规则或来源版本。
+- [ ] 小程序：继续暂停，不同步、改动、构建或验收。
+- [ ] Android / Windows / macOS：可继续提交旧选择；采用自动关联时需使用上述可选字段并保留显式原始图像声明。
+- [ ] 真实模型质量 / 生产：未验收；无付费调用、上游同步、提交、推送或部署。
+
+## 2026-10-13 · 七项既有回归失败分类与精修前置校验修复（本地，未发布）
+
+- 两项真实失败同源于精修先读取原任务/账号/材料、后验证比例与尺寸。现在先验证请求和模型能力，再读取归属上下文、重建期刊快照、绑定账号生命周期；账号注销检查通过后才绑定材料。原图归属、期刊 AI 限制、SVG 源码恢复要求及任务入队门槛保留，无新增字段或版本。
+- 五项过时测试更新：未使用的 SVG 图像/视觉角色保留选择但不计入混合路由或凭据；SVG 文案/能力桩使用当前流程；Web 材料上传与 auto/random/manual 检索独立。没有为旧断言改变产品行为。
+- [x] Core：191 项回归；期刊/原材料完整与精修链路、实际 PNG/SVG/TIFF、历史、权限及文件哈希通过模拟验证；补充合法请求仍受账号注销屏障约束的反例。
+- [x] Web / Gateway：36 / 51 项回归；历史恢复核对期刊版本、阶段、宽度及浏览器保存，原文件上传保持检索选择。
+- [ ] 小程序：继续暂停，不改动/同步/构建/验收。
+- [ ] 真实模型质量 / 生产：未验收；无付费调用、上游同步、提交、推送或部署。分类与证据见 [七项失败修复记录](docs/journal-rules-20261013/seven-failures.md)。
+
+## 2026-10-13 · 期刊规则选择、版本快照及实际文件检查（本地，未发布）
+
+- 新可选共享请求字段 `journalSelection`（journalId/version/stage/purpose/contentType/widthMm/rasterKind）；省略或 null 的普通生成保持通用流程。精修省略时继承源任务，显式 null 为用户改选通用流程。Core 从受维护目录重建 `journalProfile`，拒绝未知版本和不支持的 AI 用途，不信任客户端规则内容。
+- `modelRegistry.journalRuleVersion = 2026-10-13.v1`、`journalExportVersion = 1`；Web 在所需版本未支持时阻断期刊任务，不静默降级。新任务/执行载荷/历史保留选择、规则来源快照；结果新增可选 `journalCheck`。
+- 规则贯穿规划、风格、生图、精修及评审。新 `journalFigureExport` action 只读取调用者自己任务候选，参数 `jobId/candidateId/format(original|tiff)/flattenWhite/download`；返回实际文件报告及可选文件字节。Gateway 与 Core 均校验归属。PNG→TIFF 不放大像素；原始 PNG/SVG 均保留。
+- [x] shared / Core / Gateway：维护规则、准入、快照、上下文、实际文件检查与归属鉴权。
+- [x] Web：完整设置中期刊入口位于信息图类别上方；两栏选择、草稿取消/确认、浏览器保存、历史恢复、结果检查及带报告的逐图/ZIP 导出。
+- [ ] 小程序：继续暂停，不同步、不构建、不验收；恢复时适配上述可选字段与状态，不能把菜单存在视为已适配。
+- [ ] 真实模型质量 / 生产 / 全部投稿要求：未验收；本地/模拟验证不替代这些结论，无付费模型调用、提交、推送或部署。
+- 来源与范围见 [研究对照](docs/journal-rules-20261013/research-and-scope.md)，验证见 [开发验收](docs/journal-rules-20261013/validation.md)。
+
+## 2026-10-13 · 完整流程与精修证据链修复（本地，未发布）
+
+- 新路径精修将当前遮罩、辅助图用途、结构化对象/属性/关系/保留约束贯穿规划与评审；增加服务端派生 `editRequirements`、绑定送审 hash/顺序的 `refineInputEvidence`、可选 `separateInputObservations`。有编辑约束时评审必须返回逐项 `editChecks`（id/status/evidence）；缺项、重复/过期 ID、无证据或未解决的不确定项不能通过。普通无额外约束的旧评审格式保持兼容，结果仍保存现有 review/history/stages。
+- 精修输入和辅助视觉材料页按实际图片数量/总字节预算分批，保留每页来源及送模 hash；`materialReads` 增加可选 `vision_batch_received`。原 12 幅材料页/阶段、16 次工具决策和文字预算不变，不截去页面。分批观察可能增加模型调用数，不增加绘制/修改轮数。任何批次失败不冒充材料理解或评审通过。
+- 页图观察同时收到原任务和当前 `editInstruction`、阶段目标/计划；当前修改要求优先于旧说明，文件内容仍只作证据。
+- `model-v1` 完整流程的风格结果采用 ready/needs_input + missingInputs + 完整 plan 协议，保存原始回复再校验；格式无效、缺材料、空方案及“无需修改”占位在绘图前阻断。不会因该校验失败自动补调用或回退；旧纯文本风格路径保持兼容。
+- [x] Core / shared：输入证据、逐项核对、分批和上下文、风格校验及离线反例；修正原材料数值评审测试桩，数值免检负例继续保留。
+- [x] Web：既有处理过程/评审 JSON 展示兼容；帮助与英文文案补充分批调用成本及停止条件，无新字段需客户端填写。
+- [ ] 小程序：继续暂停，不同步/构建/验收；恢复时兼容新增可选审计记录，不自行剔除评审证据。
+- [ ] 真实模型 / 生产 / 跨版本未完成任务恢复：未验收；本轮无付费调用、提交、推送或部署。
+- 验证与保留核查见 [修复报告](docs/material-reader-20261012/full-refine-flow-fixes.md)。
+
+
+## 2026-10-12 · 生成流程审计四项修复（本地，未发布）
+
+- 新 model-v1 PNG/SVG 与对应 PNG 精修评审，从任务图型、数据字段和数据面板派生 `numericReviewContract.applicableRequired`；定量任务不能以 `applicable:false` / 空核对列表通过。纯步骤编号不自动认定为定量编码。仍不独立验证模型填报的来源、几何和科学结论。
+- Web 请求仅提交当前必需的 `modelRoutes` 及旧型号字段；未使用的角色草稿继续保存在浏览器。Core 先计算执行角色，再校验路由、冲突、区域、混合模式和思考配置；兼容旧请求中未使用的坏草稿/缺省型号。网关复用生成的共享角色策略，Core 仍以真实角色与可信登录头验证自定义/TokenDance 权限，客户端不能凭 `referenceImageMode` 跳过鉴权。
+- PNG/SVG（含旧生成分支）和新路径精修的辅助问题及不确定项，增加服务端绑定版本/摘要的 `auxiliaryVisualIssues`；主模型必须返回逐项 `visualAdjudications`（accept/reject/unresolved、reason、evidence）。漏项、重复/未知/过期 ID 或缺证据阻断通过；允许有证据的驳回。旧记录无需改写；没有问题的观察报告兼容空裁决。沿用既有修改/评审预算，没有新增模型调用步骤。
+- [x] Core / Gateway / shared：上述校验、可选评审证据、请求角色裁剪；`sync-workflow.mjs` 同时生成网关策略。
+- [x] Web：只发送必需角色、本地草稿保留、帮助及英文说明、实际 App 挂载回归。
+- [ ] 小程序：继续暂停，不同步/构建/验收；恢复后支持只提交必需角色及读取可选裁决字段。
+- [ ] 其他客户端 / 真实模型 / 生产：未验证。无提交、推送或部署。
+- 证据、成本与边界见 [本轮修复报告](docs/material-reader-20261012/workflow-flow-fixes.md)。
+
+## 2026-10-12 · 上游审计最小修复与 SVG 离线误判拦截（本地，未发布）
+
+- `model-v1` SVG 渲染/评审证据新增可选 `localQuality`：同尺寸像素对照检测声明的 marker-start/end 可见贡献，绑定原 SVG/PNG 哈希；问题或覆盖不足不能被模型 passed 覆盖。保留原始模型判断和原图；模型已通过但本地否决时停止，不编造修订方案或自动追加调用。检查有界，不能证明箭头语义、渐变、文字或科研正确性。
+- 数值评审可选 `checks[].linearScale` 校验坐标、原值与单位尺度的算术一致性；并不独立确认模型填入的来源和坐标。原有未提供此字段的合同兼容。
+- Web 恢复 `planner_critic` / `full` 两种新任务流程；普通与专业模式均可选择，专业模式保留候选/修改次数设置。当前浏览器持久化与历史恢复保留流程，`demo_full` 归一化为 `full`；共享 createJob 请求适配器同时接受两种 full 名称。新任务不恢复 vanilla / 零次检查。
+- 管理诊断 `evaluateJob`：无效回复返回 `status:unevaluable`、无效维度 `null` 和 `errors`，不默认高分、不聚合不完整结果。上传参考图不再隐含 GT；仅显式提交同任务 `groundTruthObjectKey` 且 `groundTruthConfirmed:true` 时使用对照。`model-v1` / 原材料任务在调用前返回 422 / `EVALUATION_CONTEXT_UNSUPPORTED`；这是旧接口限用，未实现新的材料评估器。
+- [x] Core / shared：上述有界本地检查、真实分支模拟集成、评估异常和请求字段转发；无新付费模型调用。
+- [x] Web：实际提交/保存/恢复完整流程；失败记录展示已完成结果、下载与原失败状态；帮助及英文说明更新。
+- [ ] 小程序：继续暂停，不同步、不构建、不验收；后续兼容评估 null / unevaluable 及可选本地评审证据，核对完整流程入口。
+- [ ] Android / Windows / macOS：后续按实际启用端核对上述可选证据、旧诊断返回和完整流程入口。
+- 本地验证：Core 65、Web 39、共享请求 30 项通过；最终 SVG 定向复核 23 项通过。Core 类型检查、Core/Web 构建及真实 8MP 渲染冒烟通过。没有付费调用、提交、推送、部署或生产验收。详见 [实现、证据及限制](docs/material-reader-20261012/upstream-minimal-repairs.md)。
+
+## 2026-10-12 · 材料与 SVG 同版本联调修复（本地，未发布）
+
+- 材料工具仍为 `application-json-v1`。新完成记录 `sourceBinding:tool-locations-v1`、`claims:[{text,sources:[sourceId/recordId/materialId/filename/page/sheet/lines/kind]}]`：来源位置由实际成功读取结果生成，模型只选择短来源 ID；虚构来源进入一次有界纠正，失败不得当作已理解。文字结论仍属模型解释，不等同于事实准确性证明。
+- 新 model-v1 PNG/SVG 成图评审要求 `numericReview`：区分数值几何是否适用，记录原值来源、实际画面/源码几何、方法与不确定性；缺失记录或未解决的数值问题不能通过。旧任务保留原解析及轮次语义。
+- 精修在任何付费材料理解前校验原图及万相透明限制；同账号成图白底副本仍要求原哈希吻合。精修评审新增 `submittedImageHash` 及实际送审图片阶段文件，与候选图证据一致。
+- 持久执行步骤新增内部 `taskMaterialCache` 标记，终态清理完整材料结果及精修原图/辅助资产缓存；清理异常进入 `materialCleanup.pending`。保留付费子调用记录用于防重复收费，恢复时需浏览器原件重新上传；这不是生产持久化验收。
+- 材料读取补充 `coverage`（pageCount/readPages/renderedPages/unreadPages），工具部分页/行读取明确 `partial`；PPTX 渲染仍保留 nativeText/表格/图表缓存/备注。主模型结构化 `plan` 无损序列化，非法已返回规划使用 `MODEL_PLAN_INVALID`，明确此前调用与绘图未开始，不报请求状态未知；`SVG_RENDER_FAILED` 本地渲染错误同样按已知调用结果处理，保留此前调用费用，不再误报 unknown。
+- 精修生图请求保留原始 `editInstruction`，最终评审直接接收修改前后图；PNG/SVG/精修终审新增 `originalMaterialComparison:{sourcePages:[inputIndex/materialId/filename/page/sourceHash/recordId/originalImageHash/submittedImageHash],omittedPages,delivery,instruction}`。原材料页图与成图共同送审，按渠道容量明确未同屏页，来源/哈希入审计；不延长原件或页图服务器保存期。
+- Web 图片思考“服务商默认”不再转换成显式 mode=true；真正显式且仅支持纯文生图的参数仍保留，自动迭代通过已有记录说明文字重画兼容路径，不伪称带图编辑。
+- [x] Core / shared：来源校验、数值评审协议、原图前置校验、精修送审绑定及缓存清理。
+- [x] Web：现有通用评审/任务材料记录兼容；辅助 10 份及原图独立额度不变。
+- [ ] 小程序：继续暂停；恢复后兼容可选 claims/numericReview/送审 hash 字段。
+- [ ] Android / Windows / macOS：后续兼容上述可选证据字段；无跨端验收。
+- 隔壁“恢复 Tuyan v4.0 交接”成果已在同一脏工作树，未覆盖旧渲染/评审实现。同版本 r7（运行源指纹 `c0a3b0f79a7bbc4dcdd1debd80971c3a195fa9985cb678a7114b5fe76119a510`）完成 5 条真实流程、54 次百炼请求（49 Qwen / 5 Wan），100 项自动化/模拟测试及类型/构建通过。原件复用、临时清理、精修三类输入及当前版本送审已核对；PNG 数值/布局仍有问题，SVG 数值正确但箭头遮挡/渐变漏检，独立质量验收未全通过。完整清单与证据见 `docs/material-reader-20261012/integration-20261012/REPORT.md`；生产及其他端未验收，无提交/推送/部署。
+
+## 2026-10-12 · 真实材料验收发现的读取协议纠正（本地，未发布）
+
+- 主模型一次返回多个 JSON 对象时，原先直接解析失败。现在每阶段最多允许一次格式纠正，计入既有 16 次决策预算；异常响应中的工具请求均不执行，重返同一任务限定的单条请求验证。主模型使用当前阶段短 `readId` / `usedReadIds`，后端映射为原有权威 `usedRecordIds`；不用模型复制 64 位哈希。读取阶段明确只核查原材料，实际成图和 SVG 源码交给下一评审阶段。
+- `materialReads` 新增 `type:protocol_error`（`response` 最多 12,000 字符、`responseTruncated`、`correctionAllowed`），保留真实格式失败证据。失败公开代码为 `MATERIAL_READ_FAILED`，展示具体材料原因；已收到主模型响应的失败不再误报“未调用”或要求裁剪图片。
+- [x] Core / shared：读取代理、一次纠正审计与材料错误/费用说明；精修读取接收实际 `editInstruction`。
+- 图研自有结果进入万相精修时，仅服务器同账号/生命周期、结果声明 `review.displayBackground:#ffffff` 且原 PNG 哈希相符，使用白底显示副本送模；保留原始 PNG。新增 reference 阶段记录原图/送模哈希和白底原因；精修结果沿用已有白底标记。用户上传透明图、任意客户端背景声明不触发此转换。
+- [x] Web：沿用通用读取审计/错误展示，无额外设置或用户操作。
+- [ ] 小程序：继续暂停；后续需容忍新增读取记录类型与失败代码。
+- [ ] Android / Windows / macOS：后续兼容新增可选记录类型与失败代码。
+- 真实百炼 89 次请求（85 Qwen / 4 Wan）：材料文字/页图、浏览器原件复用和修复后的 PNG 精修链路验证；最终精修 `issues_found`，SVG 终审未通过，数值几何及评审漏检未解决。17 项定向回归、类型检查与 Core 构建通过；[完整证据与限制](docs/material-reader-20261012/live-acceptance-20261012.md)。真实登录/Mongo/OSS/Linux 未验收；未提交、推送或部署。
+
+## 2026-10-12 · 精修原图独立于辅助文件额度（本地，未发布）
+
+- 修正下方 v2 的精修 1+9 规则：`materialMaxCount:10` 只计算辅助文件，`sourceImageUpload` / `taskSourceMaterial` 原图单独计算；精修可提交 1 张原图加 10 份辅助文件。辅助文件每份仍最大 10,000,000 字节，无新增字段或版本。
+- [x] Core / Gateway / shared：精修入口按 `materialFiles + refineInputs.references` 合计最多 10 份辅助文件校验；原图归属、像素校验与任务清理维持原协议。
+- [x] Web：精修辅助文件与生成页同为 10 份；两页统一简短说明，移除“已保存的文件”折叠库和空状态、文件卡片的“文件与读取详情”折叠区；保留简洁文件卡片、浏览器原件与读取记录、刷新恢复及任务复用。
+- [ ] 小程序：继续暂停，不同步/构建/验收；后续恢复时按原图与辅助文件分别计算。
+- [ ] Android / Windows / macOS：接入时采用辅助 10 份、原图单列的额度；其余 v2 生命周期契约不变。
+- 验证记录见 [v2 实现与证据](docs/material-reader-20261012/browser-task-storage-v2.md)。无真实模型调用、提交、推送或部署。
+
+## 2026-10-12 · 浏览器原件优先、任务临时副本与统一文件额度 v2（本地，未发布）
+
+- 覆盖下方 v1 的“8 文档 / 3 图片 / 30 天服务器保存”：每任务最多 10 份、每份 **10,000,000 字节**；生成页图片/文档合并计数。精修原图占 1 份，辅助文件最多 9 份，格式/按需读取与生成页一致。
+- `modelRegistry.materialFileVersion:2`、`materialMaxCount:10`、`materialMaxBytes:10000000`、`materialStorage:browser-original-task-temporary`；`materialRetentionDays:1` 仅表示未提交临时上传的兜底期限，**不是任务结束后的保存期**。原件先写 IndexedDB，事务提交后回读 SHA-256；失败不上传。提交任务才上传，且每次任务使用新副本。
+- `prepareMaterialUpload.files[].clientFileId`（当前浏览器 ID）由服务端返回并保存到权威 `materialFiles`。恢复已失败任务可提交 `restoreId/jobId`，必须匹配该用户/账号生命周期/原任务及原 SHA-256；原文件 ID 与读取记录 ID 保持稳定。新建任务不能共享临时文件 ID。
+- 精修新增 `sourceImageUpload:{materialId}`，Gateway 仅转发引用，Core 查所有权/原件再校验像素；`taskSourceMaterial` 保存来源，精修原图及其规范化临时快照随任务清理。旧 `sourceImageUpload.objectKey` 仅兼容旧客户端。用户提交的 `taskSourceMaterial` 不可信并被丢弃。
+- 成功/失败/取消清理原件、完整读取缓存及新协议精修输入快照；`materialCleanup.status=cleared|pending`，存储失败保留重试状态、5 分钟清理器补偿。未启动上传最长 24 小时；签名 PUT 有效窗口中的晚到字节会再次清理。成图与任务来源/读取审计保留。
+- 浏览器按 API 地址及账号隔离原件、草稿、任务读取记录。历史复用从浏览器原件重新上传；清除站点数据、浏览器自动回收、换设备或手动删除后无法自动恢复。服务器不会用摘要替代缺失的原件。
+- [x] Core / Gateway / shared：图片整页材料读取、任务绑定与清理、同哈希恢复、精修源材料接口；单次图片容量较小时由同一主模型分批观察，记录真实分批回传，非独立视觉模型强制配置。
+- [x] Web：生成/精修同组件、浏览器保存失败阻断、恢复/删除/复用、10 份总额、10 MB 限制及检索独立；真实 IndexedDB/桌面/390px 和模拟供应商链路验证。见 [v2 实现与证据](docs/material-reader-20261012/browser-task-storage-v2.md)。
+- [ ] 小程序：继续暂停，不同步/构建/验收；脚本新增 `--skip-miniprogram`，保留该端所有已有文件。
+- [ ] Android / Windows / macOS：按新字段/版本和本地存储能力接入；不得复用已清理的服务器文件引用。
+- [ ] 真实模型/真实 Mongo-OSS-登录/Linux/生产：本轮未验收，无提交/推送/部署，用户在真实测试时提供 Key。
+
+
+## 2026-10-12 · 原文件保存与按需材料工具（本地验证，未发布）
+
+- 新增可选 `materialFiles:[{id}]`；服务端将引用替换为当前用户/账号生命周期的权威原件元数据。旧 `sourceMaterials` 保留历史兼容。`modelRegistry.materialFileVersion:1`、`materialToolProtocol:application-json-v1`、`materialRetentionDays:30` 为独立能力协商，不改变 model-v1 PNG/SVG 路由。
+- 新 action：`prepareMaterialUpload`、`finalizeMaterialUpload`、`getMaterial`、`listMaterialFiles`、`readMaterial`、`deleteMaterial`。网关注入身份，Core 检查文件/任务归属；模型仅有当前任务文件 ID，不接受文件路径或任意 URL。原件 30 天、未完成上传 24 小时；显式删除使历史引用不可再读；纳入账号注销及清理。
+- 主模型通过应用层 JSON 循环请求概况、搜索、原文范围、整页图片，记录为兼容协议，**不声称原生工具调用**。规划及每次成图评审可回查原件。任务新增 `materialReads` 来源与送模证据；恢复继续使用原件 ID，读取失败不使用旧摘要冒充成功。
+- PDF.js 5.4.624 / PDFium 2.1.13 与独立有界子进程；PPTX OOXML 加 LibreOffice 整页转换，固定自带字体并提示替换/内容覆盖差异。PPT 暂不支持，要求另存 PPTX。可选服务端 `TUYAN_SOFFICE_PATH` 指定运维控制的转换器路径，客户端/模型不可设置。Linux 包须含 LibreOffice、fontconfig、自带字体及新 assets。
+- [x] Core / Gateway / shared：原件、工具、生命周期、读取证据与主模型 JSON 循环已接入；真实解析/整页渲染和模拟供应商链路通过。范围与证据见 [验收说明](docs/material-reader-20261012/README.md)。
+- [x] Web：上传保存、已存文件复用、详情/原件恢复、删除说明、四种检索独立性；本地自动化与桌面/390px 浏览器检查通过。
+- [ ] 小程序：继续暂停，不同步/构建/验收/发布；后续消费新能力与可选字段。
+- [ ] 真实模型/真实 Mongo-OSS-登录/Linux/生产：未验收；用户将在真实测试时提供凭据，无部署。
+
+## 2026-10-12 · 文件理解与模型绘图统一（model-v1，本地未发布）
+
+- 用户最新方向覆盖先前“按图型自动程序绘图”的新任务设计；[审计、格式限制与验证](docs/infographic-v400/model-material-workflow-20261012/README.md)。保留旧执行代码和已付费恢复协议，不改写历史任务。
+- [x] Core / shared：新增可选 `generationPath:model-v1`、`sourceMaterials`；modelRegistry 提供 `materialWorkflowVersion:1`。新任务按输出格式路由：PNG=主模型规划+生图模型，SVG=主模型源码+程序检查/渲染；数据/组合/状态类不进入固定程序绘图。所有修改后版本单独评审，`maxCriticRounds` 在新路径表示最大修改次数，review.limit 最多加一次最终检查。新增 `MATERIAL_INPUT_REQUIRED` 与 `SVG_SOURCE_EDIT_REQUIRED`；getJob 的安全 generationContext 保留原材料和图片恢复地址，手选 ID 不丢失。无新环境变量。
+- [x] Web：统一文件上传与有界解析，去除专属数据/算法表单；上传和 none/auto/random/manual 独立，偏好只在 auto；SVG 隐藏图片模型/无用凭据。结果“修改 SVG”恢复源码和材料到 SVG 生成区；PNG 精修后评审；恢复旧数据转 JSON 文件。服务能力门禁防止退回旧路径；浏览器存量 8793 仍为只读 UI fixture，不能据此宣称真实生成。
+- [x] 本地验证：25 个模拟 provider 生成组合、92×2 角色断言、Web 39、Core 26、旧生成回归 36、共享 API 29 项通过；类型/构建及桌面/390px UI 检查通过。模拟模型测试与真实模型效果严格区分；本轮未调用付费模型、未部署。
+- [ ] 小程序：按用户要求继续暂停；本轮不改动/同步/验收。恢复后消费 model-v1、文件材料与检索独立、版本门禁、评审修改次数、任务上下文及错误字段。共享生成脚本使用 `--skip-miniprogram`。
+- [ ] Android / Windows / macOS：后续接入上述新请求/恢复/UI/文件限制；旧客户端无 marker 继续旧合同。真实模型、Linux 运行、线上及跨端未验证。
+
+
+## 2026-10-10 · 状态／流程 SVG 关系与组合排版修复（本地代表验收通过，未发布）
+
+- [执行计划](docs/superpowers/plans/2026-10-10-svg-topology-repair.md)、[修复与证据](docs/infographic-v400/svg-repair-20261010/README.md)。仅普通 `workflow/state_transition` SVG 分支改为原始语义提取 → ELK 矢量编译 → 当前图像/源码/关系审查；原有严格 SVG 渲染器、其他图型及原生 Recraft 分支保留。并行合并请保留具体分支，不整文件覆盖 handler。
+- [x] Core / shared：无新增 createJob 输入；新增可选 `CandidateReview.topology/rendererAudit/composition.layout`，绑定实际版本与 SVG/PNG/关系 hash。固定渲染器的能力及原始需求优先级在规划、绘制和评审共用；明确用户要求仍强制满足，不能拿能力限制抵消。错误 `DIAGRAM_TOPOLOGY_INVALID` 禁止自由绘图回退。`elkjs` 固定 0.12.0，构建须包含依赖，无新 env。 新增 `topology_extraction` / `protocol_correction` 阶段记录：已收到的结构错误最多 1 次明确额外主模型纠正；评审协议错误仅使用剩余原评审轮次，同版重新审查。保存原始失败证据后才可继续；实质冲突、未知请求或存储失败不进入纠正。恢复复用已完成调用，无新 createJob 开关。
+- [x] 组合：先按最终面板像素分配尺寸，再绘制独立流程/数据子图；数值始终程序绘制，组装不改数据图元。完整总评记录即使协议失败也保留；超过 256 KiB 的 JSON 证据以带 SHA-256/字节数的对象引用保存，阶段图片仍是成图，不能把 JSON 当图库图片。修改版本不继承旧审查结果，未应用建议保持非通过。
+- [x] 原文追溯协议：新固定渲染任务内部保存 `sourceProtocol` v2 快照（含 `promptRevision:1`），并由 `getJob` 返回可选字段；不增加客户端提交参数。目录绑定任务、面板与原始输入 hash，提取／评审使用 `sourceRef`，程序解析为准确原文并同时保留原始响应与解析记录。节点按原始名称键控，重复名称不自动拆成多个实体。旧版本、缺当前提示版本或原文已改变的该类未完成任务在 resume/run/reconcile 解密凭据及付费调用前明确阻断，须重新提交；不能把旧调用记录当作新协议完成记录。原有原生矢量路线按实际型号排除，保留旧行为。
+- [x] 真实验收：原始状态 SVG 与流程＋2/5/3 柱形混合 SVG 均流程 passed，交付同一 hash 的独立真实终审也 passed；每图 7 条关系、唯一命名节点及数据完整，SVG 真矢量／可编辑文字，无手工改图。最终轮 11 次工作流＋2 次终审；全部排障累计 53 次 Qwen、0 次生图，失败轮次保留，金额未核账。Core 1258/1258、定向109/109、检查与构建通过；30 冻结文件及238保护文件复核。新证据在 `docs/infographic-v400/svg-repair-20261010`。旧完成报告的 9 个模拟组合证据被定向测试误覆盖、历史原字节未恢复，已标注失效；旧真实模型证据未受影响，后续测试默认使用临时目录。
+- [ ] 小程序及其他端：继续暂停同步；旧可选字段可忽略，后续需兼容新增审查证据/错误与程序矢量文件。本条不代表跨端、Linux 容器或生产通过。无提交、部署和生产设置变更。
+
+## 2026-10-10 · 信息图实际执行补齐：63 数据双格式、混合组合与代表实测（本地未发布）
+
+- [交付报告](docs/infographic-v400/completion/README.md)、[92 类逐项支持](docs/infographic-v400/completion/support-catalog.md)、[184 路径矩阵](docs/infographic-v400/completion/support-matrix.csv)、[真实百炼记录](docs/infographic-v400/completion/live-validation.json)。下方旧条目“40 数据 PNG、23 候选、组合仅示意”是历史状态；当前为 63 数据基础形态 PNG/SVG、27 示意双格式流程、2 独立子图组合。142 变体及 8 分析方法仍单独标记，不算全部实现。
+- [x] Core / shared：`modelRegistry.figureExecutionVersion:1` 新增执行能力门禁，分类版本及稳定 ID 保留；`figureData.options` 增加 23 专属参数合同；`figurePanels` 可含真实数据和可选 `methodContent/caption`。子图只继承白名单字段，独立按图型检索和评审；不允许嵌套组合、未实现组合变体或未验证共享尺度。新增可选 `CandidateReview.dataValidation/composition`，绑定数据/代码/PNG/SVG hash 及子图证据；原 SVG 评审算法保留。
+- [x] Plot worker：`/render` 兼容新增 `vector_output`，返回可选 `svg_base64/render_validation`，同一 Matplotlib 场景双导出、真实向量与可编辑文字，禁止图片嵌入。63 类实际数值/图元验证，360 个输入边界拒绝，31 个独立已知答案、16 个科学边界成图；63 SVG 经另一渲染器重开。新增独立 `programmatic-worker.cjs`，部署须与 Core 携带原有 WASM/字体等资产；未新增 env。
+- [x] 检索 / 绘制：具体类别/完整约束与真实许可参考像素传入规划，绘制收到执行规则与结构经验，评审收到实际画面/数据检查。手选参考新增 `manualUnmatchedCount` 与 `match.level=manual_unmatched`，保留用户选择但不冒充结构匹配。万相完整提示仍受 5000 字符限制，去重和阶段性元数据整理不截断任务约束，超限继续明确阻断。
+- [x] Web：专属中文表单、参数/CSV/JSON、显式模拟示例、PNG/SVG、独立子图草稿及任务恢复；不支持执行版本的旧 Core 在提交前阻断。数据图及混合数值组合禁用生图精修（服务端同样拒绝），转为恢复输入重新绘制。修复示例残留参数与退出账号后迟到恢复响应写回私有草稿。650 测试、构建及桌面/390px 表单检查通过。
+- [x] 本地验收：Core 1206、taxonomy 73 项通过，类型检查与构建通过。16 次真实百炼推理请求（Qwen 15、Wan 1），代表流程 PNG 通过；状态 SVG `modified_unreviewed` 且人工仍见错误；混合 SVG `issues_found`。其余逐类真实效果待测。不得把模拟模型矩阵或 HTTP 成功当作质量通过。
+- [ ] 小程序：用户要求继续暂停；224 个文件与本轮前 hash 一致。恢复后消费执行版本、上述字段/状态/错误与程序 SVG 输出；当前未同步、构建、验收或发布。
+- [ ] Android / Windows / macOS：需同步专属输入、执行能力门禁、数据保护和输出/恢复；本轮未验收。Linux 生产 worker、线上配置/部署、跨渠道及账单金额未验收。所有改动本地保留，未提交部署。
+
+
+## 2026-10-10 · 论文图库补充 v2 与图型预览（本地未发布）
+
+- [扩充与验证报告](docs/infographic-v400/expansion-20261010.md)、[38 张逐图审核](docs/infographic-v400/evidence/expansion-20261010-audit.json)、[92 类覆盖表](docs/infographic-v400/evidence/expansion-coverage.csv)。正式语料 `journal-2026-10-10.v2`：69→107 张、35→67 篇论文、覆盖 63→89/92 图型；保留 7 张隔离，研究候选不进入可用池。
+- [x] Core / shared：稳定案例和类型 ID 保留；新增主图型/子图进入同一过滤、检索和规范引用。纠正旧配对点图误标哑铃、未证明大小编码的散点误标气泡；任务历史 ID 不删除。新增可选 `license.reviewEvidence` 指向逐图审核记录；本轮 38 张记录绑定 XML、原图、PNG、图注哈希及四种用途条件。已有许可和候选门禁保持，无新任务字段或环境变量。
+- [x] Web：31 个教学预览中的 28 个换为合格真实论文图，最终 89 个论文预览＋3 个结构示例（研究路线图、流图、极坐标面积图）；独立放大、原文出处、裁剪说明与能力状态保留。补图不提高生成能力状态。定向 30 项通过，构建、桌面与 390px 窄屏验证通过。
+- [x] 资源与工具：支持经过人工核验的 Implementation Science JATS/PNG 来源，PLOS 继续保留原始 TIFF/PNG；刷新脚本不自动批准素材。分类/图库 10 项通过；发布时携带新的 references 和正式图片资源。
+- [ ] 小程序：按用户要求继续暂停；现有改动保留，未同步或测试。恢复时按新语料版本和稳定 ID 更新，不将教学预览加入检索池。
+- [ ] Android / Windows / macOS：后续同步语料及可选审核字段；生产部署、模型逐类型成图及跨端验收本轮未执行。
+
+
+## 2026-10-10 · 统一信息图分类、论文图库与数据绘制（本地未发布）
+
+- [目录及专属规范](docs/infographic-v400/catalog.md)、[旧新映射](docs/infographic-v400/mapping.md)、[实际运行说明](docs/infographic-v400/runtime.md)、[逐图许可记录](docs/infographic-v400/references.md)。唯一注册表 `packages/figure-taxonomy`：13 大类、92 基础类型、142 变体定义；40 种基础数据渲染、27 种示意/领域图合同、2 种仅示意子图组合，23 种数据图候选禁止调用。变体数量不等于实现数量。
+- [x] Core / shared / Gateway：兼容新增 `figureTypeId/figureSpecVersion/figureVariantIds/figureAnalysis/figureData/figurePanels`；modelRegistry 返回 `figureTaxonomyVersion:2026-10-10.v1`。旧字段保留；新字段贯穿任务/getJob/恢复/精修上下文、检索/规划/绘制/评审。缺数据、规范版本不符、未实现类型/变体或含数据子图组合先阻断。数据精修错误 `FIGURE_DATA_REFINE_UNSUPPORTED`；新数值图不调用生图/生图升清。
+- [x] Core / Web 图库：正式池切换为逐图许可与质量核验的 69 张真实论文原图，35 篇论文，覆盖 63 类型；7 张隔离。旧 306 案例保留历史，但未核验 ID 新调用返回 `REFERENCE_LICENSE_UNVERIFIED`。图类/图库同 ID；图像服务端 hash 校验；`referenceSelection` 新增目标 ID、精确/兼容数量及无匹配状态，允许零参考。
+- [x] Web：类别移入生成设置，分层卡片、别名搜索/详情、完整路径与保存；图库筛选/预览/来源许可联动。新数据图实际 PNG，4K 不受未使用的图片路线限制。旧后端不支持分类版本时明确阻断。27 类示意合同并非逐类真实模型效果通过。
+- [x] Plot worker：固定数值渲染、真实数据 hash 与程序核查、中文字体、按目标像素输出；40 类型合成数据实跑，中文 4096×2304 核验。本地结果不替代 Linux 生产容器验证。
+- [x] 并行 SVG 边界：沿用现有 SVG/PNG 实际画面、版本/hash 与新版未复审语义；邻会话实付结果不计入本次分类验证。未重写其评审算法。
+- [ ] 小程序：按用户要求继续暂停；已有改动保留。恢复后消费六字段/版本、图类和图库协议、许可错误及数据输入/输出限制；未同步、测试或发布。
+- [ ] Android / Windows / macOS：需消费上述可选字段与版本；不把旧 diagram/plot 当完整新协议，不宣称全端完成。
+- [ ] 真实模型逐图型效果 / 专业分析与变体 / Linux 容器 / 生产：本轮未验证或未实现。没有新增环境变量；依赖构建须携带 `packages/figure-taxonomy` 与正式参考 assets。未部署。
+
+
+## 2026-10-10 · SVG/PNG 继续真实验证与PNG版本证据（本地未发布）
+
+- [真实验证报告](docs/workflow-v400/2026-10-10-svg-png-live-followup.md)：本次追加38次百炼真实请求（34文本/视觉、4生图）。PNG重画为明确故障注入；严格一致的已付规划前缀复用，后续检查/传图/修订真实。SVG与PNG均保留模型质量问题，未把HTTP200当作图像质量验收。
+- [x] Core/shared：PNG评审加入完整画面结构化协议、交付/已审PNG hash与版本历史；`CandidateReview.history.svgHash`改可选，PNG用`pngHash`，新增`deliveredPngHash`、`reviewedPngHash`、可选`displayBackground:'#ffffff'`。原SVG字段保留。迭代记录原图/送审/传图副本；失败保留匹配的图与方案，已检查问题不被重画失败覆盖。
+- [x] Core：PNG完整生图上下文、准确5000字符预算；Wan2.7实际Data URL与尺寸/像素验证，自动PNG迭代以明确白底副本适配其RGBA输出，原图保留；用户透明精修图不自动改背景。新增公开错误代码`WORKFLOW_INTERNAL_ERROR`（内部ReferenceError），费用unknown优先规则保持。
+- [x] Web：PNG/SVG版次文字准确；仅声明白底的生成结果使用白底显示，已有状态/错误展示兼容新增字段。本次未部署。
+- [ ] 小程序：继续暂停；恢复时同步PNG类型/状态、白底声明与错误码消费，不能宣称已验收新流程。未同步、构建、测试或发布。
+- [ ] 其他客户端 / Recraft实付 / Linux生产 / 账单 / 部署：未执行；新分类图库字段由并行会话独立接入与验收。
+
+## 2026-10-10 · 百炼 SVG 真实请求验证与本地修正（未发布）
+
+- 用户授权百炼真实测试，共18次请求，输入35,011 / 输出15,251 tokens；本地基础设施和合成案例。直接识图、辅助视觉、基础图库直读/协作证据见[真实验证报告](docs/workflow-v400/2026-10-10-bailian-live-svg.md)。辅助最终流程复用了已实测且请求一致的前置响应，单独真实生成v2，不冒充全新连续调用。
+- [x] Core/shared：百炼识图按官方接口直接发送实际图片Data URL；加入SVG渲染限制上下文和完整观察JSON格式；结构化不确定项保留并阻止通过。新增公开错误代码`SVG_RENDER_FAILED`，渲染失败与此前已发生的生成调用明确区分。任务字段结构不变。
+- [x] Web：现有通用失败信息和评审状态可消费以上结果，本轮未修改Web界面；真实画面仍发现零轮公式重叠、模型漏检箭头间距等质量问题，未宣称全面质量通过。
+- [ ] 小程序：继续暂停，未同步、构建、测试或发布；恢复时纳入上述错误文案和结构化评审记录兼容核查。
+- [ ] Recraft真实调用 / Linux容器 / 生产：未执行；百炼验证不能替代其他渠道。密钥未写入仓库或报告。
+
+## 2026-10-09 · 4.0 SVG 先生成后检查，轮次包含必要修订（本地未发布）
+
+- 新共享工作流契约 `workflowContractVersion:2`：SVG 从生成前方案文字评审改为实际生成 → 当前源码真实渲染 → 画面与完整代码评审。用户澄清每轮包括检查、完整优化方案和必要生成；最后新版 `modified_unreviewed`，不继承旧结论、不追加隐藏终审。
+- `CandidateReview` 增加 `visual_code`、`issues_found`、交付/已检查版本与 SVG hash、每轮 SVG/渲染PNG/送审图片hash历史。旧 `text_reviewed` 历史含义保留。Core 保存每版文件，网络结果不明也先保留最近可交付文件，再遵循原停止/恢复屏障。
+- 所有图库参考（包括vanilla）读取标题、介绍和真实图片；基础可识图主模型优先直读，否则要求可用辅助视觉。Web/Core/网关协同忽略未使用的视觉草稿，真实辅助角色仍需认证；不允许客户端模式字段绕过识图或身份检查。
+- 原生 Recraft 明确型号/接口：首版实际style references，修订传上一版；完整上下文和数量/字节/尺寸/长度限额校验，不静默丢图、截断或改路线。非原生未知矢量渠道拒绝。提示词自有名称统一图研。渲染依赖增加固定字体、XML校验、受限WASM工作线程；生产打包必须携带assets，Dockerfile有本地中文字体smoke。
+- [x] Core / shared / Gateway：本地实现与模拟请求验证；具体矩阵、界限及最终结果见[SVG验证报告](docs/workflow-v400/2026-10-09-svg-render-review.md)。未做真实模型调用。
+- [x] Web：前置识图门禁、工作流v2协商、轮次说明、逐版本状态、图库实际图片说明与Recraft限制提示。保持旧历史可读。
+- [ ] 小程序：按用户暂停要求未改动、同步、构建、测试或发布。恢复后同步workflow v2策略及类型、状态文案、真实图片门禁、基础直读角色与认证；旧客户端未同步前不能宣称完成本轮SVG体验。交接快照中50个相关小程序文件hash保持一致。
+- [ ] 真实模型效果 / 真实接口与权益 / 费用 / Linux容器 / 生产部署：本轮未验证；真实调用和发布另定范围。公开版本仍3.8.1。
+
+
+## 2026-10-09 · 4.0 工作树整合模型目录 v31（本地，未发布）
+
+- 来源 `codex/model-catalog-20261009` / `4869c2a57adf74282ef14a892517299c61b1db28`，包含该分支自 `5e6989f` 起六个提交。合并位置 `codex/tuyan-v400-workflow-20261009`；逐文件三方合并，保留当前未提交的 4.0 工作，未整份覆盖 handler 或设置组件。[整合与验证](docs/workflow-v400/2026-10-09-catalog-integration.md)。
+- 静态目录 `2026-10-09.v31`：1,040→1,079 个渠道身份，新增 39，历史 ID 和原始渠道 defaults 全部保留；普通模式继续按本端 4.0 规则优先使用具备视觉能力的主模型。包含新型号/生命周期纠正、Replicate 文本与持久恢复、fal/Ideogram 图片适配及原厂/渠道分离的参数卡片。
+- `ModelSpecifications` v1 为可选信息，含 `manufacturer`、输入格式、准确输入/输出上限、来源与核查日期；仅展示，不据此扩大请求限额或视觉权限。Route v1、工作流 v1 与现有任务字段保持，没有新增 env/凭据。
+- [x] Core / shared：目录和思考生成物同步；全量 1,150 项通过，新增 3 项跨目录/4.0 工作流验证覆盖主模型直读、观察报告交主模型、fal 参考上一张图重新生成和调用前视觉拦截。类型检查与构建通过；均为本地模拟。
+- [x] Web：新模型/参数卡片整合；视觉无面板、普通模式、候选/评审、简化思考开关与仅必填预算规则保留；桌面1440、390/320px卡片、键盘及思考控件验收。完整625项测试与构建通过，详见报告。
+- [ ] 小程序：按用户在目录会话中的暂停范围，本轮未同步、构建、测试或发布；现有 4.0 小程序改动保留。后续需合并源配置后重新生成目录，核查规格可选字段、禁选型号、思考参数与 1.5MiB 包体限制，再独立验收。未覆盖独立微信工程。
+- [ ] 真实账户调用 / 地区权益 / 费用 / 生产部署：未执行；来源分支的官方文档核查与本地模拟不等于真实模型或线上验证。公开版本仍为 3.8.1。
+
+## 2026-10-09 · 厂商官方规格补全（v31，本地待合并）
+
+- 独立 `codex/model-catalog-20261009` 接续 `26424cb`；[41项核查与验收](docs/model-catalog/2026-10-09-manufacturer-specifications.md)。更新41项规格、Google16个精确型号逐页补证；1079个身份、默认、角色、能力和请求参数保持。
+- [x] Core / 共享：specifications v1兼容增加可选manufacturer（独立来源/日期/匹配状态/参数）和inputFormats；不参与请求构造。生成器新增原厂来源/数值校验；198项受影响测试、类型检查与目录一致性通过。
+- [x] Web：渠道与原厂规格分列，输入上限不冒充合计上下文；598测试、构建、桌面1440与390/320px卡片通过。原厂能力不新增调用控件、音视频角色或输出额度。
+- [ ] 小程序全部暂停：未同步、构建、测试、优化、验收或发布；生成器显式`--skip-miniprogram`，219文件哈希不变。恢复后再处理可选共享字段与生成物，不认为小程序UI已完成。
+- [ ] Android / Windows / macOS：后续按需消费可选原厂字段，不把参考参数认作已适配能力。
+- [x] 4.0合并（已由本页顶部整合记录完成）：人工合并规格组件/i18n/共享类型/生成器局部改动，先合并config再生成Web/Core；不整份覆盖runtime handler、设置或流程。未部署、未付费探测、未做密钥或账户操作；真实调用未验证。
+
+
+## 2026-10-09 · 模型目录证据落地与补适配（v30，本地待合并）
+
+- 独立 `codex/model-catalog-20261009`，接续调查 `b8e25cc`；[实现与验收](docs/model-catalog/2026-10-09-adaptation.md)、[21项交付表](docs/model-catalog/2026-10-09-adaptation.csv)。1066→1079：TokenDance 3、fal 3、Replicate 7；旧ID/默认保留，无生产部署。
+- [x] Core / 共享：Wan3 视频误接入已关闭新图像调用；Kimi准确思考字段、fal 6个生成/编辑端点、Replicate固定版本文本结果与持久查询恢复已实现。Route/specifications v1不变，无新env/凭据/任务字段。Core1121测试与类型/构建通过；真实账号调用未验证。
+- [x] Web：复用现有目录、参数卡片和思考控件；592测试/构建通过；桌面1440px、390/320px本地卡片验收。未改4.0设置/流程架构。
+- [ ] 小程序全部暂停：不做UI、同步、构建、测试套件、优化、真机或发布。生成器本轮显式`--skip-miniprogram`，219文件哈希未变；共享源数据已改变，小程序生成物仍旧，不能宣称已同步。恢复该端后再补生成与独立验收，未覆盖微信工程。
+- [ ] Android / Windows / macOS：按需同步新增身份、禁选Wan3与思考参数；不得把目录接入当真实账户验证。
+- [x] 4.0合并（已由本页顶部整合记录完成）：人工合并config、三个adapter/编译器局部逻辑和handler分发，再生成；不可整份覆盖其他会话文件。下条调查记录中的P1与可适配项已由本条落实，缺证据候选继续保持未接入。
+
+
+## 2026-10-09 · 模型目录补证复核（仅调查，不改共享契约）
+
+- 基于独立 `codex/model-catalog-20261009` / `66d98b8`；[163行逐项核查与证据](docs/model-catalog/2026-10-09-research.md)。目录仍1066个身份，未运行生成器、未改变默认/角色/调用参数；没有修改其他4.0工作树、服务或配置。
+- [x] 调查记录：百灵3.1原生精确ID缺口细化；TokenDance Cogevol/Kimi结论纠正；硅基公共90项目录补齐；fal6个操作端点、Replicate25份schema核对。公开证据不等于账号开通或真实调用。
+- [ ] Core / Web 后续P1纠错：Replicate `alibaba/wan-3` 实为视频，当前误登记可选生图/direct-edit；后续禁止新图像选择/调用并保留历史ID。此次只记录，尚未实施。
+- [ ] 后续可补适配：TokenDance三款Cogevol文本、Kimi精确思考映射、fal三组生成/编辑端点；Replicate文本模型需独立结果处理；缺证据项见报告，不自动开放。
+- [x] 4.0合并（已由本页顶部整合记录完成）：此次只有文档影响；后续契约修改应人工合并配置/adapter局部改动，不整份覆盖生成handler。
+- [ ] 小程序全部暂缓：不执行UI、共享数据同步、构建、测试、包体优化、真机或发布；其他端只记录后续待办。本轮无推理、付费探测、密钥操作、充值或生产部署。
+
+## 2026-10-09 · 模型目录继续补查与精确适配（v29，本地待合并）
+
+- 接续本分支`74bbf10`；独立`codex/model-catalog-20261009`。1056→1066个静态身份：Ideogram原生1、Replicate4、商汤1、TokenDance4；相对发布基线累计新增26，原1040个ID和全部默认值保持。来源/完整清单见[补查报告](docs/model-catalog/2026-10-09-followup.md)。
+- 生命周期补3项：硅基ERNIE-Image-Turbo已停用并拒绝新调用；TokenDance MiMoV2.5/Pro按本渠道公告10月21日10:00停用。保留保存的ID，不自动迁移。Together FLUX-3实为视频条目，不假接为生图。
+- [x] Core / 共享：复用现有角色、尺寸、思考编译器和校验；Ideogram可选内部`requestEncoding:'json'`与提交前持久检查点，未知结果不重发。Replicate固定四个精确审核版本，按独立schema验证；原图约束兼容增加area运算。Route v1、specifications v1不变，无新env或凭据字段。
+- [x] Web：复用首轮卡片，按渠道显示可用能力、来源、待确认项；本地桌面与390/320px交互核验。没有改4.0设置或生成流程。
+- [x] monorepo小程序共享目录 / TS / JS：同步、构建、121项测试通过。未覆盖独立微信工程。
+- [ ] 小程序原生卡片UI / 真机 / 微信发行：未在本任务实施，共享数据同步不作为原生UI完成证据。
+- [x] 4.0合并（已由本页顶部整合记录完成）：先人工合并config与adapter局部修改，随后运行`sync-model-catalog`、`sync-thinking`；不可整文件覆盖生成handler或4.0分支。首轮UI人工合并待办仍有效。
+- [ ] 原生百灵新ID、TokenDance新型号视觉/思考控制、其他资料不完整候选：按报告逐项补证，不继承其他渠道声明。真实账号/地区/额度/推理/账单未验证，本轮无push、部署、付费探测或微信发布。
+
+
+
+## 2026-10-09 · 模型目录与参数卡片（隔离分支，本地待合并）
+
+- 基线 `5e6989f`；独立 `codex/model-catalog-20261009`，不改 4.0 工作树。静态目录 `2026-10-09.v28` 新增16个渠道身份（1040→1056），原ID与默认值保留；生命周期与公开来源详见 [核查记录](docs/model-catalog/2026-10-09.md)。
+- 兼容扩展：`modelRegistry` 条目可选 `specifications.version=1`（模态、token、来源/日期/备注）；双端点型号可选 `specificationsByRole`，避免 chat token 上限显示在 image 端点。旧响应缺字段仍显示待确认。字段只用于信息展示，原角色、能力、账户、尺寸、提交门禁不放宽；Route v1不变。
+- [x] Core / 共享配置：逐精确渠道ID维护能力/尺寸/思考规则；新Claude、Gemini、BFL和图像渠道的模拟请求检查；OpenRouter仍使用实时双目录和原有Batch/格式门禁。新增型号真实调用未验证。
+- [x] Web：摘要行+原有详情，支持/未接入/待确认区分；键盘、桌面1440px、手机390px/320px已本地验收。
+- [x] monorepo小程序数据：身份/调用能力/限制同步，TS/JS构建；完整可选元数据同步，展示字典复用既有无损压缩器以保持1.5MiB预算。未覆盖独立微信工程。
+- [ ] 小程序原生卡片 UI / 原生工具验收：本任务未实现，不等于共享目录已同步就完成。
+- [ ] Android / Windows / macOS：按需消费可选信息字段；核对新目录和本端选择器，不得由官方音视频声明推断本端已适配。
+- [x] 4.0 合并（已由本页顶部整合记录完成）：人工合并 `ModelPicker.jsx` 插入、`ModelRoutingSettings.jsx`区域参数透传、CSS入口、i18n和类型导出；先合并 config 再运行两个生成器，不覆盖4.0生成流程/设置架构。
+- [ ] 真实账户 / 地区权益 / 生产发布：本轮不包含付费探测、充值、部署或微信发布。公开资料不完整渠道仍列待确认。
+
+
+
+## 2026-10-09 · 4.0.0 工作流与教程（本地开发，尚未上线）
+
+- 新共享工作流契约 `workflowContractVersion:1` / `workflowLimits:{maxCandidates:6,maxCriticRounds:5}`；候选整数 1–6、评审整数 0–5，默认 1/1。更低服务端容量限制明确拒绝，不截断；候选并发配置保持原值。部署时需核对现有 `PAPERBANANA_MAX_CANDIDATES` / `PAPERBANANA_MAX_CRITIC_ROUNDS`，模板默认分别改为 6/5，未修改生产 env。
+- createJob / refineImage 新增 `visionMode:'assist'|'none'`，旧请求缺省 assist。none 是工作流设置，停用视觉请求、Key、思考及登录依赖；不伪造模型ID。所有基础生成/精修先由主模型制定方案；assist 的观察报告交主模型决策。上传参考、图库图片观察、PNG/plot评审和精修按实际路径前后端预检，未知不当支持。SVG 保持生成前文字方案评审。
+- 主模型评审后完整修订方案与上一张候选图经精确渠道的参考输入传输；需要蒙版/多输入或未确认的渠道明确按文字重新生成，不换模型。移除隐藏评审重试以及 PNG 原生目标尺寸生成后的冗余升清。最后修改没有再次检查使用 `modified_unreviewed`，无效/失败评审不能显示通过。
+- job 新增 `candidateProgress`，每张结果新增 `review:{limit,roundsUsed,mode,status,note}`；逐张保存，不清空部分成功结果。refine 内部保存 `generationContext` 以恢复原始需求/方案；Gateway/Core 均忽略停用视觉草稿的鉴权依赖，保留本人任务归属。
+- [x] Core / shared / Gateway：本地实现与模拟验证完成；新工作流矩阵 14/14、费用与恢复专项 86/86、独立复核通过。任务共享停止屏障覆盖并发后续付费调用、检查点异常，保留安全的原异步任务查询恢复。最终证据见 `docs/workflow-v400/2026-10-09-validation.md`。共享策略源 `packages/api/src/workflow.ts`，使用 `node scripts/sync-workflow.mjs --check` 检查 Web/小程序副本。未做真实付费推理。
+- [x] Web：参数保存恢复、视觉“无”、入场拦截、动态调用估算、可访问流程问号和逐候选状态；只重做教程页，其余布局保持。旧后端未声明契约时禁止新工作流提交并保留草稿。
+- [x] 小程序 monorepo TS/JS：范围/视觉选项/入场预检/角色凭据/保存恢复/逐候选与评审状态同步，流程问号使用可关闭说明。仅源码测试；没有覆盖 `/Users/a1-6/WeChatProjects/miniprogram-9` 独立工作副本。
+- [ ] 小程序负责端合并、微信开发者工具与实体设备验收；原生上传/审核/发布未执行。
+- [ ] 真实模型效果、渠道权益与账单验证；生产部署/环境上限迁移/客户端发布均未执行。公开已发布版本仍为 3.8.1；不把本地 4.0.0 实现称为上线。
+
 
 ## 2026-09-28 · v3.8.1 附加更新统一归版并上线
 

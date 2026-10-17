@@ -1,0 +1,97 @@
+{
+  "typeId": "circle_packing",
+  "computations": {
+    "geometry": {
+      "root": [
+        0,
+        0,
+        3.054642894993891
+      ],
+      "a": [
+        -1.1283791670955128,
+        0,
+        1.926263727898378
+      ],
+      "a1": [
+        -2.2567583341910256,
+        0,
+        0.7978845608028654
+      ],
+      "a2": [
+        -0.3304946062926475,
+        0,
+        1.1283791670955126
+      ],
+      "b": [
+        1.9262637278983779,
+        0,
+        1.1283791670955126
+      ]
+    },
+    "rootTotal": 10,
+    "leafTotal": 10,
+    "algorithm": "tangent-row nested circles"
+  },
+  "checks": {
+    "a1_leaf_area": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "a1_containment_excess": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "a2_leaf_area": {
+      "actual": 3.9999999999999996,
+      "expected": 4.0,
+      "absoluteError": 4.440892098500626e-16
+    },
+    "a2_containment_excess": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "a_containment_excess": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "b_leaf_area": {
+      "actual": 3.9999999999999996,
+      "expected": 4.0,
+      "absoluteError": 4.440892098500626e-16
+    },
+    "b_containment_excess": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "leaf_total": {
+      "actual": 10.0,
+      "expected": 10.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "label",
+      "parent",
+      "value"
+    ],
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-10",
+  "version": "2026-10-10.v1",
+  "groups": 13,
+  "types": 92,
+  "variants": 142,
+  "analysisMethods": 8,
+  "pipeline": {
+    "generative_contract": 27,
+    "deterministic_base": 40,
+    "candidate_unavailable": 23,
+    "schematic_panels_only": 2
+  },
+  "kind": {
+    "schematic": 19,
+    "domain": 8,
+    "data": 63,
+    "composite": 2
+  },
+  "references": {
+    "retained": 114,
+    "usable": 107,
+    "held": 7,
+    "papers": 67,
+    "journals": {
+      "PLOS Biology": 6,
+      "PLOS Computational Biology": 34,
+      "PLOS ONE": 41,
+      "PLOS One": 11,
+      "PLOS Digital Health": 2,
+      "PLOS Genetics": 6,
+      "PLOS Medicine": 1,
+      "PLOS Neglected Tropical Diseases": 2,
+      "PLOS Pathogens": 2,
+      "PLOS Global Public Health": 1,
+      "Implementation Science : IS": 1
+    },
+    "licenses": {
+      "CC-BY-4.0": 102,
+      "CC0-1.0": 5
+    },
+    "coveredTypes": 89,
+    "caseGapTypes": [
+      "roadmap",
+      "streamgraph",
+      "rose"
+    ]
+  }
+}

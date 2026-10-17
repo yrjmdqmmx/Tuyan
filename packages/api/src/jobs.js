@@ -11,6 +11,10 @@ const CLIENT_PLATFORM_LABELS = Object.freeze({
   harmony: 'HarmonyOS',
 });
 
+export async function journalFigureExportRequest(apiBase, payload) {
+  return fetchJson(apiEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'journalFigureExport',...payload})});
+}
+
 export async function fetchBackendHealth(apiBase) {
   const data = await fetchJson(apiEndpoint(apiBase));
   if (data.runtime !== 'gateway') throw new Error('当前地址不是图研认证网关');
@@ -25,10 +29,12 @@ export async function createJobRequest(apiBase, health, payload) {
     body: JSON.stringify({
       action: 'createJob',
       clientPlatform: CLIENT_PLATFORM,
+      journalSelection: payload.journalSelection,
       configurationMode: payload.configurationMode,
       provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
       apiKeys: payload.apiKeys,
       modelRoutes: payload.modelRoutes,
+      visionMode: payload.visionMode,
       thinkingConfig: payload.thinkingConfig,
       providerRegions: payload.providerRegions,
       taskName: payload.taskName,
@@ -36,6 +42,15 @@ export async function createJobRequest(apiBase, health, payload) {
       negativePrompt: payload.negativePrompt,
       caption: payload.caption,
       infographicCategory: payload.infographicCategory,
+      generationPath: payload.generationPath,
+      sourceMaterials: payload.sourceMaterials,
+      materialFiles: payload.materialFiles,
+      figureTypeId: payload.figureTypeId,
+      figureVariantIds: payload.figureVariantIds,
+      figureAnalysis: payload.figureAnalysis,
+      figurePanels: payload.figurePanels,
+      figureData: payload.figureData,
+      figureSpecVersion: payload.figureSpecVersion,
       outputFormat: payload.outputFormat,
       imageSize: payload.imageSize,
       mainModelName: payload.mainModelName,
@@ -62,7 +77,7 @@ export async function referenceLibraryRequest(apiBase, health, opts = {}) {
       throw new Error(`referenceIds cannot be combined with ${incompatibleFields.join(', ')}`);
     }
   }
-  const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'researchDomain', 'referenceIds']
+  const hasV2OnlyField = ['scope', 'page', 'pageSize', 'visualCategory', 'figureTypeId', 'figureGroup', 'researchDomain', 'referenceIds']
     .some((field) => opts[field] !== undefined);
   const legacyRequest = !hasV2OnlyField && (opts.taskName !== undefined || opts.limit !== undefined);
   const paginatedRequest = !legacyRequest;
@@ -74,6 +89,8 @@ export async function referenceLibraryRequest(apiBase, health, opts = {}) {
       ...(opts.pageSize !== undefined ? { pageSize: opts.pageSize } : {}),
       ...(opts.query !== undefined ? { query: opts.query || '' } : {}),
       ...(opts.visualCategory ? { visualCategory: opts.visualCategory } : {}),
+      ...(opts.figureGroup ? {figureGroup:opts.figureGroup} : {}),
+      ...(opts.figureTypeId ? {figureTypeId:opts.figureTypeId} : {}),
       ...(opts.researchDomain ? { researchDomain: opts.researchDomain } : {}),
       ...(opts.taskName ? { taskName: opts.taskName } : {}),
       ...(opts.referenceIds !== undefined ? { referenceIds: opts.referenceIds } : {}),
@@ -102,7 +119,7 @@ export async function referenceLibraryRequest(apiBase, health, opts = {}) {
     page: positiveInteger(data.page) || 1,
     pageSize,
     facets: {
-      visualCategories: normalizeReferenceFacets(data.facets?.visualCategories),
+      visualCategories: normalizeReferenceFacets(data.facets?.visualCategories, true),
       researchDomains: normalizeReferenceFacets(data.facets?.researchDomains),
     },
     corpusVersion: String(data.corpusVersion || ''),
@@ -117,10 +134,12 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
     body: JSON.stringify({
       action: 'refineImage',
       clientPlatform: CLIENT_PLATFORM,
+      journalSelection: payload.journalSelection,
       configurationMode: payload.configurationMode,
       provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
       apiKeys: payload.apiKeys,
       modelRoutes: payload.modelRoutes,
+      visionMode: payload.visionMode,
       thinkingConfig: payload.thinkingConfig,
       providerRegions: payload.providerRegions,
       mainModelName: payload.mainModelName,
@@ -128,8 +147,11 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
       referenceVisionModelName: payload.referenceVisionModelName,
       sourceImageUrl: payload.sourceImageUrl,
       sourceImageObjectKey: payload.sourceImageObjectKey,
-      sourceImageUpload: payload.sourceImageUpload ? { objectKey: payload.sourceImageUpload.objectKey } : undefined,
+      sourceTaskId: payload.sourceTaskId,
+      sourceContentType: payload.sourceContentType,
+      sourceImageUpload: payload.sourceImageUpload ? payload.sourceImageUpload.materialId?{materialId:payload.sourceImageUpload.materialId}:{ objectKey: payload.sourceImageUpload.objectKey } : undefined,
       refineInputs: payload.refineInputs,
+      materialFiles: payload.materialFiles,
       editInstruction: payload.editInstruction,
       aspectRatio: payload.aspectRatio,
       imageSize: payload.imageSize,
@@ -199,12 +221,12 @@ export async function modelCapabilityRequest(apiBase, health, provider, model) {
   });
 }
 
-export async function modelRegistryRequest(apiBase, health, provider = '') {
+export async function modelRegistryRequest(apiBase, health, provider = '', options = {}) {
   assertGatewayBackend(health);
   return fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined }),
+    body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined, ...(options.refresh ? {refreshCatalog:true} : {}) }),
   });
 }
 
@@ -265,6 +287,17 @@ export function adminBenchmarkRequest(apiBase, health, action, payload = {}) {
 }
 
 export async function providerAccountCatalogRequest(apiBase, health, payload = {}) {
+  if (payload.mode === 'catalog') {
+    assertGatewayBackend(health);
+    if (!/^[a-z][a-z0-9]*$/.test(payload.provider || '')) throw new Error('无效渠道');
+    if (payload.probes !== undefined || payload.confirmPaidImageProbe !== undefined) throw new Error('读取目录不能包含模型试调用');
+    return fetchJson(apiEndpoint(apiBase), { method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'providerAccountCatalog',mode:'catalog',provider:payload.provider,
+        apiKeys:{[payload.provider]:payload.apiKeys?.[payload.provider] || ''},
+        continuation:payload.continuation,region:payload.region,workspaceId:payload.workspaceId,privateModels:payload.privateModels === true,
+        ...(payload.provider==='ark' ? {catalogCredentials:{accessKeyId:payload.catalogCredentials?.accessKeyId,secretAccessKey:payload.catalogCredentials?.secretAccessKey,sessionToken:payload.catalogCredentials?.sessionToken}} : payload.provider==='sensenova' ? {catalogCredentials:{token:payload.catalogCredentials?.token}} : {})}),
+    });
+  }
   if (payload.provider !== 'ark') throw new Error('账号模型验证仅支持 Ark。');
   if (!Array.isArray(payload.probes)) throw new Error('Ark 验证模型列表必须是数组。');
   if (payload.probes.length > 3) throw new Error('Ark 每次最多验证 3 个模型。');
@@ -421,7 +454,7 @@ function apiEndpoint(apiBase) {
 }
 
 function toCorePipeline(mode) {
-  if (mode === 'demo_full') return 'full';
+  if (mode === 'demo_full' || mode === 'full') return 'full';
   if (mode === 'vanilla') return 'vanilla';
   return 'planner_critic';
 }
@@ -437,14 +470,23 @@ function normalizeJob(job = {}) {
   return {
     id: job.id || job._id,
     status: job.status,
+    journalSelection: Object.hasOwn(job, 'journalSelection') ? job.journalSelection : job.generationContext?.journalSelection ?? null,
+    journalProfile: Object.hasOwn(job,'journalProfile') ? job.journalProfile : job.generationContext?.journalProfile ?? null,
+    sourceTaskId: job.sourceTaskId,
+    sourceContentType: job.sourceContentType ?? job.generationContext?.sourceContentType,
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
     refineInputs: job.refineInputs || null,
     refineInputMetadata: job.refineInputMetadata || null,
     failure: job.failure || null,
     referenceSelection: job.referenceSelection || null,
+    ...(job.generationContext ? {generationContext: job.generationContext} : {}),
+    manual_reference_ids: job.manual_reference_ids || job.manualReferenceIds || [],
+    ...Object.fromEntries(['generationPath','sourceMaterials','materialFiles','materialReads','materialCleanup','taskSourceMaterial','figureTypeId','figureSpecVersion','figureVariantIds','figureAnalysis','figureData','figurePanels','figureContract','figureInputValidation'].filter(key => job[key] !== undefined).map(key => [key, job[key]])),
     provider: job.provider,
     modelRoutes,
+    visionMode: job.visionMode || job.vision_mode || 'assist',
+    candidateProgress: job.candidateProgress || job.candidate_progress || [],
     model_routes: modelRoutes,
     routingMode,
     routing_mode: routingMode,
@@ -492,7 +534,9 @@ function normalizeJob(job = {}) {
       url: image.url,
       storage: image.storage || '',
       candidate_id: image.candidate_id ?? image.candidateId ?? index,
+      ...(image.journalCheck ? {journalCheck:image.journalCheck} : {}),
       mime_type: image.mime_type || image.mimeType || '',
+      ...(image.review ? { review: image.review } : {}),
     })),
     reference_image_count: job.reference_image_count || job.referenceImageCount || rawReferenceImages.length || 0,
     reference_images: rawReferenceImages.map((image, index) => ({
@@ -501,6 +545,7 @@ function normalizeJob(job = {}) {
       url: image.url,
       storage: image.storage || '',
       mime_type: image.mime_type || image.mimeType || '',
+      ...(image.review ? { review: image.review } : {}),
       size: Number(image.size || 0),
     })),
     logs_tail: job.logs_tail || (Array.isArray(job.logs) ? job.logs.slice(-10).join('\n') : ''),
@@ -537,6 +582,8 @@ export function formatClientPlatform(value) {
 function normalizeRetrievedReference(item = {}) {
   const shortIntroZh = item.shortIntroZh || item.short_intro_zh || item.introZh || item.intro_zh || '';
   return {
+    ...Object.fromEntries(Object.entries({attribution:item.license?.attribution||item.attribution,
+      ...Object.fromEntries(['figureTypeId','panelTypes','paper','assets','license','originalCaption','figureNumber','modifications','designLessons','doNotTransfer','localPreviewUrl','match','layout','density'].map(key=>[key,item[key]]))}).filter(([,value])=>value!==undefined)),
     id: item.id || item._id || '',
     task_name: item.task_name || item.taskName || 'diagram',
     title: item.title || item.visualIntent || item.caption || '',
@@ -555,11 +602,11 @@ function normalizeRetrievedReference(item = {}) {
   };
 }
 
-function normalizeReferenceFacets(value) {
+function normalizeReferenceFacets(value, includeEmpty = false) {
   if (!Array.isArray(value)) return [];
   return value
     .map((item) => ({ value: String(item?.value || ''), count: nonNegativeInteger(item?.count, 0) }))
-    .filter((item) => item.value && item.count > 0);
+    .filter((item) => item.value && (includeEmpty || item.count > 0));
 }
 
 function positiveInteger(value) {
@@ -635,4 +682,22 @@ function normalizeFeedback(item = {}) {
 export async function universalApiCheckRequest(apiBase, health, payload) {
   if (!isGatewayBackend(health)) throw new Error('当前后端不支持通用 API 接入。');
   return fetchJson(apiEndpoint(apiBase), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'universalApiCheck', route: payload.route, connection: payload.connection, selectedModelId: payload.selectedModelId, check: payload.check, apiKeys: payload.apiKeys }) });
+}
+
+export async function materialFileRequest(apiBase,health,action,payload={}) {
+  assertGatewayBackend(health);
+  if(!['prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial'].includes(action))throw new Error('Invalid material action');
+  return fetchJson(apiEndpoint(apiBase),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...payload,action})});
+}
+export async function uploadMaterialFileRequest(apiBase,health,file,options={}) {
+  const {uploads}=await materialFileRequest(apiBase,health,'prepareMaterialUpload',{files:[{filename:file.name,size:file.size,...(options.clientFileId?{clientFileId:options.clientFileId}:{}),...(options.restoreId?{restoreId:options.restoreId,jobId:options.jobId}:{})}]});
+  const upload=uploads[0];
+  try {
+    const response=await fetch(upload.uploadUrl,{method:'PUT',headers:{'Content-Type':upload.mimeType},body:file,credentials:'omit'});
+    if(!response.ok)throw new Error(`原文件上传失败（${response.status}），请重试。`);
+    return (await materialFileRequest(apiBase,health,'finalizeMaterialUpload',{materialId:upload.id})).file;
+  } catch(error) {
+    try{await materialFileRequest(apiBase,health,'deleteMaterial',{materialId:upload.id});}catch{}
+    throw error;
+  }
 }

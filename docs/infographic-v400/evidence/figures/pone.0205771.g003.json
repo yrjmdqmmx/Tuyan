@@ -1,0 +1,49 @@
+{
+  "id": "pone.0205771.g003",
+  "paper": "pone.0205771",
+  "figure": {
+    "id": "pone.0205771.g003",
+    "label": "Fig 3",
+    "caption": "Composition of occupations for the biographies in Pantheon 2.0.\nFor the period between (A) 1-1450, (B) 1450-1880, (C) 1880-1950, and (D) 1950-2000.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0205771.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0205771.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Composition of occupations for the biographies in Pantheon 2.0.</title>\n<p>For the period between (A) 1-1450, (B) 1450-1880, (C) 1880-1950, and (D) 1950-2000.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0205771.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0205771.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0205771",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0205771",
+    "title": "How the medium shapes the message: Printing and the rise of the arts and sciences",
+    "journal": "PLOS ONE",
+    "authors": [
+      "C. Jara-Figueroa",
+      "Amy Z. Yu",
+      "César A. Hidalgo"
+    ],
+    "year": "2019",
+    "license": "2019\nJara-Figueroa et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0205771.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0205771.g003.png",
+      "bytes": 403794,
+      "sha256": "eae872a3c9d1be6414588a16ddedb9c02f322a3e0b37aab1eaa762c58b2ce7de"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0205771.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0205771.g003.tif",
+      "bytes": 840636,
+      "sha256": "653cee0a7aba7a143223abd6b85b1e2c30e2e986ea5c3a2a6f674c61e7e3710b"
+    }
+  }
+}

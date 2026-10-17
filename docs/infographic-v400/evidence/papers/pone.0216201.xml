@@ -1,0 +1,2178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0216201</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-18-23303</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Energy and power</subject><subj-group><subject>Alternative energy</subject><subj-group><subject>Photovoltaic power</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Electromagnetic radiation</subject><subj-group><subject>Light</subject><subj-group><subject>Sunlight</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Electromagnetic radiation</subject><subj-group><subject>Solar radiation</subject><subj-group><subject>Sunlight</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Computer software</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Electrical engineering</subject><subj-group><subject>Electrical circuits</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Applied mathematics</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Simulation and modeling</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Materials science</subject><subj-group><subject>Materials</subject><subj-group><subject>Thin films</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Approximation methods</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Electronics</subject><subj-group><subject>Diodes</subject></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Simple and efficient estimation of photovoltaic cells and modules parameters using approximation and correction technique</article-title>
+<alt-title alt-title-type="running-head">Estimation of photovoltaic cells and modules parameters using ACT approach</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4563-9671</contrib-id>
+<name name-style="western">
+<surname>Muhammad</surname>
+<given-names>Fahmi F.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="fn" rid="currentaff001"><sup>¤</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Karim Sangawi</surname>
+<given-names>Ali W.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hashim</surname>
+<given-names>Suhairul</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ghoshal</surname>
+<given-names>S. K.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Abdullah</surname>
+<given-names>Isam K.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hameed</surname>
+<given-names>Shilan S.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Software</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Physics, Faculty of Science, Universiti Teknologi Malaysia (UTM), Skudai, Johor, Malaysia</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Nanotechnology Research Center, Cihan University-Erbil, Erbil, Kurdistan Region, Iraq</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>College of Basis Education, Charmo University, Chamchamal, Kurdistan Region, Iraq</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Centre for Sustainable Nanomaterials (CSNano), Ibnu Sina Institute for Scientific and Industrial Research (ISI-SIR), Universiti Teknologi Malaysia (UTM), Skudai, Johor, Malaysia</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Physics, College of Science, Salahaddin University, Erbil, Kurdistan Region, Iraq</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Directorate of Information Technology, Koya University, Koya, Kurdistan Region, Iraq</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Pandolfi</surname>
+<given-names>Anna</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Politecnico di Milano, ITALY</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="current-aff" id="currentaff001">
+<label>¤</label>
+<p>Current address: Soft Materials and Devices Group, Department of Physics, Faculty of Science and Health, Koya University, Koya, Kurdistan Region, Iraq</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">fahmi982@gmail.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>2</day>
+<month>5</month>
+<year>2019</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2019</year>
+</pub-date>
+<volume>14</volume>
+<issue>5</issue>
+<elocation-id>e0216201</elocation-id>
+<history>
+<date date-type="received">
+<day>7</day>
+<month>8</month>
+<year>2018</year>
+</date>
+<date date-type="accepted">
+<day>16</day>
+<month>4</month>
+<year>2019</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2019</copyright-year>
+<copyright-holder>Muhammad et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0216201"/>
+<abstract>
+<p>The behavior of solar cells and modules under various operational conditions can be determined effectively when their intrinsic parameters are accurately estimated and used to simulate the current-voltage (<italic>I-V</italic>) characteristics. This work proposed a new computational approach based on approximation and correction technique (ACT) for simple and efficient extraction of solar cells and modules parameters from the single-diode model. In this technique, an approximated value of series resistance (<italic>R</italic><sub><italic>s</italic></sub>) was first derived and used to determine the initial value of parallel resistance (<italic>R</italic><sub><italic>p</italic></sub>). Later, the final corrected values of <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> were obtained by resubstituting their approximated values in a five-loop iteration using the manipulated equations. For rapid evaluation and validation of the proposed technique, a software application was also created using MATLAB program. The correctness and robustness of the proposed technique was validated on five types of solar cells and modules operated at varied temperatures and irradiances. The lowest RMSE value was achieved for RTC France (7.78937E-4) and PVM 752 GaAs (2.10497E-4) solar cell. The legitimacy of ACT extracted parameters was established using a simple yet competitive implementation approach wherein the performance of the developed technique was compared with several state-of-the-art methods recently reported in the literature.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100005417</institution-id>
+<institution>Universiti Teknologi Malaysia</institution>
+</institution-wrap>
+</funding-source>
+<award-id>Q.J090000.21A4.00D20</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-4563-9671</contrib-id>
+<name name-style="western">
+<surname>Muhammad</surname>
+<given-names>Fahmi F.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was financially supported by Universiti Teknologi Malaysia under Vote No: Q.J090000.21A4.00D20.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="8"/>
+<page-count count="19"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the manuscript and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The utilization of photovoltaic (PV) technology to convert sunlight energy into electricity via various solar cell devices has increasingly been demanded in public sectors, industries, and space program [<xref ref-type="bibr" rid="pone.0216201.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0216201.ref004">4</xref>]. This is largely due to easy installation and low maintenance cost of photovoltaic electricity compared to other electricity sources. PV modules are made of cells connected in series and parallel to provide the desired current and voltage. However, the performance of these devices can be affected by the change in temperature, sunlight intensity and aging [<xref ref-type="bibr" rid="pone.0216201.ref005">5</xref>–<xref ref-type="bibr" rid="pone.0216201.ref007">7</xref>]. Hence, it is important to study and analyze comprehensively the output characteristics of such cells and modules under various conditions using appropriate model [<xref ref-type="bibr" rid="pone.0216201.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0216201.ref009">9</xref>]. This in turn can help the users to take effective strategies for delivering safely the maximum power to the electrical appliances/loads.</p>
+<p>Single-diode and double-diode models have widely been used to simulate the PV characteristics [<xref ref-type="bibr" rid="pone.0216201.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0216201.ref010">10</xref>, <xref ref-type="bibr" rid="pone.0216201.ref011">11</xref>]. In order to make a successful performance prediction, it is essential to simulate accurately the behavior of real-world PV devices to represent their current-voltage (<italic>I-V</italic>) characteristics. The single-diode model is comprised of an ideal diode connected in parallel with a constant current source and a shunt resistance driven to an external load through a series resistance (see <xref ref-type="fig" rid="pone.0216201.g001">Fig 1B</xref>). Such single-diode model can accurately present the conventional solar cells behavior [<xref ref-type="bibr" rid="pone.0216201.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0216201.ref013">13</xref>], wherein the unknown model parameters correspond to the PV cells or modules parameters. Estimation of these solar cells or modules parameters based on the experimental <italic>I-V</italic> data is very significant for performance assessment, simulation, design, and quality control [<xref ref-type="bibr" rid="pone.0216201.ref014">14</xref>].</p>
+<fig id="pone.0216201.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title/>
+<p>Prototype structure of solar cells (a), the equivalent circuit used to simulate <italic>I-V</italic> curve of solar cells based on single-diode model (b) and the standard <italic>I-V</italic> characteristic of solar cells (c).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.g001" xlink:type="simple"/>
+</fig>
+<p>The implicit nature of single-diode model equation makes the simple and accurate determination of these parameters somewhat challenging. Therefore, different approaches have been proposed to extract the solar cells and modules parameters including analytical techniques, computational methods and a combination of both. Analytical methods are less accurate either due to the utilization of fewer points of the practical <italic>I-V</italic> data or the negligence of some terms of the applied equations during the parameters extraction process [<xref ref-type="bibr" rid="pone.0216201.ref015">15</xref>–<xref ref-type="bibr" rid="pone.0216201.ref022">22</xref>]. Generally, highly accurate extraction of PV cell parameters is performed via numerical fitting of the practical <italic>I-V</italic> data using Newton-Raphson method [<xref ref-type="bibr" rid="pone.0216201.ref023">23</xref>], Levenberg–Marquardt algorithm [<xref ref-type="bibr" rid="pone.0216201.ref024">24</xref>], polynomial curve fitting technique and Lambert-W function [<xref ref-type="bibr" rid="pone.0216201.ref025">25</xref>] or conductivity method [<xref ref-type="bibr" rid="pone.0216201.ref026">26</xref>]. Nonetheless, these techniques can be easily trapped into local optimum because of their sensitivity to the chosen values of initial parameters. To surmount such limitations, various approaches have been developed for accurate and efficient estimation of PV device parameters.</p>
+<p>Lately, stochastic computational optimization based on evolutionary and heuristic algorithms became prospective owing to their capacity of handling nonlinear equations and global search pattern. For instance, differential evolution (DE) technique [<xref ref-type="bibr" rid="pone.0216201.ref027">27</xref>, <xref ref-type="bibr" rid="pone.0216201.ref028">28</xref>], bird mating optimizer (BMO) [<xref ref-type="bibr" rid="pone.0216201.ref029">29</xref>–<xref ref-type="bibr" rid="pone.0216201.ref031">31</xref>], genetic algorithm (GA) [<xref ref-type="bibr" rid="pone.0216201.ref032">32</xref>, <xref ref-type="bibr" rid="pone.0216201.ref033">33</xref>], artificial bee colony (ABC) [<xref ref-type="bibr" rid="pone.0216201.ref034">34</xref>] and particle swarm optimization (PSO) [<xref ref-type="bibr" rid="pone.0216201.ref035">35</xref>, <xref ref-type="bibr" rid="pone.0216201.ref036">36</xref>] have successfully been utilized to estimate the PV cells and modules parameters. Basically, these algorithms work on a random selection of the intended parameters simultaneously within a large solution space, ultimately leading to high computational cost and reduced stability. On top, the solution may easily get stuck into the local optimum when the dimension of the objective function is large [<xref ref-type="bibr" rid="pone.0216201.ref037">37</xref>]. Thus, dedicated efforts have been made to surmount the limitations of stochastic computational techniques through the establishment of alternative algorithms and internal parametric modifications. Examples of these approaches are PSO with binary constraints [<xref ref-type="bibr" rid="pone.0216201.ref038">38</xref>], guaranteed convergence PSO [<xref ref-type="bibr" rid="pone.0216201.ref039">39</xref>], improved chaotic whale optimization algorithm [<xref ref-type="bibr" rid="pone.0216201.ref040">40</xref>], improved shuffled complex evolution algorithm [<xref ref-type="bibr" rid="pone.0216201.ref037">37</xref>] and hybrid firefly algorithm with pattern search algorithm (HFAPS) [<xref ref-type="bibr" rid="pone.0216201.ref041">41</xref>]. Additionally, with the aim of combining the simplicity of analytical methods and efficiency of computational techniques various hybrid approaches have been introduced to estimate the PV cells and modules parameters [<xref ref-type="bibr" rid="pone.0216201.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0216201.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0216201.ref042">42</xref>, <xref ref-type="bibr" rid="pone.0216201.ref043">43</xref>]. Laudani <italic>et al</italic>. reported an efficient parameter extraction for the single-diode model from experimental <italic>I-V</italic> data using a reduced form [<xref ref-type="bibr" rid="pone.0216201.ref044">44</xref>], where the equations was numerically solved by non-linear least square technique. Interestingly, this approach provided low computational cost and excellent convergence. However, the method is limited when it comes to quantify the PV parameters <italic>I</italic><sub><italic>sc</italic></sub>, <italic>V</italic><sub><italic>oc</italic></sub>, <italic>V</italic><sub><italic>m</italic></sub> and <italic>I</italic><sub><italic>m</italic></sub> for their use in extracting the solar cells and modules parameters. It has been realized that in addition to the experimental <italic>I-V</italic> data, a separate procedure needs to be performed to find the PV parameters or they have to be obtained either from datasheet information or from literature [<xref ref-type="bibr" rid="pone.0216201.ref045">45</xref>].</p>
+<p>The performance and accuracy of the existing techniques for the estimation of the single-diode parameters is known to be limited due to their implementation complexity and reproducibility. Besides, these computational approaches can affect the simulated <italic>I-V</italic> curve that deviates from the experimental one which is majorly due to the high sensitivity of <italic>I-V</italic> characteristic on the ideality factor and series resistance [<xref ref-type="bibr" rid="pone.0216201.ref008">8</xref>]. Thus, special strategies must be taken to the initial estimation of the ideality factor and series resistance while implementing the derived equations. To resolve such problems, present work proposes a new computational approach based on approximation and correction technique (ACT) for simple and efficient determination of the solar cells and modules parameters. MATLAB program was used for rapid evaluation and validation of the proposed technique. This technique was implemented through the use of few viable equations and the competitive accuracy of the simulated <italic>I-V</italic> compared to the experimental ones at different environmental conditions. The developed method was shown to require a set of <italic>I-V</italic> data without manual feeding of PV parameters (<italic>I</italic><sub><italic>sc</italic></sub>, <italic>V</italic><sub><italic>oc</italic></sub>, <italic>V</italic><sub><italic>m</italic></sub> and <italic>I</italic><sub><italic>m</italic></sub>) and used the extrapolation fit to estimate such parameters prior to the initialization. The outperforming attributes of newly proposed technique were established.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Methodology</title>
+<sec id="sec003">
+<title>Mathematical manipulations</title>
+<p>PV cells and modules that are modeled by an equivalent electrical circuit can simulate their current-voltage (<italic>I-V</italic>) characteristics. <xref ref-type="fig" rid="pone.0216201.g001">Fig 1A</xref> shows a prototype structure of solar cells, while <xref ref-type="fig" rid="pone.0216201.g001">Fig 1B and 1C</xref> present the equivalent circuit along with its standard <italic>I-V</italic> characteristic curves in dark and under illumination, respectively. The light activated current source (<italic>I</italic><sub><italic>λ</italic></sub>) depicts the amount of current generated in the cell when it is exposed to photon energy.</p>
+<p>The application of a load across the right side of the circuit (<xref ref-type="fig" rid="pone.0216201.g001">Fig 1B</xref>) gives rise to a potential difference, which ultimately acts upon reducing the total amount of current passing through it in a reverse biased scheme. As such, the summation of instantaneous current in the load determines the final characteristic current of the device. Therefore, the net current of the equivalent circuit so called the output generated current of solar cells can be represented by <xref ref-type="disp-formula" rid="pone.0216201.e001">Eq 1</xref>:
+<disp-formula id="pone.0216201.e001">
+<alternatives>
+<graphic id="pone.0216201.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mrow><mml:mi>I</mml:mi><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:mi>V</mml:mi><mml:mo>+</mml:mo><mml:mi>I</mml:mi><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>V</mml:mi><mml:mo>+</mml:mo><mml:mi>I</mml:mi><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+where <italic>n</italic> is the ideality factor of the solar cell signifying the charge transport efficiency of the device, <inline-formula id="pone.0216201.e002"><alternatives><graphic id="pone.0216201.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e002" xlink:type="simple"/><mml:math display="inline" id="M2"><mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>o</mml:mi></mml:mrow></mml:msub></mml:math></alternatives></inline-formula> is the saturation (generation) current of the diode under dark conditions, <italic>V</italic><sub><italic>t</italic></sub> is the thermal voltage represented by <inline-formula id="pone.0216201.e003"><alternatives><graphic id="pone.0216201.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e003" xlink:type="simple"/><mml:math display="inline" id="M3"><mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>B</mml:mi></mml:mrow></mml:msub><mml:mi>T</mml:mi></mml:mrow><mml:mo>/</mml:mo><mml:mrow><mml:mi>q</mml:mi></mml:mrow></mml:mrow><mml:mo>,</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>B</mml:mi></mml:mrow></mml:msub></mml:math></alternatives></inline-formula> is the Boltzmann’s constant, <italic>T</italic> is the temperature in Kelvin, <italic>q</italic> is the elementary charge and <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> are the respective series and parallel resistance. For a PV module, <inline-formula id="pone.0216201.e004"><alternatives><graphic id="pone.0216201.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e004" xlink:type="simple"/><mml:math display="inline" id="M4"><mml:mo>(</mml:mo><mml:mi>V</mml:mi><mml:mo>+</mml:mo><mml:mi>I</mml:mi><mml:msub><mml:mrow><mml:mi>R</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mo>)</mml:mo></mml:math></alternatives></inline-formula> becomes <inline-formula id="pone.0216201.e005"><alternatives><graphic id="pone.0216201.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e005" xlink:type="simple"/><mml:math display="inline" id="M5"><mml:mo>(</mml:mo><mml:mi>V</mml:mi><mml:mo>/</mml:mo><mml:msub><mml:mrow><mml:mi>N</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mi>I</mml:mi><mml:msub><mml:mrow><mml:mi>R</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mo>)</mml:mo></mml:math></alternatives></inline-formula> since PV module is composed of <italic>N</italic><sub><italic>s</italic></sub> series connected cells. Consequently, the denominator of the exponent part in the equation is involved with <italic>N</italic><sub><italic>s</italic></sub>. Thus, during the numerical iterations, (<italic>N</italic><sub><italic>s</italic></sub> × <italic>n</italic>) should be considered instead of <italic>n</italic>.</p>
+<p>Using three boundary conditions obtained from the <italic>I-V</italic> curve (<xref ref-type="fig" rid="pone.0216201.g001">Fig 1C</xref>) such as the open circuit voltage (<italic>V</italic><sub><italic>oc</italic></sub>), the short circuit current (<italic>I</italic><sub><italic>sc</italic></sub>) and the maximum power (<italic>P</italic><sub><italic>m</italic></sub>), <xref ref-type="disp-formula" rid="pone.0216201.e001">Eq 1</xref> can be transformed as:
+<disp-formula id="pone.0216201.e006">
+<alternatives>
+<graphic id="pone.0216201.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6">
+<mml:mrow><mml:mn>0</mml:mn><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+<disp-formula id="pone.0216201.e007">
+<alternatives>
+<graphic id="pone.0216201.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+<disp-formula id="pone.0216201.e008">
+<alternatives>
+<graphic id="pone.0216201.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e008" xlink:type="simple"/>
+<mml:math display="block" id="M8">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula></p>
+<p>Combining Eqs <xref ref-type="disp-formula" rid="pone.0216201.e006">2</xref> from <xref ref-type="disp-formula" rid="pone.0216201.e007">3</xref> one gets the underneath expression saturation current (<italic>I</italic><sub><italic>o</italic></sub>):
+<disp-formula id="pone.0216201.e009">
+<alternatives>
+<graphic id="pone.0216201.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula></p>
+<p>The second exponential term in the denominator due to its smallness for almost all the types of solar cells [<xref ref-type="bibr" rid="pone.0216201.ref013">13</xref>, <xref ref-type="bibr" rid="pone.0216201.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0216201.ref046">46</xref>, <xref ref-type="bibr" rid="pone.0216201.ref047">47</xref>] can be approximated without loss of generality and transforms the relation to:
+<disp-formula id="pone.0216201.e010">
+<alternatives>
+<graphic id="pone.0216201.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula></p>
+<p>Under the same approximation <xref ref-type="disp-formula" rid="pone.0216201.e007">Eq 3</xref> yields:
+<disp-formula id="pone.0216201.e011">
+<alternatives>
+<graphic id="pone.0216201.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula></p>
+<p>Substituting Eqs <xref ref-type="disp-formula" rid="pone.0216201.e010">6</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e011">7</xref> into <xref ref-type="disp-formula" rid="pone.0216201.e008">Eq 4</xref> and solving for <italic>R</italic><sub><italic>s</italic></sub> one gets:
+<disp-formula id="pone.0216201.e012">
+<alternatives>
+<graphic id="pone.0216201.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e012" xlink:type="simple"/>
+<mml:math display="block" id="M12">
+<mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mi>ln</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>−</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo><mml:mo>+</mml:mo><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>/</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo stretchy="false">)</mml:mo></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(8)</label>
+</disp-formula></p>
+<p>A boundary condition at the maximum power point of the <italic>I-V</italic> curve can be applied to derive the explicit form of <italic>R</italic><sub><italic>p</italic></sub> wherein the internal impedance (<italic>Z</italic><sub><italic>in</italic></sub>) of the equivalent circuit is taken equal to the impedance of the external load (<italic>Z</italic><sub><italic>out</italic></sub>). From the theorem of maximum power transfer to the external load one achieves,
+<disp-formula id="pone.0216201.e013">
+<alternatives>
+<graphic id="pone.0216201.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e013" xlink:type="simple"/>
+<mml:math display="block" id="M13">
+<mml:mrow><mml:msub><mml:mi>Z</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mi>n</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>Z</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>u</mml:mi><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(9)</label>
+</disp-formula></p>
+<p>Based on the equivalent circuit, the impedance function takes the form:
+<disp-formula id="pone.0216201.e014">
+<alternatives>
+<graphic id="pone.0216201.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e014" xlink:type="simple"/>
+<mml:math display="block" id="M14">
+<mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:msub><mml:mi>r</mml:mi><mml:mi>d</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>r</mml:mi><mml:mi>d</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo>+</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(10)</label>
+</disp-formula>
+where <italic>r</italic><sub><italic>d</italic></sub> is the dynamic resistance of the diode at maximum power point (<italic>P</italic><sub><italic>max</italic></sub>) which is determined from the first derivative of the diode voltage with respect to its current given by:
+<disp-formula id="pone.0216201.e015">
+<alternatives>
+<graphic id="pone.0216201.e015g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e015" xlink:type="simple"/>
+<mml:math display="block" id="M15">
+<mml:mrow><mml:msub><mml:mi>r</mml:mi><mml:mi>d</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mrow><mml:mrow><mml:mfrac><mml:mrow><mml:mi>d</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>d</mml:mi><mml:msub><mml:mi>I</mml:mi><mml:mi>D</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>|</mml:mo></mml:mrow></mml:mrow><mml:mrow><mml:msub><mml:mi>P</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>e</mml:mi><mml:mi>x</mml:mi><mml:mi>p</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(11)</label>
+</disp-formula></p>
+<p>Solving Eqs <xref ref-type="disp-formula" rid="pone.0216201.e015">11</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e014">10</xref> one gets:
+<disp-formula id="pone.0216201.e016">
+<alternatives>
+<graphic id="pone.0216201.e016g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e016" xlink:type="simple"/>
+<mml:math display="block" id="M16">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:mo stretchy="false">(</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(12)</label>
+</disp-formula></p>
+<p>Manipulating Eqs <xref ref-type="disp-formula" rid="pone.0216201.e006">2</xref>, <xref ref-type="disp-formula" rid="pone.0216201.e008">4</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e010">6</xref> one achieves:
+<disp-formula id="pone.0216201.e017">
+<alternatives>
+<graphic id="pone.0216201.e017g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e017" xlink:type="simple"/>
+<mml:math display="block" id="M17">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(13)</label>
+</disp-formula></p>
+<p>Using Eqs <xref ref-type="disp-formula" rid="pone.0216201.e016">12</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e017">13</xref>, the explicit form of <italic>R</italic><sub><italic>p</italic></sub> can be obtained as:
+<disp-formula id="pone.0216201.e018">
+<alternatives>
+<graphic id="pone.0216201.e018g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e018" xlink:type="simple"/>
+<mml:math display="block" id="M18">
+<mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msubsup><mml:mi>V</mml:mi><mml:mi>m</mml:mi><mml:mn>2</mml:mn></mml:msubsup><mml:mo>+</mml:mo><mml:msubsup><mml:mi>R</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:msubsup><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msubsup><mml:mi>I</mml:mi><mml:mi>m</mml:mi><mml:mn>2</mml:mn></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>s</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>I</mml:mi><mml:mi>m</mml:mi><mml:mn>2</mml:mn></mml:msubsup><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(14)</label>
+</disp-formula></p>
+</sec>
+<sec id="sec004">
+<title>Method formulation</title>
+<p>The main concept of ACT approach is emerged from the fact that the value of every dependent variable <italic>y</italic> = <italic>f(x)</italic> in an implicit function can be approximated by neglecting initially the part of the equation that contains <italic>y</italic>. Let us assume two simultaneous implicit equations, where the first one is <inline-formula id="pone.0216201.e019"><alternatives><graphic id="pone.0216201.e019g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e019" xlink:type="simple"/><mml:math display="inline" id="M19"><mml:mi>y</mml:mi><mml:mo>=</mml:mo><mml:mi>a</mml:mi><mml:mo>+</mml:mo><mml:mi mathvariant="normal">l</mml:mi><mml:mi mathvariant="normal">n</mml:mi><mml:mo>⁡</mml:mo><mml:mo>(</mml:mo><mml:mi>b</mml:mi><mml:mo>+</mml:mo><mml:mfrac bevelled="true"><mml:mrow><mml:mi>c</mml:mi><mml:mi>y</mml:mi></mml:mrow><mml:mrow><mml:mi>x</mml:mi></mml:mrow></mml:mfrac><mml:mo>)</mml:mo></mml:math></alternatives></inline-formula> and the second one is <inline-formula id="pone.0216201.e020"><alternatives><graphic id="pone.0216201.e020g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e020" xlink:type="simple"/><mml:math display="inline" id="M20"><mml:mi>x</mml:mi><mml:mo>=</mml:mo><mml:mi>d</mml:mi><mml:mi>y</mml:mi><mml:mo>+</mml:mo><mml:mi>e</mml:mi><mml:msup><mml:mrow><mml:mi>y</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msup></mml:math></alternatives></inline-formula>, where <italic>a</italic>, <italic>b</italic>, <italic>c</italic>, <italic>d</italic> and <italic>e</italic> are some defined constants. Now, to find the approximate value of <italic>y</italic> in the first implicit equation, the term <italic>cy/x</italic> is initially neglected. This approximate value of <italic>y</italic> can be utilized in the second equation to guess the approximate value of <italic>x</italic>. Then, these approximate values of <italic>x</italic> and <italic>y</italic> can be resubstituted into the neglected part (<italic>cy/x</italic>) at the right side of the implicit equation to determine the new value of <italic>y</italic> at the left side. In this way, the resubstituting process within few iterative loops allows to exact the values of <italic>y</italic> and <italic>x</italic>. Driven by this proposed approach, the rational terms including <italic>R</italic><sub><italic>p</italic></sub> in <xref ref-type="disp-formula" rid="pone.0216201.e012">Eq 8</xref> are initially neglected to determine the approximate values of initial <italic>R</italic><sub><italic>s</italic></sub> (<italic>R</italic><sub><italic>s_i</italic></sub>) via:
+<disp-formula id="pone.0216201.e021">
+<alternatives>
+<graphic id="pone.0216201.e021g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e021" xlink:type="simple"/>
+<mml:math display="block" id="M21">
+<mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mo>_</mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mi>ln</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mrow><mml:mi>s</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mi>m</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>m</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(15)</label>
+</disp-formula>
+Value of <italic>R</italic><sub><italic>s_i</italic></sub> was utilized to estimate the preliminary value of <italic>R</italic><sub><italic>p</italic></sub> using <xref ref-type="disp-formula" rid="pone.0216201.e018">Eq 14</xref>. Later on, the final corrected values of <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> were obtained through resubstituting their approximated values in a five-loop iteration procedure using Eqs <xref ref-type="disp-formula" rid="pone.0216201.e012">8</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e018">14</xref>, respectively. It was found that five iterations were sufficient to achieve a fixed/corrected value of <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> (<xref ref-type="fig" rid="pone.0216201.g002">Fig 2</xref>). The value of <italic>R</italic><sub><italic>s</italic></sub> being always smaller than <italic>R</italic><sub><italic>p</italic></sub> by several orders of magnitude allows one to resubstitute <italic>R</italic><sub><italic>s</italic></sub> into <xref ref-type="disp-formula" rid="pone.0216201.e018">Eq 14</xref> for modifying <italic>R</italic><sub><italic>p</italic></sub>.</p>
+<fig id="pone.0216201.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>The change in values of <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> within five loop iterations, the final fixed values are used in ACT approach for the parameters extraction.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.g002" xlink:type="simple"/>
+</fig>
+<p><xref ref-type="disp-formula" rid="pone.0216201.e009">Eq 5</xref> was used to determine the saturation current (<italic>I</italic><sub><italic>o</italic></sub>) and <xref ref-type="disp-formula" rid="pone.0216201.e006">Eq 2</xref> was exploited to extract the photocurrent given by:
+<disp-formula id="pone.0216201.e022">
+<alternatives>
+<graphic id="pone.0216201.e022g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e022" xlink:type="simple"/>
+<mml:math display="block" id="M22">
+<mml:mrow><mml:msub><mml:mi>I</mml:mi><mml:mi>λ</mml:mi></mml:msub><mml:mo>=</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi>o</mml:mi></mml:msub><mml:mrow><mml:mo>[</mml:mo><mml:mrow><mml:mi>exp</mml:mi><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>n</mml:mi><mml:msub><mml:mi>V</mml:mi><mml:mi>t</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>−</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mo>]</mml:mo></mml:mrow><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>V</mml:mi><mml:mrow><mml:mi>o</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:msub><mml:mi>R</mml:mi><mml:mi>p</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(16)</label>
+</disp-formula></p>
+</sec>
+<sec id="sec005">
+<title>Method implementation and validation</title>
+<p>The ACT approach was implemented using MATLAB code (runtime R2017b) on a PC (core i7 and 8 GB RAM) involving the following steps:</p>
+<list list-type="order">
+<list-item><p>The measured <italic>I-V</italic> data was imported in csv format and a new dataset of power-voltage (<italic>P-V</italic>) is generated from. Then, exponential, Gaussian and polynomial interpolation techniques were utilized around the respective points <italic>I</italic> = 0, <italic>V</italic> = 0 and <italic>P</italic> = <italic>P</italic><sub><italic>max</italic></sub> to determine the corresponding photovoltaic parameters <italic>I</italic><sub><italic>sc</italic></sub>, <italic>V</italic><sub><italic>oc</italic></sub>, <italic>V</italic><sub><italic>m</italic></sub> and <italic>I</italic><sub><italic>m</italic></sub>.</p></list-item>
+<list-item><p>Number of series cells and operating temperature of the device was fed as input data.</p></list-item>
+<list-item><p>A set of ideality factor (<italic>n</italic>) was initialized, starting from 0.5 to 6 with an increment of 0.1.</p></list-item>
+<list-item><p>At every point of <italic>n</italic>, <xref ref-type="disp-formula" rid="pone.0216201.e021">Eq 15</xref> was used to determine the approximate value of <italic>R</italic><sub><italic>s</italic></sub>, while the final corrected values of <italic>R</italic><sub><italic>p</italic></sub> and <italic>R</italic><sub><italic>s</italic></sub> were calculated via the proposed ACT method using Eqs <xref ref-type="disp-formula" rid="pone.0216201.e018">14</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e012">8</xref>.</p></list-item>
+<list-item><p>The values of <italic>I</italic><sub><italic>o</italic></sub> and <italic>I</italic><sub><italic>λ</italic></sub> were also determined from Eqs <xref ref-type="disp-formula" rid="pone.0216201.e009">5</xref> and <xref ref-type="disp-formula" rid="pone.0216201.e022">16</xref>, respectively.</p></list-item>
+<list-item><p>At every value of <italic>n</italic>, a set of simulated <italic>I-V</italic> data was generated based on the estimated parameters using a non-linear zero finding (<italic>fzero</italic>).</p></list-item>
+<list-item><p>The set of PV cell/module parameters that provided the best fitting of the simulated <italic>I-V</italic> data to that of the experimental ones (lowest RMSE) was chosen as the optimum solution.</p></list-item>
+<list-item><p>Similarly, a new set of <italic>n</italic> was initialized around the best previous chosen <italic>n</italic> (at which the optimum parameters were extracted) with the increment of 0.01, while steps 4 to 7 were repeated to improve the accuracy and efficiency of the method.</p></list-item>
+<list-item><p>Step 8 was repeated for five sequential iterations, where the value of <italic>n</italic> with five decimal orders was obtained.</p></list-item>
+</list>
+<p>The coding was deployed in a stand-alone software application for simple and fast implementation of the above steps. This allowed the efficient extraction of the PV cells and modules parameters. <xref ref-type="fig" rid="pone.0216201.g003">Fig 3</xref> shows the workspace of this application, where the given inputs to the app were measured <italic>I-V</italic> data in csv format, number of series cells and operating temperature. The application provided a fast and efficient extraction of the parameters that could calculate the <italic>I-V</italic> data within few seconds. This application was made freely available to users as a supporting file (<xref ref-type="supplementary-material" rid="pone.0216201.s006">S1 File</xref>). The app can be executed using the free available software (MATLAB runtime R2017b) and without MATLAB installation in the computer (<ext-link ext-link-type="uri" xlink:href="https://www.mathworks.com/products/compiler/matlab-runtime.html" xlink:type="simple">https://www.mathworks.com/products/compiler/matlab-runtime.html</ext-link>).</p>
+<fig id="pone.0216201.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>The workspace of the established software application, which is used to extract the PV cells and modules parameters based on ACT.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.g003" xlink:type="simple"/>
+</fig>
+<p>The performance proposed method was validated using five PV cells and modules (composed of different series cells) operated under different temperatures and solar irradiations. These include France solar cell operated at 33°C and irradiation of 1000 W/m<sup>2</sup> (measured <italic>I-V</italic> data was provided in <xref ref-type="supplementary-material" rid="pone.0216201.s001">S1 Dataset</xref>), PVM 752 GaAs thin film cell operated at 25°C and irradiation of 1000 W/m<sup>2</sup> (measured <italic>I-V</italic> data was provided in <xref ref-type="supplementary-material" rid="pone.0216201.s002">S2 Dataset</xref>), Photowatt-PWP201 module comprising 36 polycrystalline silicon cells in series operated at 45°C and 1000 W/m<sup>2</sup> (measured <italic>I-V</italic> data was provided in <xref ref-type="supplementary-material" rid="pone.0216201.s003">S3 Dataset</xref>), Leibold Solar Module (STE 20/100) comprising 20 series cells operated at 24°C under outdoor sunlight intensity of 360 W/m<sup>2</sup> (measured <italic>I-V</italic> data was provided in <xref ref-type="supplementary-material" rid="pone.0216201.s004">S4 Dataset</xref>) and a four series cells-based polycrystalline PV module (STE 4/100) from Leybold GmbH operated at 22°C under indoor light intensity of 900 W/m<sup>2</sup> (measured <italic>I-V</italic> data was provided in <xref ref-type="supplementary-material" rid="pone.0216201.s004">S4 Dataset</xref>).</p>
+<p>The accuracy of the proposed method was assessed correspondingly in terms of summation of absolute error (SAE), mean of absolute error (MAE) and root mean squared error (RMSE) given by the relations:
+<disp-formula id="pone.0216201.e023">
+<alternatives>
+<graphic id="pone.0216201.e023g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e023" xlink:type="simple"/>
+<mml:math display="block" id="M23">
+<mml:mrow><mml:mi>S</mml:mi><mml:mi>A</mml:mi><mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>k</mml:mi></mml:munderover><mml:mrow><mml:mo>|</mml:mo><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>e</mml:mi><mml:mi>a</mml:mi><mml:mi>s</mml:mi></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>c</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>|</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(17)</label>
+</disp-formula>
+<disp-formula id="pone.0216201.e024">
+<alternatives>
+<graphic id="pone.0216201.e024g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e024" xlink:type="simple"/>
+<mml:math display="block" id="M24">
+<mml:mrow><mml:mi>M</mml:mi><mml:mi>A</mml:mi><mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:mi>k</mml:mi></mml:mfrac><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>k</mml:mi></mml:munderover><mml:mrow><mml:mo>|</mml:mo><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>e</mml:mi><mml:mi>a</mml:mi><mml:mi>s</mml:mi></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>c</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mo>|</mml:mo></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(18)</label>
+</disp-formula>
+<disp-formula id="pone.0216201.e025">
+<alternatives>
+<graphic id="pone.0216201.e025g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e025" xlink:type="simple"/>
+<mml:math display="block" id="M25">
+<mml:mrow><mml:mi>R</mml:mi><mml:mi>M</mml:mi><mml:mi>S</mml:mi><mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:msqrt><mml:mrow><mml:mfrac><mml:mn>1</mml:mn><mml:mi>k</mml:mi></mml:mfrac><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>k</mml:mi></mml:munderover><mml:msup><mml:mrow><mml:mrow><mml:mo>(</mml:mo><mml:mrow><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>e</mml:mi><mml:mi>a</mml:mi><mml:mi>s</mml:mi></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:msubsup><mml:mi>I</mml:mi><mml:mi>i</mml:mi><mml:mrow><mml:mi>c</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup></mml:mrow><mml:mo>)</mml:mo></mml:mrow></mml:mrow><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:msqrt></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(19)</label>
+</disp-formula>
+where <italic>k</italic> is the number of elements in the measured <italic>I</italic> dataset, <inline-formula id="pone.0216201.e026"><alternatives><graphic id="pone.0216201.e026g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e026" xlink:type="simple"/><mml:math display="inline" id="M26"><mml:msubsup><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>e</mml:mi><mml:mi>a</mml:mi><mml:mi>s</mml:mi></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> and <inline-formula id="pone.0216201.e027"><alternatives><graphic id="pone.0216201.e027g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0216201.e027" xlink:type="simple"/><mml:math display="inline" id="M27"><mml:msubsup><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow><mml:mrow><mml:mi>c</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msubsup></mml:math></alternatives></inline-formula> are the <italic>i</italic><sup><italic>th</italic></sup> measured current and calculated current, respectively.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="conclusions">
+<title>Results and discussion</title>
+<p>The performance of proposed ACT was validated and assessed using five types of PV devices (two PV cells and three PV modules) at different device temperatures and solar irradiations. Consequently, the extracted PV cells and modules parameters were recorded and utilized to generate simulated <italic>I-V</italic> data for each type of the device. The correctness and robustness of ATC was tested by comparing with the existing art of the techniques reported in the literature.</p>
+<sec id="sec007">
+<title>Parameters of PV cells</title>
+<p>Commercially available R.T.C. France solar cell (57 mm of diameter operated at 33°C) was tested for the parameters extraction and validation of the proposed method [<xref ref-type="bibr" rid="pone.0216201.ref023">23</xref>]. The measured <italic>I-V</italic> data of the cell was given in csv format as the <xref ref-type="supplementary-material" rid="pone.0216201.s001">S1 Dataset</xref>. <xref ref-type="table" rid="pone.0216201.t001">Table 1</xref> depicts the simulated currents and the ACT derived absolute error between the experimental and simulated currents. The calculated currents agreed very well with the measured ones.</p>
+<table-wrap id="pone.0216201.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t001</object-id>
+<label>Table 1</label> <caption><title>Calculated/simulated results for single-diode model of R.T.C.</title> <p>France solar cell obtained using ACT.</p></caption>
+<alternatives>
+<graphic id="pone.0216201.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Voltage (V)</th>
+<th align="left">Measured Current (A)</th>
+<th align="left">Calculated Current (A)</th>
+<th align="left">Absolute Error (AE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-0.2057</td>
+<td align="left">0.7640</td>
+<td align="left">0.7642</td>
+<td align="left">0.00023</td>
+</tr>
+<tr>
+<td align="left">-0.1291</td>
+<td align="left">0.7620</td>
+<td align="left">0.7628</td>
+<td align="left">0.00078</td>
+</tr>
+<tr>
+<td align="left">-0.0588</td>
+<td align="left">0.7605</td>
+<td align="left">0.7614</td>
+<td align="left">0.00094</td>
+</tr>
+<tr>
+<td align="left">0.0057</td>
+<td align="left">0.7605</td>
+<td align="left">0.7602</td>
+<td align="left">0.00029</td>
+</tr>
+<tr>
+<td align="left">0.0646</td>
+<td align="left">0.7600</td>
+<td align="left">0.7591</td>
+<td align="left">0.00092</td>
+</tr>
+<tr>
+<td align="left">0.1185</td>
+<td align="left">0.7590</td>
+<td align="left">0.7580</td>
+<td align="left">0.00095</td>
+</tr>
+<tr>
+<td align="left">0.1678</td>
+<td align="left">0.7580</td>
+<td align="left">0.7571</td>
+<td align="left">0.00092</td>
+</tr>
+<tr>
+<td align="left">0.2132</td>
+<td align="left">0.7570</td>
+<td align="left">0.7561</td>
+<td align="left">0.00089</td>
+</tr>
+<tr>
+<td align="left">0.2545</td>
+<td align="left">0.7555</td>
+<td align="left">0.7550</td>
+<td align="left">0.00045</td>
+</tr>
+<tr>
+<td align="left">0.2924</td>
+<td align="left">0.7540</td>
+<td align="left">0.7536</td>
+<td align="left">0.00038</td>
+</tr>
+<tr>
+<td align="left">0.3269</td>
+<td align="left">0.7505</td>
+<td align="left">0.7514</td>
+<td align="left">0.00087</td>
+</tr>
+<tr>
+<td align="left">0.3585</td>
+<td align="left">0.7465</td>
+<td align="left">0.7474</td>
+<td align="left">0.00087</td>
+</tr>
+<tr>
+<td align="left">0.3873</td>
+<td align="left">0.7385</td>
+<td align="left">0.7402</td>
+<td align="left">0.00168</td>
+</tr>
+<tr>
+<td align="left">0.4137</td>
+<td align="left">0.7280</td>
+<td align="left">0.7276</td>
+<td align="left">0.00044</td>
+</tr>
+<tr>
+<td align="left">0.4373</td>
+<td align="left">0.7065</td>
+<td align="left">0.7072</td>
+<td align="left">0.00071</td>
+</tr>
+<tr>
+<td align="left">0.4590</td>
+<td align="left">0.6755</td>
+<td align="left">0.6756</td>
+<td align="left">0.00011</td>
+</tr>
+<tr>
+<td align="left">0.4784</td>
+<td align="left">0.6320</td>
+<td align="left">0.6312</td>
+<td align="left">0.00080</td>
+</tr>
+<tr>
+<td align="left">0.4960</td>
+<td align="left">0.5730</td>
+<td align="left">0.5723</td>
+<td align="left">0.00066</td>
+</tr>
+<tr>
+<td align="left">0.5119</td>
+<td align="left">0.4990</td>
+<td align="left">0.4996</td>
+<td align="left">0.00065</td>
+</tr>
+<tr>
+<td align="left">0.5265</td>
+<td align="left">0.4130</td>
+<td align="left">0.4135</td>
+<td align="left">0.00052</td>
+</tr>
+<tr>
+<td align="left">0.5398</td>
+<td align="left">0.3165</td>
+<td align="left">0.3171</td>
+<td align="left">0.00063</td>
+</tr>
+<tr>
+<td align="left">0.5521</td>
+<td align="left">0.2120</td>
+<td align="left">0.2119</td>
+<td align="left">5.8E-05</td>
+</tr>
+<tr>
+<td align="left">0.5633</td>
+<td align="left">0.1035</td>
+<td align="left">0.1026</td>
+<td align="left">0.00095</td>
+</tr>
+<tr>
+<td align="left">0.5736</td>
+<td align="left">-0.0100</td>
+<td align="left">-0.0090</td>
+<td align="left">0.00064</td>
+</tr>
+<tr>
+<td align="left">0.5833</td>
+<td align="left">-0.1230</td>
+<td align="left">-0.1240</td>
+<td align="left">0.00135</td>
+</tr>
+<tr>
+<td align="left">0.5900</td>
+<td align="left">-0.2100</td>
+<td align="left">-0.2090</td>
+<td align="left">0.00097</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p><xref ref-type="table" rid="pone.0216201.t002">Table 2</xref> compares the extracted parameters of R.T.C France solar cell obtained using the ACT with other reported methods in literature. Vales of SAE, MAE and RMSE indicated a highly competitive performance of the ACT and its reliance to determine accurately the PV cells and modules parameters. It is worth mentioning that the developed ACT outperformed several recently reported stochastic and deterministic optimization algorithms such as PGJAYA, ILCOA, HFAPS, ISCE and IJAYA in terms of accuracy, simplicity and computational cost (rapidity). The proposed ACT was able to extract the devices parameters in few seconds, while almost all the stochastic algorithms require several minutes. The reduced form (RF) approach [<xref ref-type="bibr" rid="pone.0216201.ref044">44</xref>] was also seen to provide low computational cost and excellent convergence. However, this method is limited when it comes to quantify the PV parameters <italic>I</italic><sub><italic>sc</italic></sub>, <italic>V</italic><sub><italic>oc</italic></sub>, <italic>V</italic><sub><italic>m</italic></sub> and <italic>I</italic><sub><italic>m</italic></sub> before their utilization in the process of extracting the solar cells and modules parameters. Alternatively, these parameters need to be obtained manually either from datasheet information or from literature. Present ACT can automatically estimate all the PV parameters during the first <italic>I-V</italic> screening, while extracting the devices parameters accurately and efficiently.</p>
+<table-wrap id="pone.0216201.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t002</object-id>
+<label>Table 2</label> <caption><title>Comparison of different parameters extraction methods for single-diode model of R.T.C.</title> <p>France solar cell.</p></caption>
+<alternatives>
+<graphic id="pone.0216201.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Methods</th>
+<th align="left"><italic>n</italic></th>
+<th align="left"><italic>R</italic><sub><italic>s</italic></sub> (Ω)</th>
+<th align="left"><italic>R</italic><sub><italic>p</italic></sub> (Ω)</th>
+<th align="left"><italic>I</italic><sub><italic>λ</italic></sub>(A)</th>
+<th align="left"><italic>I</italic><sub><italic>o</italic></sub> (μA)</th>
+<th align="left">SAE</th>
+<th align="left">MAE</th>
+<th align="left">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ACT (proposed)</td>
+<td align="left">1.47322</td>
+<td align="left">0.0367251</td>
+<td align="left">52.4768</td>
+<td align="left">0.760849</td>
+<td align="left">0.298415</td>
+<td align="left">17.7874E-3</td>
+<td align="left">6.84129E-4</td>
+<td align="left">7.78937E-4</td>
+</tr>
+<tr>
+<td align="left">RF [<xref ref-type="bibr" rid="pone.0216201.ref044">44</xref>]</td>
+<td align="left">1.4769641</td>
+<td align="left">0.03655304</td>
+<td align="left">52.859056</td>
+<td align="left">0.7607884</td>
+<td align="left">0.3102482</td>
+<td align="left">NA</td>
+<td align="left"><bold>6.7810E-4</bold></td>
+<td align="left"><bold>7.7301E-4</bold></td>
+</tr>
+<tr>
+<td align="left">PGJAYA [<xref ref-type="bibr" rid="pone.0216201.ref048">48</xref>]</td>
+<td align="left">1.4812</td>
+<td align="left">0.0364</td>
+<td align="left">53.7185</td>
+<td align="left">0.7608</td>
+<td align="left">0.3230</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.8602E-4</td>
+</tr>
+<tr>
+<td align="left">ILCOA [<xref ref-type="bibr" rid="pone.0216201.ref049">49</xref>]</td>
+<td align="left">1.481108</td>
+<td align="left">0.036377</td>
+<td align="left">53.718679</td>
+<td align="left">0.760775</td>
+<td align="left">0.323021</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.86021E-4</td>
+</tr>
+<tr>
+<td align="left">HFAPS [<xref ref-type="bibr" rid="pone.0216201.ref041">41</xref>]</td>
+<td align="left">1.48106</td>
+<td align="left">0.0363819</td>
+<td align="left">53.6784</td>
+<td align="left">0.760777</td>
+<td align="left">0.322622</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.8602E-04</td>
+</tr>
+<tr>
+<td align="left">IJAYA [<xref ref-type="bibr" rid="pone.0216201.ref050">50</xref>]</td>
+<td align="left">1.4811</td>
+<td align="left">0.0364</td>
+<td align="left">53.7595</td>
+<td align="left">0.7608</td>
+<td align="left">0.3228</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.8603E-4</td>
+</tr>
+<tr>
+<td align="left">ISCE [<xref ref-type="bibr" rid="pone.0216201.ref037">37</xref>]</td>
+<td align="left">1.48118360</td>
+<td align="left">0.03637709</td>
+<td align="left">53.71852771</td>
+<td align="left">0.76077553</td>
+<td align="left">0.32302083</td>
+<td align="left">17.70412E-3</td>
+<td align="left">NA</td>
+<td align="left">9.860219E-4</td>
+</tr>
+<tr>
+<td align="left">EHA-NMS [<xref ref-type="bibr" rid="pone.0216201.ref051">51</xref>]</td>
+<td align="left">1.48118359</td>
+<td align="right">0.03637709</td>
+<td align="right">53.71852139</td>
+<td align="right">0.76077553</td>
+<td align="right">0.32302080</td>
+<td align="left">17.70412E-3</td>
+<td align="left">NA</td>
+<td align="left">9.860219E-4</td>
+</tr>
+<tr>
+<td align="left">R<sub>cr</sub>-IJADE [<xref ref-type="bibr" rid="pone.0216201.ref027">27</xref>]</td>
+<td align="left">1.48118360</td>
+<td align="left">0.03637709</td>
+<td align="left">53.71852500</td>
+<td align="left">0.76077553</td>
+<td align="left">0.32302080</td>
+<td align="left"><bold>17.70357E-3</bold></td>
+<td align="left">NA</td>
+<td align="left">9.86022E-4</td>
+</tr>
+<tr>
+<td align="left">PCE [<xref ref-type="bibr" rid="pone.0216201.ref052">52</xref>]</td>
+<td align="left">1.481074</td>
+<td align="left">0.036377</td>
+<td align="left">53.718525</td>
+<td align="left">0.760776</td>
+<td align="left">0.323021</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.86022E-4</td>
+</tr>
+<tr>
+<td align="left">ABC [<xref ref-type="bibr" rid="pone.0216201.ref034">34</xref>]</td>
+<td align="left">1.4817</td>
+<td align="left">0.0364</td>
+<td align="left">53.6433</td>
+<td align="left">0.7608</td>
+<td align="left">0.3251</td>
+<td align="left">NA</td>
+<td align="left">8.3034E-4</td>
+<td align="left">9.8620E-4</td>
+</tr>
+<tr>
+<td align="left">GOTLBO [<xref ref-type="bibr" rid="pone.0216201.ref053">53</xref>]</td>
+<td align="left">1.483820</td>
+<td align="left">0.036265</td>
+<td align="left">54.115426</td>
+<td align="left">0.760780</td>
+<td align="left">0.331552</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.87442E-4</td>
+</tr>
+<tr>
+<td align="left">CSO [<xref ref-type="bibr" rid="pone.0216201.ref054">54</xref>]</td>
+<td align="left">1.48118</td>
+<td align="left">0.03638</td>
+<td align="left">53.7185</td>
+<td align="left">0.76078</td>
+<td align="left">0.3230</td>
+<td align="left">NA</td>
+<td align="left">6.7968E-4</td>
+<td align="left">9.8602E-4</td>
+</tr>
+<tr>
+<td align="left">STLBO [<xref ref-type="bibr" rid="pone.0216201.ref055">55</xref>]</td>
+<td align="left">1.48114</td>
+<td align="left">0.03638</td>
+<td align="left">53.7187</td>
+<td align="left">0.76078</td>
+<td align="left">0.32302</td>
+<td align="left">NA</td>
+<td align="left">8.29E-4</td>
+<td align="left">9.8602E-4</td>
+</tr>
+<tr>
+<td align="left">ABC-DE [<xref ref-type="bibr" rid="pone.0216201.ref056">56</xref>]</td>
+<td align="left">1.47986</td>
+<td align="left">0.03637</td>
+<td align="left">53.7185</td>
+<td align="left">0.76077</td>
+<td align="left">0.32302</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.8602E-4</td>
+</tr>
+<tr>
+<td align="left">BMO [<xref ref-type="bibr" rid="pone.0216201.ref030">30</xref>]</td>
+<td align="left">1.48173</td>
+<td align="left">0.03636</td>
+<td align="left">53.8716</td>
+<td align="left">0.76077</td>
+<td align="left">0.32479</td>
+<td align="left">NA</td>
+<td align="left">4.621E-3</td>
+<td align="left">9.8608E-4</td>
+</tr>
+<tr>
+<td align="left">NM-MPSO [<xref ref-type="bibr" rid="pone.0216201.ref057">57</xref>]</td>
+<td align="left">1.48120</td>
+<td align="left">0.03638</td>
+<td align="left">53.7222</td>
+<td align="left">0.76078</td>
+<td align="left">0.32306</td>
+<td align="left">NA</td>
+<td align="left">4.598E-3</td>
+<td align="left">9.8602E-4</td>
+</tr>
+<tr>
+<td align="left">MABC [<xref ref-type="bibr" rid="pone.0216201.ref058">58</xref>]</td>
+<td align="left">1.481385</td>
+<td align="left">0.036389</td>
+<td align="left">53.39999</td>
+<td align="left">0.760779</td>
+<td align="left">0.321323</td>
+<td align="left">NA</td>
+<td align="left">8.3118E-4</td>
+<td align="left">9.8610E-4</td>
+</tr>
+<tr>
+<td align="left">GGHS [<xref ref-type="bibr" rid="pone.0216201.ref059">59</xref>]</td>
+<td align="left">1.48217</td>
+<td align="left">0.03631</td>
+<td align="left">53.0647</td>
+<td align="left">0.76092</td>
+<td align="left">0.32620</td>
+<td align="left">NA</td>
+<td align="left">4.6E-3</td>
+<td align="left">9.9097E-4</td>
+</tr>
+<tr>
+<td align="left">ABSO [<xref ref-type="bibr" rid="pone.0216201.ref060">60</xref>]</td>
+<td align="left">1.47583</td>
+<td align="left">0.03659</td>
+<td align="left">52.2903</td>
+<td align="left">0.76080</td>
+<td align="left">0.30623</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.9124E-4</td>
+</tr>
+<tr>
+<td align="left">IGHS [<xref ref-type="bibr" rid="pone.0216201.ref059">59</xref>]</td>
+<td align="left">1.48740</td>
+<td align="left">0.03613</td>
+<td align="left">53.2845</td>
+<td align="left">0.76077</td>
+<td align="left">0.34351</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">9.9306E-4</td>
+</tr>
+<tr>
+<td align="left">CPSO [<xref ref-type="bibr" rid="pone.0216201.ref061">61</xref>]</td>
+<td align="left">1.5033</td>
+<td align="left">0.0354</td>
+<td align="left">59.012</td>
+<td align="left">0.7607</td>
+<td align="left">0.4000</td>
+<td align="left">NA</td>
+<td align="left">16.8E-2</td>
+<td align="left">1.3900E-3</td>
+</tr>
+<tr>
+<td align="left">CWOA [<xref ref-type="bibr" rid="pone.0216201.ref040">40</xref>]</td>
+<td align="left">1.4812</td>
+<td align="left">0.03636</td>
+<td align="left">53.7987</td>
+<td align="left">0.76077</td>
+<td align="left">0.3239</td>
+<td align="left">NA</td>
+<td align="left">8.28E-4</td>
+<td align="left">9.8604E-4</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>The PVM 752 GaAs thin film cell (operated at 25°C and irradiation of 1000 W/m<sup>2</sup>) was tested to extract its parameters [<xref ref-type="bibr" rid="pone.0216201.ref062">62</xref>]. Yet again, the measured <italic>I-V</italic> data of this cell was given in csv format as the <xref ref-type="supplementary-material" rid="pone.0216201.s002">S2 Dataset</xref>. The calculated currents were observed to be in very good agreement with the measured ones (<xref ref-type="table" rid="pone.0216201.t003">Table 3</xref>) when compared with those reported in the literature. Besides, ACT demonstrated excellent performance to determine the PV parameters of the cell (<xref ref-type="table" rid="pone.0216201.t004">Table 4</xref>).</p>
+<table-wrap id="pone.0216201.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t003</object-id>
+<label>Table 3</label> <caption><title>Calculated/simulated results for single-diode model of PVM 752 GaAs thin film cell achieved using ACT.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Voltage (V)</th>
+<th align="left">Measured Current (A)</th>
+<th align="left">Calculated Current (A)</th>
+<th align="left">Absolute Error (AE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-0.1659</td>
+<td align="left">0.1001</td>
+<td align="left">0.1001</td>
+<td align="left">3.7E-05</td>
+</tr>
+<tr>
+<td align="left">-0.1281</td>
+<td align="left">0.1000</td>
+<td align="left">0.1001</td>
+<td align="left">8.2E-05</td>
+</tr>
+<tr>
+<td align="left">-0.0888</td>
+<td align="left">0.0999</td>
+<td align="left">0.1000</td>
+<td align="left">0.00012</td>
+</tr>
+<tr>
+<td align="left">-0.0490</td>
+<td align="left">0.0999</td>
+<td align="left">0.1000</td>
+<td align="left">6.7E-05</td>
+</tr>
+<tr>
+<td align="left">-0.0102</td>
+<td align="left">0.0999</td>
+<td align="left">0.0999</td>
+<td align="left">9.9E-06</td>
+</tr>
+<tr>
+<td align="left">0.0275</td>
+<td align="left">0.0998</td>
+<td align="left">0.0999</td>
+<td align="left">5.5E-05</td>
+</tr>
+<tr>
+<td align="left">0.0695</td>
+<td align="left">0.0999</td>
+<td align="left">0.0998</td>
+<td align="left">0.00011</td>
+</tr>
+<tr>
+<td align="left">0.1061</td>
+<td align="left">0.0998</td>
+<td align="left">0.0997</td>
+<td align="left">6E-05</td>
+</tr>
+<tr>
+<td align="left">0.1460</td>
+<td align="left">0.0998</td>
+<td align="left">0.0997</td>
+<td align="left">0.00012</td>
+</tr>
+<tr>
+<td align="left">0.1828</td>
+<td align="left">0.0997</td>
+<td align="left">0.0996</td>
+<td align="left">7.2E-05</td>
+</tr>
+<tr>
+<td align="left">0.2230</td>
+<td align="left">0.0997</td>
+<td align="left">0.0996</td>
+<td align="left">0.00013</td>
+</tr>
+<tr>
+<td align="left">0.2600</td>
+<td align="left">0.0996</td>
+<td align="left">0.0995</td>
+<td align="left">8.5E-05</td>
+</tr>
+<tr>
+<td align="left">0.3001</td>
+<td align="left">0.0997</td>
+<td align="left">0.0995</td>
+<td align="left">0.00024</td>
+</tr>
+<tr>
+<td align="left">0.3406</td>
+<td align="left">0.0996</td>
+<td align="left">0.0994</td>
+<td align="left">0.0002</td>
+</tr>
+<tr>
+<td align="left">0.3789</td>
+<td align="left">0.0995</td>
+<td align="left">0.0993</td>
+<td align="left">0.00016</td>
+</tr>
+<tr>
+<td align="left">0.4168</td>
+<td align="left">0.0994</td>
+<td align="left">0.0993</td>
+<td align="left">0.00011</td>
+</tr>
+<tr>
+<td align="left">0.4583</td>
+<td align="left">0.0994</td>
+<td align="left">0.0992</td>
+<td align="left">0.00018</td>
+</tr>
+<tr>
+<td align="left">0.4949</td>
+<td align="left">0.0993</td>
+<td align="left">0.0992</td>
+<td align="left">0.00013</td>
+</tr>
+<tr>
+<td align="left">0.5370</td>
+<td align="left">0.0993</td>
+<td align="left">0.0991</td>
+<td align="left">0.0002</td>
+</tr>
+<tr>
+<td align="left">0.5753</td>
+<td align="left">0.0992</td>
+<td align="left">0.0990</td>
+<td align="left">0.00018</td>
+</tr>
+<tr>
+<td align="left">0.6123</td>
+<td align="left">0.0990</td>
+<td align="left">0.0989</td>
+<td align="left">7E-05</td>
+</tr>
+<tr>
+<td align="left">0.6546</td>
+<td align="left">0.0988</td>
+<td align="left">0.0988</td>
+<td align="left">4.3E-05</td>
+</tr>
+<tr>
+<td align="left">0.6918</td>
+<td align="left">0.0983</td>
+<td align="left">0.0985</td>
+<td align="left">0.00017</td>
+</tr>
+<tr>
+<td align="left">0.7318</td>
+<td align="left">0.0977</td>
+<td align="left">0.0978</td>
+<td align="left">0.00011</td>
+</tr>
+<tr>
+<td align="left">0.7702</td>
+<td align="left">0.0963</td>
+<td align="left">0.0964</td>
+<td align="left">1E-04</td>
+</tr>
+<tr>
+<td align="left">0.8053</td>
+<td align="left">0.0937</td>
+<td align="left">0.0937</td>
+<td align="left">2E-06</td>
+</tr>
+<tr>
+<td align="left">0.8329</td>
+<td align="left">0.0900</td>
+<td align="left">0.0898</td>
+<td align="left">0.00016</td>
+</tr>
+<tr>
+<td align="left">0.8550</td>
+<td align="left">0.0855</td>
+<td align="left">0.0851</td>
+<td align="left">0.00045</td>
+</tr>
+<tr>
+<td align="left">0.8738</td>
+<td align="left">0.0799</td>
+<td align="left">0.0794</td>
+<td align="left">0.00046</td>
+</tr>
+<tr>
+<td align="left">0.8887</td>
+<td align="left">0.0743</td>
+<td align="left">0.0738</td>
+<td align="left">0.00049</td>
+</tr>
+<tr>
+<td align="left">0.9016</td>
+<td align="left">0.0683</td>
+<td align="left">0.0680</td>
+<td align="left">0.00028</td>
+</tr>
+<tr>
+<td align="left">0.9141</td>
+<td align="left">0.0618</td>
+<td align="left">0.0616</td>
+<td align="left">0.00024</td>
+</tr>
+<tr>
+<td align="left">0.9248</td>
+<td align="left">0.0555</td>
+<td align="left">0.0554</td>
+<td align="left">0.00014</td>
+</tr>
+<tr>
+<td align="left">0.9344</td>
+<td align="left">0.0493</td>
+<td align="left">0.0493</td>
+<td align="left">1.3E-05</td>
+</tr>
+<tr>
+<td align="left">0.9445</td>
+<td align="left">0.0422</td>
+<td align="left">0.0424</td>
+<td align="left">0.00018</td>
+</tr>
+<tr>
+<td align="left">0.9533</td>
+<td align="left">0.0357</td>
+<td align="left">0.0359</td>
+<td align="left">0.00024</td>
+</tr>
+<tr>
+<td align="left">0.9618</td>
+<td align="left">0.0291</td>
+<td align="left">0.0294</td>
+<td align="left">0.00026</td>
+</tr>
+<tr>
+<td align="left">0.9702</td>
+<td align="left">0.0222</td>
+<td align="left">0.0225</td>
+<td align="left">0.00033</td>
+</tr>
+<tr>
+<td align="left">0.9778</td>
+<td align="left">0.0157</td>
+<td align="left">0.0161</td>
+<td align="left">0.00038</td>
+</tr>
+<tr>
+<td align="left">0.9852</td>
+<td align="left">0.0092</td>
+<td align="left">0.0096</td>
+<td align="left">0.00037</td>
+</tr>
+<tr>
+<td align="left">0.9926</td>
+<td align="left">0.0026</td>
+<td align="left">0.0028</td>
+<td align="left">0.00024</td>
+</tr>
+<tr>
+<td align="left">0.9999</td>
+<td align="left">-0.0040</td>
+<td align="left">-0.0040</td>
+<td align="left">1.1E-05</td>
+</tr>
+<tr>
+<td align="left">1.0046</td>
+<td align="left">-0.0085</td>
+<td align="left">-0.0090</td>
+<td align="left">2.4E-05</td>
+</tr>
+<tr>
+<td align="left">1.0089</td>
+<td align="left">-0.0124</td>
+<td align="left">-0.0130</td>
+<td align="left">0.00032</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0216201.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t004</object-id>
+<label>Table 4</label> <caption><title>Comparison of different parameter extraction methods with the proposed ACT tested for single-diode model of PVM 752 GaAs thin film cell.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Methods</th>
+<th align="left"><italic>n</italic></th>
+<th align="left"><italic>R</italic><sub><italic>s</italic></sub> (Ω)</th>
+<th align="left"><italic>R</italic><sub><italic>p</italic></sub> (Ω)</th>
+<th align="left"><italic>I</italic><sub><italic>λ</italic></sub>(A)</th>
+<th align="left"><italic>I</italic><sub><italic>o</italic></sub> (pA)</th>
+<th align="left">SAE</th>
+<th align="left">MAE</th>
+<th align="left">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ACT (proposed)</td>
+<td align="left">1.73411</td>
+<td align="left">0.616566</td>
+<td align="left">684.519</td>
+<td align="left">0.099985</td>
+<td align="left">19.4231</td>
+<td align="left"><bold>7.42586E-3</bold></td>
+<td align="left"><bold>1.6877E-4</bold></td>
+<td align="left"><bold>2.10497E-4</bold></td>
+</tr>
+<tr>
+<td align="left">ELPSO [<xref ref-type="bibr" rid="pone.0216201.ref062">62</xref>]</td>
+<td align="left">1.768590</td>
+<td align="left">0.159052</td>
+<td align="left">14.429507</td>
+<td align="left">0.115016</td>
+<td align="left">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.5400E-2</td>
+</tr>
+<tr>
+<td align="left">CPSO [<xref ref-type="bibr" rid="pone.0216201.ref061">61</xref>]</td>
+<td align="left">1.617093</td>
+<td align="left">0.346578</td>
+<td align="left">14.241982</td>
+<td align="left">0.116530</td>
+<td align="left">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.5400E-2</td>
+</tr>
+<tr>
+<td align="left">BSA [<xref ref-type="bibr" rid="pone.0216201.ref062">62</xref>]</td>
+<td align="left">1.858574</td>
+<td align="left">0.5</td>
+<td align="left">100</td>
+<td align="left">0.103903</td>
+<td align="left">84.90</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.1469E-3</td>
+</tr>
+<tr>
+<td align="left">ABC [<xref ref-type="bibr" rid="pone.0216201.ref062">62</xref>]</td>
+<td align="left">1.774159</td>
+<td align="left">0.5</td>
+<td align="left">100</td>
+<td align="left">0.103312</td>
+<td align="left">32.00</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.0412E-3</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p><xref ref-type="table" rid="pone.0216201.t004">Table 4</xref> summarizes the parameters of PVM 752 GaAs thin film cell extracted by ACT when compared with other works. The values of SAE, MAE and RMSE clearly revealed the high competitive accuracy of ACT and its strong trustworthiness for the accurate evaluation of PV cells and modules parameters.</p>
+</sec>
+<sec id="sec008">
+<title>Parameters of PV modules</title>
+<p>In addition to PV cells, three different solar modules were examined to extract their parameters and to validate the proposed ACT. Photowatt-PWP201 (comprised of 36 polycrystalline silicon cells in series and operated at 45°C and 1000 W/m<sup>2</sup>) [<xref ref-type="bibr" rid="pone.0216201.ref023">23</xref>] was used wherein the measured <italic>I-V</italic> data is given in csv format as the <xref ref-type="supplementary-material" rid="pone.0216201.s003">S3 Dataset</xref>. <xref ref-type="table" rid="pone.0216201.t005">Table 5</xref> enlists the calculated <italic>I-V</italic> results using ACT and <xref ref-type="table" rid="pone.0216201.t006">Table 6</xref> summarizes the extracted parameters.</p>
+<table-wrap id="pone.0216201.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t005</object-id>
+<label>Table 5</label> <caption><title>Calculated/simulated results for single-diode model of Photowatt-PWP201 module tested using ACT.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t005" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Voltage (V)</th>
+<th align="left">Measured Current (A)</th>
+<th align="left">Calculated Current (A)</th>
+<th align="left">Absolute Error (AE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">-1.9426</td>
+<td align="left">1.0345</td>
+<td align="left">1.0332</td>
+<td align="left">0.00127</td>
+</tr>
+<tr>
+<td align="left">0.1248</td>
+<td align="left">1.0315</td>
+<td align="left">1.0305</td>
+<td align="left">0.00098</td>
+</tr>
+<tr>
+<td align="left">1.8093</td>
+<td align="left">1.0300</td>
+<td align="left">1.0283</td>
+<td align="left">0.00171</td>
+</tr>
+<tr>
+<td align="left">3.3511</td>
+<td align="left">1.0260</td>
+<td align="left">1.0262</td>
+<td align="left">0.00020</td>
+</tr>
+<tr>
+<td align="left">4.7622</td>
+<td align="left">1.0220</td>
+<td align="left">1.0242</td>
+<td align="left">0.00216</td>
+</tr>
+<tr>
+<td align="left">6.0538</td>
+<td align="left">1.0180</td>
+<td align="left">1.0220</td>
+<td align="left">0.00400</td>
+</tr>
+<tr>
+<td align="left">7.2364</td>
+<td align="left">1.0155</td>
+<td align="left">1.0193</td>
+<td align="left">0.00385</td>
+</tr>
+<tr>
+<td align="left">8.3189</td>
+<td align="left">1.0140</td>
+<td align="left">1.0156</td>
+<td align="left">0.00158</td>
+</tr>
+<tr>
+<td align="left">9.3097</td>
+<td align="left">1.0100</td>
+<td align="left">1.0096</td>
+<td align="left">0.00039</td>
+</tr>
+<tr>
+<td align="left">10.2163</td>
+<td align="left">1.0035</td>
+<td align="left">0.9998</td>
+<td align="left">0.00371</td>
+</tr>
+<tr>
+<td align="left">11.0449</td>
+<td align="left">0.9880</td>
+<td align="left">0.9839</td>
+<td align="left">0.00413</td>
+</tr>
+<tr>
+<td align="left">11.8018</td>
+<td align="left">0.9630</td>
+<td align="left">0.9591</td>
+<td align="left">0.00392</td>
+</tr>
+<tr>
+<td align="left">12.4929</td>
+<td align="left">0.9255</td>
+<td align="left">0.9226</td>
+<td align="left">0.00287</td>
+</tr>
+<tr>
+<td align="left">13.1231</td>
+<td align="left">0.8725</td>
+<td align="left">0.8723</td>
+<td align="left">0.00017</td>
+</tr>
+<tr>
+<td align="left">13.6983</td>
+<td align="left">0.8075</td>
+<td align="left">0.8071</td>
+<td align="left">0.00036</td>
+</tr>
+<tr>
+<td align="left">14.2221</td>
+<td align="left">0.7265</td>
+<td align="left">0.7278</td>
+<td align="left">0.00129</td>
+</tr>
+<tr>
+<td align="left">14.6995</td>
+<td align="left">0.6345</td>
+<td align="left">0.6362</td>
+<td align="left">0.00174</td>
+</tr>
+<tr>
+<td align="left">15.1346</td>
+<td align="left">0.5345</td>
+<td align="left">0.5354</td>
+<td align="left">0.00091</td>
+</tr>
+<tr>
+<td align="left">15.5311</td>
+<td align="left">0.4275</td>
+<td align="left">0.4285</td>
+<td align="left">0.00099</td>
+</tr>
+<tr>
+<td align="left">15.8929</td>
+<td align="left">0.3185</td>
+<td align="left">0.3184</td>
+<td align="left">0.00014</td>
+</tr>
+<tr>
+<td align="left">16.2229</td>
+<td align="left">0.2085</td>
+<td align="left">0.2076</td>
+<td align="left">0.00086</td>
+</tr>
+<tr>
+<td align="left">16.5241</td>
+<td align="left">0.1010</td>
+<td align="left">0.0983</td>
+<td align="left">0.00271</td>
+</tr>
+<tr>
+<td align="left">16.7987</td>
+<td align="left">-0.0080</td>
+<td align="left">-0.0080</td>
+<td align="left">1.1E-05</td>
+</tr>
+<tr>
+<td align="left">17.0499</td>
+<td align="left">-0.1110</td>
+<td align="left">-0.1110</td>
+<td align="left">0.00046</td>
+</tr>
+<tr>
+<td align="left">17.2793</td>
+<td align="left">-0.2090</td>
+<td align="left">-0.2080</td>
+<td align="left">0.00062</td>
+</tr>
+<tr>
+<td align="left">17.4885</td>
+<td align="left">-0.3030</td>
+<td align="left">-0.3010</td>
+<td align="left">0.00205</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0216201.t006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t006</object-id>
+<label>Table 6</label> <caption><title>Comparison of ACT with other existing methods that extract different parameters of single-diode model intended for Photowatt-PWP201 module.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t006g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t006" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Methods</th>
+<th align="left"><italic>n</italic></th>
+<th align="left"><italic>R</italic><sub><italic>s</italic></sub> (Ω)</th>
+<th align="left"><italic>R</italic><sub><italic>p</italic></sub> (Ω)</th>
+<th align="left"><italic>I</italic><sub><italic>λ</italic></sub>(A)</th>
+<th align="left"><italic>I</italic><sub><italic>o</italic></sub> (μA)</th>
+<th align="left">SAE</th>
+<th align="left">MAE</th>
+<th align="left">RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">ACT (proposed)</td>
+<td align="left">1.33581</td>
+<td align="left">1.2183</td>
+<td align="left">762.018</td>
+<td align="left">1.03233</td>
+<td align="left">3.00257</td>
+<td align="left">43.0543E-3</td>
+<td align="left">1.65593E-3</td>
+<td align="left">2.12633E-3</td>
+</tr>
+<tr>
+<td align="left">RF [<xref ref-type="bibr" rid="pone.0216201.ref044">44</xref>]</td>
+<td align="left">1.3174002</td>
+<td align="left">1.2390187</td>
+<td align="left">745.6431</td>
+<td align="left">1.0323759</td>
+<td align="left">2.5188848</td>
+<td align="left">NA</td>
+<td align="left"><bold>1.6060E-3</bold></td>
+<td align="left"><bold>2.0465E-3</bold></td>
+</tr>
+<tr>
+<td align="left">PGJAYA [<xref ref-type="bibr" rid="pone.0216201.ref048">48</xref>]</td>
+<td align="left">1.3512</td>
+<td align="left">1.2013</td>
+<td align="left">981.8545</td>
+<td align="left">1.0305</td>
+<td align="left">3.4818</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.4250E-3</td>
+</tr>
+<tr>
+<td align="left">ISCE [<xref ref-type="bibr" rid="pone.0216201.ref037">37</xref>]</td>
+<td align="left">1.351189</td>
+<td align="left">1.201271</td>
+<td align="left">981.98228038</td>
+<td align="left">1.0305143</td>
+<td align="left">3.48226304</td>
+<td align="left">41.78790E-3</td>
+<td align="left">NA</td>
+<td align="left">2.425075E-3</td>
+</tr>
+<tr>
+<td align="left">EHA-NMS [<xref ref-type="bibr" rid="pone.0216201.ref051">51</xref>]</td>
+<td align="left">1.351189</td>
+<td align="left">1.201271</td>
+<td align="left">981.98222618</td>
+<td align="left">1.0305143</td>
+<td align="left">3.48226292</td>
+<td align="left">41.78790E-3</td>
+<td align="left">NA</td>
+<td align="left">2.425075E-3</td>
+</tr>
+<tr>
+<td align="left">R<sub>cr</sub>-IJADE [<xref ref-type="bibr" rid="pone.0216201.ref027">27</xref>]</td>
+<td align="left">1.351189</td>
+<td align="left">1.201271</td>
+<td align="left">981.98216000</td>
+<td align="left">1.0305143</td>
+<td align="left">3.48226290</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">2.425075E-3</td>
+</tr>
+<tr>
+<td align="left">FPA [<xref ref-type="bibr" rid="pone.0216201.ref043">43</xref>]</td>
+<td align="left">1.33698</td>
+<td align="left">1.217583</td>
+<td align="left">811.3721</td>
+<td align="left">1.032091</td>
+<td align="left">3.047538</td>
+<td align="left"><bold>15.971E-3</bold></td>
+<td align="left">NA</td>
+<td align="left">2.054673E-3</td>
+</tr>
+<tr>
+<td align="left">MPCOA [<xref ref-type="bibr" rid="pone.0216201.ref063">63</xref>]</td>
+<td align="left">1.3474016</td>
+<td align="left">1.20295</td>
+<td align="left">849.6927</td>
+<td align="left">1.03188</td>
+<td align="left">3.37370</td>
+<td align="left">21.510E-3</td>
+<td align="left">2.61E-3</td>
+<td align="left">2.425E-3</td>
+</tr>
+<tr>
+<td align="left">Newton [<xref ref-type="bibr" rid="pone.0216201.ref023">23</xref>]</td>
+<td align="left">1.345833</td>
+<td align="left">1.2057</td>
+<td align="left">555.5556</td>
+<td align="left">1.0318</td>
+<td align="left">3.2875</td>
+<td align="left">NA</td>
+<td align="left">8.32E-3</td>
+<td align="left">78.05E-2</td>
+</tr>
+<tr>
+<td align="left">PS [<xref ref-type="bibr" rid="pone.0216201.ref064">64</xref>]</td>
+<td align="left">1.341358</td>
+<td align="left">1.2053</td>
+<td align="left">714.2857</td>
+<td align="left">1.0313</td>
+<td align="left">3.1756</td>
+<td align="left">NA</td>
+<td align="left">5.3E-3</td>
+<td align="left">11.8E-2</td>
+</tr>
+<tr>
+<td align="left">IP [<xref ref-type="bibr" rid="pone.0216201.ref013">13</xref>]</td>
+<td align="left">1.3106</td>
+<td align="left">1.2744</td>
+<td align="left">715.824</td>
+<td align="left">1.0333</td>
+<td align="left">2.3326</td>
+<td align="left">NA</td>
+<td align="left">1.76E-3</td>
+<td align="left">NA</td>
+</tr>
+<tr>
+<td align="left">GA [<xref ref-type="bibr" rid="pone.0216201.ref064">64</xref>]</td>
+<td align="left">1.34961</td>
+<td align="left">1.1968</td>
+<td align="left">555.556</td>
+<td align="left">1.0441</td>
+<td align="left">3.436</td>
+<td align="left">15.3479E-2</td>
+<td align="left">8.88E-3</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Despite the simplicity of implementation and low computational cost the achieved tiny values of simulation errors clearly demonstrated the excellent performance of ACT compared to other reported approaches (<xref ref-type="table" rid="pone.0216201.t006">Table 6</xref>). Moreover, the proposed technique did not require any manual initialization of parameters, while some optimization problems need to be continuously perturbed through parameters variation. This manual initialization results in increased computational cost and often leads to trap the extraction process in local minima. It was affirmed that the proposed ACT is truly competitive to be implemented as a simple and efficient tool for the identification of solar cells and modules parameters operate under diverse environmental conditions.</p>
+<p><xref ref-type="fig" rid="pone.0216201.g004">Fig 4</xref> shows the ACT based data fitting of Photowatt-PWP201 solar module obtained. The calculated currents are shown to tally very well with the measured ones in both high and low voltage regions, where a trivial deviation around the maximum power point was observed by visual inspection. Such departure could be due to the lacking of extrapolated method applied to identify the values of <italic>V</italic><sub><italic>m</italic></sub> and <italic>I</italic><sub><italic>m</italic></sub>. The ACT simulation based extracted parameters achieved a lowest RMSE of 2.12633E-3 for Photowatt-PWP201 solar module that too without requiring any manual initialization of parameters. Conversely, some of the existing optimization problems need continuous perturbation through parameters variation, which in turn increases the computational cost and leads to an entrapment in the local optimum.</p>
+<fig id="pone.0216201.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title/>
+<p>Simulated and experimental currents for single-diode model of Photowatt-PWP201 solar module (a) and their <italic>I-V</italic> curves (b).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.g004" xlink:type="simple"/>
+</fig>
+<p>A mono-crystalline Leibold Solar Module (LSM 20) comprising 20 series cells operated at 24°C under outdoor sunlight intensity of 360 W/m<sup>2</sup> was tested for its parameters extraction. The measured <italic>I-V</italic> data was given in csv format as the <xref ref-type="supplementary-material" rid="pone.0216201.s004">S4 Dataset</xref> and recorded manually using digital multimeters. Meanwhile, a potentiometer was utilized as a variable load across the module terminals. The simulated results are listed in <xref ref-type="table" rid="pone.0216201.t007">Table 7</xref>. The extracted parameters were discerned to be <italic>n</italic> = 1.26881, <italic>R</italic><sub><italic>s</italic></sub> = 6.39445 Ω, <italic>R</italic><sub><italic>p</italic></sub> = 1973.35 Ω, <italic>I</italic><sub><italic>λ</italic></sub> = 0.15449 A and <italic>I</italic><sub><italic>o</italic></sub> = 2.50879 nA. It was asserted that the ACT could effectively model the <italic>I-V</italic> behaviour of the module with a RMSE of 8.3839E-4 and extracted the solar cells parameters in a superior way compared to the one used for the PV modules. It was asserted ACT could outperform the other computational and heuristic algorithms regarding the extraction of single-diode parameters.</p>
+<table-wrap id="pone.0216201.t007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t007</object-id>
+<label>Table 7</label> <caption><title>ACT simulation-based results for single-diode model of Leibold Solar Module (LSM 20) operated at 24°C under outdoor sunlight intensity of 360 W/m<sup>2</sup>.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t007g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t007" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Voltage (V)</th>
+<th align="left">Measured Current (A)</th>
+<th align="left">Calculated Current (A)</th>
+<th align="left">Absolute Error (AE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0.00</td>
+<td align="left">0.154</td>
+<td align="left">0.1540</td>
+<td align="left">8.8E-06</td>
+</tr>
+<tr>
+<td align="left">0.37</td>
+<td align="left">0.154</td>
+<td align="left">0.1538</td>
+<td align="left">0.00020</td>
+</tr>
+<tr>
+<td align="left">0.67</td>
+<td align="left">0.154</td>
+<td align="left">0.1537</td>
+<td align="left">0.00035</td>
+</tr>
+<tr>
+<td align="left">0.99</td>
+<td align="left">0.154</td>
+<td align="left">0.1535</td>
+<td align="left">0.00051</td>
+</tr>
+<tr>
+<td align="left">1.31</td>
+<td align="left">0.153</td>
+<td align="left">0.1533</td>
+<td align="left">0.00033</td>
+</tr>
+<tr>
+<td align="left">1.67</td>
+<td align="left">0.153</td>
+<td align="left">0.1531</td>
+<td align="left">0.00015</td>
+</tr>
+<tr>
+<td align="left">3.10</td>
+<td align="left">0.152</td>
+<td align="left">0.1524</td>
+<td align="left">0.00042</td>
+</tr>
+<tr>
+<td align="left">4.60</td>
+<td align="left">0.152</td>
+<td align="left">0.1517</td>
+<td align="left">0.00035</td>
+</tr>
+<tr>
+<td align="left">6.00</td>
+<td align="left">0.151</td>
+<td align="left">0.1508</td>
+<td align="left">0.00015</td>
+</tr>
+<tr>
+<td align="left">7.45</td>
+<td align="left">0.150</td>
+<td align="left">0.1492</td>
+<td align="left">0.00081</td>
+</tr>
+<tr>
+<td align="left">8.55</td>
+<td align="left">0.144</td>
+<td align="left">0.1443</td>
+<td align="left">0.00031</td>
+</tr>
+<tr>
+<td align="left">9.30</td>
+<td align="left">0.134</td>
+<td align="left">0.1339</td>
+<td align="left">6E-05</td>
+</tr>
+<tr>
+<td align="left">9.75</td>
+<td align="left">0.123</td>
+<td align="left">0.1218</td>
+<td align="left">0.00117</td>
+</tr>
+<tr>
+<td align="left">10.04</td>
+<td align="left">0.112</td>
+<td align="left">0.1108</td>
+<td align="left">0.00125</td>
+</tr>
+<tr>
+<td align="left">10.26</td>
+<td align="left">0.102</td>
+<td align="left">0.1004</td>
+<td align="left">0.00157</td>
+</tr>
+<tr>
+<td align="left">10.99</td>
+<td align="left">0.055</td>
+<td align="left">0.0541</td>
+<td align="left">0.00088</td>
+</tr>
+<tr>
+<td align="left">11.20</td>
+<td align="left">0.037</td>
+<td align="left">0.0376</td>
+<td align="left">0.00059</td>
+</tr>
+<tr>
+<td align="left">11.31</td>
+<td align="left">0.0281</td>
+<td align="left">0.0284</td>
+<td align="left">0.00032</td>
+</tr>
+<tr>
+<td align="left">11.37</td>
+<td align="left">0.0227</td>
+<td align="left">0.0233</td>
+<td align="left">0.00058</td>
+</tr>
+<tr>
+<td align="left">11.41</td>
+<td align="left">0.0190</td>
+<td align="left">0.0198</td>
+<td align="left">0.00080</td>
+</tr>
+<tr>
+<td align="left">11.44</td>
+<td align="left">0.0160</td>
+<td align="left">0.0172</td>
+<td align="left">0.00116</td>
+</tr>
+<tr>
+<td align="left">11.46</td>
+<td align="left">0.0142</td>
+<td align="left">0.0154</td>
+<td align="left">0.00119</td>
+</tr>
+<tr>
+<td align="left">11.48</td>
+<td align="left">0.0127</td>
+<td align="left">0.0136</td>
+<td align="left">0.00091</td>
+</tr>
+<tr>
+<td align="left">11.50</td>
+<td align="left">0.0120</td>
+<td align="left">0.0118</td>
+<td align="left">0.00018</td>
+</tr>
+<tr>
+<td align="left">11.55</td>
+<td align="left">0.0060</td>
+<td align="left">0.0073</td>
+<td align="left">0.00130</td>
+</tr>
+<tr>
+<td align="left">11.58</td>
+<td align="left">0.0030</td>
+<td align="left">0.0046</td>
+<td align="left">0.00156</td>
+</tr>
+<tr>
+<td align="left">11.60</td>
+<td align="left">0.0020</td>
+<td align="left">0.0027</td>
+<td align="left">0.00071</td>
+</tr>
+<tr>
+<td align="left">11.61</td>
+<td align="left">0.0010</td>
+<td align="left">0.0018</td>
+<td align="left">0.00079</td>
+</tr>
+<tr>
+<td align="left">11.62</td>
+<td align="left">0.0010</td>
+<td align="left">0.0009</td>
+<td align="left">0.00014</td>
+</tr>
+<tr>
+<td align="left">11.63</td>
+<td align="left">0.0006</td>
+<td align="left">6.4E-5</td>
+<td align="left">0.00066</td>
+</tr>
+<tr>
+<td align="left">11.632</td>
+<td align="left">0.0003</td>
+<td align="left">-2E-04</td>
+<td align="left">0.00055</td>
+</tr>
+<tr>
+<td align="left">11.633</td>
+<td align="left">0.0002</td>
+<td align="left">-3E-04</td>
+<td align="left">0.00054</td>
+</tr>
+<tr>
+<td align="left">11.636</td>
+<td align="left">0.0001</td>
+<td align="left">-6E-04</td>
+<td align="left">0.00072</td>
+</tr>
+<tr>
+<td align="left">11.640</td>
+<td align="left">0.0001</td>
+<td align="left">-1E-03</td>
+<td align="left">0.00109</td>
+</tr>
+<tr>
+<td align="left">11.650</td>
+<td align="left">0.0000</td>
+<td align="left">-0.0020</td>
+<td align="left">0.00193</td>
+</tr>
+<tr>
+<td align="left">SAE</td>
+<td align="left" colspan="3">24.2491E-3</td>
+</tr>
+<tr>
+<td align="left">MAE</td>
+<td align="left" colspan="3">6.92832E-4</td>
+</tr>
+<tr>
+<td align="left">RMSE</td>
+<td align="left" colspan="3">8.3839E-4</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>A four series cells-based polycrystalline PV module (STE 4/100) purchased from Leybold GmbH was tested. Experimental <italic>I-V</italic> data of this cell was measured at 22°C under indoor light intensity of 900 W/m<sup>2</sup>. The results for measured <italic>I-V</italic> and simulated <italic>I-V</italic> dataset obtained by the ACT are enlisted in <xref ref-type="table" rid="pone.0216201.t008">Table 8</xref>. Yet again, the proposed ACT could successfully model the <italic>I-V</italic> behaviour of the module with a RMSE of 3.33925E-4. The extracted parameters of this solar module were discerned to be <italic>n</italic> = 1.0304, <italic>R</italic><sub><italic>s</italic></sub> = 2.5568 Ω, <italic>R</italic><sub><italic>sh</italic></sub> = 2184.82 Ω, <italic>I</italic><sub><italic>λ</italic></sub> = 0.02646 A and <italic>I</italic><sub><italic>o</italic></sub> = 0.129814 nA.</p>
+<table-wrap id="pone.0216201.t008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0216201.t008</object-id>
+<label>Table 8</label> <caption><title>ACT simulation-based results for single-diode model of Leybold Solar Module (STE 4/100) at 22°C under indoor light intensity of 900 W/m<sup>2</sup>.</title></caption>
+<alternatives>
+<graphic id="pone.0216201.t008g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.t008" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Voltage (V)</th>
+<th align="left">Experimental Current (A)</th>
+<th align="left">Calculated Current (A)</th>
+<th align="left">Absolute Error (AE)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0.00</td>
+<td align="left">0.0264</td>
+<td align="left">0.0264</td>
+<td align="left">2.7E-05</td>
+</tr>
+<tr>
+<td align="left">0.10</td>
+<td align="left">0.0264</td>
+<td align="left">0.0264</td>
+<td align="left">1.9E-05</td>
+</tr>
+<tr>
+<td align="left">0.30</td>
+<td align="left">0.0263</td>
+<td align="left">0.0263</td>
+<td align="left">1E-05</td>
+</tr>
+<tr>
+<td align="left">0.50</td>
+<td align="left">0.0262</td>
+<td align="left">0.0262</td>
+<td align="left">1.5E-06</td>
+</tr>
+<tr>
+<td align="left">0.70</td>
+<td align="left">0.0261</td>
+<td align="left">0.0261</td>
+<td align="left">6.9E-06</td>
+</tr>
+<tr>
+<td align="left">0.90</td>
+<td align="left">0.0260</td>
+<td align="left">0.0260</td>
+<td align="left">1.4E-05</td>
+</tr>
+<tr>
+<td align="left">1.00</td>
+<td align="left">0.0259</td>
+<td align="left">0.0260</td>
+<td align="left">6.7E-05</td>
+</tr>
+<tr>
+<td align="left">1.10</td>
+<td align="left">0.0258</td>
+<td align="left">0.0259</td>
+<td align="left">0.00012</td>
+</tr>
+<tr>
+<td align="left">1.20</td>
+<td align="left">0.0257</td>
+<td align="left">0.0259</td>
+<td align="left">0.00016</td>
+</tr>
+<tr>
+<td align="left">1.30</td>
+<td align="left">0.0256</td>
+<td align="left">0.0258</td>
+<td align="left">0.00017</td>
+</tr>
+<tr>
+<td align="left">1.40</td>
+<td align="left">0.0253</td>
+<td align="left">0.0256</td>
+<td align="left">0.00033</td>
+</tr>
+<tr>
+<td align="left">1.50</td>
+<td align="left">0.0252</td>
+<td align="left">0.0253</td>
+<td align="left">0.00015</td>
+</tr>
+<tr>
+<td align="left">1.60</td>
+<td align="left">0.0247</td>
+<td align="left">0.0247</td>
+<td align="left">1.1E-05</td>
+</tr>
+<tr>
+<td align="left">1.70</td>
+<td align="left">0.0232</td>
+<td align="left">0.0231</td>
+<td align="left">6.6E-05</td>
+</tr>
+<tr>
+<td align="left">1.80</td>
+<td align="left">0.0189</td>
+<td align="left">0.0196</td>
+<td align="left">0.00071</td>
+</tr>
+<tr>
+<td align="left">1.90</td>
+<td align="left">0.0121</td>
+<td align="left">0.0125</td>
+<td align="left">0.00038</td>
+</tr>
+<tr>
+<td align="left">1.95</td>
+<td align="left">0.0081</td>
+<td align="left">0.0071</td>
+<td align="left">0.00103</td>
+</tr>
+<tr>
+<td align="left">2.00</td>
+<td align="left">0.0000</td>
+<td align="left">0.0003</td>
+<td align="left">0.00029</td>
+</tr>
+<tr>
+<td align="left">SAE</td>
+<td align="left" colspan="3">3.56448E-3</td>
+</tr>
+<tr>
+<td align="left">MAE</td>
+<td align="left" colspan="3">1.98027E-4</td>
+</tr>
+<tr>
+<td align="left">RMSE</td>
+<td align="left" colspan="3">3.33925E-4</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Conclusions</title>
+<p>A new and simple computational approach based on approximation and correction technique (ACT) was proposed to determine PV cells and modules parameters precisely. Furthermore, a novel user-friendly software application was developed to extract these parameters. The proposed method was tested and validated on five different solar cells and modules under varied temperatures and irradiations. <italic>I-V</italic> simulation of R.T.C. France and PVM 752 GaAs solar cell revealed the lowest RMSE value of 7.78937E-4 and 2.10497E-4, respectively. The Photowatt-PWP201, LEYBOLD 664 431 and STE 4/100 solar modules exhibited the respective RMSE value of 2.12633E-3, 8.3839E-4 and 3.33925E-4. The devised ACT model disclosed excellent performance when tested on various solar modules operated with varied conditions. In addition to implementation simplicity, the method outperformed several previously reported computational and heuristic algorithms used to extract the parameters of single-diode model for solar cells and solar modules under varying environmental conditions.</p>
+</sec>
+<sec id="sec010">
+<title>Supporting information</title>
+<supplementary-material id="pone.0216201.s001" mimetype="text/csv" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s001" xlink:type="simple">
+<label>S1 Dataset</label>
+<caption>
+<title>Measured <italic>I-V</italic> data for France solar cell operated at 33°C and 1000 W/m<sup>2</sup>.</title>
+<p>(CSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0216201.s002" mimetype="text/csv" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s002" xlink:type="simple">
+<label>S2 Dataset</label>
+<caption>
+<title>Measured <italic>I-V</italic> data for PVM 752 GaAs thin film solar cell operated at 25°C and 1000 W/m<sup>2</sup>.</title>
+<p>(CSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0216201.s003" mimetype="text/csv" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s003" xlink:type="simple">
+<label>S3 Dataset</label>
+<caption>
+<title>Measured <italic>I-V</italic> data for Photowatt-PWP201 module operated at 45°C and 1000 W/m<sup>2</sup>.</title>
+<p>(CSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0216201.s004" mimetype="text/csv" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s004" xlink:type="simple">
+<label>S4 Dataset</label>
+<caption>
+<title>Measured <italic>I-V</italic> data for Leibold solar module (LSM 20) operated at 24°C under outdoor sunlight intensity of 360 W/m<sup>2</sup>.</title>
+<p>(CSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0216201.s005" mimetype="text/csv" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s005" xlink:type="simple">
+<label>S5 Dataset</label>
+<caption>
+<title>Measured <italic>I-V</italic> data for Leibold solar module (STE 4/100) operated at 22°C under indoor light intensity of 900 W/m<sup>2</sup>.</title>
+<p>(CSV)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0216201.s006" position="float" xlink:href="info:doi/10.1371/journal.pone.0216201.s006" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Software application for rapid determination of the PV cells and modules parameters based on approximation and correction technique (ACT).</title>
+<p>(EXE)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The authors are grateful to Universiti Teknologi Malaysia for the financial support under Vote No: Q.J090000.21A4.00D20.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0216201.ref001"><label>1</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>McEvoy</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Castaner</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Markvart</surname> <given-names>T</given-names></name>. <source>Solar cells: materials, manufacture and operation</source>: <publisher-name>Academic Press</publisher-name>; <year>2012</year>.</mixed-citation></ref>
+<ref id="pone.0216201.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>Z-S</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>G-Q</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>D-M</given-names></name>, <name name-style="western"><surname>Zhou</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L-J</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L-X</given-names></name>. <article-title>Application and development of solar energy in building industry and its prospects in China</article-title>. <source>Energy Policy</source>. <year>2007</year>;<volume>35</volume>(<issue>8</issue>):<fpage>4121</fpage>–<lpage>7</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Otte</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Makhova</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Konovalov</surname> <given-names>I</given-names></name>. <article-title>Flexible Cu (In, Ga) Se 2 thin-film solar cells for space application</article-title>. <source>Thin Solid Films</source>. <year>2006</year>;<volume>511</volume>:<fpage>613</fpage>–<lpage>22</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muhammad</surname> <given-names>FF</given-names></name>, <name name-style="western"><surname>Sulaiman</surname> <given-names>K</given-names></name>. <article-title>Thermal Stability and Reproducibility Enhancement of Organic Solar Cells by Tris (hydroxyquinoline) gallium Dopant Forming a Dual Acceptor Active Layer</article-title>. <source>ARO-The Scientific Journal of Koya University</source>. <year>2018</year>;<volume>6</volume>(<issue>2</issue>):<fpage>69</fpage>–<lpage>78</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ahmad</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Touati</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Muhammad</surname> <given-names>FF</given-names></name>, <name name-style="western"><surname>Najeeb</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Shakoor</surname> <given-names>RA</given-names></name>. <article-title>Effect of ambient temperature on the efficiency of the PCPDTBT: PC71BM BHJ solar cells</article-title>. <source>Applied Physics A</source>. <year>2017</year>;<volume>123</volume>(<issue>7</issue>):<fpage>486</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00339-017-1098-8" xlink:type="simple">10.1007/s00339-017-1098-8</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0216201.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meneses-Rodríguez</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Horley</surname> <given-names>PP</given-names></name>, <name name-style="western"><surname>Gonzalez-Hernandez</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Vorobiev</surname> <given-names>YV</given-names></name>, <name name-style="western"><surname>Gorley</surname> <given-names>PN</given-names></name>. <article-title>Photovoltaic solar cells performance at elevated temperatures</article-title>. <source>Solar energy</source>. <year>2005</year>;<volume>78</volume>(<issue>2</issue>):<fpage>243</fpage>–<lpage>50</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muhammad</surname> <given-names>FF</given-names></name>, <name name-style="western"><surname>Ketuly</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Yahya</surname> <given-names>MY</given-names></name>. <article-title>Effect of Thermal Annealing on a Ternary Organic Solar Cell Incorporating Gaq3 Organometallic as a Boosting Acceptor</article-title>. <source>Journal of Inorganic and Organometallic Polymers and Materials</source>. <year>2017</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10904-017-0561-5" xlink:type="simple">10.1007/s10904-017-0561-5</ext-link></comment> <object-id pub-id-type="pmid">29097986</object-id></mixed-citation></ref>
+<ref id="pone.0216201.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Muhammad</surname> <given-names>FF</given-names></name>, <name name-style="western"><surname>Yahya</surname> <given-names>MY</given-names></name>, <name name-style="western"><surname>Hameed</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Aziz</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Sulaiman</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Rasheed</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. <article-title>Employment of single-diode model to elucidate the variations in photovoltaic parameters under different electrical and thermal conditions</article-title>. <source>PLoS ONE</source>. <year>2017</year>;<volume>12</volume>(<issue>8</issue>):<fpage>e0182925</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0182925" xlink:type="simple">10.1371/journal.pone.0182925</ext-link></comment> <object-id pub-id-type="pmid">28793325</object-id></mixed-citation></ref>
+<ref id="pone.0216201.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xiao</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Nazario</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>F</given-names></name>. <article-title>A neural network based computational model to predict the output power of different types of photovoltaic cells</article-title>. <source>PloS one</source>. <year>2017</year>;<volume>12</volume>(<issue>9</issue>):<fpage>e0184561</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0184561" xlink:type="simple">10.1371/journal.pone.0184561</ext-link></comment> <object-id pub-id-type="pmid">28898271</object-id></mixed-citation></ref>
+<ref id="pone.0216201.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Villalva</surname> <given-names>MG</given-names></name>, <name name-style="western"><surname>Gazoli</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Filho</surname> <given-names>ER</given-names></name>. <article-title>Comprehensive Approach to Modeling and Simulation of Photovoltaic Arrays</article-title>. <source>IEEE Transactions on Power Electronics</source>. <year>2009</year>;<volume>24</volume>(<issue>5</issue>):<fpage>1198</fpage>–<lpage>208</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/TPEL.2009.2013862" xlink:type="simple">10.1109/TPEL.2009.2013862</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0216201.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Humada</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Hojabri</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mekhilef</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hamada</surname> <given-names>HM</given-names></name>. <article-title>Solar cell parameters extraction based on single and double-diode models: A review</article-title>. <source>Renewable and Sustainable Energy Reviews</source>. <year>2016</year>;<volume>56</volume>:<fpage>494</fpage>–<lpage>509</lpage>. <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.rser.2015.11.051" xlink:type="simple">https://doi.org/10.1016/j.rser.2015.11.051</ext-link>.</mixed-citation></ref>
+<ref id="pone.0216201.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Orioli</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Di Gangi</surname> <given-names>A</given-names></name>. <article-title>A criterion for rating the usability and accuracy of the one-diode models for photovoltaic modules</article-title>. <source>Energies</source>. <year>2016</year>;<volume>9</volume>(<issue>6</issue>):<fpage>427</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tong</surname> <given-names>NT</given-names></name>, <name name-style="western"><surname>Pora</surname> <given-names>W</given-names></name>. <article-title>A parameter extraction technique exploiting intrinsic properties of solar cells</article-title>. <source>Applied energy</source>. <year>2016</year>;<volume>176</volume>:<fpage>104</fpage>–<lpage>15</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maouhoub</surname> <given-names>N</given-names></name>. <article-title>Photovoltaic module parameter estimation using an analytical approach and least squares method</article-title>. <source>Journal of Computational Electronics</source>. <year>2018</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10825-017-1121-5" xlink:type="simple">10.1007/s10825-017-1121-5</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0216201.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pindado</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Cubas</surname> <given-names>J</given-names></name>. <article-title>Simple mathematical approach to solar cell/panel behavior based on datasheet information</article-title>. <source>Renewable energy</source>. <year>2017</year>;<volume>103</volume>:<fpage>729</fpage>–<lpage>38</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yıldıran</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Tacer</surname> <given-names>E</given-names></name>. <article-title>Identification of photovoltaic cell single diode discrete model parameters based on datasheet values</article-title>. <source>Solar Energy</source>. <year>2016</year>;<volume>127</volume>:<fpage>175</fpage>–<lpage>83</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Senturk</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Eke</surname> <given-names>R</given-names></name>. <article-title>A new method to simulate photovoltaic performance of crystalline silicon photovoltaic modules based on datasheet values</article-title>. <source>Renewable energy</source>. <year>2017</year>;<volume>103</volume>:<fpage>58</fpage>–<lpage>69</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cubas</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pindado</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>de Manuel</surname> <given-names>C</given-names></name>. <article-title>Explicit expressions for solar panel equivalent circuit parameters based on analytical formulation and the Lambert W-function</article-title>. <source>Energies</source>. <year>2014</year>;<volume>7</volume>(<issue>7</issue>):<fpage>4098</fpage>–<lpage>115</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ishibashi</surname> <given-names>K-i</given-names></name>, <name name-style="western"><surname>Kimura</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Niwano</surname> <given-names>M</given-names></name>. <article-title>An extensively valid and stable method for derivation of all parameters of a solar cell from a single current-voltage characteristic</article-title>. <source>Journal of applied physics</source>. <year>2008</year>;<volume>103</volume>(<issue>9</issue>):<fpage>094507</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Louzazni</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Aroudam</surname> <given-names>EH</given-names></name>. <article-title>An analytical mathematical modeling to extract the parameters of solar cell from implicit equation to explicit form</article-title>. <source>Applied Solar Energy</source>. <year>2015</year>;<volume>51</volume>(<issue>3</issue>):<fpage>165</fpage>–<lpage>71</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maouhoub</surname> <given-names>N</given-names></name>. <article-title>Photovoltaic module parameter estimation using an analytical approach and least squares method</article-title>. <source>Journal of Computational Electronics</source>. <year>2018</year>:<fpage>1</fpage>–<lpage>7</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref022"><label>22</label><mixed-citation publication-type="other" xlink:type="simple">&lt;Yadir S, Benhmida M, Sidki M, Assaid E, Khaidar M, editors. New method for extracting the model physical parameters of solar cells using explicit analytic solutions of current-voltage equation. Microelectronics (ICM), 2009 international conference on; 2009: IEEE.</mixed-citation></ref>
+<ref id="pone.0216201.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Easwarakhanthan</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Bottin</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Bouhouch</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Boutrit</surname> <given-names>C</given-names></name>. <article-title>Nonlinear minimization algorithm for determining the solar cell parameters with microcomputers</article-title>. <source>International Journal of Solar Energy</source>. <year>1986</year>;<volume>4</volume>(<issue>1</issue>):<fpage>1</fpage>–<lpage>12</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ma</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>L</given-names></name>. <article-title>Development of a model to simulate the performance characteristics of crystalline silicon photovoltaic modules/strings/arrays</article-title>. <source>Solar Energy</source>. <year>2014</year>;<volume>100</volume>:<fpage>31</fpage>–<lpage>41</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hong</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>H</given-names></name>. <article-title>Parameters extraction from commercial solar cells I–V characteristics and shunt analysis</article-title>. <source>Applied Energy</source>. <year>2011</year>;<volume>88</volume>(<issue>6</issue>):<fpage>2239</fpage>–<lpage>44</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chegaar</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ouennoughi</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Hoffmann</surname> <given-names>A</given-names></name>. <article-title>A new method for evaluating illuminated solar cell parameters</article-title>. <source>Solid-state electronics</source>. <year>2001</year>;<volume>45</volume>(<issue>2</issue>):<fpage>293</fpage>–<lpage>6</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gong</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Cai</surname> <given-names>Z</given-names></name>. <article-title>Parameter extraction of solar cell models using repaired adaptive differential evolution</article-title>. <source>Solar Energy</source>. <year>2013</year>;<volume>94</volume>:<fpage>209</fpage>–<lpage>20</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ishaque</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Salam</surname> <given-names>Z</given-names></name>. <article-title>An improved modeling method to determine the model parameters of photovoltaic (PV) modules using differential evolution (DE)</article-title>. <source>Solar Energy</source>. <year>2011</year>;<volume>85</volume>(<issue>9</issue>):<fpage>2349</fpage>–<lpage>59</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askarzadeh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rezazadeh</surname> <given-names>A</given-names></name>. <article-title>A new heuristic optimization algorithm for modeling of proton exchange membrane fuel cell: bird mating optimizer</article-title>. <source>International Journal of Energy Research</source>. <year>2013</year>;<volume>37</volume>(<issue>10</issue>):<fpage>1196</fpage>–<lpage>204</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askarzadeh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rezazadeh</surname> <given-names>A</given-names></name>. <article-title>Extraction of maximum power point in solar cells using bird mating optimizer-based parameters identification approach</article-title>. <source>Solar energy</source>. <year>2013</year>;<volume>90</volume>:<fpage>123</fpage>–<lpage>33</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askarzadeh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>dos Santos Coelho</surname> <given-names>L</given-names></name>. <article-title>Determination of photovoltaic modules parameters at different operating conditions using a novel bird mating optimizer approach</article-title>. <source>Energy Conversion and Management</source>. <year>2015</year>;<volume>89</volume>:<fpage>608</fpage>–<lpage>14</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jervase</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Bourdoucen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Al-Lawati</surname> <given-names>A</given-names></name>. <article-title>Solar cell parameter extraction using genetic algorithms</article-title>. <source>Measurement Science and Technology</source>. <year>2001</year>;<volume>12</volume>(<issue>11</issue>):<fpage>1922</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zagrouba</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sellami</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Bouaïcha</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ksouri</surname> <given-names>M</given-names></name>. <article-title>Identification of PV solar cells and modules parameters using the genetic algorithms: Application to maximum power extraction</article-title>. <source>Solar energy</source>. <year>2010</year>;<volume>84</volume>(<issue>5</issue>):<fpage>860</fpage>–<lpage>6</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oliva</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Cuevas</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Pajares</surname> <given-names>G</given-names></name>. <article-title>Parameter identification of solar cells using artificial bee colony optimization</article-title>. <source>Energy</source>. <year>2014</year>;<volume>72</volume>:<fpage>93</fpage>–<lpage>102</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ye</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>Y</given-names></name>. <article-title>Parameter extraction of solar cells using particle swarm optimization</article-title>. <source>Journal of Applied Physics</source>. <year>2009</year>;<volume>105</volume>(<issue>9</issue>):<fpage>094502</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yeh</surname> <given-names>W-C</given-names></name>. <article-title>A two-stage discrete particle swarm optimization for the problem of multiple multi-level redundancy allocation in series systems</article-title>. <source>Expert Systems with Applications</source>. <year>2009</year>;<volume>36</volume>(<issue>5</issue>):<fpage>9192</fpage>–<lpage>200</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Cui</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Qu</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Parameter extraction of solar cell models using improved shuffled complex evolution algorithm</article-title>. <source>Energy Conversion and Management</source>. <year>2018</year>;<volume>157</volume>:<fpage>460</fpage>–<lpage>79</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bana</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Saini</surname> <given-names>R</given-names></name>. <article-title>Identification of unknown parameters of a single diode photovoltaic model using particle swarm optimization with binary constraints</article-title>. <source>Renewable Energy</source>. <year>2017</year>;<volume>101</volume>:<fpage>1299</fpage>–<lpage>310</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nunes</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Pombo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mariano</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Calado</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>de Souza</surname> <given-names>JF</given-names></name>. <article-title>A new high performance method for determining the parameters of PV cells and modules based on guaranteed convergence particle swarm optimization</article-title>. <source>Applied Energy</source>. <year>2018</year>;<volume>211</volume>:<fpage>774</fpage>–<lpage>91</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oliva</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>El Aziz</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Hassanien</surname> <given-names>AE</given-names></name>. <article-title>Parameter estimation of photovoltaic cells using an improved chaotic whale optimization algorithm</article-title>. <source>Applied Energy</source>. <year>2017</year>;<volume>200</volume>:<fpage>141</fpage>–<lpage>54</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Beigi</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Maroosi</surname> <given-names>A</given-names></name>. <article-title>Parameter identification for solar cells and module using a Hybrid Firefly and Pattern Search Algorithms</article-title>. <source>Solar Energy</source>. <year>2018</year>;<volume>171</volume>:<fpage>435</fpage>–<lpage>46</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kumar</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kumar</surname> <given-names>A</given-names></name>. <article-title>An efficient parameters extraction technique of photovoltaic models for performance assessment</article-title>. <source>Solar Energy</source>. <year>2017</year>;<volume>158</volume>:<fpage>192</fpage>–<lpage>206</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref043"><label>43</label><mixed-citation publication-type="other" xlink:type="simple">Chin VJ, Salam Z, Ishaque K, editors. An improved method to estimate the parameters of the single diode model of photovoltaic module using differential evolution. Electric Power and Energy Conversion Systems (EPECS), 2015 4th International Conference on; 2015: IEEE.</mixed-citation></ref>
+<ref id="pone.0216201.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Laudani</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fulginei</surname> <given-names>FR</given-names></name>, <name name-style="western"><surname>Salvini</surname> <given-names>A</given-names></name>. <article-title>High performing extraction procedure for the one-diode model of a photovoltaic panel from experimental I–V curves by using reduced forms</article-title>. <source>Solar Energy</source>. <year>2014</year>;<volume>103</volume>:<fpage>316</fpage>–<lpage>26</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cubas</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pindado</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Victoria</surname> <given-names>M</given-names></name>. <article-title>On the analytical approach for modeling photovoltaic systems behavior</article-title>. <source>Journal of power sources</source>. <year>2014</year>;<volume>247</volume>:<fpage>467</fpage>–<lpage>74</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lineykin</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Averbukh</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kuperman</surname> <given-names>A</given-names></name>. <article-title>An improved approach to extract the single-diode equivalent circuit parameters of a photovoltaic cell/panel</article-title>. <source>Renewable and Sustainable Energy Reviews</source>. <year>2014</year>;<volume>30</volume>:<fpage>282</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Hao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>C</given-names></name>. <article-title>A simple and efficient solar cell parameter extraction method from a single current-voltage curve</article-title>. <source>Journal of applied physics</source>. <year>2011</year>;<volume>110</volume>(<issue>6</issue>):<fpage>064504</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yu</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Qu</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Yue</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Ge</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>J</given-names></name>. <article-title>A performance-guided JAYA algorithm for parameters identification of photovoltaic cell and module</article-title>. <source>Applied Energy</source>. <year>2019</year>;<volume>237</volume>:<fpage>241</fpage>–<lpage>57</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pourmousa</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Ebrahimi</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Malekzadeh</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Alizadeh</surname> <given-names>M</given-names></name>. <article-title>Parameter estimation of photovoltaic cells using improved Lozi map based chaotic optimization Algorithm</article-title>. <source>Solar Energy</source>. <year>2019</year>;<volume>180</volume>:<fpage>180</fpage>–<lpage>91</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yu</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Qu</surname> <given-names>BY</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>H</given-names></name>. <article-title>Parameters identification of photovoltaic models using an improved JAYA optimization algorithm</article-title>. <source>Energy Conversion and Management</source>. <year>2017</year>;<volume>150</volume>:<fpage>742</fpage>–<lpage>53</lpage>. <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.enconman.2017.08.063" xlink:type="simple">https://doi.org/10.1016/j.enconman.2017.08.063</ext-link>.</mixed-citation></ref>
+<ref id="pone.0216201.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>S</given-names></name>. <article-title>Parameters identification of photovoltaic models using hybrid adaptive Nelder-Mead simplex algorithm based on eagle strategy</article-title>. <source>Applied Energy</source>. <year>2016</year>;<volume>182</volume>:<fpage>47</fpage>–<lpage>57</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>S</given-names></name>. <article-title>A population classification evolution algorithm for the parameter extraction of solar cell models</article-title>. <source>International Journal of Photoenergy</source>. <year>2016</year>;<fpage>2016</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Du</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>G</given-names></name>. <article-title>Parameters identification of solar cell models using generalized oppositional teaching learning based optimization</article-title>. <source>Energy</source>. <year>2016</year>;<volume>99</volume>:<fpage>170</fpage>–<lpage>80</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guo</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Meng</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Sun</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>L</given-names></name>. <article-title>Parameter identification and sensitivity analysis of solar cell models with cat swarm optimization algorithm</article-title>. <source>Energy conversion and management</source>. <year>2016</year>;<volume>108</volume>:<fpage>520</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Niu</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>K</given-names></name>. <article-title>An improved TLBO with elite strategy for parameters identification of PEM fuel cell and solar cell models</article-title>. <source>International journal of hydrogen energy</source>. <year>2014</year>;<volume>39</volume>(<issue>8</issue>):<fpage>3837</fpage>–<lpage>54</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hachana</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Hemsas</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Tina</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ventura</surname> <given-names>C</given-names></name>. <article-title>Comparison of different metaheuristic algorithms for parameter identification of photovoltaic cell/module</article-title>. <source>Journal of renewable and sustainable energy</source>. <year>2013</year>;<volume>5</volume>(<issue>5</issue>):<fpage>053122</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hamid</surname> <given-names>NFA</given-names></name>, <name name-style="western"><surname>Rahim</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Selvaraj</surname> <given-names>J</given-names></name>. <article-title>Solar cell parameters identification using hybrid Nelder-Mead and modified particle swarm optimization</article-title>. <source>Journal of Renewable and Sustainable Energy</source>. <year>2016</year>;<volume>8</volume>(<issue>1</issue>):<fpage>015502</fpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jamadi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Merrikh-Bayat</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Bigdeli</surname> <given-names>M</given-names></name>. <article-title>Very accurate parameter estimation of single-and double-diode solar cell models using a modified artificial bee colony algorithm</article-title>. <source>International Journal of Energy and Environmental Engineering</source>. <year>2016</year>;<volume>7</volume>(<issue>1</issue>):<fpage>13</fpage>–<lpage>25</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askarzadeh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rezazadeh</surname> <given-names>A</given-names></name>. <article-title>Parameter identification for solar cell models using harmony search-based algorithms</article-title>. <source>Solar Energy</source>. <year>2012</year>;<volume>86</volume>(<issue>11</issue>):<fpage>3241</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Askarzadeh</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Rezazadeh</surname> <given-names>A</given-names></name>. <article-title>Artificial bee swarm optimization algorithm for parameters identification of solar cell models</article-title>. <source>Applied Energy</source>. <year>2013</year>;<volume>102</volume>:<fpage>943</fpage>–<lpage>9</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref061"><label>61</label><mixed-citation publication-type="other" xlink:type="simple">Wei H, Cong J, Lingyun X, Deyun S, editors. Extracting solar cell model parameters based on chaos particle swarm algorithm. Electric Information and Control Engineering (ICEICE), 2011 International Conference on; 2011: IEEE.</mixed-citation></ref>
+<ref id="pone.0216201.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jordehi</surname> <given-names>AR</given-names></name>. <article-title>Enhanced leader particle swarm optimisation (ELPSO): An efficient algorithm for parameter estimation of photovoltaic (PV) cells and modules</article-title>. <source>Solar Energy</source>. <year>2018</year>;<volume>159</volume>:<fpage>78</fpage>–<lpage>87</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yuan</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xiang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Y</given-names></name>. <article-title>Parameter extraction of solar cell models using mutative-scale parallel chaos optimization algorithm</article-title>. <source>Solar Energy</source>. <year>2014</year>;<volume>108</volume>:<fpage>238</fpage>–<lpage>51</lpage>.</mixed-citation></ref>
+<ref id="pone.0216201.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>AlRashidi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>AlHajri</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>El-Naggar</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Al-Othman</surname> <given-names>A</given-names></name>. <article-title>A new estimation approach for determining the I–V characteristics of solar cells</article-title>. <source>Solar Energy</source>. <year>2011</year>;<volume>85</volume>(<issue>7</issue>):<fpage>1543</fpage>–<lpage>50</lpage>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

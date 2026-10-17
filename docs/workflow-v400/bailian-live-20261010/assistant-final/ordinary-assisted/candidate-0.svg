@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#808080" />
+    </marker>
+  </defs>
+
+  
+  <rect width="1600" height="900" fill="#FFFFFF" />
+
+  
+  <rect x="150" y="300" width="300" height="200" rx="20" ry="20" fill="#E6F2FF" stroke="#0050B3" stroke-width="2.5" />
+  <text x="300" y="380" text-anchor="middle" font-family="'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="32" font-weight="normal" fill="#000000">样品输入</text>
+  <text x="300" y="430" text-anchor="middle" font-family="'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="24" font-weight="normal" fill="#333333">(n=12)</text>
+
+  
+  <line x1="460" y1="400" x2="580" y2="400" stroke="#808080" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  
+  <rect x="600" y="300" width="300" height="200" rx="20" ry="20" fill="#FFF7E6" stroke="#D46B08" stroke-width="2.5" />
+  <text x="750" y="380" text-anchor="middle" font-family="'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="32" font-weight="normal" fill="#000000">数据标准化</text>
+  <text x="750" y="430" text-anchor="middle" font-family="'Noto Sans Math', 'Noto Sans', sans-serif" font-size="24" font-weight="normal" font-style="italic" fill="#333333">x / x<tspan baseline-shift="sub" font-size="0.75em">0</tspan></text>
+
+  
+  <line x1="910" y1="400" x2="1030" y2="400" stroke="#808080" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  
+  <rect x="1050" y="300" width="300" height="200" rx="20" ry="20" fill="#E6FFE6" stroke="#228B22" stroke-width="2.5" />
+  <text x="1200" y="380" text-anchor="middle" font-family="'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="32" font-weight="normal" fill="#000000">结果输出</text>
+  <text x="1200" y="430" text-anchor="middle" font-family="'Noto Sans CJK SC', 'Noto Sans', sans-serif" font-size="24" font-weight="normal" fill="#333333">(均值 1.0)</text>
+</svg>

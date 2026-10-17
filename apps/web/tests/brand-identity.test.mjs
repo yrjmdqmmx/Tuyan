@@ -20,7 +20,7 @@ test('Web workspace exposes the 图研Tuyan工作台 brand on its primary entry 
   assert.match(featured, /图研Tuyan 是开源的学术图示工作台/u)
   assert.doesNotMatch(featured, /PaperBanana 是开源的学术图示工作台/u)
   const referenceLibrary = read('src/components/ReferenceLibraryPanel.jsx')
-  assert.match(referenceLibrary, /图研Tuyan 参考库/u)
+  assert.match(referenceLibrary, /图研 Tuyan · 论文插图参考/u)
   assert.doesNotMatch(referenceLibrary, /PaperBananaBench/u)
   const guide = read('src/components/GuidePanel.jsx')
   assert.match(guide, /图研Tuyan 客户端以开源方式维护/u)

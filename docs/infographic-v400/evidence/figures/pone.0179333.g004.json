@@ -1,0 +1,54 @@
+{
+  "id": "pone.0179333.g004",
+  "paper": "pone.0179333",
+  "figure": {
+    "id": "pone.0179333.g004",
+    "label": "Fig 4",
+    "caption": "Energy profile (in kcal.mol^{-1}) of side-on path for Erlotinib bioactivation by the Cpd I model of CYP3A4 and 1A2 in the gas and solvent phases.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0179333.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0179333.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Energy profile (in kcal.mol<sup>-1</sup>) of side-on path for Erlotinib bioactivation by the Cpd I model of CYP3A4 and 1A2 in the gas and solvent phases.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0179333.g004\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0179333.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0179333",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0179333",
+    "title": "Computational explanation for bioactivation mechanism of targeted anticancer agents mediated by cytochrome P450s: A case of Erlotinib",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Chun-Zhi Ai",
+      "Yong Liu",
+      "Wei Li",
+      "De-Meng Chen",
+      "Xin-Xing Zhu",
+      "Ya-Wei Yan",
+      "Du-Chu Chen",
+      "Yi-Zhou Jiang"
+    ],
+    "year": "2017",
+    "license": "2017\nAi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0179333.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0179333.g004.png",
+      "bytes": 266349,
+      "sha256": "057335c4bbce114fe92f3caeeaf5081a1734e0a81a92f909f82a8b94a78772da"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0179333.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0179333.g004.tif",
+      "bytes": 345712,
+      "sha256": "d62d6076a1746fc96073abb2a30875f39aa37c2c770500c53bc548a21995842e"
+    }
+  }
+}

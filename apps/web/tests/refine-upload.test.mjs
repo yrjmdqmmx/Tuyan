@@ -5,7 +5,10 @@ import { act, cleanup, fireEvent, render, renderHook, screen, waitFor } from '@t
 import useRefineUpload from '../src/hooks/useRefineUpload.js'
 import AspectRatioPicker, { ratioRectangle } from '../src/components/AspectRatioPicker.jsx'
 import RefinePanel from '../src/components/RefinePanel.jsx'
-import { refineRequestSource } from '../src/lib/refineSource.js'
+import { refineRequestSource,refineTaskContext,refineSourceIssue } from '../src/lib/refineSource.js'
+import {IDBFactory} from 'fake-indexeddb'
+import {getBrowserRecord,putBrowserRecord} from '../src/lib/browserMaterials.js'
+import {defaultJournalSelection} from '../../../packages/api/src/journal-rules.js'
 import { refineUploadLimits, validateRefineDimensions, validateRefineFile } from '../src/lib/refineUpload.js'
 
 const limits = { mimeTypes: ['image/png', 'image/jpeg', 'image/webp'], maxBytes: 5 * 1024 ** 2, maxDimension: 16384, maxPixels: 20 * 1024 ** 2 }
@@ -70,9 +73,9 @@ test('upload tracks actual bytes, waits for finalize, supports retry, replacemen
 test('format, byte and dimension validation fails before upload and an invalid replacement preserves the ready original', async () => {
   const selected = refineUploadLimits({ ...limits, modelMaxBytes: { 'channel/model': 1024 } }, { accessProvider: 'channel', modelId: 'model' })
   assert.equal(selected.maxBytes, 1024)
-  assert.throws(() => validateRefineFile({ type: 'image/png', size: 1025 }, selected), /MiB/)
+  assert.throws(() => validateRefineFile({ type: 'image/png', size: 1025 }, selected), /MB/)
   assert.throws(() => validateRefineFile({ type: 'image/svg+xml', size: 100 }, limits), /PNG/)
-  assert.throws(() => validateRefineFile({ type: 'image/png', size: limits.maxBytes + 1 }, limits), /MiB/)
+  assert.throws(() => validateRefineFile({ type: 'image/png', size: limits.maxBytes + 1 }, limits), /MB/)
   assert.throws(() => validateRefineDimensions({ width: 17000, height: 1 }, limits), /尺寸超限/)
   assert.throws(() => validateRefineDimensions({ width: 8000, height: 8000 }, limits), /尺寸超限/)
   const { hook, requests } = uploadHarness()
@@ -139,3 +142,73 @@ test('an expired refine URL fails before PUT and preserves the selected file for
   assert.equal(hook.result.current.source.filename, 'source.png')
   assert.ok(requests.some(request => request.action === 'abortReferenceUpload'))
 })
+
+test('source identity rejects late task reads and clears journal and nature as soon as a valid replacement is chosen', async()=>{
+ const {hook,xhrs}=uploadHarness();
+ const journalSelection=defaultJournalSelection('plos-one');
+ const taskContext=refineTaskContext({id:'original',figureTypeId:'bar',journalSelection:{...journalSelection,contentType:'data'}});
+ let late,current;
+ act(()=>{late=hook.result.current.beginSelection();});
+ act(()=>{current=hook.result.current.beginSelection();});
+ act(()=>assert.equal(hook.result.current.setSource({url:'/late.png',contentType:'schematic'},late),false));
+ act(()=>hook.result.current.setSource({url:'/original.png',taskContext,journalSelection:taskContext.journalSelection,contentType:taskContext.contentType},current));
+ assert.equal(hook.result.current.source.contentType,'data');
+ const oldIdentity=hook.result.current.source.identity;
+ act(()=>{void hook.result.current.selectFiles([new File(['new'],'new.png',{type:'image/png'})]);});
+ assert.notEqual(hook.result.current.source.identity,oldIdentity);
+ assert.equal(hook.result.current.source.journalSelection,undefined);
+ assert.equal(hook.result.current.source.taskContext,undefined);
+ assert.match(refineSourceIssue(hook.result.current.source),/确认/);
+ act(()=>hook.result.current.updateSettings(oldIdentity,{contentType:'data',journalSelection}));
+ assert.equal(hook.result.current.source.contentType,undefined,'Stale popup must not label a new image');
+ act(()=>hook.result.current.updateSettings(hook.result.current.source.identity,{contentType:'illustration'}));
+ await waitFor(()=>assert.equal(xhrs.length,1));
+ act(()=>xhrs[0].finish());
+ await waitFor(()=>assert.equal(hook.result.current.upload.status,'ready'));
+ assert.equal(hook.result.current.source.contentType,'illustration','Completion retains only the current image confirmation');
+ act(()=>hook.result.current.setSource({url:'',objectKey:''}));
+ assert.equal(hook.result.current.source.contentType,undefined);
+});
+
+test('browser draft restores settings only with the exact original and isolates owner changes',async()=>{
+ const {hook:legacy}=uploadHarness();legacy.unmount();
+ globalThis.indexedDB=new IDBFactory();
+ const props={apiBase:'https://fixture.invalid',health:{runtime:'gateway'},limits,authReady:true,ownerId:'one',materialVersion:2};
+ const scope=JSON.stringify([props.apiBase,props.ownerId]);
+ const hook=renderHook(p=>useRefineUpload(p),{initialProps:props});
+ await act(async()=>{await hook.result.current.selectFiles([new File(['original'],'original.png',{type:'image/png'})]);});
+ const ref=hook.result.current.source.browserSource;
+ assert.equal(hook.result.current.upload.status,'ready');
+ const context=refineTaskContext({id:'record',figureTypeId:'bar',journalSelection:{...defaultJournalSelection('frontiers-ai'),contentType:'data'}});
+ await act(async()=>{await hook.result.current.restoreOriginal(ref,context);});
+ await waitFor(async()=>assert.equal((await getBrowserRecord(scope,'draft:refine-source')).settings.sourceTaskId,'record'));
+ hook.unmount();
+ const restored=renderHook(p=>useRefineUpload(p),{initialProps:props});
+ await waitFor(()=>assert.equal(restored.result.current.upload.status,'ready'));
+ assert.equal(restored.result.current.source.taskContext.figureTypeId,'bar');
+ assert.equal(restored.result.current.source.contentType,'data');
+ assert.equal(restored.result.current.source.sourceTaskId,'record');
+ const request=restored.result.current.captureSelection();
+ restored.rerender({...props,ownerId:'two'});
+ assert.equal(request.isCurrent(),false);
+ assert.equal(restored.result.current.source.url,'');
+ assert.equal(restored.result.current.source.journalSelection,undefined);
+ restored.unmount();
+ const draft=await getBrowserRecord(scope,'draft:refine-source');
+ await putBrowserRecord({...draft,ref:{...draft.ref,sha256:'wrong'}});
+ const corrupted=renderHook(()=>useRefineUpload(props));
+ await waitFor(()=>assert.equal(corrupted.result.current.upload.status,'failed'));
+ assert.equal(corrupted.result.current.source.contentType,undefined);
+ assert.equal(corrupted.result.current.source.url,'');
+ assert.match(corrupted.result.current.upload.error,/校验不一致/);
+});
+
+test('task classification preserves explicit exclusions and missing legacy records remain unknown',()=>{
+ assert.equal(refineTaskContext({figureTypeId:'bar'}).contentType,'data');
+ assert.equal(refineTaskContext({generationContext:{figureTypeId:'workflow'}}).contentType,'schematic');
+ const stale=defaultJournalSelection('plos-one');
+ assert.equal(refineTaskContext({journalSelection:null,generationContext:{journalSelection:stale}}).journalSelection,null);
+ assert.equal(refineTaskContext({}).contentType,null);
+ assert.match(refineSourceIssue({url:'/source.png',taskContext:{}}),/缺少/);
+ assert.match(refineSourceIssue({url:'/source.png',contentType:'primary'}),/不能处理原始科研图像/);
+});

@@ -46,6 +46,7 @@ export type ImageChannelWire = {
   sourceEncoding?: 'base64' | 'public-url'
   constants?: Record<string, unknown>
   jsonEnvelope?: string
+  requestEncoding?: 'json'
   version?: string
   maxPromptLength?: number
   maxSourceBytes?: number
@@ -151,7 +152,9 @@ async function readImageEventStream(response:Response) {
 }
 /** Submission is never retried: a lost response may already represent a paid task. */
 export async function callExtendedImageChannel(input: ImageChannelInput, io: ImageChannelTransport): Promise<string> {
-  if (['runware','tokenhub','fal','replicate','bfl'].includes(input.provider) && (!io.pending || !io.checkpoint)) throw Object.assign(new Error('当前后端缺少持久任务恢复能力，未发起渠道请求。'), {requestState:'not_sent', localInputFailure:true})
+  if (auditedChannelContract(input.provider,input.model)?.schema === false) throw Object.assign(new Error('该型号未适配图研图像任务；历史配置已保留，未发送请求。'),{requestState:'not_sent',localInputFailure:true})
+  const requiresCheckpoint = ['runware','tokenhub','fal','replicate','bfl'].includes(input.provider) || input.provider === 'ideogram' && input.model === 'ideogram-4-5'
+  if (requiresCheckpoint && (!io.pending || !io.checkpoint)) throw Object.assign(new Error('当前后端缺少持久任务恢复能力，未发起渠道请求。'), {requestState:'not_sent', localInputFailure:true})
   const issue = refineInputIssue(refineControlsFor(input.provider, input.model), input.edit?.inputs ?? (input.source ? {version:1} : undefined), input.aspectRatio, input.resolution)
   if (issue) throw Object.assign(new Error(issue), {requestState:'not_sent', localInputFailure:true})
   if (input.edit && !input.source) throw new Error('精修控制需要原图。')
@@ -166,7 +169,7 @@ export async function callExtendedImageChannel(input: ImageChannelInput, io: Ima
   catch (error: any) {
     if (error?.name === 'ThinkingConfigValidationError' && error?.requestState === 'not_sent') throw error
     const pending = await io.pending?.()
-    if(pending && ['fal','replicate','bfl'].includes(input.provider) && !pending.polling && !pending.result && !pending.failed) throw Object.assign(new Error('提交结果未知，尚未取得可查询的原任务地址；请核对渠道记录，不会重新提交。'),{name:'ImageChannelError',requestState:'unknown',uncertain:true,recoveryAction:'reconcile_provider',terminal:true})
+    if(pending && (['fal','replicate','bfl'].includes(input.provider) || input.provider==='ideogram' && input.model==='ideogram-4-5') && !pending.polling && !pending.result && !pending.failed) throw Object.assign(new Error('提交结果未知，尚未取得可查询的原任务地址；请核对渠道记录，不会重新提交。'),{name:'ImageChannelError',requestState:'unknown',uncertain:true,recoveryAction:'reconcile_provider',terminal:true})
     if (pending && !pending.failed && !error.terminal) {
       throw Object.assign(new Error('已保存原渠道任务；可恢复查询或下载，不会重新生成。'), {name:'ImageChannelError', recoveryAction:'resume', pollOnly:true, uncertain:false, requestState:'unknown'})
     }
@@ -301,15 +304,28 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     const contract = wire || (model === 'ideogram-v4' ? {endpoint:`/v1/ideogram-v4/${source?'remix':'generate'}`,sizeMode:'string',sizeField:'resolution',promptField:'text_prompt',constants:{rendering_speed:'DEFAULT'},...(source?{sourceField:'image'}:{})} as ImageChannelWire : undefined)
     if (!contract) throw new Error('Unsupported Ideogram image operation')
     const body = await buildImageChannelBody(input, contract, io)
+    const v2 = model === 'ideogram-4-5'
+    if (v2) {
+      if (source) assertChannelSourceConstraints(auditedChannelContract(provider, model), [source])
+      // Synchronous v2 calls have no safe resubmit path after a lost response.
+      // Store the result before downloading so a failed download only reuses it.
+      if (previous) throw Object.assign(new Error('Ideogram 原提交结果未确认；请核对渠道记录，不会重新提交。'), {terminal:true, requestState:'unknown', uncertain:true, recoveryAction:'reconcile_provider'})
+      await save({state:{phase:'submitting'}})
+    }
     let data: any
-    if (contract.jsonEnvelope) data = await submit('https://api.ideogram.ai' + contract.endpoint, {[contract.jsonEnvelope]:body})
+    if (contract.requestEncoding === 'json') data = await submit('https://api.ideogram.ai' + contract.endpoint, body)
+    else if (contract.jsonEnvelope) data = await submit('https://api.ideogram.ai' + contract.endpoint, {[contract.jsonEnvelope]:body})
     else {
       const form = new FormData()
       for (const [key,value] of Object.entries(body)) if (key !== contract.sourceField) form.append(key, String(value))
       attach(form, contract.sourceField)
       data = await submit('https://api.ideogram.ai' + contract.endpoint, form, true)
     }
-    if (data.data?.[0]?.is_image_safe === false) throw new Error('Ideogram image was moderated')
+    if (data.data?.[0]?.is_image_safe === false) return terminal('Ideogram image was moderated')
+    if (v2) {
+      if (!data.data?.[0]?.url) throw Object.assign(new Error('Ideogram 未返回图片；请核对渠道记录，不会重新提交。'), {terminal:true, requestState:'unknown', uncertain:true, recoveryAction:'reconcile_provider'})
+      return completed(data.data[0].url, {requestId:data.generation_id || null, publicPrice:{source:'https://ideogram.ai/api-pricing',checkedAt:'2026-10-09',amount:null}})
+    }
     return asset(data.data?.[0]?.url)
   }
   if (provider === 'stability') {
@@ -355,6 +371,9 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     state=await submit('https://api.bfl.ai'+wire.endpoint,body)
     polling=imageTaskUrl(state.polling_url,provider)
   } else if (provider === 'fal') {
+    const contract = auditedChannelContract(provider, model)
+    if (source) assertChannelSourceConstraints(contract, [source, ...(input.edit?.references || [])])
+    assertChannelRequest(contract, body)
     await save({state:{phase:'submitting'}})
     state=await submit('https://queue.fal.run/'+wire.endpoint,body)
     let fallback: string | undefined
@@ -370,6 +389,9 @@ async function executeImageChannel(input: ImageChannelInput, io: ImageChannelTra
     // A successful submission may only acknowledge request_id.
     if (state.status == null) state.status='IN_QUEUE'
   } else if (provider === 'replicate') {
+    const contract = auditedChannelContract(provider, model)
+    if (source) assertChannelSourceConstraints(contract, [source, ...(input.edit?.references || [])])
+    assertChannelRequest(contract, body)
     await save({state:{phase:'submitting'}})
     state=await submit(wire.version ? 'https://api.replicate.com/v1/predictions' : `https://api.replicate.com/v1/models/${wire.endpoint}/predictions`,{...(wire.version?{version:wire.version}:{}),input:body})
     polling=imageTaskUrl(state.urls?.get,provider)

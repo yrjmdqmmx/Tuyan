@@ -1,0 +1,18 @@
+{
+  "scope": "Source at start of final integrated local regression, after taxonomy fixture migration. Not the earlier real-call source snapshot.",
+  "files": {
+    "apps/paperbanana-api/runtime/handler.ts": "895b8e16d38b4a102a1f3729f54adf9b68c92060ca89c47250cb70cdcc3b1816",
+    "apps/paperbanana-api/src/svg-review.ts": "25fe3679466ffaea10f4cfda65987b5764d36f95a2427249b493dd7291a17da8",
+    "packages/api/src/png-workflow.ts": "7fe3fd60b004d1df737f285f8cce5d84b9518070aa85cd110bdc74d2dbc7f7af",
+    "packages/api/src/svg-workflow.ts": "0ea9a3516faf9f2af1c26e7be9288fa74368ad31cf55037eb4436e13b6850b7f",
+    "packages/api/src/workflow-prompts.ts": "481b977263df8666c4215234149b6284241fbcede19943f7311ad4c246c92ff1",
+    "packages/api/src/execution-errors.ts": "0b77acafcaf8a24f5cb667215e9851b7a849840bd49d1de0752fad8cb2dc2117",
+    "packages/types/src/workflow.ts": "d9dd0defd1302688e366c932a0a7a57c33363b8a6af3564934af3ea6fb7fc4f1",
+    "apps/web/src/lib/workflowSettings.js": "6dd95dac7777dbbc76c81714fbad89ac838aca3a540d989bb3ce2cb5ba323b12",
+    "apps/web/src/components/ResultFigure.jsx": "089b6a4197eb27dc11bcfdfe1e7bf8af60f30083a33efe0593727a96939cf9dd",
+    "apps/paperbanana-api/tests/png-white-canvas.test.ts": "0501a0db00a4558afa751f61ceca98122428a0d2acacb4520485f472771a25ea",
+    "apps/paperbanana-api/tests/png-bailian.test.ts": "a837ac11136f0c7f26cc8f4de56a11da77b80d8ae0ed081030d0f10d50c899f4",
+    "apps/paperbanana-api/tests/svg-workflow.test.ts": "931ba4855d3038c4d95f0ed494890327c4068cecde07c328389d1a31d88e4b5f",
+    "apps/paperbanana-api/tests/workflow-v400.test.ts": "a48adf8fb11ad12cc04a8edde12cfe17b2218646a96faaece53896ee4c4ac110"
+  }
+}

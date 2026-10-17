@@ -1,0 +1,97 @@
+{
+  "typeId": "alluvial",
+  "computations": {
+    "stageTotals": {
+      "Before": {
+        "A": 5,
+        "B": 4
+      },
+      "During": {
+        "C": 3,
+        "D": 6
+      },
+      "After": {
+        "E": 7,
+        "F": 2
+      }
+    },
+    "cohortTotal": 9,
+    "pathValues": {
+      "p1": 3,
+      "p2": 2,
+      "p3": 4
+    }
+  },
+  "checks": {
+    "Before_mass": {
+      "actual": 9.0,
+      "expected": 9.0,
+      "absoluteError": 0.0
+    },
+    "During_mass": {
+      "actual": 9.0,
+      "expected": 9.0,
+      "absoluteError": 0.0
+    },
+    "After_mass": {
+      "actual": 9.0,
+      "expected": 9.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_7_width": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_8_width": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_9_width": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    },
+    "ribbon_10_width": {
+      "actual": 1.9999999999999991,
+      "expected": 2.0,
+      "absoluteError": 8.881784197001252e-16
+    },
+    "ribbon_11_width": {
+      "actual": 3.999999999999999,
+      "expected": 4.0,
+      "absoluteError": 8.881784197001252e-16
+    },
+    "ribbon_12_width": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 9.0,
+      "expected": 9.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "stage",
+      "category",
+      "value"
+    ],
+    "options": {
+      "stages": [
+        "Before",
+        "During",
+        "After"
+      ],
+      "cohortSemantics": "One fixed cohort; no loss to follow-up"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

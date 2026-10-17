@@ -1,0 +1,78 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "b31eba42ee115db17de820cc7b22dd7b50396b451ee5ada81890ca0af2aca4ae",
+  "pngHash": "e6c9ad354f1ebdff4dfed24ddcb3e662c738890eeb0f377e1d535b94022de5d3",
+  "svgHash": "2e0ea90e13db56b2b5075df18220bd87dd0c77d9c7e0382f8d6a308cca4182d3",
+  "numeric": {
+    "typeId": "parallel_coordinates",
+    "computations": {
+      "normalizedObservations": {
+        "P1": [
+          0.3333333333333333,
+          0.16666666666666666,
+          0.25
+        ],
+        "P2": [
+          0.6666666666666666,
+          0.6666666666666666,
+          0.75
+        ]
+      }
+    },
+    "checks": {
+      "P1_normalized_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "P2_normalized_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "id",
+        "height",
+        "mass",
+        "age"
+      ],
+      "options": {
+        "axes": [
+          {
+            "id": "height",
+            "min": 140,
+            "max": 200,
+            "unit": "cm"
+          },
+          {
+            "id": "mass",
+            "min": 40,
+            "max": 100,
+            "unit": "kg"
+          },
+          {
+            "id": "age",
+            "min": 20,
+            "max": 60,
+            "unit": "year"
+          }
+        ],
+        "normalization": "axis_range"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

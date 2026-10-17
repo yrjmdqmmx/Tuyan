@@ -19229,5 +19229,577 @@
         }
       ]
     }
+  },
+  {
+    "channel": "runware",
+    "directoryId": "alibaba-qwen-image-2-1-pro",
+    "apiModelId": "alibaba:qwen-image@2.1-pro",
+    "name": "Runware API - Qwen-Image-2.1-Pro",
+    "source": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro/schema.json",
+    "schemaSha256": "9b77a0ce4649a0fd74f49dcea205785303483586509a50a53ac53bc566529620",
+    "officialCapabilities": [
+      "text-to-image",
+      "image-to-image",
+      "edit",
+      "checkpoint",
+      "transparency"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-09-20T00:00:00Z",
+    "developer": "Alibaba",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.075,
+          "unit": "output",
+          "display": "$0.075 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "airport-falconer-editorial-portrait",
+          "configuration": "text-to-image · 1536×1024",
+          "price": 0.075,
+          "latencyMs": 63384
+        },
+        {
+          "id": "abyssal-cable-repair-game-key-art",
+          "configuration": "text-to-image · 1536×1024",
+          "price": 0.075,
+          "latencyMs": 69651
+        },
+        {
+          "id": "sheep-shearing-docuseries-poster",
+          "configuration": "reference-to-image · 1024×1536",
+          "price": 0.075,
+          "latencyMs": 59450
+        },
+        {
+          "id": "antique-automaton-auction-cleanup",
+          "configuration": "reference-to-image · 1024×1536",
+          "price": 0.075,
+          "latencyMs": 27622
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "bfl-flux-3-image",
+    "apiModelId": "bfl:flux@3-image",
+    "name": "Runware API - FLUX 3 Image",
+    "source": "https://runware.ai/docs/models/bfl-flux-3-image",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/bfl-flux-3-image/schema.json",
+    "schemaSha256": "9c167ff79ba454d13cc00c11378ef716b1b9967d5439ad1de9a96d51c34cf41a",
+    "officialCapabilities": [
+      "text-to-image",
+      "image-to-image",
+      "edit",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-10-01T00:00:00Z",
+    "developer": "Black Forest Labs",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.041,
+          "unit": "output",
+          "label": "0.75K",
+          "display": "$0.041 per image"
+        },
+        {
+          "amount": 0.048,
+          "unit": "output",
+          "label": "1K",
+          "display": "$0.048 per image"
+        },
+        {
+          "amount": 0.1,
+          "unit": "output",
+          "label": "2K",
+          "display": "$0.10 per image"
+        },
+        {
+          "amount": 0.607,
+          "unit": "output",
+          "label": "4K",
+          "display": "$0.607 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "circular-linen-campaign-key-visual",
+          "configuration": "bounding-boxes · 1360×768",
+          "price": 0.024,
+          "latencyMs": 50189
+        },
+        {
+          "id": "rare-manuscript-conservator-portrait",
+          "configuration": "text-to-image · 1360×768",
+          "price": 0.048,
+          "latencyMs": 44132
+        },
+        {
+          "id": "geothermal-utility-campaign-key-visual",
+          "configuration": "text-to-image · 1360×768",
+          "price": 0.048,
+          "latencyMs": 40011
+        },
+        {
+          "id": "maritime-museum-robot-headshot",
+          "configuration": "background-replacement · 2K",
+          "price": 0.05,
+          "latencyMs": 80172
+        },
+        {
+          "id": "library-returns-station-catalogue",
+          "configuration": "reference-bounding-boxes · 2K",
+          "price": 0.05,
+          "latencyMs": 59230
+        },
+        {
+          "id": "grain-inspector-staff-profile-portrait",
+          "configuration": "identity-preservation · 2K",
+          "price": 0.05,
+          "latencyMs": 46423
+        },
+        {
+          "id": "floating-sauna-social-campaign-post",
+          "configuration": "reference-to-image · 2K",
+          "price": 0.1,
+          "latencyMs": 295841
+        },
+        {
+          "id": "seed-library-supper-invitation",
+          "configuration": "reference-to-image · 2K",
+          "price": 0.1,
+          "latencyMs": 363076
+        },
+        {
+          "id": "festival-poster-title-retouch",
+          "configuration": "local-editing · 4K",
+          "price": 0.303,
+          "latencyMs": 99885
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "bytedance-seedream-5-0-flash",
+    "apiModelId": "bytedance:seedream@5.0-flash",
+    "name": "Runware API - Seedream 5.0 Flash",
+    "source": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/bytedance-seedream-5-0-flash/schema.json",
+    "schemaSha256": "a8739385150c79cb6b0dfe53fdf667b813d71fb4e159fb077ba55aa1b4695941",
+    "officialCapabilities": [
+      "text-to-image",
+      "image-to-image",
+      "edit",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-09-28T00:00:00Z",
+    "developer": "ByteDance",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.01926,
+          "unit": "output",
+          "display": "$0.0193 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "fresnel-lens-museum-wall-art",
+          "configuration": "transparent-background · 1024×1024",
+          "price": 0.0193,
+          "latencyMs": 20338
+        },
+        {
+          "id": "subsea-cable-repair-blog-hero",
+          "configuration": "text-to-image · 1536×1024",
+          "price": 0.0193,
+          "latencyMs": 18880
+        },
+        {
+          "id": "forensic-entomologist-profile-avatar",
+          "configuration": "reference-to-image · 1024×1536",
+          "price": 0.0193,
+          "latencyMs": 19076
+        },
+        {
+          "id": "kissaten-listening-room-wall-print",
+          "configuration": "layer-decomposition · 2K",
+          "price": 0.193,
+          "latencyMs": 86919
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "google-nano-banana-2-1",
+    "apiModelId": "google:nano-banana@2.1",
+    "name": "Runware API - Nano Banana 2.1",
+    "source": "https://runware.ai/docs/models/google-nano-banana-2-1",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+    "schemaSha256": "60c033c4e4d536c962961da801583f6f26f4c360b818276cdc8084bdc40c25a4",
+    "officialCapabilities": [
+      "text-to-image",
+      "image-to-image",
+      "video-to-image",
+      "edit",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-10-06T00:00:00Z",
+    "developer": "Google",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "basis": "floor",
+      "rates": [
+        {
+          "amount": 1.5e-06,
+          "unit": "inputToken",
+          "display": "$1.50 per 1M input tokens"
+        },
+        {
+          "amount": 7.5e-06,
+          "unit": "outputToken",
+          "label": "Text output",
+          "display": "$7.50 per 1M output tokens"
+        },
+        {
+          "amount": 3e-05,
+          "unit": "outputToken",
+          "label": "Image output",
+          "display": "$30.00 per 1M output tokens"
+        }
+      ],
+      "examples": [
+        {
+          "id": "autumn-dusk-memorial-garden-visualization",
+          "configuration": "text-to-image · 1376×768",
+          "price": 0.0341,
+          "latencyMs": 13098
+        },
+        {
+          "id": "geothermal-plant-operations-icon-set",
+          "configuration": "text-to-image · 1376×768",
+          "price": 0.0342,
+          "latencyMs": 32103
+        },
+        {
+          "id": "pipe-organ-restoration-social-still",
+          "configuration": "video-reference · 1376×768",
+          "price": 0.0346,
+          "latencyMs": 49530
+        },
+        {
+          "id": "marine-radio-housing-colorway-variant",
+          "configuration": "image-to-image · 2K",
+          "price": 0.0524,
+          "latencyMs": 24650
+        },
+        {
+          "id": "tidal-sound-festival-press-portrait",
+          "configuration": "identity-preservation · 2K",
+          "price": 0.0544,
+          "latencyMs": 21751
+        },
+        {
+          "id": "artemis-ii-crew-shirt-graphic",
+          "configuration": "search-grounded · 1200×896",
+          "price": 0.0905,
+          "latencyMs": 35054
+        },
+        {
+          "id": "antarctic-snowcat-exhibition-key-visual",
+          "configuration": "reference-to-image · 4K",
+          "price": 0.122,
+          "latencyMs": 85269
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "ideogram-4-5-precise-edit",
+    "apiModelId": "ideogram:4.5@precise-edit",
+    "name": "Runware API - Ideogram 4.5 Precise Edit",
+    "source": "https://runware.ai/docs/models/ideogram-4-5-precise-edit",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/ideogram-4-5-precise-edit/schema.json",
+    "schemaSha256": "8cab66f9fd6e9bca60a5e785df39316ed6f42d211f4c87d287b9e5ac36670edb",
+    "officialCapabilities": [
+      "image-to-image",
+      "edit",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-09-30T00:00:00Z",
+    "developer": "Ideogram",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.008,
+          "unit": "output",
+          "label": "Very low",
+          "display": "$0.008 per image"
+        },
+        {
+          "amount": 0.03,
+          "unit": "output",
+          "label": "Low",
+          "display": "$0.03 per image"
+        },
+        {
+          "amount": 0.06,
+          "unit": "output",
+          "label": "Medium",
+          "display": "$0.06 per image"
+        },
+        {
+          "amount": 0.2,
+          "unit": "output",
+          "label": "High",
+          "display": "$0.20 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "municipal-telephone-exchange-photo-restoration",
+          "configuration": "image-to-image",
+          "price": 0.2,
+          "latencyMs": 28158
+        },
+        {
+          "id": "heritage-railcar-interior-cleanup",
+          "configuration": "reference-to-image",
+          "price": 0.2,
+          "latencyMs": 39578
+        },
+        {
+          "id": "offshore-survival-suit-night-relight",
+          "configuration": "inpaint",
+          "price": 0.2,
+          "latencyMs": 36153
+        },
+        {
+          "id": "historic-glasshouse-visitor-free-hero-image",
+          "configuration": "image-to-image",
+          "price": 0.2,
+          "latencyMs": 30232
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "ideogram-4-5",
+    "apiModelId": "ideogram:4.5@0",
+    "name": "Runware API - Ideogram 4.5",
+    "source": "https://runware.ai/docs/models/ideogram-4-5",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/ideogram-4-5/schema.json",
+    "schemaSha256": "b01e6ae6e20d73834ca54170276a73a7d375890a8b725733a7d22d223a9dc414",
+    "officialCapabilities": [
+      "text-to-image",
+      "image-to-image",
+      "edit",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-09-30T00:00:00Z",
+    "developer": "Ideogram",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.008,
+          "unit": "output",
+          "label": "Very low",
+          "display": "$0.008 per image"
+        },
+        {
+          "amount": 0.03,
+          "unit": "output",
+          "label": "Low",
+          "display": "$0.03 per image"
+        },
+        {
+          "amount": 0.06,
+          "unit": "output",
+          "label": "Medium",
+          "display": "$0.06 per image"
+        },
+        {
+          "amount": 0.2,
+          "unit": "output",
+          "label": "High",
+          "display": "$0.20 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "regional-polka-album-cover",
+          "configuration": "text-to-image · 2048×2048",
+          "price": 0.2,
+          "latencyMs": 25717
+        },
+        {
+          "id": "industrial-ambient-album-cover",
+          "configuration": "text-to-image · 2048×2048",
+          "price": 0.2,
+          "latencyMs": 23619
+        },
+        {
+          "id": "nocturnal-moth-count-social-post",
+          "configuration": "reference-to-image · 1536×1024",
+          "price": 0.2,
+          "latencyMs": 32008
+        },
+        {
+          "id": "marine-archaeologist-linocut-portrait",
+          "configuration": "inpaint",
+          "price": 0.2,
+          "latencyMs": 26193
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
+  },
+  {
+    "channel": "runware",
+    "directoryId": "recraft-v4-1-flash",
+    "apiModelId": "recraft:v4.1@flash",
+    "name": "Runware API - Recraft V4.1 Flash",
+    "source": "https://runware.ai/docs/models/recraft-v4-1-flash",
+    "checkedAt": "2026-10-09",
+    "before": "尚未登记",
+    "after": "待自动化验证",
+    "decision": "补齐型号专用调用、选择器与恢复。",
+    "roles": [
+      "image"
+    ],
+    "schemaSource": "https://runware.ai/docs/models/recraft-v4-1-flash/schema.json",
+    "schemaSha256": "f35b55780e33146a1bfd63910b04aa60230afe55d2b367cae7d23ec9421e68d1",
+    "officialCapabilities": [
+      "text-to-image",
+      "checkpoint"
+    ],
+    "officialStatus": "live",
+    "deactivatesAt": null,
+    "replacement": null,
+    "releasedAt": "2026-09-23T00:00:00Z",
+    "developer": "Recraft",
+    "price": {
+      "currency": "USD",
+      "docs": "https://runware.ai/docs/models-api/pricing",
+      "rates": [
+        {
+          "amount": 0.007,
+          "unit": "output",
+          "display": "$0.007 per image"
+        }
+      ],
+      "examples": [
+        {
+          "id": "wildlife-culvert-retrofit-explainer",
+          "configuration": "text-to-image",
+          "price": 0.007,
+          "latencyMs": 3695
+        },
+        {
+          "id": "circular-brickmaker-editorial-portrait",
+          "configuration": "text-to-image",
+          "price": 0.007,
+          "latencyMs": 3412
+        },
+        {
+          "id": "deep-sea-robotics-engineer-portrait",
+          "configuration": "text-to-image",
+          "price": 0.007,
+          "latencyMs": 3851
+        },
+        {
+          "id": "rare-book-conservator-profile-avatar",
+          "configuration": "text-to-image",
+          "price": 0.007,
+          "latencyMs": 3327
+        }
+      ]
+    },
+    "limitations": "可选高级参数未全部开放；本轮不调用真实服务。"
   }
 ]

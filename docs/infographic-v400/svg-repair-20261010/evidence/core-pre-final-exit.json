@@ -1,0 +1,6 @@
+{
+  "tests": 1227,
+  "passed": 1227,
+  "exitCode": 0,
+  "scope": "Full Core started on renderer-contract freeze, before final composition review record-preservation fix; final regression follows"
+}

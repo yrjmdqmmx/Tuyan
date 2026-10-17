@@ -1,0 +1,153 @@
+{
+  "doi": "10.1371/journal.pone.0253822",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0253822",
+  "title": "Directed closure coefficient and its patterns",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Mingshan Jia",
+    "Bogdan Gabrys",
+    "Katarzyna Musial"
+  ],
+  "year": "2021",
+  "license": "2021\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0253822.g001",
+      "label": "Fig 1",
+      "caption": "Classification diagram of triangle formation measures.\nIn each of the two node-based measures, the focal node is painted in blue, and the dotted edge represents the potential closing edge in an open triad. In the edge-based measure, the focal edge is in blue, and the dotted outline circle represents the potential node that forms a triangle.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Classification diagram of triangle formation measures.</title>\n<p>In each of the two node-based measures, the focal node is painted in blue, and the dotted edge represents the potential closing edge in an open triad. In the edge-based measure, the focal edge is in blue, and the dotted outline circle represents the potential node that forms a triangle.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g002",
+      "label": "Fig 2",
+      "caption": "Taxonomy of directed triangles.\nTwo solid edges connecting nodes i, j and k form an open triad, which is closed by a dotted edge connecting nodes i and k. Focal node i, painted in blue, is the end-node of an open triad. (a) Eight triangles are classified into two groups according to the direction of the closing edge. First row shows a group where the focal node serves as the source node of the closing edge; second row shows another group where the focal node serves as the target. (b) Eight Triangles are classified into four groups from a transitive perspective. In six transitive triads, three different patterns are distinguished by the position of node i in a length-2 path (emphasised by grey curved arrows): head-of-path, mid-of-path, and end-of-path patterns. The remaining two non-transitive triads are classified as a cyclic pattern.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Taxonomy of directed triangles.</title>\n<p>Two solid edges connecting nodes <italic>i</italic>, <italic>j</italic> and <italic>k</italic> form an open triad, which is closed by a dotted edge connecting nodes <italic>i</italic> and <italic>k</italic>. Focal node <italic>i</italic>, painted in blue, is the end-node of an open triad. (a) Eight triangles are classified into two groups according to the direction of the closing edge. First row shows a group where the focal node serves as the source node of the closing edge; second row shows another group where the focal node serves as the target. (b) Eight Triangles are classified into four groups from a transitive perspective. In six transitive triads, three different patterns are distinguished by the position of node <italic>i</italic> in a length-2 path (emphasised by grey curved arrows): head-of-path, mid-of-path, and end-of-path patterns. The remaining two non-transitive triads are classified as a cyclic pattern.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g003",
+      "label": "Fig 3",
+      "caption": "Dealing with bidirectional edges.\nFirst row shows that an open triad with one bidirectional edge is counted as two unidirectional open triads; second row shows that a triangle with two bidirectional edges is counted as four unidirectional triangles.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Dealing with bidirectional edges.</title>\n<p>First row shows that an open triad with one bidirectional edge is counted as two unidirectional open triads; second row shows that a triangle with two bidirectional edges is counted as four unidirectional triangles.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g004",
+      "label": "Fig 4",
+      "caption": "An example of calculating the source closure coefficient and target closure coefficient.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>An example of calculating the source closure coefficient and target closure coefficient.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g005",
+      "label": "Fig 5",
+      "caption": "Two groups of directed open triads.\n(a). Four different open triads with the focal node i as the end-node. Two arrows on the superscript describe the directions of two edges: First arrow depicts an edge from i to j (→) or from j to i (←); second arrow depicts an edge from j to k (→) or from k to j (←). (b). Three different open triads with i as the centre-node. First arrow depicts the edge direction between i and j while second arrow depicts the edge direction between i and k. There are three instead of four since when the focal node is in the centre, node j and k are symmetric to it.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Two groups of directed open triads.</title>\n<p>(a). Four different open triads with the focal node <italic>i</italic> as the end-node. Two arrows on the superscript describe the directions of two edges: First arrow depicts an edge from <italic>i</italic> to <italic>j</italic> (→) or from <italic>j</italic> to <italic>i</italic> (←); second arrow depicts an edge from <italic>j</italic> to <italic>k</italic> (→) or from <italic>k</italic> to <italic>j</italic> (←). (b). Three different open triads with <italic>i</italic> as the centre-node. First arrow depicts the edge direction between <italic>i</italic> and <italic>j</italic> while second arrow depicts the edge direction between <italic>i</italic> and <italic>k</italic>. There are three instead of four since when the focal node is in the centre, node <italic>j</italic> and <italic>k</italic> are symmetric to it.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g006",
+      "label": "Fig 6",
+      "caption": "Case study of the network TR-BTCAlpha.\n(a). The correlation between directed closure coefficient and node degree (weights ignored). All nodes are plotted in black dots; (b). The correlation between weighted directed closure coefficient and node strength (weights taken into account). 3654 nodes with positive closure coefficients are plotted in red; 138 nodes with negative closure coefficients are plotted in blue.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Case study of the network TR-BTCA<sc>lpha</sc>.</title>\n<p>(a). The correlation between directed closure coefficient and node degree (weights ignored). All nodes are plotted in black dots; (b). The correlation between weighted directed closure coefficient and node strength (weights taken into account). 3654 nodes with positive closure coefficients are plotted in red; 138 nodes with negative closure coefficients are plotted in blue.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g007",
+      "label": "Fig 7",
+      "caption": "Correlation between the directed clustering coefficient and the directed closure coefficient, together with the Pearson correlation coefficient ρ.\nEach dot in the plot represents a node in the network.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Correlation between the directed clustering coefficient and the directed closure coefficient, together with the Pearson correlation coefficient <italic>ρ</italic>.</title>\n<p>Each dot in the plot represents a node in the network.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g008",
+      "label": "Fig 8",
+      "caption": "Heatmap of the correlations among the eight patterns in 24 networks.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Heatmap of the correlations among the eight patterns in 24 networks.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g009",
+      "label": "Fig 9",
+      "caption": "Parallel coordinates plot of 24 networks on eight features, including the four closure patterns and the four clustering patterns.\nEach vertical axis represents one feature. In order to put all features on a similar scale, the value of each feature is standardised by removing the mean and scaling to unit variance. Different types of networks are painted in different colours, as shown in the legend. Distinct braids of line segments are highlighted by thin rectangles.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Parallel coordinates plot of 24 networks on eight features, including the four closure patterns and the four clustering patterns.</title>\n<p>Each vertical axis represents one feature. In order to put all features on a similar scale, the value of each feature is standardised by removing the mean and scaling to unit variance. Different types of networks are painted in different colours, as shown in the legend. Distinct braids of line segments are highlighted by thin rectangles.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g010",
+      "label": "Fig 10",
+      "caption": "Average confusion matrices of Random Forest model with different feature sets.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g010\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g010</object-id>\n<label>Fig 10</label>\n<caption>\n<title>Average confusion matrices of Random Forest model with different feature sets.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g010\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0253822.g011",
+      "label": "Fig 11",
+      "caption": "Importance scores of eight features in three tree-based models classifying network types.\nThe scores of the four closure patterns are plotted in blue bars while those of the four clustering patterns are plotted in red bars.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Importance scores of eight features in three tree-based models classifying network types.</title>\n<p>The scores of the four closure patterns are plotted in blue bars while those of the four clustering patterns are plotted in red bars.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g011\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g011",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -15,11 +15,33 @@ const { build } = require('esbuild');
 const sharp = require('sharp');
 const express = require('express');
 
+// Match the workflow instruction, leaving retrieval and image-tool fixtures on their own paths.
+function workflowTextResponse(body) {
+  const prompt = typeof body === 'string' ? body : JSON.stringify(body);
+  if (prompt.includes('PNG visual review AFTER generation')) {
+    const wire=typeof body==='string'?JSON.parse(body):body;
+    const text=typeof wire.input==='string'?wire.input:[...(Array.isArray(wire.input)?wire.input:[]),...(wire.messages || [])].filter(m=>m.role==='user').flatMap(m=>typeof m.content==='string'?[m.content]:m.content.filter(p=>p.type==='input_text'||p.type==='text').map(p=>p.text)).join('\n');
+    const context=JSON.parse(text);
+    return JSON.stringify({version:context.version,pngHash:context.pngHash,visual:{status:'passed',findings:[]},uncertainties:[],revised_description:'No changes needed.'});
+  }
+  if (prompt.includes('SVG visual AND code review')) {
+    const wire=typeof body==='string'?JSON.parse(body):body;
+    const text=typeof wire.input==='string'?wire.input:[...(wire.input || []),...(wire.messages || [])].filter(m=>m.role==='user').flatMap(m=>typeof m.content==='string'?[m.content]:m.content.filter(p=>p.type==='input_text'||p.type==='text').map(p=>p.text)).join('\n');
+    const context=JSON.parse(text);
+    return JSON.stringify({version:context.version,svgHash:context.svgHash,visual:{status:'passed',findings:[]},code:{status:'passed',findings:[]},uncertainties:[],revised_description:'No changes needed.'});
+  }
+  if(prompt.includes('SVG Diagram Agent')) return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><title>Local SVG fixture</title><rect width="512" height="512" fill="white"/><text x="50" y="100" font-size="24">Input → Output</text></svg>';
+  if (prompt.includes('Return strict JSON') && prompt.includes('revised_description')) return JSON.stringify({critic_suggestions:'Labels and connections are preserved.',revised_description:'No changes needed.'});
+  if (prompt.includes('visual observer')) return JSON.stringify({content:'Labeled scientific workflow nodes',actual_text:['Input','Output'],layout:'left to right',connections:['Input → Output'],problems:[],suggestions:[],uncertainties:[]});
+  return 'Create a clear scientific workflow diagram with readable labels and directional arrows. Preserve all reference labels, values, colors and connections.';
+}
+
 export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173' } = {}) {
   const db = memoryDb();
   const objects = new Map();
   const prepared = new Map();
   const providerCalls = [];
+  const catalogCalls = [];
   let baseUrl;
   const bucket = {
     async getUploadUrl(key, _ttl, metadata) { prepared.set(key, metadata); return baseUrl + '/objects/' + key; },
@@ -38,7 +60,8 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   globalThis.__refineTestSharp = sharp;
   const result = await build({
     entryPoints: [fileURLToPath(new URL('../apps/paperbanana-api/src/core-entry.mjs', import.meta.url))],
-    bundle: true, format: 'esm', platform: 'node', write: false,
+    bundle: true, format: 'cjs', platform: 'node', write: false,
+    define: { 'import.meta.url': JSON.stringify('data:text/javascript,isolated-test-runtime') },
     nodePaths: [fileURLToPath(new URL('../apps/paperbanana-api/node_modules', import.meta.url))],
     plugins: [{ name: 'local-infrastructure', setup(builder) {
       builder.onResolve({ filter: /(?:core-services\.(?:js|ts)|^sharp)$/ }, args => ({ path: args.path, namespace: 'local-test' }));
@@ -47,8 +70,11 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       }));
     } }],
   });
-  // A unique URL keeps independent fixtures from sharing module-level lifecycle/admission state.
-  const legacy = await import('data:text/javascript;base64,' + Buffer.from(result.outputFiles[0].text + '\n// ' + Math.random()).toString('base64'));
+  // A fresh CommonJS scope isolates lifecycle state without retaining each large
+  // bundle forever in Node's ESM URL cache. It becomes collectible after close.
+  const fixtureModule = { exports: {} };
+  new Function('module', 'exports', 'require', result.outputFiles[0].text)(fixtureModule, fixtureModule.exports, require);
+  const legacy = fixtureModule.exports;
   const image = await sharp({ create: { width: 120, height: 80, channels: 4, background: '#89a78a' } }).png().toBuffer();
   const output = await sharp({ create: { width: 1024, height: 1024, channels: 4, background: '#b1c5ae' } }).png().toBuffer();
   let providerFailure = false, channelFailure = '';
@@ -76,7 +102,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
         if (providerDelay) await new Promise(resolve => setTimeout(resolve, providerDelay));
         const body = JSON.parse(options.body);
         if (retrievalResponse && String(body.messages?.[0]?.content).includes('Retrieval Agent')) return Response.json({model:body.model,id:'fixture-retrieval',choices:[{message:{content:JSON.stringify(retrievalResponse)}}]});
-        return new Response('data: '+JSON.stringify({model:body.model,id:'fixture-text-call',choices:[{delta:{content:'Create a clear scientific workflow diagram with readable labels and directional arrows.'}}]})+'\n\ndata: [DONE]\n\n', { headers: {'Content-Type':'text/event-stream'} });
+        return new Response('data: '+JSON.stringify({model:body.model,id:'fixture-text-call',choices:[{delta:{content:workflowTextResponse(body)}}]})+'\n\ndata: [DONE]\n\n', { headers: {'Content-Type':'text/event-stream'} });
       }
       if (url.endsWith('/images/generations')) {
         if (tdFailure) return Response.json({error:{message:'fixture failure'}},{status:tdFailure==='rate_limit'?429:402,headers:{'TokenDance-Recovery-Action':tdFailure,'Retry-After':'1'}});
@@ -84,6 +110,17 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
         return Response.json({model:JSON.parse(options.body).model,data:[{b64_json:output.toString('base64')}]},{headers:{'x-request-id':'fixture-image-call'}});
       }
       throw new Error('Unexpected TokenDance fixture URL');
+    }
+    // v33+ availability discovery is metadata, not a paid provider invocation.
+    // Simulate an unavailable public catalog without declaring models absent.
+    const catalogUrl = new URL(url);
+    if ((options.method || 'GET') === 'GET' && [
+      'https://api.fal.ai/v1/models',
+      'https://runware.ai/docs/models/index.json',
+      'https://api.novita.ai/v3/openai/models',
+    ].includes(catalogUrl.origin + catalogUrl.pathname)) {
+      catalogCalls.push({ url, options });
+      return Response.json({ error: 'Public catalog unavailable in this offline workflow fixture' }, { status: 503 });
     }
     providerCalls.push({ url, options });
     if (providerDelay) await new Promise(resolve => setTimeout(resolve, providerDelay));
@@ -95,10 +132,10 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     if (/^https:\/\/(token.sensenova.cn|api.stepfun.com|qianfan.baidubce.com|maas-api.cn-huabei-1.xf-yun.com|api.longcat.chat|api.ant-ling.com|api.novita.ai)\//.test(url)) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost official acknowledgment');
       if (url.includes('/images/')) return Response.json({id:'fixture-official-image',data:[{url:'https://fixture-assets.example.org/image.png'}],usage:{total_tokens:10}});
-      if (url.includes('/messages')) return Response.json({id:'fixture-official-text',stop_reason:'end_turn',content:[{type:'text',text:'保留图中标签与连接关系。'}],usage:{input_tokens:8,output_tokens:10}});
-      return Response.json({id:'fixture-official-text',choices:[{finish_reason:'stop',message:{content:'保留图中标签与连接关系。'}}],usage:{prompt_tokens:8,completion_tokens:10}});
+      if (url.includes('/messages')) return Response.json({id:'fixture-official-text',stop_reason:'end_turn',content:[{type:'text',text:workflowTextResponse(options.body)}],usage:{input_tokens:8,output_tokens:10}});
+      return Response.json({id:'fixture-official-text',choices:[{finish_reason:'stop',message:{content:workflowTextResponse(options.body)}}],usage:{prompt_tokens:8,completion_tokens:10}});
     }
-    if (url === 'https://api.x.ai/v1/responses') return Response.json({id:'fixture-xai',status:'completed',output_text:'保留图中标签与连接关系。',usage:{cost_in_usd_ticks:10000}});
+    if (url === 'https://api.x.ai/v1/responses') return Response.json({id:'fixture-xai',status:'completed',output_text:workflowTextResponse(options.body),usage:{cost_in_usd_ticks:10000}});
     if (url.startsWith('https://api.x.ai/v1/images/')) return Response.json({id:'fixture-xai-image',data:[{b64_json:output.toString('base64')}],usage:{cost_in_usd_ticks:100000000}});
     if (url === 'https://api.runware.ai/v1') {
       const task=JSON.parse(options.body)[0];
@@ -108,12 +145,12 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
         return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'processing'}]});
       }
       if (!channelTasks.has(task.taskUUID)) return Response.json({errors:[{taskUUID:task.taskUUID,code:'taskNotFound'}]});
-      if (['textInference','caption'].includes(channelTasks.get(task.taskUUID).taskType)) return Response.json({data:[{taskType:'textInference',taskUUID:task.taskUUID,text:'需要保留科研图的数值、文字与连接关系。',finishReason:'stop',cost:.00003,usage:{promptTokens:12,completionTokens:8,totalTokens:20}}]});
+      if (['textInference','caption'].includes(channelTasks.get(task.taskUUID).taskType)) return Response.json({data:[{taskType:'textInference',taskUUID:task.taskUUID,text:workflowTextResponse(channelTasks.get(task.taskUUID)),finishReason:'stop',cost:.00003,usage:{promptTokens:12,completionTokens:8,totalTokens:20}}]});
       return Response.json({data:[{taskType:'imageInference',taskUUID:task.taskUUID,status:'success',imageURL:'https://fixture-assets.example.org/image.png',cost:.012,seed:42}]});
     }
     if (['https://tokenhub.tencentmaas.com/v1/chat/completions','https://api.xiaomimimo.com/v1/chat/completions'].includes(url)) {
       if (channelFailure === 'lost-submit') throw new Error('fixture lost text acknowledgment');
-      return Response.json({id:'fixture-text',choices:[{finish_reason:'stop',message:{content:'需要保留科研图的数值、文字与连接关系。'}}],usage:{prompt_tokens:12,completion_tokens:8,total_tokens:20}});
+      return Response.json({id:'fixture-text',choices:[{finish_reason:'stop',message:{content:workflowTextResponse(options.body)}}],usage:{prompt_tokens:12,completion_tokens:8,total_tokens:20}});
     }
     if(url.includes('/vidu-image/')||url.includes('/vega-images/')) {
       if(options.method==='POST') {if(channelFailure==='lost-submit')throw new Error('fixture lost async acknowledgment');return Response.json({task_id:'fixture-tokenhub-task'});}
@@ -134,8 +171,8 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
       if (options.method === 'POST') return Response.json({id:'fixture-replicate',status:'starting',urls:{get:'https://api.replicate.com/v1/predictions/fixture-replicate'}});
       return Response.json({status:'succeeded',version:'fixture-exact-version',output:['https://fixture-assets.example.org/image.png'],metrics:{predict_time:.5}});
     }
-    if (url === 'https://api.openai.com/v1/responses') return Response.json({output_text: 'A scientific figure preserving the reference labels and connections.'});
-    if (url.includes('/chat/completions')) return Response.json({ choices: [{ message: { content: '需要调整：放大标签。需要保留：原有文字、配色和布局；其他内容保持不变。' } }] });
+    if (url === 'https://api.openai.com/v1/responses') return Response.json({output_text: workflowTextResponse(options.body)});
+    if (url.includes('/chat/completions')) return Response.json({ choices: [{ message: { content: workflowTextResponse(options.body) } }] });
     if (['https://api.openai.com/v1/images/edits', 'https://api.openai.com/v1/images/generations'].includes(url)) return Response.json({ data: [{ b64_json: output.toString('base64') }] });
     if (url.includes('multimodal-generation/generation')) {
       objects.set('fixture-output.png', { bytes: output, mimeType: 'image/png' });
@@ -154,7 +191,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     tokenDanceService = createTokenDanceService({db,fetcher:localFetch,secret:randomBytes(32).toString('base64'),callbackUrl:'http://127.0.0.1:5173/'});
     workflow = createProviderWorkflow({db,service:tokenDanceService});
     legacy.configureProviderWorkflow(workflow);
-    app.use('/core',createCoreApp({handler:legacy.default,readinessProbe:async()=>({ready:true}),healthSnapshot:()=>({ready:true}),config:{gatewayToken:'local-refine-gateway',serviceName:'fixture-core',version:'test'},logger:{info(){},warn(){},error(){}},tokenDance:tokenDanceService,providerWorkflow:workflow,resumeTokenDanceJob:legacy.resumeTokenDanceJob,requiresTokenDanceCredential:legacy.requiresTokenDanceCredential}));
+    app.use('/core',createCoreApp({handler:legacy.default,readinessProbe:async()=>({ready:true}),healthSnapshot:()=>({ready:true}),config:{gatewayToken:'local-refine-gateway',serviceName:'fixture-core',version:'test'},logger:{info(){},warn(){},error(){}},tokenDance:tokenDanceService,providerWorkflow:workflow,resumeTokenDanceJob:legacy.resumeTokenDanceJob,requiresTokenDanceCredential:legacy.requiresTokenDanceCredential,requiresCustomCredential:legacy.requiresCustomCredential}));
     app.get('/fixture/authorize',(req,res)=>res.type('html').send('<!doctype html><title>TokenDance 模拟授权</title><h1>本地授权测试桩</h1><p>不会连接真实 TokenDance，不会产生消费。</p><a href="'+String(req.query.target).replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'&amp;code=fixture-code">确认模拟授权</a>'));
     app.post('/fixture/paid',(_req,res)=>{tdPaid=true;tdFailure='';res.json({fixture:true,paid:true})});
     app.post('/fixture/balance-failure',(_req,res)=>{tdPaid=false;tdFailure='top_up_balance';res.json({fixture:true,paid:false})});
@@ -195,7 +232,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   await once(server, 'listening');
   baseUrl = 'http://127.0.0.1:' + server.address().port;
   return {
-    baseUrl, db, objects, providerCalls, image, output, legacy, invoke, tokenDanceService, workflow, tokenDanceCalls,
+    baseUrl, db, objects, providerCalls, catalogCalls, image, output, legacy, invoke, tokenDanceService, workflow, tokenDanceCalls,
     setTokenDanceFailure(action) { tdFailure = action; }, payTokenDance() { tdPaid = true; tdFailure = ''; },
     failProvider(value) { providerFailure = value; },
     setChannelFailure(value) { channelFailure = value; },
@@ -205,7 +242,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     },
     async close() {
       await legacy.drainJobAdmission(); legacy.configureRuntimeFetch();
-      await new Promise(resolve => server.close(resolve));
+      await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
       if (oldGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN;
       else process.env.PAPERBANANA_GATEWAY_TOKEN = oldGateway;
     },

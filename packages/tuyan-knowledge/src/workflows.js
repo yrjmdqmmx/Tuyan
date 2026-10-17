@@ -1,3 +1,4 @@
+import {getFigureType,figureContract} from '../../figure-taxonomy/src/index.js';
 import {
   CATEGORY_CATALOG,
   KNOWLEDGE_MAJOR,
@@ -106,7 +107,7 @@ export function getWorkflowBundle(rawInput) {
   const input = validateWorkflowInput(rawInput);
   const text = workflowText[input.locale];
   const category = CATEGORY_CATALOG[input.locale][input.visualCategory];
-  const dataStat = input.visualCategory === 'data_stat';
+  const dataStat = input.visualCategory === 'data_stat' || getFigureType(input.visualCategory)?.kind === 'data';
   const rules = [...text.commonRules, ...category.requiredChecks];
   if (dataStat) rules.push(...text.dataRules);
 
@@ -120,6 +121,7 @@ export function getWorkflowBundle(rawInput) {
       categoryDescription: category.description,
       stages: [...text[input.operation].stages],
       rules,
+      figureContract:figureContract({figureTypeId:input.visualCategory}),
     },
     execution: {
       renderer: dataStat ? 'code' : 'agent-image-tool',

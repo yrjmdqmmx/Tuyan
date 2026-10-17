@@ -1,0 +1,1070 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "http://jats.nlm.nih.gov/publishing/1.3/JATS-journalpublishing1-3.dtd">
+<article article-type="research-article" dtd-version="1.3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<processing-meta>
+<custom-meta-group content-type="composition">
+<custom-meta specific-use="newgen" xlink:href="https://www.newgen.co/">
+<meta-name>Composition Vendor</meta-name>
+<meta-value>Newgen KnowledgeWorks (P) Ltd.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</processing-meta>
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS One</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS One</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-24-53500</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Ecosystems</subject><subj-group><subject>Forests</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Ecosystems</subject><subj-group><subject>Forests</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Terrestrial environments</subject><subj-group><subject>Forests</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Environmental engineering</subject><subj-group><subject>Carbon sequestration</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Forest ecology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Forest ecology</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Community ecology</subject><subj-group><subject>Community structure</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Community ecology</subject><subj-group><subject>Community structure</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Plant science</subject><subj-group><subject>Plant anatomy</subject><subj-group><subject>Plant roots</subject><subj-group><subject>Fine roots</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Ecological metrics</subject><subj-group><subject>Biomass</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Ecology</subject><subj-group><subject>Ecological metrics</subject><subj-group><subject>Biomass</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Environmental chemistry</subject><subj-group><subject>Soil chemistry</subject><subj-group><subject>Soil carbon</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Ecology and environmental sciences</subject><subj-group><subject>Environmental chemistry</subject><subj-group><subject>Soil chemistry</subject><subj-group><subject>Soil carbon</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Earth sciences</subject><subj-group><subject>Soil science</subject><subj-group><subject>Soil chemistry</subject><subj-group><subject>Soil carbon</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical properties</subject><subj-group><subject>Physicochemical properties</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Physical chemistry</subject><subj-group><subject>Chemical properties</subject><subj-group><subject>Physicochemical properties</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Physics</subject><subj-group><subject>Physical properties</subject><subj-group><subject>Physicochemical properties</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Differences in soil carbon fractions and microbial communities and their underlying mechanisms between assisted natural regeneration and plantation forests in subtropical China</article-title>
+<alt-title alt-title-type="running-head">Differences between ANR and plantation</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0009-0001-4619-4694</contrib-id>
+<name name-style="western">
+<surname>Ding</surname>
+<given-names>Zhiqiang</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Yang</surname>
+<given-names>Zhijie</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Yang</surname>
+<given-names>Yusheng</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>School of Geographical Sciences, Fujian Normal University, Fuzhou, China,</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Fujian Sanming Forest Ecosystem National Observation and Research Station, Sanming, Fujian, China</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ma</surname>
+<given-names>Ying</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Universidade de Coimbra, PORTUGAL</addr-line></aff>
+<author-notes>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">geoyys@fjnu.edu.cn</email></corresp>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+</author-notes>
+<pub-date pub-type="epub"><day>8</day><month>1</month><year>2026</year></pub-date>
+<pub-date pub-type="collection"><year>2026</year></pub-date>
+<volume>21</volume>
+<issue>1</issue>
+<elocation-id>e0339350</elocation-id>
+<history>
+<date date-type="received"><day>21</day><month>11</month><year>2024</year></date>
+<date date-type="accepted"><day>3</day><month>12</month><year>2025</year></date>
+</history>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Ding et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0339350"/>
+<abstract>
+<p>Subtropical forests are critical to regional carbon cycling, yet the mechanisms by which forest management practices influence soil organic carbon (SOC) stability are not yet fully understood. This study assessed SOC fractions and microbial communities across four forest management types in southeastern China: secondary forest, assisted natural regeneration (ANR), and two monoculture plantations (<italic>Castanopsis carlesii</italic> and <italic>Cunninghamia lanceolata</italic>). We measured soil physicochemical properties, microbial biomass, and community composition, and used structural equation modeling (SEM) to identify the biotic and abiotic pathways regulating SOC dynamics. The results showed that ANR maintained SOC concentrations and microbial traits comparable to those of secondary forests, while significantly reducing labile carbon losses relative to monoculture plantations. At our site, ANR also exhibited higher fine-root input and richer understory cover than plantations, supporting microbially mediated LC retention and, ultimately, greater SOC stabilization. SEM identified two partially independent regulatory pathways: (1) aboveground litter inputs influenced soil pH, carbon:nitrogen ratio, and ammonium nitrogen. These changes promoted the conversion of labile carbon into recalcitrant carbon and increased total SOC. (2) fine root biomass enhanced labile carbon accumulation by increasing the abundance of Gram-positive bacteria. Recalcitrant carbon is conventionally considered a stable SOC component. However, the SEM identified no direct pathway of influence from recalcitrant carbon to total SOC. This finding underscores the central role of labile carbon in SOC stabilization in humid subtropical systems. These findings demonstrate that ANR mitigates carbon losses by enhancing microbially mediated carbon retention and reducing disturbance. This approach supports SOC preservation through improved litter dynamics and root–microbe interactions, providing insights for sustainable forest carbon management.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source><institution>National Nature Science Foundation of China</institution>
+</funding-source><award-id>32192433</award-id>
+<principal-award-recipient><name name-style="western">
+<surname>Yang</surname><given-names>Yusheng</given-names></name></principal-award-recipient></award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001809</institution-id>
+<institution>National Natural Science Foundation of China</institution>
+</institution-wrap>
+</funding-source><award-id>32101495</award-id>
+<principal-award-recipient><name name-style="western">
+<surname>Yang</surname><given-names>Yusheng</given-names></name></principal-award-recipient></award-group>
+<award-group id="award003">
+<funding-source><institution>National Nature Science Foundation of China</institution>
+</funding-source><award-id>31930071</award-id>
+<principal-award-recipient><name name-style="western">
+<surname>Yang</surname><given-names>Yusheng</given-names></name></principal-award-recipient></award-group>
+<funding-statement>This work was supported by the National Natural Science Foundation of China (grant numbers 32192433, 32101495, and 31930071). Role of the Funder Statement: The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="3"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the manuscript.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Soil organic carbon (SOC) represents a major component of terrestrial carbon storage and plays a critical role in global carbon cycling [<xref ref-type="bibr" rid="pone.0339350.ref001">1</xref>]. Forest ecosystems, particularly in subtropical regions, are important carbon reservoirs and have been widely recognized as dynamic systems where SOC turnover is strongly influenced by vegetation type, litter input, and soil microbial processes [<xref ref-type="bibr" rid="pone.0339350.ref002">2</xref>–<xref ref-type="bibr" rid="pone.0339350.ref004">4</xref>]. Forest management can significantly affect soil biogeochemistry and microbially mediated carbon dynamics by altering above- and belowground inputs [<xref ref-type="bibr" rid="pone.0339350.ref005">5</xref>,<xref ref-type="bibr" rid="pone.0339350.ref006">6</xref>]. Traditionally, monoculture plantations have been implemented across subtropical China for timber production. However, such practices have been associated with biodiversity loss, soil degradation, and SOC depletion [<xref ref-type="bibr" rid="pone.0339350.ref007">7</xref>,<xref ref-type="bibr" rid="pone.0339350.ref008">8</xref>]. Assisted natural regeneration (ANR) is a low-cost forest restoration method that minimizes disturbance by retaining logging residues and promoting natural regeneration [<xref ref-type="bibr" rid="pone.0339350.ref005">5</xref>]. It has been widely used in southeastern China, West Africa, and Latin America. ANR enhances multiple ecosystem services, including soil carbon sequestration, biodiversity conservation, hydrological regulation, and improved soil nutrient retention and stability [<xref ref-type="bibr" rid="pone.0339350.ref009">9</xref>–<xref ref-type="bibr" rid="pone.0339350.ref011">11</xref>]. Despite growing interest in ANR, the underlying mechanisms by which it influences SOC accumulation and stabilization, especially through interactions between microbial communities and soil properties, are not well characterized.</p>
+<p>Recent studies have highlighted the importance of differentiating SOC into functional fractions, such as labile carbon (LC) and recalcitrant carbon (RC), to better understand the stability and dynamics of soil carbon pools [<xref ref-type="bibr" rid="pone.0339350.ref012">12</xref>,<xref ref-type="bibr" rid="pone.0339350.ref013">13</xref>]. LC, derived from microbial biomass, root exudates, and partially decomposed litter, is sensitive to management-induced disturbance and readily responds to microbial activity [<xref ref-type="bibr" rid="pone.0339350.ref014">14</xref>]. In contrast, RC, which includes chemically complex compounds such as lignin and cellulose, is primarily stabilized through physical protection and mineral association [<xref ref-type="bibr" rid="pone.0339350.ref015">15</xref>]. Therefore, evaluating changes in the relative proportions of LC and RC may better reflect soil carbon pool responses to forest management practices compared to SOC concentration measurements. Such differentiation can facilitate improved soil resource use and ecosystem management [<xref ref-type="bibr" rid="pone.0339350.ref009">9</xref>]. The accumulation, decomposition, and dynamic changes of soil carbon fractions constitute a complex process involving multiple mechanisms [<xref ref-type="bibr" rid="pone.0339350.ref010">10</xref>]. Previous studies have identified influences from various processes, such as litter addition [<xref ref-type="bibr" rid="pone.0339350.ref012">12</xref>], soil and water erosion [<xref ref-type="bibr" rid="pone.0339350.ref013">13</xref>], forest microclimate [<xref ref-type="bibr" rid="pone.0339350.ref016">16</xref>], management disturbances [<xref ref-type="bibr" rid="pone.0339350.ref015">15</xref>], soil physicochemical properties, and biodiversity [<xref ref-type="bibr" rid="pone.0339350.ref017">17</xref>]. Nevertheless, how these drivers vary across management regimes in subtropical forests remains underexplored.</p>
+<p>Since SOC fraction dynamics are ultimately governed by microbial-mediated processes, understanding how microbially mediated environmental filters shape microbial functional guilds is critical to deciphering carbon stabilization mechanisms [<xref ref-type="bibr" rid="pone.0339350.ref018">18</xref>,<xref ref-type="bibr" rid="pone.0339350.ref019">19</xref>]. Changes in carbon input and soil nutrient availability under different management measures can affect the composition of microbial communities, especially the balance between bacteria and fungi, and thus affect the decomposition and stability of SOC components [<xref ref-type="bibr" rid="pone.0339350.ref020">20</xref>]. As demonstrated by Lange et al. [<xref ref-type="bibr" rid="pone.0339350.ref021">21</xref>], plant diversity and plant residue inputs can maintain SOC stocks by stimulating microbial growth. Therefore, enhancing understory vegetation and retaining logging residues during forest management may improve substrate availability for microorganisms, thereby helping preserve microbial community diversity and structural stability [<xref ref-type="bibr" rid="pone.0339350.ref022">22</xref>]. Although previous studies have recognized the role of microbial communities in driving SOC fraction dynamics [<xref ref-type="bibr" rid="pone.0339350.ref023">23</xref>], the mechanisms through which different management practices influence the structural characteristics of soil microbial communities and their relative importance in explaining SOC fraction variations are still unclear.</p>
+<p>The subtropical region is characterized by warm and humid conditions with concentrated seasonal rainfall, Its soils are highly weathered, acidic, and nutrient-poor [<xref ref-type="bibr" rid="pone.0339350.ref024">24</xref>]. These edaphic and climatic features not only constrain plant productivity but also render soils more susceptible to erosion and degradation. Together, these factors directly influence SOC dynamics [<xref ref-type="bibr" rid="pone.0339350.ref013">13</xref>]. In addition, frequent transitions between secondary forests and plantations, often accompanied by intensive anthropogenic disturbances such as site preparation and thinning, further impact the stability and accumulation of SOC [<xref ref-type="bibr" rid="pone.0339350.ref025">25</xref>]. Consequently, subtropical forest ecosystems provide an ideal context for exploring how forest management practices regulate soil carbon storage through biotic and abiotic pathways.</p>
+<p>To address these questions, we investigated four forest types in a typical subtropical region of southern China: a secondary forest (SF), an ANR forest, a <italic>Castanopsis carlesii</italic> plantation (CCP), and a <italic>Cunninghamia lanceolata</italic> plantation (CLP). Specifically, we aimed to: (1) compare SOC fractions and microbial community composition across different forest management types; and (2) quantify the biotic (microbial traits) and abiotic (soil properties) pathways that drive LC and RC accumulation using structural equation modeling. This study provides new insights into the dual regulatory mechanisms of SOC stability and supports ANR as a viable strategy for carbon conservation and sustainable forest management. We hypothesize that: (1) ANR enhances soil carbon storage by maintaining higher LC and supporting microbial community stability; and (2) monoculture plantations, especially <italic>Cunninghamia lanceolata (CLP)</italic>, reduce SOC concentrations through losses LC and shifts in microbial structure toward oligotrophic groups due to increased disturbance and substrate limitation.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec003">
+<title>Site description</title>
+<p>The study was conducted at a state-owned Chenda Forest Farm, located in Sanming City, Fujian Province, China (117°36′37″E, 26°20′0.8″N; <xref ref-type="fig" rid="pone.0339350.g001">Fig 1</xref>). The terrain is predominantly composed of low hills and ridges, with an average elevation of 330 m and a mean slope of 32°. The region experiences a typical subtropical monsoon climate, with a mean annual temperature of 19.1 °C, annual precipitation of 1749 mm (mainly from March to September), annual evaporation of 1585 mm, and relative humidity of 81%. The dominant soil type is Ultisol derived from biotite granite, with a sandy clay texture and bulk density of 1.04 g·cm<sup>-3</sup>. According to the FAO classification system, the soil is classified as Ferric Acrisol, equivalent to Hapludults in the USDA Soil Taxonomy [<xref ref-type="bibr" rid="pone.0339350.ref026">26</xref>].</p>
+<fig id="pone.0339350.g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.g001</object-id><label>Fig 1</label><caption><title>Location of the study area and representative forest types.</title><p>Note: (a) Geographical location of the study site in southeastern China (red dot), generated using QGIS v3.28 with base layers sourced from Natural Earth (<ext-link ext-link-type="uri" xlink:href="https://www.naturalearthdata.com/" xlink:type="simple">https://www.naturalearthdata.com/</ext-link>), a public domain cartographic data source. (b) Topographic features and elevation gradient of the study region in Sanming City, Fujian Province, visualized using SRTM DEM data (NASA Shuttle Radar Topography Mission, <ext-link ext-link-type="uri" xlink:href="https://earthexplorer.usgs.gov/" xlink:type="simple">https://earthexplorer.usgs.gov/</ext-link>) and administrative boundaries from GADM database (<ext-link ext-link-type="uri" xlink:href="https://gadm.org/" xlink:type="simple">https://gadm.org/</ext-link>). (c) Representative photos of four forest management types. c1: natural SF dominated by <italic>Castanopsis carlesii</italic>; c2: ANR dominated by <italic>Castanopsis carlesii</italic>; c3: <italic>CCP</italic>; c4: CLP.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.g001" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec004">
+<title>Plot design and sampling</title>
+<p>In 2011, we established 12 standard observation plots (20 m × 20 m each; <xref ref-type="fig" rid="pone.0339350.g001">Fig 1c</xref>) in a SF dominated by <italic>Castanopsis carlesii</italic>, with a shared land-use history and similar slope orientation and gradients to minimize potential impacts of topographic heterogeneity on soil carbon dynamics and microbial community structure. The plots were randomly assigned to four forest management types (each with three replicates): natural secondary forest(SF), ANR dominated by <italic>Castanopsis carlesii</italic>, <italic>Castanopsis carlesii</italic>, CCP and CLP. SF plots (<xref ref-type="fig" rid="pone.0339350.g001">Fig 1c</xref>: P10-P12) were control plots with no active management since 1976, allowed to regenerate naturally for over 40 years prior to sampling in 2018. The dominant canopy species were <italic>Castanopsis carlesii</italic>, <italic>Schima superba</italic>, and <italic>Elaeocarpus decipiens</italic>, while the shrub and herb layers primarily comprised <italic>Itea chinensis</italic>, <italic>Symplocos caudata</italic>, <italic>Adinandra millettii</italic>, <italic>Gahnia tristis</italic>, <italic>Dicranopteris dichotoma</italic>, <italic>Ilex pubescens</italic>, and <italic>Woodwardia japonica</italic> [<xref ref-type="bibr" rid="pone.0339350.ref005">5</xref>]. ANR plots (<xref ref-type="fig" rid="pone.0339350.g001">Fig 1c</xref>: P1, P2, P9) followed clear-cutting in December 2011, logging residues were retained in situ to promote natural regeneration of <italic>Castanopsis carlesii</italic> seedlings, with minimal subsequent disturbances. CCP plots (<xref ref-type="fig" rid="pone.0339350.g001">Fig 1c</xref>: P3, P4, P8) and CLP plots (<xref ref-type="fig" rid="pone.0339350.g001">Fig 1c</xref>: P5, P6, P7) underwent controlled burning in March 2012 prior to <italic>Castanopsis carlesii</italic> and <italic>Cunninghamia lanceolata</italic> seedlings being planted. Regular shrub removal was performed in both plantation types to maintain consistent management practices.</p>
+<p>Because surface soils represent hotspots of microbial activity and store the majority of SOC pool [<xref ref-type="bibr" rid="pone.0339350.ref027">27</xref>,<xref ref-type="bibr" rid="pone.0339350.ref028">28</xref>]. In June 2018, we selected 15 random points in each plot using an S-shaped sampling pattern to collect soil cores from the 0–10 cm layer. The homogenized soil cores were stored in a portable 12 V refrigerator maintained at 4°C immediately after field collection, and transported to the laboratory within 24h to minimize microbial activity changes prior to analysis. After removing roots and gravel, one portion of each sample was passed through a 2 mm sieve for phospholipid fatty acids (PLFA) analysis, while the remainder was air-dried and sieved to 0.149 mm for measuring SOC fractions, and carbon (C), nitrogen (N), and phosphorus(P) contents.</p>
+</sec>
+<sec id="sec005">
+<title>Separation of labile and recalcitrant organic carbon fractions</title>
+<p>Although the acid hydrolysis method [<xref ref-type="bibr" rid="pone.0339350.ref029">29</xref>] may result in overlaps between labile and recalcitrant carbon pools, it remains widely used to evaluate relative changes in SOC fractions under different management practices due to its efficiency, simplicity, and reproducibility. We implemented the acid hydrolysis procedure as follows: (1) We added 500 mg of air-dried soil to 20 mL of 2.5 mol L ⁻ ¹ H₂SO₄ and boiled at 105 °C for 30 min. (2) The slurry was transferred to a 50 mL centrifuge tube and centrifuged at 4500 rpm for 30 min; the supernatant was decanted. (3) We added 30 mL ultrapure water, centrifuged again, combined the two supernatants, and filtered through a 0.45 µm membrane. This filtrate (starches and soluble sugars) was defined as labile carbon fraction 1 (LC1). (4) The residue was rinsed repeatedly with deionized water and dried at 60 °C to constant mass. We then added 2 mL of 13 mol L ⁻ ¹ H₂SO₄, shook for 10 h, diluted to 1 mol L ⁻ ¹ H₂SO₄, and boiled at 105 °C for 3 h. (5) After boiling, we centrifuged at 4000 rpm for 10 min, decanted the supernatant, rinsed the residue with 20 mL distilled water, combined supernatants, and filtered through a 0.45 µm membrane. This filtrate (cellulose and other water-soluble compounds) was defined as LC2. (6) Total LC was the sum of LC1 and LC2. The final residue was rinsed to neutrality and dried to constant mass at 60 °C; this residue was considered recalcitrant carbon (RC) (mainly lignin, humic and fulvic substances). (7) LC was quantified using a total organic carbon analyzer, and total soil C and RC were determined using a C–N analyzer (Elementar Vario MAX, Hanau, Germany).</p>
+</sec>
+<sec id="sec006">
+<title>Determination of soil physicochemical properties and microbial community structure</title>
+<p>Soil moisture (SM) was determined by the drying method. SOC and total nitrogen (TN) were measured using a C–N analyzer. Soil pH was determined by the glass electrode method (soil:water = 1:2.5) after 30 min of shaking and 1h of standing, using a pH meter (Leici PHSJ-4F, China)). Mineral nitrogen (NH<sub>4</sub><sup>+</sup>-N and NO<sub>3</sub><sup>-</sup>-N) was extracted with 2 mol L ⁻ ¹ KCl and determined using a continuous flow analyzer (Skalar San++, Holland). Available phosphorus (AP) was extracted using the Mehlich 3 method, filtered with a phosphorus-free filter paper, and determined using a continuous flow analyzer (Skalar San++, Holland). Total phosphorus (TP) was digested with H<sub>2</sub>SO<sub>4</sub>–HClO<sub>4</sub> and determined using an inductively coupled plasma emission spectrometer (PerkinElmer 7000DV, USA). The hydrometer method was used to determine the clay, silt, and sand content of the soil samples. Litter stock was quantified within a 50 × 50 cm quadrat, oven- dried at 65°C to constant mass, and expressed as Mg·ha<sup>-1</sup>. Fine root biomass (diameter ≤ 2 mm) was determined by soil coring (0–10 cm depth), followed by washing through a 0.15 mm sieve, drying at 65°C for 48 h, and reported per unit are(Mg·ha<sup>-1</sup>).</p>
+<p>The microbial community structure of the soil was determined using PLFAs. The concentrated sample was transferred to a silinized tube, and the molecular structure of fatty acids was obtained using gas chromatography (Agilent 6890 N, USA) combined with the MIDI microbial identification system (MIDI Inc., Newark, DE). Standard nomenclature was used to further differentiate microbial groups. PLFAs i-14:0, i-15:0, a-15:0, i-16:0, i-17:0 and a-17:0 were considered representative of Gram-positive bacteria (GP), while 16:1 ω9c, 16:1 ω7c, cy-17:0 ω7c, 18:1 ω7c and cy-19:0 ω7c were representative of Gram-negative bacteria (GN). The PLFAs 18:2 ω6c and 18:1 ω9c were representative of fungal species (FUNGI), and the PLFAs 16:0 10-methyl, 17:0 10-methyl, 18:0 10-methyl, 17:1 ω7c 10-methyl and 18:1 ω7c 10-methyl were representative of actinomycetes (ACT). The PLFAs 16:1 ω5c was representative of arbuscular mycorrhizal fungi (AMF). The ratio of fungal to bacterial PLFAs(F:B) was used to estimate the relative importance of bacterial and fungal metabolism in the community [<xref ref-type="bibr" rid="pone.0339350.ref030">30</xref>].</p>
+</sec>
+<sec id="sec007">
+<title>Statistical analysis</title>
+<p>We used Kolmogorov-Smirnov tests and Levene’s tests to assess data normality and homogeneity of variances, respectively. Group differences in SOC fractions, soil physicochemical properties, and microbial community variables among forest management types were determined using one-way ANOVA with Tukey’s post-hoc comparisons (α = 0.05). To elucidate how forest management affects SOC dynamics, we first conducted Mantel tests using the linkET package (v0.0.8) in R 4.3.1 (R Core Team, 2023), evaluating multivariate correlations between management-induced environmental gradients and carbon component matrices. Subsequently, a structural equation model (SEM) was constructed based on a priori ecological hypotheses. Model fitting was performed using the lavaan package (v0.6-16) with maximum likelihood estimation. Model fit was assessed through three criteria: χ²/df ratio, root mean square error of approximation (RMSEA), and comparative fit index (CFI). Nonsignificant paths (<italic>P</italic> ≥ 0.05) were iteratively removed, while biologically plausible pathways with modification indices (MI) &gt;10 were incorporated to optimize model structure. Standardized path coefficients quantified directional effect magnitudes between variables, with <italic>R</italic><sup><italic>2</italic></sup> values indicating the proportion of variance explained for each endogenous variable.</p>
+</sec>
+</sec>
+<sec id="sec008" sec-type="results">
+<title>Results</title>
+<sec id="sec009">
+<title>Differences in soil physicochemical properties</title>
+<p>As shown in <xref ref-type="table" rid="pone.0339350.t001">Table 1</xref>, TP, pH, SM, and clay content did not differ significantly among forest types (<italic>P</italic> &gt; 0.05). By contrast, nitrogen dynamics and carbon-allocation metrics diverged across forests, indicating management effects on active C and N pools. Specifically, the highest concentrations of TN and NH₄ ⁺ -N were recorded in SF (<italic>P</italic> &lt; 0.05), while NO₃ ⁻ -N in SF was 12% of that in ANR (<italic>P </italic>&lt; 0.05). In contrast, both CCP and CLP exhibited significantly reduced NH₄ ⁺ -N compared to SF and ANR (<italic>P</italic> &lt; 0.05).</p>
+<table-wrap id="pone.0339350.t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.t001</object-id><label>Table 1</label><caption><title>Variations in basic soil physicochemical properties among forest types (n = 3).</title></caption>
+<alternatives><graphic id="pone.0339350.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.t001" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Forest types</th>
+<th align="left">TP<break/><break/>(mg·kg<sup>-1</sup>)</th>
+<th align="left">TN<break/><break/>(g·kg<sup>-1</sup>)</th>
+<th align="left">NH<sub>4</sub><sup>+</sup>-N<break/><break/>(mg·kg<sup>-1</sup>)</th>
+<th align="left">NO<sub>3</sub><sup>-</sup>-N<break/><break/>(mg·kg<sup>-1</sup>)</th>
+<th align="left">C:N</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">SF</td>
+<td align="left">162.5 ± 9.3a</td>
+<td align="left">1.32 ± 0.01a</td>
+<td align="left">17.61 ± 0.12a</td>
+<td align="left">0.32 ± 0.04c</td>
+<td align="left">19.88 ± 0.78ab</td>
+</tr>
+<tr>
+<td align="left">ANR</td>
+<td align="left">167.6 ± 12.6a</td>
+<td align="left">1.08 ± 0.04b</td>
+<td align="left">17.09 ± 1.17a</td>
+<td align="left">2.7 ± 0.41a</td>
+<td align="left">22.29 ± 1.31a</td>
+</tr>
+<tr>
+<td align="left">CCP</td>
+<td align="left">148.1 ± 14a</td>
+<td align="left">1.06 ± 0.03b</td>
+<td align="left">10.26 ± 1.91b</td>
+<td align="left">1.06 ± 0.09b</td>
+<td align="left">19.54 ± 0.18b</td>
+</tr>
+<tr>
+<td align="left">CLP</td>
+<td align="left">150.2 ± 2.5a</td>
+<td align="left">1 ± 0.08b</td>
+<td align="left">7.04 ± 1.63b</td>
+<td align="left">0.38 ± 0.14bc</td>
+<td align="left">18.29 ± 0.62b</td>
+</tr>
+<tr>
+<td align="left"><bold>Forest types</bold></td>
+<td align="left"><bold>pH</bold></td>
+<td align="left"><bold>SM (%)</bold></td>
+<td align="left"><bold>Clay (%)</bold></td>
+<td align="left"><bold>LS</bold><break/><break/><bold>(Mg ha⁻¹)</bold></td>
+<td align="left"><bold>FRB</bold><break/><break/><bold>(Mg ha ⁻ ¹)</bold></td>
+</tr>
+<tr>
+<td align="left">SF</td>
+<td align="left">4.87 ± 0.11a</td>
+<td align="left">10.19 ± 1.74a</td>
+<td align="left">10.61 ± 1.26a</td>
+<td align="left">3.62 ± 0.24b</td>
+<td align="left">2.14 ± 0.03a</td>
+</tr>
+<tr>
+<td align="left">ANR</td>
+<td align="left">4.68 ± 0.09a</td>
+<td align="left">9.99 ± 2.91a</td>
+<td align="left">10.5 ± 0.91a</td>
+<td align="left">6.26 ± 0.51a</td>
+<td align="left">2.28 ± 0.06a</td>
+</tr>
+<tr>
+<td align="left">CCP</td>
+<td align="left">4.78 ± 0.03a</td>
+<td align="left">7.69 ± 1.73a</td>
+<td align="left">12.4 ± 0.53a</td>
+<td align="left">4.24 ± 0.22b</td>
+<td align="left">1.79 ± 0.05b</td>
+</tr>
+<tr>
+<td align="left">CLP</td>
+<td align="left">4.74 ± 0.16a</td>
+<td align="left">12.29 ± 1.66a</td>
+<td align="left">11.84 ± 1.17a</td>
+<td align="left">1.7 ± 0.56c</td>
+<td align="left">1.27 ± 0.05c</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t001fn001"><p>Note: Values are expressed as mean ± standard error (SE). Different lowercase letters indicate significant differences at α = 0.05 level. SF: natural secondary forest; ANR: assisted natural regeneration forest of <italic>Castanopsis carlesii</italic>; CCP: <italic>Castanopsis carlesii</italic> plantation; CLP: <italic>Cunninghamia lanceolata</italic> plantation; TP: total phosphorous; TN: total nitrogen; C:N: carbon nitrogen ratio; SM: soil moisture; LS: litter storage; FRB: fine root biomass; NH₄⁺-N: ammonium nitrogen; NO₃⁻-N: nitrate nitrogen; pH: soil pH. The same below.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>ANR displayed the highest C:N ratio (<italic>P</italic> &lt; 0.05), which sharply contrasted with plantations (18.29–19.54; <italic>P</italic> &lt; 0.05). Plant-derived inputs also diverged. ANR accumulated 73% more litter stock(LS) than SF (<italic>P</italic> &lt; 0.05), exceeding plantations by 2.7–3.7 (<italic>P</italic> &lt; 0.05). SF and ANR retained comparable fine root biomass (2.14–2.28 Mg ha ⁻ ¹; <italic>P </italic>&gt; 0.05), both significantly surpassing plantations (1.27–1.79 Mg ha ⁻ ¹; <italic>P</italic> &lt; 0.05).</p>
+</sec>
+<sec id="sec010">
+<title>Differences in SOC and its fractions</title>
+<p>Significant alterations in SOC characteristics and its fractions were observed in the 0–10 cm soil layer under different forest management regimes (<xref ref-type="fig" rid="pone.0339350.g002">Fig 2</xref>). The highest SOC concentration was recorded in SF (26.31 ± 1.03 g·kg⁻¹), with no significant difference detected between ANR (23.89 ± 0.76 g·kg⁻¹) and SF (<italic>P</italic> &gt; 0.05). In contrast, SOC was lower in CCP and CLP by 21.04% and 30.44%, respectively (both P &lt; 0.05). Total LC declined progressively across management types relative to SF (−14.50% to −46.10%; P &lt; 0.05). The rapidly decomposable fraction (LC1) decreases of 22.62% (ANR), 30.19%(CCP), and 44.83%(CLP) (<italic>P</italic> &lt; 0.05). RC in CLP (9.18 ± 0.56 g·kg⁻¹) was significantly lower than in of SF (14.29 ± 1.26 g·kg⁻¹), ANR (12.72 ± 0.43 g·kg⁻¹), and CCP (13.20 ± 0.56 g·kg⁻¹) (<italic>P</italic> &lt; 0.05).</p>
+<fig id="pone.0339350.g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.g002</object-id><label>Fig 2</label><caption><title>Effects of different management practices on soil organic carbon (SOC) and its fractions.</title><p>Note: LC: labile carbon fractions; RC: recalcitrant carbon. SF: natural secondary forest; ANR: assisted natural regeneration forest of <italic>Castanopsis carlesii</italic>; CCP: <italic>Castanopsis carlesii</italic> plantation; CLP: <italic>Cunninghamia lanceolata</italic> plantation. Different lowercase letters indicate significant differences between different forest management practices (n = 3). The same below.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.g002" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec011">
+<title>Soil microbial community composition</title>
+<p>Significant alterations in soil microbial community structure were observed under different forest management practices (<xref ref-type="table" rid="pone.0339350.t002">Table 2</xref>). Total PLFA concentrations showed no significant difference between SF and ANR (<italic>P</italic> &gt; 0.05), but were 42.4%–45.0% lower in plantations (CCP, CLP) than in SF (P &lt; 0.05).</p>
+<table-wrap id="pone.0339350.t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.t002</object-id><label>Table 2</label><caption><title>PLFAs characteristics of soil microorganisms under different forest management practices.</title></caption>
+<alternatives><graphic id="pone.0339350.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.t002" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Microorganism PLFAs (mol·g<sup>-1</sup>)</th>
+<th align="left">SF</th>
+<th align="left">ANR</th>
+<th align="left">CCP</th>
+<th align="left">CLP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Total</td>
+<td align="left">42.43 ± 3.05a</td>
+<td align="left">36.89 ± 2.92a</td>
+<td align="left">23.27 ± 3.88b</td>
+<td align="left">23.34 ± 1.78b</td>
+</tr>
+<tr>
+<td align="left">GN</td>
+<td align="left">14.34 ± 1.01a</td>
+<td align="left">11.94 ± 0.66a</td>
+<td align="left">6.76 ± 1.53b</td>
+<td align="left">6.83 ± 0.91b</td>
+</tr>
+<tr>
+<td align="left">GP</td>
+<td align="left">12.85 ± 0.87a</td>
+<td align="left">10.54 ± 0.77a</td>
+<td align="left">7.77 ± 1.15b</td>
+<td align="left">7.17 ± 0.21b</td>
+</tr>
+<tr>
+<td align="left">FUNGI</td>
+<td align="left">7.19 ± 0.54ab</td>
+<td align="left">7.67 ± 1.19a</td>
+<td align="left">4.59 ± 0.83b</td>
+<td align="left">5.33 ± 0.73ab</td>
+</tr>
+<tr>
+<td align="left">ACT</td>
+<td align="left">6.04 ± 0.52a</td>
+<td align="left">4.93 ± 0.39a</td>
+<td align="left">3.28 ± 0.49b</td>
+<td align="left">2.98 ± 0.22b</td>
+</tr>
+<tr>
+<td align="left">AMF</td>
+<td align="left">2.01 ± 0.12a</td>
+<td align="left">1.82 ± 0.153a</td>
+<td align="left">0.87 ± 0.28b</td>
+<td align="left">1.03 ± 0.15b</td>
+</tr>
+<tr>
+<td align="left">GP:GN</td>
+<td align="left">0.89 ± 0.01b</td>
+<td align="left">0.88 ± 0.02b</td>
+<td align="left">1.21 ± 0.18a</td>
+<td align="left">1.09 ± 0.14ab</td>
+</tr>
+<tr>
+<td align="left">F:B</td>
+<td align="left">0.28 ± 0.01b</td>
+<td align="left">0.34 ± 0.04ab</td>
+<td align="left">0.31 ± 0.02ab</td>
+<td align="left">0.38 ± 0.04a</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t002fn001"><p>Note: Different lowercase letters indicate statistical significance among different forest management practices at α = 0.05. The data in the table are presented as mean ± standard error with n = 3. PLFAs: phospholipid fatty acids; GN: Gram-negative bacteria; GP: Gram-positive bacteria; FUNGI: fungal species; ACT: actinomycetes; AMF: arbuscular mycorrhizal fungi; F:B: the ratio of fungal to bacterial PLFAs.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Among functional guilds, GN and GP bacteria showed parallel declines in plantations(CCP and CLP: −52.9% and −39.5%, respectively; P &lt; 0.05). Fungal abundance in ANR was 6.6% lower than SF (ns), but declined by 25.9–36.3% in plantations, with a significant decrease in CCP (P &lt; 0.05). ACT and AMF PLFAs were also reduced in plantations (ACT −45.7–50.7%; AMF −48.6–56.7%; P &lt; 0.05). Community indices increased from GP:GN = 0.88–0.89 in SF/ANR to 1.09–1.21 in plantations (P &lt; 0.05), indicating a relative dominance of GP under managed regimes. The F:B was significantly higher in CLP than in SF (P &lt; 0.05). A plausible ecological context is that litter quality and rooting traits differ between broad-leaved <italic>Castanopsis</italic> (CCP) and coniferous <italic>Cunninghamia</italic> (CLP); slower-decomposing, nutrient-poorer litter and reduced belowground inputs in CLP likely constrained microbial biomass and shifted community structure.</p>
+</sec>
+<sec id="sec012">
+<title>Relationships between SOC, microbial characteristics, and soil properties</title>
+<p>As shown in <xref ref-type="fig" rid="pone.0339350.g003">Fig 3</xref>, SOC exhibited the strongest associations with belowground biomass and N-availability: fine root biomass (FRB), TN, and NH₄ ⁺ -N (all P &lt; 0.001).SOC was also correlated with GP, GN, AMF, ACT, and total PLFAs(<italic>P</italic> &lt; 0.05). In contrast, RC related to fewer factors—most strongly to FRB (P &lt; 0.001)—and additionally to LS and NH₄ ⁺ -N (P &lt; 0.05), with weaker links to other soil properties. LC was regulated by multiple variables, showing strong correlations (P &lt; 0.001) with total PLFAs, ACT, AMF, GP, GN, NH₄ ⁺ -N, TN, and FRB, and a significant correlation with LS (P &lt; 0.005). Notably, pH, clay, SM, F:B, and NO₃ ⁻ -N showed weak associations, suggesting limited direct contributions or mediation via other drivers.</p>
+<fig id="pone.0339350.g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.g003</object-id><label>Fig 3</label><caption><title>Environmental drivers of SOC and its fractions.</title><p>Note: The figure shows pairwise comparisons between microbial and soil property indicators, with color gradient indicating the Pearson correlation coefficient. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; TN: total nitrogen; Ammonium. N and Nitrate. N: mineral nitrogen; TP: total phosphorus; Clay represents the clay percentage; SM: soil moisture. Using Mantel tests, the correlations between SOC and its fractions (LC, RC) with each environmental factor were determined. The line color represents the significance level of Mantel’s P value, and the line width corresponds to the Mantel`s r value.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.g003" xlink:type="simple"/></fig>
+<p>As illustrated in <xref ref-type="fig" rid="pone.0339350.g004">Fig 4</xref>, the SEM elucidates two ecologically meaningful pathways. First, greater litter inputs increased the C:N ratio and lowered pH, which together promoted higher NH₄ ⁺ -N and, in turn, the conversion of LC to RC and higher total SOC. Second, larger FRB increased the abundance of GP, enhancing LC accumulation. Consistent with these pathways, LC strongly predicted SOC, whereas no direct path from RC to SOC was detected. Model statistics (χ²/df, RMSEA, CFI; see caption) indicate acceptable fit given sample size (n = 12).</p>
+<fig id="pone.0339350.g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.g004</object-id><label>Fig 4</label><caption><title>Scores and interrelationships of the best predictors for predicting SOC.</title><p>Note: Black arrow shows positive influence, red arrow shows negative influence, the value on each arrow lines are the path coefficient. <sup>*</sup> presents significant at <italic>P</italic> &lt; 0.05, <sup>**</sup> presents significant at <italic>P</italic> &lt; 0.01, <sup>***</sup> presents significant at <italic>P</italic> &lt; 0.001. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; GP: Gram-positive bacteria; C:N: carbon nitrogen ratio; LS: litter storage; FRB: fine root biomass.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.g004" xlink:type="simple"/></fig>
+</sec>
+</sec>
+<sec id="sec013" sec-type="conclusions">
+<title>Discussion</title>
+<sec id="sec014">
+<title>Impacts of Forest management on soil physicochemical properties and microbial characteristics</title>
+<p>In this study, different forest management practices significantly influenced TN, mineral nitrogen, and C:N, whereas their effects on TP, SM, pH, and clay content were relatively minor (<xref ref-type="table" rid="pone.0339350.t001">Table 1</xref>). LS was found to be positively correlated with soil C:N and ammonium nitrogen, but negatively correlated with pH (<xref ref-type="fig" rid="pone.0339350.g003">Fig 3</xref>). Previous studies have indicated that forest management can directly improve soil nutrient status by altering understory vegetation composition [<xref ref-type="bibr" rid="pone.0339350.ref031">31</xref>]. Consistent with this view, SEM results (<xref ref-type="fig" rid="pone.0339350.g004">Fig 4</xref>) further revealed that LS was a key driver of variations in soil C:N, ammonium nitrogen, and pH. Although broadleaf species were abundant in both SF and ANR forests, the soil C:N in these forests was higher than that in the CCP and CLP monoculture plantations. While such a pattern is uncommon, it has been reported elsewhere. For instance, Lin et al. [<xref ref-type="bibr" rid="pone.0339350.ref032">32</xref>]observed that birch forests exhibited higher soil C/N compared to coniferous forests, and similar trends have been documented in Iceland and Finland [<xref ref-type="bibr" rid="pone.0339350.ref033">33</xref>], where broadleaf forests showed higher C:N ratios than coniferous stands. These differences may be attributed to variations in litter decomposition rates and seasonal sampling. Broadleaf litter tends to have higher nitrogen content and decomposes rapidly during early stages. However, as recalcitrant components accumulate over time, the decomposition rate gradually slows and eventually falls below that of coniferous litter, leading to an increase in soil C:N. Additionally, during the growing season, SF and ANR forests typically exhibit higher nitrogen uptake to support leaf development, as observed by Bradley [<xref ref-type="bibr" rid="pone.0339350.ref034">34</xref>], who reported increased nitrogen absorption in soils supporting actively growing seedlings. Seasonal sampling and differences in decomposition stages further explain the elevated levels of TN and ammonium nitrogen observed in the secondary and ANR forests. Moreover, nitrogen availability is a critical factor influencing the distribution of soil carbon fractions. Studies by Wang [<xref ref-type="bibr" rid="pone.0339350.ref031">31</xref>] and Wu et al. [<xref ref-type="bibr" rid="pone.0339350.ref035">35</xref>] have shown that higher C:N ratios promote the accumulation of LC fractions, supporting the SEM-derived pathway in this study, whereby LS affects labile carbon accumulation via modulation of soil C:N. Direct plot measurements (<xref ref-type="table" rid="pone.0339350.t003">Table 3</xref>) support stronger belowground inputs and a richer understory under ANR: fine-root yield is 284 g m⁻<sup>2</sup> yr⁻¹ in ANR vs 163 in CCP and 145 in CLP, and understory cover is 92.7% in ANR (93.3% in SF) vs 84.5%(CCP) and 82.1%(CLP). These features likely increase substrate supply to microbes and help sustain LC pools and microbial biomass relative to plantations (<xref ref-type="table" rid="pone.0339350.t003">Table 3</xref>).</p>
+<table-wrap id="pone.0339350.t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pone.0339350.t003</object-id><label>Table 3</label><caption><title>Characteristics of sample plots.</title></caption>
+<alternatives><graphic id="pone.0339350.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.t003" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Forest management types</th>
+<th align="left">Mean slope<break/><break/>(°)</th>
+<th align="left">Mean height<break/><break/>(m)</th>
+<th align="left">Mean DBH<break/><break/>(cm)</th>
+<th align="left">Mean coverage</th>
+<th align="left">Fine root yield<break/><break/>(g·m<sup>-2</sup>·yr<sup>-1</sup>)</th>
+<th align="left">Average annual decline of biomass<break/><break/>(t·ha<sup>-1</sup>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">SF</td>
+<td align="left">32.7</td>
+<td align="left">19.7</td>
+<td align="left">13.5</td>
+<td align="left">93.3%</td>
+<td align="left">75.2</td>
+<td align="left">7.0</td>
+</tr>
+<tr>
+<td align="left">ANR</td>
+<td align="left">31.7</td>
+<td align="left">7.2</td>
+<td align="left">5.8</td>
+<td align="left">92.7%</td>
+<td align="left">284.0</td>
+<td align="left">4.6</td>
+</tr>
+<tr>
+<td align="left">CCP</td>
+<td align="left">32.2</td>
+<td align="left">6.4</td>
+<td align="left">8.5</td>
+<td align="left">84.5%</td>
+<td align="left">163.0</td>
+<td align="left">2.9</td>
+</tr>
+<tr>
+<td align="left">CLP</td>
+<td align="left">32.4</td>
+<td align="left">9.2</td>
+<td align="left">12.6</td>
+<td align="left">82.1%</td>
+<td align="left">144.6</td>
+<td align="left">2.4</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t003fn001"><p>Note: SF: natural secondary forest; ANR: assisted natural regeneration forest of <italic>Castanopsis carlesii</italic>; CCP: <italic>Castanopsis carlesii</italic> plantation; CLP: <italic>Cunninghamia lanceolata</italic> plantation; DBH: Diameter at Breast Height.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Due to intrinsic differences between fungi and bacteria in enzyme activity [<xref ref-type="bibr" rid="pone.0339350.ref036">36</xref>], biomass turnover rate [<xref ref-type="bibr" rid="pone.0339350.ref037">37</xref>], and carbon use efficiency [<xref ref-type="bibr" rid="pone.0339350.ref038">38</xref>], microbial community composition has been shown to respond differently to forest management regimes [<xref ref-type="bibr" rid="pone.0339350.ref039">39</xref>]. In this study, microbial biomass in the ANR and secondary forests was comparable and significantly higher than that in CCP and CLP. In contrast, both plantations exhibited elevated fungal-to-bacterial and GP:GN ratios (<xref ref-type="table" rid="pone.0339350.t002">Table 2</xref>), consistent with the findings of Zhao et al. [<xref ref-type="bibr" rid="pone.0339350.ref027">27</xref>] and Wan et al.[<xref ref-type="bibr" rid="pone.0339350.ref040">40</xref>]. These results suggest that ANR management enhanced microbial biomass by increasing substrate availability, likely through fineroot biomass accumulation [<xref ref-type="bibr" rid="pone.0339350.ref041">41</xref>,<xref ref-type="bibr" rid="pone.0339350.ref042">42</xref>]. In contrast, common plantation practices such as litter burning and understory removal reduced both above- and belowground carbon inputs [<xref ref-type="bibr" rid="pone.0339350.ref043">43</xref>], thereby intensifying microbial resource limitations [<xref ref-type="bibr" rid="pone.0339350.ref044">44</xref>]. In plantations, higher F:B and GP:GN likely reflect adaptation to high C:N substrates and nutrient limitation [<xref ref-type="bibr" rid="pone.0339350.ref024">24</xref>]. The muted contrasts between CCP and CLP may relate to stand age, with communities not yet at a new equilibrium [<xref ref-type="bibr" rid="pone.0339350.ref045">45</xref>].</p>
+</sec>
+<sec id="sec015">
+<title>Shifts in microbial functional composition</title>
+<p>Subtropical forests in China play a vital role in regional carbon cycling. Previous studies have demonstrated that, compared to monoculture plantations, both secondary forests and ANR practices contribute to the accumulation of SOC [<xref ref-type="bibr" rid="pone.0339350.ref025">25</xref>,<xref ref-type="bibr" rid="pone.0339350.ref028">28</xref>,<xref ref-type="bibr" rid="pone.0339350.ref046">46</xref>], a pattern that was further confirmed in this study (<xref ref-type="fig" rid="pone.0339350.g002">Fig 2</xref>). Beyond confirming this pattern, we clarify how management regulates SOC via coordinated responses of LC and RC to above-/belowground inputs. These results complement earlier findings on ANR`s role in SOC retention [<xref ref-type="bibr" rid="pone.0339350.ref025">25</xref>,<xref ref-type="bibr" rid="pone.0339350.ref046">46</xref>,<xref ref-type="bibr" rid="pone.0339350.ref047">47</xref>]. The results showed that, compared to the secondary forest, the LC fractions in ANR, CCP, and CLP forests decreased by 14.49%, 28.64%, and 46.13%, respectively. However, the LC loss in the ANR forest was substantially lower than that observed in the two monoculture plantations (<xref ref-type="fig" rid="pone.0339350.g002">Fig 2</xref>), consistent with previous findings [<xref ref-type="bibr" rid="pone.0339350.ref047">47</xref>]. Because LC derives from easily decomposable substrates and is disturbance-sensitive [<xref ref-type="bibr" rid="pone.0339350.ref048">48</xref>], continuous litterfall and root exudates in SF/ANR likely sustain LC pools [<xref ref-type="bibr" rid="pone.0339350.ref005">5</xref>], whereas early site preparation and understory removal in plantations reduce inputs and deplete LC [<xref ref-type="bibr" rid="pone.0339350.ref048">48</xref>–<xref ref-type="bibr" rid="pone.0339350.ref050">50</xref>].</p>
+<p>Regarding the RC fraction, higher contents were observed in the SF and ANR forests (<xref ref-type="fig" rid="pone.0339350.g002">Fig 2</xref>), which may be attributed to enhanced environmental stability associated with reduced disturbance and long-term litter accumulation. In contrast, the RC content in the CLP was the lowest, with a 35.76% reduction compared to SF. No significant difference in RC was detected between the CCP and SF or ANR forests, which is consistent with previous studies [<xref ref-type="bibr" rid="pone.0339350.ref048">48</xref>–<xref ref-type="bibr" rid="pone.0339350.ref050">50</xref>]. RC, RC, composed of chemically complex residues (cellulose, hemicellulose, lignin), underpins long-term stabilization of SOC. Although both plantation types were subjected to early site disturbances that reduced litter input and increased aggregate oxidation [<xref ref-type="bibr" rid="pone.0339350.ref028">28</xref>], RC loss in the CCP was not significant, Th possibly because higher-quality Castanopsis litter more readily forms stable mineral associations [<xref ref-type="bibr" rid="pone.0339350.ref051">51</xref>]. In contrast, slower litter decomposition and nutrient return in the <italic>Cunninghamia lanceolata</italic>(CLP) plantation may have limited RC formation and stabilization, yielding the lowest RC. The overall fit statistics (χ² = 35.91, df = 24, P = 0.056; RMSEA = 0.203) indicate marginal global misfit but an informative structure. Ecologically, this means the hypothesized pathways capture the dominant processes—(i) greater litter inputs elevating C:N and lowering pH, which increase NH₄ ⁺ -N and promote LC → RC conversion and higher SOC; and (ii) larger FRB increasing GP abundance and boosting LC—while the elevated RMSEA cautions that additional, unmeasured processes (e.g., microclimate or substrate chemistry) may also contribute given n = 12.</p>
+</sec>
+<sec id="sec016">
+<title>Influence Pathways of Forest Management on SOC Pool</title>
+<p>Studies have shown that different forest management practices can regulate both above- and belowground carbon inputs, thereby triggering coupled changes in soil environmental conditions and microbial community structure, ultimately affecting the accumulation and distribution of SOC [<xref ref-type="bibr" rid="pone.0339350.ref052">52</xref>]. Previous research has generally suggested that SOC dynamics are primarily driven by microbial community composition, with soil environmental factors playing only an indirect role. However, SEM constructed in this study (<xref ref-type="fig" rid="pone.0339350.g004">Fig 4</xref>) demonstrated that soil physicochemical properties and microbial biomass contributed equally to the regulation of the LC fraction and, in turn, to SOC and RC accumulation.</p>
+<p>Correlation analysis revealed that microbial community structure and abundance were primarily influenced by ammonium nitrogen concentrations and fine root biomass, while TP and pH also exhibited significant effects on microbial indices such as the GP:GN ratio and F:B (<xref ref-type="fig" rid="pone.0339350.g003">Fig 3</xref>). However, no significant path relationships were observed between microbial indicators and basic soil physicochemical properties (<xref ref-type="fig" rid="pone.0339350.g004">Fig 4</xref>). Among these, the abundance of GP bacteria was positively affected only by root biomass. These findings suggest that the differences in SOC among the four forest management regimes were regulated by two relatively independent pathways. On one hand, variations in aboveground litter input induced by management practices primarily influenced soil pH, C:N ratio, and ammonium nitrogen content, thereby regulating the transformation from LC to RC and overall SOC accumulation. On the other hand, changes in belowground FRB affected microbial community structure, particularly by increasing the proportion of Gram-positive bacteria, which in turn promoted LC accumulation. This mechanism is consistent with the findings of Drum et al. [<xref ref-type="bibr" rid="pone.0339350.ref053">53</xref>]. Similarly, studies by Song [<xref ref-type="bibr" rid="pone.0339350.ref054">54</xref>] and DuPont [<xref ref-type="bibr" rid="pone.0339350.ref055">55</xref>] reported that root exudates, as sources of substrate input, can significantly enhance microbial activity and biomass, thereby expanding the LC pool in surface soils and strengthening soil carbon sequestration capacity. Although an increase in LC is often considered a potential risk to SOC stability due to its association with enhanced decomposition and transformation rates [<xref ref-type="bibr" rid="pone.0339350.ref050">50</xref>], our SEM indicates that LC mediates the buildup of both RC and total SOC, and favorable conditions in SF/ANR (greater diversity, higher litter quality, lower disturbance) likely facilitate LC → RC conversion and long-term carbon retention. It is noteworthy that no significant path was detected between RC and SOC in the model, which contrasts with the findings of Liu et al. [<xref ref-type="bibr" rid="pone.0339350.ref056">56</xref>] in a semi-arid agro-pastoral ecotone. This discrepancy suggests that in humid subtropical ecosystems, characterized by active biogeochemical cycling, LC plays a more critical role in maintaining SOC stability [<xref ref-type="bibr" rid="pone.0339350.ref057">57</xref>]. Therefore, sustaining LC levels may be essential for mitigating SOC loss under such conditions. This mechanism corroborates our first hypothesis by demonstrating that LC accumulation and its conversion to RC under ANR management are key processes supporting SOC stability.</p>
+</sec>
+<sec id="sec017">
+<title>Ecosystem implications and management recommendations</title>
+<p>Our findings support the hypothesis that ANR offers a sustainable alternative to conventional plantations by maintaining microbial structure and enhancing LC retention. The ability of ANR to promote LC → RC transformation, likely via improved litter quality and reduced disturbance, underscores its role in long-term SOC stabilization. Given that microbially mediated LC transformation is a dominant driver of SOC accumulation in these systems, forest policies aiming at carbon sequestration should prioritize strategies that preserve microbial diversity and substrate availability. Furthermore, the observed decoupling of RC and SOC underlines the importance of monitoring LC dynamics in subtropical soils. While our study revealed key patterns in SOC fraction regulation, long-term monitoring and broader site comparisons are needed to fully understand temporal dynamics and broader applicability of ANR practices across varying subtropical regions.</p>
+</sec>
+</sec>
+<sec id="sec018" sec-type="conclusions">
+<title>Conclusions</title>
+<p>This study provides empirical evidence on the divergent impacts of subtropical forest management practices on soil organic carbon (SOC) fractions and their microbially mediated regulatory mechanisms. Assisted natural regeneration (ANR), by minimizing anthropogenic disturbances and preserving natural litter input, was shown to sustain SOC concentrations and microbial community structure comparable to those found in secondary forests(SF). Importantly, ANR enhanced the conversion efficiency of labile carbon (LC), supporting carbon retention through a dual regulatory mechanism: (1) aboveground litter influencing soil C:N and NH₄ ⁺ –N concentrations to promote LC transformation into RC and SOC, and (2) belowground fine root biomass modulating microbial composition to foster LC accumulation. In contrast, monoculture plantations, especially <italic>Cunninghamia lanceolata</italic>, experienced concurrent losses of LC and recalcitrant carbon (RC) and SOC, and (2) belowground fine root biomass modulating microbial composition to foster LC accumulation.</p>
+<p>In contrast, monoculture plantations, especially Cunninghamia lanceolata plantations (CLP), experienced concurrent losses of both LC and RC fractions (with SOC reduced by up to 30.4% relative to SF), and exhibited microbial shifts toward oligotrophic dominance—evidenced by increased fungal-to-bacterial and Gram-positive:Gram-negative (GP:GN) ratios—ultimately accelerating SOC decomposition. Structural equation modeling (SEM) indicated that LC serves as a critical mediator for SOC stabilization in humid subtropical systems, while RC alone showed no direct effect on SOC accumulation. This finding highlights the key role of maintaining active LC turnover through biological processes for long-term carbon retention.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0339350.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Soussana</surname> <given-names>J-F</given-names></name>, <name name-style="western"><surname>Lutfalla</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ehrhardt</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Rosenstock</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Lamanna</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Havlík</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>Matching policy and science: Rationale for the ‘4 per 1000 - soils for food security and climate’ initiative</article-title>. <source>Soil Tillage Res</source>. <year>2019</year>;<volume>188</volume>:<fpage>3</fpage>–<lpage>15</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.still.2017.12.002" xlink:type="simple">10.1016/j.still.2017.12.002</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McEwan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Marchi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Spinelli</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Brink</surname> <given-names>M</given-names></name>. <article-title>Past, present and future of industrial plantation forestry and implication on future timber harvesting technology</article-title>. <source>J For Res</source>. <year>2019</year>;<volume>31</volume>(<issue>2</issue>):<fpage>339</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11676-019-01019-3" xlink:type="simple">10.1007/s11676-019-01019-3</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Piao</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ciais</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Peylin</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Sitch</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>The carbon balance of terrestrial ecosystems in China</article-title>. <source>Nature</source>. <year>2009</year>;<volume>458</volume>(<issue>7241</issue>):<fpage>1009</fpage>–<lpage>13</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature07944" xlink:type="simple">10.1038/nature07944</ext-link></comment> <object-id pub-id-type="pmid">19396142</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ontl</surname> <given-names>TA</given-names></name>, <name name-style="western"><surname>Janowiak</surname> <given-names>MK</given-names></name>, <name name-style="western"><surname>Swanston</surname> <given-names>CW</given-names></name>, <name name-style="western"><surname>Daley</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Handler</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Cornett</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Forest Management for Carbon Sequestration and Climate Adaptation</article-title>. <source>J Forest</source>. <year>2019</year>;<volume>118</volume>(<issue>1</issue>):<fpage>86</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jofore/fvz062" xlink:type="simple">10.1093/jofore/fvz062</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Xie</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Large Ecosystem Service Benefits of Assisted Natural Regeneration</article-title>. <source>JGR Biogeosciences</source>. <year>2018</year>;<volume>123</volume>(<issue>2</issue>):<fpage>676</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/2017jg004267" xlink:type="simple">10.1002/2017jg004267</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kelly</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Sanogo</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Sidibé</surname> <given-names>SI</given-names></name>, <name name-style="western"><surname>Castillo-Lorenzo</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Ceci</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ulian</surname> <given-names>T</given-names></name>. <article-title>Restoring vegetation and degraded lands by using assisted natural regeneration approach (ANRA): case study at Bankass in the centre of Mali, West Africa</article-title>. <source>Environ Dev Sustain</source>. <year>2021</year>;<volume>23</volume>(<issue>9</issue>):<fpage>14123</fpage>–<lpage>39</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10668-021-01223-4" xlink:type="simple">10.1007/s10668-021-01223-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Canadell</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Raupach</surname> <given-names>MR</given-names></name>. <article-title>Managing forests for climate change mitigation</article-title>. <source>Science</source>. <year>2008</year>;<volume>320</volume>(<issue>5882</issue>):<fpage>1456</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/science.1155458" xlink:type="simple">10.1126/science.1155458</ext-link></comment> <object-id pub-id-type="pmid">18556550</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feyissa</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>X</given-names></name>. <article-title>Soil labile and recalcitrant carbon and nitrogen dynamics in relation to functional vegetation groups along precipitation gradients in secondary grasslands of South China</article-title>. <source>Environ Sci Pollut Res Int</source>. <year>2020</year>;<volume>27</volume>(<issue>10</issue>):<fpage>10528</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11356-019-07583-9" xlink:type="simple">10.1007/s11356-019-07583-9</ext-link></comment> <object-id pub-id-type="pmid">31939024</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bünemann</surname> <given-names>EK</given-names></name>, <name name-style="western"><surname>Bongiorno</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Bai</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Creamer</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>De Deyn</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>de Goede</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Soil quality – A critical review</article-title>. <source>Soil Biol Biochem</source>. <year>2018</year>;<volume>120</volume>:<fpage>105</fpage>–<lpage>25</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.soilbio.2018.01.030" xlink:type="simple">10.1016/j.soilbio.2018.01.030</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Basile-Doelsch</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Balesdent</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pellerin</surname> <given-names>S</given-names></name>. <article-title>Reviews and syntheses: The mechanisms underlying carbon storage in soil</article-title>. <source>Biogeosciences</source>. <year>2020</year>;<volume>17</volume>(<issue>21</issue>):<fpage>5223</fpage>–<lpage>42</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5194/bg-17-5223-2020" xlink:type="simple">10.5194/bg-17-5223-2020</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bradford</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Wood</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Addicott</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Fenichel</surname> <given-names>EP</given-names></name>, <name name-style="western"><surname>Fields</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>González-Rivero</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Quantifying microbial control of soil organic matter dynamics at macrosystem scales</article-title>. <source>Biogeochemistry</source>. <year>2021</year>;<volume>156</volume>(<issue>1</issue>):<fpage>19</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s10533-021-00789-5" xlink:type="simple">10.1007/s10533-021-00789-5</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Angst</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Mueller</surname> <given-names>KE</given-names></name>, <name name-style="western"><surname>Eissenstat</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Trumbore</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Freeman</surname> <given-names>KH</given-names></name>, <name name-style="western"><surname>Hobbie</surname> <given-names>SE</given-names></name>, <etal>et al</etal>. <article-title>Soil organic carbon stability in forests: Distinct effects of tree species identity and traits</article-title>. <source>Glob Chang Biol</source>. <year>2019</year>;<volume>25</volume>(<issue>4</issue>):<fpage>1529</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/gcb.14548" xlink:type="simple">10.1111/gcb.14548</ext-link></comment> <object-id pub-id-type="pmid">30554462</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Qian</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>W</given-names></name>, <etal>et al</etal>. <article-title>Runoff and soil erosion responses to rainfall and vegetation cover under various afforestation management regimes in subtropical montane forest</article-title>. <source>Land Degrad Dev</source>. <year>2019</year>;<volume>30</volume>(<issue>14</issue>):<fpage>1711</fpage>–<lpage>24</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/ldr.3377" xlink:type="simple">10.1002/ldr.3377</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>O’Halloran</surname> <given-names>TL</given-names></name>, <name name-style="western"><surname>Law</surname> <given-names>BE</given-names></name>, <name name-style="western"><surname>Goulden</surname> <given-names>ML</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Barr</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Schaaf</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Radiative forcing of natural forest disturbances</article-title>. <source>Global Change Biol</source>. <year>2011</year>;<volume>18</volume>(<issue>2</issue>):<fpage>555</fpage>–<lpage>65</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1365-2486.2011.02577.x" xlink:type="simple">10.1111/j.1365-2486.2011.02577.x</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kelly</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ibáñez</surname> <given-names>TS</given-names></name>, <name name-style="western"><surname>Santín</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Doerr</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Nilsson</surname> <given-names>M-C</given-names></name>, <name name-style="western"><surname>Holst</surname> <given-names>T</given-names></name>, <etal>et al</etal>. <article-title>Boreal forest soil carbon fluxes one year after a wildfire: Effects of burn severity and management</article-title>. <source>Glob Chang Biol</source>. <year>2021</year>;<volume>27</volume>(<issue>17</issue>):<fpage>4181</fpage>–<lpage>95</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/gcb.15721" xlink:type="simple">10.1111/gcb.15721</ext-link></comment> <object-id pub-id-type="pmid">34028945</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hong</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Yin</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Piao</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Dybzinski</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Cong</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>Divergent responses of soil organic carbon to afforestation</article-title>. <source>Nat Sustain</source>. <year>2020</year>;<volume>3</volume>(<issue>9</issue>):<fpage>694</fpage>–<lpage>700</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41893-020-0557-y" xlink:type="simple">10.1038/s41893-020-0557-y</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>D’Orazio</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Traversa</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Senesi</surname> <given-names>N</given-names></name>. <article-title>Forest soil organic carbon dynamics as affected by plant species and their corresponding litters: a fluorescence spectroscopy approach</article-title>. <source>Plant Soil</source>. <year>2013</year>;<volume>374</volume>(1–2):<fpage>473</fpage>–<lpage>84</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11104-013-1897-4" xlink:type="simple">10.1007/s11104-013-1897-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Xue</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Dong</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Jiao</surname> <given-names>R</given-names></name>. <article-title>Soil organic carbon fractions, C-cycling hydrolytic enzymes, and microbial carbon metabolism in Chinese fir plantations</article-title>. <source>Sci Total Environ</source>. <year>2021</year>;<volume>758</volume>:<fpage>143695</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.scitotenv.2020.143695" xlink:type="simple">10.1016/j.scitotenv.2020.143695</ext-link></comment> <object-id pub-id-type="pmid">33257064</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bölscher</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ågren</surname> <given-names>GI</given-names></name>, <name name-style="western"><surname>Herrmann</surname> <given-names>AM</given-names></name>. <article-title>Land-use alters the temperature response of microbial carbon-use efficiency in soils – a consumption-based approach</article-title>. <source>Soil Biol Biochem</source>. <year>2020</year>;<volume>140</volume>:<fpage>107639</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.soilbio.2019.107639" xlink:type="simple">10.1016/j.soilbio.2019.107639</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Dong</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Bai</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>The response of soil microbial communities to soil erodibility depends on the plant and soil properties in semiarid regions</article-title>. <source>Land Degrad Dev</source>. <year>2021</year>;<volume>32</volume>(<issue>11</issue>):<fpage>3180</fpage>–<lpage>93</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/ldr.3887" xlink:type="simple">10.1002/ldr.3887</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lange</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Eisenhauer</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Sierra</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Bessler</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Engels</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Griffiths</surname> <given-names>RI</given-names></name>, <etal>et al</etal>. <article-title>Plant diversity increases soil microbial activity and soil carbon storage</article-title>. <source>Nat Commun</source>. <year>2015</year>;<volume>6</volume>:<fpage>6707</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/ncomms7707" xlink:type="simple">10.1038/ncomms7707</ext-link></comment> <object-id pub-id-type="pmid">25848862</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewandowski</surname> <given-names>TE</given-names></name>, <name name-style="western"><surname>Forrester</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Mladenoff</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>D’Amato</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Palik</surname> <given-names>BJ</given-names></name>. <article-title>Response of the soil microbial community and soil nutrient bioavailability to biomass harvesting and reserve tree retention in northern Minnesota aspen-dominated forests</article-title>. <source>Appl Soil Ecol</source>. <year>2016</year>;<volume>99</volume>:<fpage>110</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.apsoil.2015.11.001" xlink:type="simple">10.1016/j.apsoil.2015.11.001</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ren</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Deng</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Differential soil microbial community responses to the linkage of soil organic carbon fractions with respiration across land-use changes</article-title>. <source>Forest Ecol Manag</source>. <year>2018</year>;<volume>409</volume>:<fpage>170</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2017.11.011" xlink:type="simple">10.1016/j.foreco.2017.11.011</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ni</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Xie</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>Decline in nutrient inputs from litterfall following forest plantation in subtropical China</article-title>. <source>Forest Ecol Manag</source>. <year>2021</year>;<volume>496</volume>:<fpage>119445</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2021.119445" xlink:type="simple">10.1016/j.foreco.2021.119445</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>T-C</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xiong</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Forest conversion effects on soil organic carbon are regulated by soil aggregate stability and not by recalcitrance: Evidence from a reforestation experiment</article-title>. <source>CATENA</source>. <year>2022</year>;<volume>219</volume>:<fpage>106613</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.catena.2022.106613" xlink:type="simple">10.1016/j.catena.2022.106613</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhong</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Fan</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Decreases in soil P availability are associated with soil organic P declines following forest conversion in subtropical China</article-title>. <source>CATENA</source>. <year>2021</year>;<volume>205</volume>:<fpage>105459</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.catena.2021.105459" xlink:type="simple">10.1016/j.catena.2021.105459</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhao</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>F</given-names></name>. <article-title>Differential linkages between soil respiration components and microbial community structures under long-term forest conversion</article-title>. <source>J Soils Sediments</source>. <year>2022</year>;<volume>22</volume>(<issue>4</issue>):<fpage>1252</fpage>–<lpage>62</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11368-022-03160-9" xlink:type="simple">10.1007/s11368-022-03160-9</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xiong</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Arthur</surname> <given-names>MA</given-names></name>, <etal>et al</etal>. <article-title>Loss of soil organic carbon following natural forest conversion to Chinese fir plantation</article-title>. <source>Forest Ecol Manag</source>. <year>2019</year>;<volume>449</volume>:<fpage>117476</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2019.117476" xlink:type="simple">10.1016/j.foreco.2019.117476</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rovira</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Vallejo</surname> <given-names>VR</given-names></name>. <article-title>Labile and recalcitrant pools of carbon and nitrogen in organic matter decomposing at different depths in soil: an acid hydrolysis approach</article-title>. <source>Geoderma</source>. <year>2002</year>;<volume>107</volume>(1–2):<fpage>109</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0016-7061(01)00143-4" xlink:type="simple">10.1016/s0016-7061(01)00143-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Qing</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lyu</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Effects of artificial warming on different soil organic carbon and nitrogen pools in a subtropical plantation</article-title>. <source>Soil Biol Biochem</source>. <year>2018</year>;<volume>124</volume>:<fpage>161</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.soilbio.2018.06.007" xlink:type="simple">10.1016/j.soilbio.2018.06.007</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Darboux</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Jiao</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Effects of forest floor characteristics on soil labile carbon as varied by topography and vegetation type in the Chinese Loess Plateau</article-title>. <source>CATENA</source>. <year>2021</year>;<volume>196</volume>:<fpage>104825</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.catena.2020.104825" xlink:type="simple">10.1016/j.catena.2020.104825</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qi</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>J</given-names></name>. <article-title>Microbial community composition regulates SOC decomposition response to forest conversion in a Chinese temperate forest</article-title>. <source>Ecol Res</source>. <year>2016</year>;<volume>32</volume>(<issue>2</issue>):<fpage>163</fpage>–<lpage>72</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11284-016-1428-x" xlink:type="simple">10.1007/s11284-016-1428-x</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ritter</surname> <given-names>E</given-names></name>. <article-title>Carbon, nitrogen and phosphorus in volcanic soils following afforestation with native birch (Betula pubescens) and introduced larch (Larix sibirica) in Iceland</article-title>. <source>Plant Soil</source>. <year>2007</year>;<volume>295</volume>(1–2):<fpage>239</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11104-007-9279-4" xlink:type="simple">10.1007/s11104-007-9279-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bradley</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Fyles</surname> <given-names>JW</given-names></name>. <article-title>Growth of paper birch (Betula papyrifera) seedlings increases soil available C and microbial acquisition of soil-nutrients</article-title>. <source>Soil Biol Biochem</source>. <year>1995</year>;<volume>27</volume>(<issue>12</issue>):<fpage>1565</fpage>–<lpage>71</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/0038-0717(95)00089-w" xlink:type="simple">10.1016/0038-0717(95)00089-w</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Ding</surname> <given-names>Y</given-names></name>. <article-title>Permafrost and land cover as controlling factors for light fraction organic matter on the southern Qinghai-Tibetan plateau</article-title>. <source>Sci Total Environ</source>. <year>2018</year>;613–614:<fpage>1165</fpage>–<lpage>74</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.scitotenv.2017.09.052" xlink:type="simple">10.1016/j.scitotenv.2017.09.052</ext-link></comment> <object-id pub-id-type="pmid">28954377</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McGuire</surname> <given-names>KL</given-names></name>, <name name-style="western"><surname>Treseder</surname> <given-names>KK</given-names></name>. <article-title>Microbial communities and their relevance for ecosystem models: Decomposition as a case study</article-title>. <source>Soil Biol Biochem</source>. <year>2010</year>;<volume>42</volume>(<issue>4</issue>):<fpage>529</fpage>–<lpage>35</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.soilbio.2009.11.016" xlink:type="simple">10.1016/j.soilbio.2009.11.016</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rousk</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Bååth</surname> <given-names>E</given-names></name>. <article-title>Growth of saprotrophic fungi and bacteria in soil</article-title>. <source>FEMS Microbiol Ecol</source>. <year>2011</year>;<volume>78</volume>(<issue>1</issue>):<fpage>17</fpage>–<lpage>30</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1574-6941.2011.01106.x" xlink:type="simple">10.1111/j.1574-6941.2011.01106.x</ext-link></comment> <object-id pub-id-type="pmid">21470255</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Six</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Frey</surname> <given-names>SD</given-names></name>, <name name-style="western"><surname>Thiet</surname> <given-names>RK</given-names></name>, <name name-style="western"><surname>Batten</surname> <given-names>KM</given-names></name>. <article-title>Bacterial and Fungal Contributions to Carbon Sequestration in Agroecosystems</article-title>. <source>Soil Sci Soc Am J</source>. <year>2006</year>;<volume>70</volume>(<issue>2</issue>):<fpage>555</fpage>–<lpage>69</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2136/sssaj2004.0347" xlink:type="simple">10.2136/sssaj2004.0347</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wu</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jiang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Cai</surname> <given-names>Z</given-names></name>, <etal>et al</etal>. <article-title>Soil pH rather than nutrients drive changes in microbial community following long-term fertilization in acidic Ultisols of southern China</article-title>. <source>J Soils Sediments</source>. <year>2018</year>;<volume>18</volume>(<issue>5</issue>):<fpage>1853</fpage>–<lpage>64</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11368-018-1934-2" xlink:type="simple">10.1007/s11368-018-1934-2</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wan</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Mao</surname> <given-names>R</given-names></name>. <article-title>Effects of understory removal and litter addition on leaf and twig decomposition in a subtropical Chinese fir plantation</article-title>. <source>Land Degrad Dev</source>. <year>2021</year>;<volume>32</volume>(<issue>17</issue>):<fpage>5004</fpage>–<lpage>11</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/ldr.4086" xlink:type="simple">10.1002/ldr.4086</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Uhl</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Krah</surname> <given-names>F-S</given-names></name>, <name name-style="western"><surname>Baldrian</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Brandl</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Hagge</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Müller</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Snags, logs, stumps, and microclimate as tools optimizing deadwood enrichment for forest biodiversity</article-title>. <source>Biol Conserv</source>. <year>2022</year>;<volume>270</volume>:<fpage>109569</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.biocon.2022.109569" xlink:type="simple">10.1016/j.biocon.2022.109569</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lei</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Xiao</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Zeng</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Frey</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Effects of thinning intensity and understory removal on soil microbial community in Pinus massoniana plantations of subtropical China</article-title>. <source>Appl Soil Ecol</source>. <year>2021</year>;<volume>167</volume>:<fpage>104055</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.apsoil.2021.104055" xlink:type="simple">10.1016/j.apsoil.2021.104055</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fassnacht</surname> <given-names>KS</given-names></name>, <name name-style="western"><surname>Steele</surname> <given-names>TW</given-names></name>. <article-title>Snag dynamics in northern hardwood forests under different management scenarios</article-title>. <source>Forest Ecol Manag</source>. <year>2016</year>;<volume>363</volume>:<fpage>267</fpage>–<lpage>76</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2015.12.003" xlink:type="simple">10.1016/j.foreco.2015.12.003</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lewandowski</surname> <given-names>TE</given-names></name>, <name name-style="western"><surname>Forrester</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Mladenoff</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>D’Amato</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Fassnacht</surname> <given-names>DSA</given-names></name>, <name name-style="western"><surname>Padley</surname> <given-names>E</given-names></name>, <etal>et al</etal>. <article-title>Do biological legacies moderate the effects of forest harvesting on soil microbial community composition and soil respiration</article-title>. <source>Forest Ecol Manag</source>. <year>2019</year>;<volume>432</volume>:<fpage>298</fpage>–<lpage>308</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2018.09.020" xlink:type="simple">10.1016/j.foreco.2018.09.020</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schipper</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Smith</surname> <given-names>P</given-names></name>. <article-title>Deforestation may increase soil carbon but it is unlikely to be continuous or unlimited</article-title>. <source>Glob Chang Biol</source>. <year>2018</year>;<volume>24</volume>(<issue>2</issue>):<fpage>557</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/gcb.13999" xlink:type="simple">10.1111/gcb.13999</ext-link></comment> <object-id pub-id-type="pmid">29193672</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Yin</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>C</given-names></name>. <article-title>Effects of forest conversion on soil labile organic carbon fractions and aggregate stability in subtropical China</article-title>. <source>Plant Soil</source>. <year>2009</year>;<volume>323</volume>(1–2):<fpage>153</fpage>–<lpage>62</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11104-009-9921-4" xlink:type="simple">10.1007/s11104-009-9921-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ferraz de Almeida</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Rodrigues Mikhael</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Oliveira Franco</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Fonseca Santana</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Wendling</surname> <given-names>B</given-names></name>. <article-title>Measuring the Labile and Recalcitrant Pools of Carbon and Nitrogen in Forested and Agricultural Soils: A Study under Tropical Conditions</article-title>. <source>Forests</source>. <year>2019</year>;<volume>10</volume>(<issue>7</issue>):<fpage>544</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/f10070544" xlink:type="simple">10.3390/f10070544</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ahmed</surname> <given-names>IU</given-names></name>, <name name-style="western"><surname>Assefa</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Godbold</surname> <given-names>DL</given-names></name>. <article-title>Land-Use Change Depletes Quantity and Quality of Soil Organic Matter Fractions in Ethiopian Highlands</article-title>. <source>Forests</source>. <year>2022</year>;<volume>13</volume>(<issue>1</issue>):<fpage>69</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/f13010069" xlink:type="simple">10.3390/f13010069</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chmolowska</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hamda</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Laskowski</surname> <given-names>R</given-names></name>. <article-title>Cellulose decomposed faster in fallow soil than in meadow soil due to a shorter lag time</article-title>. <source>J Soils Sediments</source>. <year>2016</year>;<volume>17</volume>(<issue>2</issue>):<fpage>299</fpage>–<lpage>305</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11368-016-1536-9" xlink:type="simple">10.1007/s11368-016-1536-9</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lyu</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>J</given-names></name>. <article-title>Changes in soil carbon and nitrogen stocks and microbial community after forest conversion in a subtropical region</article-title>. <source>Scandinavian J Forest Res</source>. <year>2021</year>;<volume>36</volume>(7–8):<fpage>575</fpage>–<lpage>84</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/02827581.2021.1998598" xlink:type="simple">10.1080/02827581.2021.1998598</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shrestha</surname> <given-names>BM</given-names></name>, <name name-style="western"><surname>Certini</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Forte</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>BR</given-names></name>. <article-title>Soil Organic Matter Quality under Different Land Uses in a Mountain Watershed of Nepal</article-title>. <source>Soil Sci Soc Am J</source>. <year>2008</year>;<volume>72</volume>(<issue>6</issue>):<fpage>1563</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2136/sssaj2007.0375" xlink:type="simple">10.2136/sssaj2007.0375</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ren</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Zhong</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Han</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Differential responses of soil microbial biomass, diversity, and compositions to altitudinal gradients depend on plant and soil characteristics</article-title>. <source>Sci Total Environ</source>. <year>2018</year>;610–611:<fpage>750</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.scitotenv.2017.08.110" xlink:type="simple">10.1016/j.scitotenv.2017.08.110</ext-link></comment> <object-id pub-id-type="pmid">28822942</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Drum</surname> <given-names>CG</given-names></name>, <name name-style="western"><surname>Vogel</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Gezan</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Jokela</surname> <given-names>EJ</given-names></name>. <article-title>Belowground processes for two loblolly pine (Pinus taeda L.) families respond differently to the intensity of plantation management</article-title>. <source>Forest Ecol Manag</source>. <year>2019</year>;<volume>441</volume>:<fpage>293</fpage>–<lpage>301</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foreco.2019.03.041" xlink:type="simple">10.1016/j.foreco.2019.03.041</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Song</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhai</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Qiao</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Forest management practices of Pinus tabulaeformis plantations alter soil organic carbon stability by adjusting microbial characteristics on the Loess Plateau of China</article-title>. <source>Sci Total Environ</source>. <year>2021</year>;<volume>766</volume>:<fpage>144209</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.scitotenv.2020.144209" xlink:type="simple">10.1016/j.scitotenv.2020.144209</ext-link></comment> <object-id pub-id-type="pmid">33418253</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>DuPont</surname> <given-names>ST</given-names></name>, <name name-style="western"><surname>Culman</surname> <given-names>SW</given-names></name>, <name name-style="western"><surname>Ferris</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Buckley</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>Glover</surname> <given-names>JD</given-names></name>. <article-title>No-tillage conversion of harvested perennial grassland to annual cropland reduces root biomass, decreases active carbon stocks, and impacts soil biota</article-title>. <source>Agric Ecosyst Environ</source>. <year>2010</year>;<volume>137</volume>(1–2):<fpage>25</fpage>–<lpage>32</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.agee.2009.12.021" xlink:type="simple">10.1016/j.agee.2009.12.021</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0339350.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>Y</given-names></name>. <article-title>Response of Bacterial and Fungal Soil Communities to Chinese Fir (Cunninghamia lanceolate) Long-Term Monoculture Plantations</article-title>. <source>Front Microbiol</source>. <year>2020</year>;<volume>11</volume>:<fpage>181</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fmicb.2020.00181" xlink:type="simple">10.3389/fmicb.2020.00181</ext-link></comment> <object-id pub-id-type="pmid">32184765</object-id></mixed-citation></ref>
+<ref id="pone.0339350.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bongiorno</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Bünemann</surname> <given-names>EK</given-names></name>, <name name-style="western"><surname>Oguejiofor</surname> <given-names>CU</given-names></name>, <name name-style="western"><surname>Meier</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Gort</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Comans</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Sensitivity of labile carbon fractions to tillage and organic matter management and their potential as comprehensive soil quality indicators across pedoclimatic conditions in Europe</article-title>. <source>Ecol Indicat</source>. <year>2019</year>;<volume>99</volume>:<fpage>38</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ecolind.2018.12.008" xlink:type="simple">10.1016/j.ecolind.2018.12.008</ext-link></comment></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pone.0339350.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Bhadauria</surname>
+<given-names>Tunira</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Tunira Bhadauria</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="article" id="rel-obj002" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">9 Feb 2025</named-content></p>
+<p>Dear Dr. Ding,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>Please submit your revised manuscript by Mar 26 2025 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email> . When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p>
+</list-item>
+<list-item>
+<p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+</list-item>
+<list-item>
+<p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+</list-item>
+</list>
+</p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link> . Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link> .</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Tunira Bhadauria, Ph.D.</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1.  Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link>   and</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2. In your Methods section, please provide additional information regarding the permits you obtained for the work. Please ensure you have included the full name of the authority that approved the field site access and, if no permits were required, a brief statement explaining why.</p>
+<p>3. Thank you for stating the following financial disclosure:</p>
+<p>“This work was supported by the National Nature Science Foundation of China (NO. 32192433, 32101495 and 31930071).”</p>
+<p>Please state what role the funders took in the study.  If the funders had no role, please state: "The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript."</p>
+<p>If this statement is not correct you must amend it as needed.</p>
+<p>Please include this amended Role of Funder statement in your cover letter; we will change the online submission form on your behalf.</p>
+<p>4. Thank you for stating the following in the Acknowledgments Section of your manuscript:</p>
+<p>“This work was supported by the National Nature Science Foundation of China (NO. 32192433, 32101495 and 31930071).”</p>
+<p>We note that you have provided funding information that is currently declared in your Funding Statement. However, funding information should not appear in the Acknowledgments section or other areas of your manuscript. We will only publish funding information present in the Funding Statement section of the online submission form.</p>
+<p>Please remove any funding-related text from the manuscript and let us know how you would like to update your Funding Statement. Currently, your Funding Statement reads as follows:</p>
+<p>“This work was supported by the National Nature Science Foundation of China (NO. 32192433, 32101495 and 31930071).”</p>
+<p>Please include your amended statements within your cover letter; we will change the online submission form on your behalf.</p>
+<p>5. We note that your Data Availability Statement is currently as follows: [All relevant data are within the manuscript and its Supporting Information files.]</p>
+<p>Please confirm at this time whether or not your submission contains all raw data required to replicate the results of your study. Authors must share the “minimal data set” for their submission. PLOS defines the minimal data set to consist of the data required to replicate all study findings reported in the article, as well as related metadata and methods (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/data-availability#loc-minimal-data-set-definition" xlink:type="simple">https://journals.plos.org/plosone/s/data-availability#loc-minimal-data-set-definition</ext-link>).</p>
+<p>For example, authors should submit the following data:</p>
+<p>- The values behind the means, standard deviations and other measures reported;</p>
+<p>- The values used to build graphs;</p>
+<p>- The points extracted from images for analysis.</p>
+<p>Authors do not need to submit their entire data set if only a portion of the data was used in the reported study.</p>
+<p>If your submission does not contain these data, please either upload them as Supporting Information files or deposit them to a stable, public repository and provide us with the relevant URLs, DOIs, or accession numbers. For a list of recommended repositories, please see <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/recommended-repositories" xlink:type="simple">https://journals.plos.org/plosone/s/recommended-repositories</ext-link>.</p>
+<p>If there are ethical or legal restrictions on sharing a de-identified data set, please explain them in detail (e.g., data contain potentially sensitive information, data are owned by a third-party organization, etc.) and who has imposed them (e.g., an ethics committee). Please also provide contact information for a data access committee, ethics committee, or other institutional body to which data requests may be sent. If data are owned by a third party, please indicate how others may request data access.</p>
+<p>6. We note that Figure 1 in your submission contain [map/satellite] images which may be copyrighted. All PLOS content is published under the Creative Commons Attribution License (CC BY 4.0), which means that the manuscript, images, and Supporting Information files will be freely available online, and any third party is permitted to access, download, copy, distribute, and use these materials in any way, even commercially, with proper attribution. For these reasons, we cannot publish previously copyrighted maps or satellite images created using proprietary data, such as Google software (Google Maps, Street View, and Earth). For more information, see our copyright guidelines: <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/licenses-and-copyright" xlink:type="simple">http://journals.plos.org/plosone/s/licenses-and-copyright</ext-link>.</p>
+<p>We require you to either (1) present written permission from the copyright holder to publish these figures specifically under the CC BY 4.0 license, or (2) remove the figures from your submission:</p>
+<p>a. You may seek permission from the original copyright holder of Figure 1 to publish the content specifically under the CC BY 4.0 license. </p>
+<p>We recommend that you contact the original copyright holder with the Content Permission Form (<ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/file?id=7c09/content-permission-form.pdf" xlink:type="simple">http://journals.plos.org/plosone/s/file?id=7c09/content-permission-form.pdf</ext-link>) and the following text:</p>
+<p>“I request permission for the open-access journal PLOS ONE to publish XXX under the Creative Commons Attribution License (CCAL) CC BY 4.0 (<ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">http://creativecommons.org/licenses/by/4.0/</ext-link>). Please be aware that this license allows unrestricted use and distribution, even commercially, by third parties. Please reply and provide explicit written permission to publish XXX under a CC BY license and complete the attached form.”</p>
+<p>Please upload the completed Content Permission Form or other proof of granted permissions as an ""Other"" file with your submission.</p>
+<p>In the figure caption of the copyrighted figure, please include the following text: “Reprinted from [ref] under a CC BY license, with permission from [name of publisher], original copyright [original copyright year].”</p>
+<p>b. If you are unable to obtain permission from the original copyright holder to publish these figures under the CC BY 4.0 license or if the copyright holder’s requirements are incompatible with the CC BY 4.0 license, please either i) remove the figure or ii) supply a replacement figure that complies with the CC BY 4.0 license. Please check copyright information on all replacement figures and update the figure caption with source information. If applicable, please specify in the figure caption text when a figure is similar but not identical to the original image and is therefore for illustrative purposes only.</p>
+<p>The following resources for replacing copyrighted map figures may be helpful:</p>
+<p>USGS National Map Viewer (public domain): <ext-link ext-link-type="uri" xlink:href="http://viewer.nationalmap.gov/viewer/" xlink:type="simple">http://viewer.nationalmap.gov/viewer/</ext-link></p>
+<p>The Gateway to Astronaut Photography of Earth (public domain): <ext-link ext-link-type="uri" xlink:href="http://eol.jsc.nasa.gov/sseop/clickmap/" xlink:type="simple">http://eol.jsc.nasa.gov/sseop/clickmap/</ext-link></p>
+<p>Maps at the CIA (public domain): <ext-link ext-link-type="uri" xlink:href="https://www.cia.gov/library/publications/the-world-factbook/index.html" xlink:type="simple">https://www.cia.gov/library/publications/the-world-factbook/index.html</ext-link> and <ext-link ext-link-type="uri" xlink:href="https://www.cia.gov/library/publications/cia-maps-publications/index.html" xlink:type="simple">https://www.cia.gov/library/publications/cia-maps-publications/index.html</ext-link></p>
+<p>NASA Earth Observatory (public domain): <ext-link ext-link-type="uri" xlink:href="http://earthobservatory.nasa.gov/" xlink:type="simple">http://earthobservatory.nasa.gov/</ext-link></p>
+<p>Landsat: <ext-link ext-link-type="uri" xlink:href="http://landsat.visibleearth.nasa.gov/" xlink:type="simple">http://landsat.visibleearth.nasa.gov/</ext-link></p>
+<p>USGS EROS (Earth Resources Observatory and Science (EROS) Center) (public domain): <ext-link ext-link-type="uri" xlink:href="http://eros.usgs.gov/#" xlink:type="simple">http://eros.usgs.gov/#</ext-link></p>
+<p>Natural Earth (public domain): <ext-link ext-link-type="uri" xlink:href="http://www.naturalearthdata.com/" xlink:type="simple">http://www.naturalearthdata.com/</ext-link></p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Partly</p>
+<p>**********</p>
+<p>2. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>3. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>4. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p>Reviewer #1: This MS titled “Assisted natural regeneration Forests demonstrate greater carbon storage potential than plantation in subtropical China” aims to explore effects of forest management strategies (i.e., ANR and man-made plantation) on SOC fractions and SMC structures over 6 years. While the topic is relevant and widely studied, the methods and findings presented in this MS appear somewhat ordinary. Additionally, the structure and content require further depth and refinement. Below are detailed suggestions for improvement.</p>
+<p>1) this work did not directly address carbon storage, and the term "C storage" in the title should be replaced with "C fractions" to more accurately reflect the study's focus.</p>
+<p>2) INTRODUCTION. The introduction lacks sufficient focus on the major topic. More attention should be given to building a strong theoretical basis for the hypotheses, which are currently missing. Clear articulation of hypotheses is essential. Some extraneous information should be removed, such as L80–85 (discussion on rhizosphere and plant and microbial diversity), as they are not directly relevant to your study. The background on ANR (L41–49) is overly detailed and should be condensed to improve clarity and flow.</p>
+<p>3) M&amp;M</p>
+<p>L120-128, were the treatments randomly assigned?</p>
+<p>L190-191, one-way ANOVA is typically used to test the significance of treatment effects on response variables or their difference, not their relationships. please rephrase or clarify the intended purpose of this analysis.</p>
+<p>4) the REUSLTS section needs reorganization with more concise and accurate statements focusing on the key findings.</p>
+<p>L245-261, the influencing factors (soil physicochemical properties and SMC groups) are insufficient. for example, PH should be included as it plays a critical role in microbial processes and SOC fraction dynamics. Litter and root characteristics, as major sources of SOC and microbes (particularly LC), should be provide and analyze. These are often considered essential when analyzing SOC fractions in forests. In my opinion, physicochemical properties should also be tested across treatments (as with SMC groups), and the significant variables would be considered for further analysis.</p>
+<p>5) there are so many spelling, grammar and writing errors that need significant improvement. please ensure a thorough review before submission. For example, L13-14, 18-19, 25-26,,,</p>
+<p>L49, the abbreviation of SOC should be labeled when it first mentioned. And also, L57 (CNP), L139 (carbon nitrogen phosphorus) ,,,</p>
+<p>Reviewer #2: This manuscript investigates the comparative potential of Assisted Natural Regeneration (ANR) and traditional plantation forests for carbon storage and microbial community modulation in subtropical China. This research topic is interesting and has practical significance. The study employs a robust experimental design with well-replicated field trials, providing valuable insights into the complex interplay between soil carbon dynamics and microbial ecology. However, while the findings are promising, certain methodological and interpretational aspects require further refinement. Specifically, the connection between the results and broader ecological implications could be more clearly articulated, and addressing some inconsistencies in methodology and data presentation would significantly enhance the manuscript's scientific rigor and impact. Furthermore, the discussion sections of the manuscript are the weakest and require further improvement. I have provided specific comments below.</p>
+<p>Specific Comments:</p>
+<p>Title: The title appears overly broad given the scope of the study. A single study may not sufficiently support the generalization implied in the title. Consider narrowing the title to reflect the specific findings, such as emphasizing the study’s focus on carbon storage and microbial community dynamics in a particular region and forest type.</p>
+<p>Abstract: The abstract seems to be a repetition of the results and lacks key supporting data.</p>
+<p>Line 12: Rephrase "how it performs than" to "how it performs relative to" for improved fluency and precision.</p>
+<p>Line 17: Clearly define "LC1" and "LC2" as "labile carbon fractions with varying turnover times" to enhance precision and accessibility for a multidisciplinary audience.</p>
+<p>Introduction: Provide a more nuanced discussion of the subtropical region’s unique climatic and edaphic conditions, emphasizing their relevance to soil carbon storage and forest restoration dynamics.</p>
+<p>Line 48: Elaborate on the phrase "extensive ecosystem service functions" by detailing specific services linked to ANR, such as carbon sequestration, hydrological regulation, and biodiversity enhancement.</p>
+<p>Lines 118-125: This sentence is too complicated, please simplify it. In addition, please specify whether the plots were randomized or stratified based on biophysical variables like slope, aspect, and vegetation type, as these can significantly influence soil and microbial metrics.</p>
+<p>Line 135: Justify the selection of a 0-10 cm soil sampling depth by citing studies highlighting its sensitivity to anthropogenic and natural disturbances.</p>
+<p>Line 144: Provide a detailed rationale for adopting the acid hydrolysis method and discuss its limitations, particularly in differentiating labile from recalcitrant carbon fractions.</p>
+<p>Figure 2: Standardize the presentation of Figure 2 by including absolute values, relative percentages, and error bars to improve interpretability. Also, please give a distinction to the subplots.</p>
+<p>Figure 4: I am confused about the graph on the right side of Figure 4. How was the data obtained (is it correct)? What does the effect here refer to? Please clarify. Moreover, please expand abbreviations like "Envi" (environmental variables) and "Mic" (microbial indicators) to facilitate interpretation by diverse readerships.</p>
+<p>Table 2: Specify the replication number (e.g., n=3) and statistical measures used to ensure transparency in data interpretation.</p>
+<p>Discussion: The discussion is the weakest part of this manuscript. A well-structured discussion should be based on this study's findings and combined with previous studies to discuss something new rather than simply listing and piling up the results.</p>
+<p>References: Ensure full compliance with journal-specific formatting requirements, standardizing Latin names, capitalization, and citation styles.</p>
+<p>General: please conduct a meticulous review for linguistic precision, ensure that terminology aligns with current soil and microbial ecology standards, and refine syntax for enhanced readability and academic rigor.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #1: <bold>Yes: </bold> Rudong Zhao</p>
+<p>Reviewer #2: No</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link> . PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email> . Please note that Supporting Information files do not need this step.</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0339350.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 1</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj003" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0339350.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">18 Apr 2025</named-content></p>
+<p>We sincerely appreciate the editor’s careful review and constructive suggestions regarding the manuscript format and structure. We have thoroughly addressed all the editorial comments.</p>
+<supplementary-material id="pone.0339350.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.s004" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">4.Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0339350.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Danise</surname>
+<given-names>Tiziana</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Tiziana Danise</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">15 Sep 2025</named-content></p>
+<p>Dear Dr. Ding,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>Please submit your revised manuscript by Oct 30 2025 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email> . When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p>
+</list-item>
+<list-item>
+<p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+</list-item>
+<list-item>
+<p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+</list-item>
+</list>
+</p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link> . Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link> .</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Tiziana Danise, PhD</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>If the reviewer comments include a recommendation to cite specific previously published works, please review and evaluate these publications to determine whether they are relevant and should be cited. There is no requirement to cite these works unless the editor has indicated otherwise. </p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>Reviewer #2: All comments have been addressed</p>
+<p>Reviewer #3: All comments have been addressed</p>
+<p>Reviewer #4: All comments have been addressed</p>
+<p>Reviewer #5: All comments have been addressed</p>
+<p>**********</p>
+<p>2. Is the manuscript technically sound, and do the data support the conclusions??&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Partly</p>
+<p>Reviewer #5: Yes</p>
+<p>**********</p>
+<p>3. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>Reviewer #5: Yes</p>
+<p>**********</p>
+<p>4. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>Reviewer #5: Yes</p>
+<p>**********</p>
+<p>5. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #4: Yes</p>
+<p>Reviewer #5: No</p>
+<p>**********</p>
+<p>Reviewer #2: The authors have addressed the comments effectively; however, there are still some spelling, formatting, and grammatical errors present. For instance, abbreviations are repeated unnecessarily, and variables are not italicized as required. Specific examples include lines 39, 90, 92, 93, 139, 208, 209, and 214. A thorough review of the manuscript is needed to correct these issues.</p>
+<p>Reviewer #3: The manuscript titled "Differences in Soil Carbon Fractions and Microbial Communities and Their Underlying Mechanisms between Assisted Natural Regeneration and Plantation Forests in Subtropical China" presents a comprehensive and well-executed investigation into how different forest management strategies influence soil organic carbon (SOC) fractions and microbial dynamics in a humid subtropical environment. The authors employ a robust experimental design encompassing four forest types, detailed field sampling, precise biochemical analyses, and advanced statistical modeling (including structural equation modeling) to elucidate the biotic and abiotic drivers of SOC stabilization.</p>
+<p>The study clearly demonstrates that assisted natural regeneration (ANR) supports SOC preservation by enhancing microbial-mediated carbon retention, increasing litter and fine root inputs, and reducing disturbances typically associated with plantation forestry. The distinction made between labile and recalcitrant carbon fractions, and the finding that labile carbon plays a more critical role in SOC stabilization in these systems, provides meaningful insight into the mechanistic underpinnings of carbon cycling. The SEM approach effectively clarifies the dual regulatory pathways, linking aboveground litter inputs and belowground microbial community structure to SOC dynamics.</p>
+<p>The manuscript is well-organized, methodologically sound, and contributes original findings to the fields of soil science, forest ecology, and carbon management. The writing is clear and concise, figures and tables are appropriate and well-interpreted, and the discussion reflects a deep understanding of the topic. Importantly, the study’s conclusions are well-supported by the data and present actionable implications for sustainable forest management and climate change mitigation strategies.</p>
+<p>Given the scientific rigor, clarity, and relevance of the findings, I recommend the publication of this manuscript in its current form.</p>
+<p>Reviewer #4: Revision no. PONE-D-24-53500R1</p>
+<p>“Differences in Soil Carbon Fractions and Microbial Communities and Their Underlying Mechanisms between Assisted Natural Regeneration and Plantation Forests in Subtropical China”</p>
+<p>Since Table 1 reflects basic and important information of the standing trees characteristics in different stands. Therefore, I strongly suggest the authors to provide justifications on</p>
+<p>1. How ANR forests outperform plantations in terms of belowground input and in comparison, with CCP and CLP.</p>
+<p>2. The authors must provide a brief justification in relation with the understory biomass diversity which would enable to understand by the audiences.</p>
+<p>3. This justification much be reflected in abstract, as it bears a meaningful insight.</p>
+<p>This manuscript is good and covers many aspects of soil. However, I strongly agreed with the reviewer’s viewpoint which lack of sincere justification in the discussion. The revised manuscript provided shows progress.</p>
+<p>I hope, a brief improvement of the above given problems could be a well written manuscript.</p>
+<p>Reviewer #5: Suggestions for Improvement:</p>
+<p>1. ABSTRACT:</p>
+<p>• Replace phrases like “remain insufficiently understood” with simpler wording such as “are not yet fully understood”; also break long sentences (e.g., line 24–25) for readability.</p>
+<p>• Use abbreviations consistently (e.g., SF) or omit them; ensure species names (Castanopsis carlesii, Cunninghamia lanceolata) are italicized throughout.</p>
+<p>• Shorten phrases like “SEM analysis revealed” to “SEM identified”; refine awkward wording such as “no direct influence path” → “no direct pathway of influence”.</p>
+<p>• Replace vague terms like “SOC levels” with more specific wording (e.g., “SOC concentrations”).</p>
+<p>• The concluding sentence (lines 25–27) reads like part of the discussion; consider moving it to strengthen the conclusion section.</p>
+<p>2. INTRODUCTION:</p>
+<p>• Some sentences are overly long and could be split for readability (e.g., lines 41–43 and 53–56). Shorter sentences would help highlight key findings more clearly.</p>
+<p>• Use abbreviations consistently: SOC, LC, RC, and ANR are well defined, but “secondary natural forest” (line 86) is not abbreviated, unlike elsewhere. Decide whether to introduce abbreviations for all forest types or avoid them.</p>
+<p>• Replace repetitive structures such as “remain poorly understood” (line 46) and “remain inadequately understood” (line 75) with varied phrasing to improve flow.</p>
+<p>• Line 55: “facilitate improved resources and environmental management” is vague. Consider specifying “facilitate improved soil resource use and ecosystem management”.</p>
+<p>3. MATERIALS &amp; METHODS:</p>
+<p>• Breaking the longer sentences into shorter steps or using bullet-style formatting for better readability (e.g., lines 150–166, acid hydrolysis method).</p>
+<p>• Abbreviations like SF, ANR, CCP, and CLP should be used consistently after introduction.</p>
+<p>• In soil and PLFA methods, some units and symbols (e.g., g•cm⁻³, Mg•hm²) could be standardized to SI format for consistency. Check spacing in chemical formulas (e.g., H₂SO₄, NH₄⁺-N).</p>
+<p>• Ensure uniform citation of figures and tables (e.g., Fig. 1c vs. Fig 1c; Table 1 is referenced, but caption and format could be improved for clarity and readability).</p>
+<p>• Phrasing like “Previous studies have shown…” (line 135) or “In the present study…” (line 149) is slightly repetitive. Consider more varied transitions to improve flow.</p>
+<p>4. RESULTS:</p>
+<p>• Clarity of Data Presentation: Some descriptions of results (lines 218–225) are overly dense with numbers and percentages. Breaking these into shorter sentences or using parentheses sparingly would improve readability.</p>
+<p>• Terminology Consistency: Ensure abbreviations (e.g., NH₄⁺-N, NO₃⁻-N, FRB, LS) are consistently defined once and used uniformly across text, tables, and figures.</p>
+<p>• Interpretation Balance: The discussion of plantations emphasizes nutrient and SOC declines but offers little context about variability or possible ecological explanations (e.g., species-specific traits of Castanopsis vs. Cunninghamia). Adding one line of interpretation would strengthen this.</p>
+<p>• Figure/Table Referencing: References to Table 2 and Figure 2 are appropriate, but Figure 3 and Figure 4 interpretations (lines 269–303) could briefly emphasize the ecological meaning of the significant pathways rather than focusing mainly on R² values.</p>
+<p>5. DISSCUSION:</p>
+<p>• The model fit indices (χ², df, RMSEA, CFI, TLI) are reported, but the narrative doesn’t fully explain their ecological significance. Readers unfamiliar with SEM may find it overly technical.</p>
+<p>• The explanation of LC and RC dynamics is repeated across multiple paragraphs. This could be condensed to avoid redundancy and to keep focus on novel insights.</p>
+<p>6. CONCLUSION:</p>
+<p>• The paragraph is breaking it into two shorter paragraphs for better readability and flow.</p>
+<p>• Acronyms such as LC, RC, SOC, ANR, GP:GN are frequently used — ensure they are defined at first use within this section for clarity to readers unfamiliar with earlier parts.</p>
+<p>• The use of percentages (e.g., “SOC reduced by up to 30.4%”) would benefit from specifying whether this was relative to secondary forests, ANR, or another reference system.</p>
+<p>7. SUGGESTIVE NOTE:</p>
+<p>I find this manuscript has;</p>
+<p>• Scientific Contribution – The focus on SOC fractions (labile vs. recalcitrant) and their microbial underpinnings in subtropical forests is timely and significant. The finding that LC serves as a critical mediator of SOC stability provides fresh insights.</p>
+<p>• Methodological Rigor – Use of multi-parameter soil and microbial analyses alongside SEM enhances the robustness of causal inference.</p>
+<p>• Novel Insights – The comparison of ANR and plantations highlights both ecological and management implications, especially regarding LC-to-RC conversion pathways.</p>
+<p>• Data Presentation – Tables and figures are detailed and well-organized, allowing clear visualization of results.</p>
+<p>• Policy Relevance – The work provides applicable recommendations for sustainable forestry and carbon management.</p>
+<p>The manuscript makes a valuable contribution to forest ecology, carbon cycle research, and sustainable land management. I recommend minor revisions focusing on clarity, consistency, and contextual framing. Once these improvements are incorporated, the manuscript will be well-prepared for acceptance.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: <bold>Yes: </bold> Tancredo Souza</p>
+<p>Reviewer #4: No</p>
+<p>Reviewer #5: <bold>Yes: </bold> Dr. Amina Kanwal</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link> . PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email> . Please note that Supporting Information files do not need this step.</p>
+<supplementary-material id="pone.0339350.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.s002" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Review PONE-D-24-53500R1.docx</named-content></p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0339350.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.s003" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Suggestions for Improvement- PlosOne - 10-09-2025.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0339350.r004">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r004</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 2</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj005" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0339350.r003" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">30 Sep 2025</named-content></p>
+<p>Thank you for the opportunity to submit a revised version of our manuscript titled “Differences in Soil Carbon Fractions and Microbial Communities and Their Underlying Mechanisms between Assisted Natural Regeneration and Plantation Forests in Subtropical China” (Manuscript ID: PONE-D-24-53500R1). We sincerely appreciate the constructive comments and suggestions provided by the reviewers and the academic editor.</p>
+<p>We have carefully addressed all the points raised during the review process. The main revisions include:</p>
+<p>Clarifying methodological details as suggested.</p>
+<p>Improving the discussion of results to better highlight their significance.</p>
+<p>Ensuring that all conclusions are well-supported by the data.</p>
+<p>Minor grammatical and stylistic edits for improved readability.</p>
+<p>We believe that the revisions have significantly improved the manuscript and hope that it now meets the publication standards of PLOS ONE.</p>
+<p>Thank you for your time and consideration.</p>
+<supplementary-material id="pone.0339350.s005" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0339350.s005" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0339350.r005" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r005</article-id>
+<title-group>
+<article-title>Decision Letter 2</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Ma</surname>
+<given-names>Ying</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Ying Ma</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="article" id="rel-obj006" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">7 Dec 2025</named-content></p>
+<p>Differences in Soil Carbon Fractions and Microbial Communities and Their Underlying Mechanisms between Assisted Natural Regeneration and Plantation Forests in Subtropical China</p>
+<p>PONE-D-24-53500R2</p>
+<p>Dear Dr. Ding,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice will be generated when your article is formally accepted. Please note, if your institution has a publishing partnership with PLOS and your article meets the relevant criteria, all or part of your publication costs will be covered. Please make sure your user information is up-to-date by logging into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">Editorial Manager®</ext-link>  and clicking the ‘Update My Information' link at the top of the page. For questions related to billing, please contact <ext-link ext-link-type="uri" xlink:href="https://plos.my.site.com/s/" xlink:type="simple">billing support</ext-link> .</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact onepress@plos.org.</p>
+<p>Kind regards,</p>
+<p>Ying Ma, Ph.D.</p>
+<p>Academic Editor</p>
+<p>PLOS One</p>
+<p>Additional Editor Comments (optional):</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Comments to the Author</bold></p>
+<p>Reviewer #2: All comments have been addressed</p>
+<p>Reviewer #3: All comments have been addressed</p>
+<p>Reviewer #6: All comments have been addressed</p>
+<p>**********</p>
+<p>2. Is the manuscript technically sound, and do the data support the conclusions??&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>3. Has the statistical analysis been performed appropriately and rigorously? --&gt;?&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>4. Have the authors made all data underlying the findings in their manuscript fully available??&gt;</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link></p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>5. Is the manuscript presented in an intelligible fashion and written in standard English??&gt;</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>Reviewer #6: Yes</p>
+<p>**********</p>
+<p>Reviewer #2: (No Response)</p>
+<p>Reviewer #3: I have carefully reviewed the revised manuscript and the authors’ point-by-point responses. The authors have satisfactorily addressed all comments raised during previous review rounds and have substantially improved the clarity, structure, and scientific rigor of the paper.</p>
+<p>I recommend the manuscript for publication in its current form.</p>
+<p>Reviewer #6: This is a revised manuscript and the authors have made great efforts to address reviewers' comments. I find the research is quite interesting and recommend Accept.</p>
+<p>**********</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link></p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: No</p>
+<p>Reviewer #6: No</p>
+<p>**********</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0339350.r006" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0339350.r006</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Ma</surname>
+<given-names>Ying</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Ying Ma</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0339350" document-id-type="doi" document-type="article" id="rel-obj007" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>PONE-D-24-53500R2</p>
+<p>PLOS One</p>
+<p>Dear Dr. Ding,</p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS One. Congratulations! Your manuscript is now being handed over to our production team.</p>
+<p>At this stage, our production department will prepare your paper for publication. This includes ensuring the following:</p>
+<p>* All references, tables, and figures are properly cited</p>
+<p>* All relevant supporting information is included in the manuscript submission,</p>
+<p>* There are no issues that prevent the paper from being properly typeset</p>
+<p>You will receive further instructions from the production team, including instructions on how to review your proof when it is ready. Please keep in mind that we are working through a large volume of accepted articles, so please give us a few days to review your paper and let you know the next and final steps.</p>
+<p>Lastly, if your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact onepress@plos.org.</p>
+<p>You will receive an invoice from PLOS for your publication fee after your manuscript has reached the completed accept phase. If you receive an email requesting payment before acceptance or for any other service, this may be a phishing scheme. Learn how to identify phishing emails and protect your accounts at <ext-link ext-link-type="uri" xlink:href="https://explore.plos.org/phishing" xlink:type="simple">https://explore.plos.org/phishing</ext-link>.</p>
+<p>If we can help with anything else, please email us at customercare@plos.org.</p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access.</p>
+<p>Kind regards,</p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr. Ying Ma</p>
+<p>Academic Editor</p>
+<p>PLOS One</p>
+</body>
+</sub-article>
+</article>

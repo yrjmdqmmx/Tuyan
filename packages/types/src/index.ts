@@ -27,3 +27,8 @@ export type { UniversalRoute, UniversalCustomConfig, UniversalProtocol, Universa
 export type { ModelVersion } from './model-presentation.js'
 
 export type { ThinkingOptions, ThinkingSelection, ThinkingConfiguration, ThinkingSnapshot, ThinkingSnapshotRole } from './thinking.js'
+
+export type { VisionMode, CandidateReview, CandidateProgress, WorkflowSettings } from './workflow.js'
+export type { ModelSpecifications, SpecificationSupport } from './model-specifications.js'
+
+export type { FigureRequest } from "./figure-taxonomy.js"

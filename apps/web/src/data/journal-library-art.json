@@ -1,0 +1,14 @@
+{
+  "asset": "/journal-library/oak-backboard.70b1842b3c.png",
+  "createdOn": "2026-10-16",
+  "kind": "generated-background",
+  "tool": "built-in image_gen",
+  "requestedModel": "image2.5",
+  "actualModel": "not exposed by tool; version not verified",
+  "sha256": "70b1842b3c52b378bfe73b7a266b5bb4afd07a803a1527a4bcfe4ab23e3f1ed3",
+  "bytes": 2380111,
+  "width": 1536,
+  "height": 1024,
+  "usage": "Decorative bookcase back panel only; never an official journal cover or a rule source. One local immutable URL, no runtime generation or remote fetch.",
+  "prompt": "Create a production-ready photorealistic BACKGROUND TEXTURE for a restrained academic journal bookshelf interface. Landscape 3:2 composition, straight-on orthographic view, no perspective convergence. A close-up of the interior BACK PANEL of an empty high-quality light natural oak bookcase, softly lit from upper left. Warm pale honey oak, subtle tactile fine vertical wood grain, very faint variations between wide fitted timber panels, matte finish, soft ambient occlusion near the two slender side rails. The panel fills the whole image. Thin real oak vertical frame rails at the far left and far right edges, very understated. NO HORIZONTAL SHELVES or horizontal lines: shelf boards will be drawn separately in the interface so the layout can be responsive. No books, no objects, no decorations, no paper, no text, no typography, no labels, no logos, no watermark. Natural contemporary library furniture, calm warm cream and pale oak palette, enough real material depth to look like photographed wood rather than a flat beige gradient. Even, low contrast central area to keep real journal covers readable in front. No dark wood, no ornate furniture, no intense orange, no vignette beyond physically plausible soft edge shadows. High quality, fine realistic wood pores, not noisy, not a repeating wallpaper pattern."
+}

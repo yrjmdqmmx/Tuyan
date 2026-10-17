@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2048" height="1152" viewBox="0 0 2048 1152"><title>Synthetic composition QA</title><rect width="100%" height="100%" fill="white"/><g data-panel="A" data-figure-type="workflow"><text x="51.2" y="89.60000000000001" font-size="35.839999999999996" font-family="Noto Sans">A</text><svg id="panel0_scope" x="51.2" y="102.4" width="954.3679999999999" height="455.16799999999995" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet"><svg width="100%" height="100%" viewBox="0 0 400 250" id="panel0_sourceRoot"><defs><marker id="panel0_arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z"></path></marker></defs><rect width="400" height="250" fill="white"></rect><rect x="25" y="75" width="100" height="70" fill="#dbe9e3"></rect><text x="40" y="115" font-size="20">Input</text><path d="M130 110 H250" stroke="#335d51" marker-end="url(#panel0_arrow)"></path><text x="260" y="115" font-size="20">Output</text></svg></svg></g><g data-panel="B" data-figure-type="bar"><text x="1042.432" y="89.60000000000001" font-size="35.839999999999996" font-family="Noto Sans">B</text><svg id="panel1_scope" x="1042.432" y="102.4" width="954.3679999999999" height="455.16799999999995" viewBox="0 0 648 432" preserveAspectRatio="xMidYMid meet"><svg version="1.1" width="100%" height="100%" viewBox="0 0 648 432" id="panel1_sourceRoot"><defs>
+  <style type="text/css">#panel1_scope *{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs><g id="panel1_figure_1">
+  <g id="panel1_patch_1">
+   <path d="M 0 432  L 648 432  L 648 0  L 0 0  z " style="fill: #ffffff"></path>
+  </g>
+  <g id="panel1_axes_1">
+   <g id="panel1_patch_2">
+    <path d="M 52.48024 393.99976  L 644.99976 393.99976  L 644.99976 3.00024  L 52.48024 3.00024  z " style="fill: #ffffff"></path>
+   </g>
+   <g id="panel1_patch_3">
+    <path d="M 52.48024 20.772945  L 278.201962 20.772945  L 278.201962 122.331262  L 52.48024 122.331262  z " clip-path="url(#panel1_p56248b3479)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_4">
+    <path d="M 52.48024 147.720842  L 616.784545 147.720842  L 616.784545 249.279158  L 52.48024 249.279158  z " clip-path="url(#panel1_p56248b3479)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_patch_5">
+    <path d="M 52.48024 274.668738  L 391.062823 274.668738  L 391.062823 376.227055  L 52.48024 376.227055  z " clip-path="url(#panel1_p56248b3479)" style="fill: #487968"></path>
+   </g>
+   <g id="panel1_matplotlib.axis_1">
+    <g id="panel1_xtick_1">
+     <g id="panel1_line2d_1">
+      <defs>
+       <path id="panel1_m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="52.48024" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_1">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="52.48024" y="411.55976" transform="rotate(-0 52.48024 411.55976)">0</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_2">
+     <g id="panel1_line2d_2">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="165.341101" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_2">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="165.341101" y="411.55976" transform="rotate(-0 165.341101 411.55976)">1</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_3">
+     <g id="panel1_line2d_3">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="278.201962" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_3">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="278.201962" y="411.55976" transform="rotate(-0 278.201962 411.55976)">2</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_4">
+     <g id="panel1_line2d_4">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="391.062823" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_4">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="391.062823" y="411.55976" transform="rotate(-0 391.062823 411.55976)">3</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_5">
+     <g id="panel1_line2d_5">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="503.923684" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_5">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="503.923684" y="411.55976" transform="rotate(-0 503.923684 411.55976)">4</text>
+     </g>
+    </g>
+    <g id="panel1_xtick_6">
+     <g id="panel1_line2d_6">
+      <g>
+       <use xlink:href="#panel1_m783222674b" x="616.784545" y="393.99976" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_6">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="616.784545" y="411.55976" transform="rotate(-0 616.784545 411.55976)">5</text>
+     </g>
+    </g>
+    <g id="panel1_text_7">
+     <text style="font-size: 12px; font-family:Noto Sans; text-anchor: middle" x="348.74" y="427.55976" transform="rotate(-0 348.74 427.55976)">dimensionless</text>
+    </g>
+   </g>
+   <g id="panel1_matplotlib.axis_2">
+    <g id="panel1_ytick_1">
+     <g id="panel1_line2d_7">
+      <defs>
+       <path id="panel1_mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8"></path>
+      </defs>
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="71.552104" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_8">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: end" x="45.48024" y="76.832104" transform="rotate(-0 45.48024 76.832104)">Alpha</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_2">
+     <g id="panel1_line2d_8">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="198.5" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_9">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: end" x="45.48024" y="203.78" transform="rotate(-0 45.48024 203.78)">Beta</text>
+     </g>
+    </g>
+    <g id="panel1_ytick_3">
+     <g id="panel1_line2d_9">
+      <g>
+       <use xlink:href="#panel1_mfd9ef9222c" x="52.48024" y="325.447896" style="stroke: #000000; stroke-width: 0.8"></use>
+      </g>
+     </g>
+     <g id="panel1_text_10">
+      <text style="font-size: 12px; font-family:Noto Sans; text-anchor: end" x="45.48024" y="330.727896" transform="rotate(-0 45.48024 330.727896)">Gamma</text>
+     </g>
+    </g>
+   </g>
+   <g id="panel1_patch_6">
+    <path d="M 52.48024 393.99976  L 52.48024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+   <g id="panel1_patch_7">
+    <path d="M 52.48024 393.99976  L 644.99976 393.99976  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"></path>
+   </g>
+  </g>
+ </g><defs>
+  <clipPath id="panel1_p56248b3479">
+   <rect x="52.48024" y="3.00024" width="592.51952" height="390.99952"></rect>
+  </clipPath>
+ </defs></svg></svg></g><g data-panel="C" data-figure-type="workflow"><text x="51.2" y="632.832" font-size="35.839999999999996" font-family="Noto Sans">C</text><svg id="panel2_scope" x="51.2" y="645.6320000000001" width="954.3679999999999" height="455.16799999999995" viewBox="0 0 400 250" preserveAspectRatio="xMidYMid meet"><svg width="100%" height="100%" viewBox="0 0 400 250" id="panel2_sourceRoot"><defs><marker id="panel2_arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z"></path></marker></defs><rect width="400" height="250" fill="white"></rect><rect x="25" y="75" width="100" height="70" fill="#dbe9e3"></rect><text x="40" y="115" font-size="20">Input</text><path d="M130 110 H250" stroke="#335d51" marker-end="url(#panel2_arrow)"></path><text x="260" y="115" font-size="20">Output</text></svg></svg></g><style>text,tspan{font-family:Noto Sans !important;}</style></svg>

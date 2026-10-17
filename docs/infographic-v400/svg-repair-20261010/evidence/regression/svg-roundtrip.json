@@ -1,0 +1,1830 @@
+[
+  {
+    "typeId": "bar",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "d630ddd2fb15763b18b8e1dcf4b5d85820ce5d9fd247fce3385c44d27342ba94",
+    "pngHash": "0d40842cdec5a28d17694ce2ba07363b1426f0a1813adb930cefb33d74d25313",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "dotplot",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "80f6f30519dcb705ba67275fc23a4555e4d93a4fe438f0268889e85fc0b007fa",
+    "pngHash": "7cad8b46930ebd30b498419f1062a5ea83ccbbf2312e6471d6b341b86ebf43aa",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "lollipop",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "c83bec9eac97eefb4c74c8ec987e7242b0ccfd1d63af5302a94c0b58f65b5e62",
+    "pngHash": "6340cb2228ae15cb2c028cdc1a2ef727756327d9877000da50e80c8c455783f7",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "dumbbell",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "0ae6026c86285436aa3e612492ac374f743bb846f963e80bbf4afd98b61c3c80",
+    "pngHash": "d0aa0bfce8729cef490932f486367623dc6b0d1cb44dc11f859c98d59cdf249b",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "forest",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "89f5e8aa1b75ac96040945aaf17fa3b2b500a1304021914a55ef2e2ea2c63aa9",
+    "pngHash": "a7c463b857ce9f9b438834fc67702a5788d12c0a5d5354857d9a9ed527413798",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "waterfall",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "0a735262de2f35f20c3aab541b2e13af5369798496e970d546e80dda8d80938f",
+    "pngHash": "b9b7978f7b8bde40f2353dc108ba6f0e05efe1f3b135c18602b915a540d0cd7b",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "gantt",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "e37c92716dba7626452babfc9f24ead766e81c437d534ae0b9f55c5c6f501316",
+    "pngHash": "4f55c344876bfaf0892ce6d466ada15bbf566d23c66d15352e17251e2fe0355b",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "histogram",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "396c0633ec262c2ebfa371bcf19690da3776c3bd97d2ba55e81a5b79ef81bf56",
+    "pngHash": "2474e37c703061249bad2b24d3f9e1764106af82e84e83a6762fad7ce32c35f4",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "boxplot",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "824409558bf250c3f4686e0553d8159c653ad52132d653984803b62964758612",
+    "pngHash": "8bb3f6ce244c09cef77caa226347e518cea02ec7164fab84dbdea03f95c7f455",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "violin",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "cc848a1edc7ec7fa1653e46f41cf151a09da0ad947de21c94555f39421cd529f",
+    "pngHash": "b8dd8fab4125430255c7eec7a86ad0559bf27402ad47394207335cad607ba368",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "ecdf",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "263bd7786604fcb9dc53589077af0b810a018c874f55962cb4ed671ff55b8758",
+    "pngHash": "d8cae7c8303b1d16364181c39e41b4383b9088a5e6ed34d861b4a932bff77cae",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "line",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "bbc4751689c6e9442c627a97062b784c1a8ffc6b4b3395ac774badb5b96dba04",
+    "pngHash": "6dc7eb7bbb5fc8ae98397bca59baf0fce68cee6820677bc34e3f25cf89b6a346",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "area",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "2fcd24649ae38eb28842c55c944004d5da3b89bd9160ded3028d89bfa611313b",
+    "pngHash": "6df7dfc131448dd666a53f99ec144e1454a449df85e247731ee352b9d0bccd7d",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "scatter",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "82d39bc063cb9254357e703ac6d02949af964145767d43d82f3377be654d2f1f",
+    "pngHash": "0fe477dfd8c95800388469d2692948756bbda8ea9d750e9712d216c74aed2427",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "bubble",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "1c6922cf90f3e9d8ba44597229756aaa3533c781158ee3e5b0cccb0fd9949a26",
+    "pngHash": "53449cbe4db14d05a9e496a74bd1385fb2ff0061b16ec19887f96008dcec3a5d",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "heatmap",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "c198532511d5ececea8b806b98788b86fbbdf3f7d620466c83de345e0f323b36",
+    "pngHash": "932a3c3bdb5421998d4fb32b237aa89fdcd965354a5ccffd60067d99832a2120",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "adjacency_matrix",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "c198532511d5ececea8b806b98788b86fbbdf3f7d620466c83de345e0f323b36",
+    "pngHash": "932a3c3bdb5421998d4fb32b237aa89fdcd965354a5ccffd60067d99832a2120",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "bubble_matrix",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "452ac0e5d953abc2e2210a7dbf69690265aa5342964b0ca0e3553099fd467914",
+    "pngHash": "6c49b28eb70de663e1df5aed128dc9366e5e508629847d6689e944553b91be59",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "correlation_matrix",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "03850fac8c9d513c3350ec4e6e1e78e56d3e6cfaa5d02108d688f26c95792c27",
+    "pngHash": "76a579642c16192420c00fbfbe2e143ce3dc906cd82e303d00a2f4ca1ebce0b8",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "pie",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "d67dc1f8bf57849d9c0b69e520ca52b0e0141adb4004f567055f125e331907cb",
+    "pngHash": "8d6bea6155d135785af893321885fd518800ae0831dfdf9d34df90f039630b66",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "rose",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "24e0a65ad71ceefd75112ddc36b8c0f9ff74bc4f48f9876a25236701abdaf5f7",
+    "pngHash": "d08f2bbd3ea8f43c89f0708eeedf81a412727d552f648af871ede8ece85b6d50",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "volcano",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "aa8ae29d55fea9dca0efe5fab34d4b51eede3710952aef1e906733a19f9b6832",
+    "pngHash": "494e0db638acf7e7b2f2509aa3a62c1f34aeb3671c8f0e9085189c2d8fb05eea",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "ma_plot",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "085bd823c77f61c881e76b9a24077954a7400cf78cb8f155353a47a9b4f1cfed",
+    "pngHash": "02e7d93958bda05419813f0d82e2330498223ad758aa4947dc4fc58a158fc6c4",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "roc",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "176c23b7f68d7056eae141b8dee03fa9edfbb54fbcb3186c56455dd3e62d6a62",
+    "pngHash": "849c1e1b52e52a5959f155c86e316d1ad7d3201c51af27fc788d1cc30584c853",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "pr_curve",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "7f87f83af6ec8f0ff2b6ccce854a45b537a62a6829b38c08e518e32c139bf232",
+    "pngHash": "e5bf5cc27325c3b3493705c56295e2be7de2a23714e059a98058de9f09574a70",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "confusion_matrix",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "30723c1adf5748ea89125bd3871b1f4144c09b77be81155d8df5433d07a7bd71",
+    "pngHash": "32683883041bf0caa43c901ae9f09f5b46a54f39894dd9f600266719b2e02ffb",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "calibration",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "a6bfad2006b9f9b5067d879d63ad0b8b4e61cf4e40e847a0b9fc5720a540b80d",
+    "pngHash": "5c6a6e86ea0463d44fe6e65d8aa8ca3ebd5d54f4be60b0cb76d186b0e6e63924",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "bland_altman",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "0a1bf945e9775711e6bf99a008475624d7d362c4bffe9a55271cd824d9cb04f2",
+    "pngHash": "47731936247241aabfa13358abb55358b004b6e344d27dab01631aaa55e51c1b",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "funnel_meta",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "41f23efe2a5f9fa23b6c8ff055daf4d689f11432326f06e8b99c72dac6eba9ac",
+    "pngHash": "45571538bd305ca4d18d6949866eeb35895f43e9f4df00670330804dd2599ac6",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "ordination",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "6d22baddc7d62003f4eb59f9d227656e37c98d4d417a9cef625acd89e644173b",
+    "pngHash": "66e63e9c0ba0e37cdcebcff506de7bc7a65f3d7050aae05b83d5ee7b22619074",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "vector_field",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "a4610630329181c9695ad852c236a13ef21934429694c227376576ef82c3af02",
+    "pngHash": "f16352b31c52108680796ba9c43bbd1d531358ac68d9b4e63c02c15952e5a8cb",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "contour",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "2eaf655c1fb78a9df524e8e0edecf0cba7feb4922d65e8cd494e5155bc643507",
+    "pngHash": "953f350b1d080c9f823865b0ff0c0711364e2b1c49877625c5377bd1da23c30d",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "kaplan_meier",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "89580ddef467cc97752cd078eed355d868dba74d903313c0a74c207696897407",
+    "pngHash": "29681bc45abc31f10fc94c5012c5a57ad618fba270952d4778122999f99cdca0",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "venn",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "8af07498153cfe81e166188cc7cecf2cf0e362144a064e2276e0cc7e8c536895",
+    "pngHash": "5eb77fc83c8521328318bffb586c9c075a7673ad9eab1c43e264efc9ac96c018",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "upset",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "5ac4877bada00a3e69a873df98ff786a7440a06a616d20029b862b38cbe0d864",
+    "pngHash": "ad12aba7edf0a371837ca5278ee1e64bfd44d51dce07a4636735e2b082cee5a8",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "density",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "19654a2d8e8afb954d85d3e2260b61455585329d3462346c1dea4c599cd811dd",
+    "pngHash": "42500c41f74c3cbc0d2af5978d015d43d6d0ce09bdb356eec3fa6c0c4eb371d4",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "raincloud",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "cb0cb9585d4eb0fd53b4fecd08d6ef05857fb4cd311c2e96465a620e98eaab63",
+    "pngHash": "66b0cf56ccfe29492e58c5392875bad335c0fbfc8816034dd834311cfe28e428",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "ridgeline",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "f95b5269a9f8a5fa841eb17b4d7cea95d829ef709b10acd18eb118fe8b76d8c5",
+    "pngHash": "4fe2d42837c0e8219ffc765789261c63c097e9bc56282c69419f182fe5703666",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "stripplot",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "9da10c901d4da36c7d1e6be7127c55ed603605d1495031e3efcbd3e4a44bb305",
+    "pngHash": "8da358c243c9d2dc4fca8321fd0cf2b89ccd863b7b3ee2dee84eeda4791261ca",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "binary_matrix",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "f7c0a5117e29dc944236185d667b60ca2a312547cca2e2c4e7eece2976a3c7df",
+    "pngHash": "f33b09cf8daa4cdd497b3b521e14e3c613beb724b855cff511f37811e93311a1",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "network",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "fca2a7571fc363a85e629f4494433978c35038c3d31993f5700c19066c65d352",
+    "pngHash": "9ebf4ae2172e3918466f0689e0ea21949b43c5d25c0ceebe5e4967cefb7e2510",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "euler",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "08ccf18664e0c74f6cdf56ff306692028c14c9df95500c98b858caaee22e2ed6",
+    "pngHash": "2956143ef0f28fb24719146e34fc8ba758417a77b7ba74c34040c4071eb815e4",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "sankey",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "e890da87e56ba48e72f491463e08471464c9d58e551bcc8a00a99ce627350ebd",
+    "pngHash": "e3ad2c4e0214d1599c5ef7d1af15b3e9c0104fe9570b125a595d281ea7588318",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "chord",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "0a2cc055bb468c2cdfb97062cbbb0cd21b0d6c6f03a67bc57415cf70047aafd3",
+    "pngHash": "bfb80b3e68533d064dac67d40a8cfe2f54dee42d1a3e9c2b3bf58c1a1e289967",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "radar",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "297f5280934d35224106bb094e898bb2b8958ed7c94e31f16bd2d44dfa347755",
+    "pngHash": "6cee7928342d6375f846235f80b9196981721a1f0ce5146ec725f12341c778a1",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "qq",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "232ba88e91a87c5908859b49096c2fdde8e258aba0bb0ed404dcad70dac9f061",
+    "pngHash": "62e0e25423def61aeaece3248faf8d844f7a13c95071852a116ddc93f967bd2e",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "streamgraph",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "aca5295c28db9790c1d61a7908e33dba6ed048e7cdeee47234df1e84353b9788",
+    "pngHash": "756fe204da641ac55c257ebfb34af85b1428f4c688bcd550092b7c7bb93c480c",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "cumulative_incidence",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "c00f26cd263bebce68efb5a1ca97af1670358e0d72c8c430b37d4c633787862a",
+    "pngHash": "df7fab80a9c17bf73fe09e5028dffcad7de5814b066ee54a486ccd8f854ac051",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "matrix_link_overlay",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "74e18fc62fbeb36642458d94bed19d1b7381df14e6044b424000b770e260e8ec",
+    "pngHash": "421bec9010cca8656dd8f798aef0b47c5a126c34026b92c5d802ca1d87315072",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "parallel_coordinates",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "701d26ad957a04e7fcf57329ffb73434a0b13370bcd07731bde28a891d60e3fc",
+    "pngHash": "9b3883380bd091c600cbba19b5951e69642c8b54755ad1d35669fde6bdcd0ed7",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "Small declared font size (7px); check actual readability in the raster.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "treemap",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "aae5c570d411153a5926e8d449befdf7dd917d1e883ca0750f3a71f1995bdcbf",
+    "pngHash": "bb7fb4a4a51ebb62ea133073cdaeb100e8b64fab3b001163d64a46754a55d883",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "circle_packing",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "51df8718c487aaae412b0e81f2131319f16ae2efff533f6f65feae11a5226ba9",
+    "pngHash": "90a3c5f30991e348efb219f8aa52f0328467df63f791c4523423a040ab378ba0",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "alluvial",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "5460556d93ce0abfa6123796bd3e6ae9f3afeef959f4fd66702a85648c7cd034",
+    "pngHash": "23feacb1a89bcd51ef025573f74fc7da7ffa4bbb7ad2b71d2ea5f92461ff11cb",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "point_map",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "5657a8f7bdbc46a62057c7a7dfc84a3bd9ac9287876f08355437102c587a01d5",
+    "pngHash": "1a21d92ea5b564f8b69215858ee954768aa7f93b0e6da8c4e92eea817b5c1b5c",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "choropleth",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "889b9ea74e1ff46d5b16c0ebe53258c04d7092d2a6e4920d7d135456c071b3c5",
+    "pngHash": "ed7d529d52d27adbb8bf23976859ab4139b8067147864bd8a544d98b6e6be102",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "enrichment",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "0f8898baad10b31be06a2a854a7e7dbd20ed5d16dac725ed8507f425c05b64ab",
+    "pngHash": "93eba97a710ae1b0a3958bfbf916e67799c9bb25a6b3dbb1c109eb7eb34d49b0",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "gene_track",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "58466f7e301e5ba8116169c0ec0ab087cc3412028ba83919a3b7e60e00db06b2",
+    "pngHash": "72712488fd564a99069a5bc2269444e2f146bf7aa0be8990ede7149e7116d560",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "protein_domain",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "e674a83a782a83f1bb5406fe1cafb69688ccefee7e4bcace783acc6f3046954a",
+    "pngHash": "1a5efe3098ad39f2ed1d228d74a84b4ad6faec74a16909f28a65fc13f28d51dd",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "motif_logo",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "604f27cf8c13122b830f3df04ccad38059e89f9df555b2a243087d93f3b00086",
+    "pngHash": "b8c7e13d89c6f4119222f0ea3b124624dd43d43f8cc274aa07260767117ac008",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "genome_circos",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "74ec7f522e398e04b71fe100933f7a792fe3a4da5c10233136a6af4585c96b1a",
+    "pngHash": "ede36dcb3dadfeff7e0298e28dd30614b30f572f79517d39681a6af3aa80fcbe",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "synteny",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "38f264eb25d6076a1cd031769402e50bcfb739255c1e9f510a6f8450639f5ae1",
+    "pngHash": "96091b843e2dc3f7dbaa5f0c964cb746a01d6c609da7e3a72cc4550421c4903f",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "phylogenetic",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "a4dc9d1874229f51eded421afc12c30d9a9b182fd70e2181fb5a05725c6a41d2",
+    "pngHash": "74c2b45cc1331c4eba0725fe20ef3def89836d639d9b7a92c3e6d2305c3e18f6",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  },
+  {
+    "typeId": "dendrogram",
+    "reopened": true,
+    "composed": true,
+    "width": 864,
+    "height": 486,
+    "svgHash": "8f3316866c05969b66841263e5522895658d91037c396cfb50c8445750f5efc3",
+    "pngHash": "d98157468030fd32d7f113722c30acfd17910d9cd597b169af8e06307f592d10",
+    "fontInfo": {
+      "families": [
+        "Noto Sans",
+        "Noto Sans CJK SC",
+        "Noto Sans Math"
+      ],
+      "sha256": {
+        "NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "NotoSansCJKsc-Regular.otf": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+        "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d"
+      },
+      "requestedFamilies": [
+        "Noto Sans CJK SC",
+        "DejaVu Sans"
+      ]
+    },
+    "codeIssues": [
+      "Font \"DejaVu Sans\" is not bundled; this raster uses the bundled Noto fallback.",
+      "SVG has no title element; check the figure description separately."
+    ]
+  }
+]

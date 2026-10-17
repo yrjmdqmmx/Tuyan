@@ -82,6 +82,7 @@ test('OpenRouter compatible choices and disabled entries are partitioned with se
   assert.deepEqual(partition.compatible.map((model) => model.id), ['ok'])
   assert.deepEqual(partition.incompatible.map((model) => [model.id, model.selectionDisabledReason]), [
     ['wrong-role', '此路由不提供图片输出'],
+    ['disabled', '当前账号目录不可用'],
   ])
 })
 
@@ -158,7 +159,7 @@ test('cached expiration dates disable selection, while earliest dates and provid
   ]
   const { compatible, incompatible } = partitionRegistryModels(models, { role: 'main' })
   assert.deepEqual(compatible.map((m) => m.id), ['earliest', 'placeholder'])
-  assert.deepEqual(incompatible, [])
+  assert.deepEqual(incompatible.map(m => [m.id, m.selectionDisabled]), [['expired', true]])
   assert.equal(models[0].id, 'expired', 'historical identity is preserved')
 })
 
@@ -169,7 +170,8 @@ test('cached retirement instants honor the channel time zone', () => {
     Date.now = () => Date.parse('2026-10-09T15:59:59.999Z')
     assert.equal(partitionRegistryModels([model], { role: 'main' }).compatible.length, 1)
     Date.now = () => Date.parse('2026-10-09T16:00:00Z')
-    assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible.length, 0)
+    assert.equal(partitionRegistryModels([model], { role: 'main' }).compatible.length, 0)
+    assert.equal(partitionRegistryModels([model], { role: 'main' }).incompatible[0].selectionDisabled, true)
   } finally { Date.now = now }
 })
 
@@ -183,9 +185,9 @@ test('retired configured default stays identifiable and never becomes a selectab
   assert.equal(registry.defaults.vision, 'previous')
 })
 
-test('temporarily unavailable models are hidden without mutating saved identities',()=>{
+test('unavailable models stay out of choices and remain explained in the disabled partition',()=>{
   const models=[{id:'quarantined',roles:['main'],selectable:false,disabledReason:'暂不可用'},{id:'unverified',roles:['main'],selectable:true,verificationState:'catalog'}]
   assert.deepEqual(filterRegistryModels(models,{role:'main'}).map(m=>m.id),['unverified'])
-  assert.deepEqual(partitionRegistryModels(models,{role:'main'}).incompatible,[])
+  assert.deepEqual(partitionRegistryModels(models,{role:'main'}).incompatible.map(m=>[m.id,m.selectionDisabledReason]),[['quarantined','暂不可用']])
   assert.equal(models[0].id,'quarantined')
 })

@@ -5,6 +5,7 @@ import {createUniversalRuntime} from '../src/universal-adapters.js'
 import {normalizeUniversalRoute,UniversalApiError} from '../../../packages/api/src/universal-api.js'
 import {universalThinkingIdentity} from '../../../packages/api/src/thinking.js'
 import {publicExecutionFailure} from '../../../packages/api/src/execution-errors.js'
+import {pngFixtureDecision,pngFixtureObservation} from './helpers/png-review-fixture.js'
 function route(role:string, overrides:any={}) {
  return normalizeUniversalRoute({accessProvider:'custom',modelId:'exact/same-ID:KeepCase',custom:{version:1,connectionId:role,protocol:role==='image'?'openai-images':'openai-chat',baseUrl:`https://${role}.example.com/prefix/v1`,auth:'bearer',capabilities:{text:role!=='image',vision:role!=='image',imageGeneration:role==='image',imageEditing:role==='image'},inputLimits:{maxCount:2,maxBytes:5e6,maxTotalBytes:10e6,maxDimension:4096,maxPixels:16e6,requestMaxBytes:32e6,mimeTypes:['image/png']},outputLimits:{maxBytes:10e6,maxDimension:4096,maxPixels:16e6,mimeTypes:['image/png']},outputSizes:role==='image'?[{resolution:'1K',aspectRatio:'1:1',value:'1024x1024'}]:[],...overrides}})
 }
@@ -17,7 +18,11 @@ async function fixture(pauseImage?:()=>Promise<void>) {
   if(request.url.includes('/images/') || JSON.parse(String(request.body||'{}')).tools?.[0]?.type==='image_generation') {imageCalls++;if(pauseImage)await pauseImage();if(failure && (failureStage==='image'||failureStage==='rerender'&&imageCalls>1))throw failure;return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify(request.url.endsWith('/responses')?{status:'completed',output:[{type:'image_generation_call',status:'completed',result:runtime.output.toString('base64')}]}:{data:[{b64_json:runtime.output.toString('base64')}]}))}}
   if(failure&&failureStage==='critic'&&request.url.includes('vision.example.com'))throw failure
   afterText?.()
-  return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({choices:[{finish_reason:'stop',message:{content:'A scientific workflow with input, analysis, planning and output; keep the source labels readable.'}}]}))}
+  const prompt=String(request.body),wire=JSON.parse(prompt)
+  const revisedPlan=failureStage==='rerender'?'A complete revised scientific workflow with larger readable labels and unchanged input, analysis, planning, output nodes and arrows.':undefined
+  const isReview=prompt.includes('Return strict JSON')&&prompt.includes('revised_description')
+  const content=prompt.includes('PNG visual review AFTER generation')?pngFixtureDecision(wire,revisedPlan):prompt.includes('attached current PNG')?pngFixtureObservation('Input, analysis, planning and output nodes are visible.',Boolean(revisedPlan)):isReview?JSON.stringify({critic_suggestions:revisedPlan?'Increase label spacing.':'No issues.',revised_description:revisedPlan || 'No changes needed.'}):'A scientific workflow with input, analysis, planning and output; keep the source labels readable.'
+  return {status:200,headers:new Headers(),bytes:Buffer.from(JSON.stringify({choices:[{finish_reason:'stop',message:{content}}]}))}
  }}})
  runtime.legacy.configureUniversalRuntime(adapter)
  return {...runtime,calls,afterText(fn:()=>void){afterText=fn},fail(error?:UniversalApiError,stage='image'){failure=error;failureStage=stage}}
@@ -53,7 +58,7 @@ test('local capabilities, output budget, key binding and result-unknown refuse c
   const routes={main:route('main'),vision:route('vision'),image:route('image')}
   assert.notEqual((await f.post({...body(routes),apiKeys:{custom:envelope({...routes,image:route('image',{baseUrl:'https://elsewhere.example.com/v1'})})}})).data.code,0);assert.equal(f.calls.length,0)
   assert.notEqual((await f.post({...body(routes),aspectRatio:'16:9'})).data.code,0);assert.equal(f.calls.length,0)
-  assert.notEqual((await f.post(body({...routes,vision:route('vision',{capabilities:{text:true,vision:false,imageGeneration:false,imageEditing:false}})}))).data.code,0);assert.equal(f.calls.length,0)
+  assert.notEqual((await f.post({...body({...routes,vision:route('vision',{capabilities:{text:true,vision:false,imageGeneration:false,imageEditing:false}})}),maxCriticRounds:1})).data.code,0);assert.equal(f.calls.length,0)
   f.fail(new UniversalApiError('RESULT_UNKNOWN','unknown',504))
   const submitted=await f.post(body(routes));await f.legacy.drainJobAdmission()
   const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
@@ -82,6 +87,12 @@ for (const stage of ['critic','rerender']) test(`custom ${stage} failure cannot 
   const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
   assert.equal(failed.status,'failed',JSON.stringify(failed));assert.equal(failed.recovery.requestState,'unknown');assert.equal(failed.failure.billingStatus,'unknown')
   assert.equal(failed.recovery.canResume,false);assert.ok(failed.stages.some((s:any)=>s.type==='render'))
+  assert.equal(failed.resultImages.length,1,'the successfully generated PNG remains available after an uncertain review or redraw')
+  assert.equal(failed.resultImages[0].review.status,stage==='rerender'?'issues_found':'review_failed')
+  assert.equal(failed.resultImages[0].review.history[0].status,stage==='rerender'?'issues_found':'review_failed')
+  assert.match(failed.resultImages[0].review.note,stage==='rerender'?/已检查且仍有问题.*重新生成未完成/:/检查未完成.*未认定通过/)
+  assert.equal(failed.resultImages[0].review.deliveredVersion,1)
+  assert.equal(failed.candidateProgress[0].status,'failed')
   const count=f.calls.length;await f.post({action:'providerResume',jobId:submitted.data.jobId});assert.equal(f.calls.length,count)
  }finally{await f.close()}
 })
@@ -96,6 +107,7 @@ for (const customRole of ['main','vision','image']) test(`professional role mixi
   const created=await f.post(input);assert.equal(created.data.code,0,JSON.stringify(created.data));await f.legacy.drainJobAdmission()
   const job=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
   assert.equal(job.status,'succeeded',JSON.stringify(job).slice(0,2500));assert.deepEqual(job.modelRoutes,routes)
+  assert.equal(job.resultImages[0].review.status,'passed','the main model reviewed the observer report')
   assert.ok(f.calls.some((c:any)=>c.url.includes(customRole+'.example.com')))
   assert.equal(f.tokenDanceCalls.length,0)
   assert.equal(JSON.stringify(job).includes('fixture-custom-key'),false)
@@ -115,6 +127,7 @@ for(const main of ['antling','custom']) test(`existing vision route mixes LongCa
   const created=await f.post(request);assert.equal(created.data.code,0,JSON.stringify(created.data));await f.legacy.drainJobAdmission()
   const job=(await f.post({action:'getJob',jobId:created.data.jobId})).data.job
   assert.equal(job.status,'succeeded',JSON.stringify(job).slice(0,4000));assert.deepEqual(job.modelRoutes,routes)
+  assert.equal(job.resultImages[0].review.status,'passed','the main model reviewed the observer report')
   const vision=f.providerCalls.filter((c:any)=>c.url==='https://api.longcat.chat/openai/v1/chat/completions')
   assert.ok(vision.length,'existing critic/vision workflow reached LongCat, no separate feature')
   for(const call of vision){
@@ -181,7 +194,9 @@ test('accepted custom job continues without browser polling; reopening reads the
   assert.equal(saved.state,'queued');assert.equal(saved.admissionVersion,1)
   assert.equal(await f.db.collection('paperbanana_provider_steps').countDocuments({jobId:second.data.jobId}),0)
   const snapshot=f.tokenDanceService!.cipher!.open(saved.secret,second.data.jobId)
-  assert.deepEqual(snapshot.task.body.modelRoutes,routes)
+  assert.deepEqual(snapshot.task.body.modelRoutes.main,routes.main)
+  assert.deepEqual(snapshot.task.body.modelRoutes.image,routes.image)
+  assert.notEqual(snapshot.task.body.modelRoutes.vision.custom.baseUrl,routes.vision.custom.baseUrl,'Unused observer connection is not retained in the execution snapshot')
   assert.equal(snapshot.task.kind,'create');assert.equal(snapshot.task.jobId,second.data.jobId)
   assert.equal(JSON.stringify(saved).includes('fixture-custom-key'),false)
   release();await f.legacy.drainJobAdmission()

@@ -1,3 +1,4 @@
+import { workflowRequiredRoles, workflowModelVisionStatus } from './workflow.js'
 import { normalizeProviderRegions } from './providerRegions.js'
 export const MODEL_ROUTE_ROLES = Object.freeze(['main', 'image', 'vision'])
 export const DEFAULT_WEB_PROVIDER = 'tokendance'
@@ -15,12 +16,18 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
   // Web's initial route differs from the shared catalog recommendation. Only
   // resolve defaults here; explicit user-selected routes never pass through it.
   const models = registry?.providers?.[provider]?.models ?? fallback?.registryModels
+  // Ordinary presets prefer one capable main model within the chosen channel.
+  // The live, region-filtered registry is authoritative; never infer vision from a name.
+  const visualMain = (models || []).filter(model => model.roles?.includes('main') && workflowModelVisionStatus(model) === 'supported')
+  const mainModel = visualMain.find(model => model.id === defaults.main)?.id
+    || visualMain.find(model => model.id === defaults.vision)?.id
+    || visualMain[0]?.id || defaults.main
   const imageModel = provider === DEFAULT_WEB_PROVIDER && models?.some(model =>
     model.id === DEFAULT_TOKENDANCE_IMAGE_MODEL && model.selectable !== false && model.roles?.includes('image'))
     ? DEFAULT_TOKENDANCE_IMAGE_MODEL : defaults.image
   return Object.fromEntries(MODEL_ROUTE_ROLES.map((role) => [role, {
     accessProvider: provider,
-    modelId: role === 'image' ? imageModel : defaults[role],
+    modelId: role === 'main' ? mainModel : role === 'image' ? imageModel : defaults[role],
   }]))
 }
 
@@ -30,14 +37,15 @@ export function registryReadinessMessage(status) {
   return ''
 }
 
-export function buildModelSubmission({ configurationMode, modelRoutes, registry, registryStatus = registry ? 'ready' : 'loading', providerRegions }) {
-  assertCompleteRoutes(modelRoutes)
-  if (configurationMode === 'advanced' || Object.values(modelRoutes).some(route => route.accessProvider === 'custom')) {
+export function buildModelSubmission({ configurationMode, modelRoutes, registry, registryStatus = registry ? 'ready' : 'loading', providerRegions, requiredRoles = MODEL_ROUTE_ROLES }) {
+  assertCompleteRoutes(modelRoutes, requiredRoles)
+  const executionRoutes = requiredRoles.map(role => modelRoutes[role])
+  if (configurationMode === 'advanced' || executionRoutes.some(route => route.accessProvider === 'custom')) {
     const readinessMessage = registryReadinessMessage(registryStatus)
     if (readinessMessage) throw new Error(readinessMessage)
   }
-  if (Object.values(modelRoutes).some(route=>route.accessProvider === 'custom') && !(registry?.universalApiContractVersion >= 1)) throw new Error('当前后端尚未支持通用 API 接入；配置已保留。')
-  if(Object.values(modelRoutes).some(r=>r.accessProvider==='custom'&&(r.custom?.imageTool||r.custom?.azure||r.custom?.protocol?.startsWith('bedrock-')||r.custom?.auth==='bearer-expiring'))&&!(registry?.universalExtensionsVersion>=1))throw new Error('当前后端尚未支持此图像工具或云接口扩展；草稿已保留，请升级后端。')
+  if (executionRoutes.some(route=>route.accessProvider === 'custom') && !(registry?.universalApiContractVersion >= 1)) throw new Error('当前后端尚未支持通用 API 接入；配置已保留。')
+  if(executionRoutes.some(r=>r.accessProvider==='custom'&&(r.custom?.imageTool||r.custom?.azure||r.custom?.protocol?.startsWith('bedrock-')||r.custom?.auth==='bearer-expiring'))&&!(registry?.universalExtensionsVersion>=1))throw new Error('当前后端尚未支持此图像工具或云接口扩展；草稿已保留，请升级后端。')
   const explicitRoutesSupported = Number(registry?.routeContractVersion || 0) >= 1
   if (configurationMode === 'advanced' && !explicitRoutesSupported) {
     throw new Error('当前后端不支持专业模式的多渠道模型路由，请切回普通模式。')
@@ -46,34 +54,23 @@ export function buildModelSubmission({ configurationMode, modelRoutes, registry,
     configurationMode,
     provider: modelRoutes.main.accessProvider,
     mainModelName: modelRoutes.main.modelId,
-    imageGenModelName: modelRoutes.image.modelId,
-    referenceVisionModelName: modelRoutes.vision.modelId,
+    ...(requiredRoles.includes('image')?{imageGenModelName:modelRoutes.image.modelId}:{}),
+    ...(requiredRoles.includes('vision')?{referenceVisionModelName:modelRoutes.vision.modelId}:{}),
   }
-  if (providerRegions && Object.values(modelRoutes).some(route => route.accessProvider === 'minimax')) {
+  if (providerRegions && executionRoutes.some(route => route.accessProvider === 'minimax')) {
     submission.providerRegions = normalizeProviderRegions(providerRegions)
     if (submission.providerRegions.minimax === 'cn' && !registry?.providerRegionContractVersion) throw new Error('当前服务端尚未支持 稀宇科技国内区域。')
   }
-  if (explicitRoutesSupported) submission.modelRoutes = modelRoutes
+  if (explicitRoutesSupported) submission.modelRoutes = Object.fromEntries(requiredRoles.map(role=>[role,modelRoutes[role]]))
   return submission
 }
 
 export function requiredCreateRouteRoles(body, maxCriticRounds) {
-  const roles = []
-  const outputFormat = body.outputFormat === 'svg' ? 'svg' : 'png'
-  const taskName = body.taskName === 'plot' ? 'plot' : 'diagram'
-  const pipelineMode = body.pipelineMode || 'planner_critic'
-  const imageRoute = body.modelRoutes?.image
-  const nativeVector = imageRoute?.accessProvider === 'recraft' && /^recraftv(?:[23]|4(?:_1)?)(?:_utility)?(?:_pro)?_vector$/.test(imageRoute.modelId)
-  if ((outputFormat === 'svg' && !nativeVector) || taskName === 'plot' || pipelineMode !== 'vanilla' || body.retrievalSetting === 'auto') roles.push('main')
-  if ((outputFormat === 'png' || nativeVector) && taskName !== 'plot') roles.push('image')
-  if (taskName === 'plot' && ['1.5K', '2K', '3K', '4K'].includes(body.imageSize) && body.imageRefineMode === 'direct-edit') roles.push('image')
-  if ((body.referenceImages || []).length) roles.push((body.referenceImageModeUsed || body.referenceImageMode) === 'main_model' ? 'main' : 'vision')
-  if (Number(maxCriticRounds || 0) > 0 && (taskName === 'plot' || (outputFormat === 'png' && pipelineMode !== 'vanilla'))) roles.push('vision')
-  return orderedUniqueRoles(roles)
+  return workflowRequiredRoles({...body, action: 'createJob'}, maxCriticRounds)
 }
 
 export function requiredRefineRouteRoles(body) {
-  return body.refineMode === 'direct-edit' ? ['image'] : ['vision', 'image']
+  return workflowRequiredRoles({...body, action: 'refineImage'})
 }
 
 export function uniqueProvidersForRoles(modelRoutes, roles) {
@@ -127,7 +124,7 @@ export function firstInvalidRequiredRoute({ roles, entries, outputFormat }) {
     image: '请选择可用的图像生成模型。',
     vision: '请选择可用的视觉模型。',
   }
-  for (const role of MODEL_ROUTE_ROLES) {
+  for (const role of orderedUniqueRoles(roles)) {
     const entry = entries?.[role]
     if (!entry || entry.selectable === false || !entry.roles?.includes(role)) {
       return {
@@ -147,8 +144,8 @@ function orderedUniqueRoles(roles) {
   return MODEL_ROUTE_ROLES.filter((role) => requested.has(role))
 }
 
-function assertCompleteRoutes(modelRoutes) {
-  for (const role of MODEL_ROUTE_ROLES) {
+function assertCompleteRoutes(modelRoutes, roles = MODEL_ROUTE_ROLES) {
+  for (const role of roles) {
     const route = modelRoutes?.[role]
     if (!route?.accessProvider || !route?.modelId) throw new Error(`模型路线 ${role} 尚未完整选择。`)
   }

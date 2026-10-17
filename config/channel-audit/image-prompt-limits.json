@@ -1,0 +1,37 @@
+[
+  {
+    "keys": [
+      "openai/gpt-image-1",
+      "openai/gpt-image-1-mini",
+      "openai/gpt-image-1.5",
+      "openai/gpt-image-2",
+      "openai/gpt-image-2-2026-04-21",
+      "openai/gpt-image-2.5-sunburst",
+      "openai/gpt-image-2.5-sunburst-2026-09-08",
+      "openai/gpt-image-2.5-flare",
+      "openai/gpt-image-2.5-flare-2026-09-08",
+      "openai/chatgpt-image-latest"
+    ],
+    "promptLimits": [
+      {
+        "kind": "generation",
+        "max": 32000,
+        "unit": "characters",
+        "field": "prompt",
+        "sourceUrls": [
+          "https://developers.openai.com/api/reference/resources/images/methods/generate"
+        ]
+      },
+      {
+        "kind": "editing",
+        "max": 32000,
+        "unit": "characters",
+        "field": "prompt",
+        "sourceUrls": [
+          "https://developers.openai.com/api/reference/resources/images/methods/edit"
+        ]
+      }
+    ],
+    "note": "2026-10-16：逐型号页面确认身份；Images API 明确列出这十个模型，生成 prompt 最大 32000 characters，编辑 prompt maxLength 32000。排除已退役 DALL-E，未外推到未列出的模型或替换图研请求限制。"
+  }
+]

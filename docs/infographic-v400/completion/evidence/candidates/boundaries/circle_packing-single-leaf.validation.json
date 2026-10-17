@@ -1,0 +1,47 @@
+{
+  "typeId": "circle_packing",
+  "computations": {
+    "geometry": {
+      "only": [
+        0,
+        0,
+        1.1283791670955126
+      ]
+    },
+    "rootTotal": 4,
+    "leafTotal": 4,
+    "algorithm": "tangent-row nested circles"
+  },
+  "checks": {
+    "only_leaf_area": {
+      "actual": 3.9999999999999996,
+      "expected": 4.0,
+      "absoluteError": 4.440892098500626e-16
+    },
+    "leaf_total": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "label",
+      "parent",
+      "value"
+    ],
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

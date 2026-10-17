@@ -1,0 +1,133 @@
+{
+  "doi": "10.1371/journal.pone.0312770",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0312770",
+  "title": "Insect diversity estimation in polarimetric lidar",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Dolores Bernenko",
+    "Meng Li",
+    "Hampus Månefjord",
+    "Samuel Jansson",
+    "Anna Runemark",
+    "Carsten Kirkeby",
+    "Mikkel Brydegaard"
+  ],
+  "year": "2024",
+  "license": "2024\nBernenko et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0312770.g001",
+      "label": "Fig 1",
+      "caption": "Lidar insect observations.\n(a) Modulation of backscattered light intensity from a single insect across exposures (time domain) and pixels (space domain). Co-polarized (cyan) and de-polarized (magenta) components shown. (b) Instantaneous echo in the range domain (@ exposure #148), with range and insect size deduced from absolute and differential pixels respectively. (c) Signal waveform showing intensity modulation over time. (d) Power spectra. (e) Distribution of observations by solar time (15-minute bins with bin centers from 00:07 and ending at 23:53) and range (20 logarithmically spaced bins between 48 m and 427 m). Time is reported in true solar time. (f) Range distribution of insect observations. (g) Time distribution of insect observations. (h) Distribution of insects’ transit times >40 ms. In (b-d), co-polarized components are in red, de-polarized in blue, see legend in (b).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Lidar insect observations.</title>\n<p>(a) Modulation of backscattered light intensity from a single insect across exposures (time domain) and pixels (space domain). Co-polarized (cyan) and de-polarized (magenta) components shown. (b) Instantaneous echo in the range domain (@ exposure #148), with range and insect size deduced from absolute and differential pixels respectively. (c) Signal waveform showing intensity modulation over time. (d) Power spectra. (e) Distribution of observations by solar time (15-minute bins with bin centers from 00:07 and ending at 23:53) and range (20 logarithmically spaced bins between 48 m and 427 m). Time is reported in true solar time. (f) Range distribution of insect observations. (g) Time distribution of insect observations. (h) Distribution of insects’ transit times &gt;40 ms. In (b-d), co-polarized components are in red, de-polarized in blue, see legend in (b).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g002",
+      "label": "Fig 2",
+      "caption": "Three datasets with varying polarimetric information for a specular (top row) and a diffuse observation (bottom row) (a, d) Unpolarized data is shown as black solid line, whereas blue shade shows contribution from the co-polarized channel, and orange–from de-polarized; (b, e) Co-polarized dataset. (c, f) DoLP dataset.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Three datasets with varying polarimetric information for a specular (top row) and a diffuse observation (bottom row) (a, d) Unpolarized data is shown as black solid line, whereas blue shade shows contribution from the co-polarized channel, and orange–from de-polarized; (b, e) Co-polarized dataset. (c, f) DoLP dataset.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g003",
+      "label": "Fig 3",
+      "caption": "Identifying optimal cluster numbers in hierarchical cluster analysis.\n(a) Reverse-ordered linkage values on a logarithmic scale. The median slope (γ, solid line) represents the expected linkage decrease. (b) Compensated linkage values. Shaded area highlights the expected linkage. (c) Distribution of compensated linkage values with median (red line) and outlier boundaries (Q_{1}−1.5⋅IQR, Q_{3}+1.5⋅IQR, blue shaded area).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Identifying optimal cluster numbers in hierarchical cluster analysis.</title>\n<p>(a) Reverse-ordered linkage values on a logarithmic scale. The median slope (γ, solid line) represents the expected linkage decrease. (b) Compensated linkage values. Shaded area highlights the expected linkage. (c) Distribution of compensated linkage values with median (red line) and outlier boundaries (<italic>Q</italic><sub>1</sub>−1.5⋅<italic>IQR</italic>, <italic>Q</italic><sub>3</sub>+1.5⋅<italic>IQR</italic>, blue shaded area).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g004",
+      "label": "Fig 4",
+      "caption": "DoLP characterization of clustering results.\n(a) HCA and (b) GMM show comparisons of cluster DoLP distributions for found clusters (black error bars) and randomly generated clusters of the same size (gray error bars). Error bars represent the bootstrapped mean DoLP and its 95% CI for each cluster. Found clusters are ranked by decreasing mean DoLP (x-axis). Vertical lines denote DoLP quartile boundaries (Q_{1}-Q_{4}).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>DoLP characterization of clustering results.</title>\n<p>(a) HCA and (b) GMM show comparisons of cluster DoLP distributions for found clusters (black error bars) and randomly generated clusters of the same size (gray error bars). Error bars represent the bootstrapped mean DoLP and its 95% CI for each cluster. Found clusters are ranked by decreasing mean DoLP (x-axis). Vertical lines denote DoLP quartile boundaries (Q<sub>1</sub>-Q<sub>4</sub>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g005",
+      "label": "Fig 5",
+      "caption": "Rearrangement of observations between cluster’s DoLP quartiles.\n(a) HCA clusters. (b) GMM clusters. Left panels show rearrangements between the unpolarized and the DoLP datasets, and right panels illustrate differences between co-polarized and DoLP datasets. Each quartile (Q_{1}—Q_{4}) is labeled with the number of observations. The flows (lines) between quartiles indicate the fraction of observations, with line width proportional to the number of observations. To plot the alluvial diagrams we use RAWGraphs [65].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Rearrangement of observations between cluster’s DoLP quartiles.</title>\n<p>(a) HCA clusters. (b) GMM clusters. Left panels show rearrangements between the unpolarized and the DoLP datasets, and right panels illustrate differences between co-polarized and DoLP datasets. Each quartile (Q<sub>1</sub>—Q<sub>4</sub>) is labeled with the number of observations. The flows (lines) between quartiles indicate the fraction of observations, with line width proportional to the number of observations. To plot the alluvial diagrams we use RAWGraphs [<xref ref-type=\"bibr\" rid=\"pone.0312770.ref065\">65</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g006",
+      "label": "Fig 6",
+      "caption": "Community structure analysis for HCA and GMM clustering results based on time and range profiles.\nEach symmetric matrix displays similarity of time (top panels) and range (bottom panels) profiles across cluster pairs, with darker pixels indicating greater dissimilarity. The heatmaps are organized to place rows/columns adjacently if clusters are from the same community, thus making communities appear as bright squares along the matrix diagonal, manifesting greater similarity within a community than between them (see the bottom-right schematic).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Community structure analysis for HCA and GMM clustering results based on time and range profiles.</title>\n<p>Each symmetric matrix displays similarity of time (top panels) and range (bottom panels) profiles across cluster pairs, with darker pixels indicating greater dissimilarity. The heatmaps are organized to place rows/columns adjacently if clusters are from the same community, thus making communities appear as bright squares along the matrix diagonal, manifesting greater similarity within a community than between them (see the bottom-right schematic).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g007",
+      "label": "Fig 7",
+      "caption": "Characterization of time and range communities.\nCIs of observation probability for (A, B) range and (I-II-III) time communities (see legend). At the top of each panel, we show the size of a community. Heatmaps at the AB and I-III intersection display median power spectra for a corresponding time-range community. The y-axis segments heatmaps into stripes, one for each cluster. Variation of colors within a stripe indicates power magnitude at corresponding frequencies (x-axis). The powers are shown after normalization, logarithmic transformation, and detrending. The color-bar encompasses 5^{th} to 95^{th} percentiles of all ranges of power values.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Characterization of time and range communities.</title>\n<p>CIs of observation probability for (A, B) range and (I-II-III) time communities (see legend). At the top of each panel, we show the size of a community. Heatmaps at the AB and I-III intersection display median power spectra for a corresponding time-range community. The y-axis segments heatmaps into stripes, one for each cluster. Variation of colors within a stripe indicates power magnitude at corresponding frequencies (x-axis). The powers are shown after normalization, logarithmic transformation, and detrending. The color-bar encompasses 5<sup>th</sup> to 95<sup>th</sup> percentiles of all ranges of power values.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g008",
+      "label": "Fig 8",
+      "caption": "Range dependence of co-polarized backscatter.\nCIs of probability distributions show the likelihood of observing an insect within a DoLP quartile (Q_{1}-Q_{4}: glossy to diffuse) and range community (A: mid-range, B: far-range). In the top-right corner of probability distributions, we show the number of observations. In B-plots, we show with the red dot the spike in the probability of observing an insect, potentially linked to a nearby landmass (see bottom panel). Heatmaps depict median power spectra for clusters within corresponding DoLP-range subsets (as in Fig 7).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Range dependence of co-polarized backscatter.</title>\n<p>CIs of probability distributions show the likelihood of observing an insect within a DoLP quartile (Q<sub>1</sub>-Q<sub>4</sub>: glossy to diffuse) and range community (A: mid-range, B: far-range). In the top-right corner of probability distributions, we show the number of observations. In B-plots, we show with the red dot the spike in the probability of observing an insect, potentially linked to a nearby landmass (see bottom panel). Heatmaps depict median power spectra for clusters within corresponding DoLP-range subsets (as in <bold><xref ref-type=\"fig\" rid=\"pone.0312770.g007\">Fig 7</xref></bold>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0312770.g009",
+      "label": "Fig 9",
+      "caption": "Clusters’ size distribution.\n(a—c) HCA clustering on three datasets; (d—f) GMM clustering on three datasets. The solid line shows the number of observations per cluster for clusters sorted from largest to smallest. Vertical lines mark Hill numbers.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0312770.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0312770.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Clusters’ size distribution.</title>\n<p>(a—c) HCA clustering on three datasets; (d—f) GMM clustering on three datasets. The solid line shows the number of observations per cluster for clusters sorted from largest to smallest. Vertical lines mark Hill numbers.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0312770.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0312770.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

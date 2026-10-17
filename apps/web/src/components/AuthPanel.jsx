@@ -1,3 +1,4 @@
+import { accountPageUrl } from '../lib/runtimePolicy.js';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
 import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
@@ -6,8 +7,8 @@ import { formatErrorMessage } from '../utils';
 import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
 import WatchaIdentityPanel from './WatchaIdentityPanel';
 
-const VERIFIED_URL = 'https://www.paperbanana.asia/account/email-verified.html';
-const RESET_URL = 'https://www.paperbanana.asia/account/reset-password.html';
+const VERIFIED_URL = accountPageUrl('email-verified.html');
+const RESET_URL = accountPageUrl('reset-password.html');
 
 export default function AuthPanel({ onAuthenticated, onCancel, client = authClient, watcha }) {
   const { t } = useAppLocale()

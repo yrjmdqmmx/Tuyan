@@ -1,0 +1,157 @@
+{
+  "deepseek": {
+    "main": "deepseek-v4-pro",
+    "image": "",
+    "vision": "deepseek-v4-flash-vision-exp"
+  },
+  "kimi": {
+    "main": "kimi-k3",
+    "image": "",
+    "vision": "kimi-k3"
+  },
+  "zhipu": {
+    "main": "glm-5.2",
+    "image": "glm-image",
+    "vision": "glm-5v-turbo"
+  },
+  "siliconflow": {
+    "main": "Pro/moonshotai/Kimi-K2.6",
+    "image": "Qwen/Qwen-Image",
+    "vision": "Pro/moonshotai/Kimi-K2.6"
+  },
+  "anthropic": {
+    "main": "claude-fable-5-1",
+    "image": "",
+    "vision": "claude-fable-5-1"
+  },
+  "recraft": {
+    "main": "",
+    "image": "recraftv4_1",
+    "vision": ""
+  },
+  "xai": {
+    "main": "grok-4.6",
+    "image": "grok-imagine-image-2.0",
+    "vision": "grok-4.6"
+  },
+  "gemini": {
+    "main": "gemini-3.7-flash",
+    "image": "gemini-3.1-flash-image",
+    "vision": "gemini-3.7-flash"
+  },
+  "bailian": {
+    "main": "qwen3.8-max",
+    "image": "wan2.7-image-pro",
+    "vision": "qwen3.7-plus"
+  },
+  "openai": {
+    "main": "gpt-5.6-sol",
+    "image": "gpt-image-2",
+    "vision": "gpt-5.6-sol"
+  },
+  "ark": {
+    "main": "doubao-seed-2-1-pro-260628",
+    "image": "doubao-seedream-5-0-pro-260628",
+    "vision": "doubao-seed-2-1-pro-260628"
+  },
+  "bfl": {
+    "main": "",
+    "image": "flux-2-pro",
+    "vision": ""
+  },
+  "stability": {
+    "main": "",
+    "image": "stable-image-ultra",
+    "vision": ""
+  },
+  "ideogram": {
+    "main": "",
+    "image": "ideogram-v4",
+    "vision": ""
+  },
+  "minimax": {
+    "main": "MiniMax-M3",
+    "image": "image-01",
+    "vision": "MiniMax-M3"
+  },
+  "mistral": {
+    "main": "mistral-small-2603",
+    "image": "",
+    "vision": "mistral-small-2603"
+  },
+  "together": {
+    "main": "moonshotai/Kimi-K3",
+    "image": "black-forest-labs/FLUX.2-pro",
+    "vision": "moonshotai/Kimi-K3"
+  },
+  "fireworks": {
+    "main": "accounts/fireworks/models/kimi-k2p5",
+    "image": "",
+    "vision": "accounts/fireworks/models/kimi-k2p5"
+  },
+  "fal": {
+    "main": "",
+    "image": "fal-ai/flux-2-pro",
+    "vision": ""
+  },
+  "replicate": {
+    "main": "",
+    "image": "black-forest-labs/flux-2-pro",
+    "vision": ""
+  },
+  "tokendance": {
+    "main": "qwen3.8-flash",
+    "image": "seedream-5.0-lite",
+    "vision": "qwen3.8-flash"
+  },
+  "runware": {
+    "main": "google:gemini@3.1-flash-lite",
+    "image": "alibaba:qwen-image@2512",
+    "vision": "google:gemini@3.1-flash-lite"
+  },
+  "tokenhub": {
+    "main": "hy3",
+    "image": "hy-image-v3",
+    "vision": "hy-vision-2.0-instruct"
+  },
+  "xiaomi": {
+    "main": "mimo-v2.6-pro",
+    "image": "",
+    "vision": "mimo-v2.6-flash"
+  },
+  "sensenova": {
+    "main": "sensenova-6.8-flash-lite",
+    "image": "sensenova-u1.5-lite",
+    "vision": "sensenova-6.8-flash-lite"
+  },
+  "stepfun": {
+    "main": "step-5-preview",
+    "image": "step-2x-large",
+    "vision": "step-5-preview"
+  },
+  "qianfan": {
+    "main": "ernie-5.1",
+    "image": "musesteamer-air-image",
+    "vision": "ernie-5.0"
+  },
+  "iflytek": {
+    "main": "spark-x2.5",
+    "image": "",
+    "vision": "xopkimik27code"
+  },
+  "longcat": {
+    "main": "LongCat-2.0",
+    "image": "",
+    "vision": "LongCat-2.5-Preview"
+  },
+  "antling": {
+    "main": "Ling-3.0-flash",
+    "vision": "Ling-3.0-flash-VL",
+    "image": ""
+  },
+  "novita": {
+    "main": "",
+    "image": "ming-image-0.1-design",
+    "vision": ""
+  }
+}

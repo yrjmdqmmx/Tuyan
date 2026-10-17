@@ -39,6 +39,7 @@ test('FigureSpec requires data contracts for data_stat and preservation contract
   const validate = validator(FIGURE_SPEC_SCHEMA);
   assert.equal(validate(figureSpec()), true, JSON.stringify(validate.errors));
   assert.equal(validate(figureSpec({ visualCategory: 'data_stat', output: { format: 'svg', renderer: 'code' } })), false);
+  assert.equal(validate(figureSpec({ visualCategory:'bar',output:{format:'png',renderer:'code'} })), false);
   assert.equal(validate(figureSpec({ operation: 'refine' })), false);
   assert.equal(validate(figureSpec({
     visualCategory: 'data_stat',

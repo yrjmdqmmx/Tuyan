@@ -7,7 +7,7 @@ import useCompactLayout from '../hooks/useCompactLayout'
 function TemplateArtwork({ template, className = '' }) {
   const { t } = useAppLocale()
   if (template.imageUrl) {
-    return <img className={className} src={template.imageUrl} alt={t("{v0}参考图", {v0: t(template.title)})} />
+    return <figure className="featured-licensed-figure"><img className={className} src={template.imageUrl} alt={t("{v0}参考图", {v0: t(template.title)})} /><figcaption><strong>论文原图 · 仅参考结构</strong><br/>{template.attribution} · {template.licenseUrl}</figcaption></figure>
   }
   return (
     <div className={`featured-template-placeholder ${className}`.trim()} role="img" aria-label={t("{v0}结构预览", {v0: t(template.title)})}>
@@ -177,7 +177,7 @@ export default function FeaturedTemplateStudio({ templates, isDirty, onApply }) 
       >
         <div className="featured-template-copy">
           <h2>{t(compact ? '从模板开始' : '从真实研究图示开始')}</h2>
-          <p>{t(compact ? '选用参考结构，或直接填写下方内容。' : '图研Tuyan 是开源的学术图示工作台。精选模板直接来自 306 条研究参考图库，套用后仍可完整改写你的方法、图注与排除项。')}</p>
+          <p>{t(compact ? '论文图仅供结构参考；起步文案是教学示例，需替换为自己的研究内容。' : '图研Tuyan 是开源的学术图示工作台。精选示例使用逐图核验许可的论文插图，借鉴结构时请替换为自己的方法、数据与结论。')}</p>
           <button type="button" className="featured-template-cta" onClick={() => openLibrary()}>
             <LayoutTemplate size={17} />{t("浏览模板")}</button>
         </div>

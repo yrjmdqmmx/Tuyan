@@ -1,0 +1,100 @@
+{
+  "figureTypeId": "choropleth",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "region": "A",
+        "value": 12
+      },
+      {
+        "region": "B",
+        "value": 28
+      }
+    ],
+    "units": {
+      "value": "cases per 1000"
+    },
+    "options": {
+      "regions": [
+        {
+          "id": "A",
+          "polygon": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              0,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "B",
+          "polygon": [
+            [
+              2,
+              0
+            ],
+            [
+              4,
+              0
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              2,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "Missing",
+          "polygon": [
+            [
+              0,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "crs": "EPSG:4326",
+      "projection": "plate_carree",
+      "valueSemantics": "Supplied rates per 1000; population denominator from source",
+      "boundarySource": "Synthetic rectangles, CC0 teaching fixture",
+      "boundaries": [
+        0,
+        10,
+        20,
+        30
+      ]
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

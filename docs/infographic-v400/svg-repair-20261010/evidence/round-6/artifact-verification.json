@@ -1,0 +1,368 @@
+{
+  "date": "2026-10-10",
+  "scope": "Original synthetic examples; actual Core/provider artifacts, no output editing",
+  "checks": [
+    {
+      "scenario": "state-diagram-svg",
+      "svgHash": "823457e7eec5acb29ff771938d9b1bcadbd114f8fa7c785cc724a1acc478f296",
+      "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+      "trueVector": true,
+      "exactOriginalRelations": [
+        "(initial)|Idle|",
+        "Completed|Idle|reset",
+        "Idle|Running|start",
+        "Paused|Idle|cancel",
+        "Paused|Running|resume",
+        "Running|Completed|finish",
+        "Running|Paused|pause"
+      ],
+      "uniqueNamedNodes": true,
+      "planningReferenceImages": [
+        {
+          "call": 1,
+          "mime": "image/png",
+          "sha256": "8a14fd84166afaa78404ec04ff83adb36550e29eb4ef3d1d78cb4c5c1bd20842",
+          "bytes": 447695
+        }
+      ],
+      "sourceProtocol": {
+        "version": 2,
+        "promptRevision": 1,
+        "resolutionStages": 2,
+        "rawAndResolvedHashChecks": true
+      },
+      "pipelineStatus": "passed",
+      "independentFinalStatus": "passed"
+    },
+    {
+      "scenario": "mixed-workflow-bar-svg",
+      "svgHash": "5842ea993cd0f855393b7e429ab9cbaad041e850925f7a7b9cd1a9152a0df41a",
+      "pngHash": "8d492ff762333fb594fb4a9f40b2ed13a3278b5492dca9d562e8a9543a4fd1ad",
+      "trueVector": true,
+      "exactOriginalRelations": [
+        "Normalize|Output|",
+        "Output|End|",
+        "Quality check|Normalize|yes",
+        "Quality check|Reject sample|no",
+        "Receive sample|Quality check|",
+        "Reject sample|End|",
+        "Start|Receive sample|"
+      ],
+      "uniqueNamedNodes": true,
+      "planningReferenceImages": [
+        {
+          "call": 5,
+          "mime": "image/png",
+          "sha256": "1f3c577a7913cc88cf9cae2c9710015e8e734d1826e2af56eaea32661e92789f",
+          "bytes": 148397
+        },
+        {
+          "call": 9,
+          "mime": "image/png",
+          "sha256": "1f3c577a7913cc88cf9cae2c9710015e8e734d1826e2af56eaea32661e92789f",
+          "bytes": 148397
+        }
+      ],
+      "sourceProtocol": {
+        "version": 2,
+        "promptRevision": 1,
+        "resolutionStages": 4,
+        "rawAndResolvedHashChecks": true
+      },
+      "numeric": {
+        "values": [
+          2,
+          5,
+          3
+        ],
+        "dataHash": "3b04ca4b5cce745e881ce5e6bfff115b80e9c4f4504762078dbbac7dc7a21791",
+        "programValidation": {
+          "status": "input_validated",
+          "rowCount": 3,
+          "checks": [
+            "schema",
+            "finite_numbers",
+            "units",
+            "type_semantics"
+          ],
+          "limitations": [
+            "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+          ],
+          "renderer": "deterministic-v1",
+          "dataHash": "3b04ca4b5cce745e881ce5e6bfff115b80e9c4f4504762078dbbac7dc7a21791",
+          "pngHash": "d7c1ab661a1194311b13c0727443119fd6d6b1e044806ffd7252bafebf4d8576",
+          "renderSucceeded": true,
+          "program": {
+            "vector": true,
+            "editableText": true,
+            "sameScene": true,
+            "figureCount": 1,
+            "codeHash": "32542751acbd06e4af2472a02b859e1ef2ee7ec2ad5680a47bc97aac1e8b08d0",
+            "pngHash": "d7c1ab661a1194311b13c0727443119fd6d6b1e044806ffd7252bafebf4d8576",
+            "svgHash": "ddfde5e63bf9f41ef221c376d87cf2ec2c77d3865239515ace99a13c8d4fbff4",
+            "numeric": {
+              "typeId": "bar",
+              "checks": {
+                "bar_widths": {
+                  "count": 3,
+                  "absoluteError": 0,
+                  "passed": true
+                }
+              },
+              "computations": {},
+              "analysis": {},
+              "suppliedFields": [
+                "label",
+                "value"
+              ],
+              "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+            }
+          },
+          "svgHash": "ddfde5e63bf9f41ef221c376d87cf2ec2c77d3865239515ace99a13c8d4fbff4"
+        },
+        "layout": {
+          "svgHash": "5842ea993cd0f855393b7e429ab9cbaad041e850925f7a7b9cd1a9152a0df41a",
+          "passed": true,
+          "allocation": {
+            "width": 1024,
+            "height": 576,
+            "columns": 2,
+            "rows": 1,
+            "cellW": 477.18399999999997,
+            "cellH": 524.8,
+            "gap": 18.432,
+            "margin": 25.6,
+            "labelHeight": 25.6,
+            "minFontPx": 14,
+            "panels": [
+              {
+                "x": 25.6,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              },
+              {
+                "x": 521.216,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              }
+            ]
+          },
+          "panels": [
+            {
+              "label": "A",
+              "svgHash": "c47a7645868a27084b70ac28ed6b735ec486a7306b25f84d69af21db9fb0c276",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14.662,
+              "textCount": 11,
+              "sourceViewBox": [
+                0,
+                0,
+                477.18399999999997,
+                499.19999999999993
+              ],
+              "uniformScale": 1,
+              "textBounds": [
+                {
+                  "text": "yes",
+                  "x": 311.61803999999995,
+                  "y": 253.306,
+                  "width": 31.66991999999999,
+                  "height": 18.327500000000015,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "no",
+                  "x": 167.69736,
+                  "y": 253.306,
+                  "width": 21.113280000000003,
+                  "height": 18.327500000000015,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Start",
+                  "x": 212.2004,
+                  "y": 30.447000000000003,
+                  "width": 52.78320000000002,
+                  "height": 18.3275,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Receive",
+                  "x": 204.28292000000002,
+                  "y": 91.133,
+                  "width": 68.61816000000002,
+                  "height": 18.3275,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "sample",
+                  "x": 209.56124,
+                  "y": 109.461,
+                  "width": 58.06151999999997,
+                  "height": 18.3275,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Quality check",
+                  "x": 177.89132,
+                  "y": 184.646,
+                  "width": 121.40136000000001,
+                  "height": 18.327500000000015,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Normalize",
+                  "x": 262.05944,
+                  "y": 309.11400000000003,
+                  "width": 84.45312000000001,
+                  "height": 18.327499999999986,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Output",
+                  "x": 272.61608,
+                  "y": 378.964,
+                  "width": 63.33983999999998,
+                  "height": 18.327499999999986,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "End",
+                  "x": 192.52704,
+                  "y": 448.815,
+                  "width": 31.66991999999999,
+                  "height": 18.327499999999986,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "Reject",
+                  "x": 163.65808,
+                  "y": 369.8,
+                  "width": 63.33984000000001,
+                  "height": 18.327499999999986,
+                  "fontPx": 14.662
+                },
+                {
+                  "text": "sample",
+                  "x": 166.29724,
+                  "y": 388.12800000000004,
+                  "width": 58.06152,
+                  "height": 18.327499999999986,
+                  "fontPx": 14.662
+                }
+              ]
+            },
+            {
+              "label": "B",
+              "svgHash": "ddfde5e63bf9f41ef221c376d87cf2ec2c77d3865239515ace99a13c8d4fbff4",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 43.811440000000005,
+                  "y": 328.50216,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 99.646107,
+                  "y": 328.50216,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 155.480773,
+                  "y": 328.50216,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 211.31544,
+                  "y": 328.50216,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 267.150107,
+                  "y": 328.50216,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 322.98477299999996,
+                  "y": 328.50216,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "dimensionless",
+                  "x": 152.27504,
+                  "y": 345.13416,
+                  "width": 83.46239999999997,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "Alpha",
+                  "x": 7.781040000000004,
+                  "y": 53.408758,
+                  "width": 32.6592,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "Beta",
+                  "x": 11.409840000000003,
+                  "y": 157.2112,
+                  "width": 29.0304,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "Gamma",
+                  "x": 4.152240000000006,
+                  "y": 261.013642,
+                  "width": 36.288,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            }
+          ],
+          "limitations": [
+            "Conservative source text bounds; final raster still requires visual review.",
+            "Uniform panel scaling preserves numeric geometry; no post-validation glyph or mark relocation."
+          ]
+        }
+      },
+      "pipelineStatus": "passed",
+      "independentFinalStatus": "passed"
+    }
+  ]
+}

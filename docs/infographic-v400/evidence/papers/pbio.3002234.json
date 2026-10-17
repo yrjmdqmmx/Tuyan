@@ -1,0 +1,79 @@
+{
+  "doi": "10.1371/journal.pbio.3002234",
+  "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002234",
+  "title": "Biomedical publishing: Past historic, present continuous, future conditional",
+  "journal": "PLOS Biology",
+  "authors": [
+    "Richard Sever"
+  ],
+  "year": "2023",
+  "license": "2023\nRichard Sever\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pbio.3002234.g001",
+      "label": "Fig 1",
+      "caption": "A timeline of science publishing.\nThe timeline shows several milestones in the history of science publishing, including the launch of various journals. It is not intended to be comprehensive. The focus is on publications in the field of PLOS Biology but some titles in other fields are also included. Not shown for the sake of clarity are the launch of Nature Genetics (1992, Nature’s first successful spin-off journal), BioMed Central (2000, first Open Access publisher), F1000R (2013, first post-publication peer review), and PLOS ONE (2004, first mega journal), which should also be considered milestones. The timeline of implementation of external peer review is also indicated. Refereeing was introduced in the early 18th century but did not become standard until the late 20th century. The launch of preprint servers (e.g., arXiv and bioRxiv) meant scientific articles were again frequently available without formal peer review. In the figure, a dotted line indicates refereeing existed, a dashed line indicates when it became more common, and a solid line indicates when it was near universal for research dissemination.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002234.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002234.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>A timeline of science publishing.</title>\n<p>The timeline shows several milestones in the history of science publishing, including the launch of various journals. It is not intended to be comprehensive. The focus is on publications in the field of <italic>PLOS Biology</italic> but some titles in other fields are also included. Not shown for the sake of clarity are the launch of <italic>Nature Genetics</italic> (1992, <italic>Nature</italic>’s first successful spin-off journal), BioMed Central (2000, first Open Access publisher), <italic>F1000R</italic> (2013, first post-publication peer review), and <italic>PLOS ONE</italic> (2004, first mega journal), which should also be considered milestones. The timeline of implementation of external peer review is also indicated. Refereeing was introduced in the early 18th century but did not become standard until the late 20th century. The launch of preprint servers (e.g., arXiv and bioRxiv) meant scientific articles were again frequently available without formal peer review. In the figure, a dotted line indicates refereeing existed, a dashed line indicates when it became more common, and a solid line indicates when it was near universal for research dissemination.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002234.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002234.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002234.g002",
+      "label": "Fig 2",
+      "caption": "Journal hierarchies.\nMost biologists select the journal to which they submit based on their judgment of where a paper fits in a hierarchy of journal impact that typically correlates with Impact Factor. Significant changes in the past 2 decades have been the arrival of sibling journals of prestige titles (b) that have in effect relegated community journals that previously occupied the second tier of the pyramid (a) and mega journals.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002234.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002234.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Journal hierarchies.</title>\n<p>Most biologists select the journal to which they submit based on their judgment of where a paper fits in a hierarchy of journal impact that typically correlates with Impact Factor. Significant changes in the past 2 decades have been the arrival of sibling journals of prestige titles (<bold>b</bold>) that have in effect relegated community journals that previously occupied the second tier of the pyramid (<bold>a</bold>) and mega journals.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002234.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002234.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002234.g003",
+      "label": "Fig 3",
+      "caption": "The traditional journal publication process.\nAuthors submit to journals via online platforms, sometimes after a presubmission enquiry, and the journal assigns an editor to evaluate the paper after a series of administrative checks. The editor then decides whether to review the paper, sending papers deemed worthy to experts in the field for assessment (referees). If conflicting reports are obtained, the editor may seek additional referees. Based on the reviews, the editor decides whether the paper should be rejected, accepted, or returned for revision. Revised submissions may be sent back to the referees. Once a paper is accepted, it undergoes further checks before being processed for online and in some cases print publication.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002234.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002234.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The traditional journal publication process.</title>\n<p>Authors submit to journals via online platforms, sometimes after a presubmission enquiry, and the journal assigns an editor to evaluate the paper after a series of administrative checks. The editor then decides whether to review the paper, sending papers deemed worthy to experts in the field for assessment (referees). If conflicting reports are obtained, the editor may seek additional referees. Based on the reviews, the editor decides whether the paper should be rejected, accepted, or returned for revision. Revised submissions may be sent back to the referees. Once a paper is accepted, it undergoes further checks before being processed for online and in some cases print publication.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002234.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002234.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002234.g004",
+      "label": "Fig 4",
+      "caption": "Box 2—Schematic of an overlay journal workflow.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002234.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002234.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title><xref ref-type=\"boxed-text\" rid=\"pbio.3002234.box002\">Box 2</xref>—Schematic of an overlay journal workflow.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002234.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002234.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002234.g005",
+      "label": "Fig 5",
+      "caption": "Contrasting visions of the future.\n(a) In an open ecosystem, dissemination by a preprint server (*rxiv) and evaluation are decoupled, and there are multiple alternative options for peer review and content verification. Content verification can be performed by various actors, resulting in the assignment of badges (b) that function as trust signals. Decoupled review (R) can be performed by journals or independent entities and coexists with unsolicited comments (C). (b) Commercial lock-in by contrast creates a walled garden where all these services are coordinated by a single publishing house and, once a paper is initially captured, it is retained and all that remains to be decided is the final destination within its hierarchy of journals following either a trickle-down or bubble-up process.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002234.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002234.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Contrasting visions of the future.</title>\n<p>(<bold>a</bold>) In an open ecosystem, dissemination by a preprint server (*rxiv) and evaluation are decoupled, and there are multiple alternative options for peer review and content verification. Content verification can be performed by various actors, resulting in the assignment of badges (b) that function as trust signals. Decoupled review (R) can be performed by journals or independent entities and coexists with unsolicited comments (C). (<bold>b</bold>) Commercial lock-in by contrast creates a walled garden where all these services are coordinated by a single publishing house and, once a paper is initially captured, it is retained and all that remains to be decided is the final destination within its hierarchy of journals following either a trickle-down or bubble-up process.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002234.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002234.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -1,0 +1,375 @@
+{
+  "registryVersion": "2026-10-16.v33",
+  "generatedAt": "2026-10-16T08:44:14.759Z",
+  "routeRows": 3460,
+  "channels": 32,
+  "withSources": 3460,
+  "modalitiesComplete": 1406,
+  "numericContext": 831,
+  "promptLimits": 146,
+  "providers": [
+    {
+      "id": "openrouter",
+      "access": "public",
+      "url": "https://openrouter.ai/api/v1/models",
+      "source": "https://openrouter.ai/docs/api-reference/models/get-models",
+      "note": "文本与独立图像目录",
+      "rows": 514,
+      "health": {
+        "state": "ready",
+        "modelCount": 514,
+        "sourceUrls": [
+          "https://openrouter.ai/api/v1/models",
+          "https://openrouter.ai/api/v1/images/models"
+        ],
+        "message": "在线目录已读取 514 个型号（文本与图像目录）"
+      }
+    },
+    {
+      "id": "tokendance",
+      "access": "public",
+      "url": "https://tokendance.space/gateway/v1/models",
+      "source": "https://tokendance.space/gateway/v1/models",
+      "rows": 113,
+      "health": {
+        "issues": [
+          {
+            "id": "deepseek-v4-flash-vision-exp",
+            "index": -1,
+            "reason": "missing_live"
+          },
+          {
+            "id": "deepseek-v3.2",
+            "index": -1,
+            "reason": "missing_live"
+          },
+          {
+            "id": "deepseek-chat-v3-0324",
+            "index": -1,
+            "reason": "missing_live"
+          },
+          {
+            "id": "qwen3-max",
+            "index": -1,
+            "reason": "missing_live"
+          }
+        ],
+        "total": 109,
+        "state": "partial",
+        "cause": null,
+        "checkedAt": 1792140254614,
+        "expiresAt": 1792140314614,
+        "stale": false,
+        "failureCount": 9,
+        "alert": "critical",
+        "issueCount": 4,
+        "usableCount": 67,
+        "affectedModels": [
+          {
+            "id": "deepseek-v4-flash-vision-exp",
+            "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+          },
+          {
+            "id": "deepseek-v3.2",
+            "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+          },
+          {
+            "id": "deepseek-chat-v3-0324",
+            "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+          },
+          {
+            "id": "qwen3-max",
+            "reason": "当前目录未列出该模型，已暂停调用；请等待供应商修复或主动选择其他模型。"
+          }
+        ],
+        "message": "观猹 TokenDance：已隔离 4 条异常记录：deepseek-v4-flash-vision-exp（当前目录未列出该模型）、deepseek-v3.2（当前目录未列出该模型）、deepseek-chat-v3-0324（当前目录未列出该模型）、qwen3-max（当前目录未列出该模型）。其他 109 条记录可继续核验使用；已接入的正常模型不受此异常影响。请稍后刷新，或主动选择其他可用模型。 图研已接入模型中 67 个目录核验通过，4 个暂停调用：deepseek-v4-flash-vision-exp、deepseek-v3.2、deepseek-chat-v3-0324、qwen3-max。"
+      }
+    },
+    {
+      "id": "fal",
+      "access": "public",
+      "url": "https://api.fal.ai/v1/models",
+      "parser": "fal",
+      "source": "https://fal.ai/docs/platform-apis/v1/models",
+      "rows": 1527,
+      "health": {
+        "state": "ready",
+        "pages": 153,
+        "fetchedAt": "2026-10-16T08:36:32.574Z",
+        "sourceUrls": [
+          "https://fal.ai/docs/platform-apis/v1/models"
+        ],
+        "message": "在线目录已读取 1524 个型号（全部分页）",
+        "rawCount": 1524,
+        "modelCount": 1524
+      }
+    },
+    {
+      "id": "runware",
+      "access": "public",
+      "url": "https://runware.ai/docs/models/index.json",
+      "parser": "runware",
+      "source": "https://runware.ai/docs/models-api/model-schemas",
+      "note": "托管模型实时目录；私有与社区模型可用账户目录搜索",
+      "rows": 382,
+      "health": {
+        "state": "ready",
+        "pages": 1,
+        "fetchedAt": "2026-10-16T08:09:31.502Z",
+        "sourceUrls": [
+          "https://runware.ai/docs/models-api/model-schemas"
+        ],
+        "message": "在线目录已读取 380 个型号（全部分页）",
+        "rawCount": 380,
+        "modelCount": 380
+      }
+    },
+    {
+      "id": "novita",
+      "access": "public",
+      "url": "https://api.novita.ai/v3/openai/models",
+      "source": "https://novita.ai/docs/api-reference/model-apis-llm-list-models",
+      "note": "公开 LLM 目录；填写 API Key 可另读图像及私有模型目录",
+      "rows": 95,
+      "health": {
+        "state": "ready",
+        "pages": 1,
+        "fetchedAt": "2026-10-16T08:09:31.502Z",
+        "sourceUrls": [
+          "https://novita.ai/docs/api-reference/model-apis-llm-list-models"
+        ],
+        "message": "在线目录已读取 95 个型号（全部分页）",
+        "rawCount": 95,
+        "modelCount": 95
+      }
+    },
+    {
+      "id": "openai",
+      "access": "key",
+      "url": "https://api.openai.com/v1/models",
+      "source": "https://developers.openai.com/api/reference/resources/models/methods/list",
+      "rows": 69,
+      "health": null
+    },
+    {
+      "id": "anthropic",
+      "access": "key",
+      "url": "https://api.anthropic.com/v1/models",
+      "parser": "anthropic",
+      "auth": "anthropic",
+      "source": "https://platform.claude.com/docs/en/api/models/list",
+      "rows": 14,
+      "health": null
+    },
+    {
+      "id": "gemini",
+      "access": "key",
+      "url": "https://generativelanguage.googleapis.com/v1beta/models",
+      "parser": "gemini",
+      "auth": "google",
+      "source": "https://ai.google.dev/api/models",
+      "rows": 17,
+      "health": null
+    },
+    {
+      "id": "deepseek",
+      "access": "key",
+      "url": "https://api.deepseek.com/models",
+      "source": "https://api-docs.deepseek.com/api/list-models",
+      "rows": 4,
+      "health": null
+    },
+    {
+      "id": "kimi",
+      "access": "key",
+      "url": "https://api.moonshot.cn/v1/models",
+      "source": "https://platform.kimi.com/docs/api/list-models",
+      "rows": 4,
+      "health": null
+    },
+    {
+      "id": "siliconflow",
+      "access": "key",
+      "url": "https://api.siliconflow.cn/v1/models",
+      "source": "https://docs.siliconflow.com/en/api-reference/models/get-model-list",
+      "rows": 68,
+      "health": null
+    },
+    {
+      "id": "mistral",
+      "access": "key",
+      "url": "https://api.mistral.ai/v1/models",
+      "source": "https://docs.mistral.ai/api/endpoint/models",
+      "rows": 17,
+      "health": null
+    },
+    {
+      "id": "together",
+      "access": "key",
+      "url": "https://api.together.ai/v1/models",
+      "source": "https://docs.together.ai/reference/models",
+      "rows": 50,
+      "health": null
+    },
+    {
+      "id": "fireworks",
+      "access": "key",
+      "url": "https://api.fireworks.ai/v1/accounts/fireworks/models",
+      "parser": "fireworks",
+      "source": "https://docs.fireworks.ai/api-reference/list-models",
+      "note": "默认读取 fireworks 托管模型；填写账户 ID 可读取该账户模型",
+      "rows": 24,
+      "health": null
+    },
+    {
+      "id": "xai",
+      "access": "key",
+      "url": "https://api.x.ai/v1/models",
+      "source": "https://docs.x.ai/developers/rest-api-reference/inference/models",
+      "rows": 12,
+      "health": null
+    },
+    {
+      "id": "minimax",
+      "access": "key",
+      "url": "https://api.minimax.io/v1/models",
+      "source": "https://platform.minimax.io/docs/api-reference/models/openai/list-models",
+      "rows": 10,
+      "health": null
+    },
+    {
+      "id": "stepfun",
+      "access": "key",
+      "url": "https://api.stepfun.com/v1/models",
+      "source": "https://platform.stepfun.com/docs/zh/api-reference/models/list",
+      "rows": 7,
+      "health": null
+    },
+    {
+      "id": "tokenhub",
+      "access": "key",
+      "url": "https://tokenhub.tencentcloudmaas.com/v1/models",
+      "source": "https://cloud.tencent.com/document/product/1823/130078",
+      "rows": 45,
+      "health": null
+    },
+    {
+      "id": "xiaomi",
+      "access": "key",
+      "url": "https://api.xiaomimimo.com/v1/models",
+      "auth": "xiaomi",
+      "source": "https://mimo.mi.com/docs/en-US/api/model/list-models",
+      "rows": 5,
+      "health": null
+    },
+    {
+      "id": "qianfan",
+      "access": "key",
+      "url": "https://qianfan.baidubce.com/v2/models",
+      "source": "https://cloud.baidu.com/doc/qianfan-api/s/Dmba8k71y",
+      "rows": 36,
+      "health": null
+    },
+    {
+      "id": "longcat",
+      "access": "key",
+      "url": "https://api.longcat.chat/openai/v1/models",
+      "source": "https://longcat.chat/platform/docs/zh/api/models.html",
+      "rows": 2,
+      "health": null
+    },
+    {
+      "id": "replicate",
+      "access": "key",
+      "url": "https://api.replicate.com/v1/models",
+      "parser": "replicate",
+      "source": "https://replicate.com/docs/reference/http/#models.list",
+      "rows": 107,
+      "health": null
+    },
+    {
+      "id": "bailian",
+      "access": "workspace",
+      "parser": "bailian",
+      "source": "https://help.aliyun.com/zh/model-studio/list-models",
+      "note": "北京目录需要业务空间 ID；不会把中国区密钥发送到海外区域",
+      "rows": 180,
+      "health": null
+    },
+    {
+      "id": "ark",
+      "access": "control-plane",
+      "source": "https://docs.volcengine.com/docs/ark/list-foundation-models-api?lang=zh",
+      "note": "目录管理使用 AccessKey/SecretKey；推理 API Key 不能替代管理凭据",
+      "rows": 33,
+      "health": null
+    },
+    {
+      "id": "sensenova",
+      "access": "control-plane",
+      "url": "https://api.sensenova.cn/v1/llm/models",
+      "source": "https://console.sensecore.cn/micro/help/docs/model-as-a-service/nova/overview/Models/GetModelList/",
+      "note": "旧版目录需要 SenseCore JWT，不能套用 token.sensenova.cn 的推理密钥",
+      "rows": 8,
+      "health": null
+    },
+    {
+      "id": "zhipu",
+      "access": "documents",
+      "source": "https://docs.bigmodel.cn/llms.txt",
+      "note": "官方接口索引未列出模型目录 API，按具体型号文档核查",
+      "rows": 28,
+      "health": null
+    },
+    {
+      "id": "recraft",
+      "access": "documents",
+      "source": "https://www.recraft.ai/docs/llms.txt",
+      "note": "官方未提供已确认的模型枚举接口",
+      "rows": 17,
+      "health": null
+    },
+    {
+      "id": "bfl",
+      "access": "documents",
+      "source": "https://docs.bfl.ai/llms.txt",
+      "note": "按具体模型的生成与编辑接口核查，未确认目录 API",
+      "rows": 14,
+      "health": null
+    },
+    {
+      "id": "stability",
+      "access": "key",
+      "url": "https://api.stability.ai/v1/engines/list",
+      "parser": "engines",
+      "source": "https://platform.stability.ai/docs/api-reference#tag/v1generation",
+      "note": "此接口仅枚举 v1 引擎；v2 模型按各自文档保留",
+      "rows": 6,
+      "health": null
+    },
+    {
+      "id": "ideogram",
+      "access": "documents",
+      "source": "https://developer.ideogram.ai/api-reference/api-reference",
+      "note": "官方未提供已确认的模型枚举接口",
+      "rows": 14,
+      "health": null
+    },
+    {
+      "id": "iflytek",
+      "access": "documents",
+      "source": "https://www.xfyun.cn/doc/spark/Web.html",
+      "note": "按模型及独立服务接口核查，未确认统一目录 API",
+      "rows": 32,
+      "health": null
+    },
+    {
+      "id": "antling",
+      "access": "documents",
+      "source": "https://www.tbox.cn/",
+      "note": "未找到可用于现有接入凭据的官方模型枚举接口",
+      "rows": 6,
+      "health": null
+    }
+  ]
+}

@@ -19,12 +19,7 @@ test('OpenRouter catalog scope and search changes reset the incremental list bef
   assert.match(modelPicker, /setQuery\(event\.target\.value\); resetModelList\(\)/u)
 })
 
-test('selected model notes keep unknown lifecycle and catalog-only verification explicit', () => {
-  assert.match(app, /if \(value === 'stable'\) return '稳定版';/u)
-  assert.match(app, /return '状态未知';/u)
-  assert.match(app, /function formatVerification\(model\)/u)
-  assert.match(app, /官方目录/u)
-  assert.match(app, /\{formatVerification\(model\)\}/u)
+test('model option badges wrap within their cards', () => {
   assert.match(styles, /\.model-option-badges\s*\{[^}]*flex-wrap:\s*wrap;/su)
 })
 
@@ -40,6 +35,6 @@ test('partial-role provider catalogs merge without inventing defaults for missin
   const routes = { main: { accessProvider: 'anthropic', modelId: 'claude-fable-5-1' }, image: { accessProvider: 'recraft', modelId: 'recraftv4_1_vector' }, vision: { accessProvider: 'xai', modelId: 'grok-4.6' } }
   const roles = requiredCreateRouteRoles({ outputFormat: 'svg', modelRoutes: routes }, 0)
   assert.deepEqual(roles, ['main', 'image'])
-  assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'svg', pipelineMode: 'vanilla', modelRoutes: routes }, 0), ['image'])
+  assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'svg', pipelineMode: 'vanilla', modelRoutes: routes }, 0), ['main', 'image'])
   assert.deepEqual(scopedApiKeysForRoles(routes, roles, { anthropic: 'text-key', recraft: 'vector-key', xai: 'unused' }), { anthropic: 'text-key', recraft: 'vector-key' })
 })

@@ -1,0 +1,56 @@
+{
+  "id": "pcbi.1010086.g008",
+  "paper": "pcbi.1010086",
+  "figure": {
+    "id": "pcbi.1010086.g008",
+    "label": "Fig 8",
+    "caption": "Quick reference for the proposed graphical notation for network models in computational neuroscience.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1010086.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1010086.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Quick reference for the proposed graphical notation for network models in computational neuroscience.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1010086.g008\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1010086.g008",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1010086",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010086",
+    "title": "Connectivity concepts in neuronal network modeling",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Johanna Senk",
+      "Birgit Kriener",
+      "Mikael Djurfeldt",
+      "Nicole Voges",
+      "Han-Jia Jiang",
+      "Lisa Schüttler",
+      "Gabriele Gramelsberger",
+      "Markus Diesmann",
+      "Hans E. Plesser",
+      "Sacha J. van Albada"
+    ],
+    "year": "2022",
+    "license": "2022\nSenk et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1010086.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g008.png",
+      "bytes": 687630,
+      "sha256": "5906c6931085e7d00346f4c23d9484a1c54a6960ce9fbb07955b76ba0b79a91b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1010086.g008",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1010086.g008.tif",
+      "bytes": 896280,
+      "sha256": "44505519286ab6af9496281eb7b51c1941744f19d36ba765675755e04fa63b62"
+    }
+  }
+}

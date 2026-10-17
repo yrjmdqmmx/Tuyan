@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000000"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  <style>
+    .label-text { font-family: 'Noto Sans', sans-serif; font-weight: bold; fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; }
+    .branch-label { font-family: 'Noto Sans', sans-serif; font-size: 18px; fill: #000000; text-anchor: middle; paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 4px; }
+  </style>
+
+  
+  <g transform="translate(800, 30)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">Start</text>
+  </g>
+
+  
+  <line x1="800" y1="60" x2="800" y2="120" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(800, 180)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">Receive sample</text>
+  </g>
+
+  
+  <line x1="800" y1="220" x2="800" y2="320" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(800, 380)">
+    <polygon points="0,-60 120,0 0,60 -120,0" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="22">Quality check</text>
+  </g>
+
+  
+  <line x1="800" y1="440" x2="800" y2="500" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="815" y="475" class="branch-label">Yes</text>
+
+  
+  <polyline points="920,380 1100,380 1100,500" fill="none" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="1010" y="365" class="branch-label">No</text>
+
+  
+  <g transform="translate(800, 560)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">Normalize</text>
+  </g>
+
+  
+  <line x1="800" y1="600" x2="800" y2="660" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(800, 720)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">Output</text>
+  </g>
+
+  
+  <line x1="800" y1="760" x2="800" y2="800" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(800, 830)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">End</text>
+  </g>
+
+  
+  <g transform="translate(1100, 560)">
+    <rect x="-150" y="-40" width="300" height="80" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">Reject sample</text>
+  </g>
+
+  
+  <line x1="1100" y1="600" x2="1100" y2="800" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(1100, 830)">
+    <path d="M -100,-30 L 100,-30 A 30,30 0 0 1 100,30 L -100,30 A 30,30 0 0 1 -100,-30 Z" fill="#1F8A70" stroke="#1F8A70" stroke-width="2"/>
+    <text x="0" y="0" class="label-text" font-size="24">End</text>
+  </g>
+
+</svg>

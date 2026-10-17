@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" article-type="research-article" dtd-version="3.0" xml:lang="en">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0128213</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-15-06591</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+</article-categories>
+<title-group>
+<article-title>Systematic Review and Meta-Analysis of the Impact of Carer Stress on Subsequent Institutionalisation of Community-Dwelling Older People</article-title>
+<alt-title alt-title-type="running-head">Carer Stress and Subsequent Institutionalisation: A Meta-Analysis</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Donnelly</surname>
+<given-names>Nora-Ann</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+<xref rid="cor001" ref-type="corresp">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hickey</surname>
+<given-names>Anne</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Burns</surname>
+<given-names>Annette</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Murphy</surname>
+<given-names>Paul</given-names>
+</name>
+<xref rid="aff002" ref-type="aff"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Doyle</surname>
+<given-names>Frank</given-names>
+</name>
+<xref rid="aff001" ref-type="aff"><sup>1</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Psychology, Royal College of Surgeons in Ireland, Dublin, Ireland</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Mercer Library, Royal College of Surgeons in Ireland, Dublin, Ireland</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Guo</surname>
+<given-names>Yiru</given-names>
+</name>
+<role>Academic Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Louisville, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="con" id="contrib001">
+<p>Conceived and designed the experiments: NAD FD. Performed the experiments: NAD FD PM AB. Analyzed the data: NAD FD. Contributed reagents/materials/analysis tools: NAD FD AH. Wrote the paper: NAD FD AH AB PM.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">noraadonnelly@rcsi.ie</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>2</day>
+<month>6</month>
+<year>2015</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2015</year>
+</pub-date>
+<volume>10</volume>
+<issue>6</issue>
+<elocation-id>e0128213</elocation-id>
+<history>
+<date date-type="received">
+<day>26</day>
+<month>2</month>
+<year>2015</year>
+</date>
+<date date-type="accepted">
+<day>24</day>
+<month>4</month>
+<year>2015</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2015</copyright-year>
+<copyright-holder>Donnelly et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0128213" xlink:type="simple"/>
+<abstract>
+<sec id="sec001">
+<title>Background</title>
+<p>In the caregiving literature there is a common assertion that a higher level of carer stress is a critical determinant of premature ending of homecare. However, this contention has not been systematically assessed. We therefore systematically reviewed and meta-analysed the prospective association between various forms of carer stress and subsequent institutionalisation of community-dwelling older people.</p>
+</sec>
+<sec id="sec002">
+<title>Methods</title>
+<p>Systematic literature search of prospective studies measuring carer stress at baseline and institutionalisation at follow-up. Given substantial interchangeability in the measurement of carer stress, we included a wide number of exposure measures, namely: carer stress, burden, depression, distress, anxiety, burnout, and strain. Institutionalisation included both acute and long-term care utilisation. The standardised mean difference between stressed and non-stressed carers was the primary measure of effect. We assessed study quality with the Crowe Critical Appraisal Tool (CCAT). Pre-planned sensitivity analysis included examination of estimates according to study size; decade published; study quality according to quartiles of CCAT scores; population; follow-up period; study design and impact of adjusted or unadjusted estimates.</p>
+</sec>
+<sec id="sec003">
+<title>Results</title>
+<p>The search yielded 6,963 articles. After exclusions, we analysed data from 54 datasets. The meta-analysis found that while carer stress has a significant effect on subsequent institutionalisation of care recipients, the overall effect size was negligible (SMD=0·05, 95% CI=0·04–0·07). Sensitivity analyses found that, the effect size was higher for measurements of stress than for other measures, though still relatively small (SMD=0·23, 95% CI=0·09–0·38). Thus, whether analysing the association between carer stress, burden, distress, or depression with either acute or long-term care, the effect size remains small to negligible. Concurrently, we found estimates reduce over time and were smaller with larger studies and those of higher quality, according to the CCAT scores.</p>
+</sec>
+<sec id="sec004">
+<title>Conclusion</title>
+<p>Despite strong statements to the contrary, it appears that the effect of carer stress on subsequent care recipient institutionalisation is small to negligible. The current findings point to a biased literature, with significant small study effects. The results suggest a need to re-evaluate the degree to which carer stress predicts premature ending of home care. Concurrently, other factors may be more crucial in institutional placement than carer stress and should be investigated.</p>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>This work was funded by the Health Research Board (HRB) in Ireland under Grant No. PHD/2007/16. The funder had no role in study design, data collection and analysis, decision to publish or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="5"/>
+<table-count count="3"/>
+<page-count count="19"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability" xlink:type="simple">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information Files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec005" sec-type="intro">
+<title>Introduction</title>
+<p>The caregiving role provided by family members and informal carers to older care recipients is often regarded as hazardous to a carer’s psychological well-being and physical health. Indeed, a number of meta-analyses and systematic reviews have concluded that carers are more likely to have poor psychological and physical health outcomes when compared to non-carers [<xref rid="pone.0128213.ref001" ref-type="bibr">1</xref>, <xref rid="pone.0128213.ref002" ref-type="bibr">2</xref>]. Therefore, in examining the sustainability of home care, gerontological researchers have increasingly recognised the needs of the carer as well as the care recipient. This work has given much attention to the psychological health effects of caregiving, leading to a contention that such psychological morbidity of the carer could increase the risk of institutionalisation of the care recipient.</p>
+<p>Before reviewing this contention it is important to note that, while there is extensive literature on the psychological health effects of caregiving, particularly carer stress, burden, and depression, there is a lack of clarity on their distinction and how they interact in the caregiving process. Indeed, though burden is one of the most commonly analysed variables in the literature, there is no single definition or uniform conceptualisation of carer burden [<xref rid="pone.0128213.ref003" ref-type="bibr">3</xref>, <xref rid="pone.0128213.ref004" ref-type="bibr">4</xref>]. A number of researchers have acknowledged this lack of clarity by framing the examination of carer burden within the context of a stress process model [<xref rid="pone.0128213.ref005" ref-type="bibr">5</xref>–<xref rid="pone.0128213.ref007" ref-type="bibr">7</xref>]. Critical to the understanding of burden is the model’s distinction between objective and subjective primary stressors [<xref rid="pone.0128213.ref008" ref-type="bibr">8</xref>]. Objective stressors include care recipient’s functional disability and behaviours that challenge. Subjective stressors are the carer’s appraisal of objective stressors. Thus, within this model, burden is not understood as a separate construct from stress, rather it is a carer’s subjective appraisal of his or her situation [<xref rid="pone.0128213.ref006" ref-type="bibr">6</xref>, <xref rid="pone.0128213.ref008" ref-type="bibr">8</xref>, <xref rid="pone.0128213.ref009" ref-type="bibr">9</xref>]. We have adopted this interpretation of carer burden and stress for the purposes of this systematic review.</p>
+<p>Despite attempts to provide clarity around the psychological health effects of caregiving, virtually every dimension of the stress process (from the primary stressors such as behaviours that challenge, to the outcomes of the model, including anxiety and depression) has been referred to as burden [<xref rid="pone.0128213.ref010" ref-type="bibr">10</xref>]. Consequently, the term ‘burden’ has been used in many different ways in the literature. Furthermore, there is a tendency of some researchers to use the concepts and associated measures interchangeably [<xref rid="pone.0128213.ref004" ref-type="bibr">4</xref>]. For example, studies discuss ‘carer stress’ yet apply measures of burden [<xref rid="pone.0128213.ref011" ref-type="bibr">11</xref>], measures of depression [<xref rid="pone.0128213.ref012" ref-type="bibr">12</xref>], or measures of strain [<xref rid="pone.0128213.ref013" ref-type="bibr">13</xref>]; or assess ‘carer strain’ and apply measures of distress [<xref rid="pone.0128213.ref014" ref-type="bibr">14</xref>]; or refer to ‘carer burden’ as synonymous with carer burnout [<xref rid="pone.0128213.ref015" ref-type="bibr">15</xref>]. Given the lack of clarity and consequential interchangeability in the measurement of psychological morbidity, any review of the area must incorporate a wide number of exposures employed to measure carer psychological morbidity. Brodaty et al., also adopted this approach in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. Therefore, in order to avoid omitting a substantial proportion of the literature, we had to include a wide number of exposures that are measured under the umbrella term of ‘carer stress’, namely: stress, burden, depression, distress, anxiety, burnout, and strain.</p>
+<p>As referred to above, in the caregiving literature there is a commonly held assertion that, as a carer is a critical element of home care, if the level of stress on a carer becomes too great, the home care support provided by the carer may be jeopardized [<xref rid="pone.0128213.ref017" ref-type="bibr">17</xref>]. Indeed, a number of cohort studies have found that higher levels of caregiver stress, burden, and depression can predict admission of the care recipient into a nursing home [<xref rid="pone.0128213.ref013" ref-type="bibr">13</xref>, <xref rid="pone.0128213.ref018" ref-type="bibr">18</xref>, <xref rid="pone.0128213.ref019" ref-type="bibr">19</xref>]. Others authors suggest that carer stress was the principal determinant of nursing home placement [<xref rid="pone.0128213.ref020" ref-type="bibr">20</xref>]. Kuzuya et al., also found carer burden to be an important risk factor for hospitalisation of care recipients [<xref rid="pone.0128213.ref021" ref-type="bibr">21</xref>]. This same study suggests that interventions aiming to reduce carer burden and improve carer well-being could delay long-term placement [<xref rid="pone.0128213.ref021" ref-type="bibr">21</xref>]. Furthermore, a recent publication in the Lancet Psychiatry [<xref rid="pone.0128213.ref022" ref-type="bibr">22</xref>] stated that “carer psychological morbidity predicts care breakdown and care home admissions” (p. 1). However, the assertion that higher levels of carer stress could jeopardize home care has not been subject to meta-analysis.</p>
+<p>Indeed, the majority of reviews of the predictors of institutionalisation have not accounted for the level of carer stress [<xref rid="pone.0128213.ref023" ref-type="bibr">23</xref>–<xref rid="pone.0128213.ref027" ref-type="bibr">27</xref>]. Gaugler et al., did include carer stress in a systematic review of factors that consistently predict nursing home admission in people with dementia [<xref rid="pone.0128213.ref028" ref-type="bibr">28</xref>]. This review found that, carers who indicated greater emotional stress were more likely to admit the care recipient to a nursing home. While this review considered separate measures of carer stress, the analysis was confined to whether carer stress was a significant predictor and the direction of the effect (positive or negative). However, unlike the current study, the review did not analyse the size of the effect [<xref rid="pone.0128213.ref028" ref-type="bibr">28</xref>]. Finally, when both carer and care recipient characteristics have been analysed together in cohort studies, the strength of the association between carer stress and institutionalisation has varied between studies, suggesting potential heterogeneity in these effects [<xref rid="pone.0128213.ref018" ref-type="bibr">18</xref>, <xref rid="pone.0128213.ref029" ref-type="bibr">29</xref>, <xref rid="pone.0128213.ref030" ref-type="bibr">30</xref>].</p>
+<p>Given the absence of a systematic review and meta-analysis in the area, we systematically reviewed and meta-analysed the prospective association between carer stress and institutional placement of the care recipient. For the purposes of the review, ‘carer stress’ is used as an umbrella term to incorporate the wide number of exposures that are used synonymously in the measurement of the psychological health effects of caregiving.</p>
+<sec id="sec006">
+<title>Objective</title>
+<p>To examine the effect of carer stress on subsequent institutional placement of community-dwelling older people.</p>
+</sec>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec008">
+<title>Study design</title>
+<p>The PRISMA guidelines for the conduct and reporting of systematic reviews and meta-analyses were adhered to in the conduct of this review [<xref rid="pone.0128213.ref031" ref-type="bibr">31</xref>].</p>
+</sec>
+<sec id="sec009">
+<title>Eligibility criteria</title>
+<sec id="sec010">
+<title>Types of studies</title>
+<p>Both naturalistic observational and intervention studies that measured carer stress at baseline and acute or long-term care utilisation at follow-up were included. We assessed prospective observational studies; control groups from controlled intervention studies with carers and, where data from control groups alone could not be obtained, combined intervention and control groups were also included. Sensitivity analyses examined the differential effect of study design on estimates and the effect of excluding those studies where data from control groups alone could not be obtained. We excluded studies if they were cross-sectional, retrospective or not written in English. Articles were not limited by year of publication.</p>
+</sec>
+<sec id="sec011">
+<title>Types of participants</title>
+<p>Care recipients: Community-dwelling older people (aged 65 and over) with chronic care needs that are being cared for by an informal carer. We did not confine the study to participants of a particular demographic group or ethnicity. Thus participants with Dementia or other chronic disabilities who have an established caregiving arrangement in the community were included. Carer: Informal carer who takes primary responsibility of the care recipient. We excluded articles with data on professional or paid carers.</p>
+</sec>
+<sec id="sec012">
+<title>Types of exposures</title>
+<p>As mentioned above, different measures of psychological morbidity have been analysed in the prediction of institutional placement. In order to avoid omitting a substantial proportion of the literature, we had to include a wide number of exposure measures that are used under the umbrella term ‘carer stress’, namely: stress, burden, depression, distress, anxiety, burnout, and strain. Brodaty et al., also employed this approach in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. Given the range of possible exposure variables, we considered them in a hierarchical manner, with composite measures of burden and stress which have been tested for validity and reliability given priority. These were followed by composite measures of depression, distress, anxiety, or strain which have also been tested for validity and reliability. Where studies included more than one measure, we recorded both and analysed these separately in a sensitivity analysis. This enabled an examination of differences between estimates solely with measures of stress, burden, depression or distress. It was also possible to examine estimates solely with measures of burden and stress according to the stress process model [<xref rid="pone.0128213.ref006" ref-type="bibr">6</xref>] and with measures of psychological distress, as adopted in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. For the overall effect estimate we employed the above hierarchy to select the best estimate.</p>
+</sec>
+<sec id="sec013">
+<title>Types of outcomes</title>
+<p>Acute care utilisation: Emergency Department visits and/or hospital admissions. Long-term care utilisation: Admission to a nursing home.</p>
+</sec>
+</sec>
+<sec id="sec014">
+<title>Search methods</title>
+<sec id="sec015">
+<title>Information sources</title>
+<p>We undertook a systematic literature search in January 2014 in the following databases: CINAHL, Medline (OVID), PsycInfo, Web of Knowledge, and EMBASE.</p>
+</sec>
+<sec id="sec016">
+<title>Search terms</title>
+<p>The search terms were: carer or caregiver; aged or elderly or Alzheimer or dementia; stress or burden or burnout or distress or anxiety or depression or strain; nursing home or long term care or long term care utilisation or care home or homes for the aged or institutionalisation or acute care or hospitalisation or hospital admission or hospital readmission or emergency department or accident and emergency. <xref rid="pone.0128213.s001" ref-type="supplementary-material">S1 Appendix</xref> provides an example of the search strategy for Medline (OVID).</p>
+</sec>
+</sec>
+<sec id="sec017">
+<title>Data collection and analysis</title>
+<sec id="sec018">
+<title>Study selection</title>
+<p>The first reviewer screened all titles and abstracts of papers identified by the literature search (NAD). Given resource constraints, a second reviewer (AB) undertook duplicate screening on a random selection of fifteen percent of found titles/abstracts. We discussed disagreements with a third reviewer (FD). All studies identified as potentially relevant were retrieved and read in full to determine eligibility for inclusion.</p>
+</sec>
+<sec id="sec019">
+<title>Data extraction</title>
+<p>We conducted data extraction by using a pre-defined data extraction template. Extracted data included design characteristics; study population and country; sample size; length of follow up; sample selection; age and sex of participants; the exposure and outcome measures; and results. Where there were insufficient data in the published paper we contacted authors to provide further information.</p>
+</sec>
+<sec id="sec020">
+<title>Quality assessment</title>
+<p>We conducted quality assessment with the Crowe Critical Appraisal Tool (CCAT) [<xref rid="pone.0128213.ref032" ref-type="bibr">32</xref>–<xref rid="pone.0128213.ref034" ref-type="bibr">34</xref>]. The CCAT was developed based on a wide number of previous critical appraisal tools, general research methods theory and reporting guidelines [<xref rid="pone.0128213.ref032" ref-type="bibr">32</xref>]. The tool has undergone testing for reliability and validity, with Crowe et al., reporting intraclass correlation coefficients of 0.83 (consistency) and 0.74 (absolute agreement) [<xref rid="pone.0128213.ref032" ref-type="bibr">32</xref>, <xref rid="pone.0128213.ref033" ref-type="bibr">33</xref>]. A similar recent meta-analysis also employed the CCAT to assess study quality [<xref rid="pone.0128213.ref035" ref-type="bibr">35</xref>].</p>
+<p>Based on the CCAT, we appraised papers included in the review in eight categories. These were preliminary appraisals (such as the title and abstract), the introduction, design, sampling, data collection, ethical matters, results, and discussion. Within each category we examined a number of items such as sampling method, sample size and bias. Scoring was a combination of objective and subjective assessment, where each category is scored from 0 (no evidence) to 5 (highest evidence). Total scores for each study are presented as a percentage. Thus the tool enables direct comparison of scores obtained in the quality assessment of articles included in the review [<xref rid="pone.0128213.ref032" ref-type="bibr">32</xref>, <xref rid="pone.0128213.ref034" ref-type="bibr">34</xref>]. In the sensitivity analysis, to examine the impact of study quality on effect estimates in a meaningful way, we grouped studies by quartiles of CCAT scores. However, we maintained continuous scores for the meta-regression.</p>
+</sec>
+<sec id="sec021">
+<title>Statistical analysis</title>
+<p>The standardised mean difference (SMD) between stressed and non-stressed carers was the primary measure of effect. This approach is recommended when there is variance in measurement of exposures (e.g., mean and SD of stress, burden, or depression scores or proportions stressed, burdened, or depressed) and outcome status (acute or long term care utilisation) [<xref rid="pone.0128213.ref036" ref-type="bibr">36</xref>, <xref rid="pone.0128213.ref037" ref-type="bibr">37</xref>]. As studies reported a combination of mean and SD scores or proportions stressed or not, we employed the metaeff command in Stata 12.0 [<xref rid="pone.0128213.ref038" ref-type="bibr">38</xref>]. This command enabled the calculation an effect size and its standard error by using methods described in the Cochrane Handbook of Systematic Reviews of Interventions [<xref rid="pone.0128213.ref038" ref-type="bibr">38</xref>, <xref rid="pone.0128213.ref039" ref-type="bibr">39</xref>]. Thus data were transformed to a common effect size metric. We estimated effects in a random effects model [<xref rid="pone.0128213.ref037" ref-type="bibr">37</xref>] for all included studies. We employed the I<sup>2</sup> test to describe the percentage of total variation across studies that was due to heterogeneity rather than chance [<xref rid="pone.0128213.ref040" ref-type="bibr">40</xref>]. We conducted an assessment of publication bias or small study effects visually with a funnel plot and more formally with Egger’s test.</p>
+<p>We conducted a pre-planned sensitivity analysis of estimates according to study size by tertile; the decade studies were published and regions in which studies were conducted; study quality by quartiles of CCAT scores; use of adjusted or unadjusted estimates; dementia populations compared to non-dementia populations; different follow-up periods; study design and long-term care in comparison to acute care utilisation. We examined the impact of different exposure measures in a number of ways. Firstly, we examined differences between estimates solely with measures of stress, burden, depression or distress separately. Where the same scale was used to measure ‘stress’, ‘distress’ and ‘burden’, we applied the original classification by the authors of the scale. For example, the General Health Questionnaire was classified as ‘distress’, an approach also adopted in a similar systematic review [<xref rid="pone.0128213.ref041" ref-type="bibr">41</xref>, <xref rid="pone.0128213.ref042" ref-type="bibr">42</xref>]. We compared differences in estimates between studies applying the Zarit Burden Interview (ZBI) with studies that applied other measures of burden. It was also possible to examine estimates solely with measures of burden and stress, according to the stress process model [<xref rid="pone.0128213.ref006" ref-type="bibr">6</xref>], and with measures of psychological distress, as adopted in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. We also examined differences in estimates within studies that measured both burden and depression. Finally, we did a further sensitivity analysis of those studies that applied measures of stress. Here, we examined the effect estimates for studies which used a validated measure of stress (that is the psychometric properties of the scale have been reported), in comparison with those studies that did not use a validated measure or report if the psychometric properties of the scale had been tested.</p>
+<p>Given the methodological diversity of included studies, we anticipated significant heterogeneity. Therefore we planned a meta-regression to understand the extent to which heterogeneity was related to the characteristics of the studies [<xref rid="pone.0128213.ref043" ref-type="bibr">43</xref>]. This included the year studies were published, study size and quality, whether the estimates were adjusted for, the type of outcome and exposure measure and the period of follow-up. We examined each study characteristic individually first. We then entered study characteristics found to be significant into a meta-regression with multiple covariates to assess their overall contribution to heterogeneity in effect estimates [<xref rid="pone.0128213.ref043" ref-type="bibr">43</xref>].</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec022" sec-type="results">
+<title>Results</title>
+<sec id="sec023">
+<title>Study selection</title>
+<p><xref rid="pone.0128213.g001" ref-type="fig">Fig 1</xref> presents a flow diagram of the search strategy. After duplicates were removed the search retrieved 4,701 articles, of which 4,582 were excluded (4,367 on review of abstract and a further 215 after full text assessment). A further 65 articles were omitted. These were 27 repeat publications from the same dataset (see <xref rid="pone.0128213.s002" ref-type="supplementary-material">S2 Appendix</xref>) and 38 studies where adequate data was not available following contact with authors. Details of these studies are presented in <xref rid="pone.0128213.s003" ref-type="supplementary-material">S3 Appendix</xref>. Thus data from 54 datasets were included in the analysis.</p>
+<fig id="pone.0128213.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Flow diagram records identified through database searching.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.g001" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec024">
+<title>Study characteristics</title>
+<p>Characteristics of included studies are displayed in <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>. Eighteen studies were conducted in Europe, twenty-six in North America, eight studies in Asia, and two were conducted in Australia. In the majority of cases, the research design adopted was a cohort study (80% of studies) with study populations of caregivers and dementia care recipient dyads (74% of studies).</p>
+<p>There was substantial variation in the types of exposure measures included. Twenty-seven studies measured caregiver burden and of these seventeen studies used the Zarit Burden Interview (ZBI). One study used items from the ZBI and two studies measured burden with the Family Caregiving Burden Inventory (FCBI). A further seven studies used seven different measures of burden (see <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>).</p>
+<p>Ten studies measured carer stress, two of these studies with the Relative Stress Scale. The other eight studies used eight different measures of stress. Six studies measured carer distress: three used the General Health Questionnaire, two used the Neuropsychiatric Inventory Distress scale (NPI-D), and the sixth used a measure from the InterRAI home care assessment tool (see <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>).</p>
+<p>Carer strain was measured in two studies. One study measured carer anxiety using the anxiety scale of the Hospital Anxiety and Depression Scale (HADS). Nineteen studies measured depression, thirteen of these with the Centre for Epidemiologic Studies Depression Scale (CES-D). Three studies used the Geriatric Depression Scale. Three other studies used three different measures of depression.</p>
+<p>Eleven studies utilized more than one measure. Six studies measured both carer burden and depression. Two studies measured carer stress and depression. One study measured carer burden and anxiety. One study measured carer stress and distress and one study measure carer distress and depression.</p>
+<p>A number of studies referred to the same measure as a measure of burden, stress, or distress. This interchangeability was apparent both within and between studies. For example, in one study the same measure was referred to as both a measure of stress and burden (reference 85, <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>). The General Health Questionnaire was used to measure ‘stress’ (reference 47; <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>), ‘distress’ (reference 71; <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>), and ‘burden’ (reference 102; <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>).</p>
+<p>In forty-two studies the outcome measure was admission to long-term care, in seven studies it was admission to acute care, while in five studies the outcome was admission to both acute and long term care (see <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>).</p>
+</sec>
+<sec id="sec025">
+<title>Synthesis of results: Meta-analysis</title>
+<p>As detailed in the methods section, we adopted a hierarchical approach to the exposure measure to estimate the overall effect size. With this approach the meta-analysis found that, while carer stress has a significant effect on subsequent institutionalisation of care recipients, the overall effect size across the 54 studies was negligible according to Cohen’s guidelines (SMD = 0.05, 95% CI = 0.04–0.07) [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>]. The forest plot using best estimates from individual studies is displayed in <xref rid="pone.0128213.g002" ref-type="fig">Fig 2</xref>.</p>
+<fig id="pone.0128213.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Overall Forest Plot.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.g002" position="float" xlink:type="simple"/>
+</fig>
+<p>There was evidence of statistically significant heterogeneity (I<sup>2</sup> = 79.2%; p = &lt;.001) and funnel plot asymmetry (see <xref rid="pone.0128213.g003" ref-type="fig">Fig 3</xref>). Furthermore, the Egger’s bias coefficient (bias = 1.45; p = &lt;.001) strongly indicated the presence of asymmetry and publication bias, suggesting small studies overestimate the effect of stress [<xref rid="pone.0128213.ref045" ref-type="bibr">45</xref>].</p>
+<fig id="pone.0128213.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Funnel Plot.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.g003" position="float" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec026">
+<title>Additional analysis: Sensitivity analyses</title>
+<p>Summary estimates for each of the sensitivity analyses are displayed in <xref rid="pone.0128213.t001" ref-type="table">Table 1</xref>. To examine the impact of the type of measure on estimates, the sensitivity analysis separated out measures of stress, burden, depression or distress. Where the same scale was used to measure ‘stress’, ‘distress’ and ‘burden’, we applied the original classification by the authors of the scale. For example, the General Health Questionnaire was classified as ‘distress’, an approach also adopted in a similar systematic review [<xref rid="pone.0128213.ref041" ref-type="bibr">41</xref>, <xref rid="pone.0128213.ref042" ref-type="bibr">42</xref>].</p>
+<table-wrap id="pone.0128213.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.t001</object-id>
+<label>Table 1</label> <caption><title>Sensitivity analyses.</title></caption>
+<alternatives>
+<graphic id="pone.0128213.t001g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.t001" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" align="center" rowspan="1"/>
+<th align="left" rowspan="1" colspan="1">No. of studies</th>
+<th align="left" rowspan="1" colspan="1">SMD</th>
+<th align="left" rowspan="1" colspan="1">95% CI</th>
+<th align="left" rowspan="1" colspan="1">1<sup>2</sup></th>
+<th align="left" rowspan="1" colspan="1">P Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="3" align="left" colspan="1"><bold>Study size</bold></td>
+<td align="left" rowspan="1" colspan="1">Small</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="char" char="." rowspan="1" colspan="1">0.28</td>
+<td align="left" rowspan="1" colspan="1">0.13–0.44</td>
+<td align="char" char="." rowspan="1" colspan="1">53.5</td>
+<td align="char" char="." rowspan="1" colspan="1">.003</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Medium</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="char" char="." rowspan="1" colspan="1">0.11</td>
+<td align="left" rowspan="1" colspan="1">0.05–0.18</td>
+<td align="char" char="." rowspan="1" colspan="1">57.7</td>
+<td align="char" char="." rowspan="1" colspan="1">.002</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Large</td>
+<td align="left" rowspan="1" colspan="1">18</td>
+<td align="char" char="." rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">0.03–0.07</td>
+<td align="char" char="." rowspan="1" colspan="1">90.1</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td rowspan="4" align="left" colspan="1"><bold>Decade published</bold></td>
+<td align="left" rowspan="1" colspan="1">1980s</td>
+<td align="left" rowspan="1" colspan="1">3</td>
+<td align="char" char="." rowspan="1" colspan="1">0.40</td>
+<td align="left" rowspan="1" colspan="1">0.16–0.63</td>
+<td align="char" char="." rowspan="1" colspan="1">0.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.494</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">1990s</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="char" char="." rowspan="1" colspan="1">0.26</td>
+<td align="left" rowspan="1" colspan="1">0.18–0.34</td>
+<td align="char" char="." rowspan="1" colspan="1">0.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.478</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2000s</td>
+<td align="left" rowspan="1" colspan="1">23</td>
+<td align="char" char="." rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">0.03–0.07</td>
+<td align="char" char="." rowspan="1" colspan="1">77.5</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">2010+</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="char" char="." rowspan="1" colspan="1">0.04</td>
+<td align="left" rowspan="1" colspan="1">0.02–0.07</td>
+<td align="char" char="." rowspan="1" colspan="1">86.3</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td rowspan="4" align="left" colspan="1"><bold>Quality score</bold></td>
+<td align="left" rowspan="1" colspan="1">Group 1: CCAT score &lt; 50%</td>
+<td align="left" rowspan="1" colspan="1">13</td>
+<td align="char" char="." rowspan="1" colspan="1">0.26</td>
+<td align="left" rowspan="1" colspan="1">0.12–0.41</td>
+<td align="char" char="." rowspan="1" colspan="1">69.5</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Group 2: CCAT score 50–57%</td>
+<td align="left" rowspan="1" colspan="1">12</td>
+<td align="char" char="." rowspan="1" colspan="1">0.21</td>
+<td align="left" rowspan="1" colspan="1">0.09–0.33</td>
+<td align="char" char="." rowspan="1" colspan="1">67.4</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Group 1: CCAT score 58–67%</td>
+<td align="left" rowspan="1" colspan="1">15</td>
+<td align="char" char="." rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">0.03–0.07</td>
+<td align="char" char="." rowspan="1" colspan="1">84.1</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Group 1: CCAT score ≥68%</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="char" char="." rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">0.01–0.09</td>
+<td align="char" char="." rowspan="1" colspan="1">82.6</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td rowspan="2" align="left" colspan="1"><bold>Adjustment</bold></td>
+<td align="left" rowspan="1" colspan="1">Unadjusted estimates</td>
+<td align="left" rowspan="1" colspan="1">44</td>
+<td align="char" char="." rowspan="1" colspan="1">0.14</td>
+<td align="left" rowspan="1" colspan="1">0.10–0.18</td>
+<td align="char" char="." rowspan="1" colspan="1">81.7</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Adjusted estimates</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="char" char="." rowspan="1" colspan="1">0.01</td>
+<td align="left" rowspan="1" colspan="1">0.00–0.02</td>
+<td align="char" char="." rowspan="1" colspan="1">46.6</td>
+<td align="char" char="." rowspan="1" colspan="1">.051</td>
+</tr>
+<tr>
+<td rowspan="2" align="left" colspan="1"><bold>Population</bold></td>
+<td align="left" rowspan="1" colspan="1">Dementia population</td>
+<td align="left" rowspan="1" colspan="1">40</td>
+<td align="char" char="." rowspan="1" colspan="1">0.03</td>
+<td align="left" rowspan="1" colspan="1">0.02–0.05</td>
+<td align="char" char="." rowspan="1" colspan="1">72.7</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Non-Dementia population</td>
+<td align="left" rowspan="1" colspan="1">14</td>
+<td align="char" char="." rowspan="1" colspan="1">0.15</td>
+<td align="left" rowspan="1" colspan="1">0.08–0.22</td>
+<td align="char" char="." rowspan="1" colspan="1">38.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.074</td>
+</tr>
+<tr>
+<td rowspan="2" align="left" colspan="1"><bold>Follow up</bold></td>
+<td align="left" rowspan="1" colspan="1">A year or less</td>
+<td align="left" rowspan="1" colspan="1">26</td>
+<td align="char" char="." rowspan="1" colspan="1">0.09</td>
+<td align="left" rowspan="1" colspan="1">0.05–0.14</td>
+<td align="char" char="." rowspan="1" colspan="1">77.7</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Over a year</td>
+<td align="left" rowspan="1" colspan="1">28</td>
+<td align="char" char="." rowspan="1" colspan="1">0.04</td>
+<td align="left" rowspan="1" colspan="1">0.02–0.05</td>
+<td align="char" char="." rowspan="1" colspan="1">77.2</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td rowspan="2" align="left" colspan="1"><bold>Study design</bold></td>
+<td align="left" rowspan="1" colspan="1">Cohort</td>
+<td align="left" rowspan="1" colspan="1">43</td>
+<td align="char" char="." rowspan="1" colspan="1">0.11</td>
+<td align="left" rowspan="1" colspan="1">0.08–0.14</td>
+<td align="char" char="." rowspan="1" colspan="1">82.3</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Intervention</td>
+<td align="left" rowspan="1" colspan="1">11</td>
+<td align="char" char="." rowspan="1" colspan="1">0.01</td>
+<td align="left" rowspan="1" colspan="1">0.00–0.02</td>
+<td align="char" char="." rowspan="1" colspan="1">32.9</td>
+<td align="char" char="." rowspan="1" colspan="1">.136</td>
+</tr>
+<tr>
+<td rowspan="3" align="left" colspan="1"><bold>Outcome</bold></td>
+<td align="left" rowspan="1" colspan="1">Long term care</td>
+<td align="left" rowspan="1" colspan="1">42</td>
+<td align="char" char="." rowspan="1" colspan="1">0.06</td>
+<td align="left" rowspan="1" colspan="1">0.04–0.08</td>
+<td align="char" char="." rowspan="1" colspan="1">74.2</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Both acute and long term care</td>
+<td align="left" rowspan="1" colspan="1">5</td>
+<td align="char" char="." rowspan="1" colspan="1">0.27</td>
+<td align="left" rowspan="1" colspan="1">0.13–0.41</td>
+<td align="char" char="." rowspan="1" colspan="1">0.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.433</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Acute care</td>
+<td align="left" rowspan="1" colspan="1">7</td>
+<td align="char" char="." rowspan="1" colspan="1">0.05</td>
+<td align="left" rowspan="1" colspan="1">0.00–0.09</td>
+<td align="char" char="." rowspan="1" colspan="1">92.4</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td rowspan="5" align="left" colspan="1"><bold>Region conducted</bold></td>
+<td align="left" rowspan="1" colspan="1">Europe</td>
+<td align="left" rowspan="1" colspan="1">18</td>
+<td align="char" char="." rowspan="1" colspan="1">0.02</td>
+<td align="left" rowspan="1" colspan="1">-0.00–0.05</td>
+<td align="char" char="." rowspan="1" colspan="1">53.3</td>
+<td align="char" char="." rowspan="1" colspan="1">.004</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">USA</td>
+<td align="left" rowspan="1" colspan="1">20</td>
+<td align="char" char="." rowspan="1" colspan="1">0.07</td>
+<td align="left" rowspan="1" colspan="1">0.04–0.09</td>
+<td align="char" char="." rowspan="1" colspan="1">83.4</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Canada</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.13</td>
+<td align="left" rowspan="1" colspan="1">0.04–0.22</td>
+<td align="char" char="." rowspan="1" colspan="1">81.5</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Asia</td>
+<td align="left" rowspan="1" colspan="1">8</td>
+<td align="char" char="." rowspan="1" colspan="1">0.14</td>
+<td align="left" rowspan="1" colspan="1">0.05–0.23</td>
+<td align="char" char="." rowspan="1" colspan="1">0.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.844</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Australia</td>
+<td align="left" rowspan="1" colspan="1">2</td>
+<td align="char" char="." rowspan="1" colspan="1">0.31</td>
+<td align="left" rowspan="1" colspan="1">0.05–0.58</td>
+<td align="char" char="." rowspan="1" colspan="1">0.0</td>
+<td align="char" char="." rowspan="1" colspan="1">.475</td>
+</tr>
+<tr>
+<td rowspan="6" align="left" colspan="1"><bold>Differences between measures</bold></td>
+<td align="left" rowspan="1" colspan="1">Any measure of burden</td>
+<td align="left" rowspan="1" colspan="1">27</td>
+<td align="char" char="." rowspan="1" colspan="1">0.07</td>
+<td align="left" rowspan="1" colspan="1">0.05–0.10</td>
+<td align="char" char="." rowspan="1" colspan="1">81.1</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Any measure of stress</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="char" char="." rowspan="1" colspan="1">0.23</td>
+<td align="left" rowspan="1" colspan="1">0.09–0.38</td>
+<td align="char" char="." rowspan="1" colspan="1">72.8</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Any measure of distress</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.09</td>
+<td align="left" rowspan="1" colspan="1">-0.01–0.18</td>
+<td align="char" char="." rowspan="1" colspan="1">89.5</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Any measure of depression</td>
+<td align="left" rowspan="1" colspan="1">19</td>
+<td align="char" char="." rowspan="1" colspan="1">0.03</td>
+<td align="left" rowspan="1" colspan="1">0.00–0.05</td>
+<td align="char" char="." rowspan="1" colspan="1">47.8</td>
+<td align="char" char="." rowspan="1" colspan="1">.011</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Zarit Burden Interview</td>
+<td align="left" rowspan="1" colspan="1">17</td>
+<td align="char" char="." rowspan="1" colspan="1">0.06</td>
+<td align="left" rowspan="1" colspan="1">0.04–0.09</td>
+<td align="char" char="." rowspan="1" colspan="1">85.2</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Any other measure of burden</td>
+<td align="left" rowspan="1" colspan="1">10</td>
+<td align="char" char="." rowspan="1" colspan="1">0.19</td>
+<td align="left" rowspan="1" colspan="1">0.04–0.35</td>
+<td align="char" char="." rowspan="1" colspan="1">51.9</td>
+<td align="char" char="." rowspan="1" colspan="1">.028</td>
+</tr>
+<tr>
+<td rowspan="2" align="left" colspan="1"><bold>Studies with more than one measure</bold></td>
+<td align="left" rowspan="1" colspan="1">Burden</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.24</td>
+<td align="left" rowspan="1" colspan="1">0.07–0.42</td>
+<td align="char" char="." rowspan="1" colspan="1">84.9</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Depression</td>
+<td align="left" rowspan="1" colspan="1">6</td>
+<td align="char" char="." rowspan="1" colspan="1">0.04</td>
+<td align="left" rowspan="1" colspan="1">-0.00–0.07</td>
+<td align="char" char="." rowspan="1" colspan="1">71.1</td>
+<td align="char" char="." rowspan="1" colspan="1">.004</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>It would appear that the magnitude of the estimate with measures of stress (SMD = 0.23, 95% CI = 0.09–0.38) is higher than that of the estimate with any other exposure measure. This estimate would still be considered ‘small’ according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>]. In contrast, the estimate with measures of burden are lower (SMD = 0.07, 95% CI = 0.05–0.10). Estimates with measures of depression fall within this range with confidence intervals which overlap with estimates of burden (SMD = 0.03, 95% CI = 0.00–0.05). However, a number of studies in the sensitivity analysis of the estimate with measures of stress used non-validated measures. We undertook a further sensitivity analysis of those studies measuring stress. Of these studies, for those that used a validated measure of stress (that is the psychometric properties of the scale have been reported), the effect size was approximately half (n = 6; SMD = 0.17, 95% CI = -0.02–0.36) of that of those studies that did not use a validated measure or report if the psychometric properties of the scale had been tested (n = 4; SMD = 0.30, 95% CI = 0.12–0.48). Overall, the number of studies included in these estimates varies, thus it cannot be said with confidence that there is a stronger effect estimate with a particular type of exposure. However, it would appear that irrespective of whether we examine the effect of stress, burden, depression or distress on institutionalisation separately or combined these measures the effect remains significant, but small to negligible according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>It was also possible to examine estimates solely with measures of burden and stress according to the stress process model [<xref rid="pone.0128213.ref006" ref-type="bibr">6</xref>]. In this case, the size of the effect is also negligible according to Cohen’s guidelines (SMD = 0.06, 95% CI = 0.04–0.08). Similarly, it was possible to examine estimates with measures of psychological distress, as adopted in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. Again, the size of the effect is negligible according to Cohen’s guidelines (SMD = 0.05, 95% CI = 0.01–0.09).</p>
+<p>We explored further the impact of the particular exposure measure on effect estimates by comparing studies which applied the Zarit Burden Interview (ZBI) (SMD = 0.06, 95% CI = 0.04–0.09) to those that applied any other measure of burden (SMD = 0.19, 95% CI = 0.04–0.35). While the SMD between the two estimates appears somewhat different, the effect sizes would still be considered small to negligible according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>Finally, in terms of the effect of different exposure measures, the sensitivity analysis examined differences in estimates within studies that measured both burden (SMD = 0.22, 95% CI = 0.05–0.39) and depression (SMD = 0.03, 95% CI = -0.00–0.07). Again, although the SMD between the two estimates appears quite different, the effect sizes would still be considered small to negligible according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>To investigate how effect estimates varied according to study size, we grouped studies by tertile. Consistent with the findings of the Egger’s test, there is a notable reduction in the size of the effect for studies with larger sample sizes. For example, the effect estimate in studies with the smallest samples (SMD = 0.28, 95% CI = 0.13–0.44) was higher compared to larger studies (SMD = 0.05, 95% CI = 0.03–0.07). The forest plot with estimates grouped according to their sample size is provided in <xref rid="pone.0128213.g004" ref-type="fig">Fig 4</xref>.</p>
+<fig id="pone.0128213.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Forest plot by sample size.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.g004" position="float" xlink:type="simple"/>
+</fig>
+<p>The sensitivity analysis also examined estimates according to the decade in which the study was published. It would appear that in each of the last four decades the effect estimates have decreased (1980s: SMD = 0.40, 95% CI = 0.16–0.63; to 2010 and later: SMD = 0.05, 95% CI = 0.02–0.07), as displayed in <xref rid="pone.0128213.t001" ref-type="table">Table 1</xref>.</p>
+<p>As presented in <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>, there was a wide variation in study quality, with CCAT scores ranging from 30% to 95%. To examine the impact of study quality on effect estimates in a meaningful way, we grouped studies by quartiles of CCAT scores. As presented in the table, effect estimates reduce as study quality improves. The effect estimate changes considerably for those studies with unadjusted estimates (SMD = 0.14, 95% CI = .010–0.18) compared to those studies with adjusted estimates (adjusting for factors such as age, sex, type and severity of dementia, spousal carer and ADL rating) (SMD = 0.01, 95% CI = 0.00–0.02). Despite this change, the unadjusted estimate would still be considered a ‘small’ effect size according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>As displayed in <xref rid="pone.0128213.t001" ref-type="table">Table 1</xref>, the sensitivity analysis also examined the differential effect of the study design on estimates. The estimate with cohort studies appears higher (SMD = 0.11, 95% CI = 0.08–0.14) than that of intervention studies (SMD = 0.01, 95% CI = 0.01–0.02). However, the estimate with cohort studies would still be considered a ‘small’ effect size according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>]. In three cases it was not possible to get data on control groups alone, despite contact with authors, therefore a sensitivity analysis examined the impact on estimates when these three studies were excluded, however the effect size remained negligible (SMD = 0.07, 95% CI = 0.05–0.09) [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>Finally, as displayed in <xref rid="pone.0128213.t001" ref-type="table">Table 1</xref>, the sensitivity analysis included an examination of the impact on estimates depending on the whether the sample was a dementia population or non-dementia population; the period of follow-up; the region in which studies were conducted and the outcome. While estimates vary slightly, in all cases the estimates remain small to negligible according to Cohen’s guidelines.</p>
+</sec>
+<sec id="sec027">
+<title>Meta-regression</title>
+<p>Given significant heterogeneity was found in the overall effect size, we conducted a meta-regression to investigate the contribution of different study characteristics to the level of heterogeneity [<xref rid="pone.0128213.ref046" ref-type="bibr">46</xref>, <xref rid="pone.0128213.ref047" ref-type="bibr">47</xref>]. Firstly, we examined each study level characteristic individually, as presented in <xref rid="pone.0128213.t002" ref-type="table">Table 2</xref>. We examined the extent to which heterogeneity was related to the year in which studies were published, with year of publication as a continuous variable. From the table, it would appear that there is a significant negative association between the year of publication and the size of the treatment effect. In tandem with this, the year in which studies were published made a substantial contribution to the level of heterogeneity, with the proportion of heterogeneity accounted for at 29.7% (p = &lt;0.001). <xref rid="pone.0128213.g005" ref-type="fig">Fig 5</xref> presents a bubble plot of the fitted regression line with the size of the circles reflecting the relative weight of the study.</p>
+<fig id="pone.0128213.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Bubble plot of fitted regression line.</title>
+</caption>
+<graphic mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.g005" position="float" xlink:type="simple"/>
+</fig>
+<table-wrap id="pone.0128213.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.t002</object-id>
+<label>Table 2</label> <caption><title>Meta-regression with single covariates.</title></caption>
+<alternatives>
+<graphic id="pone.0128213.t002g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.t002" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Study characteristic</th>
+<th align="left" rowspan="1" colspan="1">Coefficient (SE)</th>
+<th align="left" rowspan="1" colspan="1">95% CI</th>
+<th align="left" rowspan="1" colspan="1">Covariate P Value</th>
+<th align="left" rowspan="1" colspan="1">Joint test for all covariates P Value</th>
+<th align="left" rowspan="1" colspan="1">Heterogeneity τ<sup>2</sup></th>
+<th align="left" rowspan="1" colspan="1">Proportion of between-study variance explained</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Year of publication</td>
+<td align="left" rowspan="1" colspan="1">-0.012 (0.003)</td>
+<td align="left" rowspan="1" colspan="1">-.0.018–-0.006</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;0.001</td>
+<td align="char" char="." rowspan="1" colspan="1">&lt;0.001</td>
+<td align="char" char="." rowspan="1" colspan="1">0.009</td>
+<td align="char" char="." rowspan="1" colspan="1">29.65%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Adjusted</td>
+<td align="left" rowspan="1" colspan="1">-0.120 (0.047)</td>
+<td align="left" rowspan="1" colspan="1">-0.215–-0.025</td>
+<td align="char" char="." rowspan="1" colspan="1">0.014</td>
+<td align="char" char="." rowspan="1" colspan="1">0.014</td>
+<td align="char" char="." rowspan="1" colspan="1">0.009</td>
+<td align="char" char="." rowspan="1" colspan="1">24.54%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Study size</td>
+<td align="left" rowspan="1" colspan="1">-0.000 (0.000)</td>
+<td align="left" rowspan="1" colspan="1">-0.000–0.000</td>
+<td align="char" char="." rowspan="1" colspan="1">0.802</td>
+<td align="char" char="." rowspan="1" colspan="1">0.802</td>
+<td align="char" char="." rowspan="1" colspan="1">0.014</td>
+<td align="char" char="." rowspan="1" colspan="1">-9.50%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Study quality (CCAT %)</td>
+<td align="left" rowspan="1" colspan="1">-0.134 (0.093)</td>
+<td align="left" rowspan="1" colspan="1">-0.321–-0.053</td>
+<td align="char" char="." rowspan="1" colspan="1">0.157</td>
+<td align="char" char="." rowspan="1" colspan="1">0.157</td>
+<td align="char" char="." rowspan="1" colspan="1">0.014</td>
+<td align="char" char="." rowspan="1" colspan="1">-8.97%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Outcome</td>
+<td align="left" rowspan="1" colspan="1">0.063 (0.053)</td>
+<td align="left" rowspan="1" colspan="1">-0.043–0.169</td>
+<td align="char" char="." rowspan="1" colspan="1">0.235</td>
+<td align="char" char="." rowspan="1" colspan="1">0.235</td>
+<td align="char" char="." rowspan="1" colspan="1">0.013</td>
+<td align="char" char="." rowspan="1" colspan="1">-5.30%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Measure—depression</td>
+<td align="left" rowspan="1" colspan="1">-0.143 (0.084)</td>
+<td align="left" rowspan="1" colspan="1">-0.311–0.025</td>
+<td align="char" char="." rowspan="1" colspan="1">0.093</td>
+<td align="char" char="." rowspan="1" colspan="1">0.463</td>
+<td align="char" char="." rowspan="1" colspan="1">0.014</td>
+<td align="char" char="." rowspan="1" colspan="1">-9.87%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Measure—burden</td>
+<td align="left" rowspan="1" colspan="1">-0.050 (0.067)</td>
+<td align="left" rowspan="1" colspan="1">-0.185–0.084</td>
+<td align="char" char="." rowspan="1" colspan="1">0.456</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Measure—distress</td>
+<td align="left" rowspan="1" colspan="1">-0.118 (0.096)</td>
+<td align="left" rowspan="1" colspan="1">-0.310–0.075</td>
+<td align="char" char="." rowspan="1" colspan="1">0.226</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Measure—strain</td>
+<td align="left" rowspan="1" colspan="1">-0.082 (0.179)</td>
+<td align="left" rowspan="1" colspan="1">-0.442–0.278</td>
+<td align="char" char="." rowspan="1" colspan="1">0.650</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Follow-up for 1–2 years</td>
+<td align="left" rowspan="1" colspan="1">-0.030 (0.070)</td>
+<td align="left" rowspan="1" colspan="1">-0.172–0.112</td>
+<td align="char" char="." rowspan="1" colspan="1">0.674</td>
+<td align="char" char="." rowspan="1" colspan="1">.513</td>
+<td align="char" char="." rowspan="1" colspan="1">.017</td>
+<td align="char" char="." rowspan="1" colspan="1">-11.38%</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Follow-up or over 2 years</td>
+<td align="left" rowspan="1" colspan="1">-0.090 (.077)</td>
+<td align="left" rowspan="1" colspan="1">-0.246–0.066</td>
+<td align="char" char="." rowspan="1" colspan="1">0.252</td>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+<td align="left" rowspan="1" colspan="1"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Whether studies included unadjusted or adjusted estimates (adjusting for factors such as age, sex, type and severity of dementia, spousal carer and ADL rating) also made a considerable contribution, accounting for 24.5% of heterogeneity (p = 0.014). As presented in <xref rid="pone.0128213.t002" ref-type="table">Table 2</xref>, we also examined the contribution of study quality, study size, outcome, and type of exposure measure and the period of follow-up, though it would appear these all explained less heterogeneity than would be expected by chance [<xref rid="pone.0128213.ref047" ref-type="bibr">47</xref>].</p>
+<p>We entered those variables found to be significant into a meta-regression with multiple covariates, presented in <xref rid="pone.0128213.t003" ref-type="table">Table 3</xref>. In this model, the year in which studies were published and whether studies included adjusted or unadjusted estimates accounted for 46% of heterogeneity. The remaining heterogeneity was small (τ<sup>2</sup> = 0.007) [<xref rid="pone.0128213.ref047" ref-type="bibr">47</xref>].</p>
+<table-wrap id="pone.0128213.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0128213.t003</object-id>
+<label>Table 3</label> <caption><title>Meta-regression with multiple covariates.</title></caption>
+<alternatives>
+<graphic id="pone.0128213.t003g" position="float" mimetype="image" xlink:href="info:doi/10.1371/journal.pone.0128213.t003" xlink:type="simple"/>
+<table>
+<colgroup span="1">
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+<col align="left" valign="middle" span="1"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" rowspan="1" colspan="1">Study characteristic</th>
+<th align="left" rowspan="1" colspan="1">Coefficient (SE)</th>
+<th align="left" rowspan="1" colspan="1">95% CI</th>
+<th align="left" rowspan="1" colspan="1">P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" rowspan="1" colspan="1">Year of publication</td>
+<td align="left" rowspan="1" colspan="1">-0.011 (0.003)</td>
+<td align="left" rowspan="1" colspan="1">-0.017–-0.005</td>
+<td align="left" rowspan="1" colspan="1">0.001</td>
+</tr>
+<tr>
+<td align="left" rowspan="1" colspan="1">Adjusted</td>
+<td align="left" rowspan="1" colspan="1">-0.094 (0.041)</td>
+<td align="left" rowspan="1" colspan="1">-0.177–-0.011</td>
+<td align="left" rowspan="1" colspan="1">0.027</td>
+</tr>
+<tr>
+<td colspan="4" align="center" rowspan="1"><bold>Model Heterogeneity τ</bold><sup><bold>2</bold></sup>: .007</td>
+</tr>
+<tr>
+<td colspan="4" align="center" rowspan="1"><bold>Proportion of between study variance explained:</bold> 45.51%</td>
+</tr>
+<tr>
+<td colspan="4" align="center" rowspan="1"><bold>Model P Value:</bold> 0.001</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+</sec>
+<sec id="sec028" sec-type="conclusions">
+<title>Discussion</title>
+<sec id="sec029">
+<title>Summary of evidence</title>
+<p>Overall, the results suggest that while carer stress has a significant effect on subsequent institutionalisation of care recipients, the size of this effect is small to negligible according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>]. The sensitivity analysis reinforced this overall effect size. Firstly, in terms of the type of measure, while the estimate for studies that measured stress appeared to be higher than other measures, it was still relatively small. Thus, whether the exposure was a measure of burden, stress, distress, or depression the effect size remained small to negligible. Similarly, we found whether the outcome was acute or long-term care the effect size was negligible. This was also the case when examining estimates solely with measures of stress or burden, according to the stress process model [<xref rid="pone.0128213.ref006" ref-type="bibr">6</xref>], or solely with measures of psychological distress, as also adopted in a similar systematic review [<xref rid="pone.0128213.ref016" ref-type="bibr">16</xref>]. Further, we found the effect size for studies with estimates that had adjusted for other factors to be substantially lower than with studies with un-adjusted estimates. While the un-adjusted estimate is larger than the adjusted, the un-adjusted estimate effect size is still small according to Cohen’s guidelines [<xref rid="pone.0128213.ref044" ref-type="bibr">44</xref>].</p>
+<p>Taking the findings together, though carer stress is significant predictor of institutionalisation, the size of this effect suggests that other factors may be more crucial in institutional placement than carer stress. Indeed, when systematically reviewing the association between factors other than carer stress and institutionalisation, a number of studies found functional and cognitive impairment and prior nursing home use to be predictive of admissions to long-term care [<xref rid="pone.0128213.ref023" ref-type="bibr">23</xref>–<xref rid="pone.0128213.ref025" ref-type="bibr">25</xref>, <xref rid="pone.0128213.ref028" ref-type="bibr">28</xref>]. Prior hospital admissions and duration of previous hospital stay, co-morbidity and polypharmacy have been found to be predictive of admission to acute care [<xref rid="pone.0128213.ref026" ref-type="bibr">26</xref>, <xref rid="pone.0128213.ref027" ref-type="bibr">27</xref>]. This review suggests that future research should perhaps concentrate on these and other factors in the prediction of institutionalisation as it appears that carer stress is not the most critical determining factor of institutionalisation in older care recipients.</p>
+<p>The sensitivity analyses indicated that in each of the last four decades, effect estimates have decreased and are lower in studies with larger samples. This was consistent with both the funnel plot and findings of the Egger’s test, suggesting that small studies over-estimate the size of the effect of carer stress. We also found study quality to have a substantial impact on estimates; with estimates reducing as study quality improves. The findings of the sensitivity analysis were consistent with that of the meta-regression, which found that there was a significant negative association between the year of publication and the size of the treatment effect. Concurrently, results from studies using adjusted estimates also appear to differ from results of studies with un-adjusted estimates.</p>
+<p>These findings suggest that, over time, as studies have increased in size, quality has improved, and more factors have been taken into account, the size of the effect has reduced. This suggests that the significant association found between carer stress and institutionalisation in initial studies in this area may have resulted in a belief that higher levels of carer stress can undermine the sustainability of homecare. However, in later years this does not appear to have been critically evaluated, with researchers possibly relying on these initial studies to provide evidence for such contentions [<xref rid="pone.0128213.ref022" ref-type="bibr">22</xref>, <xref rid="pone.0128213.ref048" ref-type="bibr">48</xref>].</p>
+<p>The present findings therefore suggest a need to re-examine this assertion in the literature—while carer stress has a significant effect on subsequent institutionalisation of care recipients, the actual size of this effect is small to negligible. This would suggest that carer stress is not the most critical determining factor of institutionalisation in older care recipients, and that strong statements to the contrary are not based on the evidence available [<xref rid="pone.0128213.ref022" ref-type="bibr">22</xref>]. Such publication bias in psychology is not uncommon. A recent, examination of publication bias in psychology found that barely-significant values were much more frequently reported than values that just failed to reach the conventional threshold for statistical significance [<xref rid="pone.0128213.ref049" ref-type="bibr">49</xref>]. This aversion to publish null results impedes the publication of non-significant replication studies [<xref rid="pone.0128213.ref050" ref-type="bibr">50</xref>, <xref rid="pone.0128213.ref051" ref-type="bibr">51</xref>], resulting in the continued publication of numerous ‘undead’ theories [<xref rid="pone.0128213.ref051" ref-type="bibr">51</xref>] or what Ioannidis describes as ubiquitous false positive claims [<xref rid="pone.0128213.ref052" ref-type="bibr">52</xref>].</p>
+<p>The findings should not be interpreted as undermining the significance of chronic stress on carers, or the importance of RCTs aimed at reducing carer stress. The level of stress experienced by a carer is important both of itself and for its potential impact on the carer, such as impaired psychological well-being and physical health [<xref rid="pone.0128213.ref001" ref-type="bibr">1</xref>], including weakened immunity and wound healing [<xref rid="pone.0128213.ref053" ref-type="bibr">53</xref>, <xref rid="pone.0128213.ref054" ref-type="bibr">54</xref>]. Indeed, a number of meta-analyses and systematic reviews have concluded that carers are more likely to have poor psychological and physical health outcomes when compared to non-carers [<xref rid="pone.0128213.ref001" ref-type="bibr">1</xref>, <xref rid="pone.0128213.ref002" ref-type="bibr">2</xref>]. However, as stress appears to have a negligible effect on institutionalisation, it is unlikely that RCTs in this area will have an effect on institutionalisation rates.</p>
+</sec>
+<sec id="sec030">
+<title>Interchangeability of measures</title>
+<p>While carer burden, depression, and stress were the most commonly applied measures, the review found substantial inconsistency across the measurement of psychological morbidity in carers. This inconsistency was apparent in a number of ways. Firstly, the same exposure was assessed with a range of measures. As described earlier, in seven different studies burden was measured seven different ways. Inconsistency was also seen within and between studies. For example, within some studies the same measure was referred to as both a measure of stress and burden, while in different studies the same measure was referred to as a measure of burden, stress, or distress (references 47, 71, 85 and 102, <xref rid="pone.0128213.s004" ref-type="supplementary-material">S4 Appendix</xref>). The tendency of some researchers to regard measures of carer burden and depression as synonymous with measures of stress has been acknowledged in the literature [<xref rid="pone.0128213.ref004" ref-type="bibr">4</xref>]. This tendency is most apparent in the case of ‘burden’ which has been applied to virtually every dimension of the stress process [<xref rid="pone.0128213.ref010" ref-type="bibr">10</xref>]. Overall this meant that we had to combine these exposures in the present review—however sensitivity analyses did not suggest substantially different effects for these separate measures on care recipient institutionalisation. This confusion in the caregiving literature points to a need for the development of an agreed taxonomy to enable more concise identification of interactions relating to psychological morbidity in the caregiving process.</p>
+</sec>
+<sec id="sec031">
+<title>Strengths and limitations</title>
+<p>Given the lack of clarity and consequential interchangeability in the measurement of psychological morbidity, the search strategy had to incorporate a wide number of exposures that are measured under the umbrella term ‘carer stress’. It could be argued that these exposures represent distinct concepts that when pooled may result in misclassification bias. However, there is theoretical and methodological support to pool the exposure measures, in addition to the practical considerations outlined above given the contradictory literature.</p>
+<p>Firstly, Cramer et al., have developed a network approach to mental disorders and comorbidity. According to this approach, symptoms are viewed not as indicators of latent conditions but as components in a network [<xref rid="pone.0128213.ref055" ref-type="bibr">55</xref>]. Borsboom et al., employed this network model to show that half of the symptoms in the DSM-IV are connected [<xref rid="pone.0128213.ref056" ref-type="bibr">56</xref>]. As recommended by Bradburn et al., and Take et al., [<xref rid="pone.0128213.ref036" ref-type="bibr">36</xref>, <xref rid="pone.0128213.ref037" ref-type="bibr">37</xref>], to enable pooling, the primary measure of effect was the standardized mean difference using a random effects model. By standardization, the results were transformed to a common scale and the random effects model combined data under the assumption that the effect is not fixed between populations but varies around a typical value. Finally, despite the wide variation in exposure measures the meta-regression found that differences in the type of exposure measure explained less heterogeneity than would be expected by chance, providing further support for pooling measures.</p>
+<p>The sensitivity analysis examined major aspects of study design that could affect estimates. This included dementia or non-dementia populations, cohort or intervention studies, and the period of follow-up. We found these had a minimal impact on estimates. However, there may still be un-measured confounders. These may include the effect of formal care service utilization or the degree to which access to long-term care varies over time and between health systems—given the availability of beds, differential professional assessments and criteria to access long-term care. We accounted for the region in which studies were published in the sensitivity analysis and found estimates remain small to negligible. However, it would not be appropriate to give too much weight to this comparison given health system variation within and between countries. This would be more appropriate in future research.</p>
+<p>Finally, the lack of access to unpublished data could also be regarded as a limitation. However, both the funnel plot and the Egger’s bias coefficient strongly indicated the presence of publication bias, suggesting small studies overestimate the effect of stress [<xref rid="pone.0128213.ref045" ref-type="bibr">45</xref>]. Therefore, had it been possible to access unpublished data, it is likely that the effect sizes found would have been even smaller than what was found.</p>
+</sec>
+<sec id="sec032">
+<title>Future research</title>
+<p>The findings suggest the need to critically review the definition of carer stress, to offer some clarity around the terminology used and consolidate measures to enable more precise identification of the interactions relating to psychological morbidity in the caregiving process.</p>
+<p>Future research should perhaps concentrate on other factors found to be associated with institutionalisation, such as the characteristics of the care recipient. This research could be expanded to account for the impact of the health system on long-term care provision. In tandem with this, as a carer is ultimately responsible for the decision to yield care, yet carer stress appears to have a small to negligible effect on institutional placement, qualitative work could be employed to enable more in-depth examination of the impact of carer stress on the decision to yield care.</p>
+</sec>
+</sec>
+<sec id="sec033" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The results of this review suggest that while carer stress has a significant effect on subsequent institutionalisation of care recipients, the size of this effect is small to negligible. The sensitivity analysis reinforced the effect size; irrespective of the type of measures used, carer stress has small to negligible effect on subsequent institutionalisation. The results also highlight the problematic nature of the contradictory literature. That is in terms of the interchangeability in the measurement of stress.</p>
+<p>Results of this systematic review are at odds with the strong contention that higher levels of carer stress could undermine the sustainability of home care [<xref rid="pone.0128213.ref020" ref-type="bibr">20</xref>–<xref rid="pone.0128213.ref022" ref-type="bibr">22</xref>], and suggest that publication bias, or at least small study effects, have contributed to this belief. The findings should not be interpreted as undermining the significance of chronic stress on carers. As referred to above, a number of meta-analyses and systematic reviews have concluded that carers are more likely to have poor psychological and physical health outcomes when compared to non-carers. However, the size of the effect of carer stress on subsequent institutionalisation suggests that other factors may be more crucial in institutional placement than carer stress.</p>
+</sec>
+<sec id="sec034">
+<title>Supporting Information</title>
+<supplementary-material id="pone.0128213.s001" xlink:href="info:doi/10.1371/journal.pone.0128213.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title>Medline (OVID) search strategy.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0128213.s002" xlink:href="info:doi/10.1371/journal.pone.0128213.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S2 Appendix</label>
+<caption>
+<title>Repeat publications from the same dataset.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0128213.s003" xlink:href="info:doi/10.1371/journal.pone.0128213.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S3 Appendix</label>
+<caption>
+<title>Characteristics of studies for whom adequate data was not available.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0128213.s004" xlink:href="info:doi/10.1371/journal.pone.0128213.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S4 Appendix</label>
+<caption>
+<title>Characteristics of included studies.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0128213.s005" xlink:href="info:doi/10.1371/journal.pone.0128213.s005" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:type="simple">
+<label>S5 Appendix</label>
+<caption>
+<title>PRISMA Checklist.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0128213.s006" xlink:href="info:doi/10.1371/journal.pone.0128213.s006" mimetype="application/vnd.ms-excel" position="float" xlink:type="simple">
+<label>S1 Dataset</label>
+<caption>
+<p>(XLS)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0128213.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pinquart</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sorensen</surname> <given-names>S</given-names></name>. <article-title>Differences between caregivers and noncaregivers in psychological health and physical health: a meta-analysis</article-title>. <source>Psychology and aging</source>. <year>2003</year>;<volume>18</volume>(<issue>2</issue>):<fpage>250</fpage>–<lpage>67</lpage>. Epub 2003/06/27. <object-id pub-id-type="pmid">12825775</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schulz</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Sherwood</surname> <given-names>PR</given-names></name>. <article-title>Physical and Mental Health Effects of Family Caregiving</article-title>. <source>The American journal of nursing</source>. <year>2008</year>;<volume>108</volume>(<issue>9 Suppl</issue>):<fpage>23</fpage>–<lpage>7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/01.NAJ.0000336406.45248.4c" xlink:type="simple">10.1097/01.NAJ.0000336406.45248.4c</ext-link></comment> <object-id pub-id-type="pmid">PMC2791523</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bastawrous</surname> <given-names>M</given-names></name>. <article-title>Caregiver burden—A critical discussion</article-title>. <source>International journal of nursing studies</source>. <year>2013</year>;<volume>50</volume>(<issue>3</issue>):<fpage>431</fpage>–<lpage>41</lpage>. <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ijnurstu.2012.10.005" xlink:type="simple">http://dx.doi.org/10.1016/j.ijnurstu.2012.10.005</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ijnurstu.2012.10.005" xlink:type="simple">10.1016/j.ijnurstu.2012.10.005</ext-link></comment> <object-id pub-id-type="pmid">23131724</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chou</surname> <given-names>KR</given-names></name>. <article-title>Caregiver burden: a concept analysis</article-title>. <source>Journal of pediatric nursing</source>. <year>2000</year>;<volume>15</volume>(<issue>6</issue>):<fpage>398</fpage>–<lpage>407</lpage>. Epub 2001/01/11. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1053/jpdn.2000.16709" xlink:type="simple">10.1053/jpdn.2000.16709</ext-link></comment> <object-id pub-id-type="pmid">11151480</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref005"><label>5</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Lazarus</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Folkman</surname> <given-names>S</given-names></name>. <source>Stress, Appraisal, and Coping</source>: <publisher-name>Springer Publishing Company</publisher-name>; <year>1984</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearlin</surname> <given-names>LI</given-names></name>, <name name-style="western"><surname>Mullan</surname> <given-names>JT</given-names></name>, <name name-style="western"><surname>Semple</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Skaff</surname> <given-names>MM</given-names></name>. <article-title>Caregiving and the Stress Process: An Overview of Concepts and Their Measures</article-title>. <source>The Gerontologist</source>. <year>1990</year>;<volume>30</volume>(<issue>5</issue>):<fpage>583</fpage>–<lpage>94</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/geront/30.5.583" xlink:type="simple">10.1093/geront/30.5.583</ext-link></comment> <object-id pub-id-type="pmid">2276631</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nolan</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Grant</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ellis</surname> <given-names>NC</given-names></name>. <article-title>Stress is in the eye of the beholder: reconceptualizing the measurement of carer burden</article-title>. <source>Journal of advanced nursing</source>. <year>1990</year>;<volume>15</volume>(<issue>5</issue>):<fpage>544</fpage>–<lpage>55</lpage>. Epub 1990/05/01. <object-id pub-id-type="pmid">2358572</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zarit</surname> <given-names>SH</given-names></name>. <article-title>Diagnosis and management of caregiver burden in dementia</article-title>. <source>Handbook of clinical neurology</source>. <year>2008</year>;<volume>89</volume>:<fpage>101</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0072-9752(07)01209-2" xlink:type="simple">10.1016/S0072-9752(07)01209-2</ext-link></comment> <object-id pub-id-type="pmid">18631735</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yates</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Tennstedt</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Chang</surname> <given-names>BH</given-names></name>. <article-title>Contributors to and mediators of psychological well-being for informal caregivers</article-title>. <source>The journals of gerontology Series B, Psychological sciences and social sciences</source>. <year>1999</year>;<volume>54</volume>(<issue>1</issue>):<fpage>P12</fpage>–<lpage>22</lpage>. Epub 1999/02/06. <object-id pub-id-type="pmid">9934391</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref010"><label>10</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Zarit</surname> <given-names>S</given-names></name>. <chapter-title>A researcher perspective</chapter-title>. In: <collab xlink:type="simple">Family Caregiver Alliance</collab>, editor. <source>Caregiver Assessment: Voices and Views from the Field, Report from a National Consensus Development Conference</source> <volume>Vol 2</volume>. <publisher-loc>San Francisco</publisher-loc>: <publisher-name>Family Caregiver Alliance</publisher-name>; <year>2006</year> p. <fpage>12</fpage>–<lpage>37</lpage>.</mixed-citation></ref>
+<ref id="pone.0128213.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gaugler</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Newcomer</surname> <given-names>R</given-names></name>. <article-title>Unmet care needs and key outcomes in dementia</article-title>. <source>Journal of the American Geriatrics Society</source>. <year>2005</year>;<volume>53</volume>(<issue>12</issue>):<fpage>2098</fpage>–<lpage>105</lpage>. <object-id pub-id-type="pmid">16398893</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schubert</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Boustani</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Callahan</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Perkins</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Hui</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hendrie</surname> <given-names>HC</given-names></name>. <article-title>Acute care utilization by dementia caregivers within urban primary care practices</article-title>. <source>Journal Of General Internal Medicine</source>. <year>2008</year>;<volume>23</volume>(<issue>11</issue>):<fpage>1736</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1007/s11606-008-0711-0" xlink:type="simple">10.1007/s11606-008-0711-0</ext-link></comment> <object-id pub-id-type="pmid">18690489</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Spillman</surname> <given-names>BC</given-names></name>, <name name-style="western"><surname>Long</surname> <given-names>SK</given-names></name>. <article-title>Does High Caregiver Stress Predict Nursing Home Entry?</article-title> <source>Inquiry—Excellus Health Plan</source>. <year>2009</year>;<volume>46</volume>(<issue>2</issue>):<fpage>140</fpage>–<lpage>61</lpage>. prod.academic_MSTAR_220999246; <object-id pub-id-type="pmid">19694388</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fisher</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lieberman</surname> <given-names>MA</given-names></name>. <article-title>A longitudinal study of predictors of nursing home placement for patients with dementia: the contribution of family characteristics</article-title>. <source>The Gerontologist</source>. <year>1999</year>;<volume>39</volume>(<issue>6</issue>):<fpage>677</fpage>–<lpage>86</lpage>. Epub 2000/01/29. <object-id pub-id-type="pmid">10650677</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jette</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Tennstedt</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Crawford</surname> <given-names>S</given-names></name>. <article-title>How Does Formal and Informal Community Care Affect Nursing Home Use?</article-title> <source>The Journals of Gerontology Series B: Psychological Sciences and Social Sciences</source>. <year>1995</year>;<volume>50B</volume>(<issue>1</issue>):<fpage>S4</fpage>–<lpage>S12</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/geronb/50B.1.S4" xlink:type="simple">10.1093/geronb/50B.1.S4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0128213.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brodaty</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Koschera</surname> <given-names>A</given-names></name>. <article-title>Meta-analysis of psychosocial interventions for caregivers of people with dementia</article-title>. <source>Journal of the American Geriatrics Society</source>. <year>2003</year>;<volume>51</volume>(<issue>5</issue>):<fpage>657</fpage>–<lpage>64</lpage>. <object-id pub-id-type="pmid">12752841</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Deeken</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Taylor</surname> <given-names>KL</given-names></name>, <name name-style="western"><surname>Mangan</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Yabroff</surname> <given-names>KR</given-names></name>, <name name-style="western"><surname>Ingham</surname> <given-names>JM</given-names></name>. <article-title>Care for the caregivers: a review of self-report instruments developed to measure the burden, needs, and quality of life of informal caregivers</article-title>. <source>Journal of pain and symptom management</source>. <year>2003</year>;<volume>26</volume>(<issue>4</issue>):<fpage>922</fpage>–<lpage>53</lpage>. Epub 2003/10/07. <object-id pub-id-type="pmid">14527761</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yaffe</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Fox</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Newcomer</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Sands</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Lindquist</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Dane</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>Patient and caregiver characteristics and nursing home placement in patients with dementia</article-title>. <source>JAMA: the journal of the American Medical Association</source>. <year>2002</year>;<volume>287</volume>(<issue>16</issue>):<fpage>2090</fpage>–<lpage>7</lpage>. Epub 2002/04/23. <object-id pub-id-type="pmid">11966383</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gaugler</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Newcomer</surname> <given-names>R</given-names></name>. <article-title>Predictors of institutionalization in Latinos with dementia</article-title>. <source>Journal Of Cross-Cultural Gerontology</source>. <year>2006</year>;<volume>21</volume>(<issue>3–4</issue>):<fpage>139</fpage>–<lpage>55</lpage>. <object-id pub-id-type="pmid">17216577</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nobili</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Riva</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Tettamanti</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lucca</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Liscio</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Petrucci</surname> <given-names>B</given-names></name>, <etal>et al</etal>. <article-title>The effect of a structured intervention on caregivers of patients with dementia and problem behaviors: a randomized controlled pilot study</article-title>. <source>Alzheimer disease and associated disorders [Internet]</source>. <year>2004</year>; <volume>18</volume>(<issue>2</issue>):[<fpage>75</fpage>–<lpage>82</lpage> pp.]. Available: <ext-link ext-link-type="uri" xlink:href="http://onlinelibrary.wiley.com/o/cochrane/clcentral/articles/003/CN-00487003/frame.html" xlink:type="simple">http://onlinelibrary.wiley.com/o/cochrane/clcentral/articles/003/CN-00487003/frame.html</ext-link>. <object-id pub-id-type="pmid">15249851</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuzuya</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Enoki</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Hasegawa</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Izawa</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Hirakawa</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Shimokata</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Impact of caregiver burden on adverse health outcomes in community-dwelling dependent older care recipients</article-title>. <source>American Journal of Geriatric Psychiatry</source>. <year>2011</year>;<volume>19</volume>(<issue>4</issue>):<fpage>382</fpage>–<lpage>91</lpage>. <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/JGP.0b013e3181e9b98d" xlink:type="simple">http://dx.doi.org/10.1097/JGP.0b013e3181e9b98d</ext-link>. 20808120. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/JGP.0b013e3181e9b98d" xlink:type="simple">10.1097/JGP.0b013e3181e9b98d</ext-link></comment> <object-id pub-id-type="pmid">20808120</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Livingston</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Barber</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rapaport</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Knapp</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Griffin</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>King</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Long-term clinical and cost-effectiveness of psychological intervention for family carers of people with dementia: a single-blind, randomised, controlled trial</article-title>. <source>The Lancet Psychiatry</source>. <year>2014</year>;<volume>1</volume>:<fpage>539</fpage>–<lpage>48</lpage>.</mixed-citation></ref>
+<ref id="pone.0128213.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gaugler</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Duval</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Anderson</surname> <given-names>KA</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>R</given-names></name>. <article-title>Predicting nursing home admission in the U.S: a meta-analysis</article-title>. <source>BMC Geriatrics</source>. <year>2007</year>;<volume>7</volume>(<issue>1</issue>):<fpage>1</fpage>–<lpage>14</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1186/1471-2318-7-13" xlink:type="simple">10.1186/1471-2318-7-13</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0128213.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luppa</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Luck</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Weyerer</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Konig</surname> <given-names>HH</given-names></name>, <name name-style="western"><surname>Brahler</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Riedel-Heller</surname> <given-names>SG</given-names></name>. <article-title>Prediction of institutionalization in the elderly. A systematic review</article-title>. <source>Age and ageing</source>. <year>2010</year>;<volume>39</volume>(<issue>1</issue>):<fpage>31</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/ageing/afp202" xlink:type="simple">10.1093/ageing/afp202</ext-link></comment> <object-id pub-id-type="pmid">19934075</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Weissert</surname> <given-names>WG</given-names></name>. <article-title>Predicting Elderly People’s Risk for Nursing Home Placement, Hospitalization, Functional Impairment, and Mortality: A Synthesis</article-title>. <source>Medical Care Research and Review</source>. <year>2000</year>;<volume>57</volume>(<issue>3</issue>):<fpage>259</fpage>–<lpage>97</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/107755870005700301" xlink:type="simple">10.1177/107755870005700301</ext-link></comment> <object-id pub-id-type="pmid">10981186</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>García-Pérez</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Linertová</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Lorenzo-Riera</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Vázquez-Díaz</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Duque-González</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Sarría-Santamera</surname> <given-names>A</given-names></name>. <article-title>Risk factors for hospital readmissions in elderly patients: a systematic review</article-title>. <source>QJM</source>. <year>2011</year>;<volume>104</volume>(<issue>8</issue>):<fpage>639</fpage>–<lpage>51</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/qjmed/hcr070" xlink:type="simple">10.1093/qjmed/hcr070</ext-link></comment> <object-id pub-id-type="pmid">21558329</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Campbell</surname> <given-names>SE</given-names></name>, <name name-style="western"><surname>Seymour</surname> <given-names>DG</given-names></name>, <name name-style="western"><surname>Primrose</surname> <given-names>WR</given-names></name>, <collab xlink:type="simple">project ftAp</collab>. <article-title>A systematic literature review of factors affecting outcome in older medical patients admitted to hospital</article-title>. <source>Age and ageing</source>. <year>2004</year>;<volume>33</volume>(<issue>2</issue>):<fpage>110</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1093/ageing/afh036" xlink:type="simple">10.1093/ageing/afh036</ext-link></comment> <object-id pub-id-type="pmid">14960424</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gaugler</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Krichbaum</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Wyman</surname> <given-names>JF</given-names></name>. <article-title>Predictors of nursing home admission for persons with dementia</article-title>. <source>Medical care</source>. <year>2009</year>;<volume>47</volume>(<issue>2</issue>):<fpage>191</fpage>–<lpage>8</lpage>. Epub 2009/01/27. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/MLR.0b013e31818457ce" xlink:type="simple">10.1097/MLR.0b013e31818457ce</ext-link></comment> <object-id pub-id-type="pmid">19169120</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gaugler</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Kane</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Clay</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Newcomer</surname> <given-names>R</given-names></name>. <article-title>Caregiving and institutionalization of cognitively impaired older people: utilizing dynamic predictors of change</article-title>. <source>The Gerontologist</source>. <year>2003</year>;<volume>43</volume>(<issue>2</issue>):<fpage>219</fpage>–<lpage>29</lpage>. Epub 2003/04/05. <object-id pub-id-type="pmid">12677079</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Andrieu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Reynish</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Nourhashemi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Shakespeare</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Moulias</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ousset</surname> <given-names>PJ</given-names></name>, <etal>et al</etal>. <article-title>Predictive factors of acute hospitalization in 134 patients with Alzheimer's disease: a one year prospective study</article-title>. <source>International journal of geriatric psychiatry</source>. <year>2002</year>;<volume>17</volume>(<issue>5</issue>):<fpage>422</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1002/gps.624" xlink:type="simple">10.1002/gps.624</ext-link></comment> <object-id pub-id-type="pmid">11994930</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref031"><label>31</label><mixed-citation publication-type="other" xlink:type="simple">Moher D, Liberati A, Tetzlaff J, Altman DG. Preferred reporting items for systematic reviews and meta-analyses: the PRISMA statement2009 2009-07-21 10:46:49.</mixed-citation></ref>
+<ref id="pone.0128213.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Crowe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sheppard</surname> <given-names>L</given-names></name>. <article-title>A general critical appraisal tool: an evaluation of construct validity</article-title>. <source>International journal of nursing studies</source>. <year>2011</year>;<volume>48</volume>(<issue>12</issue>):<fpage>1505</fpage>–<lpage>16</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.ijnurstu.2011.06.004" xlink:type="simple">10.1016/j.ijnurstu.2011.06.004</ext-link></comment> <object-id pub-id-type="pmid">21802686</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Crowe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sheppard</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Campbell</surname> <given-names>A</given-names></name>. <article-title>Reliability analysis for a proposed critical appraisal tool demonstrated value for diverse research designs</article-title>. <source>Journal of Clinical Epidemiology</source>. <year>2012</year>;<volume>65</volume>(<issue>4</issue>):<fpage>375</fpage>–<lpage>83</lpage>. <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jclinepi.2011.08.006" xlink:type="simple">http://dx.doi.org/10.1016/j.jclinepi.2011.08.006</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jclinepi.2011.08.006" xlink:type="simple">10.1016/j.jclinepi.2011.08.006</ext-link></comment> <object-id pub-id-type="pmid">22078576</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Crowe</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sheppard</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Campbell</surname> <given-names>A</given-names></name>. <article-title>Comparison of the effects of using the Crowe Critical Appraisal Tool versus informal appraisal in assessing health research: a randomised trial</article-title>. <source>International Journal of Evidence-Based Healthcare</source>. <year>2011</year>;<volume>9</volume>(<issue>4</issue>):<fpage>444</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1111/j.1744-1609.2011.00237.x" xlink:type="simple">10.1111/j.1744-1609.2011.00237.x</ext-link></comment> <object-id pub-id-type="pmid">2011364596</object-id>. Language: English. Entry Date: 20120309. Revision Date: 20121207. Publication Type: journal article.</mixed-citation></ref>
+<ref id="pone.0128213.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Doyle</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Rohde</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Rutkowska</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Morgan</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Cousins</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>McGee</surname> <given-names>H</given-names></name>. <article-title>Systematic review and meta-analysis of the impact of depression on subsequent smoking cessation in patients with coronary heart disease: 1990 to 2013</article-title>. <source>Psychosomatic medicine</source>. <year>2014</year>;<volume>76</volume>(<issue>1</issue>):<fpage>44</fpage>–<lpage>57</lpage>. Epub 2013/12/25. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/psy.0000000000000020" xlink:type="simple">10.1097/psy.0000000000000020</ext-link></comment> <object-id pub-id-type="pmid">24367125</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref036"><label>36</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Bradburn</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Deeks</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Douglas</surname> <given-names>A</given-names></name>. <chapter-title>Metan—a command for meta-analysis in Stata</chapter-title>. In: <name name-style="western"><surname>Sterne</surname> <given-names>JAC</given-names></name>, editor. <source>Meta-analysis in Stata: An updated collection form the Stata Journal</source>. <publisher-loc>Texas</publisher-loc>: <publisher-name>Stata Press</publisher-name>; <year>2009</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tak</surname> <given-names>LM</given-names></name>, <name name-style="western"><surname>Meijer</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Manoharan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>de Jonge</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Rosmalen</surname> <given-names>JG</given-names></name>. <article-title>More than the sum of its parts: meta-analysis and its potential to discover sources of heterogeneity in psychosomatic medicine</article-title>. <source>Psychosomatic medicine</source>. <year>2010</year>;<volume>72</volume>(<issue>3</issue>):<fpage>253</fpage>–<lpage>65</lpage>. Epub 2010/04/17. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1097/PSY.0b013e3181d714e1" xlink:type="simple">10.1097/PSY.0b013e3181d714e1</ext-link></comment> <object-id pub-id-type="pmid">20395625</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref038"><label>38</label><mixed-citation publication-type="other" xlink:type="simple">Kontopantelis E, Reeves D. METAEFF: Stata module to perform effect sizes calculations for meta-analyses 2011 [cited 2013 11th November 2013]. Available: <ext-link ext-link-type="uri" xlink:href="http://EconPapers.repec.org/RePEc:boc:bocode:s457072" xlink:type="simple">http://EconPapers.repec.org/RePEc:boc:bocode:s457072</ext-link>.</mixed-citation></ref>
+<ref id="pone.0128213.ref039"><label>39</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Higgins</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>S</given-names></name>. <source>Cochrane handbook for systematic reviews of interventions</source>: <publisher-name>Wiley Online Library</publisher-name>; <year>2008</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Higgins</surname> <given-names>JPT</given-names></name>, <name name-style="western"><surname>Thompson</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Deeks</surname> <given-names>JJ</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name>. <source>Measuring inconsistency in meta-analyses</source>. <year>2003</year>;<volume>327</volume>(<issue>7414</issue>):<fpage>557</fpage>–<lpage>60</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1136/bmj.327.7414.557" xlink:type="simple">10.1136/bmj.327.7414.557</ext-link></comment> <object-id pub-id-type="pmid">12958120</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref041"><label>41</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Goldberg</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>P</given-names></name>. <source>A users guide to the General Health Questionnaire</source>. <publisher-loc>Windsor</publisher-loc>: <publisher-name>National Foundation for Educational Research</publisher-name>; <year>1988</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Selwood</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Johnston</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Katona</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Lyketsos</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Livingston</surname> <given-names>G</given-names></name>. <article-title>Systematic review of the effect of psychological interventions on family caregivers of people with dementia</article-title>. <source>J Affect Disord</source>. <year>2007</year>;<volume>101</volume>(<issue>1–3</issue>):<fpage>75</fpage>–<lpage>89</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/j.jad.2006.10.025" xlink:type="simple">10.1016/j.jad.2006.10.025</ext-link></comment> <object-id pub-id-type="pmid">17173977</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thompson</surname> <given-names>SG</given-names></name>, <name name-style="western"><surname>Higgins</surname> <given-names>J</given-names></name>. <article-title>How should meta-regression analyses be undertaken and interpreted?</article-title> <source>Statistics in medicine</source>. <year>2002</year>;<volume>21</volume>(<issue>11</issue>):<fpage>1559</fpage>–<lpage>73</lpage>. <object-id pub-id-type="pmid">12111920</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref044"><label>44</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Cohen</surname> <given-names>J</given-names></name>. <source>Statistical power analysis for the behavioral sciences</source>. <edition>2nd ed</edition>. <publisher-loc>Hillsdale, NJ</publisher-loc>: <publisher-name>Lawrence Earlbaum Associates</publisher-name>; <year>1988</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref045"><label>45</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Steichen</surname> <given-names>T</given-names></name>. <chapter-title>Tests for publication bias in meta-analysis</chapter-title>. In: <name name-style="western"><surname>Sterne</surname> <given-names>J</given-names></name>, editor. <source>Meta-analysis in Stata: An updated collection from the Stata Journal</source>. <publisher-loc>Texas</publisher-loc>: <publisher-name>Stata Press</publisher-name>; <year>2009</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref046"><label>46</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Sharp</surname> <given-names>S</given-names></name>. <chapter-title>Meta-analysis regression</chapter-title>. In: <name name-style="western"><surname>Sterne</surname> <given-names>J</given-names></name>, editor. <source>Meta-analysis in Stata: An updated collection from the Stata Journal</source>. <publisher-loc>Texas</publisher-loc>: <publisher-name>Stata Press</publisher-name>; <year>2009</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref047"><label>47</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Harbord</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Higgins</surname> <given-names>J</given-names></name>. <chapter-title>Meta-regression in Stata</chapter-title>. In: <name name-style="western"><surname>Sterne</surname> <given-names>J</given-names></name>, editor. <source>Meta-analysis in Stata: An updated collection from the Stata Journal</source>. <publisher-loc>Texas</publisher-loc>: <publisher-name>Stata Press</publisher-name>; <year>2009</year>.</mixed-citation></ref>
+<ref id="pone.0128213.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brodaty</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gresham</surname> <given-names>M</given-names></name>. <article-title>Effect of a training programme to reduce stress in carers of patients with dementia</article-title>. <source>BMJ: British Medical Journal</source>. <year>1989</year>;<volume>299</volume>(<issue>6712</issue>):<fpage>1375</fpage>–<lpage>9</lpage>. <object-id pub-id-type="pmid">PMC1838247</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kühberger</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Fritz</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Scherndl</surname> <given-names>T</given-names></name>. <article-title>Publication Bias in Psychology: A Diagnosis Based on the Correlation between Effect Size and Sample Size</article-title>. <source>PLoS ONE</source>. <year>2014</year>;<volume>9</volume>(<issue>9</issue>):<fpage>e105825</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0105825" xlink:type="simple">10.1371/journal.pone.0105825</ext-link></comment> <object-id pub-id-type="pmid">25192357</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Doyle</surname> <given-names>F</given-names></name>. <article-title>The new open access journal on health psychology and behavioral medicine: why do we need it?</article-title> <source>Health psychology and behavioral medicine</source>. <year>2013</year>;<volume>1</volume>(<issue>1</issue>):<fpage>1</fpage>–<lpage>4</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1080/21642850.2013.780401" xlink:type="simple">10.1080/21642850.2013.780401</ext-link></comment> <object-id pub-id-type="pmid">25264497</object-id>; PubMed Central PMCID: PMC4164237.</mixed-citation></ref>
+<ref id="pone.0128213.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ferguson</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Heene</surname> <given-names>M</given-names></name>. <article-title>A Vast Graveyard of Undead Theories: Publication Bias and Psychological Science’s Aversion to the Null</article-title>. <source>Perspectives on Psychological Science</source>. <year>2012</year>;<volume>7</volume>(<issue>6</issue>):<fpage>555</fpage>–<lpage>61</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1177/1745691612459059" xlink:type="simple">10.1177/1745691612459059</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0128213.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ioannidis</surname> <given-names>JPA</given-names></name>. <article-title>Why Most Published Research Findings Are False</article-title>. <source>PLoS Med</source>. <year>2005</year>;<volume>2</volume>(<issue>8</issue>):<fpage>e124</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pmed.0020124" xlink:type="simple">10.1371/journal.pmed.0020124</ext-link></comment> <object-id pub-id-type="pmid">16060722</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bauer</surname> <given-names>ME</given-names></name>, <name name-style="western"><surname>Vedhara</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Perks</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Wilcock</surname> <given-names>GK</given-names></name>, <name name-style="western"><surname>Lightman</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Shanks</surname> <given-names>N</given-names></name>. <article-title>Chronic stress in caregivers of dementia patients is associated with reduced lymphocyte sensitivity to glucocorticoids</article-title>. <source>Journal of Neuroimmunology</source>. <year>1999</year>;<volume>103</volume>(<issue>1</issue>):<fpage>84</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1016/S0165-5728(99)00228-3" xlink:type="simple">10.1016/S0165-5728(99)00228-3</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0128213.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kiecolt-Glaser</surname> <given-names>JK</given-names></name>, <name name-style="western"><surname>Marucha</surname> <given-names>PT</given-names></name>, <name name-style="western"><surname>Mercado</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Malarkey</surname> <given-names>WB</given-names></name>, <name name-style="western"><surname>Glaser</surname> <given-names>R</given-names></name>. <article-title>Slowing of wound healing by psychological stress</article-title>. <source>The Lancet</source>. <year>1995</year>;<volume>346</volume>(<issue>8984</issue>):<fpage>1194</fpage>–<lpage>6</lpage>. <object-id pub-id-type="pmid">7475659</object-id></mixed-citation></ref>
+<ref id="pone.0128213.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cramer</surname> <given-names>AO</given-names></name>, <name name-style="western"><surname>Waldorp</surname> <given-names>LJ</given-names></name>, <name name-style="western"><surname>van der Maas</surname> <given-names>HL</given-names></name>, <name name-style="western"><surname>Borsboom</surname> <given-names>D</given-names></name>. <article-title>Comorbidity: a network perspective</article-title>. <source>The Behavioral and brain sciences</source>. <year>2010</year>;<volume>33</volume>(<issue>2–3</issue>):<fpage>137</fpage>–<lpage>50</lpage>; discussion 50–93. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1017/S0140525X09991567" xlink:type="simple">10.1017/S0140525X09991567</ext-link></comment> <object-id pub-id-type="pmid">20584369</object-id>.</mixed-citation></ref>
+<ref id="pone.0128213.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Borsboom</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Cramer</surname> <given-names>AOJ</given-names></name>, <name name-style="western"><surname>Schmittmann</surname> <given-names>VD</given-names></name>, <name name-style="western"><surname>Epskamp</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Waldorp</surname> <given-names>LJ</given-names></name>. <article-title>The Small World of Psychopathology</article-title>. <source>PLoS ONE</source>. <year>2011</year>;<volume>6</volume>(<issue>11</issue>):<fpage>e27407</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="http://dx.doi.org/10.1371/journal.pone.0027407" xlink:type="simple">10.1371/journal.pone.0027407</ext-link></comment> <object-id pub-id-type="pmid">22114671</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

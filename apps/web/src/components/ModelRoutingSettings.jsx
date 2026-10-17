@@ -20,8 +20,10 @@ function probeRoleLabel(role) {
 }
 
 export default function ModelRoutingSettings({
+  catalogControls,
   configurationMode,
-  renderUniversalSettings, universalSummaries, renderThinkingSettings, renderRoutingPersistence,
+  visionMode = 'assist', onVisionModeChange, visionNotice,
+  renderUniversalSettings, universalSummaries, renderThinkingSettings,
   onModeChange,
   simpleProvider,
   onSimpleProviderChange,
@@ -32,6 +34,7 @@ export default function ModelRoutingSettings({
   onRetryRegistry,
   providerConfigs,
   outputFormat,
+  operation = 'generation',
   executionRouteRoles = [],
   credentialProviders,
   apiKeys,
@@ -96,22 +99,23 @@ export default function ModelRoutingSettings({
         </div>
       ) : null}
       <div className="model-grid model-route-grid">
-        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','视觉模型','vision-model']].map(([role,label,focusSetting]) => {
+        {[['main','主模型','main-model'],['image','图像生成模型','image-model'],['vision','视觉模型','vision-model']].filter(([role]) => (role!=='image'||executionRouteRoles.includes('image')) && (isAdvancedMode || role !== 'vision' || visionMode !== 'none')).map(([role,label,focusSetting]) => {
           const route = modelRoutes[role]
           const model = modelRegistry?.providers?.[route.accessProvider]?.models?.find(entry => entry.id === route.modelId)
           return <div className="model-role-settings" data-model-role={role} key={role}>
-            {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route}
+            {isAdvancedMode ? <ModelPicker label={t(label)} role={role} route={route} operation={operation}
+              visionMode={role === 'vision' ? visionMode : undefined} onVisionModeChange={role === 'vision' ? onVisionModeChange : undefined}
               outputFormat={role === 'image' && !executionRouteRoles.includes('image') ? '' : outputFormat}
-              registry={modelRegistry} providerConfigs={providerConfigs} allowCustom
+              registry={modelRegistry} catalogControls={catalogControls} providerConfigs={providerConfigs} providerRegions={providerRegions} allowCustom
               renderCustomSettings={() => renderUniversalSettings?.(role)} customSummary={universalSummaries?.[role]}
-              onRouteChange={next => onRouteChange(role,next)} focusSetting={focusSetting} />
-              : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong></div>}
-            {route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
+              onRouteChange={next => {if(role === 'vision')onVisionModeChange?.('assist');onRouteChange(role,next)}} focusSetting={focusSetting} />
+              : <div className="simple-model-summary"><span>{t(label)}</span><strong>{model?.label || route.modelId}</strong>{role === 'main' && visionMode === 'none' ? <small>{t('同时负责图片理解')}</small> : role === 'vision' ? <small>{t('自动辅助主模型理解图片')}</small> : null}</div>}
+            {!(role === 'vision' && visionMode === 'none') && route.accessProvider !== 'custom' && renderThinkingSettings?.(role)}
           </div>
         })}
       </div>
 
-      {isAdvancedMode ? renderRoutingPersistence?.() : null}
+      {isAdvancedMode && visionNotice ? <p className="vision-role-note" role="note">{t(visionNotice)}</p> : null}
 
       {credentialProviders.some(provider => provider !== 'custom') && <details className="api-keys-panel access-credentials" data-focus-setting="api-key" open>
         <summary><KeyRound size={17} />{t(" 接入凭据")}</summary>

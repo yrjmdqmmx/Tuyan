@@ -162,7 +162,7 @@ async function main(): Promise<void> {
   }
   const server = createServer({
     adminOperations,
-    tokenDance, providerWorkflow, resumeTokenDanceJob: core.resumeTokenDanceJob, requiresTokenDanceCredential: core.requiresTokenDanceCredential,
+    tokenDance, providerWorkflow, resumeTokenDanceJob: core.resumeTokenDanceJob, requiresTokenDanceCredential: core.requiresTokenDanceCredential, requiresCustomCredential: core.requiresCustomCredential,
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,

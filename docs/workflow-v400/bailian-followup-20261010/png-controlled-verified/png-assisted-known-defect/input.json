@@ -1,0 +1,35 @@
+{
+  "action": "createJob",
+  "configurationMode": "advanced",
+  "provider": "bailian",
+  "apiKeys": {
+    "bailian": "[REDACTED]"
+  },
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    }
+  },
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.7）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。保留右上角标识REF-73，使用圆角框布局。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "infographicCategory": "method",
+  "outputFormat": "png",
+  "visionMode": "assist",
+  "pipelineMode": "full",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "aspectRatio": "16:9",
+  "imageSize": "1K"
+}

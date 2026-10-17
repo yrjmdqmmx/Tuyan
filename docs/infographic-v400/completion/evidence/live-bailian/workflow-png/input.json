@@ -1,0 +1,39 @@
+{
+  "action": "createJob",
+  "configurationMode": "advanced",
+  "provider": "bailian",
+  "apiKeys": {
+    "bailian": "[REDACTED]"
+  },
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    }
+  },
+  "methodContent": "Synthetic teaching example, not a research result. Draw exactly Start → Receive sample → Quality check (diamond). Label yes branch → Normalize → Output → End. Label no branch → Reject sample → End. Use English text. Distinguish operations from decisions and start/end. No numeric or scientific claims. Reference image is for design structure only; do not transfer its paper data or conclusions.",
+  "caption": "Explicit synthetic teaching example",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "taskName": "diagram",
+  "figureTypeId": "workflow",
+  "figureSpecVersion": "2026-10-10.v1",
+  "outputFormat": "png",
+  "visionMode": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pbio.2003779.g001"
+  ],
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "aspectRatio": "16:9",
+  "imageSize": "1K"
+}

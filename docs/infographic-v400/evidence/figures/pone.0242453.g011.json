@@ -1,0 +1,62 @@
+{
+  "id": "pone.0242453.g011",
+  "paper": "pone.0242453",
+  "figure": {
+    "id": "pone.0242453.g011",
+    "label": "Fig 11",
+    "caption": "Two pipelines are shown to illustrate similarities and differences between them.\nTo run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies h-functions and their order of execution, as well as required input files to the pipeline. Here we show how function h_{1} is executed in a pipeline 1 and how h_{4} is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the h-function. There may be one transformation function for each direct input to an h-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The h-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional h-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function h_{1} execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function h_{4} in pipeline 2 is executed in a similar fashion to function h_{1} in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See Table 5 for implementation details of the elements in this figure.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0242453.g011\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0242453.g011</object-id>\n<label>Fig 11</label>\n<caption>\n<title>Two pipelines are shown to illustrate similarities and differences between them.</title>\n<p>To run a pipeline (called a job), a pipeline-specific configuration input file is verified and is read by the pipeline framework. The file specifies <italic>h</italic>-functions and their order of execution, as well as required input files to the pipeline. Here we show how function <italic>h</italic><sub>1</sub> is executed in a pipeline 1 and how <italic>h</italic><sub>4</sub> is executed in pipeline 2. The pipeline framework invokes the corresponding functions. If specified in the configuration file, the pipeline framework invokes a transformation function that transforms the contents of one or more files into an input file of correct format for the <italic>h</italic>-function. There may be one transformation function for each direct input to an <italic>h</italic>-function. At appropriate points in a pipeline, data files are verified against their corresponding JSON schema (input file verification). The <italic>h</italic>-function is executed and output files are generated (these digital object outputs may be, e.g., plot files, ASCII data files, and binary data files). There may be additional <italic>h</italic>-functions within pipeline 1, indicated by the ellipsis below pipeline 1 function <italic>h</italic><sub>1</sub> execution. In this example, outputs from the generic pipeline 1 are inputs for the generic pipeline 2. Function <italic>h</italic><sub>4</sub> in pipeline 2 is executed in a similar fashion to function <italic>h</italic><sub>1</sub> in pipeline 1. See the text for descriptions of these various components. Note: the pipeline framework (in brown) is the same code for all pipelines. See <xref ref-type=\"table\" rid=\"pone.0242453.t005\">Table 5</xref> for implementation details of the elements in this figure.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0242453.g011\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0242453.g011",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0242453",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0242453",
+    "title": "Data analysis and modeling pipelines for controlled networked social science experiments",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Vanessa Cedeno-Mieles",
+      "Zhihao Hu",
+      "Yihui Ren",
+      "Xinwei Deng",
+      "Noshir Contractor",
+      "Saliya Ekanayake",
+      "Joshua M. Epstein",
+      "Brian J. Goode",
+      "Gizem Korkmaz",
+      "Chris J. Kuhlman",
+      "Dustin Machi",
+      "Michael Macy",
+      "Madhav V. Marathe",
+      "Naren Ramakrishnan",
+      "Parang Saraf",
+      "Nathan Self"
+    ],
+    "year": "2020",
+    "license": "2020\nCedeno-Mieles et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0242453.g011",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g011.png",
+      "bytes": 613270,
+      "sha256": "307c1cf92ed96a4950a088cde1ddb218b44680e8e2c4561fb1c7ad6c9cabec06"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0242453.g011",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0242453.g011.tif",
+      "bytes": 1044068,
+      "sha256": "0b9283f64037f704fc90bf3c0f383212b3d2bca3649b778bec8d0a35fba9aa00"
+    }
+  }
+}

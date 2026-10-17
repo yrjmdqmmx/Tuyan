@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="other" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosbiol</journal-id>
+<journal-title-group>
+<journal-title>PLOS Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1544-9173</issn>
+<issn pub-type="epub">1545-7885</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pbio.2003779</article-id>
+<article-id pub-id-type="publisher-id">pbio.2003779</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Community Page</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Experimental design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Research validity</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research design</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Research reporting guidelines</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Data management</subject><subj-group><subject>Ontologies</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Reproducibility</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Software design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Reasoning</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Reasoning</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Reasoning</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>The Experimental Design Assistant</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0002-9478-0540</contrib-id>
+<name name-style="western">
+<surname>Percie du Sert</surname>
+<given-names>Nathalie</given-names>
+</name>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Bamsey</surname>
+<given-names>Ian</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Bate</surname>
+<given-names>Simon T.</given-names>
+</name>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Berdoy</surname>
+<given-names>Manuel</given-names>
+</name>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Clark</surname>
+<given-names>Robin A.</given-names>
+</name>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Cuthill</surname>
+<given-names>Innes</given-names>
+</name>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Fry</surname>
+<given-names>Derek</given-names>
+</name>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Karp</surname>
+<given-names>Natasha A.</given-names>
+</name>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+<xref ref-type="aff" rid="aff009"><sup>9</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Macleod</surname>
+<given-names>Malcolm</given-names>
+</name>
+<xref ref-type="aff" rid="aff010"><sup>10</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Moon</surname>
+<given-names>Lawrence</given-names>
+</name>
+<xref ref-type="aff" rid="aff011"><sup>11</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Stanford</surname>
+<given-names>S. Clare</given-names>
+</name>
+<xref ref-type="aff" rid="aff012"><sup>12</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Lings</surname>
+<given-names>Brian</given-names>
+</name>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>National Centre for the Replacement, Refinement and Reduction of Animals in Research (NC3Rs), London, United Kingdom</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Certus Technology Associates Ltd, Exeter, United Kingdom</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>GlaxoSmithKline, Stevenage, United Kingdom</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>University of Oxford, Oxford, United Kingdom</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Envigo, Alconbury, United Kingdom</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>University of Bristol, Bristol, United Kingdom</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>University of Manchester, Manchester, United Kingdom</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Wellcome Trust Sanger Institute, Hinxton, United Kingdom</addr-line></aff>
+<aff id="aff009"><label>9</label> <addr-line>Quantitative Biology IMED, AstraZeneca R&amp;D, Cambridge, United Kingdom</addr-line></aff>
+<aff id="aff010"><label>10</label> <addr-line>Centre for Clinical Brain Sciences, University of Edinburgh, Edinburgh, United Kingdom</addr-line></aff>
+<aff id="aff011"><label>11</label> <addr-line>King’s College London, London, United Kingdom</addr-line></aff>
+<aff id="aff012"><label>12</label> <addr-line>University College London, London, United Kingdom</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The EDA was developed as part of an NC3Rs programme. All authors were involved in developing the EDA and NPdS currently works at the NC3Rs.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">nathalie.perciedusert@nc3rs.org.uk</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>28</day>
+<month>9</month>
+<year>2017</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>9</month>
+<year>2017</year>
+</pub-date>
+<volume>15</volume>
+<issue>9</issue>
+<elocation-id>e2003779</elocation-id>
+<permissions>
+<copyright-year>2017</copyright-year>
+<copyright-holder>du Sert et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pbio.2003779"/>
+<abstract>
+<p>Addressing the common problems that researchers encounter when designing and analysing animal experiments will improve the reliability of in vivo research. In this article, the Experimental Design Assistant (EDA) is introduced. The EDA is a web-based tool that guides the in vivo researcher through the experimental design and analysis process, providing automated feedback on the proposed design and generating a graphical summary that aids communication with colleagues, funders, regulatory authorities, and the wider scientific community. It will have an important role in addressing causes of irreproducibility.</p>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="2"/>
+<table-count count="2"/>
+<page-count count="9"/>
+</counts>
+<custom-meta-group>
+<custom-meta>
+<meta-name>PLOS Publication Stage</meta-name>
+<meta-value>vor-update-to-uncorrected-proof</meta-value>
+</custom-meta>
+<custom-meta>
+<meta-name>Publication Update</meta-name>
+<meta-value>2017-10-10</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The poor reproducibility of findings from animal research has received much attention over the last few years [<xref ref-type="bibr" rid="pbio.2003779.ref001">1</xref>], not least because of the impact it has on translation, scientific progress, and the use of resources. It has been estimated that over half of preclinical research is irreproducible (see [<xref ref-type="bibr" rid="pbio.2003779.ref002">2</xref>]). There are many reasons for this, aside from the complication that reproducibility can be defined in different ways [<xref ref-type="bibr" rid="pbio.2003779.ref003">3</xref>], but flawed experimental design, inappropriate statistical analysis, and inadequate reporting have been flagged as major concerns [<xref ref-type="bibr" rid="pbio.2003779.ref004">4</xref>–<xref ref-type="bibr" rid="pbio.2003779.ref006">6</xref>]. There is considerable scope for improving the way animal research is designed, conducted, analysed, and reported.</p>
+<p>As a starting point, the UK National Centre for the Replacement, Refinement and Reduction of Animals in Research (NC3Rs) developed the Animal research: Reporting of in vivo experiments (ARRIVE) guidelines to improve the reporting of animal experiments [<xref ref-type="bibr" rid="pbio.2003779.ref007">7</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref008">8</xref>]. As of 2016, compliance with these guidelines was recommended by over 600 leading journals in the biomedical sciences [<xref ref-type="bibr" rid="pbio.2003779.ref009">9</xref>]; with more advocating their use each year, this number has now increased to over 1,000 [<xref ref-type="bibr" rid="pbio.2003779.ref007">7</xref>]. Compliance should ensure that published articles contain sufficient information to assess the reliability of the findings and enable the experiments to be adequately replicated [<xref ref-type="bibr" rid="pbio.2003779.ref008">8</xref>]. Improved reporting should also increase the quality of retrospective studies, such as systematic reviews. However, in order to increase the reliability of findings, the design, conduct, and analysis of individual experiments needs to be improved. Here, we present the Experimental Design Assistant (EDA), which was launched to support the scientific community with this process [<xref ref-type="bibr" rid="pbio.2003779.ref010">10</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref011">11</xref>].</p>
+<p>The EDA (<ext-link ext-link-type="uri" xlink:href="https://eda.nc3rs.org.uk/" xlink:type="simple">https://eda.nc3rs.org.uk</ext-link>) is a web-based application with an integrated website, which guides researchers through the process of designing animal experiments; the output includes a diagram that improves the transparency of the experimental plan. The resource is freely available and was developed by the authors as an NC3Rs-led collaboration between in vivo researchers and statisticians from academia and industry and a team of software designers who specialise in innovative solutions for the life sciences (<ext-link ext-link-type="uri" xlink:href="http://www.certus-tech.com/" xlink:type="simple">http://www.certus-tech.com/</ext-link>). The EDA enables researchers to build a stepwise, schematic representation of an experiment—the EDA diagram—and uses computer-based logical reasoning to provide feedback and advice on the experimental plan. The system’s main features are presented in <xref ref-type="table" rid="pbio.2003779.t001">Table 1</xref>.</p>
+<table-wrap id="pbio.2003779.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.2003779.t001</object-id>
+<label>Table 1</label> <caption><title>Features of the Experimental Design Assistant (EDA).</title></caption>
+<alternatives>
+<graphic id="pbio.2003779.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.2003779.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Features of the EDA include the following:</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">• A computer-aided design tool to develop a diagram representing the experimental plan,</td>
+</tr>
+<tr>
+<td align="left">• feedback from an expert system on the experimental plan (the Critique),</td>
+</tr>
+<tr>
+<td align="left">• Analysis Suggestion,</td>
+</tr>
+<tr>
+<td align="left">• sample size calculation,</td>
+</tr>
+<tr>
+<td align="left">• randomisation sequence generation,</td>
+</tr>
+<tr>
+<td align="left">• support for allocation concealment and blinding,</td>
+</tr>
+<tr>
+<td align="left">• web-based resources to improve knowledge of experimental design and analysis.</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<sec id="sec002">
+<title>The EDA improves the reliability of experimental results and analysis</title>
+<p>The majority of published in vivo research provides no indication that basic precautions have been taken to obtain reliable findings [<xref ref-type="bibr" rid="pbio.2003779.ref004">4</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref012">12</xref>]. High internal validity can only be achieved by minimising systematic bias so that observed differences can be confidently associated with the treatment of interest. For example, many publications include no information on randomisation and blinding [<xref ref-type="bibr" rid="pbio.2003779.ref004">4</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref012">12</xref>]. This is not considered to be just a reporting issue; studies have shown that publications of animal experiments that report the use of such measures also tend to report lower effect sizes compared to those that do not [<xref ref-type="bibr" rid="pbio.2003779.ref013">13</xref>]. This implies that experiments are generally not designed and conducted to the highest standards, and the results may not be reliable. Random allocation and blinding have 2 benefits: first, they help meet a key assumption of the statistical analysis, namely, that different groups are drawn from the same background population using random sampling. Second, applying these techniques minimises systematic differences between the treatment groups during the conduct of the experiment, assessment of the results, and data analysis. Such differences can be caused by researchers subconsciously influencing the animals’ allocation to treatment groups, the animals’ behaviour [<xref ref-type="bibr" rid="pbio.2003779.ref014">14</xref>], or the handling of the data (e.g., removal of outliers).</p>
+<p>Another common concern regarding the reliability of animal experiments is that they are underpowered, using too few animals to yield dependable results. Button, Ioannidis and colleagues [<xref ref-type="bibr" rid="pbio.2003779.ref015">15</xref>] estimated the average power in neuroscience animal studies to be around 20%. This constitutes a high risk of missing a genuine effect (a false negative), because only 1 in 5 experiments would have a chance of detecting an effect of the magnitude reported. Conversely, the use of sample sizes that are too small also reduces the reliability of the conclusions from an individual experiment and of the published literature as a whole. When a statistically significant effect is detected, it is less likely to be genuine and its magnitude more likely to be overestimated [<xref ref-type="bibr" rid="pbio.2003779.ref015">15</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref016">16</xref>]. Indeed, justification for the choice of sample sizes is rarely included in published papers [<xref ref-type="bibr" rid="pbio.2003779.ref004">4</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref012">12</xref>].</p>
+<p>The EDA helps avoid such pitfalls when designing in vivo experiments and improves the reliability of the results—and ultimately, their reproducibility. The system generates a randomisation sequence for the experiment, which takes into account any blocking factors included in the design and provides dedicated functionalities, such as support for blinding and sample size calculation, to assist researchers in following best practice (see <xref ref-type="fig" rid="pbio.2003779.g001">Fig 1</xref>). A tailored critique provides suggestions on optimising the experimental plan. For example, it helps researchers to identify variables that could confound the outcome and provides advice on how to include them in the randomisation and the statistical analysis. Finally, once the researcher has addressed the feedback and is satisfied with the design, the system advises on which methods of statistical analysis are most appropriate. Designing experiments with the EDA encourages researchers to consider the sources of bias at the design stages of the experiment before the data are collected, ensuring a rigorous design that is more likely to yield robust findings that can be reproduced. The EDA can also be used as a teaching resource, thereby promoting a better understanding of the principles of experimental design at an early stage of the research training process. The process of building an EDA diagram familiarises students with the different components of the design and how they are connected. The visual representation of abstract concepts, such as the experimental unit, the independent variables, or data transformations, brings clarity that enables a detailed discussion of the experimental plan.</p>
+<fig id="pbio.2003779.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.2003779.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>The Experimental Design Assistant (EDA) workflow.</title>
+<p>The workflow is not fixed and different users might prefer to do some steps in a different order. A potential workflow using the different functionalities of the EDA is described as follows: (1) The user starts by drawing a diagram (with nodes and links) representing the experiment they are planning. Assistance is provided in the form of examples, templates, and video tutorials. (2) Information is added into the node properties, providing more details about the specific step of the process represented by each node. (3) The “Critique” functionality (see <xref ref-type="table" rid="pbio.2003779.t002">Table 2</xref>) enables the researcher to obtain feedback on the diagram and the design it represents. The feedback might prompt a change in their plans or the addition of missing information. This is an iterative process and the user might go through the first 3 steps a number of times. (4) Once feedback from the critique has been addressed and the user is satisfied with the final design, the analysis method suggested by the system can be reviewed (see <xref ref-type="table" rid="pbio.2003779.t002">Table 2</xref>). (5) Depending on how the data will be analysed, a suitable sample size can be calculated using one of the calculators provided within the system. (6) Once the number of animals needed per group is known, the EDA can generate the randomisation sequence. The spreadsheet detailing the group allocation for each animal can be sent directly to a third party nominated by the user, thus blinding the allocation. This enables the researcher to remain unaware of the group allocation until the data have been collected and analysed. (7) Diagrams can be safely shared with colleagues and collaborators at any stage of the process. (8) The user can export a PDF report, which contains key information about the internal validity of the experiment, a summary of the feedback from the system, and the EDA diagram itself. This report can be submitted as part of a grant application, as part of the ethical review process, or, later on, with a journal manuscript. Alternatively, the diagram data can be exported (as an.eda file) and saved locally or used to register the protocol before the experiment is conducted. (9) Once the planning is complete, the experiment is carried out. (10) The diagram can be updated after data collection to enable the user to keep an accurate record (e.g., to record the number of animals analysed if some failed to complete the experiment or if data are missing for other reasons).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.2003779.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec003">
+<title>The EDA offers a new standard notation for describing experiments</title>
+<p>It is difficult to find a technical discipline that has not adopted a schematic, diagrammatic, or symbolic notation to improve communications and the recording of methodological detail. However, there are no universally accepted standards to describe the different components of an experimental design. Different terms can be used to describe the same things; for example, the outcome measure is also known as the dependent variable, the response variable, the outcome variable, or the variable of interest, which can easily be confused with the independent variable of interest (also known as the factor of interest or the predictor of interest). By contrast, the same terms can be used to describe different settings; for example, a ‘repeated measure design’ can imply a situation in which animals receive multiple treatments in a different order (sometimes described as a crossover design). However, it could also refer to a situation in which the response to a given treatment in each animal is measured over time or to a situation in which multiple responses are measured for each animal [<xref ref-type="bibr" rid="pbio.2003779.ref017">17</xref>]. The EDA resolves this problem by helping the user generate unambiguous representations of these different designs using EDA diagrams (see <xref ref-type="fig" rid="pbio.2003779.g002">Fig 2</xref> and <xref ref-type="supplementary-material" rid="pbio.2003779.s001">S1 Fig</xref>) and hence does not require knowledge or understanding of labels such as ‘repeated measure design’.</p>
+<fig id="pbio.2003779.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.2003779.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Example of an Experimental Design Assistant (EDA) diagram.</title>
+<p>EDA diagrams are composed of nodes and links to represent an entire experimental plan. Each node contains properties where specific details are captured (properties are not shown in this picture, but in the EDA they are accessible by clicking on the specific node). This particular example is a simple 2-group comparison. The grey nodes contain high-level information about the experiment, such as the null and alternative hypotheses, the effect of interest (via the experiment node), the experimental unit, or the animal characteristics. The blue and purple nodes represent the practical steps carried out in the laboratory, such as the allocation to groups (allocation node) and the group sizes and role in the experiment (group nodes), the treatments (via the intervention nodes), and the measurements taken (measurement nodes). The green and red nodes represent the analysis, the outcome measures, and the independent variables.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.2003779.g002" xlink:type="simple"/>
+</fig>
+<p>A central feature of the EDA is the development of standards for communicating experimental design. This has required the careful definition of the concepts used in experimental design together with an associated vocabulary of preferred terms. This was developed using an iterative approach and tested using a wide range of experimental plans from the published literature. The result is an ontology that supports the capture of every element of an experimental plan, from high-level information such as the hypotheses, effect of interest, and animal characteristics, to the practical steps carried out in the laboratory, as well as details on the variables included in the design and statistical analysis. This ontology has underpinned the development of a computer-aided design tool to support the experimental design process. The tool helps users develop EDA diagrams consistent with the ontology. The diagrams are unambiguous and more explicit than the text descriptions normally included in grant applications or journal publications. Novel ideas and intellectual property contained within the diagrams are protected; a summary of the security measures in place is included on the website: <ext-link ext-link-type="uri" xlink:href="https://eda.nc3rs.org.uk/security" xlink:type="simple">https://eda.nc3rs.org.uk/security</ext-link>. EDA diagrams are also computer interpretable, allowing automated critiquing of designs against recognised best practice without constraining the experimental design process or the plans themselves.</p>
+</sec>
+<sec id="sec004">
+<title>The EDA enables an effective assessment of the experimental plans</title>
+<p>For researchers who have limited access to statistical support, the critical feedback provided by the EDA will be particularly pertinent, as it provides users with information that is specific to the experiment they are planning. The system is not designed to replace specialist statistical advice but can facilitate it. The process of building a design using the EDA emulates the initial fact-finding discussion a researcher might have with a statistician. It helps the researcher to identify much of the information that a statistician would need in order to provide expert advice and presents it in an explicit and standardised format, which can be made available to funding bodies, ethical review committees, journal editors, and peer reviewers.</p>
+<p>Users also have the option to share their designs with team members and collaborators, and anecdotal evidence shows that diagrams are extremely useful when discussing the experimental plans within a research team. This is partly because the visual representation enables an efficient critical appraisal of the plans, such as questioning the role of and need for each experimental group, defining variables, identifying potential sources of bias, or debating the type of outcome measures. This detailed scrutiny before the experiment is carried out, or even before the plans are reviewed beyond the laboratory, enables researchers to identify potential pitfalls based on what they know about the science and experimental environment and perhaps follow up with more advanced questions to a statistician.</p>
+<p>In addition to problems with the design, analysis, and reporting of scientific research, there are 2 practices that are widely encountered and further compromise the reliability of published results: ‘p-hacking’ (running multiple statistical tests on the same data and choosing the one with the lowest <italic>p</italic> value) and selective outcome reporting (measuring different outcomes, or the same outcome in different ways, and only reporting the ones that reach statistical significance) [<xref ref-type="bibr" rid="pbio.2003779.ref018">18</xref>]. These issues effectively represent a post hoc choice of outcome and analysis plan and would be prevented by formalising a clear protocol and plan for the statistical analysis before collecting the data. EDA diagrams are ideal for this purpose. EDA diagrams and the nonvisual information they contain (e.g., prespecified primary outcome measure, chosen method of randomisation) can be registered before the experiment is carried out, on specific platforms such as the Open Science Framework (<ext-link ext-link-type="uri" xlink:href="https://osf.io/" xlink:type="simple">https://osf.io/</ext-link>) or more generic platforms such as Figshare (<ext-link ext-link-type="uri" xlink:href="https://figshare.com/" xlink:type="simple">https://figshare.com</ext-link>). This provides evidence that a study was planned as it has been reported and confirms that the primary outcome measure has not been changed during the course of the experiment and that any additional results reported should be treated with caution.</p>
+</sec>
+<sec id="sec005">
+<title>The EDA promotes better understanding of experimental design and analysis</title>
+<p>The EDA is not a ‘black box’ that instructs researchers on what design they should use. Instead, it promotes better understanding of experimental design and raises awareness about problems caused by a lack of randomisation and blinding, underpowered experiments, or inappropriate statistical analysis. The feedback provided by the system (see <xref ref-type="table" rid="pbio.2003779.t002">Table 2</xref>) enables users to learn about the implications of different design choices and helps them make informed decisions about the most appropriate one to adopt.</p>
+<table-wrap id="pbio.2003779.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.2003779.t002</object-id>
+<label>Table 2</label> <caption><title>Feedback provided by the Experimental Design Assistant (EDA).</title></caption>
+<alternatives>
+<graphic id="pbio.2003779.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.2003779.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Aspect of experimental design covered by the feedback rules</th>
+<th align="left">High-level description of the type of feedback that the EDA can provide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Objective</td>
+<td align="left">Provides guidance to identify the null and alternative hypothesis, the effect of interest, and the effect size that is biologically relevant.</td>
+</tr>
+<tr>
+<td align="left">Randomisation</td>
+<td align="left">Detects when the allocation method is not specified. Highlights the importance of adequate randomisation, advises on randomisation procedures, and prompts users to consider different types of randomisation.</td>
+</tr>
+<tr>
+<td align="left">Blinding</td>
+<td align="left">Detects when there is no provision for blinding, explains why allocation concealment and blinding are important and the different stages of the experiment that can be blinded, and provides ways blinding can be achieved.</td>
+</tr>
+<tr>
+<td align="left">Groups and sample size</td>
+<td align="left">Provides guidance to identify the experimental unit(s) and determine suitable sample sizes.</td>
+</tr>
+<tr>
+<td align="left">Outcome measures</td>
+<td align="left">Highlights the implications of working with continuous and categorical data. Prompts user to identify the primary outcome measure.</td>
+</tr>
+<tr>
+<td align="left">Independent variables of interest</td>
+<td align="left">Detects when independent variables have not been identified or when they should be treated as continuous or categorical or as repeated factors. Detects when independent variables may be confounded.</td>
+</tr>
+<tr>
+<td align="left">Nuisance variables</td>
+<td align="left">Advises about nuisance variables commonly seen in animal experiments and how to account for them in the randomisation and analysis.</td>
+</tr>
+<tr>
+<td align="left">Statistical analysis</td>
+<td align="left">Suggests statistical analysis methods compatible with the design, along with software that can be used to perform these tests. Advises about parametric assumptions and data transformation. Suggests when the advice of a statistician should be sought.</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>The expert system provides helpful critical feedback to the user based on a set of rules. At the time of writing this article, approximately 140 feedback rules have been implemented; this number will increase over time, improving the precision of the feedback and the ability of the EDA to detect more subtle issues that could be addressed to optimise the design. The EDA feedback is split into 2 distinct functionalities: the Critique and the Analysis Suggestion.</p></fn>
+<fn id="t002fn002"><p>The Critique helps the user build their diagram and identifies missing information and problems with internal consistency. It also suggests improvements to the design and assists the user in identifying and characterising the independent variables in the analysis. Feedback rules are devised to highlight the implications of different design choices, thus enabling researchers to make informed decisions. When an issue is detected (e.g., because additional information is requested or the information provided is not consistent with good practice), an error, warning, or advice flag is placed on a specific node in the diagram. Clicking on the flag opens a pop-up window explaining what the issue is and providing advice on how to address it. Not all EDA users will trigger all feedback rules; for instance, experienced researchers who initially input an adequate level of information within the diagram will see few, if any, prompts.</p></fn>
+<fn id="t002fn003"><p>The Analysis Suggestion can be used after the Critique feedback has been addressed. The information provided is based on the number and type of independent variables of interest, nuisance variables, and outcome measures included in the analysis.</p></fn>
+<fn id="t002fn004"><p>The development of the rule set was informed by workshops in which EDA diagrams representing examples of flawed experimental designs were analysed. These sessions identified, in particular, what information a statistician would require in order to offer the best advice on the design and what advice the statistician would feed back to the researcher to help them identify the information requested by the EDA or to help them improve the design. More information about the development of the feedback feature can be found here: <ext-link ext-link-type="uri" xlink:href="https://eda.nc3rs.org.uk/feedback" xlink:type="simple">https://eda.nc3rs.org.uk/feedback</ext-link></p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Animal studies often use suboptimal statistical analysis, such as failing to use factorial or block designs when appropriate, treating repeated measures as being independent, or failing to account for multiple testing [<xref ref-type="bibr" rid="pbio.2003779.ref004">4</xref>,<xref ref-type="bibr" rid="pbio.2003779.ref019">19</xref>–<xref ref-type="bibr" rid="pbio.2003779.ref022">22</xref>]. The EDA encourages scientists to spend time planning their experiments and optimising the design interactively. It prompts researchers to evaluate carefully their experimental plan and to consider the data to be collected. It also helps to identify sources of variability by providing examples that are commonly encountered in animal research, such as the day of the experiment (if animals are used over several days); the time of day when the experiment is performed; the piece of equipment used to record measurements; the litter or cage mates; the location of cages in the room; or baseline variables, such as the animals’ weight or locomotor activity. Such sources of variability, termed ‘nuisance variables’, can then be accounted for in the design and analysis of the experiment (e.g., as covariates or blocking factors), or they can be standardised. The choice depends on the characteristics of the specific variable, for example, whether it can be treated as a continuous or categorical variable, and the extent of its likely impact on the variability of the response and on how far the conclusions of the experiment can be generalised. It also helps the user to identify independent variables that are repeated factors and warrant a repeated measure analysis, thereby ensuring that users are provided with enough information to avoid common pitfalls.</p>
+</sec>
+</sec>
+<sec id="sec006" sec-type="conclusions">
+<title>Conclusion</title>
+<p>The EDA is a novel tool bringing together machine-readable flow diagrams and computer-based logical reasoning to assist the robust and reproducible design of animal experiments. It ensures that the experimental plans are explicit and transparent, thus allowing greater scrutiny before and after data are collected and a meaningful dialogue between researchers and statisticians. It encourages improvements on the design by providing researchers with critical feedback and targeted information. Future development of the system will continue to incorporate user feedback to ensure that the EDA continues to support the needs of the research community. Together with comprehensive reporting and a better understanding of the factors that impact on the reliability and integrity of research findings, the EDA forms part of the solution identified by NC3Rs and others to improve the quality of animal research.</p>
+</sec>
+<sec id="sec007">
+<title>Supporting information</title>
+<supplementary-material id="pbio.2003779.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pbio.2003779.s001" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Here, we present 4 Experimental Design Assistant (EDA) diagrams depicting ‘repeated measure designs’.</title>
+<p>Diagram 1 shows an experiment in which animals receive multiple treatments in a different order for each animal, and each animal is used as its own control. Diagram 2 shows an experiment in which different groups of animals receive different treatments, 1 treatment per group, and the response to these treatments is measured over time, with each time point included in the analysis. Diagram 3 shows an experiment in which different groups of animals receive different treatments, 1 treatment per group, and the response to these treatments is measured over time, but a summary measure is taken for each animal. Diagram 4 shows an experiment in which multiple responses are measured for each animal.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<fn-group>
+<fn fn-type="other" id="fn001">
+<p><bold>Provenance:</bold> Commissioned; externally peer reviewed.</p>
+</fn>
+</fn-group>
+<glossary>
+<title>Abbreviations</title>
+<def-list>
+<def-item><term>EDA</term>
+<def><p>Experimental Design Assistant</p></def>
+</def-item>
+<def-item><term>NC3Rs</term>
+<def><p>UK National Centre for the Replacement, Refinement and Reduction of Animals in Research</p></def>
+</def-item>
+<def-item><term>ARRIVE</term>
+<def><p>Animal research: Reporting of in vivo experiments</p></def>
+</def-item>
+</def-list>
+</glossary>
+<ref-list>
+<title>References</title>
+<ref id="pbio.2003779.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>Nature editorial</collab>. <article-title>Announcement: Reducing our irreproducibility</article-title>. <source>Nature</source>. <year>2013</year>;<volume>496</volume>(<issue>7446</issue>). Epub 2013/04/24.</mixed-citation></ref>
+<ref id="pbio.2003779.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Freedman</surname> <given-names>LP</given-names></name>, <name name-style="western"><surname>Cockburn</surname> <given-names>IM</given-names></name>, <name name-style="western"><surname>Simcoe</surname> <given-names>TS</given-names></name>. <article-title>The economics of reproducibility in preclinical research</article-title>. <source>PLoS Biol</source>. <year>2015</year>;<volume>13</volume>(<issue>6</issue>):<fpage>e1002165</fpage>. Epub 2015/06/10. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.1002165" xlink:type="simple">10.1371/journal.pbio.1002165</ext-link></comment> <object-id pub-id-type="pmid">26057340</object-id>; PubMed Central PMCID: PMC4461318.</mixed-citation></ref>
+<ref id="pbio.2003779.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goodman</surname> <given-names>SN</given-names></name>, <name name-style="western"><surname>Fanelli</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Ioannidis</surname> <given-names>JP</given-names></name>. <article-title>What does research reproducibility mean?</article-title> <source>Science translational medicine</source>. <year>2016</year>;<volume>8</volume>(<issue>341</issue>):<fpage>341ps12</fpage>. Epub 2016/06/03. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/scitranslmed.aaf5027" xlink:type="simple">10.1126/scitranslmed.aaf5027</ext-link></comment> <object-id pub-id-type="pmid">27252173</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kilkenny</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Parsons</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Kadyszewski</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Festing</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Cuthill</surname> <given-names>IC</given-names></name>, <name name-style="western"><surname>Fry</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Survey of the quality of experimental design, statistical analysis and reporting of research using animals</article-title>. <source>PLoS ONE</source>. <year>2009</year>;<volume>4</volume>(<issue>11</issue>):<fpage>e7824</fpage>. Epub 2009/12/04. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0007824" xlink:type="simple">10.1371/journal.pone.0007824</ext-link></comment> <object-id pub-id-type="pmid">19956596</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Begley</surname> <given-names>CG</given-names></name>, <name name-style="western"><surname>Ellis</surname> <given-names>LM</given-names></name>. <article-title>Drug development: Raise standards for preclinical cancer research</article-title>. <source>Nature</source>. <year>2012</year>;<volume>483</volume>(<issue>7391</issue>):<fpage>531</fpage>–<lpage>3</lpage>. Epub 2012/03/31. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/483531a" xlink:type="simple">10.1038/483531a</ext-link></comment> <object-id pub-id-type="pmid">22460880</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Begley</surname> <given-names>CG</given-names></name>, <name name-style="western"><surname>Ioannidis</surname> <given-names>JP</given-names></name>. <article-title>Reproducibility in science: improving the standard for basic and preclinical research</article-title>. <source>Circ Res</source>. <year>2015</year>;<volume>116</volume>(<issue>1</issue>):<fpage>116</fpage>–<lpage>26</lpage>. Epub 2015/01/02. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1161/CIRCRESAHA.114.303819" xlink:type="simple">10.1161/CIRCRESAHA.114.303819</ext-link></comment> <object-id pub-id-type="pmid">25552691</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref007"><label>7</label><mixed-citation publication-type="other" xlink:type="simple">NC3Rs. ARRIVE: Animal Research Reporting In Vivo Experiments 2017 [14 September 2017]. Available from: <ext-link ext-link-type="uri" xlink:href="https://www.nc3rs.org.uk/arrive-animal-research-reporting-vivo-experiments" xlink:type="simple">https://www.nc3rs.org.uk/arrive-animal-research-reporting-vivo-experiments</ext-link>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kilkenny</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Browne</surname> <given-names>WJ</given-names></name>, <name name-style="western"><surname>Cuthill</surname> <given-names>IC</given-names></name>, <name name-style="western"><surname>Emerson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name>. <article-title>Improving bioscience research reporting: the ARRIVE guidelines for reporting animal research</article-title>. <source>PLoS Biol</source>. <year>2010</year>;<volume>8</volume>(<issue>6</issue>):<fpage>e1000412</fpage>. Epub 2010/07/09. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.1000412" xlink:type="simple">10.1371/journal.pbio.1000412</ext-link></comment> <object-id pub-id-type="pmid">20613859</object-id>; PubMed Central PMCID: PMC2893951.</mixed-citation></ref>
+<ref id="pbio.2003779.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cressey</surname> <given-names>D</given-names></name>. <article-title>Surge in support for animal-research guidelines</article-title>. <source>Nature</source> [Internet]. <year>2016</year>. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.nature.com/news/surge-in-support-for-animal-research-guidelines-1.19274" xlink:type="simple">http://www.nature.com/news/surge-in-support-for-animal-research-guidelines-1.19274</ext-link>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cressey</surname> <given-names>D</given-names></name>. <article-title>Web tool aims to reduce flaws in animal studies</article-title>. <source>Nature</source> [Internet]. <year>2016</year>; <volume>531</volume>:[128 p.]. Available from: <ext-link ext-link-type="uri" xlink:href="http://www.nature.com/news/web-tool-aims-to-reduce-flaws-in-animal-studies-1.19459" xlink:type="simple">http://www.nature.com/news/web-tool-aims-to-reduce-flaws-in-animal-studies-1.19459</ext-link>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Percie du Sert</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Bamsey</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Bate</surname> <given-names>ST</given-names></name>, <name name-style="western"><surname>Berdoy</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Clark</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Cuthill</surname> <given-names>IC</given-names></name>, <etal>et al</etal>. <article-title>The Experimental Design Assistant</article-title>. <source>Nat Methods</source>. <year>2017</year>; Epub Sept 28, 2017. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.4462" xlink:type="simple">10.1038/nmeth.4462</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.2003779.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Macleod</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Lawson McLean</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kyriakopoulou</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Serghiou</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>de Wilde</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Sherratt</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>Risk of bias in reports of in vivo research: A focus for improvement</article-title>. <source>PLoS Biol</source>. <year>2015</year>;<volume>13</volume>(<issue>10</issue>):<fpage>e1002273</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pbio.1002273" xlink:type="simple">10.1371/journal.pbio.1002273</ext-link></comment> <object-id pub-id-type="pmid">26460723</object-id></mixed-citation></ref>
+<ref id="pbio.2003779.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vesterinen</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Sena</surname> <given-names>ES</given-names></name>, <name name-style="western"><surname>ffrench-Constant</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Williams</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Chandran</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Macleod</surname> <given-names>MR</given-names></name>. <article-title>Improving the translational hit of experimental treatments in multiple sclerosis</article-title>. <source>Mult Scler</source>. <year>2010</year>;<volume>16</volume>(<issue>9</issue>):<fpage>1044</fpage>–<lpage>55</lpage>. Epub 2010/08/06. 1352458510379612 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1352458510379612" xlink:type="simple">10.1177/1352458510379612</ext-link></comment> <object-id pub-id-type="pmid">20685763</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rosenthal</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Fode</surname> <given-names>KL</given-names></name>. <article-title>The effect of experimenter bias on the performance of the albino rat</article-title>. <source>Behavioral Science</source>. <year>1963</year>;<volume>8</volume>(<issue>3</issue>):<fpage>183</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bs.3830080302" xlink:type="simple">10.1002/bs.3830080302</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.2003779.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Button</surname> <given-names>KS</given-names></name>, <name name-style="western"><surname>Ioannidis</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Mokrysz</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Nosek</surname> <given-names>BA</given-names></name>, <name name-style="western"><surname>Flint</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Robinson</surname> <given-names>ES</given-names></name>, <etal>et al</etal>. <article-title>Power failure: why small sample size undermines the reliability of neuroscience</article-title>. <source>Nat Rev Neurosci</source>. <year>2013</year>;<volume>14</volume>(<issue>5</issue>):<fpage>365</fpage>–<lpage>76</lpage>. Epub 2013/04/11. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrn3475" xlink:type="simple">10.1038/nrn3475</ext-link></comment> <object-id pub-id-type="pmid">23571845</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ioannidis</surname> <given-names>JP</given-names></name>. <article-title>Why most published research findings are false</article-title>. <source>PLoS Med</source>. <year>2005</year>;<volume>2</volume>(<issue>8</issue>):<fpage>e124</fpage>. Epub 2005/08/03. 04-PLME-E-0321R2 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pmed.0020124" xlink:type="simple">10.1371/journal.pmed.0020124</ext-link></comment> <object-id pub-id-type="pmid">16060722</object-id>; PubMed Central PMCID: PMC1182327.</mixed-citation></ref>
+<ref id="pbio.2003779.ref017"><label>17</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Bate</surname> <given-names>ST</given-names></name>, <name name-style="western"><surname>Clark</surname> <given-names>RA</given-names></name>. <source>The Design and Statistical Analysis of Animal Experiments</source>: <publisher-name>Cambridge University Press</publisher-name>; <year>2014</year>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>John</surname> <given-names>LK</given-names></name>, <name name-style="western"><surname>Loewenstein</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Prelec</surname> <given-names>D</given-names></name>. <article-title>Measuring the prevalence of questionable research practices with incentives for truth telling</article-title>. <source>Psychol Sci</source>. <year>2012</year>;<volume>23</volume>(<issue>5</issue>):<fpage>524</fpage>–<lpage>32</lpage>. Epub 2012/04/18. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/0956797611430953" xlink:type="simple">10.1177/0956797611430953</ext-link></comment> <object-id pub-id-type="pmid">22508865</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McCance</surname> <given-names>I</given-names></name>. <article-title>Assessment of statistical procedures used in papers in the Australian Veterinary Journal</article-title>. <source>Aust Vet J</source>. <year>1995</year>;<volume>72</volume>(<issue>9</issue>):<fpage>322</fpage>–<lpage>8</lpage>. Epub 1995/09/01. <object-id pub-id-type="pmid">8585846</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Festing</surname> <given-names>MF</given-names></name>. <article-title>Randomized block experimental designs can increase the power and reproducibility of laboratory animal experiments</article-title>. <source>ILAR J</source>. <year>2014</year>;<volume>55</volume>(<issue>3</issue>):<fpage>472</fpage>–<lpage>6</lpage>. Epub 2014/12/30. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/ilar/ilu045" xlink:type="simple">10.1093/ilar/ilu045</ext-link></comment> <object-id pub-id-type="pmid">25541548</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shaw</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Festing</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Peers</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Furlong</surname> <given-names>L</given-names></name>. <article-title>Use of factorial designs to optimize animal experiments and reduce animal use</article-title>. <source>ILAR J</source>. <year>2002</year>;<volume>43</volume>(<issue>4</issue>):<fpage>223</fpage>–<lpage>32</lpage>. Epub 2002/10/23. <object-id pub-id-type="pmid">12391398</object-id>.</mixed-citation></ref>
+<ref id="pbio.2003779.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nieuwenhuis</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Forstmann</surname> <given-names>BU</given-names></name>, <name name-style="western"><surname>Wagenmakers</surname> <given-names>EJ</given-names></name>. <article-title>Erroneous analyses of interactions in neuroscience: a problem of significance</article-title>. <source>Nat Neurosci</source>. <year>2011</year>;<volume>14</volume>(<issue>9</issue>):<fpage>1105</fpage>–<lpage>7</lpage>. Epub 2011/09/01. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nn.2886" xlink:type="simple">10.1038/nn.2886</ext-link></comment> <object-id pub-id-type="pmid">21878926</object-id>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

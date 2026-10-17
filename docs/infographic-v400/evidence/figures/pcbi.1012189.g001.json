@@ -1,0 +1,70 @@
+{
+  "id": "pcbi.1012189.g001",
+  "paper": "pcbi.1012189",
+  "figure": {
+    "id": "pcbi.1012189.g001",
+    "label": "Fig 1",
+    "caption": "An example of a Gantt chart, a useful project management tool that was created to prepare for a research project that began fieldwork on March 15th.\nRows represent distinct tasks and columns represent the time period during which the tasks are planned; color-coding the tasks helps to quickly delineate among tasks that are scheduled before and after the field crew begins work.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1012189.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1012189.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>An example of a Gantt chart, a useful project management tool that was created to prepare for a research project that began fieldwork on March 15th.</title>\n<p>Rows represent distinct tasks and columns represent the time period during which the tasks are planned; color-coding the tasks helps to quickly delineate among tasks that are scheduled before and after the field crew begins work.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1012189.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1012189.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1012189",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012189",
+    "title": "Ten simple rules for implementing a successful field season",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Lindsey R. Perry",
+      "Rebecca L. Kelble",
+      "Valerie N. Brewer",
+      "Cara E. Christensen",
+      "Mark E. Kerstens",
+      "Terrah M. Owens",
+      "Megan A. Sampognaro",
+      "Dorothy L. Zahor",
+      "Rachel A. Zitomer",
+      "Suzanne H. Austin",
+      "Jamie M. Cornelius",
+      "Jonathan B. Dinkins",
+      "Sarah J. K. Frey",
+      "Cecelia E. Frisinger",
+      "Stephanie M. LeQuier",
+      "Carl G. Lundblad",
+      "Jamie Oskowski",
+      "Hallie R. Perlman",
+      "William J. Price",
+      "Richard Rich",
+      "Kayla A. Ruth",
+      "Vanessa M. Schroeder",
+      "Shawn B. Szabo",
+      "James W. Rivers"
+    ],
+    "year": "2024",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1012189.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1012189.g001.png",
+      "bytes": 262906,
+      "sha256": "0ac1a2fececad0db27a8e8d326220bb2a242b97f3505f3d284cdbfec77d8c754"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1012189.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1012189.g001.tif",
+      "bytes": 324808,
+      "sha256": "67b3b7fbd74012bd4701fa73ced4d05092001fd70a462513048c8608950562bc"
+    }
+  }
+}

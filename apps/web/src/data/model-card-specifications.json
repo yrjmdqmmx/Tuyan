@@ -1,0 +1,3676 @@
+{
+  "version": 1,
+  "checkedAt": "2026-10-16",
+  "scope": "Web display only; primary vendor and service documents; unresolved fields stay null.",
+  "models": [
+    {
+      "id": "C0001",
+      "model": "GPT Audio",
+      "lookupIds": [
+        "openai/gpt-audio"
+      ],
+      "input": "文本、音频",
+      "output": "文本、音频",
+      "context": "128,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-audio"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0002",
+      "model": "GPT Audio Mini",
+      "lookupIds": [
+        "openai/gpt-audio-mini"
+      ],
+      "input": "文本、音频",
+      "output": "文本、音频",
+      "context": "128,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-audio-mini"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0011",
+      "model": "GPT-3.5 Turbo Instruct",
+      "lookupIds": [
+        "openai/gpt-3.5-turbo-instruct"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "4,096",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-3.5-turbo-instruct"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0013",
+      "model": "GPT-4 Preview",
+      "lookupIds": [
+        "gpt-4-1106-preview"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-4-turbo-preview"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0025",
+      "model": "GPT-5 Pro",
+      "lookupIds": [
+        "openai/gpt-5-pro",
+        "gpt-5-pro",
+        "gpt-5-pro-2025-10-06"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "400,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-5-pro"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0028",
+      "model": "GPT-5.1 Codex Max",
+      "lookupIds": [
+        "openai/gpt-5.1-codex-max"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "400,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-5.1-codex-max"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0031",
+      "model": "GPT-5.2 Chat",
+      "lookupIds": [
+        "openai/gpt-5.2-chat"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "128,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-5.2-chat-latest"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0033",
+      "model": "GPT-5.2 Pro",
+      "lookupIds": [
+        "openai/gpt-5.2-pro",
+        "gpt-5.2-pro"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "400,000",
+      "sources": [
+        "https://developers.openai.com/api/docs/models/gpt-5.2-pro"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0068",
+      "model": "Gemini 2.5 Flash Image (Nano Banana)",
+      "lookupIds": [
+        "gemini-2.5-flash-image",
+        "google/flash-image-2.5",
+        "fal-ai/nano-banana",
+        "google/nano-banana",
+        "google:4@1",
+        "google/gemini-2.5-flash-image"
+      ],
+      "input": "文本、图像",
+      "output": "文本、图像",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-image"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 65,536；输出 32,768",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 65536,
+      "maxOutputTokens": 32768
+    },
+    {
+      "id": "C0074",
+      "model": "Gemini 3 Pro Image (Nano Banana Pro)",
+      "lookupIds": [
+        "gemini-3-pro-image",
+        "google/gemini-3-pro-image",
+        "fal-ai/nano-banana-pro",
+        "google/nano-banana-pro",
+        "google:4@2"
+      ],
+      "input": "文本、图像",
+      "output": "文本、图像",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 65,536；输出 32,768",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 65536,
+      "maxOutputTokens": 32768
+    },
+    {
+      "id": "C0076",
+      "model": "Gemini 3.1 Flash Image (Nano Banana 2)",
+      "lookupIds": [
+        "gemini-3.1-flash-image",
+        "google/flash-image-3.1",
+        "fal-ai/nano-banana-2",
+        "google/nano-banana-2",
+        "google:4@3",
+        "google/gemini-3.1-flash-image"
+      ],
+      "input": "文本、图像、视频、文件（PDF）",
+      "output": "文本、图像",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 131,072；输出 32,768",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 32768
+    },
+    {
+      "id": "C0079",
+      "model": "Gemini 3.1 Flash Lite Image (Nano Banana 2 Lite)",
+      "lookupIds": [
+        "gemini-3.1-flash-lite-image",
+        "google/flash-image-3.1-lite",
+        "google/nano-banana-2-lite",
+        "google:nano-banana@2-lite",
+        "google/gemini-3.1-flash-lite-image"
+      ],
+      "input": "文本、图像、视频、文件（PDF）",
+      "output": "文本、图像",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 65,536；输出 4,096",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 65536,
+      "maxOutputTokens": 4096
+    },
+    {
+      "id": "C0104",
+      "model": "Nano Banana 2.1",
+      "lookupIds": [
+        "gemini-nano-banana-2.1",
+        "google/nano-banana-2.1",
+        "google:nano-banana@2.1",
+        "google/gemini-nano-banana-2.1"
+      ],
+      "input": "文本、图像、视频、文件（PDF）",
+      "output": "文本、图像",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 131,072；输出 32,768",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 32768
+    },
+    {
+      "id": "C0080",
+      "model": "Gemini 3.1 Flash Lite Preview",
+      "lookupIds": [
+        "google/gemini-3.1-flash-lite-preview"
+      ],
+      "input": "文本、图像、视频、音频、文件（PDF）",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-preview"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 1,048,576；输出 65,536",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 65536
+    },
+    {
+      "id": "C0083",
+      "model": "Gemini 3.1 Pro Preview Custom Tools",
+      "lookupIds": [
+        "google/gemini-3.1-pro-preview-customtools"
+      ],
+      "input": "文本、图像、视频、音频、文件（PDF）",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 1,048,576；输出 65,536",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 65536
+    },
+    {
+      "id": "C0102",
+      "model": "Lyria 3 Clip Preview",
+      "lookupIds": [
+        "google/lyria-3-clip-preview"
+      ],
+      "input": "文本、图像",
+      "output": "文本、音频",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/lyria-3-clip-preview"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 131,072",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 131072
+    },
+    {
+      "id": "C0103",
+      "model": "Lyria 3 Pro Preview",
+      "lookupIds": [
+        "google/lyria-3-pro-preview"
+      ],
+      "input": "文本、图像",
+      "output": "文本、音频",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/lyria-3-pro-preview"
+      ],
+      "note": "官方仅列输入/输出上限；不将输入上限等同总上下文。 输入 131,072",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "maxInputTokens": 131072
+    },
+    {
+      "id": "C0234",
+      "model": "GLM 4 Flash",
+      "lookupIds": [
+        "glm-4-flash-250414"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0235",
+      "model": "GLM 4 flashx",
+      "lookupIds": [
+        "glm-4-flashx-250414"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0236",
+      "model": "GLM 4 long",
+      "lookupIds": [
+        "glm-4-long"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4-long"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0237",
+      "model": "GLM 4.1v Thinking Flash",
+      "lookupIds": [
+        "glm-4.1v-thinking-flash"
+      ],
+      "input": "文本、图像、视频、文件",
+      "output": "文本",
+      "context": "64K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.1v-thinking-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+      ],
+      "note": "官方总览的上下文长度列明确列出此精确型号；不是最大输出。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0238",
+      "model": "GLM 4.1v Thinking flashx",
+      "lookupIds": [
+        "glm-4.1v-thinking-flashx"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "64K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.1v-thinking"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0241",
+      "model": "GLM 4.5 airx",
+      "lookupIds": [
+        "glm-4.5-airx"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.5"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0242",
+      "model": "GLM 4.5 Flash",
+      "lookupIds": [
+        "glm-4.5-flash"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.5-flash"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0246",
+      "model": "GLM 4.6v Flash",
+      "lookupIds": [
+        "glm-4.6v-flash"
+      ],
+      "input": "文本、图像、视频、文件",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4.6v-flash"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0247",
+      "model": "GLM 4.6v flashx",
+      "lookupIds": [
+        "glm-4.6v-flashx"
+      ],
+      "input": "文本、图像、视频、文件",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-4.6v"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0250",
+      "model": "GLM 4.7 flashx",
+      "lookupIds": [
+        "glm-4.7-flashx"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "200K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/text/glm-4.7"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0251",
+      "model": "GLM 4v Flash",
+      "lookupIds": [
+        "glm-4v-flash"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "16K",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash",
+        "https://docs.bigmodel.cn/cn/guide/start/model-overview"
+      ],
+      "note": "官方总览的上下文长度列明确列出此精确型号；不是最大输出。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0259",
+      "model": "GLM 5.3 FlashX",
+      "lookupIds": [
+        "glm-5.3-flashx",
+        "ZHIPU/GLM-5.3-FlashX",
+        "z-ai/glm-5.3-flashx"
+      ],
+      "input": "文本、图像、视频、文件",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0269",
+      "model": "Kimi K2.7 Code Highspeed",
+      "lookupIds": [
+        "kimi-k2.7-code-highspeed",
+        "kimi/kimi-k2.7-code-highspeed"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://www.kimi.com/code/docs/en/kimi-code/models"
+      ],
+      "note": "原厂 Kimi Code 的 HighSpeed 规格；聚合渠道 ID 与原厂 kimi-for-coding-highspeed 不同，未验证调用。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0270",
+      "model": "Kimi K2.8 Preview",
+      "lookupIds": [
+        "kimi-k2.8-preview"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1,048,576",
+      "sources": [
+        "https://www.kimi.com/code/docs/en/kimi-code/models"
+      ],
+      "note": "原厂 Kimi Code 对应 kimi-for-coding；保留渠道原调用 ID。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0507",
+      "model": "Aion 2.0",
+      "lookupIds": [
+        "aion-labs/aion-2.0"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0508",
+      "model": "Aion 3.0",
+      "lookupIds": [
+        "aion-labs/aion-3.0"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0509",
+      "model": "Aion 3.0 Mini",
+      "lookupIds": [
+        "aion-labs/aion-3.0-mini"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0510",
+      "model": "Aion 3.5",
+      "lookupIds": [
+        "aion-labs/aion-3.5"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0511",
+      "model": "Aion 3.5 Mini",
+      "lookupIds": [
+        "aion-labs/aion-3.5-mini"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0512",
+      "model": "Aion RP 1.0 (8B)",
+      "lookupIds": [
+        "aion-labs/aion-rp-llama-3.1-8b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "32,768",
+      "sources": [
+        "https://www.aionlabs.ai/docs/models/",
+        "https://api.aionlabs.ai/v1/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0499",
+      "model": "Mistral Nemo",
+      "lookupIds": [
+        "mistralai/mistral-nemo"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://huggingface.co/mistralai/Mistral-Nemo-Instruct-2407"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0506",
+      "model": "Voxtral Small 24B",
+      "lookupIds": [
+        "mistralai/voxtral-small-24b-2507"
+      ],
+      "input": "文本、音频",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://huggingface.co/mistralai/Voxtral-Small-24B-2507"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0558",
+      "model": "LFM2.5 24B A2B",
+      "lookupIds": [
+        "liquid/lfm-2.5-24b-a2b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072",
+      "sources": [
+        "https://huggingface.co/LiquidAI/LFM2.5-24B-A2B"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0563",
+      "model": "Moondream 3 Preview",
+      "lookupIds": [
+        "moondream/moondream3-preview"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://huggingface.co/moondream/moondream3-preview"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0580",
+      "model": "Laguna S 2.1",
+      "lookupIds": [
+        "poolside/laguna-s-2.1",
+        "poolside/laguna-s-2.1:free"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1,048,576",
+      "sources": [
+        "https://huggingface.co/poolside/Laguna-S-2.1"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0581",
+      "model": "Laguna XS 2.1",
+      "lookupIds": [
+        "poolside/laguna-xs-2.1",
+        "poolside/laguna-xs-2.1:free"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://huggingface.co/poolside/Laguna-XS-2.1"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0582",
+      "model": "Ternary Bonsai 2 27B",
+      "lookupIds": [
+        "prism-ml/ternary-bonsai-2-27b"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0482",
+      "model": "Nemotron 3.5 Content Safety",
+      "lookupIds": [
+        "nvidia/nemotron-3.5-content-safety",
+        "nvidia/nemotron-3.5-content-safety:free"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://huggingface.co/nvidia/Nemotron-3.5-Content-Safety"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0572",
+      "model": "Perceptron Mk1",
+      "lookupIds": [
+        "perceptron/perceptron-mk1"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本、结构化空间标记",
+      "context": "32K",
+      "sources": [
+        "https://www.perceptron.inc/blog/introducing-perceptron-mk1"
+      ],
+      "note": "空间标记包括点/框/多边形/轨迹等，不据此声称生成图像或视频。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0573",
+      "model": "Perceptron Mk1.5",
+      "lookupIds": [
+        "perceptron/perceptron-mk1.5"
+      ],
+      "input": "文本、图像、音频、视频",
+      "output": "文本、结构化空间标记",
+      "context": "32K",
+      "sources": [
+        "https://www.perceptron.inc/blog/introducing-perceptron-mk1-5"
+      ],
+      "note": "空间标记包括点/框/多边形/轨迹等，不据此声称生成图像或视频。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0120",
+      "model": "Qwen Flash",
+      "lookupIds": [
+        "qwen-flash",
+        "qwen-flash-2025-07-28"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "表格对快照作分组；历史快照规格需以对应版本记录为准。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0130",
+      "model": "Qwen long",
+      "lookupIds": [
+        "qwen-long"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "10M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "表格对快照作分组；历史快照规格需以对应版本记录为准。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0131",
+      "model": "Qwen max",
+      "lookupIds": [
+        "qwen-max"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "表格对快照作分组；历史快照规格需以对应版本记录为准。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0132",
+      "model": "Qwen plus",
+      "lookupIds": [
+        "qwen-plus",
+        "qwen/qwen-plus",
+        "qwen-plus-2025-01-25",
+        "qwen-plus-2025-04-28",
+        "qwen-plus-2025-07-14",
+        "qwen-plus-2025-12-01",
+        "qwen-plus-latest"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "表格对快照作分组；历史快照规格需以对应版本记录为准。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0153",
+      "model": "Qwen3 Coder Flash",
+      "lookupIds": [
+        "qwen3-coder-flash",
+        "qwen/qwen3-coder-flash",
+        "qwen3-coder-flash-2025-07-28"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "表格对快照作分组；历史快照规格需以对应版本记录为准。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0175",
+      "model": "Qwen3.5 Flash",
+      "lookupIds": [
+        "qwen3.5-flash",
+        "qwen/qwen3.5-flash-02-23",
+        "qwen3.5-flash-2026-02-23"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "按官方模型表核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0178",
+      "model": "Qwen3.5 Plus",
+      "lookupIds": [
+        "qwen3.5-plus",
+        "qwen3.5-plus-2026-02-15",
+        "qwen/qwen3.5-plus-02-15",
+        "qwen3.5-plus-2026-04-20",
+        "qwen/qwen3.5-plus-20260420"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "按官方模型表核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0181",
+      "model": "Qwen3.6 Flash",
+      "lookupIds": [
+        "qwen3.6-flash",
+        "qwen/qwen3.6-flash",
+        "qwen3.6-flash-2026-04-16"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "按官方模型表核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0184",
+      "model": "Qwen3.7 Flash",
+      "lookupIds": [
+        "qwen3.7-flash",
+        "qwen/qwen3.7-flash",
+        "qwen3.7-flash-2026-07-15"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "按官方模型表核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0186",
+      "model": "Qwen3.7 max Preview",
+      "lookupIds": [
+        "qwen3.7-max-preview"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://www.qianwenai.com/models/qwen3.7-max-preview",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "精确 Preview 产品页明确仅开放纯文本能力，不继承稳定版视觉模态。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0190",
+      "model": "Qwen3.8 Flash",
+      "lookupIds": [
+        "qwen3.8-flash",
+        "Qwen/Qwen3.8-Flash",
+        "qwen/qwen3.8-flash"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/vision-model",
+        "https://help.aliyun.com/zh/model-studio/text-generation-model"
+      ],
+      "note": "按官方模型表核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0665",
+      "model": "ERNIE 4.5 Turbo",
+      "lookupIds": [
+        "ernie-4.5-turbo-20260402"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0666",
+      "model": "ERNIE 4.5 Turbo 128K",
+      "lookupIds": [
+        "ernie-4.5-turbo-128k"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0667",
+      "model": "ERNIE 4.5 Turbo 32K",
+      "lookupIds": [
+        "ernie-4.5-turbo-32k"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0668",
+      "model": "ERNIE 4.5 Turbo VL",
+      "lookupIds": [
+        "ernie-4.5-turbo-vl"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0669",
+      "model": "ERNIE 4.5 Turbo VL 32K",
+      "lookupIds": [
+        "ernie-4.5-turbo-vl-32k"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0670",
+      "model": "ERNIE 5.0",
+      "lookupIds": [
+        "ernie-5.0",
+        "ernie-5.0-thinking-latest"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0671",
+      "model": "ERNIE 5.0 Thinking Exp",
+      "lookupIds": [
+        "ernie-5.0-thinking-exp"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+        "https://cloud.baidu.com/doc/qianfan-docs/s/Jm8r1826a"
+      ],
+      "note": "精确 Exp ID 同时列在文本与视觉理解服务表；不扩展为音视频 API。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0673",
+      "model": "ERNIE 5.1",
+      "lookupIds": [
+        "ernie-5.1"
+      ],
+      "input": null,
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "以 API 接入列表为准，不把全模态训练描述直接等同音视频 API 支持。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0193",
+      "model": "Qwen3.8 Omni Flash",
+      "lookupIds": [
+        "qwen/qwen3.8-omni-flash"
+      ],
+      "input": "文本、图像、音频、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-omni-flash"
+      ],
+      "note": "官方明确仅输出文本；不沿用旧 Omni 的音频输出。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0159",
+      "model": "Qwen3 omni Flash",
+      "lookupIds": [
+        "qwen3-omni-flash",
+        "qwen3-omni-flash-2025-09-15",
+        "qwen3-omni-flash-2025-12-01"
+      ],
+      "input": "文本、图像、音频、视频",
+      "output": "文本、音频",
+      "context": "65,536",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-omni-flash",
+        "https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models"
+      ],
+      "note": "通用 ID 明确 65,536；当前文档未核定目录中的两个历史日期快照窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "variantOverrides": {
+        "qwen3-omni-flash-2025-09-15": {
+          "context": null,
+          "status": "partial",
+          "note": "历史日期快照不继承当前通用 ID 的窗口。"
+        },
+        "qwen3-omni-flash-2025-12-01": {
+          "context": null,
+          "status": "partial",
+          "note": "历史日期快照不继承当前通用 ID 的窗口。"
+        }
+      }
+    },
+    {
+      "id": "C0133",
+      "model": "Qwen2.5 14b Instruct",
+      "lookupIds": [
+        "xqwen14bchat"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072（需 YaRN）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-14B-Instruct"
+      ],
+      "note": "官方说明默认 32,768，完整长上下文需 YaRN 配置。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0136",
+      "model": "Qwen2.5 72B Instruct 128K",
+      "lookupIds": [
+        "Qwen/Qwen2.5-72B-Instruct-128K"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072（需 YaRN）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct"
+      ],
+      "note": "官方说明默认 32,768，完整长上下文需 YaRN 配置。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0137",
+      "model": "Qwen2.5 7B Instruct",
+      "lookupIds": [
+        "Pro/Qwen/Qwen2.5-7B-Instruct",
+        "Qwen/Qwen2.5-7B-Instruct",
+        "qwen/qwen-2.5-7b-instruct"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "131,072（需 YaRN）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct"
+      ],
+      "note": "官方说明默认 32,768，完整长上下文需 YaRN 配置。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0139",
+      "model": "Qwen2.5 VL 3B Instruct",
+      "lookupIds": [
+        "runware:152@1"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "32,768（默认）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct"
+      ],
+      "note": "官方文档另给 YaRN 扩展配置；默认与扩展不混用。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0140",
+      "model": "Qwen2.5 VL 72B Instruct",
+      "lookupIds": [
+        "qwen/qwen2.5-vl-72b-instruct"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "32,768（默认）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-VL-72B-Instruct"
+      ],
+      "note": "官方文档另给 YaRN 扩展配置；默认与扩展不混用。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0141",
+      "model": "Qwen2.5 VL 7B Instruct",
+      "lookupIds": [
+        "runware:152@2"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "32,768（默认）",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct"
+      ],
+      "note": "官方文档另给 YaRN 扩展配置；默认与扩展不混用。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0325",
+      "model": "MiniMax M2.1 highspeed",
+      "lookupIds": [
+        "MiniMax-M2.1-highspeed"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "204,800",
+      "sources": [
+        "https://platform.minimax.cn/docs/api-reference/text-anthropic-api"
+      ],
+      "note": "官方兼容 API 表明确列出 highspeed 型号；M2 系列仅支持文本。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0327",
+      "model": "MiniMax M2.5 highspeed",
+      "lookupIds": [
+        "MiniMax-M2.5-highspeed"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "204,800",
+      "sources": [
+        "https://platform.minimax.cn/docs/api-reference/text-anthropic-api"
+      ],
+      "note": "官方兼容 API 表明确列出 highspeed 型号；M2 系列仅支持文本。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0329",
+      "model": "MiniMax M2.7 highspeed",
+      "lookupIds": [
+        "MiniMax-M2.7-highspeed",
+        "minimax:m2.7@highspeed"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "204,800",
+      "sources": [
+        "https://platform.minimax.cn/docs/api-reference/text-anthropic-api"
+      ],
+      "note": "官方兼容 API 表明确列出 highspeed 型号；M2 系列仅支持文本。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0530",
+      "model": "Command R",
+      "lookupIds": [
+        "cohere/command-r-08-2024"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.cohere.com/docs/models"
+      ],
+      "note": "核对 08-2024 / 12-2024 的准确型号，不采用旧别名对应的 03/04-2024。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0688",
+      "model": "Command R+",
+      "lookupIds": [
+        "cohere/command-r-plus-08-2024"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.cohere.com/docs/models"
+      ],
+      "note": "核对 08-2024 / 12-2024 的准确型号，不采用旧别名对应的 03/04-2024。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0531",
+      "model": "Command R7B",
+      "lookupIds": [
+        "cohere/command-r7b-12-2024"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.cohere.com/docs/models"
+      ],
+      "note": "核对 08-2024 / 12-2024 的准确型号，不采用旧别名对应的 03/04-2024。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0317",
+      "model": "MiMo V2.6 Pro Ultraspeed",
+      "lookupIds": [
+        "mimo-v2.6-ultraspeed",
+        "mimo-v2.6-pro-ultraspeed",
+        "xiaomi/mimo-v2.6-pro-ultraspeed"
+      ],
+      "input": "文本、图像、音频、视频",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro-ultraspeed"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0488",
+      "model": "Codestral",
+      "lookupIds": [
+        "codestral-2508",
+        "codestral-latest",
+        "mistralai/codestral-2508"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://docs.mistral.ai/models/codestral-25-08"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0495",
+      "model": "Mistral Large 4",
+      "lookupIds": [
+        "mistral-large-4",
+        "mistralai/mistral-large-4-0"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://docs.mistral.ai/models/mistral-large-4-0"
+      ],
+      "note": "已消除 Preview 文字差异：原厂文档的 Public Preview 模型 ID 就是 mistral-large-4；并非另一个稳定版。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0565",
+      "model": "Morph V3 Fast",
+      "lookupIds": [
+        "morph/morph-v3-fast"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262K",
+      "sources": [
+        "https://www.morphllm.com/models",
+        "https://docs.morphllm.com/quickstart"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0566",
+      "model": "Morph V3 Large",
+      "lookupIds": [
+        "morph/morph-v3-large"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262K",
+      "sources": [
+        "https://www.morphllm.com/models",
+        "https://docs.morphllm.com/quickstart"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0090",
+      "model": "Gemma 2 27B",
+      "lookupIds": [
+        "google/gemma-2-27b-it"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemma/docs/core/model_card_2"
+      ],
+      "note": "官方模型卡确认文本输入输出，当前正文未列上下文；不拿 Gemma 4 横幅规格代替 Gemma 2。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0331",
+      "model": "Hunyuan A13B Instruct",
+      "lookupIds": [
+        "tencent/Hunyuan-A13B-Instruct",
+        "tencent/hunyuan-a13b-instruct"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262,144",
+      "sources": [
+        "https://huggingface.co/tencent/Hunyuan-A13B-Instruct"
+      ],
+      "note": "原厂模型卡明确最大 262,144，默认部署为 32K，实际渠道可能更低。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0341",
+      "model": "Hy4 Preview",
+      "lookupIds": [
+        "tencent/Hy4-preview",
+        "hy4-preview",
+        "tencent/hy4-preview"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://huggingface.co/tencent/Hy4-preview"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0455",
+      "model": "Llama 3 8B Lunaris",
+      "lookupIds": [
+        "sao10k/l3-lunaris-8b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/Sao10K/L3-8B-Lunaris-v1"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0458",
+      "model": "Llama 3.1 Euryale 70B v2.2",
+      "lookupIds": [
+        "sao10k/l3.1-euryale-70b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/Sao10K/L3.1-70B-Euryale-v2.2"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0463",
+      "model": "Llama 3.3 Euryale 70B",
+      "lookupIds": [
+        "sao10k/l3.3-euryale-70b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/Sao10K/L3.3-70B-Euryale-v2.3"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0569",
+      "model": "Hermes 3 405B Instruct",
+      "lookupIds": [
+        "nousresearch/hermes-3-llama-3.1-405b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/NousResearch/Hermes-3-Llama-3.1-405B"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0629",
+      "model": "Cydonia 24B V4.1",
+      "lookupIds": [
+        "thedrummer/cydonia-24b-v4.1"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/thedrummer/cydonia-24b-v4.1"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0635",
+      "model": "Magnum v4 72B",
+      "lookupIds": [
+        "anthracite-org/magnum-v4-72b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/anthracite-org/magnum-v4-72b"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0637",
+      "model": "MythoMax 13B",
+      "lookupIds": [
+        "gryphe/mythomax-l2-13b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/Gryphe/MythoMax-L2-13b"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0645",
+      "model": "ReMM SLERP 13B",
+      "lookupIds": [
+        "undi95/remm-slerp-l2-13b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/Undi95/ReMM-SLERP-L2-13B"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0648",
+      "model": "Skyfall 36B V2",
+      "lookupIds": [
+        "thedrummer/skyfall-36b-v2"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/TheDrummer/Skyfall-36B-v2"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0652",
+      "model": "Uncensored",
+      "lookupIds": [
+        "cognitivecomputations/dolphin-mistral-24b-venice-edition"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/cognitivecomputations/Dolphin-Mistral-24B-Venice-Edition"
+      ],
+      "note": "作者模型卡未明确声明最大上下文；不继承基座模型窗口，不将训练长度或部署命令当作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0300",
+      "model": "UI TARS 7B",
+      "lookupIds": [
+        "bytedance/ui-tars-1.5-7b"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/ByteDance-Seed/UI-TARS-1.5-7B"
+      ],
+      "note": "已核对原作者模型卡；未找到明确的最大上下文声明。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0564",
+      "model": "Moondream 3.1",
+      "lookupIds": [
+        "moondream/moondream3.1-9b-a2b"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/moondream/moondream3.1-9B-A2B"
+      ],
+      "note": "已核对原作者模型卡；未找到明确的最大上下文声明。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0588",
+      "model": "Reka Edge",
+      "lookupIds": [
+        "rekaai/reka-edge"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/RekaAI/reka-edge-2603"
+      ],
+      "note": "已核对原作者模型卡；未找到明确的最大上下文声明。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0567",
+      "model": "Nex N2.5 Mini",
+      "lookupIds": [
+        "nex-agi/nex-n2.5-mini"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/nex-agi/Nex-N2.5-mini"
+      ],
+      "note": "官方说明支持视觉反馈；262,144 仅见于部署命令，未声明为模型最大窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0568",
+      "model": "Nex N2.5 Pro",
+      "lookupIds": [
+        "nex-agi/nex-n2.5-pro"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/nex-agi/Nex-N2.5-Pro"
+      ],
+      "note": "官方说明支持视觉反馈；262,144 仅见于部署命令，未声明为模型最大窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0334",
+      "model": "Hy MT2 1.8B",
+      "lookupIds": [
+        "tencent/hy-mt2-1.8b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/tencent/Hy-MT2-1.8B"
+      ],
+      "note": "官方翻译模型卡未单列最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0335",
+      "model": "Hy MT2 30B A3B",
+      "lookupIds": [
+        "tencent/hy-mt2-30b-a3b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/tencent/Hy-MT2-30B-A3B"
+      ],
+      "note": "官方翻译模型卡未单列最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0336",
+      "model": "Hy MT2 7B",
+      "lookupIds": [
+        "tencent/hy-mt2-7b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/tencent/Hy-MT2-7B"
+      ],
+      "note": "官方翻译模型卡未单列最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0058",
+      "model": "GPT-OSS safeguard 20b",
+      "lookupIds": [
+        "openai/gpt-oss-safeguard-20b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/openai/gpt-oss-safeguard-20b"
+      ],
+      "note": "安全分类输出；模型卡未单列上下文，不自动继承 GPT-OSS 基座窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0599",
+      "model": "Fugu Max",
+      "lookupIds": [
+        "sakana/fugu-max"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://console.sakana.ai/models"
+      ],
+      "note": "官方 API 页确认文本请求/响应，未明确最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0600",
+      "model": "Fugu Ultra",
+      "lookupIds": [
+        "sakana/fugu-ultra"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://console.sakana.ai/models"
+      ],
+      "note": "官方 API 页确认文本请求/响应，未明确最大上下文。 原厂 fugu-ultra 当前指向 fugu-ultra-v2.0，但聚合渠道的映射仍需独立确认。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0601",
+      "model": "Fugu Ultra v2",
+      "lookupIds": [
+        "sakana/fugu-ultra-v2"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://console.sakana.ai/models"
+      ],
+      "note": "官方 API 页确认文本请求/响应，未明确最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0602",
+      "model": "Sakana Namazu",
+      "lookupIds": [
+        "sakana/sakana-namazu"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://console.sakana.ai/models"
+      ],
+      "note": "官方 API 页确认文本请求/响应，未明确最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0679",
+      "model": "LongCat 2.5 Preview",
+      "lookupIds": [
+        "LongCat-2.5-Preview"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1,048,576",
+      "sources": [
+        "https://longcat.ai/platform/docs/zh/api/model-params",
+        "https://longcat.ai/platform/docs/zh/image-video-understanding"
+      ],
+      "note": "参数参考明确上下文包括输入与输出；不混用最大输出字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0302",
+      "model": "Grok 4.20 Multi agent",
+      "lookupIds": [
+        "grok-4.20-multi-agent",
+        "x-ai/grok-4.20-multi-agent",
+        "grok-4.20-multi-agent-0309"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "1,000,000",
+      "sources": [
+        "https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309"
+      ],
+      "note": "官方别名表将无日期 ID 指向 0309。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0625",
+      "model": "Palmyra X5",
+      "lookupIds": [
+        "writer/palmyra-x5"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://dev.writer.com/home/models",
+        "https://dev.writer.com/api-guides/changelog"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0646",
+      "model": "Schematron V2 Small",
+      "lookupIds": [
+        "inference-net/schematron-v2-small"
+      ],
+      "input": "文本（HTML）",
+      "output": "文本（JSON）",
+      "context": "128K",
+      "sources": [
+        "https://docs.inference.net/workhorse-models/schematron"
+      ],
+      "note": "官方澄清 V2 为闭源 API，原 OpenRouter HF 地址并非可访问的 V2 权重。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0647",
+      "model": "Schematron V2 Turbo",
+      "lookupIds": [
+        "inference-net/schematron-v2-turbo"
+      ],
+      "input": "文本（HTML）",
+      "output": "文本（JSON）",
+      "context": "128K",
+      "sources": [
+        "https://docs.inference.net/workhorse-models/schematron"
+      ],
+      "note": "官方澄清 V2 为闭源 API，原 OpenRouter HF 地址并非可访问的 V2 权重。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0590",
+      "model": "Relace Apply 3",
+      "lookupIds": [
+        "relace/relace-apply-3"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://docs.relace.ai/api-reference/instant-apply/apply"
+      ],
+      "note": "官方 Apply 页分别列最大输入/输出 128K；未单列总窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0591",
+      "model": "Relace Search",
+      "lookupIds": [
+        "relace/relace-search"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://docs.relace.ai/api-reference/fast-agentic-search/search"
+      ],
+      "note": "官方 Search API 未声明最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0610",
+      "model": "Deep Research U3",
+      "lookupIds": [
+        "unifuncs-u3"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://unifuncs.com/api/deepresearch",
+        "https://unifuncs.com/pricing"
+      ],
+      "note": "新官网精确列出 U3/U3 Pro/S3/S3 Pro 服务与文本请求、报告输出；旧 docs 目录滞后。调研累计 token 预算不是上下文窗口。渠道调用 ID 保持不变。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0611",
+      "model": "Deep Research U3 Pro",
+      "lookupIds": [
+        "unifuncs-u3-pro"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://unifuncs.com/api/deepresearch",
+        "https://unifuncs.com/pricing"
+      ],
+      "note": "新官网精确列出 U3/U3 Pro/S3/S3 Pro 服务与文本请求、报告输出；旧 docs 目录滞后。调研累计 token 预算不是上下文窗口。渠道调用 ID 保持不变。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0612",
+      "model": "Deep Search S3",
+      "lookupIds": [
+        "unifuncs-s3"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://unifuncs.com/api/deepsearch",
+        "https://unifuncs.com/pricing"
+      ],
+      "note": "新官网精确列出 U3/U3 Pro/S3/S3 Pro 服务与文本请求、报告输出；旧 docs 目录滞后。调研累计 token 预算不是上下文窗口。渠道调用 ID 保持不变。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0613",
+      "model": "Deep Search S3 Pro",
+      "lookupIds": [
+        "unifuncs-s3-pro"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://unifuncs.com/api/deepsearch",
+        "https://unifuncs.com/pricing"
+      ],
+      "note": "新官网精确列出 U3/U3 Pro/S3/S3 Pro 服务与文本请求、报告输出；旧 docs 目录滞后。调研累计 token 预算不是上下文窗口。渠道调用 ID 保持不变。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0526",
+      "model": "CogEvol Base",
+      "lookupIds": [
+        "cogevol-base"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://huggingface.co/CogEvol/CogEvol-4B",
+        "https://github.com/CogEvol/CogEvol-4B"
+      ],
+      "note": "作者公开 4B 模型卡没有确认 Base/Interactive/Slide 渠道产品与该权重的对应关系。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0527",
+      "model": "CogEvol Interactive",
+      "lookupIds": [
+        "cogevol-interactive-0828"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://huggingface.co/CogEvol/CogEvol-4B",
+        "https://github.com/CogEvol/CogEvol-4B"
+      ],
+      "note": "作者公开 4B 模型卡没有确认 Base/Interactive/Slide 渠道产品与该权重的对应关系。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0528",
+      "model": "CogEvol Slide",
+      "lookupIds": [
+        "cogevol-slide-0828"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://huggingface.co/CogEvol/CogEvol-4B",
+        "https://github.com/CogEvol/CogEvol-4B"
+      ],
+      "note": "作者公开 4B 模型卡没有确认 Base/Interactive/Slide 渠道产品与该权重的对应关系。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0233",
+      "model": "GLM 4 9B",
+      "lookupIds": [
+        "THUDM/GLM-4-9B-0414"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K（需 YaRN；原生 32K）",
+      "sources": [
+        "https://github.com/zai-org/GLM-4/blob/main/README.md"
+      ],
+      "note": "原厂总仓库 Model List 精确列出 0414 各型号 32K→128K，并明确输入+输出超过 32K 时启用 YaRN。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0263",
+      "model": "GLM Z1 9B",
+      "lookupIds": [
+        "THUDM/GLM-Z1-9B-0414"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K（需 YaRN；原生 32K）",
+      "sources": [
+        "https://github.com/zai-org/GLM-4/blob/main/README.md"
+      ],
+      "note": "原厂总仓库 Model List 精确列出 0414 各型号 32K→128K，并明确输入+输出超过 32K 时启用 YaRN。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0627",
+      "model": "InternVL3 38B",
+      "lookupIds": [
+        "internvl3-38b"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/OpenGVLab/InternVL3-38B"
+      ],
+      "note": "模型卡未明确公布最大上下文；代码示例、训练长度不作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "providerOverrides": {
+        "qianfan": {
+          "context": "32K",
+          "contextSourceScope": "service",
+          "contextSources": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+          ],
+          "status": "verified",
+          "note": "千帆列表精确 ID 的渠道上下文，不推及其他部署。"
+        }
+      }
+    },
+    {
+      "id": "C0634",
+      "model": "LLaVA 1.6 Mistral 7B",
+      "lookupIds": [
+        "runware:150@2"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/llava-hf/llava-v1.6-mistral-7b-hf"
+      ],
+      "note": "模型卡未明确公布最大上下文；代码示例、训练长度不作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0211",
+      "model": "DeepSeek OCR",
+      "lookupIds": [
+        "deepseek-ocr"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/deepseek-ai/DeepSeek-OCR"
+      ],
+      "note": "模型卡未明确公布最大上下文；代码示例、训练长度不作上限。",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "providerOverrides": {
+        "qianfan": {
+          "context": "8K",
+          "contextSourceScope": "service",
+          "contextSources": [
+            "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+          ],
+          "status": "verified",
+          "note": "千帆列表精确 ID 的渠道上下文，不推及其他部署。"
+        }
+      }
+    },
+    {
+      "id": "C0466",
+      "model": "Llama Guard 4 12B",
+      "lookupIds": [
+        "meta-llama/llama-guard-4-12b"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/meta-llama/Llama-Guard-4-12B"
+      ],
+      "note": "公开模型卡确认安全分类模态，但未给出最大上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0284",
+      "model": "Seed 2.0 Code Preview",
+      "lookupIds": [
+        "doubao-seed-2-0-code-preview-260215"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "官方文本生成、视觉理解表交叉核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0285",
+      "model": "Seed 2.0 Lite",
+      "lookupIds": [
+        "doubao-seed-2-0-lite-260215",
+        "doubao-seed-2-0-lite-260428",
+        "seed-2.0-lite",
+        "bytedance-seed/seed-2.0-lite"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "官方文本生成、视觉理解表交叉核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0286",
+      "model": "Seed 2.0 Mini",
+      "lookupIds": [
+        "doubao-seed-2-0-mini-260215",
+        "doubao-seed-2-0-mini-260428",
+        "seed-2.0-mini",
+        "bytedance-seed/seed-2.0-mini"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "官方文本生成、视觉理解表交叉核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0287",
+      "model": "Seed 2.0 Pro",
+      "lookupIds": [
+        "doubao-seed-2-0-pro-260215",
+        "seed-2.0-pro"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "官方文本生成、视觉理解表交叉核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0289",
+      "model": "Seed 2.1 Turbo",
+      "lookupIds": [
+        "seed-2.1-turbo",
+        "bytedance-seed/seed-2-1-turbo",
+        "doubao-seed-2-1-turbo-260628"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "官方文本生成、视觉理解表交叉核对。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0290",
+      "model": "Seed Evolving",
+      "lookupIds": [
+        "doubao-seed-evolving",
+        "seed-evolving"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "1024K",
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0288",
+      "model": "Seed 2.1 Pro",
+      "lookupIds": [
+        "doubao-seed-2-1-pro-260628",
+        "doubao-seed-2-1-pro-260915",
+        "seed-2.1-pro"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "260628 为 256K；260915 为 1024K；无日期渠道别名未确认具体快照。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "variantOverrides": {
+        "doubao-seed-2-1-pro-260628": {
+          "context": "256K",
+          "status": "verified"
+        },
+        "doubao-seed-2-1-pro-260915": {
+          "context": "1024K",
+          "status": "verified"
+        }
+      }
+    },
+    {
+      "id": "C0282",
+      "model": "Seed 1.8",
+      "lookupIds": [
+        "doubao-seed-1-8-251228"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/bytedance-seed-1-8?lang=zh"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0682",
+      "model": "Spark X2",
+      "lookupIds": [
+        "xsparkx2"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "192k",
+      "sources": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "note": "来自科大讯飞官方模型目录的明确模态及推理上下文长度字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0683",
+      "model": "Spark X2 Flash",
+      "lookupIds": [
+        "xsparkx2flash"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "256k",
+      "sources": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "note": "来自科大讯飞官方模型目录的明确模态及推理上下文长度字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0684",
+      "model": "Spark X2.5",
+      "lookupIds": [
+        "spark-x2.5"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "256k",
+      "sources": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "note": "来自科大讯飞官方模型目录的明确模态及推理上下文长度字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0685",
+      "model": "Spark X2.5 1.7B",
+      "lookupIds": [
+        "spark-x2.5-1.7b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "note": "来自科大讯飞官方模型目录的明确模态及推理上下文长度字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0686",
+      "model": "Spark X2.5 4B",
+      "lookupIds": [
+        "spark-x2.5-4b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "note": "来自科大讯飞官方模型目录的明确模态及推理上下文长度字段。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0680",
+      "model": "Spark Lite",
+      "lookupIds": [
+        "xspark13b6k"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ],
+      "note": "官方旧版 HTTP 文档确认 Lite/Max 文本能力，仅分别给输入和输出上限；当前 MaaS 目录未返回对应 xspark ID。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0681",
+      "model": "Spark Max",
+      "lookupIds": [
+        "xsparkprox"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.xfyun.cn/doc/spark/HTTP调用文档.html"
+      ],
+      "note": "原厂 HTTP 文档公告 Max 套餐升级到 Ultra，但本渠道 xsparkprox 是否同步未获证明；不将最大输入和输出相加。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0471",
+      "model": "Muse Spark 1.2 Contributor",
+      "lookupIds": [
+        "meta/muse-spark-1.2-contributor"
+      ],
+      "input": "文本、图像、音频、视频、文件（PDF）",
+      "output": "文本",
+      "context": "1,048,576",
+      "sources": [
+        "https://dev.meta.ai/docs/models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0473",
+      "model": "Muse Spark 1.3 Contributor",
+      "lookupIds": [
+        "meta/muse-spark-1.3-contributor"
+      ],
+      "input": "文本、图像、视频、文件（PDF）；音频（有限支持）",
+      "output": "文本",
+      "context": "1,048,576",
+      "sources": [
+        "https://dev.meta.ai/docs/models"
+      ],
+      "note": "原厂说明 1.3 音频尚未完全支持，音频质量可能下降。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0533",
+      "model": "Dots3 Note Preview",
+      "lookupIds": [
+        "dots-3-note-preview",
+        "dots-studio/dots-3-note-preview:free"
+      ],
+      "input": "文本、图像、音频、视频",
+      "output": "文本",
+      "context": "512K",
+      "sources": [
+        "https://github.com/studio-dots-ai/dots3-note-prev"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0628",
+      "model": "unisound u2",
+      "lookupIds": [
+        "unisound/unisound-u2"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "163,840",
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound"
+      ],
+      "note": "该页明确为云知声直供；不采用最大输入或输出代替总窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0350",
+      "model": "Step 3.7 Flash NVFP4",
+      "lookupIds": [
+        "accounts/fireworks/models/step-3p7-flash-nvfp4"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "262K",
+      "sources": [
+        "https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4"
+      ],
+      "note": "精确核对 Fireworks 发布的这一服务型号；不继承未量化模型规格。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "fireworks"
+      ]
+    },
+    {
+      "id": "C0481",
+      "model": "Nemotron 3 Ultra (Preview) NVFP4",
+      "lookupIds": [
+        "accounts/fireworks/models/nemotron-3-ultra-nvfp4"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "262K",
+      "sources": [
+        "https://app.fireworks.ai/models/fireworks/nemotron-3-ultra-nvfp4"
+      ],
+      "note": "精确核对 Fireworks 发布的这一服务型号；不继承未量化模型规格。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "fireworks"
+      ]
+    },
+    {
+      "id": "C0631",
+      "model": "Ember 1",
+      "lookupIds": [
+        "fireworks/ember-1"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://app.fireworks.ai/models/fireworks/ember-1"
+      ],
+      "note": "精确核对 Fireworks 发布的这一服务型号；不继承未量化模型规格。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "fireworks"
+      ]
+    },
+    {
+      "id": "C0583",
+      "model": "Ternary Bonsai 27B",
+      "lookupIds": [
+        "Prism-ML/Ternary-Bonsai-27B"
+      ],
+      "input": "文本、图像（需视觉组件）",
+      "output": "文本",
+      "context": "262K",
+      "sources": [
+        "https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf"
+      ],
+      "note": "作者说明图像输入需附加视觉组件；不据此声称所有部署均已启用。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0232",
+      "model": "GLM 4 32B",
+      "lookupIds": [
+        "THUDM/GLM-4-32B-0414"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K（需 YaRN；原生 32K）",
+      "sources": [
+        "https://github.com/zai-org/GLM-4/blob/main/README.md"
+      ],
+      "note": "原厂总仓库 Model List 精确列出 0414 各型号 32K→128K，并明确输入+输出超过 32K 时启用 YaRN。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0632",
+      "model": "Extract",
+      "lookupIds": [
+        "scaledown/extract"
+      ],
+      "input": "文本、图像、文件",
+      "output": "文本（结构化字段）",
+      "context": null,
+      "sources": [
+        "https://docs.scaledown.ai/api-reference/extract-overview"
+      ],
+      "note": "官方 Extract 文档明确支持 base64 文档/图像输入；总窗口只写 Full document，未给 token 数。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0650",
+      "model": "Summarize",
+      "lookupIds": [
+        "scaledown/summarize"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://docs.scaledown.ai/api-reference/summarize-overview"
+      ],
+      "note": "厂商任务 API；文档未单列总窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0677",
+      "model": "Qianfan OCR",
+      "lookupIds": [
+        "qianfan-ocr"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "note": "官方 OCR 型号表给出 32K 上下文，最大输出为另一字段 28K。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0021",
+      "model": "GPT-5 Image",
+      "lookupIds": [
+        "openai/gpt-5-image"
+      ],
+      "input": "文本、图像、文件",
+      "output": "文本、图像",
+      "context": "400,000",
+      "sources": [
+        "https://openrouter.ai/openai/gpt-5-image",
+        "https://openrouter.ai/api/v1/models"
+      ],
+      "note": "OpenRouter 官方组合产品；原厂 GPT 文本型号与 GPT Image 型号的组合，不合并为单一原厂型号。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "openrouter"
+      ]
+    },
+    {
+      "id": "C0022",
+      "model": "GPT-5 Image Mini",
+      "lookupIds": [
+        "openai/gpt-5-image-mini"
+      ],
+      "input": "文本、图像、文件",
+      "output": "文本、图像",
+      "context": "400,000",
+      "sources": [
+        "https://openrouter.ai/openai/gpt-5-image-mini",
+        "https://openrouter.ai/api/v1/models"
+      ],
+      "note": "OpenRouter 官方组合产品；原厂 GPT 文本型号与 GPT Image 型号的组合，不合并为单一原厂型号。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "openrouter"
+      ]
+    },
+    {
+      "id": "C0036",
+      "model": "GPT-5.4 Image 2",
+      "lookupIds": [
+        "openai/gpt-5.4-image-2"
+      ],
+      "input": "文本、图像、文件",
+      "output": "文本、图像",
+      "context": "272,000",
+      "sources": [
+        "https://openrouter.ai/openai/gpt-5.4-image-2",
+        "https://openrouter.ai/api/v1/models"
+      ],
+      "note": "OpenRouter 官方组合产品；原厂 GPT 文本型号与 GPT Image 型号的组合，不合并为单一原厂型号。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "openrouter"
+      ]
+    },
+    {
+      "id": "C0318",
+      "model": "MiniMax 01",
+      "lookupIds": [
+        "minimax/minimax-01"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://huggingface.co/MiniMaxAI/MiniMax-Text-01",
+        "https://huggingface.co/MiniMaxAI/MiniMax-VL-01"
+      ],
+      "note": "渠道 MiniMax-01 同时描述 Text-01 与 VL-01，不与单个原厂权重等同；原厂上下文不跨版本套用。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0487",
+      "model": "Switchyard",
+      "lookupIds": [
+        "nvidia/switchyard"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://build.nvidia.com/",
+        "https://openrouter.ai/nvidia/switchyard"
+      ],
+      "note": "OpenRouter 描述为动态选择多个模型的路由器，无法固定为一个 NVIDIA 底座；保留渠道规格。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0640",
+      "model": "Pareto 26.9",
+      "lookupIds": [
+        "unbiased/pareto-26.9",
+        "~unbiased/pareto-latest"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://unbiased.ai/model-card/"
+      ],
+      "note": "原厂页面现为 Pareto 26.10，不能覆盖本目录 26.9；保留渠道精确 ID 规格。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0653",
+      "model": "UnslopNemo 12B",
+      "lookupIds": [
+        "thedrummer/unslopnemo-12b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://huggingface.co/TheDrummer/UnslopNemo-12B-v4.1"
+      ],
+      "note": "作者模型卡无明确上下文；不沿用 Nemo 基座窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0663",
+      "model": "WizardLM 2 8x22B",
+      "lookupIds": [
+        "microsoft/wizardlm-2-8x22b"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://wizardlm.github.io/WizardLM2/"
+      ],
+      "note": "原厂发布页确认 WizardLM-2 8x22B 文本模型，但未给出明确上下文。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0654",
+      "model": "Weaver (alpha)",
+      "lookupIds": [
+        "mancer/weaver"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "8,000",
+      "sources": [
+        "https://mancer.tech/models/weaver-alpha",
+        "https://openrouter.ai/mancer/weaver"
+      ],
+      "note": "原厂目录脚本 MODELS_DICT 的 weaver-alpha 对应 Weaver Alpha，提供 Alpaca 文本提示模板与 8,000 context；OpenRouter 的 Mancer: Weaver (alpha) 名称、描述及 8,000/6,000 上下文/输出相符。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0626",
+      "model": "Xing4.0 29B",
+      "lookupIds": [
+        "XingChenAGI/Xing4.0-29B"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B",
+        "https://www.siliconflow.cn/models"
+      ],
+      "note": "硅基流动精确 ID XingChenAGI/Xing4.0-29B 的官方说明对应 Xing4.0-29B-A4B。原生 256K，扩展 512K 不作默认值。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "displayName": "Xing4.0 29B A4B"
+    },
+    {
+      "id": "C0655",
+      "model": "SenseNova 6.8 Flash Lite",
+      "lookupIds": [
+        "sensenova-6.8-flash-lite"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://github.com/OpenSenseNova/SenseNova6.8",
+        "https://github.com/OpenSenseNova/SenseNova6.8/blob/main/API.md"
+      ],
+      "note": "官方 API.md 对应 sensenova-6.8-flash-lite（SenseNova6.8FlashLitePreview），明确文字和图像请求与文本回复；未取得总上下文。视频宣传不替代 API 的输入说明。",
+      "checkedAt": "2026-10-16",
+      "status": "partial",
+      "displayName": "SenseNova 6.8 Flash Lite Preview"
+    },
+    {
+      "id": "C0043",
+      "model": "GPT-5.6 Luna Pro",
+      "lookupIds": [
+        "openai/gpt-5.6-luna-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0045",
+      "model": "GPT-5.6 Sol Pro",
+      "lookupIds": [
+        "openai/gpt-5.6-sol-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0047",
+      "model": "GPT-5.6 Terra Pro",
+      "lookupIds": [
+        "openai/gpt-5.6-terra-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0049",
+      "model": "GPT-6 Astra Pro",
+      "lookupIds": [
+        "openai/gpt-6-astra-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0051",
+      "model": "GPT-6 Luna Pro",
+      "lookupIds": [
+        "openai/gpt-6-luna-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0053",
+      "model": "GPT-6 Sol Pro",
+      "lookupIds": [
+        "openai/gpt-6-sol-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0055",
+      "model": "GPT-6.1 Sol Pro",
+      "lookupIds": [
+        "openai/gpt-6.1-sol-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://developers.openai.com/api/docs/models",
+        "https://developers.openai.com/api/docs/changelog"
+      ],
+      "note": "未取得与本渠道 Pro 后缀完全一致的原厂 API 型号规格；不把产品套餐或思考模式当作独立模型。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0010",
+      "model": "GPT-3.5 Turbo 16k",
+      "lookupIds": [
+        "openai/gpt-3.5-turbo-16k"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://openai.com/index/function-calling-and-other-api-updates/"
+      ],
+      "note": "原厂旧发布说明确认 16k 版本；当前 GPT-3.5 Turbo 文档不是同一快照，精确窗口仍采用渠道记录。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0071",
+      "model": "Gemini 2.5 Pro Preview",
+      "lookupIds": [
+        "google/gemini-2.5-pro-preview"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro"
+      ],
+      "note": "渠道名称与原厂页面的 Preview / 稳定版不一致，或 Preview URL 重定向至稳定版；重定向不能证明渠道版本已升级。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0072",
+      "model": "Gemini 3 Flash",
+      "lookupIds": [
+        "google/gemini-3-flash",
+        "google:gemini@3-flash"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-flash-preview"
+      ],
+      "note": "渠道名称与原厂页面的 Preview / 稳定版不一致，或 Preview URL 重定向至稳定版；重定向不能证明渠道版本已升级。 Runware 文档及 AIR ID 映射已核对，补充该渠道自身明确的模态和 1M 窗口；不推断原厂 Preview 迁移。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "runware": {
+          "input": "文本、图像、音频、视频、文件",
+          "output": "文本",
+          "context": "1M",
+          "sourceScope": "service",
+          "sources": [
+            "https://runware.ai/docs/models/google-gemini-3-flash",
+            "https://runware.ai/docs/tools/compatible-apis"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C0075",
+      "model": "Gemini 3 Pro Image Preview (Nano Banana Pro)",
+      "lookupIds": [
+        "google/gemini-3-pro-image-preview"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image-preview"
+      ],
+      "note": "渠道名称与原厂页面的 Preview / 稳定版不一致，或 Preview URL 重定向至稳定版；重定向不能证明渠道版本已升级。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0077",
+      "model": "Gemini 3.1 Flash Image Preview (Nano Banana 2)",
+      "lookupIds": [
+        "google/gemini-3.1-flash-image-preview"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image-preview"
+      ],
+      "note": "渠道名称与原厂页面的 Preview / 稳定版不一致，或 Preview URL 重定向至稳定版；重定向不能证明渠道版本已升级。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0081",
+      "model": "Gemini 3.1 Pro",
+      "lookupIds": [
+        "google:gemini@3.1-pro"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
+      ],
+      "note": "渠道名称与原厂页面的 Preview / 稳定版不一致，或 Preview URL 重定向至稳定版；重定向不能证明渠道版本已升级。 Runware 文档及 AIR ID 映射已核对，补充该渠道自身明确的模态和 1M 窗口；不推断原厂 Preview 迁移。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "runware": {
+          "input": "文本、图像、音频、视频、文件",
+          "output": "文本",
+          "context": "1M",
+          "sourceScope": "service",
+          "sources": [
+            "https://runware.ai/docs/models/google-gemini-3-1-pro",
+            "https://runware.ai/docs/tools/compatible-apis"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C0192",
+      "model": "Qwen3.8 Max Prime",
+      "lookupIds": [
+        "qwen/qwen3.8-max-prime"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/prime-mode",
+        "https://openrouter.ai/qwen/qwen3.8-max-prime"
+      ],
+      "note": "阿里云价格表确认 qwen3.8-max-prime 名称并链接 Prime 模式；Prime 文档的支持型号表暂未列 Qwen，故不直接继承标准版原厂数值。OpenRouter 精确型号明确高吞吐变体、模态和 1,000,000 窗口，仅补该渠道。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "openrouter": {
+          "input": "文本、图像、视频",
+          "output": "文本",
+          "context": "1,000,000",
+          "sourceScope": "service",
+          "sources": [
+            "https://openrouter.ai/qwen/qwen3.8-max-prime"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C0260",
+      "model": "GLM 5.3 Prime",
+      "lookupIds": [
+        "z-ai/glm-5.3-prime"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://openrouter.ai/z-ai/glm-5.3-prime",
+        "https://platform.qianwenai.com/docs/developer-guides/run-and-scale/prime-mode"
+      ],
+      "note": "OpenRouter 精确产品页确认文本输入输出及 1M 窗口；千问官方说明 Prime 加速服务，不合并调用 ID。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "openrouter"
+      ]
+    },
+    {
+      "id": "C0575",
+      "model": "Sonar Deep Research",
+      "lookupIds": [
+        "perplexity/sonar-deep-research"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://docs.perplexity.ai/changelog",
+        "https://docs.perplexity.ai/guides/sonar-deep-research"
+      ],
+      "note": "旧 Sonar 产品文档已迁移至 Agent API；本次未取得该旧型号的明确上下文，不使用新 Agent 窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0577",
+      "model": "Sonar Pro Search",
+      "lookupIds": [
+        "perplexity/sonar-pro-search"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://docs.perplexity.ai/changelog",
+        "https://docs.perplexity.ai/guides/sonar-pro-search"
+      ],
+      "note": "旧 Sonar 产品文档已迁移至 Agent API；本次未取得该旧型号的明确上下文，不使用新 Agent 窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0273",
+      "model": "doubao 1.5 Lite 32k",
+      "lookupIds": [
+        "doubao-1-5-lite-32k-250115"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0274",
+      "model": "doubao 1.5 Pro 32k",
+      "lookupIds": [
+        "doubao-1-5-pro-32k-250115"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0275",
+      "model": "doubao 1.5 vision Pro 32k",
+      "lookupIds": [
+        "doubao-1-5-vision-pro-32k-250115"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0276",
+      "model": "doubao seed Code Preview",
+      "lookupIds": [
+        "doubao-seed-code-preview-251028"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement-2025?lang=en",
+        "https://developer.volcengine.com/articles/7577301460712030258"
+      ],
+      "note": "2025 年官方发布记录将豆包编程模型映射为 doubao-seed-code-preview-251028；火山引擎 Agent 社区官方发布文明确 256K 及视觉输入。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0279",
+      "model": "Seed 1.6",
+      "lookupIds": [
+        "bytedance-seed/seed-1.6",
+        "doubao-seed-1-6-250615",
+        "doubao-seed-1-6-251015"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0280",
+      "model": "Seed 1.6 Flash",
+      "lookupIds": [
+        "bytedance-seed/seed-1.6-flash",
+        "doubao-seed-1-6-flash-250615",
+        "doubao-seed-1-6-flash-250828"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0281",
+      "model": "Seed 1.6 vision",
+      "lookupIds": [
+        "doubao-seed-1-6-vision-250815"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "已核对官方新旧型号目录；当前页未再列该旧快照的上下文；型号名的 32k 不直接充当验证证据。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0283",
+      "model": "Seed 2.0 Code",
+      "lookupIds": [
+        "seed-2.0-code",
+        "bytedance-seed/seed-2.0-code"
+      ],
+      "input": null,
+      "output": null,
+      "context": null,
+      "sources": [
+        "https://www.volcengine.com/docs/82379/1330310"
+      ],
+      "note": "原厂列 Code Preview，本渠道 Seed 2 Code 无 Preview，未确认是否相同快照。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved"
+    },
+    {
+      "id": "C0222",
+      "model": "DeepSeek V3.2 Exp",
+      "lookupIds": [
+        "deepseek-v3.2-exp",
+        "deepseek/deepseek-v3.2-exp"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://api-docs.deepseek.com/news/news250929"
+      ],
+      "note": "原厂确认 V3.2-Exp 发布；公告未明确最大上下文，不套用正式 V3.2 的窗口。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "C0225",
+      "model": "DeepSeek V4 Flash Preview",
+      "lookupIds": [
+        "deepseek-v4-flash"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://api-docs.deepseek.com/news/news260424/"
+      ],
+      "note": "该数值仅对应 2026-04-24 V4 Preview 发布规格；不同渠道无日期别名与后续正式版不自动合并。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "deepseek": {
+          "input": "文本、图像",
+          "output": "文本",
+          "context": "1M",
+          "displayName": "DeepSeek V4.1 Flash",
+          "sources": [
+            "https://api-docs.deepseek.com/",
+            "https://api-docs.deepseek.com/quick_start/pricing"
+          ],
+          "status": "verified",
+          "note": "官方旧 ID 当前均由 V4.1 Flash 服务。"
+        }
+      }
+    },
+    {
+      "id": "C0228",
+      "model": "DeepSeek V4 Pro Preview",
+      "lookupIds": [
+        "deepseek-v4-pro"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://api-docs.deepseek.com/news/news260424/"
+      ],
+      "note": "该数值仅对应 2026-04-24 V4 Preview 发布规格；不同渠道无日期别名与后续正式版不自动合并。 原厂当前定价表明确 deepseek-v4-pro 对应 DeepSeek-V4-Pro-0813，直连展示名去掉 Preview；其他渠道不套用此映射。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "deepseek": {
+          "displayName": "DeepSeek V4 Pro",
+          "input": "文本",
+          "output": "文本",
+          "context": "1M",
+          "sources": [
+            "https://api-docs.deepseek.com/quick_start/pricing/"
+          ]
+        }
+      }
+    },
+    {
+      "id": "C0226",
+      "model": "DeepSeek V4 Flash Vision Exp",
+      "lookupIds": [
+        "deepseek-v4-flash-vision-exp",
+        "accounts/fireworks/models/deepseek-v4-flash-vision-exp",
+        "deepseek/deepseek-v4-flash-vision-exp"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": null,
+      "sources": [
+        "https://api-docs.deepseek.com/news/news260821/"
+      ],
+      "note": "原始 Vision Exp 发布公告确认图像输入；当前官方端点别名已迁移，聚合渠道是否同步仍未证明。",
+      "checkedAt": "2026-10-16",
+      "status": "version-unresolved",
+      "providerOverrides": {
+        "deepseek": {
+          "input": "文本、图像",
+          "output": "文本",
+          "context": "1M",
+          "displayName": "DeepSeek V4.1 Flash",
+          "sources": [
+            "https://api-docs.deepseek.com/",
+            "https://api-docs.deepseek.com/quick_start/pricing"
+          ],
+          "status": "verified",
+          "note": "官方旧 ID 当前均由 V4.1 Flash 服务。"
+        }
+      }
+    },
+    {
+      "id": "C0167",
+      "model": "Qwen3 VL Plus",
+      "lookupIds": [
+        "qwen3-vl-plus"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "256K",
+      "sources": [
+        "https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0256",
+      "model": "GLM 5.2 fast Preview",
+      "lookupIds": [
+        "glm-5.2-fast-preview"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "1M",
+      "sources": [
+        "https://www.qianwenai.com/models/glm-5.2-fast-preview",
+        "https://platform.qianwenai.com/docs/developer-guides/run-and-scale/prime-mode"
+      ],
+      "note": "已确认是 GLM-5.2 的 Prime 服务 ID，保留为独立服务型号。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "bailian"
+      ]
+    },
+    {
+      "id": "C0323",
+      "model": "MiniMax M2 her",
+      "lookupIds": [
+        "minimax/minimax-m2-her"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "64K",
+      "sources": [
+        "https://platform.minimax.io/docs/guides/text-chat"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0337",
+      "model": "HY Vision 1.5 Thinking",
+      "lookupIds": [
+        "hunyuan-t1-vision-20250916"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "40K",
+      "sources": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "note": "精确匹配调用参数及原厂型号名称。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0338",
+      "model": "HY Vision 2.0 Instruct",
+      "lookupIds": [
+        "hy-vision-2.0-instruct"
+      ],
+      "input": "文本、图像",
+      "output": "文本",
+      "context": "44K",
+      "sources": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "note": "精确匹配调用参数及原厂型号名称。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0346",
+      "model": "YT VITA",
+      "lookupIds": [
+        "youtu-vita"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "note": "精确匹配调用参数及原厂型号名称。",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0347",
+      "model": "Step 1o Turbo Vision",
+      "lookupIds": [
+        "step-1o-turbo-vision"
+      ],
+      "input": "文本、图像、视频",
+      "output": "文本",
+      "context": "32K",
+      "sources": [
+        "https://platform.stepfun.com/docs/zh/guides/models/vision"
+      ],
+      "note": "",
+      "checkedAt": "2026-10-16",
+      "status": "verified"
+    },
+    {
+      "id": "C0462",
+      "model": "Llama 3.3 70B Instruct Turbo",
+      "lookupIds": [
+        "meta-llama/Llama-3.3-70B-Instruct-Turbo"
+      ],
+      "input": "文本",
+      "output": "文本",
+      "context": "128K",
+      "sources": [
+        "https://www.together.ai/models/llama-3-3-70b"
+      ],
+      "note": "Together 官方确认完整 Turbo ID、FP8 和模态；不将它合并为其他部署。",
+      "checkedAt": "2026-10-16",
+      "status": "verified",
+      "sourceScope": "service",
+      "providers": [
+        "together"
+      ]
+    },
+    {
+      "id": "image-seedream-5-lite",
+      "model": "Seedream 5.0 Lite",
+      "lookupIds": [
+        "doubao-seedream-5-0-260128",
+        "doubao-seedream-5-0-lite-260128",
+        "ByteDance/Seedream-5.0-lite",
+        "seedream-5.0-lite",
+        "bytedance:seedream@5.0-lite",
+        "seedream-image-v5.0-lite",
+        "bytedance-seed/seedream-5-0-lite"
+      ],
+      "input": "文本、图像",
+      "output": "图像",
+      "context": null,
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en"
+      ],
+      "note": "原厂文档确认文本、单图、多图输入和图片输出；未单列 token 上下文。额外补充用户截图中的生图卡片，不计入 206 个理解模型。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "image-seedream-5-pro",
+      "model": "Seedream 5.0 Pro",
+      "lookupIds": [
+        "doubao-seedream-5-0-pro-260628",
+        "seedream-5.0-pro",
+        "bytedance:seedream@5.0-pro",
+        "seedream-image-v5.0-pro",
+        "bytedance-seed/seedream-5-0-pro"
+      ],
+      "input": "文本、图像",
+      "output": "图像",
+      "context": null,
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en"
+      ],
+      "note": "原厂文档确认文本、单图、多图输入和图片输出；未单列 token 上下文。额外补充用户截图中的生图卡片，不计入 206 个理解模型。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    },
+    {
+      "id": "image-seedream-5-flash",
+      "model": "Seedream 5.0 Flash",
+      "lookupIds": [
+        "doubao-seedream-5-0-flash-260915",
+        "bytedance:seedream@5.0-flash"
+      ],
+      "input": "文本、图像",
+      "output": "图像",
+      "context": null,
+      "sources": [
+        "https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh",
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=en"
+      ],
+      "note": "原厂文档确认文本、单图、多图输入和图片输出；未单列 token 上下文。额外补充用户截图中的生图卡片，不计入 206 个理解模型。",
+      "checkedAt": "2026-10-16",
+      "status": "partial"
+    }
+  ]
+}

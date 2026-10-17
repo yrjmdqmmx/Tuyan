@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1008009.g003",
+  "paper": "pcbi.1008009",
+  "figure": {
+    "id": "pcbi.1008009.g003",
+    "label": "Fig 3",
+    "caption": "Temporal and spatial development of an epidemic in a clustered population and corresponding cumulative force of infection (Λ).\nA) Number of infected hosts over time. B-D) Map of the cumulative force of infection (in logarithmic scale) at three points in time, respectively t = 35 days, t = 50 days; t = 75 days. For each point host, the force of infection cumulated until that time point is plotted. E-G) Map of the interpolated cumulative force of infection (in logarithmic scale) at three time points. The pointwise cumulative force of infection (panels B-D) has been interpolated in a grid of 201 km by 201 km (grid resolution 1x1 km) by using inverse distance interpolation [48].",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1008009.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1008009.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Temporal and spatial development of an epidemic in a clustered population and corresponding cumulative force of infection (<italic>Λ</italic>).</title>\n<p>A) Number of infected hosts over time. B-D) Map of the cumulative force of infection (in logarithmic scale) at three points in time, respectively <italic>t</italic> = 35 days, <italic>t</italic> = 50 days; <italic>t</italic> = 75 days. For each point host, the force of infection cumulated until that time point is plotted. E-G) Map of the interpolated cumulative force of infection (in logarithmic scale) at three time points. The pointwise cumulative force of infection (panels B-D) has been interpolated in a grid of 201 km by 201 km (grid resolution 1x1 km) by using inverse distance interpolation [<xref ref-type=\"bibr\" rid=\"pcbi.1008009.ref048\">48</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1008009.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1008009.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1008009",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008009",
+    "title": "Trade-off between local transmission and long-range dispersal drives infectious disease outbreak size in spatially structured populations",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Elisa Benincà",
+      "Thomas Hagenaars",
+      "Gert Jan Boender",
+      "Jan van de Kassteele",
+      "Michiel van Boven"
+    ],
+    "year": "2020",
+    "license": "2020\nBenincà et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1008009.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1008009.g003.png",
+      "bytes": 933407,
+      "sha256": "ae5f9eedea2bcf66bbb789b06ecf5d8a2c4db7743946c6df26a1b09d5dfbd08e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1008009.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1008009.g003.tif",
+      "bytes": 969544,
+      "sha256": "fd54d6f6cd4e6d97f971cbf4d34cba2927388cd5a867519d4a948dff37de75f8"
+    }
+  }
+}

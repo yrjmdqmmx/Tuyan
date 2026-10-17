@@ -1,0 +1,191 @@
+{
+  "checks": [
+    {
+      "name": "network isolates",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "Euler intersection",
+      "actual": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "name": "Sankey total flow",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "name": "Chord A incident total",
+      "actual": 5,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "name": "Radar speed radius",
+      "actual": 0.6,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "name": "Normal 10th percentile",
+      "actual": -1.2815515655446006,
+      "expected": -1.2815515655446004,
+      "passed": true
+    },
+    {
+      "name": "Normal median",
+      "actual": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "Stream final thickness",
+      "actual": 6,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "name": "AJ cause A final CIF",
+      "actual": 0.75,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "name": "AJ cause B final CIF",
+      "actual": 0.25,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "name": "AJ tied time risk set",
+      "actual": 4,
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "name": "AJ after censor risk set",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "Matrix supplied A-C",
+      "actual": 0.4,
+      "expected": 0.4,
+      "passed": true
+    },
+    {
+      "name": "Parallel P1 mass normalized",
+      "actual": 0.16666666666666666,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "name": "Treemap A1 area",
+      "actual": 0.19999999999999998,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "name": "Circle A2 area",
+      "actual": 3.9999999999999996,
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "name": "Alluvial cohort mass",
+      "actual": 9,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "name": "Map longitude",
+      "actual": 116,
+      "expected": 116,
+      "passed": true
+    },
+    {
+      "name": "Choropleth missing regions",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "Enrichment fold term A",
+      "actual": 2.5,
+      "expected": 2.5,
+      "passed": true
+    },
+    {
+      "name": "Enrichment gene ratio term B",
+      "actual": 0.3,
+      "expected": 0.3,
+      "passed": true
+    },
+    {
+      "name": "Negative strand arrow endpoint",
+      "actual": 550,
+      "expected": 550,
+      "passed": true
+    },
+    {
+      "name": "Inclusive protein interval residue count",
+      "actual": 71,
+      "expected": 71,
+      "passed": true
+    },
+    {
+      "name": "Uniform DNA information",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "DNA 90 percent T information",
+      "actual": 1.5310044064107187,
+      "expected": 1.5310044064107187,
+      "passed": true
+    },
+    {
+      "name": "DNA T glyph height",
+      "actual": 1.3779039657696468,
+      "expected": 1.3779039657696468,
+      "passed": true
+    },
+    {
+      "name": "Circos relative sequence angle",
+      "actual": 1.25,
+      "expected": 1.25,
+      "passed": true
+    },
+    {
+      "name": "Synteny inversion target orientation",
+      "actual": 650,
+      "expected": 650,
+      "passed": true
+    },
+    {
+      "name": "Phylogenetic B root distance",
+      "actual": 0.6000000000000001,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "name": "Cluster first distance",
+      "actual": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "Average final linkage distance",
+      "actual": 6.418551318821514,
+      "expected": 6.418551318821514,
+      "passed": true
+    }
+  ],
+  "passed": 31
+}

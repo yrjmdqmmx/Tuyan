@@ -1,0 +1,83 @@
+{
+  "doi": "10.1371/journal.pgph.0004471",
+  "sourceUrl": "https://journals.plos.org/globalpublichealth/article?id=10.1371/journal.pgph.0004471",
+  "title": "COVID-19, tuberculosis, and HIV triad: a prospective observational study in ambulatory patients in Kenya, Uganda, and South Africa",
+  "journal": "PLOS Global Public Health",
+  "authors": [
+    "Helena Huerga",
+    "Maelenn Gouillou",
+    "Liesbet Ohler",
+    "Ivan M. Taremwa",
+    "Milcah Akinyi",
+    "Alex Lubega",
+    "Winnie R. Muyindike",
+    "Mathieu Bastard",
+    "Claire Bossard",
+    "May Atieno",
+    "Rose Muhindo",
+    "Esther C. Casas",
+    "Lydia Nakiyingi",
+    "Martina Casenghi",
+    "Ankur Gupta-Wright",
+    "Maryline Bonnet",
+    "Zibusiso Ndlovu"
+  ],
+  "year": "2025",
+  "license": "2025\nHuerga et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pgph.0004471.g001",
+      "label": "Fig 1",
+      "caption": "Patients’ flow.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgph.0004471.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgph.0004471.g001</object-id><label>Fig 1</label><caption><title>Patients’ flow.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgph.0004471.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgph.0004471.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgph.0004471.g002",
+      "label": "Fig 2",
+      "caption": "SARS-CoV-2 serological tests performed and positivity rate from September 2020 to April 2022 in people living with HIV investigated for TB.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgph.0004471.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgph.0004471.g002</object-id><label>Fig 2</label><caption><title>SARS-CoV-2 serological tests performed and positivity rate from September 2020 to April 2022 in people living with HIV investigated for TB.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgph.0004471.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgph.0004471.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgph.0004471.g003",
+      "label": "Fig 3",
+      "caption": "Euler diagram of people living with HIV presenting with symptoms of TB or of COVID-19 and with tuberculosis or SARS-CoV-2 infection.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgph.0004471.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgph.0004471.g003</object-id><label>Fig 3</label><caption><title>Euler diagram of people living with HIV presenting with symptoms of TB or of COVID-19 and with tuberculosis or SARS-CoV-2 infection.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgph.0004471.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgph.0004471.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgph.0004471.g004",
+      "label": "Fig 4",
+      "caption": "Mortality over 6 months according to SARS-CoV-2 infection and TB disease in people living with HIV presenting with symptoms of TB or of COVID-19 (log-rank test p<0.001).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgph.0004471.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pgph.0004471.g004</object-id><label>Fig 4</label><caption><title>Mortality over 6 months according to SARS-CoV-2 infection and TB disease in people living with HIV presenting with symptoms of TB or of COVID-19 (log-rank test p&lt;0.001).</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgph.0004471.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgph.0004471.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

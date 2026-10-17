@@ -4,9 +4,9 @@ const path = require('node:path')
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../runtime/handler.ts'), 'utf8')
 
-assert.match(source, /methodContent\.trim\(\)\.length > 12000/)
+assert.match(source, /\(body\.methodContent\|\|\x27\x27\)\.trim\(\)\.length > 12000/)
 assert.match(source, /methodContent exceeds 12000 characters/)
-assert.match(source, /caption\.trim\(\)\.length > 1000/)
+assert.match(source, /\(body\.caption\|\|\x27\x27\)\.trim\(\)\.length > 1000/)
 assert.match(source, /caption exceeds 1000 characters/)
 assert.match(source, /negativePrompt[^\n]*length > 1000/)
 assert.match(source, /negativePrompt exceeds 1000 characters/)

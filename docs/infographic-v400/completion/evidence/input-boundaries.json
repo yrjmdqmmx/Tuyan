@@ -1,0 +1,1820 @@
+[
+  {
+    "typeId": "bar",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "dotplot",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "lollipop",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "dumbbell",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "forest",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "waterfall",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "gantt",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "histogram",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "boxplot",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "violin",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "ecdf",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "line",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "area",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "scatter",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "bubble",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "heatmap",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "adjacency_matrix",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "bubble_matrix",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "correlation_matrix",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "pie",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "rose",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "volcano",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "ma_plot",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "roc",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "pr_curve",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "confusion_matrix",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "calibration",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "bland_altman",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "funnel_meta",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "ordination",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "vector_field",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "contour",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "kaplan_meier",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "venn",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "upset",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "density",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "raincloud",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "ridgeline",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "stripplot",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "binary_matrix",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "network",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "euler",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "sankey",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "chord",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "radar",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "qq",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "streamgraph",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "cumulative_incidence",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "matrix_link_overlay",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "parallel_coordinates",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "treemap",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "circle_packing",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "alluvial",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "point_map",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "choropleth",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "enrichment",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "gene_track",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "protein_domain",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "motif_logo",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "genome_circos",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "synteny",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "nonfinite_numeric",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_numeric_unit",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "phylogenetic",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  },
+  {
+    "typeId": "dendrogram",
+    "valid": true,
+    "boundaries": [
+      {
+        "name": "empty_rows",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "row_limit_10001",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "missing_source",
+        "result": "rejected_before_models_and_render"
+      },
+      {
+        "name": "unimplemented_variant",
+        "result": "rejected_before_models_and_render"
+      }
+    ]
+  }
+]

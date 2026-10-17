@@ -1,0 +1,106 @@
+{
+  "doi": "10.1371/journal.pbio.3002645",
+  "sourceUrl": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002645",
+  "title": "An empirical appraisal of eLife’s assessment vocabulary",
+  "journal": "PLOS Biology",
+  "authors": [
+    "Tom E. Hardwicke",
+    "Sarah R. Schiavone",
+    "Beth Clarke",
+    "Simine Vazire"
+  ],
+  "year": "2024",
+  "license": "2024\nHardwicke et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pbio.3002645.g001",
+      "label": "Fig 1",
+      "caption": "An example summary statement referring to a study’s strength of support and the corresponding response scale with an arbitrary response shown.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>An example summary statement referring to a study’s strength of support and the corresponding response scale with an arbitrary response shown.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g002",
+      "label": "Fig 2",
+      "caption": "Responses to each phrase on the importance/significance dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title />\n<p>Responses to each phrase on the importance/significance dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g003",
+      "label": "Fig 3",
+      "caption": "Responses to each phrase on the strength of support dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title />\n<p>Responses to each phrase on the strength of support dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g004",
+      "label": "Fig 4",
+      "caption": "Proportion of participants (N = 301) whose implied ranking matched the intended ranking (i.e., “correct ranking”) for both evaluative dimensions and both vocabularies.\nError bars represent 95% confidence intervals using the Sison–Glaz method [13]. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Proportion of participants (<italic>N</italic> = 301) whose implied ranking matched the intended ranking (i.e., “correct ranking”) for both evaluative dimensions and both vocabularies.</title>\n<p>Error bars represent 95% confidence intervals using the Sison–Glaz method [<xref ref-type=\"bibr\" rid=\"pbio.3002645.ref013\">13</xref>]. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g005",
+      "label": "Fig 5",
+      "caption": "Extent to which participants (N = 301) implied rankings deviated from intended rankings using normalised Kendall’s distance.\nZero represents a perfect match (green bar), other values (grey bars) represent increasing dissimilarity from the intended ranking up to 1, which represents maximal dissimilarity. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Extent to which participants (<italic>N</italic> = 301) implied rankings deviated from intended rankings using normalised Kendall’s distance.</title>\n<p>Zero represents a perfect match (green bar), other values (grey bars) represent increasing dissimilarity from the intended ranking up to 1, which represents maximal dissimilarity. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g006",
+      "label": "Fig 6",
+      "caption": "Heat maps showing the percentage of participants (N = 301) whose implied rankings were concordant or discordant with the intended ranking at the level of individual phrases.\nDarker colours and higher percentages indicate greater concordance between the implied rank and the intended rank of a particular phrases. The data underlying this figure can be found in https://osf.io/mw2q4/files/osfstorage.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Heat maps showing the percentage of participants (<italic>N</italic> = 301) whose implied rankings were concordant or discordant with the intended ranking at the level of individual phrases.</title>\n<p>Darker colours and higher percentages indicate greater concordance between the implied rank and the intended rank of a particular phrases. The data underlying this figure can be found in <ext-link ext-link-type=\"uri\" ns0:href=\"https://osf.io/mw2q4/files/osfstorage\" ns0:type=\"simple\">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pbio.3002645.g007",
+      "label": "Fig 7",
+      "caption": "Explicit presentation of the intended ordinal structure (A–C), potentially with numerical ranges (B), could improve consistency of interpretation. Judgements by multiple reviewers could also be represented (by different arrows) without forcing consensus (C).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pbio.3002645.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pbio.3002645.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title />\n<p>Explicit presentation of the intended ordinal structure (A–C), potentially with numerical ranges (B), could improve consistency of interpretation. Judgements by multiple reviewers could also be represented (by different arrows) without forcing consensus (C).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pbio.3002645.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pbio.3002645.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

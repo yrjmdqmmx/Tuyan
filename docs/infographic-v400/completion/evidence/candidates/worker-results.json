@@ -1,0 +1,374 @@
+{
+  "total": 23,
+  "passed": 23,
+  "results": [
+    {
+      "typeId": "network",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.302,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "euler",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.27,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "sankey",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.273,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "chord",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.269,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "radar",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.315,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "qq",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.314,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "streamgraph",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.294,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "cumulative_incidence",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.309,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "matrix_link_overlay",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.315,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "parallel_coordinates",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.308,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "treemap",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.273,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "circle_packing",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.293,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "alluvial",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.276,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "point_map",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.328,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "choropleth",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.342,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "enrichment",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.326,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "gene_track",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.289,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "protein_domain",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.305,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "motif_logo",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.305,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "genome_circos",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.299,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "synteny",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.29,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "phylogenetic",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.285,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    },
+    {
+      "typeId": "dendrogram",
+      "passed": true,
+      "error": "",
+      "elapsedSeconds": 0.293,
+      "validationKeys": [
+        "vector",
+        "editableText",
+        "sameScene",
+        "figureCount",
+        "codeHash",
+        "pngHash",
+        "svgHash",
+        "numeric"
+      ]
+    }
+  ]
+}

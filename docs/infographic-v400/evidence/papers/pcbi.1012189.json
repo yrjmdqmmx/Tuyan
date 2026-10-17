@@ -1,0 +1,66 @@
+{
+  "doi": "10.1371/journal.pcbi.1012189",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012189",
+  "title": "Ten simple rules for implementing a successful field season",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Lindsey R. Perry",
+    "Rebecca L. Kelble",
+    "Valerie N. Brewer",
+    "Cara E. Christensen",
+    "Mark E. Kerstens",
+    "Terrah M. Owens",
+    "Megan A. Sampognaro",
+    "Dorothy L. Zahor",
+    "Rachel A. Zitomer",
+    "Suzanne H. Austin",
+    "Jamie M. Cornelius",
+    "Jonathan B. Dinkins",
+    "Sarah J. K. Frey",
+    "Cecelia E. Frisinger",
+    "Stephanie M. LeQuier",
+    "Carl G. Lundblad",
+    "Jamie Oskowski",
+    "Hallie R. Perlman",
+    "William J. Price",
+    "Richard Rich",
+    "Kayla A. Ruth",
+    "Vanessa M. Schroeder",
+    "Shawn B. Szabo",
+    "James W. Rivers"
+  ],
+  "year": "2024",
+  "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1012189.g001",
+      "label": "Fig 1",
+      "caption": "An example of a Gantt chart, a useful project management tool that was created to prepare for a research project that began fieldwork on March 15th.\nRows represent distinct tasks and columns represent the time period during which the tasks are planned; color-coding the tasks helps to quickly delineate among tasks that are scheduled before and after the field crew begins work.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1012189.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1012189.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>An example of a Gantt chart, a useful project management tool that was created to prepare for a research project that began fieldwork on March 15th.</title>\n<p>Rows represent distinct tasks and columns represent the time period during which the tasks are planned; color-coding the tasks helps to quickly delineate among tasks that are scheduled before and after the field crew begins work.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1012189.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1012189.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1012189.g002",
+      "label": "Fig 2",
+      "caption": "An example of a figure that was used in a project handbook to improve understanding of a detailed protocol for attaching leg bands to nestlings of the Black-backed Woodpecker (Picoides arcticus).\nThe study required that unique combinations of metal and colored leg bands to be attached for individual identification after capture, and this diagram was developed to avoid confusion over which leg was being referenced when describing band attachment. In this case, the diagram also served to emphasize the important point that only females should have striped leg bands, which further facilitates identification of sexes under field conditions.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1012189.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1012189.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>An example of a figure that was used in a project handbook to improve understanding of a detailed protocol for attaching leg bands to nestlings of the Black-backed Woodpecker (<italic>Picoides arcticus</italic>).</title>\n<p>The study required that unique combinations of metal and colored leg bands to be attached for individual identification after capture, and this diagram was developed to avoid confusion over which leg was being referenced when describing band attachment. In this case, the diagram also served to emphasize the important point that only females should have striped leg bands, which further facilitates identification of sexes under field conditions.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1012189.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1012189.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

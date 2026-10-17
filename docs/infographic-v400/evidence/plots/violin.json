@@ -1,0 +1,92 @@
+{
+  "figureTypeId": "violin",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic QA fixture only; no research claims.",
+    "rows": [
+      {
+        "group": "A",
+        "value": 1
+      },
+      {
+        "group": "A",
+        "value": 2
+      },
+      {
+        "group": "A",
+        "value": 2
+      },
+      {
+        "group": "A",
+        "value": 4
+      },
+      {
+        "group": "A",
+        "value": 5
+      },
+      {
+        "group": "B",
+        "value": 2
+      },
+      {
+        "group": "B",
+        "value": 3
+      },
+      {
+        "group": "B",
+        "value": 4
+      },
+      {
+        "group": "B",
+        "value": 4
+      },
+      {
+        "group": "B",
+        "value": 6
+      }
+    ],
+    "units": {
+      "value": "dimensionless",
+      "x": "dimensionless",
+      "y": "dimensionless",
+      "size": "dimensionless",
+      "low": "dimensionless",
+      "high": "dimensionless",
+      "start": "dimensionless",
+      "end": "dimensionless",
+      "effect": "dimensionless",
+      "p": "dimensionless",
+      "mean": "dimensionless",
+      "fpr": "dimensionless",
+      "tpr": "dimensionless",
+      "recall": "dimensionless",
+      "precision": "dimensionless",
+      "predicted": "dimensionless",
+      "observed": "dimensionless",
+      "count": "dimensionless",
+      "a": "dimensionless",
+      "b": "dimensionless",
+      "se": "dimensionless",
+      "u": "dimensionless",
+      "v": "dimensionless",
+      "time": "dimensionless",
+      "event": "dimensionless"
+    },
+    "options": {
+      "bandwidth": 0.5,
+      "bins": 5,
+      "nullValue": 0,
+      "initialValue": 0,
+      "levels": [
+        0.5,
+        1,
+        1.5
+      ]
+    }
+  },
+  "figureAnalysis": {
+    "method": "pca",
+    "description": "Synthetic precomputed QA values; not a statistical analysis of research data.",
+    "pKind": "p"
+  }
+}

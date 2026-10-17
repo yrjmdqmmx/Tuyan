@@ -1,0 +1,48 @@
+{
+  "id": "pone.0204309.g003",
+  "paper": "pone.0204309",
+  "figure": {
+    "id": "pone.0204309.g003",
+    "label": "Fig 3",
+    "caption": "Multidimensional mechanics of structural biological materials.\nNormalized, permutated radar charts comparing four structural classes of natural materials (see Box 1). Legend (units): elastic and shear moduli, E and G (GPa); strain to failure, ε (%); tensile, compressive and flexural strength, σ_{T}, σ_{C} and σ_{F} (MPa); toughness, u_{T} (MJ·m^{-3}) or u_{T}* (kJ·m^{-2}); fracture toughness, K_{IC} (MPa·m^{1/2}); resilience, u_{R} (%); damping loss factor, tan δ (no units); hardness, H (MPa); impact strength, IS (kJ·m^{-2}). Notes: Data averages (lines) and standard deviations/errors/ranges (shaded regions) are listed in S1–S4 Tables, compiled from numerous sources (see Supporting Information); for reference, maximum values of each average property are displayed on the axes.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0204309.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Multidimensional mechanics of structural biological materials.</title>\n<p>Normalized, permutated radar charts comparing four structural classes of natural materials (see <xref ref-type=\"boxed-text\" rid=\"pone.0204309.box001\">Box 1</xref>). <underline>Legend</underline> (units): elastic and shear moduli, E and G (GPa); strain to failure, ε (%); tensile, compressive and flexural strength, σ<sub>T</sub>, σ<sub>C</sub> and σ<sub>F</sub> (MPa); toughness, u<sub>T</sub> (MJ·m<sup>-3</sup>) or u<sub>T</sub>* (kJ·m<sup>-2</sup>); fracture toughness, K<sub>IC</sub> (MPa·m<sup>1/2</sup>); resilience, u<sub>R</sub> (%); damping loss factor, tan δ (no units); hardness, H (MPa); impact strength, IS (kJ·m<sup>-2</sup>). <underline>Notes</underline>: Data averages (lines) and standard deviations/errors/ranges (shaded regions) are listed in <xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s003\">S1</xref>–<xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s006\">S4</xref> Tables, compiled from numerous sources (see <xref ref-type=\"sec\" rid=\"sec018\">Supporting Information</xref>); for reference, maximum values of each average property are displayed on the axes.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0204309",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204309",
+    "title": "Multidimensional mechanics: Performance mapping of natural biological systems using permutated radar charts",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Michael M. Porter",
+      "Pooya Niksiar"
+    ],
+    "year": "2018",
+    "license": "2018\nPorter, Niksiar\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0204309.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0204309.g003.png",
+      "bytes": 967289,
+      "sha256": "145619068e5c418cc423735801ce51a7e3fa779ab9d6a1f493ff1a4d25207cff"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0204309.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0204309.g003.tif",
+      "bytes": 1246740,
+      "sha256": "8720fa2e8db57a211b29c47ee2c1f2521bc4535799f0b8a097fb4ee1b95a7fe3"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
-import { afterEach, test } from 'node:test'
+import { afterEach, beforeEach, test } from 'node:test'
+import { IDBFactory } from 'fake-indexeddb'
 import React from 'react'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,13 +11,14 @@ const registryV1 = {
   registryVersion: 'routing-test-v1',
   routeContractVersion: 1,
   supportsModelRoutes: true,
+  figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,
   providers: {
     bailian: {
       accessKind: 'aggregator', routeContractVersion: 1, accountCatalogRequired: true,
       defaults: { main: 'qwen3.8-max', image: 'wan2.7-image-pro', vision: 'qwen3.7-plus' },
       models: [
         { id: 'qwen3.8-max', label: 'Qwen Main', vendor: 'Alibaba Qwen', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, capabilities: {} },
-        { id: 'qwen3.7-plus', label: 'Qwen Vision', vendor: 'Alibaba Qwen', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
+        { id: 'qwen3.7-plus', label: 'Qwen Vision', vendor: 'Alibaba Qwen', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {referenceImages: true} },
         { id: 'wan2.7-image-pro', label: 'Wan Image', vendor: 'Alibaba Wan', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -24,7 +26,7 @@ const registryV1 = {
       accessKind: 'direct', routeContractVersion: 1, accountCatalogRequired: false,
       defaults: { main: 'gpt-5.6-sol', image: 'gpt-image-2', vision: 'gpt-5.6-sol' },
       models: [
-        { id: 'gpt-5.6-sol', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
+        { id: 'gpt-5.6-sol', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {referenceImages: true} },
         { id: 'gpt-image-2', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -32,7 +34,7 @@ const registryV1 = {
       accessKind: 'direct', routeContractVersion: 1, accountCatalogRequired: false,
       defaults: { main: 'gemini-3.7-flash', image: 'gemini-3.1-flash-image', vision: 'gemini-3.7-flash' },
       models: [
-        { id: 'gemini-3.7-flash', label: 'Google Vision', vendor: 'Google', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {} },
+        { id: 'gemini-3.7-flash', label: 'Google Vision', vendor: 'Google', roles: ['main', 'vision'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: {referenceImages: true} },
         { id: 'gemini-3.1-flash-image', label: 'Google Image', vendor: 'Google', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -41,12 +43,14 @@ const registryV1 = {
       defaults: { main: 'doubao-text', image: 'doubao-image', vision: 'doubao-vision' },
       models: [
         { id: 'doubao-text', label: 'Doubao Main', vendor: 'ByteDance Doubao', roles: ['main'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, capabilities: {} },
-        { id: 'doubao-vision', label: 'Doubao Vision', vendor: 'ByteDance Doubao', roles: ['vision'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: {} },
+        { id: 'doubao-vision', label: 'Doubao Vision', vendor: 'ByteDance Doubao', roles: ['vision'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: {referenceImages: true} },
         { id: 'doubao-image', label: 'Seedream Image', vendor: 'ByteDance Seedream', roles: ['image'], lifecycle: 'stable', selectable: true, recommended: true, verified: false, inputModalities: ['text', 'image'], capabilities: { aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1', '16:9'], outputFormats: ['png'], resolutions: ['1K', '2K', '4K'], refineResolutions: ['1K', '2K', '4K'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
   },
 }
+
+beforeEach(()=>{window.localStorage.clear();globalThis.indexedDB=new IDBFactory()})
 
 let restoreFetch = null
 
@@ -67,7 +71,7 @@ function installBackend(registry = registryV1, options = {}) {
         catalogAuth: 'access-key-required',
         verificationMode: 'inference-smoke',
         providerRegistry: registry.providers.ark,
-        probeResults: body.probes.map((probe) => ({ ...probe, state: 'verified', accountAvailable: true, verifiedBy: 'inference-smoke' })),
+        probeResults: (body.probes || []).map((probe) => ({ ...probe, state: 'verified', accountAvailable: true, verifiedBy: 'inference-smoke' })),
       })
     }
     if (body.action === 'createJob') return Response.json({ code: 0, jobId: `job-${requests.length}`, status: 'queued' })
@@ -144,7 +148,7 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
   registry.providerRegionContractVersion=1
   registry.providers.minimax=structuredClone(STATIC_MODEL_REGISTRY.minimax)
   const {requests,user}=await renderReadyApp(registry,{
-    getJob:({jobId})=>({id:jobId,status:'succeeded',outputFormat:'png',
+    getJob:({jobId})=>({id:jobId,status:'succeeded',outputFormat:'png',figureTypeId:'workflow',generationPath:'model-v1',
       resultImages:[{filename:'result.png',candidateId:0,mimeType:'image/png',url:'/result.png',objectKey:`jobs/${jobId}/result.png`}],stages:[]}),
   })
   await user.click(screen.getByRole('button',{name:'打开完整设置'}))
@@ -162,7 +166,7 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.type(screen.getByLabelText('精修指令'),'放大标签并保持版式')
   await user.click(screen.getByRole('button',{name:'提交精修'}))
-  await waitFor(()=>assert.ok(requests.some(request=>request.body?.action==='refineImage')))
+  await waitFor(()=>assert.ok(requests.some(request=>request.body?.action==='refineImage'), [...document.querySelectorAll('.refine-submit-hint,[role=alert]')].map(n=>n.textContent).join('; ')))
   const body=requests.find(request=>request.body?.action==='refineImage').body
   assert.deepEqual(body.providerRegions,{minimax:region})
   assert.deepEqual(body.apiKeys,{minimax:`fixture-${region}-key`})
@@ -180,7 +184,7 @@ test('generation settings drawer never steals focus after the user enters a cred
   assert.equal(document.activeElement === keyInput, true)
 })
 
-test('simple mode uses one access channel default routes and sends only its reachable key', async () => {
+test('simple mode automatically prefers a visual main and sends direct-read mode with one channel key', async () => {
   const { requests, user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
   const modeGroup = screen.getByRole('group', { name: '使用模式' })
@@ -188,6 +192,9 @@ test('simple mode uses one access channel default routes and sends only its reac
   const providerGroup = screen.getByRole('group', { name: 'API 接入渠道' })
   assert.equal(providerGroup.querySelector('button[aria-pressed="true"]')?.textContent.includes('阿里云百炼'), true)
   assert.ok(screen.getByText('接入凭据'))
+  assert.deepEqual([...document.querySelectorAll('[data-model-role]')].map(element=>element.dataset.modelRole), ['main','image'])
+  assert.ok(screen.getByText('同时负责图片理解'))
+  assert.equal(screen.queryByRole('button', {name: /选择无|启用独立视觉模型/}), null)
   await new Promise((resolve) => setTimeout(resolve, 100))
   await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
@@ -195,15 +202,34 @@ test('simple mode uses one access channel default routes and sends only its reac
   const body = requests.find((request) => request.body?.action === 'createJob').body
   assert.equal(body.configurationMode, 'simple')
   assert.equal(body.provider, 'bailian')
+  assert.equal(body.visionMode, 'none')
+  assert.equal(body.referenceImageMode, undefined, 'no reference upload means no legacy reference mode field')
   assert.deepEqual(body.apiKeys, { bailian: 'bailian-key' })
   assert.deepEqual(body.modelRoutes, {
-    main: { accessProvider: 'bailian', modelId: 'qwen3.8-max' },
+    main: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
     image: { accessProvider: 'bailian', modelId: 'wan2.7-image-pro' },
-    vision: { accessProvider: 'bailian', modelId: 'qwen3.7-plus' },
   })
   assert.equal(body.mainModelName, body.modelRoutes.main.modelId)
   assert.equal(body.imageModelName, body.modelRoutes.image.modelId)
-  assert.equal(body.referenceVisionModelName, body.modelRoutes.vision.modelId)
+  assert.equal(body.referenceVisionModelName, undefined)
+})
+
+test('ordinary mode automatically uses a vision assistant when no available visual main exists', async () => {
+  const registry=structuredClone(registryV1)
+  registry.providers.bailian.models.find(model=>model.id==='qwen3.7-plus').roles=['vision']
+  const {requests,user}=await renderReadyApp(registry)
+  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+  assert.ok(screen.getByText('自动辅助主模型理解图片'))
+  assert.deepEqual([...document.querySelectorAll('[data-model-role]')].map(element=>element.dataset.modelRole), ['main','image','vision'])
+  assert.equal(screen.queryByRole('button',{name:/选择无|启用独立视觉模型/}),null)
+  await user.type(screen.getByLabelText('阿里云百炼 接入密钥'),'fixture-key')
+  await user.click(submitButton())
+  await waitFor(()=>assert.ok(requests.some(request=>request.body?.action==='createJob')))
+  const body=requests.find(request=>request.body?.action==='createJob').body
+  assert.equal(body.mainModelName,'qwen3.8-max')
+  assert.equal(body.visionMode,'assist')
+  assert.equal(body.referenceImageMode,undefined, 'review routing uses visionMode without an uploaded reference')
+  assert.deepEqual(body.apiKeys,{bailian:'fixture-key'})
 })
 
 test('advanced mode selects mixed provider routes and deduplicates involved credentials', async () => {
@@ -239,7 +265,7 @@ test('Ark verification is optional and a failed probe does not block submit', as
     providerAccountCatalog: (body) => Response.json({
       code: 0,
       provider: 'ark',
-      probeResults: body.probes.map((probe) => ({ ...probe, state: probe.role === 'image' ? 'failed' : 'verified' })),
+      probeResults: (body.probes || []).map((probe) => ({ ...probe, state: probe.role === 'image' ? 'failed' : 'verified' })),
     }),
   })
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
@@ -306,7 +332,7 @@ test('Ark discards an in-flight verification response after the key changes', as
   assert.equal(screen.queryAllByText('已验证').length, 0)
 })
 
-test('Ark stale completion releases its own busy state after generation switches to refine', async () => {
+test('Ark verification remains valid across generation and refinement using the same required roles', async () => {
   const gate = deferred()
   const requests = installBackend(registryV1, {
     providerAccountCatalog: () => gate.promise,
@@ -338,11 +364,11 @@ test('Ark stale completion releases its own busy state after generation switches
   }))
 
   await waitFor(() => assert.equal(verifyButton.disabled, false))
-  assert.equal(screen.queryAllByText('已验证').length, 0)
+  assert.equal(screen.queryAllByText('已验证').length, 2)
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '生成候选图' }))
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  assert.equal(screen.queryAllByText('已验证').length, 0, 'stale generation probes must not be restored after returning from refine')
+  assert.equal(screen.queryAllByText('已验证').length, 2, 'same required routes retain their probe state')
 })
 
 test('an older Ark completion cannot clear the busy state owned by a newer request', async () => {
@@ -378,7 +404,7 @@ test('an older Ark completion cannot clear the busy state owned by a newer reque
   await waitFor(() => assert.equal(Boolean(verifyButton.querySelector('.spin')), false))
 })
 
-test('SVG generation rejects a disabled image route even though image execution is unreachable', async () => {
+test('SVG generation preserves an unused disabled image draft without blocking the main route', async () => {
   const invalidRegistry = structuredClone(registryV1)
   const image = invalidRegistry.providers.bailian.models.find((model) => model.id === 'wan2.7-image-pro')
   image.selectable = false
@@ -389,8 +415,11 @@ test('SVG generation rejects a disabled image route even though image execution 
   await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
 
-  assert.equal(requests.some((request) => request.body?.action === 'createJob'), false)
-  assert.ok(screen.getByText('图像模型已停用'))
+  await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
+  assert.equal(requests.find(request => request.body?.action === 'createJob').body.modelRoutes.image, undefined)
+  await user.selectOptions(screen.getByLabelText('导出格式'), 'png')
+  await user.click(screen.getByRole('button',{name:/专业模式/}))
+  assert.match(screen.getByRole('button',{name:'图像生成模型',exact:true}).textContent,/Wan Image/)
 })
 
 test('legacy registry keeps simple fallback without explicit routes', async () => {
@@ -403,9 +432,9 @@ test('legacy registry keeps simple fallback without explicit routes', async () =
   const body = requests.find((request) => request.body?.action === 'createJob').body
   assert.equal(body.modelRoutes, undefined)
   assert.equal(body.provider, 'bailian')
-  assert.equal(body.mainModelName, 'qwen3.8-max')
+  assert.equal(body.mainModelName, 'qwen3.7-plus')
   assert.equal(body.imageModelName, 'wan2.7-image-pro')
-  assert.equal(body.referenceVisionModelName, 'qwen3.7-plus')
+  assert.equal(body.referenceVisionModelName, undefined)
 })
 
 test('refine tab independently shows route summary and opens shared settings focused on refine models and credentials', async () => {
@@ -475,6 +504,7 @@ test('switching from a 4K refine model preserves the selected size and blocks un
       id: jobId,
       status: 'succeeded',
       outputFormat: 'png',
+      figureTypeId: 'workflow', generationPath: 'model-v1',
       resultImages: [{ filename: 'result.png', candidateId: 0, mimeType: 'image/png', url: '/result.png', objectKey: `jobs/${jobId}/result.png` }],
       stages: [],
     }),

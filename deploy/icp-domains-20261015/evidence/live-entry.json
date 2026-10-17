@@ -1,0 +1,262 @@
+{
+  "checkedAt": "2026-10-15T07:49:19.477400+00:00",
+  "http": {
+    "https://tuyansci.cn/": {
+      "status": 200
+    },
+    "http://tuyansci.cn/": {
+      "status": 301,
+      "Location": "https://tuyansci.cn/"
+    },
+    "https://www.tuyansci.cn/": {
+      "status": 301,
+      "Location": "https://tuyansci.cn/"
+    },
+    "http://www.tuyansci.cn/": {
+      "status": 301,
+      "Location": "https://tuyansci.cn/"
+    },
+    "https://openacad.xyz/": {
+      "status": 200
+    },
+    "http://openacad.xyz/": {
+      "status": 301,
+      "Location": "https://openacad.xyz/"
+    },
+    "https://www.openacad.xyz/": {
+      "status": 301,
+      "Location": "https://openacad.xyz/"
+    },
+    "http://www.openacad.xyz/": {
+      "status": 301,
+      "Location": "https://openacad.xyz/"
+    },
+    "https://paperbanana.asia/": {
+      "status": 301,
+      "Location": "https://www.paperbanana.asia/"
+    },
+    "https://www.paperbanana.asia/": {
+      "status": 200,
+      "Access-Control-Allow-Origin": "*"
+    },
+    "https://api.paperbanana.asia/ready": {
+      "status": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    },
+    "https://tuyansci.cn/ready": {
+      "status": 200,
+      "body": {
+        "code": 0,
+        "ok": true,
+        "runtime": "gateway",
+        "auth": "better-auth",
+        "authReady": true,
+        "backend": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "ok": true,
+            "service": "paperbanana-api",
+            "runtime": "node",
+            "version": "0.1.0",
+            "ready": true,
+            "dependencies": {
+              "mongodb": "ready",
+              "oss": "ready",
+              "providerEgress": "ready",
+              "benchmark": "ready"
+            }
+          }
+        },
+        "dependencies": {
+          "auth": {
+            "ok": true
+          },
+          "backend": {
+            "ok": true,
+            "status": 200,
+            "data": {
+              "ok": true,
+              "service": "paperbanana-api",
+              "runtime": "node",
+              "version": "0.1.0",
+              "ready": true,
+              "dependencies": {
+                "mongodb": "ready",
+                "oss": "ready",
+                "providerEgress": "ready",
+                "benchmark": "ready"
+              }
+            }
+          }
+        }
+      }
+    },
+    "https://tuyansci.cn/api/auth/watcha/status": {
+      "status": 200,
+      "body": {
+        "available": false,
+        "linked": false,
+        "hasPassword": false,
+        "emailVerified": false,
+        "pending": null
+      }
+    },
+    "https://api.paperbanana.asia/api/auth/watcha/status": {
+      "status": 200,
+      "body": {
+        "available": true,
+        "linked": false,
+        "hasPassword": false,
+        "emailVerified": false,
+        "pending": null
+      }
+    },
+    "https://openacad.xyz/api/health": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "queue": true,
+        "workers": 2,
+        "message": "服务正常"
+      }
+    }
+  },
+  "tls": {
+    "tuyansci.cn": {
+      "valid": true,
+      "expires": "Jan 13 06:37:56 2027 GMT",
+      "names": [
+        [
+          "DNS",
+          "tuyansci.cn"
+        ],
+        [
+          "DNS",
+          "www.tuyansci.cn"
+        ]
+      ]
+    },
+    "www.tuyansci.cn": {
+      "valid": true,
+      "expires": "Jan 13 06:37:56 2027 GMT",
+      "names": [
+        [
+          "DNS",
+          "tuyansci.cn"
+        ],
+        [
+          "DNS",
+          "www.tuyansci.cn"
+        ]
+      ]
+    },
+    "openacad.xyz": {
+      "valid": true,
+      "expires": "Jan 13 06:36:49 2027 GMT",
+      "names": [
+        [
+          "DNS",
+          "openacad.xyz"
+        ],
+        [
+          "DNS",
+          "www.openacad.xyz"
+        ]
+      ]
+    },
+    "www.openacad.xyz": {
+      "valid": true,
+      "expires": "Jan 13 06:36:49 2027 GMT",
+      "names": [
+        [
+          "DNS",
+          "openacad.xyz"
+        ],
+        [
+          "DNS",
+          "www.openacad.xyz"
+        ]
+      ]
+    }
+  },
+  "cors": {
+    "https://tuyansci.cn": {
+      "status": 200,
+      "Access-Control-Allow-Origin": "https://tuyansci.cn",
+      "Access-Control-Allow-Methods": "GET, PUT, HEAD"
+    },
+    "https://www.paperbanana.asia": {
+      "status": 200,
+      "Access-Control-Allow-Origin": "https://www.paperbanana.asia",
+      "Access-Control-Allow-Methods": "GET, PUT, HEAD"
+    },
+    "https://paperbanana.asia": {
+      "status": 200,
+      "Access-Control-Allow-Origin": "https://paperbanana.asia",
+      "Access-Control-Allow-Methods": "GET, PUT, HEAD"
+    },
+    "https://example.invalid": {
+      "status": 403
+    }
+  },
+  "dns": {
+    "tuyansci.cn": [
+      "116.62.146.226"
+    ],
+    "www.tuyansci.cn": [
+      "116.62.146.226"
+    ],
+    "openacad.xyz": [
+      "116.62.146.226"
+    ],
+    "www.openacad.xyz": [
+      "116.62.146.226"
+    ]
+  }
+}

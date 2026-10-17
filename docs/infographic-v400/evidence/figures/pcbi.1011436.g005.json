@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1011436.g005",
+  "paper": "pcbi.1011436",
+  "figure": {
+    "id": "pcbi.1011436.g005",
+    "label": "Fig 5",
+    "caption": "Microbiome Recurrent Neural Network architecture.\nInputs to the RNN at time step t − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, t. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011436.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011436.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Microbiome Recurrent Neural Network architecture.</title>\n<p>Inputs to the RNN at time step <italic>t</italic> − 1 include the state of species abundances, metabolite concentrations, control inputs, and a latent vector that stores information from previous steps and whose dimension determines the flexibility of the model. The output from each MiRNN block is the predicted system state and the latent vector at the next time step, <italic>t</italic>. To avoid the physically unrealistic emergence of previously absent species, a constrained feed-forward neural network (FFNN) outputs zero valued species abundances if species abundances at the previous time step were zero.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011436.g005\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011436.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011436",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011436",
+    "title": "Integrating a tailored recurrent neural network with Bayesian experimental design to optimize microbial community functions",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Jaron C. Thompson",
+      "Victor M. Zavala",
+      "Ophelia S. Venturelli"
+    ],
+    "year": "2023",
+    "license": "2023\nThompson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011436.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g005.png",
+      "bytes": 229748,
+      "sha256": "71914ec0a44f0caa468d3a08ad1e07024b28bbcb43de36cf41bf078c49bb1ab6"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011436.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011436.g005.tif",
+      "bytes": 302684,
+      "sha256": "2e3ea9076152ce5f3fee7887f4f0b1996f196adf0d1b1acfeeaa3e52a2bb1feb"
+    }
+  }
+}

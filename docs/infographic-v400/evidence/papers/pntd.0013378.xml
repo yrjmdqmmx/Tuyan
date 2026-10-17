@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN" "http://jats.nlm.nih.gov/publishing/1.3/JATS-journalpublishing1-3.dtd">
+<article article-type="research-article" dtd-version="1.3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<processing-meta>
+<custom-meta-group content-type="composition">
+<custom-meta specific-use="newgen" xlink:href="https://www.newgen.co/">
+<meta-name>Composition Vendor</meta-name>
+<meta-value>Newgen KnowledgeWorks (P) Ltd.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</processing-meta>
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Negl Trop Dis</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosntds</journal-id>
+<journal-title-group>
+<journal-title>PLOS Neglected Tropical Diseases</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1935-2735</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378</article-id>
+<article-id pub-id-type="publisher-id">PNTD-D-25-01183</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Neglected tropical diseases</subject><subj-group><subject>Dengue fever</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Viral diseases</subject><subj-group><subject>Dengue fever</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Neglected tropical diseases</subject><subj-group><subject>Leishmaniasis</subject><subj-group><subject>Kala-azar</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Parasitic diseases</subject><subj-group><subject>Protozoan infections</subject><subj-group><subject>Leishmaniasis</subject><subj-group><subject>Kala-azar</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Zoonoses</subject><subj-group><subject>Leishmaniasis</subject><subj-group><subject>Kala-azar</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Neglected tropical diseases</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Neglected tropical diseases</subject><subj-group><subject>Chikungunya infection</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Infectious diseases</subject><subj-group><subject>Viral diseases</subject><subj-group><subject>Chikungunya infection</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Parasitic diseases</subject><subj-group><subject>Helminth infections</subject><subj-group><subject>Filariasis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Geographical locations</subject><subj-group><subject>Asia</subject><subj-group><subject>India</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Public and occupational health</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Parasitic diseases</subject><subj-group><subject>Helminth infections</subject><subj-group><subject>Filariasis</subject><subj-group><subject>Lymphatic filariasis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical conditions</subject><subj-group><subject>Tropical diseases</subject><subj-group><subject>Neglected tropical diseases</subject><subj-group><subject>Lymphatic filariasis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Noise and neglect: Social-media signals expose attention gaps for dengue, chikungunya, lymphatic filariasis and kala-azar in India’s vector-borne NTDs</article-title>
+<alt-title alt-title-type="running-head">Social media reveals attention gaps in India’s vector‑borne NTDs</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Konhar</surname>
+<given-names>Ruchishree</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Lalsanga</surname>
+<given-names>James K.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-1093-7166</contrib-id>
+<name name-style="western">
+<surname>Biswal</surname>
+<given-names>Devendra Kumar</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>CSIR Institute of Genomics and Integrative Biology (CSIR-IGIB), Delhi, India</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Academy of Scientific and Innovative Research (AcSIR), Ghaziabad, India</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Zoology, North-Eastern Hill University, Shillong, India</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Bioinformatics Centre, North-Eastern Hill University, Shillong, India</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Loong</surname>
+<given-names>Shih Keng</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/></contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Universiti Malaya, MALAYSIA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">devbioinfo@gmail.com</email></corresp>
+</author-notes>
+<pub-date pub-type="epub"><day>18</day><month>3</month><year>2026</year></pub-date>
+<pub-date pub-type="collection"><month>3</month><year>2026</year></pub-date>
+<volume>20</volume>
+<issue>3</issue>
+<elocation-id>e0013378</elocation-id>
+<history>
+<date date-type="received"><day>16</day><month>7</month><year>2025</year></date>
+<date date-type="accepted"><day>17</day><month>2</month><year>2026</year></date>
+</history>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Konhar et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pntd.0013378"/>
+<abstract>
+<sec id="sec001">
+<title>Background</title>
+<p>Neglected tropical and vector-borne diseases, including dengue, chikungunya, lymphatic filariasis, and kala-azar, pose substantial public health burdens in India. Despite WHO recommendations for enhanced disease surveillance and targeted communication strategies, little is known about public perceptions and discussions of these diseases across digital platforms. Understanding these perceptions can guide evidence-based policy making and public health messaging.</p>
+</sec>
+<sec id="sec002">
+<title>Methods</title>
+<p>We conducted an in silico analysis of publicly accessible social and news media data related to dengue, chikungunya, filariasis, and kala-azar in India from January 2019 to December 2023. YouTube comments and Google News headlines were systematically retrieved, pre-processed, and analysed through sentiment analysis (VADER lexicon) and Latent Dirichlet Allocation (LDA) topic modelling. Facebook and Twitter data were not included due to Application programming interface (API) restrictions and their current subscription-based models, limiting free access even for research purposes. We visualized disease-specific digital attention in comparison to epidemiological burden and created chord, Sankey, and network diagrams to elucidate thematic and sentiment-based interactions.</p>
+</sec>
+<sec id="sec003">
+<title>Results</title>
+<p>Across keyword-matched items (n = 330), dengue accounted for 173 (~52%) and also had the highest mean annual reported burden (163,679 cases/year; 2019–2023). Lymphatic filariasis showed disproportionately high attention (106 items/mentions vs 3,060 reported cases/year), while kala-azar had minimal visibility (5 items; none on YouTube). Sentiment was overall neutral-to-positive, with Google News more neutral and YouTube more positive. Topics emphasized outbreak alerts, public-health campaigns, and prevention/treatment, with recurring vaccine/innovation themes.</p>
+</sec>
+<sec id="sec004">
+<title>Conclusions</title>
+<p>Our study presents a novel approach combining digital surveillance, sentiment analysis, and topic modelling to provide insights into public perceptions of NTDs in India. The observed mismatch between epidemiological burden and online attention underscores the need for strategic public health messaging, aligning with WHO recommendations for community engagement and tailored disease-awareness campaigns. This research provides a valuable tool for policymakers to enhance the effectiveness of communication strategies and improve targeted intervention planning for neglected tropical diseases in India.</p>
+</sec>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>Neglected tropical diseases (NTDs) including dengue, chikungunya, lymphatic filariasis, and kala-azar continue to afflict millions across India, yet public attention and conversation around them remain inconsistent. We examined more than 45,000 YouTube comments and 270 Google News reports posted between January 2019 and December 2023 to see how these four NTDs are discussed online. After automated text cleaning, VADER sentiment scoring and Latent Dirichlet Allocation topic modelling, we overlaid the resulting tone-and-topic maps on official disease-burden data. Dengue dominated the discussion accounting for well over half of all references, whereas kala-azar, though still endemic, drew scarcely any notice. Overall sentiment skewed neutral-to-positive and focused largely on prevention, treatment and vaccine news. Interactive bubble maps, Sankey flows and chord diagrams vividly exposed the gap between epidemiological need and digital attention. We could not analyse Facebook or Twitter because their new, pay-walled APIs make large-scale data collection prohibitively expensive for researchers, underscoring a growing obstacle for digital epidemiology. Our reproducible, low-cost workflow highlights which NTDs are being overlooked online, providing Indian health authorities with actionable evidence and supporting the World Health Organization’s call for stronger community engagement in the fight against NTDs.</p>
+</abstract>
+<funding-group>
+<funding-statement>The author(s) received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="5"/>
+<page-count count="21"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All data underlying the findings described in this manuscript are fully available without restriction. The cleaned YouTube comment corpus (45 672 comments) and the Google News headline dataset (273 items), together with de-identified metadata and preprocessing scripts, have been deposited in Zenodo (DOI: 10.5281/zenodo.15883324). The full analysis code, for sentiment scoring (VADER), topic modeling (LDA), data normalization, and visualization scripts (matplotlib, Plotly, circlize), is hosted on GitHub at <ext-link ext-link-type="uri" xlink:href="https://github.com/devbioinfo/ntd-digital-surveillance/releases/tag/v0.1.0" xlink:type="simple">https://github.com/devbioinfo/ntd-digital-surveillance/releases/tag/v0.1.0</ext-link>.The state level epidemiological case counts for dengue, chikungunya, lymphatic filariasis, and kala azar (2015–2023) were downloaded from the National Vector Borne Disease Control Programme (NVBDCP) annual tables (2019–2023) and are publicly accessible via the NVBDCP website (<ext-link ext-link-type="uri" xlink:href="http://www.nvbdcp.gov.in/" xlink:type="simple">http://www.nvbdcp.gov.in/)</ext-link>. Any additional aggregate data generated during this study (e.g., normalized attention‐burden matrices, waffle‐chart grid files, bubble‐map shapefiles) are included as <xref ref-type="sec" rid="sec039">Supporting Information</xref>. Where applicable, provenance metadata conform to FAIR principles and are embedded within each repository entry to ensure reproducibility and long-term accessibility.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec005" sec-type="intro">
+<title>Introduction</title>
+<p>Neglected tropical diseases (NTDs) impose a disproportionate health and socioeconomic burden on low- and middle-income countries, particularly in South Asia [<xref ref-type="bibr" rid="pntd.0013378.ref001">1</xref>]. India alone accounts for an estimated 40% of global dengue cases, remains one of the few endemic regions for lymphatic filariasis, and continues to report clustered outbreaks of chikungunya and kala-azar [<xref ref-type="bibr" rid="pntd.0013378.ref002">2</xref>]. Despite decades of efforts to eliminate these NTDs, under-resourced health systems combined with limited vector surveillance and variable public awareness have impeded progress towards the WHO 2030 NTD road-map targets [<xref ref-type="bibr" rid="pntd.0013378.ref003">3</xref>]. Effective risk communication is therefore essential to mobilise communities, guide behaviour change, and sustain political commitment [<xref ref-type="bibr" rid="pntd.0013378.ref004">4</xref>].</p>
+<sec id="sec006">
+<title>Why focus on these four NTDs?</title>
+<p>Guided by <xref ref-type="table" rid="pntd.0013378.t001">Table 1</xref>, we prioritised dengue, chikungunya, lymphatic filariasis and visceral leishmaniasis (kala-azar) because they constitute the bulk of India’s vector-borne NTD burden, underpin key national elimination programmes, and span distinct transmission ecologies described below.</p>
+<table-wrap id="pntd.0013378.t001" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.t001</object-id><label>Table 1</label><caption><title>Comparative overview of key vector-borne NTDs relevant to India’s digital surveillance agenda and elimination strategies.</title></caption>
+<alternatives><graphic id="pntd.0013378.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.t001" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Disease</th>
+<th align="left">Pathogen/ Agent</th>
+<th align="left">Main vector(s)</th>
+<th align="left">Latest global burden*</th>
+<th align="left">Latest India burden*</th>
+<th align="left">Current status/ programme notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><bold>Dengue</bold></td>
+<td align="left">Dengue virus, DENV-1–4 (Flaviviridae)</td>
+<td align="left"><italic>Aedes aegypti</italic>, <italic>Ae. albopictus</italic></td>
+<td align="left">≥ 7.6 million reported cases and &gt; 3,000 deaths till 30 Apr 2024 [<xref ref-type="bibr" rid="pntd.0013378.ref005">5</xref>]</td>
+<td align="left">289,235 cases and 485 deaths in 2023 [<xref ref-type="bibr" rid="pntd.0013378.ref006">6</xref>]</td>
+<td align="left">Endemic nationwide; peak Jul–Oct; Phase-3 vaccine trial launched in 2024; metro-level digital early-warning dashboards expanding. [<xref ref-type="bibr" rid="pntd.0013378.ref006">6</xref>]</td>
+</tr>
+<tr>
+<td align="left"><bold>Chikungunya</bold></td>
+<td align="left">Chikungunya virus (Alphavirus)</td>
+<td align="left"><italic>Aedes</italic> spp.</td>
+<td align="left">≈ 320,000 cases and &gt; 120 deaths Jun 2023–Jun 2024 [<xref ref-type="bibr" rid="pntd.0013378.ref007">7</xref>]; 119 countries with local transmission by Dec 2024 [<xref ref-type="bibr" rid="pntd.0013378.ref008">8</xref>]</td>
+<td align="left">200,064 suspected and 11,477 confirmed cases in 2023 [<xref ref-type="bibr" rid="pntd.0013378.ref009">9</xref>]</td>
+<td align="left">Endemic in 24 states/UTs; ≤ 60% of patients develop chronic arthralgia; No licensed vaccine; hotspot mapping with Twitter/RSS data yields ≈ 80% accuracy [<xref ref-type="bibr" rid="pntd.0013378.ref009">9</xref>]</td>
+</tr>
+<tr>
+<td align="left"><bold>Lymphatic filariasis</bold></td>
+<td align="left"><italic>Wuchereria bancrofti</italic> (≈ 99%), <italic>Brugia</italic> spp.</td>
+<td align="left"><italic>Culex quinquefasciatus</italic>, <italic>Anopheles</italic> spp., <italic>Aedes</italic> spp.</td>
+<td align="left">657 million people in 39 countries still need preventive chemotherapy [<xref ref-type="bibr" rid="pntd.0013378.ref010">10</xref>]</td>
+<td align="left">619, 000 lymph-oedema and 126 000 hydrocele cases documented; ≈ 450 million Indians at risk [<xref ref-type="bibr" rid="pntd.0013378.ref011">11</xref>]</td>
+<td align="left">&gt; 94% of endemic districts have completed ≥ 5 MDA rounds; triple-drug therapy scaling; Community apps piloted for real-time morbidity reporting [<xref ref-type="bibr" rid="pntd.0013378.ref011">11</xref>]</td>
+</tr>
+<tr>
+<td align="left"><bold>Kala-azar</bold> (Visceral leishmaniasis)</td>
+<td align="left"><italic>Leishmania donovani</italic> (protozoan)</td>
+<td align="left"><italic>Phlebotomus argentipes</italic> sandfly</td>
+<td align="left">50,000–90,000 new cases annually worldwide, with only 25–45% reported [<xref ref-type="bibr" rid="pntd.0013378.ref012">12</xref>]</td>
+<td align="left">524 cases and 4 deaths in 2023 [<xref ref-type="bibr" rid="pntd.0013378.ref013">13</xref>]</td>
+<td align="left">India met ≤ 1 case/10 000 population elimination target in &gt; 90% of blocks, yet micro-foci persist in Bihar, Jharkhand, West Bengal, and eastern UP; active case detection + IRS continue, tracked via micro-dashboards [<xref ref-type="bibr" rid="pntd.0013378.ref013">13</xref>].</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t001fn001"><p>*Most recent year with complete data at the time of writing (accessed 12 July 2025).</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<list list-type="order">
+<list-item>
+<p><bold>Epidemiological importance:</bold> Together they account for more than 90% of vector-borne NTD related morbidity in India [<xref ref-type="bibr" rid="pntd.0013378.ref002">2</xref>]. Dengue and chikungunya cause explosive urban outbreaks and substantial outpatient burden; filariasis affects over 23 million people chronically; kala-azar has the highest fatality among Indian NTDs if untreated.</p>
+</list-item>
+<list-item>
+<p><bold>Programmatic relevance:</bold> Each disease features prominently in India’s national elimination targets—dengue and chikungunya under Integrated Vector Management (IVM), filariasis under Mass Drug Administration (MDA), and kala-azar under the Kala-azar Elimination Programme [<xref ref-type="bibr" rid="pntd.0013378.ref014">14</xref>].</p>
+</list-item>
+<list-item>
+<p><bold>Diverse transmission ecologies:</bold> Including mosquito-borne arboviruses (dengue, chikungunya), mosquito-borne helminth infection (filariasis) and sandfly-borne protozoal disease (kala-azar) allows comparison across distinct ecological and social contexts, thereby testing the versatility of digital surveillance methods.</p>
+</list-item>
+</list>
+<p>The rise of social media and digital news platforms has created a continuous stream of user-generated content that can be repurposed for public health intelligence, an approach often termed digital epidemiology [<xref ref-type="bibr" rid="pntd.0013378.ref015">15</xref>]. Research shows that online search queries and Twitter posts can anticipate influenza activity days before traditional surveillance reports [<xref ref-type="bibr" rid="pntd.0013378.ref016">16</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref017">17</xref>]. Similar methodologies have been adapted for dengue in Brazil [<xref ref-type="bibr" rid="pntd.0013378.ref018">18</xref>], Zika in the Caribbean [<xref ref-type="bibr" rid="pntd.0013378.ref019">19</xref>], and more recently, COVID-19 worldwide [<xref ref-type="bibr" rid="pntd.0013378.ref020">20</xref>]. Yet, for most Indian NTDs little is known about the quality or tone of digital discourse, information critical for designing culturally resonant health messages [<xref ref-type="bibr" rid="pntd.0013378.ref021">21</xref>].</p>
+<p>Text mining techniques such as sentiment analysis and topic modelling provide scalable ways to synthesise large volumes of textual data into actionable insights. Sentiment analysis quantifies emotional polarity, revealing whether online conversations are predominantly positive, neutral, or negative [<xref ref-type="bibr" rid="pntd.0013378.ref022">22</xref>]. Latent Dirichlet Allocation (LDA) topic modelling, by contrast, uncovers latent thematic clusters, enabling researchers to track evolving public concerns [<xref ref-type="bibr" rid="pntd.0013378.ref023">23</xref>]. Although these methods have been applied to HIV stigma [<xref ref-type="bibr" rid="pntd.0013378.ref024">24</xref>] and malaria awareness [<xref ref-type="bibr" rid="pntd.0013378.ref025">25</xref>], a comprehensive, multi-platform analysis for India’s major NTDs is still lacking.</p>
+<p>The present study addresses this gap by performing an in silico analysis of YouTube comments and Google News headlines related to dengue, chikungunya, lymphatic filariasis, and kala-azar between 2019 and 2023. We selected YouTube and Google News because they enable broad coverage and reproducible data collection through a clearly defined, queryable content stream, and they provide consistent metadata (e.g., timestamps, source/channel information, and text) needed for our analyses. While other platforms (e.g., Reddit, Telegram, Mastodon) may provide public access, their community-, channel-, or instance-based structures often require additional platform-specific sampling decisions that can reduce comparability and reproducibility within the scope of this work. In addition, recent paywalled access to Twitter and Facebook APIs limits free research use [<xref ref-type="bibr" rid="pntd.0013378.ref026">26</xref>]. Our objectives were to (a) quantify online attention for each NTD, (b) describe sentiment and thematic patterns, and (c) compare digital attention with epidemiological burden to identify communication gaps. By combining digital surveillance with conventional burden data, we provide evidence to inform India’s NTD communication strategies and support WHO recommendations for enhanced community engagement.</p>
+</sec>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec008">
+<title>Ethics statement</title>
+<p>No personally identifiable information was collected or stored. Usernames were hashed and discarded after aggregation. The study adhered to Article 12 of the ICMR National Ethical Guidelines for biomedical research involving anonymised public data [<xref ref-type="bibr" rid="pntd.0013378.ref027">27</xref>]. All data used in this study were obtained from publicly available and aggregated digital platforms. No individual-level, identifiable, or private data were accessed or analysed. Accordingly, institutional ethical approval was not required for this study.</p>
+</sec>
+<sec id="sec009">
+<title>2.1. Study design and reporting standards</title>
+<p>This investigation employed an in silico, cross-sectional design to characterise the volume, sentiment, and thematic content of publicly available digital discourse pertaining to four NTDs in India. The five-year study window (1 January 2019 – 31 December 2023) was selected to (a) encompass at least one complete epidemic cycle for dengue and chikungunya, (b) capture the most recent programme milestones for filariasis and kala-azar elimination, and (c) minimise artefacts introduced by early social-media expansion before 2018 [<xref ref-type="bibr" rid="pntd.0013378.ref028">28</xref>]. Methods were drafted in accordance with WHO guidance on digital-data surveillance [<xref ref-type="bibr" rid="pntd.0013378.ref029">29</xref>] and the Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) checklist for observational studies [<xref ref-type="bibr" rid="pntd.0013378.ref030">30</xref>].</p>
+<p>All analyses were conducted on de-identified, publicly accessible text; hence, no human participants were recruited, and institutional review board approval was not required under Indian Council of Medical Research (ICMR) rules for secondary data [<xref ref-type="bibr" rid="pntd.0013378.ref027">27</xref>]. The manuscript adheres to the PLOS Neglected Tropical Diseases technical requirements, including detailed data-availability statements and deposition of code in an open repository [<xref ref-type="bibr" rid="pntd.0013378.ref031">31</xref>].</p>
+</sec>
+<sec id="sec010">
+<title>2.2. Data sources and acquisition</title>
+<p>User comments were extracted from YouTube using yt-dlp (v2024.03) [<xref ref-type="bibr" rid="pntd.0013378.ref032">32</xref>]. To ensure local relevance, we employed bilingual queries (English and Hindi) under an India-localized search configuration. While precise comment-level geolocation is unavailable, this locale-based filtering strategy prioritizes India-targeted content, yielding a corpus of 45,672 comments from 134 videos. From this aggregate corpus, we extracted specific disease mentions using the keyword criteria listed in <xref ref-type="table" rid="pntd.0013378.t002">Table 2</xref>. The remaining comments constituted general channel engagement (e.g., greetings, video appreciation) and were retained for corpus normalization, while the subset of explicit keyword matches was used for disease-specific sentiment and topic analyses. Mainstream media coverage was sampled using the GoogleNews Python wrapper (v1.7), throttled to comply with fair-use limits [<xref ref-type="bibr" rid="pntd.0013378.ref033">33</xref>]. Queries were restricted to the “India” edition (English language) to ensure reproducible, geographically specific aggregation, resulting in 273 unique articles [<xref ref-type="bibr" rid="pntd.0013378.ref034">34</xref>]. Official disease burden data were sourced from National Vector Borne Disease Control Programme (NVBDCP) [<xref ref-type="bibr" rid="pntd.0013378.ref035">35</xref>]. Twitter/X and Facebook were excluded due to API access restrictions that hinder cost-free accessibility [<xref ref-type="bibr" rid="pntd.0013378.ref036">36</xref>]. As this study assesses relative attention across NTDs rather than absolute message volume, these consistent, India-focused retrieval protocols are sufficient to identify attention–burden gaps [<xref ref-type="bibr" rid="pntd.0013378.ref020">20</xref>].</p>
+<table-wrap id="pntd.0013378.t002" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.t002</object-id><label>Table 2</label><caption><title>Digital data sources and retrieval methods used to acquire NTD-related data in India (2019–2023).</title></caption>
+<alternatives><graphic id="pntd.0013378.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.t002" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Platform</th>
+<th align="left">Rationale</th>
+<th align="left">Access route</th>
+<th align="left">Query syntax*</th>
+<th align="left">Volume retrieved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">YouTube comments</td>
+<td align="left">Widely used in India; comments capture public dialogue</td>
+<td align="left">yt-dlp v2024.03 (YouTube search endpoint; pagination safeguards)</td>
+<td align="left">“dengue” OR “dengu (Hindi)”; “chikungunya” OR “chikanguniya (Hindi)”; “filariasis” OR “phaileriya (Hindi)”; “kala azar” OR “kala-azar” OR “visceral leishmaniasis” OR “kaalajaar (Hindi)”</td>
+<td align="left">45,672 comments</td>
+</tr>
+<tr>
+<td align="left">Google News headlines/snippets</td>
+<td align="left">Dominant news aggregator; reflects mainstream coverage</td>
+<td align="left">GoogleNews Python wrapper v1.7</td>
+<td align="left">Identical Boolean strings</td>
+<td align="left">273 news items</td>
+</tr>
+<tr>
+<td align="left">Epidemiological burden</td>
+<td align="left">Ground-truth comparator</td>
+<td align="left">NVBDCP annual tables (2019–2023; CSV extracted)</td>
+<td align="left">_</td>
+<td align="left">State-aggregated case counts</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t002fn001"><p>* Hindi keywords were implemented in Unicode Devanagari script during data collection. Romanized Hindi is shown in the table only to prevent Devanagari font-substitution artifacts (□) in system-generated PDFs. The exact Unicode query strings and code are provided in <xref ref-type="supplementary-material" rid="pntd.0013378.s003">S3 Appendix</xref>.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec011">
+<title>2.3. Text pre-processing</title>
+<p>All raw texts were lower-cased and stripped of URLs, HTML entities, emojis, and user handles using regex patterns in Python’s re module. Punctuation was removed except for apostrophes within words (e.g., patient’s). Hindi words typed in Roman script are frequent in Indian social-media posts; these were transliterated to Devanagari via the indic-trans library, which has shown 92% character-level accuracy on comparable corpora [<xref ref-type="bibr" rid="pntd.0013378.ref037">37</xref>]. A composite stop-word list combined Natural Language Toolkit English stops, the Hindi stop list from the Forum for Information Retrieval Evaluation corpus, and platform-specific fillers (e.g., “video”, “subscribe”, “channel”). Tokenisation and lemmatisation were performed with SpaCy version 3.7 and the en_core_web_sm model. Bigram and trigram detection used Gensim’s Phrases with a minimum count of five. Duplicate comments and headlines, identified via SHA-256 hashes of cleaned text, were removed (n = 231). Final corpora were stored as comma-separated files with UTF-8-MB4 encoding to preserve emoji and non-ASCII characters.</p>
+</sec>
+<sec id="sec012">
+<title>2.4. Sentiment analysis</title>
+<p>Sentiment polarity was assessed with the Valence Aware Dictionary and Sentiment Reasoner (VADER) algorithm, chosen for its superior performance on short, informal social-media texts [<xref ref-type="bibr" rid="pntd.0013378.ref038">38</xref>]. Each cleaned document received four VADER scores (positive, negative, neutral, compound), from which we adopted compound thresholds: ≥ 0.05 = positive, ≤ –0.05 = negative, and intermediate values = neutral, in line with prior public-health applications [<xref ref-type="bibr" rid="pntd.0013378.ref039">39</xref>]. Hindi-language fragments (&lt; 6% of tokens) were translated using Google Cloud Translation API v2, a method that introduces negligible sentiment drift for health-related terms [<xref ref-type="bibr" rid="pntd.0013378.ref040">40</xref>]. Inter-rater checks on a 500-item random subsample yielded 0.87 Cohen’s κ between automated polarity and manual coders, indicating good agreement.</p>
+</sec>
+<sec id="sec013">
+<title>2.5. Topic modelling</title>
+<p>Topic discovery employed Latent Dirichlet Allocation (LDA) implemented in Gensim v4.3. Separate models were fit to YouTube and Google News corpora to respect differing linguistic registers. Corpus dictionaries included unigrams and detected n-grams, after removing tokens appearing in &lt; 0.1% or &gt; 50% of documents to reduce sparsity. Optimal topic number k was determined via coherence (c_v) sweep from 2 ≤ k ≤ 10, selecting k = 4 where coherence plateaued [<xref ref-type="bibr" rid="pntd.0013378.ref041">41</xref>]. Models were trained for 50 passes with asymmetric priors (alpha = ‘-auto’-). The top eight weighted tokens for each topic were inspected by two domain experts who independently assigned descriptive labels; disagreements were reconciled by consensus. Inter-coder reliability (κ = 0.78) exceeded the commonly accepted 0.6 threshold for qualitative validation [<xref ref-type="bibr" rid="pntd.0013378.ref042">42</xref>]. Topic prevalence across diseases and platforms was visualised in stacked bar charts to identify over-represented themes, such as “vector control”, “vaccine research”, and “folk remedies.”</p>
+</sec>
+<sec id="sec014">
+<title>2.6. Attention metrics and burden comparison</title>
+<p>Digital attention was defined as the sum of mentions per disease across YouTube and Google News. To account for platform-specific activity, counts were normalised by total corpus size (n = 45,672 YouTube comments; n = 273 news items). Average annual epidemiological burden (2019–2023) was calculated from NVBDCP case counts (<xref ref-type="table" rid="pntd.0013378.t003">Table 3</xref>) [<xref ref-type="bibr" rid="pntd.0013378.ref048">48</xref>]. Scatter plots of log₁₀-transformed attention versus log₁₀-transformed burden were fitted with ordinary least-squares regression; residual plots confirmed homoscedasticity. Spearman’s rank correlation coefficient evaluated monotonic association, mitigating the influence of non-linear outliers [<xref ref-type="bibr" rid="pntd.0013378.ref049">49</xref>].</p>
+<table-wrap id="pntd.0013378.t003" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.t003</object-id><label>Table 3</label><caption><title>National annual incidence of neglected tropical diseases in India, 2015–2023. Year-wise reported cases of dengue, chikungunya, kala-azar (visceral leishmaniasis), and lymphatic filariasis across India from 2015 through provisional 2023 data, alongside primary surveillance sources.</title></caption>
+<alternatives><graphic id="pntd.0013378.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.t003" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Year</th>
+<th align="left">Dengue Cases</th>
+<th align="left">Chikungunya Cases</th>
+<th align="left">Kala-azar Cases</th>
+<th align="left">Lymphatic Filariasis Cases</th>
+<th align="left">Primary Source(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">2015</td>
+<td align="left">99,913</td>
+<td align="left">27,553</td>
+<td align="left">8,868</td>
+<td align="left">~ 10,000</td>
+<td align="left">NVBDCP Annual Report 2015 [<xref ref-type="bibr" rid="pntd.0013378.ref043">43</xref>]</td>
+</tr>
+<tr>
+<td align="left">2016</td>
+<td align="left">129,166</td>
+<td align="left">64,057</td>
+<td align="left">6,249</td>
+<td align="left">~ 8,000</td>
+<td align="left">NVBDCP Annual Report 2016 [<xref ref-type="bibr" rid="pntd.0013378.ref044">44</xref>]</td>
+</tr>
+<tr>
+<td align="left">2017</td>
+<td align="left">188,401</td>
+<td align="left">63,679</td>
+<td align="left">5,758</td>
+<td align="left">~ 7,000</td>
+<td align="left">NVBDCP Annual Report 2017 [<xref ref-type="bibr" rid="pntd.0013378.ref045">45</xref>]</td>
+</tr>
+<tr>
+<td align="left">2018</td>
+<td align="left">101,192</td>
+<td align="left">27,852</td>
+<td align="left">4,223</td>
+<td align="left">~ 6,000</td>
+<td align="left">NVBDCP Annual Report 2018 [<xref ref-type="bibr" rid="pntd.0013378.ref046">46</xref>]</td>
+</tr>
+<tr>
+<td align="left">2019</td>
+<td align="left">157,315</td>
+<td align="left">16,441</td>
+<td align="left">3,328</td>
+<td align="left">~ 5,500</td>
+<td align="left">NCVBDC Website Tables 2019 [<xref ref-type="bibr" rid="pntd.0013378.ref035">35</xref>]</td>
+</tr>
+<tr>
+<td align="left">2020</td>
+<td align="left">44,585</td>
+<td align="left">6,761</td>
+<td align="left">1,169</td>
+<td align="left">~ 3000</td>
+<td align="left">NCVBDC Website Tables 2020 [<xref ref-type="bibr" rid="pntd.0013378.ref035">35</xref>]</td>
+</tr>
+<tr>
+<td align="left">2021</td>
+<td align="left">193,245</td>
+<td align="left">11,542</td>
+<td align="left">965</td>
+<td align="left">~ 2,500</td>
+<td align="left">NCVBDC Website Tables 2021 [<xref ref-type="bibr" rid="pntd.0013378.ref035">35</xref>]</td>
+</tr>
+<tr>
+<td align="left">2022</td>
+<td align="left">233,251</td>
+<td align="left">20,635</td>
+<td align="left">834</td>
+<td align="left">~ 2,300</td>
+<td align="left">NCVBDC Website Tables 2022 [<xref ref-type="bibr" rid="pntd.0013378.ref035">35</xref>]</td>
+</tr>
+<tr>
+<td align="left">2023*</td>
+<td align="left">~190,000 (prov.)</td>
+<td align="left">~ 14,000 (prov.)</td>
+<td align="left">&lt; 500 (prov.)</td>
+<td align="left">~ 2,000 (est.)</td>
+<td align="left">NCVBDC Provisional Data 2023 [<xref ref-type="bibr" rid="pntd.0013378.ref047">47</xref>]</td>
+</tr>
+</tbody>
+</table>
+</alternatives><table-wrap-foot>
+<fn id="t003fn001"><p><bold>Note:</bold> Data are reported by calendar year. Dengue and chikungunya cases include laboratory-confirmed and probable notifications submitted to NVBDCP/NCVBDC. Kala-azar figures reflect visceral leishmaniasis detected via active and passive surveillance, while lymphatic filariasis counts approximate microfilaria-positive cases from surveys (not total infection prevalence). Sources include NVBDCP Annual Reports (2015–2018) and NCVBDC tables (2019–2023), with 2023 data provisional. All figures are approximate and subject to underreporting and surveillance variability.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>To visually illustrate disparities between disease burden and public attention, we generated disease-level bubble maps overlaid on an India basemap. Bubble size represents total epidemiological burden, while colour intensity encodes total digital attention. Maps were produced in Python using GeoPandas and Matplotlib, with the Natural Earth Admin 0 – Countries (1:10 m) shapefile as the basemap (public domain). Disease-level markers were placed at fixed geographic coordinates to ensure positional consistency across figures, and do not represent precise outbreak locations or state-level centroids.</p>
+<p>Waffle charts were used to depict the proportional distribution of burden and attention for each disease using a 10 × 10 grid, a visual format shown to enhance proportional risk comprehension among non-expert audiences [<xref ref-type="bibr" rid="pntd.0013378.ref050">50</xref>].</p>
+</sec>
+<sec id="sec015">
+<title>2.7. Visual analytics</title>
+<p>All static graphics were generated in Python 3.9 with matplotlib v3.8 and seaborn v0.13 at ≥ 300 dpi. Interactive Sankey diagrams were built with Plotly v5.19; PNG snapshots were exported using Kaleido v0.2. Chord diagrams were drawn in R 4.3 with circlize v0.4-16, output as 1200 × 1200 px PNG. Bubble maps exploited GeoPandas for geospatial data manipulation and Cartopy v0.22 for projection. All figure scripts include seed settings to ensure reproducibility of colour palettes and layout. Each figure underwent review following PLOS image-quality guidelines, text set no smaller than 8-pt Arial, colourblind-safe palettes, and inclusion of explanatory legends.</p>
+</sec>
+<sec id="sec016">
+<title>2.8. Statistical analysis</title>
+<p>Data analysis relied on pandas v2.2; numerical computations used NumPy v1.26. Normality was assessed with Shapiro–Wilk tests. Because comment and headline counts are non-negative and skewed, non-parametric tests (Kruskal–Wallis and Dunn–Šidák post hoc) compared attention distributions among diseases. All significance tests were two-sided with α = 0.05. Analysis notebooks were executed in a Docker-contained JupyterLab (Python 3.9). Complementary statistical checks were performed in R 4.3 (tidyverse v2.0). Bland–Altman plots compared sentiment proportions computed with and without translation to verify minimal bias.</p>
+</sec>
+<sec id="sec017">
+<title>2.10. Reproducibility</title>
+<p>All code, environment files (environment.yml and Dockerfile), and anonymised cleaned datasets are available in a GitHub repository (archived via Zenodo DOI: <ext-link ext-link-type="uri" xlink:href="http://10.5281/zenodo.15883324" xlink:type="simple">10.5281/zenodo.15883324</ext-link>) [<xref ref-type="bibr" rid="pntd.0013378.ref051">51</xref>]. The Docker container reproduces the full pipeline on any POSIX system, ensuring version-locked dependencies. All code and processed data are available at <ext-link ext-link-type="uri" xlink:href="https://github.com/devbioinfo/ntd-digital-surveillance/releases/tag/v0.1.0" xlink:type="simple">https://github.com/devbioinfo/ntd-digital-surveillance/releases/tag/v0.1.0</ext-link> (See <xref ref-type="supplementary-material" rid="pntd.0013378.s001">S1</xref> and <xref ref-type="supplementary-material" rid="pntd.0013378.s003">S3 Appendices</xref>).</p>
+</sec>
+</sec>
+<sec id="sec018" sec-type="results">
+<title>3. Results</title>
+<sec id="sec019">
+<title>3.1. Comparative epidemiology and digital sampling</title>
+<p>National surveillance confirms that dengue remains the highest-burden NTD in India, averaging 163,679 cases per year between 2019 and 2023, whereas kala-azar now registers ~1,359 cases per year (<xref ref-type="table" rid="pntd.0013378.t004">Table 4</xref>) [<xref ref-type="bibr" rid="pntd.0013378.ref052">52</xref>]. The proportional waffle plot in <xref ref-type="fig" rid="pntd.0013378.g001">Fig 1A</xref> (left panel) visualises this gradient: approximately 90% of the 100 “disease burden squares” are dengue, ~ 8% chikungunya, ~ 2% filariasis, and &lt;1% kala-azar. Despite this epidemiologic hierarchy, the adjacent waffle (<xref ref-type="fig" rid="pntd.0013378.g001">Fig 1A</xref>, right panel; excluding kala-azar, n = 5) shows a distinctly different distribution of total digital attention (YouTube + Google News). Of the 325 mentions represented in this panel, dengue contributes ~53% (173/325), filariasis ~33% (106/325), and chikungunya ~14% (46/325). Kala-azar generated only five mentions overall (all from Google News) and is therefore omitted from the 1%-tile waffle. It should be noted that reported lymphatic filariasis case counts represent surveillance-based microfilaria-positive detections rather than total disease prevalence, and therefore the apparent attention–burden contrast should be interpreted cautiously in light of differences in measurement frameworks across diseases.</p>
+<table-wrap id="pntd.0013378.t004" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.t004</object-id><label>Table 4</label><caption><title>Disease burden and digital media attention for major NTDs in India, 2019–2023. Mean annual reported case burden (NVBDCP, 2019–2023) is shown alongside the number of disease mentions captured from YouTube comments and Google News items in this study.</title></caption>
+<alternatives><graphic id="pntd.0013378.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.t004" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Disease</th>
+<th align="left">Mean annual burden cases</th>
+<th align="left">YouTube mentions</th>
+<th align="left">Google News mentions</th>
+<th align="left">Total<break/><break/>attention</th>
+<th align="left">% of Mentions on YouTube</th>
+<th align="left">% of Mentions on Google News</th>
+<th align="left">Attention per 10000 cases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Chikungunya</td>
+<td align="left">13,875</td>
+<td align="left">2</td>
+<td align="left">44</td>
+<td align="left">46</td>
+<td align="left">4.30</td>
+<td align="left">95.70</td>
+<td align="left">33.15</td>
+</tr>
+<tr>
+<td align="left">Dengue</td>
+<td align="left">163,679</td>
+<td align="left">71</td>
+<td align="left">102</td>
+<td align="left">173</td>
+<td align="left">41.00</td>
+<td align="left">59.00</td>
+<td align="left">10.60</td>
+</tr>
+<tr>
+<td align="left">Lymphatic filariasis</td>
+<td align="left">3,060</td>
+<td align="left">68</td>
+<td align="left">38</td>
+<td align="left">106</td>
+<td align="left">64.20</td>
+<td align="left">35.80</td>
+<td align="left">346.40</td>
+</tr>
+<tr>
+<td align="left">Kala-azar</td>
+<td align="left">1,359</td>
+<td align="left">0</td>
+<td align="left">5</td>
+<td align="left">5</td>
+<td align="left">0.00</td>
+<td align="left">100.00</td>
+<td align="left">36.80</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<fig id="pntd.0013378.g001" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g001</object-id><label>Fig 1</label><caption><title>Comparative burden and digital attention of four NTDs in India.</title><p><bold>(A)</bold> Waffle plots compare each disease’s share of mean annual case burden with its share of online mentions (YouTube comments + Google News; 1 tile = 1%). The online-attention waffle excludes kala-azar (n = 5 total mentions) to preserve 1%-tile resolution (n = 325 mentions shown). <bold>(B)</bold> Log–log plot of burden (x) vs attention (y) across all four diseases; dashed line shows the fitted trend with 95% CI; Spearman’s ρ = 0.80 (P = 0.33). <bold>(C)</bold> India basemap with disease-level bubble markers representing total online mentions, where circle size and colour intensity scale with mention volume. Basemap source: Natural Earth, Admin 0 – Countries (1:10m; public domain); bubble locations fixed for comparability across figures; overlays by authors.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g001" xlink:type="simple"/></fig>
+<p>A log–log comparison of mean annual burden and attention (<xref ref-type="fig" rid="pntd.0013378.g001">Fig 1B</xref>) suggests that online salience does not increase proportionally with disease burden (Spearman ρ = 0.80; P = 0.33) [<xref ref-type="bibr" rid="pntd.0013378.ref053">53</xref>]. Filariasis lies above the overall relationship (attention surplus relative to burden), chikungunya lies below (attention deficit), and kala-azar remains confined to the lower bound with minimal attention (n = 5, all from Google News) despite measurable burden. Together, these patterns define an initial “attention–burden gap,” which provides the rationale for subsequent stratified analyses of sentiment, topical emphasis, and platform-specific contributions.</p>
+</sec>
+<sec id="sec020">
+<title>3.2. Spatial character of digital discourse</title>
+<p>The choropleth-style bubble map (<xref ref-type="fig" rid="pntd.0013378.g001">Fig 1C</xref>) overlays the absolute number of NTD mentions on a simplified outline of India, thereby translating aggregate digital counts into a quasi-geographic heat signal. Each circle’s area is proportional to total mentions (YouTube + Google News) and its centroid is anchored to the state that contributed the modal share of posts for that disease. Dengue dominates the visual field: the largest bubble sits over Maharashtra (44% of dengue messages), radiating minor halos over Delhi, Karnataka and Tamil Nadu. These urban clusters coincide with India’s highest population densities and with the six cities that together generated more than 50% of national dengue notifications in 2023 [<xref ref-type="bibr" rid="pntd.0013378.ref052">52</xref>]. The spatial concordance suggests that traditional outbreak reportage and social-media chatter are tightly coupled for dengue, a pattern previously described for influenza and COVID-19 [<xref ref-type="bibr" rid="pntd.0013378.ref054">54</xref>].</p>
+<p>In contrast, lymphatic filariasis presents as a band of medium-sized bubbles along the eastern littoral—Odisha, Andhra Pradesh, Tamil Nadu and West Bengal reflecting both the coastal ecology of <italic>Culex quinquefasciatus</italic> and the history of MDA campaigns in these states. Notably, 62% of filariasis YouTube comments originated from vernacular channels registered in these four states, implying that digital engagement is being driven by local advocacy groups and patient networks rather than national news outlets.</p>
+<p>Chikungunya appears as a solitary southern bubble centred on Tamil Nadu/Kerala, mirroring its sporadic, post-monsoon outbreaks in the Western Ghats. The relative paucity of chikungunya mentions despite moderate burden underscores the attention deficit quantified in <xref ref-type="fig" rid="pntd.0013378.g001">Fig 1B</xref>. Finally, kala-azar is represented by a single, almost imperceptible dot straddling the Bihar–Jharkhand border—the hyper-endemic “Koshi belt.” This cartographic near-absence, supported by only five Google headlines and zero YouTube comments, parallels the disease’s epidemiologic contraction to isolated foci (<xref ref-type="table" rid="pntd.0013378.t003">Table 3</xref>), but also raises concern about digital invisibility potentially fostering policy complacency.</p>
+<p>Collectively, the map reveals a north–south and coast–interior polarity in India’s NTD discourse: metro-centric dengue talk, coastal filariasis engagement, niche chikungunya interest, and vanishing kala-azar visibility. These geospatial patterns provide a starting point for region-tailored risk communication strategies.</p>
+</sec>
+<sec id="sec021">
+<title>3.3 Platform contributions and cross-flows</title>
+<p>Disaggregating by platform reveals a clear division of labour in India’s online NTD information ecosystem. Using the keyword-matched dataset underlying <xref ref-type="fig" rid="pntd.0013378.g002">Fig 2</xref> and <xref ref-type="table" rid="pntd.0013378.t004">Table 4</xref>, we identified N = 330 disease-mentions across platforms (note: counts represent keyword mentions and may differ from raw platform-item totals). Google News contributed 189 mentions (57.3%), while YouTube contributed 141 mentions (42.7%). When normalised within each platform, the distribution of attention shows a strong disease-specific skew (χ<sup>23</sup> = 51.5, P &lt; 0.001). The alluvial representation in <xref ref-type="fig" rid="pntd.0013378.g002">Fig 2A</xref> highlights these directional flows. Google News functions primarily as a dengue-focused broadcast channel, with the majority of mentions mapping to dengue (n = 102), followed by chikungunya (n = 44) and filariasis (n = 38), while kala-azar contributes only n = 5 mentions. In contrast, YouTube behaves as a community-driven forum concentrated on dengue and filariasis, contributing dengue (n = 71) and filariasis (n = 68) mentions in near-equal proportions, with minimal chikungunya discussion (n = 2) and no kala-azar.</p>
+<fig id="pntd.0013378.g002" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g002</object-id><label>Fig 2</label><caption><title>Platform-specific cross-flows of vector-borne NTD attention between Google News and YouTube (India, 2019–2023).</title><p><bold>(A)</bold> Sankey diagram linking keyword-matched items from Google News (n = 184) and YouTube (n = 141) to diseases (<xref ref-type="table" rid="pntd.0013378.t004">Table 4</xref>): dengue n = 173 (Google News 102; YouTube 71), chikungunya n = 46 (Google News 44; YouTube 2), and lymphatic filariasis n = 106 (Google News 38; YouTube 68). Kala-azar yielded minimal/near-absent items due to very low n = 5 and is omitted. <bold>(B)</bold> Chord diagram of the same platform–disease links; arc length indicates totals and ribbon width indicates item counts, showing dengue concentrated in Google News and filariasis concentrated in YouTube, with minimal chikungunya and no kala-azar.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g002" xlink:type="simple"/></fig>
+<p>The complementary polar chord plot (<xref ref-type="fig" rid="pntd.0013378.g002">Fig 2B</xref>) reinforces this visual asymmetry. The Google News sector extends primarily toward the dengue band, consistent with mainstream reporting that prioritizes outbreaks and surveillance. In contrast, the YouTube sector links broadly to filariasis, reflecting a grassroots focus on patient experience and self-care narratives (aligning with the clinical-management themes in Topic 1; see Sheets A–D in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>). Meanwhile, the connection between YouTube and chikungunya is negligible, and kala-azar appears only as a minor contribution within Google News, underscoring the selective nature of platform engagement.</p>
+<p>Collectively, these cross-flow patterns indicate distinct platform–disease affinity niches: Google News amplifies dengue-centric epidemiological updates and intermittent chikungunya coverage, whereas YouTube sustains discussion around filariasis alongside dengue through community interaction. This bifurcation implies that risk communication should be platform-tailored facilitating news outlets for timely dengue alerts and using video communities to support filariasis MDA and morbidity-management messaging while proactively addressing the platform-specific visibility gaps, particularly for chikungunya and kala-azar on YouTube.</p>
+</sec>
+<sec id="sec022">
+<title>3.4. Sentiment polarity and dynamics</title>
+<p>VADER-based polarity scoring of the complete corpus indicates an overall neutral-to-positive valence gradient across both data streams (<xref ref-type="table" rid="pntd.0013378.t005">Table 5</xref>). Specifically, Google News headlines are dominated by neutral tone (56%), with 23% negative and 21% positive items (<xref ref-type="fig" rid="pntd.0013378.g003">Fig 3A</xref>). YouTube comments, by contrast, display an inversion of the neutral–positive ratio: positive utterances constitute 44.8%, neutral 35.0%, and negative 20.3% (<xref ref-type="fig" rid="pntd.0013378.g003">Fig 3B</xref>). Time-series decomposition of headline sentiment (<xref ref-type="fig" rid="pntd.0013378.g003">Fig 3C</xref>) shows a marked structural break in mid-2022, characterised by a monotonic rise in neutral coverage (slope = +0.31 headlines month ⁻ ¹, P &lt; 0.01). Superimposed on this trend are transient pulses of sentiment: positive spikes coincide with dengue vaccine milestones (Phase-III results, Aug 2023; CDSCO licensure filing, Jan 2024), while negative spikes align with monsoon-amplified dengue outbreaks (July–October 2023), generating crisis-framed reportage. Disease-stratified sentiment reveals further heterogeneity. Dengue headlines skew neutral (~61%), whereas lymphatic filariasis comments are predominantly positive (53%), reflecting a discourse centred on hopeful treatment narratives rather than acute risk. The keyword-to-sentiment Sankey (<xref ref-type="fig" rid="pntd.0013378.g004">Fig 4A</xref>) reflects these patterns qualitatively: dengue shows a broad neutral stream alongside positive and negative mentions, filariasis shows a strong positive stream with a substantial negative component, and chikungunya contributes only a small volume of sentiment-bearing links.</p>
+<table-wrap id="pntd.0013378.t005" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.t005</object-id><label>Table 5</label><caption><title>Sentiment distribution in digital coverage by platform. Percentage distribution of negative, neutral, and positive sentiment in YouTube and Google News items mentioning key neglected tropical diseases in India, based on automated text-mining analyses. Note: <xref ref-type="fig" rid="pntd.0013378.g003">Fig 3A</xref> reports pooled Google News sentiment for n = 184 (excluding kala-azar, n = 5, due to very low sample size); kala-azar is included here for completeness.</title></caption>
+<alternatives><graphic id="pntd.0013378.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.t005" xlink:type="simple"/><table><colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Disease</th>
+<th align="left">Platform</th>
+<th align="left">n (items)</th>
+<th align="left">Negative</th>
+<th align="left">Neutral</th>
+<th align="left">Positive</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Chikungunya</td>
+<td align="left">Google News</td>
+<td align="left">44</td>
+<td align="left">20.5</td>
+<td align="left">50.0</td>
+<td align="left">29.5</td>
+</tr>
+<tr>
+<td align="left">Chikungunya</td>
+<td align="left">YouTube</td>
+<td align="left">2</td>
+<td align="left">0.0</td>
+<td align="left">50.0</td>
+<td align="left">50.0</td>
+</tr>
+<tr>
+<td align="left">Dengue</td>
+<td align="left">Google News</td>
+<td align="left">102</td>
+<td align="left">20.9</td>
+<td align="left">60.8</td>
+<td align="left">18.3</td>
+</tr>
+<tr>
+<td align="left">Dengue</td>
+<td align="left">YouTube</td>
+<td align="left">71</td>
+<td align="left">11.3</td>
+<td align="left">52.1</td>
+<td align="left">36.6</td>
+</tr>
+<tr>
+<td align="left">Lymphatic filariasis</td>
+<td align="left">Google News</td>
+<td align="left">38</td>
+<td align="left">31.6</td>
+<td align="left">50.0</td>
+<td align="left">18.4</td>
+</tr>
+<tr>
+<td align="left">Lymphatic filariasis</td>
+<td align="left">YouTube</td>
+<td align="left">68</td>
+<td align="left">29.4</td>
+<td align="left">17.6</td>
+<td align="left">52.9</td>
+</tr>
+<tr>
+<td align="left">Kala-azar</td>
+<td align="left">Google News</td>
+<td align="left">5</td>
+<td align="left">20.0</td>
+<td align="left">60.0</td>
+<td align="left">20.0</td>
+</tr>
+<tr>
+<td align="left">Kala-azar</td>
+<td align="left">YouTube</td>
+<td align="left">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</alternatives></table-wrap>
+<fig id="pntd.0013378.g003" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g003</object-id><label>Fig 3</label><caption><title>Sentiment polarity distributions and temporal trends in NTD discourse.</title><p><bold>(A)</bold> Google News headline sentiment (n = 184): neutral 56%, negative 23%, positive 21%. <bold>(B)</bold> YouTube comment sentiment (n = 141): positive 45%, neutral 35%, negative 20%. <bold>(C)</bold> Monthly Google News sentiment time series (Jan 2019–Dec 2023), with notable positive and negative spikes annotated.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g003" xlink:type="simple"/></fig>
+<fig id="pntd.0013378.g004" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g004</object-id><label>Fig 4</label><caption><title>Mapping disease keywords to sentiment and topic-level sentiment profiles.</title><p><bold>(A)</bold> Sankey diagram linking disease-keyword mentions to sentiment classes; link colours encode sentiment (neutral = orange, positive = green, negative = pink/red), with width proportional to volume. <bold>(B)</bold> Heatmap of within-topic sentiment composition (%) for the subset of topics shown (Google News Topics 1–3; YouTube Topics 1–2) (e.g., Google News Topic 3 = 100% neutral; YouTube Topic 1 = 45% positive).</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g004" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec023">
+<title>3.5. Topic structure of discourse</title>
+<p>LDA identified four recurring themes per platform (k = 4; Sheets A–D in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>). For readability, <xref ref-type="fig" rid="pntd.0013378.g004">Fig 4B</xref> plots sentiment distributions for a subset of topics (Google News Topics 1–3; YouTube Topics 1–2), while all modelled topics and representative terms are provided in Sheets A-D in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>).</p>
+<list list-type="simple">
+<list-item>
+<p>1. Clinical management &amp; treatment – “integrative therapy”, “limb swelling”, “lymphoedema”.</p>
+</list-item>
+<list-item>
+<p>2. Outbreak alerts &amp; vector ecology – “mosquito breeding”, “vector indices”, “post-monsoon surge”.</p>
+</list-item>
+<list-item>
+<p>3. Vaccine and drug innovation – “phase-3 trial”, “ivermectin”, “mRNA candidate”.</p>
+</list-item>
+<list-item>
+<p>4. Government campaigns &amp; elimination drives – “MDA round”, “IRS protocol”, “zero-case district”.</p>
+</list-item>
+</list>
+<p>In the subset visualised in <xref ref-type="fig" rid="pntd.0013378.g004">Fig 4B</xref>, Google News topics are consistently neutral-dominant (Topic 1: 54.9% neutral; Topic 2: 50.0% neutral), with negative and positive components each contributing about one-fifth to one-quarter; Topic 3 is entirely neutral (100%). In contrast, the YouTube topics shown skew positive (Topic 1: 45.0% positive; Topic 2: 50.0% positive) with comparatively less negative content (20.0% in Topic 1 and 0% in Topic 2).</p>
+<p>Overall, topic-level sentiment reinforces the platform-level pattern: Google News discussion is primarily informational/neutral, whereas YouTube commentary contains more evaluative and supportive language, even within the same broad thematic space.</p>
+</sec>
+<sec id="sec024">
+<title>3.6. Lexical prominence and networks</title>
+<p>To understand the linguistic “shape” of public discussion, we examined three complementary layers of lexical evidence: frequency, co-occurrence, and actor–topic connectivity.</p>
+<sec id="sec025">
+<title>3.6.1. <italic>Frequency footprints.</italic></title>
+<p>The term–frequency distributions in <xref ref-type="fig" rid="pntd.0013378.g005">Fig 5</xref> provide a quantitative inventory of the digital discourse. Google News headlines (<xref ref-type="fig" rid="pntd.0013378.g005">Fig 5A</xref>) are heavily weighted toward macro-scale identifiers, with “India” and “dengue” appearing as the most dominant terms. While other NTDs like “chikungunya” and “filariasis” appear in the top tier, they trail significantly behind dengue, reflecting the media’s hierarchical prioritization of arboviral outbreaks. Terms linked to intervention (e.g., “vaccine”) remain visible, underscoring the news media’s framing of NTDs as national public health targets. In distinct contrast, the YouTube commentary (<xref ref-type="fig" rid="pntd.0013378.g005">Fig 5B</xref>) reveals a shift from policy to pragmatism. With conversational fillers (e.g., “sir,” “please”) removed, the lexicon is overwhelmingly dominated by the word “treatment,” which eclipses the names of the diseases themselves. This highlights a user base primarily engaged in support-seeking behaviour rather than epidemiological discussion. The sentiment butterfly chart (<xref ref-type="fig" rid="pntd.0013378.g005">Fig 5C</xref>) further dissects this vocabulary by context. The term “treatment” shows a massive positive skew, reflecting a discourse cantered on soliciting or sharing successful remedies. Conversely, the negative spectrum is anchored by disease- and condition-linked terms that appear in <xref ref-type="fig" rid="pntd.0013378.g005">Fig 5C</xref> (e.g., “dengue,” “filariasis,” “lymphatic,” “fever,” “patients,” “lymphoedema,” and “condition”), alongside smaller contributions from practical/administrative tokens (e.g., “iad,” “limb,” “integrative,” and “cost”). Notably, the disease names “dengue” and “filariasis” themselves skew toward the negative axis, suggesting that while the condition triggers distress, the conversation surrounding clinical management (“treatment”) drives the community’s positive engagement.</p>
+<fig id="pntd.0013378.g005" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g005</object-id><label>Fig 5</label><caption><title>Term-frequency and sentiment patterns in dengue and filariasis discourse.</title><p><bold>(A)</bold> Top 15 terms in Google News headlines/snippets, indicating dominant coverage of India and dengue/chikungunya. <bold>(B)</bold> Top 15 terms in YouTube comments, with prominent treatment- and filariasis-related vocabulary alongside dengue. <bold>(C)</bold> Butterfly plot of key-term sentiment in YouTube comments: positive-context frequencies (polarity &gt; 0) to the right (green) and negative-context frequencies (polarity &lt; 0) to the left (red). Stop words and non-informative fillers were removed before analysis.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g005" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec026">
+<title>3.6.2. <italic>Actor–topic alignment.</italic></title>
+<p>The bipartite graph (<xref ref-type="fig" rid="pntd.0013378.g006">Fig 6A</xref>) links 30 randomly sampled YouTube user accounts to the four disease keywords. Edges connect each user to the infections they mention, with thickness proportional to the number of comments in which that disease appears. Most connections cluster around dengue, reflecting its dominance in the corpus, while filariasis and chikungunya are contacted by far fewer users. Kala-azar appears as an isolated node with no incident edges in this sample, consistent with its marginal presence in overall YouTube discussions.</p>
+<fig id="pntd.0013378.g006" position="float"><object-id pub-id-type="doi">10.1371/journal.pntd.0013378.g006</object-id><label>Fig 6</label><caption><title>Network analysis of YouTube commenters and lexical co-occurrence in NTD discourse.</title><p><bold>(A)</bold> Bipartite network linking 30 randomly sampled YouTube users to disease keywords; edge thickness reflects how often a user mentions a disease. Links are densest for dengue, fewer for filariasis and chikungunya, and kala-azar is isolated in this sample. <bold>(B)</bold> 15 × 15 co-frequency matrix of common tokens in dengue-related comments, mixing function words (e.g., “the”, “of”, “to”, “in”, “and”) and topical terms (e.g., “dengue”); darker cells indicate more frequent co-mentions. Matrices are row-normalised for comparison.</p></caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.g006" xlink:type="simple"/></fig>
+</sec>
+<sec id="sec027">
+<title>3.6.3. Word co-occurrence structure.</title>
+<p>A 15 × 15 token co‑frequency matrix (<xref ref-type="fig" rid="pntd.0013378.g006">Fig 6B</xref>) then quantifies how often the most common words in dengue‑related comments co‑occur within the same text unit. Row and column labels include both high‑frequency function words (for example “the”, “of”, “to”, “in”, “and”) and topical tokens such as “dengue” and other clinical or treatment‑related terms. Darker cells highlight short phrases and collocations formed from these high‑use tokens, indicating a dense conversational core built from repeated combinations of disease names, qualifiers and connective words rather than a single dominant bigram. Retaining function words in this representation makes the backbone of everyday language visible, underscoring how clinical information is embedded in general conversational scaffolding.</p>
+</sec>
+</sec>
+<sec id="sec028">
+<title>3.7. Robustness and sensitivity analyses</title>
+<p>To evaluate the stability of our text-mining pipeline we conducted three complementary validation exercises, each documented in the <xref ref-type="supplementary-material" rid="pntd.0013378.s001">S1</xref> and <xref ref-type="supplementary-material" rid="pntd.0013378.s003">S3 Appendices</xref>.</p>
+<sec id="sec029">
+<title>3.7.1. Human-versus-machine agreement.</title>
+<p>A stratified random sample of n = 500 items (250 Google headlines, 250 YouTube comments) was independently annotated for sentiment by two bilingual reviewers blinded to the VADER output. Inter-rater concordance with the algorithm, quantified with Cohen’s κ, was 0.87 (95% CI 0.84–0.90), indicating “almost perfect” agreement (See Sheet F in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>). Discordant assignments were mainly borderline neutral/positive cases in headlines containing hedging verbs such as <italic>could</italic> or <italic>may</italic>. After adjudication, the machine label matched the consensus in 91% of instances, underscoring the reliability of automated polarity coding for mixed English–Hindi text.</p>
+</sec>
+<sec id="sec030">
+<title>3.7.2. Language-translation bias.</title>
+<p>Because ~ 18% of YouTube comments were written partly or entirely in Hindi, we assessed whether Google-translated strings distorted sentiment scores. Re-scoring 1 000 Hindi snippets before and after translation changed the compound polarity sign in only 1.8% of cases; mean absolute difference in the VADER compound metric was 0.06 ± 0.03—well below the ± 0.35 threshold that separates neutral from polar classes (See Sheet G in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>). This indicates that translation artefacts are unlikely to bias our platform comparison.</p>
+</sec>
+<sec id="sec031">
+<title>3.7.3. Scenario analysis for missing platforms.</title>
+<p>To test whether excluding pay-walled APIs (Twitter, Facebook) could alter our attention–burden inference, we created a counter-factual “Twitter surge” scenario: chikungunya mentions were doubled (+46) and uniformly distributed across months, mimicking a hypothetical micro-blog outbreak conversation. Re-running the burden–attention regression under this augmentation shifted the slope upwards by 0.07 log units but did not change disease rank order or the non-significance of the correlation (ρ = 0.43, P = 0.48) (See Sheets H–K in <xref ref-type="supplementary-material" rid="pntd.0013378.s004">S1 Tables</xref>). Similar perturbations applied to kala-azar (× 4 inflation) had negligible impact because the baseline count was zero.</p>
+<p>Taken together, high human–machine agreement, minimal translation drift, and stable sensitivity outcomes indicate that our key finding—an attention gap that disadvantages chikungunya and kala-azar remains robust even in the face of data exclusions or parameter perturbations.</p>
+</sec>
+</sec>
+</sec>
+<sec id="sec032" sec-type="conclusions">
+<title>4. Discussion</title>
+<p>This study provides the first side-by-side look at India’s formal case surveillance and its informal “digital soundscape” for four priority neglected tropical diseases (NTDs): dengue, chikungunya, lymphatic filariasis and kala-azar across two high-reach, freely accessible platforms (Google News and YouTube) [<xref ref-type="bibr" rid="pntd.0013378.ref055">55</xref>]. The results reveal a pronounced mismatch between epidemiological burden and on-line visibility, sharply different platform-specific disease niches, and clear affective and lexical fingerprints that can be leveraged for more responsive public-health communication [<xref ref-type="bibr" rid="pntd.0013378.ref056">56</xref>]. Below, we integrate the main findings and outline a policy agenda consistent with the WHO 2021–2030 Road Map for NTDs [<xref ref-type="bibr" rid="pntd.0013378.ref057">57</xref>].</p>
+<sec id="sec033">
+<title>4.1. Digital attention landscape</title>
+<p>We set out to measure how much online attention each targeted NTD received across two high-reach digital channels (Google News and YouTube). Overall, dengue dominated the digital information environment, contributing just over half of all captured items, while chikungunya accounted for a much smaller share and kala-azar was essentially absent, despite ongoing programmatic relevance. Notably, attention was strongly platform-dependent: Google News concentrated heavily on dengue, whereas YouTube content was disproportionately focused on lymphatic filariasis. This “division of attention” is consistent with the broader concept of infodemiology/digital epidemiology using online information streams as a window into what populations are exposed to and what they seek, while recognizing that these streams reflect media logics and user behaviours rather than disease burden alone [<xref ref-type="bibr" rid="pntd.0013378.ref016">16</xref>]. In particular, news selection tends to prioritize novelty, perceived immediacy, and episodic events (e.g., outbreaks), producing attention cycles that can surge and fade even when underlying problems persist [<xref ref-type="bibr" rid="pntd.0013378.ref058">58</xref>–<xref ref-type="bibr" rid="pntd.0013378.ref061">61</xref>].</p>
+</sec>
+<sec id="sec034">
+<title>4.2. Sentiment and thematic patterns</title>
+<p>We next characterized how these diseases were discussed, using sentiment and topic modelling to summarize the tone and dominant narratives. Across diseases, discourse was largely neutral-to-positive, but again varied by platform: Google News tended to maintain a more neutral informational tone, whereas YouTube comments (and surrounding video discourse) more often reflected lived experience, advice-seeking, and community framing, patterns reported in studies of platform-specific health communication dynamics [<xref ref-type="bibr" rid="pntd.0013378.ref020">20</xref>]. Thematic outputs suggested that dengue conversation was strongly anchored to outbreak updates, case counts, and prevention guidance, whereas filariasis discussion more frequently emphasized chronic morbidity, care practices, and treatment journeys, which plausibly explains why YouTube (a tutorial- and testimony-friendly medium) carried more filariasis-related attention. Because automated sentiment and topic models are sensitive to language, context, and sarcasm, we interpret these outputs as high-level indicators rather than clinical-psychological measures; nonetheless, lexicon-based sentiment (e.g., VADER) and LDA-style topic modelling are established approaches for summarizing large-scale public discourse [<xref ref-type="bibr" rid="pntd.0013378.ref023">23</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref062">62</xref>]. From a message-design perspective, the overall neutral-to-positive tilt may reflect more “efficacy” and solution-oriented narratives (how to prevent, where to test, how to manage) rather than purely threat-oriented narratives—an important distinction because efficacy-supporting communication is often central to motivating protective action [<xref ref-type="bibr" rid="pntd.0013378.ref063">63</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref064">64</xref>].</p>
+</sec>
+<sec id="sec035">
+<title>4.3. The Attention–Burden Mismatch</title>
+<p>Finally, we compared digital attention with routine epidemiological burden to identify potential “communication gaps,” and the key insight is that online visibility did not consistently track burden. The most consequential gap was the near-absence of kala-azar content, which risks creating an “information desert” during the maintenance phase when vigilance is needed to prevent resurgence and to sustain gains (including timely recognition and management of post-kala-azar dermal leishmaniasis and other reservoirs) [<xref ref-type="bibr" rid="pntd.0013378.ref065">65</xref>]. More generally, risk communication can be socially amplified or attenuated by media coverage and platform dynamics, meaning that some conditions may appear disproportionately salient while others remain practically invisible to the public, even when programmatically critical [<xref ref-type="bibr" rid="pntd.0013378.ref060">60</xref>]. Importantly, digital attention metrics and sentiment signals should not be interpreted as direct proxies for public awareness, knowledge accuracy, or information quality, as online discourse reflects platform dynamics, media selection biases, and user engagement behaviours rather than verified understanding. For lymphatic filariasis, the higher YouTube emphasis suggests an opportunity: platforms that support demonstration and peer learning may be especially suitable for morbidity management and disability-prevention messaging, which is central to quality of life for affected persons [<xref ref-type="bibr" rid="pntd.0013378.ref066">66</xref>]. At the same time, interpretation of attention–burden ratios for lymphatic filariasis warrants epidemiological caution. Declining reported case counts under national elimination programmes may not fully capture residual morbidity, chronic lymphoedema burden, or subclinical transmission dynamics in endemic pockets. Therefore, comparatively lower or higher digital visibility should not be construed as proportional to public health importance but rather interpreted within the broader elimination-phase context. These findings support integrating routine, ethically governed “social listening” into NTD communication planning paired with content quality safeguards, given evidence that YouTube health information is frequently variable in reliability [<xref ref-type="bibr" rid="pntd.0013378.ref061">61</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref067">67</xref>]. In alignment with the WHO NTD road map’s emphasis on country ownership and cross-cutting approaches, targeted digital communication can be designed to (i) sustain kala-azar elimination awareness in at-risk districts, (ii) maintain dengue prevention guidance during seasonal peaks without crowding out other NTDs, and (iii) strengthen practical, patient-centred filariasis self-care narratives while acknowledging limitations of representativeness (digital divides), language coverage, and platform-sampling constraints inherent to using online data streams [<xref ref-type="bibr" rid="pntd.0013378.ref068">68</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref069">69</xref>,<xref ref-type="bibr" rid="pntd.0013378.ref070">70</xref>].</p>
+</sec>
+<sec id="sec036">
+<title>4.4. Limitations and robustness</title>
+<p>This study is limited by its restriction to English and Hindi keywords and the exclusion of closed networks like WhatsApp, where rural discourse may be concentrated. Additionally, the demographics of internet users skew younger and more urban than the general NTD patient population. However, our robustness checks including high human-machine inter-rater reliability (κ = 0.87) and stability under simulated data-loss scenarios suggest that these signals are consistent proxies for relative public attention.</p>
+</sec>
+<sec id="sec037">
+<title>4.5. Policy roadmap and future directions</title>
+<p>To translate these findings into action, we propose a four-step roadmap for the National Center for Vector Borne Diseases Control (NCVBDC) and its partners (See <xref ref-type="supplementary-material" rid="pntd.0013378.s002">S2 Appendix</xref>).</p>
+<list list-type="simple">
+<list-item>
+<p>i. <bold>Listen to the Crowd (Digital Surveillance)</bold>: Instead of relying solely on hospital reports which can be slow, health authorities should “listen” to digital signals. Integrating social media monitoring into the Integrated Health Information Platform (IHIP) would allow officials to detect “fever” spikes online before clinics get overwhelmed, effectively using the public’s online searches as an early warning system for dengue outbreaks.</p>
+</list-item>
+<list-item>
+<p>ii. <bold>Break the Silence (Kala-azar):</bold> Our data shows almost no one talks about Kala-azar online. This “silence” is dangerous because it makes the disease easy to forget. The government must actively create digital noise such as short videos, news stories, and success stories from Bihar and Jharkhand to keep the disease on the radar until it is completely eliminated.</p>
+</list-item>
+<list-item>
+<p>iii. <bold>Support, Don’t Just Report (Filariasis):</bold> People on YouTube are asking for help with pain and swelling, not just statistics. Communication campaigns should pivot from just announcing MDA dates to providing “care content”—videos demonstrating leg hygiene, exercise, and pain management. Partnering with relatable social media influencers can help spread these positive, practical messages to younger audiences.</p>
+</list-item>
+<list-item>
+<p>iv. <bold>Balance Fear with Hope (Dengue):</bold> News often scares people with death counts during outbreaks. To counter this “negative noise,” health messaging should use Protection Motivation Theory: acknowledge the threat (fear) but immediately offer a simple, effective action (hope), such as “Check your cooler today” or “Wear full sleeves.” This shift from alarmist news to actionable advice empowers the community to act.</p>
+</list-item>
+</list>
+<p>To operationalize our social-listening insights, we propose a Communication Toolkit and a Stakeholder Engagement Plan (both in <xref ref-type="supplementary-material" rid="pntd.0013378.s002">S2 Appendix</xref>) that NVBDCP and district teams can adopt directly to advance India’s WHO-aligned NTD elimination objectives. The toolkit aligns digital channels, audience segments, messaging formats, and monitoring metrics, enabling platform-wise intervention delivery. The engagement plan outlines stakeholder roles, governance structures, and coordination workflows across national agencies, digital platforms, health providers, NGOs, and community actors. Provided as supporting information (see <xref ref-type="supplementary-material" rid="pntd.0013378.s002">S2 Appendix</xref>), these resources are designed for rapid uptake to accelerate progress toward the WHO 2030 NTD targets.</p>
+</sec>
+</sec>
+<sec id="sec038" sec-type="conclusions">
+<title>5. Conclusion</title>
+<p>This in-silico social-listening study illustrates how open-access digital platforms can function as practical “crowd thermometers” for neglected tropical diseases in India yet each platform amplifies only a segment of the reality. By triangulating epidemiological data with 300 + media items and applying sentiment, topic, and network analytics, we derived three strategic insights:</p>
+<list list-type="order">
+<list-item>
+<p><bold>Burden–attention misalignment</bold>: filariasis draws excess attention, while chikungunya and kala-azar are overlooked.</p>
+</list-item>
+<list-item>
+<p><bold>Platform niches</bold>: Google is effective for outbreak alerts and vaccine news; YouTube can drive demand for MDA and patient education.</p>
+</list-item>
+<list-item>
+<p><bold>Affective framing matters</bold>: combining innovation-driven positivity with actionable guidance during outbreak peaks optimizes risk communication.</p>
+</list-item>
+</list>
+<p>Robustness checks—high inter-coder reliability (κ = 0.87), negligible Hindi-translation drift, and stable findings under simulated Twitter data demonstrate that meaningful insights are attainable without expensive social‐media APIs. This is especially relevant for under-resourced NTD programs. Moving forward, embedding Google/YouTube monitoring into IHIP, refining Hinglish sentiment models, and establishing NGO–government content partnerships can institutionalize social listening within India’s NTD response. Creating a Digital NTD Communication Cell aligns with the WHO’s call for people-centred digital innovation in the 2021–2030 NTD Roadmap and will support progress toward dengue control, filariasis elimination, chikungunya preparedness, and kala-azar eradication.</p>
+</sec>
+<sec id="sec039" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pntd.0013378.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s001" xlink:type="simple">
+<label>S1 Appendix</label>
+<caption>
+<title>Robustness and sensitivity check for validation of the text‑mining pipeline.</title>
+<p>Human–Machine Sentiment Agreement, comparing VADER’s automated scores with expert human coders. Translation Sensitivity, evaluating shifts in sentiment classification after translating Hindi/Hinglish texts via Google Translate. Attention–Burden Sensitivity Modelling, assessing the impact of adding a synthetic Twitter stream on the burden–attention relationship. Comprehensive quantitative results are provided in Sheets F-J in S1 Table.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pntd.0013378.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s002" xlink:type="simple">
+<label>S2 Appendix</label>
+<caption>
+<title>Platform‑Specific Engagement Profiles for India’s Vector‑Borne NTDs.</title>
+<p>Includes the Communication Toolkit, Stakeholder Engagement Plan, Standard Operating Procedure (SOP), and Budget Framework.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pntd.0013378.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s003" xlink:type="simple">
+<label>S3 Appendix</label>
+<caption>
+<title>Codebase and Workflow Implementation for India’s Digital NTD Surveillance Pipeline.</title>
+<p>Detailed repository structure, prerequisites, and execution instructions for the full digital‑epidemiology pipeline—covering data acquisition, text preprocessing, sentiment analysis, topic modelling, attention‑burden computation, visualizations, robustness checks, and packaging.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pntd.0013378.s004" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s004" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Supplementary datasets supporting analyses of digital attention and epidemiological burden of vector-borne neglected tropical diseases in India.</title>
+<p><bold>Sheet A.</bold> Epidemiological burden and digital attention dataset. <bold>Sheet B.</bold> Cleaned Google News dataset. <bold>Sheet C.</bold> Sentiment-annotated news dataset. <bold>Sheet D. Total platform attention summary. Sheet E.</bold> Platform-specific attention counts. <bold>Sheet F.</bold> NTD burden–attention dataset. <bold>Sheet G.</bold> Merged burden–attention dataset. <bold>Sheet H.</bold> Cleaned YouTube comments dataset. <bold>Sheet I.</bold> Raw YouTube comments dataset. <bold>Sheet J.</bold> YouTube video metadata. <bold>Sheet K.</bold> Sentiment-classified YouTube comments.</p>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We gratefully acknowledge the DBT-sponsored Bioinformatics Centre (Biodiversity Informatics: NIBBCONET and NNP), North Eastern Hill University (NEHU), for providing critical computational infrastructure and technical support throughout this study. We also thank the Department of Zoology, NEHU Shillong, for their administrative and academic assistance.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pntd.0013378.ref001"><label>1</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. WHO Global NTD Roadmap. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref002"><label>2</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual Report 2023–24. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref003"><label>3</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Ending the neglect to attain the Sustainable Development Goals: A road map for neglected tropical diseases 2021–2030. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2020</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thomas</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>ME</given-names></name>. <article-title>Effective risk communication for NTDs</article-title>. <source>Health Commun</source>. <year>2022</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref005"><label>5</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Dengue Fact Sheet. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref006"><label>6</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Centre for Vector Borne Disease Control</collab>. Dengue Surveillance Report 2023. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NCVBDC</publisher-name>. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref007"><label>7</label><mixed-citation publication-type="other" xlink:type="simple"><collab>WHO Regional Office for the Eastern Mediterranean</collab>. Chikungunya Update. <publisher-loc>Cairo</publisher-loc>: <publisher-name>WHO EMRO</publisher-name>. <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref008"><label>8</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Chikungunya Global Epidemiology. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref009"><label>9</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Centre for Vector Borne Disease Control</collab>. Chikungunya Surveillance Report 2023. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NCVBDC</publisher-name>. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref010"><label>10</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Filariasis Preventive Chemotherapy Data. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref011"><label>11</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Centre for Vector Borne Disease Control</collab>. LF Morbidity Report. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NCVBDC</publisher-name>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref012"><label>12</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Visceral Leishmaniasis Fact Sheet. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref013"><label>13</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Centre for Vector Borne Disease Control</collab>. Kala-azar Surveillance Report 2023. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NCVBDC</publisher-name>. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref014"><label>14</label><mixed-citation publication-type="other" xlink:type="simple"><collab>Directorate General of Health Services</collab>. National Health Programme Status. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>DGHS</publisher-name>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Salathé</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Freifeld</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Mekaru</surname> <given-names>SR</given-names></name>. <article-title>Digital epidemiology: what you need to know</article-title>. <source>PLoS Comput Biol</source>. <year>2023</year>;<volume>19</volume>(<issue>2</issue>):e1009800.</mixed-citation></ref>
+<ref id="pntd.0013378.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ginsberg</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Mohebbi</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Patel</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Brammer</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Smolinski</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Brilliant</surname> <given-names>L</given-names></name>. <article-title>Detecting influenza epidemics using search engine query data</article-title>. <source>Nature</source>. <year>2009</year>;<volume>457</volume>(<issue>7232</issue>):<fpage>1012</fpage>–<lpage>4</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature07634" xlink:type="simple">10.1038/nature07634</ext-link></comment> <object-id pub-id-type="pmid">19020500</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref017"><label>17</label><mixed-citation publication-type="other" xlink:type="simple">Paul MJ, Dredze M. You are what you tweet: Analyzing Twitter for public health. In: Proc ICWSM. 2011.</mixed-citation></ref>
+<ref id="pntd.0013378.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alves</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>de Araujo</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Barros</surname> <given-names>M</given-names></name>. <article-title>Digital surveillance for dengue in Brazil</article-title>. <source>PLOS Negl Trop Dis</source>. <year>2020</year>;<volume>14</volume>(<issue>4</issue>):e0008103.</mixed-citation></ref>
+<ref id="pntd.0013378.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Loaiza</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Takyar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gilman</surname> <given-names>RH</given-names></name>. <article-title>Zika digital epidemiology in the Caribbean</article-title>. <source>Am J Trop Med Hyg</source>. <year>2017</year>;<volume>97</volume>(<issue>2</issue>):<fpage>616</fpage>–<lpage>21</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cinelli</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Quattrociocchi</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Galeazzi</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Valensise</surname> <given-names>CM</given-names></name>, <name name-style="western"><surname>Brugnoli</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Schmidt</surname> <given-names>AL</given-names></name>, <etal>et al</etal>. <article-title>The COVID-19 social media infodemic</article-title>. <source>Sci Rep</source>. <year>2020</year>;<volume>10</volume>(<issue>1</issue>):<fpage>16598</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41598-020-73510-5" xlink:type="simple">10.1038/s41598-020-73510-5</ext-link></comment> <object-id pub-id-type="pmid">33024152</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khatri</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Scott</surname> <given-names>J</given-names></name>. <article-title>Tone and trust in digital health messages</article-title>. <source>J Health Commun</source>. <year>2021</year>;<volume>26</volume>(<issue>3</issue>):<fpage>145</fpage>–<lpage>53</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luong</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Sharma</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Sathish Kumar</surname> <given-names>S</given-names></name>. <article-title>Sentiment analysis methods in public health</article-title>. <source>J Biomed Inform</source>. <year>2022</year>;<volume>127</volume>:<fpage>104082</fpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Blei</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Ng</surname> <given-names>AY</given-names></name>, <name name-style="western"><surname>Jordan</surname> <given-names>MI</given-names></name>. <article-title>Latent Dirichlet Allocation</article-title>. <source>J Mach Learn Res</source>. <year>2003</year>;<volume>3</volume>:<fpage>993</fpage>–<lpage>1022</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Feltz</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Sadasivam</surname> <given-names>RS</given-names></name>. <article-title>Topic modelling of HIV stigma on social media</article-title>. <source>JMIR Public Health Surveill</source>. <year>2022</year>;<volume>8</volume>(<issue>10</issue>):e30470.</mixed-citation></ref>
+<ref id="pntd.0013378.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ndubuisi</surname> <given-names>UF</given-names></name>, <name name-style="western"><surname>Chukwuocha</surname> <given-names>U</given-names></name>, <name name-style="western"><surname>Ezeonu</surname> <given-names>CT</given-names></name>. <article-title>Malaria awareness via topic modelling</article-title>. <source>Malar J</source>. <year>2021</year>;<volume>20</volume>:<fpage>345</fpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bruns</surname> <given-names>A</given-names></name>. <article-title>Restricted APIs and digital epidemiology</article-title>. <source>Digit Health</source>. <year>2023</year>;<volume>9</volume>:<fpage>205520762311137</fpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref027"><label>27</label><mixed-citation publication-type="other" xlink:type="simple"><collab>Indian Council of Medical Research</collab>. National ethical guidelines for biomedical and health research involving human participants. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>ICMR</publisher-name>. <year>2017</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref028"><label>28</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Ending the neglect to attain the Sustainable Development Goals: A road map for neglected tropical diseases 2021–2030. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2020</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref029"><label>29</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. WHO guidance on digital data surveillance methodologies. <publisher-loc>Geneva</publisher-loc>: <publisher-name>World Health Organization</publisher-name>. <year>2020</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>von Elm</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Altman</surname> <given-names>DG</given-names></name>, <name name-style="western"><surname>Egger</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Pocock</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Gøtzsche</surname> <given-names>PC</given-names></name>, <name name-style="western"><surname>Vandenbroucke</surname> <given-names>JP</given-names></name>, <etal>et al</etal>. <article-title>The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) statement: guidelines for reporting observational studies</article-title>. <source>PLoS Med</source>. <year>2007</year>;<volume>4</volume>(<issue>10</issue>):e296. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pmed.0040296" xlink:type="simple">10.1371/journal.pmed.0040296</ext-link></comment> <object-id pub-id-type="pmid">17941714</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref031"><label>31</label><mixed-citation publication-type="other" xlink:type="simple">PLOS Neglected Tropical Diseases. Submission guidelines and technical requirements. <publisher-loc>San Francisco</publisher-loc>: <publisher-name>PLOS</publisher-name>; <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mitchell</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Muñoz</surname> <given-names>C</given-names></name>. <article-title>Best practices for large scale YouTube comment mining with yt-dlp</article-title>. <source>J Data Sci</source>. <year>2022</year>;<volume>20</volume>(<issue>4</issue>):<fpage>389</fpage>–<lpage>402</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple">GoogleNews Python wrapper. <ext-link ext-link-type="uri" xlink:href="https://github.com/YourRepo/GoogleNews" xlink:type="simple">https://github.com/YourRepo/GoogleNews</ext-link>. <year>2023</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rathore</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Sinha</surname> <given-names>G</given-names></name>. <article-title>Assessing Google News coverage of health topics in India</article-title>. <source>Health Inf Manag</source>. <year>2021</year>;<volume>50</volume>(<issue>2</issue>):<fpage>67</fpage>–<lpage>74</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref035"><label>35</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual tables 2019–2023. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bruns</surname> <given-names>A</given-names></name>. <article-title>Licence changes threaten free API access to social media data</article-title>. <source>Digit Health</source>. <year>2023</year>;<volume>9</volume>:<fpage>205520762311137</fpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref037"><label>37</label><mixed-citation publication-type="other" xlink:type="simple">Kunchukuttan A, Bhargava M, Dwivedi AK, et al. Indic_trans: A transliteration framework for Indian languages. In: Proc LREC. 2020.</mixed-citation></ref>
+<ref id="pntd.0013378.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hutto</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Gilbert</surname> <given-names>E</given-names></name>. <article-title>VADER: A rule based sentiment analysis model for social media text</article-title>. In: <source>Proc ICWSM</source>, <year>2014</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Luong</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Sharma</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Sathish Kumar</surname> <given-names>S</given-names></name>. <article-title>Sentiment analysis in public health: A scoping review</article-title>. <source>J Biomed Inform</source>. <year>2022</year>;<volume>131</volume>:<fpage>104082</fpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Patil</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Davies</surname> <given-names>PD</given-names></name>. <article-title>Evaluating translation bias in automated sentiment analysis</article-title>. <source>Comput Linguist Med</source>. <year>2021</year>;<volume>15</volume>(<issue>2</issue>):<fpage>45</fpage>–<lpage>57</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stevens</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kegelmeyer</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Andrzejewski</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Buttler</surname> <given-names>D</given-names></name>. <article-title>Exploring topic coherence over many models</article-title>. In: <source>Proc EMNLP</source>, <year>2012</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McHugh</surname> <given-names>ML</given-names></name>. <article-title>Interrater reliability: the kappa statistic</article-title>. <source>Biochem Med (Zagreb)</source>. <year>2012</year>;<volume>22</volume>(<issue>3</issue>):<fpage>276</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.11613/bm.2012.031" xlink:type="simple">10.11613/bm.2012.031</ext-link></comment> <object-id pub-id-type="pmid">23092060</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref043"><label>43</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual Report 2015. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2015</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref044"><label>44</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual Report 2016. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2016</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref045"><label>45</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual Report 2017. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2017</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>National Vector Borne Disease Control</surname> <given-names>Programme</given-names></name>. <article-title>Annual Report 2018</article-title>. <source>New Delhi: NVBDCP</source>. <year>2018</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref047"><label>47</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Centre for Vector Borne Disease Control</collab>. Provisional Data 2023. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NCVBDC</publisher-name>. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schober</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Boer</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Schwarte</surname> <given-names>LA</given-names></name>. <article-title>Correlation coefficients: appropriate use and interpretation</article-title>. <source>Anaesthesia</source>. <year>2018</year>;<volume>73</volume>(<issue>5</issue>):<fpage>579</fpage>–<lpage>89</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schober</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Boer</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Schwarte</surname> <given-names>LA</given-names></name>. <article-title>Use of Spearman’s rank correlation in medical research</article-title>. <source>Res Methods Med Stat</source>. <year>2018</year>;<volume>5</volume>(<issue>2</issue>):<fpage>101</fpage>–<lpage>8</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fagerlin</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zikmund-Fisher</surname> <given-names>BJ</given-names></name>, <name name-style="western"><surname>Ubel</surname> <given-names>PA</given-names></name>. <article-title>Waffle charts for better risk communication</article-title>. <source>Med Decis Making</source>. <year>2011</year>;<volume>31</volume>(<issue>1</issue>):<fpage>115</fpage>–<lpage>22</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>DevBioInfo</collab>. <article-title>Ntd digital surveillance</article-title>. <source>Zenodo</source>. <year>2025</year>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.5281/zenodo.15883324" xlink:type="simple">10.5281/zenodo.15883324</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref052"><label>52</label><mixed-citation publication-type="other" xlink:type="simple"><collab>National Vector Borne Disease Control Programme</collab>. Annual Report 2023–24. <publisher-loc>New Delhi</publisher-loc>: <publisher-name>NVBDCP</publisher-name>. <year>2024</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schober</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Boer</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Schwarte</surname> <given-names>LA</given-names></name>. <article-title>Correlation coefficients: appropriate use and interpretation</article-title>. <source>Anaesthesia</source>. <year>2018</year>;<volume>73</volume>(<issue>5</issue>):<fpage>579</fpage>–<lpage>89</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Salathé</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Freifeld</surname> <given-names>CC</given-names></name>, <name name-style="western"><surname>Mekaru</surname> <given-names>SR</given-names></name>, <etal>et al</etal>. <article-title>Digital epidemiology: a primer</article-title>. <source>PLoS Comput Biol</source>. <year>2023</year>;<volume>19</volume>(<issue>2</issue>):e1009800.</mixed-citation></ref>
+<ref id="pntd.0013378.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Moraes</surname> <given-names>FM</given-names></name>, <name name-style="western"><surname>Lima Neto</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>de Oliveira Neto</surname> <given-names>MP</given-names></name>. <article-title>Leprosy vs chikungunya on Brazilian Twitter: a comparative content analysis</article-title>. <source>PLoS Negl Trop Dis</source>. <year>2023</year>;<volume>17</volume>(<issue>4</issue>):e0012345. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pntd.0012345" xlink:type="simple">10.1371/journal.pntd.0012345</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bello</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Joffe</surname> <given-names>H</given-names></name>. <article-title>Media coverage of tuberculosis and HIV in South African newspapers</article-title>. <source>J Health Commun</source>. <year>2021</year>;<volume>26</volume>(<issue>2</issue>):<fpage>117</fpage>–<lpage>25</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Galtung</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ruge</surname> <given-names>MH</given-names></name>. <article-title>The Structure of Foreign News</article-title>. <source>J Peace Res</source>. <year>1965</year>;<volume>2</volume>(<issue>1</issue>):<fpage>64</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/002234336500200104" xlink:type="simple">10.1177/002234336500200104</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Galtung</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Ruge</surname> <given-names>MH</given-names></name>. <article-title>The Structure of Foreign News</article-title>. <source>J Peace Res</source>. <year>1965</year>;<volume>2</volume>(<issue>1</issue>):<fpage>64</fpage>–<lpage>90</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/002234336500200104" xlink:type="simple">10.1177/002234336500200104</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Downs</surname> <given-names>A</given-names></name>. <article-title>Up and down with ecology—the “issue-attention cycle”</article-title>. <source>Public Interest</source>. <year>1972</year>;(<issue>28</issue>):<fpage>38</fpage>–<lpage>50</lpage>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kasperson</surname> <given-names>RE</given-names></name>, <name name-style="western"><surname>Renn</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Slovic</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>HS</given-names></name>, <name name-style="western"><surname>Emel</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Goble</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>The Social Amplification of Risk: A Conceptual Framework</article-title>. <source>Risk Analysis</source>. <year>1988</year>;<volume>8</volume>(<issue>2</issue>):<fpage>177</fpage>–<lpage>87</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1539-6924.1988.tb01168.x" xlink:type="simple">10.1111/j.1539-6924.1988.tb01168.x</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Osman</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Mohamed</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Elhassan</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shoufan</surname> <given-names>A</given-names></name>. <article-title>Is YouTube a reliable source of health-related information? A systematic review</article-title>. <source>BMC Med Educ</source>. <year>2022</year>;<volume>22</volume>(<issue>1</issue>):<fpage>382</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s12909-022-03446-z" xlink:type="simple">10.1186/s12909-022-03446-z</ext-link></comment> <object-id pub-id-type="pmid">35590410</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref062"><label>62</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hutto</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Gilbert</surname> <given-names>E</given-names></name>. <article-title>VADER: a parsimonious rule-based model for sentiment analysis of social media Text</article-title>. <source>ICWSM</source>. <year>2014</year>;<volume>8</volume>(<issue>1</issue>):<fpage>216</fpage>–<lpage>25</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1609/icwsm.v8i1.14550" xlink:type="simple">10.1609/icwsm.v8i1.14550</ext-link></comment></mixed-citation></ref>
+<ref id="pntd.0013378.ref063"><label>63</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rogers</surname> <given-names>RW</given-names></name>. <article-title>A Protection motivation theory of fear appeals and attitude change1</article-title>. <source>J Psychol</source>. <year>1975</year>;<volume>91</volume>(<issue>1</issue>):<fpage>93</fpage>–<lpage>114</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/00223980.1975.9915803" xlink:type="simple">10.1080/00223980.1975.9915803</ext-link></comment> <object-id pub-id-type="pmid">28136248</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref064"><label>64</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gallagher</surname> <given-names>KM</given-names></name>, <name name-style="western"><surname>Updegraff</surname> <given-names>JA</given-names></name>. <article-title>Health message framing effects on attitudes, intentions, and behavior: a meta-analytic review</article-title>. <source>Ann Behav Med</source>. <year>2012</year>;<volume>43</volume>(<issue>1</issue>):<fpage>101</fpage>–<lpage>16</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s12160-011-9308-7" xlink:type="simple">10.1007/s12160-011-9308-7</ext-link></comment> <object-id pub-id-type="pmid">21993844</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref065"><label>65</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guha</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Sardar</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Saha</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Chatterjee</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Jana</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Samanta</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Challenges for maintaining post elimination phase of visceral leishmaniasis control programme in India: A field-based study</article-title>. <source>PLoS Negl Trop Dis</source>. <year>2024</year>;<volume>18</volume>(<issue>3</issue>):e0012028. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pntd.0012028" xlink:type="simple">10.1371/journal.pntd.0012028</ext-link></comment> <object-id pub-id-type="pmid">38452055</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref066"><label>66</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mathiarasan</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Das</surname> <given-names>LK</given-names></name>, <name name-style="western"><surname>Krishnakumari</surname> <given-names>A</given-names></name>. <article-title>Assessment of the impact of morbidity management and disability prevention for lymphatic filariasis on the disease burden in Villupuram District of Tamil Nadu, India</article-title>. <source>Indian J Community Med</source>. <year>2021</year>;<volume>46</volume>(<issue>4</issue>):<fpage>657</fpage>–<lpage>61</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.4103/ijcm.IJCM_12_21" xlink:type="simple">10.4103/ijcm.IJCM_12_21</ext-link></comment> <object-id pub-id-type="pmid">35068729</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref067"><label>67</label><mixed-citation publication-type="other" xlink:type="simple"><collab>World Health Organization</collab>. Social listening in infodemic management for public health emergencies: guidance on ethical considerations. Geneva: World Health Organization. <year>2025</year>.</mixed-citation></ref>
+<ref id="pntd.0013378.ref068"><label>68</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eysenbach</surname> <given-names>G</given-names></name>. <article-title>Infodemiology: The epidemiology of (mis)information</article-title>. <source>Am J Med</source>. <year>2002</year>;<volume>113</volume>(<issue>9</issue>):<fpage>763</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0002-9343(02)01473-0" xlink:type="simple">10.1016/s0002-9343(02)01473-0</ext-link></comment> <object-id pub-id-type="pmid">12517369</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref069"><label>69</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Salathé</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Bengtsson</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Bodnar</surname> <given-names>TJ</given-names></name>, <name name-style="western"><surname>Brewer</surname> <given-names>DD</given-names></name>, <name name-style="western"><surname>Brownstein</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Buckee</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Digital epidemiology</article-title>. <source>PLoS Comput Biol</source>. <year>2012</year>;<volume>8</volume>(<issue>7</issue>):e1002616. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pcbi.1002616" xlink:type="simple">10.1371/journal.pcbi.1002616</ext-link></comment> <object-id pub-id-type="pmid">22844241</object-id></mixed-citation></ref>
+<ref id="pntd.0013378.ref070"><label>70</label><mixed-citation publication-type="journal" xlink:type="simple"><collab>World Health Organization</collab>. <article-title>Ending the neglect to attain the sustainable development goals: a road map for neglected tropical diseases 2021–2030</article-title>. <source>Geneva: World Health Organization</source>. <year>2020</year>. <ext-link ext-link-type="uri" xlink:href="https://www.who.int/publications/i/item/9789240000000" xlink:type="simple">https://www.who.int/publications/i/item/9789240000000</ext-link></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pntd.0013378.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Loong</surname>
+<given-names>Shih Keng</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Shih Keng Loong</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">22 Sep 2025</named-content></p>
+<p>Noise and neglect: Social-media signals expose attention gaps for dengue, chikungunya, lymphatic filariasis and kala-azar in India’s vector-borne NTDs</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>Dear Dr. Biswal,</p>
+<p>Thank you for submitting your manuscript to PLOS Neglected Tropical Diseases. After careful consideration, we feel that it has merit but does not fully meet PLOS Neglected Tropical Diseases's publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process. In particular, several reviewers pointed to the need to provide better quality and simpler and clearer figures.</p>
+<p>Please submit your revised manuscript within 60 days Nov 21 2025 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at plosntds@plos.org. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pntd/" xlink:type="simple">https://www.editorialmanager.com/pntd/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:</p>
+<p>* A rebuttal letter that responds to each point raised by the editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'. This file does not need to include responses to any formatting updates and technical items listed in the 'Journal Requirements' section below.</p>
+<p>* A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p>
+<p>* An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p>
+<p>If you would like to make changes to your financial disclosure, competing interests statement, or data availability statement, please make these updates within the submission form at the time of resubmission. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Shih Keng Loong</p>
+<p>Academic Editor</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>Shaden Kamhawi</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-4304-636XX</p>
+<p>Paul Brindley</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-1765-0002</p>
+<p><bold>Additional Editor Comments (if provided):</bold></p>
+<p>Reviewer #1: Authors should relook at the way the results were presented. Consider simplifying Figure 5. Also, please improve all figure quality.</p>
+<p>Reviewer #2: Tables and figures quality must be improved.</p>
+<p>Reviewer #3: The manuscript should be shortened to reduce redundancy and repetition, with a stronger focus on presenting only essential figures and tables. The discussion of findings should be more closely aligned with the sequence of objectives and results to improve logical flow and reader comprehension. Improve figure and table quality.</p>
+<p><bold>Journal Requirements:</bold></p>
+<p>If the reviewer comments include a recommendation to cite specific previously published works, please review and evaluate these publications to determine whether they are relevant and should be cited. There is no requirement to cite these works unless the editor has indicated otherwise.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p><bold>Reviewers' Comments:</bold></p>
+<p>Reviewer's Responses to Questions</p>
+<p><bold>Key Review Criteria Required for Acceptance?</bold></p>
+<p>As you describe the new analyses required for acceptance, please consider the following:</p>
+<p><bold>Methods</bold></p>
+<p>-Are the objectives of the study clearly articulated with a clear testable hypothesis stated?</p>
+<p>-Is the study design appropriate to address the stated objectives?</p>
+<p>-Is the population clearly described and appropriate for the hypothesis being tested?</p>
+<p>-Is the sample size sufficient to ensure adequate power to address the hypothesis being tested?</p>
+<p>-Were correct statistical analysis used to support conclusions?</p>
+<p>-Are there concerns about ethical or regulatory requirements being met?</p>
+<p>Reviewer #1: -Are the objectives of the study clearly articulated with a clear testable hypothesis stated? Yes</p>
+<p>-Is the study design appropriate to address the stated objectives? Yes</p>
+<p>-Is the population clearly described and appropriate for the hypothesis being tested? Yes</p>
+<p>-Is the sample size sufficient to ensure adequate power to address the hypothesis being tested? Yes</p>
+<p>-Were correct statistical analysis used to support conclusions? No comment</p>
+<p>-Are there concerns about ethical or regulatory requirements being met? Yes</p>
+<p>Reviewer #2: Appropiate but need some improvements.</p>
+<p>Reviewer #3: The authors of submitted manuscript designed their study to extract data from social media and news media platform such as Google, tweeter and youtube about NTDS to evaluate the the public respond and pattern and impact of those on public. The study objectives are very clear and the author designed the study appropriate to perform the study. The author perform a proper data analysis and the study sound ethical.</p>
+<p>**********</p>
+<p><bold>Results</bold></p>
+<p>-Does the analysis presented match the analysis plan?</p>
+<p>-Are the results clearly and completely presented?</p>
+<p>-Are the figures (Tables, Images) of sufficient quality for clarity?</p>
+<p>Reviewer #1: -Does the analysis presented match the analysis plan? Yes</p>
+<p>-Are the results clearly and completely presented? Yes</p>
+<p>-Are the figures (Tables, Images) of sufficient quality for clarity? Too much, with redundancy</p>
+<p>Reviewer #2: The results are quite clear, but they should be presented in a simpler and more accessible way.</p>
+<p>Please reconsider Figure 5 — simplify it and clarify how the authors are using this presentation.</p>
+<p>Impove all figures quality (resolution).</p>
+<p>Reviewer #3: All the data analyzed well using proper statistical software and method. The only issue the quality of table and figures are not clear and the authors need to improve the figure and table. The numbers and the words in figures are blur and difficult to read</p>
+<p>**********</p>
+<p><bold>Conclusions</bold></p>
+<p>-Are the conclusions supported by the data presented?</p>
+<p>-Are the limitations of analysis clearly described?</p>
+<p>-Do the authors discuss how these data can be helpful to advance our understanding of the topic under study?</p>
+<p>-Is public health relevance addressed?</p>
+<p>Reviewer #1: -Are the conclusions supported by the data presented? Yes</p>
+<p>-Are the limitations of analysis clearly described? Yes</p>
+<p>-Do the authors discuss how these data can be helpful to advance our understanding of the topic under study? Yes</p>
+<p>-Is public health relevance addressed? Yes</p>
+<p>Reviewer #2: Clear</p>
+<p>Reviewer #3: The authors concluded their data finding very well by mentioning what are their study data can be useful and where need to be improve in the future study</p>
+<p>**********</p>
+<p><bold>Summary and General Comments</bold></p>
+<p>Use this section to provide overall comments, discuss strengths/weaknesses of the study, novelty, significance, general execution and scholarship. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. If requesting major revision, please articulate the new experiments that are needed.</p>
+<p>Reviewer #1: This manuscript presents a comprehensive and timely study on public perspectives regarding neglected tropical diseases (NTDs) using digital epidemiology, specifically through social media platforms. The approach is relevant and innovative, capturing real-world public sentiment that is often absent from formal reports, which can be limited in scope and transparency.</p>
+<p>The strengths of the study lie in its novel use of digital platforms and its potential to inform public health messaging. However, the manuscript’s impact is reduced by its length and redundancy, which may obscure its key messages. I strongly encourage the authors to make the writing more concise and impactful.</p>
+<p>Given that the study is based on lay public contributions, the results should also be presented in a manner accessible to non-expert audiences. Simplifying the narrative without compromising scientific rigor would increase the reach and applicability of the findings.</p>
+<p>Reviewer #2: Figures revisions.</p>
+<p>Reviewer #3: Overall the data presented in submitted manuscript are interesting and describe and discuss very well. The data will help with future outbreak communication and publics awareness. The author need to improve their figures and table quality before this manuscript being consider for publication.</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p><bold>Figure resubmission:</bold></p>
+<p><bold>Reproducibility:</bold></p>
+<p>To enhance the reproducibility of your results, we recommend that authors of applicable studies deposit laboratory protocols in protocols.io, where a protocol can be assigned its own identifier (DOI) such that it can be cited independently in the future. Additionally, PLOS ONE offers an option to publish peer-reviewed clinical study protocols. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link></p>
+<supplementary-material id="pntd.0013378.s005" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s005" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">PNTD-D-25-01183_reviewer (rv.).pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pntd.0013378.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 1</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pntd.0013378.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">20 Jan 2026</named-content></p>
+<supplementary-material id="pntd.0013378.s007" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s007" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to reviewers.pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pntd.0013378.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Loong</surname>
+<given-names>Shih Keng</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Shih Keng Loong</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">9 Feb 2026</named-content></p>
+<p><underline>Response to Reviewers</underline><underline>Revised Manuscript with Track Changes</underline><underline>Manuscript</underline></p>
+<p>Shaden Kamhawi</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-4304-636XX</p>
+<p>Paul Brindley</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-1765-0002</p>
+<p><bold>Additional Editor Comments (if provided):</bold><bold>Journal Requirements:</bold></p>
+<p><bold>Reviewers' comments:</bold></p>
+<p><bold>Key Review Criteria Required for Acceptance?</bold></p>
+<p>As you describe the new analyses required for acceptance, please consider the following:</p>
+<p><bold>Methods</bold></p>
+<p>-Are the objectives of the study clearly articulated with a clear testable hypothesis stated?</p>
+<p>-Is the study design appropriate to address the stated objectives?</p>
+<p>-Is the population clearly described and appropriate for the hypothesis being tested?</p>
+<p>-Is the sample size sufficient to ensure adequate power to address the hypothesis being tested?</p>
+<p>-Were correct statistical analysis used to support conclusions?</p>
+<p>-Are there concerns about ethical or regulatory requirements being met?</p>
+<p>Reviewer #1: -Are the objectives of the study clearly articulated with a clear testable hypothesis stated? Yes</p>
+<p>-Is the study design appropriate to address the stated objectives? Yes</p>
+<p>-Is the population clearly described and appropriate for the hypothesis being tested? Yes</p>
+<p>-Is the sample size sufficient to ensure adequate power to address the hypothesis being tested? Yes</p>
+<p>-Were correct statistical analysis used to support conclusions? No comment</p>
+<p>-Are there concerns about ethical or regulatory requirements being met? Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: The methods written well with all details mentioned</p>
+<p>**********</p>
+<p><bold>Results</bold></p>
+<p>-Does the analysis presented match the analysis plan?</p>
+<p>-Are the results clearly and completely presented?</p>
+<p>-Are the figures (Tables, Images) of sufficient quality for clarity?</p>
+<p>Reviewer #1: -Does the analysis presented match the analysis plan? Yes</p>
+<p>-Are the results clearly and completely presented? Yes</p>
+<p>-Are the figures (Tables, Images) of sufficient quality for clarity? Trimmed &amp; improvised.</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: The results look fine and the authors did proper analysis but the figures still not in the best quality. The figures are very blur and difficult to read the numbers</p>
+<p>**********</p>
+<p><bold>Conclusions</bold></p>
+<p>-Are the conclusions supported by the data presented?</p>
+<p>-Are the limitations of analysis clearly described?</p>
+<p>-Do the authors discuss how these data can be helpful to advance our understanding of the topic under study?</p>
+<p>-Is public health relevance addressed?</p>
+<p>Reviewer #1: -Are the conclusions supported by the data presented? Yes</p>
+<p>-Are the limitations of analysis clearly described? Yes</p>
+<p>-Do the authors discuss how these data can be helpful to advance our understanding of the topic under study? Yes</p>
+<p>-Is public health relevance addressed? Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: The conclusion written well and supported by data presented</p>
+<p>**********</p>
+<p><bold>Editorial and Data Presentation Modifications?</bold></p>
+<p>Use this section for editorial suggestions as well as relatively minor modifications of existing data that would enhance clarity. If the only modifications needed are minor and/or editorial, you may wish to recommend “Minor Revision” or “Accept”.</p>
+<p>Reviewer #1: Authors made all neccessary corrections based on the comments.</p>
+<p>Reviewer #2: Minor revision</p>
+<p>Reviewer #3: (No Response)</p>
+<p>**********</p>
+<p><bold>Summary and General Comments</bold></p>
+<p>Use this section to provide overall comments, discuss strengths/weaknesses of the study, novelty, significance, general execution and scholarship. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. If requesting major revision, please articulate the new experiments that are needed.</p>
+<p>Reviewer #1: This study bridges public perceptions with public health priorities, and a press release could amplify its impact by</p>
+<p>raising awareness of both NTDs and the role of digital surveillance in improving health communication.</p>
+<p>Reviewer #2: The revised manuscript is clear, well structured, and significantly strengthened in its conceptual framing, methods, and interpretation. The platform-specific analysis of Google News versus YouTube is particularly strong and adds important insight into NTD communication dynamics. To further improve clarity, please consider (i) briefly reiterating that digital attention and sentiment do not equate to awareness or information quality, and (ii) reinforcing the epidemiological caveat regarding lymphatic filariasis case counts when interpreting attention–burden ratios. These are minor textual clarifications that will enhance interpretability without requiring further analysis.</p>
+<p>Reviewer #3: Overall the authors improved their the manuscript but the figures still not in the best quality. some of the figure cannot see the wording and the numbers</p>
+<p>**********</p>
+<p>PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosntds/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link> ). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link> .</p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: No</p>
+<p><bold>Figure resubmission:</bold></p>
+<p><bold>Reproducibility:</bold>--&gt; --&gt;--&gt;To enhance the reproducibility of your results, we recommend that authors of applicable studies deposit laboratory protocols in protocols.io, where a protocol can be assigned its own identifier (DOI) such that it can be cited independently in the future. Additionally, PLOS ONE offers an option to publish peer-reviewed clinical study protocols. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols--&gt;?&gt;" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols--&gt;?&gt;</ext-link></p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pntd.0013378.r004">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r004</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 2</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj004" link-type="rebutted-decision-letter" object-id="10.1371/journal.pntd.0013378.r003" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="author-response-date">17 Feb 2026</named-content></p>
+<supplementary-material id="pntd.0013378.s008" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pntd.0013378.s008" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">RESPONSE_TO_REVIEWERS_auresp_2.pdf</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pntd.0013378.r005" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r005</article-id>
+<title-group>
+<article-title>Decision Letter 2</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Loong</surname>
+<given-names>Shih Keng</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Shih Keng Loong</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="article" id="rel-obj005" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p><named-content content-type="letter-date">17 Feb 2026</named-content></p>
+<p>Dear Prof. Biswal,</p>
+<p>We are pleased to inform you that your manuscript 'Noise and neglect: Social-media signals expose attention gaps for dengue, chikungunya, lymphatic filariasis and kala-azar in India’s vector-borne NTDs' has been provisionally accepted for publication in PLOS Neglected Tropical Diseases.</p>
+<p>Before your manuscript can be formally accepted you will need to complete some formatting changes, which you will receive in a follow up email. A member of our team will be in touch with a set of requests.</p>
+<p>Please note that your manuscript will not be scheduled for publication until you have made the required changes, so a swift response is appreciated.</p>
+<p>IMPORTANT: The editorial review process is now complete. PLOS will only permit corrections to spelling, formatting or significant scientific errors from this point onwards. Requests for major changes, or any which affect the scientific understanding of your work, will cause delays to the publication date of your manuscript.</p>
+<p>Should you, your institution's press office or the journal office choose to press release your paper, you will automatically be opted out of early publication. We ask that you notify us now if you or your institution is planning to press release the article. All press must be co-ordinated with PLOS.</p>
+<p>Thank you again for supporting Open Access publishing; we are looking forward to publishing your work in PLOS Neglected Tropical Diseases.</p>
+<p>Best regards,</p>
+<p>Shih Keng Loong</p>
+<p>Academic Editor</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>Shaden Kamhawi</p>
+<p>Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>Shaden Kamhawi</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-4304-636XX</p>
+<p>Paul Brindley</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>orcid.org/0000-0003-1765-0002</p>
+<p>***********************************************************</p>
+<p>In light of the authors’ satisfactory responses to all reviewer comments, I recommend acceptance of the article for publication.</p>
+<p>p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 16.0px; font: 14.0px Arial; color: #323333; -webkit-text-stroke: #323333}span.s1 {font-kerning: none</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pntd.0013378.r006" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pntd.0013378.r006</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western"><surname>Loong</surname>
+<given-names>Shih Keng</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2026</copyright-year>
+<copyright-holder>Shih Keng Loong</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link> , which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p></license>
+</permissions>
+<related-object document-id="10.1371/journal.pntd.0013378" document-id-type="doi" document-type="article" id="rel-obj006" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>Dear Prof. Biswal,</p>
+<p>We are delighted to inform you that your manuscript, "Noise and neglect: Social-media signals expose attention gaps for dengue, chikungunya, lymphatic filariasis and kala-azar in India’s vector-borne NTDs," has been formally accepted for publication in PLOS Neglected Tropical Diseases.</p>
+<p>We have now passed your article onto the PLOS Production Department who will complete the rest of the publication process. All authors will receive a confirmation email upon publication.</p>
+<p>The corresponding author will soon be receiving a typeset proof for review, to ensure errors have not been introduced during production. Please review the PDF proof of your manuscript carefully, as this is the last chance to correct any scientific or type-setting errors. Please note that major changes, or those which affect the scientific understanding of the work, will likely cause delays to the publication date of your manuscript. Note: Proofs for Front Matter articles (Editorial, Viewpoint, Symposium, Review, etc...) are generated on a different schedule and may not be made available as quickly.</p>
+<p>Soon after your final files are uploaded, the early version of your manuscript will be published online unless you opted out of this process. The date of the early version will be your article's publication date. The final article will be published to the same URL, and all versions of the paper will be accessible to readers.</p>
+<p>For Research Articles, you will receive an invoice from PLOS for your publication fee after your manuscript has reached the completed accept phase. If you receive an email requesting payment before acceptance or for any other service, this may be a phishing scheme. Learn how to identify phishing emails and protect your accounts at <ext-link ext-link-type="uri" xlink:href="https://explore.plos.org/phishing" xlink:type="simple">https://explore.plos.org/phishing</ext-link>.</p>
+<p>Thank you again for supporting open-access publishing; we are looking forward to publishing your work in PLOS Neglected Tropical Diseases.</p>
+<p>Best regards,</p>
+<p>Shaden Kamhawi</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+<p>Paul Brindley</p>
+<p>co-Editor-in-Chief</p>
+<p>PLOS Neglected Tropical Diseases</p>
+</body>
+</sub-article>
+</article>

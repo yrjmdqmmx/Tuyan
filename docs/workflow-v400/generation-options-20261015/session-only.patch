@@ -1,0 +1,236 @@
+--- before/apps/web/src/components/WorkflowOptions.jsx
++++ after/apps/web/src/components/WorkflowOptions.jsx
+@@ -2,7 +2,7 @@
+ import { CircleHelp } from 'lucide-react'
+ import { useAppLocale } from './BenchmarkLocale.jsx'
+ 
+-const MODES = [['demo_planner_critic', '规划器 + 评审器', '规划并按需修正'], ['demo_full', '完整流程', '增加风格整理'], ['vanilla', '基础生成', '先规划，再出图']]
++const MODES = [['planner_critic', '快速生成', '规划并按需修正'], ['full', '完整生成', '增加风格整理']]
+ 
+ export function workflowExplanation(mode, body = {}, locale = 'zh-CN') {
+   if (body.generationPath === 'model-v1') {
+@@ -14,14 +14,14 @@
+       svg ? 'The main model writes SVG source. Local code renders it and checks bounded marker visibility; numerical and scientific correctness still require verification.' : 'The image model draws PNG from the complete plan.',
+       `The draft and every revision are reviewed. Up to ${revisions} revisions and ${revisions + 1} reviews; the final check cannot trigger another revision.`,
+       'Reviews may finish early. Unresolved findings or uncertain local checks prevent a pass. Model approval does not guarantee scientific correctness.',
+-      'Style preparation, material reading, assisted vision, reviews and rendering may add calls. Candidate count is not concurrency.',
++      full ? 'Style preparation, material reading, assisted vision, reviews and rendering may add calls. Candidate count is not concurrency.' : 'Material reading, assisted vision, reviews and rendering may add calls. Candidate count is not concurrency.',
+     ] : [
+       '主模型读取原材料并制定完整方案。上传文件与图库检索独立，所选模式不会被上传覆盖。',
+       ...(full ? ['每张候选增加 1 次主模型风格整理，使用完整风格指南。风格整理可能简化细节，仍须核对研究含义。'] : []),
+       svg ? '主模型编写 SVG 源码；程序渲染并对声明的箭头标记做有界可见性检查，不证明数值或科学正确性。' : '生图模型按完整方案绘制 PNG。',
+       `初稿及每次修改后的版本都单独评审。最多 ${revisions} 次修改、${revisions + 1} 次评审；最终检查不再触发修改。`,
+       '评审可提前结束。未解决的问题或本地检查的不确定项不能通过；模型通过也不等于科研正确。',
+-      '风格整理、材料读取、辅助视觉、评审与绘制都可能增加调用和等待；候选数不是并发数。',
++      full ? '风格整理、材料读取、辅助视觉、评审与绘制都可能增加调用和等待；候选数不是并发数。' : '材料读取、辅助视觉、评审与绘制都可能增加调用和等待；候选数不是并发数。',
+     ]
+   }
+   const basic = mode === 'vanilla'
+@@ -59,13 +59,10 @@
+   const prefix = useId()
+   const [open, setOpen] = useState('')
+   const [pinned, setPinned] = useState('')
+-  const modes = body?.generationPath === 'model-v1'
+-    ? [['planner_critic','规划器 + 评审器','规划并按需修正'],['full','完整流程','增加风格整理']]
+-    : MODES
+   return <fieldset className="workflow-options" onKeyDown={event => {if(event.key === 'Escape') {setOpen('');setPinned('');event.stopPropagation()}}}>
+     <legend>{t('生成流程')}</legend>
+     <div className="workflow-option-list">
+-      {modes.map(([id, label, short]) => <div key={id} className={`workflow-option ${value === id ? 'selected' : ''}`}>
++      {MODES.map(([id, label, short]) => <div key={id} className={`workflow-option ${value === id ? 'selected' : ''}`}>
+         <label className="workflow-choice"><input type="radio" name={prefix} value={id} checked={value === id} onChange={() => onChange(id)} /><span><strong>{t(label)}</strong><small>{t(short)}</small></span></label>
+         <div className="workflow-help" onMouseEnter={() => setOpen(id)} onMouseLeave={() => {if(pinned !== id)setOpen('')}} onBlur={event => {if(!event.currentTarget.contains(event.relatedTarget) && pinned !== id)setOpen('')}}>
+           <button type="button" className="workflow-help-button" aria-label={t('{name}说明', {name:t(label)})} aria-expanded={open === id} aria-controls={`${prefix}-${id}`} onFocus={() => setOpen(id)} onClick={() => {const next = pinned === id ? '' : id;setPinned(next);setOpen(next)}}><CircleHelp size={16}/></button>
+--- before/apps/web/src/lib/workflowSettings.js
++++ after/apps/web/src/lib/workflowSettings.js
+@@ -4,20 +4,21 @@
+ export const VISION_ASSIST_NOTICE = '当前主模型已支持图片理解。保留独立视觉模型后，将由视觉模型分析图片，再由主模型制定方案，可能增加调用次数和等待时间。'
+ const STORAGE_KEY = 'tuyan.workflow-settings.v1'
+ const DEFAULTS = Object.freeze({numCandidates: 1, maxCriticRounds: 1, visionMode: 'none'})
+-export const normalizeGenerationPipeline = mode => mode === 'full' || mode === 'demo_full' ? 'full' : 'planner_critic'
++export const normalizeGenerationPipeline = mode => mode === 'planner_critic' || mode === 'demo_planner_critic' ? 'planner_critic' : 'full'
+ export function loadGenerationPipeline(storage) {
+   try {
+     storage ??= globalThis.localStorage ?? globalThis.window?.localStorage
+     const saved = JSON.parse(storage?.getItem(STORAGE_KEY) || 'null')
+-    return normalizeGenerationPipeline(saved?.version === 1 ? saved.pipelineMode : undefined)
+-  } catch { return 'planner_critic' }
++    // Earlier settings used planner_critic as the implicit default. Start the new choices at full.
++    return normalizeGenerationPipeline(saved?.version === 2 ? saved.pipelineMode : undefined)
++  } catch { return 'full' }
+ }
+ 
+ export function loadWorkflowSettings(storage) {
+   try {
+     storage ??= globalThis.localStorage ?? globalThis.window?.localStorage
+     const saved = JSON.parse(storage?.getItem(STORAGE_KEY) || 'null')
+-    if (saved?.version !== 1) return {...DEFAULTS}
++    if (![1, 2].includes(saved?.version)) return {...DEFAULTS}
+     let counts = DEFAULTS
+     try { counts = validateWorkflowCounts(saved) } catch { /* Invalid persisted counts cannot enter a new task. */ }
+     return {...counts, visionMode: normalizeVisionMode(saved.visionMode ?? DEFAULTS.visionMode)}
+@@ -34,7 +35,7 @@
+   }
+   try {
+     if (!storage) return false
+-    storage.setItem(STORAGE_KEY, JSON.stringify({version: 1, ...counts, visionMode: normalizeVisionMode(settings.visionMode ?? DEFAULTS.visionMode),
++    storage.setItem(STORAGE_KEY, JSON.stringify({version: 2, ...counts, visionMode: normalizeVisionMode(settings.visionMode ?? DEFAULTS.visionMode),
+       pipelineMode: settings.pipelineMode === undefined ? loadGenerationPipeline(storage) : normalizeGenerationPipeline(settings.pipelineMode)}))
+     return true
+   } catch { return false }
+--- before/apps/web/src/lib/workflowSettings.test.js
++++ after/apps/web/src/lib/workflowSettings.test.js
+@@ -1,11 +1,33 @@
+ import test from 'node:test'
+ import assert from 'node:assert/strict'
+-import {loadWorkflowSettings, saveWorkflowSettings, workflowPreflight, reviewStatusText} from './workflowSettings.js'
++import {loadWorkflowSettings, loadGenerationPipeline, saveWorkflowSettings, workflowPreflight, reviewStatusText} from './workflowSettings.js'
+ import {requiredCreateRouteRoles, requiredRefineRouteRoles, scopedApiKeysForRoles, arkProbesForRoles, buildModelSubmission} from './modelRouting.js'
+ 
+ const storage = () => {const data = new Map();return {getItem:key=>data.get(key),setItem:(key,value)=>data.set(key,value)}}
+ const registry = {workflowContractVersion:2}
+ const base = {action:'createJob',outputFormat:'png',pipelineMode:'planner_critic',numCandidates:1,maxCriticRounds:1,visionMode:'none'}
++
++test('full generation is the default and legacy preferences migrate without losing counts or vision', () => {
++  const store = storage()
++  assert.equal(loadGenerationPipeline(store), 'full')
++  for (const pipelineMode of ['planner_critic', 'demo_planner_critic', 'vanilla', 'demo_full']) {
++    store.setItem('tuyan.workflow-settings.v1', JSON.stringify({version:1,pipelineMode,numCandidates:4,maxCriticRounds:3,visionMode:'assist'}))
++    assert.equal(loadGenerationPipeline(store), 'full')
++    assert.deepEqual(loadWorkflowSettings(store), {numCandidates:4,maxCriticRounds:3,visionMode:'assist'})
++  }
++  assert.equal(loadGenerationPipeline({getItem(){throw new Error('blocked')}}), 'full')
++})
++
++test('an explicit quick choice persists with review enabled after the default migration', () => {
++  const store = storage()
++  saveWorkflowSettings({...base,numCandidates:2,maxCriticRounds:3},store)
++  assert.equal(loadGenerationPipeline(store),'planner_critic')
++  assert.deepEqual(loadWorkflowSettings(store),{numCandidates:2,maxCriticRounds:3,visionMode:'none'})
++  saveWorkflowSettings({numCandidates:3,maxCriticRounds:2,visionMode:'assist'},store)
++  assert.equal(loadGenerationPipeline(store),'planner_critic')
++  saveWorkflowSettings({...base,pipelineMode:'full'},store)
++  assert.equal(loadGenerationPipeline(store),'full')
++})
+ 
+ test('workflow defaults restore conservatively and valid bounds persist with explicit vision mode', () => {
+   const store=storage()
+--- before/apps/web/src/App.jsx
++++ after/apps/web/src/App.jsx
+@@ -1676,7 +1676,7 @@
+           <WorkflowOptions value={pipelineMode} onChange={setPipelineMode} body={createWorkflowBody} />
+         {!isAdvancedMode ? (
+         <div className="default-summary" aria-label={t("默认生成配置")}>
+-          <span>{t(pipelineMode === 'full' ? '完整流程' : '规划器 + 评审器')}</span>
++          <span>{t(pipelineMode === 'full' ? '完整生成' : '快速生成')}</span>
+           <span>{t(aspectRatio === 'auto' ? '自动比例' : aspectRatio)}</span>
+           <span>{t(formatOutputFormat(outputFormat))}</span>
+         </div>
+--- before/apps/web/src/components/GuidePanel.jsx
++++ after/apps/web/src/components/GuidePanel.jsx
+@@ -54,8 +54,8 @@
+         </Section>
+         <Section id="guide-workflow" title="两种生成流程">
+           <p>{t('生成设置中的流程卡片右上角有问号。鼠标悬停、键盘聚焦或点击即可查看当前格式、参考图和视觉模式下的说明；再次点击或按 Escape 关闭。')}</p>
+-          <h4>{t('规划器 + 评审器')}</h4><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('默认流程。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。')}</p>
+-          <h4>{t('完整流程')}</h4><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 风格整理 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('每张候选多 1 次主模型风格整理，使用完整风格指南完善配色、层级与版式。可能简化细节，需核对研究含义；不是质量保证。')}</p>
++          <h4>{t('快速生成')}</h4><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('省去风格整理，保留成图评审。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。')}</p>
++          <h4>{t('完整生成')}</h4><p>{t('普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。')}</p><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 风格整理 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('每张候选多 1 次主模型风格整理，使用完整风格指南完善配色、层级与版式。可能简化细节，需核对研究含义；不是质量保证。')}</p>
+           <p>{t('两种流程都遵循最大修改次数和最终版本检查。旧任务保留原合同；把旧任务恢复为新输入后，采用当前新任务流程。')}</p>
+         </Section>
+         <Section id="guide-library" title="参考图与检索">
+--- before/apps/web/src/i18n/workbench.en.json
++++ after/apps/web/src/i18n/workbench.en.json
+@@ -1074,5 +1074,9 @@
+   "主模型规划，图像模型绘制；检查实际生成画面，再按需重绘并检查新版。": "The main model plans and the image model draws; the actual image is reviewed, redrawn when needed, and the new version is reviewed again.",
+   "普通模式固定 1 张候选图、最多 1 次修改。专业模式可设 1–6 张、最多 1–5 次修改，只接受整数。两种模式均可选择生成流程；流程、专业模式候选数与修改次数、视觉选择保存到当前浏览器，不保存密钥。": "Simple mode uses one candidate and at most one revision. Advanced mode accepts 1–6 candidates and 1–5 revisions as integers. Both modes offer workflow selection. The workflow, advanced counts and vision choice are saved in this browser; keys are not.",
+   "任务部分失败，已完成的候选图仍可查看或下载。": "Part of this task failed. Completed candidates remain available to view or download.",
+-  "定量图不能免除数值与几何核对。辅助视觉报告中的问题和不确定项需由主模型逐项说明处理理由与证据；漏项或未解决项不会被认定为通过。评审记录不等于科研正确性证明。": "Quantitative figures require numeric and geometric checks. The main model must address every auxiliary observation and uncertainty with reasons and evidence. Missing or unresolved decisions cannot pass. A review record does not prove scientific correctness."
++  "定量图不能免除数值与几何核对。辅助视觉报告中的问题和不确定项需由主模型逐项说明处理理由与证据；漏项或未解决项不会被认定为通过。评审记录不等于科研正确性证明。": "Quantitative figures require numeric and geometric checks. The main model must address every auxiliary observation and uncertainty with reasons and evidence. Missing or unresolved decisions cannot pass. A review record does not prove scientific correctness.",
++  "快速生成": "Quick generation",
++  "完整生成": "Full generation",
++  "省去风格整理，保留成图评审。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。": "Skips style preparation while retaining image review. With assisted vision, the vision model observes and the main model decides; with None, an image-capable main model reviews directly.",
++  "普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。": "Simple and advanced modes both default to Full generation. Your manual choice is saved in this browser."
+ }
+--- before/apps/web/tests/workflow-v400-ui.test.mjs
++++ after/apps/web/tests/workflow-v400-ui.test.mjs
+@@ -9,13 +9,13 @@
+ afterEach(cleanup)
+ test('workflow cards support selection, keyboard focus, Escape, hover and tap help', () => {
+   let selected=''
+-  render(React.createElement(WorkflowOptions,{value:'demo_planner_critic',onChange:value=>selected=value,body:{maxCriticRounds:0,visionMode:'none'}}))
+-  fireEvent.click(screen.getByRole('radio',{name:/基础生成/}))
+-  assert.equal(selected,'vanilla')
+-  const help=screen.getByRole('button',{name:'基础生成说明'})
++  render(React.createElement(WorkflowOptions,{value:'full',onChange:value=>selected=value,body:{generationPath:'model-v1',maxCriticRounds:1,visionMode:'none'}}))
++  fireEvent.click(screen.getByRole('radio',{name:/快速生成/}))
++  assert.equal(selected,'planner_critic')
++  const help=screen.getByRole('button',{name:'快速生成说明'})
+   fireEvent.focus(help)
+   assert.equal(help.getAttribute('aria-expanded'),'true')
+-  assert.ok(screen.getByRole('region',{name:'基础生成说明'}).textContent.includes('不执行评审'))
++  assert.ok(screen.getByRole('region',{name:'快速生成说明'}).textContent.includes('单独评审'))
+   fireEvent.keyDown(help,{key:'Escape'})
+   assert.equal(help.getAttribute('aria-expanded'),'false')
+   fireEvent.mouseEnter(help.parentElement)
+@@ -114,8 +114,13 @@
+     await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+     assert.equal(screen.queryByText(/正常完成约 .*次模型调用/),null)
+     assert.equal(screen.queryByText(/默认 1 张 \/ 1 轮。评审为 0 时不复核结果/),null)
+-    await user.click(screen.getByRole('radio',{name:/完整流程/}))
+-    assert.equal(screen.queryByRole('radio',{name:/基础生成/}),null)
++    assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
++    assert.equal(screen.getAllByRole('radio').filter(radio=>['full','planner_critic'].includes(radio.value)).length,2)
++    assert.equal(screen.queryByRole('radio',{name:/规划器 \+ 评审器|基础生成|完整流程/}),null)
++    await user.click(screen.getByRole('button',{name:/普通模式/}))
++    assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
++    await user.click(screen.getByRole('button',{name:/专业模式/}))
++    assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
+     fireEvent.change(screen.getByLabelText('候选图数量'),{target:{value:'6'}})
+     fireEvent.change(screen.getByLabelText('最大修改次数'),{target:{value:'5'}})
+     assert.equal(screen.queryByLabelText('火山方舟 接入密钥'),null)
+@@ -130,7 +135,7 @@
+     render(React.createElement(App))
+     await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+     assert.equal(screen.getByLabelText('候选图数量').value,'6');assert.equal(screen.getByLabelText('最大修改次数').value,'5')
+-    assert.equal(screen.getByRole('radio',{name:/完整流程/}).checked,true)
++    assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
+     assert.ok(screen.getByRole('button',{name:'视觉模型'}).textContent.includes('无'))
+     assert.doesNotMatch(window.localStorage.getItem('tuyan.workflow-settings.v1'),/fixture-key/)
+   } finally {cleanup();window.localStorage.clear();globalThis.fetch=originalFetch}
+--- before/apps/web/tests/upstream-repairs.test.mjs
++++ after/apps/web/tests/upstream-repairs.test.mjs
+@@ -28,7 +28,7 @@
+  let mode=''
+  render(React.createElement(WorkflowOptions,{value:'planner_critic',onChange:value=>mode=value,body:{generationPath:'model-v1',outputFormat:'svg',maxCriticRounds:3,visionMode:'none'}}))
+  assert.equal(screen.getAllByRole('radio').length,2)
+- fireEvent.click(screen.getByRole('radio',{name:/完整流程/}));assert.equal(mode,'full')
++ fireEvent.click(screen.getByRole('radio',{name:/完整生成/}));assert.equal(mode,'full')
+  const help=workflowExplanation('full',{generationPath:'model-v1',outputFormat:'svg',maxCriticRounds:3,visionMode:'none'}).join(' ')
+  assert.match(help,/风格/);assert.match(help,/4 次/);assert.match(help,/本地/)
+  cleanup();render(React.createElement(GuidePanel))
+@@ -41,11 +41,11 @@
+ })
+ test('workflow persistence normalizes legacy aliases without storing credentials or disabling review',()=>{
+  const storage=window.localStorage
+- assert.equal(loadGenerationPipeline(storage),'planner_critic')
++ assert.equal(loadGenerationPipeline(storage),'full')
+  storage.setItem('tuyan.workflow-settings.v1',JSON.stringify({version:1,pipelineMode:'demo_full'}))
+  assert.equal(loadGenerationPipeline(storage),'full')
+  saveWorkflowSettings({numCandidates:2,maxCriticRounds:3,visionMode:'none',apiKey:'never-store'},storage)
+  assert.equal(loadGenerationPipeline(storage),'full');assert.doesNotMatch(storage.getItem('tuyan.workflow-settings.v1'),/never-store/)
+  saveWorkflowSettings({numCandidates:1,maxCriticRounds:1,pipelineMode:'vanilla'},storage)
+- assert.equal(loadGenerationPipeline(storage),'planner_critic')
++ assert.equal(loadGenerationPipeline(storage),'full')
+ })
+--- before/apps/web/tests/inactive-route-ui.test.mjs
++++ after/apps/web/tests/inactive-route-ui.test.mjs
+@@ -7,7 +7,7 @@
+ test('SVG submission excludes an unfinished custom image route while retaining the local draft',async()=>{
+  const original=globalThis.fetch,requests=[],user=userEvent.setup();
+  window.localStorage.setItem('tuyan.model-routing.v1',JSON.stringify({version:1,mode:'advanced',roles:{main:{accessProvider:'openai',modelId:'gpt-5.6-sol'},image:{accessProvider:'custom',modelId:'saved-image-draft'},vision:{accessProvider:'openai',modelId:'gpt-4.1'}}}));
+- window.localStorage.setItem('tuyan.workflow-settings.v1',JSON.stringify({version:1,pipelineMode:'planner_critic',numCandidates:1,maxCriticRounds:1,visionMode:'none'}));
++ window.localStorage.setItem('tuyan.workflow-settings.v1',JSON.stringify({version:2,pipelineMode:'planner_critic',numCandidates:1,maxCriticRounds:1,visionMode:'none'}));
+  const registry={figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,materialWorkflowVersion:1,materialFileVersion:2,workflowContractVersion:2,routeContractVersion:1,universalApiContractVersion:1,providers:{openai:{defaults:{main:'gpt-5.6-sol',image:'gpt-image-2',vision:'gpt-4.1'},models:[{id:'gpt-5.6-sol',roles:['main','vision'],label:'Main',selectable:true,capabilities:{referenceImages:true}},{id:'gpt-image-2',label:'Image',roles:['image'],selectable:true,capabilities:{outputFormats:['png'],aspectRatios:['1:1'],resolutions:['1K']}}]}}};
+  globalThis.fetch=async(_url,init={})=>{const b=init.body?JSON.parse(init.body):null;if(b)requests.push(b);return Response.json(!b?{code:0,runtime:'gateway'}:b.action==='modelRegistry'?{code:0,...registry}:b.action==='referenceLibrary'?{code:0,references:[]}:b.action==='createJob'?{code:0,jobId:'svg-fixture',status:'queued'}:{code:0,jobs:[]})};
+  try{

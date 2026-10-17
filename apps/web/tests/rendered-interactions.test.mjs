@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
+import { File } from 'node:buffer'
+import { IDBFactory } from 'fake-indexeddb'
 import React from 'react'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,14 +12,14 @@ import ReferenceLibraryPanel from '../src/components/ReferenceLibraryPanel.jsx'
 import ReferenceUploadPanel from '../src/components/ReferenceUploadPanel.jsx'
 
 const bailianRegistry = {
-  registryVersion: 'test-v2',
+  registryVersion: 'test-v2', figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,
   providers: {
     bailian: {
       defaults: { main: 'main-model', image: 'image-png', vision: 'main-model' },
       models: [
         {
           id: 'main-model', label: 'Main Model', vendor: 'Alibaba Qwen', roles: ['main', 'vision'],
-          selectable: true, inputModalities: ['text', 'image'], outputModalities: ['text'], capabilities: {},
+          selectable: true, inputModalities: ['text', 'image'], outputModalities: ['text'], capabilities: {referenceImages:true},
         },
         {
           id: 'image-png', label: 'PNG Image Model', vendor: 'Alibaba Wan', roles: ['image'],
@@ -56,8 +58,11 @@ test('rendered SVG submit ignores the image model format because the main model 
     await user.click(screen.getByRole('button', { name: '打开完整设置' }))
     await user.click(screen.getByRole('button', { name: '阿里云百炼' }))
     fireEvent.change(screen.getByLabelText('导出格式'), { target: { value: 'svg' } })
-    assert.ok(screen.getAllByText(/由主模型直接生成/).length >= 1)
+    assert.equal(document.querySelector('[data-model-role="image"]'),null,'SVG must not expose an unused image model')
+    assert.ok(screen.getByText(/主模型规划、编写和修改 SVG/))
+    fireEvent.change(screen.getByLabelText('检索设置'), { target:{value:'none'} })
     await user.type(screen.getByPlaceholderText('sk-...'), 'test-key')
+    await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
     const submit = screen.getAllByRole('button', { name: '生成候选图' }).find((button) => button.type === 'submit')
     assert.ok(submit)
     await user.click(submit)
@@ -66,6 +71,9 @@ test('rendered SVG submit ignores the image model format because the main model 
     const create = requests.find((request) => request.body?.action === 'createJob')
     assert.equal(create.body.outputFormat, 'svg')
     assert.equal(create.body.mainModelName, 'main-model')
+    assert.equal(create.body.generationPath,'model-v1')
+    assert.equal(create.body.retrievalSetting,'none')
+    assert.deepEqual(create.body.apiKeys,{bailian:'test-key'})
   } finally {
     globalThis.fetch = previousFetch
   }
@@ -119,7 +127,7 @@ test('rendered aggregator drawers omit disabled-only vendors and unsupported rol
   assert.equal(container.querySelector('.model-incompatible'), null)
 })
 
-test('rendered model cards distinguish catalog compatibility, account visibility, and real-call verification', async () => {
+test('rendered model cards omit verification badges and keep unsupported specifications unknown', async () => {
   const user = userEvent.setup()
   render(React.createElement(ModelPicker, {
     label: '主模型', role: 'main', provider: 'openrouter', value: 'vendor/catalog-only', onChange() {},
@@ -140,13 +148,17 @@ test('rendered model cards distinguish catalog compatibility, account visibility
   }))
 
   await user.click(screen.getByRole('button', { name: '主模型' }))
-  assert.ok(screen.getByText('官方目录'))
+  assert.equal(screen.queryByText('官方目录'), null)
   assert.equal(screen.queryByText(/未实测/), null)
-  assert.ok(screen.getByText('账号目录可见'))
-  assert.ok(screen.getByText('真实调用已验证'))
+  assert.equal(screen.queryByText('账号目录可见'), null)
+  assert.equal(screen.queryByText('真实调用已验证'), null)
   const catalogCard = screen.getAllByText('Catalog Only').at(-1)?.closest('button')
   assert.ok(catalogCard)
-  assert.match(catalogCard.textContent, /状态未知/)
+  const card = catalogCard.closest('.model-option')
+  assert.equal(card.querySelectorAll('dl dt').length, 3)
+  assert.equal(card.querySelectorAll('dl dd').length, 3)
+  assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown').length, 8)
+  assert.equal(card.querySelectorAll('dd')[2].textContent, '待确认')
   assert.doesNotMatch(catalogCard.textContent, /稳定版/)
   assert.doesNotMatch(catalogCard.textContent, /真实调用已验证/)
 })
@@ -179,8 +191,8 @@ test('rendered route picker shows vendor rail only for aggregator access channel
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   assert.ok(screen.getByRole('group', { name: '模型厂商' }))
   assert.ok(screen.getByText('Direct GPT'))
-  assert.ok(screen.getByText(/usage-tier/))
-  assert.ok(screen.getByText(/需开通组织用量等级/))
+  assert.equal(screen.queryByText(/usage-tier/), null)
+  assert.equal(screen.queryByText(/需开通组织用量等级/), null)
 })
 
 test('rendered mobile route picker replaces settings content and supports layered back navigation', async () => {
@@ -335,9 +347,13 @@ for (const [retrievalValue, retrievalLabel] of [
   ['random', '随机参考'],
   ['manual', '手动参考'],
 ]) {
-  test(`rendered App keeps reference upload blocked for ${retrievalValue} retrieval until the user selects none`, async () => {
+  test(`rendered App keeps local materials independent of ${retrievalValue} retrieval`, async () => {
     const requests = []
     const previousFetch = globalThis.fetch
+    const previousIndexedDB = globalThis.indexedDB
+    const previousStorage = globalThis.localStorage
+    globalThis.indexedDB = new IDBFactory()
+    globalThis.localStorage = window.localStorage
     globalThis.fetch = async (input, init = {}) => {
       const body = init.body ? JSON.parse(String(init.body)) : null
       requests.push({ url: String(input), body })
@@ -360,7 +376,7 @@ for (const [retrievalValue, retrievalLabel] of [
 
     try {
       const user = userEvent.setup()
-      const { container } = render(React.createElement(App))
+      render(React.createElement(App))
       await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'modelRegistry')))
       await user.click(screen.getByRole('button', { name: '打开完整设置' }))
       await user.click(screen.getByRole('button', { name: /专业模式/ }))
@@ -368,26 +384,28 @@ for (const [retrievalValue, retrievalLabel] of [
       const retrieval = screen.getByLabelText('检索设置')
       fireEvent.change(retrieval, { target: { value: retrievalValue } })
       assert.equal(retrieval.value, retrievalValue)
-      assert.ok(screen.getByText(/请先将检索设置切换为“不使用检索”/))
+      assert.equal(screen.queryByText(/请先将检索设置切换为“不使用检索”/),null)
       if (retrievalValue === 'manual') {
         await screen.findByRole('button', { name: /打开参考图库/ })
       }
 
-      const fileInput = container.querySelector('.reference-upload-panel input[type="file"]')
-      assert.ok(fileInput)
-      assert.equal(fileInput.disabled, true)
+      await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
+      const fileInput = screen.getByLabelText('上传文件')
+      await waitFor(()=>assert.equal(fileInput.disabled,false))
       fireEvent.change(fileInput, {
-        target: { files: [new window.File(['image'], `${retrievalValue}-reference.png`, { type: 'image/png' })] },
+        target: { files: [new File(['group,value\nA,35'], `${retrievalValue}-data.csv`, { type: 'text/csv' })] },
       })
-      assert.equal(retrieval.value, retrievalValue, `${retrievalLabel} must not be changed silently`)
-      assert.equal(screen.queryByText(`${retrievalValue}-reference.png`), null)
-
-      fireEvent.change(retrieval, { target: { value: 'none' } })
-      assert.equal(retrieval.value, 'none')
-      assert.equal(fileInput.disabled, false)
-      assert.equal(screen.queryByText(/请先将检索设置切换为“不使用检索”/), null)
+      await screen.findByText('已保存到浏览器 · 待读取')
+      assert.ok(screen.getByText(`${retrievalValue}-data.csv`))
+      assert.equal(requests.some(r=>r.body?.action==='prepareMaterialUpload'),false,'Selecting a file must not upload it')
+      await user.click(screen.getByRole('button',{name:'打开完整设置'}))
+      assert.equal(screen.getByLabelText('检索设置').value,retrievalValue,`${retrievalLabel} must not be changed silently`)
+      assert.equal(screen.getByLabelText('检索设置').disabled,false)
+      assert.equal(JSON.parse(window.localStorage.getItem('tuyan.figure-settings.v1')).retrievalSetting,retrievalValue)
     } finally {
       globalThis.fetch = previousFetch
+      globalThis.indexedDB = previousIndexedDB
+      globalThis.localStorage = previousStorage
     }
   })
 }
@@ -447,11 +465,8 @@ test('rendered model list reveals compatible batches and wraps keyboard focus wi
   await new Promise((resolve) => setTimeout(resolve, 80))
   assert.equal(document.activeElement, model24)
   await user.tab()
-  assert.match(document.activeElement?.textContent || '', /复制 ID/)
-  await user.tab()
+  assert.equal(document.activeElement, container.querySelectorAll('.model-option-select')[25])
   assert.equal(screen.queryByText(/暂不兼容/), null)
-  assert.equal(document.activeElement.tagName, 'SUMMARY')
-  container.querySelectorAll('.model-option summary')[25].focus()
   await user.tab()
   assert.equal(document.activeElement === screen.getByRole('button', { name: '关闭模型选择' }), true)
 })
@@ -516,10 +531,15 @@ test('rendered reference gallery paginates, previews full images, and preserves 
   const user = userEvent.setup()
   render(React.createElement(GalleryHarness))
   await user.click(screen.getByRole('button', { name: /打开参考图库/ }))
+  const galleryGrid = document.querySelector('.reference-library-grid')
+  galleryGrid.scrollTop = 680
   await user.click(screen.getAllByRole('button', { name: '选用' })[0])
+  assert.equal(galleryGrid.scrollTop, 680, 'selecting a card preserves the reading position')
   assert.ok(screen.getAllByText('第一页 A').length >= 1)
   await user.click(screen.getByRole('button', { name: '下一页' }))
   assert.ok(await screen.findByText('第二页 A'))
+  assert.equal(galleryGrid.scrollTop, 0, 'new page starts at the top of the gallery')
+  galleryGrid.scrollTop = 420
   await user.click(screen.getByRole('button', { name: '选用' }))
   assert.ok(screen.getByTitle('移除 第一页 A'))
   assert.ok(screen.getByTitle('移除 第二页 A'))
@@ -530,6 +550,7 @@ test('rendered reference gallery paginates, previews full images, and preserves 
   assert.ok(screen.getByText('详情 C'))
   await user.click(screen.getByRole('button', { name: '关闭大图预览' }))
   await user.click(screen.getByRole('button', { name: '上一页' }))
+  assert.equal(galleryGrid.scrollTop, 0, 'previous page also starts at the top')
   const selectedAgain = await screen.findByRole('button', { name: /已选用，点击取消/ })
   assert.equal(selectedAgain.getAttribute('aria-pressed'), 'true')
 })
@@ -615,10 +636,10 @@ test('rendered version labels remain separate from the selected API model ID', a
     }))
     await userEvent.setup().click(screen.getByRole('button',{name:'主模型'}))
     const selector=screen.getByRole('button',{name:'选择 DeepSeek-V4.1-Flash',exact:true})
-    assert.match(view.container.textContent,/滚动别名/)
-    assert.match(view.container.textContent,/deepseek-flash/)
+    assert.doesNotMatch(view.container.textContent,/滚动别名/)
+    assert.equal(view.container.querySelector('.model-id-row'),null)
     assert.doesNotMatch(view.container.textContent,/国内|国外/)
-    assert.match(view.container.textContent,/DeepSeek-V4-Pro-0813/)
+    assert.ok(screen.getByRole('button',{name:'选择 DeepSeek V4 Pro',exact:true}))
     await userEvent.setup().click(selector)
     assert.deepEqual(changes,['deepseek-flash'])
   } finally {window.matchMedia=originalMatchMedia}

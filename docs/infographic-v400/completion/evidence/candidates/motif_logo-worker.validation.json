@@ -1,0 +1,135 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "ccf562f43ea62fad50356520d9285bbd2324e66871f02ce994f6641252d532e8",
+  "pngHash": "7494e68320943d9e78a3a0812aa789dff1993d2ba0e08bdc01cc46744248fb70",
+  "svgHash": "588cfcbe9ece7d50f34d7121460c91adab433d04f0fd40d3c354f606edf954c9",
+  "numeric": {
+    "typeId": "motif_logo",
+    "computations": {
+      "positions": [
+        1,
+        2,
+        3
+      ],
+      "frequencies": [
+        [
+          0.8,
+          0.1,
+          0.1,
+          0.0
+        ],
+        [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.1,
+          0.9
+        ]
+      ],
+      "informationBits": [
+        1.0780719051126377,
+        0,
+        1.5310044064107187
+      ],
+      "letterHeights": [
+        [
+          0.8624575240901102,
+          0.10780719051126378,
+          0.10780719051126378,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.15310044064107187,
+          1.3779039657696468
+        ]
+      ],
+      "background": "uniform",
+      "smallSampleCorrection": "none"
+    },
+    "checks": {
+      "position_1_C_height": {
+        "actual": 0.10780719051126379,
+        "expected": 0.10780719051126378,
+        "absoluteError": 1.3877787807814457e-17
+      },
+      "position_1_G_height": {
+        "actual": 0.10780719051126378,
+        "expected": 0.10780719051126378,
+        "absoluteError": 0.0
+      },
+      "position_1_A_height": {
+        "actual": 0.8624575240901102,
+        "expected": 0.8624575240901102,
+        "absoluteError": 0.0
+      },
+      "position_1_stack": {
+        "actual": 1.0780719051126377,
+        "expected": 1.0780719051126377,
+        "absoluteError": 0.0
+      },
+      "position_2_stack": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "position_3_G_height": {
+        "actual": 0.1531004406410719,
+        "expected": 0.15310044064107187,
+        "absoluteError": 2.7755575615628914e-17
+      },
+      "position_3_T_height": {
+        "actual": 1.3779039657696468,
+        "expected": 1.3779039657696468,
+        "absoluteError": 0.0
+      },
+      "position_3_stack": {
+        "actual": 1.5310044064107187,
+        "expected": 1.5310044064107187,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 12.0,
+        "expected": 12.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "position",
+        "symbol",
+        "value"
+      ],
+      "options": {
+        "alphabet": [
+          "A",
+          "C",
+          "G",
+          "T"
+        ],
+        "input": "counts",
+        "mode": "information",
+        "correction": "none"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

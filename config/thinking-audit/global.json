@@ -13045,19 +13045,17 @@
       "modelIds": [
         "alibaba/wan-3"
       ],
-      "roles": [
-        "image"
-      ],
+      "roles": [],
       "protocols": [
         "provider-images"
       ],
-      "status": "unsupported",
+      "status": "unconfirmed",
       "controls": [],
       "requestMappings": [],
       "constraints": [],
       "conflicts": [],
       "notes": [
-        "Dereferenced Input schema for this exact Replicate model/version contains no thinking/reasoning control."
+        "视频生成；不支持图研当前角色，保留历史身份。"
       ],
       "sourceUrls": [
         "https://replicate.com/alibaba/wan-3/api/schema"
@@ -62919,6 +62917,1563 @@
       "checkedAt": "2026-09-27",
       "operations": [
         "generation"
+      ]
+    },
+    {
+      "id": "catalog-20261009:claude-sonnet-5-5",
+      "provider": "anthropic",
+      "modelIds": [
+        "claude-sonnet-5-5"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "anthropic-messages"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "adaptive",
+            "between_tools"
+          ],
+          "default": "adaptive",
+          "field": "thinking.type"
+        },
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "high",
+          "field": "output_config.effort"
+        }
+      ],
+      "clearFields": [
+        "thinking.type",
+        "thinking.budget_tokens",
+        "output_config.effort"
+      ],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k"
+        ]
+      },
+      "allowEffortWithoutThinking": true,
+      "invalidCombinations": [
+        {
+          "when": {
+            "mode": "between_tools",
+            "effort": [
+              "xhigh",
+              "max"
+            ]
+          },
+          "message": "关闭前置思考或思考仅支持 low、medium、high。"
+        }
+      ],
+      "operations": [
+        "text"
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+        "https://platform.claude.com/docs/en/build-with-claude/thinking",
+        "https://platform.claude.com/docs/en/build-with-claude/effort"
+      ],
+      "notes": [
+        "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+        "不发送非默认 temperature、top_p、top_k。",
+        "between_tools 仅关闭前置思考，只能搭配 low/medium/high；不支持 disabled。"
+      ]
+    },
+    {
+      "id": "catalog-20261009:claude-haiku-5-5",
+      "provider": "anthropic",
+      "modelIds": [
+        "claude-haiku-5-5"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "anthropic-messages"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "adaptive",
+            "disabled"
+          ],
+          "default": "adaptive",
+          "field": "thinking.type"
+        },
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "field": "output_config.effort"
+        }
+      ],
+      "clearFields": [
+        "thinking.type",
+        "thinking.budget_tokens",
+        "output_config.effort"
+      ],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k"
+        ]
+      },
+      "allowEffortWithoutThinking": true,
+      "invalidCombinations": [
+        {
+          "when": {
+            "mode": "disabled",
+            "effort": [
+              "xhigh",
+              "max"
+            ]
+          },
+          "message": "关闭前置思考或思考仅支持 low、medium、high。"
+        }
+      ],
+      "operations": [
+        "text"
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+        "https://platform.claude.com/docs/en/build-with-claude/thinking",
+        "https://platform.claude.com/docs/en/build-with-claude/effort"
+      ],
+      "notes": [
+        "原生 Messages 每次请求仍沿用图研 16,384 tokens 总输出额度；128K 为官方上限。",
+        "不发送非默认 temperature、top_p、top_k。",
+        "disabled 仅能搭配 low/medium/high；xhigh/max 需要 adaptive。"
+      ]
+    },
+    {
+      "id": "catalog-20261009:gpt-6.1-sol",
+      "provider": "openai",
+      "modelIds": [
+        "gpt-6.1-sol"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-responses"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "default": "medium",
+          "field": "reasoning.effort"
+        }
+      ],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "logprobs",
+          "top_logprobs"
+        ]
+      },
+      "clearFields": [
+        "reasoning.effort"
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+      ],
+      "operations": [
+        "text"
+      ],
+      "notes": [
+        "不接受 none/minimal；未开放 service_tier 或另造 pro 模式。"
+      ]
+    },
+    {
+      "id": "catalog-20261009:gemini-nano-banana-2.1",
+      "provider": "gemini",
+      "modelIds": [
+        "gemini-nano-banana-2.1"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "gemini-interactions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "minimal",
+            "medium",
+            "high"
+          ],
+          "default": "medium",
+          "field": "generation_config.thinking_level"
+        }
+      ],
+      "clearFields": [
+        "generation_config.thinking_level"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "constraints": {
+        "thinkingCannotDisable": true
+      },
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+        "https://ai.google.dev/gemini-api/docs/image-generation"
+      ],
+      "notes": [
+        "默认值留空，不自动注入。"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:google:nano-banana@2.1",
+      "provider": "runware",
+      "modelIds": [
+        "google:nano-banana@2.1"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "minimal",
+            "medium",
+            "high"
+          ],
+          "default": "minimal",
+          "field": "settings.thinkingLevel"
+        }
+      ],
+      "clearFields": [
+        "settings.thinkingLevel"
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:fal:google/nano-banana-2.1",
+      "provider": "fal",
+      "modelIds": [
+        "google/nano-banana-2.1"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "minimal",
+            "medium",
+            "high"
+          ],
+          "default": null,
+          "field": "thinking_level"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Omission retains channel default medium. minimal does not mean disabled."
+      ],
+      "sourceUrls": [
+        "https://fal.ai/models/google/nano-banana-2.1/api",
+        "https://fal.ai/models/google/nano-banana-2.1/edit/api"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [
+        "thinking_level"
+      ],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "queue endpoint path; generation/edit endpoints are distinct",
+        "bodyRoot": "root",
+        "endpointAliases": [
+          "google/nano-banana-2.1",
+          "google/nano-banana-2.1/edit"
+        ]
+      }
+    },
+    {
+      "id": "global:recraft:recraftv4_1_flash",
+      "provider": "recraft",
+      "modelIds": [
+        "recraftv4_1_flash"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Full current endpoint parameter tables explicitly enumerate the catalog versions and expose no thinking/reasoning field; style/rendering quality is not thinking."
+      ],
+      "sourceUrls": [
+        "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation"
+      ],
+      "transport": {
+        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
+        "bodyRoot": "root"
+      }
+    },
+    {
+      "id": "global:bfl:flux-3-image",
+      "provider": "bfl",
+      "modelIds": [
+        "flux-3-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "The exact native OpenAPI request schema has no adjustable reasoning field. Grounding is external search, not reasoning."
+      ],
+      "sourceUrls": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
+        "bodyRoot": "root"
+      }
+    },
+    {
+      "id": "catalog-20261009:ark:doubao-seedream-5-0-flash-260915",
+      "provider": "ark",
+      "modelIds": [
+        "doubao-seedream-5-0-flash-260915"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "ark-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh"
+      ]
+    },
+    {
+      "id": "catalog-20261009:mistral:mistral-large-4",
+      "provider": "mistral",
+      "modelIds": [
+        "mistral-large-4"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://docs.mistral.ai/models/mistral-large-4-0"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:bfl:flux@3-image",
+      "provider": "runware",
+      "modelIds": [
+        "bfl:flux@3-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:ideogram:4.5@0",
+      "provider": "runware",
+      "modelIds": [
+        "ideogram:4.5@0"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-5"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:ideogram:4.5@precise-edit",
+      "provider": "runware",
+      "modelIds": [
+        "ideogram:4.5@precise-edit"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/ideogram-4-5-precise-edit"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:bytedance:seedream@5.0-flash",
+      "provider": "runware",
+      "modelIds": [
+        "bytedance:seedream@5.0-flash"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bytedance-seedream-5-0-flash"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:recraft:v4.1@flash",
+      "provider": "runware",
+      "modelIds": [
+        "recraft:v4.1@flash"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/recraft-v4-1-flash"
+      ]
+    },
+    {
+      "id": "catalog-20261009:runware:alibaba:qwen-image@2.1-pro",
+      "provider": "runware",
+      "modelIds": [
+        "alibaba:qwen-image@2.1-pro"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "No exact adjustable reasoning request contract verified for this channel identity; do not infer from related models or quality settings."
+      ],
+      "checkedAt": "2026-10-09",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-pro"
+      ]
+    },
+    {
+      "id": "global:ideogram:ideogram-4-5",
+      "provider": "ideogram",
+      "modelIds": [
+        "ideogram-4-5"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Current operation schema exposes no thinking control; rendering_speed/magic_prompt/quality are separate controls."
+      ],
+      "sourceUrls": [
+        "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+        "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "URL path ideogram-4-5",
+        "bodyRoot": "root"
+      }
+    },
+    {
+      "id": "global:replicate/google/nano-banana-2.1",
+      "provider": "replicate",
+      "modelIds": [
+        "google/nano-banana-2.1"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Dereferenced Input schema for this exact Replicate model/version contains no thinking/reasoning control."
+      ],
+      "sourceUrls": [
+        "https://replicate.com/google/nano-banana-2.1/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "POST /v1/predictions pinned version",
+        "bodyRoot": "input",
+        "pinnedSchemaVersion": "38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83",
+        "schemaSha256": "9c52419d2863abc40fb2501874459df43b8af2cdcfb4521e4438470e54e75925"
+      },
+      "schemaInputKeys": [
+        "prompt",
+        "resolution",
+        "image_input",
+        "aspect_ratio",
+        "image_search",
+        "google_search",
+        "output_format"
+      ]
+    },
+    {
+      "id": "global:replicate/black-forest-labs/flux-3-image",
+      "provider": "replicate",
+      "modelIds": [
+        "black-forest-labs/flux-3-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Dereferenced Input schema for this exact Replicate model/version contains no thinking/reasoning control."
+      ],
+      "sourceUrls": [
+        "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "POST /v1/predictions pinned version",
+        "bodyRoot": "input",
+        "pinnedSchemaVersion": "b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28",
+        "schemaSha256": "aeb1fa6f8874b7631c5a29f460fc4b22c25cdd8c7d3b556ebe9002411b2ac2fa"
+      },
+      "schemaInputKeys": [
+        "images",
+        "prompt",
+        "grounding",
+        "resolution",
+        "aspect_ratio",
+        "output_format",
+        "output_quality",
+        "safety_tolerance"
+      ]
+    },
+    {
+      "id": "global:replicate/ideogram-ai/ideogram-4-5",
+      "provider": "replicate",
+      "modelIds": [
+        "ideogram-ai/ideogram-4-5"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Dereferenced Input schema for this exact Replicate model/version contains no thinking/reasoning control."
+      ],
+      "sourceUrls": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "POST /v1/predictions pinned version",
+        "bodyRoot": "input",
+        "pinnedSchemaVersion": "2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d",
+        "schemaSha256": "c9456c6ab499d9495eacf60b12042c47e5fe7b709ddb71ea0996c378e12bbefd"
+      },
+      "schemaInputKeys": [
+        "mask",
+        "seed",
+        "size",
+        "images",
+        "prompt",
+        "quality",
+        "num_images"
+      ]
+    },
+    {
+      "id": "global:replicate/ideogram-ai/ideogram-4-5-precise-edit",
+      "provider": "replicate",
+      "modelIds": [
+        "ideogram-ai/ideogram-4-5-precise-edit"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unsupported",
+      "controls": [],
+      "requestMappings": [],
+      "constraints": [],
+      "conflicts": [],
+      "notes": [
+        "Dereferenced Input schema for this exact Replicate model/version contains no thinking/reasoning control."
+      ],
+      "sourceUrls": [
+        "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "clearFields": [],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "editing"
+      ],
+      "transport": {
+        "modelIdentity": "POST /v1/predictions pinned version",
+        "bodyRoot": "input",
+        "pinnedSchemaVersion": "59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021",
+        "schemaSha256": "34278db843b07eebbd3b278e970284d8f751c74268333dab4d9ef2784011d7ae"
+      },
+      "schemaInputKeys": [
+        "mask",
+        "seed",
+        "image",
+        "prompt",
+        "quality",
+        "num_images",
+        "reference_images"
+      ]
+    },
+    {
+      "id": "catalog-impl-20261009:fal:blackforestlabs/flux-3/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "blackforestlabs/flux-3/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+        "https://fal.ai/models/blackforestlabs/flux-3/edit-image/api"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "endpointAliases": [
+          "blackforestlabs/flux-3/text-to-image",
+          "blackforestlabs/flux-3/edit-image"
+        ]
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:fal:ideogram/v4.5",
+      "provider": "fal",
+      "modelIds": [
+        "ideogram/v4.5"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://fal.ai/models/ideogram/v4.5/api",
+        "https://fal.ai/models/ideogram/v4.5/edit/api"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "endpointAliases": [
+          "ideogram/v4.5",
+          "ideogram/v4.5/edit"
+        ]
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:fal:bytedance/seedream/v5/flash/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "bytedance/seedream/v5/flash/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+        "https://fal.ai/models/bytedance/seedream/v5/flash/edit/api"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "generation",
+        "editing"
+      ],
+      "transport": {
+        "endpointAliases": [
+          "bytedance/seedream/v5/flash/text-to-image",
+          "bytedance/seedream/v5/flash/edit"
+        ]
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:google/gemini-3.5-flash",
+      "provider": "replicate",
+      "modelIds": [
+        "google/gemini-3.5-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "field": "input.thinking_level",
+          "default": "none",
+          "type": "enum",
+          "values": [
+            "none",
+            "low",
+            "high"
+          ]
+        }
+      ],
+      "clearFields": [
+        "input.thinking_level"
+      ],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-3.5-flash/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "570150b6a75f4814dca9dee143419cfe94f6df555acb7c10dd69fd14a5792523"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:google/gemini-3-flash",
+      "provider": "replicate",
+      "modelIds": [
+        "google/gemini-3-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "field": "input.thinking_level",
+          "default": "none",
+          "type": "enum",
+          "values": [
+            "none",
+            "low",
+            "high"
+          ]
+        }
+      ],
+      "clearFields": [
+        "input.thinking_level"
+      ],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-3-flash/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "c0a19130fe0c39f825c7321779080836edad7a82792ab144fb58adcadfc03145"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:google/gemini-2.5-flash",
+      "provider": "replicate",
+      "modelIds": [
+        "google/gemini-2.5-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "budget",
+          "label": "思考预算",
+          "field": "input.thinking_budget",
+          "default": null,
+          "type": "integer",
+          "min": 0,
+          "max": 24576
+        }
+      ],
+      "clearFields": [
+        "input.thinking_budget"
+      ],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [
+        "只开放显式thinking_budget；dynamic_thinking固定false，避免静默覆盖预算。"
+      ],
+      "sourceUrls": [
+        "https://replicate.com/google/gemini-2.5-flash/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "c1ee402081bea718d8328da9fcbb98bb1344a21573782b95b7f5af07489c2d54"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:qwen/qwen3-7-plus",
+      "provider": "replicate",
+      "modelIds": [
+        "qwen/qwen3-7-plus"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/qwen/qwen3-7-plus/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "35cfa60fb962574a80d8d4dead5269d5ed0469b07ca0850779e3303cf9ec25c6"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:deepseek-ai/deepseek-v3.1",
+      "provider": "replicate",
+      "modelIds": [
+        "deepseek-ai/deepseek-v3.1"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "field": "input.thinking",
+          "default": "None",
+          "type": "enum",
+          "values": [
+            "medium",
+            "None"
+          ]
+        }
+      ],
+      "clearFields": [
+        "input.thinking"
+      ],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/deepseek-ai/deepseek-v3.1/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "3a67d0d316067084ccf47ea0dfd9499ecacc422f2a17773a3e06e402388ab2be"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:moonshotai/kimi-k2-thinking",
+      "provider": "replicate",
+      "modelIds": [
+        "moonshotai/kimi-k2-thinking"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/moonshotai/kimi-k2-thinking/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "3298c7a0489e18d80fb092ea077cb7d3ce3d00eb4cdc270d758ea85b50a46b01"
+      }
+    },
+    {
+      "id": "catalog-impl-20261009:replicate:qwen/qwen3-235b-a22b-instruct-2507",
+      "provider": "replicate",
+      "modelIds": [
+        "qwen/qwen3-235b-a22b-instruct-2507"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507/api/schema"
+      ],
+      "checkedAt": "2026-10-09",
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "pinnedSchemaVersion": "10e10290802d58ffb8878cb56199896c1d9f290109a66bbdd35b404006f6eb3a"
+      }
+    },
+    {
+      "id": "global:gemini:gemini-4-argon",
+      "provider": "gemini",
+      "modelIds": [
+        "gemini-4-argon"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "gemini-generate-content"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "medium",
+          "field": "generationConfig.thinkingConfig.thinkingLevel"
+        }
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "thinkingCannotDisable": true,
+        "omitSampling": [
+          "generationConfig.temperature",
+          "generationConfig.topP",
+          "generationConfig.topK"
+        ]
+      },
+      "conflicts": [],
+      "notes": [
+        "省略强度使用官方默认 medium；不主动增加同步输出额度。"
+      ],
+      "sourceUrls": [
+        "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+        "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+      ],
+      "checkedAt": "2026-10-16",
+      "clearFields": [
+        "generationConfig.thinkingConfig.thinkingLevel",
+        "generationConfig.thinkingConfig.thinkingBudget"
+      ],
+      "dropSamplingWhenThinking": false,
+      "operations": [
+        "text"
+      ],
+      "transport": {
+        "modelIdentity": "body.model (Gemini GenerateContent uses URL model)",
+        "bodyRoot": "root"
+      }
+    },
+    {
+      "id": "global:catalog-20261016:together:meta-models/Muse-Spark-Open-816B-A42B",
+      "provider": "together",
+      "modelIds": [
+        "meta-models/Muse-Spark-Open-816B-A42B"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:together:nvidia/NVIDIA-Nemotron-3.5-Super-VL",
+      "provider": "together",
+      "modelIds": [
+        "nvidia/NVIDIA-Nemotron-3.5-Super-VL"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:fireworks:accounts/fireworks/models/muse-spark-open",
+      "provider": "fireworks",
+      "modelIds": [
+        "accounts/fireworks/models/muse-spark-open"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/muse-spark-open"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:bfl:flux-3-image-klein",
+      "provider": "bfl",
+      "modelIds": [
+        "flux-3-image-klein"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://api.bfl.ai/openapi.json"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:runware:bfl:flux@3-image-klein",
+      "provider": "runware",
+      "modelIds": [
+        "bfl:flux@3-image-klein"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:runware:bfl:flux@3-image-klein-base",
+      "provider": "runware",
+      "modelIds": [
+        "bfl:flux@3-image-klein-base"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://runware.ai/docs/models/bfl-flux-3-image-klein-base"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:runware:alibaba:qwen-image@2.1-turbo",
+      "provider": "runware",
+      "modelIds": [
+        "alibaba:qwen-image@2.1-turbo"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:fal:blackforestlabs/flux-3/klein/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "blackforestlabs/flux-3/klein/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:fal:blackforestlabs/flux-3/klein/base/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "blackforestlabs/flux-3/klein/base/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "global:catalog-20261016:fal:krea/v3/text-to-image",
+      "provider": "fal",
+      "modelIds": [
+        "krea/v3/text-to-image"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "provider-images"
+      ],
+      "status": "fixed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://fal.ai/models/krea/v3/text-to-image/api"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "本次仅开放固定 berry / low；渠道的其他推理级别尚未接入控件。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
       ]
     }
   ],

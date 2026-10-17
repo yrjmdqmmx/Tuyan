@@ -1,0 +1,70 @@
+{
+  "doi": "10.1371/journal.pone.0021723",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0021723",
+  "title": "Effects of Triazole Derivatives on Strigolactone Levels and Growth Retardation in Rice",
+  "journal": "PLoS ONE",
+  "authors": [
+    "Shinsaku Ito",
+    "Mikihisa Umehara",
+    "Atsushi Hanada",
+    "Nobutaka Kitahata",
+    "Hiroki Hayase",
+    "Shinjiro Yamaguchi",
+    "Tadao Asami"
+  ],
+  "year": "2011",
+  "license": "2011Ito et alThis is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {}
+  ],
+  "figures": [
+    {
+      "id": "pone-0021723-g001",
+      "label": "Figure 1",
+      "caption": "Syntheses of designed chemicals.\n            (A) Br_{2}, AlCl_{3}, ether; (B) 1,2,4-triazole, K_{2}CO_{3}, acetone; (C) R_{2}X, 60% NaH, DMF, reflux; (D) NaBH_{4}, MeOH.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021723-g001\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021723.g001</object-id>\n          <label>Figure 1</label>\n          <caption>\n            <title>Syntheses of designed chemicals.</title>\n            <p>(A) Br<sub>2</sub>, AlCl<sub>3</sub>, ether; (B) 1,2,4-triazole, K<sub>2</sub>CO<sub>3</sub>, acetone; (C) R<sub>2</sub>X, 60% NaH, DMF, reflux; (D) NaBH<sub>4</sub>, MeOH.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021723.g001\" ns0:type=\"simple\" />\n        </fig>\n      ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021723.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021723-g002",
+      "label": "Figure 2",
+      "caption": "Effect of chemicals on 2-week-old rice seedlings.\n            (A) epi-5DS levels in root exudates of 1 µM chemical-treated rice seedlings determined by LC-MS/MS. The data are means ± SD of three samples. (B) The length of 2nd leaf sheath in 10 µM chemical-treated rice. The data are means ± SD of six samples.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021723-g002\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021723.g002</object-id>\n          <label>Figure 2</label>\n          <caption>\n            <title>Effect of chemicals on 2-week-old rice seedlings.</title>\n            <p>(A) <italic>epi</italic>-5DS levels in root exudates of 1 µM chemical-treated rice seedlings determined by LC-MS/MS. The data are means ± SD of three samples. (B) The length of 2nd leaf sheath in 10 µM chemical-treated rice. The data are means ± SD of six samples.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021723.g002\" ns0:type=\"simple\" />\n        </fig>\n        ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021723.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021723-g003",
+      "label": "Figure 3",
+      "caption": "A comparison of the effects caused by TIS13 and TIS108 treatment.\n            (A) Chemical structures of strigolactone biosynthesis inhibitors. (B) epi-5DS levels in root exudates of chemical-treated rice seedlings determined by LC-MS/MS. The data are means ± SD of three samples. (C) The length of 2nd leaf sheath in 10 µM chemical-treated rice. The data are means ± SD of six samples.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021723-g003\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021723.g003</object-id>\n          <label>Figure 3</label>\n          <caption>\n            <title>A comparison of the effects caused by TIS13 and TIS108 treatment.</title>\n            <p>(A) Chemical structures of strigolactone biosynthesis inhibitors. (B) <italic>epi</italic>-5DS levels in root exudates of chemical-treated rice seedlings determined by LC-MS/MS. The data are means ± SD of three samples. (C) The length of 2nd leaf sheath in 10 µM chemical-treated rice. The data are means ± SD of six samples.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021723.g003\" ns0:type=\"simple\" />\n        </fig>\n      ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021723.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone-0021723-g004",
+      "label": "Figure 4",
+      "caption": "Effects of TIS108 on 2-week-old rice seedlings.\n            (A) epi-5DS levels in roots and root exudates of TIS108-treated rice seedlings determined by LC-MS/MS. (B) Germination stimulant levels in culture media of 1 µM TIS108-treated rice seedlings using Striga seeds. DW, distilled water; GR24, 1 µM GR24; control, non-treated rice culture media; TIS108, culture media of 1 µM TIS108-treated rice; TIS108+GR24, culture media coincubated with 1 µM GR24 and 1 µM TIS108. The data are means ± SD of three samples.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone-0021723-g004\" position=\"float\">\n          <object-id pub-id-type=\"doi\">10.1371/journal.pone.0021723.g004</object-id>\n          <label>Figure 4</label>\n          <caption>\n            <title>Effects of TIS108 on 2-week-old rice seedlings.</title>\n            <p>(A) <italic>epi</italic>-5DS levels in roots and root exudates of TIS108-treated rice seedlings determined by LC-MS/MS. (B) Germination stimulant levels in culture media of 1 µM TIS108-treated rice seedlings using <italic>Striga</italic> seeds. DW, distilled water; GR24, 1 µM GR24; control, non-treated rice culture media; TIS108, culture media of 1 µM TIS108-treated rice; TIS108+GR24, culture media coincubated with 1 µM GR24 and 1 µM TIS108. The data are means ± SD of three samples.</p>\n          </caption>\n          <graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0021723.g004\" ns0:type=\"simple\" />\n        </fig>\n      ",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0021723.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

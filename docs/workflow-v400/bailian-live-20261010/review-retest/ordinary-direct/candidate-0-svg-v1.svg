@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#424242"/>
+    </marker>
+  </defs>
+  
+  
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  
+  <g transform="translate(200, 350)">
+    <rect x="0" y="0" width="300" height="200" rx="20" ry="20" fill="#E3F2FD" stroke="#1976D2" stroke-width="2"/>
+    <text x="150" y="85" font-family="Noto Sans CJK SC, Noto Sans, sans-serif" font-size="32" fill="#212121" text-anchor="middle" dominant-baseline="middle">样品输入</text>
+    <text x="150" y="135" font-family="Noto Sans Math, Noto Sans, sans-serif" font-size="28" fill="#424242" text-anchor="middle" dominant-baseline="middle">(n=12)</text>
+  </g>
+
+  
+  <line x1="500" y1="450" x2="580" y2="450" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(650, 350)">
+    <rect x="0" y="0" width="300" height="200" rx="20" ry="20" fill="#E3F2FD" stroke="#1976D2" stroke-width="2"/>
+    <text x="150" y="85" font-family="Noto Sans CJK SC, Noto Sans, sans-serif" font-size="32" fill="#212121" text-anchor="middle" dominant-baseline="middle">数据标准化</text>
+    <text x="150" y="135" font-family="Noto Sans Math, Noto Sans, sans-serif" font-size="32" fill="#424242" text-anchor="middle" dominant-baseline="middle">x / x₀</text>
+  </g>
+
+  
+  <line x1="950" y1="450" x2="1030" y2="450" stroke="#424242" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+  
+  <g transform="translate(1100, 350)">
+    <rect x="0" y="0" width="300" height="200" rx="20" ry="20" fill="#E3F2FD" stroke="#1976D2" stroke-width="2"/>
+    <text x="150" y="85" font-family="Noto Sans CJK SC, Noto Sans, sans-serif" font-size="32" fill="#212121" text-anchor="middle" dominant-baseline="middle">结果输出</text>
+    <text x="150" y="135" font-family="Noto Sans Math, Noto Sans, sans-serif" font-size="28" fill="#424242" text-anchor="middle" dominant-baseline="middle">(均值 1.0)</text>
+  </g>
+</svg>

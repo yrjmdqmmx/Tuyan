@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="432pt" viewBox="0 0 648 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-10T16:09:01.450165</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 432 
+L 648 432 
+L 648 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 182.760106 350.819899 
+C 216.812158 350.819899 249.474111 337.290875 273.552548 313.212438 
+C 297.630986 289.134001 311.16001 256.472048 311.16001 222.419995 
+C 311.16001 188.367943 297.630986 155.70599 273.552548 131.627552 
+C 249.474111 107.549115 216.812158 94.020091 182.760106 94.020091 
+C 148.708053 94.020091 116.0461 107.549115 91.967663 131.627552 
+C 67.889225 155.70599 54.360202 188.367943 54.360202 222.419995 
+C 54.360202 256.472048 67.889225 289.134001 91.967663 313.212438 
+C 116.0461 337.290875 148.708053 350.819899 182.760106 350.819899 
+z
+" clip-path="url(#pa6099ae41e)" style="fill: #487968; opacity: 0.25; stroke: #487968; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 465.239894 350.819899 
+C 499.291947 350.819899 531.9539 337.290875 556.032337 313.212438 
+C 580.110775 289.134001 593.639798 256.472048 593.639798 222.419995 
+C 593.639798 188.367943 580.110775 155.70599 556.032337 131.627552 
+C 531.9539 107.549115 499.291947 94.020091 465.239894 94.020091 
+C 431.187842 94.020091 398.525889 107.549115 374.447452 131.627552 
+C 350.369014 155.70599 336.83999 188.367943 336.83999 222.419995 
+C 336.83999 256.472048 350.369014 289.134001 374.447452 313.212438 
+C 398.525889 337.290875 431.187842 350.819899 465.239894 350.819899 
+z
+" clip-path="url(#pa6099ae41e)" style="fill: #c58b53; opacity: 0.25; stroke: #c58b53; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="182.760106" y="222.419995" transform="rotate(-0 182.760106 222.419995)">3</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="182.760106" y="74.760106" transform="rotate(-0 182.760106 74.760106)">A</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="465.239894" y="222.419995" transform="rotate(-0 465.239894 222.419995)">1</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="465.239894" y="74.760106" transform="rotate(-0 465.239894 74.760106)">B</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="324" y="13.820139" transform="rotate(-0 324 13.820139)">Exact membership counts and topology; areas are schematic</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pa6099ae41e">
+   <rect x="3.00024" y="29.820139" width="641.99952" height="372.359722"/>
+  </clipPath>
+ </defs>
+</svg>

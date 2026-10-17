@@ -1,0 +1,10 @@
+{
+  "diagram-topology.ts": {
+    "onlyPromptBodyChanged": true,
+    "currentSha256": "8a2982bf2a6fa0d2d4e4ee7a4fc4958620136f866771dfab14c9773d74a9edfa"
+  },
+  "renderer-contract.ts": {
+    "onlyPromptBodyChanged": true,
+    "currentSha256": "aac40087a8d5b85e6ef6df9801ac4f0dac0650754242d387e591b0050f276f6b"
+  }
+}

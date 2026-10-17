@@ -1,0 +1,103 @@
+{
+  "typeId": "dendrogram",
+  "computations": {
+    "linkage": [
+      [
+        0.0,
+        1.0,
+        1.0,
+        2.0
+      ],
+      [
+        2.0,
+        3.0,
+        1.0,
+        2.0
+      ],
+      [
+        4.0,
+        5.0,
+        6.0,
+        4.0
+      ]
+    ],
+    "leafOrder": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "inputMode": "linkage",
+    "method": "average",
+    "preprocessing": "none"
+  },
+  "checks": {
+    "merge_0_height": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "merge_1_height": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "merge_2_height": {
+      "actual": 6.0,
+      "expected": 6.0,
+      "absoluteError": 0.0
+    },
+    "root_membership_count": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "monotonic_height_violations": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "x",
+      "y"
+    ],
+    "options": {
+      "input": "linkage",
+      "method": "average",
+      "metric": "euclidean",
+      "preprocessing": "none",
+      "linkage": [
+        [
+          0,
+          1,
+          1,
+          2
+        ],
+        [
+          2,
+          3,
+          1,
+          2
+        ],
+        [
+          4,
+          5,
+          6,
+          4
+        ]
+      ]
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

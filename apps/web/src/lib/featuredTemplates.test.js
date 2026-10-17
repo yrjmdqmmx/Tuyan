@@ -8,7 +8,7 @@ import {
 } from './featuredTemplates.js'
 
 test('featured templates are the approved six complete Chinese starters in exact source order', () => {
-  assert.deepEqual(FEATURED_TEMPLATE_REFERENCE_IDS, ['ref_279', 'ref_281', 'ref_245', 'ref_240', 'ref_295', 'ref_10'])
+  assert.deepEqual(FEATURED_TEMPLATE_REFERENCE_IDS, ['journal_pcbi.1011436.g001', 'journal_pbio.2003779.g001', 'journal_pcbi.1005857.g009', 'journal_pcbi.1013027.g001', 'journal_pone.0242453.g005', 'journal_pbio.1002128.g001'])
   assert.deepEqual(FEATURED_TEMPLATES.map((template) => template.sourceReferenceId), FEATURED_TEMPLATE_REFERENCE_IDS)
   assert.equal(FEATURED_TEMPLATES.length, 6)
   for (const template of FEATURED_TEMPLATES) {

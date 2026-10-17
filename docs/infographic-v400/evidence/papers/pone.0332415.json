@@ -1,0 +1,144 @@
+{
+  "doi": "10.1371/journal.pone.0332415",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0332415",
+  "title": "Magnitude of workplace violence and associated factors among healthcare professionals in East Africa: A systematic review and meta-analysis",
+  "journal": "PLOS One",
+  "authors": [
+    "Yeshiambaw Eshetie",
+    "Astewle Andargie Baye",
+    "Mengistu Ewunetu",
+    "Gashaw Kerebeh",
+    "Worku Necho Asferie",
+    "Demewoz Kefale"
+  ],
+  "year": "2025",
+  "license": "2025\nEshetie et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0332415.g001",
+      "label": "Fig 1",
+      "caption": "PRISMA flow diagram for study selection.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g001\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g001</object-id><label>Fig 1</label><caption><title>PRISMA flow diagram for study selection.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g001\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g002",
+      "label": "Fig 2",
+      "caption": "Forest plot for pooled magnitude of workplace violence.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g002\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g002</object-id><label>Fig 2</label><caption><title>Forest plot for pooled magnitude of workplace violence.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g002\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g003",
+      "label": "Fig 3",
+      "caption": "Funnel plot before adjustment (3a) and after adjustment (3b).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g003\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g003</object-id><label>Fig 3</label><caption><title>Funnel plot before adjustment (3a) and after adjustment (3b).</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g003\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g004",
+      "label": "Fig 4",
+      "caption": "Galbraith plot for heterogeneity investigation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g004</object-id><label>Fig 4</label><caption><title>Galbraith plot for heterogeneity investigation.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g004\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g005",
+      "label": "Fig 5",
+      "caption": "Forest plot for sensitivity analysis.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g005</object-id><label>Fig 5</label><caption><title>Forest plot for sensitivity analysis.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g005\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g006",
+      "label": "Fig 6",
+      "caption": "Forest plot for subgroup analysis based on year of publication.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g006\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g006</object-id><label>Fig 6</label><caption><title>Forest plot for subgroup analysis based on year of publication.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g006\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g007",
+      "label": "Fig 7",
+      "caption": "Forest plot for subgroup analysis based on study location.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g007\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g007</object-id><label>Fig 7</label><caption><title>Forest plot for subgroup analysis based on study location.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g007\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g008",
+      "label": "Fig 8",
+      "caption": "Forest plot for subgroup analysis based on median sample size.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g008\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g008</object-id><label>Fig 8</label><caption><title>Forest plot for subgroup analysis based on median sample size.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g008\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g009",
+      "label": "Fig 9",
+      "caption": "Forest plot for pooled adjusted odds ratio of emergency department.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g009\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g009</object-id><label>Fig 9</label><caption><title>Forest plot for pooled adjusted odds ratio of emergency department.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g009\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0332415.g010",
+      "label": "Fig 10",
+      "caption": "Forest plot for pooled adjusted odds ratio of younger age.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0332415.g010\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0332415.g010</object-id><label>Fig 10</label><caption><title>Forest plot for pooled adjusted odds ratio of younger age.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0332415.g010\" ns0:type=\"simple\" /></fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0332415.g010",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

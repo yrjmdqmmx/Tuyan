@@ -1,0 +1,1906 @@
+[
+  {
+    "typeId": "multipanel",
+    "format": "png",
+    "inputs": "valid_and_missing_data_duplicate_labels_unsupported_variant_checked",
+    "references": "automatic_per_child_licensed_pixels",
+    "drawing": "actual_program_numeric_panels_mock_schematic_and_actual_vector_assembly",
+    "review": "actual_numeric_checks_mock_version_bound_visual_review",
+    "refine": "data_image_refine_blocked_before_call",
+    "childRoutes": "parent_authenticated_routes_preserved",
+    "actualModel": "not_tested",
+    "reviewEvidence": {
+      "limit": 1,
+      "roundsUsed": 1,
+      "mode": "visual_code",
+      "status": "passed",
+      "deliveredVersion": 1,
+      "deliveredSvgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+      "deliveredPngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+      "history": [
+        {
+          "round": 1,
+          "version": 1,
+          "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+          "pngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+          "status": "passed",
+          "submittedImageHash": "7b9ce18d063075b9c5d63cb2bdff774cf96254640e32cbd2bf6f03eeec60d69d",
+          "assessment": "{\"version\":1,\"svgHash\":\"9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+        }
+      ],
+      "rendererAudit": {
+        "originalRequirements": [],
+        "version": 1,
+        "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+        "pngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a"
+      },
+      "reviewedVersion": 1,
+      "reviewedSvgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+      "reviewedPngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+      "note": "各子图已按自身规范检查，组合画面与代码已按实际版本检查。",
+      "composition": {
+        "renderer": "independent-vector-panels-v2",
+        "layout": {
+          "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+          "passed": true,
+          "allocation": {
+            "width": 1024,
+            "height": 576,
+            "columns": 2,
+            "rows": 1,
+            "cellW": 477.18399999999997,
+            "cellH": 524.8,
+            "gap": 18.432,
+            "margin": 25.6,
+            "labelHeight": 25.6,
+            "minFontPx": 14,
+            "panels": [
+              {
+                "x": 25.6,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              },
+              {
+                "x": 521.216,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              }
+            ]
+          },
+          "panels": [
+            {
+              "label": "甲",
+              "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 19.6,
+              "textCount": 2,
+              "sourceViewBox": [
+                0,
+                0,
+                477.18399999999997,
+                499.19999999999993
+              ],
+              "uniformScale": 1,
+              "textBounds": [
+                {
+                  "text": "Input",
+                  "x": 203.312,
+                  "y": 195.711,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "fontPx": 19.6
+                },
+                {
+                  "text": "Output",
+                  "x": 196.257,
+                  "y": 276.83299999999997,
+                  "width": 84.67199999999997,
+                  "height": 24.5,
+                  "fontPx": 19.6
+                }
+              ]
+            },
+            {
+              "label": "乙",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            }
+          ],
+          "limitations": [
+            "Conservative source text bounds; final raster still requires visual review.",
+            "Uniform panel scaling preserves numeric geometry; no post-validation glyph or mark relocation."
+          ]
+        },
+        "columns": 2,
+        "rows": 1,
+        "sharedFont": "Noto Sans",
+        "legendPolicy": "per-panel; never merge different units or encodings",
+        "panels": [
+          {
+            "label": "甲",
+            "typeId": "workflow",
+            "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual_code",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                  "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+                  "status": "passed",
+                  "submittedImageHash": "31ea688ad6dbd6de9f19e9c859e481d8cdeb5308892b2ee4c6d330c2f77ad346",
+                  "assessment": "{\"decision\":{\"version\":1,\"svgHash\":\"787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673\",\"topologyAudit\":{\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"originalRequiredNodes\":[{\"nodeId\":\"input\",\"label\":\"Input\",\"sourceQuote\":\"Input\"},{\"nodeId\":\"output\",\"label\":\"Output\",\"sourceQuote\":\"Output\"}],\"originalRequiredRelations\":[{\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"sourceQuote\":\"Input then Output\"}],\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"},\"topologyAudit\":{\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"originalRequiredNodes\":[{\"nodeId\":\"input\",\"label\":\"Input\",\"sourceQuote\":\"Input\"},{\"nodeId\":\"output\",\"label\":\"Output\",\"sourceQuote\":\"Output\"}],\"originalRequiredRelations\":[{\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"sourceQuote\":\"Input then Output\"}],\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"rendererAudit\":{\"originalRequirements\":[]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673\",\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"passed\":true,\"issues\":[],\"nodes\":{\"input\":{\"x\":186.325,\"y\":184.811,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"output\":{\"x\":181.012,\"y\":265.933,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"start\":{\"x\":238.592,\"y\":233.267},\"end\":{\"x\":238.592,\"y\":265.933},\"points\":[{\"x\":238.592,\"y\":233.267},{\"x\":238.592,\"y\":265.933}]}],\"labelAssociations\":[],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+                }
+              ],
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "deliveredPngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+              "topology": {
+                "version": 1,
+                "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+                "topologyHash": "fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c",
+                "topology": {
+                  "schemaVersion": 1,
+                  "nodes": [
+                    {
+                      "id": "input",
+                      "label": "Input",
+                      "shape": "process",
+                      "role": "normal"
+                    },
+                    {
+                      "id": "output",
+                      "label": "Output",
+                      "shape": "process",
+                      "role": "normal"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "id": "e1",
+                      "source": "input",
+                      "target": "output",
+                      "label": "",
+                      "sourceQuote": "Input then Output"
+                    }
+                  ],
+                  "uncertainties": [],
+                  "layout": {
+                    "direction": "RIGHT"
+                  }
+                },
+                "geometry": {
+                  "schemaVersion": 1,
+                  "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                  "topologyHash": "fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c",
+                  "passed": true,
+                  "issues": [],
+                  "nodes": {
+                    "input": {
+                      "x": 186.325,
+                      "y": 184.811,
+                      "width": 104.533,
+                      "height": 48.456,
+                      "shape": "process",
+                      "radius": 5.444,
+                      "strokeWidth": 1.742
+                    },
+                    "output": {
+                      "x": 181.012,
+                      "y": 265.933,
+                      "width": 115.161,
+                      "height": 48.456,
+                      "shape": "process",
+                      "radius": 5.444,
+                      "strokeWidth": 1.742
+                    }
+                  },
+                  "observedRelations": [
+                    {
+                      "edgeId": "e1",
+                      "source": "input",
+                      "target": "output",
+                      "label": "",
+                      "start": {
+                        "x": 238.592,
+                        "y": 233.267
+                      },
+                      "end": {
+                        "x": 238.592,
+                        "y": 265.933
+                      },
+                      "points": [
+                        {
+                          "x": 238.592,
+                          "y": 233.267
+                        },
+                        {
+                          "x": 238.592,
+                          "y": 265.933
+                        }
+                      ]
+                    }
+                  ],
+                  "labelAssociations": [],
+                  "minFontPx": 14,
+                  "limitations": [
+                    "Source geometry checks do not certify prose-to-graph semantic inference.",
+                    "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+                    "Edge crossings can remain and require visual review."
+                  ]
+                },
+                "layout": {
+                  "direction": "DOWN",
+                  "viewport": {
+                    "x": 25.6,
+                    "y": 51.2,
+                    "width": 477.18399999999997,
+                    "height": 499.19999999999993,
+                    "minFontPx": 14
+                  },
+                  "fontPx": 19.6,
+                  "compiler": "elkjs-0.12.0-topology-v1"
+                }
+              },
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "reviewedPngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+              "note": "当前版本已检查实际画面、完整代码、实际连接几何及原始关系；语义核查为模型判断。"
+            }
+          },
+          {
+            "label": "乙",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          }
+        ]
+      }
+    },
+    "calls": [
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "topology",
+        "images": 0
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      }
+    ]
+  },
+  {
+    "typeId": "multipanel",
+    "format": "svg",
+    "inputs": "valid_and_missing_data_duplicate_labels_unsupported_variant_checked",
+    "references": "automatic_per_child_licensed_pixels",
+    "drawing": "actual_program_numeric_panels_mock_schematic_and_actual_vector_assembly",
+    "review": "actual_numeric_checks_mock_version_bound_visual_review",
+    "refine": "data_image_refine_blocked_before_call",
+    "childRoutes": "parent_authenticated_routes_preserved",
+    "actualModel": "not_tested",
+    "reviewEvidence": {
+      "limit": 1,
+      "roundsUsed": 1,
+      "mode": "visual_code",
+      "status": "passed",
+      "deliveredVersion": 1,
+      "deliveredSvgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+      "deliveredPngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+      "history": [
+        {
+          "round": 1,
+          "version": 1,
+          "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+          "pngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+          "status": "passed",
+          "submittedImageHash": "7b9ce18d063075b9c5d63cb2bdff774cf96254640e32cbd2bf6f03eeec60d69d",
+          "assessment": "{\"version\":1,\"svgHash\":\"9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+        }
+      ],
+      "rendererAudit": {
+        "originalRequirements": [],
+        "version": 1,
+        "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+        "pngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a"
+      },
+      "reviewedVersion": 1,
+      "reviewedSvgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+      "reviewedPngHash": "2910c4b823d2d0b1bc006b9bd3c0c0db83d62ae7210a728da873b08f2deeec2a",
+      "note": "各子图已按自身规范检查，组合画面与代码已按实际版本检查。",
+      "composition": {
+        "renderer": "independent-vector-panels-v2",
+        "layout": {
+          "svgHash": "9aba71dad9b68717161018e6117369297a3ef2d259a706301fdeadbcc212afb3",
+          "passed": true,
+          "allocation": {
+            "width": 1024,
+            "height": 576,
+            "columns": 2,
+            "rows": 1,
+            "cellW": 477.18399999999997,
+            "cellH": 524.8,
+            "gap": 18.432,
+            "margin": 25.6,
+            "labelHeight": 25.6,
+            "minFontPx": 14,
+            "panels": [
+              {
+                "x": 25.6,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              },
+              {
+                "x": 521.216,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              }
+            ]
+          },
+          "panels": [
+            {
+              "label": "甲",
+              "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 19.6,
+              "textCount": 2,
+              "sourceViewBox": [
+                0,
+                0,
+                477.18399999999997,
+                499.19999999999993
+              ],
+              "uniformScale": 1,
+              "textBounds": [
+                {
+                  "text": "Input",
+                  "x": 203.312,
+                  "y": 195.711,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "fontPx": 19.6
+                },
+                {
+                  "text": "Output",
+                  "x": 196.257,
+                  "y": 276.83299999999997,
+                  "width": 84.67199999999997,
+                  "height": 24.5,
+                  "fontPx": 19.6
+                }
+              ]
+            },
+            {
+              "label": "乙",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            }
+          ],
+          "limitations": [
+            "Conservative source text bounds; final raster still requires visual review.",
+            "Uniform panel scaling preserves numeric geometry; no post-validation glyph or mark relocation."
+          ]
+        },
+        "columns": 2,
+        "rows": 1,
+        "sharedFont": "Noto Sans",
+        "legendPolicy": "per-panel; never merge different units or encodings",
+        "panels": [
+          {
+            "label": "甲",
+            "typeId": "workflow",
+            "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual_code",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                  "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+                  "status": "passed",
+                  "submittedImageHash": "31ea688ad6dbd6de9f19e9c859e481d8cdeb5308892b2ee4c6d330c2f77ad346",
+                  "assessment": "{\"decision\":{\"version\":1,\"svgHash\":\"787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673\",\"topologyAudit\":{\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"originalRequiredNodes\":[{\"nodeId\":\"input\",\"label\":\"Input\",\"sourceQuote\":\"Input\"},{\"nodeId\":\"output\",\"label\":\"Output\",\"sourceQuote\":\"Output\"}],\"originalRequiredRelations\":[{\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"sourceQuote\":\"Input then Output\"}],\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"},\"topologyAudit\":{\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"originalRequiredNodes\":[{\"nodeId\":\"input\",\"label\":\"Input\",\"sourceQuote\":\"Input\"},{\"nodeId\":\"output\",\"label\":\"Output\",\"sourceQuote\":\"Output\"}],\"originalRequiredRelations\":[{\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"sourceQuote\":\"Input then Output\"}],\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\"}],\"missingRelations\":[],\"extraRelations\":[],\"wrongRelations\":[],\"nodeIssues\":[]},\"rendererAudit\":{\"originalRequirements\":[]},\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673\",\"topologyHash\":\"fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c\",\"passed\":true,\"issues\":[],\"nodes\":{\"input\":{\"x\":186.325,\"y\":184.811,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"output\":{\"x\":181.012,\"y\":265.933,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"e1\",\"source\":\"input\",\"target\":\"output\",\"label\":\"\",\"start\":{\"x\":238.592,\"y\":233.267},\"end\":{\"x\":238.592,\"y\":265.933},\"points\":[{\"x\":238.592,\"y\":233.267},{\"x\":238.592,\"y\":265.933}]}],\"labelAssociations\":[],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]}}"
+                }
+              ],
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "deliveredPngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+              "topology": {
+                "version": 1,
+                "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+                "topologyHash": "fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c",
+                "topology": {
+                  "schemaVersion": 1,
+                  "nodes": [
+                    {
+                      "id": "input",
+                      "label": "Input",
+                      "shape": "process",
+                      "role": "normal"
+                    },
+                    {
+                      "id": "output",
+                      "label": "Output",
+                      "shape": "process",
+                      "role": "normal"
+                    }
+                  ],
+                  "edges": [
+                    {
+                      "id": "e1",
+                      "source": "input",
+                      "target": "output",
+                      "label": "",
+                      "sourceQuote": "Input then Output"
+                    }
+                  ],
+                  "uncertainties": [],
+                  "layout": {
+                    "direction": "RIGHT"
+                  }
+                },
+                "geometry": {
+                  "schemaVersion": 1,
+                  "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                  "topologyHash": "fa00cbf0a25f573a62775472b1b423674b13a78fbdf988df8322c5a627e1580c",
+                  "passed": true,
+                  "issues": [],
+                  "nodes": {
+                    "input": {
+                      "x": 186.325,
+                      "y": 184.811,
+                      "width": 104.533,
+                      "height": 48.456,
+                      "shape": "process",
+                      "radius": 5.444,
+                      "strokeWidth": 1.742
+                    },
+                    "output": {
+                      "x": 181.012,
+                      "y": 265.933,
+                      "width": 115.161,
+                      "height": 48.456,
+                      "shape": "process",
+                      "radius": 5.444,
+                      "strokeWidth": 1.742
+                    }
+                  },
+                  "observedRelations": [
+                    {
+                      "edgeId": "e1",
+                      "source": "input",
+                      "target": "output",
+                      "label": "",
+                      "start": {
+                        "x": 238.592,
+                        "y": 233.267
+                      },
+                      "end": {
+                        "x": 238.592,
+                        "y": 265.933
+                      },
+                      "points": [
+                        {
+                          "x": 238.592,
+                          "y": 233.267
+                        },
+                        {
+                          "x": 238.592,
+                          "y": 265.933
+                        }
+                      ]
+                    }
+                  ],
+                  "labelAssociations": [],
+                  "minFontPx": 14,
+                  "limitations": [
+                    "Source geometry checks do not certify prose-to-graph semantic inference.",
+                    "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+                    "Edge crossings can remain and require visual review."
+                  ]
+                },
+                "layout": {
+                  "direction": "DOWN",
+                  "viewport": {
+                    "x": 25.6,
+                    "y": 51.2,
+                    "width": 477.18399999999997,
+                    "height": 499.19999999999993,
+                    "minFontPx": 14
+                  },
+                  "fontPx": 19.6,
+                  "compiler": "elkjs-0.12.0-topology-v1"
+                }
+              },
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "svgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+                "pngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "787fea3e9207dce0204000f022d46205145be00dba61bed7aa23409fa5d2b673",
+              "reviewedPngHash": "55a366f6dc0bb9feb3f9669e67f08e33f455fd297d79e632cdae02e2c8cc21bc",
+              "note": "当前版本已检查实际画面、完整代码、实际连接几何及原始关系；语义核查为模型判断。"
+            }
+          },
+          {
+            "label": "乙",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          }
+        ]
+      }
+    },
+    "calls": [
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "topology",
+        "images": 0
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      }
+    ]
+  },
+  {
+    "typeId": "small_multiples",
+    "format": "png",
+    "inputs": "valid_and_missing_data_duplicate_labels_unsupported_variant_checked",
+    "references": "automatic_per_child_licensed_pixels",
+    "drawing": "actual_program_numeric_panels_mock_schematic_and_actual_vector_assembly",
+    "review": "actual_numeric_checks_mock_version_bound_visual_review",
+    "refine": "data_image_refine_blocked_before_call",
+    "childRoutes": "parent_authenticated_routes_preserved",
+    "actualModel": "not_tested",
+    "reviewEvidence": {
+      "limit": 1,
+      "roundsUsed": 1,
+      "mode": "visual_code",
+      "status": "passed",
+      "deliveredVersion": 1,
+      "deliveredSvgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+      "deliveredPngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+      "history": [
+        {
+          "round": 1,
+          "version": 1,
+          "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+          "pngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+          "status": "passed",
+          "submittedImageHash": "6277a78d84b199ccda701cb8b2d879eb910f3ca2e661ea7d12cc46294d7e5ffb",
+          "assessment": "{\"version\":1,\"svgHash\":\"68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+        }
+      ],
+      "rendererAudit": {
+        "originalRequirements": [],
+        "version": 1,
+        "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+        "pngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b"
+      },
+      "reviewedVersion": 1,
+      "reviewedSvgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+      "reviewedPngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+      "note": "各子图已按自身规范检查，组合画面与代码已按实际版本检查。",
+      "composition": {
+        "renderer": "independent-vector-panels-v2",
+        "layout": {
+          "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+          "passed": true,
+          "allocation": {
+            "width": 1024,
+            "height": 576,
+            "columns": 2,
+            "rows": 1,
+            "cellW": 477.18399999999997,
+            "cellH": 524.8,
+            "gap": 18.432,
+            "margin": 25.6,
+            "labelHeight": 25.6,
+            "minFontPx": 14,
+            "panels": [
+              {
+                "x": 25.6,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              },
+              {
+                "x": 521.216,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              }
+            ]
+          },
+          "panels": [
+            {
+              "label": "甲",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            },
+            {
+              "label": "乙",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            }
+          ],
+          "limitations": [
+            "Conservative source text bounds; final raster still requires visual review.",
+            "Uniform panel scaling preserves numeric geometry; no post-validation glyph or mark relocation."
+          ]
+        },
+        "columns": 2,
+        "rows": 1,
+        "sharedFont": "Noto Sans",
+        "legendPolicy": "per-panel; never merge different units or encodings",
+        "panels": [
+          {
+            "label": "甲",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          },
+          {
+            "label": "乙",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          }
+        ]
+      }
+    },
+    "calls": [
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      }
+    ]
+  },
+  {
+    "typeId": "small_multiples",
+    "format": "svg",
+    "inputs": "valid_and_missing_data_duplicate_labels_unsupported_variant_checked",
+    "references": "automatic_per_child_licensed_pixels",
+    "drawing": "actual_program_numeric_panels_mock_schematic_and_actual_vector_assembly",
+    "review": "actual_numeric_checks_mock_version_bound_visual_review",
+    "refine": "data_image_refine_blocked_before_call",
+    "childRoutes": "parent_authenticated_routes_preserved",
+    "actualModel": "not_tested",
+    "reviewEvidence": {
+      "limit": 1,
+      "roundsUsed": 1,
+      "mode": "visual_code",
+      "status": "passed",
+      "deliveredVersion": 1,
+      "deliveredSvgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+      "deliveredPngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+      "history": [
+        {
+          "round": 1,
+          "version": 1,
+          "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+          "pngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+          "status": "passed",
+          "submittedImageHash": "6277a78d84b199ccda701cb8b2d879eb910f3ca2e661ea7d12cc46294d7e5ffb",
+          "assessment": "{\"version\":1,\"svgHash\":\"68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd\",\"visual\":{\"status\":\"passed\",\"findings\":[]},\"code\":{\"status\":\"passed\",\"findings\":[]},\"uncertainties\":[],\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+        }
+      ],
+      "rendererAudit": {
+        "originalRequirements": [],
+        "version": 1,
+        "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+        "pngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b"
+      },
+      "reviewedVersion": 1,
+      "reviewedSvgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+      "reviewedPngHash": "1f60afd09ffdcfc9abd057bbed621da68d523db7ab55fa231eb72a2c1a666b2b",
+      "note": "各子图已按自身规范检查，组合画面与代码已按实际版本检查。",
+      "composition": {
+        "renderer": "independent-vector-panels-v2",
+        "layout": {
+          "svgHash": "68d438b06311421820370a14a86c7857e05238a74193c3fa9a6fac6329d432fd",
+          "passed": true,
+          "allocation": {
+            "width": 1024,
+            "height": 576,
+            "columns": 2,
+            "rows": 1,
+            "cellW": 477.18399999999997,
+            "cellH": 524.8,
+            "gap": 18.432,
+            "margin": 25.6,
+            "labelHeight": 25.6,
+            "minFontPx": 14,
+            "panels": [
+              {
+                "x": 25.6,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              },
+              {
+                "x": 521.216,
+                "y": 51.2,
+                "width": 477.18399999999997,
+                "height": 499.19999999999993,
+                "minFontPx": 14
+              }
+            ]
+          },
+          "panels": [
+            {
+              "label": "甲",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            },
+            {
+              "label": "乙",
+              "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "passed": true,
+              "issues": [],
+              "minTextPx": 14,
+              "textCount": 10,
+              "sourceViewBox": [
+                0,
+                0,
+                343.57248,
+                359.424
+              ],
+              "uniformScale": 1.3888888888888888,
+              "textBounds": [
+                {
+                  "text": "0",
+                  "x": 12.851439999999998,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000002,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "1",
+                  "x": 74.58325,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "2",
+                  "x": 136.315059,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "3",
+                  "x": 198.046869,
+                  "y": 326.83176000000003,
+                  "width": 7.2575999999999965,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "4",
+                  "x": 259.778678,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "5",
+                  "x": 321.510488,
+                  "y": 326.83176000000003,
+                  "width": 7.257600000000025,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "arbitrary test units",
+                  "x": 113.20784000000002,
+                  "y": 343.46376000000004,
+                  "width": 130.63679999999994,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                },
+                {
+                  "text": "A",
+                  "x": 2.22264,
+                  "y": 53.115896,
+                  "width": 7.2576,
+                  "height": 12.600000000000001,
+                  "fontPx": 14
+                },
+                {
+                  "text": "B",
+                  "x": 2.22264,
+                  "y": 156.37599999999998,
+                  "width": 7.2576,
+                  "height": 12.600000000000023,
+                  "fontPx": 14
+                },
+                {
+                  "text": "C",
+                  "x": 2.22264,
+                  "y": 259.636104,
+                  "width": 7.2576,
+                  "height": 12.599999999999966,
+                  "fontPx": 14
+                }
+              ]
+            }
+          ],
+          "limitations": [
+            "Conservative source text bounds; final raster still requires visual review.",
+            "Uniform panel scaling preserves numeric geometry; no post-validation glyph or mark relocation."
+          ]
+        },
+        "columns": 2,
+        "rows": 1,
+        "sharedFont": "Noto Sans",
+        "legendPolicy": "per-panel; never merge different units or encodings",
+        "panels": [
+          {
+            "label": "甲",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          },
+          {
+            "label": "乙",
+            "typeId": "bar",
+            "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+            "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+            "review": {
+              "limit": 1,
+              "roundsUsed": 1,
+              "mode": "visual",
+              "status": "passed",
+              "history": [
+                {
+                  "round": 1,
+                  "version": 1,
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "status": "passed",
+                  "assessment": "{\"critic_suggestions\":\"Mock visual opinion only\",\"rendererAudit\":{\"originalRequirements\":[]},\"revised_description\":\"No changes needed.\"}"
+                }
+              ],
+              "rendererAudit": {
+                "originalRequirements": [],
+                "version": 1,
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "reviewedVersion": 1,
+              "reviewedSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "reviewedPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+              "note": "主模型对当前统计图的本轮评审无需修改。",
+              "dataValidation": {
+                "status": "input_validated",
+                "rowCount": 3,
+                "checks": [
+                  "schema",
+                  "finite_numbers",
+                  "units",
+                  "type_semantics"
+                ],
+                "limitations": [
+                  "程序检查不证明数据来源真实或统计研究设计有效；视觉模型不能签署数值正确性。"
+                ],
+                "renderer": "deterministic-v1",
+                "dataHash": "d9607badbcd750fdb44201c5f8c15ae4ca239363dc5cd8d97cb710c22e6069d5",
+                "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                "renderSucceeded": true,
+                "program": {
+                  "vector": true,
+                  "editableText": true,
+                  "sameScene": true,
+                  "figureCount": 1,
+                  "codeHash": "94f8c3745b48e76492ad38c77df461458add2d2a3e5b7bee17f146fce664ec67",
+                  "pngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13",
+                  "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+                  "numeric": {
+                    "typeId": "bar",
+                    "checks": {
+                      "bar_widths": {
+                        "count": 3,
+                        "absoluteError": 0,
+                        "passed": true
+                      }
+                    },
+                    "computations": {},
+                    "analysis": {},
+                    "suppliedFields": [
+                      "label",
+                      "value"
+                    ],
+                    "dataSourcePolicy": "User supplied values; artist checks do not establish source authenticity or study validity."
+                  }
+                },
+                "svgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055"
+              },
+              "deliveredVersion": 1,
+              "deliveredSvgHash": "d42eb7b5a5ecfe1d1cbff768640195db2cb78638efeb35eee4bc01be9531f055",
+              "deliveredPngHash": "fafc4eb3499f04c8c4c4ae39d456f93574f4e8c872a6d1a5fd2bde116d6d3c13"
+            }
+          }
+        ]
+      }
+    },
+    "calls": [
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "retrieval",
+        "images": 0
+      },
+      {
+        "kind": "plan",
+        "images": 1
+      },
+      {
+        "kind": "data-review",
+        "images": 1
+      },
+      {
+        "kind": "svg-review",
+        "images": 1
+      }
+    ]
+  }
+]

@@ -159,3 +159,26 @@ test('an unstarted interrupted task explains saved admission and resumes only on
   await waitFor(() => assert.deepEqual(resumed, ['queued-before-crash']));
   assert.deepEqual(requested, [{action: 'providerResume', body: {jobId: 'queued-before-crash'}}]);
 });
+
+
+test('web authorization sends its official origin while retaining the server fallback for local development', async () => {
+  const originalFetch = globalThis.fetch, originalOpen = window.open, originalWindow = globalThis.window;
+  try {
+    for (const origin of ['https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia', 'http://localhost:5196']) {
+      let sent, redirected;
+      globalThis.window = new Proxy(originalWindow, { get(target, key) { if (key === 'location') return { origin }; const value = Reflect.get(target, key); return typeof value === 'function' ? value.bind(target) : value; } });
+      originalWindow.open = () => ({ location: { replace(value) { redirected = value; } }, close() {} });
+      globalThis.fetch = async (_url, init) => {
+        const body = JSON.parse(init.body);
+        if (body.action === 'tokenDanceAuthorize') { sent = body; return Response.json({ authorizationUrl: 'https://tokendance.space/auth?fixture=1' }); }
+        return Response.json({ connected: false, available: true });
+      };
+      const hook = renderHook(() => useTokenDance('https://gateway.example.test', 'fixture-owner', true));
+      await act(async () => { await hook.result.current.authorize(); });
+      assert.equal(sent.callbackOrigin, origin.startsWith('http:') ? undefined : origin);
+      assert.equal(sent.platform, 'web');
+      assert.equal(redirected, 'https://tokendance.space/auth?fixture=1');
+      hook.unmount();
+    }
+  } finally { globalThis.window = originalWindow; originalWindow.open = originalOpen; globalThis.fetch = originalFetch; }
+});

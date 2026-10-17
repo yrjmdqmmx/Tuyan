@@ -1,0 +1,52 @@
+{
+  "id": "pone.0216201.g001",
+  "paper": "pone.0216201",
+  "figure": {
+    "id": "pone.0216201.g001",
+    "label": "Fig 1",
+    "caption": "Prototype structure of solar cells (a), the equivalent circuit used to simulate I-V curve of solar cells based on single-diode model (b) and the standard I-V characteristic of solar cells (c).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0216201.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0216201.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title />\n<p>Prototype structure of solar cells (a), the equivalent circuit used to simulate <italic>I-V</italic> curve of solar cells based on single-diode model (b) and the standard <italic>I-V</italic> characteristic of solar cells (c).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0216201.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0216201.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0216201",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0216201",
+    "title": "Simple and efficient estimation of photovoltaic cells and modules parameters using approximation and correction technique",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Fahmi F. Muhammad",
+      "Ali W. Karim Sangawi",
+      "Suhairul Hashim",
+      "S. K. Ghoshal",
+      "Isam K. Abdullah",
+      "Shilan S. Hameed"
+    ],
+    "year": "2019",
+    "license": "2019\nMuhammad et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0216201.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0216201.g001.png",
+      "bytes": 353064,
+      "sha256": "e599938434bf0d1ada89b01fe671db7fa254af0310df3cdbe3c156c059e3f607"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0216201.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0216201.g001.tif",
+      "bytes": 376020,
+      "sha256": "31aefc06aba03b94e2653c34b3aeab15f03da38951cd070494686a0a57b9de42"
+    }
+  }
+}

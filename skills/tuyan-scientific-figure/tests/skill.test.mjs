@@ -6,6 +6,7 @@ import test from 'node:test';
 
 import {
   createOfflineSnapshot,
+  KNOWLEDGE_VERSION,
   PAPERBANANA_BENCH_DIAGRAM_IDS,
   PAPERBANANA_BENCH_MANIFEST,
 } from '../../../packages/tuyan-knowledge/src/index.js';
@@ -114,7 +115,7 @@ test('output finalizer records local files, knowledge, and retriever state', asy
     createdAt: '2026-09-04T00:00:00.000Z',
   });
   assert.equal(manifest?.schemaVersion, 'tuyan.output-bundle/v1');
-  assert.equal(manifest?.knowledge.version, '1.0.0');
+  assert.equal(manifest?.knowledge.version, KNOWLEDGE_VERSION);
   assert.equal(manifest?.retriever.status, 'skipped');
   assert.deepEqual(manifest?.files.map(({ path }) => path), ['figure-spec.json', 'prompts/round-01.txt']);
   assert.ok(manifest?.files.every(({ sha256 }) => /^[a-f0-9]{64}$/.test(sha256)));

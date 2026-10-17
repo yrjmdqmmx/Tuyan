@@ -1,0 +1,92 @@
+{
+  "typeId": "cumulative_incidence",
+  "computations": {
+    "estimator": "Aalen-Johansen, common time-zero entry, right censoring, simultaneous cause jumps",
+    "groups": {
+      "Data": {
+        "time": [
+          0.0,
+          0
+        ],
+        "cif": {
+          "A": [
+            0.0,
+            0.5
+          ],
+          "B": [
+            0.0,
+            0.25
+          ]
+        },
+        "eventFreeSurvival": [
+          1.0,
+          0.25
+        ],
+        "riskSets": [
+          {
+            "time": 0,
+            "atRisk": 4,
+            "eventsByCause": [
+              2,
+              1
+            ],
+            "censored": 1
+          }
+        ]
+      }
+    }
+  },
+  "checks": {
+    "Data_mass_at_0": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "Data_A_curve_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "Data_A_monotonic_violations": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "Data_B_curve_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "Data_B_monotonic_violations": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "time",
+      "event",
+      "cause"
+    ],
+    "options": {
+      "causes": [
+        "A",
+        "B"
+      ],
+      "estimator": "aalen_johansen",
+      "censoring": "right",
+      "entry": "zero"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

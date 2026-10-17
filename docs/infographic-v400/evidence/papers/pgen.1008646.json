@@ -1,0 +1,142 @@
+{
+  "doi": "10.1371/journal.pgen.1008646",
+  "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008646",
+  "title": "Long transposon-rich centromeres in an oomycete reveal divergence of centromere features in Stramenopila-Alveolata-Rhizaria lineages",
+  "journal": "PLOS Genetics",
+  "authors": [
+    "Yufeng Fang",
+    "Marco A. Coelho",
+    "Haidong Shu",
+    "Klaas Schotanus",
+    "Bhagya C. Thimmappa",
+    "Vikas Yadav",
+    "Han Chen",
+    "Ewa P. Malc",
+    "Jeremy Wang",
+    "Piotr A. Mieczkowski",
+    "Brent Kronmiller",
+    "Brett M. Tyler",
+    "Kaustuv Sanyal",
+    "Suomeng Dong",
+    "Minou Nowrousian",
+    "Joseph Heitman"
+  ],
+  "year": "2020",
+  "license": "2020\nFang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pgen.1008646.g001",
+      "label": "Fig 1",
+      "caption": "Subcellular localization of CENP-A in P. sojae at different life stages and during vegetative growth.\n(A) A schematic showing the generation of GFP-fused CENP-A utilizing CRISPR/Cas9 mediated gene replacement. (B) Subcellular localization of GFP-tagged CENP-A (expressed from the endogenous locus) in P. sojae hyphae, sporangia, and encysted zoospores. (C) Time-lapse images illustrating localization of GFP tagged CENP-A during hyphal growth. Dashed squares denote occurrence of nuclear division. Representative images are shown. Scale bars in all images, 5 μm.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Subcellular localization of CENP-A in <italic>P</italic>. <italic>sojae</italic> at different life stages and during vegetative growth.</title>\n<p>(A) A schematic showing the generation of <italic>GFP</italic>-fused <italic>CENP-A</italic> utilizing CRISPR/Cas9 mediated gene replacement. (B) Subcellular localization of GFP-tagged CENP-A (expressed from the endogenous locus) in <italic>P</italic>. <italic>sojae</italic> hyphae, sporangia, and encysted zoospores. (C) Time-lapse images illustrating localization of GFP tagged CENP-A during hyphal growth. Dashed squares denote occurrence of nuclear division. Representative images are shown. Scale bars in all images, 5 μm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g002",
+      "label": "Fig 2",
+      "caption": "Contigs in the Psojae2019.1 assembly demonstrating CENP-A enrichment based on ChIP-seq.\n(A) 10 contigs that harbor fully assembled CENP-A binding sites. (B) Five contigs that possess incompletely assembled CENP-A binding regions. All contigs are drawn to scale and the ruler indicates the length of the contigs. All CENP-A profiles shown were normalized to input DNA. mRNA profiles are shown as log-scales. Solid stars indicate the CENP-A enriched regions within contigs; hollow stars denote broken centromeres at the edge.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Contigs in the Psojae2019.1 assembly demonstrating CENP-A enrichment based on ChIP-seq.</title>\n<p>(A) 10 contigs that harbor fully assembled CENP-A binding sites. (B) Five contigs that possess incompletely assembled CENP-A binding regions. All contigs are drawn to scale and the ruler indicates the length of the contigs. All CENP-A profiles shown were normalized to input DNA. mRNA profiles are shown as log-scales. Solid stars indicate the CENP-A enriched regions within contigs; hollow stars denote broken centromeres at the edge.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g003",
+      "label": "Fig 3",
+      "caption": "A representative Circos visualization comparing a centromere-containing scaffold in Sanger V3 (Scaffold 2) with its corresponding contigs in the Psojae2019.1 assembly.\nFor the inner circle, track A illustrates assembled contigs (in Psojae2019.1) or scaffold (in P. sojae V3) that are color coded as shown at the top. The locations of centromeres (CENP-A binding regions) are highlighted in yellow. Tracks B-E show the location of other genomic features as given in the key on the bottom. Blue and orange lines in track F link regions with collinearity extending over 2 kb, with orange lines corresponding to inversions. Grey box-shaded centromere-containing regions are magnified for detailed visualization (the two outer arcs).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>A representative Circos visualization comparing a centromere-containing scaffold in Sanger V3 (Scaffold 2) with its corresponding contigs in the Psojae2019.1 assembly.</title>\n<p>For the inner circle, track A illustrates assembled contigs (in Psojae2019.1) or scaffold (in P. sojae V3) that are color coded as shown at the top. The locations of centromeres (CENP-A binding regions) are highlighted in yellow. Tracks B-E show the location of other genomic features as given in the key on the bottom. Blue and orange lines in track F link regions with collinearity extending over 2 kb, with orange lines corresponding to inversions. Grey box-shaded centromere-containing regions are magnified for detailed visualization (the two outer arcs).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g004",
+      "label": "Fig 4",
+      "caption": "Epigenetic state of P. sojae centromeres.\n(A) Schematics showing the P. sojae core centromeres (CENP-A binding regions) and the pericentric regions of various lengths. Dark and light grey bars indicate core centromeric and pericentric regions. Numbers at the center indicate the size of core centromeres; Numbers on the right denote the full-length of the centromeres (a combination of core centromere and pericentromeric region). The right pericentric region of CEN5 and the left pericentric region of CEN10, indicated by dashed bars, are not fully assembled, and their lengths are labeled with question marks. (B-C) Two centromeres (CEN1 and CEN4) are shown as representatives to compare CENP-A localization to the distributions of modified histones. A 400 kb region harboring the centromeric region is shown for CEN1 and CEN4. Cyan block, a transcriptionally active region (21 kb) that interrupts CEN4. Profiles of CENP-A, H3K9me3, H3K27me3 and H3K4me2 shown were normalized to input. mRNA profiles are shown as log-scales. Orange circles in (C) delimit borders of a CENP-A binding void.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Epigenetic state of <italic>P</italic>. <italic>sojae</italic> centromeres.</title>\n<p>(A) Schematics showing the <italic>P</italic>. <italic>sojae</italic> core centromeres (CENP-A binding regions) and the pericentric regions of various lengths. Dark and light grey bars indicate core centromeric and pericentric regions. Numbers at the center indicate the size of core centromeres; Numbers on the right denote the full-length of the centromeres (a combination of core centromere and pericentromeric region). The right pericentric region of <italic>CEN5</italic> and the left pericentric region of <italic>CEN10</italic>, indicated by dashed bars, are not fully assembled, and their lengths are labeled with question marks. (B-C) Two centromeres (<italic>CEN1</italic> and <italic>CEN4</italic>) are shown as representatives to compare CENP-A localization to the distributions of modified histones. A 400 kb region harboring the centromeric region is shown for <italic>CEN1</italic> and <italic>CEN4</italic>. Cyan block, a transcriptionally active region (21 kb) that interrupts <italic>CEN4</italic>. Profiles of CENP-A, H3K9me3, H3K27me3 and H3K4me2 shown were normalized to input. mRNA profiles are shown as log-scales. Orange circles in (C) delimit borders of a CENP-A binding void.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g005",
+      "label": "Fig 5",
+      "caption": "P. sojae centromeres are enriched for a Copia-like transposon (CoLT).\n(A) Distribution of transposable elements (TEs) in CEN1. TEs were annotated using a Phytophthora TE library from Repbase [45]. Tracks of different repeat families are color coded. The track “Other TEs” includes all types of TEs beyond Gypsy and Copia. CoLT was composed of three elements annotated in Repbase [45], namely Copia-24_PIT-I, Copia-24_PIT-LTR and Gypsy-P17-PR-I. The profile of CENP-A shown was normalized to input. The mRNA track is shown as log-scales and used to define the boundary of pericentric heterochromatin. (B) Location of CoLT elements across all of the Psojae2019.1 contigs. (C) Diagram showing the domain structure of a representative full-length CoLT sequence (see S3 File). The coding domain featured as Copia superfamily of retrotransposons, which consists of capsid protein (GAG), Gag-pre-integrase (PR), integrase (INT), reverse transcriptase (RT), and RNase H (RH) domains, and diverges from the Gypsy superfamily in the order of the RT and INT domains in their POL genes [86].",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title><italic>P</italic>. <italic>sojae</italic> centromeres are enriched for a <italic>Copia</italic>-like transposon (CoLT).</title>\n<p>(A) Distribution of transposable elements (TEs) in <italic>CEN1</italic>. TEs were annotated using a <italic>Phytophthora</italic> TE library from Repbase [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref045\">45</xref>]. Tracks of different repeat families are color coded. The track “Other TEs” includes all types of TEs beyond <italic>Gypsy</italic> and <italic>Copia</italic>. CoLT was composed of three elements annotated in Repbase [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref045\">45</xref>], namely Copia-24_PIT-I, Copia-24_PIT-LTR and Gypsy-P17-PR-I. The profile of CENP-A shown was normalized to input. The mRNA track is shown as log-scales and used to define the boundary of pericentric heterochromatin. (B) Location of CoLT elements across all of the Psojae2019.1 contigs. (C) Diagram showing the domain structure of a representative full-length CoLT sequence (see <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s021\">S3 File</xref>). The coding domain featured as <italic>Copia</italic> superfamily of retrotransposons, which consists of capsid protein (GAG), Gag-pre-integrase (PR), integrase (INT), reverse transcriptase (RT), and RNase H (RH) domains, and diverges from the <italic>Gypsy</italic> superfamily in the order of the RT and INT domains in their <italic>POL</italic> genes [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref086\">86</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g006",
+      "label": "Fig 6",
+      "caption": "Phylogenetic analyses of CoLT.\n(A) Maximum-likelihood phylogeny of different retroelements. Protein sequences of the reverse transcriptase (RT) domains were used to construct the tree [87] (see S4A File for the complete DNA and protein sequences). The tree was rooted in the midpoint and branch support values (> 50%) shown at the three nodes were determined by 10,000 replicates of both ultrafast bootstrap approximation (UFBoot) and the Shimodaira-Hasegawa approximate likelihood ratio test (SH-aLRT). (B) Maximum-likelihood phylogeny of full-length CoLT elements identified in the Psojae2010.1 genome assembly. CoLT copies located inside and outside of centromeres are denoted by blue and red circles. CoLT elements with full-length coding sequences (CDS) are depicted as filled circles. A CoLT sequence identified in P. citricola served as an outgroup. See S4B File for the CoLT copies used for the phylogenetic analysis.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Phylogenetic analyses of CoLT.</title>\n<p>(A) Maximum-likelihood phylogeny of different retroelements. Protein sequences of the reverse transcriptase (RT) domains were used to construct the tree [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref087\">87</xref>] (see <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s022\">S4A File</xref> for the complete DNA and protein sequences). The tree was rooted in the midpoint and branch support values (&gt; 50%) shown at the three nodes were determined by 10,000 replicates of both ultrafast bootstrap approximation (UFBoot) and the Shimodaira-Hasegawa approximate likelihood ratio test (SH-aLRT). (B) Maximum-likelihood phylogeny of full-length CoLT elements identified in the Psojae2010.1 genome assembly. CoLT copies located inside and outside of centromeres are denoted by blue and red circles. CoLT elements with full-length coding sequences (CDS) are depicted as filled circles. A CoLT sequence identified in <italic>P</italic>. <italic>citricola</italic> served as an outgroup. See <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s022\">S4B File</xref> for the CoLT copies used for the phylogenetic analysis.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g007",
+      "label": "Fig 7",
+      "caption": "Genomic distribution of CoLT in the Bremia lactucae genome.\n(A) Location of CoLT elements across all B. lactucae scaffolds >100 kb. For ease of analysis, scaffolds in the B. lactucae assembly were sorted and re-named based on sizes (large to small). See S5 File for the original scaffold names. Regions underlined by green lines indicate that both sides of the CoLT clusters are syntenic with the regions surrounding the P. sojae centromeres. Regions underlined by blue indicate only one side of the CoLT clusters was found to be syntenic with P. sojae centromere flanking sequences. (B) A representative Circos plot comparing a B. lactucae scaffold that has clustered CoLT elements (Scaffold 2)with the corresponding Psojae2019.1 contigs. The outer track illustrates the assembled scaffold (in the sorted B. lactucae assembly) or contigs (in Psojae2019.1), which is color coded as shown at the top. Names of contigs possessing P. sojae centromeres are enclosed in circles. Yellow regions on the outer tracks indicate the locations of centromeres (CENP-A binding regions). Blue and orange lines in track F link regions with synteny extending over 2 kb, with orange lines corresponding to inversions. Two CoLT clusters are identified in the B. lactucae Scaffold 2 (s2; original scaffold, SHOA01000004.1), which are indicated by arrowheads of different colors.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Genomic distribution of CoLT in the <italic>Bremia lactucae</italic> genome.</title>\n<p>(A) Location of CoLT elements across all <italic>B</italic>. <italic>lactucae</italic> scaffolds &gt;100 kb. For ease of analysis, scaffolds in the <italic>B</italic>. <italic>lactucae</italic> assembly were sorted and re-named based on sizes (large to small). See <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s023\">S5 File</xref> for the original scaffold names. Regions underlined by green lines indicate that both sides of the CoLT clusters are syntenic with the regions surrounding the <italic>P</italic>. <italic>sojae</italic> centromeres. Regions underlined by blue indicate only one side of the CoLT clusters was found to be syntenic with <italic>P</italic>. <italic>sojae</italic> centromere flanking sequences. (B) A representative Circos plot comparing a <italic>B</italic>. <italic>lactucae</italic> scaffold that has clustered CoLT elements (Scaffold 2)with the corresponding Psojae2019.1 contigs. The outer track illustrates the assembled scaffold (in the sorted <italic>B</italic>. <italic>lactucae</italic> assembly) or contigs (in Psojae2019.1), which is color coded as shown at the top. Names of contigs possessing <italic>P</italic>. <italic>sojae</italic> centromeres are enclosed in circles. Yellow regions on the outer tracks indicate the locations of centromeres (CENP-A binding regions). Blue and orange lines in track F link regions with synteny extending over 2 kb, with orange lines corresponding to inversions. Two CoLT clusters are identified in the <italic>B</italic>. <italic>lactucae</italic> Scaffold 2 (s2; original scaffold, SHOA01000004.1), which are indicated by arrowheads of different colors.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g008",
+      "label": "Fig 8",
+      "caption": "Genomic distribution of CoLT in the Phytophthora citricola genome.\n(A) Location of CoLT across all P. citricola contigs >100 kb. (B-D) Circos plots comparing three P. citricola contigs that have CoLT clusters with the corresponding Psojae2019.1 contigs. In each panel, the outer track (bars) illustrates the contigs in the P. citricola or the Psojae2019.1 genome assemblies, which is color coded as shown below the Circos plot in panel B. Yellow regions indicate the locations of centromeres (CENP-A binding regions). Names of contigs harboring P. sojae centromeres are enclosed in circles. Blue and orange lines in track F link regions with synteny extending over 2 kb, with orange lines corresponding to inversions. CoLT clusters present in the P. citricola contigs are indicated by arrowheads. The flanking sequences of each CoLT cluster are syntenic with the regions surrounding the P. sojae centromere.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Genomic distribution of CoLT in the <italic>Phytophthora citricola</italic> genome.</title>\n<p>(A) Location of CoLT across all <italic>P</italic>. <italic>citricola</italic> contigs &gt;100 kb. (B-D) Circos plots comparing three <italic>P</italic>. <italic>citricola</italic> contigs that have CoLT clusters with the corresponding Psojae2019.1 contigs. In each panel, the outer track (bars) illustrates the contigs in the <italic>P</italic>. <italic>citricola</italic> or the Psojae2019.1 genome assemblies, which is color coded as shown below the Circos plot in panel B. Yellow regions indicate the locations of centromeres (CENP-A binding regions). Names of contigs harboring <italic>P</italic>. <italic>sojae</italic> centromeres are enclosed in circles. Blue and orange lines in track F link regions with synteny extending over 2 kb, with orange lines corresponding to inversions. CoLT clusters present in the <italic>P</italic>. <italic>citricola</italic> contigs are indicated by arrowheads. The flanking sequences of each CoLT cluster are syntenic with the regions surrounding the <italic>P</italic>. <italic>sojae</italic> centromere.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pgen.1008646.g009",
+      "label": "Fig 9",
+      "caption": "Diversity of centromere features within the Stramenopila-Alveolata-Rhizaria (SAR) supergroup.\nSimplified schematics (not to scale) showing the structures, epigenetic modifications, sizes and compositions of reported centromeres across the SAR lineages. Asterisk, epigenetic state was not examined in the diatom centromeric regions; however, several AT-rich DNA sequences can be employed for episome maintenance, suggesting diatom centromere might not be epigenetically dependent. The histone modification H3K27me3 was only tested in P. sojae. Phylogenetic tree was constructed using TimeTree [88]. Homo sapiens, Arabidopsis thaliana and Neurospora crassa were used as representatives of animals, plants and fungi for the phylogenetic analysis, and are used as outgroups illustrating the evolutionary status of the SAR supergroup.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Diversity of centromere features within the Stramenopila-Alveolata-Rhizaria (SAR) supergroup.</title>\n<p>Simplified schematics (not to scale) showing the structures, epigenetic modifications, sizes and compositions of reported centromeres across the SAR lineages. Asterisk, epigenetic state was not examined in the diatom centromeric regions; however, several AT-rich DNA sequences can be employed for episome maintenance, suggesting diatom centromere might not be epigenetically dependent. The histone modification H3K27me3 was only tested in <italic>P</italic>. <italic>sojae</italic>. Phylogenetic tree was constructed using TimeTree [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref088\">88</xref>]. <italic>Homo sapiens</italic>, <italic>Arabidopsis thaliana</italic> and <italic>Neurospora crassa</italic> were used as representatives of animals, plants and fungi for the phylogenetic analysis, and are used as outgroups illustrating the evolutionary status of the SAR supergroup.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g009\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g009",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

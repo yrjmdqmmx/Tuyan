@@ -10,13 +10,14 @@ const registry = {
   registryVersion: 'featured-test-v1',
   routeContractVersion: 1,
   supportsModelRoutes: true,
+  figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,
   providers: {
     bailian: {
       accessKind: 'aggregator', routeContractVersion: 1, accountCatalogRequired: false,
       defaults: { main: 'main', image: 'image', vision: 'vision' },
       models: [
         { id: 'main', label: '主模型 Alpha', vendor: 'Qwen', roles: ['main'], selectable: true, lifecycle: 'stable', capabilities: {} },
-        { id: 'vision', label: '识图模型 Beta', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'vision', label: '识图模型 Beta', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {referenceImages: true} },
         { id: 'image', label: '图像模型 Gamma', vendor: 'Wan', roles: ['image'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K'], refineResolutions: ['2K'], aspectRatios: ['1:1', '3:2', '16:9', '4:1'], refineAspectRatios: ['1:1', '2:3', '16:9'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -24,7 +25,7 @@ const registry = {
       accessKind: 'direct', routeContractVersion: 1, accountCatalogRequired: false,
       defaults: { main: 'openai-main', image: 'openai-image', vision: 'openai-main' },
       models: [
-        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: {} },
+        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: {referenceImages: true} },
         { id: 'openai-image', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K', '2K'], refineResolutions: ['2K'], aspectRatios: ['1:1', '16:9'], refineAspectRatios: ['1:1'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },

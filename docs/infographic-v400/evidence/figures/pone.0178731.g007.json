@@ -1,0 +1,53 @@
+{
+  "id": "pone.0178731.g007",
+  "paper": "pone.0178731",
+  "figure": {
+    "id": "pone.0178731.g007",
+    "label": "Fig 7",
+    "caption": "Roadmap for implementing the conceptual framework.\nThe roadmap is organized into three levels: Usage (to bring the conceptual framework closer to the reality of different stakeholders, by presenting it with different abstractions depending the audience), Formalization (to continue the progress of this work, going deeper on the formalization and extending the current version of the conceptual framework) and System/Data Interoperability (to enable the interoperability of DQ related systems and data).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Roadmap for implementing the conceptual framework.</title>\n<p>The roadmap is organized into three levels: Usage (to bring the conceptual framework closer to the reality of different stakeholders, by presenting it with different abstractions depending the audience), Formalization (to continue the progress of this work, going deeper on the formalization and extending the current version of the conceptual framework) and System/Data Interoperability (to enable the interoperability of DQ related systems and data).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0178731",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0178731",
+    "title": "A conceptual framework for quality assessment and management of biodiversity data",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Allan Koch Veiga",
+      "Antonio Mauro Saraiva",
+      "Arthur David Chapman",
+      "Paul John Morris",
+      "Christian Gendreau",
+      "Dmitry Schigel",
+      "Tim James Robertson"
+    ],
+    "year": "2017",
+    "license": "2017\nVeiga et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0178731.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0178731.g007.png",
+      "bytes": 1150840,
+      "sha256": "d94ff1eceb1dce5bb517691d6b7d7d6f369ecb6a164404b99c67acf9c208248d"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0178731.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0178731.g007.tif",
+      "bytes": 1319416,
+      "sha256": "68e3658f81062162ea2f6770e0d4fc76e15fd7e2dc1fa8f44ba66db7e866e8eb"
+    }
+  }
+}

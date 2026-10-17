@@ -1,0 +1,119 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": {
+    "stage": "planning",
+    "stageLabel": "图示规划",
+    "category": "provider",
+    "code": "MODEL_PROVIDER",
+    "reason": "模型渠道返回异常或未提供完整结果。",
+    "suggestion": "请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+    "requestState": "unknown",
+    "billingStatus": "unknown",
+    "billingMessage": "请求结果及费用尚未确认，自动重试已停止；请核对渠道账单。",
+    "message": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  },
+  "referenceSelection": {
+    "proposedCount": 0,
+    "selectedCount": 0,
+    "skippedCount": 0,
+    "imageCount": 0,
+    "mode": "text",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "failed",
+      "error": "SVG_REVIEW_UNSAFE: unsupported SVG element filter"
+    }
+  ],
+  "id": "1791598573896-n48ocwzx",
+  "status": "failed",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "retrievedReferenceIds": [],
+  "retrievedReferences": [],
+  "stages": [
+    {
+      "id": "stage-6e7ae5d5-8df0-4fbf-a70b-152b305c95a7",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "好的，根据你的要求，以下是目标图表的详细描述。\n\n***\n\n**总体布局与风格**\n*   **方向**：从左到右的严格线性流程。\n*   **背景**：纯白色背景（#FFFFFF）。\n*   **流程连接**：步骤之间使用深灰色（#4A4A4A）、线宽为3像素的粗箭头相连，表示流向。\n*   **整体风格**：扁平化设计，带有细小的阴影以增加深度感。所有文本使用清晰的无衬线字体（如Arial或思源黑体）。\n\n**具体元素描述**\n\n1.  **第一步：样品输入**\n    *   **位置**：画布左侧。\n    *   **图形**：一个浅蓝色（#E1F5FE）的圆角矩形框，边框为同色系但更深的蓝色（#0288D1），线宽2像素。框的尺寸约为宽180像素，高100像素。\n    *   **内部文本**：\n        *   第一行：中文文本“样品输入”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“n=12”，深灰色（#616161），斜体，字号16像素，居中对齐。文本“n=12”必须整体使用斜体数学样式。\n\n2.  **第一步到第二步的箭头**\n    *   从第一个圆角矩形框的右边缘中心点出发，指向第二个框的左边缘中心点。\n    *   箭头为实心三角形箭头，颜色为#4A4A4A。\n\n3.  **第二步：数据标准化**\n    *   **位置**：画布中央。\n    *   **图形**：一个浅绿色（#E8F5E9）的圆角矩形框，边框为同色系更深的绿色（#388E3C），线宽2像素。框的尺寸与第一个保持一致（宽180像素，高100像素）。\n    *   **内部文本**：\n        *   第一行：中文文本“数据标准化”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“x / x₀”，深灰色（#616161），斜体，字号16像素，居中对齐。确保下标“₀”清晰准确。\n\n4.  **第二步到第三步的箭头**\n    *   从第二个圆角矩形框的右边缘中心点出发，指向第三个框的左边缘中心点。\n    *   箭头为实心三角形箭头，颜色为#4A4A4A。\n\n5.  **第三步：结果输出**\n    *   **位置**：画布右侧。\n    *   **图形**：一个浅紫色（#F3E5F5）的圆角矩形框，边框为同色系更深的紫色（#7B1FA2），线宽2像素。框的尺寸保持一致（宽180像素，高100像素）。\n    *   **内部文本**：\n        *   第一行：中文文本“结果输出”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“均值 1.0”，深灰色（#616161），字号16像素，居中对齐。“均值”为中文常规字体，“1.0”为斜体数字。\n\n6.  **右上角标识**\n    *   **前提**：由于未提供参考图，我将根据通用方法类图表的惯例，放置一个简短的、不显眼的类别标识。\n    *   **位置**：画布右上角边缘。\n    *   **样式**：一个小的圆角矩形标签，背景色为浅灰色（#EEEEEE），无边框。\n    *   **文本**：中文文本“方法概览”，字号12像素，颜色为#757575，位于标签中央。文本与边距紧密。如果此前有明确指定的参考图标识，则用它原样替换。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:16:13.898Z",
+      "completedAt": "2026-10-10T02:16:29.552Z",
+      "durationMs": 15654,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [],
+  "logs": [
+    "ERROR: 图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。"
+  ],
+  "error": "图示规划失败：模型渠道返回异常或未提供完整结果。 请核对渠道状态和调用记录，再决定是否恢复；不要盲目重复提交。",
+  "createdAt": "2026-10-10T02:16:13.896Z",
+  "updatedAt": "2026-10-10T02:16:49.006Z",
+  "startedAt": "2026-10-10T02:16:13.897Z",
+  "completedAt": "2026-10-10T02:16:49.006Z"
+}

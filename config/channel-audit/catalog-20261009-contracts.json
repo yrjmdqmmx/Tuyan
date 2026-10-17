@@ -1,0 +1,1989 @@
+{
+  "openai/gpt-6.1-sol": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "textProtocol": "openai-responses",
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "checkedAt": "2026-10-09",
+    "generateInputPolicy": false,
+    "refreshAccounting": true,
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "anthropic/claude-sonnet-5-5": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "textProtocol": "anthropic-messages",
+    "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+    "checkedAt": "2026-10-09",
+    "generateInputPolicy": false,
+    "refreshAccounting": true,
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "anthropic/claude-haiku-5-5": {
+    "provider": "anthropic",
+    "model": "claude-haiku-5-5",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "textProtocol": "anthropic-messages",
+    "source": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+    "checkedAt": "2026-10-09",
+    "generateInputPolicy": false,
+    "refreshAccounting": true,
+    "realInference": false,
+    "accountEntitlement": false,
+    "billingVerified": false
+  },
+  "ideogram/ideogram-4-5": {
+    "provider": "ideogram",
+    "model": "ideogram-4-5",
+    "roles": [
+      "image"
+    ],
+    "maxImages": 1,
+    "productImageCap": 1,
+    "source": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5",
+    "checkedAt": "2026-10-09",
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "x-constraints": [
+        {
+          "scope": "each",
+          "operation": "ratio",
+          "minimum": 0.16666666666666666,
+          "maximum": 6
+        },
+        {
+          "scope": "each",
+          "operation": "fileSize",
+          "maximum": 25000000
+        }
+      ]
+    },
+    "realInference": false
+  },
+  "sensenova/deepseek-flash": {
+    "provider": "sensenova",
+    "model": "deepseek-flash",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "maxImages": 3,
+    "minImages": 0,
+    "providerMaxImages": 200,
+    "productImageCap": 3,
+    "source": "https://platform.sensenova.cn/docs",
+    "checkedAt": "2026-10-09",
+    "textEndpoint": "https://token.sensenova.cn/v1/chat/completions",
+    "textProtocol": "openai-chat",
+    "systemMode": "system",
+    "request": {
+      "stream": false,
+      "max_tokens": 8192
+    },
+    "schema": {
+      "type": "object",
+      "required": [
+        "model",
+        "messages"
+      ],
+      "properties": {
+        "model": {
+          "const": "deepseek-flash"
+        }
+      }
+    },
+    "realInference": false
+  },
+  "replicate/google/nano-banana-2.1": {
+    "provider": "replicate",
+    "model": "google/nano-banana-2.1",
+    "roles": [
+      "image"
+    ],
+    "source": "https://replicate.com/google/nano-banana-2.1/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "A text description of the image you want to generate"
+        },
+        "resolution": {
+          "enum": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "type": "string",
+          "title": "resolution",
+          "description": "Resolution of the generated image. Higher resolutions take longer to generate.",
+          "default": "1K",
+          "x-order": 3
+        },
+        "image_input": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Image Input",
+          "default": [],
+          "x-order": 1,
+          "description": "Input images to transform or use as reference (supports up to 14 images)"
+        },
+        "aspect_ratio": {
+          "enum": [
+            "match_input_image",
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ],
+          "type": "string",
+          "title": "aspect_ratio",
+          "description": "Aspect ratio of the generated image",
+          "default": "match_input_image",
+          "x-order": 2
+        },
+        "image_search": {
+          "type": "boolean",
+          "title": "Image Search",
+          "default": false,
+          "x-order": 5,
+          "description": "Use Google Image Search grounding to find web images as visual context for generation. When enabled, web search is also used automatically."
+        },
+        "google_search": {
+          "type": "boolean",
+          "title": "Google Search",
+          "default": false,
+          "x-order": 4,
+          "description": "Use Google Web Search grounding to generate images based on real-time information (e.g. weather, sports scores, recent events)."
+        },
+        "output_format": {
+          "enum": [
+            "jpg",
+            "png"
+          ],
+          "type": "string",
+          "title": "output_format",
+          "description": "Format of the output image",
+          "default": "jpg",
+          "x-order": 6
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/black-forest-labs/flux-3-image": {
+    "provider": "replicate",
+    "model": "black-forest-labs/flux-3-image",
+    "roles": [
+      "image"
+    ],
+    "source": "https://replicate.com/black-forest-labs/flux-3-image/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Images",
+          "default": [],
+          "x-order": 1,
+          "description": "Up to 10 reference images the prompt edits or draws from. When present, the request runs as an edit and the first image drives 'auto' aspect ratio. Each image must be at least 256x256 px and at most 16 MP. Must be jpeg, png, gif, or webp."
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "Text description of the image to generate, or of the edit to apply to the reference images."
+        },
+        "grounding": {
+          "type": "boolean",
+          "title": "Grounding",
+          "default": true,
+          "x-order": 4,
+          "description": "Let the model research the prompt with web search and image search before generating."
+        },
+        "resolution": {
+          "enum": [
+            "768sq",
+            "1k",
+            "1.5k",
+            "2k",
+            "4k"
+          ],
+          "type": "string",
+          "title": "resolution",
+          "description": "Resolution of the output image. Input images are resized to the closest bin, up to 2k.",
+          "default": "1k",
+          "x-order": 3
+        },
+        "aspect_ratio": {
+          "enum": [
+            "auto",
+            "21:9",
+            "2:1",
+            "16:9",
+            "3:2",
+            "7:5",
+            "4:3",
+            "5:4",
+            "1:1",
+            "4:5",
+            "3:4",
+            "5:7",
+            "2:3",
+            "9:16",
+            "1:2",
+            "9:21"
+          ],
+          "type": "string",
+          "title": "aspect_ratio",
+          "description": "Aspect ratio of the generated image. 'auto' picks the ratio from the prompt and the first reference image.",
+          "default": "auto",
+          "x-order": 2
+        },
+        "output_format": {
+          "enum": [
+            "webp",
+            "jpg",
+            "png"
+          ],
+          "type": "string",
+          "title": "output_format",
+          "description": "Format of the output images.",
+          "default": "webp",
+          "x-order": 6
+        },
+        "output_quality": {
+          "type": "integer",
+          "title": "Output Quality",
+          "default": 80,
+          "maximum": 100,
+          "minimum": 0,
+          "x-order": 7,
+          "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
+        },
+        "safety_tolerance": {
+          "type": "integer",
+          "title": "Safety Tolerance",
+          "default": 2,
+          "maximum": 4,
+          "minimum": 0,
+          "x-order": 5,
+          "description": "Moderation tolerance for inputs and outputs. 0 is the strictest, 4 is the most permissive."
+        }
+      },
+      "additionalProperties": false,
+      "x-constraints": [
+        {
+          "scope": "each",
+          "operation": "width",
+          "minimum": 256
+        },
+        {
+          "scope": "each",
+          "operation": "height",
+          "minimum": 256
+        },
+        {
+          "scope": "each",
+          "operation": "area",
+          "maximum": 16000000
+        }
+      ]
+    },
+    "realInference": false
+  },
+  "replicate/ideogram-ai/ideogram-4-5": {
+    "provider": "replicate",
+    "model": "ideogram-ai/ideogram-4-5",
+    "roles": [
+      "image"
+    ],
+    "source": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "mask": {
+          "type": "string",
+          "title": "Mask",
+          "format": "uri",
+          "x-order": 2,
+          "nullable": true,
+          "description": "Optional black and white mask for editing. Black pixels are edited, white pixels are preserved. Only used when at least one source image is provided. When a mask is used, the output matches the source size and the size input is ignored."
+        },
+        "seed": {
+          "type": "integer",
+          "title": "Seed",
+          "maximum": 2147483647,
+          "x-order": 6,
+          "nullable": true,
+          "description": "Random seed. Set for reproducible generation."
+        },
+        "size": {
+          "enum": [
+            "source",
+            "1024x1024",
+            "1280x896",
+            "896x1280",
+            "1344x768",
+            "768x1344",
+            "1536x640",
+            "640x1536"
+          ],
+          "type": "string",
+          "title": "size",
+          "description": "Output size. 'source' preserves the source image proportions. Ignored when a mask is provided.",
+          "default": "source",
+          "x-order": 3
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Images",
+          "x-order": 1,
+          "nullable": true,
+          "description": "Up to 5 source images to edit. Omit for text-to-image generation. When a mask is provided, the first image is edited and the rest are used as references."
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "Text prompt. Describe the image to generate, or the edit to apply to the source images."
+        },
+        "quality": {
+          "enum": [
+            "very_low",
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string",
+          "title": "quality",
+          "description": "Edit quality. Higher quality is slower and more expensive.",
+          "default": "medium",
+          "x-order": 4
+        },
+        "num_images": {
+          "type": "integer",
+          "title": "Num Images",
+          "default": 1,
+          "maximum": 8,
+          "minimum": 1,
+          "x-order": 5,
+          "description": "Number of images to generate."
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/ideogram-ai/ideogram-4-5-precise-edit": {
+    "provider": "replicate",
+    "model": "ideogram-ai/ideogram-4-5-precise-edit",
+    "roles": [
+      "image"
+    ],
+    "source": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": false,
+    "editing": true,
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt",
+        "image"
+      ],
+      "properties": {
+        "mask": {
+          "type": "string",
+          "title": "Mask",
+          "format": "uri",
+          "x-order": 2,
+          "nullable": true,
+          "description": "Optional black and white mask matching the source dimensions. Black pixels are edited, white pixels are preserved."
+        },
+        "seed": {
+          "type": "integer",
+          "title": "Seed",
+          "maximum": 2147483647,
+          "x-order": 6,
+          "nullable": true,
+          "description": "Random seed. Set for reproducible generation."
+        },
+        "image": {
+          "type": "string",
+          "title": "Image",
+          "format": "uri",
+          "x-order": 1,
+          "description": "The source image to edit."
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "Text prompt describing the edit to apply."
+        },
+        "quality": {
+          "enum": [
+            "very_low",
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string",
+          "title": "quality",
+          "description": "Edit quality. Higher quality is slower and more expensive.",
+          "default": "medium",
+          "x-order": 4
+        },
+        "num_images": {
+          "type": "integer",
+          "title": "Num Images",
+          "default": 1,
+          "maximum": 8,
+          "minimum": 1,
+          "x-order": 5,
+          "description": "Number of images to generate."
+        },
+        "reference_images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Reference Images",
+          "x-order": 3,
+          "nullable": true,
+          "description": "Up to 4 reference images to guide the edit (3 when a mask is provided)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/alibaba/wan-3": {
+    "roles": [],
+    "source": "https://replicate.com/alibaba/wan-3/api/schema",
+    "checkedAt": "2026-10-09",
+    "schema": false,
+    "generateInputPolicy": false,
+    "realInference": false
+  },
+  "fal/blackforestlabs/flux-3/text-to-image": {
+    "provider": "fal",
+    "model": "blackforestlabs/flux-3/text-to-image",
+    "roles": [
+      "image"
+    ],
+    "source": "https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "anyOf": [
+        {
+          "properties": {
+            "enable_prompt_expansion": {
+              "default": false,
+              "title": "Enable Prompt Expansion",
+              "type": "boolean",
+              "description": "Expand the prompt while preserving its intent and reference roles."
+            },
+            "prompt": {
+              "title": "Prompt",
+              "type": "string",
+              "examples": [
+                "A red fox leaping over a stream in a pine forest, low-angle wildlife photograph."
+              ],
+              "description": "The prompt to generate an image from."
+            },
+            "aspect_ratio": {
+              "default": "auto",
+              "title": "Aspect Ratio",
+              "type": "string",
+              "enum": [
+                "auto",
+                "21:9",
+                "2:1",
+                "16:9",
+                "3:2",
+                "7:5",
+                "4:3",
+                "5:4",
+                "1:1",
+                "4:5",
+                "3:4",
+                "5:7",
+                "2:3",
+                "9:16",
+                "1:2"
+              ],
+              "description": "Output aspect ratio. Auto uses the first reference image when editing."
+            },
+            "version": {
+              "default": "latest",
+              "title": "Version",
+              "type": "string",
+              "description": "The model version.",
+              "const": "latest"
+            },
+            "output_format": {
+              "default": "jpeg",
+              "title": "Output Format",
+              "type": "string",
+              "enum": [
+                "jpeg",
+                "png"
+              ],
+              "description": "The format of the generated image."
+            },
+            "sync_mode": {
+              "default": false,
+              "title": "Sync Mode",
+              "type": "boolean",
+              "description": "Return the image as a data URI instead of storing it in request history."
+            },
+            "resolution": {
+              "default": "1k",
+              "title": "Resolution",
+              "type": "string",
+              "enum": [
+                "512sq",
+                "768sq",
+                "1k",
+                "2k",
+                "4k"
+              ],
+              "description": "Output resolution tier. 4k can take several minutes."
+            },
+            "safety_tolerance": {
+              "default": 2,
+              "title": "Safety Tolerance",
+              "type": "integer",
+              "description": "Safety tolerance, from 0 (strictest) to 4.",
+              "minimum": 0,
+              "maximum": 4
+            }
+          },
+          "title": "Flux3ImageInput",
+          "x-fal-order-properties": [
+            "prompt",
+            "aspect_ratio",
+            "resolution",
+            "enable_prompt_expansion",
+            "safety_tolerance",
+            "output_format",
+            "sync_mode",
+            "version"
+          ],
+          "type": "object",
+          "required": [
+            "prompt"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "properties": {
+            "enable_prompt_expansion": {
+              "default": false,
+              "title": "Enable Prompt Expansion",
+              "type": "boolean",
+              "description": "Expand the prompt while preserving its intent and reference roles."
+            },
+            "prompt": {
+              "title": "Prompt",
+              "type": "string",
+              "examples": [
+                "A red fox leaping over a stream in a pine forest, low-angle wildlife photograph."
+              ],
+              "description": "The prompt to generate an image from."
+            },
+            "image_urls": {
+              "minItems": 1,
+              "title": "Image Urls",
+              "type": "array",
+              "maxItems": 10,
+              "examples": [
+                [
+                  "https://storage.googleapis.com/falserverless/example_inputs/flux2_pro_edit_input.png"
+                ]
+              ],
+              "description": "Reference image URLs or data URIs, in image 1 through image 10 order. Each must be at least 256 pixels per dimension. Oversized images are automatically downscaled to at most 4 megapixels while preserving aspect ratio. The first controls auto aspect ratio.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "aspect_ratio": {
+              "default": "auto",
+              "title": "Aspect Ratio",
+              "type": "string",
+              "enum": [
+                "auto",
+                "21:9",
+                "2:1",
+                "16:9",
+                "3:2",
+                "7:5",
+                "4:3",
+                "5:4",
+                "1:1",
+                "4:5",
+                "3:4",
+                "5:7",
+                "2:3",
+                "9:16",
+                "1:2"
+              ],
+              "description": "Output aspect ratio. Auto uses the first reference image when editing."
+            },
+            "version": {
+              "default": "latest",
+              "title": "Version",
+              "type": "string",
+              "description": "The model version.",
+              "const": "latest"
+            },
+            "output_format": {
+              "default": "jpeg",
+              "title": "Output Format",
+              "type": "string",
+              "enum": [
+                "jpeg",
+                "png"
+              ],
+              "description": "The format of the generated image."
+            },
+            "sync_mode": {
+              "default": false,
+              "title": "Sync Mode",
+              "type": "boolean",
+              "description": "Return the image as a data URI instead of storing it in request history."
+            },
+            "resolution": {
+              "default": "1k",
+              "title": "Resolution",
+              "type": "string",
+              "enum": [
+                "512sq",
+                "768sq",
+                "1k",
+                "2k",
+                "4k"
+              ],
+              "description": "Output resolution tier. 4k can take several minutes."
+            },
+            "safety_tolerance": {
+              "default": 2,
+              "title": "Safety Tolerance",
+              "type": "integer",
+              "description": "Safety tolerance, from 0 (strictest) to 4.",
+              "minimum": 0,
+              "maximum": 4
+            }
+          },
+          "title": "Flux3ImageEditInput",
+          "x-fal-order-properties": [
+            "prompt",
+            "image_urls",
+            "aspect_ratio",
+            "resolution",
+            "enable_prompt_expansion",
+            "safety_tolerance",
+            "output_format",
+            "sync_mode",
+            "version"
+          ],
+          "type": "object",
+          "required": [
+            "prompt",
+            "image_urls"
+          ],
+          "additionalProperties": false
+        }
+      ],
+      "x-constraints": [
+        {
+          "scope": "each",
+          "operation": "width",
+          "minimum": 256
+        },
+        {
+          "scope": "each",
+          "operation": "height",
+          "minimum": 256
+        }
+      ]
+    },
+    "realInference": false
+  },
+  "fal/ideogram/v4.5": {
+    "provider": "fal",
+    "model": "ideogram/v4.5",
+    "roles": [
+      "image"
+    ],
+    "source": "https://fal.ai/models/ideogram/v4.5/api",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "anyOf": [
+        {
+          "properties": {
+            "seed": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seed",
+              "description": "Random seed. Omit to choose automatically."
+            },
+            "sync_mode": {
+              "default": false,
+              "description": "Return image data directly in the response.",
+              "title": "Sync Mode",
+              "type": "boolean"
+            },
+            "num_images": {
+              "minimum": 1,
+              "default": 1,
+              "description": "Number of images to generate.",
+              "maximum": 8,
+              "type": "integer",
+              "title": "Number of Images"
+            },
+            "enable_prompt_expansion": {
+              "default": true,
+              "description": "Enable partner prompt expansion.",
+              "title": "Enable Prompt Expansion",
+              "type": "boolean"
+            },
+            "quality": {
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ],
+              "default": "medium",
+              "description": "Text-to-image quality.",
+              "title": "Quality",
+              "type": "string"
+            },
+            "prompt": {
+              "examples": [
+                "A colorful storefront with a sign reading hello"
+              ],
+              "type": "string",
+              "title": "Prompt",
+              "description": "The generation or editing prompt.",
+              "maxLength": 10000,
+              "minLength": 1
+            },
+            "image_size": {
+              "default": "square_hd",
+              "anyOf": [
+                {
+                  "properties": {
+                    "width": {
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The width of the generated image.",
+                      "maximum": 14142,
+                      "type": "integer",
+                      "title": "Width"
+                    },
+                    "height": {
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The height of the generated image.",
+                      "maximum": 14142,
+                      "type": "integer",
+                      "title": "Height"
+                    }
+                  },
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ],
+                  "title": "ImageSize",
+                  "type": "object"
+                },
+                {
+                  "enum": [
+                    "square_hd",
+                    "square",
+                    "portrait_4_3",
+                    "portrait_16_9",
+                    "landscape_4_3",
+                    "landscape_16_9"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "description": "Output size. square is promoted to square_hd (1024x1024). 4:3 presets use 1152x864 or 864x1152; 16:9 presets use 1280x720 or 720x1280. Explicit dimensions must match a supported size: 1024x1024, 1024x3072, 1120x896, 1152x2944, 1152x864, 1248x3328, 1248x832, 1280x3072, 1280x720, 1280x800, 1296x3168, 1440x2560, 1440x2880, 1440x720, 1600x2560, 1664x2496, 1728x2304, 1792x2240, 2048x2048, 2240x1792, 2304x1728, 2496x1664, 2560x1440, 2560x1600, 2880x1440, 2944x1152, 3072x1024, 3072x1280, 3168x1296, 3328x1248, 720x1280, 720x1440, 800x1280, 832x1248, 864x1152, 896x1120",
+              "title": "Image Size"
+            }
+          },
+          "x-fal-order-properties": [
+            "prompt",
+            "image_size",
+            "quality",
+            "enable_prompt_expansion",
+            "num_images",
+            "seed",
+            "sync_mode"
+          ],
+          "title": "GenerateInputV45",
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "prompt"
+          ]
+        },
+        {
+          "properties": {
+            "image_size": {
+              "default": "auto",
+              "anyOf": [
+                {
+                  "properties": {
+                    "width": {
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The width of the generated image.",
+                      "maximum": 14142,
+                      "type": "integer",
+                      "title": "Width"
+                    },
+                    "height": {
+                      "default": 512,
+                      "exclusiveMinimum": 0,
+                      "description": "The height of the generated image.",
+                      "maximum": 14142,
+                      "type": "integer",
+                      "title": "Height"
+                    }
+                  },
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ],
+                  "title": "ImageSize",
+                  "type": "object"
+                },
+                {
+                  "enum": [
+                    "auto",
+                    "square",
+                    "square_hd",
+                    "portrait_4_3",
+                    "landscape_4_3",
+                    "portrait_16_9",
+                    "landscape_16_9"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "description": "auto preserves source geometry, downscaled by the provider if needed. Only unmasked regular edits accept named presets or custom sizes: dimensions >=256, multiples of 32, area <=4194304, ratio <=6:1. Named presets use standard fal dimensions.",
+              "title": "Image Size"
+            },
+            "seed": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Seed",
+              "description": "Random seed. Omit to choose automatically."
+            },
+            "mask_url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Mask URL",
+              "description": "Mask matching the source dimensions. Black edits, white preserves. Must contain both regions after rounding."
+            },
+            "reference_image_urls": {
+              "description": "Up to four references plus the primary source, or three references plus the primary source and mask.",
+              "title": "Reference Image URLs",
+              "maxItems": 4,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "edit_precision": {
+              "enum": [
+                "regular",
+                "high"
+              ],
+              "default": "regular",
+              "description": "regular uses Generate; high uses Precise Edit with unchanged-pixel restoration. Both always prepare structured edit instructions.",
+              "title": "Edit Precision",
+              "type": "string"
+            },
+            "num_images": {
+              "minimum": 1,
+              "default": 1,
+              "description": "Number of images to generate.",
+              "maximum": 8,
+              "type": "integer",
+              "title": "Number of Images"
+            },
+            "image_url": {
+              "title": "Image URL",
+              "description": "Primary source image to edit.",
+              "type": "string"
+            },
+            "quality": {
+              "enum": [
+                "very_low",
+                "low",
+                "medium",
+                "high"
+              ],
+              "default": "medium",
+              "description": "Quality tier for either edit precision. Defaults to medium.",
+              "title": "Quality",
+              "type": "string"
+            },
+            "prompt": {
+              "examples": [
+                "A colorful storefront with a sign reading hello"
+              ],
+              "type": "string",
+              "title": "Prompt",
+              "description": "The generation or editing prompt.",
+              "maxLength": 10000,
+              "minLength": 1
+            },
+            "sync_mode": {
+              "default": false,
+              "description": "Return image data directly in the response.",
+              "title": "Sync Mode",
+              "type": "boolean"
+            }
+          },
+          "x-fal-order-properties": [
+            "prompt",
+            "image_url",
+            "reference_image_urls",
+            "mask_url",
+            "edit_precision",
+            "quality",
+            "image_size",
+            "num_images",
+            "seed",
+            "sync_mode"
+          ],
+          "title": "EditInputV45",
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "prompt",
+            "image_url"
+          ]
+        }
+      ]
+    },
+    "realInference": false
+  },
+  "fal/bytedance/seedream/v5/flash/text-to-image": {
+    "provider": "fal",
+    "model": "bytedance/seedream/v5/flash/text-to-image",
+    "roles": [
+      "image"
+    ],
+    "source": "https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api",
+    "checkedAt": "2026-10-09",
+    "maxImages": 1,
+    "productImageCap": 1,
+    "generation": true,
+    "editing": true,
+    "schema": {
+      "anyOf": [
+        {
+          "x-fal-order-properties": [
+            "prompt",
+            "image_size",
+            "num_images",
+            "output_format",
+            "sync_mode",
+            "enable_safety_checker"
+          ],
+          "properties": {
+            "enable_safety_checker": {
+              "description": "If set to true, the safety checker will be enabled. Disabling it requires account authorization; unauthorized requests are always checked.",
+              "default": true,
+              "examples": [
+                true
+              ],
+              "title": "Enable Safety Checker",
+              "type": "boolean"
+            },
+            "prompt": {
+              "description": "The text prompt used to generate the image.",
+              "examples": [
+                "Vibrant editorial of a model in contemporary fashion fused with West African textile patterns and beadwork, Campbell Addy bold aesthetic, saturated palette, dramatic studio lighting, celebratory cultural richness, striking contemporary portraiture"
+              ],
+              "title": "Prompt",
+              "type": "string"
+            },
+            "num_images": {
+              "minimum": 1,
+              "description": "Number of separate model generations to run with the prompt.",
+              "default": 1,
+              "maximum": 6,
+              "title": "Num Images",
+              "type": "integer"
+            },
+            "image_size": {
+              "anyOf": [
+                {
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ],
+                  "properties": {
+                    "width": {
+                      "description": "The width of the generated image.",
+                      "exclusiveMinimum": 0,
+                      "default": 512,
+                      "maximum": 14142,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "description": "The height of the generated image.",
+                      "exclusiveMinimum": 0,
+                      "default": 512,
+                      "maximum": 14142,
+                      "title": "Height",
+                      "type": "integer"
+                    }
+                  },
+                  "title": "ImageSize",
+                  "type": "object"
+                },
+                {
+                  "enum": [
+                    "square_hd",
+                    "square",
+                    "portrait_4_3",
+                    "portrait_16_9",
+                    "landscape_4_3",
+                    "landscape_16_9",
+                    "auto_1K",
+                    "auto_2K"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "description": "The size of the generated image. Total pixels must be between 1024x1024 and 2048x2048, with aspect ratio between 1/16 and 16.",
+              "x-fal": {
+                "min_area": 1048576,
+                "max_area": 4194304,
+                "min_aspect_ratio": 0.0625,
+                "max_aspect_ratio": 16
+              },
+              "default": "auto_2K",
+              "examples": [
+                "auto_2K"
+              ],
+              "title": "Image Size"
+            },
+            "sync_mode": {
+              "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+              "default": false,
+              "title": "Sync Mode",
+              "type": "boolean"
+            },
+            "output_format": {
+              "description": "The file format of the generated image.",
+              "default": "jpeg",
+              "examples": [
+                "jpeg"
+              ],
+              "title": "Output Format",
+              "enum": [
+                "jpeg",
+                "png"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt"
+          ],
+          "title": "SeedDream50FlashT2IInput",
+          "type": "object",
+          "additionalProperties": false
+        },
+        {
+          "x-fal-order-properties": [
+            "prompt",
+            "image_size",
+            "num_images",
+            "output_format",
+            "sync_mode",
+            "enable_safety_checker",
+            "image_urls"
+          ],
+          "properties": {
+            "enable_safety_checker": {
+              "description": "If set to true, the safety checker will be enabled. Disabling it requires account authorization; unauthorized requests are always checked.",
+              "default": true,
+              "examples": [
+                true
+              ],
+              "title": "Enable Safety Checker",
+              "type": "boolean"
+            },
+            "prompt": {
+              "description": "The text prompt used to edit the image.",
+              "examples": [
+                "Replace the product in Figure 1 with that in Figure 2. Seamlessly render the logo in Figure 3 into the product design, in a frosted glass texture."
+              ],
+              "title": "Prompt",
+              "type": "string"
+            },
+            "num_images": {
+              "minimum": 1,
+              "description": "Number of separate model generations to run with the prompt.",
+              "default": 1,
+              "maximum": 6,
+              "title": "Num Images",
+              "type": "integer"
+            },
+            "image_size": {
+              "anyOf": [
+                {
+                  "x-fal-order-properties": [
+                    "width",
+                    "height"
+                  ],
+                  "properties": {
+                    "width": {
+                      "description": "The width of the generated image.",
+                      "exclusiveMinimum": 0,
+                      "default": 512,
+                      "maximum": 14142,
+                      "title": "Width",
+                      "type": "integer"
+                    },
+                    "height": {
+                      "description": "The height of the generated image.",
+                      "exclusiveMinimum": 0,
+                      "default": 512,
+                      "maximum": 14142,
+                      "title": "Height",
+                      "type": "integer"
+                    }
+                  },
+                  "title": "ImageSize",
+                  "type": "object"
+                },
+                {
+                  "enum": [
+                    "square_hd",
+                    "square",
+                    "portrait_4_3",
+                    "portrait_16_9",
+                    "landscape_4_3",
+                    "landscape_16_9",
+                    "auto_1K",
+                    "auto_2K"
+                  ],
+                  "type": "string"
+                }
+              ],
+              "description": "The size of the generated image. Total pixels must be between 1024x1024 and 2048x2048, with aspect ratio between 1/16 and 16.",
+              "x-fal": {
+                "min_area": 1048576,
+                "max_area": 4194304,
+                "min_aspect_ratio": 0.0625,
+                "max_aspect_ratio": 16
+              },
+              "default": "auto_2K",
+              "examples": [
+                "auto_2K"
+              ],
+              "title": "Image Size"
+            },
+            "sync_mode": {
+              "description": "If `True`, the media will be returned as a data URI and the output data won't be available in the request history.",
+              "default": false,
+              "title": "Sync Mode",
+              "type": "boolean"
+            },
+            "image_urls": {
+              "description": "List of URLs of input reference images. Up to 10 images are supported; if more are sent, only the last 10 are used.",
+              "examples": [
+                [
+                  "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_1.png",
+                  "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_2.png",
+                  "https://storage.googleapis.com/falserverless/example_inputs/seedreamv45/seedream_v45_edit_input_3.png"
+                ]
+              ],
+              "title": "Image URLs",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "output_format": {
+              "description": "The file format of the generated image.",
+              "default": "jpeg",
+              "examples": [
+                "jpeg"
+              ],
+              "title": "Output Format",
+              "enum": [
+                "jpeg",
+                "png"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt",
+            "image_urls"
+          ],
+          "title": "SeedDream50FlashEditInput",
+          "type": "object",
+          "additionalProperties": false
+        }
+      ]
+    },
+    "realInference": false
+  },
+  "replicate/google/gemini-3.5-flash": {
+    "provider": "replicate",
+    "model": "google/gemini-3.5-flash",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "source": "https://replicate.com/google/gemini-3.5-flash/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 3,
+    "productImageCap": 3,
+    "version": "570150b6a75f4814dca9dee143419cfe94f6df555acb7c10dd69fd14a5792523",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "audio": {
+          "type": "string",
+          "title": "Audio",
+          "format": "uri",
+          "x-order": 4,
+          "nullable": true,
+          "description": "Input audio to send with the prompt (max 1 audio file, up to 8.4 hours)"
+        },
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 0.95,
+          "maximum": 1,
+          "minimum": 0,
+          "x-order": 8,
+          "description": "Nucleus sampling parameter - the model considers the results of the tokens with top_p probability mass"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Images",
+          "default": [],
+          "x-order": 1,
+          "description": "Input images to send with the prompt (max 10 images, each up to 7MB)"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "The text prompt to send to the model"
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Videos",
+          "default": [],
+          "x-order": 2,
+          "description": "Input videos to send with the prompt (max 10 videos, each up to 45 minutes)"
+        },
+        "video_fps": {
+          "type": "number",
+          "title": "Video Fps",
+          "maximum": 60,
+          "minimum": 0.1,
+          "x-order": 3,
+          "nullable": true,
+          "description": "Frame rate (frames per second) at which to sample input videos. Higher values give the model more frames to reason over (useful for fast-moving footage) but consume more tokens. Omit to use the default sampling rate (1 fps)."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 1,
+          "maximum": 2,
+          "minimum": 0,
+          "x-order": 7,
+          "description": "Sampling temperature between 0 and 2"
+        },
+        "thinking_level": {
+          "enum": [
+            "none",
+            "low",
+            "high"
+          ],
+          "type": "string",
+          "title": "thinking_level",
+          "description": "Thinking level for reasoning (low or high). Replaces thinking_budget for Gemini 3 models.",
+          "default": "none",
+          "x-order": 6,
+          "nullable": true
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "title": "Max Output Tokens",
+          "default": 65535,
+          "maximum": 65535,
+          "minimum": 1,
+          "x-order": 9,
+          "description": "Maximum number of tokens to generate"
+        },
+        "system_instruction": {
+          "type": "string",
+          "title": "System Instruction",
+          "x-order": 5,
+          "nullable": true,
+          "description": "System instruction to guide the model's behavior"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/google/gemini-3-flash": {
+    "provider": "replicate",
+    "model": "google/gemini-3-flash",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "source": "https://replicate.com/google/gemini-3-flash/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 3,
+    "productImageCap": 3,
+    "version": "c0a19130fe0c39f825c7321779080836edad7a82792ab144fb58adcadfc03145",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "audio": {
+          "type": "string",
+          "title": "Audio",
+          "format": "uri",
+          "x-order": 4,
+          "nullable": true,
+          "description": "Input audio to send with the prompt (max 1 audio file, up to 8.4 hours)"
+        },
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 0.95,
+          "maximum": 1,
+          "minimum": 0,
+          "x-order": 8,
+          "description": "Nucleus sampling parameter - the model considers the results of the tokens with top_p probability mass"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Images",
+          "default": [],
+          "x-order": 1,
+          "description": "Input images to send with the prompt (max 10 images, each up to 7MB)"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "The text prompt to send to the model"
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Videos",
+          "default": [],
+          "x-order": 2,
+          "description": "Input videos to send with the prompt (max 10 videos, each up to 45 minutes)"
+        },
+        "video_fps": {
+          "type": "number",
+          "title": "Video Fps",
+          "maximum": 60,
+          "minimum": 0.1,
+          "x-order": 3,
+          "nullable": true,
+          "description": "Frame rate (frames per second) at which to sample input videos. Higher values give the model more frames to reason over (useful for fast-moving footage) but consume more tokens. Omit to use the default sampling rate (1 fps)."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 1,
+          "maximum": 2,
+          "minimum": 0,
+          "x-order": 7,
+          "description": "Sampling temperature between 0 and 2"
+        },
+        "thinking_level": {
+          "enum": [
+            "none",
+            "low",
+            "high"
+          ],
+          "type": "string",
+          "title": "thinking_level",
+          "description": "Thinking level for reasoning (low or high). Replaces thinking_budget for Gemini 3 models.",
+          "default": "none",
+          "x-order": 6,
+          "nullable": true
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "title": "Max Output Tokens",
+          "default": 65535,
+          "maximum": 65535,
+          "minimum": 1,
+          "x-order": 9,
+          "description": "Maximum number of tokens to generate"
+        },
+        "system_instruction": {
+          "type": "string",
+          "title": "System Instruction",
+          "x-order": 5,
+          "nullable": true,
+          "description": "System instruction to guide the model's behavior"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/google/gemini-2.5-flash": {
+    "provider": "replicate",
+    "model": "google/gemini-2.5-flash",
+    "roles": [
+      "main",
+      "vision"
+    ],
+    "source": "https://replicate.com/google/gemini-2.5-flash/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 3,
+    "productImageCap": 3,
+    "version": "c1ee402081bea718d8328da9fcbb98bb1344a21573782b95b7f5af07489c2d54",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "required": [
+        "prompt"
+      ],
+      "properties": {
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 0.95,
+          "maximum": 1,
+          "minimum": 0,
+          "x-order": 5,
+          "description": "Nucleus sampling parameter - the model considers the results of the tokens with top_p probability mass"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Images",
+          "default": [],
+          "x-order": 1,
+          "description": "Input images to send with the prompt (max 10 images, each up to 7MB)"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "x-order": 0,
+          "description": "The text prompt to send to the model"
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Videos",
+          "default": [],
+          "x-order": 2,
+          "description": "Input videos to send with the prompt (max 10 videos, each up to 45 minutes)"
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 1,
+          "maximum": 2,
+          "minimum": 0,
+          "x-order": 4,
+          "description": "Sampling temperature between 0 and 2"
+        },
+        "thinking_budget": {
+          "type": "integer",
+          "title": "Thinking Budget",
+          "maximum": 24576,
+          "minimum": 0,
+          "x-order": 7,
+          "nullable": true,
+          "description": "Thinking budget for reasoning (0 to disable thinking, higher values allow more reasoning)"
+        },
+        "dynamic_thinking": {
+          "type": "boolean",
+          "title": "Dynamic Thinking",
+          "default": false,
+          "x-order": 8,
+          "description": "Enable dynamic thinking - the model will adjust the thinking budget based on the complexity of the request (overrides thinking_budget parameter)"
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "title": "Max Output Tokens",
+          "default": 65535,
+          "maximum": 65535,
+          "minimum": 1,
+          "x-order": 6,
+          "description": "Maximum number of tokens to generate"
+        },
+        "system_instruction": {
+          "type": "string",
+          "title": "System Instruction",
+          "x-order": 3,
+          "nullable": true,
+          "description": "System instruction to guide the model's behavior"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/qwen/qwen3-7-plus": {
+    "provider": "replicate",
+    "model": "qwen/qwen3-7-plus",
+    "roles": [
+      "main"
+    ],
+    "source": "https://replicate.com/qwen/qwen3-7-plus/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 0,
+    "productImageCap": 0,
+    "version": "35cfa60fb962574a80d8d4dead5269d5ed0469b07ca0850779e3303cf9ec25c6",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "properties": {
+        "image": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": "Image",
+          "default": [],
+          "x-order": 2,
+          "description": "Optional list of input images for visual understanding (Qwen3.7-Plus is multimodal). Each image is sent alongside the text prompt."
+        },
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 0.8,
+          "maximum": 1,
+          "minimum": 0,
+          "x-order": 5,
+          "description": "A probability threshold for nucleus sampling. Only keeps the top tokens with cumulative probability >= top_p."
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "default": "",
+          "x-order": 0,
+          "description": "The prompt to send to the model."
+        },
+        "max_tokens": {
+          "type": "integer",
+          "title": "Max Tokens",
+          "default": 2048,
+          "maximum": 65536,
+          "minimum": 1,
+          "x-order": 3,
+          "description": "The maximum number of tokens the model should generate as output."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 0.7,
+          "maximum": 2,
+          "minimum": 0,
+          "x-order": 4,
+          "description": "The value used to modulate the next token probabilities."
+        },
+        "system_prompt": {
+          "type": "string",
+          "title": "System Prompt",
+          "default": "You are a helpful assistant.",
+          "x-order": 1,
+          "description": "System prompt to guide the model's behavior."
+        },
+        "presence_penalty": {
+          "type": "number",
+          "title": "Presence Penalty",
+          "default": 0,
+          "maximum": 2,
+          "minimum": -2,
+          "x-order": 6,
+          "description": "Presence penalty. Positive values penalize tokens that have already appeared, encouraging the model to talk about new topics."
+        },
+        "frequency_penalty": {
+          "type": "number",
+          "title": "Frequency Penalty",
+          "default": 0,
+          "maximum": 2,
+          "minimum": -2,
+          "x-order": 7,
+          "description": "Frequency penalty. Positive values penalize tokens proportionally to how often they have appeared, reducing repetition."
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/deepseek-ai/deepseek-v3.1": {
+    "provider": "replicate",
+    "model": "deepseek-ai/deepseek-v3.1",
+    "roles": [
+      "main"
+    ],
+    "source": "https://replicate.com/deepseek-ai/deepseek-v3.1/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 0,
+    "productImageCap": 0,
+    "version": "3a67d0d316067084ccf47ea0dfd9499ecacc422f2a17773a3e06e402388ab2be",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "properties": {
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 1,
+          "x-order": 4,
+          "description": "Top-p (nucleus) sampling"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "default": "Why are you better than Deepseek v3?",
+          "x-order": 1,
+          "description": "Prompt"
+        },
+        "thinking": {
+          "enum": [
+            "medium",
+            "None"
+          ],
+          "type": "string",
+          "title": "thinking",
+          "description": "Reasoning effort level for DeepSeek models. Use 'medium' for enhanced reasoning or leave as None for default behavior.",
+          "default": "None",
+          "x-order": 0
+        },
+        "max_tokens": {
+          "type": "integer",
+          "title": "Max Tokens",
+          "default": 1024,
+          "x-order": 2,
+          "description": "The maximum number of tokens the model should generate as output."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 0.1,
+          "x-order": 3,
+          "description": "The value used to modulate the next token probabilities."
+        },
+        "presence_penalty": {
+          "type": "number",
+          "title": "Presence Penalty",
+          "default": 0,
+          "x-order": 5,
+          "description": "Presence penalty"
+        },
+        "frequency_penalty": {
+          "type": "number",
+          "title": "Frequency Penalty",
+          "default": 0,
+          "x-order": 6,
+          "description": "Frequency penalty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/moonshotai/kimi-k2-thinking": {
+    "provider": "replicate",
+    "model": "moonshotai/kimi-k2-thinking",
+    "roles": [
+      "main"
+    ],
+    "source": "https://replicate.com/moonshotai/kimi-k2-thinking/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 0,
+    "productImageCap": 0,
+    "version": "3298c7a0489e18d80fb092ea077cb7d3ce3d00eb4cdc270d758ea85b50a46b01",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "properties": {
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 1,
+          "x-order": 5,
+          "description": "Top-p (nucleus) sampling"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "default": "",
+          "x-order": 0,
+          "description": "Prompt"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "title": "Max Tokens",
+          "default": 2048,
+          "x-order": 1,
+          "description": "The maximum number of tokens the model should generate as output."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 0.1,
+          "x-order": 2,
+          "description": "The value used to modulate the next token probabilities."
+        },
+        "presence_penalty": {
+          "type": "number",
+          "title": "Presence Penalty",
+          "default": 0,
+          "x-order": 3,
+          "description": "Presence penalty"
+        },
+        "frequency_penalty": {
+          "type": "number",
+          "title": "Frequency Penalty",
+          "default": 0,
+          "x-order": 4,
+          "description": "Frequency penalty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  },
+  "replicate/qwen/qwen3-235b-a22b-instruct-2507": {
+    "provider": "replicate",
+    "model": "qwen/qwen3-235b-a22b-instruct-2507",
+    "roles": [
+      "main"
+    ],
+    "source": "https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507/api/schema",
+    "checkedAt": "2026-10-09",
+    "maxImages": 0,
+    "productImageCap": 0,
+    "version": "10e10290802d58ffb8878cb56199896c1d9f290109a66bbdd35b404006f6eb3a",
+    "taskType": "text-prediction",
+    "textProtocol": "replicate-predictions",
+    "schema": {
+      "type": "object",
+      "title": "Input",
+      "properties": {
+        "top_p": {
+          "type": "number",
+          "title": "Top P",
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "x-order": 5,
+          "description": "Top-p (nucleus) sampling"
+        },
+        "prompt": {
+          "type": "string",
+          "title": "Prompt",
+          "default": "",
+          "x-order": 0,
+          "description": "Prompt"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "title": "Max Tokens",
+          "default": 1024,
+          "maximum": 16384,
+          "minimum": 1,
+          "x-order": 1,
+          "description": "The maximum number of tokens the model should generate as output."
+        },
+        "temperature": {
+          "type": "number",
+          "title": "Temperature",
+          "default": 0.1,
+          "maximum": 2,
+          "minimum": 0,
+          "x-order": 2,
+          "description": "The value used to modulate the next token probabilities."
+        },
+        "presence_penalty": {
+          "type": "number",
+          "title": "Presence Penalty",
+          "default": 0,
+          "maximum": 2,
+          "minimum": -2,
+          "x-order": 3,
+          "description": "Presence penalty"
+        },
+        "frequency_penalty": {
+          "type": "number",
+          "title": "Frequency Penalty",
+          "default": 0,
+          "maximum": 2,
+          "minimum": -2,
+          "x-order": 4,
+          "description": "Frequency penalty"
+        }
+      },
+      "additionalProperties": false
+    },
+    "realInference": false
+  }
+}

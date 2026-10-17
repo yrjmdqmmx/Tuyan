@@ -1,0 +1,86 @@
+[
+  {
+    "log": "core-before-taxonomy.log",
+    "sourceLog": "/tmp/tuyan-followup-core-final.log",
+    "summary": [
+      "ℹ tests 1192",
+      "ℹ pass 1192",
+      "ℹ fail 0"
+    ],
+    "sha256": "160d87a1da575c6f525bc5fb7aae3d6bc91fd3d7fd17db7950075ef91114e3bd"
+  },
+  {
+    "log": "core-during-taxonomy.log",
+    "sourceLog": "/tmp/tuyan-followup-core-current.log",
+    "summary": [
+      "ℹ tests 1194",
+      "ℹ pass 1179",
+      "ℹ fail 15"
+    ],
+    "sha256": "fd9f39535abe3a8bb5637d27678399af0ae9486b59fb8be057b33d8fbeee26a1"
+  },
+  {
+    "log": "svg-licensed-library.log",
+    "sourceLog": "/tmp/tuyan-followup-svg-migrated.log",
+    "summary": [
+      "ℹ tests 15",
+      "ℹ pass 15",
+      "ℹ fail 0"
+    ],
+    "sha256": "058f1d2b9432804457a03dabc3580c38c873afec8ee1deb8214d5a275f632083"
+  },
+  {
+    "log": "wan-fixture-timeout.log",
+    "sourceLog": "/tmp/tuyan-critic-timeout-fixture.log",
+    "summary": [
+      "ℹ tests 2",
+      "ℹ pass 2",
+      "ℹ fail 0"
+    ],
+    "sha256": "4f78a686877cbc7b216dfc07a64f1ef3d136252026635ba5d016e9c0057e5008"
+  },
+  {
+    "log": "web-review-state.log",
+    "sourceLog": "/tmp/tuyan-followup-web-state.log",
+    "summary": [
+      "ℹ tests 8",
+      "ℹ pass 8",
+      "ℹ fail 0"
+    ],
+    "sha256": "d437147655f3760b701c572ab3dce72b5d988120dc5af6344e11dbdd424efd1c"
+  },
+  {
+    "log": "core-build.log",
+    "sourceLog": "/tmp/tuyan-followup-build-current.log",
+    "summary": [],
+    "sha256": "7cae89a28d4bee3b165c835f733208d85622c93d5fca0012fa6e8afa0855b18f"
+  },
+  {
+    "log": "core-types.log",
+    "sourceLog": "/tmp/tuyan-followup-check-migrated.log",
+    "summary": [],
+    "sha256": "6572c49e35a000561ad5739d51dcad9f143b1624720b91f1f834d362084d5cc6"
+  },
+  {
+    "log": "core-final-integrated.log",
+    "sourceLog": "/tmp/tuyan-followup-core-integrated.log",
+    "summary": [
+      "ℹ tests 1198",
+      "ℹ pass 1198",
+      "ℹ fail 0"
+    ],
+    "sha256": "8b7b524e77e74c0599d25c794b35635a90eec301b349ce21d1a75a83b7dbbb4d"
+  },
+  {
+    "log": "core-types-final.log",
+    "sourceLog": "/tmp/tuyan-followup-types-final.log",
+    "summary": [],
+    "sha256": "6572c49e35a000561ad5739d51dcad9f143b1624720b91f1f834d362084d5cc6"
+  },
+  {
+    "log": "core-build-final.log",
+    "sourceLog": "/tmp/tuyan-followup-build-final-integrated.log",
+    "summary": [],
+    "sha256": "1e14263d2606a052739cf3d6d5caba5aa00a03ea23da7556a0098bd0dc81e1f8"
+  }
+]

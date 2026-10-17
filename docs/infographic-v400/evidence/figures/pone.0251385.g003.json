@@ -1,0 +1,50 @@
+{
+  "id": "pone.0251385.g003",
+  "paper": "pone.0251385",
+  "figure": {
+    "id": "pone.0251385.g003",
+    "label": "Fig 3",
+    "caption": "Lollipop plot showing the strength of association with disease of the various histological features using the Cramér’s V coefficient.\nThe dashed lines divide the histological features into those of high association (brick red), medium association (coral) and low association (blanched almond).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0251385.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0251385.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Lollipop plot showing the strength of association with disease of the various histological features using the Cramér’s V coefficient.</title>\n<p>The dashed lines divide the histological features into those of high association (brick red), medium association (coral) and low association (blanched almond).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0251385.g003\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0251385.g003",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0251385",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0251385",
+    "title": "Improving the diagnostic recognition of thoracic endometriosis: Spotlight on a new histo-morphological indicator",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Okechukwu Charles Okafor",
+      "Ndubueze Ezemba",
+      "Nnaemeka Thaddeus Onyishi",
+      "Kevin Nwabueze Ezike"
+    ],
+    "year": "2021",
+    "license": "2021\nOkafor et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0251385.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0251385.g003.png",
+      "bytes": 690100,
+      "sha256": "375bba6bc6d0426c2e95393ad495f0325d0cece8237efdbc5f16cff493eed413"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0251385.g003",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0251385.g003.tif",
+      "bytes": 974860,
+      "sha256": "9f5c0eb3e8ca673db6635ebc7835f1fd1c3026461a7f2934cd519576517e660d"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+.workflow-options{
+  grid-column:1/-1;
+  min-width:0;
+  border:0;
+  padding:0;
+  margin:0}
+.workflow-options legend{
+  font-weight:650;
+  font-size:14px;
+  margin-bottom:9px}
+.workflow-option-list{
+  display:grid;
+  gap:8px}
+.workflow-option{
+  position:relative;
+  border:1px solid var(--border,#dbe0e6);
+  border-radius:10px;
+  background:var(--surface,#fff)}
+.workflow-option.selected{
+  border-color:#496856;
+  background:#f3f8f4}
+.workflow-choice{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:12px 48px 12px 12px;
+  cursor:pointer}
+.workflow-choice input{
+  width:16px!important;
+  height:16px;
+  accent-color:#41644e}
+.workflow-choice span{
+  display:grid;
+  gap:3px}
+.workflow-choice strong{
+  font-size:14px}
+.workflow-choice small{
+  font-size:12px;
+  color:#56615a}
+.workflow-help{
+  position:absolute;
+  right:0;
+  top:0}
+.workflow-help-button{
+  width:44px;
+  height:44px;
+  padding:6px;
+  display:grid;
+  align-items:start;
+  justify-items:end;
+  border:0;
+  background:transparent;
+  color:#5a665d;
+  border-radius:50%;
+  cursor:pointer}
+.workflow-help-button:focus-visible,.workflow-choice:has(:focus-visible){
+  outline:2px solid #527960;
+  outline-offset:2px}
+.workflow-explanation{
+  position:absolute;
+  right:0;
+  top:42px;
+  width:min(340px,calc(100vw - 68px));
+  max-height:55dvh;
+  overflow:auto;
+  z-index:6;
+  padding:16px;
+  background:#fff;
+  border:1px solid #c8d3cd;
+  border-radius:12px;
+  box-shadow:0 8px 24px #18292024;
+  color:#28392e;
+  font-size:13px;
+  line-height:1.65}
+.workflow-explanation p{
+  margin:8px 0}
+.vision-role-note{
+  margin:8px 0;
+  padding:10px 12px;
+  background:#f6f8f5;
+  border-radius:8px;
+  font-size:12px;
+  line-height:1.6}
+.result-review{
+  padding:8px 12px;
+  margin:0;
+  font-size:12px;
+  line-height:1.5;
+  background:#f4f6f3}
+.result-review.modified_unreviewed,.result-review.review_failed{
+  background:#fff6e4;
+  color:#785312}
+.candidate-progress{
+  list-style:none;
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  font-size:12px}
+.candidate-progress li{
+  padding:6px 9px;
+  background:#f3f5f5;
+  border-radius:6px}
+.candidate-progress .failed{
+  background:#fff0ed;
+  color:#913c2c}
+
+.simple-model-summary small{display:block;margin-top:5px;color:var(--muted);font-size:12px}

@@ -1,0 +1,51 @@
+{
+  "id": "pone.0262403.g001",
+  "paper": "pone.0262403",
+  "figure": {
+    "id": "pone.0262403.g001",
+    "label": "Fig 1",
+    "caption": "Causal diagram depicting the effect of time-varying exposure (smoking) on the outcome (CHD) in the presence of time-varying mediator (weight).\nV, A, M, L, and Y stand for baseline confounders, time-varying exposure, time-varying mediator, time-varying confounders, and the outcome, respectively.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0262403.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0262403.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Causal diagram depicting the effect of time-varying exposure (smoking) on the outcome (CHD) in the presence of time-varying mediator (weight).</title>\n<p>V, A, M, L, and Y stand for baseline confounders, time-varying exposure, time-varying mediator, time-varying confounders, and the outcome, respectively.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0262403.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0262403.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0262403",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0262403",
+    "title": "Does weight mediate the effect of smoking on coronary heart disease? Parametric mediational g-formula analysis",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Yaser Mokhayeri",
+      "Maryam Nazemipour",
+      "Mohammad Ali Mansournia",
+      "Ashley I. Naimi",
+      "Jay S. Kaufman"
+    ],
+    "year": "2022",
+    "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0262403.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0262403.g001.png",
+      "bytes": 341122,
+      "sha256": "537a8570dfe0fdac5a2be1847a04d13108b16101cac4952e93f11c40ea562516"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0262403.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0262403.g001.tif",
+      "bytes": 288924,
+      "sha256": "7e6063b7bc17d506eb683a93e73c3825ac171bac41fe5856ed46cb31612bcdbe"
+    }
+  }
+}

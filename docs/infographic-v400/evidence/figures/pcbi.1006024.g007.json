@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1006024.g007",
+  "paper": "pcbi.1006024",
+  "figure": {
+    "id": "pcbi.1006024.g007",
+    "label": "Fig 7",
+    "caption": "Schematic view of the dominant pathway to the unwrapping of outer DNA with estimated changes in free energy.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Schematic view of the dominant pathway to the unwrapping of outer DNA with estimated changes in free energy.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g007\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g007",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1006024",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006024",
+    "title": "Free energy profiles for unwrapping the outer superhelical turn of nucleosomal DNA",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Hidetoshi Kono",
+      "Shun Sakuraba",
+      "Hisashi Ishida"
+    ],
+    "year": "2018",
+    "license": "2018\nKono et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1006024.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1006024.g007.png",
+      "bytes": 503724,
+      "sha256": "8a780a8f48dd1623672be05efb208f5c0dce88f96cc46f2a47a5b7b93e7e2506"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1006024.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1006024.g007.tif",
+      "bytes": 521976,
+      "sha256": "a02e21e0501a522f9c30053f4d45483535cbf5c87302f6271e3cce87fe0b8131"
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "filename": "research-slides.pptx",
+  "format": "pptx",
+  "operation": {
+    "op": "read",
+    "pages": [
+      1,
+      2
+    ]
+  },
+  "status": "read",
+  "warnings": [],
+  "chunks": [
+    {
+      "page": 1,
+      "source": "ppt/slides/slide1.xml",
+      "text": "研究材料：Alpha 35，Beta 12\n输入\n检查\n输出",
+      "tables": [],
+      "notes": {
+        "visibility": "speaker_notes_not_visible_on_slide",
+        "text": "备注专属：这是合成测试材料，不是研究结论。样本单位为个。"
+      },
+      "images": [],
+      "charts": [],
+      "warnings": []
+    },
+    {
+      "page": 2,
+      "source": "ppt/slides/slide2.xml",
+      "text": "名称\n原值\nAlpha\n35\nBeta\n12",
+      "tables": [
+        [
+          [
+            "名称",
+            "原值"
+          ],
+          [
+            "Alpha",
+            "35"
+          ],
+          [
+            "Beta",
+            "12"
+          ]
+        ]
+      ],
+      "notes": {
+        "visibility": "speaker_notes_not_visible_on_slide",
+        "text": "图表使用原始保存数值 35 和 12，不含误差线或显著性。"
+      },
+      "images": [
+        {
+          "source": "ppt/media/image1.png",
+          "sha256": "a0129d5fc8e0049f5f347e050d4b13f70777db464250bacd9dd23e971b383505",
+          "reading": "whole-slide render required"
+        }
+      ],
+      "charts": [
+        {
+          "source": "ppt/charts/chart1.xml",
+          "valueSource": "original_saved_chart_cache_not_visual_estimate",
+          "series": [
+            {
+              "label": "Sheet1!$B$1Observed samples",
+              "formulas": [
+                "Sheet1!$B$1",
+                "Sheet1!$A$2:$A$3",
+                "Sheet1!$B$2:$B$3"
+              ],
+              "savedValues": [
+                {
+                  "index": "0",
+                  "value": "35"
+                },
+                {
+                  "index": "1",
+                  "value": "12"
+                }
+              ],
+              "categories": [
+                {
+                  "index": "0",
+                  "value": "Observed samples"
+                },
+                {
+                  "index": "0",
+                  "value": "Alpha"
+                },
+                {
+                  "index": "1",
+                  "value": "Beta"
+                }
+              ]
+            }
+          ],
+          "embeddedWorkbooks": [
+            {
+              "source": "ppt/embeddings/Microsoft_Excel_Sheet1.xlsx",
+              "sheets": [
+                {
+                  "sheet": "Sheet1",
+                  "rows": "1-100",
+                  "cells": [
+                    {
+                      "address": "B1",
+                      "value": "Observed samples",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "A2",
+                      "value": "Alpha",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "B2",
+                      "value": "35",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "A3",
+                      "value": "Beta",
+                      "valueSource": "original_cell"
+                    },
+                    {
+                      "address": "B3",
+                      "value": "12",
+                      "valueSource": "original_cell"
+                    }
+                  ],
+                  "warning": "仅该范围；完整嵌入工作簿未读取"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "warnings": []
+    }
+  ],
+  "images": []
+}

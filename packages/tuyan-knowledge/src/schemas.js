@@ -1,3 +1,4 @@
+import { FIGURE_TYPES } from '../../figure-taxonomy/src/index.js';
 import { LOCALES, OPERATIONS, OUTPUT_FORMATS, VISUAL_CATEGORIES } from './catalog.js';
 
 const sha256 = { type: 'string', pattern: '^[a-f0-9]{64}$' };
@@ -87,7 +88,7 @@ export const FIGURE_SPEC_SCHEMA = Object.freeze({
   required: ['schemaVersion', 'operation', 'visualCategory', 'locale', 'intent', 'canvas', 'content', 'output'],
   allOf: [
     {
-      if: { properties: { visualCategory: { const: 'data_stat' } }, required: ['visualCategory'] },
+      if: { properties: { visualCategory: { enum: ['data_stat', ...FIGURE_TYPES.filter(type=>type.kind==='data').map(type=>type.id)] } }, required: ['visualCategory'] },
       then: {
         required: ['data'],
         properties: {

@@ -1,0 +1,255 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 0,
+    "selectedCount": 0,
+    "skippedCount": 0,
+    "imageCount": 0,
+    "mode": "text",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7",
+            "pngHash": "6b509eed88abeb07f9e3adc9cc0743443225de52b1b3f2192e0b0ed8c2baa09e",
+            "status": "review_failed",
+            "submittedImageHash": "9a13182ce3b4b33f04e23467916f3d1b6502e708b5a458ea52a58f12cef200cb",
+            "error": "SVG 评审缺少不确定项或完整决策。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7",
+        "note": "当前 SVG 评审失败，未认定为通过。"
+      }
+    }
+  ],
+  "id": "1791598986470-wtbtond3",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "none",
+  "manualReferenceIds": [],
+  "retrievedReferenceIds": [],
+  "retrievedReferences": [],
+  "stages": [
+    {
+      "id": "stage-c2ae45ca-7899-4ce2-b6b9-8a29d51c9cfe",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "好的，这是目标图示的详细描述。\n\n***\n\n**整体布局与风格**\n*   **画布**: 背景为纯白色。\n*   **布局**: 三个主要元素水平排列，方向严格从左到右。它们之间由向右的箭头连接。\n*   **图形风格**: 所有主元素均为带有显著圆角的圆角矩形边框。采用扁平化设计，无阴影、无渐变。边框线条清晰，粗细适中（例如 2px）。\n*   **配色方案**: 使用清爽的学术风格配色。\n    *   第一个框：浅蓝色背景，深蓝色边框。\n    *   第二个框：浅黄色背景，深橙色或琥珀色边框。\n    *   第三个框：浅绿色背景，深绿色边框。\n    *   连接箭头：中灰色。\n*   **字体**: 所有中文和数学文本均使用 'Noto Sans CJK SC' 或 'Noto Sans Math'，常规字重，样式正常。\n*   **标识**: 在画布的绝对右上角，放置一个与参考图（如有）右上角完全相同的短标识（例如，一个代表团队或会议的小图章或缩写，根据提供者要求原样复制）。\n\n**具体元素与连接**\n1.  **第一个模块 (左侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅蓝色 `#E6F2FF`，边框深蓝色 `#0050B3`。\n    *   **内部文本**:\n        *   第一行: 中文 \"样品输入\"\n        *   第二行: 文本 \"(n=12)\"，注意字体大小略小于标题，以区分主次。\n    *   **位置**: 画布左侧三分之一处，垂直居中。\n\n2.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 填充色或描边色为 `#808080`。\n    *   **位置**: 连接第一个框的右边缘中心和第二个框的左边缘中心。\n\n3.  **第二个模块 (中间)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅黄色 `#FFF7E6`，边框深橙色 `#D46B08`。\n    *   **内部文本**:\n        *   第一行: 中文 \"数据标准化\"\n        *   第二行: 数学表达式 \"x / x₀\"，使用斜体变量，下标样式，准确保留。\n    *   **位置**: 画布正中，垂直居中。\n\n4.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 与上一个相同，中灰色 `#808080`。\n    *   **位置**: 连接第二个框的右边缘中心和第三个框的左边缘中心。\n\n5.  **第三个模块 (右侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅绿色 `#E6FFE6`，边框深绿色 `#228B22`。\n    *   **内部文本**:\n        *   第一行: 中文 \"结果输出\"\n        *   第二行: 文本 \"(均值 1.0)\"，括号内文字为描述性信息。\n    *   **位置**: 画布右侧三分之一处，垂直居中。",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:23:06.472Z",
+      "completedAt": "2026-10-10T02:23:06.478Z",
+      "durationMs": 6,
+      "error": ""
+    },
+    {
+      "id": "stage-a5ddda60-879b-4273-96f7-148bef98a40f",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7\",\"pngHash\":\"6b509eed88abeb07f9e3adc9cc0743443225de52b1b3f2192e0b0ed8c2baa09e\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"Noto Sans\",\"sans-serif\",\"Noto Sans Math\"]},\"codeIssues\":[\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598986470-wtbtond3/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791598986470-wtbtond3/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T02:23:06.579Z",
+      "completedAt": "2026-10-10T02:23:06.579Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-a03e1b67-34e7-4f7f-b5d8-dfb1d1445262",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7\",\"pngHash\":\"6b509eed88abeb07f9e3adc9cc0743443225de52b1b3f2192e0b0ed8c2baa09e\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Noto Sans CJK SC\",\"Noto Sans\",\"sans-serif\",\"Noto Sans Math\"]},\"codeIssues\":[\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:23:06.579Z",
+      "completedAt": "2026-10-10T02:23:06.579Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-d66d3408-afdf-4620-b816-03b7d722c4f0",
+      "candidateId": 0,
+      "type": "observation",
+      "title": "SVG v1 视觉观察（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7\",\"pngHash\":\"6b509eed88abeb07f9e3adc9cc0743443225de52b1b3f2192e0b0ed8c2baa09e\",\"submittedImageHash\":\"9a13182ce3b4b33f04e23467916f3d1b6502e708b5a458ea52a58f12cef200cb\",\"round\":1,\"previousAssessment\":\"\",\"referenceAnalysis\":\"\",\"retrievalContext\":\"\",\"observation\":{\"content\":\"Three rounded rectangular boxes arranged horizontally from left to right on a white background. Left box is light blue with dark blue border containing '样品输入' and '(n=12)'. Middle box is light yellow/orange with orange border containing '数据标准化' and 'x / x₀'. Right box is light green with green border containing '结果输出' and '(均值 1.0)'. Grey arrows connect the boxes sequentially.\",\"actual_text\":[\"样品输入\",\"(n=12)\",\"数据标准化\",\"x / x₀\",\"结果输出\",\"(均值 1.0)\"],\"layout\":\"Horizontal three-step flowchart layout. Boxes are vertically centered and evenly spaced. Arrows connect the vertical midpoints of adjacent box edges. No top-right identifier is present.\",\"connections\":[\"Grey arrow from right edge of '样品输入' box to left edge of '数据标准化' box\",\"Grey arrow from right edge of '数据标准化' box to left edge of '结果输出' box\"],\"problems\":[{\"issue\":\"Missing required element\",\"location\":\"Top right corner of canvas\",\"evidence\":\"The request specifies placing a short identifier in the top right corner ('把参考图右上角的短标识原样放在新图右上角'), but the area is empty.\",\"suggestion\":\"Add the specified short identifier/logo to the absolute top right corner of the image.\"},{\"issue\":\"Subscript fidelity\",\"location\":\"Middle box, second line text\",\"evidence\":\"The character '₀' appears as a standard baseline digit '0' rather than a lowered subscript glyph, reducing scientific notation accuracy.\",\"suggestion\":\"Ensure the font rendering or SVG markup explicitly sets the '0' as a subscript (lowered baseline and smaller size) for 'x₀'.\"}],\"suggestions\":[\"Verify the specific identifier required for the top right corner, as no reference image was provided to extract it from.\",\"Consider using a dedicated math font or explicit `<tspan dy='...'>` positioning for the subscript to guarantee visual correctness across renderers.\"],\"uncertainties\":[\"The specific content of the 'short identifier' for the top right corner is unknown due to lack of reference image.\"]}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598986470-wtbtond3/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598986470-wtbtond3/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T02:23:16.807Z",
+      "completedAt": "2026-10-10T02:23:16.807Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-2019405d-26a1-40ff-bbdf-fb9dae4e72cf",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 第1轮未完成",
+      "round": 1,
+      "text": "当前 SVG 评审失败，未认定为通过。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:23:29.655Z",
+      "completedAt": "2026-10-10T02:23:29.655Z",
+      "durationMs": 0,
+      "error": "SVG 评审缺少不确定项或完整决策。"
+    },
+    {
+      "id": "stage-7419d44b-c51a-4aca-b380-19887397d354",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "当前 SVG 评审失败，未认定为通过。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598986470-wtbtond3/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:23:29.656Z",
+      "completedAt": "2026-10-10T02:23:29.656Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791598986470-wtbtond3/candidate-0.svg",
+      "objectKey": "1791598986470-wtbtond3/candidate-0.svg",
+      "url": "http://127.0.0.1:63590/objects/1791598986470-wtbtond3/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "好的，这是目标图示的详细描述。\n\n***\n\n**整体布局与风格**\n*   **画布**: 背景为纯白色。\n*   **布局**: 三个主要元素水平排列，方向严格从左到右。它们之间由向右的箭头连接。\n*   **图形风格**: 所有主元素均为带有显著圆角的圆角矩形边框。采用扁平化设计，无阴影、无渐变。边框线条清晰，粗细适中（例如 2px）。\n*   **配色方案**: 使用清爽的学术风格配色。\n    *   第一个框：浅蓝色背景，深蓝色边框。\n    *   第二个框：浅黄色背景，深橙色或琥珀色边框。\n    *   第三个框：浅绿色背景，深绿色边框。\n    *   连接箭头：中灰色。\n*   **字体**: 所有中文和数学文本均使用 'Noto Sans CJK SC' 或 'Noto Sans Math'，常规字重，样式正常。\n*   **标识**: 在画布的绝对右上角，放置一个与参考图（如有）右上角完全相同的短标识（例如，一个代表团队或会议的小图章或缩写，根据提供者要求原样复制）。\n\n**具体元素与连接**\n1.  **第一个模块 (左侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅蓝色 `#E6F2FF`，边框深蓝色 `#0050B3`。\n    *   **内部文本**:\n        *   第一行: 中文 \"样品输入\"\n        *   第二行: 文本 \"(n=12)\"，注意字体大小略小于标题，以区分主次。\n    *   **位置**: 画布左侧三分之一处，垂直居中。\n\n2.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 填充色或描边色为 `#808080`。\n    *   **位置**: 连接第一个框的右边缘中心和第二个框的左边缘中心。\n\n3.  **第二个模块 (中间)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅黄色 `#FFF7E6`，边框深橙色 `#D46B08`。\n    *   **内部文本**:\n        *   第一行: 中文 \"数据标准化\"\n        *   第二行: 数学表达式 \"x / x₀\"，使用斜体变量，下标样式，准确保留。\n    *   **位置**: 画布正中，垂直居中。\n\n4.  **向右箭头 (中间)**\n    *   **形状**: 一个简单的向右箭头。\n    *   **颜色**: 与上一个相同，中灰色 `#808080`。\n    *   **位置**: 连接第二个框的右边缘中心和第三个框的左边缘中心。\n\n5.  **第三个模块 (右侧)**\n    *   **形状**: 圆角矩形框。\n    *   **颜色**: 填充浅绿色 `#E6FFE6`，边框深绿色 `#228B22`。\n    *   **内部文本**:\n        *   第一行: 中文 \"结果输出\"\n        *   第二行: 文本 \"(均值 1.0)\"，括号内文字为描述性信息。\n    *   **位置**: 画布右侧三分之一处，垂直居中。",
+      "review": {
+        "limit": 1,
+        "roundsUsed": 1,
+        "mode": "visual_code",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7",
+            "pngHash": "6b509eed88abeb07f9e3adc9cc0743443225de52b1b3f2192e0b0ed8c2baa09e",
+            "status": "review_failed",
+            "submittedImageHash": "9a13182ce3b4b33f04e23467916f3d1b6502e708b5a458ea52a58f12cef200cb",
+            "error": "SVG 评审缺少不确定项或完整决策。"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "8b95c05f715f7106864aa10ed047412188ddb63655ac4e8bb5f1d80b7f7ca7b7",
+        "note": "当前 SVG 评审失败，未认定为通过。"
+      }
+    }
+  ],
+  "logs": [],
+  "error": "",
+  "createdAt": "2026-10-10T02:23:06.470Z",
+  "updatedAt": "2026-10-10T02:23:29.657Z",
+  "startedAt": "2026-10-10T02:23:06.470Z",
+  "completedAt": "2026-10-10T02:23:29.657Z"
+}

@@ -1,0 +1,70 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "4c2a587a6ea1fe7683c193b87d388770e0711696f5edff1ceb57c448baadca16",
+  "pngHash": "669844466a78612a942a4c053cf3f42eb29896f18faad55218d80a9e500fcff1",
+  "svgHash": "8760247d0b85a53c7bcb2b5fea7003087de1421b0a2f865873520e71db33b5cf",
+  "numeric": {
+    "typeId": "gene_track",
+    "computations": {
+      "intervals": [
+        {
+          "label": "Gene A",
+          "start": 100,
+          "end": 400,
+          "strand": "+",
+          "headCoordinate": 400
+        },
+        {
+          "label": "Gene B",
+          "start": 550,
+          "end": 800,
+          "strand": "-",
+          "headCoordinate": 550
+        }
+      ]
+    },
+    "checks": {
+      "interval_0_length": {
+        "actual": 300.0,
+        "expected": 300.0,
+        "absoluteError": 0.0
+      },
+      "interval_1_length": {
+        "actual": 250.0,
+        "expected": 250.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "label",
+        "chrom",
+        "start",
+        "end",
+        "strand"
+      ],
+      "options": {
+        "sequences": [
+          {
+            "id": "chr1",
+            "length": 1000
+          }
+        ],
+        "assembly": "Synthetic v1",
+        "coordinateSystem": "zero_based_half_open"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

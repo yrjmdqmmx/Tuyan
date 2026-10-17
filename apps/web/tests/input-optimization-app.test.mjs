@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
-import { afterEach, test } from 'node:test'
+import { afterEach, beforeEach, test } from 'node:test'
+import { IDBFactory } from 'fake-indexeddb'
 import React from 'react'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,6 +12,7 @@ const capableRegistry = {
   routeContractVersion: 1,
   inputOptimizationContractVersion: 1,
   supportsModelRoutes: true,
+  figureTaxonomyVersion:'2026-10-10.v1',figureExecutionVersion:1,workflowContractVersion:2,materialWorkflowVersion:1,materialFileVersion:2,
   providers: {
     bailian: {
       accessKind: 'aggregator',
@@ -19,7 +21,7 @@ const capableRegistry = {
       defaults: { main: 'main', image: 'image', vision: 'vision' },
       models: [
         { id: 'main', label: '主模型', vendor: 'Qwen', roles: ['main'], selectable: true, lifecycle: 'stable', capabilities: {} },
-        { id: 'vision', label: '识图模型', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'vision', label: '识图模型', vendor: 'Qwen', roles: ['vision'], selectable: true, lifecycle: 'stable', capabilities: {referenceImages: true} },
         { id: 'image', label: '图像模型', vendor: 'Wan', roles: ['image'], selectable: true, lifecycle: 'stable', inputModalities: ['text', 'image'], capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], aspectRatios: ['16:9'], refineAspectRatios: ['16:9'], imageEditMode: 'direct-edit', referenceImages: true } },
       ],
     },
@@ -29,12 +31,14 @@ const capableRegistry = {
       accountCatalogRequired: false,
       defaults: { main: 'openai-main', image: 'openai-image', vision: 'openai-main' },
       models: [
-        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', capabilities: {} },
+        { id: 'openai-main', label: 'OpenAI Main', vendor: 'OpenAI', roles: ['main', 'vision'], selectable: true, lifecycle: 'stable', capabilities: {referenceImages: true} },
         { id: 'openai-image', label: 'OpenAI Image', vendor: 'OpenAI', roles: ['image'], selectable: true, lifecycle: 'stable', capabilities: { outputFormats: ['png'], resolutions: ['1K'], refineResolutions: ['2K'], imageEditMode: 'direct-edit' } },
       ],
     },
   },
 }
+
+beforeEach(()=>{window.localStorage.clear();globalThis.indexedDB=new IDBFactory()})
 
 let restoreFetch
 
@@ -136,7 +140,7 @@ async function configureAdvancedVanillaOpenAiMain(user) {
   await user.click(screen.getByRole('button', { name: '主模型' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.click(screen.getByRole('button', { name: /OpenAI Main/u }))
-  await user.selectOptions(screen.getByLabelText('生成流程'), 'vanilla')
+  await user.click(screen.getByRole('radio', {name: /快速生成/}))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 }
 
@@ -227,7 +231,7 @@ test('invalid main route and missing main key open settings at the right focus t
   assert.match(screen.getByRole('alert').textContent, /密钥/u)
 })
 
-test('advanced vanilla optimization reveals and focuses its otherwise unreachable main-provider key without sending a request', async () => {
+test('advanced vanilla optimization focuses its required main-provider key without sending a request', async () => {
   const { requests, user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
 
@@ -242,7 +246,7 @@ test('advanced vanilla optimization reveals and focuses its otherwise unreachabl
   assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'), 'generation image key remains available')
 })
 
-test('closing settings clears the temporary optimization credential provider', async () => {
+test('closing settings retains the main credential needed by basic planning', async () => {
   const { user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
   fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
@@ -250,11 +254,11 @@ test('closing settings clears the temporary optimization credential provider', a
 
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  assert.equal(screen.queryByLabelText('OpenAI 接入密钥'), null)
+  assert.equal(screen.getByLabelText('OpenAI 接入密钥').value, 'configured-openai-key')
   assert.ok(screen.getByLabelText('阿里云百炼 接入密钥'))
 })
 
-test('temporary optimization credentials never expand vanilla generation key scope', async () => {
+test('basic generation scopes credentials to required main and image roles', async () => {
   const { requests, user } = await renderReady()
   await configureAdvancedVanillaOpenAiMain(user)
   fireEvent.click(screen.getByRole('button', { name: '优化输入：方法栏' }))
@@ -266,7 +270,7 @@ test('temporary optimization credentials never expand vanilla generation key sco
   await user.click(submit)
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const create = requests.find((request) => request.body?.action === 'createJob').body
-  assert.deepEqual(create.apiKeys, { bailian: 'bailian-image-key' })
+  assert.deepEqual(create.apiKeys, {openai: 'openai-optimization-key', bailian: 'bailian-image-key' })
   assert.equal(create.modelRoutes.main.accessProvider, 'openai')
 })
 

@@ -6,11 +6,11 @@ import { mountEmailConfirmation } from '../public/account/email-verify.js';
 
 const html = fs.readFileSync(new URL('../public/account/email-verify.html', import.meta.url), 'utf8');
 const token = 'a'.repeat(43);
-function fixture(fetch, hash = `#token=${token}`) {
-  const dom = new JSDOM(html, { url: `https://web.example.test/account/email-verify.html${hash}` });
+function fixture(fetch, hash = `#token=${token}`, origin = 'https://web.example.test') {
+  const dom = new JSDOM(html, { url: `${origin}/account/email-verify.html${hash}` });
   const { document, history } = dom.window;
   let destination;
-  const location = { get hash() { return dom.window.location.hash; }, get href() { return dom.window.location.href; }, pathname: dom.window.location.pathname, replace(value) { destination = value; } };
+  const location = { origin: dom.window.location.origin, get hash() { return dom.window.location.hash; }, get href() { return dom.window.location.href; }, pathname: dom.window.location.pathname, replace(value) { destination = value; } };
   mountEmailConfirmation({ document, location, history, fetch, timeout: () => undefined });
   return { dom, document, destination: () => destination, submit: () => document.getElementById('verify-form').dispatchEvent(new dom.window.Event('submit', { bubbles: true, cancelable: true })) };
 }
@@ -73,6 +73,18 @@ test('missing/invalid fragments never submit; expiry and service failures cannot
     f.submit(); await settle();
     assert.equal(f.destination() ? new URL(f.destination()).searchParams.get('error') : null, expected);
     if (!expected) assert.match(f.document.getElementById('message').textContent, /暂时无法确认/);
+    f.dom.window.close();
+  }
+});
+
+
+test('email confirmation submits to the new same-origin gateway and preserves the legacy gateway', async () => {
+  for (const origin of ['https://tuyansci.cn', 'https://www.paperbanana.asia']) {
+    let target;
+    const f = fixture(async url => { target = url; return Response.json({ ok: true, code: 'EMAIL_VERIFIED' }); }, `#token=${token}`, origin);
+    f.submit(); await settle();
+    assert.equal(new URL(target).origin, origin === 'https://tuyansci.cn' ? origin : 'https://api.paperbanana.asia');
+    assert.equal(f.destination(), `${origin}/account/email-verified.html`);
     f.dom.window.close();
   }
 });

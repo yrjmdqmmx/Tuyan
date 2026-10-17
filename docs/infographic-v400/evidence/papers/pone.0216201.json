@@ -1,0 +1,72 @@
+{
+  "doi": "10.1371/journal.pone.0216201",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0216201",
+  "title": "Simple and efficient estimation of photovoltaic cells and modules parameters using approximation and correction technique",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Fahmi F. Muhammad",
+    "Ali W. Karim Sangawi",
+    "Suhairul Hashim",
+    "S. K. Ghoshal",
+    "Isam K. Abdullah",
+    "Shilan S. Hameed"
+  ],
+  "year": "2019",
+  "license": "2019\nMuhammad et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0216201.g001",
+      "label": "Fig 1",
+      "caption": "Prototype structure of solar cells (a), the equivalent circuit used to simulate I-V curve of solar cells based on single-diode model (b) and the standard I-V characteristic of solar cells (c).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0216201.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0216201.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title />\n<p>Prototype structure of solar cells (a), the equivalent circuit used to simulate <italic>I-V</italic> curve of solar cells based on single-diode model (b) and the standard <italic>I-V</italic> characteristic of solar cells (c).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0216201.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0216201.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0216201.g002",
+      "label": "Fig 2",
+      "caption": "The change in values of R_{s} and R_{p} within five loop iterations, the final fixed values are used in ACT approach for the parameters extraction.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0216201.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0216201.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>The change in values of <italic>R</italic><sub><italic>s</italic></sub> and <italic>R</italic><sub><italic>p</italic></sub> within five loop iterations, the final fixed values are used in ACT approach for the parameters extraction.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0216201.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0216201.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0216201.g003",
+      "label": "Fig 3",
+      "caption": "The workspace of the established software application, which is used to extract the PV cells and modules parameters based on ACT.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0216201.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0216201.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>The workspace of the established software application, which is used to extract the PV cells and modules parameters based on ACT.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0216201.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0216201.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0216201.g004",
+      "label": "Fig 4",
+      "caption": "Simulated and experimental currents for single-diode model of Photowatt-PWP201 solar module (a) and their I-V curves (b).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0216201.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0216201.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title />\n<p>Simulated and experimental currents for single-diode model of Photowatt-PWP201 solar module (a) and their <italic>I-V</italic> curves (b).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0216201.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0216201.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "bccbbec5fec2e99d67297cc9aa94ade06426e4daef9a6b43e1ba699a1547ab82",
+  "pngHash": "9b354408205a3d45a690b8791e211fd37f40d35630c8185e8ef9d86e0fbcc8c7",
+  "svgHash": "39a729bcef30c14bd41b4787a181387d99a64dd9c1d5b3935fe5187b2ca9a3d0",
+  "numeric": {
+    "typeId": "network",
+    "computations": {
+      "positions": {
+        "A": [
+          1.0,
+          0.0
+        ],
+        "B": [
+          6.123233995736766e-17,
+          1.0
+        ],
+        "C": [
+          -1.0,
+          1.2246467991473532e-16
+        ],
+        "Isolate": [
+          -1.8369701987210297e-16,
+          -1.0
+        ]
+      },
+      "degree": {
+        "A": 1,
+        "B": 2,
+        "C": 1,
+        "Isolate": 0
+      },
+      "isolatedNodes": [
+        "Isolate"
+      ],
+      "lineWidthPerWeight": 2.0
+    },
+    "checks": {
+      "edge_1_width": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "edge_2_width": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      },
+      "degree_sum": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "rendered_node_count": {
+        "actual": 4.0,
+        "expected": 4.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "source",
+        "target",
+        "value"
+      ],
+      "options": {
+        "nodes": [
+          {
+            "id": "A"
+          },
+          {
+            "id": "B"
+          },
+          {
+            "id": "C"
+          },
+          {
+            "id": "Isolate"
+          }
+        ],
+        "directed": true,
+        "layout": "circular",
+        "weightUnit": "contacts"
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

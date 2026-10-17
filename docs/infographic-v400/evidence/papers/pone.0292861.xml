@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0292861</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-23-04992</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Software engineering</subject><subj-group><subject>Computer software</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Rheumatology</subject><subj-group><subject>Arthritis</subject><subj-group><subject>Rheumatoid arthritis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Clinical medicine</subject><subj-group><subject>Clinical immunology</subject><subj-group><subject>Autoimmune diseases</subject><subj-group><subject>Rheumatoid arthritis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Immunology</subject><subj-group><subject>Clinical immunology</subject><subj-group><subject>Autoimmune diseases</subject><subj-group><subject>Rheumatoid arthritis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Immunology</subject><subj-group><subject>Clinical immunology</subject><subj-group><subject>Autoimmune diseases</subject><subj-group><subject>Rheumatoid arthritis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pharmacology</subject><subj-group><subject>Drug interactions</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Optimization</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pharmaceutics</subject><subj-group><subject>Pharmaceutical processing technology</subject><subj-group><subject>Drug delivery system preparation</subject><subj-group><subject>Microencapsulation</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Mathematical models</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Materials science</subject><subj-group><subject>Materials</subject><subj-group><subject>Mixtures</subject><subj-group><subject>Colloids</subject><subj-group><subject>Emulsions</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Polymer chemistry</subject><subj-group><subject>Macromolecules</subject><subj-group><subject>Polymers</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Materials science</subject><subj-group><subject>Materials</subject><subj-group><subject>Polymers</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Polymer chemistry</subject><subj-group><subject>Polymers</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Development and optimization of sustained release triptolide microspheres</article-title>
+<alt-title alt-title-type="running-head">Development and optimization of triptolide microspheres</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Zeng</surname>
+<given-names>Hui-lin</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Qiu</surname>
+<given-names>Qian</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-2626-6264</contrib-id>
+<name name-style="western">
+<surname>Fu</surname>
+<given-names>Ting-xiong</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Deng</surname>
+<given-names>Ai-ping</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Xie</surname>
+<given-names>Xiang-yang</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Pharmacy, Central Hospital of Wuhan, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, Hubei, China</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Pharmacy, General Hospital of Central Theater of the PLA, Wuhan, Hubei, China</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Gebre-Mariam</surname>
+<given-names>Tsige</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Addis Ababa University College of Health Sciences, ETHIOPIA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">ftx322005@163.com</email> (TXF); <email xlink:type="simple">1986818536@qq.com</email> (APD)</corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>19</day>
+<month>10</month>
+<year>2023</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2023</year>
+</pub-date>
+<volume>18</volume>
+<issue>10</issue>
+<elocation-id>e0292861</elocation-id>
+<history>
+<date date-type="received">
+<day>23</day>
+<month>2</month>
+<year>2023</year>
+</date>
+<date date-type="accepted">
+<day>2</day>
+<month>10</month>
+<year>2023</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2023</copyright-year>
+<copyright-holder>Zeng et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0292861"/>
+<abstract>
+<p>Rheumatoid arthritis is considered a chronic systemic autoimmune disorder that may cause joint destruction. Triptolide, an active component isolated from <italic>Tripterygium wilfordii</italic> Hook.f., is considered to have promising potential for clinical use in treating rheumatoid arthritis. However, its clinical application has been limited by the narrow therapeutic window, side effects associated with plasma drug fluctuations, low oral bioavailability, and poor patient compliance with the long and frequent dosing regimen. An extended drug release preparation may address these limitations. The aim of this work was therefore to develop, formulate and optimize sustained release triptolide microspheres with poly (lactide-co-glycolide) (PLGA). Triptolide-loaded microspheres were prepared using PLGA as the matrix polymer, dichloromethane as the oil phase, and polyvinyl alcohol (PVA) as the matrix forming emulsifier. An oil-in-water (O/W) emulsion solvent evaporation technique was utilized to prepare the microspheres. Surface response methodology (RSM) coupled with central composite design (CCD) was used to optimize the formulation and a total of twenty formulations were prepared. PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>), and theoretical drug content (X<sub>3</sub>) were selected as independent variables; and drug content (Y<sub>1</sub>), encapsulation efficiency (Y<sub>2</sub>), mean diameter (Y<sub>3</sub>) and the initial release during the first day (Y<sub>4</sub>) were taken as the response variables. The optimized formulation showed mean diameter of 42.36 μm, drug content of 7.96%, encapsulation efficiency of 80.16% and an initial release of 14.48%. The prepared microspheres exhibited a sustained release profile of triptolide <italic>in vitro</italic> over 4 weeks, which was wellfitted with a Korsmeyer-Peppas equation. However, the initial drug release (~14%) of triptolide-loaded microspheres was very high and should be specifically investigated in future studies. The results indicate that long-term sustained release microspheres of triptolide can be considered a strategy to overcome the low bioavailability and poor patient compliance with conventional triptolide tablets. The issue of initial burst release and <italic>in vivo</italic> evaluations should be specifically investigated in the future.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100010846</institution-id>
+<institution>Health and Family Planning Commission of Hubei Province</institution>
+</institution-wrap>
+</funding-source>
+<award-id>WJ2021M218</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Xie</surname>
+<given-names>Xiang-yang</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work (XX) was financially supported by the Scientific Research Fund of Health and Family Planning Commission of Hubei Province (No. WJ2021M218). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="10"/>
+<table-count count="5"/>
+<page-count count="20"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its <xref ref-type="sec" rid="sec022">Supporting Information</xref> files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Rheumatoid arthritis (RA), associated with inflammatory manifestations in synovial joints and other organs (such as the heart and lungs), is considered a chronic systemic autoimmune disorder that may cause joint destruction [<xref ref-type="bibr" rid="pone.0292861.ref001">1</xref>]. Despite the ever increasing progress in medical science, the therapeutic needs for RA are still not well met. Epidemiological investigation revealed that the RA has a global prevalence of approximately 1% and varies highly with sex and race [<xref ref-type="bibr" rid="pone.0292861.ref002">2</xref>]. For RA patients, disease development involves progressive joint deformity, thereby leading to loss of function. In addition, extra-articular symptoms are also common in RA patients and affect important systems of the body, such as the heart (pericarditis), blood vessels (Raynaud’s phenomenon), lung (pulmonary nodules, pulmonary fibrosis), nerves (peripheral nerve entrapment, polyneuropathy) and eyes [<xref ref-type="bibr" rid="pone.0292861.ref003">3</xref>]. These disorders seriously affect the quality of life, longevity and work capacity of RA sufferers [<xref ref-type="bibr" rid="pone.0292861.ref004">4</xref>].</p>
+<p>To date, there are many therapeutic agents available on the market to manage the symptoms of RA patients. Among these drugs, the Chinese traditional medicine (TCM) of <italic>Tripterygium wilfordii</italic> Hook.f. (TWHF) cannot be ignored for its favorable cost‒benefit ratio and special immunosuppressive efficacy in the treatment of RA [<xref ref-type="bibr" rid="pone.0292861.ref005">5</xref>]. TWHF has been used as an herbal remedy to treat arthritis and other autoimmune inflammatory disorders since the late Qing Dynasty (19<sup>th</sup> century) in China [<xref ref-type="bibr" rid="pone.0292861.ref006">6</xref>], and it has been used as an antitumor agent in recent years [<xref ref-type="bibr" rid="pone.0292861.ref007">7</xref>]. Clinical trials in the United States have also confirmed the efficacy of TWHF in the treatment of RA [<xref ref-type="bibr" rid="pone.0292861.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0292861.ref009">9</xref>]. Currently, several TCMs made from TWHF are available on the market in China, including <italic>Tripterygium wilfordii</italic> tablets (approved in 1998), <italic>Tripterygium</italic> hypoglaucum hutch tablets (approved in 2002) and <italic>Tripterygium wilfordii</italic> glycoside tablets (approved in 1998) [<xref ref-type="bibr" rid="pone.0292861.ref010">10</xref>]. For patients with RA, these tablets are recommended for oral administration under the supervision of doctors.</p>
+<p>Triptolide (<xref ref-type="fig" rid="pone.0292861.g001">Fig 1</xref>), a bioactive diterpene triepoxide isolated from TWHF, exhibits potent immunomodulatory, cartilage protective and anti-inflammatory activities [<xref ref-type="bibr" rid="pone.0292861.ref011">11</xref>], and it is considered to have promising potential to be used in the clinic to treat RA and other autoimmune diseases [<xref ref-type="bibr" rid="pone.0292861.ref007">7</xref>]. In the treatment of RA, extracts of TWHF (<italic>Tripterygium wilfordii</italic> tablets) are often recommended to be taken orally (3 times per day, 20–40 mg per time) over 4 weeks, in which the content of triptolide is 33 μg per tablet (20 mg of TWHF extract). For the treatment of inflammatory and autoimmune diseases, the dose doubled to 66 μg triptolide per time (3 times per day) was proven to be safe and effective [<xref ref-type="bibr" rid="pone.0292861.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0292861.ref013">13</xref>]. However, the clinical application of triptolide still faces several challenges, including multiorgan toxicity, a narrow therapeutic window [<xref ref-type="bibr" rid="pone.0292861.ref007">7</xref>], side effects associated with plasma drug fluctuations, low oral bioavailability due to its poor aqueous solubility [<xref ref-type="bibr" rid="pone.0292861.ref011">11</xref>], and poor patient compliance due to the long and frequent dosing regimen.</p>
+<fig id="pone.0292861.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Chemical structure of triptolide: A bioactive diterpene triepoxide isolated from <italic>Tripterygium wilfordii Hook F</italic>.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g001" xlink:type="simple"/>
+</fig>
+<p>To address these limitations, a sustained release drug delivery system (DDS) for injection, which can deliver a relatively constant dose of triptolide for a long period of time, may provide an alternative to solve the aforementioned problems to some extent. Microspheres are innovative DDSs that possess favorable features and have been studied widely over three decades [<xref ref-type="bibr" rid="pone.0292861.ref014">14</xref>]. Microspheres can be classified into two types, biodegradable and nonbiodegradable, and biodegradable microspheres are preferable in practical applications. Biodegradable microspheres can extend the duration of drug action remarkably, reduce the dosing frequency and hence improve the compliance of patients. The total drug dose and adverse reactions related to waving blood drug levels can also be diminished due to the steady plasma concentration that the microsphere formulation will bring [<xref ref-type="bibr" rid="pone.0292861.ref015">15</xref>]. Furthermore, there is no need to implant biodegradable microspheres in surgical operations and remove them after drug release is completed. Moreover, by changing the route of drug administration from oral to depo injection, the bioavailability of triptolide can also be improved. However, microsphere preparations may face the problem of initial burst release, which is more prominent for narrow therapeutic index drugs such as triptolide. This issue should be addressed in the final phase of the dosage form study.</p>
+<p>Poly (lactic-co-glycolic acid) (PLGA), an FDA approved biodegradable polymer for <italic>in vivo</italic> use, is one of the most widely used polymers for DDSs because of its biodegradability, biocompatibility and ease of processing [<xref ref-type="bibr" rid="pone.0292861.ref016">16</xref>]. Currently, there are several injectable microsphere products on the market using PLGA as their carrier (e.g. Lupron Depot<sup>®</sup>, Zoladex<sup>®</sup>, Risperdal Consta<sup>®</sup>) [<xref ref-type="bibr" rid="pone.0292861.ref017">17</xref>].</p>
+<p>Taken together, the aim of the present study was to develop a sustained-release microsphere formulation of triptolide for the treatment of RA. Since there are few reports on the formulation of triptolide using sustained release microspheres, the objective of this study was therefore to develop, characterize, and optimize triptolide loaded microspheres to obtain a prolonged release system to treat RA. In this work an oil-in-water (O/W) emulsion solvent evaporation technique was utilized to prepare microspheres, and a response surface methodology (RSM) coupled with central composite design (CCD) was used to optimize the formulation. The size, morphology, encapsulation efficiency, and <italic>in vitro</italic> drug release feature of the optimized microspheres were also investigated.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec003">
+<title>Ethics statement</title>
+<p>This study did not involve nonhuman primates or other animals.</p>
+</sec>
+<sec id="sec004" sec-type="materials|methods">
+<title>Materials</title>
+<p>Triptolide (99.7% purity) was purchased from Nanjing Zelang Pharmaceutical &amp; Scientific Company (Jiangsu, China). Poly (D, L-lactide-<italic>co</italic>-glycolide) copolymers, PLGA (75:25) with molecular weights of 20 kDa, were supplied by the Jinan Research Institute of Medical Equipment (Shandong, China) in their capped forms (ester end group). Polyvinyl alcohol-124 (PVA) was obtained from the Beijing East Ring Union Chemical Plant (Beijing, China).</p>
+<p>All other materials or solvents were of reagent or analytical grade.</p>
+</sec>
+<sec id="sec005" sec-type="materials|methods">
+<title>Experimental design</title>
+<p>Before the application of formulation optimization, preliminary experiments were conducted to identify the critical formulation and process parameters. The single factor screening method [<xref ref-type="bibr" rid="pone.0292861.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0292861.ref019">19</xref>], also known as the one-factor-at-a-time (OFAT) method [<xref ref-type="bibr" rid="pone.0292861.ref020">20</xref>] was used in the preliminary trials. The levels of formulation variables were also determined in preliminary trials. The encapsulation efficiency (EE) of microspheres was selected as the response variable to evaluate formulation/process parameters during OFAT experiments. The OFAT studies provided the factors affecting EE and the setting of the levels for each factor. Factors that have marked effects on the EE of microspheres were identified, including the concentration of PVA (2–8%), PLGA concentration (100–400 mg·mL<sup>-1</sup>), and theoretical drug loading (1–12%). Other variables investigated in the preliminary experiments were the oil/water ratio (1:4–1:9) and stirring speed (200–1000 rpm).</p>
+<p>Following the preliminary experiments, critical factors (PVA concentration, PLGA concentration, and theoretical drug loading) were selected to obtain the optimum formulation by a response surface methodology (RSM) using central composite design (CCD). The coded values of the factors and their levels (based on the results of preliminary experiments) are shown in <xref ref-type="table" rid="pone.0292861.t001">Table 1</xref>. Design-Expert 8.0.5 software was applied to perform the RSM process and therefore to investigate the effects of variable factors on the system’s response [<xref ref-type="bibr" rid="pone.0292861.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0292861.ref022">22</xref>]. The experimental plan is shown in <xref ref-type="table" rid="pone.0292861.t002">Table 2</xref>, where the actual order of the experimental arrangement is given randomly by the software. This means randomizing the order of runs from the fixed design (standard order <xref ref-type="table" rid="pone.0292861.t002">Table 2</xref>). The number of replicates was 6 (standard order 15 to 20 in <xref ref-type="table" rid="pone.0292861.t002">Table 2</xref>), and the number of independent experiments was 14 (standard order 1 to 14 in <xref ref-type="table" rid="pone.0292861.t002">Table 2</xref>).</p>
+<table-wrap id="pone.0292861.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.t001</object-id>
+<label>Table 1</label> <caption><title>Experimental levels of independent variables in central composite design.</title></caption>
+<alternatives>
+<graphic id="pone.0292861.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">Factor</th>
+<th align="center">Level (-1.732)</th>
+<th align="center">Level (-1)</th>
+<th align="center">Level (0)</th>
+<th align="center">Level (+1)</th>
+<th align="center">Level (+1.732)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">X<sub>1</sub>/%</td>
+<td align="center">3.00</td>
+<td align="center">3.61</td>
+<td align="center">4.50</td>
+<td align="center">5.62</td>
+<td align="center">6.00</td>
+</tr>
+<tr>
+<td align="left">X<sub>2</sub>/ mg·mL<sup>-1</sup></td>
+<td align="center">100</td>
+<td align="center">141</td>
+<td align="center">200</td>
+<td align="center">259</td>
+<td align="center">300</td>
+</tr>
+<tr>
+<td align="left">X<sub>3</sub>/%</td>
+<td align="center">4.00</td>
+<td align="center">5.62</td>
+<td align="center">8.00</td>
+<td align="center">10.38</td>
+<td align="center">12.00</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0292861.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.t002</object-id>
+<label>Table 2</label> <caption><title>Experimental plan of central composite design.</title></caption>
+<alternatives>
+<graphic id="pone.0292861.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Standard Order</th>
+<th align="center">X<sub>1</sub>/%</th>
+<th align="center">X<sub>2</sub>/ mg·mL<sup>-1</sup></th>
+<th align="center">X<sub>3</sub>/%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">3.61</td>
+<td align="center">141</td>
+<td align="center">5.62</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">5.39</td>
+<td align="center">141</td>
+<td align="center">5.62</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">3.61</td>
+<td align="center">259</td>
+<td align="center">5.62</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">5.39</td>
+<td align="center">259</td>
+<td align="center">5.62</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">3.61</td>
+<td align="center">141</td>
+<td align="center">10.38</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">5.39</td>
+<td align="center">141</td>
+<td align="center">10.38</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">3.61</td>
+<td align="center">259</td>
+<td align="center">10.38</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">5.39</td>
+<td align="center">259</td>
+<td align="center">10.38</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">3.00</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">6.00</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">4.50</td>
+<td align="center">100</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">4.50</td>
+<td align="center">300</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">4.00</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">12.00</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="center">4.50</td>
+<td align="center">200</td>
+<td align="center">8.00</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>The independent variables in CCD studies were PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>), and theoretical drug content (X<sub>3</sub>). For each factor, the experimental range was selected based on the results of preliminary experiments. By using parameters in these selected ranges, microspheres could be prepared successfully with desired characteristics (drug content more than 2%, drug encapsulation efficiency more than 80%, mean diameter in the range of 10–60 μm). The dependent variables (responses) were drug content (Y<sub>1</sub>), encapsulation efficiency (Y<sub>2</sub>), mean diameter (Y<sub>3</sub>) and initial release (Y<sub>4</sub>, to calculate the cumulative percentage of the drug released in the first day after incubation).</p>
+<p>In this study, Design-Expert 8.0.5 software was used to analyze the data of the optimization experiment (as shown in <xref ref-type="table" rid="pone.0292861.t003">Table 3</xref>). Central composite design (CCD) was applied to investigate the effect of the three independent variables (factors) and their potential interactions. Twenty experiments were performed with three factors and five levels, and they were augmented with six replications at the central point to estimate the "pure error". The experimental data were input into the software to conduct multiple regression analysis.</p>
+<table-wrap id="pone.0292861.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.t003</object-id>
+<label>Table 3</label> <caption><title>Microsphere formulation variables and physical properties (mean±SD).</title></caption>
+<alternatives>
+<graphic id="pone.0292861.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify">Standard Order</th>
+<th align="justify">Drug content (%)</th>
+<th align="justify">Encapsulation efficiency (%)</th>
+<th align="justify">Mean diameter (μm)</th>
+<th align="justify">Initial release (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">4.75</td>
+<td align="center">84.3</td>
+<td align="center">47.38</td>
+<td align="center">14.10</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">4.21</td>
+<td align="center">74.9</td>
+<td align="center">30.84</td>
+<td align="center">18.94</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">4.79</td>
+<td align="center">85.2</td>
+<td align="center">55.79</td>
+<td align="center">11.02</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">4.09</td>
+<td align="center">73.4</td>
+<td align="center">40.69</td>
+<td align="center">16.87</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">6.32</td>
+<td align="center">59.8</td>
+<td align="center">52.61</td>
+<td align="center">14.94</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">5.92</td>
+<td align="center">57.7</td>
+<td align="center">39.37</td>
+<td align="center">19.82</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">8.51</td>
+<td align="center">81.8</td>
+<td align="center">45.19</td>
+<td align="center">15.02</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">7.83</td>
+<td align="center">74.7</td>
+<td align="center">34.45</td>
+<td align="center">19.70</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">6.43</td>
+<td align="center">79.3</td>
+<td align="center">54.74</td>
+<td align="center">16.38</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">5.74</td>
+<td align="center">71.4</td>
+<td align="center">31.19</td>
+<td align="center">25.47</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">5.58</td>
+<td align="center">69.8</td>
+<td align="center">39.15</td>
+<td align="center">14.95</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">6.69</td>
+<td align="center">82.9</td>
+<td align="center">45.06</td>
+<td align="center">11.64</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="center">3.22</td>
+<td align="center">80.4</td>
+<td align="center">42.69</td>
+<td align="center">12.06</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="center">7.91</td>
+<td align="center">64.4</td>
+<td align="center">43.73</td>
+<td align="center">16.98</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="center">6.95</td>
+<td align="center">86.9</td>
+<td align="center">42.09</td>
+<td align="center">14.06</td>
+</tr>
+<tr>
+<td align="center">16</td>
+<td align="center">6.89</td>
+<td align="center">86.1</td>
+<td align="center">46.12</td>
+<td align="center">16.16</td>
+</tr>
+<tr>
+<td align="center">17</td>
+<td align="center">6.74</td>
+<td align="center">84.4</td>
+<td align="center">45.82</td>
+<td align="center">15.03</td>
+</tr>
+<tr>
+<td align="center">18</td>
+<td align="center">6.51</td>
+<td align="center">81.3</td>
+<td align="center">43.36</td>
+<td align="center">16.17</td>
+</tr>
+<tr>
+<td align="center">19</td>
+<td align="center">6.93</td>
+<td align="center">86.5</td>
+<td align="center">45.50</td>
+<td align="center">13.71</td>
+</tr>
+<tr>
+<td align="center">20</td>
+<td align="center">7.01</td>
+<td align="center">87.6</td>
+<td align="center">44.16</td>
+<td align="center">15.52</td>
+</tr>
+<tr>
+<td align="center">Range</td>
+<td align="center">3.22–8.51</td>
+<td align="center">57.7–87.6</td>
+<td align="center">30.84–55.79</td>
+<td align="center">11.02–25.47</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec006">
+<title>Preparation of microspheres</title>
+<p>Triptolide loaded microspheres were prepared by a classic oil-in-water (O/W) emulsion solvent evaporation method [<xref ref-type="bibr" rid="pone.0292861.ref023">23</xref>]. In brief, PLGA (120 and 299.57 mg) and triptolide (theoretical drug content: 1.99, 3.21, 5.00, 6.80 and 8.02%, w/v) were dissolved in 10 mL of dichloromethane (DCM) as the oil phase. Then the mixed solution was dropped slowly into 100 mL of deionized water as an external phase containing varying amounts of PVA (concentration: 3.04, 3.63, 4.50, 5.37 and 5.96%, w/v) as an emulsifier and stirred by a propeller stirrer (SXJQ-1, Zhengzhou, China; 4-blade propeller stirrer with 20 mm stirrer diameter) at 800 rpm for 10 min at 25°C to produce an O/W single emulsion. The resulting emulsion was then poured into 200 mL of deionized water and stirred at 300 rpm on a magnetic stirrer (egg-shaped stirring bar with a length of 30 mm) for 4 h at 25°C to evaporate the DCM. The hardened microspheres were collected by filtering through filter paper and then rinsed three times with 10 mL of deionized water; after that, the microspheres were dried under vacuum at room temperature to obtain free flowing powder.</p>
+</sec>
+<sec id="sec007">
+<title>Determination of triptolide content</title>
+<p>The amount of triptolide contained in the microspheres was determined by an HPLC method. Briefly, 25 mg of triptolide loaded microspheres was dissolved in 5 mL of acetonitrile, diluted to 50 mL with methanol and vortexed for 1 min. The resulting solution was filtered through a 0.45 μm filter membrane and analyzed by an HPLC system (Agilent 1260, USA) with a reversed phase C<sub>18</sub> column (5 μm, 4.6 mm × 250 mm, Elite Analytical Instruments Co., Ltd., China). The analysis temperature was 30°C and the detection wavelength set at 218 nm. The mobile phase consisted of water and methanol at a ratio of 60: 40. The flow rate was 1 mL/min and the injection volume was 20 μL. The related method validation data of this section are presented in <xref ref-type="supplementary-material" rid="pone.0292861.s001">S1 File</xref>.</p>
+<p>The encapsulation efficiency (EE) and drug loading (DL) of the microspheres were calculated by the following equations [<xref ref-type="bibr" rid="pone.0292861.ref024">24</xref>]:</p>
+<p>EE = (drug found in tested microspheres × microsphere weight of tested batch / tested microspheres weight / drug added in tested batch) × 100%</p>
+<p>DL = (drug found in tested microspheres / tested microsphere weight) × 100%</p>
+<p>Here, "drug found in tested microspheres" refers to the drug content detected by HPLC in the tested microspheres; "drug added in tested batch" refers to the theoretical drug added in the tested formulation batch. All measurements were performed in triplicate.</p>
+</sec>
+<sec id="sec008">
+<title>Morphological characterization and particle size analysis</title>
+<p>The shape and surface morphology of the final obtained microspheres were observed by scanning electron microscopy (SEM). The microspheres were added onto double-sided adhesive carbon tape attached to an aluminum stub and then coated with a layer of gold. The coated specimen was photographed by SEM (Hitachi S-4800, Japan) at an acceleration voltage of 5 keV and working distance of 7.4 mm.</p>
+<p>The microsphere size and size distribution of the prepared microspheres were measured by a light-scattering particle size analyzer (Ls800, OMEC Ltd., China). Microspheres were dispersed in sodium carboxymethyl cellulose solution (0.5%, w/v) [<xref ref-type="bibr" rid="pone.0292861.ref025">25</xref>] and then analyzed. All measurements were conducted in triplicate.</p>
+</sec>
+<sec id="sec009">
+<title>In vitro release assay</title>
+<p>The <italic>in vitro</italic> release behavior of triptolide loaded microspheres was investigated as follows. Ten milligrams of drug-loaded microspheres were added into a 30 mL cylindrical tube, which contained 25 mL of 0.1 M phosphate buffer solution (PBS, pH 7.4) and sodium azide (0.02%, w/v). These tubes were then incubated in a water bath (37 ± 0.5°C) and shaken horizontally at 72 rpm [<xref ref-type="bibr" rid="pone.0292861.ref026">26</xref>]. At predetermined time intervals, 2 mL of sample solution was withdrawn and replenished with 2 mL of fresh medium maintained at the same temperature. The samples were centrifuged at 5,000 rpm for 10 min, the supernatants were collected for determination, and the precipitate microspheres were put back into the corresponding tubes. The triptolide concentrations were assayed by HPLC as described above. All measurements were conducted in triplicate.</p>
+</sec>
+<sec id="sec010">
+<title>Release kinetics</title>
+<p>To investigate the possible release mechanism of triptolide loaded PLGA microspheres, the <italic>in vitro</italic> release data were fitted by mathematical models such as zero order (Q = kt), first order (Ln(1—Q) = -kt), Higuchi (Q = kt<sup>1/2</sup>) [<xref ref-type="bibr" rid="pone.0292861.ref027">27</xref>] and Korsmeyer-Peppas equation (LnQ = nLnt + k) [<xref ref-type="bibr" rid="pone.0292861.ref028">28</xref>, <xref ref-type="bibr" rid="pone.0292861.ref029">29</xref>]. In these equations, Q represents cumulative drug release at time t, k is the release rate constant, and n is the exponent indicative of release mechanism. After model fitting and coefficient (R<sup>2</sup>) calculation, the model that gave the highest value of R<sup>2</sup> was considered to be the most suitable kinetic model for describing the release mechanism.</p>
+</sec>
+<sec id="sec011">
+<title>Statistical analysis</title>
+<p>All data are shown as the mean ± standard deviation (SD) unless otherwise stated. Student’s t test or one-way analysis of variance (ANOVA) was performed to compare the means between groups. A P value less than 0.05 was considered to be significant. Plots of drug release profiles were conducted by Origin 8.6 Software (Origin Lab Corporation, MA, USA). Graphs related to the optimum process were generated using Design-Expert 8.0.5 software (Stat-Easy In., MN, USA).</p>
+</sec>
+</sec>
+<sec id="sec012" sec-type="conclusions">
+<title>Results and discussion</title>
+<sec id="sec013" sec-type="materials|methods">
+<title>Experimental design</title>
+<p>Drug content can reflect the drug loading efficiency of the microspheres (formulation); encapsulation efficiency can indicate the drug loading efficiency of the preparation process (technique); mean diameter will influence the mobility of microspheres through the needle and the drug release behavior of microspheres; initial release determines the drug onset rate and safe dosage of the prepared microspheres. The above four responses are the key performance indicators in the quality control of microspheres; therefore they were selected to evaluate the prepared microspheres in the experimental design.</p>
+<p>As the ratios of max to min for the four responses were less than 3, no transformation was utilized to deal with the response data. For ratios less than 3, the power transforms have little effect.</p>
+<p>Polynomial models were selected for the four response (dependent) variables. The suggested fitting mathematical model was automatically selected based on the comparisons of five statistical parameters, including the Lack of Fit p-value, coefficient of determination (R<sup>2</sup>), adjusted multiple correlation coefficient (adjusted R<sup>2</sup>), predicted multiple correlation coefficient (predicted R<sup>2</sup>) and predicted residual sum of squares (PRESS). As shown in <xref ref-type="table" rid="pone.0292861.t004">Table 4</xref>, the "Lack of Fit" p values of the four suggested models implied that the "Lack of Fit" was not significant relative to the pure error. This means that these modes are well-fitted. The R-squared (R<sup>2</sup>) values of the four responses are all greater than 0.95, indicating a good fit or reliability of the models. The "adjusted R<sup>2</sup>" values were the "Pred R-Squared" of 0.9701, which is in reasonable agreement with the "predicted R<sup>2</sup>" values (the differences are less than 0.2) [<xref ref-type="bibr" rid="pone.0292861.ref030">30</xref>], indicating a good correlation between the experimental (actual) and predicted response values. This also implies that the suggested models have good predictability. Moreover, the suggested models have lower PRESS values than the no-suggested models, which indicates the good fitness of the mathematical models.</p>
+<table-wrap id="pone.0292861.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.t004</object-id>
+<label>Table 4</label> <caption><title>Fit summary statistics for response variables in central composite design.</title></caption>
+<alternatives>
+<graphic id="pone.0292861.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Response</th>
+<th align="center">Source</th>
+<th align="center">Lack of Fit p-value</th>
+<th align="center">R-Squared</th>
+<th align="center">Adjusted R-Squared</th>
+<th align="center">Predicted R-Squared</th>
+<th align="center">PRESS</th>
+<th align="center">Remark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="4">Y1</td>
+<td align="center">Linear</td>
+<td align="center">0.0025</td>
+<td align="center">0.8043</td>
+<td align="center">0.7676</td>
+<td align="center">0.6986</td>
+<td align="center">10.80</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center">2FI</td>
+<td align="center">0.0032</td>
+<td align="center">0.8659</td>
+<td align="center">0.8041</td>
+<td align="center">0.6410</td>
+<td align="center">12.87</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><underline>Quadratic</underline></td>
+<td align="center"><underline>0.5567</underline></td>
+<td align="center"><underline>0.9911</underline></td>
+<td align="center"><underline>0.9831</underline></td>
+<td align="center"><underline>0.9615</underline></td>
+<td align="center"><underline>1.38</underline></td>
+<td align="center"><underline>Suggested</underline></td>
+</tr>
+<tr>
+<td align="center">Cubic</td>
+<td align="center">0.5246</td>
+<td align="center">0.9948</td>
+<td align="center">0.9835</td>
+<td align="center">0.8952</td>
+<td align="center">3.76</td>
+<td align="center">Aliased</td>
+</tr>
+<tr>
+<td align="center" rowspan="4">Y2</td>
+<td align="center">Linear</td>
+<td align="center">0.0052</td>
+<td align="center">0.4904</td>
+<td align="center">0.3949</td>
+<td align="center">0.2393</td>
+<td align="center">1199.32</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center">2FI</td>
+<td align="center">0.0058</td>
+<td align="center">0.6305</td>
+<td align="center">0.4600</td>
+<td align="center">0.0686</td>
+<td align="center">1468.53</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><underline>Quadratic</underline></td>
+<td align="center"><underline>0.7919</underline></td>
+<td align="center"><underline>0.9754</underline></td>
+<td align="center"><underline>0.9532</underline></td>
+<td align="center"><underline>0.9158</underline></td>
+<td align="center"><underline>132.75</underline></td>
+<td align="center"><underline>Suggested</underline></td>
+</tr>
+<tr>
+<td align="center">Cubic</td>
+<td align="center">0.9577</td>
+<td align="center">0.9831</td>
+<td align="center">0.9466</td>
+<td align="center">0.9734</td>
+<td align="center">41.87</td>
+<td align="center">Aliased</td>
+</tr>
+<tr>
+<td align="center" rowspan="4">Y3</td>
+<td align="center">Linear</td>
+<td align="center">0.0416</td>
+<td align="center">0.8148</td>
+<td align="center">0.7800</td>
+<td align="center">0.6704</td>
+<td align="center">276.08</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><underline>2FI</underline></td>
+<td align="center"><underline>0.6257</underline></td>
+<td align="center"><underline>0.9656</underline></td>
+<td align="center"><underline>0.9497</underline></td>
+<td align="center"><underline>0.9346</underline></td>
+<td align="center"><underline>54.76</underline></td>
+<td align="center"><underline>Suggested</underline></td>
+</tr>
+<tr>
+<td align="center">Quadratic</td>
+<td align="center">0.7590</td>
+<td align="center">0.9773</td>
+<td align="center">0.9568</td>
+<td align="center">0.9196</td>
+<td align="center">67.39</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center">Cubic</td>
+<td align="center">0.5058</td>
+<td align="center">0.9834</td>
+<td align="center">0.9475</td>
+<td align="center">0.6384</td>
+<td align="center">302.93</td>
+<td align="center">Aliased</td>
+</tr>
+<tr>
+<td align="center" rowspan="4">Y4</td>
+<td align="center">Linear</td>
+<td align="center">0.0259</td>
+<td align="center">0.59433</td>
+<td align="center">0.51826</td>
+<td align="center">0.295947</td>
+<td align="center">144.138</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center">2FI</td>
+<td align="center">0.0154</td>
+<td align="center">0.61145</td>
+<td align="center">0.43212</td>
+<td align="center">0.277522</td>
+<td align="center">147.91</td>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><underline>Quadratic</underline></td>
+<td align="center"><underline>0.9422</underline></td>
+<td align="center"><underline>0.96761</underline></td>
+<td align="center"><underline>0.93846</underline></td>
+<td align="center"><underline>0.916865</underline></td>
+<td align="center"><underline>17.0198</underline></td>
+<td align="center"><underline>Suggested</underline></td>
+</tr>
+<tr>
+<td align="center">Cubic</td>
+<td align="center">0.9812</td>
+<td align="center">0.97331</td>
+<td align="center">0.91549</td>
+<td align="center">0.960884</td>
+<td align="center">8.00805</td>
+<td align="center">Aliased</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Based on the fit summary of <xref ref-type="table" rid="pone.0292861.t004">Table 4</xref>, a quadratic model was suggested for responses Y<sub>1</sub>, Y<sub>2</sub> and Y<sub>4</sub>, and the 2FI model was suggested for response Y<sub>3</sub>.</p>
+<p>"Adeq Precision" measures the signal to noise ratio. A ratio greater than 4 is desirable. The ratios of the four responses (Y<sub>1</sub>: 48.090, Y<sub>2</sub>: 19.225, Y<sub>3</sub>: 29.313 and Y<sub>4</sub>: 25.164) are all greater than 4, which indicates an adequate signal.</p>
+<p>The plots of predicted versus actual values can give us a visual representation on the model satisfactoriness. The predicted versus actual value plots of four responses (Y<sub>1</sub>-Y<sub>4</sub>) are displayed in <xref ref-type="fig" rid="pone.0292861.g002">Fig 2</xref> for drug content, EE, mean diameter and initial release. These plots indicate sufficient agreement between the real data and the data generated by the models.</p>
+<fig id="pone.0292861.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title/>
+<p>Predicted vs. actual value plots for (A) drug content, (B) encapsulation efficiency, (C) mean diameter, and (D) initial release.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g002" xlink:type="simple"/>
+</fig>
+<p>After meeting the above criteria, these mathematical models suggested by the software were used to plot the relationships between factors and responses and produce visual images for the design space (see the "Response surface and contour plot analysis" section). This is helpful to determine the edge of failure for process parameters beyond which the relevant quality attributes cannot be met.</p>
+</sec>
+<sec id="sec014">
+<title>Mathematical regression of models</title>
+<p>To describe the relationships between the dependent (responses) and independent (factors) variables, mathematical models were generated by the software. The suggested polynomial equations relating the factors and responses in terms of actual factors were obtained and given in Eqs <xref ref-type="disp-formula" rid="pone.0292861.e001">1</xref>–<xref ref-type="disp-formula" rid="pone.0292861.e004">4</xref>.
+<disp-formula id="pone.0292861.e001">
+<alternatives>
+<graphic id="pone.0292861.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0292861.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:msub><mml:mrow><mml:mi mathvariant="normal">Y</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:mn>7.40324</mml:mn><mml:mo>+</mml:mo><mml:mn>2.89623</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>7.51197</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>1.15005</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>3.69463</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>0.35355</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>7.45492</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>5</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>0.082218</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+<disp-formula id="pone.0292861.e002">
+<alternatives>
+<graphic id="pone.0292861.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0292861.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2">
+<mml:msub><mml:mrow><mml:mi mathvariant="normal">Y</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:mn>10.61230</mml:mn><mml:mo>+</mml:mo><mml:mn>34.88332</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.23928</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.75036</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>0.017442</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.70711</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.035002</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>4.51537</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>9.15958</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>4</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>0.81935</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+<disp-formula id="pone.0292861.e003">
+<alternatives>
+<graphic id="pone.0292861.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0292861.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3">
+<mml:msub><mml:mrow><mml:mi mathvariant="normal">Y</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mn>56.43093</mml:mn><mml:mo>−</mml:mo><mml:mn>13.28614</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.19411</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>3.33723</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>9.28667</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.45137</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>0.027047</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+<disp-formula id="pone.0292861.e004">
+<alternatives>
+<graphic id="pone.0292861.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0292861.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4">
+<mml:msub><mml:mrow><mml:mi mathvariant="normal">Y</mml:mi></mml:mrow><mml:mrow><mml:mn>4</mml:mn></mml:mrow></mml:msub><mml:mo>=</mml:mo><mml:mn>49.62976</mml:mn><mml:mo>−</mml:mo><mml:mn>20.16373</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.014908</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>0.51124</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>1.90919</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:mn>0.066586</mml:mn><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>4.51664</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>3</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:mn>2.58135</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>1.82197</mml:mn><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:mn>4</mml:mn></mml:mrow></mml:msup><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>−</mml:mo><mml:mn>0.037311</mml:mn><mml:mo>∙</mml:mo><mml:msubsup><mml:mrow><mml:mi mathvariant="normal">X</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+where Y<sub>1</sub>, Y<sub>2</sub>, Y<sub>3</sub> and Y<sub>4</sub> are actual values for drug content, EE, mean diameter and initial release, respectively. X<sub>1</sub>, X<sub>2</sub> and X<sub>3</sub> are actual values for PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>), respectively.</p>
+<p>The equations represent the quantitative effects of the factors on the responses. The coefficients display how the factors influence the responses. If the coefficient is positive, the response will increase when the factor ranges from low level (-1.732) to a high level (+1.732); the opposite effect will be obtained if the coefficient is negative. According to the magnitude of the coefficients of X<sub>1</sub> to X<sub>3</sub> in Eqs <xref ref-type="disp-formula" rid="pone.0292861.e001">1</xref>–<xref ref-type="disp-formula" rid="pone.0292861.e004">4</xref>, PVA concentration (X<sub>1</sub>) has the greatest effect (numerical value of coefficient) on responses (Y<sub>1</sub>-Y<sub>4</sub>).</p>
+<p>The coefficients of <xref ref-type="disp-formula" rid="pone.0292861.e001">Eq 1</xref> appear as one constant, three linear, three quadratic, and one interaction term. The coefficients imply that for Y<sub>1</sub> (drug content), the first- and second-order main effects are generated from PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>), and the main interaction terms are from X<sub>2</sub>-X<sub>3</sub>.</p>
+<p>The coefficients of <xref ref-type="disp-formula" rid="pone.0292861.e002">Eq 2</xref> appear as one constant, three linear, three quadratic, and three interaction terms. The coefficients imply that for Y<sub>2</sub> (encapsulation efficiency), the first-, second-order and interaction main effects are generated from PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>).</p>
+<p>The coefficients of <xref ref-type="disp-formula" rid="pone.0292861.e003">Eq 3</xref> appear as one constant, three linear and three interaction terms. The coefficients imply that for Y<sub>3</sub> (mean diameter), the first-order and interaction main effects are generated from PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>).</p>
+<p>The coefficients of <xref ref-type="disp-formula" rid="pone.0292861.e004">Eq 4</xref> appear as one constant, three linear, three quadratic, and three interaction terms. The coefficients imply that for Y<sub>4</sub> (initial release), the first-, second-order and interaction main effects are generated from PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>).</p>
+</sec>
+<sec id="sec015">
+<title>Response surface and contour plot analysis</title>
+<p>The relationships between the dependent and independent variables were demonstrated by the three-dimensional response surface plots and corresponding two-dimensional contour plots generated by the mathematical models (Figs <xref ref-type="fig" rid="pone.0292861.g003">3</xref>–<xref ref-type="fig" rid="pone.0292861.g006">6</xref>). These plots are useful for showing the interaction effects of factors on the responses, displaying the effects of two factors on the response at the same time [<xref ref-type="bibr" rid="pone.0292861.ref031">31</xref>].</p>
+<fig id="pone.0292861.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title/>
+<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on drug content (Y<sub>1</sub>).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g003" xlink:type="simple"/>
+</fig>
+<fig id="pone.0292861.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title/>
+<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on encapsulation efficiency (Y<sub>2</sub>).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g004" xlink:type="simple"/>
+</fig>
+<fig id="pone.0292861.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title/>
+<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on mean diameter (Y<sub>3</sub>).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g005" xlink:type="simple"/>
+</fig>
+<fig id="pone.0292861.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title/>
+<p>Response surface (A&amp;B) and contour plots (C&amp;D) of PVA concentration (X<sub>1</sub>), PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on initial release (Y<sub>4</sub>).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g006" xlink:type="simple"/>
+</fig>
+<p><xref ref-type="fig" rid="pone.0292861.g003">Fig 3A and 3C</xref> depicts the combined effect of PVA concentration (X<sub>1</sub>) and PLGA concentration (X<sub>2</sub>) on drug content (Y<sub>1</sub>). As the PVA concentration increased, the drug content decreased, while the drug content value increased with increasing PLGA concentration. <xref ref-type="fig" rid="pone.0292861.g003">Fig 3B and 3D</xref> shows the combined effect of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on drug content (Y<sub>1</sub>). These two plots indicate that the drug content value increases slowly as the PLGA concentration or theoretical drug content increases. To avoid the occurrence of high EE with low drug loading, the response of drug content was selected as an important qualifying parameter for the subsequent model optimization. A high PVA concentration in outer water could produce small microspheres with a large surface area resulting in an increase in drug diffusion into the water phase, therefore leading to a low drug content. High PLGA concentrations could slow drug diffusion and thereby increase the drug content (EE).</p>
+<p><xref ref-type="fig" rid="pone.0292861.g004">Fig 4A and 4C</xref> depicts the combined effect of PVA concentration (X<sub>1</sub>) and PLGA concentration (X<sub>2</sub>) on encapsulation efficiency (Y<sub>2</sub>). As the PVA concentration increases the value of EE decreases quickly; the EE value increases as the PLGA concentration increases. <xref ref-type="fig" rid="pone.0292861.g004">Fig 4B and 4D</xref> shows the combined effect of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on encapsulation efficiency (Y<sub>2</sub>). These two plots indicate that the EE value increases dramatically as the PLGA concentration increases or the theoretical drug content decreases. It has been reported that EE is highly affected by many factors, such as the polymer concentration, intrinsic viscosity, diameter of microspheres, and molecular weight of polymers [<xref ref-type="bibr" rid="pone.0292861.ref032">32</xref>]. An increase in the concentration of PVA in the water phase led to a decrease in the EE. A possible reason for this might be that the higher PVA in the outer water phase would increase the drug solubility in the aqueous phase and therefore impair drug EE. Moreover, an increase in PVA would generate a smaller microsphere (diameter) resulting in a lower EE. A higher concentration of PLGA in the oil phase would increase the drug EE, because the enhancement of PLGA concentration would increase the viscosity of the oil phase and hence prevent the drug from diffusing out of the oil phase.</p>
+<p><xref ref-type="fig" rid="pone.0292861.g005">Fig 5A and 5C</xref> depicts the combined effect of PVA concentration (X<sub>1</sub>) and PLGA concentration (X<sub>2</sub>) on mean diameter (Y<sub>3</sub>). As the PVA concentration increased, the value of the mean diameter decreased; the mean diameter value increased slightly as the PLGA concentration increased. <xref ref-type="fig" rid="pone.0292861.g005">Fig 5B and 5D</xref> shows the combined effect of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on mean diameter (Y<sub>3</sub>). Both factors (X<sub>2</sub>, X<sub>3</sub>) have mild effects on the mean diameter in the chosen scope. With the combination of the two factors (X<sub>2</sub>, X<sub>3</sub>), there is a vertex space for the response Y<sub>3.</sub> In such a design space (area) with X<sub>1</sub> fixed, the mean diameter can obtain a relatively stable value. Moreover, the theoretical drug content has a limited effect on the mean diameter. The increase in PVA concentration could decrease the surface tension of the oil-water phase interface and thus increase the microsphere diameter. The PLGA concentration could influence the viscosity of the oil phase and hence affect the diameter of the microspheres.</p>
+<p><xref ref-type="fig" rid="pone.0292861.g006">Fig 6A and 6C</xref> depicts the combined effect of PVA concentration (X<sub>1</sub>) and PLGA concentration (X<sub>2</sub>) on initial release (Y<sub>3</sub>). As the PVA concentration increased, the value of initial release increased dramatically; the initial release value increased slightly as the PLGA concentration decreased. <xref ref-type="fig" rid="pone.0292861.g006">Fig 6B and 6D</xref> shows the combined effect of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on initial release (Y<sub>4</sub>). The initial release value increases as the theoretical drug content increases or PLGA concentration decreases. According to the above discussion, a high PVA concentration or low PLGA concentration would decrease the microsphere size. The enhancement of the initial release might be due to the smaller diameter and higher surface areas of the microspheres. This is because microspheres with a larger surface/volume ratio have more contact areas for drug diffusion into the release medium.</p>
+<p>There are many preparation parameters that may influence the pharmaceutical features of microspheres, such as the homogenization speed, stirring paddle size, and temperature of the preparation process. These factors have a relatively small influence compared with the selected factors (X<sub>1</sub>-X<sub>3</sub>), and they were removed from the CCD to simplify the subsequent formulation optimization.</p>
+</sec>
+<sec id="sec016">
+<title>Optimization</title>
+<p>After the construction of mathematical models, the desirability function approach which can give an assessment of how well the comprehensive goals are satisfied for all responses was provided by the software to conduct the formulation optimization. Such an approach has many advantages, such as being easy to set in the software and flexible to give weight or importance to each response [<xref ref-type="bibr" rid="pone.0292861.ref033">33</xref>]. For these reasons, the desirability function has been widely utilized in the optimization of multiple responses.</p>
+<p>For our final goals, we want the microspheres to have high drug content and EE to load more drugs into the preparation and have a small mean diameter and initial release to aid the usage of such drugs. In the numerical optimization process, all goals of the three factors (X<sub>1</sub>-X<sub>3</sub>) were set as "in range", the goals of Y<sub>1</sub> and Y<sub>2</sub> were set as "maximize" and the goals of Y<sub>3</sub> and Y<sub>4</sub> were set as "minimize", and the other parameters were set by default.</p>
+<p>In the numerical optimization process, all goals of the three factors (X<sub>1</sub>-X<sub>3</sub>) were set as "in range", the goals of Y<sub>1</sub> and Y<sub>2</sub> were set as "maximize", the goals of Y<sub>3</sub> and Y<sub>4</sub> were set as "minimize", and the other parameters were set by default. In the graphical optimization process, all parameters were set automatically by the software. The software provided 8 sets of optimal solutions, and the first recommended solution with a desirability of 0.762 was as follows: 4.48% PVA concentration (X<sub>1</sub>), 259.46 of PLGA concentration (X<sub>2</sub>) and 10.10% theoretical drug content (X<sub>3</sub>). These values predicted 8.32% drug content, 82.87% EE, 41.32 μm mean diameter and 15.11% initial release.</p>
+<p><xref ref-type="fig" rid="pone.0292861.g007">Fig 7A</xref> depicts the 3D response surface of the desirability function for the first recommended solution (other solutions were similar to this one). The area of the optimized formulation is shown in <xref ref-type="fig" rid="pone.0292861.g007">Fig 7B</xref>, in which the yellow region represents the area satisfying the proposed constraints.</p>
+<fig id="pone.0292861.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title/>
+<p>Response surface (A) and contour plots (B) of PLGA concentration (X<sub>2</sub>) and theoretical drug content (X<sub>3</sub>) on the desirability function. At a PVA concentration (X<sub>1</sub>) of 4.48%.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g007" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec017">
+<title>Confirmation experiments</title>
+<p>To confirm the validity of the obtained optimal conditions, confirmation experiments were conducted with the software recommended parameters in triplicate (X<sub>1</sub> = 4.48%, X<sub>2</sub> = 259.46 mg/ml, X<sub>3</sub> = 10.10%). <xref ref-type="table" rid="pone.0292861.t005">Table 5</xref> represents the predicted values and experimental results for the four response variables at the optimal levels of the three factors. The errors between the observed (measured) and predicted values of the four responses were less than 5%, showing the good predictability and reliability of the constructed models [<xref ref-type="bibr" rid="pone.0292861.ref034">34</xref>].</p>
+<table-wrap id="pone.0292861.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.t005</object-id>
+<label>Table 5</label> <caption><title>Predicted and measured response values at the optimal levels of factors.</title></caption>
+<alternatives>
+<graphic id="pone.0292861.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.t005" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Response variables</th>
+<th align="left">Predicted value</th>
+<th align="left">Observed value</th>
+<th align="left">%Error<xref ref-type="table-fn" rid="t005fn001"><sup>a</sup></xref></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Drug content</td>
+<td align="left">8.32</td>
+<td align="left">7.96</td>
+<td align="left">-4.52</td>
+</tr>
+<tr>
+<td align="left">Encapsulation efficiency</td>
+<td align="left">82.87</td>
+<td align="left">80.16</td>
+<td align="left">-3.38</td>
+</tr>
+<tr>
+<td align="left">Mean diameter</td>
+<td align="left">41.32</td>
+<td align="left">42.36</td>
+<td align="left">2.45</td>
+</tr>
+<tr>
+<td align="left">Initial release</td>
+<td align="left">15.11</td>
+<td align="left">14.48</td>
+<td align="left">-4.35</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t005fn001"><p><sup>a</sup>Error (%) = (Observed value—Predicted value) / Observed value×100%</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec018">
+<title>Morphology, particle size and drug loading</title>
+<p>The surface morphology of microspheres prepared with the optimized formulation was observed by SEM. The prepared microspheres were spherical and smooth without any pores on their surface (<xref ref-type="fig" rid="pone.0292861.g008">Fig 8</xref>). Moreover, the microspheres appear to be regular and homogeneous.</p>
+<fig id="pone.0292861.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>Micrograph of triptolide loaded PLGA microspheres by scanning electron microscopy.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g008" xlink:type="simple"/>
+</fig>
+<p>Particle size is an important feature of microspheres, as it can influence the drug content, drug EE, drug release rate, and initial burst release of microspheres [<xref ref-type="bibr" rid="pone.0292861.ref032">32</xref>]. As shown in <xref ref-type="fig" rid="pone.0292861.g009">Fig 9</xref>, the mean diameter of the microspheres was approximately 40 μm, with an average value of 42.36 ± 1.33 μm. The particle size of the microspheres is uniform with a small span of size distribution (1.03 ± 0.05). These results are consistent with the above SEM results.</p>
+<fig id="pone.0292861.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>Particle size distribution of triptolide loaded PLGA microspheres.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g009" xlink:type="simple"/>
+</fig>
+<p>After the drug content assay, the drug content and EE of the prepared microspheres were calculated as 7.96 ± 0.19% and 80.16 ± 3.36, respectively.</p>
+<p>The preparation method used in this work is emulsion solvent evaporation, which was adopted with some modifications reported by Wu et al. [<xref ref-type="bibr" rid="pone.0292861.ref011">11</xref>]. Since this technique requires no special equipment [<xref ref-type="bibr" rid="pone.0292861.ref035">35</xref>] and only mild conditions such as constant stirring and ambient temperature [<xref ref-type="bibr" rid="pone.0292861.ref036">36</xref>], it is widely applied in the preparation of microspheres and is superior to other methods.</p>
+</sec>
+<sec id="sec019">
+<title>In vitro drug release</title>
+<p><xref ref-type="fig" rid="pone.0292861.g010">Fig 10</xref> displays the <italic>in vitro</italic> release profiles of three batches of triptolide loaded microspheres. The <italic>in vitro</italic> drug release behaviors of the three batches showed good consistency. After an initial burst release of approximately 14% within the first 24 h, the triptolide release rate slowed down and remained constant from Day 2 to Day 21 (3.5% released per day); after that, the release rate slowed down gradually and reached a plateau phase (after Day 21); over 90% of the drug was released by Day 28. In short, the triptolide release feature from the prepared microspheres can be attributed to the interactions between the drug and the polymer.</p>
+<fig id="pone.0292861.g010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0292861.g010</object-id>
+<label>Fig 10</label>
+<caption>
+<title><italic>In vitro</italic> cumulative drug release from triptolide loaded PLGA microspheres in PBS pH 7.4 at 37°C (mean± SD, n = 3).</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.g010" xlink:type="simple"/>
+</fig>
+<p>Initial burst release is a great challenge for microspheres. Approximately 10%-80% of the total drug loading will be released from microspheres within the first day in the burst release period [<xref ref-type="bibr" rid="pone.0292861.ref037">37</xref>]. This dose dumping may pose a serious toxicity risk for the users of microspheres and is a major obstacle to the development of microsphere products. To prepare microspheres with low burst release, numerous strategies have been developed, for example using different matrices, modifying the encapsulated drugs and employing special preparation methods [<xref ref-type="bibr" rid="pone.0292861.ref038">38</xref>, <xref ref-type="bibr" rid="pone.0292861.ref039">39</xref>]. For the narrow therapeutic index drug triptolide, the issue of reducing the abrupt release becomes more prominent. Considering that the designed drug release period is 30 days, the initial burst release of triptolide microspheres prepared (~14%) in this paper should at least be reduced to 3% (1/30) to achieve a safe and optimal therapeutic level and decrease side effects. Now, the important issue facing treptolide is not the absence of sustained-release (SR) properties but rather its narrow therapeutic window. This calls for research on development of new emulsion preparation methods, pre-release of initial burst release and / or new materials to overcome this outstanding issue. <italic>In vitro</italic> drug release tests are commonly employed to assess the initial burst release of microsphere products and thus ensure clinical safety.</p>
+<p>As reported in the literature, commercial preparations of TWHF can cause severe drug reactions such as reproductive toxicity, hepatotoxicity and renal cytotoxicity. Studies have also demonstrated that triptolide-induced toxicity depends on dosage and use time [<xref ref-type="bibr" rid="pone.0292861.ref007">7</xref>]. It can be inferred that the control of the amount of initial release and regular medical examinations of the users are prerequisites for the clinical usage of triptolide SR microspheres. If triptolide SR microspheres exhibit an accidental burst upon administration, they may cause the severe reactions described above, or even organ failure (liver and /or kidney). In such cases, emergency surgery is required to remove the implanted microspheres. This suggests that the control of burst release is critical for the quality of triptolide microspheres. Moreover, the potential clinical benefits of triptolide SR microspheres may not be justified unless the <italic>in vitro</italic> drug release characterization is substantiated by <italic>in vivo</italic> studies.</p>
+</sec>
+<sec id="sec020">
+<title>Release kinetics</title>
+<p>These <italic>in vitro</italic> release data were fitted with zero-order (F<sub>t</sub> = 3.375t + 9.718, R<sup>2</sup> = 0.957), first-order (Ln(100—Ft) = -0.100t + 4.684, R<sup>2</sup> = 0.965), Higuchi (Q = 18.94t1/2–6.009, R<sup>2</sup> = 0.971) and Korsmeyer-Peppas (Ln(Q) = 0.600Ln(t) + 2.540, R<sup>2</sup> = 0.975) equations. The data best fit the Korsmeyer-Peppas model with the highest R<sup>2</sup> value, indicating that the <italic>in vitro</italic> triptolide release was mainly controlled by more than one type of diffusion release mechanism (Fickian and non-Fickian diffusion) [<xref ref-type="bibr" rid="pone.0292861.ref040">40</xref>].</p>
+</sec>
+</sec>
+<sec id="sec021" sec-type="conclusions">
+<title>Conclusions</title>
+<p>In this study, triptolide loaded PLGA microspheres were successfully prepared by an O/W emulsion solvent evaporation method. The formulation of triptolide microspheres was developed and optimized successfully utilizing RSM coupled with CCD. A series of experiments given by the central composite design were conducted and the related data were processed by the software, which provided the optimized factor levels. The predicted optimal conditions were further confirmed by the validated experiments and showed good consistency with the predicted values of the responses. The optimized microspheres displayed a sustained release of triptolide <italic>in vitro</italic> over 4 weeks, which was well fitted with a Korsmeyer-Peppas model. However, all the evaluations in this paper were <italic>in vitro</italic>, and further <italic>in vivo</italic> experiments are being performed. The initial burst release issue (reduced from ~14% to 3%) should also be specifically investigated in future studies. <italic>In vivo</italic> studies are required to validate the <italic>in vitro</italic> drug release properties of triptolide microspheres and thus justify their potential clinical benefits. The extended release feature of triptolide from such microspheres could provide a reliable and convenient alternative option for the long-term treatment of RA. Once a new formulation is developed with an initial burst release reduced to 3% or less, and the in <italic>vitro</italic> release data are substantiated with <italic>in vivo</italic> studies, this triptolide-loaded PLGA microsphere formulation may only need to be injected once a month, greatly reducing the burden for RA patients to take medication daily.</p>
+</sec>
+<sec id="sec022" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0292861.s001" mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" position="float" xlink:href="info:doi/10.1371/journal.pone.0292861.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title>Research data of the paper.</title>
+<p>(XLSX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0292861.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sweeney</surname> <given-names>SE</given-names></name>, <name name-style="western"><surname>Firestein</surname> <given-names>GS</given-names></name>. <article-title>Rheumatoid arthritis: regulation of synovial inflammation</article-title>. <source>Int J Biochem Cell Biol</source>. <year>2004</year>; <volume>36</volume>(<issue>3</issue>):<fpage>372</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s1357-2725%2803%2900259-0" xlink:type="simple">10.1016/s1357-2725(03)00259-0</ext-link></comment> <object-id pub-id-type="pmid">14687914</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aletaha</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Smolen</surname> <given-names>JS</given-names></name>. <article-title>Diagnosis and Management of Rheumatoid Arthritis: A Review</article-title>. <source>JAMA</source>. <year>2018</year>; <volume>320</volume>(<issue>13</issue>):<fpage>1360</fpage>–<lpage>1372</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1001/jama.2018.13103" xlink:type="simple">10.1001/jama.2018.13103</ext-link></comment> <object-id pub-id-type="pmid">30285183</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McLaughlin</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Östör</surname> <given-names>A</given-names></name>. <article-title>Safety of subcutaneous versus intravenous tocilizumab in combination with traditional disease-modifying antirheumatic drugs in patients with rheumatoid arthritis.</article-title> <source>Expert Opin Drug Saf</source>. <year>2015</year>; <volume>14</volume>(<issue>3</issue>):<fpage>429</fpage>–<lpage>37</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1517/14740338.2015.998198" xlink:type="simple">10.1517/14740338.2015.998198</ext-link></comment> <object-id pub-id-type="pmid">25553607</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McWilliams</surname> <given-names>DF</given-names></name>, <name name-style="western"><surname>Varughese</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Young</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kiely</surname> <given-names>PD</given-names></name>, <name name-style="western"><surname>Walsh</surname> <given-names>DA</given-names></name>. <article-title>Work disability and state benefit claims in early rheumatoid arthritis: the ERAN cohort.</article-title> <source>Rheumatology (Oxford).</source> <year>2014</year>; <volume>53</volume>(<issue>3</issue>):<fpage>473</fpage>–<lpage>81</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/rheumatology/ket373" xlink:type="simple">10.1093/rheumatology/ket373</ext-link></comment> Epub 2013 Nov 15. <object-id pub-id-type="pmid">24241033</object-id>; PMCID: PMC3930885.</mixed-citation></ref>
+<ref id="pone.0292861.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fan</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zheng</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>The Effect of Triptolide in Rheumatoid Arthritis: From Basic Research towards Clinical Translation.</article-title> <source>Int J Mol Sci.</source> <year>2018</year>; <volume>19</volume>(<issue>2</issue>):<fpage>376</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/ijms19020376" xlink:type="simple">10.3390/ijms19020376</ext-link></comment> <object-id pub-id-type="pmid">29373547</object-id>; PMCID: PMC5855598.</mixed-citation></ref>
+<ref id="pone.0292861.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Tao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Lipsky</surname> <given-names>PE</given-names></name>. <article-title>Triptolide, an active component of the Chinese herbal remedy Tripterygium wilfordii Hook F, inhibits production of nitric oxide by decreasing inducible nitric oxide synthase gene transcription</article-title>. <source>Arthritis Rheum</source>. <year>2004</year>; <volume>50</volume>(<issue>9</issue>):<fpage>2995</fpage>–<lpage>303</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/art.20459" xlink:type="simple">10.1002/art.20459</ext-link></comment> <object-id pub-id-type="pmid">15457469</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>XJ</given-names></name>, <name name-style="western"><surname>Jiang</surname> <given-names>ZZ</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>LY</given-names></name>. <article-title>Triptolide: progress on research in pharmacodynamics and toxicology</article-title>. <source>J Ethnopharmacol</source>. <year>2014</year>; <volume>155</volume>(<issue>1</issue>):<fpage>67</fpage>–<lpage>79</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jep.2014.06.006" xlink:type="simple">10.1016/j.jep.2014.06.006</ext-link></comment> <object-id pub-id-type="pmid">24933225</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tao</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Younger</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Fan</surname> <given-names>FZ</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lipsky</surname> <given-names>PE</given-names></name>. <article-title>Benefit of an extract of Tripterygium Wilfordii Hook F in patients with rheumatoid arthritis: a double-blind, placebo-controlled study</article-title>. <source>Arthritis Rheum</source>. <year>2002</year>; <volume>46</volume>(<issue>7</issue>):<fpage>1735</fpage>–<lpage>43</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/art.10411" xlink:type="simple">10.1002/art.10411</ext-link></comment> <object-id pub-id-type="pmid">12124856</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cibere</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Deng</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ou</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Z</given-names></name>, <etal>et al</etal>. <article-title>A randomized double blind, placebo controlled trial of topical Tripterygium wilfordii in rheumatoid arthritis: reanalysis using logistic regression analysis</article-title>. <source>J Rheumatol</source>. <year>2003</year>; <volume>30</volume>(<issue>3</issue>):<fpage>465</fpage>–<lpage>7</lpage>. <object-id pub-id-type="pmid">12610802</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Law</surname> <given-names>SK</given-names></name>, <name name-style="western"><surname>Simmons</surname> <given-names>MP</given-names></name>, <name name-style="western"><surname>Techen</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Khan</surname> <given-names>IA</given-names></name>, <name name-style="western"><surname>He</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Shaw</surname> <given-names>PC</given-names></name>, <etal>et al</etal>. <article-title>Molecular analyses of the Chinese herb Leigongteng (Tripterygium wilfordii Hook.f.).</article-title> <source>Phytochemistry</source>. <year>2011</year>; <volume>72</volume>(<issue>1</issue>):<fpage>21</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.phytochem.2010.10.015" xlink:type="simple">10.1016/j.phytochem.2010.10.015</ext-link></comment> <object-id pub-id-type="pmid">21094504</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wu</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Gong</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>Triptolide ameliorates ileocolonic anastomosis inflammation in IL-10 deficient mice by mechanism involving suppression of miR-155/SHIP-1 signaling pathway</article-title>. <source>Mol Immunol</source>. <year>2013</year>; <volume>56</volume>(<issue>4</issue>):<fpage>340</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.molimm.2013.05.006" xlink:type="simple">10.1016/j.molimm.2013.05.006</ext-link></comment> <object-id pub-id-type="pmid">23911388</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Han</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Rostami-Yazdi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gerdes</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mrowietz</surname> <given-names>U</given-names></name>. <article-title>Triptolide in the treatment of psoriasis and other immune-mediated inflammatory diseases</article-title>. <source>Br J Clin Pharmacol</source>. <year>2012</year>; <volume>74</volume>(<issue>3</issue>):<fpage>424</fpage>–<lpage>36</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1365-2125.2012.04221.x" xlink:type="simple">10.1111/j.1365-2125.2012.04221.x</ext-link></comment> <object-id pub-id-type="pmid">22348323</object-id>; PMCID: PMC3477344.</mixed-citation></ref>
+<ref id="pone.0292861.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goldbach-Mansky</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Wilson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Fleischmann</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Olsen</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Silverfield</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Kempf</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>Comparison of Tripterygium wilfordii Hook F versus sulfasalazine in the treatment of rheumatoid arthritis: a randomized trial</article-title>. <source>Ann Intern Med</source>. <year>2009</year>; <volume>151</volume>(<issue>4</issue>):<fpage>229</fpage>–<lpage>40</lpage>, W49-51. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7326/0003-4819-151-4-200908180-00005" xlink:type="simple">10.7326/0003-4819-151-4-200908180-00005</ext-link></comment> <object-id pub-id-type="pmid">19687490</object-id>; PMCID: PMC2938780.</mixed-citation></ref>
+<ref id="pone.0292861.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>ES</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Jeong</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Lim</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Sustained-Release Microspheres of Rivoceranib for the Treatment of Subfoveal Choroidal Neovascularization.</article-title> <source>Pharmaceutics.</source> <year>2021</year>; <volume>13</volume>(<issue>10</issue>):<fpage>1548</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/pharmaceutics13101548" xlink:type="simple">10.3390/pharmaceutics13101548</ext-link></comment> <object-id pub-id-type="pmid">34683841</object-id>; PMCID: PMC8538988.</mixed-citation></ref>
+<ref id="pone.0292861.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hickey</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Kreutzer</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Burgess</surname> <given-names>DJ</given-names></name>, <name name-style="western"><surname>Moussy</surname> <given-names>F</given-names></name>. <article-title>Dexamethasone/PLGA microspheres for continuous delivery of an anti-inflammatory drug for implantable medical devices.</article-title> <source>Biomaterials.</source> <year>2002</year>; <volume>23</volume>(<issue>7</issue>):<fpage>1649</fpage>–<lpage>56</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0142-9612%2801%2900291-5" xlink:type="simple">10.1016/s0142-9612(01)00291-5</ext-link></comment> <object-id pub-id-type="pmid">11922468</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Su</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Sun</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>PLGA-based biodegradable microspheres in drug delivery: recent advances in research and application.</article-title> <source>Drug Deliv</source>. <year>2021</year>; <volume>28</volume>(<issue>1</issue>):<fpage>1397</fpage>–<lpage>1418</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/10717544.2021.1938756" xlink:type="simple">10.1080/10717544.2021.1938756</ext-link></comment> <object-id pub-id-type="pmid">34184949</object-id>; PMCID: PMC8248937.</mixed-citation></ref>
+<ref id="pone.0292861.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xie</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Chi</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Controlled release of dutasteride from biodegradable microspheres: in vitro and in vivo studies</article-title>. <source>PLoS One</source>. <year>2014</year>; <volume>9</volume>(<issue>12</issue>):<fpage>e114835</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0114835" xlink:type="simple">10.1371/journal.pone.0114835</ext-link></comment> <object-id pub-id-type="pmid">25541985</object-id>; PMCID: PMC4277280.</mixed-citation></ref>
+<ref id="pone.0292861.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Song</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Shi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Xue</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Tan</surname> <given-names>X</given-names></name>, <etal>et al</etal>. <article-title>Formulation and evaluation of celastrol-loaded liposomes.</article-title> <source>Molecules</source>. <year>2011</year>; <volume>16</volume>(<issue>9</issue>):<fpage>7880</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/molecules16097880" xlink:type="simple">10.3390/molecules16097880</ext-link></comment> <object-id pub-id-type="pmid">22143548</object-id>; PMCID: PMC6264578.</mixed-citation></ref>
+<ref id="pone.0292861.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wei</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Weng</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Wei</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Xie</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Adu-Frimpong</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>The characterisation, pharmacokinetic and tissue distribution studies of TPGS modified myricetrin mixed micelles in rats.</article-title> <source>J Microencapsul</source>. <year>2019</year>; <volume>36</volume>(<issue>3</issue>):<fpage>278</fpage>–<lpage>290</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/02652048.2019.1622606" xlink:type="simple">10.1080/02652048.2019.1622606</ext-link></comment> <object-id pub-id-type="pmid">31117852</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Czitrom</surname> <given-names>V.</given-names></name> <article-title>One-Factor-at-a-Time versus Designed Experiments</article-title>. <source>The American Statistician</source>. <year>1999</year>; <volume>53</volume>(<issue>2</issue>), <fpage>126</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2307/2685731" xlink:type="simple">10.2307/2685731</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0292861.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ilomuanya</surname> <given-names>MO</given-names></name>, <name name-style="western"><surname>Salako</surname> <given-names>BB</given-names></name>, <name name-style="western"><surname>Ologunagba</surname> <given-names>MO</given-names></name>, <name name-style="western"><surname>Shonekan</surname> <given-names>OO</given-names></name>, <name name-style="western"><surname>Owodeha-Ashaka</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Osahon</surname> <given-names>ES</given-names></name>, <etal>et al</etal>. <article-title>Formulation and Optimization of Metronidazole and Lactobacillus spp.</article-title> <source>Layered Suppositories via a Three-Variable, Five-Level Central Composite Design for the Management of Bacterial Vaginosis. Pharmaceutics</source>. <year>2022</year>; <volume>14</volume>(<issue>11</issue>):<fpage>2337</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/pharmaceutics14112337" xlink:type="simple">10.3390/pharmaceutics14112337</ext-link></comment> <object-id pub-id-type="pmid">36365154</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shailendra</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Shailendra</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Manish</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>TY</given-names></name>, <name name-style="western"><surname>Priti</surname> <given-names>T</given-names></name>. <article-title>Design and Optimization of Domperidone Fast Dissolving Tablet Using Central Composite Design.</article-title> <source>Curr Drug Deliv.</source> <year>2015</year>; <volume>12</volume>(<issue>6</issue>):<fpage>736</fpage>–<lpage>44</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2174/1567201811666141022101415" xlink:type="simple">10.2174/1567201811666141022101415</ext-link></comment> <object-id pub-id-type="pmid">25335985</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yokogawa</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Shima</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Hashimoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Hiyajyo</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Kadoyama</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Ishizaki</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>High bioavailabilty of alpha-tocopherol loaded into poly (DL-lactic-co-glycolic acid) microspheres in apolipoprotein B knockout mice.</article-title> <source>Pharm Res</source>. <year>2003</year>; <volume>20</volume>(<issue>11</issue>):<fpage>1846</fpage>–<lpage>50</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1023/b%3Apham.0000003384.38161.ba" xlink:type="simple">10.1023/b:pham.0000003384.38161.ba</ext-link></comment> <object-id pub-id-type="pmid">14661931</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Xie</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Chi</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>A novel accelerated in vitro release method to evaluate the release of thymopentin from PLGA microspheres.</article-title> <source>Pharm Dev Technol</source>. <year>2015</year>; <volume>20</volume>(<issue>5</issue>):<fpage>633</fpage>–<lpage>40</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3109/10837450.2014.892131" xlink:type="simple">10.3109/10837450.2014.892131</ext-link></comment> <object-id pub-id-type="pmid">24597702</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Luo</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>Development of interferon alpha-2b microspheres with constant release</article-title>. <source>Int J Pharm</source>. <year>2011</year>; <volume>410</volume>(<issue>1–2</issue>):<fpage>48</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijpharm.2011.03.016" xlink:type="simple">10.1016/j.ijpharm.2011.03.016</ext-link></comment> <object-id pub-id-type="pmid">21419205</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Mei</surname> <given-names>X</given-names></name>. <article-title>Effects of formulation parameters on encapsulation efficiency and release behavior of thienorphine loaded PLGA microspheres.</article-title> <source>Pharm Dev Technol</source>. <year>2013</year>; <volume>18</volume>(<issue>5</issue>):<fpage>1169</fpage>–<lpage>74</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3109/10837450.2011.618948" xlink:type="simple">10.3109/10837450.2011.618948</ext-link></comment> <object-id pub-id-type="pmid">21967467</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Higuchi</surname> <given-names>T.</given-names></name> <article-title>Mechanism of sustained action medication, theoretical analysis of rate of release of solid drugs dispersed in solid matrices</article-title>. <source>J Pharm Sci</source>. <year>1963</year>; <volume>52</volume>:<fpage>1145</fpage>–<lpage>1149</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/jps.2600521210" xlink:type="simple">10.1002/jps.2600521210</ext-link></comment> <object-id pub-id-type="pmid">14088963</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Korsmeyer</surname> <given-names>RW</given-names></name>, <name name-style="western"><surname>Gurny</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Doelker</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Buri</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Peppas</surname> <given-names>NA</given-names></name>. <article-title>Mechanisms of potassium chloride release from compressed, hydrophilic, polymeric matrices: effect of entrapped air</article-title>. <source>J Pharm Sci</source>. <year>1983</year>; <volume>72</volume>(<issue>10</issue>):<fpage>1189</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/jps.2600721021" xlink:type="simple">10.1002/jps.2600721021</ext-link></comment> <object-id pub-id-type="pmid">6644570</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Peppas</surname> <given-names>NA</given-names></name>. <article-title>Analysis of Fickian and non-Fickian drug release from polymers</article-title>. <source>Pharm Acta Helv.</source> <year>1985</year>; <volume>60</volume>(<issue>4</issue>):<fpage>110</fpage>–<lpage>1</lpage>. <object-id pub-id-type="pmid">4011621</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tafere</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Yilma</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Abrha</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Yehualaw</surname> <given-names>A</given-names></name>. <article-title>Formulation, in vitro characterization and optimization of taste-masked orally disintegrating co-trimoxazole tablet by direct compression.</article-title> <source>PLoS One</source>. <year>2021</year>; <volume>16</volume>(<issue>3</issue>):<fpage>e0246648</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0246648" xlink:type="simple">10.1371/journal.pone.0246648</ext-link></comment> <object-id pub-id-type="pmid">33725014</object-id>; PMCID: PMC7963106.</mixed-citation></ref>
+<ref id="pone.0292861.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nutan</surname> <given-names>MT</given-names></name>, <name name-style="western"><surname>Soliman</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Taha</surname> <given-names>EI</given-names></name>, <name name-style="western"><surname>Khan</surname> <given-names>MA</given-names></name>. <article-title>Optimization and characterization of controlled release multi-particulate beads coated with starch acetate</article-title>. <source>Int J Pharm</source>. <year>2005</year>; <volume>294</volume>(<issue>1–2</issue>):<fpage>89</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijpharm.2005.01.013" xlink:type="simple">10.1016/j.ijpharm.2005.01.013</ext-link></comment> <object-id pub-id-type="pmid">15814233</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Su</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Sun</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Shi</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Jiang</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Meng</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Teng</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Effects of formulation parameters on encapsulation efficiency and release behavior of risperidone poly(D,L-lactide-co-glycolide) microsphere.</article-title> <source>Chem Pharm Bull (Tokyo).</source> <year>2009</year>; <volume>57</volume>(<issue>11</issue>):<fpage>1251</fpage>–<lpage>6</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1248/cpb.57.1251" xlink:type="simple">10.1248/cpb.57.1251</ext-link></comment> <object-id pub-id-type="pmid">19881277</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Benyounis</surname> <given-names>KY</given-names></name>, <name name-style="western"><surname>Olabi</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Hashmi</surname> <given-names>MSJ</given-names></name>. <article-title>Multi-response optimization of CO2 laser-welding process of austenitic stainless steel.</article-title> <source>Opt Laser Technol</source>. <year>2008</year>; <volume>40</volume>(<issue>1</issue>):<fpage>76</fpage>–<lpage>87</lpage>.</mixed-citation></ref>
+<ref id="pone.0292861.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Molla</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Belete</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gebre-mariam</surname> <given-names>T</given-names></name>. <article-title>Boswellia papyrifera resin as microencapsulating agent for controlled release of diclofenac sodium: formulation, evaluation and optimization study</article-title>. <source>Int J Pharm Pharm Sci</source>. <year>2014</year>; <volume>6</volume>(<issue>1</issue>):<fpage>827</fpage>–<lpage>37</lpage>.</mixed-citation></ref>
+<ref id="pone.0292861.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Qandil</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Assaf</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Al Ani</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Yassin</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Obaidat</surname> <given-names>AA</given-names></name>. <article-title>Sustained-release diclofenac potassium orally disintegrating tablet incorporating eudragit ERL/ERS: possibility of specific diclofenac-polymer interaction</article-title>. <source>Journal of Pharmaceutical Investigation</source>. <year>2013</year>; <volume>43</volume>:<fpage>171</fpage>–<lpage>183</lpage>.</mixed-citation></ref>
+<ref id="pone.0292861.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>BK</given-names></name>, <name name-style="western"><surname>Hwang</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>HJ</given-names></name>. <article-title>Preparation and characterization of drug-loaded polymethacrylate microspheres by an emulsion solvent evaporation method.</article-title> <source>J Microencapsul.</source> <year>2002</year>; <volume>19</volume>(<issue>6</issue>):<fpage>811</fpage>–<lpage>22</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/0265204021000022770" xlink:type="simple">10.1080/0265204021000022770</ext-link></comment> <object-id pub-id-type="pmid">12569029</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>BM</given-names></name>, <name name-style="western"><surname>Schwendeman</surname> <given-names>SP</given-names></name>. <article-title>Characterization of the initial burst release of a model peptide from poly(D,L-lactide-co-glycolide) microspheres.</article-title> <source>J Control Release</source>. <year>2002</year>; <volume>82</volume>(<issue>2–3</issue>):<fpage>289</fpage>–<lpage>307</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0168-3659%2802%2900137-2" xlink:type="simple">10.1016/s0168-3659(02)00137-2</ext-link></comment> <object-id pub-id-type="pmid">12175744</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zheng</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Liang</surname> <given-names>W</given-names></name>. <article-title>A one-step modified method to reduce the burst initial release from PLGA microspheres.</article-title> <source>Drug Deliv.</source> <year>2010</year>; <volume>17</volume>(<issue>2</issue>):<fpage>77</fpage>–<lpage>82</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3109/10717540903509001" xlink:type="simple">10.3109/10717540903509001</ext-link></comment> <object-id pub-id-type="pmid">20067365</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Ying</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Trujillo</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>High drug-loaded microspheres enabled by controlled in-droplet precipitation promote functional recovery after spinal cord injury.</article-title> <source>Nat Commun.</source> <year>2022</year>; <volume>13</volume>(<issue>1</issue>):<fpage>1262</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41467-022-28787-7" xlink:type="simple">10.1038/s41467-022-28787-7</ext-link></comment> <object-id pub-id-type="pmid">35273148</object-id>.</mixed-citation></ref>
+<ref id="pone.0292861.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mircioiu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Voicu</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Anuta</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Tudose</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Celia</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Paolino</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Mathematical Modeling of Release Kinetics from Supramolecular Drug Delivery Systems.</article-title> <source>Pharmaceutics</source>. <year>2019</year>; <volume>11</volume>(<issue>3</issue>):<fpage>140</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/pharmaceutics11030140" xlink:type="simple">10.3390/pharmaceutics11030140</ext-link></comment> <object-id pub-id-type="pmid">30901930</object-id>; PMCID: PMC6471682.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

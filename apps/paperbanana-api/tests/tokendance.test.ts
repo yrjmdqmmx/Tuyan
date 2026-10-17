@@ -9,20 +9,21 @@ import { createTokenDanceService, tokenDanceCipher } from '../src/tokendance-ser
 import { createProviderWorkflow } from '../src/provider-workflow.js'
 import { TOKENDANCE_APP_URL, TokenDanceError, tokenDanceAmount, tokenDanceBalance, tokenDanceChat, tokenDanceChatBody, tokenDanceImageBody, tokenDanceResponse, tokenDanceFailure } from '../../../packages/api/src/tokendance.js'
 import { resolveImageSize } from '../../../packages/types/src/image-size-contract.js'
-import { STATIC_MODEL_REGISTRY as mini } from '../../miniprogram/miniprogram/utils/static-model-catalog.js'
+import { TOKENDANCE_MODELS } from '../../../packages/api/src/tokendance-models.js'
 import { compareTokenDanceCatalog } from '../../../scripts/check-tokendance-catalog.mjs'
 const catalog = JSON.parse(readFileSync(new URL('../../../config/tokendance/catalog.json', import.meta.url), 'utf8'))
 const { STATIC_MODEL_REGISTRY: web } = createRequire(import.meta.url)('../../web/src/lib/staticModelCatalog.js')
 const sizes = JSON.parse(readFileSync(new URL('../../../config/image-size-contracts.json', import.meta.url), 'utf8'))
 const secret = Buffer.alloc(32, 37).toString('base64')
 
-test('all 95 reviewed IDs are accounted for, all eligible roles agree across clients, and discovery reports changes', () => {
-  assert.equal(catalog.models.length, 95)
-  assert.equal(new Set(catalog.models.map((m: any) => m.id)).size, 95)
+test('all 102 reviewed IDs are accounted for, all eligible roles agree across Web and Core, and discovery reports changes', () => {
+  assert.equal(catalog.models.length, 102)
+  assert.equal(new Set(catalog.models.map((m: any) => m.id)).size, 102)
   const included = catalog.models.filter((m: any) => m.roles.length)
-  assert.equal(included.length, 64)
-  for (const [role, count] of Object.entries({ main: 62, vision: 29, image: 2, optimize: 62, refine: 2 })) assert.equal(included.filter((m: any) => m.roles.includes(role)).length, count)
-  assert.deepEqual(web.tokendance, mini.tokendance)
+  assert.equal(included.length, 71)
+  for (const [role, count] of Object.entries({ main: 69, vision: 29, image: 2, optimize: 69, refine: 2 })) assert.equal(included.filter((m: any) => m.roles.includes(role)).length, count)
+  // Mini Program synchronization and verification are explicitly deferred this round.
+  assert.deepEqual(TOKENDANCE_MODELS.filter(m => m.roles.length).map(m => m.id).sort(), included.map((m: any) => m.id).sort())
   for (const model of catalog.models) {
     const entry = web.tokendance.models.find((m: any) => m.id === model.id)
     if (!model.roles.length) { assert.ok(model.excludedReason); assert.equal(entry, undefined); continue }
@@ -281,7 +282,9 @@ test('headless authorization, reconnecting a pending order, complete erasure and
   for (const name of ['connections', 'flows', 'payments']) assert.equal(f.db.collection('paperbanana_tokendance_' + name).rows.length, 0)
 })
 
-test('real legacy adapters dispatch every eligible text and vision ID plus both Seedream generation/edit protocols', async () => {
+test('real legacy adapters dispatch every eligible text and vision ID plus both Seedream generation/edit protocols', async (t) => {
+  // Wire coverage at the audit date; retirement boundaries have separate tests.
+  t.mock.method(Date, 'now', () => Date.parse('2026-10-09T00:00:00Z'))
   const runtime = await createRefineRuntime()
   const requests: any[] = []
   try {
@@ -298,7 +301,7 @@ test('real legacy adapters dispatch every eligible text and vision ID plus both 
       if (model.roles.includes('vision')) assert.equal(await runtime.legacy.callVisionModel('tokendance', model.id, 'fixture', 'm', 'c', [{ url: 'https://example.com/figure.png' }]), 'scientific text')
       if (model.roles.includes('image')) for (const source of ['', 'data:image/png;base64,' + runtime.image.toString('base64')]) assert.ok(await runtime.legacy.callImageModel('tokendance', model.id, 'fixture', 'figure', '16:9', source, '2K', true))
     }
-    assert.equal(requests.length, 95)
+    assert.equal(requests.length, 102)
     for (const { url, init } of requests) { assert.equal(init.headers['X-App-URL'], TOKENDANCE_APP_URL); assert.ok(url.startsWith('https://tokendance.space/gateway/')); assert.equal('models' in JSON.parse(init.body), false) }
   } finally { await runtime.close() }
 })
@@ -307,7 +310,11 @@ test('real Gateway/Core compose login, authorization, generation, balance failur
   const runtime = await createRefineRuntime({ tokenDance: true })
   try {
     assert.equal((await runtime.post({ action: 'tokenDanceAuthorize' }, 'anonymous')).status, 401)
-    const start = await runtime.post({ action: 'tokenDanceAuthorize' })
+    const start = await runtime.post({ action: 'tokenDanceAuthorize', platform: 'web', callbackOrigin: 'https://tuyansci.cn' })
+    assert.equal(start.data.code, 0, JSON.stringify(start))
+    const authUrl = new URL(start.data.authorizationUrl)
+    // The fixture wraps the real provider URL in a local consent page.
+    assert.equal(new URL(authUrl.searchParams.get('target')!).origin, 'https://tuyansci.cn')
     assert.equal(start.data.code, 0)
     assert.equal((await runtime.post({ action: 'tokenDanceExchange', state: start.data.state, code: 'fixture-code' }, 'other-owner')).status, 409)
     assert.equal((await runtime.post({ action: 'tokenDanceExchange', state: start.data.state, code: 'fixture-code' })).data.connected, true)
@@ -351,10 +358,16 @@ test('real Gateway/Core compose login, authorization, generation, balance failur
     assert.ok(lastImage)
     assert.ok(JSON.parse(lastImage.options.body).image[0].startsWith('data:image/png;base64,'))
     await runtime.post({ action: 'tokenDanceDisconnect' })
-    const unused = await runtime.post({ action: 'refineImage', configurationMode: 'advanced', provider: 'tokendance', modelRoutes: { ...routes, image: { accessProvider: 'openai', modelId: 'gpt-image-2' } }, apiKeys: { openai: 'fixture-openai' }, sourceImageObjectKey: source, editInstruction: '保留布局。', imageSize: '2K', aspectRatio: '16:9' })
-    assert.equal(unused.data.code, 0, 'unused TD main/vision routes must not require a connection: ' + JSON.stringify(unused))
+    const needsMain = await runtime.post({ action: 'refineImage', configurationMode: 'advanced', provider: 'tokendance', modelRoutes: { ...routes, image: { accessProvider: 'openai', modelId: 'gpt-image-2' } }, apiKeys: { openai: 'fixture-openai' }, sourceImageObjectKey: source, editInstruction: '保留布局。', imageSize: '2K', aspectRatio: '16:9' })
+    assert.equal(needsMain.data.code, 401, 'refinement always requires its configured main model connection')
+    const beforeUnused = runtime.tokenDanceCalls.length
+    const unused = await runtime.post({ action: 'refineImage', configurationMode: 'advanced', provider: 'openai', visionMode: 'none', modelRoutes: { ...routes, main: { accessProvider: 'openai', modelId: 'gpt-4.1' }, image: { accessProvider: 'openai', modelId: 'gpt-image-2' } }, apiKeys: { openai: 'fixture-openai' }, sourceImageObjectKey: source, editInstruction: '保留布局。', imageSize: '2K', aspectRatio: '16:9' })
+    assert.equal(unused.data.code, 0, 'disabled TD vision draft must not require a connection: ' + JSON.stringify(unused))
     await runtime.legacy.drainJobAdmission()
-    assert.equal((await runtime.post({ action: 'getJob', jobId: unused.data.jobId })).data.job.status, 'succeeded')
+    const unusedResult = await runtime.post({ action: 'getJob', jobId: unused.data.jobId })
+    assert.ok(unusedResult.data.job, JSON.stringify(unusedResult))
+    assert.equal(unusedResult.data.job.status, 'succeeded')
+    assert.equal(runtime.tokenDanceCalls.length, beforeUnused)
   } finally { await runtime.close() }
 })
 
@@ -448,4 +461,28 @@ test('deterministic reference validation never hides an earlier uncertain provid
   }))
   const job = await f.db.collection('paperbanana_jobs').findOne({_id:task.jobId})
   assert.equal(job.recovery.action,'review_request');assert.equal(job.recovery.canResume,false)
+})
+
+
+test('dual-site callbacks preserve stable attribution, legacy fallback, PKCE and manual-code mode', async () => {
+  for (const origin of [undefined, 'https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia']) {
+    const f = fixture(), result = await f.request('tokenDanceAuthorize', { platform: 'web', ...(origin ? { callbackOrigin: origin } : {}) })
+    const url = new URL(result.authorizationUrl), target = new URL(url.searchParams.get('callback_url')!)
+    assert.equal(target.origin, origin === 'https://tuyansci.cn' ? origin : 'https://www.paperbanana.asia')
+    assert.equal(target.searchParams.get('tokendance_callback'), '1')
+    assert.equal(target.searchParams.get('state'), result.state)
+    assert.equal(url.searchParams.get('app_url'), TOKENDANCE_APP_URL)
+    await f.request('tokenDanceExchange', { state: result.state, code: 'fixture' })
+    assert.equal(createHash('sha256').update(JSON.parse(f.calls[0].init.body).code_verifier).digest('base64url'), url.searchParams.get('code_challenge'))
+    assert.equal((await f.request('tokenDanceStatus')).connected, true)
+  }
+  for (const origin of ['https://evil.test', 'https://tuyansci.cn.evil.test', 'http://tuyansci.cn', 'https://tuyansci.cn:444', 'https://tuyansci.cn/', 'https://tuyansci.cn/path', 'https://u:p@tuyansci.cn', null, 1]) {
+    const f = fixture()
+    await assert.rejects(f.request('tokenDanceAuthorize', { callbackOrigin: origin }), (error: any) => error.status === 400)
+    assert.equal(await f.db.collection('paperbanana_tokendance_flows').countDocuments({}), 0)
+    assert.equal(f.calls.length, 0)
+  }
+  const flow = await fixture().request('tokenDanceAuthorize', { platform: 'miniprogram' })
+  assert.equal(flow.mode, 'manual-code')
+  assert.equal(new URL(flow.authorizationUrl).searchParams.has('callback_url'), false)
 })

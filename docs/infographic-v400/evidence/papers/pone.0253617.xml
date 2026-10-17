@@ -1,0 +1,1701 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0253617</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-20-40514</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Artificial intelligence</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Computational biology</subject><subj-group><subject>Computational neuroscience</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Computational neuroscience</subject><subj-group><subject>Artificial neural networks</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Eukaryota</subject><subj-group><subject>Plants</subject><subj-group><subject>Medicinal plants</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Plant science</subject><subj-group><subject>Plant anatomy</subject><subj-group><subject>Tubers</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular types</subject><subj-group><subject>Animal cells</subject><subj-group><subject>Neurons</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cellular neuroscience</subject><subj-group><subject>Neurons</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research design</subject><subj-group><subject>Experimental design</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Optimization</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Chloroform</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Chloroform</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Mathematical and statistical techniques</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Regression analysis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Statistics</subject><subj-group><subject>Statistical methods</subject><subj-group><subject>Regression analysis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Optimization of diosgenin extraction from <italic>Dioscorea deltoidea</italic> tubers using response surface methodology and artificial neural network modelling</article-title>
+<alt-title alt-title-type="running-head">Optimization of diosgenin extraction from <italic>Dioscorea deltoidea</italic></alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Nazir</surname>
+<given-names>Romaan</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Pandey</surname>
+<given-names>Devendra Kumar</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Pandey</surname>
+<given-names>Babita</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kumar</surname>
+<given-names>Vijay</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Dwivedi</surname>
+<given-names>Padmanabh</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Khampariya</surname>
+<given-names>Aditya</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Dey</surname>
+<given-names>Abhijit</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-8332-7927</contrib-id>
+<name name-style="western">
+<surname>Malik</surname>
+<given-names>Tabarak</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Biotechnology, Lovely Faculty of Technology and Sciences, Lovely Professional University, Phagwara, Punjab, India</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Computer Science and Information Technology, Babasaheb Bhimrao Ambedkar University, Lucknow, Uttar Pradesh, India</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Department of Plant Physiology, Banaras Hindu University, Varanasi, Uttar Pradesh, India</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>School of Computer Science and Engineering, Lovely Professional University, Phagwara, Punjab, India</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Department of Life Sciences, Presidency University, Kolkata, India</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Department of Biochemistry, College of Medicine and Health Sciences, University of Gondar, Gondar, Ethiopia</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Yaseen</surname>
+<given-names>Zaher Mundher</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Ton Duc Thang University, VIET NAM</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">malikitrc@gmail.com</email> (TM); <email xlink:type="simple">abhijit.dbs@presiuniv.ac.in</email> (AD)</corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>21</day>
+<month>7</month>
+<year>2021</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2021</year>
+</pub-date>
+<volume>16</volume>
+<issue>7</issue>
+<elocation-id>e0253617</elocation-id>
+<history>
+<date date-type="received">
+<day>24</day>
+<month>12</month>
+<year>2020</year>
+</date>
+<date date-type="accepted">
+<day>8</day>
+<month>6</month>
+<year>2021</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2021</copyright-year>
+<copyright-holder>Nazir et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0253617"/>
+<abstract>
+<sec id="sec001">
+<title>Introduction</title>
+<p><italic>Dioscorea deltoidea</italic> var. <italic>deltoidea</italic> (Dioscoreaceae) is a valuable endangered plant of great medicinal and economic importance due to the presence of the bioactive compound diosgenin. In the present study, response surface methodology (RSM) and artificial neural network (ANN) modelling have been implemented to evaluate the diosgenin content from <italic>D</italic>. <italic>deltoidea</italic>. In addition, different extraction parameters have been also optimized and developed.</p>
+</sec>
+<sec id="sec002">
+<title>Materials and methods</title>
+<p>Firstly, Plackett-Burman design (PBD) was applied for screening the significant variables among the selected extraction parameters i.e. solvent composition, solid: solvent ratio, particle size, time, temperature, pH and extraction cycles on diosgenin yield. Among seven tested parameters only four parameters (particle size, solid: solvent ratio, time and temperature) were found to exert significant effect on the diosgenin extraction. Moreover, Box-Behnken design (BBD) was employed to optimize the significant extraction parameters for maximum diosgenin yield.</p>
+</sec>
+<sec id="sec003">
+<title>Results</title>
+<p>The most suitable condition for diosgenin extraction was found to be solid: solvent ratio (1:45), particle size (1.25 mm), time (45 min) and temperature (45°C). The maximum experimental yield of diosgenin (1.204% dry weight) was observed close to the predicted value (1.202% dry weight) on the basis of the chosen optimal extraction factors. The developed mathematical model fitted well with experimental data for diosgenin extraction.</p>
+</sec>
+<sec id="sec004">
+<title>Conclusions</title>
+<p>Experimental validation revealed that a well trained ANN model has superior performance compared to a RSM model.</p>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>NO - The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="6"/>
+<table-count count="10"/>
+<page-count count="19"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the manuscript tables and figures.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec005" sec-type="intro">
+<title>1. Introduction</title>
+<p>The tubers of several species of the genus Dioscorea (Family: Dioscoreaceae) contain steroidal saponins and sapogenins (diosgenin), which is the preliminary material of industrial interest in the synthesis of many steroidal drugs which are on the market as antitumor, anti-inflammatory, anticancer, androgenic, estrogenic, and contraceptive drugs [<xref ref-type="bibr" rid="pone.0253617.ref001">1</xref>]. One of the important species is <italic>D</italic>. <italic>deltoidea var</italic>. <italic>deltoidea</italic> is a climbing herb having rhizomatous rootstock. It is found in the tropical and sub-tropical areas of the world, mostly present in Pakistan, Bhutan, Vietnam, India, Nepal and China. In India, it is mainly distributed in Assam to Kashmir at altitudes of 550–3100 m [<xref ref-type="bibr" rid="pone.0253617.ref002">2</xref>]. In Himalayan regions this plant grows in Assam, Sikkim, Uttarakhand, Jammu and Kashmir, Meghalaya and Arunanchal Pradesh [<xref ref-type="bibr" rid="pone.0253617.ref003">3</xref>]. <italic>D</italic>. <italic>deltoidea</italic> contains a variety of bioactive compounds such as stigmasterol, diosgenin and other sapogenins [<xref ref-type="bibr" rid="pone.0253617.ref001">1</xref>], among which, diosgenin has been considered as most important phytochemical compound and foremost source for the endorsement of <italic>D</italic>. <italic>deltoidea</italic>. Diosgenin is a steroidal sapogenin used as a precursor of sex hormones (progesterone), corticosteroids (corticosone) and contraceptives [<xref ref-type="bibr" rid="pone.0253617.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0253617.ref005">5</xref>]. This compound is also used as a supplement by body builders to build muscle mass and to increase testosterone level [<xref ref-type="bibr" rid="pone.0253617.ref006">6</xref>]. Traditionally, it is used as an anti-diabetic, anti-hypertriacylglycerolimia, anti-hypercholesterolemia, anti-hyperglycemic and anti-leukemia agent [<xref ref-type="bibr" rid="pone.0253617.ref007">7</xref>].</p>
+<p>Currently, its demand is increasing day by day in pharmaceutical industries due to its immense therapeutic activities such as anti-cancer [<xref ref-type="bibr" rid="pone.0253617.ref008">8</xref>, <xref ref-type="bibr" rid="pone.0253617.ref009">9</xref>], anti-diabetic [<xref ref-type="bibr" rid="pone.0253617.ref010">10</xref>, <xref ref-type="bibr" rid="pone.0253617.ref011">11</xref>], anti-fungal [<xref ref-type="bibr" rid="pone.0253617.ref012">12</xref>], anti-viral [<xref ref-type="bibr" rid="pone.0253617.ref013">13</xref>], anti-microbial [<xref ref-type="bibr" rid="pone.0253617.ref014">14</xref>], anti-tumour [<xref ref-type="bibr" rid="pone.0253617.ref015">15</xref>], anti-oxidant [<xref ref-type="bibr" rid="pone.0253617.ref016">16</xref>, <xref ref-type="bibr" rid="pone.0253617.ref017">17</xref>], anti-coagulant and anti-thrombosis [<xref ref-type="bibr" rid="pone.0253617.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0253617.ref019">19</xref>] activities. In addition, it also shows effects on skin aging [<xref ref-type="bibr" rid="pone.0253617.ref020">20</xref>, <xref ref-type="bibr" rid="pone.0253617.ref021">21</xref>], menopausal symptoms [<xref ref-type="bibr" rid="pone.0253617.ref022">22</xref>, <xref ref-type="bibr" rid="pone.0253617.ref023">23</xref>], CNS [<xref ref-type="bibr" rid="pone.0253617.ref024">24</xref>], lipid system [<xref ref-type="bibr" rid="pone.0253617.ref025">25</xref>] and blood pressure.</p>
+<p>Diosgenin is a commercially important bioactive compound, therefore optimization of isolation and purification of this compound by different extraction procedures is crucial. Many other factors such as extraction time, method, cycle, temperature, solvent type, solid: solvent ratio, particle size, and pH are stated to influence the total diosgenin content [<xref ref-type="bibr" rid="pone.0253617.ref026">26</xref>–<xref ref-type="bibr" rid="pone.0253617.ref030">30</xref>]. Different conventional extraction methods such as soxhlet [<xref ref-type="bibr" rid="pone.0253617.ref031">31</xref>, <xref ref-type="bibr" rid="pone.0253617.ref032">32</xref>], heat reflux [<xref ref-type="bibr" rid="pone.0253617.ref033">33</xref>] ultrasonic assisted extraction (UAE) and liquid-liquid extraction (LLE) [<xref ref-type="bibr" rid="pone.0253617.ref034">34</xref>] have been used for the extraction of diosgenin. Specialized and reproducible extraction methods for the isolation of valuable bioactive compounds from several plant species including Himalayan plants is still lacking [<xref ref-type="bibr" rid="pone.0253617.ref026">26</xref>, <xref ref-type="bibr" rid="pone.0253617.ref035">35</xref>]</p>
+<p>In recent years researchers were investigating specific extraction condition for the optimization of high yield of bioactive compounds from different medicinal plant species. However, considering a one-factor-at-a-time is time consuming, expensive and less effective and lacks interactive effect of factors influencing extraction. On the other hand, response surface methodology (RSM) is a statistical techniques for designing experiments, building models and considered as highly effective tool for optimization of various factors for the better yield [<xref ref-type="bibr" rid="pone.0253617.ref036">36</xref>, <xref ref-type="bibr" rid="pone.0253617.ref037">37</xref>]. RSM is broadly employed for enhancing the extraction of vitamin E, phenolic compounds, polysaccharides, polyphenolics, triterpenoids, anthocyanins, xanthonoids and protein from various plant resources [<xref ref-type="bibr" rid="pone.0253617.ref037">37</xref>–<xref ref-type="bibr" rid="pone.0253617.ref045">45</xref>]. It is also used to achieve maximum Remazol brilliant blue R (RBBR) dye decolourization and chemical oxygen demand (COD) reduction, to optimize the key parameters for methylene blue dye adsorption, reactive orange 16 (RO16) dye adsorption and adsorptive properties of chitosan-tripolyphosphate/ fly ash(CS-TPP/FA) for removal of reactive red (RR120) dye from the aqueous environment [<xref ref-type="bibr" rid="pone.0253617.ref046">46</xref>–<xref ref-type="bibr" rid="pone.0253617.ref049">49</xref>]. Whereas, Artificial Neural Network (ANN) is a data processing approach based on the non-linear weighted sum statistical data modelling tools [<xref ref-type="bibr" rid="pone.0253617.ref046">46</xref>, <xref ref-type="bibr" rid="pone.0253617.ref047">47</xref>]. ANN is inspired of biological neuron network that determines an intricate association between the responses and predicted variables [<xref ref-type="bibr" rid="pone.0253617.ref048">48</xref>]. This modelling technique allows computing, learning, and memorizing as similar as human brains [<xref ref-type="bibr" rid="pone.0253617.ref049">49</xref>]. ANN as compared to RSM is more precise technique of interpolation, prediction, and validation [<xref ref-type="bibr" rid="pone.0253617.ref046">46</xref>]. The present research focuses on the optimization of extraction parameters on diosgenin from <italic>D</italic>. <italic>deltoidea</italic>. Consecutively, the results predicted by RSM and ANN were compared with the experimental value for their accuracy and generalization capability. To the best of our knowledge no reports have been published so far on heat reflux extraction of diosgenin from <italic>D</italic>. <italic>deltoidea</italic> and comparative study between RSM and ANN on diosgenin. The present investigation was undertaken with the objective to screen the significant extraction parameters by applying PBD, to maximize the yield of diosgenin from tubers of <italic>D</italic>. <italic>deltoidea</italic>, RSM with BBD as a powerful optimization approach was applied in order to optimize the extraction process parameters such as solid: solvent ratio, particle size, temperature and time. Furthermore, ANN model were applied, and compared with RSM model.</p>
+</sec>
+<sec id="sec006" sec-type="materials|methods">
+<title>2. Materials and methods</title>
+<sec id="sec007">
+<title>2.1 Chemicals and plant material</title>
+<p><italic>D</italic>. <italic>deltoidea</italic> plant with tuber was collected from a local nursery from Chakrata district, Uttarakhand, India. The plant was identified by the taxonomist and voucher specimen (15062018) was kept in School of Bioengineering and Biosciences, Lovely Professional University. The freshly collected tubers were rinsed using water followed by drying in shade at room temperature. Dried tubers were ground into fine powder in electric grinder. The powdered samples were sieved into three different homogeneous particle sizes (0.50 mm; mesh size 35, 1.25 mm; mesh size 16 and 2.00 mm; mesh size 10) and stored in airtight glass bottles (51, 52).</p>
+<p>Methanol, chloroform (HPLC grade), ethanol was purchased from Thomas Baker (Mumbai, India). Ultra-pure water was obtained from a Milli Q PLUS purification system (Millipore, USA). The standard diosgenin (<xref ref-type="fig" rid="pone.0253617.g001">Fig 1</xref>) were procured from Sigma-Aldrich, USA. All chemicals used in the assays were of analytical grade. HPTLC plates (0.25mm): pre-coated silica gel 60 F254 were procured from Merck, Darmstadt, Germany. Rotary evaporator (SJW, Ambala), centrifuge machine (REMI, Ambala), and mixer grinder (Philips HL1606/03) were used in conducting the extraction and sample preparation.</p>
+<fig id="pone.0253617.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Chemical structure of diosgenin.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec008">
+<title>2.2 Extraction of diosgenin</title>
+<p>The heat reflux extraction (HRE) was performed in a temperature controlled heater using round bottom flask equipped with condenser to avoid <ext-link ext-link-type="uri" xlink:href="https://www.sciencedirect.com/topics/chemistry/solvent-evaporation" xlink:type="simple">solvent evaporation</ext-link>. The anhydrous dry powder samples (1.0 g) were extracted using different volumes of solvent (ethanol: water mixtures) according to experimental design (PBD and BBD). To evaluate the influence of solid: solvent extraction on the diosgenin yield, tests were carried out via different extraction variables <italic>viz</italic>., solvent composition (X<sub>1</sub>:Ethanol-water), solid-to-solvent ratio (X<sub>2</sub>:30–60 ml g<sup>–1</sup>), particle size (X<sub>3</sub>: 0.5–2.05), extraction time (X<sub>4</sub>:30–60 min), temperature (X<sub>5</sub>:30–60°C), pH (X<sub>6</sub>:5–9), and extraction cycles (X<sub>7</sub>:1–3). After extraction, samples were filtered, concentrated to dryness in a rotary evaporator at 40°C. 20 ml of HCL (10%) was added to the dried residue and heated to hydrolyse for 60 min in water bath at 98°C. After cooling, two times 15 ml chloroform were used for washing and collective mixture was extracted and segregated, the chloroform layer i.e. lower layer was collected and further 20 ml chloroform was used to extract upper layer. All the collected chloroform layers were combined and concentrated to dryness. An appropriate amount of methanol was added to the residue and the final concentration was filtered through 0.45μm polypropylene membrane filter before high performance thin layer chromatography (HPTLC) analysis.</p>
+</sec>
+<sec id="sec009">
+<title>2.3 HPTLC method for assessment of diosgenin content</title>
+<p>Estimation of diosgenin was carried out by using HPTLC analysis comprised of Linomat–5 applicator CAMAG (Switzerland) fitted with 100μl syringe and TLC scanner-3 CAMAG (Switzerland) run by win CATS software (version: 1.4.6.2002) for better data collection and documentation. The stationary phase used was 20 × 10 cm precoated silica gel 60 F<sub>254</sub> TLC plates. The samples were patched in form of A 6mm-wide bands to the plates. The mobile phase used was toluene: chloroform: acetone (2:8:2) saturated in CAMAG twin trough chamber. Post-derivatization of plates was done by anisaldehyde reagent (1 ml anisaldehyde, 20 ml glacial acetic acid, 170 ml methanol and 10 ml conc. sulphuric acid), heated for 5 min at 100°C.</p>
+</sec>
+<sec id="sec010">
+<title>2.4 Preparation of standard calibration curve of diosgenin</title>
+<p>For preparation of calibration curves of diosgenin (0.1 mg. ml<sup>-1</sup> in methanol), different concentrations of working standard solution [2 μl (200 ng), 4 μl (400 ng), 6 μl (600 ng), 8 μl (800 ng), and 10 μl (1000 ng)] were applied to obtain linearity range of 200–1000 ng/spot. Densitometric scanning was performed at λ = 433 nm.</p>
+</sec>
+<sec id="sec011">
+<title>2.5 Validation of method</title>
+<p>Method validation was performed according to the guidelines of International Conference on Harmonisation (ICH) on the parameters such as linearity, limit of sensitivity, specificity, precision, accuracy, recovery, and robustness presented in <xref ref-type="table" rid="pone.0253617.t001">Table 1</xref> [<xref ref-type="bibr" rid="pone.0253617.ref050">50</xref>].</p>
+<table-wrap id="pone.0253617.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t001</object-id>
+<label>Table 1</label> <caption><title>Method validation for diosgenin quantification.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">S.No</th>
+<th align="left">Parameters</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>1</bold></td>
+<td align="left">Linearity range (ng/spot;<italic>n</italic> = 12<xref ref-type="table-fn" rid="t001fn001"><sup>a</sup></xref>)</td>
+<td align="left">200–1000</td>
+</tr>
+<tr>
+<td align="center"><bold>2</bold></td>
+<td align="left">Correlation coefficient (r<sup>2</sup>)</td>
+<td align="left">0.993</td>
+</tr>
+<tr>
+<td align="center"><bold>3</bold></td>
+<td align="left">Regression equation</td>
+<td align="left">Y = 15.25X + 26424</td>
+</tr>
+<tr>
+<td align="center"><bold>4</bold></td>
+<td align="left">Calculated SD value</td>
+<td align="left">0.32</td>
+</tr>
+<tr>
+<td align="center"><bold>5</bold></td>
+<td align="left"><xref ref-type="table-fn" rid="t001fn002"><sup>b</sup></xref>Limit of detection (LOD) (ng) [3×SD/S]</td>
+<td align="left">20</td>
+</tr>
+<tr>
+<td align="center"><bold>6</bold></td>
+<td align="left"><xref ref-type="table-fn" rid="t001fn002"><sup>b</sup></xref>Limit of quantification (LOQ) (ng) [10×SD/S]</td>
+<td align="left">60</td>
+</tr>
+<tr>
+<td align="center"><bold>7</bold></td>
+<td align="left">R<sub>f</sub></td>
+<td align="left">0.78</td>
+</tr>
+<tr>
+<td align="left" colspan="3"><bold>Precision and accuracy</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>8</bold></td>
+<td align="left">Intra-day<xref ref-type="table-fn" rid="t001fn003"><sup>c</sup></xref> RSD (%), n = 5</td>
+<td align="left">1.34</td>
+</tr>
+<tr>
+<td align="center"><bold>9</bold></td>
+<td align="left">Inter-day RSD (%), n = 5</td>
+<td align="left">1.56</td>
+</tr>
+<tr>
+<td align="left" colspan="3"><bold>Recovery</bold></td>
+</tr>
+<tr>
+<td align="center"><bold>10</bold></td>
+<td align="left">Amount of standard in plant samples (μg mg<sup>−1</sup>) containing highest bioactive compounds</td>
+<td align="left">12.04</td>
+</tr>
+<tr>
+<td align="center"><bold>11</bold></td>
+<td align="left">Amount of standards added in plant samples (μg mg<sup>−1</sup>)</td>
+<td align="left">6, 12, 18</td>
+</tr>
+<tr>
+<td align="center"><bold>12</bold></td>
+<td align="left">Amount of standard found (μg mg<sup>−1</sup>)</td>
+<td align="left">18.15, 23.98, 29.98</td>
+</tr>
+<tr>
+<td align="center"><bold>13</bold></td>
+<td align="left">Recovery (%)</td>
+<td align="left">100.6, 99.75, 99.80</td>
+</tr>
+<tr>
+<td align="center"><bold>14</bold></td>
+<td align="left">Mean Recovery (%)</td>
+<td align="left">100.05</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p><sup>a</sup> Five concentration levels in triplicate.</p></fn>
+<fn id="t001fn002"><p><sup>b</sup> SD is the standard deviation of the blank response and S is the slope of the calibration plot.</p></fn>
+<fn id="t001fn003"><p><sup>c</sup>RSD is Relative standard deviation; RSD = 100S / x−; S: standard deviation; x: mean.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec012">
+<title>2.6 Modelling and optimization studies</title>
+<p>Investigation was performed via two phases: Plackett-Burmandesign (PBD) was employed to analyse the significant independent parameters and Box-Behnken design (BBD) applied to check the optimal level and probable collaborations among significant parameters. Experimental design was set up in Minitab software. Furthermore, Design Expert software, version 12 was used to generate 3 D surface plot.</p>
+<sec id="sec013">
+<title>2.6.1 Plackett–Burman design (PBD)</title>
+<p>PBD was employed for the optimization of diosgenin to estimate the significant parameters. This model depends on first-order model:
+<disp-formula id="pone.0253617.e001">
+<alternatives>
+<graphic id="pone.0253617.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mrow><mml:mtext>Y</mml:mtext><mml:mo>=</mml:mo><mml:mo>β</mml:mo><mml:mn>0</mml:mn><mml:mo>+</mml:mo><mml:mo>∑</mml:mo><mml:mspace width="4pt"/><mml:mo>β</mml:mo><mml:mtext>iXi</mml:mtext></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+Where expected target function is denoted by <italic>Y</italic>, scaling constant is <italic>β</italic><sub><italic>0</italic></sub> and a regression coefficient is <italic>β</italic><sub><italic>i</italic>.</sub> The influence of independent variables <italic>viz</italic>., time, pH, solid: solvent ratio, solvent composition, temperature, extraction steps as well as the particle size on diosgenin was tested. Test was directed at two levels in which (+) implies greatest esteem and (-) implies least esteem (portrayed in <xref ref-type="table" rid="pone.0253617.t002">Table 2</xref>). All factors said above were tried in triplicates by directing 12 tests (plot portrayed in <xref ref-type="table" rid="pone.0253617.t003">Table 3</xref>). Regression analyses at 5% (<italic>p &lt; 0</italic>.<italic>05</italic>) have been used to test the significant factors, as appeared in <xref ref-type="table" rid="pone.0253617.t004">Table 4</xref>.</p>
+<table-wrap id="pone.0253617.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t002</object-id>
+<label>Table 2</label> <caption><title>Different extraction parameters used for diosgenin extraction from <italic>D</italic>. <italic>deltoidei</italic>.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Variable code</th>
+<th align="center">Variables</th>
+<th align="center">High level(+)</th>
+<th align="center">Low level(-)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>1</bold></sub></td>
+<td align="center">Solvent Composition (Ethanol and water)</td>
+<td align="center">100</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>2</bold></sub></td>
+<td align="center">Solid: solvent ratio(g/ml)</td>
+<td align="center">1:60</td>
+<td align="center">1:30</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>3</bold></sub></td>
+<td align="center">Particle size (mm)</td>
+<td align="center">2.00</td>
+<td align="center">0.5</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>4</bold></sub></td>
+<td align="center">Time (min)</td>
+<td align="center">60</td>
+<td align="center">30</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>5</bold></sub></td>
+<td align="center">Temperature (°C)</td>
+<td align="center">60</td>
+<td align="center">30</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>6</bold></sub></td>
+<td align="center">pH</td>
+<td align="center">9</td>
+<td align="center">5</td>
+</tr>
+<tr>
+<td align="center"><bold>X</bold><sub><bold>7</bold></sub></td>
+<td align="center">Cycles/steps</td>
+<td align="center">3</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0253617.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t003</object-id>
+<label>Table 3</label> <caption><title>Diosgenin content from <italic>D</italic>. <italic>deltoidea</italic> tuber using different levels of extraction variables of Plackett-Burman design criteria.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Runs</th>
+<th align="center">X<sub>1</sub></th>
+<th align="center">X<sub>2</sub></th>
+<th align="center">X<sub>3</sub></th>
+<th align="center">X<sub>4</sub></th>
+<th align="center">X<sub>5</sub></th>
+<th align="center">X<sub>6</sub></th>
+<th align="center">X<sub>7</sub></th>
+<th align="center">(%)Diosgenin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="char" char=".">1.016</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.906</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.907</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.909</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="char" char=".">0.477</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.964</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="char" char=".">0.953</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="char" char=".">0.957</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.637</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="char" char=".">0.464</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="char" char=".">0.758</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="center">-1</td>
+<td align="char" char=".">0.393</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0253617.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t004</object-id>
+<label>Table 4</label> <caption><title>Regression analysis for prediction of significant extraction parameters by PBD criterion.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Term</th>
+<th align="center">Effect</th>
+<th align="center">Coefficient</th>
+<th align="center">SE coefficient</th>
+<th align="center"><italic>T</italic></th>
+<th align="center"><italic>P</italic></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>Constant</bold></td>
+<td align="center"/>
+<td align="char" char=".">0.782</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">34.50</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size</bold></td>
+<td align="char" char=".">0.141</td>
+<td align="char" char=".">0.070</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">3.11</td>
+<td align="char" char=".">0.036</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid: Solvent ratio</bold></td>
+<td align="char" char=".">0.175</td>
+<td align="char" char=".">0.087</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">3.86</td>
+<td align="char" char=".">0.018</td>
+</tr>
+<tr>
+<td align="center"><bold>Time</bold></td>
+<td align="char" char=".">0.403</td>
+<td align="char" char=".">0.201</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">8.90</td>
+<td align="char" char=".">0.001</td>
+</tr>
+<tr>
+<td align="center"><bold>Temperature</bold></td>
+<td align="char" char=".">0.123</td>
+<td align="char" char=".">0.061</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">2.72</td>
+<td align="char" char=".">0.049</td>
+</tr>
+<tr>
+<td align="center"><bold>Solvent composition</bold></td>
+<td align="char" char=".">-0.078</td>
+<td align="char" char=".">-0.039</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">-1.73</td>
+<td align="char" char=".">0.158</td>
+</tr>
+<tr>
+<td align="center"><bold>pH</bold></td>
+<td align="char" char=".">-0.004</td>
+<td align="char" char=".">-0.002</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">-0.10</td>
+<td align="char" char=".">0.928</td>
+</tr>
+<tr>
+<td align="center"><bold>Extraction cycles</bold></td>
+<td align="char" char=".">0.026</td>
+<td align="char" char=".">0.013</td>
+<td align="char" char=".">0.022</td>
+<td align="char" char=".">0.59</td>
+<td align="char" char=".">0.588</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+</sec>
+<sec id="sec014">
+<title>2.6.2 Box-Behnken design (BBD)</title>
+<p>BBD is somewhat a spherical, revolving quadratic and independent model with no fixed fractional factorial points wherever the combinations are at the midpoints of the edges and at the centre of the variable space [<xref ref-type="bibr" rid="pone.0253617.ref051">51</xref>]. In this study, BBD was utilized to examine the combined impact of four independent variables i.e., solid: solvent ratio, time, temperature as well as size of particle on diosgenin extraction, which was previously selected by PBD. In this model, three variable levels i.e., low, middle and high (-1, 0, +1) were tested, (as shown in <xref ref-type="table" rid="pone.0253617.t005">Table 5</xref>). According to the equation given below, the coding of variables was done [<xref ref-type="bibr" rid="pone.0253617.ref052">52</xref>]:
+<disp-formula id="pone.0253617.e002">
+<alternatives>
+<graphic id="pone.0253617.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2">
+<mml:mrow><mml:mtable columnalign="left" equalcolumns="true" equalrows="true"><mml:mtr columnalign="left"><mml:mtd columnalign="left"><mml:mrow><mml:mtext>xi</mml:mtext><mml:mo>=</mml:mo><mml:mtext>Xi</mml:mtext><mml:mo>–</mml:mo><mml:mtext>X</mml:mtext><mml:mn>0</mml:mn><mml:mo>/</mml:mo><mml:mo>Δ</mml:mo><mml:mtext>Xi</mml:mtext></mml:mrow></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mtext>i</mml:mtext><mml:mo>=</mml:mo><mml:mn>1</mml:mn><mml:mo>,</mml:mo><mml:mn>2</mml:mn><mml:mo>,</mml:mo><mml:mn>3</mml:mn><mml:mo>…</mml:mo><mml:mo>,</mml:mo><mml:mtext>k</mml:mtext></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+Where x<sub>i</sub> represents independent variable of coded value; X<sub>i</sub> represents independent variable of actual value; X<sub>0</sub> is the independent variable of the actual value at the centre point; and ΔX<sub>i</sub> is the independent variable of the step change value. In BBD, a total number of 27 runs were accomplished and the results are recorded in <xref ref-type="table" rid="pone.0253617.t006">Table 6</xref>. All experiments were executed in triplicates and the averages of diosgenin content were taken as response.</p>
+<table-wrap id="pone.0253617.t005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t005</object-id>
+<label>Table 5</label> <caption><title>Actual and coded treatment variables for optimization of diosgenin extraction from <italic>D</italic>. <italic>deltoidea</italic> using BBD.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t005g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t005" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2">Variables</th>
+<th align="center" colspan="5">Coded levels</th>
+</tr>
+<tr>
+<th align="center"/>
+<th align="center">Codes</th>
+<th align="center">+ 1</th>
+<th align="center">0</th>
+<th align="center">-1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>Solid: Solvent ratio (g/ml)</bold></td>
+<td align="center">X<sub>2</sub></td>
+<td align="center">A</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="center">30</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size (mm)</bold></td>
+<td align="center">X<sub>3</sub></td>
+<td align="center">B</td>
+<td align="center">2.00</td>
+<td align="center">1.25</td>
+<td align="center">0.5</td>
+</tr>
+<tr>
+<td align="center"><bold>Extraction time (min)</bold></td>
+<td align="center">X<sub>4</sub></td>
+<td align="center">C</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="center">30</td>
+</tr>
+<tr>
+<td align="center"><bold>Temperature (°C)</bold></td>
+<td align="center">X<sub>5</sub></td>
+<td align="center">D</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="center">30</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0253617.t006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t006</object-id>
+<label>Table 6</label> <caption><title>Experimental and predicted value of BBD design with four different extraction variables: Solid: Solvent ratio(X<sub>2</sub>), particle size (X<sub>3</sub>), time (X<sub>4</sub>) and temperature(X<sub>5</sub>).</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t006g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t006" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2">Run order</th>
+<th align="center" colspan="4">Factors</th>
+<th align="center" colspan="3">Diosgenin (% dry weight)</th>
+</tr>
+<tr>
+<th align="center">Solid: solvent ratio (X<sub>2</sub>)</th>
+<th align="center">Particle size (X<sub>3</sub>)</th>
+<th align="center">Time (X<sub>4</sub>)</th>
+<th align="center">Temperature(X<sub>5</sub>)</th>
+<th align="center">Experimental</th>
+<th align="center">RSM Predicted</th>
+<th align="center">ANN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>1</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">0.50</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.128</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.129</td>
+</tr>
+<tr>
+<td align="center"><bold>2</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">0.50</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.150</td>
+<td align="char" char=".">1.153</td>
+</tr>
+<tr>
+<td align="center"><bold>3</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">2.00</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.134</td>
+<td align="char" char=".">1.152</td>
+</tr>
+<tr>
+<td align="center"><bold>4</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">2.00</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.126</td>
+<td align="char" char=".">1.137</td>
+</tr>
+<tr>
+<td align="center"><bold>5</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">30</td>
+<td align="center">30</td>
+<td align="char" char=".">1.127</td>
+<td align="char" char=".">1.128</td>
+<td align="char" char=".">1.128</td>
+</tr>
+<tr>
+<td align="center"><bold>6</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">60</td>
+<td align="center">30</td>
+<td align="char" char=".">1.129</td>
+<td align="char" char=".">1.146</td>
+<td align="char" char=".">1.132</td>
+</tr>
+<tr>
+<td align="center"><bold>7</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">30</td>
+<td align="center">60</td>
+<td align="char" char=".">1.147</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.147</td>
+</tr>
+<tr>
+<td align="center"><bold>8</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">60</td>
+<td align="center">60</td>
+<td align="char" char=".">1.152</td>
+<td align="char" char=".">1.156</td>
+<td align="char" char=".">1.155</td>
+</tr>
+<tr>
+<td align="center"><bold>9</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">30</td>
+<td align="char" char=".">1.156</td>
+<td align="char" char=".">1.116</td>
+<td align="char" char=".">1.155</td>
+</tr>
+<tr>
+<td align="center"><bold>10</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">30</td>
+<td align="char" char=".">1.117</td>
+<td align="char" char=".">1.133</td>
+<td align="char" char=".">1.118</td>
+</tr>
+<tr>
+<td align="center"><bold>11</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">60</td>
+<td align="char" char=".">1.134</td>
+<td align="char" char=".">1.181</td>
+<td align="char" char=".">1.133</td>
+</tr>
+<tr>
+<td align="center"><bold>12</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">60</td>
+<td align="char" char=".">1.182</td>
+<td align="char" char=".">1.125</td>
+<td align="char" char=".">1.183</td>
+</tr>
+<tr>
+<td align="center"><bold>13</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">0.50</td>
+<td align="center">30</td>
+<td align="center">45</td>
+<td align="char" char=".">1.126</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.128</td>
+</tr>
+<tr>
+<td align="center"><bold>14</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">2.00</td>
+<td align="center">30</td>
+<td align="center">45</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.134</td>
+</tr>
+<tr>
+<td align="center"><bold>15</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">0.50</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="char" char=".">1.137</td>
+<td align="char" char=".">1.131</td>
+<td align="char" char=".">1.137</td>
+</tr>
+<tr>
+<td align="center"><bold>16</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">2.00</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="char" char=".">1.132</td>
+<td align="char" char=".">1.119</td>
+<td align="char" char=".">1.138</td>
+</tr>
+<tr>
+<td align="center"><bold>17</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">1.25</td>
+<td align="center">30</td>
+<td align="center">45</td>
+<td align="char" char=".">1.119</td>
+<td align="char" char=".">1.137</td>
+<td align="char" char=".">1.119</td>
+</tr>
+<tr>
+<td align="center"><bold>18</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">1.25</td>
+<td align="center">30</td>
+<td align="center">45</td>
+<td align="char" char=".">1.137</td>
+<td align="char" char=".">1.136</td>
+<td align="char" char=".">1.137</td>
+</tr>
+<tr>
+<td align="center"><bold>19</bold></td>
+<td align="center">30</td>
+<td align="char" char=".">1.25</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.126</td>
+<td align="char" char=".">1.135</td>
+</tr>
+<tr>
+<td align="center"><bold>20</bold></td>
+<td align="center">60</td>
+<td align="char" char=".">1.25</td>
+<td align="center">60</td>
+<td align="center">45</td>
+<td align="char" char=".">1.125</td>
+<td align="char" char=".">1.144</td>
+<td align="char" char=".">1.125</td>
+</tr>
+<tr>
+<td align="center"><bold>21</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">0.50</td>
+<td align="center">45</td>
+<td align="center">30</td>
+<td align="char" char=".">1.144</td>
+<td align="char" char=".">1.133</td>
+<td align="char" char=".">1.144</td>
+</tr>
+<tr>
+<td align="center"><bold>22</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">2.00</td>
+<td align="center">45</td>
+<td align="center">30</td>
+<td align="char" char=".">1.133</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.134</td>
+</tr>
+<tr>
+<td align="center"><bold>23</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">0.50</td>
+<td align="center">45</td>
+<td align="center">60</td>
+<td align="char" char=".">1.150</td>
+<td align="char" char=".">1.169</td>
+<td align="char" char=".">1.15</td>
+</tr>
+<tr>
+<td align="center"><bold>24</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">2.00</td>
+<td align="center">45</td>
+<td align="center">60</td>
+<td align="char" char=".">1.169</td>
+<td align="char" char=".">1.204</td>
+<td align="char" char=".">1.168</td>
+</tr>
+<tr>
+<td align="center"><bold>25</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.202</td>
+<td align="char" char=".">1.204</td>
+<td align="char" char=".">1.191</td>
+</tr>
+<tr>
+<td align="center"><bold>26</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.201</td>
+<td align="char" char=".">1.204</td>
+<td align="char" char=".">1.192</td>
+</tr>
+<tr>
+<td align="center"><bold>27</bold></td>
+<td align="center">45</td>
+<td align="char" char=".">1.25</td>
+<td align="center">45</td>
+<td align="center">45</td>
+<td align="char" char=".">1.211</td>
+<td align="char" char=".">1.151</td>
+<td align="char" char=".">1.192</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>To compare the relationship between independent variables and diosgenin content a second-order polynomial equation was applied for the prediction of optimal point. The equation for four variables is given below:
+<disp-formula id="pone.0253617.e003">
+<alternatives>
+<graphic id="pone.0253617.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3">
+<mml:mrow><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:mi>Y</mml:mi><mml:mo>=</mml:mo><mml:mi>β</mml:mi><mml:mn>0</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>2</mml:mn><mml:mi>X</mml:mi><mml:mn>2</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>3</mml:mn><mml:mi>X</mml:mi><mml:mn>3</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>4</mml:mn><mml:mi>X</mml:mi><mml:mn>4</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>5</mml:mn><mml:mi>X</mml:mi><mml:mn>5</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>22</mml:mn><mml:mi>X</mml:mi><mml:mn>22</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>33</mml:mn><mml:mi>X</mml:mi><mml:mn>32</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>44</mml:mn><mml:mi>X</mml:mi><mml:mn>42</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>55</mml:mn><mml:mi>X</mml:mi><mml:mn>52</mml:mn></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>23</mml:mn><mml:mi>X</mml:mi><mml:mn>2</mml:mn><mml:mi>X</mml:mi><mml:mn>3</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>24</mml:mn><mml:mi>X</mml:mi><mml:mn>2</mml:mn><mml:mi>X</mml:mi><mml:mn>4</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>25</mml:mn><mml:mi>X</mml:mi><mml:mn>2</mml:mn><mml:mi>X</mml:mi><mml:mn>5</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>34</mml:mn><mml:mi>X</mml:mi><mml:mn>3</mml:mn><mml:mi>X</mml:mi><mml:mn>4</mml:mn><mml:mo>+</mml:mo><mml:mi>β</mml:mi><mml:mn>35</mml:mn><mml:mi>X</mml:mi><mml:mn>3</mml:mn><mml:mi>X</mml:mi><mml:mn>5</mml:mn></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+Where Y represents predicted response; <italic>β</italic><sub><italic>0</italic></sub> shows modal constant; X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub> andX<sub>5</sub> are significant factors; <italic>β</italic><sub><italic>2</italic>,</sub> <italic>β</italic><sub><italic>3</italic>,</sub> <italic>β</italic><sub><italic>4 and</italic></sub> <italic>β</italic><sub><italic>5</italic></sub> are linear coefficients; <italic>β</italic><sub><italic>22</italic>,</sub> <italic>β</italic><sub><italic>33</italic>,</sub> <italic>β</italic><sub><italic>44</italic></sub> and <italic>β</italic><sub><italic>55</italic></sub> are quadratic coefficients and <italic>β</italic><sub><italic>23</italic>,</sub> <italic>β</italic><sub><italic>24</italic>,</sub> <italic>β</italic><sub><italic>25</italic>,</sub> <italic>β</italic><sub><italic>34</italic>,</sub> <italic>β</italic><sub><italic>35</italic>,</sub> <italic>β</italic><sub><italic>45</italic></sub> are the interactive coefficients. Diosgenin content in <italic>D</italic>. <italic>deltoidea</italic> has been evaluated by the regression coefficient and ANOVA. 3-D surface plots of % diosgenin were prepared for each interactive coefficient by Design Expert 12 software (Fig 4A-4F).</p>
+</sec>
+<sec id="sec015">
+<title>2.6.3 Artificial Neural Network (ANN) modeling</title>
+<p>The functionality of ANN is to alter the given input vectors furnished to model into feature map or output with help of unique rules. In proposed approach multi-layer, perceptron model was utilized by using MATLAB (The Mathworks Inc., 2012a) which comprised of hidden neurons for generation of approximate multi-layer model. The predicted output computation is expressed with help of <xref ref-type="disp-formula" rid="pone.0253617.e004">Eq (4)</xref> as:
+<disp-formula id="pone.0253617.e004">
+<alternatives>
+<graphic id="pone.0253617.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4">
+<mml:mrow><mml:mi>Y</mml:mi><mml:mo>=</mml:mo><mml:mi>f</mml:mi><mml:mfenced><mml:mrow><mml:msub><mml:mi>A</mml:mi><mml:mi>z</mml:mi></mml:msub></mml:mrow></mml:mfenced><mml:mo>=</mml:mo><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mi>p</mml:mi><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mi>m</mml:mi></mml:munderover><mml:msub><mml:mi>w</mml:mi><mml:mrow><mml:mi>z</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>*</mml:mo><mml:msub><mml:mi>x</mml:mi><mml:mi>p</mml:mi></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mi>θ</mml:mi><mml:mi>z</mml:mi></mml:msub></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+Here, <italic>Y</italic> represents the output obtained from output layer, <italic>f</italic>(<italic>A</italic><sub><italic>z</italic></sub>) denoted the activation functions which is responsible for non-linear nature of model associated with neuron z. <italic>w</italic><sub><italic>zp</italic></sub> represents weight connection between neuron z and p. <italic>θ</italic><sub><italic>z</italic></sub> denotes the input bias and <italic>x</italic><sub><italic>p</italic></sub> illustrated the inputs given to neuron <italic>p</italic>.</p>
+<p>To minimize the error and achieve faster convergence, ANN adopted back propagation algorithm during training phase for model training and convergence without any delay or loss. Due to consideration of appropriate neuron size, the obtained achieved results are sound and accurate without any compromises. The multilayer perceptron model consists of four inputs, one hidden and output layer for prediction. For training and validation analysis, Log Sigmoidal function is used as an activation unit for non-linear output prediction. For synaptic weight adjustment and analysis training data is trained with help of Marquardt algorithm and validation is supported and performed with the help of 5-fold cross validation strategy. Fig 6A depicted the performance data obtained over entire training data and fitted at best epochs for validation data being represented. Similarly, gradient loss and training state achieved over entire ANN training is explained with help of Fig 6.</p>
+<p>In addition, comparison was drawn between two models on the basis of three significant statistical parameters, <italic>viz</italic>. Root mean square error (RMSE), Absolute average deviation (AAD) and regression coefficient (<italic>r</italic><sup><italic>2</italic></sup>).</p>
+<p>RMSE and AAD were calculated on the basis of Eqs <xref ref-type="disp-formula" rid="pone.0253617.e005">5</xref> and <xref ref-type="disp-formula" rid="pone.0253617.e006">6</xref>.</p>
+<disp-formula id="pone.0253617.e005">
+<alternatives>
+<graphic id="pone.0253617.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e005" xlink:type="simple"/>
+<mml:math display="block" id="M5">
+<mml:mrow><mml:mtext>RMSE</mml:mtext><mml:mo>=</mml:mo><mml:mfenced><mml:mrow><mml:mfrac><mml:mn>1</mml:mn><mml:mi>n</mml:mi></mml:mfrac><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mtext>i</mml:mtext><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mtext>n</mml:mtext></mml:munderover><mml:msup><mml:mrow><mml:mfenced><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>p</mml:mi><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mi>d</mml:mi><mml:mi>i</mml:mi><mml:mi>c</mml:mi><mml:mi>t</mml:mi><mml:mi>e</mml:mi><mml:mi>d</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>x</mml:mi><mml:mi>p</mml:mi><mml:mi>e</mml:mi><mml:mi>r</mml:mi><mml:mi>i</mml:mi><mml:mi>m</mml:mi><mml:mi>e</mml:mi><mml:mi>n</mml:mi><mml:mi>t</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfenced></mml:mrow><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:mfenced><mml:mfrac><mml:mn>1</mml:mn><mml:mn>2</mml:mn></mml:mfrac></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+<disp-formula id="pone.0253617.e006">
+<alternatives>
+<graphic id="pone.0253617.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6">
+<mml:mrow><mml:mi>A</mml:mi><mml:mi>A</mml:mi><mml:mi>D</mml:mi><mml:mo stretchy="false">(</mml:mo><mml:mi>%</mml:mi><mml:mo stretchy="false">)</mml:mo><mml:mo>=</mml:mo><mml:mfenced><mml:mrow><mml:munderover><mml:mstyle displaystyle="true" mathsize="140%"><mml:mo>∑</mml:mo></mml:mstyle><mml:mrow><mml:mtext>i</mml:mtext><mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:mrow><mml:mtext>P</mml:mtext></mml:munderover><mml:mfenced><mml:mrow><mml:mfenced close="|" open="|"><mml:mrow><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>e</mml:mi><mml:mi>x</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>c</mml:mi><mml:mi>a</mml:mi><mml:mi>l</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfenced><mml:mo>/</mml:mo><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mo>,</mml:mo><mml:mi>e</mml:mi><mml:mi>x</mml:mi><mml:mi>p</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfenced><mml:mo>/</mml:mo><mml:mi>P</mml:mi></mml:mrow></mml:mfenced><mml:mo>×</mml:mo><mml:mn>100</mml:mn></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+</sec>
+</sec>
+</sec>
+<sec id="sec016" sec-type="results">
+<title>3. Results</title>
+<p>In the present study, HPTLC analysis has been implicated for the estimation of diosgenin content in different extracts. HPTLC fingerprinting and chromatogram showed the presence of diosgenin (green colour; R<sub>f</sub>: 0.78) in extracts of <italic>D</italic>. <italic>deltoidea</italic> tubers (<xref ref-type="fig" rid="pone.0253617.g002">Fig 2A &amp; 2B</xref>). <xref ref-type="table" rid="pone.0253617.t001">Table 1</xref> showed the analytical characteristics of the method of validation of diosgenin. The linear regression analysis data for the calibration plots Y = 15.25X + 26424) revealed good linear relationship with R<sup>2</sup> = 0.993 for diosgenin in terms of peak area with concentration range of 200–1000 ng/spot (<xref ref-type="fig" rid="pone.0253617.g003">Fig 3</xref>).</p>
+<fig id="pone.0253617.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title/>
+<p><bold>A</bold> HPTLC fingerprinting of BBD samples (1–27) after derivatizing by anisaldehyde regent. <bold>B</bold> Chromatogram I of BBD samples (1–14); Chromatogram II of BBD samples (15–27).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g002" xlink:type="simple"/>
+</fig>
+<fig id="pone.0253617.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Calibration plot for diosgenin.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g003" xlink:type="simple"/>
+</fig>
+<sec id="sec017">
+<title>3.1 Screening of significant extraction parameters</title>
+<p>PBD was employed for the screening and estimation of the effect of seven different parameters on the diosgenin yield (<xref ref-type="table" rid="pone.0253617.t002">Table 2</xref>). The particular design matrix and resultant % diosgenin yield acquired from <italic>D</italic>. <italic>deltoidea</italic> tubers are displayed in <xref ref-type="table" rid="pone.0253617.t003">Table 3</xref>. Regression analysis was used for the screening of the impact of extraction factors (<xref ref-type="table" rid="pone.0253617.t004">Table 4</xref>). Among seven parameters only for parameters (particle size, solid: solvent ratio, time and temperature) had revealed significant impact on diosgenin extraction as shown by their <italic>P</italic> values (<italic>P</italic>&lt; 0.05) given in <xref ref-type="table" rid="pone.0253617.t004">Table 4</xref>. In this study, according to the PBD, the diosgenin yield has shown deviation up to 0.393–1.01%.</p>
+</sec>
+<sec id="sec018">
+<title>3.2 Effect of process variables</title>
+<p>Investigational design is comprehensively utilized for knowing the influence of parameters in a procedure to diminish the number of tests, material assets and time. Moreover, the experiment implemented on the outcomes effectively acknowledged, and thus the test errors are reduced. The impacts of variations in the test variables are measured by the statistical procedures and their mutual interactions through the investigational design [<xref ref-type="bibr" rid="pone.0253617.ref053">53</xref>]. In this scheme, four parameters at three level BBD was utilised to optimize and examine the effect of independent variables on diosgenin of <italic>D</italic>. <italic>deltoidea</italic> tubers extract obtained by solid–liquid extraction method (<xref ref-type="table" rid="pone.0253617.t005">Table 5</xref>) and the results along with experimental values and predicted values achieved by model equation were shown in <xref ref-type="table" rid="pone.0253617.t006">Table 6</xref>. The quadratic model impact is statistically significant (0.0001) and R<sup>2</sup> and adjusted R<sup>2</sup> values of 0.9967 and 0.982 correspondingly, and lack of fit was not significant (1.0). This predicts the adequacy of the model. The quadratic model is observed to be the most appropriate model for the current extraction process.</p>
+<p>Multiple regression analysis was employed on experimental results, providing second-order polynomial <xref ref-type="disp-formula" rid="pone.0253617.e007">Eq 7</xref>
+<disp-formula id="pone.0253617.e007">
+<alternatives>
+<graphic id="pone.0253617.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0253617.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7">
+<mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:mtext>Y</mml:mtext><mml:mo>=</mml:mo><mml:mn>1.2046</mml:mn><mml:mo>+</mml:mo><mml:mn>0.002</mml:mn><mml:msub><mml:mrow><mml:mspace width="4pt"/><mml:mspace width="4pt"/><mml:mtext>X</mml:mtext></mml:mrow><mml:mn>2</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mn>0.00158</mml:mn><mml:msub><mml:mrow><mml:mspace width="4pt"/><mml:mtext>X</mml:mtext></mml:mrow><mml:mn>3</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mn>0.00158</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>4</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mn>0.01067</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>5</mml:mn></mml:msub><mml:mspace width="4pt"/><mml:mtext>--</mml:mtext><mml:mn>0.03321</mml:mn><mml:mspace width="4pt"/><mml:msub><mml:mtext>X</mml:mtext><mml:mn>2</mml:mn></mml:msub><mml:msup><mml:mrow/><mml:mn>2</mml:mn></mml:msup><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mn>0.03058</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>3</mml:mn></mml:msub><mml:msup><mml:mrow/><mml:mn>2</mml:mn></mml:msup><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mn>0.04183</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>4</mml:mn></mml:msub><mml:msup><mml:mrow/><mml:mn>2</mml:mn></mml:msup></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mtext>--</mml:mtext><mml:mn>0.02446</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>5</mml:mn></mml:msub><mml:msup><mml:mrow/><mml:mn>2</mml:mn></mml:msup><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mn>0.00975</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mtext>X</mml:mtext><mml:mn>3</mml:mn></mml:msub><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mspace width="4pt"/><mml:mn>0.00700</mml:mn><mml:msub><mml:mrow><mml:mspace width="4pt"/><mml:mtext>X</mml:mtext></mml:mrow><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mtext>X</mml:mtext><mml:mn>4</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mn>0.02175</mml:mn><mml:mspace width="4pt"/><mml:msub><mml:mtext>X</mml:mtext><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mtext>X</mml:mtext><mml:mn>5</mml:mn></mml:msub><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mspace width="4pt"/><mml:mtext>-</mml:mtext><mml:mn>0.00350</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>3</mml:mn></mml:msub><mml:msub><mml:mtext>X</mml:mtext><mml:mn>4</mml:mn></mml:msub><mml:mo>+</mml:mo><mml:mn>0.00750</mml:mn><mml:msub><mml:mtext>X</mml:mtext><mml:mn>3</mml:mn></mml:msub><mml:msub><mml:mtext>X</mml:mtext><mml:mn>5</mml:mn></mml:msub></mml:mrow></mml:mtd></mml:mtr></mml:mtable>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula></p>
+<p>The influence of solid: solvent (X<sub>2</sub>), particle size (X<sub>3</sub>), time (X<sub>4</sub>) and temperature (X<sub>5</sub>) on the extraction of diosgenin were shown in <xref ref-type="table" rid="pone.0253617.t007">Table 7</xref>. Regression coefficients had shown significant positive linear effects of the four variables (X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub> and X<sub>5</sub>). Among four parameters, temperature has revealed maximum effect on diosgenin yield, by giving the maximum linear coefficient value (0.01067) followed by solid: solvent ratio (0.002), while time (0.00158) and particle size (0.00158) has equal effect. Regression analysis also indicated high significance (p &lt; 0.0001) of model equation terms: main, squared, and interaction effects of process variables. The smaller the magnitude of the P, the more significant is the corresponding coefficient. Values of P less than 0.05 indicate model terms are significant. The significant linear, (X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub> and X<sub>5</sub>), quadratic (X<sub>2</sub><sup>2</sup>, X<sub>3</sub><sup>2</sup>, X<sub>4</sub><sup>2</sup> and X<sub>5</sub><sup>2</sup>) and interactive effect i.e particle size and time (X<sub>25</sub>), solid: solvent and particle size (X<sub>23</sub>), solid: solvent and time (X<sub>24</sub>), solid: solvent and temperature (X<sub>25</sub>), particle size and time (X<sub>34</sub>) and particle size and temperature (X<sub>35</sub>) were shown in the model regression <xref ref-type="disp-formula" rid="pone.0253617.e004">Eq (4)</xref> except time and temperature (X<sub>45</sub>), which had non-significant effect on diosgenin yield. For all the responses such as solid: solvent ratio (X<sub>2</sub>), particle size (X<sub>3</sub>), time (X<sub>4</sub>) and temperature (X<sub>5</sub>) quadratic effect of variables were seen to be significant.</p>
+<table-wrap id="pone.0253617.t007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t007</object-id>
+<label>Table 7</label> <caption><title>Regression analysis of BBD criterion data for diosgenin extraction from <italic>D</italic>. <italic>deltoidea</italic> tuber.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t007g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t007" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Model parameters</th>
+<th align="center">Regression coefficient</th>
+<th align="center">S.E.Cofficient</th>
+<th align="center"><italic>T</italic></th>
+<th align="center"><italic>P</italic></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>Constant</bold></td>
+<td align="char" char=".">1.204</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">861.351</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid:Solvent</bold></td>
+<td align="char" char=".">0.002</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">2.860</td>
+<td align="char" char=".">0.014</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size</bold></td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">2.264</td>
+<td align="char" char=".">0.043</td>
+</tr>
+<tr>
+<td align="center"><bold>Time</bold></td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">2.264</td>
+<td align="char" char=".">0.043</td>
+</tr>
+<tr>
+<td align="center"><bold>Temperature</bold></td>
+<td align="char" char=".">0.010</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">15.254</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid:Solvent</bold><sup><bold>2</bold></sup></td>
+<td align="char" char=".">-0.033</td>
+<td align="char" char=".">0.0010</td>
+<td align="char" char=".">-31.659</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size</bold><sup><bold>2</bold></sup></td>
+<td align="char" char=".">-0.030</td>
+<td align="char" char=".">0.0010</td>
+<td align="char" char=".">-29.157</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Time</bold><sup><bold>2</bold></sup></td>
+<td align="char" char=".">-0.041</td>
+<td align="char" char=".">0.0010</td>
+<td align="char" char=".">-39.882</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Temperature</bold><sup><bold>2</bold></sup></td>
+<td align="char" char=".">-0.024</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">-23.317</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid:Solvent × Particle size</bold></td>
+<td align="char" char=".">-0.009</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">-8.050</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid:Solvent × Time</bold></td>
+<td align="char" char=".">-0.007</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">-5.779</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Solid:Solvent × Temperature</bold></td>
+<td align="char" char=".">0.021</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">17.957</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size ×Time</bold></td>
+<td align="char" char=".">-0.003</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">-2.890</td>
+<td align="char" char=".">0.014</td>
+</tr>
+<tr>
+<td align="center"><bold>Particle size × Temperature</bold></td>
+<td align="char" char=".">0.007</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">6.192</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Time × Temperature</bold></td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.619</td>
+<td align="char" char=".">0.547</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t007fn001"><p>R-Sq = 99.67% R-Sq(pred) = 98.20% R-Sq(adj) = 99.28%.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>ANOVA analysis specifies the linear, interactive and quadratic relationship among the independent variables on their dependent variables [<xref ref-type="bibr" rid="pone.0253617.ref054">54</xref>]. ANOVA for the extraction of diosgenin attained from this model were shown in <xref ref-type="table" rid="pone.0253617.t008">Table 8</xref>. Model values obtained by the Analysis of variance describe whether this model is fit for the variation found in diosgenin extract. If the significance in F-Test is found at the 5% level (<italic>P</italic>&lt; 0.05), then the model can clearly explain the variations and is fit for the analysis [<xref ref-type="bibr" rid="pone.0253617.ref055">55</xref>–<xref ref-type="bibr" rid="pone.0253617.ref058">58</xref>]. The coefficient of determination (<italic>R</italic><sup><italic>2</italic></sup>) value of 0.996 and an adjusted-<italic>R</italic><sup><italic>2</italic></sup> value of 0.982 appear close to the unity and indicate a high correlation between the actual and the predicted values [<xref ref-type="bibr" rid="pone.0253617.ref059">59</xref>, <xref ref-type="bibr" rid="pone.0253617.ref060">60</xref>] and R<sup>2</sup> value (0.9967) indicates that the model can explain the variation up to 99.67% in the extract of diosgenin. The <italic>P</italic> value (1.0) explains that the applied model is fit and also describes the influence of solid: solvent ratio, particle size, time and temperature on diosgenin from <italic>D</italic>. <italic>deltoidea</italic>.</p>
+<table-wrap id="pone.0253617.t008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t008</object-id>
+<label>Table 8</label> <caption><title>Analysis of variance for diosgenin extraction from <italic>D</italic>. <italic>deltoidea</italic> by using BBD criterion.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t008g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t008" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center">Source</th>
+<th align="center">DF</th>
+<th align="center">Seq SS</th>
+<th align="center">AdjSS</th>
+<th align="center">Adj MS</th>
+<th align="center">F</th>
+<th align="center">P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>Regression</bold></td>
+<td align="center">14</td>
+<td align="char" char=".">0.016</td>
+<td align="char" char=".">0.016</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">203.85</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Linear</bold></td>
+<td align="center">4</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">62.78</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Square</bold></td>
+<td align="center">4</td>
+<td align="char" char=".">0.011</td>
+<td align="char" char=".">0.011</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">533.77</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Interaction</bold></td>
+<td align="center">6</td>
+<td align="char" char=".">0.002</td>
+<td align="char" char=".">0.002</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">77.96</td>
+<td align="char" char=".">0.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Residual Error</bold></td>
+<td align="center">12</td>
+<td align="char" char=".">0.0001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.000</td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><bold>Lack-of-Fit</bold></td>
+<td align="center">10</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.000</td>
+<td align="char" char=".">0.03</td>
+<td align="char" char=".">1.000</td>
+</tr>
+<tr>
+<td align="center"><bold>Pure Error</bold></td>
+<td align="center">2</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.000</td>
+<td align="center"/>
+<td align="center"/>
+</tr>
+<tr>
+<td align="center"><bold>Total</bold></td>
+<td align="center">26</td>
+<td align="char" char=".">0.016</td>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+<td align="center"/>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p><xref ref-type="fig" rid="pone.0253617.g004">Fig 4A–4F</xref> presented the surface response plots of various levels of particle size, solid: solvent ratio, time and temperature on diosgenin yield. The impact of extraction temperature and solid: solvent ratio on diosgenin extraction is given in (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4A</xref>). At extraction temperature 45°C and solid: solvent ratio 1:45 g/ml, maximum diosgenin (1.204%) was attained. This shows that diosgenin yield was strongly influenced by these two parameters. (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4B</xref>) shows that maximum diosgenin was extracted when temperature was 45°C and particle size 1.25 mm. (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4C</xref>) indicates the evolution of diosgenin yield in accordance to time and extraction temperature. (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4D</xref>) indicated that the maximum diosgenin was extracted at extraction time 45 min and particle size 1.25 mm. Increase in particle size causes decline in extraction of diosgenin. The effect of solid: solvent ratio and extraction time on the extraction diosgenin is shown in (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4E</xref>). Maximum diosgenin was obtained at the solid: solvent ratio 1:45 and extraction time of 45 min. Effect of particle size and solid: solvent ratio on diosgenin extraction was shown in (<xref ref-type="fig" rid="pone.0253617.g004">Fig 4F</xref>). Particle size 1.25 mm and solid: solvent ratio of 1:45 (g/ml) shows maximum yield of diosgenin. Further, increase in both the parameters leads to decrease in the yield of diosgenin.</p>
+<fig id="pone.0253617.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title/>
+<p>A. Three-dimensional surface response plots for diosgenin extraction at varying level of temperature and solid/solvent ratio. B. Contour plot for diosgenin extraction at varying level of temperature and particle size. C. Contour plot for diosgenin extraction at varying level of temperature and time. D. Contour plot for diosgenin extraction at varying level of time and particle size. E. Contour plot for diosgenin extraction at varying level of time and solid/solvent ratio. F. Contour plot for diosgenin extraction at varying level of particle size and solid/solvent ratio.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g004" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec019">
+<title>3.3 ANN modelling</title>
+<p>In the present study, ANN adopted back propagation algorithm during training phase and was developed into 3 layers: input layer (X<sub>2</sub>, X<sub>3</sub>, X<sub>4</sub>, X<sub>5</sub>), hidden layer and output layer (% yield of diosgenin). In ANN modelling, 27 runs of BBD matrix were divided into 3 subsets, with approximate 19:4:4ratios to train, validate and test. The experimental data versus the computed ANN data in training, testing and validation networks is shown in <xref ref-type="fig" rid="pone.0253617.g005">Fig 5</xref>. The performance data obtained over entire training data and fitted at best epochs for validation data being represented (<xref ref-type="fig" rid="pone.0253617.g006">Fig 6</xref>). Similarly, gradient loss and training state achieved over entire ANN training is explained with the help of <xref ref-type="fig" rid="pone.0253617.g006">Fig 6</xref>. Best validation performance for the optimization of diosgenin was observed at epoch 15. The experimental results used for RSM was also applied to predict the optimal design of ANN (<xref ref-type="table" rid="pone.0253617.t009">Table 9</xref>). In the experimental design, the selecting of appropriate numbers of neurons in the input, hidden and output layers were limited. In hidden layer number of neurons was selected when lowest error of predictive models attained. Initially, the neural network was optimized to acquire an ANN model with least dimension and errors in testing and training. The data apportioning (training, testing and validation) were accomplished to evade extreme training and over-parameterization. The goodness of fit between the observed and predicted response data form ANN models are shown in <xref ref-type="fig" rid="pone.0253617.g005">Fig 5</xref> with correlation coefficients of 0.998% for extraction yield. Higher correlation coefficients reveal the reliability of the predictive models by ANN. For valid evaluation of predictive capability, a new validation data set (not belonging to the training data set previously used for model creation) of 9 runs was employed (<xref ref-type="table" rid="pone.0253617.t010">Table 10</xref>).</p>
+<fig id="pone.0253617.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Correlation between experimental versus computed yield of ANN.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g005" xlink:type="simple"/>
+</fig>
+<fig id="pone.0253617.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>A-B Performance data obtained (ANN) over entire training data and gradient loss for diosgenin.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.g006" xlink:type="simple"/>
+</fig>
+<table-wrap id="pone.0253617.t009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t009</object-id>
+<label>Table 9</label> <caption><title>Comparison of predictive capacity of RSM and ANN models.</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t009g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t009" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center"/>
+<th align="center">RSM</th>
+<th align="center">ANN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Coefficient of determination(R<sup>2</sup>)</td>
+<td align="char" char=".">0.996</td>
+<td align="char" char=".">0.998</td>
+</tr>
+<tr>
+<td align="center">Root mean square error (RMSE)</td>
+<td align="char" char=".">0.001</td>
+<td align="char" char=".">0.001</td>
+</tr>
+<tr>
+<td align="center">Absolute average deviation (AAD)</td>
+<td align="char" char=".">0.018</td>
+<td align="char" char=".">0.018</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<table-wrap id="pone.0253617.t010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0253617.t010</object-id>
+<label>Table 10</label> <caption><title>Validation data set for extraction variables with corresponding experimental and predicted value (RSM and ANN).</title></caption>
+<alternatives>
+<graphic id="pone.0253617.t010g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0253617.t010" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2">Run order</th>
+<th align="center" colspan="4">Factors</th>
+<th align="center" colspan="3">Diosgenin (% dry weight)</th>
+</tr>
+<tr>
+<th align="center">Solid: solvent ratio (X<sub>2</sub>)</th>
+<th align="center">Particle size (X<sub>3</sub>)</th>
+<th align="center">Time (X<sub>4</sub>)</th>
+<th align="center">Temperature(X<sub>5</sub>)</th>
+<th align="center">Experimental</th>
+<th align="center">RSM Predicted</th>
+<th align="center">ANN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><bold>1</bold></td>
+<td align="left">50</td>
+<td align="char" char=".">0.2</td>
+<td align="left">20</td>
+<td align="left">50</td>
+<td align="char" char=".">1.125</td>
+<td align="char" char=".">1.121</td>
+<td align="char" char=".">1.127</td>
+</tr>
+<tr>
+<td align="center"><bold>2</bold></td>
+<td align="left">50</td>
+<td align="char" char=".">2.0</td>
+<td align="left">20</td>
+<td align="left">50</td>
+<td align="char" char=".">1.137</td>
+<td align="char" char=".">1.133</td>
+<td align="char" char=".">1.136</td>
+</tr>
+<tr>
+<td align="center"><bold>3</bold></td>
+<td align="left">50</td>
+<td align="char" char=".">0.2</td>
+<td align="left">80</td>
+<td align="left">50</td>
+<td align="char" char=".">1.135</td>
+<td align="char" char=".">1.132</td>
+<td align="char" char=".">1.137</td>
+</tr>
+<tr>
+<td align="center"><bold>4</bold></td>
+<td align="left">50</td>
+<td align="char" char=".">2.0</td>
+<td align="left">80</td>
+<td align="left">50</td>
+<td align="char" char=".">1.131</td>
+<td align="char" char=".">1.130</td>
+<td align="char" char=".">1.134</td>
+</tr>
+<tr>
+<td align="center"><bold>5</bold></td>
+<td align="left">20</td>
+<td align="char" char=".">1.1</td>
+<td align="left">20</td>
+<td align="left">50</td>
+<td align="char" char=".">1.119</td>
+<td align="char" char=".">1.117</td>
+<td align="char" char=".">1.119</td>
+</tr>
+<tr>
+<td align="center"><bold>6</bold></td>
+<td align="left">80</td>
+<td align="char" char=".">1.1</td>
+<td align="left">20</td>
+<td align="left">50</td>
+<td align="char" char=".">1.137</td>
+<td align="char" char=".">1.138</td>
+<td align="char" char=".">1.137</td>
+</tr>
+<tr>
+<td align="center"><bold>7</bold></td>
+<td align="left">20</td>
+<td align="char" char=".">1.1</td>
+<td align="left">80</td>
+<td align="left">50</td>
+<td align="char" char=".">1.136</td>
+<td align="char" char=".">1.132</td>
+<td align="char" char=".">1.135</td>
+</tr>
+<tr>
+<td align="center"><bold>8</bold></td>
+<td align="left">80</td>
+<td align="char" char=".">1.1</td>
+<td align="left">80</td>
+<td align="left">50</td>
+<td align="char" char=".">1.126</td>
+<td align="char" char=".">1.122</td>
+<td align="char" char=".">1.126</td>
+</tr>
+<tr>
+<td align="center"><bold>9</bold></td>
+<td align="left">50</td>
+<td align="char" char=".">0.2</td>
+<td align="left">50</td>
+<td align="left">20</td>
+<td align="char" char=".">1.144</td>
+<td align="char" char=".">1.146</td>
+<td align="char" char=".">1.144</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Moreover, RSM model was compared with the ANN model that represented the ANN model as more accurate method of interpolation, prediction, and validation. In contrast to the RSM, ANN model showed less deviation between the predicted and experimental values. <xref ref-type="table" rid="pone.0253617.t006">Table 6</xref> depicted the predicted values in response to the experimental values obtained for diosgenin. In addition, comparison was drawn between two models on the basis of three significant statistical parameters, <italic>viz</italic>. Root mean square error (RMSE), Absolute average deviation (AAD) and regression coefficient (<italic>r</italic><sup><italic>2</italic></sup>).</p>
+<p>RMSE and AAD were calculated on the basis of Eqs <xref ref-type="disp-formula" rid="pone.0253617.e005">5</xref> and <xref ref-type="disp-formula" rid="pone.0253617.e006">6</xref>.</p>
+<p>Comparative overview of analytical parameters with RSM and ANN models are presented in <xref ref-type="table" rid="pone.0253617.t009">Table 9</xref>. Though both RSM and ANN models showed good result of prediction, but higher R<sup>2</sup> value and lower RMSE and AAD value revealed that ANN model can efficiently predict responses with greater evaluation abilities in comparison to RSM. This enhanced precision of the ANN can be caused by its universal capability to estimate the non-linearity, however RSM is simply based on a quadratic polynomial. Moreover, ANN has the capacity to estimate multi-response in a single procedure, while in RSM it has to be run separately. ANN revealed best validation statistical parameters, hence can be used as an accurate method in the optimization approaches [<xref ref-type="bibr" rid="pone.0253617.ref046">46</xref>–<xref ref-type="bibr" rid="pone.0253617.ref048">48</xref>].</p>
+</sec>
+</sec>
+<sec id="sec020" sec-type="conclusions">
+<title>4. Discussion</title>
+<p>The present study involves the use of RSM to optimize extraction conditions for maximum diosgenin yield from <italic>Dioscorea deltoidea</italic> by using HPTLC analysis. The ANN model was used to simulate the data for the experiments done through RSM and to compare the values obtained experimentally (by RSM) and predictively (using ANN). The diosgenin yield can be influenced significantly by extraction parameters i.e solid: solvent, time, particle size and temperature. Low temperature was not suitable for extraction of bioactive compounds from the plant matrix due to inability to release the bioactive compounds. As the temperature rises the diosgenin yield increased but further increase in temperature had no effect on the diosgenin yield due to maximum diosgenin extracted from the plant matrix. Pandey et al. (2018) have reported the enhanced yield of pentacyclic triterpenoids from <italic>Swertia chirata</italic> stem at mean particle size (3 mm), temperature (65°C), and methanol–ethyl acetate solvent composition (45%) [<xref ref-type="bibr" rid="pone.0253617.ref045">45</xref>]. Similar results were found in our studies as particle size-temperature interaction was found to be significant. Diosgenin yield was maximum at optimized particle size due increase in the contact area of sample particles which is responsible for the better leaching of solute to reach the surface. Furthermore, very small particles may lead to technical difficulties related to the permeability of the solid bed, during the mixing of the plant material with solvent. Increased solubility of anthocyanins in solvents was found in extraction from black currants, due to increased temperature and sample to solvent ratio due better penetration of solvent into the plant matrix [<xref ref-type="bibr" rid="pone.0253617.ref029">29</xref>, <xref ref-type="bibr" rid="pone.0253617.ref030">30</xref>]. Optimum extraction time is suitable for better extraction yield of bioactive compounds as we got in diosgenin yield. Likewise, results were obtained in bioactive compound yield from various medicinal plants [<xref ref-type="bibr" rid="pone.0253617.ref038">38</xref>–<xref ref-type="bibr" rid="pone.0253617.ref040">40</xref>]. RSM and ANN were efficaciously applied for optimization of extraction parameters for the extraction of diosgenin from <italic>D</italic>. <italic>deltoidea</italic>. For the optimization of diosgenin, seven different parameters (time, solvent composition, temperature, particle size solid: solvent ratio, pH and extraction cycles/steps) were run through PBD conditions and only four parameters (particle size; solid: solvent ratio; time and temperature) indicated significant impact on diosgenin extraction. The presence of interactions among the factors were studied and the interaction among solid: solvent ratio and particle size; time and particle size; particle size and temperature; solid: solvent ratio and time; and solid: solvent ratio and temperature revealed significant effects on diosgenin extraction.</p>
+</sec>
+<sec id="sec021" sec-type="conclusions">
+<title>5. Conclusions</title>
+<p>BBD was used for the optimization of extraction factors and best extraction factors for diosgenin extraction were particle size (1.25 mm), solid: solvent ratio (1:45 g/ml), extraction temperature (45°C), and extraction time (45 min). The maximum experimental yield of diosgenin (1.204% dry weight) was observed close to the predicted value (1.202% dry weight) on the basis of the chosen optimal extraction factors. The developed mathematical model fitted well with experimental data for diosgenin extraction. The performance estimation results proposed that ANN as a modelling method was far superior to RSM. The present work is the first ever investigation of optimization of diosgenin extraction from <italic>D</italic>. <italic>deltoidea</italic> tuber using RSM and ANN. Moreover, further studies are crucial to design other modelling approaches that would enhance the synthesis of valuable bioactive compounds.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0253617.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sautour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mitaine-Offer</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Lacaille-Dubois</surname> <given-names>MA</given-names></name>. <article-title>The Dioscorea genus: a review of bioactive steroid saponins</article-title>. <source>Journal of natural medicines</source>. <year>2007</year> <month>Apr</month>;<volume>61</volume>(<issue>2</issue>):<fpage>91</fpage>–<lpage>101</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dangwal</surname> <given-names>LR</given-names></name>, <name name-style="western"><surname>Chauhan</surname> <given-names>AS</given-names></name>. <article-title><italic>Dioscorea deltoidea</italic> wall. exgriseb. A highly threatened himalayan medicinal plant: an overview</article-title>. <source>Int J Pharma Bio Sci</source>. <year>2015</year>;<volume>6</volume>:<fpage>452</fpage>–<lpage>460</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref003"><label>3</label><mixed-citation publication-type="other" xlink:type="simple">Prakash A. Uses of some threatened and potential ethnomedicinal plants among the tribals of Uttar Pradesh and Uttarakhand in India. In National Conference on Forest Biodiversity-Earth’s Living Treasure. 2011;93–99.</mixed-citation></ref>
+<ref id="pone.0253617.ref004"><label>4</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Onwueme</surname> <given-names>IC</given-names></name>. <source>The tropical tuber crops: yams, cassava, sweet potato, and cocoyams</source>. <publisher-name>John Wiley and Sons</publisher-name>. <year>1978</year>;<fpage>248</fpage>–<lpage>34</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref005"><label>5</label><mixed-citation publication-type="other" xlink:type="simple">Coursey DG. Yams. An account of the nature, origins, cultivation and utilisation of the useful members of the Dioscoreaceae. Yams. An account of the nature, origins, cultivation and utilisation of the useful members of the Dioscoreaceae. 1967.</mixed-citation></ref>
+<ref id="pone.0253617.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gopichand</surname></name>, <name name-style="western"><surname>Singh</surname> <given-names>RD</given-names></name>, <name name-style="western"><surname>Meena</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Kaul</surname> <given-names>VK</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>B</given-names></name>. <article-title>Influence of manure and plant spacing on growth and yield of <italic>Dioscorea deltoidea</italic> Wall: an Endangered Species</article-title>. <source>J Med Plants Stud</source>. <year>2013</year>;<volume>1</volume>:<fpage>184</fpage>–<lpage>190</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>PS</given-names></name>, <name name-style="western"><surname>Shih</surname> <given-names>YW</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>HC</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>HW</given-names></name>. <article-title>Diosgenin, a steroidal saponin, inhibits migration and invasion of human prostate cancer PC–3 cells by reducing matrix metalloproteinasesexpression</article-title>. <source>PloSone</source>. <year>2011</year>;<volume>6</volume>:<fpage>e20164</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0020164" xlink:type="simple">10.1371/journal.pone.0020164</ext-link></comment> <object-id pub-id-type="pmid">21629786</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Selim</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Al Jaouni</surname> <given-names>S</given-names></name>. <article-title>Anticancer and apoptotic effects on cell proliferation of diosgenin isolated from <italic>Costusspeciosus</italic> (Koen.) Sm</article-title>. <source>BMC Complement Altern Med</source>. <year>2015</year>;<volume>15</volume>:<fpage>301</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s12906-015-0836-8" xlink:type="simple">10.1186/s12906-015-0836-8</ext-link></comment> <object-id pub-id-type="pmid">26329920</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Gao</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Diosgenin inhibits the migration of human breast cancer MDA–MB–231 cells by suppressing Vav2 activity</article-title>. <source>Phytomedicine</source>. <year>2014</year>;<volume>21</volume>: <fpage>871</fpage>–<lpage>876</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.phymed.2014.02.002" xlink:type="simple">10.1016/j.phymed.2014.02.002</ext-link></comment> <object-id pub-id-type="pmid">24656238</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Saravanan</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Ponmurugan</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Deepa</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Senthilkumar</surname> <given-names>B</given-names></name>. <article-title>Modulatory effects of diosgenin on attenuating the key enzymes activities of carbohydrate metabolism and glycogen content in streptozotocin–induced diabetic rats</article-title>. <source>Can J Diabetes</source>. <year>2014</year>;<volume>38</volume>:<fpage>409</fpage>–<lpage>414</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jcjd.2014.02.004" xlink:type="simple">10.1016/j.jcjd.2014.02.004</ext-link></comment> <object-id pub-id-type="pmid">24993510</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanchan</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Somani</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Peshattiwar</surname> <given-names>VV</given-names></name>, <name name-style="western"><surname>Kaikini</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Sathaye</surname> <given-names>S</given-names></name>. <article-title>Renoprotective effect of diosgenin in streptozotocin induced diabetic rats</article-title>. <source>Pharmacol Rep</source>. <year>2016</year>;<volume>68</volume>:<fpage>370</fpage>–<lpage>377</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.pharep.2015.10.011" xlink:type="simple">10.1016/j.pharep.2015.10.011</ext-link></comment> <object-id pub-id-type="pmid">26922541</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Yang</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Jacob</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Khan</surname> <given-names>SI</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>YJ</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>XC</given-names></name>. <article-title>Antifungal activity of C–27 steroidal saponins</article-title>. <source>Antimicrob Agents Chemother</source>. <year>2006</year>;<volume>50</volume>: <fpage>1710</fpage>–<lpage>1714</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/AAC.50.5.1710-1714.2006" xlink:type="simple">10.1128/AAC.50.5.1710-1714.2006</ext-link></comment> <object-id pub-id-type="pmid">16641439</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>YJ</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>KL</given-names></name>, <name name-style="western"><surname>Hsieh</surname> <given-names>TC</given-names></name>, <name name-style="western"><surname>Chang</surname> <given-names>TY</given-names></name>, <name name-style="western"><surname>Lin</surname> <given-names>WH</given-names></name>, <name name-style="western"><surname>Hsu</surname> <given-names>JTA</given-names></name>. <article-title>Diosgenin, a plant–derived sapogenin, exhibits antiviral activity in vitro against hepatitis C virus</article-title>. <source>J Nat Prod</source>. <year>2011</year>; <volume>74</volume>:<fpage>580</fpage>–<lpage>584</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/np100578u" xlink:type="simple">10.1021/np100578u</ext-link></comment> <object-id pub-id-type="pmid">21391660</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sautour</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Mitaine-Offer</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Miyamoto</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Dongmo</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Lacaille-Dubois</surname> <given-names>MA</given-names></name>. 2004. <article-title>Antifungal steroid saponins from <italic>Dioscorea cayenensis</italic></article-title>. <source>Planta Med</source>. <year>2004</year>; <volume>70</volume>:<fpage>90</fpage>–<lpage>92</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1055/s-2004-815467" xlink:type="simple">10.1055/s-2004-815467</ext-link></comment> <object-id pub-id-type="pmid">14765305</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>He</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Tian</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Bing</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Anti–tumour and immunomodulating activities of diosgenin, a naturally occurring steroidal saponin</article-title>. <source>Nat Prod Res</source>. <year>2012</year>;<volume>26</volume>: <fpage>2243</fpage>–<lpage>2246</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/14786419.2011.648192" xlink:type="simple">10.1080/14786419.2011.648192</ext-link></comment> <object-id pub-id-type="pmid">22235932</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jayachandran</surname> <given-names>KS</given-names></name>, <name name-style="western"><surname>Vasanthi</surname> <given-names>HR</given-names></name>, <name name-style="western"><surname>Rajamanickam</surname> <given-names>GV</given-names></name>. <article-title>Antilipoperoxidative and membrane stabilizing effect of diosgenin, in experimentally induced myocardial infarction</article-title>. <source>Mol Cell Biochem</source>. <year>2009</year>; <volume>327</volume>:<fpage>203</fpage>–<lpage>210</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11010-009-0058-9" xlink:type="simple">10.1007/s11010-009-0058-9</ext-link></comment> <object-id pub-id-type="pmid">19234676</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pari</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Monisha</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Jalaludeen</surname> <given-names>AM</given-names></name>. 2012. <article-title>Beneficial role of diosgenin on oxidative stress in aorta of streptozotocin induced diabetic rats</article-title>. <source>Eur J Pharmacol</source>. <year>2012</year>;<volume>691</volume>:<fpage>143</fpage>–<lpage>150</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ejphar.2012.06.038" xlink:type="simple">10.1016/j.ejphar.2012.06.038</ext-link></comment> <object-id pub-id-type="pmid">22771295</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gong</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Qin</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>W</given-names></name>. <article-title>Anti–thrombosis effect of diosgenin extract from <italic>Dioscorea zingiberensis</italic> CH Wright <italic>in vitro</italic> and <italic>in vivo</italic></article-title>. <source>Phytomedicine</source>. <year>2011</year>;<volume>18</volume>:<fpage>458</fpage>–<lpage>463</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.phymed.2010.08.015" xlink:type="simple">10.1016/j.phymed.2010.08.015</ext-link></comment> <object-id pub-id-type="pmid">21036572</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Huang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Du</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Guo</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xin</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Xing</surname> <given-names>Z</given-names></name>, <etal>et al</etal>. 2013. <article-title>Anti-thrombosis effect of diosgenyl saponins <italic>in vitro</italic> and <italic>in vivo</italic></article-title>. <source>Steroids</source>. <year>2013</year>;<volume>78</volume>: <fpage>1064</fpage>–<lpage>1070</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.steroids.2013.07.003" xlink:type="simple">10.1016/j.steroids.2013.07.003</ext-link></comment> <object-id pub-id-type="pmid">23891646</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tada</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Kanda</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Haratake</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Tobiishi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Uchiwa</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Watanabe</surname> <given-names>S</given-names></name>. <article-title>Novel effects of diosgenin on skin aging</article-title>. <source>Steroids</source>. <year>2009</year>;<volume>74</volume>: <fpage>504</fpage>–<lpage>511</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.steroids.2009.01.006" xlink:type="simple">10.1016/j.steroids.2009.01.006</ext-link></comment> <object-id pub-id-type="pmid">19428439</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Jung</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>YS</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>D</given-names></name>. <article-title>Diosgenin inhibits melanogenesis through the activation of phosphatidylinositol–3–kinase pathway (PI3K) signaling</article-title>. <source>Life Sci</source>. <year>2007</year>; <volume>81</volume>:<fpage>249</fpage>–<lpage>254</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.lfs.2007.05.009" xlink:type="simple">10.1016/j.lfs.2007.05.009</ext-link></comment> <object-id pub-id-type="pmid">17568620</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chiang</surname> <given-names>SS</given-names></name>, <name name-style="western"><surname>Chang</surname> <given-names>SP</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>TM</given-names></name>. <article-title>Osteoprotective effect of Monascus–fermented <italic>Dioscorea</italic> in ovariectomized rat model of postmenopausal osteoporosis</article-title>. <source>J Agr Food Chem</source>. <year>2011</year>; <volume>59</volume>:<fpage>9150</fpage>–<lpage>9157</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/jf201640j" xlink:type="simple">10.1021/jf201640j</ext-link></comment> <object-id pub-id-type="pmid">21800902</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Komesaroff</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Black</surname> <given-names>CVS</given-names></name>, <name name-style="western"><surname>Cable</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Sudhir</surname> <given-names>K</given-names></name>. <article-title>Effects of wild yam extract on menopausal symptoms, lipids and sex hormones in healthy menopausal women</article-title>. <source>Climacteric</source>. <year>2001</year>;<volume>4</volume>: <fpage>144</fpage>–<lpage>150</lpage>. <object-id pub-id-type="pmid">11428178</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ghayur</surname> <given-names>MN</given-names></name>, <name name-style="western"><surname>Kazim</surname> <given-names>SF</given-names></name>, <name name-style="western"><surname>Rasheed</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Khalid</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Jumani</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Choudhary</surname> <given-names>MI</given-names></name>, <etal>et al</etal>. <article-title>Identification of antiplatelet and acetylcholinesterase inhibitory constituents in betel nut</article-title>. <source>Zhong xi yijie he xuebao = Chin J Integr Med</source>. <year>2011</year>;<volume>9</volume>: <fpage>619</fpage>–<lpage>625</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kosters</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Frijters</surname> <given-names>RJ</given-names></name>, <name name-style="western"><surname>Kunne</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Vink</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Schneiders</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Schaap</surname> <given-names>FG</given-names></name>, <etal>et al</etal>. <article-title>Diosgenin‐induced biliary cholesterol secretion in mice requires Abcg8</article-title>. <source>Hepatology</source>. <year>2005</year>;<volume>41</volume>:<fpage>141</fpage>–<lpage>150</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/hep.20540" xlink:type="simple">10.1002/hep.20540</ext-link></comment> <object-id pub-id-type="pmid">15619238</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chirinos</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Rogez</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Campos</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Pedreschi</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Larondelle</surname> <given-names>Y</given-names></name>. 2007. <article-title>Optimization of extraction conditions of antioxidant phenolic compounds from mashua (<italic>Tropaeolumtuberosum</italic>Ruíz&amp;Pavón) tubers</article-title>. <source>Sep Purif Technol</source>. <year>2007</year>; <volume>55</volume>:<fpage>217</fpage>–<lpage>225</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gad</surname> <given-names>HA</given-names></name>, <name name-style="western"><surname>El‐Ahmady</surname> <given-names>SH</given-names></name>, <name name-style="western"><surname>Abou‐Shoer</surname> <given-names>MI</given-names></name>, <name name-style="western"><surname>Al‐Azizi</surname> <given-names>MM</given-names></name>. <article-title>Application of chemometrics in authentication of herbal medicines: a review</article-title>. <source>Phytochem Analysis</source>. <year>2013</year>; <volume>24</volume>:<fpage>1</fpage>–<lpage>24</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/pca.2378" xlink:type="simple">10.1002/pca.2378</ext-link></comment> <object-id pub-id-type="pmid">22678654</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ng</surname> <given-names>LY</given-names></name>, <name name-style="western"><surname>Ang</surname> <given-names>YK</given-names></name>, <name name-style="western"><surname>Khoo</surname> <given-names>HE</given-names></name>, <name name-style="western"><surname>Yim</surname> <given-names>HS</given-names></name>. <article-title>Influence of different extraction parameters on antioxidant properties of <italic>Carica papaya</italic> peel and seed</article-title>. <source>Research J Phytochem</source>. <year>2012</year>; <volume>6</volume>:<fpage>61</fpage>–<lpage>74</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Belwal</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Giri</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Bhatt</surname> <given-names>ID</given-names></name>, <name name-style="western"><surname>Rawal</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Pande</surname> <given-names>V</given-names></name>. <article-title>An improved method for extraction of nutraceutically important polyphenolics from <italic>Berberisjaeschkeana</italic> CK Schneid. fruits</article-title>. <source>Food Chem</source>. <year>2017b</year>; <volume>230</volume>:<fpage>657</fpage>–<lpage>666</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cacace</surname> <given-names>JE</given-names></name>, <name name-style="western"><surname>Mazza</surname> <given-names>G</given-names></name>. <article-title>Optimization of extraction of anthocyanins from black currants with aqueous ethanol</article-title>. <source>J Food Sci</source>. <year>2003</year>; <volume>68</volume>:<fpage>240</fpage>–<lpage>248</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Niño</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Jiménez</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Mosquera</surname> <given-names>OM</given-names></name>, <name name-style="western"><surname>Correa</surname> <given-names>YM</given-names></name>. <article-title>Diosgenin quantification by HPLC in a <italic>Dioscorea polygonoides</italic> tuber collection from Colombian flora</article-title>. <source>J BrazChem Soc</source>. <year>2007</year>;<volume>18</volume>: <fpage>1073</fpage>–<lpage>1076</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Olayemi</surname> <given-names>JO</given-names></name>, <name name-style="western"><surname>Ajaiyeoba</surname> <given-names>EO</given-names></name>. <article-title>Anti–inflammatory studies of yam (<italic>Dioscorea esculenta</italic>) extract on wistar rats</article-title>. <source>Afr J Biotechnol</source>. <year>2007</year>; <volume>6</volume>:<fpage>1913</fpage>–<lpage>1915</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Ma</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Lou</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>H</given-names></name>. <article-title>Ionic liquid–based ultrasonic/microwave–assisted extraction of steroidal saponins from <italic>Dioscorea zingiberensis</italic> CH Wright</article-title>. <source>Trop J Pharm Res</source>. <year>2014</year>; <volume>13</volume>:<fpage>1339</fpage>–<lpage>1345</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gupta</surname> <given-names>PK</given-names></name>, <name name-style="western"><surname>Nagore</surname> <given-names>DH</given-names></name>, <name name-style="western"><surname>Kuber</surname> <given-names>VV</given-names></name>, <name name-style="western"><surname>Purohit</surname> <given-names>S</given-names></name>. <article-title>A validated RP–HPLC method for the estimation of diosgenin from polyherbal formulation containing <italic>Tribulusterrestris</italic> Linn</article-title>. <source>Asian J Pharm Clin Res</source>. <year>2012</year>; <volume>5</volume>:<fpage>91</fpage>–<lpage>94</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Xie</surname> <given-names>MY</given-names></name>, <name name-style="western"><surname>Gong</surname> <given-names>XF</given-names></name>. <article-title>Microwave-assisted extraction used for the isolation of total triterpenoid saponins from <italic>Ganodermaatrum</italic></article-title>. <source>J Food Eng</source>. <year>2007</year>; <volume>81</volume>: <fpage>162</fpage>–<lpage>170</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref036"><label>36</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Myers</surname> <given-names>RH</given-names></name>, <name name-style="western"><surname>Montgomery</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Anderson-Cook</surname> <given-names>CM</given-names></name>. <source>Response Surface Methodology: Process and Product Optimization Using Designed Experiments</source>. <publisher-name>John Wiley &amp; Sons</publisher-name>. <year>2016</year>.</mixed-citation></ref>
+<ref id="pone.0253617.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhong</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Q</given-names></name>. <article-title>Optimization of ultrasonic extraction of polysaccharides from dried longan pulp using response surface methodology</article-title>. <source>CarbohydrPolym</source>. <year>2010</year>; <volume>80</volume>:<fpage>19</fpage>–<lpage>25</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ge</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ni</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Yan</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Cai</surname> <given-names>T</given-names></name>. <article-title>Optimization of the supercritical fluid extraction of natural vitamin E from wheat germ using response surface methodology</article-title>. <source>J Food Sci</source>. <year>2002</year>;<volume>67</volume>: <fpage>239</fpage>–<lpage>243</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Quanhong</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Caili</surname> <given-names>F</given-names></name>. <article-title>Application of response surface methodology for extraction optimization of germinant pumpkin seeds protein</article-title>. <source>Food Chem</source>. <year>2005</year>; <volume>92</volume>:<fpage>701</fpage>–<lpage>706</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Banik</surname> <given-names>RM</given-names></name>, <name name-style="western"><surname>Pandey</surname> <given-names>DK</given-names></name>. <article-title>Optimizing conditions for oleanolic acid extraction from <italic>Lantana camara</italic> roots using response surface methodology</article-title>. <source>Ind Crops Prod</source>. <year>2008</year>; <volume>27</volume>:<fpage>241</fpage>–<lpage>248</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Belwal</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Dhyani</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Bhatt</surname> <given-names>ID</given-names></name>, <name name-style="western"><surname>Rawal</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>Pande</surname> <given-names>V</given-names></name>. <article-title>Optimization extraction conditions for improving phenolic content and antioxidant activity in <italic>Berberis asiatica</italic> fruits using response surface methodology (RSM)</article-title>. <source>Food Chem</source>. <year>2016</year>;<volume>207</volume>:<fpage>115</fpage>–<lpage>124</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.foodchem.2016.03.081" xlink:type="simple">10.1016/j.foodchem.2016.03.081</ext-link></comment> <object-id pub-id-type="pmid">27080887</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Farzaneh</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Carvalho</surname> <given-names>IS</given-names></name>. 2017. <article-title>Modelling of microwave assisted extraction (MAE) of anthocyanins (TMA)</article-title>. <source>J Appl Res Med Aromat Plants</source>. <year>2017</year>;<volume>6</volume>:<fpage>92</fpage>–<lpage>100</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Alara</surname> <given-names>OR</given-names></name>, <name name-style="western"><surname>Mudalip</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Olalere</surname> <given-names>OA</given-names></name>. <article-title>Optimization of mangiferin extracted from <italic>Phaleriamacrocarpa</italic> fruits using response surface methodology</article-title>. <source>J Appl Res Med Aromat Plants</source>. <year>2017</year>; <volume>5</volume>:<fpage>82</fpage>–<lpage>87</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shang</surname> <given-names>YF</given-names></name>, <name name-style="western"><surname>Xu</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>WJ</given-names></name>, <name name-style="western"><surname>Um</surname> <given-names>BH</given-names></name>. <article-title>Antioxidativepolyphenolics obtained from spent coffee grounds by pressurized liquid extraction</article-title>. <source>S Afr J Bot</source>. <year>2017</year>;<volume>109</volume>:<fpage>75</fpage>–<lpage>80</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pandey</surname> <given-names>DK</given-names></name>, <name name-style="western"><surname>Kaur</surname> <given-names>P</given-names></name>. 2018. <article-title>Optimization of extraction parameters of pentacyclic triterpenoids from <italic>Swertia chirata</italic> stem using response surface methodology</article-title>. <source>3 Biotech</source>. <year>2018</year>;<volume>8</volume>:<fpage>152</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s13205-018-1174-6" xlink:type="simple">10.1007/s13205-018-1174-6</ext-link></comment> <object-id pub-id-type="pmid">29492371</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>. <article-title>Facile synthesis of crosslinked chitosan-tripolyphosphate/kaolin clay composite for decolourization and COD reduction of remazol brilliant blue R dye: Optimization by using response surface methodology</article-title>. <source>Colloids and Surfaces A: Physicochemical and Engineering Aspects</source>. <year>2020</year>;<volume>605</volume>:<fpage>125329</fpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>. <article-title>Statistical modeling of methylene blue dye adsorption by high surface area mesoporous activated carbon from bamboo chip using KOH-assisted thermal activation</article-title>. <source>Energy, Ecology and Environment</source>. <year>2020</year>;<volume>5</volume>(<issue>6</issue>):<fpage>456</fpage>–<lpage>69</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>AbdMalek</surname> <given-names>NN</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Razuan</surname> <given-names>R</given-names></name>. <article-title>Synthesis of magnetic chitosan-fly ash/Fe 3 O 4 composite for adsorption of reactive orange 16 dye: optimization by Box–Behnken design</article-title>. <source>Journal of Polymers and the Environment</source>. <year>2020</year>;<volume>28</volume>(<issue>3</issue>):<fpage>1068</fpage>–<lpage>82</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mohammed</surname> <given-names>IA</given-names></name>, <name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Mastuli</surname> <given-names>MS</given-names></name>. <article-title>Physicochemical modification of chitosan with fly ash and tripolyphosphate for removal of reactive red 120 dye: Statistical optimization and mechanism study</article-title>. <source>International journal of biological macromolecules</source>. <year>2020</year>;<volume>161</volume>:<fpage>503</fpage>–<lpage>13</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijbiomac.2020.06.069" xlink:type="simple">10.1016/j.ijbiomac.2020.06.069</ext-link></comment> <object-id pub-id-type="pmid">32534088</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>AbdMalek</surname> <given-names>NN</given-names></name>, <name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Ismail</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hameed</surname> <given-names>BH</given-names></name>. <article-title>New magnetic Schiff’s base-chitosan-glyoxal/fly ash/Fe3O4 biocomposite for the removal of anionic azo dye: An optimized process</article-title>. <source>International journal of biological macromolecules</source>. <year>2020</year>;<volume>146</volume>:<fpage>530</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijbiomac.2020.01.020" xlink:type="simple">10.1016/j.ijbiomac.2020.01.020</ext-link></comment> <object-id pub-id-type="pmid">31917215</object-id></mixed-citation></ref>
+<ref id="pone.0253617.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Amdoun</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Benyoussef</surname> <given-names>EH</given-names></name>, <name name-style="western"><surname>Benamghar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Khelifi</surname> <given-names>L</given-names></name>. 2019. <article-title>Prediction of hyoscyamine content in <italic>Datura stramonium</italic> L. hairy roots using different modeling approaches: Response Surface Methodology (RSM), Artificial Neural Network (ANN) and Kriging</article-title>. <source>BiochemEng J</source>. <year>2019</year>;<volume>144</volume>:<fpage>8</fpage>–<lpage>17</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Dhanarajan</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Mandal</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sen</surname> <given-names>R</given-names></name>. <article-title>A combined artificial neural network modelling-particle swarm optimization strategy for improved production of marine bacterial lipopeptide from food waste</article-title>. <source>BiochemEng J</source>. <year>2014</year>; <volume>84</volume>:<fpage>59</fpage>–<lpage>65</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Morales-Medina</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Pérez-Gálvez</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Guadix</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Guadix</surname> <given-names>EM</given-names></name>. 2016. <article-title>Artificial neuronal network modeling of the enzymatic hydrolysis of horse mackerel protein using protease mixtures</article-title>. <source>BiochemEng J</source>. <year>2016</year>; <volume>105</volume>:<fpage>364</fpage>–<lpage>370</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Altissimi</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Brambilla</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Deidda</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Semino</surname> <given-names>D</given-names></name>. <article-title>Optimal operation of a separation plant using artificial neural networks</article-title>. <source>ComputChem Eng</source>. <year>1998</year>;<volume>22</volume>: <fpage>S939</fpage>–<lpage>S942</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref055"><label>55</label><mixed-citation publication-type="other" xlink:type="simple">International Council for Harmonisation, Harmonised tripartite guideline. Validation of analytical procedures, text and methodology Q2 (R1). International Conference on Harmonisation of Technical Requirements for Registration of Pharmaceuticals for Human Use. 2005;1–13.</mixed-citation></ref>
+<ref id="pone.0253617.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maran</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Sivakumar</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Sridhar</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Immanuel</surname> <given-names>VP</given-names></name>. <article-title>Development of model for mechanical properties of tapioca starch based edible films</article-title>. <source>Ind Crops Prod</source>. <year>2013</year>; <volume>42</volume>:<fpage>159</fpage>–<lpage>168</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Maran</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Manikandan</surname> <given-names>S</given-names></name>. <article-title>Response surface modelling and optimization of process parameters for aqueous extraction of pigments from prickly pear (<italic>Opuntiaficus-indica</italic>) fruit</article-title>. <source>Dyes Pigm</source>. <year>2012</year>; <volume>95</volume>:<fpage>465</fpage>–<lpage>472</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ekren</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Ekren</surname> <given-names>BY</given-names></name>. <article-title>Size optimization of a PV/wind hybrid energy conversion system with battery storage using response surface methodology</article-title>. <source>Appl Energy</source>. <year>2008</year>; <volume>85</volume>:<fpage>1086</fpage>–<lpage>1101</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kim</surname> <given-names>HK</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>JG</given-names></name>, <name name-style="western"><surname>Cho</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Hong</surname> <given-names>JW</given-names></name>. <article-title>Optimization and characterization of UV-curable adhesives for optical communications by response surface methodology</article-title>. <source>Polym Test</source>. <year>2003</year>; <volume>22</volume>:<fpage>899</fpage>–<lpage>906</lpage>.</mixed-citation></ref>
+<ref id="pone.0253617.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jawad</surname> <given-names>AH</given-names></name>, <name name-style="western"><surname>Abdulhameed</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>AbdMalek</surname> <given-names>NN</given-names></name>, <name name-style="western"><surname>ALOthman</surname> <given-names>ZA</given-names></name>. <article-title>Statistical optimization and modeling for color removal and COD reduction of reactive blue 19 dye by mesoporous chitosan-epichlorohydrin/kaolin clay composite</article-title>. <source>International journal of biological macromolecules</source>. <year>2020</year>; <volume>1</volume>(<issue>164</issue>):<fpage>4218</fpage>–<lpage>4230</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijbiomac.2020.08.201" xlink:type="simple">10.1016/j.ijbiomac.2020.08.201</ext-link></comment> <object-id pub-id-type="pmid">32861784</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

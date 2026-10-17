@@ -1,0 +1,178 @@
+[
+  {
+    "keys": [
+      "bailian/qwen3.8-max-0902",
+      "bailian/qwen3.8-max",
+      "tokendance/qwen3.8-max",
+      "tokendance/qwen3.8-max-0902",
+      "novita/qwen/qwen3.8-max",
+      "openrouter/qwen/qwen3.8-max-0902"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 1000000,
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-8-max"
+      ]
+    },
+    "note": "官方分别列出别名和 0902 快照，未套用到 Prime。"
+  },
+  {
+    "keys": [
+      "bailian/qwen3.7-max",
+      "bailian/qwen3.7-max-2026-05-20",
+      "bailian/qwen3.7-max-preview",
+      "together/Qwen/Qwen3.7-Max",
+      "tokendance/qwen3.7-max",
+      "novita/qwen/qwen3.7-max",
+      "openrouter/qwen/qwen3.7-max",
+      "bailian/qwen3.7-max-2026-05-17"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 1000000,
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+      ]
+    },
+    "note": "当前别名对应 2026-05-20；06-08 单独处理。"
+  },
+  {
+    "keys": [
+      "bailian/qwen3.7-max-2026-06-08"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 1000000,
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-7-max"
+      ]
+    },
+    "note": "同一模型专页中 06-08 快照明确列出 Image Text Video。"
+  },
+  {
+    "keys": [
+      "bailian/qwen3.6-plus",
+      "bailian/qwen3.6-plus-2026-04-02",
+      "together/Qwen/Qwen3.6-Plus",
+      "tokendance/qwen3.6-plus",
+      "openrouter/qwen/qwen3.6-plus"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 1000000,
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-plus"
+      ]
+    },
+    "note": ""
+  },
+  {
+    "keys": [
+      "bailian/qwen3.6-max-preview",
+      "tokendance/qwen3.6-max-preview"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 262144,
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-max"
+      ]
+    },
+    "note": ""
+  },
+  {
+    "keys": [
+      "siliconflow/Qwen/Qwen3.5-35B-A3B",
+      "bailian/qwen3.5-35b-a3b",
+      "tokendance/qwen3.5-35b-a3b",
+      "qianfan/qwen3.5-35b-a3b",
+      "novita/qwen/qwen3.5-35b-a3b",
+      "openrouter/qwen/qwen3.5-35b-a3b"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowTokens": 262144,
+      "sourceUrls": [
+        "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
+      ]
+    },
+    "note": "原生上下文 262144；扩展长度 1010000 需额外配置，未作为默认窗口。"
+  },
+  {
+    "keys": [
+      "sensenova/sensenova-6.8-flash-lite"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowStatus": "not-published",
+      "sourceUrls": [
+        "https://github.com/OpenSenseNova/SenseNova6.8/blob/main/API.md"
+      ]
+    },
+    "note": "逐节检查具体 API 文档；max_tokens=2000 是示例请求值，没有发布总上下文上限。"
+  },
+  {
+    "keys": [
+      "runware/runware:150@2"
+    ],
+    "specifications": {
+      "officialInputModalities": [
+        "text",
+        "image"
+      ],
+      "officialOutputModalities": [
+        "text"
+      ],
+      "contextWindowStatus": "not-published",
+      "sourceUrls": [
+        "https://runware.ai/docs/models/meta-llava-1-6-mistral-7b/schema.json"
+      ]
+    },
+    "note": "精确 Runware AIR 对应 schema 未公布上下文；不把底座 Mistral 或 Hugging Face 部署配置当作此渠道上限。"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "command": "pnpm --filter @paperbanana/web exec node --import tsx --import ./tests/dom-setup.mjs --test tests/watcha.test.mjs tests/email-confirmation.test.mjs src/lib/runtimePolicy.test.js",
+  "tests": 20,
+  "passed": 20,
+  "failed": 0,
+  "afterFinalSourceChange": true
+}

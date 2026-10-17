@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLOS Digit Health</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosdh</journal-id>
+<journal-title-group>
+<journal-title>PLOS Digital Health</journal-title>
+</journal-title-group>
+<issn pub-type="epub">2767-3170</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pdig.0000364</article-id>
+<article-id pub-id-type="publisher-id">PDIG-D-23-00339</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Education</subject><subj-group><subject>Training (education)</subject><subj-group><subject>Retraining</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Oncology</subject><subj-group><subject>Cancers and neoplasms</subject><subj-group><subject>Gynecological tumors</subject><subj-group><subject>Cervical cancer</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Artificial intelligence</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Viruses</subject><subj-group><subject>DNA viruses</subject><subj-group><subject>Papillomaviruses</subject><subj-group><subject>Human papillomavirus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Papillomaviruses</subject><subj-group><subject>Human papillomavirus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Papillomaviruses</subject><subj-group><subject>Human papillomavirus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Viruses</subject><subj-group><subject>Viral pathogens</subject><subj-group><subject>Papillomaviruses</subject><subj-group><subject>Human papillomavirus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Critical care and emergency medicine</subject><subj-group><subject>Triage</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Population biology</subject><subj-group><subject>Population dynamics</subject><subj-group><subject>Geographic distribution</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Reproductive system</subject><subj-group><subject>Genital anatomy</subject><subj-group><subject>Cervix</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Reproductive system</subject><subj-group><subject>Genital anatomy</subject><subj-group><subject>Cervix</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Bioengineering</subject><subj-group><subject>Biotechnology</subject><subj-group><subject>Medical devices and equipment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Bioengineering</subject><subj-group><subject>Biotechnology</subject><subj-group><subject>Medical devices and equipment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Medical devices and equipment</subject></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Assessing generalizability of an AI-based visual test for cervical cancer screening</article-title>
+<alt-title alt-title-type="running-head">External validation of artificial intelligence approaches</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-1615-8633</contrib-id>
+<name name-style="western">
+<surname>Ahmed</surname>
+<given-names>Syed Rakin</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+<xref ref-type="fn" rid="econtrib001"><sup>‡</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Egemen</surname>
+<given-names>Didem</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+<xref ref-type="fn" rid="econtrib001"><sup>‡</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Befano</surname>
+<given-names>Brian</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Rodriguez</surname>
+<given-names>Ana Cecilia</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Jeronimo</surname>
+<given-names>Jose</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-8992-5944</contrib-id>
+<name name-style="western">
+<surname>Desai</surname>
+<given-names>Kanan</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-1833-7758</contrib-id>
+<name name-style="western">
+<surname>Teran</surname>
+<given-names>Carolina</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Alfaro</surname>
+<given-names>Karla</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff009"><sup>9</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-4722-9262</contrib-id>
+<name name-style="western">
+<surname>Fokom-Domgue</surname>
+<given-names>Joel</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff010"><sup>10</sup></xref>
+<xref ref-type="aff" rid="aff011"><sup>11</sup></xref>
+<xref ref-type="aff" rid="aff012"><sup>12</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Charoenkwan</surname>
+<given-names>Kittipat</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff013"><sup>13</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-3655-4721</contrib-id>
+<name name-style="western">
+<surname>Mungo</surname>
+<given-names>Chemtai</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff014"><sup>14</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Luckett</surname>
+<given-names>Rebecca</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff015"><sup>15</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Saidu</surname>
+<given-names>Rakiya</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff016"><sup>16</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Raiol</surname>
+<given-names>Taina</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff017"><sup>17</sup></xref>
+<xref ref-type="aff" rid="aff018"><sup>18</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Ribeiro</surname>
+<given-names>Ana</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff017"><sup>17</sup></xref>
+<xref ref-type="aff" rid="aff018"><sup>18</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0001-5259-6385</contrib-id>
+<name name-style="western">
+<surname>Gage</surname>
+<given-names>Julia C.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff019"><sup>19</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>de Sanjose</surname>
+<given-names>Silvia</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+<xref ref-type="aff" rid="aff020"><sup>20</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kalpathy-Cramer</surname>
+<given-names>Jayashree</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff021"><sup>21</sup></xref>
+<xref ref-type="fn" rid="econtrib001"><sup>‡</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Schiffman</surname>
+<given-names>Mark</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+<xref ref-type="fn" rid="econtrib001"><sup>‡</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Harvard Graduate Program in Biophysics, Harvard Medical School, Harvard University, Cambridge, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Massachusetts Institute of Technology, Cambridge, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Geisel School of Medicine at Dartmouth, Dartmouth College, Hanover, New Hampshire, United States of America</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>Clinical Epidemiology Unit, Clinical Genetics Branch, Division of Cancer Epidemiology and Genetics, National Cancer Institute, National Institutes of Health, Bethesda, Maryland, United States of America</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Information Management Services, Calverton, Maryland, United States of America</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>University of Washington, Seattle, Washington, United States of America</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Facultad de Medicina, Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca, Sucre, Bolivia</addr-line></aff>
+<aff id="aff009"><label>9</label> <addr-line>Basic Health International, El Salvador</addr-line></aff>
+<aff id="aff010"><label>10</label> <addr-line>Cameroon Baptist Convention Health Services, Bamenda, North West Region, Cameroon</addr-line></aff>
+<aff id="aff011"><label>11</label> <addr-line>Department of Obstetrics and Gynecology, Faculty of Medicine and Biomedical Sciences, University of Yaoundé, Yaoundé, Cameroon</addr-line></aff>
+<aff id="aff012"><label>12</label> <addr-line>Department of Epidemiology, The University of Texas MD Anderson Cancer Center, Houston, Texas, United States of America</addr-line></aff>
+<aff id="aff013"><label>13</label> <addr-line>Department of Obstetrics and Gynecology, Chiang Mai University, Chiang Mai, Thailand</addr-line></aff>
+<aff id="aff014"><label>14</label> <addr-line>Department of Obstetrics and Gynecology, University of North Carolina-Chapel Hill School of Medicine, Chapel Hill, North Carolina, United States of America</addr-line></aff>
+<aff id="aff015"><label>15</label> <addr-line>Beth Israel Deaconess Medical Center, Boston, Massachusetts, United States of America</addr-line></aff>
+<aff id="aff016"><label>16</label> <addr-line>Department of Obstetrics and Gynaecology and South African Medical Research Council Gynaecological Cancer Research Centre, University of Cape Town, Cape Town</addr-line></aff>
+<aff id="aff017"><label>17</label> <addr-line>Center for Epidemiology and Health Surveillance, Oswaldo Cruz Foundation (Fiocruz), Brasília, Federal District, Brazil</addr-line></aff>
+<aff id="aff018"><label>18</label> <addr-line>MARCO Clinical and Molecular Research Center, University Hospital of Brasilia/EBSERH, Federal District, Brazil</addr-line></aff>
+<aff id="aff019"><label>19</label> <addr-line>Center for Global Health, National Cancer Institute, National Institutes of Health, Bethesda, Maryland, United States of America</addr-line></aff>
+<aff id="aff020"><label>20</label> <addr-line>ISGlobal, Barcelona, Spain</addr-line></aff>
+<aff id="aff021"><label>21</label> <addr-line>Department of Ophthalmology, University of Colorado Anschutz, Denver, Colorado, United States of America</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Ansermino</surname>
+<given-names>J. Mark</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of British Columbia, CANADA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<fn fn-type="other" id="econtrib001">
+<p>‡ SRA and DE share first authorship on this work. JK-C and MS are joint senior authors on this work.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">syedrakin_ahmed@fas.harvard.edu</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>2</day>
+<month>10</month>
+<year>2024</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>10</month>
+<year>2024</year>
+</pub-date>
+<volume>3</volume>
+<issue>10</issue>
+<elocation-id>e0000364</elocation-id>
+<history>
+<date date-type="received">
+<day>8</day>
+<month>9</month>
+<year>2023</year>
+</date>
+<date date-type="accepted">
+<day>16</day>
+<month>7</month>
+<year>2024</year>
+</date>
+</history>
+<permissions>
+<license xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">
+<license-p>This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">Creative Commons CC0</ext-link> public domain dedication.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pdig.0000364"/>
+<abstract>
+<p>A number of challenges hinder artificial intelligence (AI) models from effective clinical translation. Foremost among these challenges is the lack of generalizability, which is defined as the ability of a model to perform well on datasets that have different characteristics from the training data. We recently investigated the development of an AI pipeline on digital images of the cervix, utilizing a multi-heterogeneous dataset of 9,462 women (17,013 images) and a multi-stage model selection and optimization approach, to generate a diagnostic classifier able to classify images of the cervix into “normal”, “indeterminate” and “precancer/cancer” (denoted as “precancer+”) categories. In this work, we investigate the performance of this multiclass classifier on external data not utilized in training and internal validation, to assess the generalizability of the classifier when moving to new settings. We assessed both the classification performance and repeatability of our classifier model across the two axes of heterogeneity present in our dataset: image capture device and geography, utilizing both out-of-the-box inference and retraining with external data. Our results demonstrate that device-level heterogeneity affects our model performance more than geography-level heterogeneity. Classification performance of our model is strong on images from a new geography without retraining, while incremental retraining with inclusion of images from a new device progressively improves classification performance on that device up to a point of saturation. Repeatability of our model is relatively unaffected by data heterogeneity and remains strong throughout. Our work supports the need for optimized retraining approaches that address data heterogeneity (e.g., when moving to a new device) to facilitate effective use of AI models in new settings.</p>
+</abstract>
+<abstract abstract-type="summary">
+<title>Author summary</title>
+<p>Artificial intelligence (AI) model robustness has emerged as a pressing issue, particularly in medicine, where model deployment requires rigorous standards of approval. In the context of this work, model robustness refers to both the repeatability of model predictions across repeat images, as well as the generalizability of model performance to external data. Real world clinical data is often heterogeneous across multiple axes, with distribution shifts in one or more of these axes often being the norm. Current deep learning (DL) models for cervical cancer and in other domains exhibit poor repeatability and overfitting, and frequently fail when evaluated on external data. As recently as March 2023, the FDA issued a draft guidance on effective implementation of AI/DL models, proposing the need for adapting models to data distribution shifts. To surmount known concerns, we conducted a thorough investigation of the generalizability of a deep learning model for cervical cancer screening, utilizing the distribution shifts present in our large, multi-heterogenous dataset. We highlight optimized strategies to adapt an AI-based clinical test, which in our case was a cervical cancer screening triage test, to external data from a new setting. Given the severe clinical burden of cervical cancer, and the fact that existing screening approaches, such as visual inspection with acetic acid (VIA), are unreliable, inaccurate, and invasive, there is a critical need for an automated, AI-based pipeline that can more consistently evaluate cervical lesions in a minimally invasive fashion. Our work represents one of the first efforts at generating and externally validating a cervical cancer diagnostic classifier that is reliable, consistent, accurate, and clinically translatable, in order to triage women into appropriate risk categories.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100015338</institution-id>
+<institution>Cancer Moonshot</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Schiffman</surname>
+<given-names>Mark</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100000054</institution-id>
+<institution>National Cancer Institute</institution>
+</institution-wrap>
+</funding-source>
+<award-id>T32CA09168</award-id>
+<principal-award-recipient>
+<name name-style="western">
+<surname>Befano</surname>
+<given-names>Brian</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by the National Cancer Institute (NCI) of the National Institutes of Health (NIH). All NCI-affiliated staff are supported by the NCI Intramural Research Program including supplemental funding from the Cancer Cures Moonshot Initiative. Additionally, BB was supported by NCI/NIH under Grant T32CA09168. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="2"/>
+<page-count count="15"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The materials used to train and generate results can be found at the following repository: <ext-link ext-link-type="uri" xlink:href="https://github.com/QTIM-lab/cervix_generalizability" xlink:type="simple">https://github.com/QTIM-lab/cervix_generalizability</ext-link>.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>The development of artificial intelligence (AI) and deep learning (DL) approaches have become seemingly ubiquitous in recent years, across several clinical domains, with optimized models reporting near-clinician-level performance [<xref ref-type="bibr" rid="pdig.0000364.ref001">1</xref>–<xref ref-type="bibr" rid="pdig.0000364.ref004">4</xref>]. However, translation of AI models from bench to bedside remain sparse. To be clinically translatable, AI/DL models should be robust, computationally-efficient, low-cost, and blend well with existing clinical workflows, ensuring the inputs/outputs of the model and the task it performs are most relevant to the clinician for a given use case. This is often not the case with existing models, which are frequently hindered by several key methodological flaws in their design [<xref ref-type="bibr" rid="pdig.0000364.ref005">5</xref>], thereby undermining their validity, and hindering clinical translation. In particular, model robustness has emerged as a key challenge hindering AI model deployment from bench to clinical practice.</p>
+<p>In the context of this work, model robustness refers to two key attributes: 1. repeatability, defined as the ability of a model to generate near-identical predictions for the same patient under identical conditions, ensuring that the model produces precise, reliable outputs in the clinical setting [<xref ref-type="bibr" rid="pdig.0000364.ref006">6</xref>]; and 2. generalizability, defined as the ability of a model to adapt well to domain expansion or, alternatively, the ability of a model to perform well on datasets that are out of distribution from the training data, i.e., having different characteristics from training data [<xref ref-type="bibr" rid="pdig.0000364.ref007">7</xref>]. There is a paucity of work in the current DL and medical image classification literature that assess one or both of these attributes, with many models tending to overfit to the training data distribution. This is either due to 1) the absence of data heterogeneity (geography-, institution-, population- and/or device-level) in the available training data for a given use case; and/or 2) the absence of specific optimization approaches to reduce overfitting. To assess whether a model is overfit, an external dataset is required which has different characteristics from the training set. Assessing overfitting is particularly important when considering AI model deployment for use cases that are likely to involve multiple axes of data heterogeneity.</p>
+<p>Globally, cervical cancer is the fourth most common cause of cancer morbidity and mortality, with approximately 90% of the 300,000 deaths per year occurring in low-resource settings [<xref ref-type="bibr" rid="pdig.0000364.ref008">8</xref>–<xref ref-type="bibr" rid="pdig.0000364.ref010">10</xref>]. Even though the causal pathway to cervical cancer is well understood, with HPV being the main cause [<xref ref-type="bibr" rid="pdig.0000364.ref009">9</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref011">11</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref012">12</xref>], this cancer has not yet been controlled, especially in low-resource settings [<xref ref-type="bibr" rid="pdig.0000364.ref013">13</xref>]. The primary prevention strategy is HPV vaccination, and for the secondary prevention strategy the World Health Organization (WHO) recommends screening with HPV test [<xref ref-type="bibr" rid="pdig.0000364.ref014">14</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref015">15</xref>]. In order to triage the risk of HPV-positive individuals, visual inspection with acetic acid (VIA) is used in low-resource settings [<xref ref-type="bibr" rid="pdig.0000364.ref016">16</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref017">17</xref>]. However, many studies have shown that expert visual evaluation has mediocre accuracy and repeatability [<xref ref-type="bibr" rid="pdig.0000364.ref018">18</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref019">19</xref>]. Therefore, there is a need for a highly accurate, repeatable, low-cost, point-of-care visual screening test to triage the risks of HPV-positive individuals. To address this need, we previously conducted a comprehensive, multi-stage model selection and optimization approach, utilizing a large, collated multi-institution, multi-device, and multi-population dataset, in order to generate a diagnostic classifier model, termed automated visual evaluation (AVE) that is able to classify images of the cervix into “normal”, “indeterminate” (interchangeably termed as “gray zone”) and “precancer/cancer” (denoted as “precancer+”) categories [<xref ref-type="bibr" rid="pdig.0000364.ref020">20</xref>].</p>
+<p>The objectives of the present study are to highlight the relative impacts of the known axes of data heterogeneity present in our dataset and to assess the generalizability of AVE on multiple external datasets; specifically, we assessed both classification performance and repeatability of AVE, utilizing various retraining and inference strategies. Our approaches are directed by the known distribution shifts present in our external dataset, in the form of device and geography. We hypothesize that these two distribution shifts present in our data will impact the classification performance of our model differently, while the repeatability of our model will be unaffected by distribution shifts. Additionally, we further hypothesize that the classification performance of our model will improve following retraining via optimized strategies with additional images from the new distribution.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<p>In this paper, we utilized a model that we developed in a prior study, following a multi-stage model selection and optimization process utilizing a multi-heterogeneous dataset, henceforth referred to as “SEED” [<xref ref-type="bibr" rid="pdig.0000364.ref020">20</xref>]. The primary discernible axes of heterogeneity in this prior work included image capture device and geography. In the current study, we conducted a thorough external validation of our model by running the model on images collected from a new, external dataset, henceforth termed “EXT”. The “EXT” dataset used a different image capture device, Samsung Galaxy J8, from those of the SEED (<xref ref-type="fig" rid="pdig.0000364.g001">Fig 1</xref>), and also constituted six distinct geographies/countries (<xref ref-type="table" rid="pdig.0000364.t001">Table 1</xref> and <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1</xref>). All of these countries are listed in the low- and middle-income countries (LMIC) classification of the World Bank and IMF [<xref ref-type="bibr" rid="pdig.0000364.ref021">21</xref>].</p>
+<table-wrap id="pdig.0000364.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.t001</object-id>
+<label>Table 1</label> <caption><title>Breakdown of dataset by ground truth and geography.</title></caption>
+<alternatives>
+<graphic id="pdig.0000364.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="4" style="background-color:#FFC000">DATASETS</th>
+<th align="center" colspan="12" style="background-color:#FFE599">Ground truth categories</th>
+<th align="center" colspan="4" rowspan="2" style="background-color:#FFE599">GRAND TOTAL<break/>(n<sub>i</sub> = 1669, n<sub>w</sub> = 580)</th>
+</tr>
+<tr>
+<th align="center" colspan="12">no. (%)</th>
+</tr>
+<tr>
+<th align="center" colspan="4" style="background-color:#FFE599">Normal (n<sub>i</sub> = 598, n<sub>w</sub> = 204)</th>
+<th align="center" colspan="4" style="background-color:#FFE599">Indeterminate / Gray (n<sub>i</sub> = 465, n<sub>w</sub> = 157)</th>
+<th align="center" colspan="4" style="background-color:#FFE599">Precancer+ (n<sub>i</sub> = 606, n<sub>w</sub> = 219)</th>
+<th align="center" colspan="4" style="background-color:#FFE599">no. (%)</th>
+</tr>
+<tr>
+<th align="center" colspan="2"># images</th>
+<th align="center" colspan="2"># women</th>
+<th align="center" colspan="2"># images</th>
+<th align="center" colspan="2"># women</th>
+<th align="center" colspan="2"># images</th>
+<th align="center" colspan="2"># women</th>
+<th align="center" colspan="2"># images</th>
+<th align="center" colspan="2"># women</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right" style="background-color:#FFC000">Bolivia</td>
+<td align="center">140</td>
+<td align="center">(5.8%)</td>
+<td align="center">40</td>
+<td align="center">(3.1%)</td>
+<td align="center">118</td>
+<td align="center">(5.5%)</td>
+<td align="center">33</td>
+<td align="center">(2.4%)</td>
+<td align="center">59</td>
+<td align="center">(5.5%)</td>
+<td align="center">15</td>
+<td align="center">(2.4%)</td>
+<td align="center">317</td>
+<td align="center">(19.0%)</td>
+<td align="center">88</td>
+<td align="center">(15.2%)</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Brazil</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">410</td>
+<td align="center">(37.9%)</td>
+<td align="center">154</td>
+<td align="center">(24.2%)</td>
+<td align="center">410</td>
+<td align="center">(24.6%)</td>
+<td align="center">154</td>
+<td align="center">(26.6%)</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Cameroon</td>
+<td align="center">231</td>
+<td align="center">(9.5%)</td>
+<td align="center">85</td>
+<td align="center">(6.7%)</td>
+<td align="center">33</td>
+<td align="center">(1.5%)</td>
+<td align="center">13</td>
+<td align="center">(0.9%)</td>
+<td align="center">2</td>
+<td align="center">(0.2%)</td>
+<td align="center">2</td>
+<td align="center">(0.3%)</td>
+<td align="center">266</td>
+<td align="center">(15.9%)</td>
+<td align="center">100</td>
+<td align="center">(17.2%)</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">El Salvador</td>
+<td align="center">130</td>
+<td align="center">(5.3%)</td>
+<td align="center">49</td>
+<td align="center">(3.9%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">56</td>
+<td align="center">(5.2%)</td>
+<td align="center">21</td>
+<td align="center">(3.3%)</td>
+<td align="center">186</td>
+<td align="center">(11.1%)</td>
+<td align="center">70</td>
+<td align="center">(12.1%)</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Kenya</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">0</td>
+<td align="center">(0.0%)</td>
+<td align="center">309</td>
+<td align="center">(14.3%)</td>
+<td align="center">109</td>
+<td align="center">(7.8%)</td>
+<td align="center">36</td>
+<td align="center">(3.3%)</td>
+<td align="center">13</td>
+<td align="center">(2.0%)</td>
+<td align="center">345</td>
+<td align="center">(20.7%)</td>
+<td align="center">122</td>
+<td align="center">(21.0%)</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Thailand</td>
+<td align="center">97</td>
+<td align="center">(4.0%)</td>
+<td align="center">30</td>
+<td align="center">(2.4%)</td>
+<td align="center">5</td>
+<td align="center">(0.2%)</td>
+<td align="center">2</td>
+<td align="center">(0.1%)</td>
+<td align="center">43</td>
+<td align="center">(4.0%)</td>
+<td align="center">14</td>
+<td align="center">(2.2%)</td>
+<td align="center">145</td>
+<td align="center">(8.7%)</td>
+<td align="center">46</td>
+<td align="center">(7.9%)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFC000"><bold><italic>TOTAL</italic></bold></td>
+<td align="center" style="background-color:#FFE599">598</td>
+<td align="center" style="background-color:#FFE599">(24.6%)</td>
+<td align="center" style="background-color:#FFE599">204</td>
+<td align="center" style="background-color:#FFE599">(16.0%)</td>
+<td align="center" style="background-color:#FFE599">465</td>
+<td align="center" style="background-color:#FFE599">(21.6%)</td>
+<td align="center" style="background-color:#FFE599">157</td>
+<td align="center" style="background-color:#FFE599">(11.3%)</td>
+<td align="center" style="background-color:#FFE599">606</td>
+<td align="center" style="background-color:#FFE599">(56.0%)</td>
+<td align="center" style="background-color:#FFE599">219</td>
+<td align="center" style="background-color:#FFE599">(34.4%)</td>
+<td align="center" style="background-color:#FFE599">1669</td>
+<td align="center" style="background-color:#FFE599">(100.0%)</td>
+<td align="center" style="background-color:#FFE599">580</td>
+<td align="center" style="background-color:#FFE599">(100.0%)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p><bold><italic>Detailed</italic></bold> breakdown of “EXT” dataset by ground truth class and geography. n<sub>i</sub> = total # images; n<sub>w</sub> = total # women</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<fig id="pdig.0000364.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Uniform manifold approximation and projections (UMAP) highlighting the relative distributions of the datasets, devices and geographies investigated in this work.</title>
+<p>Each subplot highlights a different representation of the UMAP, where the color coding (highlighted in the corresponding legend at the top of each subplot) is at the (a) dataset-level, (b) device-level and (c) geography-level. The datasets and devices occupy distinct clusters in (a) and (b), while the geographies are all clustered together within the same device in (c). The x- and y-axes are in arbitrary units, representing the two UMAP components on which the higher dimensional data was projected.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.g001" xlink:type="simple"/>
+</fig>
+<sec id="sec003">
+<title>Dataset</title>
+<sec id="sec004">
+<title>Analysis population</title>
+<p>We utilized two groups of datasets in this study: 1) a collated, multi-institutional and multi-device (cerviscope, DSLR) dataset that was previously utilized in the model development work, which comprised of a convenience sample combining five distinct studies–Natural History Study (NHS), ASC-US/LSIL Triage Study for Cervical Cancer (ALTS), Costa Rica Vaccine Trial (CVT), Biopsy Study in the US (Biop), and Biopsy Study in Europe (D Biop) [<xref ref-type="bibr" rid="pdig.0000364.ref020">20</xref>]; we denote this dataset as “SEED”, and 2) an external multi-geography dataset of images taken by Samsung Galaxy J8 smartphones, from six countries–Bolivia, Brazil, Cameroon, El Salvador, Kenya and Thailand; we denote this dataset as “EXT”. All sites in “EXT” (except Brazil) was collected as part of the AVE Network Project, where none of the images were available/used at the initial training, validation, and testing phases of the AVE algorithm. In all six countries, cervical images were collected at the vaginal exam using a Samsung Galaxy J8 smartphone. Referral for a vaginal exam was due to human papillomavirus (HPV) positivity in Bolivia and El Salvador, with additional cervical images from El Salvador collected from a randomly selected group of HPV-negative individuals. In Cameroon, Kenya, and Thailand, images were collected from VIA positive individuals at the triage visit. In Brazil, images were collected from patients with histologically confirmed cervical intraepithelial neoplasia (CIN) 2 or worse lesions. HPV tests used in these countries were Hybrid Capture 2 (HC2) [<xref ref-type="bibr" rid="pdig.0000364.ref022">22</xref>] for Bolivia, AmpFire [<xref ref-type="bibr" rid="pdig.0000364.ref023">23</xref>] for Cameroon, and Care HPV [<xref ref-type="bibr" rid="pdig.0000364.ref024">24</xref>] for El Salvador and Kenya. In Thailand, no HPV test was used for screening, however cytology was utilized in addition to VIA. Histopathologic confirmation of cervical cancer status in these countries were available in the form of CIN 2, CIN 3, adenocarcinoma in situ (AIS), and cervical cancer. In Brazil, images were collected after application of acetic acid and prior to Loop Electrosurgical Excision Procedure (LEEP).</p>
+</sec>
+<sec id="sec005">
+<title>Ground truth delineation</title>
+<p>The ground truth values for the “EXT” dataset was assigned in a similar manner to that used for the “SEED” dataset [<xref ref-type="bibr" rid="pdig.0000364.ref020">20</xref>]. Specifically, the three ground truth values mapped to the images, “normal”, “indeterminate” and “precancer+”, were based primarily on histology and HPV results. All images ≥CIN 3 were assigned to precancer/cancer. If images were CIN 2, high-risk HPV (hrHPV) positivity was used to determine classes for images from all sites except Brazil: hrHPV+ was assigned to the “precancer+” class, and hrHPV- was assigned to the “indeterminate” class. All images from Brazil were &gt;CIN 2 and were assigned to the "precancer+” class. For images where the histopathology result is &lt;CIN 2 or missing, the ground truth class (either “normal” or “indeterminate”) was determined by a joint evaluation of a local clinician and an NCI expert colposcopist review in a site-specific manner. The final result of the ground truth distribution across each of the geographies, in terms of both the number of individuals and the number of images is depicted on <xref ref-type="table" rid="pdig.0000364.t001">Table 1</xref>.</p>
+</sec>
+<sec id="sec006">
+<title>Ethics</title>
+<p>All study participants signed a written informed consent prior to enrollment and sample collection. All studies were reviewed and approved by the Institutional Review Boards of the National Cancer Institute (NCI) and the National Institutes of Health (NIH).</p>
+</sec>
+</sec>
+<sec id="sec007">
+<title>Model training and analysis</title>
+<p>Prior to any model runs, all images were cropped with bounding boxes generated from a YOLOv5 [<xref ref-type="bibr" rid="pdig.0000364.ref025">25</xref>] model trained for cervix detection on the “SEED” dataset images (<xref ref-type="fig" rid="pdig.0000364.g002">Fig 2</xref>), resized to 256x256 pixels, and scaled to intensity values from 0 to 1. For the retraining runs, affine transformations were applied to the image for data augmentation.</p>
+<fig id="pdig.0000364.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title/>
+<p>(a) Bounding boxes generated from running the cervix detector, highlighted in white, around 50 randomly selected images from the external (“EXT”) dataset. The cervix detector utilized a YOLOv5 architecture trained on the “SEED” dataset images. (b) Bound and cropped images of the cervix which are passed onto the diagnostic classifier (AVE).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.g002" xlink:type="simple"/>
+</fig>
+<p>We assessed the generalizability of our model by conducting two distinct sets of investigations. In the first set, we analyzed the relative impacts of device- and geography-level heterogeneities of our dataset on model performance, both visually via uniform manifold approximation and projection (UMAP), and statistically via assessing key classification performance and repeatability metrics.</p>
+<p>First, in order to get a sense of the dataset distributions of the “SEED” and “EXT” datasets, including the distributions by device and geography, we ran out-of-the-box (OOB) inference with our initial model on the held-aside test set of the “SEED” dataset and on the full “EXT” dataset. We subsequently plotted UMAPs of the resulting features, which represent a dimension-reduced version of the features output from the model’s inference run, color-coded by dataset, device, and geography (<xref ref-type="fig" rid="pdig.0000364.g001">Fig 1</xref>) respectively.</p>
+<p>We further tested the impact of device- and geography-level heterogeneity on our model performance via three distinct model runs: (i) OOB inference of AVE on a test set comprising only of “SEED” images; (ii) OOB inference of AVE on a test set comprising only of “EXT” (J8) images; and (iii) training a model using the same hyperparameters as AVE but on both “SEED” images and “EXT” images from all geographies except Bolivia and testing on Bolivia images (<xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref>).</p>
+<fig id="pdig.0000364.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Results from the first set of the generalizability analyses, highlighting that device level heterogeneity impacts our model performance greater than geography level heterogeneity.</title>
+<p>The classification performance and repeatability plots depicted here include (a) receiver operating characteristics (ROC) curves; (b) confusion matrices; and (c) Bland-Altman plots, for models that were (i) trained on “SEED” and tested on a held-aside set from “SEED”; (ii) trained on “SEED” and tested on “EXT”; and (iii) trained on a dataset comprising of “SEED” + all images from “EXT” except Bolivia and tested on Bolivia images from “EXT”. “Gray Zone” = “Indeterminate”.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.g003" xlink:type="simple"/>
+</fig>
+<p>In the second set of the generalizability analyses, we closely assessed the overall performance of AVE on “EXT” (J8) by incrementally adding women from “EXT” to our training set of “SEED” images, training on the combined set comprising of “SEED” and “EXT” images and testing on a common, held-aside set of “EXT” women (230 women, 644 images). Specifically, we added images at the woman level in two distinct ratios of ground truth– 1 normal (N): 1 indeterminate (I): 1 precancer+ (P), and 2 N: 2 I: 1 P; our intuition behind these additions were twofold: 1) we sought to minimize the number of precancer+ women needed when conducting a study utilizing a new device, and 2) we intended to mimic the ground truth balancing utilized in our model development work, which used a 2 N: 2 I: 1 P ratio of ground truths during training on “SEED”, and evaluate whether matching the same balancing strategy as in the “SEED” set has any influence on the model performance. The specific increments of women added are highlighted in <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4</xref> and <xref ref-type="table" rid="pdig.0000364.t002">Table 2</xref>. We assessed the classification performance of the retrained models via the area under the receiver operating characteristics curve (AUROC) (<xref ref-type="fig" rid="pdig.0000364.g004">Fig 4</xref>), and the degree of extreme misclassifications (normal misclassified as precancer+ and vice versa) and total misclassifications (<xref ref-type="table" rid="pdig.0000364.t002">Table 2</xref>). We also assessed the repeatability of these models via the degree of extreme disagreement (% 2-class disagreement between image pairs across women) and the 95% limits of agreement (LoA) on a Bland-Altman plot (<xref ref-type="table" rid="pdig.0000364.t002">Table 2</xref>). <xref ref-type="supplementary-material" rid="pdig.0000364.s001">S1 Text</xref> and <xref ref-type="supplementary-material" rid="pdig.0000364.s002">S1 Fig</xref> further highlight the improvements in repeatability and classification performance imparted by the key innovations of our model.</p>
+<fig id="pdig.0000364.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Results from the second set of generalizability analysis, highlighting that retraining can improve performance on a new device previously not present in the “SEED”.</title>
+<p>(a) Model level comparison across models representing incremental additions of “EXT” (J8) images at the woman level to the training set of “SEED” images, with the “EXT” images added in (i) a 1n normal (N): 1n indeterminate (I): 1n precancer+ (P) ratio; and (ii) a 2n N: 2n I: 1n P ratio of ground truth classes at the woman level, where n = # of precancer+ women added (y-axes) (b) Plots of area under receiver operating characteristics curve (AUC) vs. # women added to the training set per ground truth class, in the same ratios as in (a). For example, in (ii), the x-axis represents the # precancer+ (P) women added (n) in the ratio 2n N: 2n I: 1n P to the training set. The top row plots the Normal (class 0) vs. Rest AUC, while the bottom row plots the Precancer+ (class 2) vs. rest AUC, respectively, on the y-axis. In panel (a) “normal” = green, “indeterminate” / “gray zone” = gray and “precancer+” = red.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.g004" xlink:type="simple"/>
+</fig>
+<table-wrap id="pdig.0000364.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pdig.0000364.t002</object-id>
+<label>Table 2</label> <caption><title>Classification and Repeatability Metrics.</title></caption>
+<alternatives>
+<graphic id="pdig.0000364.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" rowspan="2" style="background-color:#FFC000"># added</th>
+<th align="center" colspan="2" style="background-color:#FFE599">Classification</th>
+<th align="center" colspan="2" style="background-color:#FFE599">Repeatability</th>
+</tr>
+<tr>
+<th align="center">% ext. mis.</th>
+<th align="center">% tot. mis.</th>
+<th align="center">% ext. dis.</th>
+<th align="center">95% LoA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 00 (inf)</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 05</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 13</td>
+<td align="center" style="background-color:#FFFFFF">7.8%</td>
+<td align="center" style="background-color:#FFFFFF">65.7%</td>
+<td align="center" style="background-color:#FFFFFF">0.0%</td>
+<td align="center" style="background-color:#FFFFFF">0.3</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 16</td>
+<td align="center" style="background-color:#FFFFFF">9.6%</td>
+<td align="center" style="background-color:#FFFFFF">53.0%</td>
+<td align="center" style="background-color:#FFFFFF">1.9%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 18</td>
+<td align="center" style="background-color:#FFFFFF">7.9%</td>
+<td align="center" style="background-color:#FFFFFF">55.2%</td>
+<td align="center" style="background-color:#FFFFFF">1.0%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 21</td>
+<td align="center" style="background-color:#FFFFFF">4.4%</td>
+<td align="center" style="background-color:#FFFFFF">51.3%</td>
+<td align="center" style="background-color:#FFFFFF">0.5%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 23</td>
+<td align="center" style="background-color:#FFFFFF">7.4%</td>
+<td align="center" style="background-color:#FFFFFF">39.1%</td>
+<td align="center" style="background-color:#FFFFFF">1.0%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 26</td>
+<td align="center" style="background-color:#FFFFFF">4.8%</td>
+<td align="center" style="background-color:#FFFFFF">46.1%</td>
+<td align="center" style="background-color:#FFFFFF">0.0%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 28</td>
+<td align="center" style="background-color:#FFFFFF">6.0%</td>
+<td align="center" style="background-color:#FFFFFF">55.2%</td>
+<td align="center" style="background-color:#FFFFFF">0.5%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 41</td>
+<td align="center" style="background-color:#FFFFFF">8.7%</td>
+<td align="center" style="background-color:#FFFFFF">37.8%</td>
+<td align="center" style="background-color:#FFFFFF">1.9%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 45</td>
+<td align="center" style="background-color:#FFFFFF">7.0%</td>
+<td align="center" style="background-color:#FFFFFF">44.8%</td>
+<td align="center" style="background-color:#FFFFFF">1.5%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 50</td>
+<td align="center" style="background-color:#FFFFFF">11.3%</td>
+<td align="center" style="background-color:#FFFFFF">39.1%</td>
+<td align="center" style="background-color:#FFFFFF">1.9%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 55</td>
+<td align="center" style="background-color:#FFFFFF">9.6%</td>
+<td align="center" style="background-color:#FFFFFF">38.3%</td>
+<td align="center" style="background-color:#FFFFFF">2.4%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 60</td>
+<td align="center" style="background-color:#FFFFFF">6.5%</td>
+<td align="center" style="background-color:#FFFFFF">33.9%</td>
+<td align="center" style="background-color:#FFFFFF">1.9%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 65</td>
+<td align="center" style="background-color:#FFFFFF">6.0%</td>
+<td align="center" style="background-color:#FFFFFF">39.1%</td>
+<td align="center" style="background-color:#FFFFFF">1.0%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+<tr>
+<td align="right" style="background-color:#FFC000">Add 70</td>
+<td align="center" style="background-color:#FFFFFF">6.0%</td>
+<td align="center" style="background-color:#FFFFFF">27.8%</td>
+<td align="center" style="background-color:#FFFFFF">1.9%</td>
+<td align="center" style="background-color:#FFFFFF">0.4</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>Relevant classification performance metrics, including % extreme misclassifications (% ext. mis.) and % total misclassifications (% tot. mis.), and repeatability metrics, including % extreme disagreement (% ext. dis.) and 95% limits of agreement (LoA) on a Bland Altman plot, for each of the model runs involving incremental additions of images from the “EXT” (J8) dataset at the woman level. Here the metrics are presented for the incremental additions in a 2n normal (N): 2n indeterminate (I): n precancer+ (P) ratio of ground truth class, where n = # of precancer+ women added, as shown on the leftmost column. All values are rounded to 1 decimal place.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Finally, to aid better visualization of predictions at the individual model level, we generated the plots on <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4A</xref> which compare model predictions across 60 images for each of the retrained models. To generate this comparison, we first summarized each model’s output as a continuous severity <italic>score</italic>. Specifically, we utilized the ordinality of our problem and defined the continuous severity <italic>score</italic> as a weighted average using softmax probability of each class as described in Equation 3, where <italic>k</italic> is the number of classes and <italic>p<sub>i</sub></italic> the softmax probability of class <italic>i</italic>.</p>
+<disp-formula id="pdig.0000364.e001">
+<alternatives>
+<graphic id="pdig.0000364.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pdig.0000364.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:mi>s</mml:mi><mml:mi>c</mml:mi><mml:mi>o</mml:mi><mml:mi>r</mml:mi><mml:mi>e</mml:mi><mml:mo>=</mml:mo><mml:mrow><mml:munderover><mml:mo stretchy="false">∑</mml:mo><mml:mrow><mml:mi>i</mml:mi><mml:mo>=</mml:mo><mml:mn>0</mml:mn></mml:mrow><mml:mrow><mml:mi>k</mml:mi></mml:mrow></mml:munderover><mml:mrow><mml:msub><mml:mrow><mml:mi>p</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>×</mml:mo><mml:mi>i</mml:mi></mml:mrow></mml:mrow>
+</mml:math>
+</alternatives>
+</disp-formula>
+<p>Put another way, the <italic>score</italic> is equivalent to the expected value of a random variable that takes values equal to the class labels, and the probabilities are the model’s softmax probability at index <italic>i</italic> corresponding to class label <italic>i</italic>. For a three-class model, the values lie in the range 0 to 2. We next computed the average of the <italic>score</italic> for each image across all 16 models compared and arranged the images in order of increasing <italic>score</italic> within each class. From this <italic>score</italic>-ordered list, we randomly selected 20 images per class, maintaining the distribution of mean scores within each class, and arranged the images in order of increasing average <italic>score</italic> within each class in the top row of <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4A</xref> (i and ii), color coded by ground truth. We subsequently compared the predicted class across the models for each of these 60 images (bottom 16 rows of <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4A</xref>), maintaining the images in the same order as the ground truth row and color-coded by model predicted class, enabling us to gain a deeper insight into model performance.</p>
+</sec>
+</sec>
+<sec id="sec008" sec-type="results">
+<title>Results</title>
+<p>Our results highlight two critical findings in terms of model generalizability, which, we believe, hold relevance even outside of cervical imaging, as noted below:</p>
+<list list-type="alpha-lower">
+<list-item><p>Device-level heterogeneity impacts model performance greater than geography level heterogeneity. Our model performs well out of the box (no retraining) on external datasets where the axis of heterogeneity is geography only vs. device, i.e., on images from a different geography but sharing a device that is represented in the training dataset. However, the repeatability of our model is unaffected by data heterogeneity and is strong throughout.</p></list-item>
+<list-item><p>Incremental retraining with inclusion of new device images to the training dataset progressively improves classification performance and class discrimination on images from a new device previously not incorporated in the training dataset, up to a point of saturation.</p></list-item>
+</list>
+<p>First, the UMAPs on <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1A and 1B</xref> highlight that the “EXT” dataset and its corresponding J8 device (blue) occupy a different cluster from the “SEED” dataset and its corresponding devices (red and salmon), while <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1C</xref> highlights the geography level distribution. Taken together, <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1A and 1B</xref> and <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1C</xref> suggests the relatively greater impact of device-level heterogeneity on model performance than geography-level heterogeneity, given that within the same device, different geographies do not occupy distinct clusters on <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1C</xref>, unlike the corresponding device level clusters on <xref ref-type="fig" rid="pdig.0000364.g001">Fig 1B</xref>, which are distinct. <xref ref-type="supplementary-material" rid="pdig.0000364.s003">S2 Fig</xref> highlights the device and geography level characteristics of our “SEED” and “EXT” datasets.</p>
+<p>This is further reinforced by <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref>, which highlights the results from the model runs designed to investigate the relative impacts of device- and geography-level heterogeneity. <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref> illustrates that, for our model, device level heterogeneity impacts model performance greater than geography level heterogeneity. Specifically, column (i) of <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref> highlights that our model performs well when running out-of-the-box inference on images that are acquired using devices that are represented in the SEED data utilized in training our model (AUROC Normal vs. Rest = 0.88, AUROC Precancer+ vs. Rest = 0.82). However, when tested on a new device, J8, out-of-the-box (OOB) inference using the same model trained on seed data fails, as indicated by the poor classification performance of our model (AUROC Normal vs. Rest = 0.65; AUROC Precancer+ vs. Rest = 0.60; no normal predictions as highlighted by the confusion matrix) on column (ii) of <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref>. Column (iii) of <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref> highlights that our model performs well when trained on images from a training set that includes the seed data and J8 images from all geographies except Bolivia and tested on J8 images from Bolivia (AUROC Normal vs. Rest = 0.70, AUROC Precancer+ vs. Rest = 0.79). This trend in classification performance is also reflected in the confusion matrices on row (b) of <xref ref-type="fig" rid="pdig.0000364.g003">Fig 3</xref>, where column (i) and column (iii) have extreme misclassification rates of 3.7% and 9.1% respectively, while column (ii) shows the model making only “indeterminate” and “precancer+” predictions, and no “normal” predictions. Finally, row (c) illustrates the strong repeatability performance of our model in all of the cases (i)–(iii), highlighted by the small width of the 95% limits of agreement (95% LoA) on each corresponding Bland-Altman plot (95% LoA = 0.24, 0.36, 0.42 respectively). Each point on a Bland-Altman plot refers to a single woman, with the y-axis representing the maximum difference in the continuous classification <italic>score</italic> (see <xref ref-type="sec" rid="sec002">METHODS</xref>) across repeat images per woman, and the x-axis plotting the mean of the corresponding <italic>score</italic> across all repeat images per woman. Repeatability is evaluated using the 95% LoA, highlighted by the blue dotted lines on either side of the mean (central blue dotted line); for each of the Bland-Altman plots in row (c), the 95% LoA is quite narrow, with most points clustered around 0 on the y-axis suggesting that <italic>score</italic> values of the model on repeat images taken on the same visit for each woman are quite similar. Taken together, these results suggest that the classification performance of our model is affected more by device differences than differences in geography, while repeatability is relatively unaffected and quite strong throughout.</p>
+<p><xref ref-type="fig" rid="pdig.0000364.g004">Fig 4</xref> illustrates that, given the impact of device level heterogeneity on the performance of our model, retraining can improve performance on a new device previously not present in the “SEED”. Specifically, incremental retraining with inclusion of J8 images to the seed data, where training set = “SEED” images + J8 images, progressively improves classification performance and class discrimination on a held-aside test set consisting only of J8 images, up until a point of saturation. Panel (a) of <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4</xref> highlights this finding by providing a detailed comparison of model performance at the individual image level. Here (i) represents the case where the J8 images were added in a 1n N: 1n G: 1n P ratio of ground truth class at the woman level, while (ii) represents J8 additions in a 2n N: 2n G: 1n P ratio of ground truth classes at the woman level (the y-axis represents n, or the number of precancer+ women added). In both cases, incremental addition of new device images to the training set improves class discrimination; this improvement is achieved with fewer precancer+ cases added to the training set in (ii), with the 2:2:1 ratio. Panel (b) plots the AUROCs (both normal vs. rest and precancer+ vs. rest) against number of women added in the training set for each of the two corresponding ratios together with bootstrapped confidence intervals for each AUROC value, further reinforcing the finding that our model performance on J8 images improves with increased representation of J8 images in the training set in a saturating fashion. As we add more J8 images at the woman level, both the normal vs. rest and precancer+ vs. rest AUROCs increase up to a plateau of around 0.9.</p>
+<p><xref ref-type="table" rid="pdig.0000364.t002">Table 2</xref> highlights key classification (% extreme misclassifications and % total misclassifications) and repeatability (% extreme disagreement and 95% LoA) metrics for the case where J8 images are added to the training set in a 2 N: 2 G: 1 P ratio at the woman level. Specifically, the decrease in % total misclassifications with progressive addition of J8 images in the training set further illustrates the improvement in classification performance. On the other hand, the repeatability of our model is quite strong and relatively consistent throughout, as highlighted by the consistently low % extreme disagreement and 95% LoA values in <xref ref-type="table" rid="pdig.0000364.t002">Table 2</xref>. Additionally, model performance on the original “SEED” set images remains consistently strong regardless of the number of women added from the “EXT” dataset, as highlighted by the high AUROC values, the low % extreme misclassification and % total misclassifications, and the low % extreme disagreement and 95% LoA across all increments of “EXT” on <xref ref-type="supplementary-material" rid="pdig.0000364.s004">S1 Table</xref>. This suggests that our model does not exhibit any catastrophic forgetting.</p>
+</sec>
+<sec id="sec009" sec-type="conclusions">
+<title>Discussion</title>
+<p>The use of AI models as possible biomarkers continue to be hindered by key factors that affect their clinical translation. To be effective, any biomarker needs to: 1. generate reproducible test results; 2. acknowledge uncertainty, particularly when the underlying predictive task has pre-existing uncertainty (e.g., ASCUS in the Bethesda system); and 3. acknowledge the need for, or the lack of, generalizability to data heterogeneities. In this work, we address each of these properties in turn via first investigating the key axes of heterogeneities present in the underlying data, and subsequently demonstrating that the key design innovations of our multiclass AVE model are optimized for improved repeatability and classification performance and can translate well into new settings in order to facilitate clinical decision-making.</p>
+<p>Our work demonstrates proof of principle on adapting an AI-based clinical test, which in our case was a cervical cancer screening triage test, to a new setting. Both “internal” and “external” validation of AI models, particularly for models that are intended for clinical translation and deployment across heterogeneous data, are essential for fair evaluation of model performance [<xref ref-type="bibr" rid="pdig.0000364.ref026">26</xref>]. In the context of our work, “internal” validation refers to assessing model performance on data that shares similar distributional characteristics to the training data (e.g., same device, same geography, same population), while “external” validation uses datasets that are out-of-distribution [<xref ref-type="bibr" rid="pdig.0000364.ref027">27</xref>]. In the large majority of cases, the training data that is available for an AI model is homogeneous and does not often match the intended use case. Additionally, data drift or covariate shift, a phenomenon where the distribution of input data to an AI model changes over time, can significantly impact model performance following deployment [<xref ref-type="bibr" rid="pdig.0000364.ref007">7</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref028">28</xref>,<xref ref-type="bibr" rid="pdig.0000364.ref029">29</xref>]. This is particularly consequential in a clinical setting, where an inaccurate model prediction can lead to a cascade of potentially harmful downstream clinical decisions which might impact the health and safety of a patient. In this work, we posit that assessing AI model performance requires thorough consideration of both repeatability of predictions, and the discrimination ability of the model, when evaluated on “external” data from a new setting.</p>
+<p>In this work, we demonstrate that our model is able to discriminate between classes (“normal”, “indeterminate”, “precancer+”) well when evaluated on external data without retraining, provided that the axis of heterogeneity is geography only. If the external data is from a new device, our model performance improves as we incrementally add images collected from additional individuals from the external dataset and retrain on the collated training set. The specific retraining approach used, in particular, a ground truth ratio of women added to match the corresponding ratio in the “SEED” used for baseline model training, also determines the extent of this improvement. Additionally, as <xref ref-type="fig" rid="pdig.0000364.g004">Fig 4</xref> highlights, this performance improvement eventually reaches a saturation point. Overall, these findings have important implications for clinical deployment: in order to deploy our model to a new setting which uses a different image capture device from the family of devices utilized in model training, we would need to retrain our model, via optimized strategies, with a small portion of labelled images acquired using the new device; however, this is not needed if the new setting only differs in terms of geography. We can therefore expect our model to generalize well across diverse geographies without the need for retraining, provided that the image capture device used is represented in the training set. This is a critical and impactful result, which implies that standardizing an image capture device should minimize the need for retraining.</p>
+<p>Our work also sheds light on the potential importance of local retraining and the need for adapting models to local needs and constraints. The concept of creating generalizable models may not necessarily fit with AI as applied to healthcare. Using global models that are expected to generalize across all known axes of data heterogeneity might, in fact, further worsen the bias and health disparities between high-resource and low-resource settings. Retraining local models that are tailored to specific regions or institutions, which may be using a specific image-capture device, may enable better coordination of the various stakeholders involved in model design and implementation, and might better enable clinical interventions that are specific to the local context. There may also be greater buy-in from local providers when models are retrained and adapted locally.</p>
+<p>Despite the heterogeneous nature of our dataset, our work may be limited by the number of external devices utilized. Forthcoming work will evaluate our retraining approaches and assess model performance on additional external devices. Further, despite our utilization of a large, comprehensive dataset, our work may also be limited by the known number of axes of data heterogeneity investigated. Future work will investigate the impact of additional axes of data heterogeneity on model performance by acquiring new, prospective data, and additionally optimize our model for use on edge devices, thereby promoting the possibility of translation into relevant clinical settings.</p>
+</sec>
+<sec id="sec010" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pdig.0000364.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.s001" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Supplementary Methods And Results–Repeatability And Classification Performance Analysis.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pdig.0000364.s002" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.s002" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Results from the repeatability and classification performance analysis.</title>
+<p>(a) Bland-Altman plots; and (b) Test-Retest score plots for each of the four models under investigation namely (i) binary; (ii) binary with MC dropout; (iii) multiclass; and (iv) multiclass with MC dropout (our model), in order to assess the relative impact of the key design choices of our model. Panel (c) (1) highlights the % extreme disagreement (proportion of women for whom the model predicts “normal” for image 1 and “precancer+” for image 2 and vice-versa) for the each of the four models (repeatability), while Panel (c) (2)–(4) highlights relevant classification metrics, including (2) the % extreme misclassification (precancer+ misclassified as normal and vice-versa); (3) the % precancer+ misclassified as normal; and (4) the % normal misclassified as precancer+, for each of the four models. “Gray Zone” = “Indeterminate”.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pdig.0000364.s003" mimetype="image/tiff" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.s003" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Dataset Overview.</title>
+<p>The top panel highlights the five different studies (NHS, ALTS, CVT, Biop and D Biop) used to generate the final collated “SEED” dataset (top right) on which our model was trained and internally validated. The bottom panel highlights the six different countries / geographies included in the “EXT” dataset, all comprising of images acquired using a Samsung Galaxy J8 smartphone, on which our model was externally validated.</p>
+<p>(TIF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pdig.0000364.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pdig.0000364.s004" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>Classification and repeatability metrics on a held-aside test set of 8,734 images from the “SEED” dataset.</title>
+<p>Our model performs consistently well on “internal” data, even when retrained with added “external” images from the “EXT” dataset. Metrics are reported for each of the model runs involving incremental additions of images from the “EXT” (J8) dataset at the woman level, in a 2n normal (N): 2n indeterminate (I): 1n precancer+ (P) ratio of ground truth class, where n = # of precancer+ women added, as shown on the leftmost column. % values are rounded to 1 decimal place, while numeric values are rounded to 2 decimal places.</p>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pdig.0000364.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Esteva</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Kuprel</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Novoa</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Ko</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Swetter</surname> <given-names>SM</given-names></name>, <name name-style="western"><surname>Blau</surname> <given-names>HM</given-names></name>, <etal>et al</etal>. <article-title>Dermatologist-level classification of skin cancer with deep neural networks</article-title>. <source>Nat</source> 2017 5427639. <year>2017</year>;<volume>542</volume>: <fpage>115</fpage>–<lpage>118</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nature21056" xlink:type="simple">10.1038/nature21056</ext-link></comment> <object-id pub-id-type="pmid">28117445</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hannun</surname> <given-names>AY</given-names></name>, <name name-style="western"><surname>Rajpurkar</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Haghpanahi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tison</surname> <given-names>GH</given-names></name>, <name name-style="western"><surname>Bourn</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Turakhia</surname> <given-names>MP</given-names></name>, <etal>et al</etal>. <article-title>Cardiologist-level arrhythmia detection and classification in ambulatory electrocardiograms using a deep neural network</article-title>. <source>Nat Med</source> 2019 251. <year>2019</year>;<volume>25</volume>: <fpage>65</fpage>–<lpage>69</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41591-018-0268-3" xlink:type="simple">10.1038/s41591-018-0268-3</ext-link></comment> <object-id pub-id-type="pmid">30617320</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Piccialli</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Somma</surname> <given-names>V Di</given-names></name>, <name name-style="western"><surname>Giampaolo</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Cuomo</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fortino</surname> <given-names>G</given-names></name>. <article-title>A survey on deep learning in medicine: Why, how and when?</article-title> <source>Inf Fusion.</source> <year>2021</year>;<volume>66</volume>: <fpage>111</fpage>–<lpage>137</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/J.INFFUS.2020.09.006" xlink:type="simple">10.1016/J.INFFUS.2020.09.006</ext-link></comment></mixed-citation></ref>
+<ref id="pdig.0000364.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Topol</surname> <given-names>EJ</given-names></name>. <article-title>High-performance medicine: the convergence of human and artificial intelligence</article-title>. <source>Nat Med</source> 2019 251. <year>2019</year>;<volume>25</volume>: <fpage>44</fpage>–<lpage>56</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41591-018-0300-7" xlink:type="simple">10.1038/s41591-018-0300-7</ext-link></comment> <object-id pub-id-type="pmid">30617339</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gidwani</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Chang</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Patel</surname> <given-names>JB</given-names></name>, <name name-style="western"><surname>Hoebel</surname> <given-names>KV</given-names></name>, <name name-style="western"><surname>Ahmed</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>Inconsistent Partitioning and Unproductive Feature Associations Yield Idealized Radiomic Models.</article-title> <year>2022</year> [cited 3 Jan 2023]. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1148/radiol.220715" xlink:type="simple">10.1148/radiol.220715</ext-link></comment> <object-id pub-id-type="pmid">36537895</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lemay</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Hoebel</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Bridge</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Befano</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>De Sanjosé</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Egemen</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Improving the repeatability of deep learning models with Monte Carlo dropout.</article-title> <year>2022</year> [cited 13 Nov 2022]. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41746-022-00709-3" xlink:type="simple">10.1038/s41746-022-00709-3</ext-link></comment> <object-id pub-id-type="pmid">36400939</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lu</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Ahmed</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Singh</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Kalpathy-Cramer</surname> <given-names>J</given-names></name>. <article-title>Estimating Test Performance for AI Medical Devices under Distribution Shift with Conformal Prediction.</article-title> <year>2022</year> [cited 13 Nov 2022]. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.48550/arxiv.2207.05796" xlink:type="simple">10.48550/arxiv.2207.05796</ext-link></comment></mixed-citation></ref>
+<ref id="pdig.0000364.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wentzensen</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Lahrmann</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Clarke</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Kinney</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Tokugawa</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Poitras</surname> <given-names>N</given-names></name>, <etal>et al</etal>. <article-title>Accuracy and Efficiency of Deep-Learning–Based Automation of Dual Stain Cytology in Cervical Cancer Screening</article-title>. <source>JNCI J Natl Cancer Inst</source>. <year>2021</year>;<volume>113</volume>: <fpage>72</fpage>–<lpage>79</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jnci/djaa066" xlink:type="simple">10.1093/jnci/djaa066</ext-link></comment> <object-id pub-id-type="pmid">32584382</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>de Martel</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Plummer</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Vignat</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Franceschi</surname> <given-names>S</given-names></name>. <article-title>Worldwide burden of cancer attributable to HPV by site, country and HPV type</article-title>. <source>Int J Cancer</source>. <year>2017</year>;<volume>141</volume>: <fpage>664</fpage>–<lpage>670</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/ijc.30716" xlink:type="simple">10.1002/ijc.30716</ext-link></comment> <object-id pub-id-type="pmid">28369882</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sung</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ferlay</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Siegel</surname> <given-names>RL</given-names></name>, <name name-style="western"><surname>Laversanne</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Soerjomataram</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Jemal</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Global Cancer Statistics 2020: GLOBOCAN Estimates of Incidence and Mortality Worldwide for 36 Cancers in 185 Countries.</article-title> <source>CA Cancer J Clin.</source> <year>2021</year>;<volume>71</volume>: <fpage>209</fpage>–<lpage>249</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3322/caac.21660" xlink:type="simple">10.3322/caac.21660</ext-link></comment> <object-id pub-id-type="pmid">33538338</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schiffman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Doorbar</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wentzensen</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>De Sanjosé</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fakhry</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Monk</surname> <given-names>BJ</given-names></name>, <etal>et al</etal>. <article-title>Carcinogenic human papillomavirus infection.</article-title> <source>Nat Rev Dis Prim 2016 21</source>. <year>2016</year>;<volume>2</volume>: <fpage>1</fpage>–<lpage>20</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrdp.2016.86" xlink:type="simple">10.1038/nrdp.2016.86</ext-link></comment> <object-id pub-id-type="pmid">27905473</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schiffman</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Bauer</surname> <given-names>HM</given-names></name>, <name name-style="western"><surname>Hoover</surname> <given-names>RN</given-names></name>, <name name-style="western"><surname>Glass</surname> <given-names>AG</given-names></name>, <name name-style="western"><surname>Cadell</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Rush</surname> <given-names>BB</given-names></name>, <etal>et al</etal>. <article-title>Epidemiologic Evidence Showing That Human Papillomavirus Infection Causes Most Cervical Intraepithelial Neoplasia</article-title>. <source>JNCI J Natl Cancer Inst</source>. <year>1993</year>;<volume>85</volume>: <fpage>958</fpage>–<lpage>964</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jnci/85.12.958" xlink:type="simple">10.1093/jnci/85.12.958</ext-link></comment> <object-id pub-id-type="pmid">8388478</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schiffman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Castle</surname> <given-names>PE</given-names></name>, <name name-style="western"><surname>Jeronimo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rodriguez</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Wacholder</surname> <given-names>S</given-names></name>. <article-title>Human papillomavirus and cervical cancer</article-title>. <source>Lancet</source>. <year>2007</year>;<volume>370</volume>: <fpage>890</fpage>–<lpage>907</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0140-6736%2807%2961416-0" xlink:type="simple">10.1016/S0140-6736(07)61416-0</ext-link></comment> <object-id pub-id-type="pmid">17826171</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref014"><label>14</label><mixed-citation publication-type="book" xlink:type="simple"><collab>WHO Guidelines Approved by the Guidelines Review Committee</collab>. <source>WHO guidelines for screening and treatment of precancerous lesions for cervical cancer prevention</source>. <publisher-loc>Geneva</publisher-loc> <publisher-name>World Heal Organ</publisher-name>. <year>2013</year>.</mixed-citation></ref>
+<ref id="pdig.0000364.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><collab>World Health Organization</collab>. <source>Global strategy to accelerate the elimination of cervical cancer as a public health problem and its associated goals and targets for the period 2020–2030</source>. <publisher-name>United Nations Gen Assem</publisher-name>. <year>2020</year>;<volume>2</volume>: <fpage>1</fpage>–<lpage>56</lpage>. Available: <ext-link ext-link-type="uri" xlink:href="https://www.who.int/publications/i/item/9789240014107" xlink:type="simple">https://www.who.int/publications/i/item/9789240014107</ext-link></mixed-citation></ref>
+<ref id="pdig.0000364.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Belinson</surname> <given-names>J.</given-names></name> <article-title>Cervical cancer screening by simple visual inspection after acetic acid</article-title>. <source>Obstet Gynecol</source>. <year>2001</year>;<volume>98</volume>: <fpage>441</fpage>–<lpage>444</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0029-7844%2801%2901454-5" xlink:type="simple">10.1016/s0029-7844(01)01454-5</ext-link></comment> <object-id pub-id-type="pmid">11530126</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ajenifuja</surname> <given-names>KO</given-names></name>, <name name-style="western"><surname>Gage</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Adepiti</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Wentzensen</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Eklund</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Reilly</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>A Population-Based Study of Visual Inspection With Acetic Acid (VIA) for Cervical Screening in Rural Nigeria.</article-title> <source>Int J Gynecol Cancer</source>. <year>2013</year>;<volume>23</volume>: <fpage>507</fpage>–<lpage>512</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/IGC.0b013e318280f395" xlink:type="simple">10.1097/IGC.0b013e318280f395</ext-link></comment> <object-id pub-id-type="pmid">23354369</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Massad</surname> <given-names>LS</given-names></name>, <name name-style="western"><surname>Jeronimo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schiffman</surname> <given-names>M</given-names></name>. <article-title>Interobserver agreement in the assessment of components of colposcopic grading.</article-title> <source>Obstet Gynecol</source>. <year>2008</year>;<volume>111</volume>: <fpage>1279</fpage>–<lpage>1284</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1097/AOG.0b013e31816baed1" xlink:type="simple">10.1097/AOG.0b013e31816baed1</ext-link></comment> <object-id pub-id-type="pmid">18515509</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Silkensen</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Schiffman</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sahasrabuddhe</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Flanigan</surname> <given-names>JS</given-names></name>. <article-title>Is It Time to Move Beyond Visual Inspection With Acetic Acid for Cervical Cancer Screening?</article-title> <source>Glob Heal Sci Pract.</source> <year>2018</year>;<volume>6</volume>: <fpage>242</fpage>–<lpage>246</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.9745/GHSP-D-18-00206" xlink:type="simple">10.9745/GHSP-D-18-00206</ext-link></comment> <object-id pub-id-type="pmid">29959268</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ahmed</surname> <given-names>SR</given-names></name>, <name name-style="western"><surname>Befano</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lemay</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Egemen</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Rodriguez</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Angara</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Reproducible and clinically translatable deep neural networks for cervical screening.</article-title> <source>Sci Reports 2023 131</source>. <year>2023</year>;<volume>13</volume>: <fpage>1</fpage>–<lpage>18</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41598-023-48721-1" xlink:type="simple">10.1038/s41598-023-48721-1</ext-link></comment> <object-id pub-id-type="pmid">38066031</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref021"><label>21</label><mixed-citation publication-type="other" xlink:type="simple">Low &amp; middle income | Data. [cited 20 Aug 2023]. Available: <ext-link ext-link-type="uri" xlink:href="https://data.worldbank.org/country/XO" xlink:type="simple">https://data.worldbank.org/country/XO</ext-link></mixed-citation></ref>
+<ref id="pdig.0000364.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Arbyn</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Sasieni</surname> <given-names>P</given-names></name>, Meijer CJLM, Clavel C, Koliopoulos G, Dillner J. <article-title>Chapter 9: Clinical applications of HPV testing: A summary of meta-analyses</article-title>. <source>Vaccine</source>. <year>2006</year>;<volume>24</volume>: <fpage>S78</fpage>–<lpage>S89</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/J.VACCINE.2006.05.117" xlink:type="simple">10.1016/J.VACCINE.2006.05.117</ext-link></comment> <object-id pub-id-type="pmid">16950021</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Christine</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Juliana</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Juma</surname> <given-names>MH</given-names></name>, <name name-style="western"><surname>Heijmans</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Ouburg</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Ali</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Detection of high-risk human papillomavirus (HPV) by the novel AmpFire isothermal HPV assay among pregnant women in Pemba Island, Tanzania.</article-title> <source>Pan Afr Med J</source>. <year>2020</year>;<volume>37</volume>: <fpage>37</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.11604/pamj.2020.37.183.23367" xlink:type="simple">10.11604/pamj.2020.37.183.23367</ext-link></comment> <object-id pub-id-type="pmid">33447338</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jeronimo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Holme</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Slavkovsky</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Camel</surname> <given-names>C</given-names></name>. <article-title>Implementation of HPV testing in Latin America.</article-title> <source>J Clin Virol</source>. <year>2016</year>;<volume>76</volume>: <fpage>69</fpage>–<lpage>73</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jcv.2015.11.035" xlink:type="simple">10.1016/j.jcv.2015.11.035</ext-link></comment> <object-id pub-id-type="pmid">26699418</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref025"><label>25</label><mixed-citation publication-type="other" xlink:type="simple">Redmon J, Divvala S, Girshick R, Farhadi A. You only look once: Unified, real-time object detection. Proc IEEE Comput Soc Conf Comput Vis Pattern Recognit. 2016;2016-December: 779–788. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/CVPR.2016.91" xlink:type="simple">10.1109/CVPR.2016.91</ext-link></comment></mixed-citation></ref>
+<ref id="pdig.0000364.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Egemen</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Perkins</surname> <given-names>RB</given-names></name>, <name name-style="western"><surname>Cheung</surname> <given-names>LC</given-names></name>, <name name-style="western"><surname>Befano</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rodriguez</surname> <given-names>AC</given-names></name>, <name name-style="western"><surname>Desai</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>Artificial intelligence–based image analysis in clinical testing: lessons from cervical cancer screening</article-title>. <source>JNCI J Natl Cancer Inst</source>. <year>2024</year>;<volume>116</volume>: <fpage>26</fpage>–<lpage>33</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jnci/djad202" xlink:type="simple">10.1093/jnci/djad202</ext-link></comment> <object-id pub-id-type="pmid">37758250</object-id></mixed-citation></ref>
+<ref id="pdig.0000364.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bengio</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Bastien</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Bergeron</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Boulanger–Lewandowski</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Breuel</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Chherawala</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Deep Learners Benefit More from Out-of-Distribution Examples.</article-title> <source>JMLR Workshop and Conference Proceedings</source>; <year>2011</year>. pp. <fpage>164</fpage>–<lpage>172</lpage>. Available: <ext-link ext-link-type="uri" xlink:href="https://proceedings.mlr.press/v15/bengio11b.html" xlink:type="simple">https://proceedings.mlr.press/v15/bengio11b.html</ext-link></mixed-citation></ref>
+<ref id="pdig.0000364.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Žliobaitė</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Pechenizkiy</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gama</surname> <given-names>J</given-names></name>. <article-title>An Overview of Concept Drift Applications.</article-title> <source>Stud Big Data.</source> <year>2016</year>;<volume>16</volume>: <fpage>91</fpage>–<lpage>114</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/978-3-319-26989-4%5F4/COVER" xlink:type="simple">10.1007/978-3-319-26989-4_4/COVER</ext-link></comment></mixed-citation></ref>
+<ref id="pdig.0000364.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hoens</surname> <given-names>TR</given-names></name>, <name name-style="western"><surname>Polikar</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Chawla N</surname> <given-names>V</given-names></name>. <article-title>Learning from streaming data with concept drift and imbalance: An overview.</article-title> <source>Prog Artif Intell</source>. <year>2012</year>;<volume>1</volume>: <fpage>89</fpage>–<lpage>101</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/S13748-011-0008-0/METRICS" xlink:type="simple">10.1007/S13748-011-0008-0/METRICS</ext-link></comment></mixed-citation></ref>
+</ref-list>
+</back>
+</article>

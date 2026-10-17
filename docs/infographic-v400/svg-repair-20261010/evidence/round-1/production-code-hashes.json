@@ -1,0 +1,20 @@
+{
+  "apps/paperbanana-api/src/diagram-topology.ts": "2caedee383fff3dea0d1524f4d48409a5798e4c6aac6222fd7a827bd1ad8188c",
+  "apps/paperbanana-api/src/panel-layout.ts": "53c8ff79a24d6a62e5facd5db6c150908d3a4c54197eb184e2d80bb8b1b74070",
+  "apps/paperbanana-api/src/figure-composition.ts": "8feb472ba85969fa7261f89418de840eeef1f4a8cb33219bd97867cd8d5d3ce7",
+  "apps/paperbanana-api/runtime/handler.ts": "9b469cfdee8a8097112654429483b3f47aa57a8752d33796f0642b954d1a5bb3",
+  "apps/paperbanana-api/package.json": "844c8e0fd288be55169d80c0d4070050bae177828fe4c8f10aa373e2113036e4",
+  "packages/types/src/workflow.ts": "83ebd2a770b6d139023afbd794fab6d0d6a3ffd2c96ec2a6b7e5a8201c909987",
+  "packages/api/src/execution-errors.ts": "0f5595bc10557e0b842c911e7d7467011c39d3378a7c6239df7b89f89f302d34",
+  "packages/figure-taxonomy/src/plot.js": "912951ecfc5fb6e3edf0b86ad981dc47fff917672740a8d985dbaaf858048bf0",
+  "packages/figure-taxonomy/src/specialist-renderers.js": "1453bb0a2d8dd0b22194a79b6de06b9360a2b1ce3044ddefe81a4988e3a4e2e7",
+  "pnpm-lock.yaml": "e1a7d93e66632ae92c83b9c8593e647c333a698db3d4a23b7301bfe96eb1b4dd",
+  "apps/paperbanana-api/tests/diagram-topology.test.ts": "3f4113399f04b9db2fc73ad936400c5a52d7c0bb4baeab281acdb88e66bef787",
+  "apps/paperbanana-api/tests/diagram-topology-runtime.test.ts": "45dd28bdc4647f09fd57802132e3945f6631bed9f1e9a0081916dae4b6143042",
+  "apps/paperbanana-api/tests/helpers/topology-fixtures.ts": "6bfd4f1cfef5fc6d15cf71b0bbe8f670b6a85c0754097667e6da57c463958446",
+  "apps/paperbanana-api/tests/figure-completion-matrix.test.ts": "b5b976ed35a0827f340374b14faaf7f94a4514c883badd25c9532767d3121278",
+  "apps/paperbanana-api/tests/figure-composite-runtime.test.ts": "ee408cdb79d8a51f4bd8eaeb0bc7ba7d9aa4616f33bcc75cc36a5fd0d6e52240",
+  "apps/paperbanana-api/tests/figure-composition.test.ts": "2c8b8906f29cc135fc5a8ae426fb90095c7f97fbdc35063f4d67987914f22055",
+  "apps/paperbanana-api/tests/figure-data-matrix.test.ts": "84970869c9226b5dacd273a4a45299e6422917a62b960bba7efa133278935281",
+  "apps/paperbanana-api/tests/figure-export-roundtrip.test.ts": "9fc7c33308f1126a5ea35a0f919ffe827adfbfe0910312e804593bda36f24c75"
+}

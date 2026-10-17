@@ -1,0 +1,97 @@
+{
+  "typeId": "treemap",
+  "computations": {
+    "geometry": {
+      "root": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "a": [
+        0,
+        0,
+        0.6,
+        1
+      ],
+      "a1": [
+        0,
+        0,
+        0.6,
+        0.3333333333333333
+      ],
+      "a2": [
+        0,
+        0.3333333333333333,
+        0.6,
+        0.6666666666666666
+      ],
+      "b": [
+        0.6,
+        0,
+        0.4,
+        1
+      ]
+    },
+    "rootTotal": 10,
+    "leafTotal": 10,
+    "algorithm": "slice-and-dice"
+  },
+  "checks": {
+    "root_area_ratio": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "a_area_ratio": {
+      "actual": 0.6,
+      "expected": 0.6,
+      "absoluteError": 0.0
+    },
+    "a1_area_ratio": {
+      "actual": 0.19999999999999998,
+      "expected": 0.2,
+      "absoluteError": 2.7755575615628914e-17
+    },
+    "a2_area_ratio": {
+      "actual": 0.39999999999999997,
+      "expected": 0.4,
+      "absoluteError": 5.551115123125783e-17
+    },
+    "b_area_ratio": {
+      "actual": 0.4,
+      "expected": 0.4,
+      "absoluteError": 0.0
+    },
+    "leaf_area_sum": {
+      "actual": 1.0,
+      "expected": 1.0,
+      "absoluteError": 0.0
+    },
+    "leaf_total": {
+      "actual": 10.0,
+      "expected": 10.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 5.0,
+      "expected": 5.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "id",
+      "label",
+      "parent",
+      "value"
+    ],
+    "options": {
+      "valueSemantics": "subtree_total"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

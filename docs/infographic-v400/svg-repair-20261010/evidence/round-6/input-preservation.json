@@ -1,0 +1,10 @@
+[
+  {
+    "scenario": "state-diagram-svg",
+    "equalExceptCredentialAndReviewBudget": true
+  },
+  {
+    "scenario": "mixed-workflow-bar-svg",
+    "equalExceptCredentialAndReviewBudget": true
+  }
+]

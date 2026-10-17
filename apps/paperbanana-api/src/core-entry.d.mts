@@ -41,3 +41,4 @@ export function configureProviderWorkflow(hooks: any): void
 export function resumeTokenDanceJob(task: any): Promise<any>
 
 export function requiresTokenDanceCredential(body: Record<string, any>): Promise<boolean>
+export function requiresCustomCredential(body: Record<string, any>): Promise<boolean>

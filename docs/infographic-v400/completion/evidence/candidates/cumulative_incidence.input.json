@@ -1,0 +1,48 @@
+{
+  "figureTypeId": "cumulative_incidence",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "a",
+        "time": 1,
+        "event": 1,
+        "cause": "A"
+      },
+      {
+        "id": "b",
+        "time": 1,
+        "event": 1,
+        "cause": "B"
+      },
+      {
+        "id": "c",
+        "time": 2,
+        "event": 0,
+        "cause": null
+      },
+      {
+        "id": "d",
+        "time": 3,
+        "event": 1,
+        "cause": "A"
+      }
+    ],
+    "units": {
+      "time": "year"
+    },
+    "options": {
+      "causes": [
+        "A",
+        "B"
+      ],
+      "estimator": "aalen_johansen",
+      "censoring": "right",
+      "entry": "zero"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

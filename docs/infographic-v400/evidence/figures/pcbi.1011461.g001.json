@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1011461.g001",
+  "paper": "pcbi.1011461",
+  "figure": {
+    "id": "pcbi.1011461.g001",
+    "label": "Fig 1",
+    "caption": "Funnel Plot A.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1011461.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1011461.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Funnel Plot A.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1011461.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1011461.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1011461",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011461",
+    "title": "Ten simple rules for interpreting and evaluating a meta-analysis",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Rebecca B. Carlson",
+      "Jennifer R. Martin",
+      "Robert D. Beckett"
+    ],
+    "year": "2023",
+    "license": "2023\nCarlson et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1011461.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011461.g001.png",
+      "bytes": 276845,
+      "sha256": "953137795d5cf0dd7d7a99e2697a6819976fc6aac7c967d53ed66ae938a698b6"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1011461.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1011461.g001.tif",
+      "bytes": 309552,
+      "sha256": "6a4cab0177f93ea1c8b72a85343c02f534ca1861841e35549456f57f7fd10bfd"
+    }
+  }
+}

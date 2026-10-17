@@ -18,7 +18,9 @@ const base64=bytes.toString('base64'),source={base64,mimeType:'image/png',dataUr
 const task='12345678-1234-4123-8123-123456789abc'
 for(const [key,c]of Object.entries(AUDITED_CHANNEL_CONTRACTS).filter(([key])=>['runware','tokenhub','xiaomi'].includes(key.split('/')[0]))) {
   const at=key.indexOf('/'),provider=key.slice(0,at),model=key.slice(at+1)
-  test(`official per-model request: ${key}`,async()=>{
+  test(`official per-model request: ${key}`,async(t)=>{
+    // Exercise historical wire contracts just before expiry; cutoff rejection is tested below.
+    if(c.expiresAt)t.mock.method(Date,'now',()=>Date.parse(c.expiresAt!)-1)
     const row=catalog.providers[provider].find((m:any)=>m.id===model)
     assert.ok(row);assert.deepEqual(row.roles,c.roles)
     if(c.taskType!=='imageInference'&&!['hy35','vidu','vega','seedream'].includes(c.taskType)) {
@@ -67,9 +69,9 @@ for(const [key,c]of Object.entries(AUDITED_CHANNEL_CONTRACTS).filter(([key])=>['
 }
 test('all three official directories have one disposition per ID; not merely representatives',()=>{
   const all=['runware','cn'].flatMap(k=>JSON.parse(fs.readFileSync(new URL(`config/channel-audit/${k}-directory.json`,root),'utf8')))
-  assert.equal(all.filter(r=>r.channel==='runware').length,355)
+  assert.equal(all.filter(r=>r.channel==='runware').length,362)
   assert.equal(all.filter(r=>r.channel==='xiaomi').length,9)
-  for(const row of all){assert.ok(row.decision,JSON.stringify(row));assert.ok(row.source);assert.equal(row.checkedAt,'2026-09-22')}
+  for(const row of all){assert.ok(row.decision,JSON.stringify(row));assert.ok(row.source);assert.ok(['2026-09-22','2026-10-09'].includes(row.checkedAt))}
 })
 test('scheduled retirement retains the original ID until its documented product cutoff, then rejects without transport',()=>{
   const realNow=Date.now

@@ -1,3 +1,4 @@
+import {JournalTaskSummary} from './JournalExportPanel.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import JobFailureNotice from './JobFailureNotice';
 import { AlertTriangle } from 'lucide-react';
@@ -82,6 +83,7 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
             </div>
           </div>
 
+          <JournalTaskSummary job={item}/>
           <div className="job-prompts">
             <div>
               <strong>{t("论文方法内容")}</strong>
@@ -116,15 +118,16 @@ export default function JobTable({ jobs, showUser, apiBase, onUseForRefine, rend
             </div>
           ) : null}
 
-          {item.status === 'succeeded' && (item.result_images || []).some((image) => image.url) ? (
+          {(item.result_images || []).some((image) => image.url) ? (
             <div className="job-record-images">
               <div className="job-record-images-head">
                 <strong>{t("结果图")}</strong>
                 <DownloadJobZipButton job={item} apiBase={apiBase} />
               </div>
+              {item.status === 'failed' ? <p className="notice warning">{t('任务部分失败，已完成的候选图仍可查看或下载。')}</p> : null}
               <div className="job-record-image-grid">
                 {(item.result_images || []).filter((image) => image.url).map((image) => (
-                  <ResultFigure key={image.filename} image={image} apiBase={apiBase} labelPrefix="结果图" outputFormat={item.output_format} onUseForRefine={onUseForRefine} />
+                  <ResultFigure key={image.filename} image={image} apiBase={apiBase} labelPrefix="结果图" outputFormat={item.output_format} journalProfile={item.journalProfile} jobId={item.id} onUseForRefine={onUseForRefine} />
                 ))}
               </div>
             </div>

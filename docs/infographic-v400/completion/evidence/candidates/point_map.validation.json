@@ -1,0 +1,47 @@
+{
+  "typeId": "point_map",
+  "computations": {
+    "coordinates": [
+      [
+        110,
+        30
+      ],
+      [
+        116,
+        34
+      ],
+      [
+        113,
+        28
+      ]
+    ],
+    "projection": "Plate Carree; no equal-area or distance claim"
+  },
+  "checks": {
+    "coordinate_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 3.0,
+      "expected": 3.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "label",
+      "x",
+      "y"
+    ],
+    "options": {
+      "crs": "EPSG:4326",
+      "projection": "plate_carree"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

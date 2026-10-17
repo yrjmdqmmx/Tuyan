@@ -1,0 +1,58 @@
+{
+  "doi": "10.1371/journal.pcbi.1005740",
+  "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005740",
+  "title": "Quick tips for creating effective and impactful biological pathways using the Systems Biology Graphical Notation",
+  "journal": "PLOS Computational Biology",
+  "authors": [
+    "Vasundra Touré",
+    "Nicolas Le Novère",
+    "Dagmar Waltemath",
+    "Olaf Wolkenhauer"
+  ],
+  "year": "2018",
+  "license": "2018\nTouré et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pcbi.1005740.g001",
+      "label": "Fig 1",
+      "caption": "Three different SBGN representations of Na+ transport into the cytoplasm by voltage-dependant channels.\n(a), The depolarisation (“perturbation” symbol) of the membrane triggers (“stimulation” symbol, arrow with white head) the opening of the Na+ channel, which enables the import of Na+ from the extracellular space to the cytoplasm. Each sodium channel glyph contains a “unit of information” glyph (rectangle at the top left) that gives information about the conformational state of the channel. (b), The depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel. This value is necessary to stimulate (“necessary stimulation” symbol, arrow with white head and a vertical line) the relocation of Na+ into the cytoplasm. (c), A cascade of signals is represented where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. Na+, sodium ion; SBGN, Systems Biology Graphical Notation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005740.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005740.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Three different SBGN representations of Na+ transport into the cytoplasm by voltage-dependant channels.</title>\n<p>(a), The depolarisation (“perturbation” symbol) of the membrane triggers (“stimulation” symbol, arrow with white head) the opening of the Na+ channel, which enables the import of Na+ from the extracellular space to the cytoplasm. Each sodium channel glyph contains a “unit of information” glyph (rectangle at the top left) that gives information about the conformational state of the channel. (b), The depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel. This value is necessary to stimulate (“necessary stimulation” symbol, arrow with white head and a vertical line) the relocation of Na+ into the cytoplasm. (c), A cascade of signals is represented where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. Na+, sodium ion; SBGN, Systems Biology Graphical Notation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005740.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005740.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1005740.g002",
+      "label": "Fig 2",
+      "caption": "Representation of energy storage by the ATP synthase at different levels of detail from the more abstract layer (left) to the more detailed layer (right).\nIn the first diagram, the nature of the entities is unspecified (oval shaped glyphs) and the modulation is of unknown direction. The second diagram is more detailed with a macromolecule “ATP synthase” that stimulates the reaction consuming the simple chemicals “ADP” and “Pi” to produce the simple chemical “ATP.” In the third diagram, the ATP glyph has been substituted by a complex, making the diagram even more precise. Finally, the forth diagram highlights an identified complex catalysing the synthesis of a simple chemical. ADP, adenosine diphosphate; Pi, inorganic phosphate.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005740.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005740.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Representation of energy storage by the ATP synthase at different levels of detail from the more abstract layer (left) to the more detailed layer (right).</title>\n<p>In the first diagram, the nature of the entities is unspecified (oval shaped glyphs) and the modulation is of unknown direction. The second diagram is more detailed with a macromolecule “ATP synthase” that stimulates the reaction consuming the simple chemicals “ADP” and “Pi” to produce the simple chemical “ATP.” In the third diagram, the ATP glyph has been substituted by a complex, making the diagram even more precise. Finally, the forth diagram highlights an identified complex catalysing the synthesis of a simple chemical. ADP, adenosine diphosphate; Pi, inorganic phosphate.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005740.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005740.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pcbi.1005740.g003",
+      "label": "Fig 3",
+      "caption": "Example of the Drosophila cell cycle initial SBGN drawing (left) and beautified SBGN network (right).\nWe generated the SBGN map of the following study “Dynamical modeling of syncytial mitotic cycles in Drosophila embryos” by Calzone et al. [16, 17]. First, we created an initial map with the different reactions found in the Drosophila cell cycle. Then we beautified the map by duplicating FZY with clone markers in order to reduce edge crossings, adding colors, and optimising arc positions. The colors categorise the different reactions: green processes represent creation or degradation of entities (“source and sink”) and grey processes show import and export of entities between compartments. The red processes and arcs visualise the positive feedback exerted by the MPF. The purple processes highlight the switch between the activation and the inactivation of MPF. FZY, fizzy; MPF, maturation promoting factor; SBGN, Systems Biology Graphical Notation.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005740.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005740.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Example of the <italic>Drosophila</italic> cell cycle initial SBGN drawing (left) and beautified SBGN network (right).</title>\n<p>We generated the SBGN map of the following study “Dynamical modeling of syncytial mitotic cycles in <italic>Drosophila</italic> embryos” by Calzone et al. [<xref ref-type=\"bibr\" rid=\"pcbi.1005740.ref016\">16</xref>, <xref ref-type=\"bibr\" rid=\"pcbi.1005740.ref017\">17</xref>]. First, we created an initial map with the different reactions found in the <italic>Drosophila</italic> cell cycle. Then we beautified the map by duplicating FZY with clone markers in order to reduce edge crossings, adding colors, and optimising arc positions. The colors categorise the different reactions: green processes represent creation or degradation of entities (“source and sink”) and grey processes show import and export of entities between compartments. The red processes and arcs visualise the positive feedback exerted by the MPF. The purple processes highlight the switch between the activation and the inactivation of MPF. FZY, fizzy; MPF, maturation promoting factor; SBGN, Systems Biology Graphical Notation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005740.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005740.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

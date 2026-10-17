@@ -8,23 +8,15 @@ try {
   // RED starts before the package implementation exists.
 }
 
-const categoryIds = [
-  'method_framework',
-  'workflow',
-  'system_architecture',
-  'mechanism',
-  'comparison',
-  'timeline',
-  'data_stat',
-  'concept_map',
-];
+const { FIGURE_TYPES } = await import('../../figure-taxonomy/src/index.js');
+const categoryIds = [...FIGURE_TYPES.map(type=>type.id), 'data_stat'];
 
-test('exports the exact version-one workflow dimensions', () => {
+test('exports the shared taxonomy and version-one workflow dimensions', () => {
   assert.deepEqual(knowledge.VISUAL_CATEGORIES, categoryIds);
   assert.deepEqual(knowledge.OPERATIONS, ['create', 'refine', 'evaluate']);
   assert.deepEqual(knowledge.OUTPUT_FORMATS, ['png', 'svg']);
   assert.deepEqual(knowledge.LOCALES, ['zh-CN', 'en-US']);
-  assert.equal(knowledge.KNOWLEDGE_VERSION, '1.0.0');
+  assert.equal(knowledge.KNOWLEDGE_VERSION, '1.1.0');
 });
 
 test('keeps bilingual category coverage in lockstep', () => {
@@ -177,7 +169,7 @@ test('resources have a stable order and resolve without mutable state', () => {
 
 test('offline snapshot hash binds every version-one public knowledge object', () => {
   const snapshot = knowledge.createOfflineSnapshot();
-  assert.equal(snapshot.manifest.knowledgeVersion, '1.0.0');
+  assert.equal(snapshot.manifest.knowledgeVersion, '1.1.0');
   assert.match(snapshot.manifest.knowledgeHash, /^[a-f0-9]{64}$/);
   assert.deepEqual(snapshot.categories, knowledge.CATEGORY_CATALOG);
   assert.deepEqual(snapshot.schemas.figureSpec, knowledge.FIGURE_SPEC_SCHEMA);

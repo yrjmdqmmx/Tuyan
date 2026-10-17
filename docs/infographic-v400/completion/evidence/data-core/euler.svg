@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 324 315.47224  C 354.516602 315.47224 383.787432 303.347865 405.365929 281.769369  C 426.944425 260.190872 439.0688 230.920042 439.0688 200.40344  C 439.0688 169.886838 426.944425 140.616008 405.365929 119.037511  C 383.787432 97.459015 354.516602 85.33464 324 85.33464  C 293.483398 85.33464 264.212568 97.459015 242.634071 119.037511  C 221.055575 140.616008 208.9312 169.886838 208.9312 200.40344  C 208.9312 230.920042 221.055575 260.190872 242.634071 281.769369  C 264.212568 303.347865 293.483398 315.47224 324 315.47224  z " clip-path="url(#p7f0102989f)" style="fill: #487968; opacity: 0.25; stroke: #487968; stroke-width: 2; stroke-linejoin: miter" />
+   </g>
+   <g id="patch_3">
+    <path d="M 295.2328 257.93784  C 310.491101 257.93784 325.126516 251.875653 335.915764 241.086404  C 346.705013 230.297156 352.7672 215.661741 352.7672 200.40344  C 352.7672 185.145139 346.705013 170.509724 335.915764 159.720476  C 325.126516 148.931227 310.491101 142.86904 295.2328 142.86904  C 279.974499 142.86904 265.339084 148.931227 254.549836 159.720476  C 243.760587 170.509724 237.6984 185.145139 237.6984 200.40344  C 237.6984 215.661741 243.760587 230.297156 254.549836 241.086404  C 265.339084 251.875653 279.974499 257.93784 295.2328 257.93784  z " clip-path="url(#p7f0102989f)" style="fill: #c58b53; opacity: 0.25; stroke: #c58b53; stroke-width: 2; stroke-linejoin: miter" />
+   </g>
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="295.2328" y="200.40344" transform="rotate(-0 295.2328 200.40344)">2</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="398.79472" y="200.40344" transform="rotate(-0 398.79472 200.40344)">1</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="295.2328" y="131.36216" transform="rotate(-0 295.2328 131.36216)">B</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="68.07432" transform="rotate(-0 324 68.07432)">A</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 10px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="324" y="11.80024" transform="rotate(-0 324 11.80024)">Exact membership counts and topology; areas are schematic</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7f0102989f">
+   <rect x="36.328" y="27.80024" width="575.344" height="333.69952" />
+  </clipPath>
+ </defs>
+</svg>

@@ -47,7 +47,12 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
     if (!row) throw new TokenDanceError(401, '请先连接观猹 TokenDance。', 'reauthorize_api_key')
     return { key: cipher!.open(row.secret, userId).key as string, version: row.version as string }
   }
-  async function begin(userId: string, platform: unknown) {
+  async function begin(userId: string, platform: unknown, callbackOrigin?: unknown) {
+    // Only select between official sites; never accept a caller-provided URL/path.
+    const sites = new Set(['https://tuyansci.cn', 'https://www.paperbanana.asia', 'https://paperbanana.asia'])
+    if (callbackOrigin !== undefined && (typeof callbackOrigin !== 'string' || !sites.has(callbackOrigin))) throw new TokenDanceError(400, '不受支持的 TokenDance 回调来源。')
+    const webCallback = callbackOrigin === 'https://tuyansci.cn' ? 'https://tuyansci.cn/'
+      : callbackOrigin ? TOKENDANCE_APP_URL : callback.toString()
     enabled(); await accepting(userId)
     const state = randomBytes(32).toString('base64url'), verifier = randomBytes(48).toString('base64url')
     const at = new Date(now()), expiresAt = new Date(now() + 10 * 60_000)
@@ -61,7 +66,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
     authorization.searchParams.set('code_challenge_method', 'S256')
     authorization.searchParams.set('key_name', '图研 Tuyan')
     if (platform !== 'miniprogram') {
-      const target = new URL(callback)
+      const target = new URL(webCallback)
       target.searchParams.set('tokendance_callback', '1'); target.searchParams.set('state', state)
       authorization.searchParams.set('callback_url', target.toString())
     }
@@ -191,7 +196,7 @@ export function createTokenDanceService({ db, fetcher = fetch, secret = '', call
           const row = cipher ? await connections.findOne({ _id: userId }) : null
           return { code: 0, available: Boolean(cipher), connected: Boolean(row), connectedAt: row?.connectedAt || null, appUrl: TOKENDANCE_APP_URL, remoteRevokeSupported: false }
         }
-        case 'tokenDanceAuthorize': return { code: 0, ...await begin(userId, body.platform) }
+        case 'tokenDanceAuthorize': return { code: 0, ...await begin(userId, body.platform, body.callbackOrigin) }
         case 'tokenDanceExchange': return { code: 0, ...await exchange(userId, body.state, body.code) }
         case 'tokenDanceCancel':
           await flows.updateOne({ _id: String(body.state || ''), userId }, { $set: { status: 'cancelled' }, $unset: { secret: '' } })

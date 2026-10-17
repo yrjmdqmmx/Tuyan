@@ -1,5 +1,5 @@
 {
-  "reviewedAt": "2026-09-27",
+  "reviewedAt": "2026-10-16",
   "channels": {
     "deepseek": "深度求索",
     "kimi": "Kimi",
@@ -639,9 +639,25 @@
         "书生"
       ],
       "source": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+    },
+    "cogevol": {
+      "label": "CogEvol",
+      "labelEn": "CogEvol",
+      "aliases": [
+        "cogevol"
+      ],
+      "source": "https://tokendance.space/models/cogevol-base"
     }
   },
   "routes": [
+    {
+      "channels": [
+        "tokendance"
+      ],
+      "pattern": "^cogevol-(base|interactive-0828|slide-0828)$",
+      "vendorId": "cogevol",
+      "source": "https://tokendance.space/models/cogevol-base"
+    },
     {
       "channels": [
         "antling"
@@ -1652,6 +1668,7 @@
       "vendorId": "alibaba",
       "newestFirst": [
         "qwen[-/]image[-/]3(?:[.]0)?",
+        "qwen[-/]image[-/@]2[.]1",
         "qwen[-/]image[-/]2(?:[.]0)?",
         "qwen[-/]image-edit.*2511",
         "qwen[-/]image-edit.*2509",
@@ -1773,6 +1790,7 @@
       "id": "gemini",
       "vendorId": "google",
       "newestFirst": [
+        "gemini-4(?:[.-]|$)",
         "gemini-3[.]8",
         "gemini-3[.]7",
         "gemini-3[.]6",
@@ -1875,6 +1893,7 @@
       "id": "step",
       "vendorId": "stepfun",
       "newestFirst": [
+        "step-5",
         "step-3[.]7",
         "step-3[.]5"
       ],
@@ -1882,6 +1901,66 @@
     }
   ],
   "releases": [
+    {
+      "vendorId": "recraft",
+      "channels": [
+        "recraft"
+      ],
+      "pattern": "^recraftv4_1_flash$",
+      "releasedAt": null,
+      "source": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash",
+      "lifecycle": "stable"
+    },
+    {
+      "vendorId": "google",
+      "channels": [
+        "gemini"
+      ],
+      "pattern": "^gemini\\-nano\\-banana\\-2\\.1$",
+      "releasedAt": "2026-10-06",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1",
+      "lifecycle": "stable"
+    },
+    {
+      "vendorId": "mistral",
+      "channels": [
+        "mistral"
+      ],
+      "pattern": "^mistral\\-large\\-4$",
+      "releasedAt": "2026-10-06",
+      "source": "https://docs.mistral.ai/models/mistral-large-4-0",
+      "lifecycle": "preview"
+    },
+    {
+      "vendorId": "anthropic",
+      "channels": [
+        "anthropic"
+      ],
+      "pattern": "^claude\\-haiku\\-5\\-5$",
+      "releasedAt": "2026-10-07",
+      "source": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+      "lifecycle": "stable"
+    },
+    {
+      "vendorId": "anthropic",
+      "channels": [
+        "anthropic"
+      ],
+      "pattern": "^claude\\-sonnet\\-5\\-5$",
+      "releasedAt": "2026-09-28",
+      "source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+      "lifecycle": "stable"
+    },
+    {
+      "vendorId": "openai",
+      "channels": [
+        "openai"
+      ],
+      "pattern": "^gpt\\-6\\.1\\-sol$",
+      "releasedAt": "2026-09-29",
+      "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "lifecycle": "stable"
+    },
     {
       "vendorId": "meituan",
       "channels": [

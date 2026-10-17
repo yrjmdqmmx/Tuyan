@@ -1,0 +1,50 @@
+{
+  "id": "pone.0222362.g001",
+  "paper": "pone.0222362",
+  "figure": {
+    "id": "pone.0222362.g001",
+    "label": "Fig 1",
+    "caption": "Causal directed acyclic graph illustrating the instrumental variable assumptions for the instrumental variable G, exposure X, outcome Y, and the set of variables (U) that confound the association between X and Y.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0222362.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0222362.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Causal directed acyclic graph illustrating the instrumental variable assumptions for the instrumental variable <italic>G</italic>, exposure <italic>X</italic>, outcome <italic>Y</italic>, and the set of variables (<italic>U</italic>) that confound the association between <italic>X</italic> and <italic>Y</italic>.</title>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0222362.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0222362.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0222362",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222362",
+    "title": "Robust methods in Mendelian randomization via penalization of heterogeneous causal estimates",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Jessica M. B. Rees",
+      "Angela M. Wood",
+      "Frank Dudbridge",
+      "Stephen Burgess"
+    ],
+    "year": "2019",
+    "license": "2019\nRees et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0222362.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0222362.g001.png",
+      "bytes": 37674,
+      "sha256": "a0b091131ac861622ba1f0bad6396240f20723c31f898e4b0a09a3aec3712c7e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0222362.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0222362.g001.tif",
+      "bytes": 104076,
+      "sha256": "5b280081cf8f9aff908b45c71fbd17145b9015b244a189f7457bf5329199930a"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "doi": "10.1371/journal.pone.0272825",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0272825",
+  "title": "A novel method to derive personalized minimum viable recommendations for type 2 diabetes prevention based on counterfactual explanations",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Marta Lenatti",
+    "Alberto Carlevaro",
+    "Aziz Guergachi",
+    "Karim Keshavjee",
+    "Maurizio Mongelli",
+    "Alessia Paglialonga"
+  ],
+  "year": "2022",
+  "license": "2022\nLenatti et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0272825.g001",
+      "label": "Fig 1",
+      "caption": "Workflow.\nSchematic workflow of the counterfactuals generation process.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Workflow.</title>\n<p>Schematic workflow of the counterfactuals generation process.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0272825.g002",
+      "label": "Fig 2",
+      "caption": "Comparison between Canonical TC-SVDD and TC-SVDD with FNR reduction.\nComparison between the changes in FBS, sBP, and BMI derived from counterfactuals generated from a canonical TC-SVDD and TC-SVDD with FNR reductionB(TC − SVDD_{red}) in the four groups of subjects: F_HTN, F_noHTN, M_HTN, M_noHTN.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Comparison between Canonical TC-SVDD and TC-SVDD with FNR reduction.</title>\n<p>Comparison between the changes in FBS, sBP, and BMI derived from counterfactuals generated from a canonical TC-SVDD and TC-SVDD with FNR reductionB(<italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>) in the four groups of subjects: F_HTN, F_noHTN, M_HTN, M_noHTN.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0272825.g003",
+      "label": "Fig 3",
+      "caption": "Classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction.\nVisualization of classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction (TC − SVDD_{red}) in the plane FBS-sBP with two examples of factuals (black circle markers) and related counterfactuals (black cross markers).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction.</title>\n<p>Visualization of classification regions obtained with Canonical TC-SVDD and TC-SVDD with FNR reduction (<italic>TC</italic> − <italic>SVDD</italic><sub><italic>red</italic></sub>) in the plane FBS-sBP with two examples of factuals (black circle markers) and related counterfactuals (black cross markers).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0272825.g004",
+      "label": "Fig 4",
+      "caption": "SHAP waterfall plots for individual predictions.\nWaterfall visualization of SHAP values related to factuals F1 (left panel) and F2 (right panel). Red bar: positive contribution; blue bar: negative contribution. E[f(X)]: baseline expected output; f(X): output predicted by the model. Features are ordered by importance.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>SHAP waterfall plots for individual predictions.</title>\n<p>Waterfall visualization of SHAP values related to factuals F1 (left panel) and F2 (right panel). Red bar: positive contribution; blue bar: negative contribution. <italic>E</italic>[<italic>f</italic>(<italic>X</italic>)]: baseline expected output; <italic>f</italic>(<italic>X</italic>): output predicted by the model. Features are ordered by importance.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0272825.g005",
+      "label": "Fig 5",
+      "caption": "SHAP summary plot.\nEach point in the plot represents the SHAP value for a feature in an individual record of the dataset. The color represents the feature value from high (red) to low (blue). Features are ordered by importance.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0272825.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0272825.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>SHAP summary plot.</title>\n<p>Each point in the plot represents the SHAP value for a feature in an individual record of the dataset. The color represents the feature value from high (red) to low (blue). Features are ordered by importance.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0272825.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0272825.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

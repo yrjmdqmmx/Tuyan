@@ -1,0 +1,385 @@
+[
+  {
+    "id": "pcbi.1005740.g001",
+    "type": "comparison",
+    "domain": "生物网络",
+    "layout": "three-panels",
+    "design": "同一钠通道机制并列使用过程描述、实体关系、活动流语言，直接比较三者符号与语义。",
+    "caution": "PD 的过程、ER 的状态关系、AF 的活动影响不能互换；不沿用原模型实体或推断。",
+    "panels": {
+      "a": "sbgn_pd",
+      "b": "sbgn_er",
+      "c": "sbgn_af"
+    }
+  },
+  {
+    "id": "pcbi.1005740.g003",
+    "type": "comparison",
+    "domain": "生物网络",
+    "layout": "before-after",
+    "design": "通过重排、克隆节点与专业符号改善同一细胞周期网络，保留连接语义。",
+    "caution": "节点克隆不代表新增物种，布局优化不等于原模型被科学验证。",
+    "panels": {
+      "left": "sbgn_pd",
+      "right": "sbgn_pd"
+    }
+  },
+  {
+    "id": "pone.0306028.g003",
+    "type": "ridgeline",
+    "domain": "血管成像",
+    "layout": "two-column-ridges",
+    "design": "多病例密度曲线沿纵向错开，对齐横轴比较动静脉分布。",
+    "caution": "KDE 平滑、带宽和纵向偏移必须重新定义；密度高度不是原始计数。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0260687.g008",
+    "type": "ridgeline",
+    "domain": "植物生态学",
+    "layout": "2x2-grid",
+    "design": "群落分布曲线错位堆叠，并叠加观测点和分位线，比较生态指标分布。",
+    "caution": "群落顺序不是时间；点和分位线来自原研究样本，不可迁移。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0199554.g001",
+    "type": "dumbbell",
+    "domain": "科研行为调查",
+    "layout": "horizontal-paired-points",
+    "design": "同一类别的两组比例以端点表示，水平线连接，共用数值轴比较差距。",
+    "caution": "两端是类别汇总比例，不是个体配对轨迹；连线不表示时间演化。",
+    "panels": {}
+  },
+  {
+    "id": "pgph.0004471.g003",
+    "type": "euler",
+    "domain": "公共卫生",
+    "layout": "overlapping-sets",
+    "design": "集合用面积和实际交叠关系组织，只显示存在的集合交集。",
+    "caution": "集合面积与计数的具体拟合需另验；不能假定所有理论交集都存在。",
+    "panels": {}
+  },
+  {
+    "id": "pcbi.1011795.g002",
+    "type": "multipanel",
+    "domain": "传染病建模",
+    "layout": "matrix-and-trends",
+    "design": "相关矩阵与观测/拟合曲线并列，区分变量关联和模型时间趋势。",
+    "caution": "Pearson 系数不是因果关系，拟合曲线不代表预测验证；原病例数不可借用。",
+    "panels": {
+      "A": "correlation_matrix",
+      "B": "line"
+    }
+  },
+  {
+    "id": "pcbi.1011795.g004",
+    "type": "area",
+    "domain": "传染病建模",
+    "layout": "stacked-panels",
+    "design": "相对比例堆叠与绝对数量堆叠分别呈现同一时间过程，基线和纵轴语义明确。",
+    "caution": "比例与数量不可混读；面积堆叠不等于流图的移动基线。",
+    "panels": {
+      "A": "area",
+      "B": "area"
+    }
+  },
+  {
+    "id": "pone.0250938.g006",
+    "type": "parallel_coordinates",
+    "domain": "金融经济学",
+    "layout": "parallel-axes",
+    "design": "多项金融指标各占平行轴，同一簇的线贯穿各轴，突出多维模式。",
+    "caution": "轴值经标准化，不能把不同轴上的距离当成相同物理量或因果路径。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0253822.g009",
+    "type": "parallel_coordinates",
+    "domain": "复杂网络",
+    "layout": "parallel-axes",
+    "design": "每条折线沿多项网络特征的平行轴连接，颜色区分网络类型。",
+    "caution": "必须说明各特征归一化方式；线交叉不是网络中的连接边。",
+    "panels": {}
+  },
+  {
+    "id": "ppat.1013369.g001",
+    "type": "alluvial",
+    "domain": "病原体流行病学",
+    "layout": "three-stage-flows",
+    "design": "国家、性别、传播类别的流带连接同一群体，带宽表示对应数量。",
+    "caution": "分类间的流向不是感染传播方向；不得迁移原群体数量和比例。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0312770.g005",
+    "type": "alluvial",
+    "domain": "昆虫生态学",
+    "layout": "2x2-grid",
+    "design": "各分位组之间用连续流带连接同一批昆虫，表达分类变化与群体分配。",
+    "caution": "流带表示分组迁移，不是物质通量；分位阈值须依据新数据计算。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0205771.g003",
+    "type": "treemap",
+    "domain": "历史与计算社会科学",
+    "layout": "2x2-grid",
+    "design": "职业层级以嵌套矩形呈现，矩形面积表达份额，分面比较不同时段。",
+    "caution": "原传记样本的覆盖偏差不能当作总体人口职业分布；面积分母须一致。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0339350.g003",
+    "type": "matrix_link_overlay",
+    "domain": "土壤生态学",
+    "layout": "matrix-with-links",
+    "design": "三角 Pearson 矩阵外接 Mantel 检验连线，矩阵颜色、边粗和边色各有图例。",
+    "caution": "两套分析的样本、距离矩阵与检验方法须独立明确；相关与显著性不能视为因果。",
+    "panels": {
+      "matrix": "correlation_matrix"
+    }
+  },
+  {
+    "id": "pgen.1010387.g001",
+    "type": "qq",
+    "domain": "基因组学",
+    "layout": "quantile-plot",
+    "design": "观测和期望的负对数 p 值按分位对应，对角线与区间用于观察偏离。",
+    "caution": "这是 GWAS 的 p 值 Q–Q 图，不是默认正态性检验；偏离不能直接证明关联。",
+    "panels": {}
+  },
+  {
+    "id": "pntd.0004266.g001",
+    "type": "comparison",
+    "domain": "科研合作网络",
+    "layout": "matrix-and-network",
+    "design": "同一批作者的邻接矩阵和节点连线图并列，显示矩阵单元与网络边的对应。",
+    "caution": "行列均为作者节点，不是样本与特征的存在缺失表；共著不代表科学影响力。",
+    "panels": {
+      "a": "adjacency_matrix",
+      "b": "network"
+    }
+  },
+  {
+    "id": "pcbi.1011937.g005",
+    "type": "multipanel",
+    "domain": "进化建模",
+    "layout": "2x2-grid",
+    "design": "拟合值散点与误差累计分布并列，分开呈现估计一致性和误差分布。",
+    "caution": "论文使用模拟场景，不能将曲线或拟合性能作为真实实验结论。",
+    "panels": {
+      "A–C": "scatter",
+      "D": "ecdf"
+    }
+  },
+  {
+    "id": "pone.0310962.g001",
+    "type": "protein_domain",
+    "domain": "分子生物学",
+    "layout": "domains-and-models",
+    "design": "结构域边界和截短构建沿氨基酸位置排列，与三维结构预测并列。",
+    "caution": "结构预测不是实验解析结构；氨基酸坐标不能当核苷酸坐标。",
+    "panels": {
+      "A": "protein_domain",
+      "C": "protein_domain"
+    }
+  },
+  {
+    "id": "pbio.3002213.g001",
+    "type": "timeline",
+    "domain": "生物图像分析",
+    "layout": "horizontal-timeline",
+    "design": "沿年份排列工具与领域里程碑，以明确日期建立历史先后关系。",
+    "caution": "年份间的视觉间隔未必精确表示时长；历史里程碑不是未来路线图。",
+    "panels": {}
+  },
+  {
+    "id": "pcbi.1007732.g001",
+    "type": "method_framework",
+    "domain": "泛基因组学",
+    "layout": "pipeline-with-insets",
+    "design": "基因组输入、图结构、存在缺失矩阵和统计分区共同解释分析方法。",
+    "caution": "矩阵行是基因家族、列是基因组；0/1 表达存在缺失，不能当节点邻接。",
+    "panels": {
+      "presence/absence matrix": "binary_matrix",
+      "pangenome graph": "network"
+    }
+  },
+  {
+    "id": "pcbi.1007732.g005",
+    "type": "bubble",
+    "domain": "泛基因组学",
+    "layout": "bubble-with-errorbars",
+    "design": "二维位置、带大小图例的气泡和类别颜色分别表达不同变量，并保留误差条。",
+    "caution": "气泡 K 的含义、大小映射与误差条定义须保留；不得复制原物种结论。",
+    "panels": {}
+  },
+  {
+    "id": "pcbi.1004076.g001",
+    "type": "multipanel",
+    "domain": "细胞力学",
+    "layout": "experiment-and-fields",
+    "design": "细胞牵引实验、位移向量与多种正则化牵引场并列，显示测量到反演的关系。",
+    "caution": "位移与牵引使用不同量纲；正则化参数和噪声会改变箭头场，不可仅凭视觉断言真值。",
+    "panels": {
+      "A": "apparatus",
+      "B displacement": "vector_field",
+      "C": "vector_field"
+    }
+  },
+  {
+    "id": "pcbi.1004076.g002",
+    "type": "method_framework",
+    "domain": "细胞力学",
+    "layout": "pipeline-and-inverse-problem",
+    "design": "实验图像、位移估计与力学反演按阶段组织，正问题与逆问题对照。",
+    "caution": "逆问题解依赖模型假设和正则化，框图不构成方法有效性的证据。",
+    "panels": {
+      "B": "workflow"
+    }
+  },
+  {
+    "id": "pone.0314976.g002",
+    "type": "correlation_matrix",
+    "domain": "科研评价",
+    "layout": "triangular-matrix",
+    "design": "指标两两 Pearson 系数放入三角矩阵，数值与连续色标相互对应。",
+    "caution": "同色不表示显著性；自引指标关联不能自动推导评价或伦理结论。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0314976.g003",
+    "type": "lollipop",
+    "domain": "科研评价",
+    "layout": "two-panels",
+    "design": "各期刊用细茎连接零基线与端点值，颜色区分分组，便于排序比较。",
+    "caution": "排名、指标值与分组仅适用于原数据；端点大小没有第三变量含义。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0294812.g007",
+    "type": "multipanel",
+    "domain": "科研基础设施",
+    "layout": "two-maps",
+    "design": "点位图表示服务位置，分区设色图表示国家层面的资源差异，两种地理编码并列。",
+    "caution": "底图为 Natural Earth；国家汇总数量不是人均率，未显示地区不能直接视作零。",
+    "panels": {
+      "A": "point_map",
+      "B": "choropleth"
+    }
+  },
+  {
+    "id": "pone.0251385.g003",
+    "type": "lollipop",
+    "domain": "病理学",
+    "layout": "horizontal-stems",
+    "design": "病理特征的关联量用端点位置表达，细线回接零基线，数值和阈值颜色清楚可辨。",
+    "caution": "Cramér V 表达关联强度而非因果或诊断性能；阈值颜色不可迁移为显著性。",
+    "panels": {}
+  },
+  {
+    "id": "pbio.3002645.g002",
+    "type": "ridgeline",
+    "domain": "科学传播",
+    "layout": "two-column-ridges",
+    "design": "词语评分的密度曲线分组错开，并用区间标记表达评分分布。",
+    "caution": "问卷评分不是测量确定值；分布重叠本身不能替代组间统计检验。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0325214.g002",
+    "type": "density",
+    "domain": "社会科学",
+    "layout": "before-after",
+    "design": "倾向得分的核密度曲线并列展示匹配前后分布，颜色区分两组。",
+    "caution": "密度可以高于 1；匹配后曲线接近不能单独证明无混杂或因果识别。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0226222.g001",
+    "type": "hierarchy",
+    "domain": "鱼类分类",
+    "layout": "classification-tree",
+    "design": "从上位类目逐层分叉到下位类目，每个子类有唯一直接父类。",
+    "caution": "这是分类层级，分支长度没有进化时间或聚类距离含义。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0141039.g001",
+    "type": "hierarchy",
+    "domain": "海洋生态学",
+    "layout": "hierarchy-panels",
+    "design": "底质和生物的可见分类按父子层级展开，多个面板展示局部分支。",
+    "caution": "可见形态分类不等同系统发育关系；不能依据图片布局推断亲缘距离。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0191423.g003",
+    "type": "chemical_reaction",
+    "domain": "药物化学",
+    "layout": "reaction-and-compounds",
+    "design": "反应路线以结构式、反应箭头和条件编号连接起始物、中间体与产物。",
+    "caution": "化合物活性属于原研究，不能转移；条件编号须与完整图注对应。",
+    "panels": {
+      "A": "chemical_reaction"
+    }
+  },
+  {
+    "id": "pone.0321072.g002",
+    "type": "dotplot",
+    "domain": "社会科学",
+    "layout": "coefficient-panels",
+    "design": "各类别的回归估计和区间在共同数值轴上定位，对照两种模型。",
+    "caution": "点是参数估计，不是个体样本；模型设定与区间水平必须随新数据重新说明。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0179333.g001",
+    "type": "chemical_reaction",
+    "domain": "药物代谢",
+    "layout": "branched-reactions",
+    "design": "分子结构通过分支反应箭头连接，强调代谢反应的化学转化关系。",
+    "caution": "箭头是化学转化而非一般工作步骤；不能将假设反应路线当成新任务实验事实。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0179333.g004",
+    "type": "energy_diagram",
+    "domain": "计算化学",
+    "layout": "branched-energy-profile",
+    "design": "反应物、中间体、过渡态按相对能量分层，分支比较气相与溶剂条件。",
+    "caution": "能量单位和参照态必须保留；横向间隔不是反应时间，计算势垒不是实验测量值。",
+    "panels": {}
+  },
+  {
+    "id": "pone.0191835.g002",
+    "type": "contour",
+    "domain": "代谢工程",
+    "layout": "2x2-contours",
+    "design": "两项通量构成坐标，同值线与数值标签表达计算标量场，分面比较目标与底物。",
+    "caution": "来自通量模型的计算场；同值线不是轨迹，不能把模拟结果移作实验数据。",
+    "panels": {}
+  },
+  {
+    "id": "s13012-022-01192-w.g001",
+    "type": "swimlane",
+    "domain": "实施科学与医疗服务",
+    "layout": "swimlanes-and-table",
+    "design": "执行者各占泳道，步骤与跨泳道连线清楚交代医疗流程的责任和交接。",
+    "caution": "c 面板为作者明确标注的假设数据；泳道图表达流程责任，不表示实际实施效果。",
+    "panels": {
+      "a": "swimlane",
+      "b": "swimlane"
+    }
+  },
+  {
+    "id": "pone.0272825.g004",
+    "type": "waterfall",
+    "domain": "可解释机器学习与糖尿病",
+    "layout": "two-waterfalls",
+    "design": "以模型基准值为起点，正负贡献的悬浮条逐项累加到个体预测值。",
+    "caution": "SHAP 是模型输出分解，不是因果效应或通用风险建议；舍入数值和原患者特征不可移植。",
+    "panels": {}
+  }
+]

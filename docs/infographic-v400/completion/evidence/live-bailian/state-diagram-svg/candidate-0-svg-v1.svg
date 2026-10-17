@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000000"/>
+    </marker>
+  </defs>
+  
+  
+  <rect width="1600" height="900" fill="#ffffff"/>
+
+  
+  <circle cx="280" cy="250" r="8" fill="#000000"/>
+  <line x1="288" y1="250" x2="348" y2="250" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  
+  
+  
+  <g id="state-idle">
+    <rect x="350" y="200" width="200" height="100" rx="20" ry="20" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+    <text x="450" y="255" font-family="Noto Sans, Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#000000">Idle</text>
+  </g>
+
+  
+  <g id="state-running">
+    <rect x="1050" y="200" width="200" height="100" rx="20" ry="20" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+    <text x="1150" y="255" font-family="Noto Sans, Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#000000">Running</text>
+  </g>
+
+  
+  <g id="state-paused">
+    <rect x="1050" y="600" width="200" height="100" rx="20" ry="20" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+    <text x="1150" y="655" font-family="Noto Sans, Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#000000">Paused</text>
+  </g>
+
+  
+  <g id="state-completed">
+    <rect x="350" y="600" width="200" height="100" rx="20" ry="20" fill="#ffffff" stroke="#000000" stroke-width="2"/>
+    <text x="450" y="655" font-family="Noto Sans, Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#000000">Completed</text>
+  </g>
+
+  
+
+  
+  <line x1="550" y1="250" x2="1040" y2="250" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="795" y="240" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#000000">start</text>
+
+  
+  <line x1="1150" y1="300" x2="1150" y2="590" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="1165" y="445" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="start" fill="#000000">pause</text>
+
+  
+  <line x1="1100" y1="600" x2="1100" y2="310" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="1085" y="455" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="end" fill="#000000">resume</text>
+
+  
+  <path d="M 1150 300 Q 1150 500 750 500 Q 350 500 350 600" fill="none" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="750" y="520" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#000000">finish</text>
+
+  
+  <path d="M 1050 650 Q 700 750 350 650" fill="none" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="700" y="730" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="middle" fill="#000000">cancel</text>
+
+  
+  <line x1="450" y1="600" x2="450" y2="310" stroke="#000000" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="435" y="455" font-family="Noto Sans, Arial, sans-serif" font-size="18" text-anchor="end" fill="#000000">reset</text>
+
+</svg>

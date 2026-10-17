@@ -1,0 +1,65 @@
+{
+  "vector": true,
+  "editableText": true,
+  "sameScene": true,
+  "figureCount": 1,
+  "codeHash": "237f700c5000b493eaf9b4c97fe4d8a8e674de350593b6e71f69ee3ed665217c",
+  "pngHash": "532fd0b983dfdcec67089adba0b845ca84b4247239763a7f30be347357292627",
+  "svgHash": "62bed4ffa3d529d7af3e629723b36688f6ba55f0916f8b7af636cdd68266af51",
+  "numeric": {
+    "typeId": "enrichment",
+    "computations": {
+      "geneRatio": [
+        0.5,
+        0.3
+      ],
+      "foldEnrichment": [
+        2.5,
+        1.0
+      ],
+      "suppliedP": [
+        0.01,
+        0.08
+      ],
+      "bubbleAreaPointsSquared": [
+        100,
+        60
+      ],
+      "bubbleAreaRule": "20 * count; zero counts explicitly marked with x"
+    },
+    "checks": {
+      "fold_coordinate_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "p_color_error": {
+        "actual": 0.0,
+        "expected": 0.0,
+        "absoluteError": 0.0
+      },
+      "source_row_count": {
+        "actual": 2.0,
+        "expected": 2.0,
+        "absoluteError": 0.0
+      }
+    },
+    "analysis": {
+      "description": "Synthetic supplied hypergeometric results, BH adjusted externally",
+      "pKind": "adjusted_p"
+    },
+    "suppliedFields": {
+      "rowFields": [
+        "term",
+        "count",
+        "background",
+        "p"
+      ],
+      "options": {
+        "inputSize": 10,
+        "backgroundSize": 100
+      }
+    },
+    "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+  }
+}

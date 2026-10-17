@@ -1,0 +1,233 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "assist",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 0,
+        "roundsUsed": 0,
+        "mode": "visual_code",
+        "status": "not_requested",
+        "history": [],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "9dc3c4d26746c4c9ef4bc58953449e287e7b78ec442b29256e1adf78fdeb6258",
+        "note": "未评审。"
+      }
+    }
+  ],
+  "id": "1791598652608-pzwmoot0",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "deepseek-v4-pro"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。",
+  "negativePrompt": "禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。",
+  "caption": "从样品输入到标准化结果的三步方法流程。",
+  "infographicCategory": "method",
+  "outputFormat": "svg",
+  "mainModelName": "deepseek-v4-pro",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "vision_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "vanilla",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferenceIds": [
+    "live-svg-reference"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "live-svg-reference",
+      "taskName": "diagram",
+      "title": "双节点方法图参考",
+      "summary": "观察该图的颜色、布局和右上角标识，作为版式参考。",
+      "titleZh": "",
+      "introZh": "",
+      "shortIntroZh": "",
+      "detailZh": "",
+      "visualCategory": "",
+      "researchDomain": "",
+      "keywords": [],
+      "corpusVersion": "zh-CN.v2",
+      "imageUrl": "http://127.0.0.1:62334/objects/library/reference.png",
+      "imageObjectKey": "library/reference.png",
+      "source": "paperbanana-bench"
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-9fc23c37-3fff-4c58-bd74-53e9a71d828a",
+      "candidateId": 0,
+      "type": "reference_observation",
+      "title": "图库参考图观察",
+      "round": 0,
+      "text": "```json\n{\n  \"content\": \"图像展示了一个简单的两步流程图。左侧是一个浅蓝色圆角矩形框，内部文字为“样品输入”。右侧是一个浅绿色圆角矩形框，内部文字为“结果输出”。两个框之间由一根黑色向右箭头连接。图像右上角有黑色文本标识“REF-73”。\",\n  \"actual_text\": [\n    \"REF-73\",\n    \"样品输入\",\n    \"结果输出\"\n  ],\n  \"layout\": \"水平线性布局，从左至右排列。背景为纯白。\",\n  \"connections\": \"单一直线箭头从左侧框指向右侧框。\",\n  \"problems\": [\n    \"步骤缺失：用户明确要求绘制“三步科学流程”，但图中仅包含两个节点（样品输入、结果输出），完全遗漏了中间步骤“数据标准化（x / x₀）”。\",\n    \"标签内容不完整：左侧框仅显示“样品输入”，缺少要求的参数“(n=12)”；右侧框仅显示“结果输出”，缺少要求的数值“(均值 1.0)”。\",\n    \"数学表达式缺失：由于中间步骤缺失，导致核心数学表达式“x / x₀”未出现在图中。\"\n  ],\n  \"suggestions\": [\n    \"在“样品输入”和“结果输出”之间增加第三个圆角矩形框，填入文字“数据标准化”及公式“x / x₀”。\",\n    \"更新左侧框文字为“样品输入（n=12）”。\",\n    \"更新右侧框文字为“结果输出（均值 1.0）”。\",\n    \"保持原有的蓝-绿配色方案、圆角样式及右上角“REF-73”标识不变，确保箭头依次连接三个节点。\"\n  ],\n  \"uncertainties\": \"无不确定项，图像内容与指令差异清晰可见。\"\n}\n```",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:17:39.994Z",
+      "completedAt": "2026-10-10T02:17:39.994Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-3f7d633d-0608-4e6c-8cfd-3e678e25e735",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "```svg\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1600 900\" width=\"1600\" height=\"900\">\n  <!-- 纯白背景 -->\n  <rect width=\"1600\" height=\"900\" fill=\"#ffffff\"/>\n\n  <!-- 右上角短标识 -->\n  <text x=\"1520\" y=\"50\" font-family=\"Arial, sans-serif\" font-size=\"20\" fill=\"#000000\" text-anchor=\"end\">REF-73</text>\n\n  <!-- ===== 框1：样品输入 ===== -->\n  <rect x=\"120\" y=\"350\" width=\"320\" height=\"200\" rx=\"20\" ry=\"20\" fill=\"#B3D9FF\" stroke=\"none\"/>\n  <text x=\"280\" y=\"430\" font-family=\"Arial, sans-serif\" font-size=\"32\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">样品输入</text>\n  <text x=\"280\" y=\"480\" font-family=\"Arial, sans-serif\" font-size=\"26\" fill=\"#333333\" text-anchor=\"middle\">(n=12)</text>\n\n  <!-- ===== 箭头1：样品输入 → 数据标准化 ===== -->\n  <defs>\n    <marker id=\"arrowhead\" markerWidth=\"12\" markerHeight=\"10\" refX=\"10\" refY=\"5\" orient=\"auto\">\n      <polygon points=\"0,0 12,5 0,10\" fill=\"#000000\"/>\n    </marker>\n  </defs>\n  <line x1=\"440\" y1=\"450\" x2=\"590\" y2=\"450\" stroke=\"#000000\" stroke-width=\"4\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- ===== 框2：数据标准化 ===== -->\n  <rect x=\"600\" y=\"340\" width=\"380\" height=\"220\" rx=\"20\" ry=\"20\" fill=\"#B3D9FF\" stroke=\"none\"/>\n  <text x=\"790\" y=\"420\" font-family=\"Arial, sans-serif\" font-size=\"30\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">数据标准化</text>\n  <text x=\"790\" y=\"480\" font-family=\"Georgia, serif\" font-size=\"36\" fill=\"#000000\" text-anchor=\"middle\" font-style=\"italic\">x / x₀</text>\n\n  <!-- ===== 箭头2：数据标准化 → 结果输出 ===== -->\n  <line x1=\"980\" y1=\"450\" x2=\"1130\" y2=\"450\" stroke=\"#000000\" stroke-width=\"4\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- ===== 框3：结果输出 ===== -->\n  <rect x=\"1140\" y=\"350\" width=\"320\" height=\"200\" rx=\"20\" ry=\"20\" fill=\"#B3FFB3\" stroke=\"none\"/>\n  <text x=\"1300\" y=\"430\" font-family=\"Arial, sans-serif\" font-size=\"32\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">结果输出</text>\n  <text x=\"1300\" y=\"480\" font-family=\"Arial, sans-serif\" font-size=\"26\" fill=\"#333333\" text-anchor=\"middle\">(均值 1.0)</text>\n</svg>\n```",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T02:17:39.995Z",
+      "completedAt": "2026-10-10T02:17:53.374Z",
+      "durationMs": 13379,
+      "error": ""
+    },
+    {
+      "id": "stage-5fae4272-e9c6-46e4-8641-309f33435c2f",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"9dc3c4d26746c4c9ef4bc58953449e287e7b78ec442b29256e1adf78fdeb6258\",\"pngHash\":\"a7a341d81d84d9aa043b8673340843bb5f40e8e221707162e2d64a4808bafdb3\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Arial\",\"sans-serif\",\"Georgia\",\"serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"Font \\\"Georgia\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598652608-pzwmoot0/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:62334/objects/1791598652608-pzwmoot0/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791598652608-pzwmoot0/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T02:18:07.860Z",
+      "completedAt": "2026-10-10T02:18:07.860Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-a6099562-0e8c-4968-8194-47f7b23a90c7",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"9dc3c4d26746c4c9ef4bc58953449e287e7b78ec442b29256e1adf78fdeb6258\",\"pngHash\":\"a7a341d81d84d9aa043b8673340843bb5f40e8e221707162e2d64a4808bafdb3\",\"width\":1600,\"height\":900,\"renderer\":\"resvg-wasm@2.6.2/svg-review-v2/memory-256MiB\",\"fontInfo\":{\"families\":[\"Noto Sans\",\"Noto Sans CJK SC\",\"Noto Sans Math\"],\"sha256\":{\"NotoSans-Regular.ttf\":\"b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5\",\"NotoSansCJKsc-Regular.otf\":\"2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b\",\"NotoSansMath-Regular.ttf\":\"3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d\"},\"requestedFamilies\":[\"Arial\",\"sans-serif\",\"Georgia\",\"serif\"]},\"codeIssues\":[\"Font \\\"Arial\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"Only regular Noto font faces are bundled; verify requested bold/italic styling in the raster.\",\"Font \\\"Georgia\\\" is not bundled; this raster uses the bundled Noto fallback.\",\"SVG has no title element; check the figure description separately.\"]}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598652608-pzwmoot0/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62334/objects/1791598652608-pzwmoot0/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598652608-pzwmoot0/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:18:07.861Z",
+      "completedAt": "2026-10-10T02:18:07.861Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-0cc25aba-fc0d-42c2-8727-b0d6bb10b406",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "未评审。",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791598652608-pzwmoot0/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:62334/objects/1791598652608-pzwmoot0/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791598652608-pzwmoot0/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T02:18:07.861Z",
+      "completedAt": "2026-10-10T02:18:07.861Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 0,
+  "promptCharCount": 195,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791598652608-pzwmoot0/candidate-0.svg",
+      "objectKey": "1791598652608-pzwmoot0/candidate-0.svg",
+      "url": "http://127.0.0.1:62334/objects/1791598652608-pzwmoot0/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "```svg\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1600 900\" width=\"1600\" height=\"900\">\n  <!-- 纯白背景 -->\n  <rect width=\"1600\" height=\"900\" fill=\"#ffffff\"/>\n\n  <!-- 右上角短标识 -->\n  <text x=\"1520\" y=\"50\" font-family=\"Arial, sans-serif\" font-size=\"20\" fill=\"#000000\" text-anchor=\"end\">REF-73</text>\n\n  <!-- ===== 框1：样品输入 ===== -->\n  <rect x=\"120\" y=\"350\" width=\"320\" height=\"200\" rx=\"20\" ry=\"20\" fill=\"#B3D9FF\" stroke=\"none\"/>\n  <text x=\"280\" y=\"430\" font-family=\"Arial, sans-serif\" font-size=\"32\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">样品输入</text>\n  <text x=\"280\" y=\"480\" font-family=\"Arial, sans-serif\" font-size=\"26\" fill=\"#333333\" text-anchor=\"middle\">(n=12)</text>\n\n  <!-- ===== 箭头1：样品输入 → 数据标准化 ===== -->\n  <defs>\n    <marker id=\"arrowhead\" markerWidth=\"12\" markerHeight=\"10\" refX=\"10\" refY=\"5\" orient=\"auto\">\n      <polygon points=\"0,0 12,5 0,10\" fill=\"#000000\"/>\n    </marker>\n  </defs>\n  <line x1=\"440\" y1=\"450\" x2=\"590\" y2=\"450\" stroke=\"#000000\" stroke-width=\"4\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- ===== 框2：数据标准化 ===== -->\n  <rect x=\"600\" y=\"340\" width=\"380\" height=\"220\" rx=\"20\" ry=\"20\" fill=\"#B3D9FF\" stroke=\"none\"/>\n  <text x=\"790\" y=\"420\" font-family=\"Arial, sans-serif\" font-size=\"30\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">数据标准化</text>\n  <text x=\"790\" y=\"480\" font-family=\"Georgia, serif\" font-size=\"36\" fill=\"#000000\" text-anchor=\"middle\" font-style=\"italic\">x / x₀</text>\n\n  <!-- ===== 箭头2：数据标准化 → 结果输出 ===== -->\n  <line x1=\"980\" y1=\"450\" x2=\"1130\" y2=\"450\" stroke=\"#000000\" stroke-width=\"4\" marker-end=\"url(#arrowhead)\"/>\n\n  <!-- ===== 框3：结果输出 ===== -->\n  <rect x=\"1140\" y=\"350\" width=\"320\" height=\"200\" rx=\"20\" ry=\"20\" fill=\"#B3FFB3\" stroke=\"none\"/>\n  <text x=\"1300\" y=\"430\" font-family=\"Arial, sans-serif\" font-size=\"32\" fill=\"#000000\" text-anchor=\"middle\" font-weight=\"bold\">结果输出</text>\n  <text x=\"1300\" y=\"480\" font-family=\"Arial, sans-serif\" font-size=\"26\" fill=\"#333333\" text-anchor=\"middle\">(均值 1.0)</text>\n</svg>\n```",
+      "review": {
+        "limit": 0,
+        "roundsUsed": 0,
+        "mode": "visual_code",
+        "status": "not_requested",
+        "history": [],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "9dc3c4d26746c4c9ef4bc58953449e287e7b78ec442b29256e1adf78fdeb6258",
+        "note": "未评审。"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T02:17:39.994Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；辅助视觉观察请求合计 1 张图片，上限 8 张。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T02:17:32.608Z",
+  "updatedAt": "2026-10-10T02:18:07.861Z",
+  "startedAt": "2026-10-10T02:17:32.609Z",
+  "completedAt": "2026-10-10T02:18:07.861Z"
+}

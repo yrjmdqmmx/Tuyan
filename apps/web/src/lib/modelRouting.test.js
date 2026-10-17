@@ -63,6 +63,30 @@ test('simple provider defaults produce one complete non-mixed route state', () =
   })
 })
 
+test('ordinary presets prefer an available visual main within the selected channel, without mutating the catalog', () => {
+  const model = (id, roles, vision, selectable = true) => ({id, roles, selectable, capabilities: {referenceImages: vision}})
+  const base = {providers: {bailian: {
+    defaults: {main: 'text-main', image: 'image', vision: 'vision-default'},
+    models: [model('text-main', ['main'], false), model('vision-only', ['vision'], true),
+      model('disabled-main', ['main'], true, false), model('unknown-main', ['main'], undefined),
+      model('other-visual', ['main'], true), model('vision-default', ['main', 'vision'], true)],
+  }}}
+  const original = structuredClone(base)
+  assert.deepEqual(providerDefaultRoutes('bailian', base, fallbackProviders), {
+    main: {accessProvider: 'bailian', modelId: 'vision-default'},
+    image: {accessProvider: 'bailian', modelId: 'image'},
+    vision: {accessProvider: 'bailian', modelId: 'vision-default'},
+  })
+  assert.deepEqual(base, original)
+  base.providers.bailian.models[0].capabilities.referenceImages = true
+  assert.equal(providerDefaultRoutes('bailian', base, fallbackProviders).main.modelId, 'text-main')
+  base.providers.bailian.models[0].capabilities.referenceImages = false
+  base.providers.bailian.models.at(-1).selectable = false
+  assert.equal(providerDefaultRoutes('bailian', base, fallbackProviders).main.modelId, 'other-visual')
+  base.providers.bailian.models.find(entry => entry.id === 'other-visual').selectable = false
+  assert.equal(providerDefaultRoutes('bailian', base, fallbackProviders).main.modelId, 'text-main', 'unknown, unavailable and vision-only entries cannot replace the main model')
+})
+
 test('safe bootstrap uses current official defaults and Google user-facing naming', () => {
   assert.equal(PROVIDERS.gemini.label, 'Google')
   assert.deepEqual([
@@ -112,14 +136,14 @@ test('old backends use simple legacy fallback and fail closed for advanced route
 
 test('reachable create roles mirror Core route secret selection', () => {
   assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'svg', retrievalSetting: 'none' }, 0), ['main'])
-  assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'png', pipelineMode: 'vanilla', retrievalSetting: 'none', imageSize: '1K' }, 1), ['image'])
+  assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'png', pipelineMode: 'vanilla', retrievalSetting: 'none', imageSize: '1K' }, 1), ['main', 'image'])
   assert.deepEqual(requiredCreateRouteRoles({ outputFormat: 'png', pipelineMode: 'planner_critic', retrievalSetting: 'auto', imageSize: '2K' }, 1), ['main', 'image', 'vision'])
   assert.deepEqual(requiredCreateRouteRoles({ taskName: 'plot', outputFormat: 'svg', pipelineMode: 'planner_critic', imageSize: '1K' }, 1), ['main', 'vision'])
 })
 
 test('reachable refine roles distinguish direct edit from analyze and redraw', () => {
-  assert.deepEqual(requiredRefineRouteRoles({ refineMode: 'direct-edit' }), ['image'])
-  assert.deepEqual(requiredRefineRouteRoles({ refineMode: 'analyze-redraw' }), ['vision', 'image'])
+  assert.deepEqual(requiredRefineRouteRoles({ refineMode: 'direct-edit' }), ['main', 'image', 'vision'])
+  assert.deepEqual(requiredRefineRouteRoles({ refineMode: 'analyze-redraw' }), ['main', 'image', 'vision'])
 })
 
 test('credential providers and payload keys cover only reachable deduplicated roles', () => {
@@ -179,16 +203,13 @@ test('Ark verification always finishes free roles before a separately confirmed 
   })
 })
 
-test('explicit route validation rejects an invalid unreachable route', () => {
+test('unused route drafts cannot block actual execution', () => {
   const entries = {
     main: { id: 'main', roles: ['main'], selectable: true },
     image: { id: 'image', roles: ['vision'], selectable: false, selectionDisabledReason: '图像权益未开通' },
     vision: { id: 'vision', roles: ['vision'], selectable: true },
   }
-  assert.deepEqual(firstInvalidRequiredRoute({ roles: ['main'], entries, outputFormat: 'svg' }), {
-    setting: 'image-model',
-    message: '图像权益未开通',
-  })
+  assert.equal(firstInvalidRequiredRoute({ roles: ['main'], entries, outputFormat: 'svg' }), null)
 })
 
 test('unreachable image route still needs registry role capability but not the current output format', () => {

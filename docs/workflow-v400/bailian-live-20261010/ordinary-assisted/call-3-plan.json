@@ -1,0 +1,37 @@
+{
+  "number": 3,
+  "kind": "plan",
+  "model": "deepseek-v4-pro",
+  "request": {
+    "model": "deepseek-v4-pro",
+    "messages": [
+      {
+        "role": "system",
+        "content": "I am working on a task: given the 'Methodology' section of a paper, and the caption of the desired figure, automatically generate a corresponding illustrative diagram. I will input the text of the 'Methodology' section, the figure caption, and your output should be a detailed description of an illustrative figure that effectively represents the methods described in the text.\n\nTo help you understand the task better, and grasp the principles for generating such figures, I will also provide you with several examples. You should learn from these examples to provide your figure description.\n\n** IMPORTANT: **\nYour description should be as detailed as possible. Semantically, clearly describe each element and their connections. Formally, include various details such as background style (typically pure white or very light pastel), colors, line thickness, icon styles, etc. Remember: vague or unclear specifications will only make the generated figure worse, not better.\n\nIf reference image analysis is provided, use it as structure and style guidance without copying irrelevant content. Do not include the figure title or caption text inside the image."
+      },
+      {
+        "role": "user",
+        "content": "Methodology Section:\n这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\n\nFigure Caption:\n从样品输入到标准化结果的三步方法流程。\n\nDetailed description of the target figure:\n\nInfographic category: method — emphasize the conventions of this figure type.\n\n<avoidance_constraints>\n禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\n</avoidance_constraints>\nComplete task context:\n{\n  \"originalRequest\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"methodology\": \"这是合成测试案例，不代表真实研究。绘制三步科学流程：样品输入（n=12）→ 数据标准化（x / x₀）→ 结果输出（均值 1.0）。方向必须从左到右，不能添加其他步骤或数值。文字使用中文，数学表达式准确保留。若提供参考图，使用其配色与圆角框布局，并把参考图右上角的短标识原样放在新图右上角。\",\n  \"visualIntent\": \"从样品输入到标准化结果的三步方法流程。\",\n  \"completePlan\": \"\",\n  \"figureType\": \"method\",\n  \"aspectRatio\": \"16:9\",\n  \"resolution\": \"1K\",\n  \"outputFormat\": \"svg\",\n  \"mustPreserve\": \"All user-specified scientific facts, labels, relationships and required content unless the user explicitly requests changing them.\",\n  \"avoid\": \"禁止虚构实验结论、遗漏标签、交叉或反向连线；不要在图内写图注。\",\n  \"referenceRequirements\": {\n    \"mode\": \"none\",\n    \"retrieval\": \"none\",\n    \"uploaded\": []\n  },\n  \"modificationGoal\": \"Check fidelity, readable labels, layout and connections against the original request.\",\n  \"referenceAnalysis\": \"\",\n  \"retrievalContext\": \"\",\n  \"planningMode\": \"planner_critic\"\n}"
+      }
+    ],
+    "stream": true,
+    "enable_thinking": false,
+    "max_tokens": 8192,
+    "stream_options": {
+      "include_usage": true
+    }
+  },
+  "originalParameters": {},
+  "httpStatus": 200,
+  "elapsedMs": 15651,
+  "requestId": "chatcmpl-6124a316-81ab-941f-9f1a-f0a577ac5c5e",
+  "responseText": "好的，根据你的要求，以下是目标图表的详细描述。\n\n***\n\n**总体布局与风格**\n*   **方向**：从左到右的严格线性流程。\n*   **背景**：纯白色背景（#FFFFFF）。\n*   **流程连接**：步骤之间使用深灰色（#4A4A4A）、线宽为3像素的粗箭头相连，表示流向。\n*   **整体风格**：扁平化设计，带有细小的阴影以增加深度感。所有文本使用清晰的无衬线字体（如Arial或思源黑体）。\n\n**具体元素描述**\n\n1.  **第一步：样品输入**\n    *   **位置**：画布左侧。\n    *   **图形**：一个浅蓝色（#E1F5FE）的圆角矩形框，边框为同色系但更深的蓝色（#0288D1），线宽2像素。框的尺寸约为宽180像素，高100像素。\n    *   **内部文本**：\n        *   第一行：中文文本“样品输入”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“n=12”，深灰色（#616161），斜体，字号16像素，居中对齐。文本“n=12”必须整体使用斜体数学样式。\n\n2.  **第一步到第二步的箭头**\n    *   从第一个圆角矩形框的右边缘中心点出发，指向第二个框的左边缘中心点。\n    *   箭头为实心三角形箭头，颜色为#4A4A4A。\n\n3.  **第二步：数据标准化**\n    *   **位置**：画布中央。\n    *   **图形**：一个浅绿色（#E8F5E9）的圆角矩形框，边框为同色系更深的绿色（#388E3C），线宽2像素。框的尺寸与第一个保持一致（宽180像素，高100像素）。\n    *   **内部文本**：\n        *   第一行：中文文本“数据标准化”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“x / x₀”，深灰色（#616161），斜体，字号16像素，居中对齐。确保下标“₀”清晰准确。\n\n4.  **第二步到第三步的箭头**\n    *   从第二个圆角矩形框的右边缘中心点出发，指向第三个框的左边缘中心点。\n    *   箭头为实心三角形箭头，颜色为#4A4A4A。\n\n5.  **第三步：结果输出**\n    *   **位置**：画布右侧。\n    *   **图形**：一个浅紫色（#F3E5F5）的圆角矩形框，边框为同色系更深的紫色（#7B1FA2），线宽2像素。框的尺寸保持一致（宽180像素，高100像素）。\n    *   **内部文本**：\n        *   第一行：中文文本“结果输出”，灰色（#424242），粗体，字号18像素，居中对齐。\n        *   第二行：数学表达式“均值 1.0”，深灰色（#616161），字号16像素，居中对齐。“均值”为中文常规字体，“1.0”为斜体数字。\n\n6.  **右上角标识**\n    *   **前提**：由于未提供参考图，我将根据通用方法类图表的惯例，放置一个简短的、不显眼的类别标识。\n    *   **位置**：画布右上角边缘。\n    *   **样式**：一个小的圆角矩形标签，背景色为浅灰色（#EEEEEE），无边框。\n    *   **文本**：中文文本“方法概览”，字号12像素，颜色为#757575，位于标签中央。文本与边距紧密。如果此前有明确指定的参考图标识，则用它原样替换。",
+  "usage": {
+    "prompt_tokens": 785,
+    "completion_tokens": 843,
+    "total_tokens": 1628,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  }
+}

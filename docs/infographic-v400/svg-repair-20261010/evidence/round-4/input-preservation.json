@@ -1,0 +1,18 @@
+[
+  {
+    "scenario": "state-diagram-svg",
+    "originalScientificInputReferencesDataPreserved": true,
+    "allowedDifferences": [
+      "apiKeys redacted/transport injection",
+      "maxCriticRounds=2"
+    ]
+  },
+  {
+    "scenario": "mixed-workflow-bar-svg",
+    "originalScientificInputReferencesDataPreserved": true,
+    "allowedDifferences": [
+      "apiKeys redacted/transport injection",
+      "maxCriticRounds=2"
+    ]
+  }
+]

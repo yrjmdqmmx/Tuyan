@@ -1,16 +1,8 @@
-export const KNOWLEDGE_VERSION = '1.0.0';
+import {FIGURE_TYPES} from '../../figure-taxonomy/src/index.js';
+export const KNOWLEDGE_VERSION = '1.1.0';
 export const KNOWLEDGE_MAJOR = 1;
 
-export const VISUAL_CATEGORIES = Object.freeze([
-  'method_framework',
-  'workflow',
-  'system_architecture',
-  'mechanism',
-  'comparison',
-  'timeline',
-  'data_stat',
-  'concept_map',
-]);
+export const VISUAL_CATEGORIES = Object.freeze([...FIGURE_TYPES.map(type=>type.id),'data_stat']);
 
 export const OPERATIONS = Object.freeze(['create', 'refine', 'evaluate']);
 export const OUTPUT_FORMATS = Object.freeze(['png', 'svg']);
@@ -109,7 +101,11 @@ const enUS = {
   },
 };
 
-export const CATEGORY_CATALOG = Object.freeze({ 'zh-CN': Object.freeze(zhCN), 'en-US': Object.freeze(enUS) });
+for(const type of FIGURE_TYPES){
+ zhCN[type.id]={label:type.label,description:type.definition,requiredChecks:type.reviewRequirements};
+ enUS[type.id]={label:type.en,description:type.definition,requiredChecks:type.reviewRequirements};
+}
+export const CATEGORY_CATALOG = Object.freeze({ 'zh-CN': Object.freeze(Object.fromEntries(VISUAL_CATEGORIES.map(id=>[id,zhCN[id]]))), 'en-US': Object.freeze(Object.fromEntries(VISUAL_CATEGORIES.map(id=>[id,enUS[id]]))) });
 
 export const PAPERBANANA_BENCH_MANIFEST = Object.freeze({
   id: 'paperbanana-bench',

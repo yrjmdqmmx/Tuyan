@@ -1,0 +1,15 @@
+{
+  "baseTypes": 92,
+  "groups": 13,
+  "variantsDefined": 142,
+  "variantsIndependentlyVerified": 0,
+  "dataTypesProgramVerified": 63,
+  "compositeTypesRuntimeVerified": 2,
+  "schematicTypesMockFlowVerified": 27,
+  "formatPaths": 184,
+  "realRepresentativePaths": 3,
+  "realRepresentativePassed": 1,
+  "licensedReferenceCases": 107,
+  "referencePapers": 67,
+  "boundaryRejections": 360
+}

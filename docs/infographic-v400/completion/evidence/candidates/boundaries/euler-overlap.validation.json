@@ -1,0 +1,36 @@
+{
+  "typeId": "euler",
+  "computations": {
+    "intersection": 1,
+    "onlyA": 2,
+    "onlyB": 1,
+    "union": 4,
+    "topology": "overlap",
+    "areaMode": "schematic"
+  },
+  "checks": {
+    "union_count": {
+      "actual": 4.0,
+      "expected": 4.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 2.0,
+      "expected": 2.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "set",
+      "members"
+    ],
+    "options": {
+      "areaMode": "schematic"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

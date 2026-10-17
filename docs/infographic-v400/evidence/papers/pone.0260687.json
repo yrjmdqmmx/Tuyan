@@ -1,0 +1,126 @@
+{
+  "doi": "10.1371/journal.pone.0260687",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0260687",
+  "title": "Environmental variables drive plant species composition and distribution in the moist temperate forests of Northwestern Himalaya, Pakistan",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Inayat Ur Rahman",
+    "Robbie E. Hart",
+    "Farhana Ijaz",
+    "Aftab Afzal",
+    "Zafar Iqbal",
+    "Eduardo S. Calixto",
+    "Elsayed Fathi Abd_Allah",
+    "Abdulaziz A. Alqarawi",
+    "Abeer Hashem",
+    "Al-Bandari Fahad Al-Arjani",
+    "Rukhsana Kausar",
+    "Shiekh Marifatul Haq"
+  ],
+  "year": "2022",
+  "license": "This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the Creative Commons CC0 public domain dedication.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0260687.g001",
+      "label": "Fig 1",
+      "caption": "Map of the study area showing Pakistan, Khyber Pakhtunkhwa (KP) province, and sampling sites for data collection.\nPoints in the right figure represent stands of the four communities identified in the moist temperate zone, Northwestern Himalaya, Pakistan. CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus, IHC: Indigofera heterantha- Heracleum candicans-Cynodon dactylon, PCP: Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana, and VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Map of the study area showing Pakistan, Khyber Pakhtunkhwa (KP) province, and sampling sites for data collection.</title>\n<p>Points in the right figure represent stands of the four communities identified in the moist temperate zone, Northwestern Himalaya, Pakistan. <bold>CPI:</bold> <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic>, <bold>IHC</bold>: <italic>Indigofera heterantha- Heracleum candicans-Cynodon dactylon</italic>, <bold>PCP:</bold> <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>, and <bold>VIP:</bold> <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g002",
+      "label": "Fig 2",
+      "caption": "The Species-Area Curve (SAC) of 244 plant species distributed among 30 sampling sites.\nThe SAC was used to check the adequacy level of the sampling effort, where plant abundance data with Sørensen distance values were used to create the SAC.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>The Species-Area Curve (SAC) of 244 plant species distributed among 30 sampling sites.</title>\n<p>The SAC was used to check the adequacy level of the sampling effort, where plant abundance data with Sørensen distance values were used to create the SAC.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g002",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g003",
+      "label": "Fig 3",
+      "caption": "Clustering analysis indicates the classification of 30 stands comprised of 244 plant species into four different plant communities.\nIHC (red triangle): Indigofera heterantha-Heracleum candicans-Cynodon dactylon, VIP (blue circle): Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI (green square): Cedrus deodara-Pinus wallichiana-Isodon rugosus and PCP (yellow diamond): Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana. The plant communities are represented by the symbols in the illustration. Letters associated with numbers at the end of each branch of the dendrogram represent the stands evaluated.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Clustering analysis indicates the classification of 30 stands comprised of 244 plant species into four different plant communities.</title>\n<p>IHC (red triangle): <italic>Indigofera heterantha-Heracleum candicans-Cynodon dactylon</italic>, VIP (blue circle): <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, CPI (green square): <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic> and PCP (yellow diamond): <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>. The plant communities are represented by the symbols in the illustration. Letters associated with numbers at the end of each branch of the dendrogram represent the stands evaluated.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g004",
+      "label": "Fig 4",
+      "caption": "Non-Multidimensional Scaling (NMDS) between plant communities in moist temperate forests and environmental gradients.\na) geographic, b) slope, c) edaphic and d) climatic. e). Principle Component Analysis (PCA) illustrating the relationship between various measured environmental variables and communities indicated by coloured circles. Large coloured circles show the centroid of each community. NMDS-PCA: Species contribution analysis for community ordination in NMDS is depicted in Table 2. IHC: Indigofera heterantha- Heracleum candicans-Cynodon dactylon, VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus and PCP: Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Non-Multidimensional Scaling (NMDS) between plant communities in moist temperate forests and environmental gradients.</title>\n<p>a) geographic, b) slope, c) edaphic and d) climatic. e). Principle Component Analysis (PCA) illustrating the relationship between various measured environmental variables and communities indicated by coloured circles. Large coloured circles show the centroid of each community. NMDS-PCA: Species contribution analysis for community ordination in NMDS is depicted in <xref ref-type=\"table\" rid=\"pone.0260687.t002\">Table 2</xref>. <bold>IHC</bold>: <italic>Indigofera heterantha- Heracleum candicans-Cynodon dactylon</italic>, <bold>VIP:</bold> <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, <bold>CPI:</bold> <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic> and <bold>PCP:</bold> <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g005",
+      "label": "Fig 5",
+      "caption": "The Venn diagram shows variation partitioning results (partial CCA model) and the contribution [77] of the four studied environmental variable groups (i.e., climatic, edaphic, geographic, and slope) that drive the plant species distribution.\nEach letter code indicates the individual fraction.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>The Venn diagram shows variation partitioning results (partial CCA model) and the contribution [<xref ref-type=\"bibr\" rid=\"pone.0260687.ref077\">77</xref>] of the four studied environmental variable groups (<italic>i</italic>.<italic>e</italic>., climatic, edaphic, geographic, and slope) that drive the plant species distribution.</title>\n<p>Each letter code indicates the individual fraction.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g006",
+      "label": "Fig 6",
+      "caption": "NMDS with PERMANOVA analysis to compare species composition between communities of moist temperate forests.\nIHC: Indigofera heterantha- Heracleum candicans-Cynodon dactylon, VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus and PCP: Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>NMDS with PERMANOVA analysis to compare species composition between communities of moist temperate forests.</title>\n<p><bold>IHC</bold>: <italic>Indigofera heterantha- Heracleum candicans-Cynodon dactylon</italic>, <bold>VIP:</bold> <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, <bold>CPI:</bold> <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic> and <bold>PCP:</bold> <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g006\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g006",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g007",
+      "label": "Fig 7",
+      "caption": "Dissimilarity cluster based on spatial turnover (βsim) and nestedness-resultant components (βsne) of beta diversity components of species dissimilarity between four plant communities of moist temperate forests.\nIHC: Indigofera heterantha-Heracleum candicans-Cynodon dactylon, VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus, and PCP: Pinus wallichiana-Cedrus deodara-Parrotiopsis jacquemontiana.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g007\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g007</object-id>\n<label>Fig 7</label>\n<caption>\n<title>Dissimilarity cluster based on spatial turnover (βsim) and nestedness-resultant components (βsne) of beta diversity components of species dissimilarity between four plant communities of moist temperate forests.</title>\n<p>IHC: <italic>Indigofera heterantha-Heracleum candicans-Cynodon dactylon</italic>, VIP: <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, CPI: <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic>, and PCP: <italic>Pinus wallichiana-Cedrus deodara-Parrotiopsis jacquemontiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g007\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0260687.g008",
+      "label": "Fig 8",
+      "caption": "Variation of diversity indices between the four plant communities of moist temperate forests in the Northwestern Himalaya, Pakistan.\nFigures represent ridgeline plots with raw data (black dots below each density distribution) and the first, second and third quartiles (vertical red lines). Lowercase letters on the left differ from each other by an estimated marginal mean. The Y-axis is displayed in an ascendant altitudinal gradient. IHC: Indigofera heterantha- Heracleum candicans-Cynodon dactylon, VIP: Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana, CPI: Cedrus deodara-Pinus wallichiana-Isodon rugosus, and PCP: Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0260687.g008\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0260687.g008</object-id>\n<label>Fig 8</label>\n<caption>\n<title>Variation of diversity indices between the four plant communities of moist temperate forests in the Northwestern Himalaya, Pakistan.</title>\n<p>Figures represent ridgeline plots with raw data (black dots below each density distribution) and the first, second and third quartiles (vertical red lines). Lowercase letters on the left differ from each other by an estimated marginal mean. The Y-axis is displayed in an ascendant altitudinal gradient. <bold>IHC</bold>: <italic>Indigofera heterantha- Heracleum candicans-Cynodon dactylon</italic>, <bold>VIP:</bold> <italic>Viburnum grandiflorum-Indigofera heterantha-Pinus wallichiana</italic>, <bold>CPI:</bold> <italic>Cedrus deodara-Pinus wallichiana-Isodon rugosus</italic>, and <bold>PCP:</bold> <italic>Pinus wallichiana-Cedrus deodara- Parrotiopsis jacquemontiana</italic>.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0260687.g008\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0260687.g008",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

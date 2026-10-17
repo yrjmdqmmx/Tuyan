@@ -1,0 +1,68 @@
+{
+  "typeId": "streamgraph",
+  "computations": {
+    "x": [
+      0,
+      1,
+      2
+    ],
+    "totalThickness": [
+      3,
+      5,
+      6
+    ],
+    "baseline": [
+      -1.5,
+      -2.5,
+      -3.0
+    ],
+    "series": {
+      "A": [
+        2,
+        3,
+        2
+      ],
+      "B": [
+        1,
+        2,
+        4
+      ]
+    }
+  },
+  "checks": {
+    "A_thickness_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "B_thickness_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "symmetric_baseline_error": {
+      "actual": 0.0,
+      "expected": 0.0,
+      "absoluteError": 0.0
+    },
+    "source_row_count": {
+      "actual": 6.0,
+      "expected": 6.0,
+      "absoluteError": 0.0
+    }
+  },
+  "analysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  },
+  "suppliedFields": {
+    "rowFields": [
+      "x",
+      "y",
+      "group"
+    ],
+    "options": {
+      "baseline": "symmetric"
+    }
+  },
+  "dataSourcePolicy": "Input provenance is supplied; numerical checks do not certify source truth."
+}

@@ -1,0 +1,49 @@
+{
+  "id": "pone.0235209.g001",
+  "paper": "pone.0235209",
+  "figure": {
+    "id": "pone.0235209.g001",
+    "label": "Fig 1",
+    "caption": "Example of a concept map generated from CohViz.\nColored fragments indicate concepts that are not related to the rest of the concepts and are thus indicative of a problem in cohesion. For example, the writer did not relate the first two sentences, leading to a fragmented concept map. The concept map contains three fragments, 13 concepts, and 13 relations.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0235209.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0235209.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a concept map generated from CohViz.</title>\n<p>Colored fragments indicate concepts that are not related to the rest of the concepts and are thus indicative of a problem in cohesion. For example, the writer did not relate the first two sentences, leading to a fragmented concept map. The concept map contains three fragments, 13 concepts, and 13 relations.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0235209.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0235209.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0235209",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0235209",
+    "title": "Assisting students’ writing with computer-based concept map feedback: A validation study of the CohViz feedback system",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Christian Burkhart",
+      "Andreas Lachner",
+      "Matthias Nückles"
+    ],
+    "year": "2020",
+    "license": "2020\nBurkhart et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0235209.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0235209.g001.png",
+      "bytes": 386821,
+      "sha256": "478ea1cbee7fbb1f5d5f1221f419649030ed0850339be75462ca8988b67d021f"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0235209.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0235209.g001.tif",
+      "bytes": 595956,
+      "sha256": "6678c6096c70537375af551fe34656c88d4f6448897990324aa8454f0a8d646e"
+    }
+  }
+}

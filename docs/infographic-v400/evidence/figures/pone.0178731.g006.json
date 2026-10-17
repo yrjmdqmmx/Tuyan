@@ -1,0 +1,53 @@
+{
+  "id": "pone.0178731.g006",
+  "paper": "pone.0178731",
+  "figure": {
+    "id": "pone.0178731.g006",
+    "label": "Fig 6",
+    "caption": "A Fitness for Use Backbone.\nBasic architecture for a computational platform based on the conceptual framework, composed of three main parts: (1) DQ Report (registering and retrieving DQ status assigned to Data Resources according to DQ profiles definitions), (2) DQ Solutions (registering and retrieving methods and tools for meeting DQ needs) and (3) DQ Needs (registering and retrieving entire DQ profiles or individual parts, such DQ Dimensions, DQ Criterion and DQ Enhancement).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0178731.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0178731.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>A Fitness for Use Backbone.</title>\n<p>Basic architecture for a computational platform based on the conceptual framework, composed of three main parts: (1) DQ Report (registering and retrieving DQ status assigned to Data Resources according to DQ profiles definitions), (2) DQ Solutions (registering and retrieving methods and tools for meeting DQ needs) and (3) DQ Needs (registering and retrieving entire DQ profiles or individual parts, such DQ Dimensions, DQ Criterion and DQ Enhancement).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0178731.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0178731.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0178731",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0178731",
+    "title": "A conceptual framework for quality assessment and management of biodiversity data",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Allan Koch Veiga",
+      "Antonio Mauro Saraiva",
+      "Arthur David Chapman",
+      "Paul John Morris",
+      "Christian Gendreau",
+      "Dmitry Schigel",
+      "Tim James Robertson"
+    ],
+    "year": "2017",
+    "license": "2017\nVeiga et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0178731.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0178731.g006.png",
+      "bytes": 347166,
+      "sha256": "ea51af838a70aafff578444fa87381a0bbb472cc66e333d56d7dfa9f37c0f8c3"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0178731.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0178731.g006.tif",
+      "bytes": 416140,
+      "sha256": "72c111260a77c0f9c9c7964628cf62a3fc12543375ba72db3ed71f91b9a8cb9e"
+    }
+  }
+}

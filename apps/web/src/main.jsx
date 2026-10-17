@@ -1,3 +1,10 @@
+import './components/journal-rules.css'
+import './components/journal-bookshelf.css'
+import './components/svgWorkspace.css'
+import './components/referenceTaxonomy.css'
+import './components/figureTypePicker.css'
+import './components/workflowOptions.css'
+import './components/guidePanel.css'
 import './components/ThinkingSettings.css'
 import React, { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -14,6 +21,7 @@ import './components/watcha.css';
 import './components/benchmark.css';
 import './components/admin/admin.css';
 import './mobile-workbench.css';
+import './components/generationSettingsDrawer.css';
 import './components/leaderboard-mobile.css';
 import './components/changelog.css';
 import './components/header-navigation.css';
@@ -38,5 +46,5 @@ createRoot(document.getElementById('root')).render(
     ? <LeaderboardSessionProvider><Suspense fallback={<div className="changelog-page" role="status">正在载入更新日志…</div>}><ChangelogRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} /></Suspense></LeaderboardSessionProvider>
     : leaderboardRoute.isLeaderboard
     ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={PUBLIC_LEADERBOARD_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>
-    : <App />}</AppLocaleProvider>,
+    : <App />}{globalThis.location?.origin === 'https://tuyansci.cn' && <footer className="icp-footer"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026071869号-3</a></footer>}</AppLocaleProvider>,
 );

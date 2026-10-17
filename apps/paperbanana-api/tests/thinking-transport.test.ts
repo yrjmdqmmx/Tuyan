@@ -1,4 +1,6 @@
 import test from 'node:test'
+import {readFileSync} from 'node:fs'
+const tokenDanceCatalog=JSON.parse(readFileSync(new URL('../../../config/tokendance/catalog.json',import.meta.url),'utf8'))
 import assert from 'node:assert/strict'
 import {createRefineRuntime} from '../../../test-support/refine-runtime.mjs'
 import {THINKING_PROFILES} from '../../../packages/api/src/thinking-data.js'
@@ -21,12 +23,16 @@ function selectedOptions(profile:any) {
 const get=(body:any,path:string)=>path.split('.').reduce((node,key)=>node?.[key],body)
 
 test('every supported static text/vision identity reaches its actual adapter with the audited fields',async(t)=>{
+  // Adapter coverage is anchored to the catalog audit date; lifecycle tests enforce retirement.
+  t.mock.method(Date, 'now', () => Date.parse('2026-09-27T00:00:00Z'))
   const r:any=await createRefineRuntime();let snapshot:any, captured:any[],pending:any
   try {
-    r.legacy.configureProviderWorkflow({ ...r.workflow, active:()=>true, call:async(_d:any,fn:any)=>fn(), thinking:()=>snapshot,
+    r.legacy.configureProviderWorkflow({ ...r.workflow, active:()=>true, key:async()=> 'fixture-key', call:async(_d:any,fn:any)=>fn(), thinking:()=>snapshot,
       pending:async()=>pending,checkpoint:async(v:any)=>{pending=v},record:async()=>{} })
     r.legacy.configureRuntimeFetch(async(url:any,init:any)=>{
+      if(String(url).endsWith('/gateway/v1/models'))return Response.json({data:tokenDanceCatalog.models})
       const body=JSON.parse(init.body);captured.push({url:String(url),body});const task=Array.isArray(body)?body[0]:body
+      if(String(url).includes('api.replicate.com'))return Response.json({id:'fixture',version:body.version,status:'succeeded',output:['Visible answer']})
       if(String(url).includes('runware.ai'))return Response.json({data:[{taskUUID:task.taskUUID,text:'Visible answer',finishReason:'stop'}]})
       if(String(url).endsWith('/messages'))return Response.json({content:[{type:'thinking',thinking:'hidden'},{type:'text',text:'Visible answer'}],stop_reason:'end_turn'})
       if(String(url).includes(':generateContent'))return Response.json({candidates:[{content:{parts:[{thought:true,text:'hidden'},{text:'Visible answer'}]}}]})
@@ -45,7 +51,7 @@ test('every supported static text/vision identity reaches its actual adapter wit
         const answer=await r.legacy.callTextModel(profile.provider,model,'fixture-key','system','user',images,{thinkingRole:role})
         assert.equal(answer,'Visible answer')
         const request=Array.isArray(captured[0].body)?captured[0].body[0]:captured[0].body
-        for(const c of profile.controls)if(options[c.key]!==undefined)assert.deepEqual(get(request,c.field),options[c.key],c.field)
+        for(const c of profile.controls)if(options[c.key]!==undefined)assert.deepEqual(get(request,c.field),c.wireValues?.[String(options[c.key])]??options[c.key],c.field)
         assert.equal(captured.length,1,'no inferred or automatic retry')
         snapshot=compileThinkingSelection({...snapshot,options:{}},role)
         captured=[];pending=undefined
@@ -87,7 +93,7 @@ test('actual image builders preserve quality/size while injecting documented nat
       try {
         await r.legacy.callImageModel(profile.provider,model,'fixture-key','Draw a diagram',entry.capabilities?.aspectRatios?.[0] || 'auto','',entry.capabilities?.resolutions?.[0]||'1K')
         const request=Array.isArray(captured[0].body)?captured[0].body[0]:captured[0].body
-        for(const c of profile.controls)if(options[c.key]!==undefined)assert.deepEqual(get(request,c.field),options[c.key],c.field)
+        for(const c of profile.controls)if(options[c.key]!==undefined)assert.deepEqual(get(request,c.field),c.wireValues?.[String(options[c.key])]??options[c.key],c.field)
         assert.equal(captured.length,1)
         if(profile.operations?.includes('editing') && entry.capabilities?.imageEditMode==='direct-edit') {
           captured=[];pending=undefined
@@ -99,7 +105,7 @@ test('actual image builders preserve quality/size while injecting documented nat
         identities++
       }catch(error:any){assert.fail(`${profile.provider}/${model}/image: ${String(error.message).slice(0,350)}`)}
     }
-    assert.equal(identities,21)
+    assert.equal(identities,24)
     t.diagnostic(`${identities} image generation and ${edits} eligible editing identities`)
   }finally{await r.close()}
 })
@@ -114,7 +120,9 @@ test('Gateway create and refine freeze server-compiled settings, expose metadata
     assert.equal(created.data.code,0,JSON.stringify(created.data).slice(0,500));await r.legacy.drainJobAdmission()
     const job=(await r.post({action:'getJob',jobId:created.data.jobId})).data.job
     assert.equal(job.status,'succeeded',job.error)
-    assert.deepEqual(job.thinkingConfig,{version:1,roles})
+    // This fixture has no reference images or review rounds, so its vision draft is inactive.
+    assert.deepEqual(job.thinkingConfig,{version:1,roles:{main:roles.main,image:roles.image}})
+    assert.equal(job.thinkingSnapshot.roles.vision,undefined)
     assert.deepEqual(job.thinkingSnapshot.roles.main.wire,{thinking:{type:'enabled'}})
     assert.equal(job.thinkingSnapshot.roles.main.wire.model,undefined)
     assert.equal(JSON.stringify(job).includes('fixture-xiaomi'),false)

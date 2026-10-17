@@ -1,0 +1,60 @@
+
+<figure_type_contract stage="planning">
+{
+  "version": "2026-10-10.v1",
+  "id": "workflow",
+  "path": "过程、时间与控制 / 流程图",
+  "definition": "表达操作顺序、分支和终止条件",
+  "kind": "schematic",
+  "suitable": "表达操作顺序、分支和终止条件",
+  "unsuitable": "静态组成或没有顺序含义的概念关系不宜画成流程",
+  "confusable": [
+    {
+      "id": "method_framework",
+      "label": "方法框架图",
+      "definition": "呈现研究方法的模块及信息如何转化，适用于方法总览"
+    },
+    {
+      "id": "decision_tree",
+      "label": "决策树图",
+      "definition": "表达条件逐级划分到决策叶节点"
+    }
+  ],
+  "requiredInputs": [
+    "起点终点",
+    "步骤",
+    "分支条件",
+    "输入输出"
+  ],
+  "elements": [
+    "起止节点",
+    "步骤",
+    "条件分支",
+    "方向箭头",
+    "循环条件"
+  ],
+  "encodingRules": [
+    "分支标注互斥或并发语义",
+    "每条路径有去向",
+    "回路有条件"
+  ],
+  "generationRequirements": [
+    "分支标注互斥或并发语义",
+    "每条路径有去向",
+    "回路有条件",
+    "仅使用用户给出的事实；未知内容标注缺失，禁止复制参考论文的数值和结论。"
+  ],
+  "reviewRequirements": [
+    "核对：分支标注互斥或并发语义",
+    "核对：每条路径有去向",
+    "核对：回路有条件",
+    "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+  ],
+  "variants": [],
+  "analysis": null,
+  "data": null,
+  "panels": [],
+  "evidencePolicy": "Reference figures are evidence about visual structure only. Never transfer their data, labels, numerical results, significance or scientific conclusions. If required inputs are missing, list missing inputs and do not fabricate them."
+}
+</figure_type_contract>
+Preserve this contract independently of the intermediate plan; a plan cannot relax its constraints.

@@ -1,0 +1,51 @@
+{
+  "id": "pcbi.1005562.g001",
+  "paper": "pcbi.1005562",
+  "figure": {
+    "id": "pcbi.1005562.g001",
+    "label": "Fig 1",
+    "caption": "Visualizations provided by ROTS.\n(A) Volcano plot of the features, where the differentially expressed features are coloured red. (B) MA plot of the features, where the differentially expressed features are coloured red. (C) ROTS reproducibility Z-score as function of top list size. The highest score is marked with red dot together with its value. (D) Histogram of p-values. (E) Principal component analysis (PCA) plot of the differentially expressed features. (F) Heatmap and hierarchical clustering of the samples (columns) and the differentially expressed features (rows) using euclidean distance and the complete-linkage agglomerative clustering method.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005562.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005562.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Visualizations provided by ROTS.</title>\n<p>(A) Volcano plot of the features, where the differentially expressed features are coloured red. (B) MA plot of the features, where the differentially expressed features are coloured red. (C) ROTS reproducibility Z-score as function of top list size. The highest score is marked with red dot together with its value. (D) Histogram of <italic>p</italic>-values. (E) Principal component analysis (PCA) plot of the differentially expressed features. (F) Heatmap and hierarchical clustering of the samples (columns) and the differentially expressed features (rows) using euclidean distance and the complete-linkage agglomerative clustering method.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005562.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005562.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1005562",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005562",
+    "title": "ROTS: An R package for reproducibility-optimized statistical testing",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Tomi Suomi",
+      "Fatemeh Seyednasrollah",
+      "Maria K. Jaakkola",
+      "Thomas Faux",
+      "Laura L. Elo"
+    ],
+    "year": "2017",
+    "license": "2017\nSuomi et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1005562.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005562.g001.png",
+      "bytes": 642360,
+      "sha256": "8e6b491c84a080cd5fd95f3a577b8160b46bcaeff91852e6c819d9ef1c7a2a52"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1005562.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005562.g001.tif",
+      "bytes": 982572,
+      "sha256": "b1a38d2ce83af1bc69e82dff2ca34c58b13d50d2c8457c598bb4bef8ff3c0e51"
+    }
+  }
+}

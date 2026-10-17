@@ -1,0 +1,49 @@
+{
+  "id": "pone.0253822.g009",
+  "paper": "pone.0253822",
+  "figure": {
+    "id": "pone.0253822.g009",
+    "label": "Fig 9",
+    "caption": "Parallel coordinates plot of 24 networks on eight features, including the four closure patterns and the four clustering patterns.\nEach vertical axis represents one feature. In order to put all features on a similar scale, the value of each feature is standardised by removing the mean and scaling to unit variance. Different types of networks are painted in different colours, as shown in the legend. Distinct braids of line segments are highlighted by thin rectangles.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0253822.g009\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0253822.g009</object-id>\n<label>Fig 9</label>\n<caption>\n<title>Parallel coordinates plot of 24 networks on eight features, including the four closure patterns and the four clustering patterns.</title>\n<p>Each vertical axis represents one feature. In order to put all features on a similar scale, the value of each feature is standardised by removing the mean and scaling to unit variance. Different types of networks are painted in different colours, as shown in the legend. Distinct braids of line segments are highlighted by thin rectangles.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0253822.g009\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0253822.g009",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0253822",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0253822",
+    "title": "Directed closure coefficient and its patterns",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Mingshan Jia",
+      "Bogdan Gabrys",
+      "Katarzyna Musial"
+    ],
+    "year": "2021",
+    "license": "2021\nJia et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0253822.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0253822.g009.png",
+      "bytes": 3250441,
+      "sha256": "d4bce9582a74e450e534efff9bd1a879c3244945e57c5cdee32f7416337b562e"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0253822.g009",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0253822.g009.tif",
+      "bytes": 4116488,
+      "sha256": "2ce258ffdd820345786e3fc24b8c28edd7ea9f49bbbd3ec1112ea2020893e702"
+    }
+  }
+}

@@ -41,6 +41,7 @@ type AppDependencies = {
   tokenDance?: ReturnType<typeof createTokenDanceService>
   providerWorkflow?: ReturnType<typeof createProviderWorkflow>
   resumeTokenDanceJob?: (task: any) => Promise<any>
+  requiresCustomCredential?: (body: Record<string, any>) => Promise<boolean>
   requiresTokenDanceCredential?: (body: Record<string, any>) => Promise<boolean>
   handler: CoreHandler
   readinessProbe: ReadinessProbe
@@ -140,7 +141,7 @@ function handlerHeaders(request: Request): Request['headers'] {
 
 export function createApp({
   handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
-  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential,
+  prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential, requiresCustomCredential,
 }: AppDependencies): Express {
   const app = express()
   app.disable('x-powered-by')
@@ -214,15 +215,15 @@ export function createApp({
       && adminTransport
       && tokensMatch(adminTransport, config.adminTransportToken),
     )
-    const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'custom')
-    if (usesCustom) {
+    const usesCustom = action === 'universalApiCheck' || (body.mainRoute as any)?.accessProvider === 'custom' || Object.entries((body.modelRoutes || {}) as any).some(([role, route]: [string, any]) => (role !== 'vision' || body.visionMode !== 'none') && route?.accessProvider === 'custom')
+    if (usesCustom && (action==='universalApiCheck' || !requiresCustomCredential || await requiresCustomCredential(body))) {
       const userId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200) || ''
       if (!userId) return response.status(401).json({code: 401, error: '通用 API 接入需要先登录。'})
       body.userId = userId
       response.setHeader('Cache-Control', 'no-store')
     }
     const tokenDanceAction = action === 'providerResume' || (TOKENDANCE_ACTIONS as readonly string[]).includes(action) || action === 'adminTokenDancePricing'
-    const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.values((body.modelRoutes || {}) as any).some((route: any) => route?.accessProvider === 'tokendance'))
+    const usesTokenDance = ['createJob', 'refineImage', 'optimizeInputs'].includes(action) && (body.provider === 'tokendance' || (body.mainRoute as any)?.accessProvider === 'tokendance' || Object.entries((body.modelRoutes || {}) as any).some(([role, route]: [string, any]) => (role !== 'vision' || body.visionMode !== 'none') && route?.accessProvider === 'tokendance'))
     // Client-supplied TD keys and identities are never authoritative.
     if (body.apiKeys && typeof body.apiKeys === 'object') { body.apiKeys = { ...(body.apiKeys as object) }; delete (body.apiKeys as any).tokendance }
     if (usesTokenDance || tokenDanceAction) {
@@ -237,8 +238,8 @@ export function createApp({
           }
           return response.json(await tokenDance.handle(body, userId, isAdminTransport && Boolean(config.adminToken)))
         }
-        body.userId = userId
         if (!requiresTokenDanceCredential || await requiresTokenDanceCredential(body)) {
+          body.userId = userId
           if (!tokenDance) throw new TokenDanceError(503, '观猹 TokenDance 连接服务尚未配置。')
           const credential = await tokenDance.credential(userId)
           body.apiKeys = { ...(body.apiKeys as object || {}), tokendance: credential.key }

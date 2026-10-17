@@ -1,0 +1,50 @@
+{
+  "id": "pone.0344555.g005",
+  "paper": "pone.0344555",
+  "figure": {
+    "id": "pone.0344555.g005",
+    "label": "Fig 5",
+    "caption": "Final version of the planning and implementation roadmap for digital transformation with a focus on the human component.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0344555.g005\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0344555.g005</object-id><label>Fig 5</label><caption><title>Final version of the planning and implementation roadmap for digital transformation with a focus on the human component.</title></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0344555.g005\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0344555.g005",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0344555",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0344555",
+    "title": "Change management in hospital digital transformation: A roadmap to support planning and implementation for humanisation and efficiency through technology",
+    "journal": "PLOS One",
+    "authors": [
+      "Juliana Basulo-Ribeiro",
+      "Francisco Rocha-Gonçalves",
+      "Alberto Freitas",
+      "Leonor Teixeira"
+    ],
+    "year": "2026",
+    "license": "2026\nBasulo-Ribeiro et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0344555.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0344555.g005.png",
+      "bytes": 710159,
+      "sha256": "84f6c9967ecaccb2d7d83af08052090d7f4fe71bd6e93ac2093383741be041b5"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0344555.g005",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0344555.g005.tif",
+      "bytes": 992876,
+      "sha256": "6f95db2b29bd8794edecf39db9c7d1129cce2f7803ed92bfef5c92afaaba9bd0"
+    }
+  }
+}

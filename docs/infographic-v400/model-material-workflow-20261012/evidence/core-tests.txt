@@ -1,0 +1,37 @@
+✔ every selectable type uses format-driven roles without mandatory figureData (1.045125ms)
+MODEL_MATERIAL_EVIDENCE=/var/folders/j9/mr21v8tx3nqf_yd0sfxvvrk80000gn/T/tuyan-material-workflow-Uqex0U
+✔ gateway/Core: formats x retrieval x uploads; data and mixed types; revised-version review (8216.061334ms)
+✔ model controls distinguish image slots, mask combinations, native structure and inherited dimensions (2.439625ms)
+✔ fal sends source and auxiliary bytes to final image model and freezes metadata (5610.083166ms)
+✔ replicate sends source and auxiliary bytes to final image model and freezes metadata (3508.715834ms)
+✔ runware sends source and auxiliary bytes to final image model and freezes metadata (4742.746625ms)
+✔ tokenhub sends source and auxiliary bytes to final image model and freezes metadata (4154.541166ms)
+✔ fal mask and structured fields are native; invalid combinations, ownership and dimensions make zero calls (3384.995083ms)
+✔ refining an owned historical image freezes its orientation-corrected pixels before applying a mask (3384.012291ms)
+✔ runware lost-submit: recovery never repeats billed submission (5180.523625ms)
+✔ tokenhub lost-submit: recovery never repeats billed submission (3219.308333ms)
+✔ fal lost-submit: recovery never repeats billed submission (3200.488459ms)
+✔ fal download: recovery never repeats billed submission (3853.594833ms)
+✔ tokenhub download: recovery never repeats billed submission (6382.121291ms)
+✔ sensenova lost-submit: recovery never repeats billed submission (5060.24425ms)
+✔ sensenova download: recovery never repeats billed submission (5263.776334ms)
+✔ qianfan lost-submit: recovery never repeats billed submission (5857.619834ms)
+✔ qianfan download: recovery never repeats billed submission (7687.759875ms)
+✔ stepfun lost-submit: recovery never repeats billed submission (8423.393583ms)
+✔ stepfun download: recovery never repeats billed submission (7550.041625ms)
+✔ refine admission saves frozen source, reference and mask paths before acknowledging; failed persistence makes no call (13783.775458ms)
+✔ Responses image tool follows existing refine workflow with owned source and auxiliary reference (7868.764458ms)
+{"event":"tokendance_catalog_health","level":"error","state":"unavailable","cause":"empty","alert":"critical","consecutiveAnomalies":1,"anomalySince":1791777706265,"checkedAt":1791777706265,"stale":false,"total":0,"valid":0,"compatibleCount":0,"issueCount":0,"issues":[]}
+✔ real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end (original identity) (6558.40425ms)
+{"event":"tokendance_catalog_health","level":"error","state":"unavailable","cause":"empty","alert":"critical","consecutiveAnomalies":1,"anomalySince":1791777710488,"checkedAt":1791777710488,"stale":false,"total":0,"valid":0,"compatibleCount":0,"issueCount":0,"issues":[]}
+✔ real gateway/Core upload, ownership validation, source snapshot and image editing compose end to end (restored-fixture-generation) (4218.364875ms)
+✔ finalized sources reject corrupted, mismatched, oversized and animated data before provider calls (3202.880875ms)
+✔ refine input optimization keeps edit-only context and preservation instructions on the real main route (4167.95925ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109133.8525

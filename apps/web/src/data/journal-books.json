@@ -1,0 +1,517 @@
+{
+  "plos-one": {
+    "category": "综合科学",
+    "tags": [
+      "自然科学",
+      "医学",
+      "工程",
+      "人文社科"
+    ],
+    "aliases": [
+      "PLOS",
+      "公共科学图书馆综合"
+    ],
+    "description": "面向科学、工程、医学及相关社会科学与人文学科的开放获取期刊。覆盖跨学科研究，也接收重复研究及阴性、零结果研究。",
+    "descriptionSource": "https://journals.plos.org/plosone/s/journal-information",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": null,
+      "providedFile": "PLOS_Medicine_Postcard.jpeg",
+      "originalJournal": "PLOS Medicine",
+      "acquiredOn": "2026-10-17",
+      "issue": null,
+      "usageNote": "用户指定上传的图片，仅用于本地开发展示；未核实该图片的独立再分发授权。不是 PLOS ONE 官方封面或规则来源。",
+      "kind": "user-provided",
+      "src": "/journal-covers/plos-one-custom.7b1e928466.webp",
+      "assetUrl": null,
+      "width": 467,
+      "height": 640,
+      "sha256": "7b1e928466fc8c8aacf93209f9f26059244ac702b613a8fe059c79b28390b796",
+      "originalSha256": "08373794921b30a93c05599692e1f46aeb61492487648550cad66c1d28ff2ec8",
+      "note": "用户明确指定将 PLOS_Medicine_Postcard.jpeg 用于 PLOS ONE 书架展示。原图刊名为 PLOS Medicine，未修改图中文字、未冒称为 PLOS ONE 官方封面；书架期刊条目及规则仍归属 PLOS ONE。未标明卷期。"
+    }
+  },
+  "scientific-reports": {
+    "category": "综合科学",
+    "tags": [
+      "自然科学",
+      "医学",
+      "心理学",
+      "工程"
+    ],
+    "aliases": [
+      "Sci Rep",
+      "SRep",
+      "科学报告"
+    ],
+    "description": "发表自然科学、心理学、医学和工程领域的原创研究。采用开放获取方式，强调科学方法与研究的可靠性。",
+    "descriptionSource": "https://www.nature.com/srep/about",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://blog.sciencenet.cn/blog-3432244-1491747.html",
+      "acquiredOn": "2026-10-17",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "kind": "official-display",
+      "src": "/journal-covers/scientific-reports.d225d730a2.webp",
+      "assetUrl": "https://pica.zhimg.com/v2-d5d98d8f8043a11181cf9cc259fca6fc_1440w.jpg",
+      "width": 480,
+      "height": 638,
+      "sha256": "d225d730a2ad540fa9fe29afabbe133e602340fa2caa8813e169092a596fdd0b",
+      "originalSha256": "db4aa8afcd99c03e22454d4a39f65afe34aa1c3196b7474cd9cdb76527ccbc05",
+      "note": "Springer Nature 科研服务官方账号于 2025-06-30 发布的期刊展示封面，无卷期标注；来源页要求转载联系作者。",
+      "verificationSourceUrl": "https://www.springernature.com/gp/researchers/the-source/blog/blogposts-for-editors/diversifying-editorial-boards-in-china/27783962"
+    }
+  },
+  "frontiers-ai": {
+    "category": "人工智能与工程",
+    "tags": [
+      "人工智能",
+      "计算机",
+      "金融",
+      "教育"
+    ],
+    "aliases": [
+      "Front Artif Intell",
+      "FRAI",
+      "人工智能前沿"
+    ],
+    "description": "关注人工智能方法及其实际应用的跨学科期刊。研究范围包括商业、金融、医学、农业与人类学习等领域中的 AI 问题。",
+    "descriptionSource": "https://www.frontiersin.org/journals/artificial-intelligence/about",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://www.frontiersin.org/news/2018/10/16/frontiers-in-artificial-intelligence-collaborating-to-make-the-ai-revolution-happen",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/frontiers-ai.ac7fee907c.webp",
+      "assetUrl": "https://images.ctfassets.net/mrbo2ykgx5lt/26397/192573644a061f70210773745bb389cb/pre-launch-logo-picture.png?&w=912&fm=webp&q=80",
+      "kind": "official-display",
+      "width": 480,
+      "height": 353,
+      "sha256": "ac7fee907c7d92337f9f7ebcd6769ebe1b704d9e79778fe187794af67461f7df",
+      "originalSha256": "5801651404a5576c11367da31b228cc3f0de72f23fb4e9336a5434563d6d369c"
+    }
+  },
+  "ieee-access": {
+    "category": "人工智能与工程",
+    "tags": [
+      "工程",
+      "计算机",
+      "人工智能",
+      "信息技术"
+    ],
+    "aliases": [
+      "IEEE",
+      "电气电子工程师学会"
+    ],
+    "description": "覆盖 IEEE 各技术领域的跨学科开放获取期刊。持续发表科学与技术领域的原创研究和开发成果。",
+    "descriptionSource": "https://ieeeaccess.ieee.org/about/",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://ieee.codeocean.com/",
+      "acquiredOn": "2026-10-17",
+      "issue": "Volume 11 · 2023",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "kind": "issue",
+      "src": "/journal-covers/ieee-access.30f102042b.webp",
+      "assetUrl": "https://ieee.codeocean.com/hs-fs/hubfs/ACCESS-logo-for-code-ocean-final.png?width=840&height=1200&name=ACCESS-logo-for-code-ocean-final.png",
+      "width": 448,
+      "height": 640,
+      "sha256": "30f102042b36766860677340942dc75c1b87805c62beeadb167a3c3467912711",
+      "originalSha256": "773e1810c0fcfed9064c2d820b618b2a8ab942e551ecee51ac310e45e1b625e3",
+      "note": "IEEE 与 Code Ocean 官方合作入口展示的第 11 卷封面；封面标注 2023，不推定为最新一期。"
+    }
+  },
+  "advanced-materials-interfaces": {
+    "category": "材料与化学",
+    "tags": [
+      "材料科学",
+      "化学",
+      "物理",
+      "生物界面"
+    ],
+    "aliases": [
+      "AMI",
+      "Adv Mater Interfaces",
+      "先进材料界面"
+    ],
+    "description": "关注功能界面、表面及其应用。研究连接物理、化学、材料科学与生命科学，涵盖器件、催化、涂层及生物界面等方向。",
+    "descriptionSource": "https://www.wiley-vch.de/en/44-wiley-vch/journals/400-advanced-materials-interfaces-2706-en",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://www.wiley-vch.de/en/44-wiley-vch/journals/400-advanced-materials-interfaces-2706-en",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/advanced-materials-interfaces.6c6a251916.webp",
+      "assetUrl": "https://application.wiley-vch.de/vch/journals/2706/2706_300w.png",
+      "kind": "official-display",
+      "width": 300,
+      "height": 394,
+      "sha256": "6c6a2519162b52fe0ae06dfc60f5c4232f20f698fada0467436638bcafbc210c",
+      "originalSha256": "2136c698f480e0d7acec4e9d96f844cd45a131904aaaab17d6bdfc140a365cad"
+    }
+  },
+  "acs-omega": {
+    "category": "材料与化学",
+    "tags": [
+      "化学",
+      "材料科学",
+      "跨学科"
+    ],
+    "aliases": [
+      "ACSO",
+      "美国化学会"
+    ],
+    "description": "覆盖化学及其交叉领域的开放获取期刊。重视原创化学见解、可靠的科学原理与实验依据。",
+    "descriptionSource": "https://pubs.acs.org/journal/acsodf",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://axial.acs.org/publishing/open-access-with-acs-omega",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/acs-omega.c6c42b2fec.webp",
+      "assetUrl": "https://cdn.sanity.io/images/x3tdws7z/production/ea9bd18e07ba5f9db9750a095fde9b58f2428684-298x397.jpg",
+      "kind": "official-display",
+      "width": 298,
+      "height": 397,
+      "sha256": "c6c42b2fece62a367319535a0bd67eab23bfdec983cca073a05d5c17019cec6c",
+      "originalSha256": "bf0d9c7e1f88b41f31742f972a66cbc6bddeb8fbf00aaa31af33c70e112a5170"
+    }
+  },
+  "cell-reports": {
+    "category": "生命科学",
+    "tags": [
+      "生物学",
+      "生命科学",
+      "医学"
+    ],
+    "aliases": [
+      "Cell Rep",
+      "细胞报告"
+    ],
+    "description": "Cell Press 旗下生命科学开放获取期刊。覆盖生命科学多个方向，发表研究论文、简短报告及研究资源。",
+    "descriptionSource": "https://www.cell.com/cell-reports/information-for-authors",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://info.cell.com/cell-reports-most-read",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/cell-reports.b44f045982.webp",
+      "assetUrl": "https://info.cell.com/hs-fs/hubfs/CellReports_cover.jpg?width=366&height=477&name=CellReports_cover.jpg",
+      "kind": "official-display",
+      "width": 480,
+      "height": 624,
+      "sha256": "b44f04598203440d87ac7961d01ff59eb4b062cbe91da596d5f6ae0a210420da",
+      "originalSha256": "921342695e90503ef7db26c48155a20c649e399fe01029a22bdd78a7b7b0192b"
+    }
+  },
+  "jingjixuejia": {
+    "category": "经济与管理",
+    "tags": [
+      "经济学",
+      "金融",
+      "人文社科"
+    ],
+    "aliases": [
+      "Economist",
+      "经济理论"
+    ],
+    "description": "由西南财经大学承办的经济理论刊物。关注经济学理论与财经领域研究。",
+    "descriptionSource": "https://jjxj.swufe.edu.cn/CN/column/column1.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://jjxj.swufe.edu.cn/CN/home",
+      "acquiredOn": "2026-10-17",
+      "issue": "2026年第10期",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "kind": "issue",
+      "src": "/journal-covers/jingjixuejia.13a6537371.webp",
+      "assetUrl": "https://jjxj.swufe.edu.cn/fileup/1003-5656/COVER/volumn_20261013152011.png",
+      "width": 480,
+      "height": 612,
+      "sha256": "13a6537371540a705528e24e24f1c2c29679db7464a64e09ba14ff14d9f3e5df",
+      "originalSha256": "a622035e110708c70e6381c5b0db732c27ab86a0a3d9ae875b55636bbaf62a3a",
+      "note": "从西南财经大学期刊官网的当期目录取得；封面明确标注 2026 年第 10 期。"
+    }
+  },
+  "caijing-luncong": {
+    "category": "经济与管理",
+    "tags": [
+      "经济学",
+      "管理学",
+      "金融",
+      "会计",
+      "人文社科"
+    ],
+    "aliases": [
+      "Collected Essays on Finance and Economics",
+      "浙江财经大学学报"
+    ],
+    "description": "浙江财经大学主办的财经学术期刊。官网栏目包括金融与投资等经济、管理研究方向。",
+    "descriptionSource": "https://cjlc.zufe.edu.cn/CN/1004-4892/home.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://cjlc.zufe.edu.cn/CN/1004-4892/home.shtml",
+      "acquiredOn": "2026-10-16",
+      "issue": "2026 年 · 第 42 卷第 10 期",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/caijing-luncong.4b186b4f40.webp",
+      "assetUrl": "https://cjlc.zufe.edu.cn/fileup/1004-4892/COVER/20261009114142.jpg",
+      "kind": "issue",
+      "width": 456,
+      "height": 640,
+      "sha256": "4b186b4f401b4e951c633cd5f486141821ca33806552dc13796315016b7823cc",
+      "originalSha256": "63c34ddf6e58a33ccb00c6452deb8e06fea1133655b35ed06da8fa3e68b54bad"
+    }
+  },
+  "shanxi-finance-economics": {
+    "category": "经济与管理",
+    "tags": [
+      "经济学",
+      "管理学",
+      "金融",
+      "人文社科"
+    ],
+    "aliases": [
+      "Journal of Shanxi University of Finance and Economics",
+      "山财学报"
+    ],
+    "description": "山西财经大学的经管类学术期刊。关注经济与管理理论研究及相关学术成果。",
+    "descriptionSource": "https://xygz.sxufe.edu.cn/info/1043/4931.htm",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://xb.sxufe.edu.cn/info/1009/2423.htm",
+      "acquiredOn": "2026-10-17",
+      "issue": "2026年第48卷第8期",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "kind": "issue",
+      "src": "/journal-covers/shanxi-finance-economics.73e2ff47eb.webp",
+      "assetUrl": "https://xb.sxufe.edu.cn/__local/F/8D/15/83757C7CAFBF5DC398AE2E14140_09AF0D2A_854EE.jpg",
+      "width": 457,
+      "height": 640,
+      "sha256": "73e2ff47ebb9dfeb549d32e70943aec91fa7846d3c6b8888a182bf2c271f9f6a",
+      "originalSha256": "c498d697d60424a7ba037045525a162f94a7330c935e4236e33af32324ef6fe4",
+      "note": "山西财经大学学报官网首页展示并链接该期目录；目录网页发布日为 2026-09-28，封面卷期为 2026 年第 48 卷第 8 期。"
+    }
+  },
+  "social-sciences-in-china": {
+    "category": "人文与社会科学",
+    "tags": [
+      "人文社科",
+      "哲学",
+      "经济学",
+      "社会学",
+      "历史学",
+      "文学"
+    ],
+    "aliases": [
+      "Social Sciences in China",
+      "中国社科"
+    ],
+    "description": "中国社会科学杂志社编辑出版的综合性哲学社会科学期刊。覆盖哲学、经济学、政治学、法学、社会学、历史学、文学及跨学科研究。",
+    "descriptionSource": "https://sscp.cssn.cn/kbw/zgshkx/",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://sscp.cssn.cn/kbw/zgshkx/",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/social-sciences-in-china.4a79bf5fc4.webp",
+      "assetUrl": "https://sscp.cssn.cn/kbw/zgshkx/202411/W020260227413832434557.png",
+      "kind": "official-display",
+      "width": 458,
+      "height": 640,
+      "sha256": "4a79bf5fc437aa6972ccff0d10b6cb942a438eb94056b31b0146647247ba1955",
+      "originalSha256": "340bc4e0d0c8475f5cc0c32400933ea7fcf67e6c60051b9a10c2fae372f378a4"
+    }
+  },
+  "sage-open": {
+    "category": "人文与社会科学",
+    "tags": [
+      "人文社科",
+      "社会学",
+      "心理学",
+      "教育",
+      "经济学"
+    ],
+    "aliases": [
+      "SGO",
+      "SAGE",
+      "赛奇开放"
+    ],
+    "description": "开放获取的同行评审期刊，发表原创研究和综述。范围覆盖社会科学、行为科学与人文学科。",
+    "descriptionSource": "https://journals.sagepub.com/home/sgo",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://journals.sagepub.com/home/sgo",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/sage-open.2527ef2711.webp",
+      "assetUrl": "https://journals.sagepub.com/cms/asset/6799063c-7244-44ed-8e9d-132b8a01550d/default_cover.jpg",
+      "kind": "official-display",
+      "width": 480,
+      "height": 623,
+      "sha256": "2527ef2711f0c7e377fc9d18497b5183359e3c871cfbdab194942cc7a7422a02",
+      "originalSha256": "fb552c4f0568d8ec0a0ad8b20234ad997c6f50ed69536991649caad8b14243d1"
+    }
+  },
+  "hssc": {
+    "category": "人文与社会科学",
+    "tags": [
+      "人文社科",
+      "社会学",
+      "心理学",
+      "教育",
+      "经济学"
+    ],
+    "aliases": [
+      "Humanities & Social Sciences Communications",
+      "HSSC",
+      "人文与社会科学通讯",
+      "人文社科通讯",
+      "Palgrave Communications"
+    ],
+    "description": "发表人文、社会与行为科学研究的开放获取期刊。接收单一学科及跨学科研究，文章类型包括研究论文、综述与评论。",
+    "descriptionSource": "https://www.nature.com/palcomms/journal-information",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://x.com/HSScomms",
+      "acquiredOn": "2026-10-17",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "kind": "official-display",
+      "src": "/journal-covers/hssc.b4aa599654.webp",
+      "assetUrl": "https://pbs.twimg.com/media/Gdz8uBLXAAEq6Sg.png",
+      "width": 480,
+      "height": 480,
+      "sha256": "b4aa5996546ba1a16a1efe8b8133d8b4c119d5bbe5e4561ff0ed29bb21fecf00",
+      "originalSha256": "9f47916742d362fce0fba2ba713aedc2140134a31bf9a3f27efac0b12186ac58",
+      "note": "期刊官方社交账号展示封面，无卷期标注；Nature 期刊官网直接链接该 HSScomms 账号。保留原始方形比例。",
+      "verificationSourceUrl": "https://www.nature.com/palcomms/"
+    }
+  },
+  "population-research": {
+    "category": "人文与社会科学",
+    "tags": [
+      "人口学",
+      "社会学",
+      "人文社科"
+    ],
+    "aliases": [
+      "Population Research",
+      "人口"
+    ],
+    "description": "关注人口学研究成果、信息与分析方法。强调理论与现实人口问题相结合，为人口科学研究与政策讨论提供交流平台。",
+    "descriptionSource": "https://rkyj.ruc.edu.cn/CN/column/column1.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://rkyj.ruc.edu.cn/CN/home",
+      "acquiredOn": "2026-10-16",
+      "issue": "2026 年 · 第 50 卷第 5 期",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/population-research.6525a465f9.webp",
+      "assetUrl": "https://rkyj.ruc.edu.cn/fileup/1000-6087/COVER/20261009110704.jpg",
+      "kind": "issue",
+      "width": 469,
+      "height": 640,
+      "sha256": "6525a465f9f0c211155522afb958f010a1bf257d00c240d0d08f98a87b5d1c21",
+      "originalSha256": "c08ac5eaedf9ff49b73a16b9250a753213111d9717bfc3382340740093a8cfbb"
+    }
+  },
+  "acta-psychologica-sinica": {
+    "category": "人文与社会科学",
+    "tags": [
+      "心理学",
+      "行为科学",
+      "人文社科"
+    ],
+    "aliases": [
+      "Acta Psychologica Sinica",
+      "APS",
+      "心理"
+    ],
+    "description": "中国心理学会和中国科学院心理研究所主办的心理学期刊。主要发表心理学科技研究论文。",
+    "descriptionSource": "https://journal.psych.ac.cn/xlxb/CN/column/column1.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://journal.psych.ac.cn/xlxb/CN/article/showOldVolumnList.do",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/acta-psychologica-sinica.d761268784.webp",
+      "assetUrl": "https://journal.psych.ac.cn/xlxb/fileup/0439-755X/COVER/20260729162856.jpg",
+      "kind": "official-display",
+      "width": 113,
+      "height": 159,
+      "sha256": "d761268784ff776d98308f22fd2efaa3c8761c4aef46be305a7a466195c517ce",
+      "originalSha256": "1b642515a45856030b60a83b41ff4e28db00184f90779a4d052ef548752a5293",
+      "note": "官网仅取得小尺寸封面缩略图；保持原比例，未用放大或生成补细节。"
+    }
+  },
+  "advances-psychological-science": {
+    "category": "人文与社会科学",
+    "tags": [
+      "心理学",
+      "行为科学",
+      "人文社科"
+    ],
+    "aliases": [
+      "Advances in Psychological Science",
+      "心理进展"
+    ],
+    "description": "关注心理学各领域的研究进展。主要发表文献综述与评论，栏目包括研究构想、研究前沿、元分析和研究方法。",
+    "descriptionSource": "https://journal.psych.ac.cn/xlkxjz/CN/column/column1.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://journal.psych.ac.cn/xlkxjz/CN/article/showOldVolumnList.do",
+      "acquiredOn": "2026-10-16",
+      "issue": null,
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/advances-psychological-science.ff363f9c43.webp",
+      "assetUrl": "https://journal.psych.ac.cn/xlkxjz/fileup/1671-3710/COVER/20260720181050.jpg",
+      "kind": "official-display",
+      "width": 110,
+      "height": 155,
+      "sha256": "ff363f9c431f021dc996ba90897bc0b0ed0d367c6ee2b0005820f1339b3d821b",
+      "originalSha256": "16dd5631bfbe59a4eb3c6490c63a0f617f2d48dd8a325c3d326b879454d20529",
+      "note": "官网仅取得小尺寸封面缩略图；保持原比例，未用放大或生成补细节。"
+    }
+  },
+  "library-information-service": {
+    "category": "人文与社会科学",
+    "tags": [
+      "图书情报",
+      "图书馆学",
+      "情报学",
+      "信息资源管理",
+      "数字人文",
+      "人文社科"
+    ],
+    "aliases": [
+      "Library and Information Service",
+      "LIS",
+      "图情"
+    ],
+    "description": "面向信息资源管理学科及相关领域的学术期刊。报道理论研究与实践进展，关注知识组织、知识服务、情报研究及信息技术等方向。",
+    "descriptionSource": "https://www.lis.ac.cn/CN/column/column30.shtml",
+    "checkedOn": "2026-10-16",
+    "cover": {
+      "sourceUrl": "https://www.lis.ac.cn/CN/0252-3116/home.shtml",
+      "acquiredOn": "2026-10-16",
+      "issue": "2026 年 · 第 70 卷第 20 期",
+      "usageNote": "封面版权归原权利人；已核对来源页，未取得覆盖本封面的独立再分发授权。仅作本地开发中的期刊识别展示，公开分发前仍需确认使用权；不将论文的开放许可推定为封面许可。",
+      "src": "/journal-covers/library-information-service.6c084470e4.webp",
+      "assetUrl": "https://www.lis.ac.cn/fileup/0252-3116/COVER/20261013151220.jpg",
+      "kind": "issue",
+      "width": 446,
+      "height": 640,
+      "sha256": "6c084470e436e41daed36e047358eddce59a335753768c083809ceb86b29838d",
+      "originalSha256": "ab16f2602a051c19301d372b839a9ef29737a0e70d6b87b4b47c130b90be91fe"
+    }
+  }
+}

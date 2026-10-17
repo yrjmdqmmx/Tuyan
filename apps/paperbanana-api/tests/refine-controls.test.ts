@@ -13,7 +13,7 @@ async function upload(f: Awaited<ReturnType<typeof createRefineRuntime>>, bytes=
   return file
 }
 function request(provider:string,model:string,source:string,inputs:any={version:1}) {
-  return {action:'refineImage',provider:'openai',configurationMode:'advanced',modelRoutes:{main:{accessProvider:'openai',modelId:'gpt-4.1'},vision:{accessProvider:'openai',modelId:'gpt-4.1'},image:{accessProvider:provider,modelId:model}},apiKeys:{[provider]:'private-fixture-key'},sourceImageUpload:{objectKey:source},editInstruction:'修改节点边框，保持所有数值与箭头关系不变。',imageSize:provider==='fal'||provider==='replicate'?'auto':'1K',aspectRatio:'auto',refineInputs:inputs}
+  return {action:'refineImage',provider:'openai',configurationMode:'advanced',modelRoutes:{main:{accessProvider:'openai',modelId:'gpt-4.1'},vision:{accessProvider:'openai',modelId:'gpt-4.1'},image:{accessProvider:provider,modelId:model}},apiKeys:{openai:'fixture-main-vision-key',[provider]:'private-fixture-key'},sourceImageUpload:{objectKey:source},editInstruction:'修改节点边框，保持所有数值与箭头关系不变。',imageSize:provider==='fal'||provider==='replicate'?'auto':'1K',aspectRatio:'auto',refineInputs:inputs}
 }
 const firstSubmission=(f:any,provider:string)=>f.providerCalls.find((call:any)=>call.options.method==='POST'&&call.url.includes(provider==='tokenhub'?'tokenhub.tencentmaas':provider==='runware'?'api.runware':provider==='fal'?'queue.fal':'api.replicate'))
 
@@ -106,15 +106,20 @@ test('refining an owned historical image freezes its orientation-corrected pixel
   } finally {await f.close()}
 })
 
-for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['stepfun','step-2x-large','lost-submit',false],['stepfun','step-2x-large','download',true]] as const) test(`${provider} ${scenario}: recovery never repeats billed submission`,async()=>{
+for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-image-edit@2511','lost-submit',true],['tokenhub','hy-image-v3','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','lost-submit',false],['fal','bria/fibo-edit-1.5/edit','download',true],['tokenhub','hy-image-v3','download',true],['sensenova','sensenova-u1.5-lite','lost-submit',false],['sensenova','sensenova-u1.5-lite','download',true],['qianfan','qwen-image-edit','lost-submit',false],['qianfan','qwen-image-edit','download',true],['stepfun','step-2x-large','lost-submit',false],['stepfun','step-2x-large','download',true]] as const) test(`${provider} ${scenario}: recovery never repeats billed submission`,async(t)=>{
+  // Exercise the historical adapter before its 2026-10-10 retirement. Lifecycle
+  // rejection is tested independently; recovery behavior must not depend on today.
+  if(provider==='stepfun')t.mock.timers.enable({apis:['Date'],now:new Date('2026-10-09T08:00:00Z')})
   const f=await createRefineRuntime({tokenDance:true})
   try {
     const source=await upload(f,['sensenova','qianfan','stepfun'].includes(provider)?await sharp({create:{width:1024,height:1024,channels:3,background:'#b1c5ae'}}).png().toBuffer():f.image);f.setChannelFailure(scenario)
     const submitted=await f.post(request(provider,model,source.objectKey));assert.equal(submitted.data.code,0,JSON.stringify(submitted));await f.legacy.drainJobAdmission()
     const failed=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job
     assert.equal(failed.status,'failed',JSON.stringify(failed));assert.equal(failed.recovery.canResume,resumable,JSON.stringify(failed));assert.equal(failed.recovery.channel,provider)
-    const submissions=()=>f.providerCalls.filter(call=>call.options.method==='POST'&&(provider!=='runware'||JSON.parse(String(call.options.body))[0].taskType==='imageInference')).length
+    const submissions=()=>f.providerCalls.filter(call=>call.options.method==='POST'&&!call.url.startsWith('https://api.openai.com/')&&(provider!=='runware'||JSON.parse(String(call.options.body))[0].taskType==='imageInference')).length
     assert.equal(submissions(),1)
+    const planningCalls = f.providerCalls.filter(call=>call.url.startsWith('https://api.openai.com/')).length
+    assert.equal(planningCalls,2,'one observer and one main planner call')
     f.setChannelFailure('')
     const resumed=await f.post({action:'providerResume',jobId:submitted.data.jobId})
     if (resumable) {
@@ -123,6 +128,7 @@ for (const [provider,model,scenario,resumable] of [['runware','alibaba:qwen-imag
       assert.equal(done.status,'succeeded',JSON.stringify(done));assert.equal(done.providerCalls.length,1)
     } else assert.notEqual(resumed.data.code,0)
     assert.equal(submissions(),1);assert.equal(f.tokenDanceCalls.length,0)
+    assert.equal(f.providerCalls.filter(call=>call.url.startsWith('https://api.openai.com/')).length,planningCalls,'resume reuses observer and planner work')
   } finally {await f.close()}
 })
 
@@ -170,7 +176,7 @@ test('Responses image tool follows existing refine workflow with owned source an
     const custom=universalExtensionDeclaration({version:1,connectionId:'custom_image',baseUrl:'https://api.openai.com/v1',protocol:'openai-responses',auth:'bearer',compatibility:'standard',imageTool:{provider:'openai',model:'gpt-image-1.5'},capabilities:{text:false,vision:false,imageGeneration:true,imageEditing:true},outputLimits:{maxBytes:10000000,maxDimension:8192,maxPixels:32000000,mimeTypes:['image/png']},inputLimits:{maxCount:8,maxBytes:5000000,maxTotalBytes:20000000,maxDimension:4096,maxPixels:16000000,requestMaxBytes:30000000,mimeTypes:['image/png']}},'gpt-4.1')!
     const body:any=request('custom','gpt-4.1',source.objectKey,{version:1,references:[{objectKey:ref.objectKey,purpose:'color',note:'只参考配色'}]})
     body.imageSize='auto';body.modelRoutes.image.custom=custom
-    body.apiKeys={custom:JSON.stringify({custom_image:{baseUrl:custom.baseUrl,protocol:custom.protocol,auth:custom.auth,apiKey:'fixture-image-role'}})}
+    body.apiKeys={openai:'fixture-main-vision-key',custom:JSON.stringify({custom_image:{baseUrl:custom.baseUrl,protocol:custom.protocol,auth:custom.auth,apiKey:'fixture-image-role'}})}
     const submitted=await f.post(body);assert.equal(submitted.data.code,0,JSON.stringify(submitted))
     await f.post({action:'abortReferenceUpload',uploads:[source,ref]});await f.legacy.drainJobAdmission()
     const done=(await f.post({action:'getJob',jobId:submitted.data.jobId})).data.job

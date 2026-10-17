@@ -1,0 +1,48 @@
+{
+  "figureTypeId": "parallel_coordinates",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "id": "P1",
+        "height": 160,
+        "mass": 50,
+        "age": 30
+      },
+      {
+        "id": "P2",
+        "height": 180,
+        "mass": 80,
+        "age": 50
+      }
+    ],
+    "units": {},
+    "options": {
+      "axes": [
+        {
+          "id": "height",
+          "min": 140,
+          "max": 200,
+          "unit": "cm"
+        },
+        {
+          "id": "mass",
+          "min": 40,
+          "max": 100,
+          "unit": "kg"
+        },
+        {
+          "id": "age",
+          "min": 20,
+          "max": 60,
+          "unit": "year"
+        }
+      ],
+      "normalization": "axis_range"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

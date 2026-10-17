@@ -1,0 +1,20 @@
+
+> @paperbanana/paperbanana-api@0.1.0 build /Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009/apps/paperbanana-api
+> esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/server.cjs --define:import.meta.url='"file:///app/node_modules/@paperbanana/benchmark-core/src/scientific-edit-source.js"' --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:ali-oss --external:express --external:mongodb --external:sharp && esbuild src/image-runtime-entry.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/image-runtime.mjs --alias:jpeg-js=./node_modules/jpeg-js --external:@resvg/resvg-wasm --external:sharp && esbuild src/scientific-v2-lineage-inspector.ts --bundle --platform=node --target=node24 --format=esm --outfile=dist/scientific-v2-lineage-inspector.mjs --external:mongodb && esbuild src/svg-review.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/svg-review.cjs --define:import.meta.url='"file:///app/dist/svg-review.cjs"'
+
+
+  dist/server.cjs  10.8mb ⚠️
+
+⚡ Done in 146ms
+
+  dist/image-runtime.mjs  9.1mb ⚠️
+
+⚡ Done in 130ms
+
+  dist/scientific-v2-lineage-inspector.mjs  375.9kb
+
+⚡ Done in 8ms
+
+  dist/svg-review.cjs  6.5kb
+
+⚡ Done in 1ms

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="648pt" height="364.5pt" viewBox="0 0 648 364.5" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 364.5  L 648 364.5  L 648 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 467.399808 182.25  C 467.399808 151.971639 457.810055 122.457416 440.012882 97.961708  C 422.215708 73.465999 397.10941 55.225206 368.312978 45.868678  L 324 182.25  z " style="fill: #487968" />
+   </g>
+   <g id="patch_3">
+    <path d="M 368.312978 45.868678  C 332.156274 34.120653 292.771608 37.220294 258.89785 54.479836  C 225.024091 71.739377 199.366703 101.780319 187.618678 137.937022  C 175.870653 174.093726 178.970294 213.478392 196.229836 247.35215  C 213.489377 281.225909 243.530319 306.883297 279.687022 318.631322  L 324 182.25  z " style="fill: #c58b53" />
+   </g>
+   <g id="patch_4">
+    <path d="M 279.687022 318.631322  C 301.208365 325.62403 324.082393 327.424255 346.432672 323.884318  C 368.782952 320.344382 389.981145 311.563803 408.288292 298.262882  C 426.59544 284.961961 441.496869 267.514629 451.770164 247.35215  C 462.04346 227.189672 467.399808 204.878879 467.399808 182.25  L 324 182.25  z " style="fill: #647da6" />
+   </g>
+   <g id="matplotlib.axis_1" />
+   <g id="matplotlib.axis_2" />
+   <g id="text_1">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: start" x="451.61417" y="93.438503" transform="rotate(-0 451.61417 93.438503)">Alpha</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="173.980546" y="138.065725" transform="rotate(-0 173.980546 138.065725)">Beta</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 12px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: start" x="416.717122" y="314.42417" transform="rotate(-0 416.717122 314.42417)">Gamma</text>
+   </g>
+  </g>
+ </g>
+</svg>

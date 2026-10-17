@@ -1,0 +1,60 @@
+{
+  "id": "pcbi.1007732.g001",
+  "paper": "pcbi.1007732",
+  "figure": {
+    "id": "pcbi.1007732.g001",
+    "label": "Fig 1",
+    "caption": "Flowchart of PPanGGOLiN on a toy example of 4 genomes.\nThe method requires annotated genomes of the same species with their genes clustered into homologous gene families. Annotations and gene families can be predicted by PPanGGOLiN or directly provided by the user. Based on these inputs, a pangenome graph is built by merging homologous genes and their genomic links. Nodes represent gene families and edges represent genomic neighborhood. The edges are labeled by identifiers of genomes sharing the same gene neighborhood. In parallel, gene families are encoded as a presence/absence matrix that indicates for each family whether or not it is present in the genomes. The pangenome is then divided into K partitions (K = 3 in this example) by estimating the best partitioning parameters through an Expectation-Maximization algorithm. The method involves the maximization of the likelihood of a multivariate Bernoulli Mixture Model taking into account the constraint of a Markov Random Field (MRF). The MRF network is given by the pangenome graph and it favors two neighbors to be more likely classified in the same partition. At the end of this iterative process, PPanGGOLiN returns a partitioned pangenome graph where persistent, shell and cloud partitions are overlaid on the neighborhood graph. In addition, many tables, charts and statistics are provided by the software. The number of partitions (K) can either be provided by the user or determined by the algorithm.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1007732.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1007732.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Flowchart of PPanGGOLiN on a toy example of 4 genomes.</title>\n<p>The method requires annotated genomes of the same species with their genes clustered into homologous gene families. Annotations and gene families can be predicted by PPanGGOLiN or directly provided by the user. Based on these inputs, a pangenome graph is built by merging homologous genes and their genomic links. Nodes represent gene families and edges represent genomic neighborhood. The edges are labeled by identifiers of genomes sharing the same gene neighborhood. In parallel, gene families are encoded as a presence/absence matrix that indicates for each family whether or not it is present in the genomes. The pangenome is then divided into <italic>K</italic> partitions (<italic>K</italic> = 3 in this example) by estimating the best partitioning parameters through an Expectation-Maximization algorithm. The method involves the maximization of the likelihood of a multivariate Bernoulli Mixture Model taking into account the constraint of a Markov Random Field (MRF). The MRF network is given by the pangenome graph and it favors two neighbors to be more likely classified in the same partition. At the end of this iterative process, PPanGGOLiN returns a partitioned pangenome graph where persistent, shell and cloud partitions are overlaid on the neighborhood graph. In addition, many tables, charts and statistics are provided by the software. The number of partitions (<italic>K</italic>) can either be provided by the user or determined by the algorithm.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1007732.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1007732.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1007732",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1007732",
+    "title": "PPanGGOLiN: Depicting microbial diversity via a partitioned pangenome graph",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Guillaume Gautreau",
+      "Adelme Bazin",
+      "Mathieu Gachet",
+      "Rémi Planel",
+      "Laura Burlot",
+      "Mathieu Dubois",
+      "Amandine Perrin",
+      "Claudine Médigue",
+      "Alexandra Calteau",
+      "Stéphane Cruveiller",
+      "Catherine Matias",
+      "Christophe Ambroise",
+      "Eduardo P. C. Rocha",
+      "David Vallenet"
+    ],
+    "year": "2020",
+    "license": "2020\nGautreau et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1007732.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1007732.g001.png",
+      "bytes": 1261064,
+      "sha256": "ef51c2ec96e223e115ec04f5fd630569a5501a03357bc7f1a6d64a97be4ffaeb"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1007732.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1007732.g001.tif",
+      "bytes": 1614236,
+      "sha256": "ff739aa79e5a0230fbb714c8c6f07994dd049e7475176009949db1d5c2c28daf"
+    }
+  }
+}

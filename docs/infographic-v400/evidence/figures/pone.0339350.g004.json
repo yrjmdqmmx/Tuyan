@@ -1,0 +1,49 @@
+{
+  "id": "pone.0339350.g004",
+  "paper": "pone.0339350",
+  "figure": {
+    "id": "pone.0339350.g004",
+    "label": "Fig 4",
+    "caption": "Scores and interrelationships of the best predictors for predicting SOC.Note: Black arrow shows positive influence, red arrow shows negative influence, the value on each arrow lines are the path coefficient. ^{*} presents significant at P < 0.05, ^{**} presents significant at P < 0.01, ^{***} presents significant at P < 0.001. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; GP: Gram-positive bacteria; C:N: carbon nitrogen ratio; LS: litter storage; FRB: fine root biomass.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0339350.g004\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0339350.g004</object-id><label>Fig 4</label><caption><title>Scores and interrelationships of the best predictors for predicting SOC.</title><p>Note: Black arrow shows positive influence, red arrow shows negative influence, the value on each arrow lines are the path coefficient. <sup>*</sup> presents significant at <italic>P</italic> &lt; 0.05, <sup>**</sup> presents significant at <italic>P</italic> &lt; 0.01, <sup>***</sup> presents significant at <italic>P</italic> &lt; 0.001. SOC: soil organic carbon; RC: recalcitrant carbon; LC: labile carbon; GP: Gram-positive bacteria; C:N: carbon nitrogen ratio; LS: litter storage; FRB: fine root biomass.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0339350.g004\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0339350.g004",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0339350",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0339350",
+    "title": "Differences in soil carbon fractions and microbial communities and their underlying mechanisms between assisted natural regeneration and plantation forests in subtropical China",
+    "journal": "PLOS One",
+    "authors": [
+      "Zhiqiang Ding",
+      "Zhijie Yang",
+      "Yusheng Yang"
+    ],
+    "year": "2026",
+    "license": "2026\nDing et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0339350.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0339350.g004.png",
+      "bytes": 350512,
+      "sha256": "0c2ded7f9226cbabdbb43daca38fcf73b3bee28d81a112d10d23f177f32fb319"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0339350.g004",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0339350.g004.tif",
+      "bytes": 417368,
+      "sha256": "385ff3f1acd783523e5b7749dfec0ec4e04e0e2401a7d22d875c02547779044a"
+    }
+  }
+}

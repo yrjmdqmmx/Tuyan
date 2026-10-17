@@ -51,17 +51,17 @@ export function filterRegistryModels(models, { role, query = '', outputFormat = 
       || Number(left.selectable === false) - Number(right.selectable === false))
 }
 
-export function partitionRegistryModels(models, { role, query = '', outputFormat = '', recommendedOnly = false } = {}) {
+export function partitionRegistryModels(models, { role, query = '', outputFormat = '', operation = '', recommendedOnly = false } = {}) {
   const needle = query.trim().toLocaleLowerCase('zh-CN')
   const annotated = (models || [])
     .filter((model) => model?.roles?.includes(role)
+      || model?.catalogDiscovered === true
       || Boolean(model?.roleReasons?.[role])
       || (role === 'image' && model?.protocol === 'openrouter-images'))
-    .filter((model) => !modelUnavailableForSelection(model))
     .filter((model) => !recommendedOnly || (model.recommended === true && model.lifecycle === 'stable'))
     .filter((model) => !needle || registryModelSearchValues(model)
       .some((value) => value.toLocaleLowerCase('zh-CN').includes(needle)))
-    .map((model) => annotateModelForRole(model, { role, outputFormat }))
+    .map((model) => annotateModelForRole(model, { role, outputFormat, operation }))
 
   return {
     compatible: sortModelsNewestFirst(annotated.filter((model) => !model.selectionDisabled)),
@@ -92,17 +92,23 @@ function registryModelSearchValues(model) {
   ].map((value) => String(value || ''))
 }
 
-function annotateModelForRole(model, { role, outputFormat }) {
+function annotateModelForRole(model, { role, outputFormat, operation }) {
   const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
   const outputFormats = model.capabilities?.outputFormats || []
   const roleMismatch = !model.roles?.includes(role)
   const formatMismatch = role === 'image' && outputFormat && outputFormats.length && !outputFormats.includes(outputFormat)
+  const generationMismatch = role === 'image' && operation === 'generation'
+    && (model.capabilities?.requiresSourceImage === true || model.capabilities?.imageGeneration === false)
+  const editingMismatch = role === 'image' && operation === 'editing'
+    && Array.isArray(model.capabilities?.refineResolutions) && !model.capabilities.refineResolutions.length
   return {
     ...model,
-    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch),
+    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch) || generationMismatch || editingMismatch,
     selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
-      || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : ''),
+      || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : '')
+      || (generationMismatch ? '该模型仅支持图像编辑' : '')
+      || (editingMismatch ? '该模型没有可用的精修输出参数' : ''),
   }
 }
 

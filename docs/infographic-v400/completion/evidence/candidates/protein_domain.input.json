@@ -1,0 +1,40 @@
+{
+  "figureTypeId": "protein_domain",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "protein": "P1",
+        "label": "Domain A",
+        "start": 10,
+        "end": 80,
+        "evidence": "synthetic prediction"
+      },
+      {
+        "protein": "P1",
+        "label": "Domain B",
+        "start": 60,
+        "end": 130,
+        "evidence": "synthetic prediction"
+      }
+    ],
+    "units": {
+      "start": "aa",
+      "end": "aa"
+    },
+    "options": {
+      "proteins": [
+        {
+          "id": "P1",
+          "length": 180
+        }
+      ],
+      "database": "Synthetic domain annotations v1",
+      "coordinateSystem": "one_based_inclusive"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

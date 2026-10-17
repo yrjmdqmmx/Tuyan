@@ -1,0 +1,81 @@
+{
+  "doi": "10.1371/journal.pone.0204309",
+  "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0204309",
+  "title": "Multidimensional mechanics: Performance mapping of natural biological systems using permutated radar charts",
+  "journal": "PLOS ONE",
+  "authors": [
+    "Michael M. Porter",
+    "Pooya Niksiar"
+  ],
+  "year": "2018",
+  "license": "2018\nPorter, Niksiar\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pone.0204309.g001",
+      "label": "Fig 1",
+      "caption": "Mechanical properties of structural biological materials.\n(a) Mechanical property chart comparing the strength and modulus of twelve natural materials (see Box 1); (b-e) representative stress-strain curves of the four structural classes of materials. Notes: Guidelines shown in (a) are derived material indices for elastic hinges (σ/E) and springs (σ^{2}/E) as defined by Ashby [4]. The icons in the upper-right corners of (b-e) indicate the modes of loading: tension, bending, or compression. Data used to create the figures are listed in S1–S6 Tables, compiled from numerous sources (see Supporting Information).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0204309.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Mechanical properties of structural biological materials.</title>\n<p>(a) Mechanical property chart comparing the strength and modulus of twelve natural materials (see <xref ref-type=\"boxed-text\" rid=\"pone.0204309.box001\">Box 1</xref>); (b-e) representative stress-strain curves of the four structural classes of materials. <underline>Notes</underline>: Guidelines shown in (a) are derived material indices for elastic hinges (<italic>σ</italic>/<italic>E</italic>) and springs (<italic>σ</italic><sup>2</sup>/<italic>E</italic>) as defined by Ashby [<xref ref-type=\"bibr\" rid=\"pone.0204309.ref004\">4</xref>]. The icons in the upper-right corners of (b-e) indicate the modes of loading: tension, bending, or compression. Data used to create the figures are listed in <xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s003\">S1</xref>–<xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s008\">S6</xref> Tables, compiled from numerous sources (see <xref ref-type=\"sec\" rid=\"sec018\">Supporting Information</xref>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0204309.g002",
+      "label": "Fig 2",
+      "caption": "Methods of axis-sorting and shape moments using radar charts.\n(a) All possible permutations of the N = 5 mechanical properties of the collagenous tissues dataset, where the instance resulting in a maximal total area (12) is boxed with a dashed line. (b) The “permutated radar chart” yielding a maximal total area used for shape descriptor analyses. (c) The property profile of dentin (red), illustrating its area (A), centroidal distance (R), and the x,y-coordinates of point (a,b) located at the intersection of a vector passing through the profile’s centroid and the perimeter of a unit circle; the area of the property space (grey) of a regular pentagon is A_{5} ≈ 2.4. (d) The relative first moment of area Q′ about the outer limits of the property space (a,b) for the five materials across all 12 permutations; notice that the maximum values for Q′ are nearly equivalent to those of the maximal area permutation. Legend: dentin = red; bone = yellow; tendon = green; skin = blue; cartilage = purple; total permutation area (A˜) = black dashed line (right axis).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0204309.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Methods of axis-sorting and shape moments using radar charts.</title>\n<p>(a) All possible permutations of the <italic>N</italic> = 5 mechanical properties of the collagenous tissues dataset, where the instance resulting in a maximal total area (12) is boxed with a dashed line. (b) The “permutated radar chart” yielding a maximal total area used for shape descriptor analyses. (c) The property profile of dentin (red), illustrating its area (<italic>A</italic>), centroidal distance (<italic>R</italic>), and the <italic>x</italic>,<italic>y</italic>-coordinates of point (<italic>a</italic>,<italic>b</italic>) located at the intersection of a vector passing through the profile’s centroid and the perimeter of a unit circle; the area of the property space (grey) of a regular pentagon is <italic>A</italic><sub>5</sub> ≈ 2.4. (d) The relative first moment of area <italic>Q</italic>′ about the outer limits of the property space (<italic>a</italic>,<italic>b</italic>) for the five materials across all 12 permutations; notice that the maximum values for <italic>Q</italic>′ are nearly equivalent to those of the maximal area permutation. <underline>Legend</underline>: dentin = red; bone = yellow; tendon = green; skin = blue; cartilage = purple; total permutation area (<inline-formula id=\"pone.0204309.e007\"><alternatives><graphic id=\"pone.0204309.e007g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.e007\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M7\"><ns1:mover accent=\"true\"><ns1:mrow><ns1:mi>A</ns1:mi></ns1:mrow><ns1:mo>˜</ns1:mo></ns1:mover></ns1:math></alternatives></inline-formula>) = black dashed line (right axis).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g002\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "id": "pone.0204309.e007g",
+        "mimetype": "image",
+        "position": "anchor",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.e007",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0204309.g003",
+      "label": "Fig 3",
+      "caption": "Multidimensional mechanics of structural biological materials.\nNormalized, permutated radar charts comparing four structural classes of natural materials (see Box 1). Legend (units): elastic and shear moduli, E and G (GPa); strain to failure, ε (%); tensile, compressive and flexural strength, σ_{T}, σ_{C} and σ_{F} (MPa); toughness, u_{T} (MJ·m^{-3}) or u_{T}* (kJ·m^{-2}); fracture toughness, K_{IC} (MPa·m^{1/2}); resilience, u_{R} (%); damping loss factor, tan δ (no units); hardness, H (MPa); impact strength, IS (kJ·m^{-2}). Notes: Data averages (lines) and standard deviations/errors/ranges (shaded regions) are listed in S1–S4 Tables, compiled from numerous sources (see Supporting Information); for reference, maximum values of each average property are displayed on the axes.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0204309.g003\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g003</object-id>\n<label>Fig 3</label>\n<caption>\n<title>Multidimensional mechanics of structural biological materials.</title>\n<p>Normalized, permutated radar charts comparing four structural classes of natural materials (see <xref ref-type=\"boxed-text\" rid=\"pone.0204309.box001\">Box 1</xref>). <underline>Legend</underline> (units): elastic and shear moduli, E and G (GPa); strain to failure, ε (%); tensile, compressive and flexural strength, σ<sub>T</sub>, σ<sub>C</sub> and σ<sub>F</sub> (MPa); toughness, u<sub>T</sub> (MJ·m<sup>-3</sup>) or u<sub>T</sub>* (kJ·m<sup>-2</sup>); fracture toughness, K<sub>IC</sub> (MPa·m<sup>1/2</sup>); resilience, u<sub>R</sub> (%); damping loss factor, tan δ (no units); hardness, H (MPa); impact strength, IS (kJ·m<sup>-2</sup>). <underline>Notes</underline>: Data averages (lines) and standard deviations/errors/ranges (shaded regions) are listed in <xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s003\">S1</xref>–<xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s006\">S4</xref> Tables, compiled from numerous sources (see <xref ref-type=\"sec\" rid=\"sec018\">Supporting Information</xref>); for reference, maximum values of each average property are displayed on the axes.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g003\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.g003",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0204309.g004",
+      "label": "Fig 4",
+      "caption": "Tensile properties of dentin, bone, tendon, skin, and cartilage.\n(a) Normalized, permutated radar charts comparing five collagenous tissues (see Box 2), where the profile averages (lines) and standard deviations/ranges (shaded regions) are shown on the outer edges; the center plot illustrates a trade-off between stiffness (E) and extensibility (ε). (b) Micrographs illustrating key microstructural features correlating each material with its unique property profile; images adapted from literature [42–46] or provided by J. McKittrick (dentin and bone), for illustrative purposes only. Scale bars: (from left to right, top to bottom) 5 μm; 150 μm; 5 μm; 25 μm; 2 μm. (c) Radar charts showing the intersections and unions of dentin-bone (top) and dentin-cartilage (bottom). (d) Comparisons of the profile areas, A (dotted bars), centroidal distances, R (hatched bars), and relative first moments of area, Q′ (solid bars). Legend (units): elastic modulus, E (GPa); tensile strength, σ (MPa); toughness, u_{T} (MJ·m^{-3}); resilience, u_{R}^{†} (MPa); extensibility, ε (%). Notes: Data are listed in S5 Table, compiled from numerous sources (see Supporting Information); for reference, maximum values of each average property are displayed on the axes.",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0204309.g004\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g004</object-id>\n<label>Fig 4</label>\n<caption>\n<title>Tensile properties of dentin, bone, tendon, skin, and cartilage.</title>\n<p>(a) Normalized, permutated radar charts comparing five collagenous tissues (see <xref ref-type=\"boxed-text\" rid=\"pone.0204309.box002\">Box 2</xref>), where the profile averages (lines) and standard deviations/ranges (shaded regions) are shown on the outer edges; the center plot illustrates a trade-off between stiffness (E) and extensibility (ε). (b) Micrographs illustrating key microstructural features correlating each material with its unique property profile; images adapted from literature [<xref ref-type=\"bibr\" rid=\"pone.0204309.ref042\">42</xref>–<xref ref-type=\"bibr\" rid=\"pone.0204309.ref046\">46</xref>] or provided by J. McKittrick (dentin and bone), for illustrative purposes only. <underline>Scale bars</underline>: (from left to right, top to bottom) 5 μm; 150 μm; 5 μm; 25 μm; 2 μm. (c) Radar charts showing the intersections and unions of dentin-bone (top) and dentin-cartilage (bottom). (d) Comparisons of the profile areas, <italic>A</italic> (dotted bars), centroidal distances, <italic>R</italic> (hatched bars), and relative first moments of area, <italic>Q</italic>′ (solid bars). <underline>Legend</underline> (units): elastic modulus, E (GPa); tensile strength, σ (MPa); toughness, u<sub>T</sub> (MJ·m<sup>-3</sup>); resilience, u<sub>R</sub><sup>†</sup> (MPa); extensibility, ε (%). <underline>Notes</underline>: Data are listed in <xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s007\">S5 Table</xref>, compiled from numerous sources (see <xref ref-type=\"sec\" rid=\"sec018\">Supporting Information</xref>); for reference, maximum values of each average property are displayed on the axes.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g004\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.g004",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    },
+    {
+      "id": "pone.0204309.g005",
+      "label": "Fig 5",
+      "caption": "Feeding vs singing performance of Darwin’s finches.\n(a) Normalized, permutated radar chart comparing eight Darwin’s finches, showing the properties correlated with feeding and singing performance as well as the distinct functional trade-off between base bite force and vocal potential. (b) Individual profiles of Darwin’s finches, showing their reported averages (lines) and ranges (shaded regions). (c) Radar charts illustrating the intersections and unions of G. scandens-C. pallida (left) and G. magnirostris-C. olivacea (right). (d) Comparisons of the profile areas, A, centroidal distances, R, relative first moments of area, Q′, and compactness, C; colored bars callout the two maxima of each shape descriptor as referred in the text. Legend: base bite force (BBF), tip bite force (TBF), gape (G), opening velocity (OV), closing velocity (CV), vocal potential (VP). Notes: Beak sketches are adapted from literature [58]. Data are listed in S6 Table, compiled from numerous sources (see Supporting Information).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0204309.g005\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0204309.g005</object-id>\n<label>Fig 5</label>\n<caption>\n<title>Feeding vs singing performance of Darwin’s finches.</title>\n<p>(a) Normalized, permutated radar chart comparing eight Darwin’s finches, showing the properties correlated with feeding and singing performance as well as the distinct functional trade-off between base bite force and vocal potential. (b) Individual profiles of Darwin’s finches, showing their reported averages (lines) and ranges (shaded regions). (c) Radar charts illustrating the intersections and unions of <italic>G</italic>. <italic>scandens-C</italic>. <italic>pallida</italic> (left) and <italic>G</italic>. <italic>magnirostris-C</italic>. <italic>olivacea</italic> (right). (d) Comparisons of the profile areas, <italic>A</italic>, centroidal distances, <italic>R</italic>, relative first moments of area, <italic>Q</italic>′, and compactness, <italic>C</italic>; colored bars callout the two maxima of each shape descriptor as referred in the text. <underline>Legend</underline>: base bite force (BBF), tip bite force (TBF), gape (G), opening velocity (OV), closing velocity (CV), vocal potential (VP). <underline>Notes</underline>: Beak sketches are adapted from literature [<xref ref-type=\"bibr\" rid=\"pone.0204309.ref058\">58</xref>]. Data are listed in <xref ref-type=\"supplementary-material\" rid=\"pone.0204309.s008\">S6 Table</xref>, compiled from numerous sources (see <xref ref-type=\"sec\" rid=\"sec018\">Supporting Information</xref>).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0204309.g005\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0204309.g005",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

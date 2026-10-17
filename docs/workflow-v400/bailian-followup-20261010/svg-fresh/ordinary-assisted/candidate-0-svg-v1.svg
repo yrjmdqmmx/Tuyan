@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="'Noto Sans CJK SC', 'Noto Sans', 'Noto Sans Math', sans-serif">
+  <rect width="1600" height="900" fill="#ffffff"/>
+  
+  
+  <text x="1550" y="50" font-size="16" fill="#999999" text-anchor="end">标识</text>
+
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0,0 10,3.5 0,7" fill="#555555"/>
+    </marker>
+  </defs>
+
+  
+  <rect x="120" y="340" width="360" height="140" rx="18" ry="18" fill="#E8F4FD" stroke="#4A90D9" stroke-width="2.5"/>
+  <text x="300" y="395" text-anchor="middle" font-size="28" fill="#2C5F8A">样品输入</text>
+  <text x="300" y="440" text-anchor="middle" font-size="24" fill="#4A90D9">n = 12</text>
+
+  
+  <line x1="480" y1="410" x2="580" y2="410" stroke="#555555" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  
+  <rect x="600" y="340" width="400" height="140" rx="18" ry="18" fill="#E8F8E8" stroke="#4CAF50" stroke-width="2.5"/>
+  <text x="800" y="390" text-anchor="middle" font-size="28" fill="#2E7D32">数据标准化</text>
+  <text x="800" y="440" text-anchor="middle" font-size="26" fill="#4CAF50" font-family="'Noto Sans Math', 'Noto Sans CJK SC', 'Noto Sans', sans-serif">x / x₀</text>
+
+  
+  <line x1="1000" y1="410" x2="1100" y2="410" stroke="#555555" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+
+  
+  <rect x="1120" y="340" width="360" height="140" rx="18" ry="18" fill="#FDE8E8" stroke="#E57373" stroke-width="2.5"/>
+  <text x="1300" y="390" text-anchor="middle" font-size="28" fill="#C62828">结果输出</text>
+  <text x="1300" y="440" text-anchor="middle" font-size="24" fill="#E57373">均值 = 1.0</text>
+
+  
+  <text x="300" y="310" text-anchor="middle" font-size="18" fill="#999999">步骤 1</text>
+  <text x="800" y="310" text-anchor="middle" font-size="18" fill="#999999">步骤 2</text>
+  <text x="1300" y="310" text-anchor="middle" font-size="18" fill="#999999">步骤 3</text>
+</svg>

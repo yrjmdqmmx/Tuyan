@@ -1,0 +1,56 @@
+{
+  "id": "pgen.1010387.g001",
+  "paper": "pgen.1010387",
+  "figure": {
+    "id": "pgen.1010387.g001",
+    "label": "Fig 1",
+    "caption": "Quantile-quantile plot for meta-analytic p-values of association between SNPs and TBscore.\nThe quantile-quantile (Q-Q) plot shows the inverse log(10) of the observed p-values on the Y-axis relative to what is expected if there was no association on the x-axis. Deviations above the line indicate an association with the outcome. If the line deviates at the low quantiles, then this is considered evidence to suggest genome-wide inflation of the test statistics, which typically indicates unmeasured confounding (λ = 0.98).",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1010387.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1010387.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Quantile-quantile plot for meta-analytic p-values of association between SNPs and TBscore.</title>\n<p>The quantile-quantile (Q-Q) plot shows the inverse log(10) of the observed p-values on the Y-axis relative to what is expected if there was no association on the x-axis. Deviations above the line indicate an association with the outcome. If the line deviates at the low quantiles, then this is considered evidence to suggest genome-wide inflation of the test statistics, which typically indicates unmeasured confounding (λ = 0.98).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1010387.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1010387.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1010387",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1010387",
+    "title": "Tuberculosis severity associates with variants and eQTLs related to vascular biology and infection-induced inflammation",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Michael L. McHenry",
+      "Jason Simmons",
+      "Hyejeong Hong",
+      "LaShaunda L. Malone",
+      "Harriet Mayanja-Kizza",
+      "William S. Bush",
+      "W. Henry Boom",
+      "Thomas R. Hawn",
+      "Scott M. Williams",
+      "Catherine M. Stein"
+    ],
+    "year": "2023",
+    "license": "2023\nMcHenry et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1010387.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1010387.g001.png",
+      "bytes": 347184,
+      "sha256": "add32933ff857bf1d1aa85bf034d0b4e06f937c427a868b24473dd514bc12dd2"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1010387.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1010387.g001.tif",
+      "bytes": 553276,
+      "sha256": "3e5e3bea2faf2e4ead6c5a91dc4edceed7210e1ebe3d439340bd70f9d2dd7eb4"
+    }
+  }
+}

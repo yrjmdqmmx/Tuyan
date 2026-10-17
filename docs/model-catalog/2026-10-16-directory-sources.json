@@ -1,0 +1,221 @@
+[
+  {
+    "url": "https://docs.fal.ai/llms.txt",
+    "file": "fal-index.txt",
+    "sha256": "ddefede15a6e904404d0191b36d4faf5c6cec772d3b069c4459487484f40ce8c",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://novita.ai/docs/llms.txt",
+    "file": "novita-index.txt",
+    "sha256": "15a025e1aee1b711f3fd0fdfb7237177e2d2918ff57c1f61556d1c984c8d219a",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://runware.ai/docs/llms.txt",
+    "file": "runware-index.txt",
+    "sha256": "d38f7666ae5f4f2d7eecaaf59eb6d2dff9d71824903aff63b2394c9069156b5a",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://platform.claude.com/docs/llms.txt",
+    "file": "anthropic-index.txt",
+    "sha256": "4245e4e574c90afd5d28d061ba81100ba0f5e018f84debf3c1ece62856598bbc",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://docs.mistral.ai/llms.txt",
+    "file": "mistral-index.txt",
+    "sha256": "5bce50516483c84764417f950ab4678d920c1070e729390012e63ae837d78d90",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://docs.x.ai/llms.txt",
+    "file": "xai-index.txt",
+    "sha256": "9d9ebff2c1e65f63ac59552f44064b0714ad441cdd55c15ad54bf40b3c9534d6",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://api-docs.deepseek.com/llms.txt",
+    "file": "deepseek-index.txt",
+    "sha256": "7ce9db1b1cc7e2efafe7cbfd57b9d46d240c20399f7bd87672c7e3a5250ccdd0",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://docs.together.ai/reference/models.md",
+    "file": "together-models.txt",
+    "sha256": "c4d442a27634d42ca279525f70f46387e9c793a754b0a64a694baab804092554",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://docs.fireworks.ai/api-reference/list-models.md",
+    "file": "fireworks-models.txt",
+    "sha256": "0929b0ee0a0e74ab4cb20da8fb5eade7b5ce682e01a64a59925e9651d05bf896",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://developers.openai.com/llms.txt",
+    "file": "openai-index.txt",
+    "sha256": "b40e651d5d657741912bbbe1696644c295190d46e6f74c089b93f8c98de53e28",
+    "manifest": "fetches.json"
+  },
+  {
+    "url": "https://fal.ai/docs/platform-apis/v1/models.md",
+    "file": "fal-models.txt",
+    "sha256": "7d9e1b3a04fdd9aceda9a2f1a4cc5e6587f9915d131b7a7a0ecb41021a4a60ff",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://novita.ai/docs/api-reference/model-apis-llm-list-models.md",
+    "file": "novita-models.txt",
+    "sha256": "06f5e501e0b7edc301a3a471b339878824e64104c3b7d96cc6d905046eda3437",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://platform.claude.com/docs/en/api/models/list.md",
+    "file": "anthropic-models.txt",
+    "sha256": "4abdc7020aa6bf563d77364942bca94957cd0673f014d2d2d55a4057bef7cd72",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://ai.google.dev/api/models.md",
+    "file": "gemini-models.txt",
+    "sha256": "8826134b47be58fc18cf4c2013aaa5c6ba05b8d3c777db270fedca476e266622",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://platform.moonshot.cn/llms.txt",
+    "file": "moonshot-index.txt",
+    "sha256": "555ade811b8fccb6e6be3ae9c8b5838180d2f0e042f1d0fd6aef907fcec06900",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://docs.bigmodel.cn/llms.txt",
+    "file": "zhipu-index.txt",
+    "sha256": "bc296b7454f44e0c27bbb12052418e1ff4c035ed6d094fa68a023830fcb96fee",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://docs.bfl.ai/llms.txt",
+    "file": "bfl-index.txt",
+    "sha256": "fc3518ae4a28eafb1cdd6589622f9491b4c2978214287fdd5c994829625be175",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://www.recraft.ai/docs/llms.txt",
+    "file": "recraft-index.txt",
+    "sha256": "5ccccc6be84d91c0e77513c8e11213563ccb04dc02103d9f8522162ad21b2b17",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://developer.ideogram.ai/llms.txt",
+    "file": "ideogram-index.txt",
+    "sha256": "1c10e659c47eb475cf83f265b35c0e2f6adc3e9a937dd82829336dac9e264ea4",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://longcat.chat/platform/docs/llms.txt",
+    "file": "longcat-index.txt",
+    "sha256": "bfdc960a7c303f094e7c021ceb995608179adfa72dcf9fe8b9c36d5055443873",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://www.tbox.cn/llms.txt",
+    "file": "antling-index.txt",
+    "sha256": "30dd388f9e85246255a8052d364ffe7aa98c0f07eabca59e0ed74c84949874ae",
+    "manifest": "fetches-2.json"
+  },
+  {
+    "url": "https://developers.openai.com/api/llms.txt",
+    "file": "openai-api-index.txt",
+    "sha256": "9f66b4cbcf5fa83018857243f3451488d8709bd353c3afc718a51a9c5952cecf",
+    "manifest": "fetches-3.json"
+  },
+  {
+    "url": "https://docs.x.ai/developers/rest-api-reference/inference/models.md",
+    "file": "xai-models.txt",
+    "sha256": "fa8ebbc9bda427b4a9eabd3e3cdf8ede1546b664d2686105a80de1d72ba0513b",
+    "manifest": "fetches-3.json"
+  },
+  {
+    "url": "https://api-docs.deepseek.com/api/list-models",
+    "file": "deepseek-models.txt",
+    "sha256": "41551c3c498a93b6e6459eaeee89829940ca8acf999b24436a38a2231c7e091b",
+    "manifest": "fetches-3.json"
+  },
+  {
+    "url": "https://platform.moonshot.cn/docs/api/models",
+    "file": "moonshot-models.txt",
+    "sha256": "9f64dcce8473f09c4bfb63902f071b7c1ab5f7e7dafaaeaf06f313f36d34eba0",
+    "manifest": "fetches-3.json"
+  },
+  {
+    "url": "https://platform.xiaomimimo.com/docs/api-reference/models",
+    "file": "xiaomi-models.txt",
+    "sha256": "714050e95f5e423ba61212a6c6344422f09120f56d7bd8e5886aec233c72f740",
+    "manifest": "fetches-3.json"
+  },
+  {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-8-max",
+    "file": "qwen38max.txt",
+    "sha256": "738457e4b1cf1531395b79781da5d8db08439a64977565fb4464e5d676ba4d35",
+    "manifest": "specific-additional-sources.json"
+  },
+  {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-7-max",
+    "file": "qwen37max.txt",
+    "sha256": "5c467c7b28bdf69b0a756fefdc5e4da7713ab176e4323ac007796b912b4d2b2e",
+    "manifest": "specific-additional-sources.json"
+  },
+  {
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-6-plus",
+    "file": "qwen36plus.txt",
+    "sha256": "2c0efa8e924210ebf50cb8d109c8532252a7e38b7ded0d39f1a674611ac59d9a",
+    "manifest": "specific-additional-sources.json"
+  },
+  {
+    "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B/raw/main/README.md",
+    "file": "qwen35.txt",
+    "sha256": "71c3bbc2eadadd5980bbdbb15df958c27d42ede24821015602a021109aacf492",
+    "manifest": "specific-additional-sources.json"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/OpenSenseNova/SenseNova6.8/main/API.md",
+    "file": "sense68api.txt",
+    "sha256": "1f75774ab693a7d28bca746aa0242ae25079b6c70b3318241e86b39b4dd2ceaf",
+    "manifest": "specific-additional-sources.json"
+  },
+  {
+    "url": "https://developers.openai.com/api/reference/resources/images/methods/generate",
+    "checkedAt": "2026-10-16",
+    "access": "web reader",
+    "facts": {
+      "promptMaxCharacters": 32000,
+      "scope": "explicit GPT Image model list; retired DALL-E excluded"
+    }
+  },
+  {
+    "url": "https://developers.openai.com/api/reference/resources/images/methods/edit",
+    "checkedAt": "2026-10-16",
+    "access": "web reader",
+    "facts": {
+      "promptMaxLength": 32000,
+      "unit": "JSON Schema string characters"
+    }
+  },
+  {
+    "url": "https://docs.novita.ai/api-reference/model-apis-get-model",
+    "checkedAt": "2026-10-16",
+    "access": "web reader",
+    "facts": {
+      "endpoint": "GET https://api.novita.ai/v3/model",
+      "auth": "Bearer API Key",
+      "pagination": [
+        "pagination.limit",
+        "pagination.cursor",
+        "pagination.next_cursor"
+      ],
+      "id": "sd_name_in_api"
+    }
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "id": "pcbi.1005740.g001",
+  "paper": "pcbi.1005740",
+  "figure": {
+    "id": "pcbi.1005740.g001",
+    "label": "Fig 1",
+    "caption": "Three different SBGN representations of Na+ transport into the cytoplasm by voltage-dependant channels.\n(a), The depolarisation (“perturbation” symbol) of the membrane triggers (“stimulation” symbol, arrow with white head) the opening of the Na+ channel, which enables the import of Na+ from the extracellular space to the cytoplasm. Each sodium channel glyph contains a “unit of information” glyph (rectangle at the top left) that gives information about the conformational state of the channel. (b), The depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel. This value is necessary to stimulate (“necessary stimulation” symbol, arrow with white head and a vertical line) the relocation of Na+ into the cytoplasm. (c), A cascade of signals is represented where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. Na+, sodium ion; SBGN, Systems Biology Graphical Notation.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1005740.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1005740.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Three different SBGN representations of Na+ transport into the cytoplasm by voltage-dependant channels.</title>\n<p>(a), The depolarisation (“perturbation” symbol) of the membrane triggers (“stimulation” symbol, arrow with white head) the opening of the Na+ channel, which enables the import of Na+ from the extracellular space to the cytoplasm. Each sodium channel glyph contains a “unit of information” glyph (rectangle at the top left) that gives information about the conformational state of the channel. (b), The depolarisation stimulates the assignment of value “true” to the state “open” of the Na+ channel. This value is necessary to stimulate (“necessary stimulation” symbol, arrow with white head and a vertical line) the relocation of Na+ into the cytoplasm. (c), A cascade of signals is represented where the depolarisation stimulates the activity of Na+ channels, which in turn, is necessary to stimulate the activity of Na+ in the cytoplasm. Na+, sodium ion; SBGN, Systems Biology Graphical Notation.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1005740.g001\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1005740.g001",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1005740",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005740",
+    "title": "Quick tips for creating effective and impactful biological pathways using the Systems Biology Graphical Notation",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Vasundra Touré",
+      "Nicolas Le Novère",
+      "Dagmar Waltemath",
+      "Olaf Wolkenhauer"
+    ],
+    "year": "2018",
+    "license": "2018\nTouré et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1005740.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005740.g001.png",
+      "bytes": 111748,
+      "sha256": "dd15c52c66d373c1b989b14bba2a0652b6a4e83509bf6f27349678dc093c70e6"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1005740.g001",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1005740.g001.tif",
+      "bytes": 207988,
+      "sha256": "6a874c2da0042cf6fc70f4ae6c62753017549e8270e248bace05bd088bd40794"
+    }
+  }
+}

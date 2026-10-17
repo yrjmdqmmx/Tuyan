@@ -1,0 +1,81 @@
+
+<figure_type_contract stage="planning">
+{
+  "version": "2026-10-10.v1",
+  "id": "forest",
+  "path": "数值比较与估计 / 森林图",
+  "definition": "比较多个效应估计及置信区间",
+  "kind": "data",
+  "suitable": "比较多个效应估计及置信区间",
+  "unsuitable": "没有区间来源时不能生成置信线或合并效应",
+  "confusable": [
+    {
+      "id": "dotplot",
+      "label": "类别点图",
+      "definition": "用共同数轴位置比较类别数值"
+    },
+    {
+      "id": "funnel_meta",
+      "label": "荟萃漏斗图",
+      "definition": "展示研究效应与精度的关系"
+    }
+  ],
+  "requiredInputs": [
+    "label/value/low/high",
+    "效应尺度",
+    "置信水平",
+    "权重来源"
+  ],
+  "elements": [
+    "研究标签",
+    "点估计",
+    "置信区间",
+    "无效应线",
+    "效应尺度"
+  ],
+  "encodingRules": [
+    "参考线随差值或比值变化",
+    "区间含点估计",
+    "合并效应须真实算法"
+  ],
+  "generationRequirements": [
+    "参考线随差值或比值变化",
+    "区间含点估计",
+    "合并效应须真实算法",
+    "仅使用用户给出的事实；未知内容标注缺失，禁止复制参考论文的数值和结论。"
+  ],
+  "reviewRequirements": [
+    "核对：参考线随差值或比值变化",
+    "核对：区间含点估计",
+    "核对：合并效应须真实算法",
+    "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+  ],
+  "variants": [],
+  "analysis": {
+    "description": "合成的差值估计与95%区间；不是研究结论。"
+  },
+  "data": {
+    "source": "synthetic QA only",
+    "units": {
+      "value": "mean difference",
+      "low": "mean difference",
+      "high": "mean difference"
+    },
+    "rows": [
+      {
+        "label": "A",
+        "value": 2,
+        "low": 1,
+        "high": 3
+      }
+    ],
+    "options": {
+      "nullValue": 0
+    }
+  },
+  "panels": [],
+  "evidencePolicy": "Reference figures are evidence about visual structure only. Never transfer their data, labels, numerical results, significance or scientific conclusions. If required inputs are missing, list missing inputs and do not fabricate them."
+}
+</figure_type_contract>
+Preserve this contract independently of the intermediate plan; a plan cannot relax its constraints.
+This typed plot uses an immutable deterministic data renderer. Do not create Python, replace data or infer new statistics. The complete plan (including revised_description if revising) must be a JSON string/object with plan and plotStyle:{width,height,fontSize}. Width 6-16 inches, height 4-14 inches, fontSize 10-20 points are the supported layout controls. A revision must change a supported control; if a requested change is unsupported, report that limitation instead of claiming it was applied.

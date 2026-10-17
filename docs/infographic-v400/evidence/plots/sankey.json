@@ -1,0 +1,52 @@
+{
+  "figureTypeId": "sankey",
+  "taskName": "plot",
+  "figureData": {
+    "source": "Synthetic teaching data, generated for renderer QA only.",
+    "rows": [
+      {
+        "source": "A",
+        "target": "C",
+        "value": 3
+      },
+      {
+        "source": "A",
+        "target": "D",
+        "value": 2
+      },
+      {
+        "source": "B",
+        "target": "D",
+        "value": 4
+      }
+    ],
+    "units": {
+      "value": "people"
+    },
+    "options": {
+      "nodes": [
+        {
+          "id": "A",
+          "stage": 0
+        },
+        {
+          "id": "B",
+          "stage": 0
+        },
+        {
+          "id": "C",
+          "stage": 1
+        },
+        {
+          "id": "D",
+          "stage": 1
+        }
+      ],
+      "layout": "bipartite",
+      "flowSemantics": "Observed people moving once from origin to destination"
+    }
+  },
+  "figureAnalysis": {
+    "description": "Synthetic teaching fixture; supplied quantities are not research findings."
+  }
+}

@@ -1,0 +1,710 @@
+{
+  "data": [
+    {
+      "id": "glm-4.7",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "glm-5",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "minimax-h3-max",
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ]
+    },
+    {
+      "id": "minimax-m2.5",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "kimi-k2.5",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "minimax-m2.7",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "glm-4.5-air",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "glm-4.6v",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "step-3.5-flash",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seed-2.0-pro",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seed-2.0-lite",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seed-2.0-mini",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "glm-5v-turbo",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seedream-5.0-lite",
+      "supported_protocols": [
+        "ark:image-generations",
+        "openai:image-generations"
+      ]
+    },
+    {
+      "id": "qwen3.6-max-preview",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "glm-5.1",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "ling-3.1-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "ateve-jev-v1",
+      "supported_protocols": [
+        "typesafe:systemone"
+      ]
+    },
+    {
+      "id": "mimo-v2.5",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "qwen3-vl-plus",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "glm-ocr",
+      "supported_protocols": [
+        "zai:layout-parsing"
+      ]
+    },
+    {
+      "id": "kimi-k2.6",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "qwen-text-embedding-v4",
+      "supported_protocols": [
+        "openai:embeddings"
+      ]
+    },
+    {
+      "id": "qwen3.5-plus",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "qwen3.5-flash",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "happyhorse-1.0-video-edit",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "happyhorse-1.0-i2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "happyhorse-1.0-t2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "happyhorse-1.0-r2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "qwen3.6-plus",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "mimo-v2.5-pro",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "unifuncs-s3",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "unifuncs-u3",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seedance-2.0",
+      "supported_protocols": [
+        "seedance:generations"
+      ]
+    },
+    {
+      "id": "seedance-2.0-fast",
+      "supported_protocols": [
+        "seedance:generations"
+      ]
+    },
+    {
+      "id": "mimo-v2.5-tts",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "mimo-v2.5-tts-voicedesign",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "mimo-v2.5-tts-voiceclone",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "qwen3.7-plus",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "qwen3.7-max",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "minimax-speech-2.8-hd",
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ]
+    },
+    {
+      "id": "minimax-speech-2.8-turbo",
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ]
+    },
+    {
+      "id": "step-3.7-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "bocha-web-search",
+      "supported_protocols": [
+        "bocha:web-search"
+      ]
+    },
+    {
+      "id": "unifuncs-u3-pro",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "unifuncs-s3-pro",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "unifuncs-web-reader",
+      "supported_protocols": [
+        "unifuncs:web-reader"
+      ]
+    },
+    {
+      "id": "unifuncs-web-search",
+      "supported_protocols": [
+        "unifuncs:web-search"
+      ]
+    },
+    {
+      "id": "hy3-preview",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "glm-5.2",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "happyhorse-1.1-r2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "seed-evolving",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seed-2.1-turbo",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "minimax-m3",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "seed-2.1-pro",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "wan3.0-video",
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ]
+    },
+    {
+      "id": "seedance-2.0-mini",
+      "supported_protocols": [
+        "seedance:generations"
+      ]
+    },
+    {
+      "id": "qwen3.8-max",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "longcat-2.0",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "hy3",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "kling-3.0",
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video",
+        "kling:motion-control"
+      ]
+    },
+    {
+      "id": "happyhorse-1.1-t2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "cogevol-interactive-0828",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "seedream-5.0-pro",
+      "supported_protocols": [
+        "ark:image-generations"
+      ]
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "happyhorse-1.1-i2v",
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ]
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "seedance-2.5",
+      "supported_protocols": [
+        "seedance:generations"
+      ]
+    },
+    {
+      "id": "glm-5.3-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "wan3.0-video-prime",
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ]
+    },
+    {
+      "id": "dots-3-note-preview",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "seed-2.0-code",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "ling-3.0-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "kling-3.0-turbo",
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video"
+      ]
+    },
+    {
+      "id": "glm-5.3",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "seed-tts-2.0",
+      "supported_protocols": [
+        "ark:tts",
+        "ark:tts_ws"
+      ]
+    },
+    {
+      "id": "hy4-preview",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "qwen3.7-text-embedding",
+      "supported_protocols": [
+        "openai:embeddings"
+      ]
+    },
+    {
+      "id": "kling-3.0-omni",
+      "supported_protocols": [
+        "kling:omni-video"
+      ]
+    },
+    {
+      "id": "qwen3.8-max-0902",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "spark-x2.5-1.7b",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "spark-x2.5-4b",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "qwen3.7-text-rerank",
+      "supported_protocols": [
+        "qwen:text-rerank"
+      ]
+    },
+    {
+      "id": "cogevol-slide-0828",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "cogevol-base",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "kimi-k3",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "glm-5.3-flashx",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "qwen3.5-ocr",
+      "supported_protocols": [
+        "openai:chat-completions"
+      ]
+    },
+    {
+      "id": "step-5-preview",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "mimo-v2.6-ultraspeed",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "qwen3.8-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ]
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "minimax-h3",
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ]
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ]
+    },
+    {
+      "id": "bocha-jev-v1",
+      "supported_protocols": [
+        "typesafe:systemone"
+      ]
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash",
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ]
+    },
+    {
+      "id": "qwen-audio-3.0-asr-flash",
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ]
+    },
+    {
+      "id": "yc-song-4.0",
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ]
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash-message",
+      "supported_protocols": [
+        "qwen:audio-asr-streaming"
+      ]
+    },
+    {
+      "id": "yc-song-3.5",
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ]
+    }
+  ]
+}

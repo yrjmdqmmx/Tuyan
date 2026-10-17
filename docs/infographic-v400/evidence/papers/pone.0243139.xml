@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0243139</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-20-25426</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject><subj-group><subject>Monosaccharides</subject><subj-group><subject>Glucose</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject><subj-group><subject>Monosaccharides</subject><subj-group><subject>Glucose</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Endocrinology</subject><subj-group><subject>Diabetic endocrinology</subject><subj-group><subject>Insulin</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Hormones</subject><subj-group><subject>Insulin</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Mathematics</subject><subj-group><subject>Applied mathematics</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Simulation and modeling</subject><subj-group><subject>Algorithms</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Hormones</subject><subj-group><subject>Glucagon</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Hormones</subject><subj-group><subject>Peptide hormones</subject><subj-group><subject>Glucagon</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Clinical medicine</subject><subj-group><subject>Clinical trials</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pharmacology</subject><subj-group><subject>Drug research and development</subject><subj-group><subject>Clinical trials</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Clinical trials</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Endocrine system</subject><subj-group><subject>Pancreas</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Endocrine system</subject><subj-group><subject>Pancreas</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Exocrine glands</subject><subj-group><subject>Pancreas</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Anatomy</subject><subj-group><subject>Exocrine glands</subject><subj-group><subject>Pancreas</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Carbohydrates</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Engineering and technology</subject><subj-group><subject>Electronics engineering</subject><subj-group><subject>Computer engineering</subject><subj-group><subject>Man-computer interface</subject><subj-group><subject>Graphical user interfaces</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Computer and information sciences</subject><subj-group><subject>Computer architecture</subject><subj-group><subject>User interfaces</subject><subj-group><subject>Graphical user interfaces</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Development platform for artificial pancreas algorithms</article-title>
+<alt-title alt-title-type="running-head">Platform for artificial pancreas developers</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-8891-7926</contrib-id>
+<name name-style="western">
+<surname>Smaoui</surname>
+<given-names>Mohamed Raef</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Software</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<role content-type="https://casrai.org/credit/">Visualization</role>
+<role content-type="https://casrai.org/credit/">Writing – original draft</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Rabasa-Lhoret</surname>
+<given-names>Remi</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Supervision</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Haidar</surname>
+<given-names>Ahmad</given-names>
+</name>
+<role content-type="https://casrai.org/credit/">Conceptualization</role>
+<role content-type="https://casrai.org/credit/">Data curation</role>
+<role content-type="https://casrai.org/credit/">Formal analysis</role>
+<role content-type="https://casrai.org/credit/">Investigation</role>
+<role content-type="https://casrai.org/credit/">Methodology</role>
+<role content-type="https://casrai.org/credit/">Project administration</role>
+<role content-type="https://casrai.org/credit/">Resources</role>
+<role content-type="https://casrai.org/credit/">Validation</role>
+<role content-type="https://casrai.org/credit/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Computer Science Department, Faculty of Science, Kuwait University, Kuwait City, Kuwait</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Nutrition, Faculty of Medicine, Université de Montréal, Montréal, Canada</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Institut de Recherches Cliniques de Montréal, Montréal, Canada</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Biomedical Engineering, Faculty of Medicine, McGill University, Montreal, Canada</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Moser</surname>
+<given-names>Othmar</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Medizinische Universitat Graz, AUSTRIA</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">msmaoui@cs.ku.edu.kw</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>17</day>
+<month>12</month>
+<year>2020</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2020</year>
+</pub-date>
+<volume>15</volume>
+<issue>12</issue>
+<elocation-id>e0243139</elocation-id>
+<history>
+<date date-type="received">
+<day>13</day>
+<month>8</month>
+<year>2020</year>
+</date>
+<date date-type="accepted">
+<day>17</day>
+<month>11</month>
+<year>2020</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2020</copyright-year>
+<copyright-holder>Smaoui et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0243139"/>
+<abstract>
+<sec id="sec001">
+<title>Background and aims</title>
+<p>Assessing algorithms of artificial pancreas systems is critical in developing automated and fault-tolerant solutions that work outside clinical settings. The development and evaluation of algorithms can be facilitated with a platform that conducts virtual clinical trials. We present in this paper a clinically validated cloud-based distributed platform that supports the development and comprehensive testing of single and dual-hormone algorithms for type 1 diabetes mellitus (T1DM).</p>
+</sec>
+<sec id="sec002">
+<title>Methods</title>
+<p>The platform is built on principles of object-oriented design and runs user algorithms in real-time virtual clinical trials utilizing a multi-threaded environment enabled by concurrent execution over a cloud infrastructure. The platform architecture isolates user algorithms located on personal machines from proprietary patient data running on the cloud. Users import a plugin into their algorithms (Matlab, Python, or Java) to connect to the platform. Once connected, users interact with a graphical interface to design experimental protocols for their trials. Protocols include trial duration in days, mealtimes and amounts, variability in mealtimes and amounts, carbohydrate counting errors, snacks, and onboard insulin levels.</p>
+</sec>
+<sec id="sec003">
+<title>Results</title>
+<p>The platform facilitates development by solving the ODE model in the cloud on large CPU-optimized machines, providing a 62% improvement in memory, speed and CPU utilization. Users can easily debug &amp; modify code, test multiple strategies, and generate detailed clinical performance reports. We validated and integrated into the platform a glucoregulatory system of ordinary differential equations (ODEs) parameterized with clinical data to mimic the inter and intra-day variability of glucose responses of 15 T1DM patients.</p>
+</sec>
+<sec id="sec004">
+<title>Conclusion</title>
+<p>The platform utilizes the validated patient model to conduct virtual clinical trials for the rapid development and testing of closed-loop algorithms for T1DM.</p>
+</sec>
+</abstract>
+<funding-group>
+<funding-statement>The authors received no specific funding for this work.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="10"/>
+<table-count count="2"/>
+<page-count count="19"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its <xref ref-type="sec" rid="sec022">Supporting Information</xref> files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec005" sec-type="intro">
+<title>Introduction</title>
+<p>Clinical trials are an integral part in the research and development process of the artificial pancreas (AP) [<xref ref-type="bibr" rid="pone.0243139.ref001">1</xref>, <xref ref-type="bibr" rid="pone.0243139.ref002">2</xref>]. The artificial pancreas currently aims to improve glucose control and to rid T1DM patients from the continuous task of monitoring their glucose levels and manually administering insulin infusions and injections [<xref ref-type="bibr" rid="pone.0243139.ref003">3</xref>]. At the core of the AP technology lies a titrating algorithm responsible for computing an amount of insulin required to maintain patients’ glucose in acceptable physiological levels [<xref ref-type="bibr" rid="pone.0243139.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0243139.ref005">5</xref>]. Several algorithms have been tested in clinical settings and have provided promising results to the potential efficacy of AP solutions compared to the standard open-loop treatments [<xref ref-type="bibr" rid="pone.0243139.ref004">4</xref>, <xref ref-type="bibr" rid="pone.0243139.ref006">6</xref>–<xref ref-type="bibr" rid="pone.0243139.ref011">11</xref>].</p>
+<p>The development of computer simulation environments and glucose modeling work has been critical in the evolution of AP algorithms. With the increasing availability of clinical data, T1DM patient mathematical models have continuously been improved to better approximate patient behavior and to strive to replicate clinical findings [<xref ref-type="bibr" rid="pone.0243139.ref012">12</xref>–<xref ref-type="bibr" rid="pone.0243139.ref017">17</xref>]. Among the powerful simulation environments that have been designed and made available for computational researchers to utilize in diabetes control algorithm development are the AIDA educational package [<xref ref-type="bibr" rid="pone.0243139.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0243139.ref019">19</xref>], the UVA/Padova Simulator [<xref ref-type="bibr" rid="pone.0243139.ref015">15</xref>] and the Cambridge Simulation Environment [<xref ref-type="bibr" rid="pone.0243139.ref012">12</xref>]. The latter two simulators have been validated against results of clinical studies, providing fair simulation models for AP algorithm developers [<xref ref-type="bibr" rid="pone.0243139.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0243139.ref020">20</xref>].</p>
+<p>To be considered clinically relevant and commercially viable, algorithms designed for the AP must undergo several clinical trials and present acceptable control of patient glucose levels under normal and extreme conditions in both inpatient and outpatient settings. Algorithms must prove effective clinically in controlling post-meal glycemic excursions [<xref ref-type="bibr" rid="pone.0243139.ref021">21</xref>, <xref ref-type="bibr" rid="pone.0243139.ref022">22</xref>] when patients eat different meals and amounts, when patients undergo exercise [<xref ref-type="bibr" rid="pone.0243139.ref023">23</xref>], when patients incorrectly assess carbohydrate intake [<xref ref-type="bibr" rid="pone.0243139.ref024">24</xref>], when patients experience mood swings and hormonal changes that alter normal glucose trends [<xref ref-type="bibr" rid="pone.0243139.ref025">25</xref>, <xref ref-type="bibr" rid="pone.0243139.ref026">26</xref>], and when AP hardware sensor readings react abnormally [<xref ref-type="bibr" rid="pone.0243139.ref027">27</xref>]. Algorithms are expected to maintain glucose readings outside of hypoglycaemia ranges to avoid severe health complications [<xref ref-type="bibr" rid="pone.0243139.ref028">28</xref>–<xref ref-type="bibr" rid="pone.0243139.ref030">30</xref>]. Any improvements to existing algorithms need to remain bug-free and maintain foregoing performance.</p>
+<p>Diabetes simulators are still far from providing rigorous environments that mimic observed clinical variabilities and are not architected to efficiently undergo thorough automated testing of different clinical protocols. Mathematical models that replicate or e-clone patients need constant improvement, and need to account for increasing physiological details and for emerging data made available by recent clinical studies [<xref ref-type="bibr" rid="pone.0243139.ref007">7</xref>, <xref ref-type="bibr" rid="pone.0243139.ref031">31</xref>]. For example, improved models for exercise would help train algorithms on proper dosing strategies during and after exercise, and novel uses of insulin analogs along with non-insulin adjunctive therapies significantly alter glucose-insulin dynamics in T1DM patients [<xref ref-type="bibr" rid="pone.0243139.ref032">32</xref>–<xref ref-type="bibr" rid="pone.0243139.ref034">34</xref>]. Novel simulator environments need to support algorithm development in different computer languages and provide extensive clinical protocols that could be utilized and replicated to test treatments under varying conditions [<xref ref-type="bibr" rid="pone.0243139.ref035">35</xref>].</p>
+<p>To improve on the current diabetes simulators in the T1DM field, we introduce in this paper a computational development platform to efficiently develop and comprehensively test novel single and dual-hormone algorithms utilizing different clinical protocols against varying patient models. The platform assists developers in rapidly creating robust algorithms that are fault-tolerant and could be extended to work outside clinical settings. Moreover, to overcome the current architectural and simulation limitations of existing simulators, the platform in this paper has been designed as a cloud-based distributed system built with software engineering object-oriented principles to support concurrent algorithm development in multiple computer languages, support month-long simulations, and re-enforces intra-patient daily variability. The platform facilitates real-time code debugging for algorithm developers and runs on different operating systems. Addressing a significant security issue with current simulators, the platform compartmentalizes and isolates user algorithms from virtual patients. The platform aims to assist researchers and developers in the early stages of AP algorithm and testing development prior to conducting clinical trials and pursuing commercial development. Furthermore, we validate in this paper a virtual patient model against a previously conducted clinical trial to provide developers on the platform with a patient model they can directly use.</p>
+</sec>
+<sec id="sec006" sec-type="materials|methods">
+<title>Methods</title>
+<sec id="sec007">
+<title>Platform architecture overview</title>
+<p>The platform is comprised of several object-oriented individual programs. First, a program running a glucoregulatory system of ordinary differential equations (ODE) is responsible for modeling the glycemic responses of T1DM patients to glucose intake and insulin / glucagon delivery. Second, a controller algorithm that a user integrates into the platform through an interface plugin regulates insulin and glucagon delivery systems. Third, a program running a graphical user interface (GUI) allows a user to design and set experimental protocols for a virtual clinical trial and track outcome progress in real time. Finally, an application engine interlays the execution flow among the GUI, the glucoregulatory system, and the controller algorithm. The platform is highly scalable. While a controller algorithm runs on a user’s machine, the computations of the glucoregulatory system are solved in the cloud allowing users to launch tens of simultaneous runs. This separation uplifts heavy computations from a user’s machine and allows for more CPU power and memory to be allocated to the execution of longer simulation durations. The engine prepares a report summarizing the controller algorithm performance and clinically relevant outcomes for the entire virtual trial.</p>
+</sec>
+<sec id="sec008">
+<title>Cloud infrastructure</title>
+<p><xref ref-type="fig" rid="pone.0243139.g001">Fig 1</xref> provides a detailed schematic of the cloud infrastructure designed to power the development platform. Compartmentalizing the platform’s elements across a cloud architecture not only allows for faster development and testing of control algorithms but also introduces a feasible way for individuals to automatically and efficiently test tens of scenarios using standard grade personal machines. The separation between client machines and the cloud service provides an additional layer of security encapsulating sensitive patient parameters from a user and securing unwarranted access to control algorithms.</p>
+<fig id="pone.0243139.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Development platform infrastructure.</title>
+<p>The control algorithm, GUI, and system engine reside in a Client machine. The Client machine communicates with the glucoregulatory model computed concurrently across several Web Servers.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g001" xlink:type="simple"/>
+</fig>
+<p>The Development Platform is composed of two main parts: the client machine and the cloud service. The client machine hosts a user’s closed-loop control algorithm, a graphical user interface application, and a system engine. The cloud service runs the glucoregulatory model and stores the virtual patient data (ODE parameters). Client machines communicate with the cloud service through a centralized service point, the Elastic Load Balancer (ELB). The ELB is responsible for channeling and balancing traffic to various Web Servers running the glucoregulatory model. The Web Servers are considered worker machines that listen for simulation requests and solve the ODE model iteratively. The ELB contains a protocol to scale up and launch additional Web Servers as traffic increases or scale down and remove Web Servers as traffic decreases. The ELB keeps track of active servers in a group called, “auto-scaling group” and monitors their CPU usage. As requests are made to the system, the ELB captures each request and forwards it to one of the servers in the auto-scaling group. The ELB tries to forward the requests in a fair sequential fashion without causing an imbalance in the CPU utilization among the servers in the auto-scaling group. Once the load starts to increase on the group, the ELB automatically prepares and launches into the auto-scaling group new servers with the required configuration to run the glucoregulatory models. The current protocol followed by the ELB is the following: auto-scaling group with a server minimum capacity: 1; server maximum capacity: 10; scale-up policy: step scaling when the CPU-utilization &gt; = 50% for 1 consecutive periods of 300 seconds in the auto-scaling group; scale-down policy: simple scaling when the CPU-utilization = 0 for 1 consecutive periods of 300 seconds in the auto-scaling group; scale-up and scale-down into and out of ELB’s security group; routing-algorithm: round robin; and health-check threshold: 2;</p>
+<p>This auto-scaling feature enables high volume access to the Development Platform’s cloud service. Each Web Server loads patient parameters from a secure database server that is replicated to tolerate instance failure. In addition, each Web Server is connected to a persistent storage device that loads the necessary code for running the glucoregulatory model.</p>
+</sec>
+<sec id="sec009">
+<title>Client side</title>
+<p>The Development Platform is designed to minimize computations on the client machine and simultaneously conceal access to the controller algorithm code. Instead of shipping code into the platform, a user can install into their code a light-weight plugin called, “Nexus Communicator” to interface with the platform. We provide the plugin for users to externally “hook up” their algorithms to the platform in Java, Python, and Matlab environments. After a user installs the Nexus Communicator, their algorithm will automatically connect to the Development Platform. <xref ref-type="fig" rid="pone.0243139.g002">Fig 2</xref> shows an algorithm written in python code connected to the Development Platform and waiting for the patient model and clinical parameters to be set.</p>
+<fig id="pone.0243139.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Connecting a T1DM closed-loop algorithm written in python code to the development platform though the nexus communicator plugin.</title>
+<p>The Python code implements an interface class to connect to the Platform. The plugin uses two methods to communicate insulin / glucagon dosages to the Platform and receives glucose responses and meal input. A user executes a python file that performs a system call to run the Nexus Communicator plugin. Nexus connects to the platform and controls the flow of data to instances of the python algorithm.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g002" xlink:type="simple"/>
+</fig>
+<p><xref ref-type="fig" rid="pone.0243139.g003">Fig 3</xref> depicts the interactions of a user’s code with the Nexus plugin and main application. S1 and S2 Figs present screenshots of Matlab and Java algorithms using the plugin to interface with the development platform.</p>
+<fig id="pone.0243139.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Client algorithm integration into the simulation environment.</title>
+<p>The Client Machine contains an Application and Client Code components. The Nexus Communicator is a plugin that a user can install to their controller algorithm and provides a communication interface protocol with the simulation environment.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g003" xlink:type="simple"/>
+</fig>
+<p>The Nexus Communicator provides an object-oriented interface for algorithms to implement and for the platform to execute through secure socket programming. The Java, Python, and Matlab plugins all provide the same interface to the platform. The platform has no access to any part of the controller code and can only capture the return values of the interface methods outlined in <xref ref-type="fig" rid="pone.0243139.g004">Fig 4</xref>.</p>
+<fig id="pone.0243139.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Class diagram for algorithm interface implementation.</title>
+<p>Controller algorithms implementing two basic methods can be seamlessly invoked by the simulation environment through a TCP/IP connection.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g004" xlink:type="simple"/>
+</fig>
+<p>The current version of the Nexus Communicator contains two methods to provide the initial conditions set in the experiment protocol to the control algorithm, and subsequently calls a control Step method in a repetitive fashion until the simulation time is over. It is important to note that as the Development Platform expands and new features are added to it, the Nexus Communicator plugin interface will change to reflect the new developments. Algorithm developers should be aware of the plugin release versions they use and build their code in a modular fashion that can adapt to potential changes in the interface’s method definitions.</p>
+<p>User algorithms are completely decoupled from the development platform for code separation and security. This design allows users to easily run their algorithms against the virtual patients without having to ship code or change any of their designs. Moreover, the plugin uses object-oriented reflection to simultaneously launch multiple instances of a user’s algorithm, each connected to a separate virtual patient. The plugin ensures proper thread communication over the socket and catches any exceptions that might rise in users’ algorithms. Failures caused by the control algorithms do not disrupt the execution of the platform. Users can fix and re-launch their code without re-launching the platform.</p>
+<p>The main application on the client machine also consists of a user-friendly GUI and an underlying simulation engine. The GUI is designed with the javaFX library [<xref ref-type="bibr" rid="pone.0243139.ref036">36</xref>] and Model-View-Controller concepts [<xref ref-type="bibr" rid="pone.0243139.ref037">37</xref>]. The GUI provides the user with various options to set experimental protocols. In launching a virtual clinical trial, a user can select patients from a population of virtual subjects, set the duration of the trial in days, specify any insulin onboard, set the frequency of the dosing control algorithm time-step, and define the amount of variability in glucose starting levels, meal times, meal amounts and snacks during the trial. Figs <xref ref-type="fig" rid="pone.0243139.g005">5</xref> and <xref ref-type="fig" rid="pone.0243139.g006">6</xref> present screenshots of two panels that capture this data.</p>
+<fig id="pone.0243139.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Setting experiment protocol 1.</title>
+<p>The second panel allows users to set the virtual clinical trial duration in days and hours, the start time of the trial, the variability in the starting glucose levels of the virtual subjects, the intended algorithm dosing time step.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g005" xlink:type="simple"/>
+</fig>
+<fig id="pone.0243139.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Setting experiment protocol 2.</title>
+<p>The third panel allows users to set the breakfast, lunch, dinner and snack meals times and amounts during the virtual clinical trial. The protocol allows for variability in meal amounts and times from day to day and from patient to patient. Users can enable the option of Carbohydrate Counting Error to estimate a rough 0%-20% error in insulin meal bolus calculations.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g006" xlink:type="simple"/>
+</fig>
+<p>The simulation engine is responsible for administering concurrent multi-threaded data communication with a user’s controller algorithm, transferring controller algorithm responses to the web servers, and plotting trial outcomes to the user in real time. <xref ref-type="fig" rid="pone.0243139.g007">Fig 7</xref> presents a sequence diagram outlining the engine’s execution logic.</p>
+<fig id="pone.0243139.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Simulation engine sequence diagram.</title>
+<p>A sequence diagram outlining the software communication protocols.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g007" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec010">
+<title>Testing and debugging</title>
+<p>Once an algorithm is run, a user can pause/resume simulations in debug mode and manually enter boluses, meals, and modify insulin-to-carbohydrate-ratios during a simulation run in real-time to test responses of their code. Users can run a step-by-step execution in real-time to follow the execution of their algorithms and check the results of their simulations, pausing at necessary occasions to check their algorithm consoles for any relevant output. An open loop / closed loop button tests the effect of switching a virtual patient back and forth to open-loop treatment, emulating the behaviour of a lost sensor connection in closed-loop or lost connection to the user algorithm. <xref ref-type="fig" rid="pone.0243139.g008">Fig 8</xref> presents a simulation run on the Development Platform along with the debug commands available for users.</p>
+<fig id="pone.0243139.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>Algorithm debugging mode.</title>
+<p>Pause and Start buttons are presented in the top panel in green, open / closed Loop switch in yellow, and insulin bolus, meal CHO, and ICR buttons in red. The red line plot shows glucose readings solved by a patient model (ODE) while the blue line plots insulin values returned from a user’s algorithm.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g008" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Entire study analysis</title>
+<p>The GUI displays to the user in real time various metrics to analyze the controller algorithm performance. The GUI graphs the glycemic responses of every patient and the overall virtual trial outcomes. The data calculated throughout the simulations include the medians, interquartile ranges, means and standard deviations of the following outcomes: percentage of Time-in-Target (4–8 mmol/L and 4–10 mmol/L), Hypoglycemia (percentage of Time &lt; 4 mmol/L, 3.5 mmol/L, 3.1 mmol/L and area under curve AUC below 4.0 mmol/L, 3.5 mmol/L, 3.1 mmol/L), Incidence of Hypoglycemia, Hyperglycemia (percentage of Time &gt; 8 mmol/L, 10 mmol/L and AUC above 8 mmol/L, 10 mmol/L), Incidence of Hyperglycemia, and Glycemic variability (Average Sensor Glucose mmol/L, SD Sensor Glucose mmol/L, Insulin Delivery U/h, and Glucagon Delivery mg). The population characteristics of BMI, Age, HBA1c, Daily insulin dose, and Duration of diabetes are also displayed for the chosen subjects in a particular trial. In addition to displaying the results in the GUI, the user is able export all the simulation results and virtual patient data and graphs to Microsoft Excel files. In <xref ref-type="fig" rid="pone.0243139.g009">Fig 9</xref> we present the simulation result of 15 virtual subjects that were given 4 meals over a 24-hour period (8 am to 8 am). The first meal was given at 8 am (median 59 g of carbohydrates, IQR (40–60)), the second meal at noon (70 g, 70–75), the third meal at 5 pm (95 g, 81–100), and a snack at 9 pm (20 g, 20–30).</p>
+<fig id="pone.0243139.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>Algorithm performance report assessing the clinical outcomes of a 24-hour single-hormone treatment of a single-hormone treatment.</title>
+<p>Results include baseline characteristics of study participants, percentage time in target, glycemic variability, hypoglycemia and hyperglycemia analyses.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g009" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec012">
+<title>Modeling virtual patients</title>
+<p>The Development Platform includes a program to simulate and run virtual subjects. Interested developers who want to test algorithms against specific patient models of their choice can implement their own versions of virtual subjects on the platform. The virtual subject class can be extended in an object-oriented manner and new implementations of virtual patients can be achieved using Java. For developers only interested in creating algorithms, we provide in the Development Platform a glucoregulatory system of thirteen ODEs to model virtual subjects. The default glycemic responses of virtual subjects are defined by a unique set of parameters that simulate inter and intra subject variability.</p>
+<p>The default model uses a nonlinear model of glucose and a stochastic estimation method to determine virtual subject parameters. The glucoregulatory model consists of seven subsystems that model the following dynamics: subcutaneous insulin absorption, plasma insulin kinetics, insulin action, glucagon absorption dynamics, gut glucose absorption, plasma glucose dynamics, and interstitial glucose dynamics. For each component, several models have been proposed in the literature [<xref ref-type="bibr" rid="pone.0243139.ref038">38</xref>]. Input to the model include subcutaneous insulin infusion, subcutaneous glucagon infusion, and carbohydrate content of meals. The main output we capture from the model is the plasma glucose concentration. Below are short descriptions of the subsystems.</p>
+</sec>
+<sec id="sec013">
+<title>Insulin absorption dynamics (pharmacokinetics)</title>
+<p>The absorption of subcutaneously-infused insulin can be modelled as two parallel absorption channels, fast and slow [<xref ref-type="bibr" rid="pone.0243139.ref039">39</xref>]. The slow channel comprises a two-compartment chain with two different transfer rates while the fast channel comprises a two-compartment chain with one shared transfer rate. The slow channel is described by the following equations:
+<disp-formula id="pone.0243139.e001">
+<alternatives>
+<graphic id="pone.0243139.e001g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e001" xlink:type="simple"/>
+<mml:math display="block" id="M1">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>u</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>p</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(1)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e002">
+<alternatives>
+<graphic id="pone.0243139.e002g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e002" xlink:type="simple"/>
+<mml:math display="block" id="M2">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(2)</label>
+</disp-formula>
+where <italic>Q</italic><sub><italic>is</italic>1</sub>(<italic>t</italic>) and <italic>Q</italic><sub><italic>is</italic>2</sub>(<italic>t</italic>) (U) are the insulin masses in the first and second compartment, respectively, <italic>u</italic><sub><italic>i</italic></sub>(<italic>t</italic>) (U/min) is the insulin infusion rate, <italic>p</italic><sub><italic>i</italic></sub> (unitless) is the portion of subcutaneous insulin that is absorbed through the slow channel, and <italic>k</italic><sub><italic>is</italic>1</sub> and <italic>k</italic><sub><italic>is</italic>2</sub> (1/min) are the fractional transfer rate parameters. The fast channel is described by the following equations:
+<disp-formula id="pone.0243139.e003">
+<alternatives>
+<graphic id="pone.0243139.e003g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e003" xlink:type="simple"/>
+<mml:math display="block" id="M3">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>u</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mi>p</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>)</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(3)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e004">
+<alternatives>
+<graphic id="pone.0243139.e004g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e004" xlink:type="simple"/>
+<mml:math display="block" id="M4">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi></mml:mrow></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(4)</label>
+</disp-formula>
+where <italic>Q</italic><sub><italic>if</italic>1</sub>(<italic>t</italic>) and <italic>Q</italic><sub><italic>if</italic>2</sub>(<italic>t</italic>) (U) are the insulin masses in the first and second compartment, respectively, and <italic>k</italic><sub><italic>if</italic></sub> (1/min) is the shared fractional transfer rate.</p>
+</sec>
+<sec id="sec014">
+<title>Plasma insulin kinetics</title>
+<p>We represent plasma insulin kinetics by one compartment
+<disp-formula id="pone.0243139.e005">
+<alternatives>
+<graphic id="pone.0243139.e005g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e005" xlink:type="simple"/>
+<mml:math display="block" id="M5">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi><mml:mi>f</mml:mi></mml:mrow></mml:msub><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>e</mml:mi></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>c</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(5)</label>
+</disp-formula>
+where <italic>Q</italic><sub><italic>i</italic></sub>(<italic>t</italic>) (U) is the insulin mass in the plasma, <italic>k</italic><sub><italic>e</italic></sub> (1/min) is the fractional clearance rate, <italic>c</italic><sub><italic>i</italic></sub> (U/min) is the background insulin appearance, and <italic>I</italic><sub><italic>m</italic></sub>(<italic>t</italic>) (unitless) is a multiplicative time-varying piecewise-linear function describing diurnal and other time-varying components of insulin kinetics. The plasma insulin concentration <italic>I</italic><sub><italic>p</italic></sub>(<italic>t</italic>) (mU/l) is obtained as
+<disp-formula id="pone.0243139.e006">
+<alternatives>
+<graphic id="pone.0243139.e006g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e006" xlink:type="simple"/>
+<mml:math display="block" id="M6">
+<mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:mi>V</mml:mi></mml:mrow><mml:mrow><mml:mi>i</mml:mi></mml:mrow></mml:msub><mml:mi>w</mml:mi></mml:mrow></mml:mfrac><mml:mi>x</mml:mi><mml:mspace width="0.25em"/><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mn>6</mml:mn></mml:mrow></mml:msup>
+</mml:math>
+</alternatives>
+<label>(6)</label>
+</disp-formula>
+where <italic>V</italic><sub><italic>i</italic></sub> = 190 ml/kg is the insulin distribution volume and <italic>w</italic> (kg) is subject’s weight.</p>
+</sec>
+<sec id="sec015">
+<title>Insulin action dynamics</title>
+<p>Insulin action can be partitioned into suppression of endogenous glucose production, promotion of glucose disposal, and distribution of glucose [<xref ref-type="bibr" rid="pone.0243139.ref040">40</xref>]. The effect of insulin lags behind plasma insulin concentrations by 10–30 minutes [<xref ref-type="bibr" rid="pone.0243139.ref041">41</xref>], and thus, state variables of the delayed effect (referred to as remote effect) of insulin are defined as:
+<disp-formula id="pone.0243139.e007">
+<alternatives>
+<graphic id="pone.0243139.e007g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e007" xlink:type="simple"/>
+<mml:math display="block" id="M7">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(7)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e008">
+<alternatives>
+<graphic id="pone.0243139.e008g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e008" xlink:type="simple"/>
+<mml:math display="block" id="M8">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(8)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e009">
+<alternatives>
+<graphic id="pone.0243139.e009g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e009" xlink:type="simple"/>
+<mml:math display="block" id="M9">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>a</mml:mi><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>I</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(9)</label>
+</disp-formula>
+where <italic>x</italic><sub>1</sub>(<italic>t</italic>), <italic>x</italic><sub>2</sub>(<italic>t</italic>), and <italic>x</italic><sub>3</sub>(<italic>t</italic>) (1/min) are the delayed effects of insulin on glucose distribution, glucose disposal, and the endogenous glucose production, respectively, <italic>k</italic><sub><italic>a</italic>1</sub>, <italic>k</italic><sub><italic>a</italic>2</sub>, and <italic>k</italic><sub><italic>a</italic>3</sub> (1/min) are time constants.</p>
+</sec>
+<sec id="sec016">
+<title>Glucagon absorption dynamics (pharmacokinetics)</title>
+<p>The absorption of subcutaneously-infused glucagon can be modelled as [<xref ref-type="bibr" rid="pone.0243139.ref042">42</xref>]:
+<disp-formula id="pone.0243139.e010">
+<alternatives>
+<graphic id="pone.0243139.e010g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e010" xlink:type="simple"/>
+<mml:math display="block" id="M10">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>u</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo stretchy="false">(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(10)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e011">
+<alternatives>
+<graphic id="pone.0243139.e011g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e011" xlink:type="simple"/>
+<mml:math display="block" id="M11">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo stretchy="false">(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>−</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo stretchy="false">(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(11)</label>
+</disp-formula>
+where <italic>Q</italic><sub><italic>g</italic>1</sub>(<italic>t</italic>) and <italic>Q</italic><sub><italic>g</italic>2</sub>(<italic>t</italic>) (units) are the glucagon masses in the first and second subcutaneous compartments, respectively, <italic>u</italic><sub><italic>g</italic></sub>(<italic>t</italic>) (unit/min) is the glucagon infusion rate, and <inline-formula id="pone.0243139.e012"><alternatives><graphic id="pone.0243139.e012g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e012" xlink:type="simple"/><mml:math display="inline" id="M12"><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:math></alternatives></inline-formula> (min) is time-to-peak plasma glucagon concentration following a glucagon bolus (impulse response). The plasma glucagon concentration <italic>C</italic><sub><italic>p</italic></sub>(<italic>t</italic>) is obtained as:
+<disp-formula id="pone.0243139.e013">
+<alternatives>
+<graphic id="pone.0243139.e013g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e013" xlink:type="simple"/>
+<mml:math display="block" id="M13">
+<mml:msub><mml:mrow><mml:mi>C</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:mn>1</mml:mn></mml:mrow><mml:mrow><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>x</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>∙</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo stretchy="false">(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo stretchy="false">)</mml:mo></mml:mrow><mml:mrow><mml:mi>w</mml:mi><mml:mo>∙</mml:mo><mml:msub><mml:mrow><mml:mi>M</mml:mi><mml:mi>C</mml:mi><mml:mi>R</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mfrac><mml:mo>×</mml:mo><mml:msup><mml:mrow><mml:mn>10</mml:mn></mml:mrow><mml:mrow><mml:mn>6</mml:mn></mml:mrow></mml:msup><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>C</mml:mi></mml:mrow><mml:mrow><mml:mi>b</mml:mi></mml:mrow></mml:msub><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(12)</label>
+</disp-formula>
+where <italic>MCR</italic><sub><italic>g</italic></sub> (ml/kg/min) is the metabolic clearance rate and <italic>C</italic><sub><italic>b</italic></sub> (mU/l) is the background plasma glucagon concentration.</p>
+</sec>
+<sec id="sec017">
+<title>Meal absorption dynamics</title>
+<p>Two absorption channels can represent the absorption of meal glucose from the gut, each comprising a two-compartment chain to allow double-peak absorption profiles to be represented. Double-peak absorption profiles were observed in a previous study [<xref ref-type="bibr" rid="pone.0243139.ref043">43</xref>]. Absorption channels share the fractional transfer rate. To allow increased flexibility of absorption profiles that considerably vary between subjects, the model includes a multiplicative time-varying function. The subsystem is described as:
+<disp-formula id="pone.0243139.e014">
+<alternatives>
+<graphic id="pone.0243139.e014g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e014" xlink:type="simple"/>
+<mml:math display="block" id="M14">
+<mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>f</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo>
+</mml:math>
+</alternatives>
+<label>(13)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e015">
+<alternatives>
+<graphic id="pone.0243139.e015g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e015" xlink:type="simple"/>
+<mml:math display="block" id="M15">
+<mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msubsup><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:msup><mml:mrow><mml:mi>t</mml:mi><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mi>t</mml:mi></mml:mrow></mml:msup><mml:mfrac><mml:mrow><mml:mi>C</mml:mi><mml:mi>H</mml:mi><mml:mi>O</mml:mi><mml:mi>x</mml:mi><mml:mn>5551</mml:mn></mml:mrow><mml:mrow><mml:mi>w</mml:mi></mml:mrow></mml:mfrac><mml:msub><mml:mrow><mml:mi>p</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub>
+</mml:math>
+</alternatives>
+<label>(14)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e016">
+<alternatives>
+<graphic id="pone.0243139.e016g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e016" xlink:type="simple"/>
+<mml:math display="block" id="M16">
+<mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mrow><mml:mo>{</mml:mo><mml:mtable><mml:mtr><mml:mtd><mml:mrow><mml:msubsup><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msubsup><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi><mml:mo>−</mml:mo><mml:mi>d</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msup><mml:mrow><mml:mi>e</mml:mi></mml:mrow><mml:mrow><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>−</mml:mo><mml:mi>d</mml:mi><mml:mo>)</mml:mo></mml:mrow></mml:msup><mml:mfrac><mml:mrow><mml:mi>C</mml:mi><mml:mi>H</mml:mi><mml:mi>O</mml:mi><mml:mi>x</mml:mi><mml:mn>5551</mml:mn></mml:mrow><mml:mrow><mml:mi>w</mml:mi></mml:mrow></mml:mfrac><mml:msub><mml:mrow><mml:mo>(</mml:mo><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:mi>p</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>)</mml:mo><mml:mspace width="0.25em"/><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mspace width="0.25em"/><mml:mi>t</mml:mi><mml:mo>&gt;</mml:mo><mml:mi>d</mml:mi></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mn>0</mml:mn><mml:mspace width="9em"/><mml:mi>o</mml:mi><mml:mi>t</mml:mi><mml:mi>h</mml:mi><mml:mi>e</mml:mi><mml:mi>r</mml:mi><mml:mi>w</mml:mi><mml:mi>i</mml:mi><mml:mi>s</mml:mi><mml:mi>e</mml:mi></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(15)</label>
+</disp-formula>
+where <italic>U</italic><sub><italic>m</italic>1</sub>(<italic>t</italic>) and <italic>U</italic><sub><italic>m</italic>2</sub>(<italic>t</italic>) (μmol/kg/min) are the appearances of the first and the second absorption channels, respectively, <italic>k</italic><sub><italic>m</italic></sub>(<italic>t</italic>) (1/min) is a transfer rate parameter, <italic>d</italic> (min) is the delay associated with the second absorption channel, <italic>p</italic><sub><italic>m</italic></sub> (unitless) is the portion of meal carbohydrates absorbed through the first channel, <italic>CHO</italic> (g) is the carbohydrate content of the meal, and <italic>f</italic><sub><italic>m</italic></sub>(<italic>t</italic>) (unitless) is the time-varying piecewise-linear function.</p>
+</sec>
+<sec id="sec018">
+<title>Plasma glucose dynamics</title>
+<p>Glucose kinetics are represented by model developed in [<xref ref-type="bibr" rid="pone.0243139.ref040">40</xref>], adapted to allow glucagon action [<xref ref-type="bibr" rid="pone.0243139.ref044">44</xref>]:
+<disp-formula id="pone.0243139.e017">
+<alternatives>
+<graphic id="pone.0243139.e017g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e017" xlink:type="simple"/>
+<mml:math display="block" id="M17">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>F</mml:mi></mml:mrow><mml:mrow><mml:mn>01</mml:mn></mml:mrow></mml:msub><mml:mfrac><mml:mrow><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mn>160</mml:mn></mml:mrow></mml:mfrac></mml:mrow><mml:mrow><mml:mn>1</mml:mn><mml:mo>+</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mn>160</mml:mn></mml:mrow></mml:mfrac></mml:mrow></mml:mfrac><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>S</mml:mi></mml:mrow><mml:mrow><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mn>12</mml:mn></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:mi>E</mml:mi><mml:mi>G</mml:mi><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>F</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mi>t</mml:mi><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>U</mml:mi></mml:mrow><mml:mrow><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(16)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e018">
+<alternatives>
+<graphic id="pone.0243139.e018g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e018" xlink:type="simple"/>
+<mml:math display="block" id="M18">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:msub><mml:mrow><mml:mi>S</mml:mi></mml:mrow><mml:mrow><mml:mi>t</mml:mi></mml:mrow></mml:msub><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>−</mml:mo><mml:mo>(</mml:mo><mml:mrow><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mn>12</mml:mn></mml:mrow></mml:msub><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>S</mml:mi></mml:mrow><mml:mrow><mml:mi>d</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>2</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(17)</label>
+</disp-formula>
+<disp-formula id="pone.0243139.e019">
+<alternatives>
+<graphic id="pone.0243139.e019g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e019" xlink:type="simple"/>
+<mml:math display="block" id="M19">
+<mml:mi>E</mml:mi><mml:mi>G</mml:mi><mml:mi>P</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mrow><mml:mo>{</mml:mo><mml:mtable columnalign="left"><mml:mtr><mml:mtd><mml:mrow><mml:msub><mml:mrow><mml:mi>C</mml:mi></mml:mrow><mml:mrow><mml:mi>p</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>S</mml:mi></mml:mrow><mml:mrow><mml:mi>g</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mn>1</mml:mn><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:msub><mml:mrow><mml:mi>S</mml:mi></mml:mrow><mml:mrow><mml:mi>e</mml:mi></mml:mrow></mml:msub></mml:mrow><mml:mo>)</mml:mo><mml:mspace width="0.50em"/><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mspace width="0.50em"/><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>&lt;</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd><mml:mrow><mml:mn>0</mml:mn><mml:mspace width="9em"/><mml:mi>i</mml:mi><mml:mi>f</mml:mi><mml:mspace width="0.50em"/><mml:msub><mml:mrow><mml:mi>x</mml:mi></mml:mrow><mml:mrow><mml:mn>3</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>≥</mml:mo><mml:mn>1</mml:mn></mml:mrow></mml:mtd></mml:mtr></mml:mtable><mml:mo>,</mml:mo></mml:mrow>
+</mml:math>
+</alternatives>
+<label>(18)</label>
+</disp-formula>
+where <italic>Q</italic><sub>1</sub>(<italic>t</italic>) and <italic>Q</italic><sub>2</sub>(<italic>t</italic>) (μmol/kg) are the glucose masses in the accessible (where measurements are made) and the non-accessible glucose compartments, respectively, <italic>F</italic><sub>01</sub> (μmol/kg/min) is the non-insulin dependent glucose utilization, and <italic>S</italic><sub><italic>g</italic></sub> is the glucagon sensitivity, <italic>S</italic><sub><italic>t</italic></sub> and <italic>S</italic><sub><italic>d</italic></sub> (10<sup>−4</sup> × /min per mU/l) are the insulin sensitivities of glucose distribution and glucose disposal, respectively, and <italic>S</italic><sub><italic>e</italic></sub> (10<sup>−4</sup> per mU/l) is the insulin sensitivity of endogenous glucose production, and <italic>F</italic><sub><italic>g</italic></sub>(<italic>t</italic>) (unitless) is a time-varying piecewise-linear flux function capturing diurnal changes and other time-varying characteristics of glucose dynamics. The plasma glucose concentration <italic>G</italic>(<italic>t</italic>) (mmol/L) is obtained as:
+<disp-formula id="pone.0243139.e020">
+<alternatives>
+<graphic id="pone.0243139.e020g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e020" xlink:type="simple"/>
+<mml:math display="block" id="M20">
+<mml:mi>G</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mrow><mml:mi>Q</mml:mi></mml:mrow><mml:mrow><mml:mn>1</mml:mn></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo></mml:mrow><mml:mrow><mml:mi>V</mml:mi></mml:mrow></mml:mfrac><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(19)</label>
+</disp-formula>
+where <italic>V</italic> is the glucose distribution volume.</p>
+</sec>
+<sec id="sec019">
+<title>Interstitial glucose dynamics</title>
+<p>Interstitial glucose dynamics can be represented by:
+<disp-formula id="pone.0243139.e021">
+<alternatives>
+<graphic id="pone.0243139.e021g" mimetype="image" position="anchor" xlink:href="info:doi/10.1371/journal.pone.0243139.e021" xlink:type="simple"/>
+<mml:math display="block" id="M21">
+<mml:msub><mml:mrow><mml:mover accent="true"><mml:mrow><mml:mi>G</mml:mi></mml:mrow><mml:mo>˙</mml:mo></mml:mover></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>=</mml:mo><mml:mo>−</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:msub><mml:mrow><mml:mi>G</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>+</mml:mo><mml:msub><mml:mrow><mml:mi>k</mml:mi></mml:mrow><mml:mrow><mml:mi>s</mml:mi></mml:mrow></mml:msub><mml:mi>G</mml:mi><mml:mo>(</mml:mo><mml:mrow><mml:mi>t</mml:mi></mml:mrow><mml:mo>)</mml:mo><mml:mo>,</mml:mo>
+</mml:math>
+</alternatives>
+<label>(20)</label>
+</disp-formula>
+where <italic>G</italic><sub><italic>s</italic></sub>(<italic>t</italic>) is the interstitial glucose concentration (where the sensor measures) and <italic>k</italic><sub><italic>s</italic></sub> (1/min) is a time constant. The model incorporates time-invariant parameters and time-variant functions (fluxes) which are used to outline insulin changes and glucose responses.</p>
+<p>Virtual subjects are represented by a set of parameter vectors. Values of time-variant and time-invariant parameters were obtained using the method described in [<xref ref-type="bibr" rid="pone.0243139.ref039">39</xref>]. The system currently includes 15 virtual subjects that each represents a real patient that was tested in a clinical trial [<xref ref-type="bibr" rid="pone.0243139.ref045">45</xref>].</p>
+</sec>
+</sec>
+<sec id="sec020" sec-type="conclusions">
+<title>Results &amp; discussion</title>
+<p>The focus of the platform’s design is the separation of the three programs running the virtual patients, the GUI, and the user algorithm. This separation ensures complete isolation of user algorithms from virtual patients and helps distribute the load of computations over a cloud network. The servers running on the cloud network are CPU-optimized to solve the ODE system as efficiently as possible. The available servers each have between 16 and 48 CPU cores and implement hyper-threading to provide 32–96 vCPUs each. Consequently, with this separation, a user’s machine only runs their control algorithm and waits for the solution to each ODE system at every iteration. In <xref ref-type="fig" rid="pone.0243139.g010">Fig 10</xref> we plot the results of running an AP virtual clinical trial of 16 patients using a dual-hormone algorithm on an i3 dual-core machine (4 vCPUs) and an i7 quad-core machine (8 vCPUs) supporting hyper-threading for 60 simulation days. For each machine, we ran the 16 patients simultaneously using the Development Platform over the cloud (distributed) versus a complete local installation (sequential) where the ODE model was solved on the same machine. The distributed simulation over the cloud provided a 62% improvement in the running time of the virtual clinical trial on the i3 machine and a 66% improvement on the i7 machine. The distributed simulation on the i3 processor with half the computational power of the i7 processor still ran 33% faster than the sequential simulation on the i7 processor. This overall improvement in speed and CPU utilization can help users develop their algorithms twice as fast and run longer simulations. The reduction in the computational burden of virtually running an AP system opens the possibilities to develop learning algorithms that can train on very long simulation durations [<xref ref-type="bibr" rid="pone.0243139.ref046">46</xref>–<xref ref-type="bibr" rid="pone.0243139.ref049">49</xref>] efficiently without requiring users to obtain specialized hardware.</p>
+<fig id="pone.0243139.g010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.g010</object-id>
+<label>Fig 10</label>
+<caption>
+<title>Computational burden of simulating a virtual clinical trial of 16 patients.</title>
+<p>A comparison between Core i3 and Core i7 processors running 16 virtual patient processes simultaneously using the Development Platform over the cloud (distributed) versus a complete local installation on a physical device (sequential).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.g010" xlink:type="simple"/>
+</fig>
+<p>Using the glucose and insulin readings, meal data, and experimental protocols of one of our previous dual-hormone randomized crossover controlled trials [<xref ref-type="bibr" rid="pone.0243139.ref045">45</xref>], we ran Bayesian Markov chain Monte Carlo (MCMC) simulations using WinBUGS [<xref ref-type="bibr" rid="pone.0243139.ref050">50</xref>]. We ran the virtual patient program over the cloud platform and used the Nexus Communicator to plug in the Matlab algorithm that was used to conduct the CLASS03 clinical study [<xref ref-type="bibr" rid="pone.0243139.ref008">8</xref>]. We mimicked the protocol of the CLASS03 trial and used the Development Platform panels shown in S4 and S5 Figs, 5 and 6 to set a simulation timeframe of 24-hours (8 am to 8 am) and 4 meals to be given to each of the 15 virtual patients. We set the first meal at 8 am (median 59 g of carbohydrates, IQR (40–60)), the second meal at noon (70 g, 70–75), the third meal at 5 pm (95 g, 81–100), and a snack at 9 pm (20 g, 20–30). The patients in CLASS03 participated in an open-loop treatment, a single-hormone treatment, and a dual-hormone treatment on separate occasions. We replicated all three treatments on our set of virtual patients using the same open-loop and closed-loop algorithm used in the trial. The simulations all ran in parallel for each treatment, launching 15 instances of each algorithm all running simultaneously with each connected to a single patient. On a personal machine, the entire simulation took less than 20 minutes to setup, run, and terminate. S6 and S9 Figs, and 9 present a visual report generated by the development platform for the virtual clinical trials. S7, S8 and S10 Figs graph the response on the platform of one of the virtual patients to the different algorithms used during the simulation run.</p>
+<p>We report in S1 Table the baseline characteristics for the virtual patients and the patients in CLASS03. The virtual patients’ mean age and duration of diabetes are slightly higher than the patients in CLASS03 (47 vs 33 and 28 vs 16, respectively). However, the BMI, HbA1c, and total daily dose are within close range. S2 Table outlines the main clinical results of the virtual trial, comparing the performance of open-loop, single-hormone, and dual-hormone treatments. <xref ref-type="table" rid="pone.0243139.t001">Table 1</xref> compares the outcomes of the virtual trials to CLASS03. The time In target, time between 4.0–10.0 mmol/L, time above 8.0 mmol/L, time above 10.0 mmol/L, and plasma glucose concentrations are all nearly identical in both studies for the three arms. Moreover, the mean glucose levels, SD of glucose, insulin delivery, and glucagon delivery were extremely close in both studies for the three arms. We report in <xref ref-type="table" rid="pone.0243139.t001">Table 1</xref> the means and medians of the times below 4.0 mmol/L. Patients in CLASS03 spent slightly more time in hypoglycemia during the day due to a 30-minute exercise they performed in the study. The 30-minute exercise also lead to more hypoglycemic events (<xref ref-type="table" rid="pone.0243139.t002">Table 2</xref>) than was observed in the virtual trial. Simulating exercise is something we plan to integrate into the default virtual patients on development platform in the future. Nevertheless, the rates of hypoglycemia in both studies followed the same decrease from open-loop to single-hormone to dual-hormone treatments. In addition, overnight outcomes reported in S3 Table also confirm very similar outcomes between the virtual and CLASS03 trial. The paired difference between the three treatments in the virtual trial and CLASS03 are also extremely similar (comparing S2 Table with data from CLASS03).</p>
+<table-wrap id="pone.0243139.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.t001</object-id>
+<label>Table 1</label> <caption><title>Comparisons between simulated and real experiments using 24-hour clinical data collected in the CLASS03 randomized trial involving the dual-hormone artificial pancreas, single-hormone artificial pancreas, and conventional insulin pump therapy arms.</title></caption>
+<alternatives>
+<graphic id="pone.0243139.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Outcome</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Conventional insulin pump therapy</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Single-hormone artificial pancreas</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Dual-hormone artificial pancreas</th>
+</tr>
+<tr>
+<th align="center" colspan="2" style="background-color:#F8F7F2"/>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 29)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 30)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 29)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" colspan="3">Time spent at glucose levels (%):</td>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+<td align="left"/>
+</tr>
+<tr>
+<td align="left" style="background-color:#F8F7F2"/>
+<td align="left" style="background-color:#F8F7F2">In target<xref ref-type="table-fn" rid="t001fn002">*</xref></td>
+<td align="center" style="background-color:#F8F7F2">51% (19)</td>
+<td align="center" style="background-color:#F8F7F2">52% (25)</td>
+<td align="center" style="background-color:#F8F7F2">62% (18)</td>
+<td align="center" style="background-color:#F8F7F2">63% (20)</td>
+<td align="center" style="background-color:#F8F7F2">63% (18)</td>
+<td align="center" style="background-color:#F8F7F2">64% (25)</td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="left">4.0–10.0 mmol/L</td>
+<td align="center">61% (20)</td>
+<td align="center">63% (19)</td>
+<td align="center">74% (15)</td>
+<td align="center">74% (17)</td>
+<td align="center">77% (14)</td>
+<td align="center">74% (22)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#F8F7F2"/>
+<td align="left" style="background-color:#F8F7F2">&lt; 4.0 mmol/L</td>
+<td align="center" style="background-color:#F8F7F2">13.1% (11.6), 13.3% (2.8–20.9)</td>
+<td align="center" style="background-color:#F8F7F2">9.1% (11.5), 1.7% (0.0–17.5)</td>
+<td align="center" style="background-color:#F8F7F2">5.7% (6.8), 3.1% (0.6–8.7)</td>
+<td align="center" style="background-color:#F8F7F2">4.3% (5.3), 1.7% (0.0–7.9)</td>
+<td align="center" style="background-color:#F8F7F2">2.7% (3.5), 1.5% (0.0–3.5)</td>
+<td align="center" style="background-color:#F8F7F2">1.2% (2.9), 0.0% (0.0–0.0)</td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="left">&lt; 3.5 mmol/L</td>
+<td align="center">6.6% (6.1), 4.8% (1.4–10.5)</td>
+<td align="center">5.9% (8.5), 0.0% (0.0–11.0)</td>
+<td align="center">3.0% (4.6), 0.0% (0.0–4.8)</td>
+<td align="center">1.9% (3.0), 0.0% (0.0–3.3)</td>
+<td align="center">0.9% (1.5), 0.1% (0.0–1.4)</td>
+<td align="center">0.5% (1.4), 0.0% (0.0–0.0)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#F8F7F2"/>
+<td align="left" style="background-color:#F8F7F2">&lt; 3.3 mmol/L</td>
+<td align="center" style="background-color:#F8F7F2">4.3% (4.3), 3.0% (1.1–6.5)</td>
+<td align="center" style="background-color:#F8F7F2">4.7% (6.7), 0.0% (0.0–8.7)</td>
+<td align="center" style="background-color:#F8F7F2">1.8% (3.3), 0.0% (0.0–2.0)</td>
+<td align="center" style="background-color:#F8F7F2">1.4% (2.3), 0.0% (0.0–2.1)</td>
+<td align="center" style="background-color:#F8F7F2">0.6% (1.2), 0.0% (0.0–0.8)</td>
+<td align="center" style="background-color:#F8F7F2">0.3% (0.9), 0.0% (0.0–0.0)</td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="left">&gt; 8.0 mmol/L</td>
+<td align="center">41% (23)</td>
+<td align="center">45% (33)</td>
+<td align="center">39% (19)</td>
+<td align="center">40% (25)</td>
+<td align="center">41% (18)</td>
+<td align="center">42% (26)</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#F8F7F2"/>
+<td align="left" style="background-color:#F8F7F2">&gt; 10.0 mmol/L</td>
+<td align="center" style="background-color:#F8F7F2">26% (22)</td>
+<td align="center" style="background-color:#F8F7F2">28% (26)</td>
+<td align="center" style="background-color:#F8F7F2">20% (16)</td>
+<td align="center" style="background-color:#F8F7F2">22% (19)</td>
+<td align="center" style="background-color:#F8F7F2">20% (15)</td>
+<td align="center" style="background-color:#F8F7F2">24% (23)</td>
+</tr>
+<tr>
+<td align="left" colspan="2" style="background-color:#FFFFFF">Mean glucose (mmol/L)</td>
+<td align="center" style="background-color:#FFFFFF">7.9 (2.1)</td>
+<td align="center" style="background-color:#FFFFFF">8.0 (2.5)</td>
+<td align="center" style="background-color:#FFFFFF">7.7 (1.4)</td>
+<td align="center" style="background-color:#FFFFFF">7.9 (1.7)</td>
+<td align="center" style="background-color:#FFFFFF">8.0 (1.4)</td>
+<td align="center" style="background-color:#FFFFFF">8.3 (1.9)</td>
+</tr>
+<tr>
+<td align="left" colspan="2" style="background-color:#F8F7F2">SD of glucose (mmol/L)</td>
+<td align="center" style="background-color:#F8F7F2">2.9 (0.9)</td>
+<td align="center" style="background-color:#F8F7F2">2.5 (0.8)</td>
+<td align="center" style="background-color:#F8F7F2">2.6 (0.9)</td>
+<td align="center" style="background-color:#F8F7F2">2.4 (1.1)</td>
+<td align="center" style="background-color:#F8F7F2">2.5 (0.9)</td>
+<td align="center" style="background-color:#F8F7F2">2.3 (1.1)</td>
+</tr>
+<tr>
+<td align="left" colspan="2">Insulin delivery (U/kg)</td>
+<td align="center">0.69 (0.18)</td>
+<td align="center">1.1 (0.38)</td>
+<td align="center">0.63 (0.17)</td>
+<td align="center">1.0 (0.4)</td>
+<td align="center">0.62 (0.19)</td>
+<td align="center">1.1 (0.44)</td>
+</tr>
+<tr>
+<td align="left" colspan="2" style="background-color:#E6E6E6">Glucagon delivery (mg)</td>
+<td align="center" style="background-color:#E6E6E6">-</td>
+<td align="center" style="background-color:#E6E6E6">-</td>
+<td align="center" style="background-color:#E6E6E6">-</td>
+<td align="center" style="background-color:#E6E6E6">-</td>
+<td align="center" style="background-color:#E6E6E6">0.04 (0.02–0.08)<xref ref-type="table-fn" rid="t001fn003">^</xref></td>
+<td align="center" style="background-color:#E6E6E6">0.03 (0.0–0.12)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>Data are mean (SD) or median (IQR), unless otherwise indicated.</p></fn>
+<fn id="t001fn002"><p>*Primary outcome, defined as 4·0–10·0 mmol/L for 2 h postprandially and 4·0–8·0 mmol/L otherwise.</p></fn>
+<fn id="t001fn003"><p>^Glucagon delivery for day time period outside exercise range.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pone.0243139.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0243139.t002</object-id>
+<label>Table 2</label> <caption><title>Hypoglycaemia rates and nocturnal hypoglycaemia.</title></caption>
+<alternatives>
+<graphic id="pone.0243139.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="justify" style="background-color:#F8F7F2">Outcome</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Conventional insulin pump therapy</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Single-hormone artificial pancreas</th>
+<th align="center" colspan="2" style="background-color:#F8F7F2">Dual-hormone artificial pancreas</th>
+</tr>
+<tr>
+<th align="justify" style="background-color:#F8F7F2"/>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 29)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 29)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+<th align="center" style="background-color:#F8F7F2">CLASS03 (n = 29)</th>
+<th align="center" style="background-color:#F8F7F2">Simulations (n = 14)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Number of hypoglycemic events</td>
+<td align="center">52</td>
+<td align="center">11</td>
+<td align="center" style="background-color:#FFFFFF">13</td>
+<td align="center" style="background-color:#FFFFFF">4</td>
+<td align="center" style="background-color:#FFFFFF">9</td>
+<td align="center" style="background-color:#FFFFFF">3</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#F8F7F2">Number of nocturnal hypoglycemic events</td>
+<td align="center" style="background-color:#F8F7F2">13</td>
+<td align="center" style="background-color:#F8F7F2">4</td>
+<td align="center" style="background-color:#F8F7F2">0</td>
+<td align="center" style="background-color:#F8F7F2">0</td>
+<td align="center" style="background-color:#F8F7F2">0</td>
+<td align="center" style="background-color:#F8F7F2">0</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Number of patients with at least one hypoglycemia event</td>
+<td align="center" style="background-color:#FFFFFF">24 (83%)</td>
+<td align="center" style="background-color:#FFFFFF">6 (43%)</td>
+<td align="center" style="background-color:#FFFFFF">5 (17%)</td>
+<td align="center" style="background-color:#FFFFFF">4 (29%)</td>
+<td align="center" style="background-color:#FFFFFF">6 (21%)</td>
+<td align="center" style="background-color:#FFFFFF">2 (14%)</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t002fn001"><p>Data are number (%) or numbers. Hypoglycaemic events for CLASS03 are defined as plasma glucose concentration below 3·3 mmol/L with symptoms or below 3·0 mmol/L irrespective of symptoms, and were treated with oral carbohydrate. Hypoglycaemic events for Simulations are defined as glucose concentration below 3·3 mmol/L and were treated with simulated oral carbohydrate.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec021">
+<title>Conclusion &amp; future work</title>
+<p>Conducting clinical trials to develop early stage algorithms, to test new improvements, to test multiple treatments [<xref ref-type="bibr" rid="pone.0243139.ref051">51</xref>], or to validate algorithm performance under varying conditions is expensive and can be facilitated by a computational platform that conducts virtual clinical trials. Although not a replacement for clinical studies, such a platform would considerably save resources, time, and speed development of AP systems for T1DM patients.</p>
+<p>The conclusions reached in the virtual trial are the same clinical conclusions observed in CLASS03 regarding the performance of the open-loop, single-hormone, and dual-hormone algorithms used. The results suggest that the default T1DM virtual subjects we provide in the Development Platform are a good representation of the T1DM population who participated in the clinical study. The development platform is intended to give algorithm developers a venue to efficiently develop and rapidly test their T1DM solutions prior to clinical testing.</p>
+<p>Changes and updates to the virtual patient program running on the cloud can be made without requiring users to download updates. The separation of concerns in the platform allows for the ODE model to be updated or changed without affecting users’ access to the platform. Moreover, users have automatic access to new virtual patients as they become available on the platform’s database, without the need to run updates. However, new additions to the core of the plugin will require users to update their codes to match any interface changes.</p>
+<p>To help users better assess the performance of their algorithms and how they compare to open-loop treatment, the platform provides a feature that runs a default open-loop virtual trial with user defined protocols. Users can compare the performance of their algorithms to open-loop running on the same protocols. The platform maintains meal rescue protocols for open-loop using procedures defined by the Medtronic Minimed Pump manual. We plan to add other protocols and procedures by other companies in future releases. The platform does not currently integrate directly into any of the CGMs or pumps for testing. Nevertheless, its current architectures allows for many commercial features to be integrated as the platform grows. It is designed to assist interested researchers in trying new ideas and approaches that could potentially motivate new advances in commercial algorithms.</p>
+<p>An advantage of designing the development platform with object-oriented principles is the compartmentalization of the different system components. A component such as the ODE model can be easily replaced with another model without rewriting or restructuring existing code. The platform can support different model structures and different parameter values without the need for the user to do anything locally. Future updates to the platform would include the addition of more virtual patients, the extension of the existing default model to incorporate exercise modeling, the modeling of more complex sensor dynamics, the modeling of flux variability from day to day, and the ability for users to create custom ODE models and upload their own patient parameters. Access to the development platform is made possible through a desktop application that can be downloaded at <ext-link ext-link-type="uri" xlink:href="http://t1dclinic.com/ulna.php" xlink:type="simple">http://t1dclinic.com/ulna.php</ext-link>.</p>
+</sec>
+<sec id="sec022" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0243139.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.s001" xlink:type="simple">
+<label>S1 Material</label>
+<caption>
+<title/>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ref-list>
+<title>References</title>
+<ref id="pone.0243139.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kadish</surname> <given-names>A. H.</given-names></name>, "<article-title>Automation control of blood sugar a servomechanism for glucose monitoring and control</article-title>," <source><italic>Trans Am Soc Artif Intern Organs</italic></source>, vol. <volume>9</volume>, pp. <fpage>363</fpage>–<lpage>7</lpage>, <year>1963</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/13958209" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/13958209</ext-link>. <object-id pub-id-type="pmid">13958209</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, "<article-title>Closed-loop insulin delivery: from bench to clinical practice</article-title>," <source><italic>Nat Rev Endocrinol</italic></source>, vol. <volume>7</volume>, no. <issue>7</issue>, pp. <fpage>385</fpage>–<lpage>95</lpage>, <month>Feb</month> <day>22</day> <year>2011</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrendo.2011.32" xlink:type="simple">10.1038/nrendo.2011.32</ext-link></comment> <object-id pub-id-type="pmid">21343892</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, <name name-style="western"><surname>Wilinska</surname> <given-names>M. E.</given-names></name>, <name name-style="western"><surname>Chassin</surname> <given-names>L. J.</given-names></name>, and <name name-style="western"><surname>Dunger</surname> <given-names>D. B.</given-names></name>, "<article-title>Roadmap to the artificial pancreas</article-title>," (in English), <source><italic>Diabetes Res Clin Pr</italic></source>, vol. <volume>74</volume>, pp. <fpage>S178</fpage>–<lpage>S182</lpage>, <month>Dec</month> <year>2006</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S0168-8227%2806%2970027-4" xlink:type="simple">10.1016/S0168-8227(06)70027-4</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0243139.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Steil</surname> <given-names>G. M.</given-names></name> <etal>et al.</etal>, "<article-title>The Effect of Insulin Feedback on Closed Loop Glucose Control</article-title>," (in English), <source><italic>J Clin Endocr Metab</italic></source>, vol. <volume>96</volume>, no. <issue>5</issue>, pp. <fpage>1402</fpage>–<lpage>1408</lpage>, <month>May</month> <year>2011</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1210/jc.2010-2578" xlink:type="simple">10.1210/jc.2010-2578</ext-link></comment> <object-id pub-id-type="pmid">21367930</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Toffanin</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Messori</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Di Palma</surname> <given-names>F.</given-names></name>, <name name-style="western"><surname>De Nicolao</surname> <given-names>G.</given-names></name>, <name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, and <name name-style="western"><surname>Magni</surname> <given-names>L.</given-names></name>, "<article-title>Artificial pancreas: model predictive control design from clinical experience</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>7</volume>, no. <issue>6</issue>, pp. <fpage>1470</fpage>–<lpage>83</lpage>, <month>Nov</month> <day>01</day> <year>2013</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/24351173" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/24351173</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229681300700607" xlink:type="simple">10.1177/193229681300700607</ext-link></comment> <object-id pub-id-type="pmid">24351173</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>El-Khatib</surname> <given-names>F. H.</given-names></name>, <name name-style="western"><surname>Russell</surname> <given-names>S. J.</given-names></name>, <name name-style="western"><surname>Nathan</surname> <given-names>D. M.</given-names></name>, <name name-style="western"><surname>Sutherlin</surname> <given-names>R. G.</given-names></name>, and <name name-style="western"><surname>Damiano</surname> <given-names>E. R.</given-names></name>, "<article-title>A bihormonal closed-loop artificial pancreas for type 1 diabetes</article-title>," <source><italic>Sci Transl Med</italic></source>, vol. <volume>2</volume>, no. <issue>27</issue>, p. <fpage>27ra27</fpage>, <month>Apr</month> <day>14</day> <year>2010</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1126/scitranslmed.3000619" xlink:type="simple">10.1126/scitranslmed.3000619</ext-link></comment> <object-id pub-id-type="pmid">20393188</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elleri</surname> <given-names>D.</given-names></name> <etal>et al.</etal>, "<article-title>Closed-Loop Basal Insulin Delivery Over 36 Hours in Adolescents With Type 1 Diabetes</article-title>," (in English), <source><italic>Diabetes Care</italic></source>, vol. <volume>36</volume>, no. <issue>4</issue>, pp. <fpage>838</fpage>–<lpage>844</lpage>, <month>Apr</month> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/dc12-0816" xlink:type="simple">10.2337/dc12-0816</ext-link></comment> <object-id pub-id-type="pmid">23193217</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Legault</surname> <given-names>L.</given-names></name>, <name name-style="western"><surname>Messier</surname> <given-names>V.</given-names></name>, <name name-style="western"><surname>Mitre</surname> <given-names>T. M.</given-names></name>, <name name-style="western"><surname>Leroux</surname> <given-names>C.</given-names></name>, and <name name-style="western"><surname>Rabasa-Lhoret</surname> <given-names>R.</given-names></name>, "<article-title>Comparison of dual-hormone artificial pancreas, single-hormone artificial pancreas, and conventional insulin pump therapy for glycaemic control in patients with type 1 diabetes: an open-label randomised controlled crossover trial</article-title>," (in English), <source><italic>Lancet Diabetes Endo</italic></source>, vol. <volume>3</volume>, no. <issue>1</issue>, pp. <fpage>17</fpage>–<lpage>26</lpage>, <month>Jan</month> <year>2015</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2213-8587%2814%2970226-8" xlink:type="simple">10.1016/S2213-8587(14)70226-8</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0243139.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Ellingsen</surname> <given-names>C.</given-names></name> <etal>et al.</etal>, "<article-title>Safety constraints in an artificial pancreatic beta cell: an implementation of model predictive control with insulin on board</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>3</volume>, no. <issue>3</issue>, pp. <fpage>536</fpage>–<lpage>44</lpage>, <month>May</month> <day>01</day> <year>2009</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/20144293" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/20144293</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229680900300319" xlink:type="simple">10.1177/193229680900300319</ext-link></comment> <object-id pub-id-type="pmid">20144293</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Russell</surname> <given-names>S. J.</given-names></name> <etal>et al.</etal>, "<article-title>Outpatient glycemic control with a bionic pancreas in type 1 diabetes</article-title>," <source><italic>N Engl J Med</italic></source>, vol. <volume>371</volume>, no. <issue>4</issue>, pp. <fpage>313</fpage>–<lpage>25</lpage>, <month>Jul</month> <day>24</day> <year>2014</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMoa1314474" xlink:type="simple">10.1056/NEJMoa1314474</ext-link></comment> <object-id pub-id-type="pmid">24931572</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>A. S. El Fathi</surname> <given-names>M. R</given-names></name>.; <name name-style="western"><surname>Gingras</surname> <given-names>V.</given-names></name>; <name name-style="western"><surname>Boulet</surname> <given-names>B</given-names></name>; <name name-style="western"><surname>Haidar</surname> <given-names>A</given-names></name>, "<article-title>The Artificial Pancreas and Meal Control: An Overview of Postprandial Glucose Regulation in Type 1 Diabetes</article-title>," <source><italic>IEEE Control Systems Magazine</italic></source>, vol. <volume>38</volume>, no. <issue>1</issue>, pp. <fpage>67</fpage>–<lpage>85</lpage>, <year>2018</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/MCS.2017.2766323" xlink:type="simple">10.1109/MCS.2017.2766323</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0243139.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wilinska</surname> <given-names>M. E.</given-names></name>, <name name-style="western"><surname>Chassin</surname> <given-names>L. J.</given-names></name>, <name name-style="western"><surname>Acerini</surname> <given-names>C. L.</given-names></name>, <name name-style="western"><surname>Allen</surname> <given-names>J. M.</given-names></name>, <name name-style="western"><surname>Dunger</surname> <given-names>D. B.</given-names></name>, and <name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, "<article-title>Simulation environment to evaluate closed-loop insulin delivery systems in type 1 diabetes</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>4</volume>, no. <issue>1</issue>, pp. <fpage>132</fpage>–<lpage>44</lpage>, <month>Jan</month> <day>01</day> <year>2010</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/20167177" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/20167177</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229681000400117" xlink:type="simple">10.1177/193229681000400117</ext-link></comment> <object-id pub-id-type="pmid">20167177</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kovatchev</surname> <given-names>B. P.</given-names></name>, <name name-style="western"><surname>Breton</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Man</surname> <given-names>C. D.</given-names></name>, and <name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, "<article-title>In silico preclinical trials: a proof of concept in closed-loop control of type 1 diabetes</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>3</volume>, no. <issue>1</issue>, pp. <fpage>44</fpage>–<lpage>55</lpage>, <month>Jan</month> <year>2009</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/19444330" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/19444330</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229680900300106" xlink:type="simple">10.1177/193229680900300106</ext-link></comment> <object-id pub-id-type="pmid">19444330</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kanderian</surname> <given-names>S. S.</given-names></name>, <name name-style="western"><surname>Weinzimer</surname> <given-names>S.</given-names></name>, <name name-style="western"><surname>Voskanyan</surname> <given-names>G.</given-names></name>, and <name name-style="western"><surname>Steil</surname> <given-names>G. M.</given-names></name>, "<article-title>Identification of intraday metabolic profiles during closed-loop glucose control in individuals with type 1 diabetes</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>3</volume>, no. <issue>5</issue>, pp. <fpage>1047</fpage>–<lpage>57</lpage>, <month>Sep</month> <day>01</day> <year>2009</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/20144418" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/20144418</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229680900300508" xlink:type="simple">10.1177/193229680900300508</ext-link></comment> <object-id pub-id-type="pmid">20144418</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Man</surname> <given-names>C. D.</given-names></name>, <name name-style="western"><surname>Micheletto</surname> <given-names>F.</given-names></name>, <name name-style="western"><surname>Lv</surname> <given-names>D.</given-names></name>, <name name-style="western"><surname>Breton</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Kovatchev</surname> <given-names>B.</given-names></name>, and <name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, "<article-title>The UVA/PADOVA Type 1 Diabetes Simulator: New Features</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>8</volume>, no. <issue>1</issue>, pp. <fpage>26</fpage>–<lpage>34</lpage>, <month>Jan</month> <day>1</day> <year>2014</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1932296813514502" xlink:type="simple">10.1177/1932296813514502</ext-link></comment> <object-id pub-id-type="pmid">24876534</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Van Herpe</surname> <given-names>T.</given-names></name> <etal>et al.</etal>, "<article-title>An adaptive input-output modeling approach for predicting the glycemia of critically ill patients</article-title>," <source><italic>Physiol Meas</italic></source>, vol. <volume>27</volume>, no. <issue>11</issue>, pp. <fpage>1057</fpage>–<lpage>69</lpage>, <month>Nov</month> <year>2006</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1088/0967-3334/27/11/001" xlink:type="simple">10.1088/0967-3334/27/11/001</ext-link></comment> <object-id pub-id-type="pmid">17028401</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, <name name-style="western"><surname>Chassin</surname> <given-names>L. J.</given-names></name>, <name name-style="western"><surname>Ellmerer</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Plank</surname> <given-names>J.</given-names></name>, and <name name-style="western"><surname>Wilinska</surname> <given-names>M. E.</given-names></name>, "<article-title>A simulation model of glucose regulation in the critically ill</article-title>," <source><italic>Physiol Meas</italic></source>, vol. <volume>29</volume>, no. <issue>8</issue>, pp. <fpage>959</fpage>–<lpage>78</lpage>, <month>Aug</month> <year>2008</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1088/0967-3334/29/8/008" xlink:type="simple">10.1088/0967-3334/29/8/008</ext-link></comment> <object-id pub-id-type="pmid">18641427</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lehmann</surname> <given-names>E. D.</given-names></name>, "<article-title>Experience with the Internet release of AIDA v4.0—<ext-link ext-link-type="uri" xlink:href="http://www.diabetic.org.uk.aida.htm" xlink:type="simple">http://www.diabetic.org.uk.aida.htm</ext-link>—an interactive educational diabetes simulator</article-title>," <source><italic>Diabetes Technol Ther</italic></source>, vol. <volume>1</volume>, no. <issue>1</issue>, pp. <fpage>41</fpage>–<lpage>54</lpage>, Spring <year>1999</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/152091599317567" xlink:type="simple">10.1089/152091599317567</ext-link></comment> <object-id pub-id-type="pmid">11475304</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lehmann</surname> <given-names>E. D.</given-names></name>, "<article-title>Research use of the AIDA <ext-link ext-link-type="uri" xlink:href="http://www.2aida.org" xlink:type="simple">www.2aida.org</ext-link> diabetes software simulation program: a review-part 1. decision support testing and neural network training</article-title>," <source><italic>Diabetes Technol Ther</italic></source>, vol. <volume>5</volume>, no. <issue>3</issue>, pp. <fpage>425</fpage>–<lpage>38</lpage>, <year>2003</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/152091503765691938" xlink:type="simple">10.1089/152091503765691938</ext-link></comment> <object-id pub-id-type="pmid">12828827</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Visentin</surname> <given-names>R.</given-names></name>, <name name-style="western"><surname>Dalla Man</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Kovatchev</surname> <given-names>B.</given-names></name>, and <name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, "<article-title>The university of Virginia/Padova type 1 diabetes simulator matches the glucose traces of a clinical trial</article-title>," <source><italic>Diabetes Technol Ther</italic></source>, vol. <volume>16</volume>, no. <issue>7</issue>, pp. <fpage>428</fpage>–<lpage>34</lpage>, <month>Jul</month> <year>2014</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/dia.2013.0377" xlink:type="simple">10.1089/dia.2013.0377</ext-link></comment> <object-id pub-id-type="pmid">24571584</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>American Diabetes</surname> <given-names>A.</given-names></name>, "<article-title>Postprandial blood glucose. American Diabetes Association</article-title>," <source><italic>Diabetes Care</italic></source>, vol. <volume>24</volume>, no. <issue>4</issue>, pp. <fpage>775</fpage>–<lpage>8</lpage>, <month>Apr</month> <year>2001</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/11315848" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/11315848</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/diacare.24.4.775" xlink:type="simple">10.2337/diacare.24.4.775</ext-link></comment> <object-id pub-id-type="pmid">11315848</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Oviedo</surname> <given-names>S.</given-names></name>, <name name-style="western"><surname>Contreras</surname> <given-names>I.</given-names></name>, <name name-style="western"><surname>Quiros</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Gimenez</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Conget</surname> <given-names>I.</given-names></name>, and <name name-style="western"><surname>Vehi</surname> <given-names>J.</given-names></name>, "<article-title>Risk-based postprandial hypoglycemia forecasting using supervised learning</article-title>," <source><italic>Int J Med Inform</italic></source>, vol. <volume>126</volume>, pp. <fpage>1</fpage>–<lpage>8</lpage>, <month>Jun</month> <year>2019</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijmedinf.2019.03.008" xlink:type="simple">10.1016/j.ijmedinf.2019.03.008</ext-link></comment> <object-id pub-id-type="pmid">31029250</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tansey</surname> <given-names>M. J.</given-names></name> <etal>et al.</etal>, "<article-title>The effects of aerobic exercise on glucose and counterregulatory hormone concentrations in children with type 1 diabetes</article-title>," <source><italic>Diabetes Care</italic></source>, vol. <volume>29</volume>, no. <issue>1</issue>, pp. <fpage>20</fpage>–<lpage>5</lpage>, <month>Jan</month> <year>2006</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/16373890" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/16373890</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/diacare.29.1.20" xlink:type="simple">10.2337/diacare.29.1.20</ext-link></comment> <object-id pub-id-type="pmid">16373890</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Scavone</surname> <given-names>G.</given-names></name> <etal>et al.</etal>, "<article-title>Effect of carbohydrate counting and medical nutritional therapy on glycaemic control in Type 1 diabetic subjects: a pilot study</article-title>," <source><italic>Diabet Med</italic></source>, vol. <volume>27</volume>, no. <issue>4</issue>, pp. <fpage>477</fpage>–<lpage>9</lpage>, <month>Apr</month> <year>2010</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1464-5491.2010.02963.x" xlink:type="simple">10.1111/j.1464-5491.2010.02963.x</ext-link></comment> <object-id pub-id-type="pmid">20536522</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Brown</surname> <given-names>S. A.</given-names></name>, <name name-style="western"><surname>Jiang</surname> <given-names>B.</given-names></name>, <name name-style="western"><surname>McElwee-Malloy</surname> <given-names>M.</given-names></name>, <name name-style="western"><surname>Wakeman</surname> <given-names>C.</given-names></name>, and <name name-style="western"><surname>Breton</surname> <given-names>M. D.</given-names></name>, "<article-title>Fluctuations of Hyperglycemia and Insulin Sensitivity Are Linked to Menstrual Cycle Phases in Women With T1D</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>9</volume>, no. <issue>6</issue>, pp. <fpage>1192</fpage>–<lpage>9</lpage>, <month>Oct</month> <day>14</day> <year>2015</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1932296815608400" xlink:type="simple">10.1177/1932296815608400</ext-link></comment> <object-id pub-id-type="pmid">26468135</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Goudie</surname> <given-names>R. J. B.</given-names></name>, <name name-style="western"><surname>Lunn</surname> <given-names>D.</given-names></name>, <name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, and <name name-style="western"><surname>Murphy</surname> <given-names>H. R.</given-names></name>, "<article-title>Pharmacokinetics of Insulin Aspart in Pregnant Women With Type 1 Diabetes: Every Day Is Different</article-title>," (in English), <source><italic>Diabetes Care</italic></source>, vol. <volume>37</volume>, no. <issue>6</issue>, pp. <fpage>E121</fpage>–<lpage>E122</lpage>, <month>Jun</month> <year>2014</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/dc13-2535" xlink:type="simple">10.2337/dc13-2535</ext-link></comment> <object-id pub-id-type="pmid">24855162</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Leelarathna</surname> <given-names>L.</given-names></name> <etal>et al.</etal>, "<article-title>Evaluating the accuracy and large inaccuracy of two continuous glucose monitoring systems</article-title>," <source><italic>Diabetes Technol Ther</italic></source>, vol. <volume>15</volume>, no. <issue>2</issue>, pp. <fpage>143</fpage>–<lpage>9</lpage>, <month>Feb</month> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/dia.2012.0245" xlink:type="simple">10.1089/dia.2012.0245</ext-link></comment> <object-id pub-id-type="pmid">23256605</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nathan</surname> <given-names>D. M.</given-names></name> <etal>et al.</etal>, "<article-title>Intensive diabetes treatment and cardiovascular disease in patients with type 1 diabetes</article-title>," <source><italic>N Engl J Med</italic></source>, vol. <volume>353</volume>, no. <issue>25</issue>, pp. <fpage>2643</fpage>–<lpage>53</lpage>, <month>Dec</month> <day>22</day> <year>2005</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMoa052187" xlink:type="simple">10.1056/NEJMoa052187</ext-link></comment> <object-id pub-id-type="pmid">16371630</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chase</surname> <given-names>H. P.</given-names></name> <etal>et al.</etal>, "<article-title>The impact of the diabetes control and complications trial and humalog insulin on glycohemoglobin levels and severe hypoglycemia in type 1 diabetes</article-title>," <source><italic>Diabetes Care</italic></source>, vol. <volume>24</volume>, no. <issue>3</issue>, pp. <fpage>430</fpage>–<lpage>4</lpage>, <month>Mar</month> <year>2001</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="https://www.ncbi.nlm.nih.gov/pubmed/11289463" xlink:type="simple">https://www.ncbi.nlm.nih.gov/pubmed/11289463</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/diacare.24.3.430" xlink:type="simple">10.2337/diacare.24.3.430</ext-link></comment> <object-id pub-id-type="pmid">11289463</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gruden</surname> <given-names>G.</given-names></name> <etal>et al.</etal>, "<article-title>Severe hypoglycemia and cardiovascular disease incidence in type 1 diabetes: the EURODIAB Prospective Complications Study</article-title>," <source><italic>Diabetes Care</italic></source>, vol. <volume>35</volume>, no. <issue>7</issue>, pp. <fpage>1598</fpage>–<lpage>604</lpage>, <month>Jul</month> <year>2012</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/dc11-1531" xlink:type="simple">10.2337/dc11-1531</ext-link></comment> <object-id pub-id-type="pmid">22584135</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Riddell</surname> <given-names>M. C.</given-names></name>, <name name-style="western"><surname>Zaharieva</surname> <given-names>D. P.</given-names></name>, <name name-style="western"><surname>Yavelberg</surname> <given-names>L.</given-names></name>, <name name-style="western"><surname>Cinar</surname> <given-names>A.</given-names></name>, and <name name-style="western"><surname>Jamnik</surname> <given-names>V. K.</given-names></name>, "<article-title>Exercise and the Development of the Artificial Pancreas: One of the More Difficult Series of Hurdles</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>9</volume>, no. <issue>6</issue>, pp. <fpage>1217</fpage>–<lpage>26</lpage>, <month>Oct</month> <day>1</day> <year>2015</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/1932296815609370" xlink:type="simple">10.1177/1932296815609370</ext-link></comment> <object-id pub-id-type="pmid">26428933</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>George</surname> <given-names>P.</given-names></name> and <name name-style="western"><surname>McCrimmon</surname> <given-names>R. J.</given-names></name>, "<article-title>Potential role of non-insulin adjunct therapy in Type 1 diabetes</article-title>," <source><italic>Diabet Med</italic></source>, vol. <volume>30</volume>, no. <issue>2</issue>, pp. <fpage>179</fpage>–<lpage>88</lpage>, <month>Feb</month> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1464-5491.2012.03744.x" xlink:type="simple">10.1111/j.1464-5491.2012.03744.x</ext-link></comment> <object-id pub-id-type="pmid">22804102</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nisly</surname> <given-names>S. A.</given-names></name>, <name name-style="western"><surname>Kolanczyk</surname> <given-names>D. M.</given-names></name>, and <name name-style="western"><surname>Walton</surname> <given-names>A. M.</given-names></name>, "<article-title>Canagliflozin, a new sodium-glucose cotransporter 2 inhibitor, in the treatment of diabetes</article-title>," <source><italic>Am J Health Syst Pharm</italic></source>, vol. <volume>70</volume>, no. <issue>4</issue>, pp. <fpage>311</fpage>–<lpage>9</lpage>, <month>Feb</month> <day>15</day> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2146/ajhp110514" xlink:type="simple">10.2146/ajhp110514</ext-link></comment> <object-id pub-id-type="pmid">23370138</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kielgast</surname> <given-names>U.</given-names></name>, <name name-style="western"><surname>Krarup</surname> <given-names>T.</given-names></name>, <name name-style="western"><surname>Holst</surname> <given-names>J. J.</given-names></name>, and <name name-style="western"><surname>Madsbad</surname> <given-names>S.</given-names></name>, "<article-title>Four Weeks of Treatment With Liraglutide Reduces Insulin Dose Without Loss of Glycemic Control in Type 1 Diabetic Patients With and Without Residual beta-Cell Function</article-title>," (in English), <source><italic>Diabetes Care</italic></source>, vol. <volume>34</volume>, no. <issue>7</issue>, pp. <fpage>1463</fpage>–<lpage>1468</lpage>, <month>Jul</month> <year>2011</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/dc11-0096" xlink:type="simple">10.2337/dc11-0096</ext-link></comment> <object-id pub-id-type="pmid">21593296</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, "<article-title>Closed-loop insulin delivery: from bench to clinical practice</article-title>," (in English), <source><italic>Nature Reviews Endocrinology</italic></source>, vol. <volume>7</volume>, no. <issue>7</issue>, pp. <fpage>385</fpage>–<lpage>395</lpage>, <month>Jul</month> <year>2011</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrendo.2011.32" xlink:type="simple">10.1038/nrendo.2011.32</ext-link></comment> <object-id pub-id-type="pmid">21343892</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref036"><label>36</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Weaver</surname> <given-names>J.</given-names></name>, <source><italic>JavaFX Script</italic>: <italic>Dynamic Java Scripting for Rich Internet/Client-side Applications</italic></source>. <publisher-name>Apress</publisher-name>, <year>2007</year>.</mixed-citation></ref>
+<ref id="pone.0243139.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sharan</surname> <given-names>K.</given-names></name>, <source><italic>Model-View-Controller Pattern</italic></source>. <year>2015</year>.</mixed-citation></ref>
+<ref id="pone.0243139.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Man</surname> <given-names>C. D.</given-names></name>, <name name-style="western"><surname>Sparacino</surname> <given-names>G.</given-names></name>, <name name-style="western"><surname>Magni</surname> <given-names>L.</given-names></name>, <name name-style="western"><surname>De Nicolao</surname> <given-names>G.</given-names></name>, and <name name-style="western"><surname>Kovatchev</surname> <given-names>B. P.</given-names></name>, "<article-title>Diabetes: Models, Signals, and Control</article-title>," <source><italic>IEEE Rev Biomed Eng</italic></source>, vol. <volume>2</volume>, pp. <fpage>54</fpage>–<lpage>96</lpage>, <month>Jan</month> <day>1</day> <year>2009</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/RBME.2009.2036073" xlink:type="simple">10.1109/RBME.2009.2036073</ext-link></comment> <object-id pub-id-type="pmid">20936056</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Wilinska</surname> <given-names>M. E.</given-names></name>, <name name-style="western"><surname>Graveston</surname> <given-names>J. A.</given-names></name>, and <name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name>, "<article-title>Stochastic Virtual Population of Subjects With Type 1 Diabetes for the Assessment of Closed-Loop Glucose Controllers</article-title>," <source><italic>IEEE Trans Biomed Eng</italic></source>, vol. <volume>60</volume>, no. <issue>12</issue>, pp. <fpage>3524</fpage>–<lpage>33</lpage>, <month>Dec</month> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/TBME.2013.2272736" xlink:type="simple">10.1109/TBME.2013.2272736</ext-link></comment> <object-id pub-id-type="pmid">23864149</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hovorka</surname> <given-names>R.</given-names></name> <etal>et al.</etal>, "<article-title>Partitioning glucose distribution/transport, disposal, and endogenous production during IVGTT</article-title>," (in eng), <source><italic>American journal of physiology</italic>. <italic>Endocrinology and metabolism</italic></source>, <source>Clinical Trial Research Support, Non-U.S. Gov't</source> vol. <volume>282</volume>, no. <issue>5</issue>, pp. <fpage>E992</fpage>–<lpage>1007</lpage>, <month>May</month> <year>2002</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajpendo.00304.2001" xlink:type="simple">10.1152/ajpendo.00304.2001</ext-link></comment> <object-id pub-id-type="pmid">11934663</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bergman</surname> <given-names>R. N.</given-names></name>, <name name-style="western"><surname>Ider</surname> <given-names>Y. Z.</given-names></name>, <name name-style="western"><surname>Bowden</surname> <given-names>C. R.</given-names></name>, and <name name-style="western"><surname>Cobelli</surname> <given-names>C.</given-names></name>, "<article-title>Quantitative estimation of insulin sensitivity</article-title>," <source><italic>Am J Physiol</italic></source>, vol. <volume>236</volume>, no. <issue>6</issue>, pp. <fpage>E667</fpage>–<lpage>77</lpage>, <month>Jun</month> <year>1979</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/443421" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pubmed/443421</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajpendo.1979.236.6.E667" xlink:type="simple">10.1152/ajpendo.1979.236.6.E667</ext-link></comment> <object-id pub-id-type="pmid">443421</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Duval</surname> <given-names>C.</given-names></name>, <name name-style="western"><surname>Legault</surname> <given-names>L.</given-names></name>, and <name name-style="western"><surname>Rabasa-Lhoret</surname> <given-names>R.</given-names></name>, "<article-title>Pharmacokinetics of insulin aspart and glucagon in type 1 diabetes during closed-loop operation</article-title>," <source><italic>J Diabetes Sci Technol</italic></source>, vol. <volume>7</volume>, no. <issue>6</issue>, pp. <fpage>1507</fpage>–<lpage>12</lpage>, <month>Nov</month> <year>2013</year>. [Online]. Available: <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pubmed/24351176" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pubmed/24351176</ext-link>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/193229681300700610" xlink:type="simple">10.1177/193229681300700610</ext-link></comment> <object-id pub-id-type="pmid">24351176</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Elleri</surname> <given-names>D.</given-names></name> <etal>et al.</etal>, "<article-title>Absorption patterns of meals containing complex carbohydrates in type 1 diabetes</article-title>," <source><italic>Diabetologia</italic></source>, vol. <volume>56</volume>, no. <issue>5</issue>, pp. <fpage>1108</fpage>–<lpage>17</lpage>, <month>May</month> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00125-013-2852-x" xlink:type="simple">10.1007/s00125-013-2852-x</ext-link></comment> <object-id pub-id-type="pmid">23435829</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Emami</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>El Youssef</surname> <given-names>J.</given-names></name>, <name name-style="western"><surname>Rabasa-Lhoret</surname> <given-names>R.</given-names></name>, <name name-style="western"><surname>Pineau</surname> <given-names>J.</given-names></name>, <name name-style="western"><surname>Castle</surname> <given-names>J.</given-names></name>, and <name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name>, "<article-title>Modelling Glucagon Action in Patients with Type 1 Diabetes</article-title>," <source><italic>IEEE J Biomed Health Inform</italic></source>, <month>Jul</month> <day>20</day> <year>2016</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1109/JBHI.2016.2593630" xlink:type="simple">10.1109/JBHI.2016.2593630</ext-link></comment> <object-id pub-id-type="pmid">27448377</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name> <etal>et al.</etal>, "<article-title>Glucose-responsive insulin and glucagon delivery (dual-hormone artificial pancreas) in adults with type 1 diabetes: a randomized crossover controlled trial</article-title>," <source><italic>CMAJ</italic></source>, vol. <volume>185</volume>, no. <issue>4</issue>, pp. <fpage>297</fpage>–<lpage>305</lpage>, <month>Mar</month> <day>5</day> <year>2013</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1503/cmaj.121265" xlink:type="simple">10.1503/cmaj.121265</ext-link></comment> <object-id pub-id-type="pmid">23359039</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Miller</surname> <given-names>S.</given-names></name>, <name name-style="western"><surname>Nimri</surname> <given-names>R.</given-names></name>, <name name-style="western"><surname>Atlas</surname> <given-names>E.</given-names></name>, <name name-style="western"><surname>Grunberg</surname> <given-names>E. A.</given-names></name>, and <name name-style="western"><surname>Phillip</surname> <given-names>M.</given-names></name>, "<article-title>Automatic learning algorithm for the MD-logic artificial pancreas system</article-title>," <source><italic>Diabetes Technol Ther</italic></source>, vol. <volume>13</volume>, no. <issue>10</issue>, pp. <fpage>983</fpage>–<lpage>90</lpage>, <month>Oct</month> <year>2011</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/dia.2010.0216" xlink:type="simple">10.1089/dia.2010.0216</ext-link></comment> <object-id pub-id-type="pmid">21774690</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nimri</surname> <given-names>R.</given-names></name> <etal>et al.</etal>, "<article-title>MD-Logic Overnight Control for 6 Weeks of Home Use in Patients With Type 1 Diabetes: Randomized Crossover Trial</article-title>," (in English), <source><italic>Diabetes Care</italic></source>, vol. <volume>37</volume>, no. <issue>11</issue>, pp. <fpage>3025</fpage>–<lpage>3032</lpage>, <month>Nov</month> <year>2014</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2337/dc14-0835" xlink:type="simple">10.2337/dc14-0835</ext-link></comment> <object-id pub-id-type="pmid">25078901</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Thabit</surname> <given-names>H.</given-names></name> <etal>et al.</etal>, "<article-title>Home Use of an Artificial Beta Cell in Type 1 Diabetes</article-title>," (in English), <source><italic>New Engl J Med</italic></source>, vol. <volume>373</volume>, no. <issue>22</issue>, pp. <fpage>2129</fpage>–<lpage>2140</lpage>, <month>Nov</month> <day>26</day> <year>2015</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1056/NEJMoa1509351" xlink:type="simple">10.1056/NEJMoa1509351</ext-link></comment> <object-id pub-id-type="pmid">26379095</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kropff</surname> <given-names>J.</given-names></name> <etal>et al.</etal>, "<article-title>2 month evening and night closed-loop glucose control in patients with type 1 diabetes under free-living conditions: a randomised crossover trial</article-title>," (in English), <source><italic>Lancet Diabetes Endo</italic></source>, vol. <volume>3</volume>, no. <issue>12</issue>, pp. <fpage>939</fpage>–<lpage>947</lpage>, <month>Dec</month> <year>2015</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2213-8587%2815%2900335-6" xlink:type="simple">10.1016/S2213-8587(15)00335-6</ext-link></comment> <object-id pub-id-type="pmid">26432775</object-id></mixed-citation></ref>
+<ref id="pone.0243139.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lunn</surname> <given-names>D. J.</given-names></name>, <name name-style="western"><surname>Thomas</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Best</surname> <given-names>N.</given-names></name>, and <name name-style="western"><surname>Spiegelhalter</surname> <given-names>D.</given-names></name>, "<article-title>WinBUGS—A Bayesian modelling framework: Concepts, structure, and extensibility</article-title>," (in English), <source><italic>Stat Comput</italic></source>, vol. <volume>10</volume>, no. <issue>4</issue>, pp. <fpage>325</fpage>–<lpage>337</lpage>, <month>Oct</month> <year>2000</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1023/A%3A1008929526011" xlink:type="simple">10.1023/A:1008929526011</ext-link></comment></mixed-citation></ref>
+<ref id="pone.0243139.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Haidar</surname> <given-names>A.</given-names></name>, <name name-style="western"><surname>Smaoui</surname> <given-names>M. R.</given-names></name>, <name name-style="western"><surname>Legault</surname> <given-names>L.</given-names></name>, and <name name-style="western"><surname>Rabasa-Lhoret</surname> <given-names>R.</given-names></name>, "<article-title>The role of glucagon in the artificial pancreas</article-title>," <source><italic>Lancet Diabetes Endocrinol</italic></source>, vol. <volume>4</volume>, no. <issue>6</issue>, pp. <fpage>476</fpage>–<lpage>9</lpage>, <month>Jun</month> <year>2016</year>, <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/S2213-8587%2816%2930006-7" xlink:type="simple">10.1016/S2213-8587(16)30006-7</ext-link></comment> <object-id pub-id-type="pmid">27138734</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pone.0243139.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0243139.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Moser</surname>
+<given-names>Othmar</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2020</copyright-year>
+<copyright-holder>Othmar Moser</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0243139" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">2 Nov 2020</named-content>
+</p>
+<p>PONE-D-20-25426</p>
+<p>Development Platform for Artificial Pancreas Algorithms</p>
+<p>PLOS ONE</p>
+<p>Dear Dr. Smaoui,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>Please submit your revised manuscript by Dec 14 2020 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email>. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:</p>
+<p><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p></list-item><list-item><p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p></list-item><list-item><p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p></list-item></list></p>
+<p>If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link></p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Othmar Moser</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link> and</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2. Please clearly report at the beginning of your methods or results section which the key performance measures were to establish validity and utility of your model/algorithm/tool.</p>
+<p>3. Please include captions for your Supporting Information files at the end of your manuscript, and update any in-text citations to match accordingly. Please see our Supporting Information guidelines for more information: <ext-link ext-link-type="uri" xlink:href="about:blank" xlink:type="simple">http://journals.plos.org/plosone/s/supporting-information</ext-link>.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Partly</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: I Don't Know</p>
+<p>Reviewer #3: I Don't Know</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>Reviewer #3: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: I'd like to applaud the authors for this publication. The development of AP systems is one of the most important topics in research around type 1 diabetes. Even though this publication solely included virtual patients, the level of detail that has been provided regarding the methodology, structure, development and user friendly application within this manuscript is unusual and absolutely outstanding.</p>
+<p>Furthermore, the writing is, even though the topic is rather complicated, exceptional and enjoyable.</p>
+<p>This makes me recommend this manuscript for publication without any further comments, since individuals that are interested in this specific topic will gain valuable insight into an otherwise unexplored field of research.</p>
+<p>Reviewer #2: This paper describes a science or IT topic and emphasizes on a statistical issue: the authors talk about a clinically validated cloud-based distributed platform that supports the development and comprehensive testing of single and dual-hormone algorithms for type 1 diabetes mellitus (T1DM). The platform utilizes the validated patient model to conduct virtual clinical trials for the rapid development and testing of closed-loop algorithms for T1DM.</p>
+<p>From a medical point of view one can assume that the need for virtual clinical trials is low. We need clinical trials on patients with type 1 diabetes to find out more about their glucose metabolism. If virtual clinical trials fit the real needs remains to be proven.</p>
+<p>A reviewer with strong IT skills combined with statistical knowledge (best fit with knowledge of artificial intelligence) should review this paper.</p>
+<p>Reviewer #3: The content of this manuscript is highly important in order standardize and facilitate the evaluation of the performance of AP systems. In general, the article is well written and the aim is clear. I am not able to prove the mathematical and statistical correctness of the models. I suggest them to be rechecked by a specialized person.</p>
+<p>Further minor points:</p>
+<p>- I would recommend not to use the term “patient” for users of AP technology throughout the manuscript</p>
+<p>- Line 90: “algorithms must prove effective clinically in…” please check the grammar</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: No</p>
+<p>Reviewer #3: No</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email>. Please note that Supporting Information files do not need this step.</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0243139.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0243139.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0243139" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0243139.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">9 Nov 2020</named-content>
+</p>
+<p>Reviewer 1:</p>
+<p>We sincerely thank the reviewer for their time in reading the manuscript and recommending it for publication. We are delighted that the reviewer has enjoyed reviewing the work.</p>
+<p>Reviewer 2:</p>
+<p>We thank the reviewer for taking the time to read and review the manuscript. We agree with the reviewer that more clinical trials on patients with type 1 diabetes are needed to better understand glucose metabolism. Data from future clinical trials in the field will continue to improve our patient models and provide better testing frameworks for algorithms. Nonetheless, the community of AP algorithm developers can still greatly benefit from the currently existing clinical data and models provided by a platform such as the one we are presenting to test and improve algorithms.</p>
+<p>Reviewer 3:</p>
+<p>We thank the reviewer for their time and effort in reviewing the manuscript and are delighted that the reviewer found the topic of high importance. We are confident of the correctness of the mathematical and statistical models.</p>
+<p>Concern:</p>
+<p>I would recommend not to use the term “patient” for users of AP technology throughout the manuscript.</p>
+<p>Response:</p>
+<p>We have reworded most of the phrases that referred to users of AP technology as “patients”. We also replaced the term with “participants” / “subjects” / “users” / “humans” throughout the manuscript wherever it seemed appropriate.</p>
+<p>Concern:</p>
+<p>Line 90: “algorithms must prove effective clinically in..” please check the grammar.</p>
+<p>Response:</p>
+<p>We thank the reviewer for pointing this out. We have rephrased the sentence to fix the grammar mistake.</p>
+<supplementary-material id="pone.0243139.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0243139.s002" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response_to_reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pone.0243139.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0243139.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Moser</surname>
+<given-names>Othmar</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2020</copyright-year>
+<copyright-holder>Othmar Moser</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0243139" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">17 Nov 2020</named-content>
+</p>
+<p>Development Platform for Artificial Pancreas Algorithms</p>
+<p>PONE-D-20-25426R1</p>
+<p>Dear Dr. <!-- <span id="lblTo"> -->Smaoui<!-- </span> -->,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice for payment will follow shortly after the formal acceptance. To ensure an efficient process, please log into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="http://www.editorialmanager.com/pone/" xlink:type="simple">http://www.editorialmanager.com/pone/</ext-link>, click the 'Update My Information' link at the top of the page, and double check that your user information is up-to-date. If you have any billing related questions, please contact our Author Billing department directly at <email xlink:type="simple">authorbilling@plos.org</email>.</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>Kind regards,</p>
+<p>Othmar Moser</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. If the authors have adequately addressed your comments raised in a previous round of review and you feel that this manuscript is now acceptable for publication, you may indicate that here to bypass the “Comments to the Author” section, enter your conflict of interest statement in the “Confidential to Editor” section, and submit your "Accept" recommendation.<!-- </font> --></p>
+<p>Reviewer #1: All comments have been addressed</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: I Don't Know</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: (No Response)</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->7. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0243139.r004" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0243139.r004</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Moser</surname>
+<given-names>Othmar</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2020</copyright-year>
+<copyright-holder>Othmar Moser</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0243139" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">23 Nov 2020</named-content>
+</p>
+<p>PONE-D-20-25426R1 </p>
+<p>Development Platform for Artificial Pancreas Algorithms </p>
+<p>Dear Dr. Smaoui:</p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS ONE. Congratulations! Your manuscript is now with our production department. </p>
+<p>If your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>If we can help with anything else, please email us at <email xlink:type="simple">plosone@plos.org</email>. </p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access. </p>
+<p>Kind regards, </p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr. Othmar Moser  </p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+</body>
+</sub-article>
+</article>

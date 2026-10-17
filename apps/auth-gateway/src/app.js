@@ -1,3 +1,4 @@
+import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
 import express from 'express';
 
@@ -34,7 +35,9 @@ const ADMIN_BACKEND_ACTIONS = new Set([
   'adminBenchmarkPromptDecision',
 ]);
 const ADMIN_MUTATING_ACTIONS = new Set(['adminTaskFollowup', 'adminCommunityEdit', 'adminBenchmarkPromptDecision', 'importReferences', 'evaluateJob', 'initDatabase']);
+const MATERIAL_ACTIONS=new Set(['prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial']);
 const MAINTENANCE_ACTIONS = new Set([
+  ...MATERIAL_ACTIONS,
   'tokenDanceResume', 'providerResume', 'tokenDanceAuthorize', 'tokenDanceExchange', 'tokenDancePaymentCreate',
   'createJob',
   'refineImage',
@@ -194,7 +197,7 @@ export function createApp({
       }
 
       const context = requestContext(request);
-      if (auth.deletionStore && ['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action)) {
+      if (auth.deletionStore && (MATERIAL_ACTIONS.has(action)||['createJob', 'refineImage', 'prepareReferenceUpload', 'submitFeedback', 'benchmarkPromptSubmission', 'optimizeInputs'].includes(action))) {
         const session = await auth.optionalSession(request);
         const operation = session?.user?.id ? await auth.deletionStore.get(String(session.user.id)) : null;
         if (operation) return response.status(409).json({ code: 409, error: operation.status === 'review_required' ? 'ACCOUNT_DELETION_REVIEW_REQUIRED' : 'ACCOUNT_DELETION_PROCESSING' });
@@ -287,6 +290,11 @@ export function createApp({
         return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
       }
 
+      if(MATERIAL_ACTIONS.has(action)){
+        const principal=await writePrincipal(config,auth,request,response,nowSeconds,randomBytes);
+        const {files,materialId,operation,jobId}=request.body||{};
+        return relay(response,await backend.call({action,files,materialId,operation,jobId,userId:principal.userId,userEmail:principal.userEmail},context,{timeoutMs:75000,...(!principal.guestOwner?{authUserId:principal.userId}:{})}));
+      }
       if (action === 'submitFeedback') {
         const session = await auth.optionalSession(request);
         return relay(
@@ -309,7 +317,10 @@ export function createApp({
         action === 'abortReferenceUpload' ||
         action === 'providerAccountCatalog' || action === 'universalApiCheck'
       ) {
-        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
+        const activeRoles = action==='createJob' ? workflowRequiredRoles({...request.body,outputFormat:request.body.outputFormat || request.body.output_format,referenceImageMode:'vision_model'}) : ['main','image','vision'];
+        // Basic-flow direct vision depends on Core's authoritative model capability.
+        // Core checks the actual required roles and trusted auth header before any call.
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.entries(request.body?.modelRoutes || {}).some(([role, route]) => activeRoles.includes(role) && (role !== 'vision' || request.body?.visionMode !== 'none' && !(action==='createJob' && request.body?.pipelineMode==='vanilla' && request.body?.taskName!=='plot')) && ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const body = action === 'createJob'
@@ -326,13 +337,13 @@ export function createApp({
               userEmail: principal.userEmail,
             },
             context,
-            { ...(td ? { authUserId: principal.userId } : {}), ...(action === 'finalizeReferenceUpload' ? { timeoutMs: 40_000 } : {}) },
+            { ...(!principal.guestOwner ? { authUserId: principal.userId } : {}), ...(action === 'finalizeReferenceUpload' ? { timeoutMs: 40_000 } : {}), ...(action === 'providerAccountCatalog' && request.body.mode === 'catalog' ? { timeoutMs: 60_000 } : {}) },
           ),
         );
       }
 
       if (action === 'refineImage') {
-        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.values(request.body?.modelRoutes || {}).some(route => ['tokendance', 'custom'].includes(route?.accessProvider));
+        const td = ['tokendance', 'custom'].includes(request.body?.provider) || action === 'universalApiCheck' || Object.entries(request.body?.modelRoutes || {}).some(([role, route]) => (role !== 'vision' || request.body?.visionMode !== 'none') && ['tokendance', 'custom'].includes(route?.accessProvider));
         if (td) await requireSession(auth, request);
         const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
         const source = normalizeRefineSource(request.body, {
@@ -369,6 +380,14 @@ export function createApp({
           delete body.sourceImageObjectKey;
         } else delete body.sourceImageUpload;
         return relay(response, await backend.call(body, context, td ? { authUserId: principal.userId } : {}));
+      }
+
+      if (action === 'journalFigureExport') {
+        const principal = await writePrincipal(config, auth, request, response, nowSeconds, randomBytes);
+        const result = await backend.call({action:'getJob',jobId:request.body.jobId},context);
+        if (result.status < 200 || result.status >= 300 || Number(result.data?.code || 0) !== 0) return relay(response,result);
+        if (!authorizeJobOwner(result.data?.job,principal)) return forbidden(response);
+        return relay(response,await backend.call({action:'journalFigureExport',jobId:request.body.jobId,candidateId:request.body.candidateId,format:request.body.format,flattenWhite:request.body.flattenWhite,download:request.body.download,userId:principal.userId},context));
       }
 
       if (action === 'getJob') {
@@ -550,6 +569,18 @@ function normalizeFeedbackBody(body) {
 }
 
 function normalizeProviderAccountCatalogBody(body) {
+  if (body?.mode === 'catalog') {
+    const provider = typeof body.provider === 'string' ? body.provider : '';
+    const key = typeof body.apiKeys?.[provider] === 'string' ? body.apiKeys[provider] : '';
+    return { action:'providerAccountCatalog', mode:'catalog', provider,
+      apiKeys: { [provider]: key }, continuation:body.continuation, region:body.region, workspaceId:body.workspaceId,
+      privateModels:body.privateModels === true,
+      ...(provider==='ark' ? {catalogCredentials:{accessKeyId:body.catalogCredentials?.accessKeyId,secretAccessKey:body.catalogCredentials?.secretAccessKey,sessionToken:body.catalogCredentials?.sessionToken}} : provider==='sensenova' ? {catalogCredentials:{token:body.catalogCredentials?.token}} : {}),
+      // Preserve forbidden fields so Core rejects a mixed metadata/inference request.
+      ...(body.probes !== undefined ? {probes:body.probes} : {}),
+      ...(body.confirmPaidImageProbe !== undefined ? {confirmPaidImageProbe:body.confirmPaidImageProbe} : {}),
+    };
+  }
   const arkKey = typeof body?.apiKeys?.ark === 'string' ? body.apiKeys.ark : undefined;
   return {
     action: 'providerAccountCatalog',

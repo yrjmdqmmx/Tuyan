@@ -1,0 +1,31 @@
+{
+  "doi": "10.1371/journal.pntd.0004266",
+  "sourceUrl": "https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0004266",
+  "title": "Social Network Analysis As a Tool for Research Policy",
+  "journal": "PLOS Neglected Tropical Diseases",
+  "authors": [
+    "Dieter Vanderelst"
+  ],
+  "year": "2015",
+  "license": "2015\nDieter Vanderelst\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited",
+  "licenseAttributes": [
+    {
+      "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  ],
+  "figures": [
+    {
+      "id": "pntd.0004266.g001",
+      "label": "Fig 1",
+      "caption": "(a) Example of an Adjacency Matrix, the generic data format used in Social Network Analysis. This example represents a network of authors. The rows and columns of the matrix represent 50 different authors. Black squares indicate the author in the row and column have at least co-authored one paper together. Note that the matrix is symmetrical. (b) Graphical representation of the adjacency matrix in panel a. This visualization reveals that the network consists of seven components, one of which has been circled. The colours of the nodes are determined by their betweenness centrality. In this network, author 37 has the highest betweenness centrality. The degree of selected author nodes is indicated using a number in brackets. The density of this network is about 0.06 (i.e., the average value of the adjacency matrix, omitting the diagonal).",
+      "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pntd.0004266.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pntd.0004266.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title />\n<p>(a) Example of an Adjacency Matrix, the generic data format used in Social Network Analysis. This example represents a network of authors. The rows and columns of the matrix represent 50 different authors. Black squares indicate the author in the row and column have at least co-authored one paper together. Note that the matrix is symmetrical. (b) Graphical representation of the adjacency matrix in panel a. This visualization reveals that the network consists of seven components, one of which has been circled. The colours of the nodes are determined by their betweenness centrality. In this network, author 37 has the highest betweenness centrality. The degree of selected author nodes is indicated using a number in brackets. The density of this network is about 0.06 (i.e., the average value of the adjacency matrix, omitting the diagonal).</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pntd.0004266.g001\" ns0:type=\"simple\" />\n</fig>\n",
+      "graphic": {
+        "mimetype": "image",
+        "position": "float",
+        "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pntd.0004266.g001",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="343.57248pt" height="359.424pt" viewBox="0 0 343.57248 359.424" version="1.1">
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 359.424  L 343.57248 359.424  L 343.57248 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 47.44024 322.71176  L 340.57224 322.71176  L 340.57224 3.00024  L 47.44024 3.00024  z " style="fill: #ffffff" />
+   </g>
+   <g id="patch_3">
+    <path d="M 47.44024 17.532582  L 159.109573 17.532582  L 159.109573 100.574535  L 47.44024 100.574535  z " clip-path="url(#p49fa17c9c7)" style="fill: #487968" />
+   </g>
+   <g id="patch_4">
+    <path d="M 47.44024 121.335023  L 326.613573 121.335023  L 326.613573 204.376977  L 47.44024 204.376977  z " clip-path="url(#p49fa17c9c7)" style="fill: #487968" />
+   </g>
+   <g id="patch_5">
+    <path d="M 47.44024 225.137465  L 214.94424 225.137465  L 214.94424 308.179418  L 47.44024 308.179418  z " clip-path="url(#p49fa17c9c7)" style="fill: #487968" />
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m783222674b" d="M 0 0  L 0 3.5  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#m783222674b" x="47.44024" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="47.44024" y="338.58216" transform="rotate(-0 47.44024 338.58216)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m783222674b" x="103.274907" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="103.274907" y="338.58216" transform="rotate(-0 103.274907 338.58216)">1</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m783222674b" x="159.109573" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="159.109573" y="338.58216" transform="rotate(-0 159.109573 338.58216)">2</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m783222674b" x="214.94424" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="214.94424" y="338.58216" transform="rotate(-0 214.94424 338.58216)">3</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m783222674b" x="270.778907" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="270.778907" y="338.58216" transform="rotate(-0 270.778907 338.58216)">4</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m783222674b" x="326.613573" y="322.71176" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="326.613573" y="338.58216" transform="rotate(-0 326.613573 338.58216)">5</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: middle" x="194.00624" y="355.21416" transform="rotate(-0 194.00624 355.21416)">dimensionless</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7">
+      <defs>
+       <path id="mfd9ef9222c" d="M 0 0  L -3.5 0  " style="stroke: #000000; stroke-width: 0.8" />
+      </defs>
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="47.44024" y="59.053558" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="40.44024" y="63.488758" transform="rotate(-0 40.44024 63.488758)">Alpha</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="47.44024" y="162.856" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="40.44024" y="167.2912" transform="rotate(-0 40.44024 167.2912)">Beta</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#mfd9ef9222c" x="47.44024" y="266.658442" style="stroke: #000000; stroke-width: 0.8" />
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 10.08px; font-family: 'Noto Sans CJK SC', 'DejaVu Sans'; text-anchor: end" x="40.44024" y="271.093642" transform="rotate(-0 40.44024 271.093642)">Gamma</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_6">
+    <path d="M 47.44024 322.71176  L 47.44024 3.00024  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+   <g id="patch_7">
+    <path d="M 47.44024 322.71176  L 340.57224 322.71176  " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square" />
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p49fa17c9c7">
+   <rect x="47.44024" y="3.00024" width="293.132" height="319.71152" />
+  </clipPath>
+ </defs>
+</svg>

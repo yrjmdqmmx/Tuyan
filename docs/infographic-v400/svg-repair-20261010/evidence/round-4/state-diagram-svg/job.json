@@ -1,0 +1,1416 @@
+{
+  "recovery": null,
+  "providerCalls": [],
+  "refineInputs": null,
+  "refineInputMetadata": null,
+  "failure": null,
+  "referenceSelection": {
+    "proposedCount": 1,
+    "selectedCount": 1,
+    "requestedTypeId": "state_transition",
+    "exactCount": 1,
+    "compatibleCount": 0,
+    "manualUnmatchedCount": 0,
+    "matchStatus": "matched",
+    "skippedCount": 0,
+    "imageCount": 1,
+    "mode": "images",
+    "limit": 8,
+    "omitted": {
+      "duplicate": 0,
+      "unavailable": 0,
+      "budget": 0
+    },
+    "policyStatus": "partial"
+  },
+  "visionMode": "none",
+  "candidateProgress": [
+    {
+      "candidateId": 0,
+      "status": "succeeded",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "review_failed",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "```json\n{\n  \"version\": 1,\n  \"svgHash\": \"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\n  \"visual\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"code\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"uncertainties\": [],\n  \"revised_description\": \"No changes needed.\",\n  \"topologyAudit\": {\n    \"topologyHash\": \"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\n    \"originalRequiredNodes\": [\n      {\n        \"nodeId\": \"initial_dot\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"nodeId\": \"idle\",\n        \"label\": \"Idle\",\n        \"sourceQuote\": \"States: Idle\"\n      },\n      {\n        \"nodeId\": \"running\",\n        \"label\": \"Running\",\n        \"sourceQuote\": \"States: ... Running\"\n      },\n      {\n        \"nodeId\": \"paused\",\n        \"label\": \"Paused\",\n        \"sourceQuote\": \"States: ... Paused\"\n      },\n      {\n        \"nodeId\": \"completed\",\n        \"label\": \"Completed\",\n        \"sourceQuote\": \"States: ... Completed\"\n      }\n    ],\n    \"originalRequiredRelations\": [\n      {\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\",\n        \"sourceQuote\": \"Transitions: Idle→Running: start\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\",\n        \"sourceQuote\": \"Transitions: ... Running→Paused: pause\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\",\n        \"sourceQuote\": \"Transitions: ... Paused→Running: resume\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\",\n        \"sourceQuote\": \"Transitions: ... Running→Completed: finish\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\",\n        \"sourceQuote\": \"Transitions: ... Paused→Idle: cancel\"\n      },\n      {\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\",\n        \"sourceQuote\": \"Transitions: ... Completed→Idle: reset\"\n      }\n    ],\n    \"observedRelations\": [\n      {\n        \"edgeId\": \"edge_1\",\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\"\n      },\n      {\n        \"edgeId\": \"edge_2\",\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\"\n      },\n      {\n        \"edgeId\": \"edge_3\",\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\"\n      },\n      {\n        \"edgeId\": \"edge_4\",\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\"\n      },\n      {\n        \"edgeId\": \"edge_5\",\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\"\n      },\n      {\n        \"edgeId\": \"edge_6\",\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\"\n      },\n      {\n        \"edgeId\": \"edge_7\",\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\"\n      }\n    ],\n    \"missingRelations\": [],\n    \"extraRelations\": [],\n    \"wrongRelations\": [],\n    \"nodeIssues\": []\n  },\n  \"rendererAudit\": {\n    \"originalRequirements\": [\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text.\",\n        \"requirement\": \"Complete state machine with specific nodes and labeled transitions\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"All 4 states (Idle, Running, Paused, Completed) and the initial dot are present. All 6 transitions (start, pause, resume, finish, cancel, reset) are correctly connected and labeled. 'Completed' has an outgoing 'reset' edge, confirming it is not terminal.\"\n      },\n      {\n        \"sourceField\": \"avoid\",\n        \"sourceQuote\": \"No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.\",\n        \"requirement\": \"No invented content; preserve labels\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The diagram contains only the requested states and event labels. No numerical data, statistics, or external scientific conclusions are present.\"\n      }\n    ]\n  }\n}\n```",
+            "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+          },
+          {
+            "round": 2,
+            "version": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "review_failed",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "```json\n{\n  \"version\": 1,\n  \"svgHash\": \"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\n  \"visual\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"code\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"uncertainties\": [],\n  \"revised_description\": \"No changes needed.\",\n  \"topologyAudit\": {\n    \"topologyHash\": \"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\n    \"originalRequiredNodes\": [\n      {\n        \"nodeId\": \"initial_dot\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"nodeId\": \"idle\",\n        \"label\": \"Idle\",\n        \"sourceQuote\": \"States: Idle\"\n      },\n      {\n        \"nodeId\": \"running\",\n        \"label\": \"Running\",\n        \"sourceQuote\": \"States: ... Running\"\n      },\n      {\n        \"nodeId\": \"paused\",\n        \"label\": \"Paused\",\n        \"sourceQuote\": \"States: ... Paused\"\n      },\n      {\n        \"nodeId\": \"completed\",\n        \"label\": \"Completed\",\n        \"sourceQuote\": \"States: ... Completed\"\n      }\n    ],\n    \"originalRequiredRelations\": [\n      {\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\",\n        \"sourceQuote\": \"Transitions: Idle→Running: start\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\",\n        \"sourceQuote\": \"Transitions: ... Running→Paused: pause\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\",\n        \"sourceQuote\": \"Transitions: ... Paused→Running: resume\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\",\n        \"sourceQuote\": \"Transitions: ... Running→Completed: finish\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\",\n        \"sourceQuote\": \"Transitions: ... Paused→Idle: cancel\"\n      },\n      {\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\",\n        \"sourceQuote\": \"Transitions: ... Completed→Idle: reset\"\n      }\n    ],\n    \"observedRelations\": [\n      {\n        \"edgeId\": \"edge_1\",\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\"\n      },\n      {\n        \"edgeId\": \"edge_2\",\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\"\n      },\n      {\n        \"edgeId\": \"edge_3\",\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\"\n      },\n      {\n        \"edgeId\": \"edge_4\",\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\"\n      },\n      {\n        \"edgeId\": \"edge_5\",\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\"\n      },\n      {\n        \"edgeId\": \"edge_6\",\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\"\n      },\n      {\n        \"edgeId\": \"edge_7\",\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\"\n      }\n    ],\n    \"missingRelations\": [],\n    \"extraRelations\": [],\n    \"wrongRelations\": [],\n    \"nodeIssues\": []\n  },\n  \"rendererAudit\": {\n    \"originalRequirements\": [\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"English text.\",\n        \"requirement\": \"Use English labels for all states and transitions.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"All node labels (Idle, Running, Paused, Completed) and edge labels (start, pause, resume, finish, cancel, reset) are in English.\"\n      },\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Each named state appears once.\",\n        \"requirement\": \"Ensure exactly one node per defined state.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The SVG contains exactly four state nodes with IDs 'idle', 'running', 'paused', and 'completed'.\"\n      },\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Arrows are labelled events, not process activities.\",\n        \"requirement\": \"Edge labels must represent triggering events.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"Labels are 'start', 'pause', 'resume', 'finish', 'cancel', 'reset', which are events/triggers.\"\n      },\n      {\n        \"sourceField\": \"avoid\",\n        \"sourceQuote\": \"No invented numbers, statistical significance, or scientific conclusions.\",\n        \"requirement\": \"Do not include numerical data or statistical claims not present in the source.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The diagram is purely structural with no numerical values or statistical annotations.\"\n      },\n      {\n        \"sourceField\": \"figureContract\",\n        \"sourceQuote\": \"节点是状态不是动作\",\n        \"requirement\": \"Nodes must represent system states, not actions.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"Node labels are nouns/adjectives describing states (Idle, Running, etc.), distinct from the verb-based transition labels.\"\n      }\n    ]\n  }\n}\n```",
+            "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+        "deliveredPngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+        "topology": {
+          "version": 1,
+          "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+          "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+          "topologyHash": "88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1",
+          "topology": {
+            "schemaVersion": 1,
+            "nodes": [
+              {
+                "id": "initial_dot",
+                "label": "",
+                "shape": "initial",
+                "role": "initial",
+                "initialEvidence": {
+                  "sourceQuote": "Initial dot enters Idle.",
+                  "markerQuote": "Initial dot",
+                  "interpretation": "explicit_unnamed_initial"
+                }
+              },
+              {
+                "id": "idle",
+                "label": "Idle",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "running",
+                "label": "Running",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "paused",
+                "label": "Paused",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "completed",
+                "label": "Completed",
+                "shape": "process",
+                "role": "normal"
+              }
+            ],
+            "edges": [
+              {
+                "id": "edge_1",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "sourceQuote": "Initial dot enters Idle."
+              },
+              {
+                "id": "edge_2",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "sourceQuote": "Idle→Running: start"
+              },
+              {
+                "id": "edge_3",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "sourceQuote": "Running→Paused: pause"
+              },
+              {
+                "id": "edge_4",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "sourceQuote": "Paused→Running: resume"
+              },
+              {
+                "id": "edge_5",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "sourceQuote": "Running→Completed: finish"
+              },
+              {
+                "id": "edge_6",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "sourceQuote": "Paused→Idle: cancel"
+              },
+              {
+                "id": "edge_7",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "sourceQuote": "Completed→Idle: reset"
+              }
+            ],
+            "uncertainties": [],
+            "layout": {
+              "direction": "RIGHT"
+            }
+          },
+          "geometry": {
+            "schemaVersion": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "topologyHash": "88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1",
+            "passed": true,
+            "issues": [],
+            "nodes": {
+              "initial_dot": {
+                "x": 411.517,
+                "y": 434.183,
+                "width": 17.422,
+                "height": 17.422,
+                "shape": "initial",
+                "radius": 0,
+                "strokeWidth": 0
+              },
+              "idle": {
+                "x": 404.548,
+                "y": 484.272,
+                "width": 104.533,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "running": {
+                "x": 405.623,
+                "y": 190.272,
+                "width": 122.217,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "paused": {
+                "x": 417.572,
+                "y": 43.272,
+                "width": 115.161,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "completed": {
+                "x": 477.94,
+                "y": 337.272,
+                "width": 150.441,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              }
+            },
+            "observedRelations": [
+              {
+                "edgeId": "edge_1",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "start": {
+                  "x": 420.228,
+                  "y": 451.605
+                },
+                "end": {
+                  "x": 425.455,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 420.228,
+                    "y": 451.605
+                  },
+                  {
+                    "x": 420.228,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 425.455,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 425.455,
+                    "y": 484.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_2",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "start": {
+                  "x": 446.362,
+                  "y": 484.272
+                },
+                "end": {
+                  "x": 446.362,
+                  "y": 238.728
+                },
+                "points": [
+                  {
+                    "x": 446.362,
+                    "y": 484.272
+                  },
+                  {
+                    "x": 446.362,
+                    "y": 238.728
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_3",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "start": {
+                  "x": 446.362,
+                  "y": 190.272
+                },
+                "end": {
+                  "x": 446.362,
+                  "y": 91.728
+                },
+                "points": [
+                  {
+                    "x": 446.362,
+                    "y": 190.272
+                  },
+                  {
+                    "x": 446.362,
+                    "y": 91.728
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_4",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "start": {
+                  "x": 475.152,
+                  "y": 91.728
+                },
+                "end": {
+                  "x": 487.101,
+                  "y": 190.272
+                },
+                "points": [
+                  {
+                    "x": 475.152,
+                    "y": 91.728
+                  },
+                  {
+                    "x": 475.152,
+                    "y": 168.494
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 168.494
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 190.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_5",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "start": {
+                  "x": 487.101,
+                  "y": 238.728
+                },
+                "end": {
+                  "x": 553.16,
+                  "y": 337.272
+                },
+                "points": [
+                  {
+                    "x": 487.101,
+                    "y": 238.728
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 249.617
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 249.617
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 337.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_6",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "start": {
+                  "x": 503.942,
+                  "y": 91.728
+                },
+                "end": {
+                  "x": 488.175,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 503.942,
+                    "y": 91.728
+                  },
+                  {
+                    "x": 503.942,
+                    "y": 102.617
+                  },
+                  {
+                    "x": 662.354,
+                    "y": 102.617
+                  },
+                  {
+                    "x": 662.354,
+                    "y": 473.383
+                  },
+                  {
+                    "x": 488.175,
+                    "y": 473.383
+                  },
+                  {
+                    "x": 488.175,
+                    "y": 484.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_7",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "start": {
+                  "x": 553.16,
+                  "y": 385.728
+                },
+                "end": {
+                  "x": 467.268,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 553.16,
+                    "y": 385.728
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 467.268,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 467.268,
+                    "y": 484.272
+                  }
+                ]
+              }
+            ],
+            "labelAssociations": [
+              {
+                "edgeId": "edge_2",
+                "bounds": {
+                  "x": 367.09000000000003,
+                  "y": 347.072,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.711999999999989,
+                "nearestCompetingRouteDistance": 80.03300000000002
+              },
+              {
+                "edgeId": "edge_3",
+                "bounds": {
+                  "x": 367.09000000000003,
+                  "y": 126.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.711999999999989,
+                "nearestCompetingRouteDistance": 37.50199999999995
+              },
+              {
+                "edgeId": "edge_4",
+                "bounds": {
+                  "x": 484.952,
+                  "y": 126.572,
+                  "width": 84.672,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.800000000000011,
+                "nearestCompetingRouteDistance": 23.955
+              },
+              {
+                "edgeId": "edge_5",
+                "bounds": {
+                  "x": 473.889,
+                  "y": 273.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.710999999999956,
+                "nearestCompetingRouteDistance": 27.526999999999987
+              },
+              {
+                "edgeId": "edge_6",
+                "bounds": {
+                  "x": 576.026,
+                  "y": 273.572,
+                  "width": 77.616,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.712000000000089,
+                "nearestCompetingRouteDistance": 22.865999999999985
+              },
+              {
+                "edgeId": "edge_7",
+                "bounds": {
+                  "x": 473.889,
+                  "y": 420.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.710999999999956,
+                "nearestCompetingRouteDistance": 27.526999999999987
+              }
+            ],
+            "minFontPx": 14,
+            "limitations": [
+              "Source geometry checks do not certify prose-to-graph semantic inference.",
+              "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+              "Edge crossings can remain and require visual review."
+            ]
+          },
+          "layout": {
+            "direction": "DOWN",
+            "viewport": {
+              "width": 1024,
+              "height": 576,
+              "minFontPx": 14
+            },
+            "fontPx": 19.6,
+            "compiler": "elkjs-0.12.0-topology-v1"
+          }
+        },
+        "note": "当前图评审失败，未认定通过。 DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+      }
+    }
+  ],
+  "id": "1791630591495-cmui6x9v",
+  "status": "succeeded",
+  "provider": "bailian",
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    }
+  },
+  "routingMode": "single",
+  "modelRoutingVersion": 1,
+  "modelRoutingSource": "explicit",
+  "clientPlatform": "",
+  "client_platform": "",
+  "jobType": "generate",
+  "userId": "refine-owner",
+  "userEmail": "local@example.invalid",
+  "configurationMode": "advanced",
+  "taskName": "diagram",
+  "methodContent": "Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "caption": "Explicit synthetic teaching example",
+  "infographicCategory": "状态转移图",
+  "figureTypeId": "state_transition",
+  "figureSpecVersion": "2026-10-10.v1",
+  "figureInputValidation": {
+    "status": "content_review_required",
+    "checks": [
+      "核对：节点是状态不是动作",
+      "核对：边标注事件",
+      "核对：自循环与不可达态显式检查",
+      "逐项核对必要输入；记录证据缺口，不把模型的自信作为事实依据。"
+    ]
+  },
+  "outputFormat": "svg",
+  "mainModelName": "qwen3.7-plus",
+  "imageModelName": "wan2.7-image-pro",
+  "imageRefineMode": "direct-edit",
+  "imageRefineReason": "Wan 2.7 Image Pro accepts the source image for direct image-to-image editing",
+  "refineMode": "",
+  "refineReason": "",
+  "referenceVisionModelName": "qwen3.7-plus",
+  "referenceImageMode": "main_model",
+  "referenceImageModeUsed": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "retrievedReferences": [
+    {
+      "id": "journal_pcbi.1009702.g001",
+      "source": "journal-curated",
+      "corpusVersion": "journal-2026-10-10.v2",
+      "figureTypeId": "multipanel",
+      "panelTypes": [
+        {
+          "panel": "A",
+          "typeId": "network"
+        },
+        {
+          "panel": "B",
+          "typeId": "state_transition"
+        },
+        {
+          "panel": "C",
+          "typeId": "mechanism"
+        }
+      ],
+      "title": "Identification of periodic attractors in Boolean networks using a priori information",
+      "titleZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "summary": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "originalCaption": "Example of a BN.\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].",
+      "shortIntroZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。",
+      "detailZh": "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。 A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+      "paper": {
+        "title": "Identification of periodic attractors in Boolean networks using a priori information",
+        "authors": [
+          "Ulrike Münzner",
+          "Tomoya Mori",
+          "Marcus Krantz",
+          "Edda Klipp",
+          "Tatsuya Akutsu"
+        ],
+        "journal": "PLOS Computational Biology",
+        "year": "2022",
+        "doi": "10.1371/journal.pcbi.1009702",
+        "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1009702"
+      },
+      "figureNumber": "Fig 1",
+      "researchDomain": "系统生物学与布尔网络",
+      "layout": "grid",
+      "density": "high",
+      "tags": [
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "designLessons": [
+        "同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。"
+      ],
+      "doNotTransfer": [
+        "A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。",
+        "原论文的实体名称、样本、数值、显著性、模型性能与科学结论。"
+      ],
+      "imageUrl": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+      "localPreviewUrl": "/reference-library/pcbi.1009702.g001.png",
+      "assets": {
+        "large": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.png",
+          "bytes": 367246,
+          "sha256": "1626940dd34b4372305aa26c217199da6895a7252701f5aeb838a5b0707e0a63"
+        },
+        "original": {
+          "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1009702.g001",
+          "path": "apps/paperbanana-api/assets/reference-library/pcbi.1009702.g001.tif",
+          "bytes": 432340,
+          "sha256": "f2680160c6cc4ed9419bf90d4edf5b09b7cf3bfcbcedaefbfa245ce28a0be1bc"
+        }
+      },
+      "modifications": [],
+      "license": {
+        "id": "CC-BY-4.0",
+        "url": "http://creativecommons.org/licenses/by/4.0/",
+        "status": "verified",
+        "attributionRequired": true,
+        "verifiedAt": "2026-10-10",
+        "basis": "2022\nMünzner et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+        "evidenceFile": "docs/infographic-v400/evidence/papers/pcbi.1009702.xml",
+        "captionEvidence": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1009702.g001\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1009702.g001</object-id>\n<label>Fig 1</label>\n<caption>\n<title>Example of a BN.</title>\n<p>(A) Network structure <italic>G</italic>(<italic>V</italic>, <italic>E</italic>) for a BN consisting of <italic>n</italic> = 3 nodes <italic>x</italic><sub>1</sub>, <italic>x</italic><sub>2</sub>, and <italic>x</italic><sub>3</sub>. The Boolean functions are represented by the edges. (B) State transition diagram of all 2<sup>3</sup> = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component <italic>x</italic><sub>1</sub> are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) <italic>x</italic><sub>1</sub> undergoes phosphorylation by consuming its elemental state <italic>x</italic><sub>1</sub>-{0} to produce its modified state <italic>x</italic><sub>1</sub>-{P} by reaction <italic>r</italic><sub>1</sub> (phosphorylation). The modified <italic>x</italic><sub>1</sub>-{P} undergoes consumption thereby producing the neutral state <italic>x</italic><sub>1</sub>-{0} via reaction <italic>r</italic><sub>2</sub> (dephosphorylation) (details in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>]). (D) Relationship between initial states of both elemental states <italic>x</italic><sub>1</sub>-{0} and <italic>x</italic><sub>1</sub>-{P} of component <italic>x</italic><sub>1</sub> and the attractors. When at least either of the two elemental states <italic>x</italic><sub>1</sub>-{0} or <italic>x</italic><sub>1</sub>-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes <italic>r</italic><sub>1</sub> and <italic>r</italic><sub>2</sub> are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [<xref ref-type=\"bibr\" rid=\"pcbi.1009702.ref029\">29</xref>].</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1009702.g001\" ns0:type=\"simple\" />\n</fig>\n",
+        "reviewEvidence": null,
+        "thirdPartyReview": "已检查出版方XML、全文素材声明、图注和图像；未发现该图另行限制或第三方署名例外。",
+        "permissions": {
+          "storage": true,
+          "display": true,
+          "modelInput": true,
+          "adaptation": true
+        },
+        "conditions": [
+          "保留论文、作者、图号、来源及许可链接（CC0为学术溯源要求，非额外许可义务）",
+          "如修改，明确说明修改并保留原图",
+          "不暗示原作者认可新作品",
+          "仅基于许可的复制与改编权判断模型输入；不额外授予训练、商标、隐私等权利"
+        ],
+        "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0."
+      },
+      "quality": {
+        "status": "reviewed",
+        "inspection": "publisher-caption-and-image",
+        "reason": "结构与科学编码可作为所标注类型的参考；局限写在 doNotTransfer 中。"
+      },
+      "attribution": "Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.",
+      "taskName": "diagram",
+      "visualCategory": "multipanel",
+      "visualCategoryLabel": "组合表达 / 多面板组合图",
+      "keywords": [
+        "多面板组合图",
+        "multipanel",
+        "系统生物学与布尔网络",
+        "grid"
+      ],
+      "match": {
+        "level": "exact",
+        "score": 1010,
+        "requestedTypeId": "state_transition",
+        "preferences": {},
+        "reason": "图型或明确标注的子图精确匹配"
+      }
+    }
+  ],
+  "stages": [
+    {
+      "id": "stage-de4bb511-828d-462e-93d4-07b0de47384e",
+      "candidateId": 0,
+      "type": "planner",
+      "title": "规划",
+      "round": 0,
+      "text": "### Advisory Plan\n\n**1. Nodes & Elements**\n*   **Initial State Marker:** Unnamed solid dot (compiler-owned shape: small filled circle).\n*   **State Nodes (Rounded Rectangles):**\n    *   `Idle`\n    *   `Running`\n    *   `Paused`\n    *   `Completed`\n*   **Note:** All nodes use the compiler-defined rounded rectangle shape with fill `#e5efeb` and stroke `#355c53`. No distinct \"terminal\" styling is applied to `Completed` as it has an outgoing transition.\n\n**2. Relationships (Transitions)**\nAll connections are orthogonal polylines with filled triangle arrows (`#355c53`). Labels are event names, not actions.\n\n*   **Initial → Idle:** Entry arrow from unnamed dot to `Idle`.\n*   **Idle → Running:** Label `start`.\n*   **Running → Paused:** Label `pause`.\n*   **Paused → Running:** Label `resume`.\n*   **Running → Completed:** Label `finish`.\n*   **Paused → Idle:** Label `cancel`.\n*   **Completed → Idle:** Label `reset`.\n\n**3. Layout Strategy**\n*   **Direction:** RIGHT (Adaptable hint).\n*   **Topology:** The graph contains a primary forward path (`Idle`→`Running`→`Completed`) with a side loop (`Running`↔`Paused`) and two return paths to `Idle` (`Paused`→`Idle`, `Completed`→`Idle`).\n*   **Arrangement:** To minimize edge crossings and maintain readability of the \"teaching example\":\n    *   `Idle` is positioned leftmost (entry point).\n    *   `Running` is central.\n    *   `Paused` is placed vertically adjacent to `Running` (e.g., below) to handle the `pause`/`resume` cycle cleanly without crossing the main flow.\n    *   `Completed` is placed to the right of `Running`.\n    *   Return edges (`cancel`, `reset`) will route around the periphery (top or bottom) to avoid intersecting the central `Running`↔`Paused` or `Idle`→`Running` edges.\n\n**4. Compliance & Constraints Check**\n*   **Renderer Contract:** Uses fixed palette (`#e5efeb` fill, `#355c53` stroke/text), Noto Sans font, orthogonal arrows. No shadows/filters.\n*   **Methodology:** Preserves all 4 states and 6 transitions exactly. `Completed` is treated as a standard state node (not terminal). English text only.\n*   **Reference Usage:** Structural design only (state transition topology). No data/colors/fonts transferred from the Boolean network reference.\n*   **Avoidance:** No invented numbers or scientific conclusions.\n\n**5. Uncertainties / Renderer Limitations**\n*   **Edge Routing:** The `Completed`→`Idle` (reset) and `Paused`→`Idle` (cancel) edges create a cycle back to the start. In a strict orthogonal layout, these long backward edges may require significant routing space to avoid overlapping the `Idle`→`Running` edge. The ELK layout engine will determine the specific routing; if overlap occurs, it is a topological constraint of the provided data, not a planning error.\n*   **Node Sizing:** Text length varies (`Completed` vs `Idle`). Node widths will differ based on label content; vertical alignment of centers is not guaranteed but horizontal flow is prioritized.",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:09:51.650Z",
+      "completedAt": "2026-10-10T11:10:06.894Z",
+      "durationMs": 15244,
+      "error": ""
+    },
+    {
+      "id": "stage-e09bb9ba-67c1-45ad-b871-dbffa413dedf",
+      "candidateId": 0,
+      "type": "topology_extraction",
+      "title": "拓扑提取原文（第1次）",
+      "round": 0,
+      "text": "{\"attempt\":1,\"rawHash\":\"2ff2c5802ce109aafaeb2d9aad64be6fa77230c83422a3b0829e14c6b8f0a213\",\"rawResponse\":\"{\\n  \\\"schemaVersion\\\": 1,\\n  \\\"nodes\\\": [\\n    {\\n      \\\"id\\\": \\\"initial_dot\\\",\\n      \\\"label\\\": \\\"\\\",\\n      \\\"shape\\\": \\\"initial\\\",\\n      \\\"role\\\": \\\"initial\\\",\\n      \\\"initialEvidence\\\": {\\n        \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\",\\n        \\\"markerQuote\\\": \\\"Initial dot\\\",\\n        \\\"interpretation\\\": \\\"explicit_unnamed_initial\\\"\\n      }\\n    },\\n    {\\n      \\\"id\\\": \\\"idle\\\",\\n      \\\"label\\\": \\\"Idle\\\",\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"running\\\",\\n      \\\"label\\\": \\\"Running\\\",\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"paused\\\",\\n      \\\"label\\\": \\\"Paused\\\",\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"completed\\\",\\n      \\\"label\\\": \\\"Completed\\\",\\n      \\\"shape\\\": \\\"process\\\",\\n      \\\"role\\\": \\\"normal\\\"\\n    }\\n  ],\\n  \\\"edges\\\": [\\n    {\\n      \\\"id\\\": \\\"edge_1\\\",\\n      \\\"source\\\": \\\"initial_dot\\\",\\n      \\\"target\\\": \\\"idle\\\",\\n      \\\"label\\\": \\\"\\\",\\n      \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_2\\\",\\n      \\\"source\\\": \\\"idle\\\",\\n      \\\"target\\\": \\\"running\\\",\\n      \\\"label\\\": \\\"start\\\",\\n      \\\"sourceQuote\\\": \\\"Idle→Running: start\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_3\\\",\\n      \\\"source\\\": \\\"running\\\",\\n      \\\"target\\\": \\\"paused\\\",\\n      \\\"label\\\": \\\"pause\\\",\\n      \\\"sourceQuote\\\": \\\"Running→Paused: pause\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_4\\\",\\n      \\\"source\\\": \\\"paused\\\",\\n      \\\"target\\\": \\\"running\\\",\\n      \\\"label\\\": \\\"resume\\\",\\n      \\\"sourceQuote\\\": \\\"Paused→Running: resume\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_5\\\",\\n      \\\"source\\\": \\\"running\\\",\\n      \\\"target\\\": \\\"completed\\\",\\n      \\\"label\\\": \\\"finish\\\",\\n      \\\"sourceQuote\\\": \\\"Running→Completed: finish\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_6\\\",\\n      \\\"source\\\": \\\"paused\\\",\\n      \\\"target\\\": \\\"idle\\\",\\n      \\\"label\\\": \\\"cancel\\\",\\n      \\\"sourceQuote\\\": \\\"Paused→Idle: cancel\\\"\\n    },\\n    {\\n      \\\"id\\\": \\\"edge_7\\\",\\n      \\\"source\\\": \\\"completed\\\",\\n      \\\"target\\\": \\\"idle\\\",\\n      \\\"label\\\": \\\"reset\\\",\\n      \\\"sourceQuote\\\": \\\"Completed→Idle: reset\\\"\\n    }\\n  ],\\n  \\\"uncertainties\\\": [],\\n  \\\"layout\\\": {\\n    \\\"direction\\\": \\\"RIGHT\\\"\\n  }\\n}\",\"correctionEligible\":false,\"correctionUsed\":false}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:10:19.649Z",
+      "completedAt": "2026-10-10T11:10:19.649Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-3cb99edc-a764-4575-bf1c-a56b9208024d",
+      "candidateId": 0,
+      "type": "svg_source",
+      "title": "SVG v1 文件",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle.\"},{\"id\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_2\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_3\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_4\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_5\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_6\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_7\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1.svg",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1.svg",
+        "mimeType": "image/svg+xml",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1.svg"
+      },
+      "startedAt": "2026-10-10T11:10:20.109Z",
+      "completedAt": "2026-10-10T11:10:20.109Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-596f2431-fc35-4684-91ca-72f129f099fc",
+      "candidateId": 0,
+      "type": "render",
+      "title": "SVG v1 实际渲染",
+      "round": 0,
+      "text": "{\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle.\"},{\"id\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"geometry\":{\"schemaVersion\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_2\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_3\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_4\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_5\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_6\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_7\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"}}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T11:10:20.109Z",
+      "completedAt": "2026-10-10T11:10:20.109Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-240bf899-993c-49a1-ba12-2055e5841ab6",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面、代码与原始关系评审（第1轮）",
+      "round": 1,
+      "text": "{\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"submittedImageHash\":\"2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc\",\"round\":1,\"referenceAnalysis\":\"\",\"retrievalContext\":\"[{\\\"id\\\":\\\"journal_pcbi.1009702.g001\\\",\\\"title\\\":\\\"Identification of periodic attractors in Boolean networks using a priori information\\\",\\\"originalCaption\\\":\\\"Example of a BN.\\\\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].\\\",\\\"figureTypeId\\\":\\\"multipanel\\\",\\\"panels\\\":[{\\\"panel\\\":\\\"A\\\",\\\"typeId\\\":\\\"network\\\"},{\\\"panel\\\":\\\"B\\\",\\\"typeId\\\":\\\"state_transition\\\"},{\\\"panel\\\":\\\"C\\\",\\\"typeId\\\":\\\"mechanism\\\"}],\\\"match\\\":{\\\"level\\\":\\\"exact\\\",\\\"score\\\":1010,\\\"requestedTypeId\\\":\\\"state_transition\\\",\\\"preferences\\\":{},\\\"reason\\\":\\\"图型或明确标注的子图精确匹配\\\"},\\\"layout\\\":\\\"grid\\\",\\\"density\\\":\\\"high\\\",\\\"designLessons\\\":[\\\"同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。\\\"],\\\"doNotTransfer\\\":[\\\"A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。\\\",\\\"原论文的实体名称、样本、数值、显著性、模型性能与科学结论。\\\"],\\\"attribution\\\":\\\"Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.\\\",\\\"license\\\":\\\"CC-BY-4.0\\\"}]\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle.\"},{\"id\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"nodeIdentityMap\":[{\"id\":\"initial_dot\",\"label\":\"\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\"},{\"id\":\"running\",\"label\":\"Running\"},{\"id\":\"paused\",\"label\":\"Paused\"},{\"id\":\"completed\",\"label\":\"Completed\"}],\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_2\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_3\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_4\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_5\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_6\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_7\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"actualLayout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"assessment\":\"```json\\n{\\n  \\\"version\\\": 1,\\n  \\\"svgHash\\\": \\\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\\\",\\n  \\\"visual\\\": {\\n    \\\"status\\\": \\\"passed\\\",\\n    \\\"findings\\\": []\\n  },\\n  \\\"code\\\": {\\n    \\\"status\\\": \\\"passed\\\",\\n    \\\"findings\\\": []\\n  },\\n  \\\"uncertainties\\\": [],\\n  \\\"revised_description\\\": \\\"No changes needed.\\\",\\n  \\\"topologyAudit\\\": {\\n    \\\"topologyHash\\\": \\\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\\\",\\n    \\\"originalRequiredNodes\\\": [\\n      {\\n        \\\"nodeId\\\": \\\"initial_dot\\\",\\n        \\\"label\\\": \\\"\\\",\\n        \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"Idle\\\",\\n        \\\"sourceQuote\\\": \\\"States: Idle\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"Running\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Running\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"Paused\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Paused\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"Completed\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Completed\\\"\\n      }\\n    ],\\n    \\\"originalRequiredRelations\\\": [\\n      {\\n        \\\"source\\\": \\\"initial_dot\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"\\\",\\n        \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"idle\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"start\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: Idle→Running: start\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"pause\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Running→Paused: pause\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"resume\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Paused→Running: resume\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"finish\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Running→Completed: finish\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"cancel\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Paused→Idle: cancel\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"completed\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"reset\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Completed→Idle: reset\\\"\\n      }\\n    ],\\n    \\\"observedRelations\\\": [\\n      {\\n        \\\"edgeId\\\": \\\"edge_1\\\",\\n        \\\"source\\\": \\\"initial_dot\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_2\\\",\\n        \\\"source\\\": \\\"idle\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"start\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_3\\\",\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"pause\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_4\\\",\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"resume\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_5\\\",\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"finish\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_6\\\",\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"cancel\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_7\\\",\\n        \\\"source\\\": \\\"completed\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"reset\\\"\\n      }\\n    ],\\n    \\\"missingRelations\\\": [],\\n    \\\"extraRelations\\\": [],\\n    \\\"wrongRelations\\\": [],\\n    \\\"nodeIssues\\\": []\\n  },\\n  \\\"rendererAudit\\\": {\\n    \\\"originalRequirements\\\": [\\n      {\\n        \\\"sourceField\\\": \\\"methodology\\\",\\n        \\\"sourceQuote\\\": \\\"Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text.\\\",\\n        \\\"requirement\\\": \\\"Complete state machine with specific nodes and labeled transitions\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"All 4 states (Idle, Running, Paused, Completed) and the initial dot are present. All 6 transitions (start, pause, resume, finish, cancel, reset) are correctly connected and labeled. 'Completed' has an outgoing 'reset' edge, confirming it is not terminal.\\\"\\n      },\\n      {\\n        \\\"sourceField\\\": \\\"avoid\\\",\\n        \\\"sourceQuote\\\": \\\"No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.\\\",\\n        \\\"requirement\\\": \\\"No invented content; preserve labels\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"The diagram contains only the requested states and event labels. No numerical data, statistics, or external scientific conclusions are present.\\\"\\n      }\\n    ]\\n  }\\n}\\n```\"}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-review-1.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-review-1.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-review-1.png"
+      },
+      "startedAt": "2026-10-10T11:10:44.494Z",
+      "completedAt": "2026-10-10T11:10:44.494Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-5fde5b53-6b44-49fd-9c61-30c382e6531e",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 第1轮未完成",
+      "round": 1,
+      "text": "当前图评审失败，未认定通过。 DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T11:10:44.496Z",
+      "completedAt": "2026-10-10T11:10:44.496Z",
+      "durationMs": 0,
+      "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+    },
+    {
+      "id": "stage-fa5b5690-62fb-47c0-a657-6c1be721edab",
+      "candidateId": 0,
+      "type": "protocol_correction",
+      "title": "SVG 同版协议重审（第2/2轮）",
+      "round": 2,
+      "text": "{\"kind\":\"review_schema\",\"code\":\"node_provenance\",\"error\":\"DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence\",\"previousRound\":1,\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"consumesReviewRound\":true,\"note\":\"重新检查原文、当前画面和代码；前次视觉判断不输入下一轮。\"}",
+      "suggestion": "",
+      "image": null,
+      "startedAt": "2026-10-10T11:10:44.496Z",
+      "completedAt": "2026-10-10T11:10:44.496Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-0d3fce90-f730-48f6-af17-ac7af54ba19a",
+      "candidateId": 0,
+      "type": "critic",
+      "title": "SVG v1 画面、代码与原始关系评审（第2轮）",
+      "round": 2,
+      "text": "{\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"pngHash\":\"958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865\",\"submittedImageHash\":\"2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc\",\"round\":2,\"referenceAnalysis\":\"\",\"retrievalContext\":\"[{\\\"id\\\":\\\"journal_pcbi.1009702.g001\\\",\\\"title\\\":\\\"Identification of periodic attractors in Boolean networks using a priori information\\\",\\\"originalCaption\\\":\\\"Example of a BN.\\\\n(A) Network structure G(V, E) for a BN consisting of n = 3 nodes x_{1}, x_{2}, and x_{3}. The Boolean functions are represented by the edges. (B) State transition diagram of all 2^{3} = 8 states of the BN represented in (A). (C) Simplification of a bBM for a phosphorylation-dephosphorylation system as elemental species-reaction graph. The nodes corresponding to elemental states of component x_{1} are shown in black, the nodes corresponding to reactions are shown with grey fillings. Here, a component (protein) x_{1} undergoes phosphorylation by consuming its elemental state x_{1}-{0} to produce its modified state x_{1}-{P} by reaction r_{1} (phosphorylation). The modified x_{1}-{P} undergoes consumption thereby producing the neutral state x_{1}-{0} via reaction r_{2} (dephosphorylation) (details in [29]). (D) Relationship between initial states of both elemental states x_{1}-{0} and x_{1}-{P} of component x_{1} and the attractors. When at least either of the two elemental states x_{1}-{0} or x_{1}-{P} are active in the initial state, both will be active in the attractor. Both elemental states need to be inactive in the initial state to be absent (inactive) in the attractor state. Both reaction nodes r_{1} and r_{2} are assumed to be active in this example and are not shown. Synthesis and degradation are not considered here. In the example, standard update rules are applied, where two mutually exclusive states can be simultaneously present. More details can be found in [29].\\\",\\\"figureTypeId\\\":\\\"multipanel\\\",\\\"panels\\\":[{\\\"panel\\\":\\\"A\\\",\\\"typeId\\\":\\\"network\\\"},{\\\"panel\\\":\\\"B\\\",\\\"typeId\\\":\\\"state_transition\\\"},{\\\"panel\\\":\\\"C\\\",\\\"typeId\\\":\\\"mechanism\\\"}],\\\"match\\\":{\\\"level\\\":\\\"exact\\\",\\\"score\\\":1010,\\\"requestedTypeId\\\":\\\"state_transition\\\",\\\"preferences\\\":{},\\\"reason\\\":\\\"图型或明确标注的子图精确匹配\\\"},\\\"layout\\\":\\\"grid\\\",\\\"density\\\":\\\"high\\\",\\\"designLessons\\\":[\\\"同一布尔网络分别呈现实体连接、全状态转移、反应机制及真值表，展示节点语义随图型改变。\\\"],\\\"doNotTransfer\\\":[\\\"A节点是变量，B节点是整组布尔状态，C含反应节点，不能互相混用。D是表格，不能为了填补覆盖而标成二值矩阵图。\\\",\\\"原论文的实体名称、样本、数值、显著性、模型性能与科学结论。\\\"],\\\"attribution\\\":\\\"Ulrike Münzner, Tomoya Mori, Marcus Krantz, Edda Klipp, Tatsuya Akutsu. Identification of periodic attractors in Boolean networks using a priori information. PLOS Computational Biology (2022), Fig 1. 10.1371/journal.pcbi.1009702. CC-BY-4.0.\\\",\\\"license\\\":\\\"CC-BY-4.0\\\"}]\",\"topology\":{\"schemaVersion\":1,\"nodes\":[{\"id\":\"initial_dot\",\"label\":\"\",\"shape\":\"initial\",\"role\":\"initial\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"running\",\"label\":\"Running\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"paused\",\"label\":\"Paused\",\"shape\":\"process\",\"role\":\"normal\"},{\"id\":\"completed\",\"label\":\"Completed\",\"shape\":\"process\",\"role\":\"normal\"}],\"edges\":[{\"id\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"sourceQuote\":\"Initial dot enters Idle.\"},{\"id\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"sourceQuote\":\"Idle→Running: start\"},{\"id\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"sourceQuote\":\"Running→Paused: pause\"},{\"id\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"sourceQuote\":\"Paused→Running: resume\"},{\"id\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"sourceQuote\":\"Running→Completed: finish\"},{\"id\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"sourceQuote\":\"Paused→Idle: cancel\"},{\"id\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"sourceQuote\":\"Completed→Idle: reset\"}],\"uncertainties\":[],\"layout\":{\"direction\":\"RIGHT\"}},\"nodeIdentityMap\":[{\"id\":\"initial_dot\",\"label\":\"\",\"initialEvidence\":{\"sourceQuote\":\"Initial dot enters Idle.\",\"markerQuote\":\"Initial dot\",\"interpretation\":\"explicit_unnamed_initial\"}},{\"id\":\"idle\",\"label\":\"Idle\"},{\"id\":\"running\",\"label\":\"Running\"},{\"id\":\"paused\",\"label\":\"Paused\"},{\"id\":\"completed\",\"label\":\"Completed\"}],\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"localGeometryCheck\":{\"schemaVersion\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"passed\":true,\"issues\":[],\"nodes\":{\"initial_dot\":{\"x\":411.517,\"y\":434.183,\"width\":17.422,\"height\":17.422,\"shape\":\"initial\",\"radius\":0,\"strokeWidth\":0},\"idle\":{\"x\":404.548,\"y\":484.272,\"width\":104.533,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"running\":{\"x\":405.623,\"y\":190.272,\"width\":122.217,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"paused\":{\"x\":417.572,\"y\":43.272,\"width\":115.161,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742},\"completed\":{\"x\":477.94,\"y\":337.272,\"width\":150.441,\"height\":48.456,\"shape\":\"process\",\"radius\":5.444,\"strokeWidth\":1.742}},\"observedRelations\":[{\"edgeId\":\"edge_1\",\"source\":\"initial_dot\",\"target\":\"idle\",\"label\":\"\",\"start\":{\"x\":420.228,\"y\":451.605},\"end\":{\"x\":425.455,\"y\":484.272},\"points\":[{\"x\":420.228,\"y\":451.605},{\"x\":420.228,\"y\":462.494},{\"x\":425.455,\"y\":462.494},{\"x\":425.455,\"y\":484.272}]},{\"edgeId\":\"edge_2\",\"source\":\"idle\",\"target\":\"running\",\"label\":\"start\",\"start\":{\"x\":446.362,\"y\":484.272},\"end\":{\"x\":446.362,\"y\":238.728},\"points\":[{\"x\":446.362,\"y\":484.272},{\"x\":446.362,\"y\":238.728}]},{\"edgeId\":\"edge_3\",\"source\":\"running\",\"target\":\"paused\",\"label\":\"pause\",\"start\":{\"x\":446.362,\"y\":190.272},\"end\":{\"x\":446.362,\"y\":91.728},\"points\":[{\"x\":446.362,\"y\":190.272},{\"x\":446.362,\"y\":91.728}]},{\"edgeId\":\"edge_4\",\"source\":\"paused\",\"target\":\"running\",\"label\":\"resume\",\"start\":{\"x\":475.152,\"y\":91.728},\"end\":{\"x\":487.101,\"y\":190.272},\"points\":[{\"x\":475.152,\"y\":91.728},{\"x\":475.152,\"y\":168.494},{\"x\":487.101,\"y\":168.494},{\"x\":487.101,\"y\":190.272}]},{\"edgeId\":\"edge_5\",\"source\":\"running\",\"target\":\"completed\",\"label\":\"finish\",\"start\":{\"x\":487.101,\"y\":238.728},\"end\":{\"x\":553.16,\"y\":337.272},\"points\":[{\"x\":487.101,\"y\":238.728},{\"x\":487.101,\"y\":249.617},{\"x\":553.16,\"y\":249.617},{\"x\":553.16,\"y\":337.272}]},{\"edgeId\":\"edge_6\",\"source\":\"paused\",\"target\":\"idle\",\"label\":\"cancel\",\"start\":{\"x\":503.942,\"y\":91.728},\"end\":{\"x\":488.175,\"y\":484.272},\"points\":[{\"x\":503.942,\"y\":91.728},{\"x\":503.942,\"y\":102.617},{\"x\":662.354,\"y\":102.617},{\"x\":662.354,\"y\":473.383},{\"x\":488.175,\"y\":473.383},{\"x\":488.175,\"y\":484.272}]},{\"edgeId\":\"edge_7\",\"source\":\"completed\",\"target\":\"idle\",\"label\":\"reset\",\"start\":{\"x\":553.16,\"y\":385.728},\"end\":{\"x\":467.268,\"y\":484.272},\"points\":[{\"x\":553.16,\"y\":385.728},{\"x\":553.16,\"y\":462.494},{\"x\":467.268,\"y\":462.494},{\"x\":467.268,\"y\":484.272}]}],\"labelAssociations\":[{\"edgeId\":\"edge_2\",\"bounds\":{\"x\":367.09000000000003,\"y\":347.072,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":80.03300000000002},{\"edgeId\":\"edge_3\",\"bounds\":{\"x\":367.09000000000003,\"y\":126.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.711999999999989,\"nearestCompetingRouteDistance\":37.50199999999995},{\"edgeId\":\"edge_4\",\"bounds\":{\"x\":484.952,\"y\":126.572,\"width\":84.672,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":9.800000000000011,\"nearestCompetingRouteDistance\":23.955},{\"edgeId\":\"edge_5\",\"bounds\":{\"x\":473.889,\"y\":273.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987},{\"edgeId\":\"edge_6\",\"bounds\":{\"x\":576.026,\"y\":273.572,\"width\":77.616,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.712000000000089,\"nearestCompetingRouteDistance\":22.865999999999985},{\"edgeId\":\"edge_7\",\"bounds\":{\"x\":473.889,\"y\":420.572,\"width\":70.56,\"height\":24.5,\"font\":19.6},\"ownRouteDistance\":8.710999999999956,\"nearestCompetingRouteDistance\":27.526999999999987}],\"minFontPx\":14,\"limitations\":[\"Source geometry checks do not certify prose-to-graph semantic inference.\",\"Text widths are conservative Noto Sans bounds; actual raster must still be inspected.\",\"Edge crossings can remain and require visual review.\"]},\"layout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"actualLayout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"protocolCorrection\":{\"kind\":\"review_schema\",\"code\":\"node_provenance\",\"error\":\"DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence\",\"previousRound\":1,\"version\":1,\"svgHash\":\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\"},\"assessment\":\"```json\\n{\\n  \\\"version\\\": 1,\\n  \\\"svgHash\\\": \\\"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\\\",\\n  \\\"visual\\\": {\\n    \\\"status\\\": \\\"passed\\\",\\n    \\\"findings\\\": []\\n  },\\n  \\\"code\\\": {\\n    \\\"status\\\": \\\"passed\\\",\\n    \\\"findings\\\": []\\n  },\\n  \\\"uncertainties\\\": [],\\n  \\\"revised_description\\\": \\\"No changes needed.\\\",\\n  \\\"topologyAudit\\\": {\\n    \\\"topologyHash\\\": \\\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\\\",\\n    \\\"originalRequiredNodes\\\": [\\n      {\\n        \\\"nodeId\\\": \\\"initial_dot\\\",\\n        \\\"label\\\": \\\"\\\",\\n        \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"Idle\\\",\\n        \\\"sourceQuote\\\": \\\"States: Idle\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"Running\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Running\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"Paused\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Paused\\\"\\n      },\\n      {\\n        \\\"nodeId\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"Completed\\\",\\n        \\\"sourceQuote\\\": \\\"States: ... Completed\\\"\\n      }\\n    ],\\n    \\\"originalRequiredRelations\\\": [\\n      {\\n        \\\"source\\\": \\\"initial_dot\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"\\\",\\n        \\\"sourceQuote\\\": \\\"Initial dot enters Idle.\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"idle\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"start\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: Idle→Running: start\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"pause\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Running→Paused: pause\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"resume\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Paused→Running: resume\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"finish\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Running→Completed: finish\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"cancel\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Paused→Idle: cancel\\\"\\n      },\\n      {\\n        \\\"source\\\": \\\"completed\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"reset\\\",\\n        \\\"sourceQuote\\\": \\\"Transitions: ... Completed→Idle: reset\\\"\\n      }\\n    ],\\n    \\\"observedRelations\\\": [\\n      {\\n        \\\"edgeId\\\": \\\"edge_1\\\",\\n        \\\"source\\\": \\\"initial_dot\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_2\\\",\\n        \\\"source\\\": \\\"idle\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"start\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_3\\\",\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"paused\\\",\\n        \\\"label\\\": \\\"pause\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_4\\\",\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"running\\\",\\n        \\\"label\\\": \\\"resume\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_5\\\",\\n        \\\"source\\\": \\\"running\\\",\\n        \\\"target\\\": \\\"completed\\\",\\n        \\\"label\\\": \\\"finish\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_6\\\",\\n        \\\"source\\\": \\\"paused\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"cancel\\\"\\n      },\\n      {\\n        \\\"edgeId\\\": \\\"edge_7\\\",\\n        \\\"source\\\": \\\"completed\\\",\\n        \\\"target\\\": \\\"idle\\\",\\n        \\\"label\\\": \\\"reset\\\"\\n      }\\n    ],\\n    \\\"missingRelations\\\": [],\\n    \\\"extraRelations\\\": [],\\n    \\\"wrongRelations\\\": [],\\n    \\\"nodeIssues\\\": []\\n  },\\n  \\\"rendererAudit\\\": {\\n    \\\"originalRequirements\\\": [\\n      {\\n        \\\"sourceField\\\": \\\"methodology\\\",\\n        \\\"sourceQuote\\\": \\\"English text.\\\",\\n        \\\"requirement\\\": \\\"Use English labels for all states and transitions.\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"All node labels (Idle, Running, Paused, Completed) and edge labels (start, pause, resume, finish, cancel, reset) are in English.\\\"\\n      },\\n      {\\n        \\\"sourceField\\\": \\\"methodology\\\",\\n        \\\"sourceQuote\\\": \\\"Each named state appears once.\\\",\\n        \\\"requirement\\\": \\\"Ensure exactly one node per defined state.\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"The SVG contains exactly four state nodes with IDs 'idle', 'running', 'paused', and 'completed'.\\\"\\n      },\\n      {\\n        \\\"sourceField\\\": \\\"methodology\\\",\\n        \\\"sourceQuote\\\": \\\"Arrows are labelled events, not process activities.\\\",\\n        \\\"requirement\\\": \\\"Edge labels must represent triggering events.\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"Labels are 'start', 'pause', 'resume', 'finish', 'cancel', 'reset', which are events/triggers.\\\"\\n      },\\n      {\\n        \\\"sourceField\\\": \\\"avoid\\\",\\n        \\\"sourceQuote\\\": \\\"No invented numbers, statistical significance, or scientific conclusions.\\\",\\n        \\\"requirement\\\": \\\"Do not include numerical data or statistical claims not present in the source.\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"The diagram is purely structural with no numerical values or statistical annotations.\\\"\\n      },\\n      {\\n        \\\"sourceField\\\": \\\"figureContract\\\",\\n        \\\"sourceQuote\\\": \\\"节点是状态不是动作\\\",\\n        \\\"requirement\\\": \\\"Nodes must represent system states, not actions.\\\",\\n        \\\"verdict\\\": \\\"satisfied\\\",\\n        \\\"evidence\\\": \\\"Node labels are nouns/adjectives describing states (Idle, Running, etc.), distinct from the verb-based transition labels.\\\"\\n      }\\n    ]\\n  }\\n}\\n```\"}",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-review-2.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-review-2.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-review-2.png"
+      },
+      "startedAt": "2026-10-10T11:11:10.980Z",
+      "completedAt": "2026-10-10T11:11:10.980Z",
+      "durationMs": 0,
+      "error": ""
+    },
+    {
+      "id": "stage-47778728-12fc-42a0-b638-77f39e3102a1",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 第2轮未完成",
+      "round": 2,
+      "text": "当前图评审失败，未认定通过。 DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T11:11:10.981Z",
+      "completedAt": "2026-10-10T11:11:10.981Z",
+      "durationMs": 0,
+      "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+    },
+    {
+      "id": "stage-08a044c2-60e5-491b-97da-3a571fb8149f",
+      "candidateId": 0,
+      "type": "review_status",
+      "title": "SVG v1 交付状态",
+      "round": 0,
+      "text": "当前图评审失败，未认定通过。 DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence",
+      "suggestion": "",
+      "image": {
+        "storage": "bucket",
+        "filename": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0-svg-v1-render.png",
+        "mimeType": "image/png",
+        "objectKey": "1791630591495-cmui6x9v/candidate-0-svg-v1-render.png"
+      },
+      "startedAt": "2026-10-10T11:11:10.982Z",
+      "completedAt": "2026-10-10T11:11:10.982Z",
+      "durationMs": 0,
+      "error": ""
+    }
+  ],
+  "criticMode": "visual_code",
+  "aspectRatio": "16:9",
+  "imageSize": "1K",
+  "numCandidates": 1,
+  "maxCriticRounds": 2,
+  "promptCharCount": 632,
+  "referenceImageCount": 0,
+  "referenceImages": [],
+  "resultImages": [
+    {
+      "candidateId": 0,
+      "filename": "1791630591495-cmui6x9v/candidate-0.svg",
+      "objectKey": "1791630591495-cmui6x9v/candidate-0.svg",
+      "url": "http://127.0.0.1:61944/objects/1791630591495-cmui6x9v/candidate-0.svg",
+      "storage": "bucket",
+      "mimeType": "image/svg+xml",
+      "description": "{\"renderer\":\"elkjs-0.12.0-topology-v1\",\"actualLayout\":{\"direction\":\"DOWN\",\"viewport\":{\"width\":1024,\"height\":576,\"minFontPx\":14},\"fontPx\":19.6,\"compiler\":\"elkjs-0.12.0-topology-v1\"},\"topologyHash\":\"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\"note\":\"Only this fixed compiler output was applied; planner and critic prose remain advisory stage records.\"}",
+      "review": {
+        "limit": 2,
+        "roundsUsed": 2,
+        "mode": "visual_code",
+        "status": "review_failed",
+        "history": [
+          {
+            "round": 1,
+            "version": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "review_failed",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "```json\n{\n  \"version\": 1,\n  \"svgHash\": \"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\n  \"visual\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"code\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"uncertainties\": [],\n  \"revised_description\": \"No changes needed.\",\n  \"topologyAudit\": {\n    \"topologyHash\": \"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\n    \"originalRequiredNodes\": [\n      {\n        \"nodeId\": \"initial_dot\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"nodeId\": \"idle\",\n        \"label\": \"Idle\",\n        \"sourceQuote\": \"States: Idle\"\n      },\n      {\n        \"nodeId\": \"running\",\n        \"label\": \"Running\",\n        \"sourceQuote\": \"States: ... Running\"\n      },\n      {\n        \"nodeId\": \"paused\",\n        \"label\": \"Paused\",\n        \"sourceQuote\": \"States: ... Paused\"\n      },\n      {\n        \"nodeId\": \"completed\",\n        \"label\": \"Completed\",\n        \"sourceQuote\": \"States: ... Completed\"\n      }\n    ],\n    \"originalRequiredRelations\": [\n      {\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\",\n        \"sourceQuote\": \"Transitions: Idle→Running: start\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\",\n        \"sourceQuote\": \"Transitions: ... Running→Paused: pause\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\",\n        \"sourceQuote\": \"Transitions: ... Paused→Running: resume\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\",\n        \"sourceQuote\": \"Transitions: ... Running→Completed: finish\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\",\n        \"sourceQuote\": \"Transitions: ... Paused→Idle: cancel\"\n      },\n      {\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\",\n        \"sourceQuote\": \"Transitions: ... Completed→Idle: reset\"\n      }\n    ],\n    \"observedRelations\": [\n      {\n        \"edgeId\": \"edge_1\",\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\"\n      },\n      {\n        \"edgeId\": \"edge_2\",\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\"\n      },\n      {\n        \"edgeId\": \"edge_3\",\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\"\n      },\n      {\n        \"edgeId\": \"edge_4\",\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\"\n      },\n      {\n        \"edgeId\": \"edge_5\",\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\"\n      },\n      {\n        \"edgeId\": \"edge_6\",\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\"\n      },\n      {\n        \"edgeId\": \"edge_7\",\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\"\n      }\n    ],\n    \"missingRelations\": [],\n    \"extraRelations\": [],\n    \"wrongRelations\": [],\n    \"nodeIssues\": []\n  },\n  \"rendererAudit\": {\n    \"originalRequirements\": [\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text.\",\n        \"requirement\": \"Complete state machine with specific nodes and labeled transitions\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"All 4 states (Idle, Running, Paused, Completed) and the initial dot are present. All 6 transitions (start, pause, resume, finish, cancel, reset) are correctly connected and labeled. 'Completed' has an outgoing 'reset' edge, confirming it is not terminal.\"\n      },\n      {\n        \"sourceField\": \"avoid\",\n        \"sourceQuote\": \"No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.\",\n        \"requirement\": \"No invented content; preserve labels\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The diagram contains only the requested states and event labels. No numerical data, statistics, or external scientific conclusions are present.\"\n      }\n    ]\n  }\n}\n```",
+            "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+          },
+          {
+            "round": 2,
+            "version": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+            "status": "review_failed",
+            "submittedImageHash": "2f265f4a189734a84a768d5fc261e870ac9df104adbbc4b414931f92e66e70fc",
+            "assessment": "```json\n{\n  \"version\": 1,\n  \"svgHash\": \"a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca\",\n  \"visual\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"code\": {\n    \"status\": \"passed\",\n    \"findings\": []\n  },\n  \"uncertainties\": [],\n  \"revised_description\": \"No changes needed.\",\n  \"topologyAudit\": {\n    \"topologyHash\": \"88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1\",\n    \"originalRequiredNodes\": [\n      {\n        \"nodeId\": \"initial_dot\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"nodeId\": \"idle\",\n        \"label\": \"Idle\",\n        \"sourceQuote\": \"States: Idle\"\n      },\n      {\n        \"nodeId\": \"running\",\n        \"label\": \"Running\",\n        \"sourceQuote\": \"States: ... Running\"\n      },\n      {\n        \"nodeId\": \"paused\",\n        \"label\": \"Paused\",\n        \"sourceQuote\": \"States: ... Paused\"\n      },\n      {\n        \"nodeId\": \"completed\",\n        \"label\": \"Completed\",\n        \"sourceQuote\": \"States: ... Completed\"\n      }\n    ],\n    \"originalRequiredRelations\": [\n      {\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\",\n        \"sourceQuote\": \"Initial dot enters Idle.\"\n      },\n      {\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\",\n        \"sourceQuote\": \"Transitions: Idle→Running: start\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\",\n        \"sourceQuote\": \"Transitions: ... Running→Paused: pause\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\",\n        \"sourceQuote\": \"Transitions: ... Paused→Running: resume\"\n      },\n      {\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\",\n        \"sourceQuote\": \"Transitions: ... Running→Completed: finish\"\n      },\n      {\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\",\n        \"sourceQuote\": \"Transitions: ... Paused→Idle: cancel\"\n      },\n      {\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\",\n        \"sourceQuote\": \"Transitions: ... Completed→Idle: reset\"\n      }\n    ],\n    \"observedRelations\": [\n      {\n        \"edgeId\": \"edge_1\",\n        \"source\": \"initial_dot\",\n        \"target\": \"idle\",\n        \"label\": \"\"\n      },\n      {\n        \"edgeId\": \"edge_2\",\n        \"source\": \"idle\",\n        \"target\": \"running\",\n        \"label\": \"start\"\n      },\n      {\n        \"edgeId\": \"edge_3\",\n        \"source\": \"running\",\n        \"target\": \"paused\",\n        \"label\": \"pause\"\n      },\n      {\n        \"edgeId\": \"edge_4\",\n        \"source\": \"paused\",\n        \"target\": \"running\",\n        \"label\": \"resume\"\n      },\n      {\n        \"edgeId\": \"edge_5\",\n        \"source\": \"running\",\n        \"target\": \"completed\",\n        \"label\": \"finish\"\n      },\n      {\n        \"edgeId\": \"edge_6\",\n        \"source\": \"paused\",\n        \"target\": \"idle\",\n        \"label\": \"cancel\"\n      },\n      {\n        \"edgeId\": \"edge_7\",\n        \"source\": \"completed\",\n        \"target\": \"idle\",\n        \"label\": \"reset\"\n      }\n    ],\n    \"missingRelations\": [],\n    \"extraRelations\": [],\n    \"wrongRelations\": [],\n    \"nodeIssues\": []\n  },\n  \"rendererAudit\": {\n    \"originalRequirements\": [\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"English text.\",\n        \"requirement\": \"Use English labels for all states and transitions.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"All node labels (Idle, Running, Paused, Completed) and edge labels (start, pause, resume, finish, cancel, reset) are in English.\"\n      },\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Each named state appears once.\",\n        \"requirement\": \"Ensure exactly one node per defined state.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The SVG contains exactly four state nodes with IDs 'idle', 'running', 'paused', and 'completed'.\"\n      },\n      {\n        \"sourceField\": \"methodology\",\n        \"sourceQuote\": \"Arrows are labelled events, not process activities.\",\n        \"requirement\": \"Edge labels must represent triggering events.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"Labels are 'start', 'pause', 'resume', 'finish', 'cancel', 'reset', which are events/triggers.\"\n      },\n      {\n        \"sourceField\": \"avoid\",\n        \"sourceQuote\": \"No invented numbers, statistical significance, or scientific conclusions.\",\n        \"requirement\": \"Do not include numerical data or statistical claims not present in the source.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"The diagram is purely structural with no numerical values or statistical annotations.\"\n      },\n      {\n        \"sourceField\": \"figureContract\",\n        \"sourceQuote\": \"节点是状态不是动作\",\n        \"requirement\": \"Nodes must represent system states, not actions.\",\n        \"verdict\": \"satisfied\",\n        \"evidence\": \"Node labels are nouns/adjectives describing states (Idle, Running, etc.), distinct from the verb-based transition labels.\"\n      }\n    ]\n  }\n}\n```",
+            "error": "DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+          }
+        ],
+        "deliveredVersion": 1,
+        "deliveredSvgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+        "deliveredPngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+        "topology": {
+          "version": 1,
+          "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+          "pngHash": "958a8f1380342a4a4c9dea5166b9d316fa5654025349e8c27345b21438013865",
+          "topologyHash": "88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1",
+          "topology": {
+            "schemaVersion": 1,
+            "nodes": [
+              {
+                "id": "initial_dot",
+                "label": "",
+                "shape": "initial",
+                "role": "initial",
+                "initialEvidence": {
+                  "sourceQuote": "Initial dot enters Idle.",
+                  "markerQuote": "Initial dot",
+                  "interpretation": "explicit_unnamed_initial"
+                }
+              },
+              {
+                "id": "idle",
+                "label": "Idle",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "running",
+                "label": "Running",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "paused",
+                "label": "Paused",
+                "shape": "process",
+                "role": "normal"
+              },
+              {
+                "id": "completed",
+                "label": "Completed",
+                "shape": "process",
+                "role": "normal"
+              }
+            ],
+            "edges": [
+              {
+                "id": "edge_1",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "sourceQuote": "Initial dot enters Idle."
+              },
+              {
+                "id": "edge_2",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "sourceQuote": "Idle→Running: start"
+              },
+              {
+                "id": "edge_3",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "sourceQuote": "Running→Paused: pause"
+              },
+              {
+                "id": "edge_4",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "sourceQuote": "Paused→Running: resume"
+              },
+              {
+                "id": "edge_5",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "sourceQuote": "Running→Completed: finish"
+              },
+              {
+                "id": "edge_6",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "sourceQuote": "Paused→Idle: cancel"
+              },
+              {
+                "id": "edge_7",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "sourceQuote": "Completed→Idle: reset"
+              }
+            ],
+            "uncertainties": [],
+            "layout": {
+              "direction": "RIGHT"
+            }
+          },
+          "geometry": {
+            "schemaVersion": 1,
+            "svgHash": "a90d806e5c10945c526929ee4647229e77d6731995a97933d99f959481fdd4ca",
+            "topologyHash": "88e2fc1a8f7c283a24bd1c8af16aead32149f98e6c77b65cc800d5d3e19f79f1",
+            "passed": true,
+            "issues": [],
+            "nodes": {
+              "initial_dot": {
+                "x": 411.517,
+                "y": 434.183,
+                "width": 17.422,
+                "height": 17.422,
+                "shape": "initial",
+                "radius": 0,
+                "strokeWidth": 0
+              },
+              "idle": {
+                "x": 404.548,
+                "y": 484.272,
+                "width": 104.533,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "running": {
+                "x": 405.623,
+                "y": 190.272,
+                "width": 122.217,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "paused": {
+                "x": 417.572,
+                "y": 43.272,
+                "width": 115.161,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              },
+              "completed": {
+                "x": 477.94,
+                "y": 337.272,
+                "width": 150.441,
+                "height": 48.456,
+                "shape": "process",
+                "radius": 5.444,
+                "strokeWidth": 1.742
+              }
+            },
+            "observedRelations": [
+              {
+                "edgeId": "edge_1",
+                "source": "initial_dot",
+                "target": "idle",
+                "label": "",
+                "start": {
+                  "x": 420.228,
+                  "y": 451.605
+                },
+                "end": {
+                  "x": 425.455,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 420.228,
+                    "y": 451.605
+                  },
+                  {
+                    "x": 420.228,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 425.455,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 425.455,
+                    "y": 484.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_2",
+                "source": "idle",
+                "target": "running",
+                "label": "start",
+                "start": {
+                  "x": 446.362,
+                  "y": 484.272
+                },
+                "end": {
+                  "x": 446.362,
+                  "y": 238.728
+                },
+                "points": [
+                  {
+                    "x": 446.362,
+                    "y": 484.272
+                  },
+                  {
+                    "x": 446.362,
+                    "y": 238.728
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_3",
+                "source": "running",
+                "target": "paused",
+                "label": "pause",
+                "start": {
+                  "x": 446.362,
+                  "y": 190.272
+                },
+                "end": {
+                  "x": 446.362,
+                  "y": 91.728
+                },
+                "points": [
+                  {
+                    "x": 446.362,
+                    "y": 190.272
+                  },
+                  {
+                    "x": 446.362,
+                    "y": 91.728
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_4",
+                "source": "paused",
+                "target": "running",
+                "label": "resume",
+                "start": {
+                  "x": 475.152,
+                  "y": 91.728
+                },
+                "end": {
+                  "x": 487.101,
+                  "y": 190.272
+                },
+                "points": [
+                  {
+                    "x": 475.152,
+                    "y": 91.728
+                  },
+                  {
+                    "x": 475.152,
+                    "y": 168.494
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 168.494
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 190.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_5",
+                "source": "running",
+                "target": "completed",
+                "label": "finish",
+                "start": {
+                  "x": 487.101,
+                  "y": 238.728
+                },
+                "end": {
+                  "x": 553.16,
+                  "y": 337.272
+                },
+                "points": [
+                  {
+                    "x": 487.101,
+                    "y": 238.728
+                  },
+                  {
+                    "x": 487.101,
+                    "y": 249.617
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 249.617
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 337.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_6",
+                "source": "paused",
+                "target": "idle",
+                "label": "cancel",
+                "start": {
+                  "x": 503.942,
+                  "y": 91.728
+                },
+                "end": {
+                  "x": 488.175,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 503.942,
+                    "y": 91.728
+                  },
+                  {
+                    "x": 503.942,
+                    "y": 102.617
+                  },
+                  {
+                    "x": 662.354,
+                    "y": 102.617
+                  },
+                  {
+                    "x": 662.354,
+                    "y": 473.383
+                  },
+                  {
+                    "x": 488.175,
+                    "y": 473.383
+                  },
+                  {
+                    "x": 488.175,
+                    "y": 484.272
+                  }
+                ]
+              },
+              {
+                "edgeId": "edge_7",
+                "source": "completed",
+                "target": "idle",
+                "label": "reset",
+                "start": {
+                  "x": 553.16,
+                  "y": 385.728
+                },
+                "end": {
+                  "x": 467.268,
+                  "y": 484.272
+                },
+                "points": [
+                  {
+                    "x": 553.16,
+                    "y": 385.728
+                  },
+                  {
+                    "x": 553.16,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 467.268,
+                    "y": 462.494
+                  },
+                  {
+                    "x": 467.268,
+                    "y": 484.272
+                  }
+                ]
+              }
+            ],
+            "labelAssociations": [
+              {
+                "edgeId": "edge_2",
+                "bounds": {
+                  "x": 367.09000000000003,
+                  "y": 347.072,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.711999999999989,
+                "nearestCompetingRouteDistance": 80.03300000000002
+              },
+              {
+                "edgeId": "edge_3",
+                "bounds": {
+                  "x": 367.09000000000003,
+                  "y": 126.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.711999999999989,
+                "nearestCompetingRouteDistance": 37.50199999999995
+              },
+              {
+                "edgeId": "edge_4",
+                "bounds": {
+                  "x": 484.952,
+                  "y": 126.572,
+                  "width": 84.672,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 9.800000000000011,
+                "nearestCompetingRouteDistance": 23.955
+              },
+              {
+                "edgeId": "edge_5",
+                "bounds": {
+                  "x": 473.889,
+                  "y": 273.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.710999999999956,
+                "nearestCompetingRouteDistance": 27.526999999999987
+              },
+              {
+                "edgeId": "edge_6",
+                "bounds": {
+                  "x": 576.026,
+                  "y": 273.572,
+                  "width": 77.616,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.712000000000089,
+                "nearestCompetingRouteDistance": 22.865999999999985
+              },
+              {
+                "edgeId": "edge_7",
+                "bounds": {
+                  "x": 473.889,
+                  "y": 420.572,
+                  "width": 70.56,
+                  "height": 24.5,
+                  "font": 19.6
+                },
+                "ownRouteDistance": 8.710999999999956,
+                "nearestCompetingRouteDistance": 27.526999999999987
+              }
+            ],
+            "minFontPx": 14,
+            "limitations": [
+              "Source geometry checks do not certify prose-to-graph semantic inference.",
+              "Text widths are conservative Noto Sans bounds; actual raster must still be inspected.",
+              "Edge crossings can remain and require visual review."
+            ]
+          },
+          "layout": {
+            "direction": "DOWN",
+            "viewport": {
+              "width": 1024,
+              "height": 576,
+              "minFontPx": 14
+            },
+            "fontPx": 19.6,
+            "compiler": "elkjs-0.12.0-topology-v1"
+          }
+        },
+        "note": "当前图评审失败，未认定通过。 DIAGRAM_REVIEW_INVALID: required node lacks stable ID or original evidence"
+      }
+    }
+  ],
+  "logs": [
+    "2026-10-10T11:09:51.649Z 参考图选择：采用 1 张，排除重复 0 张、无法使用 0 张、超出预算 0 张；主模型规划请求合计 1 张图片，上限 8 张。"
+  ],
+  "error": "",
+  "createdAt": "2026-10-10T11:09:51.495Z",
+  "updatedAt": "2026-10-10T11:11:10.983Z",
+  "startedAt": "2026-10-10T11:09:51.495Z",
+  "completedAt": "2026-10-10T11:11:10.983Z"
+}

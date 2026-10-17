@@ -7020,10 +7020,6 @@
         "glm-5.3-flashx",
         "glm-5v-turbo",
         "glm-4.6v",
-        "kimi-k3",
-        "kimi-k2.7-code",
-        "kimi-k2.6",
-        "kimi-k2.5",
         "minimax-m3",
         "qwen3.8-flash",
         "qwen3.8-max",
@@ -7610,6 +7606,622 @@
         "https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/"
       ],
       "checkedAt": "2026-09-27"
+    },
+    {
+      "id": "domestic:tokendance:catalog-20261009",
+      "provider": "tokendance",
+      "modelIds": [
+        "ling-3.1-flash",
+        "mimo-v2.6-pro",
+        "mimo-v2.6-flash",
+        "mimo-v2.6-ultraspeed"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "文本调用示例及精确ID已核对；该渠道思考字段/档位未公开确认，保持省略。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/docs/protocol-openai-chat-completions.md",
+        "https://tokendance.space/models/ling-3.1-flash",
+        "https://tokendance.space/models/mimo-v2.6-pro",
+        "https://tokendance.space/models/mimo-v2.6-flash",
+        "https://tokendance.space/models/mimo-v2.6-ultraspeed"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "domestic:sensenova:deepseek-flash",
+      "provider": "sensenova",
+      "modelIds": [
+        "deepseek-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "none",
+            "low",
+            "high",
+            "max"
+          ],
+          "field": "reasoning_effort",
+          "default": "high"
+        }
+      ],
+      "clearFields": [
+        "reasoning_effort"
+      ],
+      "requestMappings": [
+        {
+          "key": "effort",
+          "field": "reasoning_effort",
+          "encoding": "identity",
+          "wireValues": [
+            "none",
+            "low",
+            "high",
+            "max"
+          ]
+        }
+      ],
+      "constraints": {
+        "neverIncreaseOutputBudget": true,
+        "disabledEffortValues": [
+          "none"
+        ],
+        "outputBudgetRelation": "inclusive"
+      },
+      "conflicts": [],
+      "notes": [
+        "使用Chat原生effort档位；none关闭思考。不要将Messages兼容规则复制至Chat。"
+      ],
+      "sourceUrls": [
+        "https://platform.sensenova.cn/docs"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:cogevol-base",
+      "provider": "tokendance",
+      "modelIds": [
+        "cogevol-base"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-base"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:cogevol-interactive-0828",
+      "provider": "tokendance",
+      "modelIds": [
+        "cogevol-interactive-0828"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-interactive-0828"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:cogevol-slide-0828",
+      "provider": "tokendance",
+      "modelIds": [
+        "cogevol-slide-0828"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {},
+      "conflicts": [],
+      "notes": [],
+      "sourceUrls": [
+        "https://tokendance.space/models/cogevol-slide-0828"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:kimi-k3",
+      "provider": "tokendance",
+      "modelIds": [
+        "kimi-k3"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "high",
+            "max"
+          ],
+          "default": "max",
+          "field": "reasoning_effort"
+        }
+      ],
+      "clearFields": [
+        "thinking",
+        "reasoning_effort"
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "n",
+          "presence_penalty",
+          "frequency_penalty"
+        ],
+        "thinkingCannotDisable": true
+      },
+      "conflicts": [],
+      "notes": [
+        "渠道明确引用原厂档位和字段；当前独立文本调用不暴露keep历史保留开关；不提升输出预算。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/docs/kimi-thinking-models.md",
+        "https://platform.kimi.com/docs/guide/use-thinking-models",
+        "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:kimi-k2.7-code",
+      "provider": "tokendance",
+      "modelIds": [
+        "kimi-k2.7-code"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "fixed",
+      "controls": [],
+      "clearFields": [
+        "thinking",
+        "reasoning_effort"
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "n",
+          "presence_penalty",
+          "frequency_penalty"
+        ],
+        "thinkingCannotDisable": true
+      },
+      "conflicts": [],
+      "notes": [
+        "渠道明确引用原厂档位和字段；当前独立文本调用不暴露keep历史保留开关；不提升输出预算。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/docs/kimi-thinking-models.md",
+        "https://platform.kimi.com/docs/guide/use-thinking-models",
+        "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:kimi-k2.6",
+      "provider": "tokendance",
+      "modelIds": [
+        "kimi-k2.6"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "enabled",
+            "disabled"
+          ],
+          "default": "enabled",
+          "field": "thinking.type"
+        }
+      ],
+      "clearFields": [
+        "thinking",
+        "reasoning_effort"
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "n",
+          "presence_penalty",
+          "frequency_penalty"
+        ],
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "渠道明确引用原厂档位和字段；当前独立文本调用不暴露keep历史保留开关；不提升输出预算。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/docs/kimi-thinking-models.md",
+        "https://platform.kimi.com/docs/guide/use-thinking-models",
+        "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "catalog-impl-20261009:tokendance:kimi-k2.5",
+      "provider": "tokendance",
+      "modelIds": [
+        "kimi-k2.5"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "mode",
+          "label": "思考模式",
+          "type": "enum",
+          "values": [
+            "enabled",
+            "disabled"
+          ],
+          "default": "enabled",
+          "field": "thinking.type"
+        }
+      ],
+      "clearFields": [
+        "thinking",
+        "reasoning_effort"
+      ],
+      "requestMappings": [],
+      "constraints": {
+        "omitSampling": [
+          "temperature",
+          "top_p",
+          "top_k",
+          "n",
+          "presence_penalty",
+          "frequency_penalty"
+        ],
+        "thinkingCannotDisable": false
+      },
+      "conflicts": [],
+      "notes": [
+        "渠道明确引用原厂档位和字段；当前独立文本调用不暴露keep历史保留开关；不提升输出预算。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/docs/kimi-thinking-models.md",
+        "https://platform.kimi.com/docs/guide/use-thinking-models",
+        "https://platform.kimi.com/docs/guide/use-reasoning-effort"
+      ],
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "id": "domestic:catalog-20261016:siliconflow:deepseek-ai/DeepSeek-V4.1-Flash",
+      "provider": "siliconflow",
+      "modelIds": [
+        "deepseek-ai/DeepSeek-V4.1-Flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://www.siliconflow.cn/models"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:siliconflow:zai-org/GLM-5.3-Flash",
+      "provider": "siliconflow",
+      "modelIds": [
+        "zai-org/GLM-5.3-Flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://www.siliconflow.cn/models"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:tokenhub:deepseek-v4.1-flash",
+      "provider": "tokenhub",
+      "modelIds": [
+        "deepseek-v4.1-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:tokenhub:mimo-v2.6-pro",
+      "provider": "tokenhub",
+      "modelIds": [
+        "mimo-v2.6-pro"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:tokenhub:mimo-v2.6-flash",
+      "provider": "tokenhub",
+      "modelIds": [
+        "mimo-v2.6-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:tokenhub:step-5-preview",
+      "provider": "tokenhub",
+      "modelIds": [
+        "step-5-preview"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:xiaomi:mimo-v2.6-pro-ultraspeed",
+      "provider": "xiaomi",
+      "modelIds": [
+        "mimo-v2.6-pro-ultraspeed"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "text"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:bailian:qwen-image-2.1-pro",
+      "provider": "bailian",
+      "modelIds": [
+        "qwen-image-2.1-pro"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "bailian-multimodal-generation"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
+    },
+    {
+      "id": "domestic:catalog-20261016:bailian:qwen-image-2.1-turbo",
+      "provider": "bailian",
+      "modelIds": [
+        "qwen-image-2.1-turbo"
+      ],
+      "roles": [
+        "image"
+      ],
+      "protocols": [
+        "bailian-multimodal-generation"
+      ],
+      "status": "unconfirmed",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference"
+      ],
+      "checkedAt": "2026-10-16",
+      "notes": [
+        "已核对该渠道型号及基础请求；独立思考控制尚未确认，不继承原厂或其他渠道设置。"
+      ],
+      "operations": [
+        "generation",
+        "editing"
+      ]
     }
   ],
   "excluded": [

@@ -161,8 +161,8 @@ function validAccountHttpsUrl(name, value) {
   const normalized = validHttpUrl(name, value);
   const parsed = new URL(normalized);
   if (parsed.protocol !== 'https:') throw new Error(`${name} must use https`);
-  if (parsed.hostname !== 'paperbanana.asia' && !parsed.hostname.endsWith('.paperbanana.asia')) {
-    throw new Error(`${name} must use paperbanana.asia`);
+  if (parsed.origin !== 'https://tuyansci.cn' && parsed.hostname !== 'paperbanana.asia' && !parsed.hostname.endsWith('.paperbanana.asia')) {
+    throw new Error(`${name} must use paperbanana.asia or tuyansci.cn`);
   }
   return normalized;
 }

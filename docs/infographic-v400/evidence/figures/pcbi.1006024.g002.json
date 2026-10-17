@@ -1,0 +1,49 @@
+{
+  "id": "pcbi.1006024.g002",
+  "paper": "pcbi.1006024",
+  "figure": {
+    "id": "pcbi.1006024.g002",
+    "label": "Fig 2",
+    "caption": "Free energy profiles plotted as a function of DNA end-to-end distance.\nFree energies were calculated using the ensembles obtained with umbrella sampling durations of 5, 10, 12, 14 and 15 ns from black to blue. (a) stage 1. (b) stage 2.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pcbi.1006024.g002\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pcbi.1006024.g002</object-id>\n<label>Fig 2</label>\n<caption>\n<title>Free energy profiles plotted as a function of DNA end-to-end distance.</title>\n<p>Free energies were calculated using the ensembles obtained with umbrella sampling durations of 5, 10, 12, 14 and 15 ns from black to blue. (a) stage 1. (b) stage 2.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pcbi.1006024.g002\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pcbi.1006024.g002",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pcbi.1006024",
+    "sourceUrl": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006024",
+    "title": "Free energy profiles for unwrapping the outer superhelical turn of nucleosomal DNA",
+    "journal": "PLOS Computational Biology",
+    "authors": [
+      "Hidetoshi Kono",
+      "Shun Sakuraba",
+      "Hisashi Ishida"
+    ],
+    "year": "2018",
+    "license": "2018\nKono et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=large&id=10.1371/journal.pcbi.1006024.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1006024.g002.png",
+      "bytes": 38337,
+      "sha256": "78ac6f5c22a04ff68319cfb33481848577d5911dfa64af17a18231402864214b"
+    },
+    "original": {
+      "url": "https://journals.plos.org/ploscompbiol/article/figure/image?size=original&id=10.1371/journal.pcbi.1006024.g002",
+      "path": "apps/paperbanana-api/assets/reference-library/pcbi.1006024.g002.tif",
+      "bytes": 85532,
+      "sha256": "049c424825b1dacc36e28889fcc8ba0c88cfce395bce655ec58c1d91ad89b1d0"
+    }
+  }
+}

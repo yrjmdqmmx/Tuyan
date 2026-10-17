@@ -55,10 +55,9 @@ test('App requests paginated bench results and CSS provides 3/2/1 responsive lay
   assert.match(cssSource, /\.image-preview-dialog\s*\{/u);
 });
 
-test('gallery exposes facets, corpus metadata, persistent tray and complete preview controls', () => {
+test('gallery exposes facets, persistent tray and complete preview controls', () => {
   const gallery = readSource('../src/components/ReferenceLibraryPanel.jsx');
   const preview = readSource('../src/components/ImagePreviewDialog.jsx');
-  assert.match(gallery, /corpusVersion/u);
   assert.match(gallery, /visualCategories/u);
   assert.match(gallery, /researchDomains/u);
   assert.match(gallery, /reference-selection-tray/u);

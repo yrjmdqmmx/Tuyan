@@ -1,0 +1,53 @@
+{
+  "id": "pone.0281854.g006",
+  "paper": "pone.0281854",
+  "figure": {
+    "id": "pone.0281854.g006",
+    "label": "Fig 6",
+    "caption": "Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pone.0281854.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pone.0281854.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title />\n<p>Hierarchical cluster analysis of fungi (a) and bacteria (b) in different soil and rhizosphere samples. The left diagram is a hierarchical clustering tree diagram according to the similarity between samples, and the right histogram is a stacked histogram of the top 10 genera. The phylogenetic trees were calculated using the neighbour-joining method.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0281854.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0281854.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0281854",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0281854",
+    "title": "Passion fruit plants alter the soil microbial community with continuous cropping and improve plant disease resistance by recruiting beneficial microorganisms",
+    "journal": "PLOS ONE",
+    "authors": [
+      "Ye Wang",
+      "Yao Teng",
+      "Jianli Zhang",
+      "Zixiong Zhang",
+      "Chen Wang",
+      "Xiukun Wu",
+      "Xiuqin Long"
+    ],
+    "year": "2023",
+    "license": "2023\nWang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0281854.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g006.png",
+      "bytes": 776761,
+      "sha256": "6a822c9a75110b871bb057ab4cad2408f3b4311222ba32bf90e4d8bcdc59b5fd"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0281854.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0281854.g006.tif",
+      "bytes": 1229628,
+      "sha256": "e8fb18812b7799013311dc89576294621aae4df0872db8cf6852e6d91b6bbda8"
+    }
+  }
+}

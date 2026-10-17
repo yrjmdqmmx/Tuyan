@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0191423</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-17-26047</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular structures and organelles</subject><subj-group><subject>Cell membranes</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Signal transduction</subject><subj-group><subject>Cell signaling</subject><subj-group><subject>Signaling molecules</subject><subj-group><subject>Guanine nucleotide exchange factors</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biotechnology</subject><subj-group><subject>Small molecules</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Chemical compounds</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Small molecules</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Physical sciences</subject><subj-group><subject>Chemistry</subject><subj-group><subject>Organic chemistry</subject><subj-group><subject>Organic compounds</subject><subj-group><subject>Small molecules</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Molecular biology assays and analysis techniques</subject><subj-group><subject>Library screening</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Molecular biology assays and analysis techniques</subject><subj-group><subject>Library screening</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzymes</subject><subj-group><subject>Hydrolases</subject><subj-group><subject>Guanosine triphosphatase</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Enzymes</subject><subj-group><subject>Hydrolases</subject><subj-group><subject>Guanosine triphosphatase</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Enzymology</subject><subj-group><subject>Enzymes</subject><subj-group><subject>Oxidoreductases</subject><subj-group><subject>Luciferase</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Enzymes</subject><subj-group><subject>Oxidoreductases</subject><subj-group><subject>Luciferase</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Cell biology</subject><subj-group><subject>Cellular structures and organelles</subject><subj-group><subject>Vesicles</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3"><subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Post-translational modification</subject><subj-group><subject>Phosphorylation</subject></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>An AKAP-Lbc-RhoA interaction inhibitor promotes the translocation of aquaporin-2 to the plasma membrane of renal collecting duct principal cells</article-title>
+<alt-title alt-title-type="running-head">Disruption of AKAP-Lbc-RhoA interaction with small molecules</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Schrade</surname>
+<given-names>Katharina</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Tröger</surname>
+<given-names>Jessica</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" equal-contrib="yes" xlink:type="simple">
+<name name-style="western">
+<surname>Eldahshan</surname>
+<given-names>Adeeb</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Zühlke</surname>
+<given-names>Kerstin</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Abdul Azeez</surname>
+<given-names>Kamal R.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Elkins</surname>
+<given-names>Jonathan M.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Neuenschwander</surname>
+<given-names>Martin</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Oder</surname>
+<given-names>Andreas</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Elkewedi</surname>
+<given-names>Mohamed</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Jaksch</surname>
+<given-names>Sarah</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Andrae</surname>
+<given-names>Karsten</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Li</surname>
+<given-names>Jinliang</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Fernandes</surname>
+<given-names>Joao</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Müller</surname>
+<given-names>Paul Markus</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Grunwald</surname>
+<given-names>Stephan</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Marino</surname>
+<given-names>Stephen F.</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Vukićević</surname>
+<given-names>Tanja</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Eichhorst</surname>
+<given-names>Jenny</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Investigation</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Wiesner</surname>
+<given-names>Burkhard</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Formal analysis</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Weber</surname>
+<given-names>Marcus</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kapiloff</surname>
+<given-names>Michael</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Rocks</surname>
+<given-names>Oliver</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Daumke</surname>
+<given-names>Oliver</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Wieland</surname>
+<given-names>Thomas</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff006"><sup>6</sup></xref>
+<xref ref-type="aff" rid="aff007"><sup>7</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Knapp</surname>
+<given-names>Stefan</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="aff" rid="aff008"><sup>8</sup></xref>
+<xref ref-type="aff" rid="aff009"><sup>9</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>von Kries</surname>
+<given-names>Jens Peter</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Data curation</role>
+<role content-type="http://credit.casrai.org/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+<role content-type="http://credit.casrai.org/">Conceptualization</role>
+<role content-type="http://credit.casrai.org/">Funding acquisition</role>
+<role content-type="http://credit.casrai.org/">Methodology</role>
+<role content-type="http://credit.casrai.org/">Project administration</role>
+<role content-type="http://credit.casrai.org/">Resources</role>
+<role content-type="http://credit.casrai.org/">Supervision</role>
+<role content-type="http://credit.casrai.org/">Validation</role>
+<role content-type="http://credit.casrai.org/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+<xref ref-type="aff" rid="aff010"><sup>10</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Max Delbrück Center for Molecular Medicine Berlin (MDC), Berlin, Germany</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Structural Genomics Consortium, University of Oxford, Oxford, United Kingdom</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Leibniz-Forschungsinstitut für Molekulare Pharmakologie (FMP), Berlin, Germany</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Zuse Institute Berlin (ZIB), Germany</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>University of Miami Miller School of Medicine, Miami, United States of America</addr-line></aff>
+<aff id="aff006"><label>6</label> <addr-line>Institute of Experimental Pharmacology and Toxicology, Medical Faculty Mannheim, Heidelberg University, Heidelberg, Germany</addr-line></aff>
+<aff id="aff007"><label>7</label> <addr-line>DZHK (German Centre for Cardiovascular Research), partner site Heidelberg/Mannheim, Germany</addr-line></aff>
+<aff id="aff008"><label>8</label> <addr-line>Institute for Pharmaceutical Chemistry and Buchmann Institute, Goethe University, Frankfurt, Germany</addr-line></aff>
+<aff id="aff009"><label>9</label> <addr-line>DKTK (German Cancer Center Network), partner site Frankfurt/Main, Germany</addr-line></aff>
+<aff id="aff010"><label>10</label> <addr-line>DZHK (German Centre for Cardiovascular Research), partner site Berlin, Germany</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Garcia-Mata</surname>
+<given-names>Rafael</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>University of Toledo, UNITED STATES</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors have declared that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">enno.klussmann@mdc-berlin.de</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>26</day>
+<month>1</month>
+<year>2018</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2018</year>
+</pub-date>
+<volume>13</volume>
+<issue>1</issue>
+<elocation-id>e0191423</elocation-id>
+<history>
+<date date-type="received">
+<day>11</day>
+<month>7</month>
+<year>2017</year>
+</date>
+<date date-type="accepted">
+<day>4</day>
+<month>1</month>
+<year>2018</year>
+</date>
+</history>
+<permissions>
+<license xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">
+<license-p>This is an open access article, free of all copyright, and may be freely reproduced, distributed, transmitted, modified, built upon, or otherwise used by anyone for any lawful purpose. The work is made available under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" xlink:type="simple">Creative Commons CC0</ext-link> public domain dedication.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0191423"/>
+<abstract>
+<p>Stimulation of renal collecting duct principal cells with antidiuretic hormone (arginine-vasopressin, AVP) results in inhibition of the small GTPase RhoA and the enrichment of the water channel aquaporin-2 (AQP2) in the plasma membrane. The membrane insertion facilitates water reabsorption from primary urine and fine-tuning of body water homeostasis. Rho guanine nucleotide exchange factors (GEFs) interact with RhoA, catalyze the exchange of GDP for GTP and thereby activate the GTPase. However, GEFs involved in the control of AQP2 in renal principal cells are unknown. The A-kinase anchoring protein, AKAP-Lbc, possesses GEF activity, specifically activates RhoA, and is expressed in primary renal inner medullary collecting duct principal (IMCD) cells. Through screening of 18,431 small molecules and synthesis of a focused library around one of the hits, we identified an inhibitor of the interaction of AKAP-Lbc and RhoA. This molecule, Scaff10-8, bound to RhoA, inhibited the AKAP-Lbc-mediated RhoA activation but did not interfere with RhoA activation through other GEFs or activities of other members of the Rho family of small GTPases, Rac1 and Cdc42. Scaff10-8 promoted the redistribution of AQP2 from intracellular vesicles to the periphery of IMCD cells. Thus, our data demonstrate an involvement of AKAP-Lbc-mediated RhoA activation in the control of AQP2 trafficking.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution>Bundesministerium für Bildung und Forschung (BMBF)</institution>
+</funding-source>
+<award-id>16GW0179K</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution>Deutsche Forschungsgemeinschaft (DFG)</institution>
+</funding-source>
+<award-id>KL1415/7-1</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award003">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100001736</institution-id>
+<institution>German-Israeli Foundation for Scientific Research and Development</institution>
+</institution-wrap>
+</funding-source>
+<award-id>I-2010-286.13/2012</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award004">
+<funding-source>
+<institution>Else Kröner-Fresenius-Stiftung</institution>
+</funding-source>
+<award-id>2013_A145</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award005">
+<funding-source>
+<institution>German Center for Cardiovascular Research (DZHK)</institution>
+</funding-source>
+<award-id>81X210012 and B18-005 SE</award-id>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">http://orcid.org/0000-0003-4004-5003</contrib-id>
+<name name-style="western">
+<surname>Klussmann</surname>
+<given-names>Enno</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was supported by grants from the Else Kröner-Fresenius-Stiftung (2013_A145), the German-Israeli Foundation (G.I.F. I-1210-286.13/2012), the German Centre for Cardio-vascular Research (DZHK 81X210012 and B18-005 SE), the Deutsche Forschungsgemein-schaft (DFG KL1415/7-1) and the Bundesministerium für Bildung und Forschung (BMBF; 16GW0179K) to EK. The Screening Unit of the FMP is jointly co-financed by the Max-Delbrueck Centre, the Berlin Institute of Health and the Leibniz-Forschungsinstitut für Moleku-lare Pharmakologie.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="10"/>
+<table-count count="1"/>
+<page-count count="30"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All relevant data are within the paper and its Supporting Information files.</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Antidiuretic hormone (arginine-vasopressin, AVP) stimulates vasopressin V2 receptors (V2R) on the surface of renal collecting duct principal cells, and thereby triggers the redistribution of the water channel, aquaporin-2 (AQP2) from intracellular vesicles into the plasma membrane. The membrane insertion of AQP2 facilitates water reabsorption from primary urine and fine-tunes body water homeostasis [<xref ref-type="bibr" rid="pone.0191423.ref001">1</xref>–<xref ref-type="bibr" rid="pone.0191423.ref005">5</xref>]. Defects of the mechanism lead to diabetes insipidus (DI), a disease characterized by a massive loss of hypotonic urine and by polydipsia. DI can be caused by mutations in the V2 receptor or AQP2 genes or can be acquired, for example, as a consequence of lithium treatment of bipolar disorders. Molecular mechanisms underlying the AVP-induced redistribution of AQP2 are not well understood and targeted treatments of DI are not available. Thus, elucidating molecular mechanisms controlling AQP2 not only provides insight into the mechanism itself but can also pave the way to new concepts for the therapy of water balance disorders such as DI [<xref ref-type="bibr" rid="pone.0191423.ref006">6</xref>, <xref ref-type="bibr" rid="pone.0191423.ref007">7</xref>].</p>
+<p>On the molecular level, AVP stimulates synthesis of cAMP and activation of protein kinase A (PKA). The subsequent PKA-catalyzed phosphorylation of AQP2 at serine (S)256 is considered the key trigger for its redistribution into the plasma membrane [<xref ref-type="bibr" rid="pone.0191423.ref008">8</xref>–<xref ref-type="bibr" rid="pone.0191423.ref014">14</xref>]. In addition, AVP mediates phosphorylations of S264 and S269, which are associated with a predominant plasma membrane localization of AQP2 [<xref ref-type="bibr" rid="pone.0191423.ref015">15</xref>–<xref ref-type="bibr" rid="pone.0191423.ref020">20</xref>], and the dephosphorylation of S261 [<xref ref-type="bibr" rid="pone.0191423.ref015">15</xref>, <xref ref-type="bibr" rid="pone.0191423.ref018">18</xref>, <xref ref-type="bibr" rid="pone.0191423.ref021">21</xref>]. The dephosphorylation is associated with decreased poly-ubiquitination and proteasomal degradation and an enhanced abundance of AQP2, and thus contributes to the increase in water reabsorption from primary urine in response to AVP [<xref ref-type="bibr" rid="pone.0191423.ref022">22</xref>].</p>
+<p>GTPases are molecular switches cycling between an inactive, GDP-bound and an active, GTP-bound state. RhoA is a small GTPase of the Rho family, which includes Rho, Cdc42 and Rac isoforms. We have previously shown that active RhoA maintains the F-actin cytoskeleton as a physical barrier hindering AQP2-bearing vesicles from reaching the plasma membrane of principal cells under resting conditions [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>]. An elevation of cAMP causes PKA-mediated phosphorylation of RhoA, its increased interaction with Rho guanosine nucleotide dissociation inhibitor (GDI) and thus RhoA inhibition [<xref ref-type="bibr" rid="pone.0191423.ref024">24</xref>]. The inhibition is associated with de-polymerization of F-actin and the redistribution of AQP2 to the plasma membrane [<xref ref-type="bibr" rid="pone.0191423.ref014">14</xref>, <xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>, <xref ref-type="bibr" rid="pone.0191423.ref025">25</xref>]. How RhoA in resting cells is maintained in an active form is unclear.</p>
+<p>The exchange of GDP for GTP and thus activation of GTPases is catalyzed by guanine nucleotide exchange factors (GEFs). The A-kinase anchoring protein (AKAP)-lymphoid blast crisis (Lbc) is a member of the AKAP family of scaffolding proteins. The common property of AKAPs is their ability to directly bind PKA and tether the AKAP-PKA complex to defined cellular compartments to coordinate cellular signaling events spatially and temporally. We had shown that the tethering of PKA by AKAPs is a prerequisite for the AVP/PKA-induced redistribution of AQP2 to the plasma membrane and that PKA is anchored to AQP2-bearing vesicles by AKAP18δ [<xref ref-type="bibr" rid="pone.0191423.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0191423.ref013">13</xref>, <xref ref-type="bibr" rid="pone.0191423.ref026">26</xref>, <xref ref-type="bibr" rid="pone.0191423.ref027">27</xref>]. AKAP-Lbc is the only AKAP which possesses a GEF activity. It selectively activates RhoA but not the other Rho family members, Rac and Cdc42 [<xref ref-type="bibr" rid="pone.0191423.ref028">28</xref>]. The GEF activity is conferred by a GEF domain comprising a tandem Dbl homology (DH) and pleckstrin homology (PH) domain [<xref ref-type="bibr" rid="pone.0191423.ref029">29</xref>–<xref ref-type="bibr" rid="pone.0191423.ref031">31</xref>]. Two distinct pockets of the DH domain directly interact with RhoA and catalyze the exchange of GDP for GTP. PH domains can control the localization and/or the activity of DH domains [<xref ref-type="bibr" rid="pone.0191423.ref029">29</xref>]. The PH domain of AKAP-Lbc does not affect its activity [<xref ref-type="bibr" rid="pone.0191423.ref031">31</xref>]. Upon an elevation of cAMP in HEK293 cells, AKAP-Lbc-bound PKA phosphorylates AKAP-Lbc at S1565 recruiting a 14-3-3 protein and inhibiting the GEF activity [<xref ref-type="bibr" rid="pone.0191423.ref032">32</xref>]. The rat orthologue of AKAP-Lbc, Rt31, is expressed in primary rat inner medullary collecting duct principal (IMCD) cells, a model for the AVP-induced redistribution of AQP2, and forms a complex with RhoA [<xref ref-type="bibr" rid="pone.0191423.ref005">5</xref>, <xref ref-type="bibr" rid="pone.0191423.ref033">33</xref>]. However, whether AKAP-Lbc-mediated activation of RhoA plays a role in the control of AQP2, in particular in resting cells, is unknown.</p>
+</sec>
+<sec id="sec002" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec003">
+<title>Antibodies</title>
+<p>The following antibodies were used for Western blotting: AKAP-Lbc (Abcam; #ab99377; 1:1000), Aquaporin-2 (AQP2) (Santa Cruz; #9882,C17; 1:1000), Hsp90 (Stressgen; #SPA-830; 1:1000), Pan-Cadherin (Abcam; #ab6528; 1:1000), RhoA (Santa Cruz; #sc-418, 1:1000), Cdc42 (Cell Signaling, #2462; 1:1000 for Western blot, 1:250 for PAK-1 pull down), Rac-1 (BD Transduction Laboratories, #610650, 1:1000 for Western blot, 1:250 for PAK-1 pull down), anti-Flag, M2 monoclonal antibody (Sigma, 2 μg/ml), anti-G12QL antibody (rabbit; Gramsch, 1:1000), Peroxidase (POD)-anti-goat IgG (Jackson ImmunoResearch Laboratories; #705-035-147; 1:10,000), POD-anti-mouse IgG (Jackson ImmunoResearch Laboratories; #715-035-151; 1:10,000), POD-F(ab')2-anti-rabbit IgG (Jackson ImmunoResearch Laboratories; #711-036-152; 1:10,000). The following antibodies were used in HTRF assays: GST antibody, coupled to terbium (Donor; Cisbio Bioassays, Codolet, France; #MAb GSS11), His<sub>6</sub>-tag antibody, coupled to XL665 (Acceptor; Cisbio Bioassays; #MAb HIS-1). In immunofluorescence microscopy, AQP2 was detected with antibody H27 (1: 600) [<xref ref-type="bibr" rid="pone.0191423.ref012">12</xref>, <xref ref-type="bibr" rid="pone.0191423.ref034">34</xref>] and Cy3-anti-Rabbit IgG (Jackson ImmunoResearch Laboratories; #211-165-109; 1:300). Nuclei were detected with 4’, 6-Diamidine-2’-phenylindole dihydrochloride (DAPI; Roche Diagnostics GmbH; Mannheim, Germany; #10236276001; 1:100) and F-actin was visualized using Alexa Fluor 647-Phalloidin (Invitrogen; Darmstadt, Germany); #A22287; 1:30).</p>
+</sec>
+<sec id="sec004">
+<title>Protein expression and purification</title>
+<p>Purified His<sub>6</sub>-RhoA (human RhoA, NP_001655.1, NCBI) and AKAP-Lbc/DHPH (aa 1923–2336 of human AKAP-Lbc; NP_006729.4, NCBI) were used in the GEF assay. Purified GST-RhoA (human RhoA, NP_001655.1) and His<sub>6</sub>-AKAP-Lbc/DHPH (aa 1972–2342 of human AKAP-Lbc; NP_006729.4) were used in the HTRF assay (Fig 2 in S2 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>).</p>
+<p>RhoA was expressed as an N-terminal His<sub>6</sub>-tag fusion from a pET30α plasmid (kindly provided by D. Diviani, University of Lausanne), and AKAP-Lbc/DHPH was expressed from a pPal7 plasmid in <italic>E</italic>. <italic>coli</italic> Rosetta (DE3). Bacteria were grown in LB medium and protein expression was induced at an optical density at 600 nm of 0.7–0.9 with 1 mM isopropyl-β-D-thiogalactoside (IPTG). The cells were grown overnight at 16 °C, centrifuged and suspended in protein purification buffer (150 mM NaCl, 10 mM Na<sub>2</sub>HPO<sub>4</sub>, pH 7.4, 5 mM EDTA) and lysed using a fluidiser (Microfluidics; Newton, US). Lysates were centrifuged (40,000xg, 30 min, 4 °C), and the soluble extract was filtered and purified with the Profinia<sub>TM</sub> affinity chromatography protein purification system (BioRad, Munich, Germany) according to manufacturer’s instructions. His<sub>6</sub>-RhoA was eluted in buffer containing 300 mM KCl, 50 mM KH<sub>2</sub>PO<sub>4</sub>, pH 8.0, 250 mM imidazole and AKAP-Lbc/DHPH in buffer containing 100 mM Na<sub>3</sub>PO<sub>4</sub>, pH 7.2, 100 mM NaCl. Relevant fractions were pooled, proteins concentrated and snap-frozen in liquid nitrogen. The final yield was 20–30 mg protein/l bacterial culture.</p>
+<p>GFP-AKAP-Lbc-His<sub>6</sub> was isolated from HEK293-EBNA cells. 24 h post transfection, the medium volume was doubled and peptone added to a final concentration of 0.5%. After 6 days, cells were lysed and the supernatant concentrated in Amicon tubes (10,000 molecular weight cut-off) to a final volume of 12.5 ml. The soluble extract was filtered and subjected to gel filtration (Superdex200 column). The protein was eluted with gel filtration buffer (50 mM HEPES, pH 7.4, 300 mM NaCl; flow rate 1 ml/min). Relevant fractions were pooled, the protein concentrated and snap-frozen in liquid nitrogen.</p>
+</sec>
+<sec id="sec005">
+<title>Guanine nucleotide exchange (GEF) assay</title>
+<p>His<sub>6</sub>-RhoA and AKAP-Lbc/DHPH (2 μM each) were incubated with the fluorescently labeled nucleotide analogue 2’/3’-<italic>O</italic>-(<italic>N</italic>-Methyl-anthraniloyl)-GTP (mant-GTP) in 1 μM concentration in GEF buffer (40mM Tris, pH 7.5; 100 mM NaCl; 20 mM MgCl<sub>2</sub>; 100 μg/ml bovine serum albumine (BSA)). Fluorescence was recorded for 15 min in a 384-well plate in a microplate reader (Tecan, Safire; Durham, US) at 440 nm (360 nm excitation wavelength).</p>
+</sec>
+<sec id="sec006">
+<title>High-throughput screening</title>
+<p>The ChemBioNet [<xref ref-type="bibr" rid="pone.0191423.ref035">35</xref>] and CBB2 compound libraries at the Leibniz-Forschungsinstitut für Molekulare Pharmakologie (FMP), in total 18,431 compounds, were screened using the nucleotide exchange assay depicted in <xref ref-type="fig" rid="pone.0191423.g001">Fig 1A</xref>. All library compounds are accessible at <ext-link ext-link-type="uri" xlink:href="http://www.fmp-berlin.de/" xlink:type="simple">http://www.fmp-berlin.de</ext-link>, and further information on every compound is available at <ext-link ext-link-type="uri" xlink:href="http://www.ncbi.nlm.nih.gov/pccompound" xlink:type="simple">http://www.ncbi.nlm.nih.gov/pccompound</ext-link>. For all dispensing and washing steps an EL406 washer/dispenser combination (BioTek Instruments, Bad Friedrichshall, Germany) was used. The screen was performed in a 384-well plate format. Obtained data were automatically analyzed as described [<xref ref-type="bibr" rid="pone.0191423.ref035">35</xref>–<xref ref-type="bibr" rid="pone.0191423.ref037">37</xref>]. <italic>Z score</italic> describes the distance of a sample signal to the mean of all other samples on the plate in units of standard deviation. Percent inhibition describes the relative strength of the signal compared to means of the control samples on the plate (where samples in column 23 received only DMSO and were set to 0% inhibition, and samples in column 24 did not receive GEF and were set to -100%). Samples with a Z score &lt; -3 were considered as potential inhibitors (655 samples). For quality control purposes, Z’-factors describing the effective signal window were calculated for each plate based on the control samples. The Z’-factor was on average 0.51, indicating reliable screening conditions. Potential inhibitors were subjected to a second round of GEF assay for confirming concentration-dependent effects. Compound identity and purity of samples used in this secondary screen were validated by mass spectrometric analysis.</p>
+<fig id="pone.0191423.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Identification of a small molecule inhibitor of the AKAP-Lbc-mediated activation of RhoA.</title>
+<p>(A) Principle of the nucleotide exchange assay for the screening. The DHPH domain of the RhoA-specific guanine nucleotide exchange factor (GEF) AKAP-Lbc and RhoA were generated as recombinant proteins. The DHPH domain-catalyzed exchange of GDP for the fluorescent mant-GTP was monitored at the emission wavelength of RhoA-bound mant-GTP at 440 nm. (B) The fluorescence signal intensity changes were determined for all samples including positive and negative controls and percent inhibitions calculated based on the controls. The screening data quality was evaluated as distribution of percent inhibition of all tested compounds and by calculating the Z’-factors for each plate, which were found to be 0.51 on average. (C) Using the GEF assay from (A), 18,431 small molecules were screened for inhibitors of the nucleotide exchange; 100 hits were identified of which 26 candidates were validated. The most promising hit was the compound Scaff10 (structure indicated). (D) Nucleotide exchange assay with Scaff10 and two further hits (for details see S1 Table). IC<sub>50</sub> values for the inhibition are indicated.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g001" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec007">
+<title>Synthesis of compounds</title>
+<p>Starting materials and solvents for synthesis were purchased from Sigma-Aldrich Chemie GmbH (Munich, Germany), Otava Chemicals (Ontario, CA), Fluka (Munich, Germany), Acros (Geel, Belgium), and ALFA Aesar (Karlsruhe, Germany). For high-performance liquid chromatography (HPLC) and liquid chromatography-mass spectrometry (LC/MS) measurements, acetonitrile (ACN) and methanol (HPLC grade) from J. T. Baker (Center Valley, US) and purified water (Milli-Q-Plus from Millipore) were used. Deuterated solvents for nuclear magnetic resonance (NMR) spectroscopy were purchased from Deutero GmbH (Kastellaun, Germany).</p>
+<p>The synthesis of all compounds is described in detail in the Supporting Information. The chemical synthesis of Scaff10 derivatives followed the scheme shown below in <xref ref-type="fig" rid="pone.0191423.g002">Fig 2</xref>. Under neutral reaction conditions, acetophenones (1) were transformed into the corresponding α-iodoketones (2) by addition of iodine in methanol (a). Addition of Na<sub>2</sub>SO<sub>3</sub>-solution (b) reduced excessive iodine to iodide. 7-Hydroxycoumarin derivatives were synthesised based on the Pechmann condensation: in an initial reaction step, resorcinol (3) and diethyl-2-acetylglutarat (4) reacted to the corresponding phenolester in ethanolic HCl (c). Following a Michael addition, the enol form of the acid catalysed keto-enol tautomerisation was nucleophilically attacked by the aromatic system. Finally, rearomatisation and acid-induced condensation yielded the product of the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a). In the presence of potash in excess in acetone (d), 7-hydroxycoumarins (5) reacted with α-haloketones (2) in a Williamson ether synthesis at 55°C overnight to the corresponding substituted 2-oxoethers (6) [<xref ref-type="bibr" rid="pone.0191423.ref038">38</xref>], representing class 6 Scaff10 derivatives. After ester saponification to the carboxylate by adding 1 M sodium hydroxide, Scaff10 derivatives of class 7 were formed. Reaction conditions ranged from 55–95°C and from 0.3-16 hours (e). Cyclisation of Scaff10 derivatives of class 7 to the corresponding furocoumarin derivatives (8) (Scaff10 derivative class 8) was carried out under further heating in NaOH solution (60–110°C) for 0.75–10 h (f). The reaction conditions required for the synthesis of Scaff10 derivatives of class 7 and 8 are indicated.</p>
+<fig id="pone.0191423.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>The small molecule Scaff10-8 inhibits the interaction of the DH domain of AKAP-Lbc and RhoA.</title>
+<p>(A). Principle of homogenous time-resolved fluorescence (HTRF) assay. Recombinant His-AKAP-Lbc/DHPH and GST-RhoA were generated. The tags are recognized by specific antibodies coupled to fluorescent dyes. When the two proteins interact, donor and acceptor dyes of the antibodies are in close proximity, energy transfer occurs upon excitation at 320 nm and a FRET signal is detected (665 nm). If a compound disrupts the interaction of the DHPH domain and RhoA, the proximity of the fluorescent moieties remains insufficient for a FRET signal to occur. (B) In the HTRF from (A), Scaff10-8 inhibited the interaction of AKAP-Lbc/DHPH and RhoA with an IC<sub>50</sub> = 34.1 μM whereas Scaff10-59 did not (example of a negative Scaff10 derivative). As expected, excess untagged Rho decreases the binding between GST-RhoA and His-AKAP-Lbc/DHPH in a dose-dependent manner (lower left panel). Scaff10-8 does not interact with a His-GST fusion protein, excluding any interference of the tags or antibodies used in this assay with Scaff10-8. n = 3–15 independent experiments in duplicate; IC<sub>50</sub> values are indicated. (C) The influence of Scaff10-8 on the interaction of RhoA with the recombinant DH domain of AKAP-Lbc in the absence of the PH domain was determined by Alpha screen. Scaff10-7/59 was included as negative controls as they did not interfere with interaction of the DHPH domain and RhoA in the HTRF shown in Fig 2. n = 3–15 independent experiments in duplicate. The IC<sub>50</sub> value is indicated.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g002" xlink:type="simple"/>
+</fig>
+<p>Scaff10 derivatives were classified into uncondensed (6, 7) and furan (8) derivatives (opening of the furan in position <italic>g</italic> of the coumarin structure). Class 6 and 7 differ in position 3 of the coumarin structure: class 6 is substituted with either a propionic acidester or with a methyl group whereas class 7 exhibits a carboxylic group at a C1-C5 spacer between coumarin and carboxylic acid at this position.</p>
+<p>Solubility of Scaff10 derivatives was assessed nephelometrically. Scaff10 derivatives are moderately to poorly soluble in aqueous solutions due to their large number of aromatic rings having lipophilic character. Details about NMR, LC/MS and HPLC characterization steps are given in the Supplemental Information.</p>
+</sec>
+<sec id="sec008">
+<title>Homogeneous time-resolved fluorescence (HTRF) assay</title>
+<p>The assay was essentially carried out as described [<xref ref-type="bibr" rid="pone.0191423.ref039">39</xref>]. Scaff10 derivatives were added to His<sub>6</sub>-AKAP-Lbc/DHPH protein (250 nM final concentration) in HTRF buffer (PBS; 4 mM MgCl<sub>2</sub>; 0.05% Tween 20) in 384 well plates (Proxiplate-384 Plus, white, #6008289; Perkin Elmer LAS, Rodgau, Germany). Concentrations of Scaff10 derivatives ranged between 1.56–200 μM (2% DMSO final concentration); HTRF buffer with 2% DMSO served as a control. GST-RhoA (30 nM final concentration) in HTRF buffer and anti-GST antibody coupled to terbium (donor) and anti-His<sub>6</sub>-tag antibody coupled to XL665 (acceptor) were added to all wells (final antibody concentration: 2 μg/ml). After 1 h incubation at room temperature in the dark, FRET signals were recorded at 620 and 665 nm using a Genios Pro plate reader (Tecan Austria GmbH, Grödig, AT) and the ratios of absorbance of 650 nm to 620 nm were calculated. Wells containing no compound were set to 100% interaction of AKAP-Lbc/DHPH with RhoA, wells containing GST-RhoA only (without His<sub>6</sub>-AKAP-Lbc/DHPH) were set to 0% interaction. To exclude any interference of the tags and/or antibodies with Scaff10 derivatives, a His<sub>6</sub>-GST fusion protein replaced the two tagged proteins in a control assay. Wells containing His<sub>6</sub>-GST fusion protein were set to 100% interaction of His<sub>6</sub>-GST, wells containing no fusion protein were set to 0% interaction.</p>
+</sec>
+<sec id="sec009">
+<title>Alpha screen assay</title>
+<p>Assays were performed according to the manufacturer’s protocol (PerkinElmer) with minor modifications. All reagents were diluted in buffer containing 25 mM Hepes, pH 7.4, 100 mM NaCl, 0.1% bovine serum albumin, 0.05% CHAPS and 50 μM GDP and allowed to equilibrate to room temperature before addition to plates. The assays were run in 20 μL volumes in low-volume 384-well plates (ProxiPlate-384 Plus, PerkinElmer, USA) at RT. The proteins used were N-terminally His6-tagged AKAP-Lbc-DH domain and C-terminally biotinylated RhoA. To determine ideal assay concentrations of the two proteins, 4 μL volumes of RhoA were incubated with 4 μL His-AKAP-Lbc-DH domain (0–16 μM of each; final assay concentrations: 0–3.2 μM) in 4 μL buffer for 30 min at RT in foil-sealed plates. 8 μL of assay buffer containing donor and acceptor beads at 1:400 dilution was then added, the plate was incubated in the dark for 60 min and then read on a PheraStar FS plate reader (BMG Labtech, Germany) using an AlphaScreen<sup>TM</sup> 680 excitation/570 emission filter set.</p>
+<p>For compound IC<sub>50</sub> measurement, a dilution series of the compound dissolved in DMSO in 0.4 μL total volume (final assay concentrations 200 μM to 0.125 μM) were made into the assay plate using an Echo dispenser (Labcyte, California, USA). 11.6 μL of a solution containing 100 nM RhoA and 200 nM AKAP13 in assay buffer was added and incubated with the compounds for 30 min at RT in foil-sealed plates. 8 μL of assay buffer containing donor and acceptor beads at 1:400 dilution was added. The plate was incubated in the dark for 60 min and then read on a PheraStar FS plate reader. Alternatively, for counter-screening of the compounds, 11.6 μL of 75 nM biotinylated and His6-tagged linker peptide (PerkinElmer) was added instead of the protein solution.</p>
+</sec>
+<sec id="sec010">
+<title>Microscale thermophoresis (MST)</title>
+<p>The final concentration of GFP-AKAP-Lbc/DHPH was set to 150 nM, 95% LED and 80% MST laser power. The final concentration of Red-NHS-labelled RhoA (647-RhoA; labelling performed according to manufacturer’s instructions; Monolith<sub>TM</sub> Protein Labeling Kit RED-NHS (Amine Reactive; #MO-L001; NanoTemper Technologies GmbH, Munich, Germany) was set to 100 nM, 20% LED and 20% MST laser power. Thereby, the fluorescence intensity measured for each fluorescent protein was comparable (100–150 fluorescence units). Final concentrations of Scaff10 derivatives ranged from 12.21 nM to 200 μM, control wells received 2% DMSO. For controls, His<sub>6</sub>-AKAP-Lbc/DHPH and unlabeled RhoA were added in concentrations of 17.70 nM– 290 μM and 36.01 nM– 590 μM, respectively, in MST buffer (without DMSO). The samples were incubated in the dark for 1 h incubation at room temperature, and measured with 30 sec laser-on and 5 sec laser-off time at a Monolith NT.115 device (NanoTemper). Measured fluorescence (F) was normalised (F<sub>hot</sub>/F<sub>cold</sub> = F<sub>steady state</sub>/F<sub>initial state</sub>, <xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref>). Values of thermophoresis + T-jump were related to average of each measurement row (16 capillaries). Final values are given as ‰.</p>
+<fig id="pone.0191423.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Scaff10 derivatives.</title>
+<p>(A) Overview of the synthesis of Scaff10 derivatives. By addition of iodine in methanol (a), acetophenone derivatives (1) reacted with the corresponding α-iodoketones (2a), removal of excessive iodine by addition of Na<sub>2</sub>SO<sub>3</sub>-solution (b). Resorcinol (3) and diethyl-2-acetylglutarat (4) were transformed into the 7-hydroxycoumarin derivative ethyl 3-(7-hydroxy-4-methyl-2-oxo-chromen-3-yl)propanoate (5a) in ethanolic HCl (c). In the presence of excess potash, 5 reacted with α-haloketone derivatives (2) in a Williamson ether synthesis at 55°C in acetone (d) to 6. Saponification to 7 was carried out in 1 M NaOH at 55–95°C and from 0.3–16 h (e). Final cyclization of ketones to furocoumarin derivatives (8) was carried out upon further heating in NaOH solution (60–110°C) for various times (0.75–10 h) (f). R is indicated in <xref ref-type="table" rid="pone.0191423.t001">Table 1</xref> and (C). (B) Compounds of the generalized structures 6–8 from (A) were allocated into classes 6–8, respectively. (C) Structures of Scaff10 derivatives, which inhibit the AKAP-Lbc/DHPH-RhoA interaction in the homogenous time-resolved fluorescence (HTRF) assay depicted in Fig 3A and B. IC<sub>50</sub> values (μM ± SEM) were obtained from n = 3–15 independent HTRF experiments carried out in duplicate (S3 Table). Structural differences compared to Scaff10-8 are shown in grey. R<sup>2</sup> indicates the coefficient of determination.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g003" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec011">
+<title>Isothermal titration calorimetry (ITC)</title>
+<p>ITC measurements were essentially carried out as previously described [<xref ref-type="bibr" rid="pone.0191423.ref040">40</xref>]. The stabilizing RhoA mutant F25N [<xref ref-type="bibr" rid="pone.0191423.ref041">41</xref>] was purified as a GST-RhoA fusion in its GDP-bound form (final gel filtration purification step in 20 mM HEPES, pH 7.5, 150 mM NaCl, 2 mM DTT, 50 μM GDP). In order to exchange GDP against GTPγS, GST-RhoA loaded with GDP was incubated for 20 min in ITC nucleotide exchange buffer (50 mM HEPES, pH 7.5, 20 mM EDTA) at 25°C followed by three dilution and concentration steps in Amicon tubes (10,000 MWCO) using ITC dialysis buffer (50 mM HEPES, pH 7.4, 150 mM NaCl, 5 mM MgCl2, 2 mM β-mercaptoethanol). The nucleotide-loading state was confirmed by HPLC. All proteins used in ITC measurements were dialyzed overnight against ITC dialysis buffer. Protein concentrations were determined with NanoDrop ND-1000. GDP or GTPγS (final concentration 2 mM) and DMSO (2%) were added to the proteins prior to the ITC measurements. Scaff10-8 was dissolved in the same buffer (including 2% DMSO and 2 mM GDP or GTPγS). ITC measurements were performed on a VP-ITC (GE Healthcare, München, DE) at 15°C. Titrations were conducted using 14.8 μM Scaff10-8 in the cell and 235 μM (GST control), 222 μM (GST-RhoA, GDP-bound) or 210 μM (GST-RhoA, GTPγS-bound) in the syringe. The cell was stirred at 351 rpm and a total of 27 x 10 μl injections were added to the cell, separated by 240 s of equilibration. The data were fitted using the Microcal Origin software (version 7.0) and a one-site binding model. We consistently observed a binding number close to N = 0.5 (RhoA/Scaff10-8). This observation may be due to the binding of two molecules of Scaff10-8 per one molecule of GST-RhoA for both the GDP-bound and GTPγS-bound form of GST-RhoA, or due to some inaccuracy in the determination of protein or compound concentrations. The data were thus fitted using a fixed binding number of N = 0.5.</p>
+</sec>
+<sec id="sec012">
+<title>MTS cytotoxicity assay</title>
+<p>The potential cytotoxicity of Scaff10-8 on primary IMCD and several permanent cell lines (MCF7, H9C2, HEK293, MCD4) was assessed using the tetrazolium compound-based CellTiter 96 AQueous One Solution Cell Proliferation (3-(4,5-dimethylthiazol-2-yl)-5-(3-carboxymethoxyphenyl)-2-(4-sulfophenyl)-2H-tetrazolium) (MTS) assay according to the instructions of the manufacturer. In brief, the cells were seeded into 96 well plates (5,000 cells per well) and cultured in their appropriate medium Scaff10-8 (100 μM, 30 μm and 3 μm, 0.3% final DMSO concentration) were added, DMSO (0.3%) was included as a control. Staurosporine (1 μM) was included as a positive control. All conditions were tested in quadruplicate. At the indicated time points, the MTS reagent was added. Absorption was determined 4 h after addition of MTS reagent at 450 nm wavelength. The MST reagent absorbance at 450 nm is proportional to the amount of living cells. A blank measurement determined the medium absorption (background). Values were normalized to untreated cells after 24 h for each cell line.</p>
+</sec>
+<sec id="sec013">
+<title>Luciferase assay</title>
+<p>Luciferase reporter gene assays were performed with the Dual Luciferase Reporter Assay System (Promega) according to manufactures protocol and as previously reported [<xref ref-type="bibr" rid="pone.0191423.ref042">42</xref>]. In brief, HEK293 cells were seeded and co-transfected with the indicated plasmids together with pSRE.L reporter plasmid encoding firefly luciferase (kindly provided from Dr J. Mao and Dr. D. Wu, Rochester, NY) and pRL-TK control vector (Promega, Mannheim, Germany) encoding renilla luciferase. The transfected cells were further cultured in DMEM with 0.5% FCS for 24 h, lysed with passive lysis buffer (Promega). Luciferase activities was measured an Envision Instrument (Perkin Elmer, Rodgau, Germany) in white 96-well plates. N-terminally flag-tagged LARG and PDZ-RhoGEF are encoded in the vector pCMV2b, kindly provided by Stefan Offermanns (Max-Planck-Institut für Herz- und Lungenforschung, Bad Nauheim, Germany; [<xref ref-type="bibr" rid="pone.0191423.ref043">43</xref>]). Western blotting for the detection of Flag was carried out with primary anti-Flag, M2 monoclonal antibody (Sigma, 2 μg/ml). G12QL was in pCDNA3, purchased from cDNA.org. In Western blots, the protein was detected with primary polyclonal antibody (rabbit; Gramsch, 1:1000). The vector pEGFP-N1 encoding GFP-tagged AKAP-Lbc was kindly provided by Dr. J. Scott (University of Washington, Seattle, USA; [<xref ref-type="bibr" rid="pone.0191423.ref028">28</xref>]). AKAP-Lbc was detected with a specific anti-AKAP-Lbc antibody (Abcam; #ab99377; 1:1000). For transfection in the luciferase assay, 30 ng of each AKAP-Lbc, LARG or PDZ-RhoGEF, and 10 ng of G12QL were transfected.</p>
+</sec>
+<sec id="sec014">
+<title>Detection of AQP2 and F-actin in primary IMCD cells</title>
+<p>Primary rat renal inner medullary collecting duct (IMCD) cells were obtained and cultured as previously described [<xref ref-type="bibr" rid="pone.0191423.ref034">34</xref>, <xref ref-type="bibr" rid="pone.0191423.ref044">44</xref>]. AQP2 was detected with specific rabbit (H27 antibody) and secondary Cy3-coupled antibodies, and F-actin was visualized with Alexa Fluor 647-Phalloidin by laser scanning microscopy (LSM780; Zeiss Jena, Germany) as described [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>].</p>
+</sec>
+<sec id="sec015">
+<title>Biotinylation of cell surface proteins</title>
+<p>The assay was performed according to Bogum et al. [<xref ref-type="bibr" rid="pone.0191423.ref044">44</xref>]. IMCD cells were treated with Scaff10-8 at a concentration of 30 μM for 1 or 24 h (0.3% DMSO final concentration). DMSO (0.3%) was used as a control for the 24 h of incubation. Cells were stimulated with forskolin (30 min, 30 μM). Cells were washed twice with ice-cold PBS and incubated with biotinylation buffer (500 μg Biotin per well; 10 mM triethanolamine; 150 mM NaCl; 1 mM MgCl<sub>2</sub>; 0.1 mM CaCl<sub>2</sub>; pH 8.0) for 60 min at 4°C. After two washing steps with biotinylation buffer, cells were incubated for 10 min with quenching buffer (50 mM NH<sub>4</sub>Cl in PBS) at 4°C. Lysates were prepared using biotinylation lysis buffer 1 (SLB; 0.5% Triton X-100; 0.2% BSA; Complete mini EDTA-free). Lysates were sonicated and incubated for 20 min at 37°C. Cell debris was removed by centrifugation (30 min, 15,000x g, 4°C). Lysates were incubated with 80 μl streptavidin agarose beads at 4°C overnight. Beads were washed three times with biotinylation lysis buffer 1 and 2 (SLB; 0.5% Triton X-100; Complete mini EDTA-free). Proteins were eluted using sample buffer and analyzed by Western blotting.</p>
+</sec>
+<sec id="sec016">
+<title>Western blotting and determination of RhoA, Cdc42 and Rac1 activities</title>
+<p>Western blotting for the detection of RhoA and Hsp90 and a Rhotekin pull down for the detection of active, GTP-bound RhoA were adapted from a procedure previously described by us [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>, <xref ref-type="bibr" rid="pone.0191423.ref045">45</xref>]. In brief, IMCD cells were cultured as described [<xref ref-type="bibr" rid="pone.0191423.ref034">34</xref>], DBcAMP and nystatin were removed on day twelve after seeding by exchange of medium for medium without the compounds. On the following day, Scaff10-8 was added to a final concentration of 30 μM or, as a control, the solvent DMSO (0.3%) for 1 h. Then cells were treated with forskolin (30 μM) for an additional 30 min, and subsequently incubated at 4°C in ice-cold Rhotekin buffer (50 mM Tris, pH 7.2; 1% (w/v) Triton X-100; 0.5% sodium deoxycholate; 500 mM NaCl; 10 mm MgCl<sub>2</sub>; PhosSTOP EASY (PhosSTOP EASY pack, Roche Diagnostics, Mannheim, DE; #REF04906837001), Complete mini EDTA-free (Complete mini EDTA-free, Roche Diagnostics, Mannheim, DE; #REF0693159001), for 10 min and lysed. Lysates (300–400 μg protein) were incubated with 300 μl of Rhotekin beads as previously described [<xref ref-type="bibr" rid="pone.0191423.ref024">24</xref>] Proteins were eluted from beads with Laemmli buffer and analyzed by Western blotting. Active RhoA was related to RhoA in the input fraction and the ratio to the loading control, Hsp90.</p>
+<p>The (p21) binding domain (PBD) of p21 activated kinase 1 protein (PAK-1) spans amino acids 67–150 of PAK-1 and binds specifically to the GTP-bound Rac-1 and Cdc42. The PBD was prepared as described [<xref ref-type="bibr" rid="pone.0191423.ref046">46</xref>] and used for selective precipitation of the activated GTPases from IMCD cells. The PBD was expressed as a GST-fusion protein in DH5α E-coli cells, the cells were lysed using a French press, and the fusion protein was purified with Glutathione Sepharose 4 Fast Flow GST-tagged protein purification resin kit according to the manufacturer’s instructions (GE Healthcare; #17-5132-01). The PAK-1-PBD pull down was carried out with 400–500 μg protein from IMCD cell lysates. Proteins were eluted from the beads by boiling with Laemmli sample buffer, and analyzed by Western blotting. The membranes were first probed for Cdc42, and the GTP-bound active fraction of the protein was related to total Cdc42, and to the loading control GAPDH. The membranes were re-probed for Rac-1 accordingly to determine the active GTP-bound Rac-1 fraction.</p>
+</sec>
+<sec id="sec017">
+<title>Statistics</title>
+<p>Statistical analyses were carried out using GraphPad Prism 5.0 software and a one-way ANOVA combined with a Bonferroni post hoc comparison test in order to evaluate statistical significance.</p>
+</sec>
+</sec>
+<sec id="sec018" sec-type="results">
+<title>Results</title>
+<sec id="sec019">
+<title>A novel small molecule inhibits the AKAP-Lbc-induced activation of RhoA and the interaction of the two proteins</title>
+<p>We aimed to develop a small molecule that prevents RhoA activation by interfering with the interaction of AKAP-Lbc and RhoA. We initiated the search for inhibitors by screening of a library of 18,431 small molecules (ChemBioNet library [<xref ref-type="bibr" rid="pone.0191423.ref035">35</xref>]) using a guanine nucleotide exchange assay for RhoA activation after addition of the DHPH domain of AKAP-Lbc (AKAP-Lbc/DHPH; <xref ref-type="fig" rid="pone.0191423.g001">Fig 1A and 1B</xref>). The screen identified 655 inhibitors (S1 Table in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>); 100 of the primary hits and 252 additional structurally related compounds from the library (1, 10 and 100 μM) were tested for dosage-dependent activity using the same assay. We were able to determine IC<sub>50</sub> values for 26 compounds. 23 initial hits were autofluorescent and thus not further considered (S2 Table in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Compound 31413 (Scaff10; <xref ref-type="fig" rid="pone.0191423.g001">Fig 1C</xref>) inhibited the AKAP-Lbc/DHPH-induced RhoA activation with the lowest IC<sub>50</sub> values in the primary screen and secondary assays (IC<sub>50</sub> = 26 μM; <xref ref-type="fig" rid="pone.0191423.g001">Fig 1D</xref>).</p>
+<p>Initial cell-based experiments were carried out to gain insight into the specificity of Scaff10. We expressed AKAP-Lbc and various other RhoGEFs in HEK293 cells: ARHGEF25 (p63RhoGEF), Kalirin (Duet), Trio, RhoGEF, RhoGEF2, ARHGEF12 (LARG), MCF2L (Ost1), and ARHGEF11 (PDZRhoGEF). Scaff10 selectively inhibited the AKAP-Lbc-mediated activation of RhoA (Fig A in S1 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). AKAP-Lbc is selectively activated by the G protein G<sub>12</sub> [<xref ref-type="bibr" rid="pone.0191423.ref028">28</xref>]. A constitutively active version of G<sub>12</sub> (G<sub>12</sub>QL) increased the level of active RhoA in HEK293 cells transiently expressing AKAP-Lbc. While Scaff10 abolished this activation, it did not affect RhoA activation through constitutively active G<sub>q</sub> (G<sub>q</sub>RC; Fig B in S1 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). The data indicated specific interference of Scaff10 with AKAP-Lbc signaling. Based on these observations, Scaff10 served as a starting point for the development of a small molecule inhibitor of the AKAP-Lbc-RhoA interaction. For this, a focused library around Scaff10 comprising 54 compounds was synthesized and the structure-activity relationship elucidated.</p>
+</sec>
+<sec id="sec020">
+<title>The Structure-Activity Relationship (SAR) of Scaff10 derivatives</title>
+<p>SARs indicate the chemical moieties of a small molecule that determine its inhibitory effects. Our focused library of 54 compounds around Scaff10 (<xref ref-type="table" rid="pone.0191423.t001">Table 1</xref>, S3 Table in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>, <xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref>) and our homogeneous time-resolved fluorescence (HTRF) assay (<xref ref-type="fig" rid="pone.0191423.g002">Fig 2A</xref>) was used to obtain insight into the structure activity relationship of the identified 4-methoxyphenylfuorochromenone Scaff10 (Figs <xref ref-type="fig" rid="pone.0191423.g001">1C</xref> and <xref ref-type="fig" rid="pone.0191423.g002">2B</xref>; S3 Table). Twelve out of the 55 compounds inhibited the AKAP-Lbc/DHPH–RhoA interaction in our HTRF assay with IC<sub>50</sub> values ranging from 20–65 μM (<xref ref-type="fig" rid="pone.0191423.g002">Fig 2B</xref>, S3 Table in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>; recombinant proteins are shown in <xref ref-type="fig" rid="pone.0191423.g002">Fig 2</xref> in S2 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Scaff10-8 inhibited the interaction with an IC<sub>50</sub> = 34.1 μM (<xref ref-type="fig" rid="pone.0191423.g002">Fig 2B</xref>). Alpha screen assays demonstrated the inhibitory effect of Scaff10-8 on the interaction of the DH domain of AKAP-Lbc and RhoA in the absence of the PH domain (IC<sub>50</sub> = 42 μM; <xref ref-type="fig" rid="pone.0191423.g002">Fig 2C</xref>).</p>
+<table-wrap id="pone.0191423.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.t001</object-id>
+<label>Table 1</label> <caption><title>List of substituents R<sup>1</sup> and R<sup>2</sup> of Scaff10 derivatives.</title></caption>
+<alternatives>
+<graphic id="pone.0191423.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left">Scaff10 derivative</th>
+<th align="center">class</th>
+<th align="center">R<sup>1</sup></th>
+<th align="center">R<sup>2</sup></th>
+<th align="center">IC<sub>50</sub> ± SEM μM</th>
+<th align="center">log P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Scaff10</td>
+<td align="center">8</td>
+<td align="center">-CH<sub>3</sub></td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">-</td>
+<td align="center">4.60</td>
+</tr>
+<tr>
+<td align="left">Scaff10-6</td>
+<td align="center">7</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-methoxyphenylethanone-</td>
+<td align="center">-</td>
+<td align="center">3.65</td>
+</tr>
+<tr>
+<td align="left">Scaff10-7</td>
+<td align="center">6</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOC<sub>2</sub>H<sub>5</sub></td>
+<td align="center">4-methoxyphenylethanone</td>
+<td align="center">-</td>
+<td align="center">4.22</td>
+</tr>
+<tr>
+<td align="left">Scaff10-8</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">34.1 ± 1.7</td>
+<td align="center">4.36</td>
+</tr>
+<tr>
+<td align="left">Scaff10-26</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>CON(CH<sub>3</sub>)<sub>2</sub></td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">-</td>
+<td align="center">4.02</td>
+</tr>
+<tr>
+<td align="left">Scaff10-30</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-(trifluoromethyl)phenyl-</td>
+<td align="center">47.8 ± 7.8</td>
+<td align="center">5.19</td>
+</tr>
+<tr>
+<td align="left">Scaff10-32</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-pyridyl-</td>
+<td align="center">-</td>
+<td align="center">3.10</td>
+</tr>
+<tr>
+<td align="left">Scaff10-35</td>
+<td align="center">7</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-(dimethylamino)phenylethanone-</td>
+<td align="center">-</td>
+<td align="center">3.83</td>
+</tr>
+<tr>
+<td align="left">Scaff10-38</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-phenoxyphenyl-</td>
+<td align="center">36.7 ± 3.3</td>
+<td align="center">5.81</td>
+</tr>
+<tr>
+<td align="left">Scaff10-40</td>
+<td align="center">7</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-biphenyl-</td>
+<td align="center">20.8 ± 2.6</td>
+<td align="center">5.19</td>
+</tr>
+<tr>
+<td align="left">Scaff10-41</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-biphenyl-</td>
+<td align="center">29.1 ± 2.6</td>
+<td align="center">5.77</td>
+</tr>
+<tr>
+<td align="left">Scaff10-43</td>
+<td align="center">7</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">6-methoxynaphthyl-ethanone-</td>
+<td align="center">-</td>
+<td align="center">4.56</td>
+</tr>
+<tr>
+<td align="left">Scaff10-44</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">6-methoxy-2-naphthyl-</td>
+<td align="center">20.7 ± 2.5</td>
+<td align="center">5.27</td>
+</tr>
+<tr>
+<td align="left">Scaff10-46</td>
+<td align="center">8</td>
+<td align="center">-CH<sub>3</sub></td>
+<td align="center">4-biphenyl-</td>
+<td align="center">-</td>
+<td align="center">6.13</td>
+</tr>
+<tr>
+<td align="left">Scaff10-47</td>
+<td align="center">8</td>
+<td align="center">-CH<sub>3</sub></td>
+<td align="center">6-methoxy-2-naphthyl-</td>
+<td align="center">-</td>
+<td align="center">5.51</td>
+</tr>
+<tr>
+<td align="left">Scaff10-48</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOCH<sub>3</sub></td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">-</td>
+<td align="center">4.59</td>
+</tr>
+<tr>
+<td align="left">Scaff10-49</td>
+<td align="center">8</td>
+<td align="center">-CH<sub>2</sub>COOH</td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">56.4 ± 4.5</td>
+<td align="center">3.90</td>
+</tr>
+<tr>
+<td align="left">Scaff10-51</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>CONHOH</td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">-</td>
+<td align="center">3.78</td>
+</tr>
+<tr>
+<td align="left">Scaff10-58</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">Phenyl-</td>
+<td align="center">66.7 ± 7.5</td>
+<td align="center">4.38</td>
+</tr>
+<tr>
+<td align="left">Scaff10-59</td>
+<td align="center">6</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOC<sub>2</sub>H<sub>5</sub></td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">-</td>
+<td align="center">4.55</td>
+</tr>
+<tr>
+<td align="left">Scaff10-61</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>CONHCH<sub>2</sub>COOH</td>
+<td align="center">4-methoxyphenyl-</td>
+<td align="center">64.0 ± 6.0</td>
+<td align="center">3.46</td>
+</tr>
+<tr>
+<td align="left">Scaff10-63</td>
+<td align="center">7</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">3'-methoxy-1,1'-biphenyl-4-ethanone-</td>
+<td align="center">24.4 ± 8.4</td>
+<td align="center">5.17</td>
+</tr>
+<tr>
+<td align="left">Scaff10-64</td>
+<td align="center">8</td>
+<td align="center">-C<sub>2</sub>H<sub>4</sub>COOH</td>
+<td align="center">4-(3‘-methoxyphenyl)phenyl-</td>
+<td align="center">28.9 ± 9.3</td>
+<td align="center">5.75</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>Scaff10 derivatives were synthesized and the active compounds, i.e. inhibitors of the interaction of the DHPH domain of AKAP-Lbc and RhoA, were allocated into classes 6–8 (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3A and 3B</xref>). IC<sub>50</sub> values were obtained in HTRF assays (see <xref ref-type="fig" rid="pone.0191423.g002">Fig 2</xref> and S3 Table). log P values were calculated.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>During synthesis, classes 6–8 of Scaff10 derivatives were defined (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3A</xref>). All inhibitors of the AKAP-Lbc/DHPH-RhoA interaction were from classes 7 and 8 (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3B and 3C</xref>). The carboxylic group at a C2-spacer at R<sup>1</sup> seemed to be required for the inhibitory effect (R<sup>1</sup> and R<sup>2</sup> are shown in <xref ref-type="table" rid="pone.0191423.t001">Table 1</xref>). R<sup>1</sup> in class 6 compounds was a propionic ester, which rendered the molecules inactive (no inhibitory effect of compounds in class 6, e.g. Scaff10, Scaff10-46 and Scaff10-47). The polar character as electron pair donor of the carboxylate in classes 7 and 8 was not the reason of the inhibitory effect, as a replacement against a dimethylamide (Scaff10-26) or a methylester (Scaff10-48) resulted in a complete loss of the inhibitory effect. Thus, the negative charge of the carboxylate seems highly relevant for the inhibitory effect. For further analysis of the impact of the negative charge, the carboxylic acid was substituted with hydroxamic acid. Since the quantity of negatively charged molecules depends on the pK<sub>a</sub> value of the chemical function, the differences in the pK<sub>a</sub> values should result in an altered inhibitory effect (estimated pK<sub>a</sub> value for Scaff10-8 (carboxylic acid) ~ 5; cinnamic acid (pK<sub>a</sub> = 4.44), propionic acid (pK<sub>a</sub> = 4.88); estimated pK<sub>a</sub> value for Scaff10-51 (hydroxamic acid) ~ 9, compare to acetohydroxamic acid (pK<sub>a</sub> = 8.7)). The increase of the pK<sub>a</sub> value of Scaff10-51 results in an almost complete loss of activity. In addition, the length of the spacer between carboxylic acid and coumarin at R<sup>1</sup> seemed relevant: shortening the spacer from two to one carbon atoms increased the IC<sub>50</sub> value to 56 ± 5 μM (Scaff10-49), extension to 5 atoms <italic>via</italic> an amide bond at R<sup>1</sup> also increased the IC<sub>50</sub> value (64 ± 6 μM for Scaff10-61). Hence an optimal length of the spacers between carboxylic acid and coumarin at R<sup>1</sup> was between 2 and 4 atoms.</p>
+<p>Remarkably, most of the uncondensed derivatives of class 7 were inactive, except Scaff10-40 (IC<sub>50</sub> = 21 ± 3 μM) and Scaff10-63 (IC<sub>50</sub> = 24 ± 8 μM). The R<sup>2</sup> substituent of the two compounds is highly flexible, resulting in many conformers and a consequently increased probability of a bioactive conformation fitting into the targeted binding pocket. The steric fixation of molecules of class 8 was beneficial in most cases. As R<sup>2</sup> substituents, potentially charged groups such as the tertiary amine group at the <italic>para</italic>-position of the substitution of the phenyl ring (Scaff10-35), a trifluoromethyl substituent (Scaff10-30) or a 4-pyridyl substituent (Scaff10-32) at the phenyl ring leads to reduced (trifluoromethyl substituent) or complete loss of activity (tertiary amine, 4-pyridyl). A methoxy substituent in <italic>para</italic>-position of the phenyl ring at R<sup>2</sup> enhanced the inhibitory effect (Scaff10-8 and Scaff10-58). In addition, an extension of the R<sup>2</sup> substituent by aromatic moieties, e.g. Scaff10-38, Scaff10-41, Scaff10-44 and Scaff10-64, was beneficial or did not change the inhibitory potency. Rather bulky substituents at this position, such as a naphthyl substituent, were tolerated only for condensed compounds (Scaff10-44).</p>
+<p>In conclusion, inhibition of the AKAP-Lbc/DHPH-RhoA interaction by Scaff10 derivatives required a negatively charged group like a carboxylic acid at a C2 to C4 spacer at position 3 of the coumarin indicating interaction with positively charged amino acids such as lysine, arginine or histidine in the binding pocket. In addition, a long, lipophilic and flexible moiety at R<sup>2</sup> with a methoxy substituent at the <italic>para</italic>-position adds to the inhibitory effect; condensation to furan mostly improves the inhibitory effect.</p>
+</sec>
+<sec id="sec021">
+<title>Scaff10-8 binds to GDP- and GTP-bound RhoA</title>
+<p>Microscale thermophoresis (MST) was used to identify the target of Scaff10 derivatives [<xref ref-type="bibr" rid="pone.0191423.ref047">47</xref>]. Since the readout of MST is fluorescence emission, recombinant GFP-tagged AKAP-Lbc/DHPH and RED-NHS-labeled RhoA (647-RhoA) were generated. GFP-AKAP-Lbc/DHPH concentration-dependently bound unlabeled RhoA with a K<sub>D</sub> value of 42 ± 5 μM (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4A</xref>). 647-RhoA bound His-AKAP-Lbc/DHPH (protein also used for the HTRF assay) with a K<sub>D</sub> value of 14 ± 4 μM (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4B</xref>). The shape of the binding curve was inverted because of the altered ratios of RhoA to AKAP-Lbc/DHPH: F<sub>norm</sub> values became high when AKAP-Lbc/DHPH was present in excess, whereas F<sub>norm</sub> values decrease when RhoA was present in excess.</p>
+<fig id="pone.0191423.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>The Scaff10 derivative Scaff10-8 binds to RhoA but not to the DHPH domain of AKAP-Lbc.</title>
+<p>(A-D) Microscale thermophoresis (MST) takes advantage of the phenomenon of directed movement of particles in a temperature gradient. Binding events lead to changes in the hydration shell of biomolecules and a relative change of movement of the molecular complex along a temperature gradient. Using such changes, binding affinities can be determined [<xref ref-type="bibr" rid="pone.0191423.ref047">47</xref>]. MST assays were carried out with (A) the recombinant DHPH domain of AKAP-Lbc fused with GFP and RhoA as a ligand and (B) fluorescent 647-RhoA and the His-tagged AKAP-Lbc/DHPH domain as a ligand. (C) MST assays for the analysis of the binding of Scaff10-8 to 647-RhoA. Upper panels: The concentration of fluorescent 647-RhoA remained constant and Scaff10-8 (left) and Scaff10-7 as a negative control (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. (D) MST assay showing no binding of Scaff10-8 or Scaff10-7 to GFP-DHPH. Upper panels: The concentration of fluorescent GFP-AKAP-Lbc/DHPH remained constant and Scaff10-8 (left) and Scaff10-7 (right) were titrated in increasing concentrations. Lower panels: Values of fluorescence corresponding to upper panels. The K<sub>D</sub> value for the binding of Scaff10-8 to 647-RhoA is 20 ± 11 μM. F norm = normalized fluorescence (fluorescence steady state/fluorescence initial state) indicated in ‰. n = 3–5. Mean ± SEM.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g004" xlink:type="simple"/>
+</fig>
+<p>The target of Scaff10-8 (and Scaff10-38, <xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> in S3 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>) is RhoA, as Scaff10-8 bound to 647-RhoA with a K<sub>D</sub> value of 20 ± 11 μM (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4C</xref>). Scaff10-38 bound to 647-RhoA with a similar K<sub>D</sub> value (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> in S3 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Scaff10-7 and also other compounds from the different Scaff10 classes (e.g. Scaff10-48 from class 8, <xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> in S3 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>) that were inactive in our HTRF assay, did not bind 647-RhoA, and neither Scaff10-8, Scaff10-7, Scaff10-38 or Scaff10-48 bound GFP-AKAP-Lbc/DHPH (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4D</xref>, <xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> in S3 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). The concentration of the fluorescent molecule remained constant in the samples during each run. Based on this, the decreasing values for Scaff10-7 (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4D</xref>) and of other HTRF-negative compounds such as Scaff10-48 (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> in S3 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>) were not considered as binding events, but as a direct interaction with GFP of the DHPH domain, which influences the F<sub>norm</sub> value concentration-dependently.</p>
+<p>We used isothermal titration calorimetry (ITC) assays to confirm the interaction of Scaff10-8 with RhoA (<xref ref-type="fig" rid="pone.0191423.g005">Fig 5A and 5B</xref>). Indeed, Scaff10-8 bound GST-RhoA loaded with GDP with a K<sub>D</sub> = 20 ± 1 μM or GTPγS with a K<sub>D</sub> = 38 ± 4 μM. Since GTP-GDP exchange is associated with large conformational rearrangements of the switch regions, the similar K<sub>D</sub> values suggest that interaction with Scaff10-8 does not directly involve these elements and that it was independent of the conformational change. Scaff10-8 specifically interacted with RhoA, as it did not bind to the GST control (<xref ref-type="fig" rid="pone.0191423.g005">Fig 5C</xref>).</p>
+<fig id="pone.0191423.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Scaff10-8 binds to GDP- and GTP-bound RhoA.</title>
+<p>Isothermal titration calorimetry (ITC) measurements using recombinant GST-tagged RhoA in its (A) GDP- and (B) GTP-bound form and Scaff10-8 were performed (GDP and GTPγS, 2 mM each). K<sub>D</sub> values are indicated. (C) As a control, the measurements were carried out with GST alone.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec022">
+<title>Scaff10-8 does not affect viability and inhibits the AKAP-Lbc-mediated activation of RhoA in cells</title>
+<p>Prior to the analysis of effects of Scaff10-8 on the localization of AQP2 in primary rat inner medullary collecting duct (IMCD) cells, potential cytotoxic effects and specificity of the compound were evaluated. For this, IMCD cells, mouse collecting duct MCD4 cells (another model for renal principal cells [<xref ref-type="bibr" rid="pone.0191423.ref044">44</xref>, <xref ref-type="bibr" rid="pone.0191423.ref048">48</xref>]), Human embryonic kidney (HEK)293, breast carcinoma (MCF7) and cardiac myocytes (H9C2) that all express AKAP-Lbc and RhoA (<xref ref-type="fig" rid="pone.0191423.g006">Fig 6A</xref>) were incubated with Scaff10-8 in concentrations of 3–100 μM and an MTS cytotoxicity assay was carried out (<xref ref-type="fig" rid="pone.0191423.g006">Fig 6B</xref>). The compound did not influence the viability of these cells. A further experiment based on quantitation of ATP as an indicator of metabolically active cells confirmed that Scaf10-8 did not affect the viability of cells in concentrations of up to 100 μM (<xref ref-type="fig" rid="pone.0191423.g004">Fig 4</xref> in S4 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Using MCD4 cells and a mass spectrometry approach, we confirmed the uptake of Scaff10-8 into cells (data not shown).</p>
+<fig id="pone.0191423.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Scaff10-8 is not cytotoxic.</title>
+<p>(A) Western blot showing protein expression of AKAP-Lbc and RhoA in five different cell lines and in primary rat inner medullary collecting duct (IMCD) cells: All cells express full-length AKAP-Lbc (308 kDa) and shorter splice variants. RhoA (22 kDa) is also expressed in all cells. MW = molecular weight. (B) Cytotoxicity was assessed after 24–72 h of incubation with Scaff10-8 (3, 30, 100 μM). Staurosporine as inducer of apoptosis was used as a positive control. Absorption was determined at 450 nm and was related to medium absorption (blank). DMSO was used as a control. Normalised to untreated cells after 24 h, three independent experiments with four data points each are shown. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g006" xlink:type="simple"/>
+</fig>
+<p>In order to test whether Scaff10-8 would, as the mother compound Scaff10, have specificity towards inhibition of AKAP-Lbc-mediated RhoA activation, we expressed AKAP-Lbc in the absence or presence of a constitutively active form of the α-subunit of G12, Gα12QL, or the RhoGEFs LARG and PDZ-RhoGEF in HEK293 cells and analyzed the effect of Scaff10-8 on the activation of RhoA. <xref ref-type="fig" rid="pone.0191423.g007">Fig 7</xref> shows that only the AKAP-Lbc-mediated activation of RhoA was inhibited, whereas LARG and PDZ-RhoAGEF-mediated RhoA activation was not influenced, indicating that Scaff10-8 has a similar selectivity as Scaff10.</p>
+<fig id="pone.0191423.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title>Scaff10-8 inhibits the AKAP-Lbc-mediated activation of RhoA in cells.</title>
+<p>In HEK293 cells, full length AKAP-Lbc was transiently expressed alone or in combination with the constitutively active version, Gα12QL, of the G protein α subunit Gα12. Gα12 selectively activates the GEF activity of AKAP-Lbc [<xref ref-type="bibr" rid="pone.0191423.ref028">28</xref>]. Where indicated, the RhoGEFs LARG and PDZ-RhoGEF were expressed. The cells were left untreated or incubated with Scaff10-8 in concentrations of 30 or 100 μM. The lower panels show detection of the indicated proteins by Western blotting. n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g007" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec023">
+<title>Scaff10-8 promotes the redistribution of AQP2 to the periphery of primary IMCD cells</title>
+<p>To investigate whether Scaff10-8 affected the localization of AQP2, primary IMCD cells were treated with Scaff10-8 and AQP2 was visualized using immunofluorescence microscopy (<xref ref-type="fig" rid="pone.0191423.g008">Fig 8</xref>). In resting IMCD cells, AQP2 was located mainly in the perinuclear region. As previously demonstrated, stimulation of cAMP synthesis with the adenylyl cyclase activator forskolin induced its redistribution to the plasma membrane. Incubation with Scaff10-8 (30 μM, 1 h) caused the translocation of AQP2 to the plasma membrane in the absence of forskolin, while it did not enhance the forskolin-induced redistribution. In control cells, polymerized F-actin appeared mostly as fiber structures and elevation of cAMP through forskolin caused depolymerization as previously described [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>]. F-actin disappeared and dot-like structures became apparent, presumably representing shorter fragments of F-actin or G-actin [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>] (<xref ref-type="fig" rid="pone.0191423.g008">Fig 8</xref>). In cells challenged with 30 μM Scaff10-8 alone, F-actin also decreased and more dot-like structures were present. Scaff10-8 did not influence the effect of forskolin on F-actin. The data argue for a Scaff10-8-induced decrease of F-actin, which is in line with an inhibition of RhoA. In MCD4 cells, Scaff10-8 also induced cAMP-independently the translocation of AQP2 to the plasma membrane (<xref ref-type="fig" rid="pone.0191423.g005">Fig 5</xref> in S5 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Scaff10-7 and Scaff10-59, compounds without inhibitory effects in our HTRF and Alpha screen assays, did not affect the location of AQP2 in MCD4 cells (<xref ref-type="fig" rid="pone.0191423.g005">Fig 5</xref> in S5 in <xref ref-type="supplementary-material" rid="pone.0191423.s001">S1 File</xref>). Due to the lack of an effect of the latter compounds on AQP2, we refrained from testing them on primary IMCD cells.</p>
+<fig id="pone.0191423.g008" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g008</object-id>
+<label>Fig 8</label>
+<caption>
+<title>Scaff10-8 promotes the redistribution of AQP2 to the plasma membrane of primary IMCD cells, which is independent of cAMP elevation and associated with depolymerization of F-actin.</title>
+<p>(A) Upper panel. IMCD cells were treated with DMSO (1%; control), the solvent of Scaff10-8, or forskolin (10 μM, 30 min) to stimulate cAMP synthesis. Lower panels: The cells were treated for 1 hour with Scaff10-8 (30 μM) alone (control) or with Scaff10-8 and forskolin. Forskolin (10 μM) was added for the final 30 min of Scaff10-8 incubation. AQP2 (green) was detected with specific primary and Cy3-coupled secondary antibodies, F-actin (red) with Alexa Fluor 647-Phalloidin and nuclei with DAPI (blue). Signals were visualized using a laser scanning microscope. Representative images are shown. n = 3. The magnified views were derived from the indicated boxes. (B) The signal intensities arising from intracellular and plasma membrane AQP2 were recorded, related to nuclear signal intensities, and the ratios of plasma membrane to intracellular fluorescence signal intensities were calculated (n = 30 cells per condition). Ratios &gt; 1 indicate a predominant localization of AQP2 at the plasma membrane. Statistically significant differences were calculated using one-way ANOVA with posthoc Bonferroni. Mean ± SEM; *, p ≤ 0.05; *** p ≤ 0.001.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g008" xlink:type="simple"/>
+</fig>
+<p>Since the immunofluorescence microscopy experiments indicated a Scaff10-8-induced redistribution of AQP2 to the plasma membrane, we investigated whether AQP2 inserted into the membrane. However, surface biotinylation experiments revealed that this was not the case. Forskolin alone induced the membrane insertion of AQP2 into the plasma membrane of IMCD cells but not Scaff10-8 (<xref ref-type="fig" rid="pone.0191423.g009">Fig 9</xref>). Thus, Scaff10-8 appears to promote the redistribution of AQP2 to a near-plasma membrane region of the IMCD cells but not its insertion.</p>
+<fig id="pone.0191423.g009" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g009</object-id>
+<label>Fig 9</label>
+<caption>
+<title>Scaff10-8 does not promote the insertion of AQP2 into the plasma membrane of IMCD cerlls.</title>
+<p>(A) IMCD cells were treated with either compound (30 μM) or DMSO for 1 or 24 h. Membrane proteins were biotinylated followed by precipitation with streptavidin agarose beads. Pulldown (PD) and supernatant fractions were separated by 12% SDS-PAGE. Pan-Cadherin was used as a loading control for the PD fraction, Hsp90 for the supernatants. A representative Western blot is shown. (B) Signals from A were quantified by densitometric analysis. The amount of AQP2 in the PD fractions were related to Pan-Cadherin. MW = molecular weight. M = molecular weight standard. cg = complex glycosylated; hm = high mannose glycosylated; ng = non-glycosylated. 10–8 = Scaff10-8. n = 3. Mean ± SEM is plotted.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g009" xlink:type="simple"/>
+</fig>
+<p>Next, we investigated the effect of Scaff10-8 on RhoA activity. In order to measure RhoA activity in IMCD cells, Rhotekin pull down assays were performed (<xref ref-type="fig" rid="pone.0191423.g010">Fig 10</xref>). They revealed that Scaff10-8 alone decreased RhoA activity as forskolin did. Scaff10-8 did not significantly enhance the inhibitory effect of forskolin. The inhibitory effect of Scaff10-8 on RhoA explains the observed depolymerization of F-actin and the AVP/cAMP-independent redistribution of AQP2 to the periphery of the IMCD cells.</p>
+<fig id="pone.0191423.g010" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0191423.g010</object-id>
+<label>Fig 10</label>
+<caption>
+<title>Scaff10-8 inhibits activation of RhoA in primary IMCD cells.</title>
+<p>IMCD cells were incubated with Scaff10-8 (30 μM, 1 h). DMSO (1%), the solvent of Scaff10-8, served as a control. The cells were lysed, (A) active RhoA was precipitated with the RhoA binding domain of Rhotekin coupled to sepharose beads, (B) active Cdc42 and Rac1 were precipitated with with GST fused to the (p21) binding domain (PBD) of p21 activated kinase 1 protein (PAK-1) coupled to sepharose beads. Inputs and pulldown fractions were separated by SDS-PAGE. Hsp90 or GAPDH were used as loading controls. Representative Western blots from 3–5 independent experiments are shown. Signals were semiquantitatively analyzed by densitometry. The amount of active RhoA was related to normalized RhoA (total RhoA to Hsp90 (Input)). Accordingly, active Cdc42 and Rac1 were related to normalized Cdc42 and Rac1, respectively (total RhoA to GAPDH (Input)). PD, Pulldown. n = 3–5. Statistically significant differences were determined using one-way ANOVA with posthoc Bonferroni. Mean ± SEM is plotted. *, p ≤ 0.05; **, p ≤ 0.01; *** p ≤ 0.001.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.g010" xlink:type="simple"/>
+</fig>
+<p>The Rho GTPases, Cdc42, and Rac1 are crucial regulators of the cytoskeleton [<xref ref-type="bibr" rid="pone.0191423.ref049">49</xref>]. In order to determine whether Scaff10-8 non-selectively affects these members of the Rho family in addition to RhoA, we precipitated the active GTP-bound forms using GST fused to the (p21) binding domain (PBD) of p21 activated kinase 1 protein (PAK-1). <xref ref-type="fig" rid="pone.0191423.g010">Fig 10B</xref> shows that Scaff10-8 did not influence activities of Cdc42 or Rac1 underpinning the selectivity for interference with AKAP-Lbc/RhoA signaling.</p>
+</sec>
+</sec>
+<sec id="sec024" sec-type="conclusions">
+<title>Discussion</title>
+<p>We report here a novel small molecule, Scaff10-8. We were able to demonstrate that this compound bound RhoA and inhibited its interaction with AKAP-Lbc. In IMCD cells, Scaff10-8 caused inhibition of RhoA and promoted the redistribution of AQP2 to the periphery of the cells in the absence of AVP. This effect of Scaff10-8 was associated with depolymerization of F-actin. The results concur with our previous observation that a basal RhoA activity in resting IMCD cells maintains F-actin as a physical barrier preventing AQP2-bearing vesicles from reaching the plasma membrane [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>]. Our data indicate that under resting conditions a basal GEF activity of AKAP-Lbc maintains a pool of RhoA in an active state. The decrease of RhoA activity upon challenge with AVP is due to PKA phosphorylation of RhoA at S188 and its consequent inhibition [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>–<xref ref-type="bibr" rid="pone.0191423.ref025">25</xref>, <xref ref-type="bibr" rid="pone.0191423.ref045">45</xref>]. In addition, PKA phosphorylation and thus inhibition of the GEF activity of AKAP-Lbc as it occurs in HEK293 cells is likely to contribute to RhoA inhibition [<xref ref-type="bibr" rid="pone.0191423.ref032">32</xref>]. This argues for several layers of control ensuring a tight regulation of RhoA and thereby of the localization of AQP2.</p>
+<p>We have previously shown that prostaglandin E<sub>2</sub> antagonizes the AVP-induced redistribution of AQP2 through stimulation of EP<sub>3</sub> receptors [<xref ref-type="bibr" rid="pone.0191423.ref045">45</xref>]. The inhibitory effect was independent of EP<sub>3</sub> receptor coupling to the inhibitory G protein G<sub>i</sub> and inhibition of adenylyl cyclase and cAMP generation. The EP<sub>3</sub> receptor-mediated inhibition was due to RhoA activation and formation of F-actin-containing stress fibers. Stimulation of EP<sub>3</sub> receptor subtypes α and β activates the G protein G<sub>12</sub> in addition to G<sub>i</sub> [<xref ref-type="bibr" rid="pone.0191423.ref050">50</xref>]. Since the GEF activity of AKAP-Lbc is selectively activated by G<sub>12</sub> [<xref ref-type="bibr" rid="pone.0191423.ref028">28</xref>], AKAP-Lbc may not only maintain a basal RhoA activity in resting IMCD cells, but may be part of the signaling cascade controlling the inhibitory effects of prostaglandin E<sub>2</sub> on diuresis.</p>
+<p>Scaff10-8 did not promote the membrane insertion of AQP2 in IMCD cells. We had previously observed that direct inhibition of RhoA with C3 toxin promotes the depolymerization of F-actin and the redistribution of AQP2 to the plasma membrane [<xref ref-type="bibr" rid="pone.0191423.ref023">23</xref>]. Whether C3 toxin induces the insertion into the plasma membrane was not evaluated. However, there is ample evidence from other studies that inhibition of Rho causes membrane insertion of the water channel. For the treatment of water balance disorders, in particular, forms of DI where a redistribution of AQP2 into the plasma membrane independent of AVP and the V2R is desirable, treatment with statins as a measure for interference with Rho activity has been suggested. Statins block HMG-CoA reductase and thereby inhibit lipid modification and activity of RhoA, and also enhance AQP2 expression [<xref ref-type="bibr" rid="pone.0191423.ref051">51</xref>]. For example, simvastatin controls AQP2 trafficking in porcine LLC-PK1 cells stably expressing AQP2, and urinary concentration in Brattleboro rats through downregulation of Rho activity and inhibition of endocytosis. Statins inhibit clathrin-mediated endocytosis [<xref ref-type="bibr" rid="pone.0191423.ref051">51</xref>, <xref ref-type="bibr" rid="pone.0191423.ref052">52</xref>]. In hypercholesterolemic patients, simvastatin reduced diuresis and increased urine osmolality [<xref ref-type="bibr" rid="pone.0191423.ref053">53</xref>, <xref ref-type="bibr" rid="pone.0191423.ref054">54</xref>]. Scaf10-8 may not induce the membrane insertion of AQP2 because interference with a single RhoGEF may not be sufficient to inactivate the relevant RhoA pool to a degree that leads to membrane insertion. The peripheral F-actin cytoskeleton may be under the control of one or more other GEF/s and, in the presence of Scaff10-8, may still constitute a physical barrier for AQP2-bearing vesicles preventing them from reaching the plasma membrane. Cdc42 and Rac1 are most likely not involved in maintaining peripheral F-actin as a barrier, as Scaff10-8 did not affect their activity.</p>
+<p>Recently, a virtual screening identified small molecule inhibitors of the AKAP-Lbc/DHPH-RhoA interaction [<xref ref-type="bibr" rid="pone.0191423.ref055">55</xref>]. In the docked structural models, negatively charged molecules targeted a cluster of positively charged residues of the AKAP-Lbc/DHPH domain. One of the molecules, A13, reduced proliferation, migration and invasion of prostate cancer cells. This is in line with previous findings showing that AKAP-Lbc/DHPH alone is constitutively active and promotes cell transformation and cancer cell proliferation [<xref ref-type="bibr" rid="pone.0191423.ref056">56</xref>]. However, another small molecule, C646, almost identical to A13, was identified as a pan-assay interference compound (PAINS) [<xref ref-type="bibr" rid="pone.0191423.ref057">57</xref>]. PAINS are compounds that tend to nonspecifically react with various targets and are often false positive hits in high-throughput screenings. We, therefore, refrained from testing A13 in IMCD cells. Additional small molecules targeting the binding sites of RhoA in AKAP-Lbc were recently identified through an <italic>in silico</italic> approach. However, it is unclear whether these <italic>in silico</italic> hits inhibit the interaction with RhoA [<xref ref-type="bibr" rid="pone.0191423.ref058">58</xref>]. We, therefore, also did not test the <italic>in silico</italic>-derived molecules in IMCD cells.</p>
+<p>The AKAP-Lbc-mediated RhoA activation is associated with the development of cardiac hypertrophy [<xref ref-type="bibr" rid="pone.0191423.ref059">59</xref>] and cancer [<xref ref-type="bibr" rid="pone.0191423.ref060">60</xref>]. Therefore, the development of an inhibitor of the interaction has clinical implications. However, the target of Scaff10-8 is RhoA and not AKAP-Lbc. Since a drug binding RhoA would be expected to cause side effects, Scaff10-8 is apparently not suitable for further development towards a drug candidate, although, in principle, targeting Rho is possible. For instance, the Rho inhibitor VX-210 is currently being clinically tested for the treatment of traumatic cervical spinal cord injury (ClinicalTrials.gov Identifier: NCT02669849). Inhibitors of the Rho effector, Rho kinase (ROCK; Fasudil and Ripasudil), which is ubiquitously expressed, have been approved for the treatment of glaucoma and vasculature-related diseases [<xref ref-type="bibr" rid="pone.0191423.ref061">61</xref>].</p>
+<p>In summary, with our novel small molecule, Scaff10-8, that targets the interaction of a Rho-specific GEF with RhoA to interfere with RhoA activity, we provide a novel research tool for studying functions of the AKAP-Lbc-RhoA interaction. Using Scaff10-8, we have identified the first RhoGEF involved in the control of AQP2 trafficking.</p>
+</sec>
+<sec id="sec025">
+<title>Supporting information</title>
+<supplementary-material id="pone.0191423.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0191423.s001" xlink:type="simple">
+<label>S1 File</label>
+<caption>
+<title/>
+<p><bold>S1 Fig. Scaff10 specifically inhibits the Gα12-AKAP-Lbc-mediated activation of RhoA.</bold> (A) Full length AKAP-Lbc (AKAP13) and the indicated GEFs were transiently expressed in HEK293 cells. Upper panel: Scaff10 concentration-dependently inhibits the AKAP-Lbc-mediated stress response element-induced luciferase activity but at a concentration of 50 μM does not affect increases in luciferase activity induced by other GEFs. n = 3; statistically significant differences were not found, as confirmed by statistical analysis using ANOVA. (B) Scaff10 inhibits Gα12- but not Gαq-mediated RhoA activation. The indicated Gα12 and Gαq-mutants were transiently co-expressed with AKAP-Lbc and p63RhoGEF in HEK293 cells as indicated. The cells were left untreated or incubated with Scaff10 (50 μM). The fraction of active RhoA was determined using Rhotekin pulldown assays. Shown is one representative out of three experiments. All GEF constructs were in pCMV3a and Myc-tagged (30 ng per transfection). Expression of AKAP-Lbc, LARG and PDZ-RhoGEF is shown in <xref ref-type="fig" rid="pone.0191423.g007">Fig 7</xref> of the main manuscript. <bold>S2 Fig.</bold> (A) <bold>The sequence of the AKAP-Lbc/DHPH domain</bold> (5,914–7,005 bp, NCBI accession number CCDS32320.1) was mutated in order to remove rare codons and genetically fused with GFP and a His<sub>6</sub> tag. Substituted base pairs are indicated in red. (B) <bold>Purified recombinant proteins for subsequent assays.</bold> SDS-PAGE followed by Coomassie staining: His6-AKAP-Lbc/DHPH (46 kDa) and GST-RhoA (48 kDa) were used for the HTRF assay and ITC; untagged RhoA (22 kDa) and GST were used for ITC (28 kDa). 2 μg of each protein were loaded. <bold>S3 Fig. Scaff10 derivatives, Scaff10-8 and Scaff10-38 inhibiting the AKAP-Lbc-RhoA interaction in our HTRF assay bound RhoA, not the AKAP-Lbc/DHPH domain.</bold> Results of MST assays. (A) Upper panel: The concentration of fluorescent 647-RhoA remained constant whereas Scaff10-8, Scaff10-38, Scaff10-7 and Scaff10-48 (ligands) were added in increasing concentrations. The Kd values for the binding of Scaff10-8 and Scaff10-38 to RhoA are 20.2 ± 11.1 μM and 19.5 ± 4.1 μM, respectively. Lower panel: Corresponding values of fluorescence to upper panel. (B) Upper panel: The concentration of fluorescent GFP-AKAP-Lbc/DHPH remained constant whereas Scaff10-8, Scaff10-38, Scaff10-7 and Scaff10-48 (ligands) were added in increasing concentrations. Lower panel: Corresponding values of fluorescence to upper panel. (B) F norm = normalised fluorescence (fluoresence steady state/fluorescence initial state) indicated in ‰. Compound concentration [nM] refers to the appropriate ligand. n = 3–5. Mean ± SEM is plotted. Kd values are indicated ± SEM. R<sup>2</sup> indicates the coefficient of determination. The results of the Scaff10-8 and Scaff10-7 derivatives are shown in the main manuscript and are here included for direct comparison. <bold>S4 Fig. Scaff10-8 does not affect viability of cells.</bold> The viability of the indicated cells was determined using a CellTiter-Glo<sup>®</sup>Luminescent Cell Viability Assay (Promega, Wisconsin, USA) according to the manufacturer's instructions. The assay is based on the quantification of ATP as an indicator of metabolically active cells. The cells were seeded, grown for 24 h and treated with the different concentrations of Scaff 10–8. Viability was assessed after 1 and 24 h incubation with Scaff10-8 in the indicated concentrations. An equal volume of CellTiter-Glo Reagent was added, plates were shaken and luminescence monitored over time with the plates held at 22°C. Mono-oxygenation of luciferin is catalyzed by luciferase in the presence of Mg<sup>2+</sup>, ATP and molecular oxygen. DMSO was used as a control. Relative luminescent signals (RLU) was measured and normalized to untreated cells, n = 3. Statistically significant differences were determined applying one-way ANOVA with posthoc Bonferroni. Mean ± SD is plotted. <bold>S5 Fig.</bold> Scaff10-8 but not Scaff10-7 or Scaff10-59 induced the translocation of AQP2 to the plasma membrane of MCD4 cells independent of cAMP elevation. MCD4 cells were left untreated (A) or incubated with 30 (B) or 3 μM (C) Scaff10-8 and stimulated with forskolin (FSK). DMSO was used as a control (A). As negative controls, the cells were incubated with Scaff10-7 and Scaff10-59 (30 μM each), which were inactive in our HTRF assay. AQP2 stained in green, nuclei stained in blue, F-actin stained in red. Scale bar indicates 20 μm. Representative images are shown. n = 3. <bold>S1 Table.</bold> A guanine nucleotide exchange assay for RhoA activation after addition of the DHPH domain of AKAP-Lbc identified 655 inhibitors in a screen of 18,431 compounds. The table shows chemical structures of the compounds. <bold>S2 Table.</bold> Compounds tested for dose-dependent inhibition of AKAP-Lbc-mediated RhoA activation using a guanine nucleotide exchange assay. Of the primary hits 100 and 252 additional structurally related compounds from the library were tested for activity (1, 10 and 100 μM). <bold>S3 Table. Overview of all 55 Scaff10 derivatives</bold>. Structures labeld with <sup>1</sup> were commercially obtained. MW = molecular weight. logP = calculated partition coefficient (using Biovia Draw V.16.1), indicates a compounds’s distribution in a biphasic system consisting of ocatanol-water. Disruption of the interaction of RhoA and AKAP-Lbc/DHPH (PPI) and IC<sub>50</sub> values refer to HTRF assays (<xref ref-type="fig" rid="pone.0191423.g003">Fig 3</xref> main manuscript), IC<sub>50</sub> values ± SEM; all HTRF experiments were performed in duplicate; X-axis = compound concentration [μM], Y-axis = relative interaction of AKAP-Lbc/DHPH and RhoA (%). Solubility was assessed nephelometrically in DMEM + 10% FCS + Scaff10 derivative with either 0.3 or 2% DMSO final concentration; values in μM indicate maximal solubility of the compound under the respective condition. Yield in % indicates total yield of the last step of chemical synthesis for each of Scaff10 derivatives. n.d. = not determined. n.i. = not indicated.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>We thank Sylvia Niquet, Bärbel Pohl, Beate Eisermann, Andrea Geelhaar and Doris Baltus for excellent technical assistance. We are grateful to Prof. S. Offermanns (Max-Planck-Institut für Herz- und Lungenforschung, Bad Nauheim, Germany) for pCMV2b plasmids encoding LARG und PDZ-RhoGEF, and Prof. J. Scott (University of Washington, Seattle, USA) for providing a pEGFP-N1 plasmid encoding AKAP-Lbc. We thank Profs. G. Valenti and G. Tamma (University of Bari, Italy) for providing MCD4 cells.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0191423.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sasaki</surname> <given-names>S</given-names></name>. <article-title>Aquaporin 2: from its discovery to molecular structure and medical implications</article-title>. <source>Molecular aspects of medicine</source>. <year>2012</year>;<volume>33</volume>(<issue>5–6</issue>):<fpage>535</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.mam.2012.03.004" xlink:type="simple">10.1016/j.mam.2012.03.004</ext-link></comment> <object-id pub-id-type="pmid">23078817</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Pearce</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Soundararajan</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Trimpert</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kashlan</surname> <given-names>OB</given-names></name>, <name name-style="western"><surname>Deen</surname> <given-names>PM</given-names></name>, <name name-style="western"><surname>Kohan</surname> <given-names>DE</given-names></name>. <article-title>Collecting duct principal cell transport processes and their regulation</article-title>. <source>Clin J Am Soc Nephrol</source>. <year>2015</year>;<volume>10</volume>(<issue>1</issue>):<fpage>135</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2215/CJN.05760513" xlink:type="simple">10.2215/CJN.05760513</ext-link></comment> <object-id pub-id-type="pmid">24875192</object-id>; PubMed Central PMCID: PMCPMC4284417.</mixed-citation></ref>
+<ref id="pone.0191423.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Olesen</surname> <given-names>ET</given-names></name>, <name name-style="western"><surname>Fenton</surname> <given-names>RA</given-names></name>. <article-title>Aquaporin-2 membrane targeting: still a conundrum</article-title>. <source>Am J Physiol Renal Physiol</source>. <year>2017</year>;<volume>312</volume>(<issue>4</issue>):<fpage>F744</fpage>–<lpage>F7</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajprenal.00010.2017" xlink:type="simple">10.1152/ajprenal.00010.2017</ext-link></comment> <object-id pub-id-type="pmid">28179252</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Maric</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>. <article-title>The mechanisms of aquaporin control in the renal collecting duct</article-title>. <source>Rev Physiol Biochem Pharmacol</source>. <year>2000</year>;<volume>141</volume>:<fpage>33</fpage>–<lpage>95</lpage>. <object-id pub-id-type="pmid">10916423</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nedvetsky</surname> <given-names>PI</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Beulshausen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Valenti</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>. <article-title>Regulation of aquaporin-2 trafficking</article-title>. <source>Handb Exp Pharmacol</source>. <year>2009</year>;(<issue>190</issue>):<fpage>133</fpage>–<lpage>57</lpage>. Epub 2008/12/20. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/978-3-540-79885-9_6" xlink:type="simple">10.1007/978-3-540-79885-9_6</ext-link></comment> <object-id pub-id-type="pmid">19096775</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vukicevic</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Schulz</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Faust</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>. <article-title>The Trafficking of the Water Channel Aquaporin-2 in Renal Principal Cells-a Potential Target for Pharmacological Intervention in Cardiovascular Diseases</article-title>. <source>Front Pharmacol</source>. <year>2016</year>;<volume>7</volume>:<fpage>23</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fphar.2016.00023" xlink:type="simple">10.3389/fphar.2016.00023</ext-link></comment> <object-id pub-id-type="pmid">26903868</object-id>; PubMed Central PMCID: PMCPMC4749865.</mixed-citation></ref>
+<ref id="pone.0191423.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Milano</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Carmosino</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Gerbino</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Svelto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Procino</surname> <given-names>G</given-names></name>. <article-title>Hereditary Nephrogenic Diabetes Insipidus: Pathophysiology and Possible Treatment. An Update</article-title>. <source>Int J Mol Sci</source>. <year>2017</year>;<volume>18</volume>(<issue>11</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/ijms18112385" xlink:type="simple">10.3390/ijms18112385</ext-link></comment> <object-id pub-id-type="pmid">29125546</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Katsura</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Gustafson</surname> <given-names>CE</given-names></name>, <name name-style="western"><surname>Ausiello</surname> <given-names>DA</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>D</given-names></name>. <article-title>Protein kinase A phosphorylation is involved in regulated exocytosis of aquaporin-2 in transfected LLC-PK1 cells</article-title>. <source>Am J Physiol</source>. <year>1997</year>;<volume>272</volume>(<issue>6</issue> Pt 2):<fpage>F817</fpage>–<lpage>22</lpage>. Epub 1997/06/01. <object-id pub-id-type="pmid">9227644</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fushimi</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Sasaki</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Marumo</surname> <given-names>F</given-names></name>. <article-title>Phosphorylation of serine 256 is required for cAMP-dependent regulatory exocytosis of the aquaporin-2 water channel</article-title>. <source>J Biol Chem</source>. <year>1997</year>;<volume>272</volume>(<issue>23</issue>):<fpage>14800</fpage>–<lpage>4</lpage>. Epub 1997/06/06. <object-id pub-id-type="pmid">9169447</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Balkom</surname> <given-names>BW</given-names></name>, <name name-style="western"><surname>Savelkoul</surname> <given-names>PJ</given-names></name>, <name name-style="western"><surname>Markovich</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Hofman</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>van der Sluijs</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>The role of putative phosphorylation sites in the targeting and shuttling of the aquaporin-2 water channel</article-title>. <source>J Biol Chem</source>. <year>2002</year>;<volume>277</volume>(<issue>44</issue>):<fpage>41473</fpage>–<lpage>9</lpage>. Epub 2002/08/27. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.M207525200" xlink:type="simple">10.1074/jbc.M207525200</ext-link></comment> [pii]. <object-id pub-id-type="pmid">12194985</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kuwahara</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Asai</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Terada</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Sasaki</surname> <given-names>S</given-names></name>. <article-title>The C-terminal tail of aquaporin-2 determines apical trafficking</article-title>. <source>Kidney Int</source>. <year>2005</year>;<volume>68</volume>(<issue>5</issue>):<fpage>1999</fpage>–<lpage>2009</lpage>. Epub 2005/10/14. KID654 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1523-1755.2005.00654.x" xlink:type="simple">10.1111/j.1523-1755.2005.00654.x</ext-link></comment> <object-id pub-id-type="pmid">16221200</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Maric</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Beyermann</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>. <article-title>Protein kinase A anchoring proteins are required for vasopressin-mediated translocation of aquaporin-2 into cell membranes of renal principal cells</article-title>. <source>J Biol Chem</source>. <year>1999</year>;<volume>274</volume>(<issue>8</issue>):<fpage>4934</fpage>–<lpage>8</lpage>. Epub 1999/02/13. <object-id pub-id-type="pmid">9988736</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McSorley</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Stefan</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Henn</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Baillie</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Houslay</surname> <given-names>MD</given-names></name>, <etal>et al</etal>. <article-title>Spatial organisation of AKAP18 and PDE4 isoforms in renal collecting duct principal cells</article-title>. <source>European journal of cell biology</source>. <year>2006</year>;<volume>85</volume>(<issue>7</issue>):<fpage>673</fpage>–<lpage>8</lpage>. Epub 2006/02/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ejcb.2006.01.005" xlink:type="simple">10.1016/j.ejcb.2006.01.005</ext-link></comment> <object-id pub-id-type="pmid">16500722</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>. <article-title>Role and identification of protein kinase A anchoring proteins in vasopressin-mediated aquaporin-2 translocation</article-title>. <source>Kidney Int</source>. <year>2001</year>;<volume>60</volume>(<issue>2</issue>):<fpage>446</fpage>–<lpage>9</lpage>. Epub 2001/07/28. kid829 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1046/j.1523-1755.2001.060002446.x" xlink:type="simple">10.1046/j.1523-1755.2001.060002446.x</ext-link></comment> <object-id pub-id-type="pmid">11473624</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hoffert</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Pisitkun</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>RF</given-names></name>, <name name-style="western"><surname>Knepper</surname> <given-names>MA</given-names></name>. <article-title>Quantitative phosphoproteomics of vasopressin-sensitive renal cells: regulation of aquaporin-2 phosphorylation at two sites</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2006</year>;<volume>103</volume>(<issue>18</issue>):<fpage>7159</fpage>–<lpage>64</lpage>. Epub 2006/04/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0600895103" xlink:type="simple">10.1073/pnas.0600895103</ext-link></comment> <object-id pub-id-type="pmid">16641100</object-id>; PubMed Central PMCID: PMC1459033.</mixed-citation></ref>
+<ref id="pone.0191423.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fenton</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Moeller</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Hoffert</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>MJ</given-names></name>, <name name-style="western"><surname>Nielsen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Knepper</surname> <given-names>MA</given-names></name>. <article-title>Acute regulation of aquaporin-2 phosphorylation at Ser-264 by vasopressin</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>2008</year>;<volume>105</volume>(<issue>8</issue>):<fpage>3134</fpage>–<lpage>9</lpage>. Epub 2008/02/22. 0712338105 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0712338105" xlink:type="simple">10.1073/pnas.0712338105</ext-link></comment> <object-id pub-id-type="pmid">18287043</object-id>; PubMed Central PMCID: PMC2268597.</mixed-citation></ref>
+<ref id="pone.0191423.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moeller</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Praetorius</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Rutzler</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Fenton</surname> <given-names>RA</given-names></name>. <article-title>Phosphorylation of aquaporin-2 regulates its endocytosis and protein-protein interactions</article-title>. <source>Proceedings of the National Academy of Sciences of the United States of America</source>. <year>2010</year>;<volume>107</volume>(<issue>1</issue>):<fpage>424</fpage>–<lpage>9</lpage>. Epub 2009/12/08. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.0910683107" xlink:type="simple">10.1073/pnas.0910683107</ext-link></comment> <object-id pub-id-type="pmid">19966308</object-id>; PubMed Central PMCID: PMC2806726.</mixed-citation></ref>
+<ref id="pone.0191423.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hoffert</surname> <given-names>JD</given-names></name>, <name name-style="western"><surname>Fenton</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Moeller</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Simons</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Tchapyjnikov</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>McDill</surname> <given-names>BW</given-names></name>, <etal>et al</etal>. <article-title>Vasopressin-stimulated increase in phosphorylation at Ser269 potentiates plasma membrane retention of aquaporin-2</article-title>. <source>J Biol Chem</source>. <year>2008</year>;<volume>283</volume>(<issue>36</issue>):<fpage>24617</fpage>–<lpage>27</lpage>. Epub 2008/07/09. M803074200 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.M803074200" xlink:type="simple">10.1074/jbc.M803074200</ext-link></comment> <object-id pub-id-type="pmid">18606813</object-id>; PubMed Central PMCID: PMC2528999.</mixed-citation></ref>
+<ref id="pone.0191423.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Moeller</surname> <given-names>HB</given-names></name>, <name name-style="western"><surname>Knepper</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Fenton</surname> <given-names>RA</given-names></name>. <article-title>Serine 269 phosphorylated aquaporin-2 is targeted to the apical membrane of collecting duct principal cells</article-title>. <source>Kidney Int</source>. <year>2009</year>;<volume>75</volume>(<issue>3</issue>):<fpage>295</fpage>–<lpage>303</lpage>. Epub 2008/10/10. ki2008505 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/ki.2008.505" xlink:type="simple">10.1038/ki.2008.505</ext-link></comment> <object-id pub-id-type="pmid">18843259</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rice</surname> <given-names>WL</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Matsuzaki</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Brown</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>HA</given-names></name>. <article-title>Differential, Phosphorylation Dependent Trafficking of AQP2 in LLC-PK1 Cells</article-title>. <source>PLoS One</source>. <year>2012</year>;<volume>7</volume>(<issue>2</issue>):<fpage>e32843</fpage>. Epub 2012/03/10. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0032843" xlink:type="simple">10.1371/journal.pone.0032843</ext-link></comment> <object-id pub-id-type="pmid">22403603</object-id>; PubMed Central PMCID: PMC3293519.</mixed-citation></ref>
+<ref id="pone.0191423.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Robben</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Trimpert</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Boone</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Deen</surname> <given-names>PM</given-names></name>. <article-title>Regulation of AQP2 localization by S256 and S261 phosphorylation and ubiquitination</article-title>. <source>American journal of physiology Cell physiology</source>. <year>2011</year>;<volume>300</volume>(<issue>3</issue>):<fpage>C636</fpage>–<lpage>46</lpage>. Epub 2010/12/15. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajpcell.00433.2009" xlink:type="simple">10.1152/ajpcell.00433.2009</ext-link></comment> <object-id pub-id-type="pmid">21148409</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nedvetsky</surname> <given-names>PI</given-names></name>, <name name-style="western"><surname>Tabor</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Beulshausen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Skroblin</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Kirschner</surname> <given-names>A</given-names></name>, <etal>et al</etal>. <article-title>Reciprocal regulation of aquaporin-2 abundance and degradation by protein kinase A and p38-MAP kinase</article-title>. <source>J Am Soc Nephrol</source>. <year>2010</year>;<volume>21</volume>(<issue>10</issue>):<fpage>1645</fpage>–<lpage>56</lpage>. Epub 2010/08/21. ASN.2009111190 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1681/ASN.2009111190" xlink:type="simple">10.1681/ASN.2009111190</ext-link></comment> <object-id pub-id-type="pmid">20724536</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Lorenz</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Maric</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Hofmann</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>An inhibitory role of Rho in the vasopressin-mediated translocation of aquaporin-2 into cell membranes of renal principal cells</article-title>. <source>J Biol Chem</source>. <year>2001</year>;<volume>276</volume>(<issue>23</issue>):<fpage>20451</fpage>–<lpage>7</lpage>. Epub 2001/03/30. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.M010270200" xlink:type="simple">10.1074/jbc.M010270200</ext-link></comment> [pii]. <object-id pub-id-type="pmid">11278652</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Procino</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Svelto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Valenti</surname> <given-names>G</given-names></name>. <article-title>cAMP-induced AQP2 translocation is associated with RhoA inhibition through RhoA phosphorylation and interaction with RhoGDI</article-title>. <source>J Cell Sci</source>. <year>2003</year>;<volume>116</volume>(<issue>Pt 8</issue>):<fpage>1519</fpage>–<lpage>25</lpage>. Epub 2003/03/18. <object-id pub-id-type="pmid">12640036</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Maric</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Aktories</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Svelto</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>, <etal>et al</etal>. <article-title>Rho inhibits cAMP-induced translocation of aquaporin-2 into the apical membrane of renal cells</article-title>. <source>Am J Physiol Renal Physiol</source>. <year>2001</year>;<volume>281</volume>(<issue>6</issue>):<fpage>F1092</fpage>–<lpage>101</lpage>. Epub 2001/11/13. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajprenal.0091.2001" xlink:type="simple">10.1152/ajprenal.0091.2001</ext-link></comment> <object-id pub-id-type="pmid">11704560</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Henn</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Edemir</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Stefan</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Lorenz</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Theilig</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>Identification of a novel A-kinase anchoring protein 18 isoform and evidence for its role in the vasopressin-induced aquaporin-2 shuttle in renal principal cells</article-title>. <source>J Biol Chem</source>. <year>2004</year>;<volume>279</volume>(<issue>25</issue>):<fpage>26654</fpage>–<lpage>65</lpage>. Epub 2004/03/24. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.M312835200" xlink:type="simple">10.1074/jbc.M312835200</ext-link></comment> [pii]. <object-id pub-id-type="pmid">15037626</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Stefan</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Baillie</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Mollajew</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Henn</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Lorenz</surname> <given-names>D</given-names></name>, <etal>et al</etal>. <article-title>Compartmentalization of cAMP-dependent signaling by phosphodiesterase-4D is involved in the regulation of vasopressin-mediated water reabsorption in renal principal cells</article-title>. <source>J Am Soc Nephrol</source>. <year>2007</year>;<volume>18</volume>(<issue>1</issue>):<fpage>199</fpage>–<lpage>212</lpage>. Epub 2006/12/01. ASN.2006020132 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1681/ASN.2006020132" xlink:type="simple">10.1681/ASN.2006020132</ext-link></comment> <object-id pub-id-type="pmid">17135396</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Diviani</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Soderling</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Scott</surname> <given-names>JD</given-names></name>. <article-title>AKAP-Lbc anchors protein kinase A and nucleates Galpha 12-selective Rho-mediated stress fiber formation</article-title>. <source>The Journal of biological chemistry</source>. <year>2001</year>;<volume>276</volume>(<issue>47</issue>):<fpage>44247</fpage>–<lpage>57</lpage>. Epub 2001/09/08. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.M106629200" xlink:type="simple">10.1074/jbc.M106629200</ext-link></comment> <object-id pub-id-type="pmid">11546812</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Aittaleb</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Boguth</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Tesmer</surname> <given-names>JJ</given-names></name>. <article-title>Structure and function of heterotrimeric G protein-regulated Rho guanine nucleotide exchange factors</article-title>. <source>Mol Pharmacol</source>. <year>2010</year>;<volume>77</volume>(<issue>2</issue>):<fpage>111</fpage>–<lpage>25</lpage>. Epub 2009/11/03. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1124/mol.109.061234" xlink:type="simple">10.1124/mol.109.061234</ext-link></comment> <object-id pub-id-type="pmid">19880753</object-id>; PubMed Central PMCID: PMC2812070.</mixed-citation></ref>
+<ref id="pone.0191423.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zheng</surname> <given-names>Y</given-names></name>. <article-title>Dbl family guanine nucleotide exchange factors</article-title>. <source>Trends Biochem Sci</source>. <year>2001</year>;<volume>26</volume>(<issue>12</issue>):<fpage>724</fpage>–<lpage>32</lpage>. Epub 2001/12/12. <object-id pub-id-type="pmid">11738596</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Abdul Azeez</surname> <given-names>KR</given-names></name>, <name name-style="western"><surname>Knapp</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Fernandes</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Elkins</surname> <given-names>JM</given-names></name>. <article-title>The crystal structure of the RhoA-AKAP-Lbc DH-PH domain complex</article-title>. <source>Biochem J</source>. <year>2014</year>;<volume>464</volume>(<issue>2</issue>):<fpage>231</fpage>–<lpage>9</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1042/BJ20140606" xlink:type="simple">10.1042/BJ20140606</ext-link></comment> <object-id pub-id-type="pmid">25186459</object-id>; PubMed Central PMCID: PMC4232260.</mixed-citation></ref>
+<ref id="pone.0191423.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Diviani</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Abuin</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Cotecchia</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Pansier</surname> <given-names>L</given-names></name>. <article-title>Anchoring of both PKA and 14-3-3 inhibits the Rho-GEF activity of the AKAP-Lbc signaling complex</article-title>. <source>EMBO J</source>. <year>2004</year>;<volume>23</volume>(<issue>14</issue>):<fpage>2811</fpage>–<lpage>20</lpage>. Epub 2004/07/02. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/sj.emboj.7600287" xlink:type="simple">10.1038/sj.emboj.7600287</ext-link></comment> <object-id pub-id-type="pmid">15229649</object-id>; PubMed Central PMCID: PMC514948.</mixed-citation></ref>
+<ref id="pone.0191423.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Klussmann</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Edemir</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Pepperle</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Henn</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Klauschenz</surname> <given-names>E</given-names></name>, <etal>et al</etal>. <article-title>Ht31: the first protein kinase A anchoring protein to integrate protein kinase A and Rho signaling</article-title>. <source>FEBS Lett</source>. <year>2001</year>;<volume>507</volume>(<issue>3</issue>):<fpage>264</fpage>–<lpage>8</lpage>. Epub 2001/11/07. S0014-5793(01)02995-7 [pii]. <object-id pub-id-type="pmid">11696353</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Faust</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Geelhaar</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Eisermann</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Eichhorst</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Rosenthal</surname> <given-names>W</given-names></name>, <etal>et al</etal>. <article-title>Culturing primary rat inner medullary collecting duct cells</article-title>. <source>Journal of visualized experiments: JoVE</source>. <year>2013</year>;(<issue>76</issue>). <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3791/50366" xlink:type="simple">10.3791/50366</ext-link></comment> <object-id pub-id-type="pmid">23852264</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lisurek</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rupp</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Wichard</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Neuenschwander</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>von Kries</surname> <given-names>JP</given-names></name>, <name name-style="western"><surname>Frank</surname> <given-names>R</given-names></name>, <etal>et al</etal>. <article-title>Design of chemical libraries with potentially bioactive molecules applying a maximum common substructure concept</article-title>. <source>Mol Divers</source>. <year>2010</year>;<volume>14</volume>(<issue>2</issue>):<fpage>401</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11030-009-9187-z" xlink:type="simple">10.1007/s11030-009-9187-z</ext-link></comment> <object-id pub-id-type="pmid">19685275</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Chung</surname> <given-names>TD</given-names></name>, <name name-style="western"><surname>Oldenburg</surname> <given-names>KR</given-names></name>. <article-title>A Simple Statistical Parameter for Use in Evaluation and Validation of High Throughput Screening Assays</article-title>. <source>Journal of biomolecular screening</source>. <year>1999</year>;<volume>4</volume>(<issue>2</issue>):<fpage>67</fpage>–<lpage>73</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/108705719900400206" xlink:type="simple">10.1177/108705719900400206</ext-link></comment> <object-id pub-id-type="pmid">10838414</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Malo</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Hanley</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Cerquozzi</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Pelletier</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Nadon</surname> <given-names>R</given-names></name>. <article-title>Statistical practice in high-throughput screening data analysis</article-title>. <source>Nature biotechnology</source>. <year>2006</year>;<volume>24</volume>(<issue>2</issue>):<fpage>167</fpage>–<lpage>75</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nbt1186" xlink:type="simple">10.1038/nbt1186</ext-link></comment> <object-id pub-id-type="pmid">16465162</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Garazd</surname> <given-names>MM</given-names></name>, <name name-style="western"><surname>Garazd Ia</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ogorodniichuk</surname> <given-names>AS</given-names></name>, <name name-style="western"><surname>Khilia</surname> <given-names>VP</given-names></name>. <article-title>[Synthesis of modified psoralen analogues]</article-title>. <source>Bioorganicheskaia khimiia</source>. <year>2004</year>;<volume>30</volume>(<issue>3</issue>):<fpage>324</fpage>–<lpage>33</lpage>. <object-id pub-id-type="pmid">15344663</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schafer</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Milic</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Eldahshan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Gotz</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Zuhlke</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Schillinger</surname> <given-names>C</given-names></name>, <etal>et al</etal>. <article-title>Highly functionalized terpyridines as competitive inhibitors of AKAP-PKA interactions</article-title>. <source>Angew Chem Int Ed Engl</source>. <year>2013</year>;<volume>52</volume>(<issue>46</issue>):<fpage>12187</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/anie.201304686" xlink:type="simple">10.1002/anie.201304686</ext-link></comment> <object-id pub-id-type="pmid">24115519</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gotz</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Roske</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Schulz</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Autenrieth</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Bertinetti</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Faelber</surname> <given-names>K</given-names></name>, <etal>et al</etal>. <article-title>AKAP18:PKA-RIIalpha structure reveals crucial anchor points for recognition of regulatory subunits of PKA</article-title>. <source>Biochem J</source>. <year>2016</year>;<volume>473</volume>(<issue>13</issue>):<fpage>1881</fpage>–<lpage>94</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1042/BCJ20160242" xlink:type="simple">10.1042/BCJ20160242</ext-link></comment> <object-id pub-id-type="pmid">27102985</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rittinger</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Walker</surname> <given-names>PA</given-names></name>, <name name-style="western"><surname>Eccleston</surname> <given-names>JF</given-names></name>, <name name-style="western"><surname>Smerdon</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Gamblin</surname> <given-names>SJ</given-names></name>. <article-title>Structure at 1.65 A of RhoA and its GTPase-activating protein in complex with a transition-state analogue</article-title>. <source>Nature</source>. <year>1997</year>;<volume>389</volume>(<issue>6652</issue>):<fpage>758</fpage>–<lpage>62</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/39651" xlink:type="simple">10.1038/39651</ext-link></comment> <object-id pub-id-type="pmid">9338791</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lutz</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Mohl</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Rauch</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Weber</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Wieland</surname> <given-names>T</given-names></name>. <article-title>RhoGEF17, a Rho-specific guanine nucleotide exchange factor activated by phosphorylation via cyclic GMP-dependent kinase Ialpha</article-title>. <source>Cell Signal</source>. <year>2013</year>;<volume>25</volume>(<issue>3</issue>):<fpage>630</fpage>–<lpage>8</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.cellsig.2012.11.016" xlink:type="simple">10.1016/j.cellsig.2012.11.016</ext-link></comment> <object-id pub-id-type="pmid">23195829</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Swiercz</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Kuner</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Behrens</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Offermanns</surname> <given-names>S</given-names></name>. <article-title>Plexin-B1 directly interacts with PDZ-RhoGEF/LARG to regulate RhoA and growth cone morphology</article-title>. <source>Neuron</source>. <year>2002</year>;<volume>35</volume>(<issue>1</issue>):<fpage>51</fpage>–<lpage>63</lpage>. <object-id pub-id-type="pmid">12123608</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bogum</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Faust</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Zuhlke</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Eichhorst</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Moutty</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Furkert</surname> <given-names>J</given-names></name>, <etal>et al</etal>. <article-title>Small-molecule screening identifies modulators of aquaporin-2 trafficking</article-title>. <source>J Am Soc Nephrol</source>. <year>2013</year>;<volume>24</volume>(<issue>5</issue>):<fpage>744</fpage>–<lpage>58</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1681/ASN.2012030295" xlink:type="simple">10.1681/ASN.2012030295</ext-link></comment> <object-id pub-id-type="pmid">23559583</object-id>; PubMed Central PMCID: PMC3636789.</mixed-citation></ref>
+<ref id="pone.0191423.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Wiesner</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Furkert</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Hahm</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Oksche</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Schaefer</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>The prostaglandin E2 analogue sulprostone antagonizes vasopressin-induced antidiuresis through activation of Rho</article-title>. <source>J Cell Sci</source>. <year>2003</year>;<volume>116</volume>(<issue>Pt 16</issue>):<fpage>3285</fpage>–<lpage>94</lpage>. Epub 2003/06/28. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1242/jcs.00640" xlink:type="simple">10.1242/jcs.00640</ext-link></comment> [pii]. <object-id pub-id-type="pmid">12829746</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Benard</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Bohl</surname> <given-names>BP</given-names></name>, <name name-style="western"><surname>Bokoch</surname> <given-names>GM</given-names></name>. <article-title>Characterization of rac and cdc42 activation in chemoattractant-stimulated human neutrophils using a novel assay for active GTPases</article-title>. <source>J Biol Chem</source>. <year>1999</year>;<volume>274</volume>(<issue>19</issue>):<fpage>13198</fpage>–<lpage>204</lpage>. <object-id pub-id-type="pmid">10224076</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jerabek-Willemsen</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Wienken</surname> <given-names>CJ</given-names></name>, <name name-style="western"><surname>Braun</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Baaske</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Duhr</surname> <given-names>S</given-names></name>. <article-title>Molecular interaction studies using microscale thermophoresis</article-title>. <source>Assay Drug Dev Technol</source>. <year>2011</year>;<volume>9</volume>(<issue>4</issue>):<fpage>342</fpage>–<lpage>53</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1089/adt.2011.0380" xlink:type="simple">10.1089/adt.2011.0380</ext-link></comment> <object-id pub-id-type="pmid">21812660</object-id>; PubMed Central PMCID: PMCPMC3148787.</mixed-citation></ref>
+<ref id="pone.0191423.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Iolascon</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Aglio</surname> <given-names>V</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>D'Apolito</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Addabbo</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Procino</surname> <given-names>G</given-names></name>, <etal>et al</etal>. <article-title>Characterization of two novel missense mutations in the AQP2 gene causing nephrogenic diabetes insipidus</article-title>. <source>Nephron Physiol</source>. <year>2007</year>;<volume>105</volume>(<issue>3</issue>):<fpage>p33</fpage>–<lpage>41</lpage>. Epub 2006/12/29. 000098136 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1159/000098136" xlink:type="simple">10.1159/000098136</ext-link></comment> <object-id pub-id-type="pmid">17192724</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jaffe</surname> <given-names>AB</given-names></name>, <name name-style="western"><surname>Hall</surname> <given-names>A</given-names></name>. <article-title>Rho GTPases: biochemistry and biology</article-title>. <source>Annu Rev Cell Dev Biol</source>. <year>2005</year>;<volume>21</volume>:<fpage>247</fpage>–<lpage>69</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1146/annurev.cellbio.21.020604.150721" xlink:type="simple">10.1146/annurev.cellbio.21.020604.150721</ext-link></comment> <object-id pub-id-type="pmid">16212495</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sugimoto</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Narumiya</surname> <given-names>S</given-names></name>. <article-title>Prostaglandin E receptors</article-title>. <source>J Biol Chem</source>. <year>2007</year>;<volume>282</volume>(<issue>16</issue>):<fpage>11613</fpage>–<lpage>7</lpage>. Epub 2007/03/03. R600038200 [pii] <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1074/jbc.R600038200" xlink:type="simple">10.1074/jbc.R600038200</ext-link></comment> <object-id pub-id-type="pmid">17329241</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wade</surname> <given-names>JB</given-names></name>. <article-title>Statins affect AQP2 traffic</article-title>. <source>Am J Physiol Renal Physiol</source>. <year>2011</year>;<volume>301</volume>(<issue>2</issue>):<fpage>F308</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajprenal.00248.2011" xlink:type="simple">10.1152/ajprenal.00248.2011</ext-link></comment> <object-id pub-id-type="pmid">21561996</object-id>; PubMed Central PMCID: PMCPMC3154589.</mixed-citation></ref>
+<ref id="pone.0191423.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Li</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Bouley</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Chen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Matsuzaki</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Nunes</surname> <given-names>P</given-names></name>, <etal>et al</etal>. <article-title>Simvastatin enhances aquaporin-2 surface expression and urinary concentration in vasopressin-deficient Brattleboro rats through modulation of Rho GTPase</article-title>. <source>Am J Physiol Renal Physiol</source>. <year>2011</year>;<volume>301</volume>(<issue>2</issue>):<fpage>F309</fpage>–<lpage>18</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1152/ajprenal.00001.2011" xlink:type="simple">10.1152/ajprenal.00001.2011</ext-link></comment> <object-id pub-id-type="pmid">21511701</object-id>; PubMed Central PMCID: PMCPMC3154588.</mixed-citation></ref>
+<ref id="pone.0191423.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Procino</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Portincasa</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Mastrofrancesco</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Castorani</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Bonfrate</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Addabbo</surname> <given-names>F</given-names></name>, <etal>et al</etal>. <article-title>Simvastatin increases AQP2 urinary excretion in hypercholesterolemic patients: A pleiotropic effect of interest for patients with impaired AQP2 trafficking</article-title>. <source>Clin Pharmacol Ther</source>. <year>2016</year>;<volume>99</volume>(<issue>5</issue>):<fpage>528</fpage>–<lpage>37</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/cpt.305" xlink:type="simple">10.1002/cpt.305</ext-link></comment> <object-id pub-id-type="pmid">26575415</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Procino</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Barbieri</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Carmosino</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Tamma</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Milano</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>De Benedictis</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Fluvastatin modulates renal water reabsorption in vivo through increased AQP2 availability at the apical plasma membrane of collecting duct cells</article-title>. <source>Pflugers Arch</source>. <year>2011</year>;<volume>462</volume>(<issue>5</issue>):<fpage>753</fpage>–<lpage>66</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00424-011-1007-5" xlink:type="simple">10.1007/s00424-011-1007-5</ext-link></comment> <object-id pub-id-type="pmid">21858457</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Diviani</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Raimondi</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Del Vescovo</surname> <given-names>CD</given-names></name>, <name name-style="western"><surname>Dreyer</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Reggi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Osman</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Small-Molecule Protein-Protein Interaction Inhibitor of Oncogenic Rho Signaling</article-title>. <source>Cell Chem Biol</source>. <year>2016</year>;<volume>23</volume>(<issue>9</issue>):<fpage>1135</fpage>–<lpage>46</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.chembiol.2016.07.015" xlink:type="simple">10.1016/j.chembiol.2016.07.015</ext-link></comment> <object-id pub-id-type="pmid">27593112</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zheng</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Olson</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Hall</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Cerione</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Toksoz</surname> <given-names>D</given-names></name>. <article-title>Direct involvement of the small GTP-binding protein Rho in lbc oncogene function</article-title>. <source>J Biol Chem</source>. <year>1995</year>;<volume>270</volume>(<issue>16</issue>):<fpage>9031</fpage>–<lpage>4</lpage>. <object-id pub-id-type="pmid">7721814</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Shrimp</surname> <given-names>JH</given-names></name>, <name name-style="western"><surname>Sorum</surname> <given-names>AW</given-names></name>, <name name-style="western"><surname>Garlick</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Guasch</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Nicklaus</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Meier</surname> <given-names>JL</given-names></name>. <article-title>Characterizing the Covalent Targets of a Small Molecule Inhibitor of the Lysine Acetyltransferase P300</article-title>. <source>ACS Med Chem Lett</source>. <year>2016</year>;<volume>7</volume>(<issue>2</issue>):<fpage>151</fpage>–<lpage>5</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/acsmedchemlett.5b00385" xlink:type="simple">10.1021/acsmedchemlett.5b00385</ext-link></comment> <object-id pub-id-type="pmid">26985290</object-id>; PubMed Central PMCID: PMCPMC4753543.</mixed-citation></ref>
+<ref id="pone.0191423.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Khan</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Munir</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Aiman</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Wadood</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Khan</surname> <given-names>AU</given-names></name>. <article-title>The in silico identification of small molecules for protein-protein interaction inhibition in AKAP-Lbc-RhoA signaling complex</article-title>. <source>Comput Biol Chem</source>. <year>2017</year>;<volume>67</volume>:<fpage>84</fpage>–<lpage>91</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.compbiolchem.2016.12.014" xlink:type="simple">10.1016/j.compbiolchem.2016.12.014</ext-link></comment> <object-id pub-id-type="pmid">28063348</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref059"><label>59</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Diviani</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Reggi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Arambasic</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Caso</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Maric</surname> <given-names>D</given-names></name>. <article-title>Emerging roles of A-kinase anchoring proteins in cardiovascular pathophysiology</article-title>. <source>Biochim Biophys Acta</source>. <year>2016</year>;<volume>1863</volume>(<issue>7</issue> Pt B):<fpage>1926</fpage>–<lpage>36</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.bbamcr.2015.11.024" xlink:type="simple">10.1016/j.bbamcr.2015.11.024</ext-link></comment> <object-id pub-id-type="pmid">26643253</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref060"><label>60</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reggi</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Diviani</surname> <given-names>D</given-names></name>. <article-title>The role of A-kinase anchoring proteins in cancer development</article-title>. <source>Cell Signal</source>. <year>2017</year>;<volume>40</volume>:<fpage>143</fpage>–<lpage>55</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.cellsig.2017.09.011" xlink:type="simple">10.1016/j.cellsig.2017.09.011</ext-link></comment> <object-id pub-id-type="pmid">28927666</object-id>.</mixed-citation></ref>
+<ref id="pone.0191423.ref061"><label>61</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Defert</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>Boland</surname> <given-names>S</given-names></name>. <article-title>Rho kinase inhibitors: a patent review (2014–2016)</article-title>. <source>Expert Opin Ther Pat</source>. <year>2017</year>;<volume>27</volume>(<issue>4</issue>):<fpage>507</fpage>–<lpage>15</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/13543776.2017.1272579" xlink:type="simple">10.1080/13543776.2017.1272579</ext-link></comment> <object-id pub-id-type="pmid">28048944</object-id>.</mixed-citation></ref>
+</ref-list>
+</back>
+</article>

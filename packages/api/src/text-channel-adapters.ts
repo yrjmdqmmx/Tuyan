@@ -1,6 +1,7 @@
 import { auditedChannelContract, assertChannelRequest } from './audited-channel-contracts.js'
+import { callReplicateTextChannel } from './replicate-text-channel.js'
 import type { ImageChannelTransport, ImageChannelCheckpoint } from './image-channel-adapters.js'
-export type NewTextInput = {provider:'xiaomi'|'tokenhub'|'runware'|'sensenova'|'stepfun'|'qianfan'|'iflytek'|'longcat' | 'antling'; model:string; apiKey:string; system:string; user:string; images:{url:string}[]; signal?:AbortSignal}
+export type NewTextInput = {provider:'xiaomi'|'tokenhub'|'runware'|'sensenova'|'stepfun'|'qianfan'|'iflytek'|'longcat' | 'antling' | 'replicate'; model:string; apiKey:string; system:string; user:string; images:{url:string}[]; signal?:AbortSignal}
 function textPublicPrice(provider:string,model:string) { return auditedChannelContract(provider,model)?.price || {source:'',checkedAt:'2026-09-22',amount:null,status:'待确认'} }
 export function buildAuditedTextBody(input:NewTextInput,taskId?:string) {
   const {provider,model,system,user,images}=input
@@ -46,6 +47,7 @@ async function auditedTextResponse(response:Response, contract:any, io:Pick<Imag
 /** Explicit audited fields; neither an ID in a catalog nor generic compatibility
  * enables arbitrary models. No inference POST is retried. */
 export async function callNewTextChannel(input:NewTextInput, io:Pick<ImageChannelTransport,'request'|'json'|'sleep'|'now'|'pending'|'checkpoint'|'record'|'pollIntervalMs'|'pollTimeoutMs'>):Promise<string> {
+  if(input.provider==='replicate')return callReplicateTextChannel({...input,provider:'replicate'},io)
   const {provider,model,apiKey,system,user,images}=input
   const signal=input.signal ? AbortSignal.any([input.signal,AbortSignal.timeout(600000)]) : AbortSignal.timeout(600000)
   const contract=auditedChannelContract(provider,model)

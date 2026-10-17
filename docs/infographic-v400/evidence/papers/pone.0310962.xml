@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS ONE</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosone</journal-id>
+<journal-title-group>
+<journal-title>PLOS ONE</journal-title>
+</journal-title-group>
+<issn pub-type="epub">1932-6203</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pone.0310962</article-id>
+<article-id pub-id-type="publisher-id">PONE-D-24-17026</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Protein domains</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Macromolecular structure analysis</subject><subj-group><subject>Protein structure</subject><subj-group><subject>Protein structure prediction</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Protein structure</subject><subj-group><subject>Protein structure prediction</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Animal studies</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Model organisms</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Bacteria</subject><subj-group><subject>Enterobacteriaceae</subject><subj-group><subject>Escherichia</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Bacteria</subject><subj-group><subject>Gut bacteria</subject><subj-group><subject>Escherichia</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Animal studies</subject><subj-group><subject>Experimental organism systems</subject><subj-group><subject>Prokaryotic models</subject><subj-group><subject>Escherichia coli</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Bacteria</subject><subj-group><subject>Staphylococcus</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Staphylococcus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Staphylococcus</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Macromolecular structure analysis</subject><subj-group><subject>Protein structure</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Biochemistry</subject><subj-group><subject>Proteins</subject><subj-group><subject>Protein structure</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Viruses</subject><subj-group><subject>Bacteriophages</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Molecular biology</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Mutagenesis and gene deletion techniques</subject><subj-group><subject>Deletion mutagenesis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Molecular biology techniques</subject><subj-group><subject>Mutagenesis and gene deletion techniques</subject><subj-group><subject>Deletion mutagenesis</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Organisms</subject><subj-group><subject>Bacteria</subject><subj-group><subject>Staphylococcus</subject><subj-group><subject>Staphylococcus epidermidis</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Microbiology</subject><subj-group><subject>Medical microbiology</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Staphylococcus</subject><subj-group><subject>Staphylococcus epidermidis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Medicine and health sciences</subject><subj-group><subject>Pathology and laboratory medicine</subject><subj-group><subject>Pathogens</subject><subj-group><subject>Microbial pathogens</subject><subj-group><subject>Bacterial pathogens</subject><subj-group><subject>Staphylococcus</subject><subj-group><subject>Staphylococcus epidermidis</subject></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>Examination of yield, bacteriolytic activity and cold storage of linker deletion mutants based on endolysin S6_ORF93 derived from <italic>Staphylococcus</italic> giant bacteriophage S6</article-title>
+<alt-title alt-title-type="running-head">Examination of characteristics of linker deletion endolysin</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Munetomo</surname>
+<given-names>Sosuke</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-original-draft/">Writing – original draft</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-0846-0100</contrib-id>
+<name name-style="western">
+<surname>Uchiyama</surname>
+<given-names>Jumpei</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+<xref ref-type="corresp" rid="cor001">*</xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Takemura-Uchiyama</surname>
+<given-names>Iyo</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Wanganuttara</surname>
+<given-names>Thamonwan</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Yamamoto</surname>
+<given-names>Yumiko</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Tsukui</surname>
+<given-names>Toshihiro</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff003"><sup>3</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Hagiya</surname>
+<given-names>Hideharu</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff004"><sup>4</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kanamaru</surname>
+<given-names>Shuji</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff005"><sup>5</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Kanda</surname>
+<given-names>Hideyuki</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"><sup>1</sup></xref>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<name name-style="western">
+<surname>Matsushita</surname>
+<given-names>Osamu</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff002"><sup>2</sup></xref>
+</contrib>
+</contrib-group>
+<aff id="aff001"><label>1</label> <addr-line>Department of Public Health, Graduate School of Medicine Dentistry and Pharmaceutical Sciences, Okayama University, Kita-ku, Okayama, Japan</addr-line></aff>
+<aff id="aff002"><label>2</label> <addr-line>Department of Bacteriology, Graduate School of Medicine Dentistry and Pharmaceutical Sciences, Okayama University, Kita-ku, Okayama, Japan</addr-line></aff>
+<aff id="aff003"><label>3</label> <addr-line>Nippon Zenyaku Kogyo Co. Ltd., Koriyama, Fukushima, Japan</addr-line></aff>
+<aff id="aff004"><label>4</label> <addr-line>Department of Infectious Diseases, Okayama University Hospital, Kita-ku, Okayama, Japan</addr-line></aff>
+<aff id="aff005"><label>5</label> <addr-line>School of Life Science and Technology, Tokyo Institute of Technology, Yokohama Kanagawa, Japan</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Zeth</surname>
+<given-names>Kornelius</given-names>
+</name>
+<role>Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Roskilde Universitet, DENMARK</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>The authors declare that no competing interests exist.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">uchiyama@okayama-u.ac.jp</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>23</day>
+<month>10</month>
+<year>2024</year>
+</pub-date>
+<pub-date pub-type="collection">
+<year>2024</year>
+</pub-date>
+<volume>19</volume>
+<issue>10</issue>
+<elocation-id>e0310962</elocation-id>
+<history>
+<date date-type="received">
+<day>28</day>
+<month>4</month>
+<year>2024</year>
+</date>
+<date date-type="accepted">
+<day>10</day>
+<month>9</month>
+<year>2024</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Munetomo et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pone.0310962"/>
+<abstract>
+<p>Methicillin-resistant <italic>Staphylococcus</italic> spp. present challenges in clinical and veterinary settings because effective antimicrobial agents are limited. Phage-encoded peptidoglycan-degrading enzyme, endolysin, is expected to be a novel antimicrobial agent. The enzymatic activity has recently been shown to be influenced by the linker between functional domains in the enzyme. S6_ORF93 (ORF93) is one of the endolysins derived from previously isolated <italic>Staphylococcus</italic> giant phage S6. The ORF93 was speculated to have a catalytic and peptidoglycan-binding domain with a long linker. In this study, we examined the influence of linker shortening on the characteristics of ORF93. We produce wild-type ORF93 and the linker deletion mutants using an <italic>Escherichia coli</italic> expression system. These mutants were designated as ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20, from which 5, 10, 15, and 20 amino acids were removed from the linker, respectively. Except for the ORF93-Δ20, ORF93 and its mutants were expressed as soluble proteins. Moreover, ORF93-Δ15 showed the highest yield and bacteriolytic activity, while the antimicrobial spectrum was homologous. The cold storage experiment showed a slight effect by the linker deletion. According to our results and other studies, linker investigations are crucial in endolysin development.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/100016986</institution-id>
+<institution>Nippon Zenyaku Kogyo</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0003-0846-0100</contrib-id>
+<name name-style="western">
+<surname>Uchiyama</surname>
+<given-names>Jumpei</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This work was funded by a joint research fund from Nippon Zenyaku Kogyo Co. Ltd. (<ext-link ext-link-type="uri" xlink:href="https://www.zenoaq.com/" xlink:type="simple">https://www.zenoaq.com/</ext-link>). J.U. has received this funding. There is no specific grant number. The funders had no role in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="4"/>
+<table-count count="1"/>
+<page-count count="16"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>The orf93 gene designed in this study was deposited to the GenBank (accession no. LC797950).</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p><italic>Staphylococcus</italic> spp. are a genus of Gram-positive cocci that can be found on skin and mucosa of humans and animals [<xref ref-type="bibr" rid="pone.0310962.ref001">1</xref>,<xref ref-type="bibr" rid="pone.0310962.ref002">2</xref>]. <italic>S</italic>. <italic>aureus</italic> and <italic>S</italic>. <italic>epidermidis</italic> can cause a variety of infections, including skin infections like cellulitis, as well as opportunistic infections such as pneumonia, meningitis, endocarditis, and bacteremia in humans [<xref ref-type="bibr" rid="pone.0310962.ref002">2</xref>,<xref ref-type="bibr" rid="pone.0310962.ref003">3</xref>]. <italic>S</italic>. <italic>pseudintermedius</italic> and <italic>S</italic>. <italic>schleiferi</italic> cause pyoderma, otitis, postoperative and urinary tract infections in dogs and cats [<xref ref-type="bibr" rid="pone.0310962.ref004">4</xref>,<xref ref-type="bibr" rid="pone.0310962.ref005">5</xref>]. Methicillin-resistant <italic>S</italic>. <italic>aureus</italic> (MRSA) and <italic>S</italic>. <italic>pseudintermedius</italic> (MRSP), in particular, are a significant problem because of the limited effectiveness of current antimicrobial agents [<xref ref-type="bibr" rid="pone.0310962.ref005">5</xref>,<xref ref-type="bibr" rid="pone.0310962.ref006">6</xref>]. Additionally, <italic>S</italic>. <italic>aureus</italic> less susceptible and unsusceptible to vancomycin, such as vancomycin-intermediate <italic>S</italic>. <italic>aureus</italic> and vancomycin-resistant <italic>S</italic>. <italic>aureus</italic>, respectively, have already emerged and become threats in the clinical setting [<xref ref-type="bibr" rid="pone.0310962.ref007">7</xref>]. Thus, there is an urgent need to develop new antimicrobial agents with novel mechanisms of action in clinical and veterinary settings.</p>
+<p>Endolysin is a peptidoglycan-degrading enzyme produced by bacteriophage (phage) [<xref ref-type="bibr" rid="pone.0310962.ref008">8</xref>]. Endolysin, together with holin, which is encoded on the phage genome, leads to bacterial cell lysis at the last stage of phage infection [<xref ref-type="bibr" rid="pone.0310962.ref009">9</xref>]. Endolysins pass through the pores formed by holins and break down the peptidoglycan [<xref ref-type="bibr" rid="pone.0310962.ref009">9</xref>]. When treating the Gram-positive bacteria, such as <italic>S</italic>. <italic>aureus</italic>, with endolysins from the outside, the bacteria are lysed by degrading peptidoglycan because those have peptidoglycan on the outside of their cell walls. Endolysin is now expected to be implemented as an alternative, new, antimicrobial modality, because of its following properties: 1) it exhibits rapid bacteriolytic efficacy [<xref ref-type="bibr" rid="pone.0310962.ref010">10</xref>]; 2) it kills specific bacterial genus/species and does not disturb normal microflora [<xref ref-type="bibr" rid="pone.0310962.ref010">10</xref>]; 3) as the peptidoglycan is essential for bacterial survival, the risk of emergence of endolysin-resistant bacteria is not likely to occur [<xref ref-type="bibr" rid="pone.0310962.ref011">11</xref>]; 4) as the mechanism of action is different from that of conventional antimicrobial agents, it can kill the drug-resistant bacteria [<xref ref-type="bibr" rid="pone.0310962.ref012">12</xref>]; and 5) because protein drugs such as cytokines and lysozyme are already on the market, the conventional drug manufacturing platform can be used to produce the pharmaceutical endolysin [<xref ref-type="bibr" rid="pone.0310962.ref013">13</xref>]. However, natural endolysins often have low yield, antimicrobial activity, and storability, and these characteristics need to be improved to develop them as antimicrobial agents [<xref ref-type="bibr" rid="pone.0310962.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0310962.ref017">17</xref>].</p>
+<p>Most of the proteins, including endolysin, have several functional domains, which are characterized as structural units with function. In the protein with multiple domains, the domains are connected by short peptides called linkers. Endolysins against Gram-positive bacteria generally have one or two peptidoglycan catalytic domains at the N-terminus and one peptidoglycan-binding domain at the C-terminus, where all domains are connected by linkers [<xref ref-type="bibr" rid="pone.0310962.ref018">18</xref>]. In recent years, it is considered that the linker is important for protein characteristics because it can control the cooperation of neighboring domains [<xref ref-type="bibr" rid="pone.0310962.ref019">19</xref>–<xref ref-type="bibr" rid="pone.0310962.ref024">24</xref>]. For example, the expression of protein without a linker was not successful in <italic>Escherichia coli</italic> [<xref ref-type="bibr" rid="pone.0310962.ref020">20</xref>]. Changing the codons of the linker improved the expression of fusion protein [<xref ref-type="bibr" rid="pone.0310962.ref021">21</xref>]. The linker length is shown to be an important factor for protein characteristics such as stability [<xref ref-type="bibr" rid="pone.0310962.ref022">22</xref>] activity [<xref ref-type="bibr" rid="pone.0310962.ref023">23</xref>] and catalytic efficiency [<xref ref-type="bibr" rid="pone.0310962.ref024">24</xref>]. However, the influence of linker length on the endolysin characteristics has not been examined well, to our knowledge.</p>
+<p>Although a single endolysin is typically found in a phage, the giant phages infecting <italic>Staphylococcus</italic> spp. atypically have two endolysins that are aligned tandemly [<xref ref-type="bibr" rid="pone.0310962.ref025">25</xref>,<xref ref-type="bibr" rid="pone.0310962.ref026">26</xref>]. Giant phage S6 can infect a wide range of <italic>Staphylococcus</italic> spp., and S6_ORF93 (ORF93) and S6_ORF94 are predicted as endolysins [<xref ref-type="bibr" rid="pone.0310962.ref027">27</xref>,<xref ref-type="bibr" rid="pone.0310962.ref028">28</xref>]. In this study, we aimed to examine the influences of ORF93 by controlling linker length to the characteristics, such as yield, bacteriolytic activity, and storability, using the <italic>E</italic>. <italic>coli</italic> protein expression system.</p>
+</sec>
+<sec id="sec002" sec-type="results">
+<title>Results</title>
+<sec id="sec003">
+<title>Description of ORF93 and its mutants</title>
+<p>According to the protein domain analysis by InterPro, ORF93 was predicted to have two domains [<xref ref-type="bibr" rid="pone.0310962.ref029">29</xref>]: the cysteine, histidine-dependent amidohydrolase/peptidase (CHAP) domain was located from the 4<sup>th</sup> to the 136<sup>th</sup> amino acid from the N-terminal end; and the Src homology-3 (SH3) domain was located from the 163<sup>rd</sup> to the 265<sup>th</sup> amino acid (<xref ref-type="fig" rid="pone.0310962.g001">Fig 1A</xref>). The CHAP domain hydrolyzes the peptide bond within the peptidoglycan, between the terminal glycine of the pentaglycine cross-bridge and D-alanine, and the SH3 domain binds to the peptidoglycan [<xref ref-type="bibr" rid="pone.0310962.ref030">30</xref>]. According to these predictions, we assumed that the linker that connects the two domains was located from the 137<sup>th</sup> to the 162<sup>nd</sup> amino acid. The predicted linker consists of 26 amino acids, containing the basic amino acid of lysine at 35% and the neutral amino acids at 65% (<xref ref-type="supplementary-material" rid="pone.0310962.s001">S1 Fig</xref>).</p>
+<fig id="pone.0310962.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0310962.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>Description of ORF93 and its mutants.</title>
+<p>The domains and linker are colored as follows: CHAP domain in green, linker in red, and SH3 domain in yellow. (A) Schematic diagram of ORF93 based on the primary structure. Each number represents the amino acid position from the N-terminus at both ends of the domain, counted from the N-terminus. (B) Predicted protein structure of ORF93. (C) Schematic diagram of ORF93 mutants based on the primary structure. The linker deletions are shown as shadowed areas. The numbers around shadowed areas represent the amino acid position from the N-terminus at both ends of the deletion area. ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20 are the ORF93 mutants which 5, 10, 15, and 20 amino acids were deleted in the upstream direction from the 157<sup>th</sup> amino acid from the N-terminus. The predicted linker lengths are 21, 16, 11, and 6 amino acids, respectively. (D) Predicted protein structures of ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15. These protein structures were overlapped based on the CHAP domain. (E) Predicted protein structure of ORF93-Δ20.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.g001" xlink:type="simple"/>
+</fig>
+<p>Moreover, the structure prediction by AlphaFold2 distinctly showed the two domains and a long linker (<xref ref-type="fig" rid="pone.0310962.g001">Fig 1B</xref>) [<xref ref-type="bibr" rid="pone.0310962.ref031">31</xref>]. In the result of the predicted local distance difference test (pLDDT) in the structural prediction, the pLDDT scores, which are the confidence value for structural prediction in AlphaFold2, were overall low at the predicted linker region from the 137<sup>th</sup> to the 162<sup>nd</sup> amino acid based on the protein domain analysis. This suggested that the predicted linker region is likely to be flexible (<xref ref-type="supplementary-material" rid="pone.0310962.s002">S2 Fig</xref>) [<xref ref-type="bibr" rid="pone.0310962.ref032">32</xref>]. In addition, the predicted aligned error (PAE) plot, which provides the estimates of the positional error of the amino acids in a predicted structure, showed that the linker region assumed by the protein domain analysis had greater position errors than the other region (<xref ref-type="supplementary-material" rid="pone.0310962.s003">S3 Fig</xref>). Thus, the ORF93 region from the 137<sup>th</sup> to the 162<sup>nd</sup> amino acid (26 amino acids) was assumed to be a linker.</p>
+<p>Based on the results of domain prediction from the protein sequence, four linker deletion mutants of ORF93 were designed (<xref ref-type="fig" rid="pone.0310962.g001">Fig 1C</xref>). We shortened the linker of ORF93 by 5, 10, 15, and 20 amino acids in the upstream direction from the 157<sup>th</sup> amino acid from the N-terminus. These four ORF93 mutants were designated as ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20, respectively. The protein sequences of the ORF93 mutants are shown in <xref ref-type="supplementary-material" rid="pone.0310962.s001">S1 Fig</xref>. Observing the predicted protein structures of the linker deletion mutants, the superpositions of the predicted structures of ORF93-Δ05, ORF93-Δ10, and ORF93-Δ15 matched each other except for linkers (<xref ref-type="fig" rid="pone.0310962.g001">Fig 1D</xref>). The orientation of two domains of ORF93-Δ20 structure was different from those of ORF93 and the other linker deletion mutants (<xref ref-type="fig" rid="pone.0310962.g001">Fig 1E</xref>), which corresponds that the deleted region reached the region with higher pLDDT scores than the main linker region with low pLDDT scores (<xref ref-type="supplementary-material" rid="pone.0310962.s002">S2 Fig</xref>).</p>
+</sec>
+<sec id="sec004">
+<title>Production of ORF93 and its mutants</title>
+<p>The ORF93 and deletion mutants tagged with 6×His N-terminally were overexpressed in <italic>E</italic>. <italic>coli</italic> and purified with Co<sup>2+</sup> affinity chromatography. Three out of four mutants, ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15, were expressed in soluble fractions in <italic>E</italic>. <italic>coli</italic>, while ORF93-Δ20 became insoluble in <italic>E</italic>. <italic>coli</italic>. The obtained proteins were subjected to the sodium dodecyl sulfate-polyacrylamide gel electrophoresis (SDS-PAGE) analysis. The molecular masses of ORF93, ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15 were estimated to be 28.6 kDa, 27.9 kDa, 27.4 kDa, and 26.9 kDa, respectively (<xref ref-type="fig" rid="pone.0310962.g002">Fig 2A</xref>); the theoretical molecular masses were 31.3 kDa, 30.7 kDa, 30.2 kDa, and 29.7 kDa, respectively. Moreover, the purities of obtained proteins were examined using the SDS-PAGE images. The faint minor bands disappeared, as the linker was shortened. The proportions of endolysin contained in the protein solutions were calculated to be 80.2 ± 0.3% at ORF93, 81.1 ± 0.5% at ORF93-Δ05, and 81.5 ± 0.2% at ORF93-Δ10, and 89.8 ± 0.6% at ORF93-Δ15 (mean ± standard deviation (SD); n = 3). Based on these results, ORF93 and the three mutants could be used in further experiments in this study.</p>
+<fig id="pone.0310962.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0310962.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title>Production of ORF93 and its mutants.</title>
+<p>(A) SDS-PAGE image. We used the protein marker (XL-Ladder Broad protein molecular weight, APRO Life Science Institute) as a standard, of which thin bands at 20, 40, 50, 60, and 100 kDa and thick bands at 30 and 80 kDa contain 0.15 μg and 0.6 μg proteins, respectively. After elution from the affinity chromatography and filtration, 10 μL of elutes were electrophoresed. (B) Yields of ORF93 and its mutants. We evaluated a yield as a relative rate, of which the ORF93 is set as 100%. Error bars indicate SD (n = 4). The yield of ORF93 was statistically compared with those of linker deletion mutants. A double asterisk shows statistical significance (**, <italic>P</italic> &lt; 0.01).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.g002" xlink:type="simple"/>
+</fig>
+<p>Next, we compared the yields of three mutants with that of ORF93. We quadruplicated the experiment in which four protein productions from bacterial culture to protein purification were simultaneously carried out under the same conditions. For the comparison, the yield of wild-type ORF93 was set as 100%, and the relative yields of the other three proteins were calculated. Comparing the yield of ORF93-Δ15 with those of the other three proteins, ORF93-Δ15 had ca. 2.3, 2.0, and 1.7 times higher yields than ORF93, ORF93-Δ05, and ORF93-Δ10, respectively (<italic>P</italic> &lt; 0.05; <xref ref-type="fig" rid="pone.0310962.g002">Fig 2B</xref>). Moreover, we separately triplicated the experiments to calculate the yield in one liter bacterial culture in this culture setting for ORF93 and ORF93-Δ15. ORF93 and ORF93-Δ15 were produced at 1.2 ± 0.2 and 2.6 ± 0.3 mg/L (n = 3), respectively. Considering these results, the optimal linker length of ORF93 was considered to not only improve the purity but also enhance the yield in <italic>E</italic>. <italic>coli</italic> overexpression system.</p>
+</sec>
+<sec id="sec005">
+<title>Antimicrobial spectrum and bacteriolytic activity</title>
+<p>The antimicrobial spectra of ORF93 and three deletion mutants were examined by a double-layered agar plate assay. In the assay, the endolysin solutions (3 μL of 0.1 mg/mL) were applied on the surface of double-layered culture media containing bacteria, and the transparency of the spot formed on the agar plate was examined after incubation. In this assay, we tested 11 bacteria, including nine strains of <italic>Staphylococcus</italic> spp., one strain of <italic>Bacillus subtilis</italic>, and one strain of <italic>E</italic>. <italic>coli</italic>. We also semiquantitatively estimated the strength of antimicrobial activity by observing the degree of transparency of the spot formed on the agar plate at a 4-level scale (i.e., strong, moderate, weak, and no activity; <xref ref-type="supplementary-material" rid="pone.0310962.s004">S4 Fig</xref>). First, observing the sensitivity to ORF93 and the three mutants to the tested bacteria, all the tested proteins showed the transparency of spots against all nine strains of <italic>Staphylococcus</italic> spp.; these proteins did not form a transparency of spot on <italic>B</italic>. <italic>subtilis</italic> and <italic>E</italic>. <italic>coli</italic> strains (<xref ref-type="table" rid="pone.0310962.t001">Table 1</xref>). Thus, the antimicrobial spectra of ORF93 and the three mutants were not different from each other. Of note, ORF93-Δ10 and ORF93-Δ15 showed stronger transparency of spots than ORF93 and ORF93-Δ05, suggesting that they have high antimicrobial activity.</p>
+<table-wrap id="pone.0310962.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0310962.t001</object-id>
+<label>Table 1</label> <caption><title>Examination of transparency of spot formed by ORF93 and its mutants against various bacteria using a double-layered agar plate assay.</title></caption>
+<alternatives>
+<graphic id="pone.0310962.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="center" colspan="2">Tested bacteria</th>
+<th align="center" rowspan="2">ORF93</th>
+<th align="center" rowspan="2">ORF93-Δ05</th>
+<th align="center" rowspan="2">ORF93-Δ10</th>
+<th align="center" rowspan="2">ORF93-Δ15</th>
+</tr>
+<tr>
+<th align="center">Species</th>
+<th align="center">Strains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">S. aureus</td>
+<td align="left">SA27</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. schleiferi</td>
+<td align="left">D91</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. felis</td>
+<td align="left">C3</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. sciuri</td>
+<td align="left">D108</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. arlettae</td>
+<td align="left">D119</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. pettenkoferi</td>
+<td align="left">C58</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">++</td>
+</tr>
+<tr>
+<td align="left">S. kloosii</td>
+<td align="left">D187</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">+</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="left">S. pseudintermedius</td>
+<td align="left">D19</td>
+<td align="center">±</td>
+<td align="center">±</td>
+<td align="center">+</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="left">S. epidermidis</td>
+<td align="left">GTC289</td>
+<td align="center">±</td>
+<td align="center">±</td>
+<td align="center">±</td>
+<td align="center">+</td>
+</tr>
+<tr>
+<td align="left">B. subtilis</td>
+<td align="left">168</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="left">E. coli</td>
+<td align="left">JM109</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+<td align="center">-</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t001fn001"><p>The degree of transparency of the spot was examined at a 4-level scale. The levels of transparency on the spot are ranked at “strong,” “moderate,” and “weak” as “++”, “+”, and “±“, respectively; no transparency of spot is shown as “-”.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<p>Next, we measured the time-course bacterial turbidity change, and calculated and compared the bacteriolytic activities. In this study, the bacteriolytic activity was put as the reduction in turbidity per unit time and dose (ΔOD<sub>595</sub>/min/mg; <xref ref-type="supplementary-material" rid="pone.0310962.s005">S5 Fig</xref>). Four bacteria, including <italic>S</italic>. <italic>aureus</italic>, <italic>S</italic>. <italic>epidermidis</italic>, <italic>S</italic>. <italic>pseudintermedius</italic>, and <italic>S</italic>. <italic>schleiferi</italic>, were tested. As a result, similar to the result in the double-layered agar plate assay described above, bacteriolytic activities tended to increase as the linker was shortened (<xref ref-type="fig" rid="pone.0310962.g003">Fig 3</xref>). The ORF93-Δ15 had significantly higher bacteriolytic activities than other endolysins against the tested four <italic>Staphylococcus</italic> spp. Compared with ORF93, ORF93-Δ15 had ca 1.9, 2.1, 2.9, and 1.9 times higher bacteriolytic activities against <italic>S</italic>. <italic>aureus</italic>, <italic>S</italic>. <italic>epidermidis</italic>, <italic>S</italic>. <italic>pseudintermedius</italic>, and <italic>S</italic>. <italic>schleiferi</italic>, respectively (<italic>P</italic> &lt; 0.0001). Thus, although the linker adjustment of ORF93 did not confer the antimicrobial spectrum, it was likely to improve the bacteriolytic activity against <italic>Staphylococcus</italic> spp.</p>
+<fig id="pone.0310962.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0310962.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title>Bacteriolytic activities of ORF93 and its mutants against <italic>Staphylococcus</italic> spp.</title>
+<p>Error bars indicate SD (n = 12). We compared the bacteriolytic activities of ORF93 with those of linker deletion mutants. Statistical significance is shown on the graph as asterisks (****, <italic>P</italic> &lt; 0.0001; **, <italic>P</italic> &lt; 0.01; *, <italic>P</italic> &lt; 0.05).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.g003" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec006">
+<title>Long-term stability in solution at cold temperature</title>
+<p>Storing ORF93 and three mutants at 4°C, the protein quantities over time were measured for 56 days. In this study, we measured the protein quantity of protein solution, after centrifugation to remove the insoluble proteins, and how the relative rate of protein quantity, which at the first day was set as 100%, was calculated. The protein quantities of the tested endolysins overall decreased by ca. 45–65% on 56 days (<xref ref-type="fig" rid="pone.0310962.g004">Fig 4A</xref>), because proteins in the storage tended to turn to insoluble forms. On day 14, the average relative protein quantities of ORF93, ORF93-Δ05, ORF93-Δ10, and ORF93-Δ15 were ca. 76%, 69%, 74%, and 85%, respectively; on day 56, those were ca. 55%, 48%, 35%, and 52%, respectively. We then compared these protein quantities on days 14 and 56 (<xref ref-type="fig" rid="pone.0310962.g004">Fig 4B</xref>). On day 14, the protein quantities did not differ among ORF93 and three mutants; on day 56, the protein quantity of ORF93-Δ10 was significantly lower than that of ORF93 (<italic>P</italic> &lt; 0.01), while those of the other two mutants were not. In addition, by analyzing the proteins on day 56 by SDS-PAGE, we confirmed the endolysin band; the thickness of minor bands slightly decreased as the linker length was shortened (<xref ref-type="fig" rid="pone.0310962.g004">Fig 4C</xref>). Thus, the linker is also important in ORF93 stability.</p>
+<fig id="pone.0310962.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pone.0310962.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Cold storage of ORF93 and its mutants.</title>
+<p>Error bars indicate SD (n = 3). (A) Protein quantity changes over time. The protein quantity is presented as a relative rate, which at the first day was set to be 100%. (B) The protein quantity of the endolysin solution on day 14 and day 56. We compared protein quantity of ORF93 with those of linker deletion mutants on days 14 and 56. Statistical significance is shown on the graph with a double asterisk (**, <italic>P</italic> &lt; 0.01). (C) SDS-PAGE image. We analyzed 10 μL of endolysin solutions by SDS-PAGE together with a protein marker (5 μL of XL-Ladder Broad protein molecular weight, APRO Life Science Institute) on day 56.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.g004" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+<sec id="sec007" sec-type="conclusions">
+<title>Discussion</title>
+<p>Efforts to develop endolysin as an antimicrobial agent in the pharmaceutical industry are already under way, and clinical trials are in progress [<xref ref-type="bibr" rid="pone.0310962.ref033">33</xref>,<xref ref-type="bibr" rid="pone.0310962.ref034">34</xref>]. In the endolysin development, natural endolysin against <italic>S</italic>. <italic>aureus</italic> is fused and/or replaced with a protein domain from other bacteriolytic enzyme, and improves the antimicrobial activity and their yields [<xref ref-type="bibr" rid="pone.0310962.ref014">14</xref>–<xref ref-type="bibr" rid="pone.0310962.ref016">16</xref>,<xref ref-type="bibr" rid="pone.0310962.ref035">35</xref>]. To generate endolysins with improved activity and yield is difficult so that they have to be screened using a high-throughput system [<xref ref-type="bibr" rid="pone.0310962.ref036">36</xref>]. To extend the endolysin development, it is necessary to search for simpler and more effective modifications.</p>
+<p>ORF93 is a novel endolysin derived from <italic>Staphylococcus</italic> giant phage S6, and is expected to be a potential antimicrobial agent against various pathogenic staphylococci. ORF93 is a two-domain endolysin, in which CHAP and SH3 domains are connected with a long atypical linker, considering that multidomain proteins have an average linker length of 10 amino acids [<xref ref-type="bibr" rid="pone.0310962.ref037">37</xref>]. In addition, the ORF93 linker is atypically lysine-rich. In this study, we designed and produced the mutant endolysins by deleting the linker length of ORF93. Although the mutants such as ORF93-Δ05, ORF93-Δ10, and ORF93-Δ15 were produced, the mutant ORF93-Δ20 was not, which has the shortest linker of the endolysin tested in this study. One possible reason for the unsuccessful production of ORF93-Δ20 is that excessive deletion of the linker region led to the deletion of a rigid region close to the domain and resulted in inappropriate folding. The space provided by the linker is also important for folding during the protein translation process [<xref ref-type="bibr" rid="pone.0310962.ref038">38</xref>,<xref ref-type="bibr" rid="pone.0310962.ref039">39</xref>]. The protein with an extensively short linker may fail protein folding, because the domains come into contact with each other due to linker length during folding. Thus, the linker length to some extent is required to be optimally adjusted in the endolysin mutant production. We evaluated the influence of linker length adjustment on endolysin characteristics, such as yield, bacteriolytic activity, and storability using ORF93 and its three mutants.</p>
+<p>The yield can be important to be considered in the endolysin development, because large production capability in <italic>E</italic>. <italic>coli</italic> can lead to the cost performance improvement in manufacturing. In this study, the relative yields tended to increase as the linker was shortened, and the ORF93-Δ15 exhibited the highest yield and purity. As <italic>E</italic>. <italic>coli</italic> has several proteases, the recombinant proteins may be proteolyzed by these enzymes [<xref ref-type="bibr" rid="pone.0310962.ref040">40</xref>]. The proteases recognize and cleave specific protein sequences presented on the protein surface. The shorter the linker sequence, the less frequent the recombinant protein is proteolyzed [<xref ref-type="bibr" rid="pone.0310962.ref041">41</xref>,<xref ref-type="bibr" rid="pone.0310962.ref042">42</xref>]. In particular, the linkers of ORF93 and its mutants are located outside of the protein, and changing the linker length could have affected the susceptibility to proteolysis. Thus, the reduction in linker length can contribute to improving the yield.</p>
+<p>The high bacteriolytic activity and spectrum are also important in endolysin development to achieve high treatment efficiency against various bacterial infections. In this study, ORF93-Δ15 exhibited the highest bacteriolytic activity among the tested endolysins. One possible reason for this effect can be that the length and flexibility of the linker can change the geometric orientation between domains [<xref ref-type="bibr" rid="pone.0310962.ref035">35</xref>]. On the other hand, the antimicrobial spectrum was not influenced by the linker shortening. A previous study has shown the production of endolysin with bacteriolytic activity against both <italic>Staphylococcus</italic> spp. and <italic>Streptococcus</italic> spp., by replacing the peptidoglycan-binding domain of the streptococcal endolysin LambdaSa2 with that of staphylococcal endolysin [<xref ref-type="bibr" rid="pone.0310962.ref043">43</xref>]. If the antimicrobial spectrum of endolysin is required to be modified, the domain shuffling can be a solution.</p>
+<p>The cold chain is crucial for commercial distribution [<xref ref-type="bibr" rid="pone.0310962.ref044">44</xref>]. Particularly, the prevention of natural aggregation is important when protein is stored [<xref ref-type="bibr" rid="pone.0310962.ref045">45</xref>]. In this study, testing the long storability at the cold temperature, ORF93 and its mutants were not natively stable. In addition, the minor protein bands of ORF93 increased as the protein was stored for a long period. The minor protein bands decreased, as the linker length was shortened. The degradation by carry-over molecules from the <italic>E</italic>. <italic>coli</italic> expression was assumed to occur on ORF93 and its mutants with a longer linker; ORF93-Δ15 did not seem to be influenced. In general, both domain and linker are important in protein stability. First, it is reasonable to consider that the protein domain functions in protein stability. The study has indicated that protein stability is related to domain molecular characteristics, such as hydrogen bond, hydrophobic interactions, and disulfide bond [<xref ref-type="bibr" rid="pone.0310962.ref046">46</xref>]. Moreover, the linker is also important in protein stability. Previous studies have demonstrated that the linker modification contributes to the thermal and pH stability of proteins and may impact their overall stability [<xref ref-type="bibr" rid="pone.0310962.ref024">24</xref>,<xref ref-type="bibr" rid="pone.0310962.ref047">47</xref>,<xref ref-type="bibr" rid="pone.0310962.ref048">48</xref>]. To enhance the storability of endolysin, delicate improvements to both the linker and domain may be required.</p>
+<p>In general, endolysin has been optimized to a phage life cycle through viral evolution, whereas its function as an enzyme has not been maximized. Phage evolves the cell lysis, such as the timing of lysis and the lysis system optimal to the progeny phage release. The expression of endolysin starts in the middle of the phage infection process [<xref ref-type="bibr" rid="pone.0310962.ref009">9</xref>]. If a phage expresses endolysins with high bacteriolytic activity in the middle phase of the infection process, progeny phages cannot be produced efficiently. In addition, phage S6 is a giant phage, and a longer linker of ORF93 may function to produce larger holes in the peptidoglycan by simply extending the distance from CHAP to SH3 domain.</p>
+<p>To understand the role of the linker further, it is also important to examine both linker extension and modification. A previous study showed that a longer linker improves the thermostability of subunit-fused nitrile hydratase; however, an excessively long linker can decrease its activity and expression [<xref ref-type="bibr" rid="pone.0310962.ref047">47</xref>], which is consistent with the results of this study. Moreover, in protein engineering, various linkers have been designed and classified as flexible, rigid, helical, and cleavable linkers [<xref ref-type="bibr" rid="pone.0310962.ref019">19</xref>,<xref ref-type="bibr" rid="pone.0310962.ref049">49</xref>–<xref ref-type="bibr" rid="pone.0310962.ref051">51</xref>]. It has been reported that changing the type of linker can change the stability and activity of the enzyme [<xref ref-type="bibr" rid="pone.0310962.ref038">38</xref>,<xref ref-type="bibr" rid="pone.0310962.ref047">47</xref>,<xref ref-type="bibr" rid="pone.0310962.ref048">48</xref>]. In the future, the linker types will be examined in ORF93-Δ15.</p>
+<p>To study the feasibility of endolysins, they must be investigated from other aspects, such as physical characteristics and therapeutic effects in vivo. First, physical characteristics such as pH stability and thermostability are important to develop an endolysin drug, because protein instability leads to irreversible aggregation and is a major concern in the development of new biopharmaceuticals. In particular, these characteristics have been investigated in detail to develop monoclonal antibodies as biopharmaceuticals [<xref ref-type="bibr" rid="pone.0310962.ref052">52</xref>,<xref ref-type="bibr" rid="pone.0310962.ref053">53</xref>]. Similarly to this, the physical characteristics of endolysins must be investigated regarding their suitability in biopharmaceuticals in the future. In addition, the additives enabling the protein stability are also important, to extend the usability to an endolysin drug. For example, a previous study has shown that the activity of LysK endolysin was maintained at 100% when stored at 22°C for one month with polyols such as glycerol, whereas without polyols, it decreased to 5% [<xref ref-type="bibr" rid="pone.0310962.ref054">54</xref>]. Moreover, the therapeutic effects in vivo may be varied depending on endolysin type. In the previous study, some endolysins have shown therapeutic effects equivalent to vancomycin in mice with systemic MRSA infections, whereas other endolysins have not [<xref ref-type="bibr" rid="pone.0310962.ref012">12</xref>]. In addition, it has been shown that endolysins exhibit different levels of biofilm removal activity [<xref ref-type="bibr" rid="pone.0310962.ref012">12</xref>]. We need to investigate the therapeutic effects in vivo with an understanding of the biochemical properties of endolysins.</p>
+<p>In conclusion, the optimization of the linker length of ORF93 improved the yield, and bacteriolytic activity against <italic>Staphylococcus</italic> spp., which suggested that it could be improved from wild-type ORF93 as an antimicrobial agent. This study addresses the subject more comprehensively than previous articles and shows that optimizing linker length could have multiple benefits for endolysin development. We propose that the linker investigation can be one of the key processes in endolysin development.</p>
+</sec>
+<sec id="sec008" sec-type="materials|methods">
+<title>Materials and methods</title>
+<sec id="sec009">
+<title>Prediction of protein structure</title>
+<p>The domain structure was predicted using the InterPro software package (<ext-link ext-link-type="uri" xlink:href="https://www.ebi.ac.uk/interpro/" xlink:type="simple">https://www.ebi.ac.uk/interpro/</ext-link>) [<xref ref-type="bibr" rid="pone.0310962.ref029">29</xref>]. Protein conformation was predicted using AlphaFold2 within ColabFold [<xref ref-type="bibr" rid="pone.0310962.ref031">31</xref>,<xref ref-type="bibr" rid="pone.0310962.ref055">55</xref>]. The protein conformation was visualized using UCSF ChimeraX (<ext-link ext-link-type="uri" xlink:href="https://www.rbvi.ucsf.edu/chimerax" xlink:type="simple">https://www.rbvi.ucsf.edu/chimerax</ext-link>) [<xref ref-type="bibr" rid="pone.0310962.ref056">56</xref>].</p>
+</sec>
+<sec id="sec010">
+<title>Bacterial strains, culture media, culture conditions, and reagents</title>
+<p><italic>E</italic>. <italic>coli</italic> JM109 (Champion<sup>®</sup> 109 High, SMOBIO Technology, Inc., Hsinchu City, Taiwan) was used for cloning. TaKaRa Competent Cells <italic>E</italic>. <italic>coli</italic> BL21 (Takara Bio, Shiga, Japan) was used for protein expression.</p>
+<p>To examine the antimicrobial activity and bacteriolytic activity, the following bacteria were used: <italic>S</italic>. <italic>aureus</italic> SA27, <italic>S</italic>. <italic>schleiferi</italic> D91, <italic>S</italic>. <italic>pettenkoferi</italic> C58, <italic>S</italic>. <italic>felis</italic> C3, <italic>S</italic>. <italic>arlettae</italic> D119, <italic>S</italic>. <italic>pseudintermedius</italic> D19, <italic>S</italic>. <italic>epidermidis</italic> GTC289, <italic>S</italic>. <italic>kloosii</italic> D187, and <italic>S</italic>. <italic>sciuri</italic> D108 [<xref ref-type="bibr" rid="pone.0310962.ref027">27</xref>]; <italic>B</italic>. <italic>subtilis</italic> 168 [<xref ref-type="bibr" rid="pone.0310962.ref028">28</xref>]; <italic>E</italic>. <italic>coli</italic> JM109 (Champion<sup>®</sup> 109 High, SMOBIO Technology, Inc.).</p>
+<p>All strains were cultured in Luria-Bertani-Miller broth (LB broth, Kanto Kagaku, Tokyo, Japan) at 37°C. Ampicillin 100 μg/ mL was supplemented to the LB broth if needed.</p>
+<p>All reagents used in this study were purchased from FUJIFILM Wako Pure Chemical Industries, Ltd (Osaka, Japan) unless otherwise stated.</p>
+</sec>
+<sec id="sec011">
+<title>Construction of expression vector</title>
+<p>The protein sequence of ORF93 was downloaded from GenBank (accession no. BDE75631). The DNA sequence optimized to <italic>E</italic>. <italic>coli</italic> was designed using Invitrogen GeneArt gene optimizer [<xref ref-type="bibr" rid="pone.0310962.ref057">57</xref>]. Synthetic genes were outsourced to Thermo Fisher Scientific (Waltham, MA, USA; <xref ref-type="supplementary-material" rid="pone.0310962.s006">S6 Fig</xref>). The synthetic gene was subcloned into pUC19 cloning vector, using the In-Fusion<sup>®</sup> HD Cloning Kit (Takara Bio). Inverse PCR was performed with primer sets (<xref ref-type="supplementary-material" rid="pone.0310962.s007">S1 Table</xref>) using a pUC19 with the synthetic gene as a DNA template, to produce the mutant synthetic genes. The PCR products were then connected, using the In-Fusion<sup>®</sup> HD Cloning Kit. The genes with accurate sequence were digested with <italic>Sac</italic> I and <italic>Xba</italic> I, and cloned into the pCold II vector (Takara Bio), of which the protein fused with translation enhancing element and 6×His tag at the N-terminus can be expressed.</p>
+</sec>
+<sec id="sec012">
+<title>Protein expression and purification</title>
+<p>Protein expression was performed using pCold II vector (Takara Bio), according to the company’s instructions. Briefly, LB broth supplemented with ampicillin, containing <italic>E</italic>. <italic>coli</italic> BL21, which carries the gene sequence of the endolysin, was incubated at 37°C with a shake until 0.4 to 0.5 of the optical density at 600 nm (OD<sub>600</sub>). After cooling down to 15°C and supplementing isopropyl-<italic>β</italic>-D-thiogalactopyranoside (IPTG) at 1 mM, the culture was incubated at 15°C with a shake for 24 h. The cultures were centrifuged (8,000 × g, 4°C, 5 min), the cell pellets were resuspended in a sonication buffer (100 mM sodium phosphate, 300 mM NaCl, pH 7.8), and sonicated (12.7 mm diameter horn tip, 16% amplitude, 5-s pulses at 5-s intervals 30 times) on the ice, using a Q700 sonicator (Qsonica, Newtown, CT, USA). The cell lysates were centrifuged (9,000 × g, 4°C, 20 min), and the supernatants were incubated with Co<sup>2+</sup> agarose resin (ProteNova, Kagawa, Japan) for 2 h at 4°C. After washing the resin with sonication buffer, the proteins were eluted with 2 mL of elution buffer (100 mM sodium phosphate, 300 mM NaCl, 300 mM imidazole, pH 7.8). The eluates were filtered through a 0.22 μm membrane filter (Millex<sup>®</sup> GV; Millipore, Billerica, MA, USA).</p>
+</sec>
+<sec id="sec013">
+<title>SDS-PAGE and protein quantification</title>
+<p>The protein solution was mixed with a 3× Laemmli sample buffer (6% w/v SDS, 30% v/v glycerol, 0.03% w/v bromophenol blue, 0.3 mol/L dithiothreitol, 180 mmol/L Tris-HCl, pH 6.8), and were heated at 95°C for 5 min. The samples were analyzed in a SDS-PAGE gel (12.5% w/v acrylamide) together with protein molecular weight markers (XL-Ladder Broad; APRO life Science Institute, Tokushima, Japan). The gel was stained with Coomassie Brilliant Blue R250 to confirm protein purification.</p>
+<p>The theoretical molecular mass was calculated from the protein sequence using GENETYX<sup>®</sup> Ver. 14.1.1 (Nihon server, Tokyo, Japan); the protein molecular mass was estimated from the thickest band in the SDS-PAGE image using ImageJ software (version 1.54g) [<xref ref-type="bibr" rid="pone.0310962.ref058">58</xref>].</p>
+<p>Protein purification was examined by measuring the thicknesses of the bands in the SDS-PAGE images using ImageJ software (version 1.54g); the protein quantity in the SDS-PAGE image from 10 kDa to 250 kDa was set to 100%; and the proportion of protein band was calculated.</p>
+<p>After the centrifugation (12,100 × g, 15 seconds) of protein solution, the supernatant was subjected to protein quantification using the TaKaRa Bradford Protein Assay Kit (Takara Bio).</p>
+</sec>
+<sec id="sec014">
+<title>Measurement of antimicrobial activity using a double-layered agar plate assay</title>
+<p>A hundred microliters of the overnight bacterial liquid culture were mixed with 5 mL of LB broth soft agar (LB broth supplemented with 0.5% w/v agar) on a 1.5% w/v LB agar plate. After the soft agar had solidified, 3 μL of endolysin solution (0.1 mg/mL) or elution buffer as a negative control was dropped onto the surface of the double-layered agar plate. After incubation at 37°C for 12 to 24 h, the degree of the transparency of spots was visually examined at a 4-level scale (strong, moderate, weak, and no activity; <xref ref-type="supplementary-material" rid="pone.0310962.s004">S4 Fig</xref>).</p>
+</sec>
+<sec id="sec015">
+<title>Measurement of bacteriolytic activity</title>
+<p>Bacteria were grown in LB broth until the mid-log phase. The bacterial solutions were then washed three times with Dulbecco’s phosphate-buffered saline (pH 7.4) and adjusted to an OD<sub>600</sub> of 1.0. The washed bacterial solutions were dispensed at 190 μL per well into 96-well microplates, together with 10 μL of endolysin solution (0.05 mg/mL) or elution buffer as a negative control. Optical density at 595 nm (OD<sub>595</sub>) was measured immediately with a shake at 37°C over time, using a Multiskan FC<sup>®</sup> (Thermo Fisher Scientific).</p>
+</sec>
+<sec id="sec016">
+<title>Measurement of protein quantities during cold storage</title>
+<p>Endolysin solutions were stored at 4°C, and the protein quantities were quantified over time. SDS-PAGE and protein quantification were performed as described above.</p>
+</sec>
+<sec id="sec017">
+<title>Statistical analysis</title>
+<p>One-way ANOVA was used for the analysis, followed by Tukey’s test or Dunnet test for the post hoc test. <italic>P</italic> &lt; 0.05 was considered to indicate a significant difference. GraphPad Prism 4.0 (GraphPad Software Inc., San Diego, CA, USA) was used for the analysis.</p>
+</sec>
+</sec>
+<sec id="sec018" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pone.0310962.s001" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s001" xlink:type="simple">
+<label>S1 Fig</label>
+<caption>
+<title>Protein sequences of ORF93 and its mutants.</title>
+<p>The linker protein sequences are highlighted in yellow. (A) ORF93. (B) ORF93-Δ05. (C) ORF93-Δ10. (D) ORF93-Δ15. (E) ORF93-Δ20.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s002" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s002" xlink:type="simple">
+<label>S2 Fig</label>
+<caption>
+<title>Predicted protein structure of ORF93 mapped with pLDDT score.</title>
+<p>The colors on the protein structure indicate pLDDT score: &lt; 50 in red, 50–90 by gradient color from orange, yellow, green to light blue, respectively, and &gt; 90 in blue. The region with higher pLDDT scores indicates the structure with a higher confidence model.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s003" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s003" xlink:type="simple">
+<label>S3 Fig</label>
+<caption>
+<title>Predicted aligned error (PAE) plot for ORF93.</title>
+<p>In the PAE, the scored residue <italic>x</italic> with regards to the aligned residue <italic>y</italic> is shown as a heatmap. The color scale shows the expected position error, for which the unit is Å.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s004" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s004" xlink:type="simple">
+<label>S4 Fig</label>
+<caption>
+<title>Examination of antimicrobial activity on a double-layered agar plate.</title>
+<p>(A) Assessment criteria for the degree of the transparency of spot. The transparency of spot was evaluated at a 4-level scale: ++, strong; +, moderate; ±, weak; and -, no activity. (B) Example of antimicrobial activity examination. <italic>S</italic>. <italic>pettencoferi</italic> C58 was tested.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s005" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s005" xlink:type="simple">
+<label>S5 Fig</label>
+<caption>
+<title>Formula and schematic diagram for bacteriolytic activity.</title>
+<p>In this study, we calculated the bacteriolytic activity from the above equation using the OD<sub>595</sub> value at 30 min.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s006" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s006" xlink:type="simple">
+<label>S6 Fig</label>
+<caption>
+<title><italic>orf93</italic> gene sequence used in this study.</title>
+<p>The linker DNA sequence is highlighted in yellow.</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s007" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s007" xlink:type="simple">
+<label>S1 Table</label>
+<caption>
+<title>List of the PCR primers used in this study.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pone.0310962.s008" mimetype="application/pdf" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s008" xlink:type="simple">
+<label>S1 Raw images</label>
+<caption>
+<title>Raw data of SDS-PAGE gel stained with Coomassie Brilliant Blue R250.</title>
+<p>The gel images were taken with an EPSON GT-9800F scanner (Seiko Epson Corporation, Nagano, Japan). Original gel images of Figs <xref ref-type="fig" rid="pone.0310962.g002">2A</xref> (A) and <xref ref-type="fig" rid="pone.0310962.g004">4C</xref> (B).</p>
+<p>(PDF)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>Molecular graphics and analyses performed with UCSF Chimera X, developed by the Resource for Biocomputing, Visualization, and Informatics at the University of California, San Francisco.</p>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pone.0310962.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Grice</surname> <given-names>EA</given-names></name>, <name name-style="western"><surname>Segre</surname> <given-names>JA</given-names></name>. <article-title>The skin microbiome</article-title>. <source>Nat Rev Microbiol</source>. <year>2011</year>; <volume>9</volume>: <fpage>244</fpage>–<lpage>253</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nrmicro2537" xlink:type="simple">10.1038/nrmicro2537</ext-link></comment> <object-id pub-id-type="pmid">21407241</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Tong</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Davis</surname> <given-names>JS</given-names></name>, <name name-style="western"><surname>Eichenberger</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Holland</surname> <given-names>TL</given-names></name>, <name name-style="western"><surname>Fowler</surname> <given-names>VG</given-names></name>, <article-title>Jr. <italic>Staphylococcus aureus</italic> infections: epidemiology, pathophysiology, clinical manifestations, and management</article-title>. <source>Clin Microbiol Rev</source>. <year>2015</year>; <volume>28</volume>: <fpage>603</fpage>–<lpage>661</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Heilmann</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Peters</surname> <given-names>G</given-names></name>. <article-title>Coagulase-negative staphylococci.</article-title> <source>Clin Microbiol Rev</source>. <year>2014</year>; <volume>27</volume>: <fpage>870</fpage>–<lpage>926</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/CMR.00109-13" xlink:type="simple">10.1128/CMR.00109-13</ext-link></comment> <object-id pub-id-type="pmid">25278577</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref004"><label>4</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Davis</surname> <given-names>MF</given-names></name>, <name name-style="western"><surname>Cain</surname> <given-names>CL</given-names></name>, <name name-style="western"><surname>Brazil</surname> <given-names>AM</given-names></name>, <name name-style="western"><surname>Rankin</surname> <given-names>SC</given-names></name>. <article-title>Two coagulase-negative staphylococci emerging as potential zoonotic pathogens: wolves in sheep’s clothing?</article-title> <source>Front Microbiol</source>. <year>2013</year>; <volume>4</volume>: <fpage>123</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3389/fmicb.2013.00123" xlink:type="simple">10.3389/fmicb.2013.00123</ext-link></comment> <object-id pub-id-type="pmid">23720657</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Duijkeren</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Catry</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Greko</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Moreno</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Pomba</surname> <given-names>MC</given-names></name>, <name name-style="western"><surname>Pyorala</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>Review on methicillin-resistant <italic>Staphylococcus pseudintermedius</italic></article-title>. <source>J Antimicrob Chemother</source>. <year>2011</year>; <volume>66</volume>: <fpage>2705</fpage>–<lpage>2714</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Turner</surname> <given-names>NA</given-names></name>, <name name-style="western"><surname>Sharma-Kuinkel</surname> <given-names>BK</given-names></name>, <name name-style="western"><surname>Maskarinec</surname> <given-names>SA</given-names></name>, <name name-style="western"><surname>Eichenberger</surname> <given-names>EM</given-names></name>, <name name-style="western"><surname>Shah</surname> <given-names>PP</given-names></name>, <name name-style="western"><surname>Carugati</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Methicillin-resistant <italic>Staphylococcus aureus</italic>: an overview of basic and clinical research</article-title>. <source>Nat Rev Microbiol</source>. <year>2019</year>; <volume>17</volume>: <fpage>203</fpage>–<lpage>218</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McGuinness</surname> <given-names>WA</given-names></name>, <name name-style="western"><surname>Malachowa</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>DeLeo</surname> <given-names>FR</given-names></name>. <article-title>Vancomycin resistance in <italic>Staphylococcus aureus</italic>.</article-title> <source>Yale J Biol Med</source>. <year>2017</year>; <volume>90</volume>: <fpage>269</fpage>–<lpage>281</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmelcher</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Donovan</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Loessner</surname> <given-names>MJ</given-names></name>. <article-title>Bacteriophage endolysins as novel antimicrobials.</article-title> <source>Future Microbiol</source>. <year>2012</year>; <volume>7</volume>: <fpage>1147</fpage>–<lpage>1171</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.2217/fmb.12.97" xlink:type="simple">10.2217/fmb.12.97</ext-link></comment> <object-id pub-id-type="pmid">23030422</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Young</surname> <given-names>R.</given-names></name> <article-title>Phage lysis: do we have the hole story yet?</article-title> <source>Curr Opin Microbiol</source>. <year>2013</year>; <volume>16</volume>: <fpage>790</fpage>–<lpage>797</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.mib.2013.08.008" xlink:type="simple">10.1016/j.mib.2013.08.008</ext-link></comment> <object-id pub-id-type="pmid">24113139</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gerstmans</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Criel</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Briers</surname> <given-names>Y</given-names></name>. <article-title>Synthetic biology of modular endolysins</article-title>. <source>Biotechnol Adv</source>. <year>2018</year>; <volume>36</volume>: <fpage>624</fpage>–<lpage>640</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.biotechadv.2017.12.009" xlink:type="simple">10.1016/j.biotechadv.2017.12.009</ext-link></comment> <object-id pub-id-type="pmid">29248682</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schuch</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Nelson</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Fischetti</surname> <given-names>VA</given-names></name>. <article-title>A bacteriolytic agent that detects and kills <italic>Bacillus anthracis</italic></article-title>. <source>Nature</source>. <year>2002</year>; <volume>418</volume>: <fpage>884</fpage>–<lpage>889</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schmelcher</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Nelson</surname> <given-names>DC</given-names></name>, <name name-style="western"><surname>Eugster</surname> <given-names>MR</given-names></name>, <name name-style="western"><surname>Eichenseher</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Hanke</surname> <given-names>DC</given-names></name>, <etal>et al</etal>. <article-title>Evolutionarily distinct bacteriophage endolysins featuring conserved peptidoglycan cleavage sites protect mice from MRSA infection</article-title>. <source>J Antimicrob Chemother</source>. <year>2015</year>; <volume>70</volume>: <fpage>1453</fpage>–<lpage>1465</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/jac/dku552" xlink:type="simple">10.1093/jac/dku552</ext-link></comment> <object-id pub-id-type="pmid">25630640</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Liu</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Hu</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Li</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Yang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Lu</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Rao</surname> <given-names>X</given-names></name>. <article-title>Therapeutic potential of bacteriophage endolysins for infections caused by Gram-positive bacteria</article-title>. <source>J Biomed Sci</source>. <year>2023</year>; <volume>30</volume>: <fpage>29</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/s12929-023-00919-1" xlink:type="simple">10.1186/s12929-023-00919-1</ext-link></comment> <object-id pub-id-type="pmid">37101261</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Daniel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Euler</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Collin</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Chahales</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Gorelick</surname> <given-names>KJ</given-names></name>, <name name-style="western"><surname>Fischetti</surname> <given-names>VA</given-names></name>. <article-title>Synergism between a novel chimeric lysin and oxacillin protects against infection by methicillin-resistant <italic>Staphylococcus aureus</italic></article-title>. <source>Antimicrob Agents Chemother</source>. <year>2010</year>; <volume>54</volume>: <fpage>1603</fpage>–<lpage>1612</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref015"><label>15</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Manoharadas</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Witte</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Blasi</surname> <given-names>U</given-names></name>. <article-title>Antimicrobial activity of a chimeric enzybiotic towards <italic>Staphylococcus aureus</italic></article-title>. <source>J Biotechnol</source>. <year>2009</year>; <volume>139</volume>: <fpage>118</fpage>–<lpage>123</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Son</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Kong</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ryu</surname> <given-names>S</given-names></name>. <article-title>Development of a novel chimeric endolysin, Lys109 with enhanced lytic activity against <italic>Staphylococcus aureus</italic></article-title>. <source>Front Microbiol</source>. <year>2020</year>; <volume>11</volume>: <fpage>615887</fpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Kim</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Ryu</surname> <given-names>S</given-names></name>. <article-title>Bacteriophage and endolysin engineering for biocontrol of food pathogens/pathogens in the food: recent advances and future trends</article-title>. <source>Crit Rev Food Sci Nutr</source>. <year>2023</year>; <volume>63</volume>: <fpage>8919</fpage>–<lpage>8938</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/10408398.2022.2059442" xlink:type="simple">10.1080/10408398.2022.2059442</ext-link></comment> <object-id pub-id-type="pmid">35400249</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ryu</surname> <given-names>S</given-names></name>. <article-title>Characterization of a novel cell wall binding domain-containing <italic>Staphylococcus aureus</italic> endolysin LysSA97</article-title>. <source>Appl Microbiol Biotechnol</source>. <year>2017</year>; <volume>101</volume>: <fpage>147</fpage>–<lpage>158</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Chen</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Zaro</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>WC</given-names></name>. <article-title>Fusion protein linkers: property, design and functionality</article-title>. <source>Adv Drug Deliv Rev</source>. <year>2013</year>; <volume>65</volume>: <fpage>1357</fpage>–<lpage>1369</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.addr.2012.09.039" xlink:type="simple">10.1016/j.addr.2012.09.039</ext-link></comment> <object-id pub-id-type="pmid">23026637</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref020"><label>20</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wang</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Deng</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ji</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Xiong</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Design, overproduction and purification of the chimeric phage lysin MLTphg fighting against <italic>Staphylococcus aureus</italic>.</article-title> <source>Processes</source>. <year>2020</year>; <volume>8</volume>: <fpage>1587</fpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref021"><label>21</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Trinh</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Gurbaxani</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Morrison</surname> <given-names>SL</given-names></name>, <name name-style="western"><surname>Seyfzadeh</surname> <given-names>M</given-names></name>. <article-title>Optimization of codon pair use within the (GGGGS)<sub>3</sub> linker sequence results in enhanced protein expression.</article-title> <source>Mol Immunol</source>. <year>2004</year>; <volume>40</volume>: <fpage>717</fpage>–<lpage>722</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref022"><label>22</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Husain</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Mayo</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Cole</surname> <given-names>JL</given-names></name>. <article-title>Role of the interdomain linker in RNA-activated protein kinase activation</article-title>. <source>Biochemistry</source>. <year>2016</year>; <volume>55</volume>: <fpage>253</fpage>–<lpage>261</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/acs.biochem.5b01171" xlink:type="simple">10.1021/acs.biochem.5b01171</ext-link></comment> <object-id pub-id-type="pmid">26678943</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref023"><label>23</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Forsberg</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Stepnov</surname> <given-names>AA</given-names></name>, <name name-style="western"><surname>Tesei</surname> <given-names>G</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Buchinger</surname> <given-names>E</given-names></name>, <name name-style="western"><surname>Kristiansen</surname> <given-names>SK</given-names></name>, <etal>et al</etal>. <article-title>The effect of linker conformation on performance and stability of a two-domain lytic polysaccharide monooxygenase</article-title>. <source>J Biol Chem</source>. <year>2023</year>; <volume>299</volume>: <fpage>105262</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.jbc.2023.105262" xlink:type="simple">10.1016/j.jbc.2023.105262</ext-link></comment> <object-id pub-id-type="pmid">37734553</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref024"><label>24</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lu</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Feng</surname> <given-names>MG</given-names></name>. <article-title>Bifunctional enhancement of a beta-glucanase-xylanase fusion enzyme by optimization of peptide linkers</article-title>. <source>Appl Microbiol Biotechnol</source>. <year>2008</year>; <volume>79</volume>: <fpage>579</fpage>–<lpage>587</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00253-008-1468-4" xlink:type="simple">10.1007/s00253-008-1468-4</ext-link></comment> <object-id pub-id-type="pmid">18415095</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref025"><label>25</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lee</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Son</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Cha</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Ryu</surname> <given-names>S</given-names></name>. <article-title>Characterization and genomic analysis of PALS2, a novel <italic>Staphylococcus</italic> jumbo bacteriophage.</article-title> <source>Front Microbiol.</source> <year>2021</year>; <volume>12</volume>: <fpage>622755</fpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref026"><label>26</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhang</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Sun</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Zhao</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Pan</surname> <given-names>Q</given-names></name>, <name name-style="western"><surname>Tong</surname> <given-names>Y</given-names></name>, <etal>et al</etal>. <article-title>Characterization and genomic analysis of a novel jumbo bacteriophage vB_StaM_SA1 infecting <italic>Staphylococcus aureus</italic> with two lysins.</article-title> <source>Front Microbiol.</source> <year>2022</year>; <volume>13</volume>: <fpage>856473</fpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref027"><label>27</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Uchiyama</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Takemura-Uchiyama</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Sakaguchi</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Gamoh</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kato</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Daibata</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Intragenus generalized transduction in <italic>Staphylococcus</italic> spp. by a novel giant phage</article-title>. <source>ISME J.</source> <year>2014</year>; <volume>8</volume>: <fpage>1949</fpage>–<lpage>1952</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref028"><label>28</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Uchiyama</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Takemura-Uchiyama</surname> <given-names>I</given-names></name>, <name name-style="western"><surname>Gotoh</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Kato</surname> <given-names>SI</given-names></name>, <name name-style="western"><surname>Sakaguchi</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Murakami</surname> <given-names>H</given-names></name>, <etal>et al</etal>. <article-title>Phylogenic analysis of new viral cluster of large phages with unusual DNA genomes containing uracil in place of thymine in gene-sharing network, using phages S6 and PBS1 and relevant uncultured phages derived from sewage metagenomics</article-title>. <source>Virus Res</source>. <year>2022</year>; <volume>319</volume>: <fpage>198881</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.virusres.2022.198881" xlink:type="simple">10.1016/j.virusres.2022.198881</ext-link></comment> <object-id pub-id-type="pmid">35934259</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref029"><label>29</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Paysan-Lafosse</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Blum</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Chuguransky</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Grego</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Pinto</surname> <given-names>BL</given-names></name>, <name name-style="western"><surname>Salazar</surname> <given-names>GA</given-names></name>, <etal>et al</etal>. <article-title>InterPro in 2022</article-title>. <source>Nucleic Acids Res</source>. <year>2023</year>; <volume>51</volume>: <fpage>D418</fpage>–<lpage>D427</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/nar/gkac993" xlink:type="simple">10.1093/nar/gkac993</ext-link></comment> <object-id pub-id-type="pmid">36350672</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref030"><label>30</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Dong</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Baker</surname> <given-names>JR</given-names></name>, <name name-style="western"><surname>Foster-Frey</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Pritchard</surname> <given-names>DG</given-names></name>, <name name-style="western"><surname>Donovan</surname> <given-names>DM</given-names></name>. <article-title>LysK CHAP endopeptidase domain is required for lysis of live staphylococcal cells</article-title>. <source>FEMS Microbiol Lett</source>. <year>2009</year>; <volume>294</volume>: <fpage>52</fpage>–<lpage>60</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1111/j.1574-6968.2009.01541.x" xlink:type="simple">10.1111/j.1574-6968.2009.01541.x</ext-link></comment> <object-id pub-id-type="pmid">19493008</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref031"><label>31</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jumper</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Evans</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Pritzel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Figurnov</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ronneberger</surname> <given-names>O</given-names></name>, <etal>et al</etal>. <article-title>Highly accurate protein structure prediction with AlphaFold</article-title>. <source>Nature</source>. <year>2021</year>; <volume>596</volume>: <fpage>583</fpage>–<lpage>589</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41586-021-03819-2" xlink:type="simple">10.1038/s41586-021-03819-2</ext-link></comment> <object-id pub-id-type="pmid">34265844</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref032"><label>32</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jumper</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Evans</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Pritzel</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Green</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Figurnov</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Ronneberger</surname> <given-names>O</given-names></name>, <etal>et al</etal>. <article-title>Applying and improving AlphaFold at CASP14</article-title>. <source>Proteins</source>. <year>2021</year>; <volume>89</volume>: <fpage>1711</fpage>–<lpage>1721</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/prot.26257" xlink:type="simple">10.1002/prot.26257</ext-link></comment> <object-id pub-id-type="pmid">34599769</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref033"><label>33</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fowler</surname> <given-names>VG</given-names></name>, Jr., <name name-style="western"><surname>Das</surname> <given-names>AF</given-names></name>, <name name-style="western"><surname>Lipka-Diamond</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Schuch</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Pomerantz</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Jauregui-Peredo</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Exebacase for patients with <italic>Staphylococcus aureus</italic> bloodstream infection and endocarditis</article-title>. <source>J Clin Invest</source>. <year>2020</year>; <volume>130</volume>: <fpage>3750</fpage>–<lpage>3760</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref034"><label>34</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Jun</surname> <given-names>SY</given-names></name>, <name name-style="western"><surname>Jang</surname> <given-names>IJ</given-names></name>, <name name-style="western"><surname>Yoon</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Jang</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Yu</surname> <given-names>KS</given-names></name>, <name name-style="western"><surname>Cho</surname> <given-names>JY</given-names></name>, <etal>et al</etal>. <article-title>Pharmacokinetics and tolerance of the phage endolysin-based candidate drug SAL200 after a single intravenous administration among healthy volunteers</article-title>. <source>Antimicrob Agents Chemother</source>. <year>2017</year>; <volume>61</volume>: <fpage>e02629</fpage>–<lpage>16</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1128/AAC.02629-16" xlink:type="simple">10.1128/AAC.02629-16</ext-link></comment> <object-id pub-id-type="pmid">28348152</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref035"><label>35</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eichenseher</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Herpers</surname> <given-names>BL</given-names></name>, <name name-style="western"><surname>Badoux</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Leyva-Castillo</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Geha</surname> <given-names>RS</given-names></name>, <name name-style="western"><surname>van der Zwart</surname> <given-names>M</given-names></name>, <etal>et al</etal>. <article-title>Linker-improved chimeric endolysin selectively kills <italic>Staphylococcus aureus</italic> in vitro, on reconstituted human epidermis, and in a murine model of skin infection</article-title>. <source>Antimicrob Agents Chemother</source>. <year>2022</year>; <volume>66</volume>: <fpage>e0227321</fpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref036"><label>36</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Duyvejonck</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Gerstmans</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Stock</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Grimon</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Lavigne</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Briers</surname> <given-names>Y</given-names></name>. <article-title>Rapid and high-throughput evaluation of diverse configurations of engineered lysins using the VersaTile technique.</article-title> <source>Antibiotics (Basel).</source> <year>2021</year>; <volume>10</volume>: <fpage>293</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/antibiotics10030293" xlink:type="simple">10.3390/antibiotics10030293</ext-link></comment> <object-id pub-id-type="pmid">33799561</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref037"><label>37</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>George</surname> <given-names>RA</given-names></name>, <name name-style="western"><surname>Heringa</surname> <given-names>J</given-names></name>. <article-title>An analysis of protein domain linkers: their classification and role in protein folding</article-title>. <source>Protein Eng</source>. <year>2002</year>; <volume>15</volume>: <fpage>871</fpage>–<lpage>879</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/protein/15.11.871" xlink:type="simple">10.1093/protein/15.11.871</ext-link></comment> <object-id pub-id-type="pmid">12538906</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref038"><label>38</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Robinson</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>Sauer</surname> <given-names>RT</given-names></name>. <article-title>Optimizing the stability of single-chain proteins by linker length and composition mutagenesis</article-title>. <source>Proc Natl Acad Sci U S A</source>. <year>1998</year>; <volume>95</volume>: <fpage>5929</fpage>–<lpage>5934</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1073/pnas.95.11.5929" xlink:type="simple">10.1073/pnas.95.11.5929</ext-link></comment> <object-id pub-id-type="pmid">9600894</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref039"><label>39</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Amet</surname> <given-names>N</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>HF</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>WC</given-names></name>. <article-title>Insertion of the designed helical linker led to increased expression of tf-based fusion proteins</article-title>. <source>Pharm Res</source>. <year>2009</year>; <volume>26</volume>: <fpage>523</fpage>–<lpage>528</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11095-008-9767-0" xlink:type="simple">10.1007/s11095-008-9767-0</ext-link></comment> <object-id pub-id-type="pmid">19002568</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref040"><label>40</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gottesman</surname> <given-names>S.</given-names></name> <article-title>Proteases and their targets in Escherichia <italic>coli</italic></article-title>. <source>Annu Rev Genet</source>. <year>1996</year>; <volume>30</volume>: <fpage>465</fpage>–<lpage>506</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref041"><label>41</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Gustavsson</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Lehtio</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Denman</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Teeri</surname> <given-names>TT</given-names></name>, <name name-style="western"><surname>Hult</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Martinelle</surname> <given-names>M</given-names></name>. <article-title>Stable linker peptides for a cellulose-binding domain-lipase fusion protein expressed in <italic>Pichia pastoris</italic></article-title>. <source>Protein Eng</source>. <year>2001</year>; <volume>14</volume>: <fpage>711</fpage>–<lpage>715</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref042"><label>42</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kavoosi</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Creagh</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Kilburn</surname> <given-names>DG</given-names></name>, <name name-style="western"><surname>Haynes</surname> <given-names>CA</given-names></name>. <article-title>Strategy for selecting and characterizing linker peptides for CBM9-tagged fusion proteins expressed in <italic>Escherichia coli</italic></article-title>. <source>Biotechnol Bioeng</source>. <year>2007</year>; <volume>98</volume>: <fpage>599</fpage>–<lpage>610</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref043"><label>43</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Becker</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Foster-Frey</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Stodola</surname> <given-names>AJ</given-names></name>, <name name-style="western"><surname>Anacker</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Donovan</surname> <given-names>DM</given-names></name>. <article-title>Differentially conserved staphylococcal SH3b_5 cell wall binding domains confer increased staphylolytic and streptolytic activity to a streptococcal prophage endolysin domain</article-title>. <source>Gene</source>. <year>2009</year>; <volume>443</volume>: <fpage>32</fpage>–<lpage>41</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.gene.2009.04.023" xlink:type="simple">10.1016/j.gene.2009.04.023</ext-link></comment> <object-id pub-id-type="pmid">19422893</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref044"><label>44</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Welch</surname> <given-names>RP</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Luzuriaga</surname> <given-names>MA</given-names></name>, <name name-style="western"><surname>Brohlin</surname> <given-names>OR</given-names></name>, <name name-style="western"><surname>Gassensmith</surname> <given-names>JJ</given-names></name>. <article-title>Protein-polymer delivery: chemistry from the cold chain to the clinic</article-title>. <source>Bioconjug Chem</source>. <year>2018</year>; <volume>29</volume>: <fpage>2867</fpage>–<lpage>2883</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1021/acs.bioconjchem.8b00483" xlink:type="simple">10.1021/acs.bioconjchem.8b00483</ext-link></comment> <object-id pub-id-type="pmid">30152998</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref045"><label>45</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Arakawa</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Prestrelski</surname> <given-names>SJ</given-names></name>, <name name-style="western"><surname>Kenney</surname> <given-names>WC</given-names></name>, <name name-style="western"><surname>Carpenter</surname> <given-names>JF</given-names></name>. <article-title>Factors affecting short-term and long-term stabilities of proteins</article-title>. <source>Adv Drug Deliv Rev</source>. <year>2001</year>; <volume>46</volume>: <fpage>307</fpage>–<lpage>326</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/s0169-409x%2800%2900144-7" xlink:type="simple">10.1016/s0169-409x(00)00144-7</ext-link></comment> <object-id pub-id-type="pmid">11259845</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref046"><label>46</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Nick Pace</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Scholtz</surname> <given-names>JM</given-names></name>, <name name-style="western"><surname>Grimsley</surname> <given-names>GR</given-names></name>. <article-title>Forces stabilizing proteins</article-title>. <source>FEBS Lett</source>. <year>2014</year>; <volume>588</volume>: <fpage>2177</fpage>–<lpage>2184</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.febslet.2014.05.006" xlink:type="simple">10.1016/j.febslet.2014.05.006</ext-link></comment> <object-id pub-id-type="pmid">24846139</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref047"><label>47</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Guo</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Cheng</surname> <given-names>Z</given-names></name>, <name name-style="western"><surname>Berdychowska</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Zhu</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Peplowski</surname> <given-names>L</given-names></name>, <etal>et al</etal>. <article-title>Effect and mechanism analysis of different linkers on efficient catalysis of subunit-fused nitrile hydratase</article-title>. <source>Int J Biol Macromol</source>. <year>2021</year>; <volume>181</volume>: <fpage>444</fpage>–<lpage>451</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.ijbiomac.2021.03.103" xlink:type="simple">10.1016/j.ijbiomac.2021.03.103</ext-link></comment> <object-id pub-id-type="pmid">33753198</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref048"><label>48</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Zhao</surname> <given-names>HL</given-names></name>, <name name-style="western"><surname>Yao</surname> <given-names>XQ</given-names></name>, <name name-style="western"><surname>Xue</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Xiong</surname> <given-names>XH</given-names></name>, <name name-style="western"><surname>Liu</surname> <given-names>ZM</given-names></name>. <article-title>Increasing the homogeneity, stability and activity of human serum albumin and interferon-alpha2b fusion protein by linker engineering</article-title>. <source>Protein Expr Purif</source>. <year>2008</year>; <volume>61</volume>: <fpage>73</fpage>–<lpage>77</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.pep.2008.04.013" xlink:type="simple">10.1016/j.pep.2008.04.013</ext-link></comment> <object-id pub-id-type="pmid">18541441</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref049"><label>49</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wriggers</surname> <given-names>W</given-names></name>, <name name-style="western"><surname>Chakravarty</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Jennings</surname> <given-names>PA</given-names></name>. <article-title>Control of protein functional dynamics by peptide linkers</article-title>. <source>Biopolymers</source>. <year>2005</year>; <volume>80</volume>: <fpage>736</fpage>–<lpage>746</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/bip.20291" xlink:type="simple">10.1002/bip.20291</ext-link></comment> <object-id pub-id-type="pmid">15880774</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref050"><label>50</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Bai</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Shen</surname> <given-names>WC</given-names></name>. <article-title>Improving the oral efficacy of recombinant granulocyte colony-stimulating factor and transferrin fusion protein by spacer optimization</article-title>. <source>Pharm Res</source>. <year>2006</year>; <volume>23</volume>: <fpage>2116</fpage>–<lpage>2121</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11095-006-9059-5" xlink:type="simple">10.1007/s11095-006-9059-5</ext-link></comment> <object-id pub-id-type="pmid">16952003</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref051"><label>51</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McCormick</surname> <given-names>AL</given-names></name>, <name name-style="western"><surname>Thomas</surname> <given-names>MS</given-names></name>, <name name-style="western"><surname>Heath</surname> <given-names>AW</given-names></name>. <article-title>Immunization with an interferon-gamma-gp120 fusion protein induces enhanced immune responses to human immunodeficiency virus gp120</article-title>. <source>J Infect Dis</source>. <year>2001</year>; <volume>184</volume>: <fpage>1423</fpage>–<lpage>1430</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1086/324371" xlink:type="simple">10.1086/324371</ext-link></comment> <object-id pub-id-type="pmid">11709784</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref052"><label>52</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Hebditch</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Warwicker</surname> <given-names>J</given-names></name>. <article-title>Web-based display of protein surface and pH-dependent properties for assessing the developability of biotherapeutics.</article-title> <source>Sci Rep</source>. <year>2019</year>; <volume>9</volume>: <fpage>1969</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41598-018-36950-8" xlink:type="simple">10.1038/s41598-018-36950-8</ext-link></comment> <object-id pub-id-type="pmid">30760735</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref053"><label>53</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>McConnell</surname> <given-names>AD</given-names></name>, <name name-style="western"><surname>Zhang</surname> <given-names>X</given-names></name>, <name name-style="western"><surname>Macomber</surname> <given-names>JL</given-names></name>, <name name-style="western"><surname>Chau</surname> <given-names>B</given-names></name>, <name name-style="western"><surname>Sheffer</surname> <given-names>JC</given-names></name>, <name name-style="western"><surname>Rahmanian</surname> <given-names>S</given-names></name>, <etal>et al</etal>. <article-title>A general approach to antibody thermostabilization.</article-title> <source>MAbs</source>. <year>2014</year>; <volume>6</volume>: <fpage>1274</fpage>–<lpage>1282</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.4161/mabs.29680" xlink:type="simple">10.4161/mabs.29680</ext-link></comment> <object-id pub-id-type="pmid">25517312</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref054"><label>54</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Filatova</surname> <given-names>LY</given-names></name>, <name name-style="western"><surname>Becker</surname> <given-names>SC</given-names></name>, <name name-style="western"><surname>Donovan</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Gladilin</surname> <given-names>AK</given-names></name>, <name name-style="western"><surname>Klyachko</surname> <given-names>NL</given-names></name>. <article-title>LysK, the enzyme lysing <italic>Staphylococcus aureus</italic> cells: specific kinetic features and approaches towards stabilization</article-title>. <source>Biochimie</source>. <year>2010</year>; <volume>92</volume>: <fpage>507</fpage>–<lpage>513</lpage>.</mixed-citation></ref>
+<ref id="pone.0310962.ref055"><label>55</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Mirdita</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Schutze</surname> <given-names>K</given-names></name>, <name name-style="western"><surname>Moriwaki</surname> <given-names>Y</given-names></name>, <name name-style="western"><surname>Heo</surname> <given-names>L</given-names></name>, <name name-style="western"><surname>Ovchinnikov</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Steinegger</surname> <given-names>M</given-names></name>. <article-title>ColabFold: making protein folding accessible to all.</article-title> <source>Nat Methods</source>. <year>2022</year>; <volume>19</volume>: <fpage>679</fpage>–<lpage>682</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/s41592-022-01488-1" xlink:type="simple">10.1038/s41592-022-01488-1</ext-link></comment> <object-id pub-id-type="pmid">35637307</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref056"><label>56</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Meng</surname> <given-names>EC</given-names></name>, <name name-style="western"><surname>Goddard</surname> <given-names>TD</given-names></name>, <name name-style="western"><surname>Pettersen</surname> <given-names>EF</given-names></name>, <name name-style="western"><surname>Couch</surname> <given-names>GS</given-names></name>, <name name-style="western"><surname>Pearson</surname> <given-names>ZJ</given-names></name>, <name name-style="western"><surname>Morris</surname> <given-names>JH</given-names></name>, <etal>et al</etal>. <article-title>UCSF ChimeraX: Tools for structure building and analysis</article-title>. <source>Protein Sci</source>. <year>2023</year>; <volume>32</volume>: <fpage>e4792</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1002/pro.4792" xlink:type="simple">10.1002/pro.4792</ext-link></comment> <object-id pub-id-type="pmid">37774136</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref057"><label>57</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Raab</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Graf</surname> <given-names>M</given-names></name>, <name name-style="western"><surname>Notka</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Schodl</surname> <given-names>T</given-names></name>, <name name-style="western"><surname>Wagner</surname> <given-names>R</given-names></name>. <article-title>The GeneOptimizer algorithm: using a sliding window approach to cope with the vast sequence space in multiparameter DNA sequence optimization</article-title>. <source>Syst Synth Biol</source>. <year>2010</year>; <volume>4</volume>: <fpage>215</fpage>–<lpage>225</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11693-010-9062-3" xlink:type="simple">10.1007/s11693-010-9062-3</ext-link></comment> <object-id pub-id-type="pmid">21189842</object-id></mixed-citation></ref>
+<ref id="pone.0310962.ref058"><label>58</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Schneider</surname> <given-names>CA</given-names></name>, <name name-style="western"><surname>Rasband</surname> <given-names>WS</given-names></name>, <name name-style="western"><surname>Eliceiri</surname> <given-names>KW</given-names></name>. <article-title>NIH Image to ImageJ: 25 years of image analysis.</article-title> <source>Nat Methods.</source> <year>2012</year>; <volume>9</volume>: <fpage>671</fpage>–<lpage>675</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nmeth.2089" xlink:type="simple">10.1038/nmeth.2089</ext-link></comment> <object-id pub-id-type="pmid">22930834</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="aggregated-review-documents" id="pone.0310962.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0310962.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zeth</surname>
+<given-names>Kornelius</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Kornelius Zeth</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0310962" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">23 Jul 2024</named-content>
+</p>
+<p><!-- <div> -->PONE-D-24-17026<!-- </div> --><!-- <div> -->Examination of yield, bacteriolytic activity and cold storage of linker deletion mutants based on endolysin S6_ORF93 derived from <italic>Staphylococcus</italic> giant bacteriophage S6<!-- </div> --><!-- <div> -->PLOS ONE</p>
+<p>Dear Dr. Uchiyama,</p>
+<p>Thank you for submitting your manuscript to PLOS ONE. After careful consideration, we feel that it has merit but does not fully meet PLOS ONE’s publication criteria as it currently stands. Therefore, we invite you to submit a revised version of the manuscript that addresses the points raised during the review process.</p>
+<p>==============================<!-- </div> --><!-- <div> -->Both reviewers consider your manuscript as a valuable contribution to the field of endolysin research. However, there are minor changes to be done for the authors before the manuscript can be published. The academic author apologizes for the delay of publication procedure, in part also due to the difficulty to find suitable reviewers of the field.</p>
+<p>==============================</p>
+<p>Please submit your revised manuscript by Sep 06 2024 11:59PM. If you will need more time than this to complete your revisions, please reply to this message or contact the journal office at <email xlink:type="simple">plosone@plos.org</email>. When you're ready to submit your revision, log on to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">https://www.editorialmanager.com/pone/</ext-link> and select the 'Submissions Needing Revision' folder to locate your manuscript file.</p>
+<p>Please include the following items when submitting your revised manuscript:<!-- </div> --><list list-type="bullet"><list-item><p>A rebuttal letter that responds to each point raised by the academic editor and reviewer(s). You should upload this letter as a separate file labeled 'Response to Reviewers'.</p></list-item><list-item><p>A marked-up copy of your manuscript that highlights changes made to the original version. You should upload this as a separate file labeled 'Revised Manuscript with Track Changes'.</p></list-item><list-item><p>An unmarked version of your revised paper without tracked changes. You should upload this as a separate file labeled 'Manuscript'.</p></list-item></list><!-- <div> -->If you would like to make changes to your financial disclosure, please include your updated statement in your cover letter. Guidelines for resubmitting your figure files are available below the reviewer comments at the end of this letter.</p>
+<p>If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols" xlink:type="simple">https://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols</ext-link>. Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link>.</p>
+<p>We look forward to receiving your revised manuscript.</p>
+<p>Kind regards,</p>
+<p>Kornelius Zeth, PhD</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Journal Requirements:</p>
+<p>When submitting your revision, we need you to address these additional requirements.</p>
+<p>1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming. The PLOS ONE style templates can be found at </p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf</ext-link> and </p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf" xlink:type="simple">https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf</ext-link></p>
+<p>2. Thank you for submitting the above manuscript to PLOS ONE. During our internal evaluation of the manuscript, we found significant text overlap between your submission and previous work in the [introduction, conclusion, etc.].</p>
+<p>We would like to make you aware that copying extracts from previous publications, especially outside the methods section, word-for-word is unacceptable. In addition, the reproduction of text from published reports has implications for the copyright that may apply to the publications.</p>
+<p>Please revise the manuscript to rephrase the duplicated text, cite your sources, and provide details as to how the current manuscript advances on previous work. Please note that further consideration is dependent on the submission of a manuscript that addresses these concerns about the overlap in text with published work.</p>
+<p>[If the overlap is with the authors’ own works: Moreover, upon submission, authors must confirm that the manuscript, or any related manuscript, is not currently under consideration or accepted elsewhere. If related work has been submitted to PLOS ONE or elsewhere, authors must include a copy with the submitted article. Reviewers will be asked to comment on the overlap between related submissions (<ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submission-guidelines#loc-related-manuscripts" xlink:type="simple">http://journals.plos.org/plosone/s/submission-guidelines#loc-related-manuscripts</ext-link>).]</p>
+<p>We will carefully review your manuscript upon resubmission and further consideration of the manuscript is dependent on the text overlap being addressed in full. Please ensure that your revision is thorough as failure to address the concerns to our satisfaction may result in your submission not being considered further.</p>
+<p>3. Thank you for stating the following financial disclosure: </p>
+<p>"This work was funded by a joint research fund of Nippon Zenyaku Kogyo Co., Ltd."</p>
+<p>Please state what role the funders took in the study.  If the funders had no role, please state: "The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript." </p>
+<p>If this statement is not correct you must amend it as needed. </p>
+<p>Please include this amended Role of Funder statement in your cover letter; we will change the online submission form on your behalf.</p>
+<p>4. Thank you for stating the following in the Acknowledgments Section of your manuscript: </p>
+<p>"This work was funded by a joint research fund of Nippon Zenyaku Kogyo Co., Ltd. Molecular graphics and analyses performed with UCSF Chimera X, developed by the Resource for Biocomputing, Visualization, and Informatics at the University of California, San Francisco, with support from National Institutes of Health R01-GM129325 and the Office of Cyber Infrastructure and Computational Biology, National Institute of Allergy and Infectious Diseases."</p>
+<p>We note that you have provided funding information that is not currently declared in your Funding Statement. However, funding information should not appear in the Acknowledgments section or other areas of your manuscript. We will only publish funding information present in the Funding Statement section of the online submission form. </p>
+<p>Please remove any funding-related text from the manuscript and let us know how you would like to update your Funding Statement. Currently, your Funding Statement reads as follows: </p>
+<p>"This work was funded by a joint research fund of Nippon Zenyaku Kogyo Co., Ltd."</p>
+<p>Please include your amended statements within your cover letter; we will change the online submission form on your behalf.</p>
+<p>5. Thank you for stating the following in your Competing Interests section:  </p>
+<p>"No authors have competing interests."</p>
+<p>Please complete your Competing Interests on the online submission form to state any Competing Interests. If you have no competing interests, please state "The authors have declared that no competing interests exist.", as detailed online in our guide for authors at <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosone/s/submit-now" xlink:type="simple">http://journals.plos.org/plosone/s/submit-now</ext-link> </p>
+<p> This information should be included in your cover letter; we will change the online submission form on your behalf.</p>
+<p>6. PLOS ONE now requires that authors provide the original uncropped and unadjusted images underlying all blot or gel results reported in a submission’s figures or Supporting Information files. This policy and the journal’s other requirements for blot/gel reporting and figure preparation are described in detail at <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/figures#loc-blot-and-gel-reporting-requirements" xlink:type="simple">https://journals.plos.org/plosone/s/figures#loc-blot-and-gel-reporting-requirements</ext-link> and <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/figures#loc-preparing-figures-from-image-files" xlink:type="simple">https://journals.plos.org/plosone/s/figures#loc-preparing-figures-from-image-files</ext-link>. When you submit your revised manuscript, please ensure that your figures adhere fully to these guidelines and provide the original underlying images for all blot or gel data reported in your submission. See the following link for instructions on providing the original image data: <ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/figures#loc-original-images-for-blots-and-gels" xlink:type="simple">https://journals.plos.org/plosone/s/figures#loc-original-images-for-blots-and-gels</ext-link>.   </p>
+<p>In your cover letter, please note whether your blot/gel image data are in Supporting Information or posted at a public data repository, provide the repository URL if relevant, and provide specific details as to which raw blot/gel images, if any, are not available. Email us at <email xlink:type="simple">plosone@plos.org</email> if you have any questions.</p>
+<p>7. We are unable to open your Supporting Information file [S1-S6_Fig]. Please kindly revise as necessary and re-upload.</p>
+<p>8. Please review your reference list to ensure that it is complete and correct. If you have cited papers that have been retracted, please include the rationale for doing so in the manuscript text, or remove these references and replace them with relevant current references. Any changes to the reference list should be mentioned in the rebuttal letter that accompanies your revised manuscript. If you need to cite a retracted article, indicate the article’s retracted status in the References list and also include a citation and full reference for the retraction notice.</p>
+<p>[Note: HTML markup is below. Please do not edit.]</p>
+<p>Reviewers' comments:</p>
+<p>Reviewer's Responses to Questions</p>
+<p><!-- <font color="black"> --><bold>Comments to the Author</bold></p>
+<p>1. Is the manuscript technically sound, and do the data support the conclusions?</p>
+<p>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions. Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes. The conclusions must be drawn appropriately based on the data presented. <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->2. Has the statistical analysis been performed appropriately and rigorously? <!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->3. Have the authors made all data underlying the findings in their manuscript fully available?</p>
+<p>The <ext-link ext-link-type="uri" xlink:href="http://www.plosone.org/static/policies.action#sharing" xlink:type="simple">PLOS Data policy</ext-link> requires authors to make all data underlying the findings described in their manuscript fully available without restriction, with rare exception (please refer to the Data Availability Statement in the manuscript PDF file). The data should be provided as part of the manuscript or its supporting information, or deposited to a public repository. For example, in addition to summary statistics, the data points behind means, medians and variance measures should be available. If there are restrictions on publicly sharing data—e.g. participant privacy or use of data from a third party—those must be specified.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->4. Is the manuscript presented in an intelligible fashion and written in standard English?</p>
+<p>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors here.<!-- </font> --></p>
+<p>Reviewer #1: Yes</p>
+<p>Reviewer #2: Yes</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->5. Review Comments to the Author</p>
+<p>Please use the space provided to explain your answers to the questions above. You may also include additional comments for the author, including concerns about dual publication, research ethics, or publication ethics. (Please upload your review as an attachment if it exceeds 20,000 characters)<!-- </font> --></p>
+<p>Reviewer #1: Munetomo et al., characterized three linker deletion mutants ORF93-delta05, ORF93-delta10, and ORF93-delta15 of endolysin S6_ORF93 derived from Staphylococcus giant bacteriophage S6.</p>
+<p>I agree with Authors that optimization of the linker sequence is necessary to obtain a desirable chimeric protein. There are a lot of studies showing that the optimal linker sequence length is crucial for high protein activity (see for example <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s00253-008-1468-4" xlink:type="simple">https://doi.org/10.1007/s00253-008-1468-4</ext-link>, <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/j.molimm.2003.08.006" xlink:type="simple">https://doi.org/10.1016/j.molimm.2003.08.006</ext-link>, <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.3390/pr8121587" xlink:type="simple">https://doi.org/10.3390/pr8121587</ext-link> or other). Therefore, I support publication of the manuscript in the PLOS ONE Journal after minor revision.</p>
+<p>Specific comments:</p>
+<p>‘Amino acid residues’ sounds strange, 'amino acids' or 'residues', please correct throughout the manuscript, line 95, 99, 100 etc.</p>
+<p>The authors state that ‘the molecular masses of ORF93, ORF93-delta05, ORF93-delta10, and ORF93-delta15 were estimated to be 28.6 kDa, 27.9 kDa, 27.4 kDa, and 26.9 kDa, respectively’ or ‘the theoretical molecular masses were 31.3 kDa, 30.7 kDa, 30.2 kDa, and 29.7 kDa’. What programs were used to determine the molecular masses of studied proteins?</p>
+<p>What was the concentration of proteins used in bacteriolytic activity tests?, line 184</p>
+<p>Reviewer #2: In the context of the prevalence of antibiotic resistance, it is crucial to develop alternative antibacterial strategies, and phage lysin is a good candidate molecule. However, there are many limiting factors in the development of phage lysins at present, and more basic research is needed. This work examined the influence of linker modification on the characteristics of the endolysisn derived from Staphylococcus jumbo phage S6, and found that ORF93-△15 showed the highest yield and bacteriolytic activity with a slight effect on the cold storage performance.</p>
+<p>Several concerns:</p>
+<p>1. Figure 1 and Figure 2 need to be merged into one image because they illustrate the same problem, so there is no need to separate them into two separate images.</p>
+<p>2. How long can the modified protein maintain activity at room temperature (e.g. 23 degrees)?</p>
+<p>3. It is recommended to conduct further experiments on the modified content elements, such as temperature stability, pH stability tests, biofilm removal tests, in vivo antibacterial tests, etc.</p>
+<p>4. In addition, how does extending the linker, altering or optimizing the linker's amino acid sequence affect lysin?</p>
+<p>**********</p>
+<p><!-- <font color="black"> -->6. PLOS authors have the option to publish the peer review history of their article (<ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosone/s/editorial-and-peer-review-process#loc-peer-review-history" xlink:type="simple">what does this mean?</ext-link>). If published, this will include your full peer review and any attached files.</p>
+<p>If you choose “no”, your identity will remain anonymous but your review may still be made public.</p>
+<p><bold>Do you want your identity to be public for this peer review?</bold> For information about this choice, including consent withdrawal, please see our <ext-link ext-link-type="uri" xlink:href="https://www.plos.org/privacy-policy" xlink:type="simple">Privacy Policy</ext-link>.<!-- </font> --></p>
+<p>Reviewer #1: No</p>
+<p>Reviewer #2: <bold>Yes: </bold>Shuguang Lu</p>
+<p>**********</p>
+<p>[NOTE: If reviewer comments were submitted as an attachment file, they will be attached to this email and accessible via the submission site. Please log into your account, locate the manuscript record, and check for the action link "View Attachments". If this link does not appear, there are no attachment files.]</p>
+<p>While revising your submission, please upload your figure files to the Preflight Analysis and Conversion Engine (PACE) digital diagnostic tool, <ext-link ext-link-type="uri" xlink:href="https://pacev2.apexcovantage.com/" xlink:type="simple">https://pacev2.apexcovantage.com/</ext-link>. PACE helps ensure that figures meet PLOS requirements. To use PACE, you must first register as a user. Registration is free. Then, login and navigate to the UPLOAD tab, where you will find detailed instructions on how to use the tool. If you encounter any issues or have any questions when using PACE, please email PLOS at <email xlink:type="simple">figures@plos.org</email>. Please note that Supporting Information files do not need this step.</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pone.0310962.r002">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0310962.r002</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 0</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pone.0310962" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj002" link-type="rebutted-decision-letter" object-id="10.1371/journal.pone.0310962.r001" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">2 Sep 2024</named-content>
+</p>
+<p>Responses to Reviewer #1’s comments</p>
+<p>We have responded to one general comment and three specific ones and revised the manuscript accordingly.</p>
+<p>Response to the general comment</p>
+<p>1. Reviewer #1 recommended including some references supporting the fact that the optimal linker is crucial to the protein function. We have revised the manuscript to strengthen our manuscript as follows, with the addition of the suggested references.</p>
+<p>Line 82: “The influence of linker … been examined well, to our knowledge.” has been replaced with the following sentences.</p>
+<p>“For example, the expression of protein without a linker was not successful in Escherichia coli [20]. Changing the codons of the linker improved the expression of fusion protein [21]. The linker length is shown to be an important factor for protein characteristics such as stability [22], activity [23], and catalytic efficiency [24]. However, the influence of linker length on the endolysin characteristics has not been examined well, to our knowledge.”</p>
+<p>Line 88: “Escherichia coli” has been replaced with “E. coli.”</p>
+<p>Response to specific comments</p>
+<p>2. Reviewer #1 suggested that “amino acid residues” be replaced with “amino acids.” We agree with this suggestion and have made this change throughout the text.</p>
+<p>Lines 94, 95, 99-100, 106, 111, 115, 122, and 138: “amino acid residue” has been replaced with “amino acid”.</p>
+<p>Lines 35, 100-101, 109, 111, 122, and 264: “amino acid residues” has been replaced with “amino acids”.</p>
+<p>3. Reviewer #1 requested us to mention the software used to determine the molecular masses of studied proteins. We have modified the manuscript as follows.</p>
+<p>Line 383: The following sentence has been added.</p>
+<p>“The theoretical molecular mass was calculated from the protein sequence using GENETYX® Ver. 14.1.1 (Nihon server, Tokyo, Japan); the protein molecular mass was estimated from the thickest band in the SDS-PAGE image using ImageJ software (version 1.54g) [58].”</p>
+<p>4. Reviewer #1 requested us to mention the protein quantity used in bacteriolytic activity tests in line 184. We have modified the manuscript as follows.</p>
+<p>Line 184: “In the assay, the endolysin … examined after incubation.” has been replaced with the following sentences.</p>
+<p>“In the assay, the endolysin solutions (3 µL of 0.1 mg/mL) were applied on the surface of double-layered culture media containing bacteria, and the transparency of the spot formed on the agar plate was examined after incubation.” </p>
+<p>Responses to Reviewer #2’s comments</p>
+<p>Reviewer #2 made 4 comments. We have responded to these comments and revised the manuscript accordingly.</p>
+<p>1. Reviewer #2 suggested merging Figs 1 and 2. We have done so, and this is now included as a new Fig 1. We have modified the manuscript as follows.</p>
+<p>Line 114: “Fig 1. Description of ORF93. (A) Schematic … correspond to Fig 1A.” has been replaced with the following sentences.</p>
+<p>“Fig 1. Description of ORF93 and its mutants. The domains and linker are colored as follows: CHAP domain in green, linker in red, and SH3 domain in yellow. (A) Schematic diagram of ORF93 based on the primary structure. Each number represents the amino acid position from the N-terminus at both ends of the domain, counted from the N-terminus. (B) Predicted protein structure of ORF93. (C) Schematic diagram of ORF93 mutants based on the primary structure. The linker deletions are shown as shadowed areas. The numbers around shadowed areas represent the amino acid position from the N-terminus at both ends of the deletion area. ORF93-Δ05, ORF93-Δ10, ORF93-Δ15, and ORF93-Δ20 are the ORF93 mutants which 5, 10, 15, and 20 amino acids were deleted in the upstream direction from the 157th amino acid from the N-terminus. The predicted linker lengths are 21, 16, 11, and 6 amino acids, respectively. (D) Predicted protein structures of ORF93-Δ05, ORF93-Δ10 and ORF93-Δ15. These protein structures were overlapped based on the CHAP domain. (E) Predicted protein structure of ORF93-Δ20.”</p>
+<p>Line 121: “Fig 2A” has been replaced with “Fig 1C”.</p>
+<p>Line 127: “Fig 2B” has been replaced with “Fig 1D”.</p>
+<p>Line 129: “Fig 2C”  has been replaced with “Fig 1E”.</p>
+<p>Line 132: “Fig 2. Description of ORF93 mutants. The domains and linker … protein structure of ORF93-Δ20.” has been deleted.</p>
+<p>Line 151: “Fig 3A” has been replaced with “Fig 2A”. </p>
+<p>Line 160: “Fig 3” has been replaced with “Fig 2”. </p>
+<p>Line 175: “Fig 3B” has been replaced with “Fig 2B”. </p>
+<p>Line 214: “Fig 4” has been replaced with “Fig 3”.</p>
+<p>Line 222: “Figure 4” has been replaced with “Fig 3”.</p>
+<p>Line 232: “Fig 5A” has been replaced with “Fig 4A”.</p>
+<p>Line 236: “Fig 5B” has been replaced with “Fig 4B”.</p>
+<p>Line 241: “Fig 5C” has been replaced with “Fig 4C”.</p>
+<p>Line 243: “Fig 5” has been replaced with “Fig 4”</p>
+<p>2. Reviewer #2 addressed the stability of the proteins at room temperature (i.e., how long can the modified protein maintain activity at room temperature?). We appreciate this comment. The storability can extend the usability of endolysins. We consider this information to be highly appropriate when discussing general endolysin characteristics. Thus, we have modified the manuscript as follows.</p>
+<p>Line 322: A new paragraph has been added as follows.</p>
+<p>“To study the feasibility of endolysins, they must be investigated from other aspects, such as physical characteristics and therapeutic effects in vivo. First, physical characteristics such as pH stability and thermostability are important to develop an endolysin drug, because protein instability leads to irreversible aggregation and is a major concern in the development of new biopharmaceuticals. In particular, these characteristics have been investigated in detail to develop monoclonal antibodies as biopharmaceuticals [52, 53]. Similarly to this, the physical characteristics of endolysins must be investigated regarding their suitability in biopharmaceuticals in the future. In addition, the additives enabling the protein stability are also important, to extend the usability to an endolysin drug. For example, a previous study has shown that the activity of LysK endolysin was maintained at 100% when stored at 22 °C for one month with polyols such as glycerol, whereas without polyols, it decreased to 5% [54]. Moreover, the therapeutic effects in vivo may be varied depending on endolysin type. In the previous study, some endolysins have shown therapeutic effects equivalent to vancomycin in mice with systemic MRSA infections, whereas other endolysins have not [12]. In addition, it has been shown that endolysins exhibit different levels of biofilm removal activity [12]. We need to investigate the therapeutic effects in vivo with an understanding of the biochemical properties of endolysins.”</p>
+<p>3. Reviewer #2 recommended conducting further experiments, such as temperature stability, pH stability tests, biofilm removal tests, in vivo antibacterial tests, etc. We appreciate these comments. However, our intention is to conduct these experiments in the future, because of the limits to the manuscript length and thus its content. Instead, we have reviewed the work on endolysins again, and have added these points to the new paragraph described right above in  the response to comment No. 2 of Reviewer #2.</p>
+<p>4. Reviewer #2 raised questions on the effects of extending the linker, and of altering or optimizing the linker’s amino acid sequence on endolysin function. We have modified the manuscript as follows.</p>
+<p>Lines 317–321: “Moreover, phage S6 … to maximize endolysin function [14-16, 32, 33, 40, 47]” has been replaced with “In addition, phage S6 is a giant phage, and a longer linker of ORF93 may produce larger holes in the peptidoglycan by simply extending the distance from CHAP to the SH3 domain.”</p>
+<p>Line 321: A new paragraph has been added as follows.</p>
+<p>“To understand the role of the linker further, it is also important to examine both linker extension and modification. A previous study showed that a longer linker improves the thermostability of subunit-fused nitrile hydratase; however, an excessively long linker can decrease its activity and expression [47], which is consistent with the results of this study. Moreover, in protein engineering, various linkers have been designed and classified as flexible, rigid, helical, and cleavable linkers [19, 49-51]. It has been reported that changing the type of linker can change the stability and activity of the enzyme [38, 47, 48]. In the future, the linker types will be examined in ORF93-Δ15.”</p>
+<p>Minor modifications</p>
+<p>Through this revision, we have found minor mistakes in the abstract. Thus, we have modified our manuscript as follows.</p>
+<p>Line 32: "linker modification" has been replaced with "linker shortening".</p>
+<p>Line 36: "all the endolysins" has been replaced with "ORF93 and its mutants".</p>
+<p>Lines 658–659: “The vertical and horizontal … of ORF93, respectively” has been replaced with “In the PAE, the scored residue x with regards to the aligned residue y is shown as a heatmap”.</p>
+<supplementary-material id="pone.0310962.s009" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pone.0310962.s009" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to Reviewers.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0310962.r003" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0310962.r003</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zeth</surname>
+<given-names>Kornelius</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Kornelius Zeth</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0310962" document-id-type="doi" document-type="article" id="rel-obj003" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">11 Sep 2024</named-content>
+</p>
+<p>Examination of yield, bacteriolytic activity and cold storage of linker deletion mutants based on endolysin S6_ORF93 derived from <italic>Staphylococcus</italic> giant bacteriophage S6</p>
+<p>PONE-D-24-17026R1</p>
+<p>Dear Dr. Uchiyama,</p>
+<p>We’re pleased to inform you that your manuscript has been judged scientifically suitable for publication and will be formally accepted for publication once it meets all outstanding technical requirements.</p>
+<p>Within one week, you’ll receive an e-mail detailing the required amendments. When these have been addressed, you’ll receive a formal acceptance letter and your manuscript will be scheduled for publication.</p>
+<p>An invoice will be generated when your article is formally accepted. Please note, if your institution has a publishing partnership with PLOS and your article meets the relevant criteria, all or part of your publication costs will be covered. Please make sure your user information is up-to-date by logging into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pone/" xlink:type="simple">Editorial Manager®</ext-link> and clicking the ‘Update My Information' link at the top of the page. If you have any questions relating to publication charges, please contact our Author Billing department directly at <email xlink:type="simple">authorbilling@plos.org</email>.</p>
+<p>If your institution or institutions have a press office, please notify them about your upcoming paper to help maximize its impact. If they’ll be preparing press materials, please inform our press team as soon as possible -- no later than 48 hours after receiving the formal acceptance. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>Kind regards,</p>
+<p>Kornelius Zeth, PhD</p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+<p>Additional Editor Comments (optional):</p>
+<p>Reviewers' comments:</p>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pone.0310962.r004" specific-use="acceptance-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pone.0310962.r004</article-id>
+<title-group>
+<article-title>Acceptance letter</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Zeth</surname>
+<given-names>Kornelius</given-names>
+</name>
+<role>Academic Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Kornelius Zeth</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pone.0310962" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">11 Oct 2024</named-content>
+</p>
+<p>PONE-D-24-17026R1 </p>
+<p>PLOS ONE</p>
+<p>Dear Dr.  Uchiyama, </p>
+<p>I'm pleased to inform you that your manuscript has been deemed suitable for publication in PLOS ONE. Congratulations! Your manuscript is now being handed over to our production team.</p>
+<p>At this stage, our production department will prepare your paper for publication. This includes ensuring the following:</p>
+<p>* All references, tables, and figures are properly cited</p>
+<p>* All relevant supporting information is included in the manuscript submission,</p>
+<p>* There are no issues that prevent the paper from being properly typeset</p>
+<p>If revisions are needed, the production department will contact you directly to resolve them. If no revisions are needed, you will receive an email when the publication date has been set. At this time, we do not offer pre-publication proofs to authors during production of the accepted work. Please keep in mind that we are working through a large volume of accepted articles, so please give us a few weeks to review your paper and let you know the next and final steps. </p>
+<p>Lastly, if your institution or institutions have a press office, please let them know about your upcoming paper now to help maximize its impact. If they'll be preparing press materials, please inform our press team within the next 48 hours. Your manuscript will remain under strict press embargo until 2 pm Eastern Time on the date of publication. For more information, please contact <email xlink:type="simple">onepress@plos.org</email>.</p>
+<p>If we can help with anything else, please email us at <email xlink:type="simple">customercare@plos.org</email>.</p>
+<p>Thank you for submitting your work to PLOS ONE and supporting open access. </p>
+<p>Kind regards, </p>
+<p>PLOS ONE Editorial Office Staff</p>
+<p>on behalf of</p>
+<p>Dr. Kornelius Zeth </p>
+<p>Academic Editor</p>
+<p>PLOS ONE</p>
+</body>
+</sub-article>
+</article>

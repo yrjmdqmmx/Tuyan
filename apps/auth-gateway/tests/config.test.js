@@ -192,3 +192,20 @@ test('Watcha defaults disabled and enabling requires credentials, mail and appro
   for (const scope of ['email', 'read profile', 'read admin']) assert.throws(() => loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: scope })), /WATCHA_OAUTH_SCOPES/);
   assert.equal(loadGatewayConfig(validEnv({ ...enabled, WATCHA_OAUTH_SCOPES: 'read' })).watcha.scopes, 'read');
 });
+
+
+test('new gateway can use exact Hangzhou account origin while old gateway stays unchanged', () => {
+  const config = loadGatewayConfig(validEnv({
+    AUTH_BASE_URL: 'https://tuyansci.cn', FRONTEND_ORIGINS: 'https://tuyansci.cn',
+    AUTH_VERIFICATION_CALLBACK_URL: 'https://tuyansci.cn/account/email-verified.html',
+    AUTH_PASSWORD_RESET_URL: 'https://tuyansci.cn/account/reset-password.html',
+  }));
+  assert.equal(config.authBaseUrl, 'https://tuyansci.cn/');
+  assert.equal(config.cookieSameSite, 'lax');
+  assert.equal(config.cookieDomain, '');
+  assert.ok(config.frontendOrigins.includes('https://tuyansci.cn'));
+  for (const origin of ['https://tuyansci.cn.evil.example', 'https://evil.tuyansci.cn', 'https://tuyansci.cn:444', 'http://tuyansci.cn']) {
+    assert.throws(() => loadGatewayConfig(validEnv({ AUTH_PASSWORD_RESET_URL: origin + '/account/reset-password.html' })));
+  }
+  assert.equal(loadGatewayConfig(validEnv()).authEmail.resetPasswordUrl, 'https://www.paperbanana.asia/account/reset-password.html');
+});

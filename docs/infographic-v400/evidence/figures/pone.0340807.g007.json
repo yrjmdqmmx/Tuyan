@@ -1,0 +1,50 @@
+{
+  "id": "pone.0340807.g007",
+  "paper": "pone.0340807",
+  "figure": {
+    "id": "pone.0340807.g007",
+    "label": "Fig 7",
+    "caption": "(Top) Pareto fronts along key axes; the asterisk marks the knee solution.(Bottom) Error–energy fronts for search strategies under a matched budget (P=6 , K=10 , 20-epoch candidates). (a) Error vs energy (b) Error vs size (c) Energy vs calibration. (d) MO_BBBC (e) Random (f) TPE_lite.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" xmlns:ns1=\"http://www.w3.org/1998/Math/MathML\" id=\"pone.0340807.g007\" position=\"float\"><object-id pub-id-type=\"doi\">10.1371/journal.pone.0340807.g007</object-id><label>Fig 7</label><caption><title>(Top) Pareto fronts along key axes; the asterisk marks the knee solution.</title><p>(Bottom) Error–energy fronts for search strategies under a matched budget (<inline-formula id=\"pone.0340807.e211\"><alternatives><graphic id=\"pone.0340807.e211g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0340807.e211\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M211\"><ns1:mrow><ns1:mi>P</ns1:mi><ns1:mrow><ns1:mo>=</ns1:mo></ns1:mrow><ns1:mn>6</ns1:mn><ns1:mo> </ns1:mo></ns1:mrow></ns1:math></alternatives></inline-formula>, <inline-formula id=\"pone.0340807.e212\"><alternatives><graphic id=\"pone.0340807.e212g\" mimetype=\"image\" position=\"anchor\" ns0:href=\"info:doi/10.1371/journal.pone.0340807.e212\" ns0:type=\"simple\" /><ns1:math display=\"inline\" id=\"M212\"><ns1:mrow><ns1:mi>K</ns1:mi><ns1:mrow><ns1:mo>=</ns1:mo></ns1:mrow><ns1:mn>10</ns1:mn><ns1:mo> </ns1:mo></ns1:mrow></ns1:math></alternatives></inline-formula>, 20-epoch candidates). (a) Error vs energy (b) Error vs size (c) Energy vs calibration. (d) MO_BBBC (e) Random (f) TPE_lite.</p></caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pone.0340807.g007\" ns0:type=\"simple\" /></fig>\n",
+    "graphic": {
+      "id": "pone.0340807.e211g",
+      "mimetype": "image",
+      "position": "anchor",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pone.0340807.e211",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pone.0340807",
+    "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0340807",
+    "title": "Multi-objective Big Bang Big Crunch framework for reliable rice disease and variety classification with conditional calibration",
+    "journal": "PLOS One",
+    "authors": [
+      "Chatter Singh",
+      "Amar Singh",
+      "Sahraoui Dhelim"
+    ],
+    "year": "2026",
+    "license": "2026\nSingh et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0340807.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0340807.g007.png",
+      "bytes": 914722,
+      "sha256": "a2f005c81aa9f3610400b22d3af67638a359dc5af8db3de8429c256c3a5d8465"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosone/article/figure/image?size=original&id=10.1371/journal.pone.0340807.g007",
+      "path": "apps/paperbanana-api/assets/reference-library/pone.0340807.g007.tif",
+      "bytes": 1195920,
+      "sha256": "66020bef3693e64415f88a8ee33812c5a5983919780b6d161160a3b5a3b3cf39"
+    }
+  }
+}

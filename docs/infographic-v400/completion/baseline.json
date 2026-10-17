@@ -1,0 +1,1490 @@
+[
+  {
+    "id": "method_framework",
+    "label": "方法框架图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "method_framework.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "experimental_design",
+    "label": "实验设计图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "experimental_design.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "experimental_design.v2",
+        "status": "prompt-only"
+      },
+      {
+        "id": "experimental_design.v3",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "apparatus",
+    "label": "实验装置图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "apparatus.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "apparatus.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "mechanism",
+    "label": "机制示意图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "mechanism.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "mechanism.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "anatomical",
+    "label": "解剖定位示意图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "anatomical.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "anatomical.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "chemical_reaction",
+    "label": "化学反应式图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "chemical_reaction.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "chemical_reaction.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "energy_diagram",
+    "label": "能量剖面图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "energy_diagram.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "sbgn_pd",
+    "label": "生化过程描述图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "sbgn_pd.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "sbgn_af",
+    "label": "生物活动流图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "sbgn_af.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "sbgn_er",
+    "label": "生物实体关系图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "sbgn_er.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "workflow",
+    "label": "流程图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "workflow.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "workflow.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "swimlane",
+    "label": "泳道流程图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "swimlane.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "decision_tree",
+    "label": "决策树图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "decision_tree.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "decision_tree.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "state_transition",
+    "label": "状态转移图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "state_transition.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "state_transition.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "sequence_diagram",
+    "label": "时序交互图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "sequence_diagram.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "sequence_diagram.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "dataflow",
+    "label": "数据流图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "dataflow.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "timeline",
+    "label": "时间线",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "timeline.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "timeline.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "gantt",
+    "label": "甘特图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "gantt.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "gantt.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "roadmap",
+    "label": "研究路线图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "roadmap.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "system_architecture",
+    "label": "系统架构图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "system_architecture.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "system_architecture.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "neural_architecture",
+    "label": "神经网络架构图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "neural_architecture.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "neural_architecture.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "entity_relationship",
+    "label": "数据库实体关系图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "entity_relationship.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "entity_relationship.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "circuit",
+    "label": "电路原理图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "circuit.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "circuit.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "concept_map",
+    "label": "概念关系图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "concept_map.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "hierarchy",
+    "label": "层级树图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "hierarchy.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "hierarchy.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "network",
+    "label": "节点连接网络图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "network.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "network.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "adjacency_matrix",
+    "label": "邻接矩阵图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "adjacency_matrix.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "adjacency_matrix.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "venn",
+    "label": "韦恩集合图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "venn.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "euler",
+    "label": "欧拉集合图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "euler.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "upset",
+    "label": "UpSet 交集图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "upset.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "upset.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "sankey",
+    "label": "桑基流量图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "sankey.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "chord",
+    "label": "弦图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "chord.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "causal_dag",
+    "label": "因果有向无环图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "causal_dag.v1",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "bar",
+    "label": "柱形图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "bar.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "bar.v2",
+        "status": "not-implemented"
+      },
+      {
+        "id": "bar.v3",
+        "status": "not-implemented"
+      },
+      {
+        "id": "bar.v4",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "dotplot",
+    "label": "类别点图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "dotplot.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "dotplot.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "stripplot",
+    "label": "原始观测点图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "stripplot.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "stripplot.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "lollipop",
+    "label": "棒棒糖图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "lollipop.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "dumbbell",
+    "label": "哑铃图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "dumbbell.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "forest",
+    "label": "森林图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "forest.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "waterfall",
+    "label": "瀑布增量图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "waterfall.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "radar",
+    "label": "雷达图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "radar.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "histogram",
+    "label": "直方图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "histogram.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "histogram.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "density",
+    "label": "核密度图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "density.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "boxplot",
+    "label": "箱线图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "boxplot.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "boxplot.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "violin",
+    "label": "小提琴图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "violin.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "raincloud",
+    "label": "云雨图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "raincloud.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "ridgeline",
+    "label": "山脊密度图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "ridgeline.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "ecdf",
+    "label": "经验累积分布图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "ecdf.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "qq",
+    "label": "分位数比较图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "qq.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "qq.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "line",
+    "label": "折线图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "line.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "line.v2",
+        "status": "not-implemented"
+      },
+      {
+        "id": "line.v3",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "area",
+    "label": "面积趋势图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "area.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "area.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "streamgraph",
+    "label": "流图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "streamgraph.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "kaplan_meier",
+    "label": "生存曲线",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "kaplan_meier.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "cumulative_incidence",
+    "label": "累计发生率曲线",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "cumulative_incidence.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "scatter",
+    "label": "散点图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "scatter.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "scatter.v2",
+        "status": "not-implemented"
+      },
+      {
+        "id": "scatter.v3",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "bubble",
+    "label": "气泡散点图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "bubble.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "heatmap",
+    "label": "数值热图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "heatmap.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "heatmap.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "bubble_matrix",
+    "label": "气泡矩阵",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "bubble_matrix.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "binary_matrix",
+    "label": "二值存在矩阵",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "binary_matrix.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "binary_matrix.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "correlation_matrix",
+    "label": "相关矩阵图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "correlation_matrix.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "correlation_matrix.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "matrix_link_overlay",
+    "label": "关联矩阵与网络叠合图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "matrix_link_overlay.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "parallel_coordinates",
+    "label": "平行坐标图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "parallel_coordinates.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "ordination",
+    "label": "排序投影图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "ordination.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "ordination.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "pie",
+    "label": "饼图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "pie.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "treemap",
+    "label": "矩形树图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "treemap.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "circle_packing",
+    "label": "圆堆积层级图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "circle_packing.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "rose",
+    "label": "极坐标面积图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "rose.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "alluvial",
+    "label": "冲积流转图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "alluvial.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "geological_section",
+    "label": "地质剖面图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "geological_section.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "geological_section.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "point_map",
+    "label": "地理点位图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "point_map.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "choropleth",
+    "label": "分区设色地图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "choropleth.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "contour",
+    "label": "等值线图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "contour.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "vector_field",
+    "label": "矢量场图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "vector_field.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "vector_field.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "volcano",
+    "label": "火山图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "volcano.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "ma_plot",
+    "label": "MA 图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "ma_plot.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "enrichment",
+    "label": "富集结果图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "enrichment.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "enrichment.v2",
+        "status": "not-implemented"
+      },
+      {
+        "id": "enrichment.v3",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "gene_track",
+    "label": "基因坐标轨道图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "gene_track.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "gene_track.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "protein_domain",
+    "label": "蛋白结构域图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "protein_domain.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "motif_logo",
+    "label": "序列标识图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "motif_logo.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "motif_logo.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "genome_circos",
+    "label": "基因组环形轨道图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "genome_circos.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "synteny",
+    "label": "基因组共线性图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "synteny.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "synteny.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "phylogenetic",
+    "label": "系统发育树图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "phylogenetic.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "phylogenetic.v2",
+        "status": "not-implemented"
+      },
+      {
+        "id": "phylogenetic.v3",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "dendrogram",
+    "label": "层次聚类树状图",
+    "pipeline": "candidate_unavailable",
+    "png": "blocked",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "dendrogram.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "roc",
+    "label": "ROC 曲线",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "roc.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "pr_curve",
+    "label": "精确率召回率曲线",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "pr_curve.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "confusion_matrix",
+    "label": "混淆矩阵",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "confusion_matrix.v1",
+        "status": "not-implemented"
+      },
+      {
+        "id": "confusion_matrix.v2",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "calibration",
+    "label": "校准曲线",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "calibration.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "bland_altman",
+    "label": "Bland–Altman 一致性图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "bland_altman.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "funnel_meta",
+    "label": "荟萃漏斗图",
+    "pipeline": "deterministic_base",
+    "png": "program-tested",
+    "svg": "not-implemented",
+    "variants": [
+      {
+        "id": "funnel_meta.v1",
+        "status": "not-implemented"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "comparison",
+    "label": "并列比较示意图",
+    "pipeline": "generative_contract",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "comparison.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "comparison.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "multipanel",
+    "label": "多面板组合图",
+    "pipeline": "schematic_panels_only",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "multipanel.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "multipanel.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  },
+  {
+    "id": "small_multiples",
+    "label": "分面小多图",
+    "pipeline": "schematic_panels_only",
+    "png": "contract-only",
+    "svg": "contract-only",
+    "variants": [
+      {
+        "id": "small_multiples.v1",
+        "status": "prompt-only"
+      },
+      {
+        "id": "small_multiples.v2",
+        "status": "prompt-only"
+      }
+    ],
+    "realGeneration": "not-per-type-verified"
+  }
+]

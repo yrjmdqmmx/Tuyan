@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1d3 20150301//EN" "http://jats.nlm.nih.gov/publishing/1.1d3/JATS-journalpublishing1.dtd">
+<article article-type="research-article" dtd-version="1.1d3" xml:lang="en" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<journal-meta>
+<journal-id journal-id-type="nlm-ta">PLoS Biol</journal-id>
+<journal-id journal-id-type="publisher-id">plos</journal-id>
+<journal-id journal-id-type="pmc">plosbiol</journal-id>
+<journal-title-group>
+<journal-title>PLOS Biology</journal-title>
+</journal-title-group>
+<issn pub-type="ppub">1544-9173</issn>
+<issn pub-type="epub">1545-7885</issn>
+<publisher>
+<publisher-name>Public Library of Science</publisher-name>
+<publisher-loc>San Francisco, CA USA</publisher-loc>
+</publisher>
+</journal-meta>
+<article-meta>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645</article-id>
+<article-id pub-id-type="publisher-id">PBIOLOGY-D-24-01054</article-id>
+<article-categories>
+<subj-group subj-group-type="heading">
+<subject>Preregistered Research Article</subject>
+</subj-group>
+<subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Peer review</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Neuroscience</subject><subj-group><subject>Cognitive science</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Biology and life sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Psychology</subject><subj-group><subject>Cognitive psychology</subject><subj-group><subject>Language</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Linguistics</subject><subj-group><subject>Grammar</subject><subj-group><subject>Syntax</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject><subj-group><subject>Research quality assessment</subject></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Research and analysis methods</subject><subj-group><subject>Research assessment</subject></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Education</subject><subj-group><subject>Educational attainment</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Social sciences</subject><subj-group><subject>Sociology</subject><subj-group><subject>Communications</subject><subj-group><subject>Social communication</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>Science policy</subject><subj-group><subject>Science and technology workforce</subject><subj-group><subject>Careers in research</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group><subj-group subj-group-type="Discipline-v3">
+<subject>People and places</subject><subj-group><subject>Population groupings</subject><subj-group><subject>Professions</subject><subj-group><subject>Scientists</subject></subj-group></subj-group></subj-group></subj-group></article-categories>
+<title-group>
+<article-title>An empirical appraisal of eLife’s assessment vocabulary</article-title>
+<alt-title alt-title-type="running-head">An empirical appraisal of eLife’s assessment vocabulary</alt-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author" corresp="yes" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0001-9485-4952</contrib-id>
+<name name-style="western">
+<surname>Hardwicke</surname>
+<given-names>Tom E.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/data-curation/">Data curation</role>
+<role content-type="http://credit.niso.org/contributor-roles/formal-analysis/">Formal analysis</role>
+<role content-type="http://credit.niso.org/contributor-roles/funding-acquisition/">Funding acquisition</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/methodology/">Methodology</role>
+<role content-type="http://credit.niso.org/contributor-roles/project-administration/">Project administration</role>
+<role content-type="http://credit.niso.org/contributor-roles/resources/">Resources</role>
+<role content-type="http://credit.niso.org/contributor-roles/software/">Software</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/validation/">Validation</role>
+<role content-type="http://credit.niso.org/contributor-roles/visualization/">Visualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="corresp" rid="cor001">*</xref>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-8829-137X</contrib-id>
+<name name-style="western">
+<surname>Schiavone</surname>
+<given-names>Sarah R.</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-7355-6718</contrib-id>
+<name name-style="western">
+<surname>Clarke</surname>
+<given-names>Beth</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+<contrib contrib-type="author" xlink:type="simple">
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-3933-9752</contrib-id>
+<name name-style="western">
+<surname>Vazire</surname>
+<given-names>Simine</given-names>
+</name>
+<role content-type="http://credit.niso.org/contributor-roles/conceptualization/">Conceptualization</role>
+<role content-type="http://credit.niso.org/contributor-roles/investigation/">Investigation</role>
+<role content-type="http://credit.niso.org/contributor-roles/supervision/">Supervision</role>
+<role content-type="http://credit.niso.org/contributor-roles/writing-review-editing/">Writing – review &amp; editing</role>
+<xref ref-type="aff" rid="aff001"/>
+</contrib>
+</contrib-group>
+<aff id="aff001"><addr-line>Melbourne School of Psychological Sciences, University of Melbourne, Melbourne, Australia</addr-line></aff>
+<contrib-group>
+<contrib contrib-type="editor" xlink:type="simple">
+<name name-style="western">
+<surname>Chambers</surname>
+<given-names>Christopher D.</given-names>
+</name>
+<role>Academic Editor</role>
+<xref ref-type="aff" rid="edit1"/>
+</contrib>
+</contrib-group>
+<aff id="edit1"><addr-line>Cardiff University, UNITED KINGDOM OF GREAT BRITAIN AND NORTHERN IRELAND</addr-line></aff>
+<author-notes>
+<fn fn-type="conflict" id="coi001">
+<p>SV is a member of the board of directors of The Public Library of Science (PLOS). This role has in no way influenced the outcome or development of this work or the peer-review process, nor does it alter our adherence to PLOS Biology policies on sharing data and materials. All other authors declare they have no conflicts of interest.</p>
+</fn>
+<corresp id="cor001">* E-mail: <email xlink:type="simple">tom.hardwicke@unimelb.edu.au</email></corresp>
+</author-notes>
+<pub-date pub-type="epub">
+<day>22</day>
+<month>8</month>
+<year>2024</year>
+</pub-date>
+<pub-date pub-type="collection">
+<month>8</month>
+<year>2024</year>
+</pub-date>
+<volume>22</volume>
+<issue>8</issue>
+<elocation-id>e3002645</elocation-id>
+<history>
+<date date-type="received">
+<day>7</day>
+<month>4</month>
+<year>2024</year>
+</date>
+<date date-type="accepted">
+<day>9</day>
+<month>7</month>
+<year>2024</year>
+</date>
+</history>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Hardwicke et al</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<self-uri content-type="pdf" xlink:href="info:doi/10.1371/journal.pbio.3002645"/>
+<abstract>
+<p>Research articles published by the journal eLife are accompanied by short evaluation statements that use phrases from a prescribed vocabulary to evaluate research on 2 dimensions: importance and strength of support. Intuitively, the prescribed phrases appear to be highly synonymous (e.g., important/valuable, compelling/convincing) and the vocabulary’s ordinal structure may not be obvious to readers. We conducted an online repeated-measures experiment to gauge whether the phrases were interpreted as intended. We also tested an alternative vocabulary with (in our view) a less ambiguous structure. A total of 301 participants with a doctoral or graduate degree used a 0% to 100% scale to rate the importance and strength of support of hypothetical studies described using phrases from both vocabularies. For the eLife vocabulary, most participants’ implied ranking did not match the intended ranking on both the importance (<italic>n</italic> = 59, 20% matched, 95% confidence interval [15% to 24%]) and strength of support dimensions (<italic>n</italic> = 45, 15% matched [11% to 20%]). By contrast, for the alternative vocabulary, most participants’ implied ranking did match the intended ranking on both the importance (<italic>n</italic> = 188, 62% matched [57% to 68%]) and strength of support dimensions (<italic>n</italic> = 201, 67% matched [62% to 72%]). eLife’s vocabulary tended to produce less consistent between-person interpretations, though the alternative vocabulary still elicited some overlapping interpretations away from the middle of the scale. We speculate that explicit presentation of a vocabulary’s intended ordinal structure could improve interpretation. Overall, these findings suggest that more structured and less ambiguous language can improve communication of research evaluations.</p>
+</abstract>
+<abstract abstract-type="toc">
+<p>Research articles published by eLife are accompanied by statements that use prescribed phrases to evaluate importance and strength of support. This study uses an online repeated-measures experiment to gauge whether the eLife phrases were interpreted as intended, finding that most participants’ implied ranking did not match the intended ranking.</p>
+</abstract>
+<funding-group>
+<award-group id="award001">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100007961</institution-id>
+<institution>Melbourne School of Psychological Sciences</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0002-3933-9752</contrib-id>
+<name name-style="western">
+<surname>Vazire</surname>
+<given-names>Simine</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<award-group id="award002">
+<funding-source>
+<institution-wrap>
+<institution-id institution-id-type="funder-id">http://dx.doi.org/10.13039/501100007961</institution-id>
+<institution>Melbourne School of Psychological Sciences</institution>
+</institution-wrap>
+</funding-source>
+<principal-award-recipient>
+<contrib-id authenticated="true" contrib-id-type="orcid">https://orcid.org/0000-0001-9485-4952</contrib-id>
+<name name-style="western">
+<surname>Hardwicke</surname>
+<given-names>Tom E.</given-names>
+</name>
+</principal-award-recipient>
+</award-group>
+<funding-statement>This study was supported by funding awarded to to SV and TEH from the Melbourne School of Psychological Sciences, University of Melbourne. The funders did not play any role in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.</funding-statement>
+</funding-group>
+<counts>
+<fig-count count="7"/>
+<table-count count="4"/>
+<page-count count="17"/>
+</counts>
+<custom-meta-group>
+<custom-meta id="data-availability">
+<meta-name>Data Availability</meta-name>
+<meta-value>All data, materials, and analysis scripts are publicly available on the Open Science Framework (<ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage/" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage/</ext-link>). A reproducible version of the manuscript and associated computational environment is available in a Code Ocean container (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.24433/CO.4128032.v1" xlink:type="simple">https://doi.org/10.24433/CO.4128032.v1</ext-link>).</meta-value>
+</custom-meta>
+</custom-meta-group>
+</article-meta>
+</front>
+<body>
+<sec id="sec001" sec-type="intro">
+<title>Introduction</title>
+<p>Peer review is usually a black box—readers only know that a research paper eventually surpassed some ill-defined threshold for publication and rarely see the more nuanced evaluations of the reviewers and editor [<xref ref-type="bibr" rid="pbio.3002645.ref001">1</xref>]. A minority of journals challenge this convention by making peer review reports publicly available [<xref ref-type="bibr" rid="pbio.3002645.ref002">2</xref>]. One such journal, eLife, also accompanies articles with short evaluation statements (“eLife assessments”) representing the consensus opinions of editors and peer reviewers [<xref ref-type="bibr" rid="pbio.3002645.ref003">3</xref>]. In 2022, eLife stated that these assessments would use phrases drawn from a common vocabulary (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>) to convey their judgements on 2 evaluative dimensions: (1) “significance”; and (2) “strength of support” (for details see [<xref ref-type="bibr" rid="pbio.3002645.ref004">4</xref>]). For example, a study may be described as having “landmark” significance and offering “exceptional” strength of support (for a complete example, see <xref ref-type="boxed-text" rid="pbio.3002645.box001">Box 1</xref>). The phrases are drawn from “widely used expressions” in prior eLife assessments and the stated goal is to “help convey the views of the editor and the reviewers in a clear and consistent manner” [<xref ref-type="bibr" rid="pbio.3002645.ref004">4</xref>]. Here, we report a study which assessed whether the language used in eLife assessments is perceived clearly and consistently by potential readers. We also assessed alternative language that may improve communication.</p>
+<table-wrap id="pbio.3002645.t001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.t001</object-id>
+<label>Table 1</label> <caption><title>Phrases and their definitions (italicised) from the eLife vocabulary representing 2 evaluative dimensions: significance and strength of support.</title> <p>The significance dimension is represented by 5 phrases and the strength of support dimension is represented by 6 phrases. In a particular eLife assessment, readers only see 1 phrase from each of the evaluative dimensions. Phrases are accompanied by eLife definitions, but these are not shown in eLife assessments (though some words from the definitions may be used).</p></caption>
+<alternatives>
+<graphic id="pbio.3002645.t001g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.t001" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" colspan="2">eLife vocabulary</th>
+</tr>
+<tr>
+<th align="left">Significance</th>
+<th align="left">Strength of support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Landmark: <italic>findings with profound implications that are expected to have widespread influence</italic></td>
+<td align="left">Exceptional: <italic>exemplary use of existing approaches that establish new standards for a field</italic></td>
+</tr>
+<tr>
+<td align="left">Fundamental: <italic>findings that substantially advance our understanding of major research questions</italic></td>
+<td align="left">Compelling: <italic>evidence that features methods</italic>, <italic>data</italic>, <italic>and analyses more rigorous than the current state-of-the-art</italic></td>
+</tr>
+<tr>
+<td align="left">Important: <italic>findings that have theoretical or practical implications beyond a single subfield</italic></td>
+<td align="left">Convincing: <italic>appropriate and validated methodology in line with current state-of-the-art</italic></td>
+</tr>
+<tr>
+<td align="left">Valuable: <italic>findings that have theoretical or practical implications for a subfield</italic></td>
+<td align="left">Solid: <italic>methods</italic>, <italic>data</italic>, <italic>and analyses broadly support the claims with only minor weaknesses</italic></td>
+</tr>
+<tr>
+<td align="left">Useful: <italic>findings that have focused importance and scope</italic></td>
+<td align="left">Incomplete: <italic>main claims are only partially supported</italic></td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="left">Inadequate: <italic>methods</italic>, <italic>data</italic>, <italic>and analyses do not support the primary claims</italic></td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>Our understanding (based on [<xref ref-type="bibr" rid="pbio.3002645.ref004">4</xref>]) is that eLife intends the common vocabulary to represent different degrees of each evaluative dimension on an ordinal scale (e.g., “landmark” findings are more significant than “fundamental” findings and so forth); however, in our view the intended ordering is sometimes ambiguous or counterintuitive. For example, it does not seem obvious to us that an “important” study is necessarily more significant than a “valuable” study nor does a “compelling” study seem necessarily stronger than a “convincing” study. Additionally, several phrases like “solid” and “useful,” could be broadly interpreted, leading to a mismatch between intended meaning and perceived meaning. The phrases also do not cover the full continuum of measurement and are unbalanced in terms of positive and negative phrases. For example, the “significance” dimension has no negative phrases—the scale endpoints are “landmark” and “useful.” We also note that the definitions provided by eLife do not always map onto gradations of the same construct. For example, the eLife definitions of phrases on the significance dimension suggest that the difference between “useful,” “valuable,” and “important” is a matter of breadth/scope (whether the findings have implications beyond a specific subfield), whereas the difference between “fundamental” and “landmark” is a matter of degree. In short, we are concerned that several aspects of the eLife vocabulary may undermine communication of research evaluations to readers.</p>
+<p>In <xref ref-type="table" rid="pbio.3002645.t002">Table 2</xref>, we outline an alternative vocabulary that is intended to overcome these potential issues with the eLife vocabulary. Phrases in the alternative vocabulary explicitly state the relevant evaluative dimension (e.g., “support”) along with a modifying adjective that unambiguously represents degree (e.g., “very low”). The alternative vocabulary is intended to cover the full continuum of measurement and be balanced in terms of positive and negative phrases. We have also renamed “significance” to “importance” to avoid any confusion with statistical significance. We hope that these features will facilitate alignment of readers’ interpretations with the intended interpretations, improving the efficiency and accuracy of communication.</p>
+<boxed-text id="pbio.3002645.box001" position="float">
+<sec id="sec002">
+<title>Box 1. A complete example of an eLife assessment. This particular example uses the phrase “important,” to convey the study’s significance, and the phrase “compelling,” to convey the study’s strength of support</title>
+<p>“The overarching question of the manuscript is important and the findings inform the patterns and mechanisms of phage-mediated bacterial competition, with implications for microbial evolution and antimicrobial resistance. The strength of the evidence in the manuscript is compelling, with a huge amount of data and very interesting observations. The conclusions are well supported by the data. This manuscript provides a new co-evolutionary perspective on competition between lysogenic and phage-susceptible bacteria that will inform new studies and sharpen our understanding of phage-mediated bacterial co-evolution.” [<xref ref-type="bibr" rid="pbio.3002645.ref005">5</xref>].</p>
+</sec>
+</boxed-text>
+<table-wrap id="pbio.3002645.t002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.t002</object-id>
+<label>Table 2</label> <caption><title>Phrases from the alternative vocabulary representing 2 evaluative dimensions: importance and strength of support. Each dimension is represented by 5 phrases.</title></caption>
+<alternatives>
+<graphic id="pbio.3002645.t002g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.t002" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<thead>
+<tr>
+<th align="left" colspan="2">Alternative vocabulary</th>
+</tr>
+<tr>
+<th align="left">Importance</th>
+<th align="left">Strength of support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Very high importance</td>
+<td align="left">Very strong support</td>
+</tr>
+<tr>
+<td align="left">High importance</td>
+<td align="left">Strong support</td>
+</tr>
+<tr>
+<td align="left">Moderate importance</td>
+<td align="left">Moderate support</td>
+</tr>
+<tr>
+<td align="left">Low importance</td>
+<td align="left">Weak support</td>
+</tr>
+<tr>
+<td align="left">Very low importance</td>
+<td align="left">Very weak support</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+</table-wrap>
+<p>The utility of eLife assessments will depend (in part) on whether readers interpret the common vocabulary in the manner that eLife intends. Mismatches between eLife’s intentions and readers’ perceptions could lead to inefficient or inaccurate communication. In this study, we empirically evaluated how the eLife vocabulary (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>) is interpreted and assessed whether an alternative vocabulary (<xref ref-type="table" rid="pbio.3002645.t002">Table 2</xref>) elicited more desirable interpretations. Our goal was not to disparage eLife’s progressive efforts, but to make a constructive contribution towards a more transparent and informative peer review process. We hope that a vocabulary with good empirical performance will be more attractive and useful to other journals considering adopting eLife’s approach.</p>
+<p>Our study is modelled on prior studies that report considerable individual differences in people’s interpretation of probabilistic phrases [<xref ref-type="bibr" rid="pbio.3002645.ref006">6</xref>–<xref ref-type="bibr" rid="pbio.3002645.ref012">12</xref>]. In a prototypical study of this kind, participants are shown a probabilistic statement like “It will probably rain tomorrow” and asked to indicate the likelihood of rain on a scale from 0% to 100%. Analogously, in our study participants read statements describing hypothetical scientific studies using phrases drawn from the eLife vocabulary or the alternative vocabulary and were asked to rate the study’s significance/importance or strength of support on a scale from 0 to 100. We used these responses to gauge the extent to which people’s interpretations of the vocabulary were consistent with each other and consistent with the intended rank order.</p>
+<sec id="sec003">
+<title>Research aims</title>
+<p>Our overarching goal was to identify clear language for conveying evaluations of scientific papers. We hope that this will make it easier for other journals/platforms to follow in eLife’s footsteps and move towards more transparent and informative peer review.</p>
+<p>With this overall goal in mind, we had 3 specific research aims:</p>
+<list list-type="bullet">
+<list-item><p>Aim One. To what extent do people share similar interpretations of phrases used to describe scientific research?</p></list-item>
+<list-item><p>Aim Two. To what extent do people’s (implied) ranking of phrases used to describe scientific research align with (a) each other; and (b) with the intended ranking?</p></list-item>
+<list-item><p>Aim Three. To what extent do different phrases used to describe scientific research elicit overlapping interpretations and do those interpretations imply broad coverage of the underlying measurement scale?</p></list-item>
+</list>
+</sec>
+</sec>
+<sec id="sec004" sec-type="materials|methods">
+<title>Methods</title>
+<p>Our methods adhered to our preregistered plan (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.17605/OSF.IO/MKBTP" xlink:type="simple">https://doi.org/10.17605/OSF.IO/MKBTP</ext-link>) with one minor deviation: our target sample size was 300, but we accidentally recruited an additional participant, so the actual sample size was 301.</p>
+<sec id="sec005">
+<title>Ethics</title>
+<p>This study was approved by a University of Melbourne ethics board (project ID: 26411).</p>
+</sec>
+<sec id="sec006">
+<title>Design</title>
+<p>We conducted an experiment with a repeated-measures design. Participants were shown short statements that described hypothetical scientific studies in terms of their significance/importance or strength of support using phrases drawn from the eLife vocabulary (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>) and from the alternative vocabulary (<xref ref-type="table" rid="pbio.3002645.t002">Table 2</xref>). The statements were organised into 4 blocks based on vocabulary and evaluative dimension; specifically, block one: <italic>eLife-significance</italic> (5 statements), block two: <italic>eLife-support</italic> (6 statements), block three: <italic>alternative-importance</italic> (5 statements), block four: <italic>alternative-support</italic> (5 statements). Each participant saw all 21 phrases and responded using a 0% to 100% slider scale to indicate their belief about each hypothetical study’s significance/importance or strength of support.</p>
+</sec>
+<sec id="sec007" sec-type="materials|methods">
+<title>Materials</title>
+<p>There were 21 statements that described hypothetical scientific studies using one of the 21 phrases included in the 2 vocabularies (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>). Statements referred either to a study’s strength of support (e.g., <xref ref-type="fig" rid="pbio.3002645.g001">Fig 1</xref>) or a study’s significance/importance (e.g., Supplementary Figure A in <xref ref-type="supplementary-material" rid="pbio.3002645.s001">S1 Text</xref>). For the alternative vocabulary, we used the term “importance” rather than “significance.” To ensure the statements were grammatically accurate, it was necessary to use slightly different phrasing when communicating significance with the eLife vocabulary (“This is an [phrase] study”) compared to communicating importance with the alternative vocabulary (“This study has [phrase] importance”; e.g., Supplementary Figure B in <xref ref-type="supplementary-material" rid="pbio.3002645.s001">S1 Text</xref>).</p>
+<fig id="pbio.3002645.g001" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g001</object-id>
+<label>Fig 1</label>
+<caption>
+<title>An example summary statement referring to a study’s strength of support and the corresponding response scale with an arbitrary response shown.</title>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g001" xlink:type="simple"/>
+</fig>
+<p>Additionally, there was 1 attention check statement (Supplementary Figure C in <xref ref-type="supplementary-material" rid="pbio.3002645.s001">S1 Text</xref>), a question asking participants to confirm their highest completed education level (options: Undergraduate degree (BA/BSc/other)/Graduate degree (MA/MSc/MPhil/other)/Doctorate degree (PhD/other)/Other), and a question asking participants the broad subject area of their highest completed education level (options: Arts and Humanities/Life Sciences and Biomedicine/Physical Sciences/Social Sciences/Other). The veridical materials are available at <ext-link ext-link-type="uri" xlink:href="https://osf.io/jpgxe/" xlink:type="simple">https://osf.io/jpgxe/</ext-link>.</p>
+</sec>
+<sec id="sec008">
+<title>Sample</title>
+<sec id="sec009">
+<title>Sample source</title>
+<p>Participants were recruited from the online participant recruitment platform Prolific (<ext-link ext-link-type="uri" xlink:href="https://www.prolific.co/" xlink:type="simple">https://www.prolific.co/</ext-link>). As of 23rd August 2023, the platform had 123,064 members. Demographic information about Prolific members is provided in <xref ref-type="supplementary-material" rid="pbio.3002645.s008">S8 Text</xref>.</p>
+</sec>
+<sec id="sec010">
+<title>Sample size</title>
+<p>As data collection unfolded, we intermittently checked how many participants had met the inclusion criteria, aiming to stop data collection when we had eligible data for our target sample size of 300 participants. Ultimately, 461 participants responded to the survey. Of these 461 participants, 156 participants failed the attention check and 12 participants took longer than 30 min to complete the study and were therefore excluded. No participants failed to respond to all 21 statements or completed the study too quickly (&lt;5 min). We applied these exclusion criteria one-by-one which removed data from 160 participants and retained eligible data from 301 participants (we unintentionally recruited 1 additional participant).</p>
+</sec>
+<sec id="sec011">
+<title>Sample size justification</title>
+<p>The target sample size of 300 was based on our resource constraints and expectations about statistical power and precision (see <xref ref-type="supplementary-material" rid="pbio.3002645.s002">S2 Text</xref>).</p>
+</sec>
+<sec id="sec012">
+<title>Inclusion criteria</title>
+<p>Participants had to have a ≥95% approval rate for prior participation on the recruitment platform (Prolific). Additionally, Prolific prescreening questions were used to ensure that the study was only available to participants who reported that they speak fluent English, were aged between 18 and 70 years, and had completed a doctorate degree (PhD/other).</p>
+</sec>
+<sec id="sec013">
+<title>Procedure</title>
+<list list-type="order">
+<list-item><p>Data collection and recruitment via the Prolific platform began on September 13, 2023 and was completed on September 14, 2023.</p></list-item>
+<list-item><p>After responding to the study advert (<ext-link ext-link-type="uri" xlink:href="https://osf.io/a25vq" xlink:type="simple">https://osf.io/a25vq</ext-link>), participants read an information sheet (<ext-link ext-link-type="uri" xlink:href="https://osf.io/39vay" xlink:type="simple">https://osf.io/39vay</ext-link>) and provided consent (<ext-link ext-link-type="uri" xlink:href="https://osf.io/xdar7" xlink:type="simple">https://osf.io/xdar7</ext-link>). During this process, they were told that the study seeks to understand “how people perceive words used to describe scientific studies so we can improve communication of research to the general public.”</p></list-item>
+<list-item><p>Participants completed the task remotely online via the Qualtrics platform. Before starting the main task, they read a set of instructions and responded to a practice statement (<xref ref-type="supplementary-material" rid="pbio.3002645.s003">S3 Text</xref>).</p></list-item>
+<list-item><p>For the main task, statements were presented sequentially, and participants responded to them in their own time. The order of presentation was randomized, both between and within the 4 blocks of statements. After each statement, there was a 15-s filler task during which participants were asked to complete as many multiplication problems (e.g., 5 × 7 =?) as they could from a list of 10. The multiplication problems were randomly generated every time they appeared using the Qualtrics software. Only numbers between 1 and 15 were used to ensure that most of the problems were relatively straightforward to solve. A single “attention check” statement (Supplementary Figure C in <xref ref-type="supplementary-material" rid="pbio.3002645.s001">S1 Text</xref>) appeared after all 4 blocks had been completed.</p></list-item>
+<list-item><p>Participants were required to respond to each statement before they could continue to the next statement. The response slider could be readjusted as desired until the “next” button was pressed, after which participants could not return to or edit prior responses.</p></list-item>
+<list-item><p>After responding to all 21 statements and the attention check, participants were shown a debriefing document (<ext-link ext-link-type="uri" xlink:href="https://osf.io/a9gve" xlink:type="simple">https://osf.io/a9gve</ext-link>).</p></list-item>
+</list>
+</sec>
+</sec>
+</sec>
+<sec id="sec014" sec-type="results">
+<title>Results</title>
+<p>All analyses adhered to our preregistered plan (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.17605/OSF.IO/MKBTP" xlink:type="simple">https://doi.org/10.17605/OSF.IO/MKBTP</ext-link>). Numbers in square brackets represent 95% confidence intervals computed with the Sison–Glaz method [<xref ref-type="bibr" rid="pbio.3002645.ref013">13</xref>] for multinomial proportions or bootstrapped with the percentile method [<xref ref-type="bibr" rid="pbio.3002645.ref014">14</xref>] for percentile estimates.</p>
+<sec id="sec015">
+<title>Participant characteristics</title>
+<p>Participants stated that their highest completed education level was either a doctorate degree (<italic>n</italic> = 287) or graduate degree (<italic>n</italic> = 14). Participants reported that the subject areas that most closely represented their degrees were Life Sciences and Biomedicine (<italic>n</italic> = 97), Social Sciences (<italic>n</italic> = 77), Physical Sciences (<italic>n</italic> = 57), Arts and Humanities (<italic>n</italic> = 37), and various “other” disciplines (<italic>n</italic> = 33).</p>
+</sec>
+<sec id="sec016">
+<title>Response distributions</title>
+<p>The distribution of participants’ responses to each phrase is shown in <xref ref-type="fig" rid="pbio.3002645.g002">Fig 2</xref> (importance/significance dimension) and <xref ref-type="fig" rid="pbio.3002645.g003">Fig 3</xref> (strength of support dimension). These “ridgeline” plots [<xref ref-type="bibr" rid="pbio.3002645.ref015">15</xref>] are kernel density distributions which represent the relative probability of observing different responses (akin to a smoothed histogram).</p>
+<p>Tables <xref ref-type="table" rid="pbio.3002645.t003">3</xref> and <xref ref-type="table" rid="pbio.3002645.t004">4</xref> show the 25th, 50th (i.e., median), and 75th percentiles of responses for each phrase (as represented by the black vertical lines in Figs <xref ref-type="fig" rid="pbio.3002645.g002">2</xref> and <xref ref-type="fig" rid="pbio.3002645.g003">3</xref>). The tables include 95% confidence intervals only for medians to make them easier to read; however, confidence intervals for all percentile estimates are available in Supplementary Table A in <xref ref-type="supplementary-material" rid="pbio.3002645.s005">S5 Text</xref> and Supplementary Table B in in <xref ref-type="supplementary-material" rid="pbio.3002645.s005">S5 Text</xref>.</p>
+<fig id="pbio.3002645.g002" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g002</object-id>
+<label>Fig 2</label>
+<caption>
+<title/>
+<p>Responses to each phrase on the importance/significance dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g002" xlink:type="simple"/>
+</fig>
+<fig id="pbio.3002645.g003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g003</object-id>
+<label>Fig 3</label>
+<caption>
+<title/>
+<p>Responses to each phrase on the strength of support dimension as kernel density distributions with the 25th, 50th (i.e., median), and 75th quantiles represented by black vertical lines and the 25th–75th quantile region (i.e., interquartile range) highlighted in blue. The data underlying this figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g003" xlink:type="simple"/>
+</fig>
+<table-wrap id="pbio.3002645.t003" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.t003</object-id>
+<label>Table 3</label> <caption><title>Percentile estimates for participant responses to phrases on the significance/importance dimension for eLife and alternative vocabularies.</title> <p>The data underlying this table can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p></caption>
+<alternatives>
+<graphic id="pbio.3002645.t003g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.t003" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" colspan="4"><bold>Importance dimension</bold></td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="center" colspan="3"><bold>Percentile</bold></td>
+</tr>
+<tr>
+<td align="left"><bold>Phrase</bold></td>
+<td align="right"><bold>25th</bold></td>
+<td align="right"><bold>Median [CI]</bold></td>
+<td align="right" style="background-color:#FFFFFF"><bold>75th</bold></td>
+</tr>
+<tr>
+<td align="left" colspan="4" style="background-color:#FFFFFF"><bold>eLife vocabulary</bold></td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Landmark</td>
+<td align="right" style="background-color:#FFFFFF">86</td>
+<td align="right" style="background-color:#FFFFFF">94 [92,95]</td>
+<td align="right" style="background-color:#FFFFFF">98</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Fundamental</td>
+<td align="right" style="background-color:#FFFFFF">70</td>
+<td align="right" style="background-color:#FFFFFF">83 [81,85]</td>
+<td align="right" style="background-color:#FFFFFF">90</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Important</td>
+<td align="right" style="background-color:#FFFFFF">66</td>
+<td align="right" style="background-color:#FFFFFF">72 [71,75]</td>
+<td align="right" style="background-color:#FFFFFF">80</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Valuable</td>
+<td align="right" style="background-color:#FFFFFF">60</td>
+<td align="right" style="background-color:#FFFFFF">70 [70,71]</td>
+<td align="right" style="background-color:#FFFFFF">80</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Useful</td>
+<td align="right" style="background-color:#FFFFFF">50</td>
+<td align="right" style="background-color:#FFFFFF">60 [60,63]</td>
+<td align="right" style="background-color:#FFFFFF">70</td>
+</tr>
+<tr>
+<td align="left" colspan="4" style="background-color:#FFFFFF"><bold>Alternative vocabulary</bold></td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Very high importance</td>
+<td align="right" style="background-color:#FFFFFF">84</td>
+<td align="right" style="background-color:#FFFFFF">90 [90,91]</td>
+<td align="right" style="background-color:#FFFFFF">94</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">High importance</td>
+<td align="right" style="background-color:#FFFFFF">75</td>
+<td align="right" style="background-color:#FFFFFF">80 [80,81]</td>
+<td align="right" style="background-color:#FFFFFF">88</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Moderate importance</td>
+<td align="right" style="background-color:#FFFFFF">48</td>
+<td align="right" style="background-color:#FFFFFF">50 [50,51]</td>
+<td align="right" style="background-color:#FFFFFF">58</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Low importance</td>
+<td align="right" style="background-color:#FFFFFF">10</td>
+<td align="right" style="background-color:#FFFFFF">15 [13,18]</td>
+<td align="right" style="background-color:#FFFFFF">20</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Very low importance</td>
+<td align="right" style="background-color:#FFFFFF">4</td>
+<td align="right" style="background-color:#FFFFFF">8 [6,9]</td>
+<td align="right" style="background-color:#FFFFFF">11</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t003fn001"><p>CI, 95% confidence intervals.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+<table-wrap id="pbio.3002645.t004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.t004</object-id>
+<label>Table 4</label> <caption><title>Percentile estimates for participant responses to phrases on the strength of support dimension for eLife and alternative vocabularies.</title> <p>The data underlying this table can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p></caption>
+<alternatives>
+<graphic id="pbio.3002645.t004g" mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.t004" xlink:type="simple"/>
+<table>
+<colgroup>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+<col align="left" valign="middle"/>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" colspan="4"><bold>Strength of support dimension</bold></td>
+</tr>
+<tr>
+<td align="left"/>
+<td align="center" colspan="3"><bold>Percentile</bold></td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF"><bold>Phrase</bold></td>
+<td align="right" style="background-color:#FFFFFF"><bold>25th</bold></td>
+<td align="right" style="background-color:#FFFFFF"><bold>Median [CI]</bold></td>
+<td align="right" style="background-color:#FFFFFF"><bold>75th</bold></td>
+</tr>
+<tr>
+<td align="left" colspan="4" style="background-color:#FFFFFF"><bold>eLife vocabulary</bold></td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Exceptional</td>
+<td align="right" style="background-color:#FFFFFF">90</td>
+<td align="right" style="background-color:#FFFFFF">95 [94,95]</td>
+<td align="right" style="background-color:#FFFFFF">98</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Compelling</td>
+<td align="right" style="background-color:#FFFFFF">70</td>
+<td align="right" style="background-color:#FFFFFF">80 [76,80]</td>
+<td align="right" style="background-color:#FFFFFF">86</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Convincing</td>
+<td align="right" style="background-color:#FFFFFF">65</td>
+<td align="right" style="background-color:#FFFFFF">75 [71,75]</td>
+<td align="right" style="background-color:#FFFFFF">81</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Solid</td>
+<td align="right" style="background-color:#FFFFFF">65</td>
+<td align="right" style="background-color:#FFFFFF">74 [71,75]</td>
+<td align="right" style="background-color:#FFFFFF">82</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Incomplete</td>
+<td align="right" style="background-color:#FFFFFF">10</td>
+<td align="right" style="background-color:#FFFFFF">20 [16,20]</td>
+<td align="right" style="background-color:#FFFFFF">30</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Inadequate</td>
+<td align="right" style="background-color:#FFFFFF">5</td>
+<td align="right" style="background-color:#FFFFFF">10 [10,13]</td>
+<td align="right" style="background-color:#FFFFFF">20</td>
+</tr>
+<tr>
+<td align="left" colspan="4" style="background-color:#FFFFFF"><bold>Alternative vocabulary</bold></td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Very strong support</td>
+<td align="right" style="background-color:#FFFFFF">80</td>
+<td align="right" style="background-color:#FFFFFF">88 [85,90]</td>
+<td align="right" style="background-color:#FFFFFF">92</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Strong support</td>
+<td align="right" style="background-color:#FFFFFF">70</td>
+<td align="right" style="background-color:#FFFFFF">77 [75,80]</td>
+<td align="right" style="background-color:#FFFFFF">85</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Moderate support</td>
+<td align="right" style="background-color:#FFFFFF">46</td>
+<td align="right" style="background-color:#FFFFFF">50 [50,51]</td>
+<td align="right" style="background-color:#FFFFFF">56</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Weak support</td>
+<td align="right" style="background-color:#FFFFFF">10</td>
+<td align="right" style="background-color:#FFFFFF">15 [14,18]</td>
+<td align="right" style="background-color:#FFFFFF">22</td>
+</tr>
+<tr>
+<td align="left" style="background-color:#FFFFFF">Very weak support</td>
+<td align="right" style="background-color:#FFFFFF">5</td>
+<td align="right" style="background-color:#FFFFFF">9 [7,10]</td>
+<td align="right" style="background-color:#FFFFFF">13</td>
+</tr>
+</tbody>
+</table>
+</alternatives>
+<table-wrap-foot>
+<fn id="t004fn001"><p>CI, 95% confidence intervals.</p></fn>
+</table-wrap-foot>
+</table-wrap>
+</sec>
+<sec id="sec017">
+<title>Implied ranking of evaluative phrases</title>
+<sec id="sec018">
+<title>Do participants’ implied rankings match the intended rankings?</title>
+<p>Although participants rated each statement separately on a continuous scale, these responses also imply an overall ranking of the phrases (in order of significance/importance or strength of support). Ideally, an evaluative vocabulary elicits implied rankings that are both consistent among participants and consistent with the intended ranking. <xref ref-type="fig" rid="pbio.3002645.g004">Fig 4</xref> shows the proportion of participants whose implied ranking matched the intended ranking (i.e., “correct ranking”) for the different evaluative dimensions and vocabularies.</p>
+<p>On the significance/importance dimension, 59 (20% [15% to 24%]) participants’ implied rankings of the eLife vocabulary aligned with the intended ranking and 188 (62% [57% to 68%]) participants’ implied rankings of the alternative vocabulary aligned with the intended ranking. We performed an “exact” McNemar test and computed the McNemar odds ratio with Clopper–Pearson 95% confidence intervals adjusted with the “midp” method, as recommended by [<xref ref-type="bibr" rid="pbio.3002645.ref016">16</xref>]. The McNemar test indicated that observing a difference between the vocabularies this large, or larger, is unlikely if the null hypothesis were true (odds ratio = 8.17, 95% CI [5.11, 13.69], <italic>p</italic> = 1.34e-26). The intended ranking was the most popular for both vocabularies; however, participants had 55 different implied rankings for the eLife vocabulary and 8 different implied rankings for the alternative vocabulary (for details, see Supplementary Tables A–D in <xref ref-type="supplementary-material" rid="pbio.3002645.s006">S6 Text</xref>). Note that these values should be compared with caution, as for the significance/importance dimension, the eLife vocabulary had more (6) phrases than the alternative vocabulary (which had 5 phrases and therefore fewer possible rankings).</p>
+<p>On the strength of support dimension, 45 (15% [11% to 20%]) participants’ ratings of the eLife phrases were in accordance with the intended ranking relative to 201 (67% [62% to 72%]) participants who correctly ranked the alternative vocabulary. A McNemar test indicated that observing a difference between the vocabularies this large, or larger, is unlikely if the null hypothesis were true (odds ratio = 11.4, 95% CI [6.89, 20.01], <italic>p</italic> = 5.73e-35). The intended ranking was the most popular for both vocabularies; though for the eLife vocabulary, an unintended ranking that swapped the ordinal positions of “convincing” and “solid” came a close second, reflected in the ratings of 44 (15% [10% to 19%]) participants. Overall, there were 34 different implied rankings for the eLife vocabulary, relative to 10 implied rankings for the alternative vocabulary.</p>
+<fig id="pbio.3002645.g004" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g004</object-id>
+<label>Fig 4</label>
+<caption>
+<title>Proportion of participants (<italic>N</italic> = 301) whose implied ranking matched the intended ranking (i.e., “correct ranking”) for both evaluative dimensions and both vocabularies.</title>
+<p>Error bars represent 95% confidence intervals using the Sison–Glaz method [<xref ref-type="bibr" rid="pbio.3002645.ref013">13</xref>]. The data underlying this figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g004" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec019">
+<title>Quantifying ranking similarity</title>
+<p>Thus far, our analyses have emphasised the binary difference between readers’ implied rankings and eLife’s intended rankings. A complementary analysis quantifies the <italic>degree</italic> of similarity between rankings using Kendall’s tau distance (<italic>K</italic><sub>d</sub>)—a metric that describes the difference between 2 lists in terms of the number of adjacent pairwise swaps required to convert one list into the other [<xref ref-type="bibr" rid="pbio.3002645.ref017">17</xref>,<xref ref-type="bibr" rid="pbio.3002645.ref018">18</xref>]. The larger the distance, the larger the dissimilarity between the 2 lists. <italic>K</italic><sub>d</sub> ranges from 0 (indicating a complete match) to n(n-1)/2 (where n is the size of one list). Because the eLife strength of support dimension has 6 phrases and all other dimensions have 5 phrases, we report the normalised <italic>K</italic><sub>d</sub> which ranges from 0 (maximal similarity) to 1 (maximal dissimilarity). Further explanation of <italic>K</italic><sub>d</sub> is provided in <xref ref-type="supplementary-material" rid="pbio.3002645.s007">S7 Text</xref>.</p>
+<p><xref ref-type="fig" rid="pbio.3002645.g005">Fig 5</xref> illustrates the extent to which participants’ observed rankings deviated from the intended ranking in terms of normalised <italic>K</italic><sub><italic>d</italic></sub>. This suggests that although deviations from the intended eLife ranking were common, they only tended to be on the order of 1 or 2 discordant rank pairs. By contrast, the alternative vocabulary rarely resulted in any deviations, and when it did, these were typically only in terms of one discordant rank pair.</p>
+<fig id="pbio.3002645.g005" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g005</object-id>
+<label>Fig 5</label>
+<caption>
+<title>Extent to which participants (<italic>N</italic> = 301) implied rankings deviated from intended rankings using normalised Kendall’s distance.</title>
+<p>Zero represents a perfect match (green bar), other values (grey bars) represent increasing dissimilarity from the intended ranking up to 1, which represents maximal dissimilarity. The data underlying this figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g005" xlink:type="simple"/>
+</fig>
+</sec>
+<sec id="sec020">
+<title>Locus of ranking deviations</title>
+<p>So far, we have examined how many participants adhered to the intended ranking (<xref ref-type="fig" rid="pbio.3002645.g004">Fig 4</xref>) and the extent to which their implied rankings deviated from the intended rankings (<xref ref-type="fig" rid="pbio.3002645.g005">Fig 5</xref>). However, these approaches do not optimally illustrate <italic>where</italic> the ranking deviations were concentrated (i.e., which phrases were typically being misranked). The heat maps in <xref ref-type="fig" rid="pbio.3002645.g006">Fig 6</xref> show the percentage of participants whose implied rankings matched or deviated from the intended ranking at the level of individual phrases. Ideally, a phrase’s observed rank will match its intended rank for 100% of participants. For example, the heat maps show that almost all participants (98%) correctly ranked “moderate importance” and “moderate support” in the alternative vocabulary. The heat maps also reveal phrases that were often misranked with each other, for example: “solid,” “convincing,” and “compelling” in the eLife vocabulary.</p>
+<fig id="pbio.3002645.g006" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g006</object-id>
+<label>Fig 6</label>
+<caption>
+<title>Heat maps showing the percentage of participants (<italic>N</italic> = 301) whose implied rankings were concordant or discordant with the intended ranking at the level of individual phrases.</title>
+<p>Darker colours and higher percentages indicate greater concordance between the implied rank and the intended rank of a particular phrases. The data underlying this figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>.</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g006" xlink:type="simple"/>
+</fig>
+</sec>
+</sec>
+</sec>
+<sec id="sec021" sec-type="conclusions">
+<title>Discussion</title>
+<p>Research articles published in eLife are accompanied by evaluation statements that use phrases from a prescribed vocabulary (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>) to describe a study’s importance (e.g., “landmark”) and strength of support (e.g., “compelling”). If readers, reviewers, and editors interpret the prescribed vocabulary differently to the intended meaning, or inconsistently with each other, it could lead to miscommunication of research evaluations. In this study, we assessed the extent to which people’s interpretations of the eLife vocabulary are consistent with each other and consistent with the intended ordinal structure. We also examined whether an alternative vocabulary (<xref ref-type="table" rid="pbio.3002645.t002">Table 2</xref>) improved consistency of interpretation.</p>
+<p>Overall, the empirical data supported our initial intuitions: while some phrases in the eLife vocabulary were interpreted relatively consistently (e.g., “exceptional” and “landmark”), several phrases elicited broad interpretations that overlapped a great deal with other phrases’ interpretation (particularly the phrases “fundamental,” “important,” and “valuable” on the significance/importance dimension (<xref ref-type="fig" rid="pbio.3002645.g002">Fig 2</xref>) and “compelling,” “convincing,” and “useful” on the strength of support dimension (<xref ref-type="fig" rid="pbio.3002645.g003">Fig 3</xref>)). This suggests these phrases are not ideal for discriminating between studies with different degrees of importance and strength of support. If the same phrases often mean different things to different people, there is a danger of miscommunication between the journal and its readers. Responses on the significance/importance dimension were largely confined to the upper half of the scale, which is unsurprising, given the absence of negative phrases. It is unclear if the exclusion of negative phrases was a deliberate choice on the part of eLife’s leadership (because articles with little importance would not be expected to make it through editorial triage) or an oversight. Most participants’ implied rankings of the phrases were misaligned with the ranking intended by eLife—20% of participants had aligned rankings on the significance/importance dimension and 15% had aligned rankings on the strength of support dimension (<xref ref-type="fig" rid="pbio.3002645.g004">Fig 4</xref>). The degree of mismatch was typically in the range of 1 or 2 discordant ranks (<xref ref-type="fig" rid="pbio.3002645.g005">Fig 5</xref>). Heat maps (<xref ref-type="fig" rid="pbio.3002645.g006">Fig 6</xref>) highlighted that phrases in the middle of scale (e.g., “solid,” “convincing”) were most likely to have discordant ranks.</p>
+<p>By contrast, phrases in the alternative vocabulary tended to elicit more consistent interpretations across participants and interpretations that had less overlap with other phrases (Figs <xref ref-type="fig" rid="pbio.3002645.g002">2</xref> and <xref ref-type="fig" rid="pbio.3002645.g003">3</xref> and Tables <xref ref-type="table" rid="pbio.3002645.t003">3</xref> and <xref ref-type="table" rid="pbio.3002645.t004">4</xref>). The alternative vocabulary was more likely to elicit implied rankings that matched the intended ranking—62% of participants had aligned rankings on the significance/importance dimension and 67% had aligned rankings on the strength of support dimension (<xref ref-type="fig" rid="pbio.3002645.g004">Fig 4</xref>). Mismatched rankings were usually misaligned by one rank (<xref ref-type="fig" rid="pbio.3002645.g005">Fig 5</xref>). Although the alternative vocabulary had superior performance to the eLife vocabulary, it was nevertheless imperfect. Specifically, interpretation of phrases away from the middle of the scale on both dimensions (e.g., “low importance” and “very low importance”) tended to have some moderate overlap (Figs <xref ref-type="fig" rid="pbio.3002645.g002">2</xref>, <xref ref-type="fig" rid="pbio.3002645.g003">3</xref>, and <xref ref-type="fig" rid="pbio.3002645.g006">6</xref>). We do not know what caused this overlap, but, as discussed in the next paragraph, one possibility is that it is overly optimistic to expect peoples’ intuitions to align when they judge phrases in isolation, without any knowledge of the underlying scale.</p>
+<p>Rather than presenting evaluative phrases in isolation (as occurs for eLife readers and occurred for participants in our study), informing people of the underlying ordinal scale may help to improve communication of evaluative judgements. eLife could refer readers to an external explanation of the vocabulary; however, prior research on interpretation of probabilistic phrases suggests this may be insufficient as most people neglect to look up the information [<xref ref-type="bibr" rid="pbio.3002645.ref006">6</xref>,<xref ref-type="bibr" rid="pbio.3002645.ref019">19</xref>]. A more effective option might be to explicitly present the phrases in their intended ordinal structure [<xref ref-type="bibr" rid="pbio.3002645.ref019">19</xref>]. For example, the full importance scale could be attached to each evaluation statement with the relevant phrase selected by reviewers/editors highlighted (<xref ref-type="fig" rid="pbio.3002645.g007">Fig 7A</xref>). Additionally, phrases could be accompanied by mutually exclusive numerical ranges (<xref ref-type="fig" rid="pbio.3002645.g007">Fig 7B</xref>); prior research suggests that this can improve consistency of interpretation for probabilistic phrases [<xref ref-type="bibr" rid="pbio.3002645.ref019">19</xref>]. It is true that the limits of such ranges are arbitrary, and editors may be concerned that using numbers masks vague subjective evaluations in a veil of objectivity and precision. To some extent we share these concerns; however, the goal here is not to develop an “objective” measurement of research quality, but to have practical guidelines that improve accuracy of communication. Specifying a numerical range may help to calibrate the interpretations of evaluators and readers so that the uncertainty can be accurately conveyed. Future research could also explore the relationship between the number of items included in the vocabulary and the level of precision that reviewers/editors wish to communicate.</p>
+<fig id="pbio.3002645.g007" position="float">
+<object-id pub-id-type="doi">10.1371/journal.pbio.3002645.g007</object-id>
+<label>Fig 7</label>
+<caption>
+<title/>
+<p>Explicit presentation of the intended ordinal structure (A–C), potentially with numerical ranges (B), could improve consistency of interpretation. Judgements by multiple reviewers could also be represented (by different arrows) without forcing consensus (C).</p>
+</caption>
+<graphic mimetype="image" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.g007" xlink:type="simple"/>
+</fig>
+<p>Our study has several important limitations. First, we did not address whether editor/reviewer opinions provide valid assessments of studies or whether the vocabularies provide valid measurements of those opinions. We also note that eLife assessments are formed via consensus, rather than representing the opinions of individuals, which raises questions about how social dynamics may affect the evaluation outcomes. It may be more informative to solicit and report individual assessments from each peer reviewer and editor, rather than force a consensus (e.g., see <xref ref-type="fig" rid="pbio.3002645.g007">Fig 7C</xref>). Although these are important issues, they are beyond the scope of this study, which is focused on clarity of communication.</p>
+<p>Second, we are particularly interested in how the readership of eLife interpret the vocabularies, but because we do not have any demographic information about the readership, we do not know the extent to which our sample is similar to that population. We anticipated that the most relevant demographic characteristics were education status (because the content is technical), knowledge of subject area (because eLife publishes biomedical and life sciences), and language (because the content is in English). All of our participants reported speaking fluent English, the vast majority had doctoral degrees, and about one third had a degree in the Biomedical and Life Sciences. Relative to this sample, we expect the eLife readership probably consists of more professional scientists, but otherwise we think the sample is likely to be a good match to the target population. Also note that eLife explicitly states that eLife assessments are intended to be accessible to non-expert readers [<xref ref-type="bibr" rid="pbio.3002645.ref004">4</xref>], therefore, our sample is still a relevant audience, even if it might contain fewer professional scientists than eLife’s readership.</p>
+<p>Third, to maintain experimental control, we presented participants with very short statements that differed only in terms of the phrases we wished to evaluate. In practice however, these phrases will be embedded in a paragraph of text (e.g., <xref ref-type="boxed-text" rid="pbio.3002645.box001">Box 1</xref>) which may also contain “aspects” of the vocabulary definitions (<xref ref-type="table" rid="pbio.3002645.t001">Table 1</xref>) “when appropriate” [<xref ref-type="bibr" rid="pbio.3002645.ref004">4</xref>]. It is unclear if the inclusion of text from the intended phrase definitions will help to disambiguate the phrases and future research could explore this.</p>
+<p>Fourth, participants were asked to respond to phrases with a point estimate; however, it is likely that a range of plausible values would more accurately reflect their interpretations [<xref ref-type="bibr" rid="pbio.3002645.ref009">9</xref>,<xref ref-type="bibr" rid="pbio.3002645.ref011">11</xref>]. Because asking participants to respond with a range (rather than a point estimate) creates technical and practical challenges in data collection and analysis, we opted to obtain point estimates only.</p>
+</sec>
+<sec id="sec022" sec-type="conclusions">
+<title>Conclusion</title>
+<p>Overall, our study suggests that using more structured and less ambiguous language can improve communication of research evaluations. Relative to the eLife vocabulary, participants’ interpretations of our alternative vocabulary were more likely to align with each other, and with the intended interpretation. Nevertheless, some phrases in the alternatively vocabulary were not always interpreted as we intended, possibly because participants were not completely aware of the vocabulary’s underlying ordinal scale. Future research, in addition to finding optimal words to evaluate research, could attempt to improve interpretation by finding optimal ways to present them.</p>
+</sec>
+<sec id="sec023" sec-type="supplementary-material">
+<title>Supporting information</title>
+<supplementary-material id="pbio.3002645.s001" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s001" xlink:type="simple">
+<label>S1 Text</label>
+<caption>
+<title>Example stimuli and attention check.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s002" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s002" xlink:type="simple">
+<label>S2 Text</label>
+<caption>
+<title>Sample size planning.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s003" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s003" xlink:type="simple">
+<label>S3 Text</label>
+<caption>
+<title>Task instructions.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s004" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s004" xlink:type="simple">
+<label>S4 Text</label>
+<caption>
+<title>Peer Community in Registered Reports Design Template.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s005" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s005" xlink:type="simple">
+<label>S5 Text</label>
+<caption>
+<title>Expanded versions of <xref ref-type="table" rid="pbio.3002645.t003">Table 3</xref> and <xref ref-type="table" rid="pbio.3002645.t004">Table 4</xref> percentile estimates with confidence intervals.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s006" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s006" xlink:type="simple">
+<label>S6 Text</label>
+<caption>
+<title>Frequency of implied rankings.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s007" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s007" xlink:type="simple">
+<label>S7 Text</label>
+<caption>
+<title>Further explanation of Kendall’s distance.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+<supplementary-material id="pbio.3002645.s008" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s008" xlink:type="simple">
+<label>S8 Text</label>
+<caption>
+<title>Demographics of Prolific members.</title>
+<p>(DOCX)</p>
+</caption>
+</supplementary-material>
+</sec>
+</body>
+<back>
+<ack>
+<p>The Stage 1 version of this preregistered research article has been peer-reviewed and recommended by Peer Community in Registered Reports (<ext-link ext-link-type="uri" xlink:href="https://rr.peercommunityin.org/articles/rec?id=488" xlink:type="simple">https://rr.peercommunityin.org/articles/rec?id=488</ext-link>).</p>
+<sec id="sec024">
+<title>Research transparency statement</title>
+<p>The research question, methods, and analysis plan were peer reviewed and preregistered as a Stage One Registered Report via the <italic>Peer Community in Registered Reports</italic> platform (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.17605/OSF.IO/MKBTP" xlink:type="simple">https://doi.org/10.17605/OSF.IO/MKBTP</ext-link>). There was only 1 minor deviation from the preregistered protocol (target sample size = 300; actual sample size = 301). A <italic>Peer Community in Registered Reports</italic> design table is available in <xref ref-type="supplementary-material" rid="pbio.3002645.s004">S4 Text</xref>. All data, materials, and analysis scripts are publicly available on the Open Science Framework (<ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage/" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage/</ext-link>). A reproducible version of the manuscript and associated computational environment is available in a Code Ocean container (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.24433/CO.4128032.v1" xlink:type="simple">https://doi.org/10.24433/CO.4128032.v1</ext-link>).</p>
+</sec>
+</ack>
+<ref-list>
+<title>References</title>
+<ref id="pbio.3002645.ref001"><label>1</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Vazire</surname> <given-names>S.</given-names></name> <article-title>Opening the Black Box of Peer Review</article-title>. <source>Phys Ther</source>. <year>2021</year>;<volume>14</volume>:<fpage>169</fpage>. Available from: <ext-link ext-link-type="uri" xlink:href="https://physics.aps.org/articles/v14/169" xlink:type="simple">https://physics.aps.org/articles/v14/169</ext-link>.</mixed-citation></ref>
+<ref id="pbio.3002645.ref002"><label>2</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wolfram</surname> <given-names>D</given-names></name>, <name name-style="western"><surname>Wang</surname> <given-names>P</given-names></name>, <name name-style="western"><surname>Hembree</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Park</surname> <given-names>H</given-names></name>. <article-title>Open peer review: promoting transparency in open science</article-title>. <source>Scientometrics</source>. <year>2020</year>;<volume>125</volume>:<fpage>1033</fpage>–<lpage>1051</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1007/s11192-020-03488-4" xlink:type="simple">10.1007/s11192-020-03488-4</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref003"><label>3</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Eisen</surname> <given-names>MB</given-names></name>, <name name-style="western"><surname>Akhmanova</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Behrens</surname> <given-names>TE</given-names></name>, <name name-style="western"><surname>Diedrichsen</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Harper</surname> <given-names>DM</given-names></name>, <name name-style="western"><surname>Iordanova</surname> <given-names>MD</given-names></name>, <etal>et al</etal>. <article-title>Peer review without gatekeeping [editorial]</article-title>. <source>Elife</source>. <year>2022</year>;<volume>11</volume>:<fpage>e83889</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7554/eLife.83889" xlink:type="simple">10.7554/eLife.83889</ext-link></comment> <object-id pub-id-type="pmid">36263932</object-id></mixed-citation></ref>
+<ref id="pbio.3002645.ref004"><label>4</label><mixed-citation publication-type="book" xlink:type="simple"><source>eLife’s New Model: What is an eLife assessment?</source> In: eLife [Internet]. <publisher-name>eLife Sciences Publications Limited</publisher-name>; <day>20</day> <month>Oct</month> <year>2022</year> [cited 2023 Jan 24]. Available from: <ext-link ext-link-type="uri" xlink:href="https://elifesciences.org/inside-elife/db24dd46/elife-s-new-model-what-is-an-elife-assessment" xlink:type="simple">https://elifesciences.org/inside-elife/db24dd46/elife-s-new-model-what-is-an-elife-assessment</ext-link>.</mixed-citation></ref>
+<ref id="pbio.3002645.ref005"><label>5</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rendueles</surname> <given-names>O</given-names></name>, <name name-style="western"><surname>de Sousa</surname> <given-names>JA</given-names></name>, <name name-style="western"><surname>Rocha</surname> <given-names>EP</given-names></name>. <article-title>Competition between lysogenic and sensitive bacteria is determined by the fitness costs of the different emerging phage-resistance strategies. Díaz-Muñoz SL, Landry CR, Díaz-Muñoz SL, editors</article-title>. <source>Elife</source>. <year>2023</year>;<volume>12</volume>:<fpage>e83479</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.7554/eLife.83479" xlink:type="simple">10.7554/eLife.83479</ext-link></comment> <object-id pub-id-type="pmid">36975200</object-id></mixed-citation></ref>
+<ref id="pbio.3002645.ref006"><label>6</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Budescu</surname> <given-names>DV</given-names></name>, <name name-style="western"><surname>Por</surname> <given-names>H-H</given-names></name>, <name name-style="western"><surname>Broomell</surname> <given-names>SB</given-names></name>, <name name-style="western"><surname>Smithson</surname> <given-names>M</given-names></name>. <article-title>The interpretation of IPCC probabilistic statements around the world</article-title>. <source>Nature Clim Change</source>. <year>2014</year>;<volume>4</volume>:<fpage>508</fpage>–<lpage>512</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1038/nclimate2194" xlink:type="simple">10.1038/nclimate2194</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref007"><label>7</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Budescu</surname> <given-names>DV</given-names></name>, <name name-style="western"><surname>Wallsten</surname> <given-names>TS</given-names></name>. <article-title>Consistency in interpretation of probabilistic phrases</article-title>. <source>Organ Behav Hum Decis Process</source>. <year>1985</year>;<volume>36</volume>:<fpage>391</fpage>–<lpage>405</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1016/0749-5978%2885%2990007-X" xlink:type="simple">10.1016/0749-5978(85)90007-X</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref008"><label>8</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Lichtenstein</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Newman</surname> <given-names>JR</given-names></name>. <article-title>Empirical scaling of common verbal phrases associated with numerical probabilities</article-title>. <source>Psychonomic Science</source>. <year>1967</year>;<volume>9</volume>:<fpage>563</fpage>–<lpage>564</lpage>.</mixed-citation></ref>
+<ref id="pbio.3002645.ref009"><label>9</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Reagan</surname> <given-names>RT</given-names></name>, <name name-style="western"><surname>Mosteller</surname> <given-names>F</given-names></name>, <name name-style="western"><surname>Youtz</surname> <given-names>C</given-names></name>. <article-title>Quantitative meanings of verbal probability expressions</article-title>. <source>J Appl Psychol</source>. <year>1989</year>;<volume>74</volume>:<fpage>433</fpage>–<lpage>442</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/0021-9010.74.3.433" xlink:type="simple">10.1037/0021-9010.74.3.433</ext-link></comment> <object-id pub-id-type="pmid">2737992</object-id></mixed-citation></ref>
+<ref id="pbio.3002645.ref010"><label>10</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Theil</surname> <given-names>M.</given-names></name> <article-title>The role of translations of verbal into numerical probability expressions in risk management: a meta-analysis</article-title>. <source>J Risk Res</source>. <year>2002</year>;<volume>5</volume>:<fpage>177</fpage>–<lpage>186</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/13669870110038179" xlink:type="simple">10.1080/13669870110038179</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref011"><label>11</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wallsten</surname> <given-names>TS</given-names></name>, <name name-style="western"><surname>Budescu</surname> <given-names>DV</given-names></name>, <name name-style="western"><surname>Rapoport</surname> <given-names>A</given-names></name>, <name name-style="western"><surname>Zwick</surname> <given-names>R</given-names></name>, <name name-style="western"><surname>Forsyth</surname> <given-names>B</given-names></name>. <article-title>Measuring the vague meanings of probability terms</article-title>. <source>J Exp Psychol Gen</source>. <year>1986</year>;<volume>115</volume>:<fpage>348</fpage>–<lpage>365</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1037/0096-3445.115.4.348" xlink:type="simple">10.1037/0096-3445.115.4.348</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref012"><label>12</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Willems</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Albers</surname> <given-names>C</given-names></name>, <name name-style="western"><surname>Smeets</surname> <given-names>I</given-names></name>. <article-title>Variability in the interpretation of probability phrases used in Dutch news articles—a risk for miscommunication</article-title>. <source>JCOM</source>. <year>2020</year>;<volume>19</volume>:<fpage>A03</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.22323/2.19020203" xlink:type="simple">10.22323/2.19020203</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref013"><label>13</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Sison</surname> <given-names>CP</given-names></name>, <name name-style="western"><surname>Glaz</surname> <given-names>J</given-names></name>. <article-title>Simultaneous confidence intervals and sample size determination for multinomial proportions</article-title>. <source>J Am Stat Assoc</source>. <year>1995</year>;<volume>90</volume>:<fpage>366</fpage>–<lpage>369</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1080/01621459.1995.10476521" xlink:type="simple">10.1080/01621459.1995.10476521</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref014"><label>14</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Rousselet</surname> <given-names>GA</given-names></name>, <name name-style="western"><surname>Pernet</surname> <given-names>CR</given-names></name>, <name name-style="western"><surname>Wilcox</surname> <given-names>RR</given-names></name>. <article-title>The percentile bootstrap: a primer with step-by-step instructions in R</article-title>. <source>Adv Methods Pract Psychol Sci</source>. <year>2021</year>;<volume>4</volume>:<fpage>2515245920911881</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1177/2515245920911881" xlink:type="simple">10.1177/2515245920911881</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref015"><label>15</label><mixed-citation publication-type="book" xlink:type="simple"><name name-style="western"><surname>Wilke</surname> <given-names>C.</given-names></name> <source>Fundamentals of data visualization: a primer on making informative and compelling figures.</source> <edition designator="1">First edition</edition>. <publisher-loc>Sebastopol, CA</publisher-loc>: <publisher-name>O’Reilly Media</publisher-name>; <year>2019</year>.</mixed-citation></ref>
+<ref id="pbio.3002645.ref016"><label>16</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Fagerland</surname> <given-names>MW</given-names></name>, <name name-style="western"><surname>Lydersen</surname> <given-names>S</given-names></name>, <name name-style="western"><surname>Laake</surname> <given-names>P</given-names></name>. <article-title>The McNemar test for binary matched-pairs data: mid-p and asymptotic are better than exact conditional</article-title>. <source>BMC Med Res Methodol</source>. <year>2013</year>;<volume>13</volume>:<fpage>91</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1186/1471-2288-13-91" xlink:type="simple">10.1186/1471-2288-13-91</ext-link></comment> <object-id pub-id-type="pmid">23848987</object-id></mixed-citation></ref>
+<ref id="pbio.3002645.ref017"><label>17</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Kendall</surname> <given-names>MG</given-names></name>. <article-title>A new measure of rank correlation</article-title>. <source>Biometrika</source>. <year>1938</year>;<volume>30</volume>:<fpage>81</fpage>–<lpage>93</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1093/biomet/30.1%26%23x2013%3B2.81" xlink:type="simple">10.1093/biomet/30.1–2.81</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref018"><label>18</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>van Doorn</surname> <given-names>J</given-names></name>, <name name-style="western"><surname>Westfall</surname> <given-names>HA</given-names></name>, <name name-style="western"><surname>Lee</surname> <given-names>MD</given-names></name>. <article-title>Using the weighted Kendall Distance to analyze rank data in psychology</article-title>. <source>TQMP</source><year>2021</year>;<volume>17</volume>:<fpage>154</fpage>–<lpage>165</lpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.20982/tqmp.17.2.p154" xlink:type="simple">10.20982/tqmp.17.2.p154</ext-link></comment></mixed-citation></ref>
+<ref id="pbio.3002645.ref019"><label>19</label><mixed-citation publication-type="journal" xlink:type="simple"><name name-style="western"><surname>Wintle</surname> <given-names>BC</given-names></name>, <name name-style="western"><surname>Fraser</surname> <given-names>H</given-names></name>, <name name-style="western"><surname>Wills</surname> <given-names>BC</given-names></name>, <name name-style="western"><surname>Nicholson</surname> <given-names>AE</given-names></name>, <name name-style="western"><surname>Fidler</surname> <given-names>F</given-names></name>. <article-title>Verbal probabilities: Very likely to be somewhat more confusing than numbers</article-title>. <source>PLoS ONE</source>. <year>2019</year>;<volume>14</volume>:<fpage>e0213522</fpage>. <comment>doi: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.1371/journal.pone.0213522" xlink:type="simple">10.1371/journal.pone.0213522</ext-link></comment> <object-id pub-id-type="pmid">30995242</object-id></mixed-citation></ref>
+</ref-list>
+</back>
+<sub-article article-type="editor-report" id="pbio.3002645.r001" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r001</article-id>
+<title-group>
+<article-title>Decision Letter 0</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>Roland G</given-names>
+</name>
+<role>Senior Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Roland G Roberts</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="article" id="rel-obj001" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>0</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">25 Apr 2024</named-content>
+</p>
+<p>Dear Tom, </p>
+<p>Thank you for submitting your ex-PCI-RR manuscript entitled "Finding the right words to evaluate research: An empirical appraisal of eLife’s assessment vocabulary" for consideration as a Meta-Research Article by PLOS Biology.</p>
+<p>Your stage 2 Pre-Registered Research Article manuscript has now been evaluated by the PLOS Biology editorial staff, as well as by an academic editor with relevant expertise, and I'm writing to let you know that we would like to send your submission out for re-review.</p>
+<p>IMPORTANT: Please can you change the article type to "Pre-Registered Research Article" when you upload your additional metadata (see next paragraph)?</p>
+<p>However, before we can send your manuscript to reviewers, we need you to complete your submission by providing the metadata that is required for full assessment. To this end, please login to Editorial Manager where you will find the paper in the 'Submissions Needing Revisions' folder on your homepage. Please click 'Revise Submission' from the Action Links and complete all additional questions in the submission questionnaire.</p>
+<p>Once your full submission is complete, your paper will undergo a series of checks in preparation for re-review. After your manuscript has passed the checks it will be sent out for review. To provide the metadata for your submission, please Login to Editorial Manager (<ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pbiology" xlink:type="simple">https://www.editorialmanager.com/pbiology</ext-link>) within two working days, i.e. by Apr 29 2024 11:59PM.</p>
+<p>During the process of completing your manuscript submission, you will be invited to opt-in to posting your pre-review manuscript as a bioRxiv preprint. Visit <ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosbiology/s/preprints" xlink:type="simple">http://journals.plos.org/plosbiology/s/preprints</ext-link> for full details. If you consent to posting your current manuscript as a preprint, please upload a single Preprint PDF. </p>
+<p>Feel free to email us at <email xlink:type="simple">plosbiology@plos.org</email> if you have any queries relating to your submission.</p>
+<p>Kind regards,</p>
+<p>Roli</p>
+<p>Roland Roberts, PhD</p>
+<p>Senior Editor</p>
+<p>PLOS Biology</p>
+<p><email xlink:type="simple">rroberts@plos.org</email></p>
+</body>
+</sub-article>
+<sub-article article-type="aggregated-review-documents" id="pbio.3002645.r002" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r002</article-id>
+<title-group>
+<article-title>Decision Letter 1</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>Roland G</given-names>
+</name>
+<role>Senior Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Roland G Roberts</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="article" id="rel-obj002" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>1</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">21 May 2024</named-content>
+</p>
+<p>Dear Dr Hardwicke,</p>
+<p>Thank you for your patience while your revised registered report "Finding the right words to evaluate research: An empirical appraisal of eLife’s assessment vocabulary" went through peer-review at PLOS Biology. I am sending you this decision letter on behalf of my colleague Roli Roberts, who is out of the office this week, in order to avoid unnecessary delays. Your manuscript has now been evaluated by the PLOS Biology editors, an Academic Editor with relevant expertise, and by the three independent reviewers that assessed the stage 1 submission at PCI-RR. All of the reviewers have signed their reports: Reviewer #1 is Ross Mounce, Reviewer #2 is Štěpán Bahník and Reviewer #3 is Veli-Matti Karhulahti.</p>
+<p>In light of the reviews, which you will find at the end of this email, we are pleased to offer you the opportunity to address the following points, which we anticipate should not take you very long. We will then assess your revised manuscript and your response to the reviewers' comments with our Academic Editor without further rounds of peer-review.</p>
+<p>1) Please add a column to the right of the study design table that reports the actual outcome per row and whether it confirmed or disconfirmed the hypothesis.</p>
+<p>2) As you will see, both R1 and R3 remain uncomfortable about your level of engagement with eLife, uncomfortable enough to raise this independently, because they did not have a chance to see a revised stage 1. Although it is not a precondition for publication, we would tend to agree and encourage you to engage with eLife about their intention behind the assessment system, as this would make the discussion more straightforward and certain (eg about intentionality). In addition, this work is likely to receive a fair amount of scrutiny post-publication, including the peer-review file, and so the reviewer qualms might be discussed in post-publication commentary around the article.</p>
+<p>3) Reviewer 2 also speaks of additional analyses that could be done with the data. Again, this would not be required for publication, but we did want to give you the opportunity to address this report if you wanted. Especially the assessment of whether the frequency of actual ratings might be justified given pre-selection based on quality, or whether the reviewers disproportionately use words on the lower end of the scale, appears to be relatively doable in a reasonable time frame, should you wish to complement the work in that way.</p>
+<p>4) Could the COI statement for author Simine Vazire be modified in our submission system to state the following? </p>
+<p>"SV is a member of the board of directors of The Public Library of Science (PLOS). This role has in no way influenced the outcome or development of this work or the peer-review process, nor does it alter our adherence to PLOS Biology policies on sharing data and materials."</p>
+<p>We expect to receive your revised manuscript within 1 month. Please email us (<email xlink:type="simple">plosbiology@plos.org</email>) if you have any questions or concerns, or would like to request an extension. </p>
+<p>At this stage, your manuscript remains formally under active consideration at our journal; please notify us by email if you do not intend to submit a revision so that we withdraw the manuscript.</p>
+<p>**IMPORTANT - SUBMITTING YOUR REVISION**</p>
+<p>Please submit the following files along with your revised manuscript:</p>
+<p>1. A 'Response to Reviewers' file - this should detail your responses to the editorial requests, present a point-by-point response to all of the reviewers' comments, and indicate the changes made to the manuscript (if any).</p>
+<p>*NOTE: In your point-by-point response to the reviewers, please provide the full context of each review. Do not selectively quote paragraphs or sentences to reply to. The entire set of reviewer comments should be present in full and each specific point should be responded to individually.</p>
+<p>You should also cite any additional relevant literature that has been published since the original submission and mention any additional citations in your response. </p>
+<p>2. In addition to a clean copy of the manuscript, please also upload a 'track-changes' version of your manuscript that specifies the edits made. This should be uploaded as a "Revised Article with Changes Highlighted " file type. </p>
+<p>*Resubmission Checklist*</p>
+<p>When you are ready to resubmit your revised manuscript, please refer to this resubmission checklist: <ext-link ext-link-type="uri" xlink:href="https://plos.io/Biology_Checklist" xlink:type="simple">https://plos.io/Biology_Checklist</ext-link></p>
+<p>To submit a revised version of your manuscript, please go to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pbiology/" xlink:type="simple">https://www.editorialmanager.com/pbiology/</ext-link> and log in as an Author. Click the link labelled 'Submissions Needing Revision' where you will find your submission record. </p>
+<p>Please make sure to read the following important policies and guidelines while preparing your revision:</p>
+<p>*Published Peer Review*</p>
+<p>Please note while forming your response, if your article is accepted, you will have the opportunity to make the peer review history publicly available. For the sake of transparency, we strongly recommend that you opt into this. The record will include editor decision letters (with reviews) and your responses to reviewer comments. If eligible, we will contact you to opt in or out. Please see here for more details:</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://blogs.plos.org/plos/2019/05/plos-journals-now-open-for-published-peer-review/" xlink:type="simple">https://blogs.plos.org/plos/2019/05/plos-journals-now-open-for-published-peer-review/</ext-link></p>
+<p>*PLOS Data Policy*</p>
+<p>Please note that as a condition of publication PLOS' data policy (<ext-link ext-link-type="uri" xlink:href="http://journals.plos.org/plosbiology/s/data-availability" xlink:type="simple">http://journals.plos.org/plosbiology/s/data-availability</ext-link>) requires that you make available all data used to draw the conclusions arrived at in your manuscript. If you have not already done so, you must include any data used in your manuscript either in appropriate repositories, within the body of the manuscript, or as supporting information (N.B. this includes any numerical values that were used to generate graphs, histograms etc.). For an example see here: <ext-link ext-link-type="uri" xlink:href="http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5" xlink:type="simple">http://www.plosbiology.org/article/info%3Adoi%2F10.1371%2Fjournal.pbio.1001908#s5</ext-link> </p>
+<p>Thank you again for your submission to our journal. We hope that our editorial process has been constructive thus far, and we welcome your feedback at any time. Please don't hesitate to contact us if you have any questions or comments.</p>
+<p>Sincerely,</p>
+<p>Nonia</p>
+<p>Nonia Pariente, PhD</p>
+<p>Editor in Chief</p>
+<p>PLOS Biology</p>
+<p><email xlink:type="simple">npariente@plos.org</email></p>
+<p>on behalf of</p>
+<p>Roland</p>
+<p>Roland Roberts, PhD</p>
+<p>Senior Editor</p>
+<p>PLOS Biology</p>
+<p><email xlink:type="simple">rroberts@plos.org</email></p>
+<p>----------------------------------------------------------------</p>
+<p>REVIEWS:</p>
+<p>Reviewer #1: Ross Mounce</p>
+<p>Reviewer #2: Štěpán Bahník</p>
+<p>Reviewer #3: Veli-Matti Karhulahti</p>
+<p>Reviewer #1: I re-read the stage 1 protocol submission, which is registered here: <ext-link ext-link-type="uri" xlink:href="https://doi.org/10.17605/OSF.IO/MKBTP" xlink:type="simple">https://doi.org/10.17605/OSF.IO/MKBTP</ext-link> (which I will hereafter refer to simply as S1)</p>
+<p>The rationale and the stated hypotheses of this Stage 2 manuscript submitted to PLOS Biology (which I will hereafter refer to simply as S2), are indeed the same as approved in S1. The wording between the S1 and S2 is not precisely the same.  </p>
+<p>A brief digression / sidenote: not a fault of the authors, but I must remark it is a little unhelpful to provide reviewers only PDF files when asking peer reviewers to check the similarity between two separate documents with separate formatting (one with line numbering, one without!). I converted the S1 and S2 into plain text files, chopping-off the S2 at the appropriate places to ensure maximum comparability with the content of the S1. From here a simple bag of words analysis comparing between the plain text of S1 and S2 revealed to me a few linguistic changes that seem to have occurred between S1 and S2 e.g.</p>
+<p>In S1:  "eLife recently stated that these assessments will use phrases drawn from a common vocabulary…"</p>
+<p>In S2: "eLife stated that these assessments would use phrases drawn from a common vocabulary…" </p>
+<p>Although there are small changes of wording detectable between the S1 and S2 I did not perceive them to have changed the meaning of the introduction, rationale, or stated hypotheses.</p>
+<p>I note that the authors aimed for a target sample size of 300 in the stage 1 protocol and report a target sample size of 301 in the stage 2 manuscript. This tiny difference is noted by the authors in the stage 2 manuscript and is NOT a significant deviation from the stage 1 protocol.</p>
+<p>As far as I can tell the authors have adhered to the approved S1 experimental procedures.</p>
+<p>The data are to an extent able to test the authors proposed hypotheses. </p>
+<p>As I noted in my review of S1 I still think it is a bit of a cop-out by the authors to choose not to ask eLife for the broad (e.g. country-level) demographic characteristics of eLife readers - most well-run journals absolutely do hold data on the geography of where in-bound page views are coming from, at least to the country-level if not in much finer detail via standard web traffic analysis captured by e.g. Google Analytics or Matomo. I can see from inspection of their HTML that eLife use Google Analytics to track website usage data. Their global site tag is currently "GTM-WVM8KG" - you'll see it tagged in every single page. They will know the IP address of every visitor to their site and from the IP address will be able to determine the geolocation of the reader with a high degree of accuracy (relatively few readers take steps to obfuscate the IP address they are reading from). </p>
+<p>The conclusions of S2 are valid given the data. However, the conclusions do pre-suppose that eLife intend their vocabulary to have a clear and unambiguous ranking order between words. What if the apparent ambiguity that the data &amp; research has uncovered was _intentional_ on eLife's part? It's not clear to me if the authors here have ever asked eLife if they intended all the words in the vocabulary to have a strict and clear order of ranking. Might the authors want to ask eLife about this? If the intention was to have a clear and unambiguous ranking, why wouldn't eLife have just used numbers rather than words (which clearly as this study and many others show, can be interpreted differently by different people)? Some of the wording in the S2 rather assumes a certain intentionality on behalf of eLife and I'm not 100% convinced that the authors here can speak confidently of eLife's intentionality without directly asking eLife.</p>
+<p>I have examined the data deposited at OSF (<ext-link ext-link-type="uri" xlink:href="https://doi.org/10.17605/OSF.IO/MW2Q4" xlink:type="simple">https://doi.org/10.17605/OSF.IO/MW2Q4</ext-link>) to support S2. The data is in a public repository, it is appropriately described, rights-waived under CC0 1.0 to enable maximum re-use potential, and it is time-stamped (April 6, 2024) to demonstrate that the data was collected after the S1 approval. The data complies with the PLOS data availability policy.</p>
+<p>Conclusion: Whilst I retain and reiterate my quibbles from the S1 review stage, this S2 does represent sound, pre-registered research and should be published.</p>
+<p>Reviewer #2: The second stage of the registered report follows the plan from the first stage. I did not notice any deviations. The results are clearly described and the text in discussion and conclusion is justified given the results.</p>
+<p>My biggest regret for the study is that it only purports to show that the eLife vocabulary is not optimal, that the alternative vocabulary is better, but it does not purports to show that the alternative vocabulary is good itself. This is correctly described in the conclusion, where the authors note that future research could find optimal vocabulary, so I do not think the description needs to be changed. I just hope that the alternative vocabulary will not be adopted based only on the results of this study. As the authors correctly note, the wording of the alternative vocabulary overlaps (at the two most extreme points on each end of the scale), which suggests that a different wording might be better. An informative and useful vocabulary should take into account not only whether the descriptions are correctly ordered, but also how well they cover the importance and support in actual studies. This would be possible to quantify, but the authors opted not do that during the first stage of the registered report. Relatedly, the authors note in the discussion that the eLife vocabulary covers only the upper half of the scale. It would be possible to look at the frequency of actual ratings to see whether this might be justified given pre-selection based on quality, or whether the reviewers disproportionately use words on the lower end of the scale.</p>
+<p>Reviewer #3: Thank you for inviting me to review the Stage 2 of this manuscript. I was excited about the plan at Stage 1 and it's indeed interesting to read the results at Stage 2. First, as far as my assessment goes, the authors have followed the plan carefully, the materials and data are shared, the solitary hypotheses was successfully tested, and the paper thus deserves to be accepted as well as further debated in post-publication discussion. For editors, I acknowledge to have reviewed the html script but didn't run the code in R and am (still) not qualified to comment on the details of Kendall's tau distance.</p>
+<p>When reading the final version of the paper in reflection with the Stage 1 review, I must re-address a few points that were raised earlier. Because there was no re-assessment for the revised Stage 1 plan after revisions, I did not have an earlier opportunity to comment on the final Stage 1. Therefore, my Stage 2 review revisits some issues of Stage 1; this is mainly for the open review record and may not entail action from authors. To be clear, these points were considered resolved by the editors/recommenders, so the authors should not be demanded to resolve them but optionally engage if and as they best see fit.</p>
+<p>1. One of my and other reviewers' comments at Stage 1 was to further involve eLife in the study. Considering that the paper systematically uses words like "intended" as the core epistemic lens through which the data are analysed, it still feels awkward that "intentions" have not been backed up beyond the journal's public statement "…to help convey the views of the editor and the reviewers in a clear and consistent manner." Reading author responses post hoc, I can see there has been an informal dinner with one editor before the study, but this was only to inform them about the study. Of course it could be that the short description on eLife website represents all there is to the intended purpose, but that remains unknown for readers at least. I'd suggest having a representative of eLife review the full Stage 2 in order to ensure that their intentions have not been misinterpreted. E.g., it feels strange to publish sentences like "It is unclear if the exclusion of negative phrases was a deliberate choice on the part of eLife's leadership" when it all it takes to figure that out is ask. Moreover, it would've been valuable to hear what specifically eLife means by "consistency" that is operationalised in a specific way here.</p>
+<p>2. Related to this, while we still don't know what eLife fully intended, their stated decision to use "common vocabulary" implies that the idea was indeed not to use overly quantifying ranking (Likert scale agreement, numeric scores, etc.) but in their own words "rich" vocabulary that perhaps serves to balance between ranking and the inherent vagueness of scientific assessment where comparisons between studies rarely make sense. One could reasonably argue that the results of the study support such balance: eLife vocabulary appears to be somewhat successful at communicating correctly ordered rankings, while not expressing overly confidence on the quantifiability of such ranking. In this regard, it's possible that e.g. reporting percentages (proposed on p. 24) would move the assessment system even more far away from eLife's intended epistemology and/or values. The authors are aware of this, but due to lacking involvement of eLife, all this remains speculation for readers (which could be easily cleared). </p>
+<p>3. As commented at Stage 1, the paper has one explicit registered test for a hypothesis, which remains difficult for readers to separate from the rest of analytic context on page 17: "The McNemar test indicated that observing a difference between the vocabularies this large, or larger, is unlikely if the null hypothesis were true (odds ratio = 8.17, 95% CI [5.11,13.69], p = 1.34e-26)." The authors must be commende</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pbio.3002645.r003">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r003</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 1</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj003" link-type="rebutted-decision-letter" object-id="10.1371/journal.pbio.3002645.r002" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">4 Jun 2024</named-content>
+</p>
+<supplementary-material id="pbio.3002645.s009" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s009" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to reviews.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pbio.3002645.r004" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r004</article-id>
+<title-group>
+<article-title>Decision Letter 2</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>Roland G</given-names>
+</name>
+<role>Senior Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Roland G Roberts</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="article" id="rel-obj004" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>2</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">27 Jun 2024</named-content>
+</p>
+<p>Dear Tom,</p>
+<p>Thank you for your patience while we considered your revised manuscript "Finding the right words to evaluate research: An empirical appraisal of eLife’s assessment vocabulary" for publication as a Preregistered Research Article at PLOS Biology. This revised version of your manuscript has been evaluated by the PLOS Biology editors and the Academic Editor.</p>
+<p>Based on our Academic Editor's assessment of your revision, we are likely to accept this manuscript for publication, provided you satisfactorily address the following data and other policy-related requests.</p>
+<p>IMPORTANT - please attend to the following:</p>
+<p>a) Please remove the first phrase from the title, making it simply "An empirical appraisal of eLife’s assessment vocabulary."</p>
+<p>b) Thank you for adding the extra column to the design table (currently Table D1 in the supplement); please could you move this Table to the main paper and adjust the manuscript to accommodate it?</p>
+<p>c) Please can you include the following rubric in an "Acknowledgements" section (after the "Conclusion"): "The Stage 1 version of this pre-registered research article has been peer-reviewed and recommended by Peer Community In Registered Reports (<ext-link ext-link-type="uri" xlink:href="https://rr.peercommunityin.org/articles/rec?id=488" xlink:type="simple">https://rr.peercommunityin.org/articles/rec?id=488</ext-link>)". [This is a formula that we have used previously in manuscripts that have come to us down the PCI route]</p>
+<p>d) Thanks for providing the underlying data in OSF. Please cite the location of the data clearly in all relevant main Figure legends, e.g. “The data underlying this Figure can be found in S1 Data” or “The data underlying this Figure can be found in <ext-link ext-link-type="uri" xlink:href="https://osf.io/mw2q4/files/osfstorage" xlink:type="simple">https://osf.io/mw2q4/files/osfstorage</ext-link>"</p>
+<p>e) Please move your ethics statement [“This study was approved by a University of Melbourne ethics board (project ID: 26411).”] to an appropriate part of the Methods section.</p>
+<p>f) Please remove the funding information and competing interests statement from the manuscript file; it seems that these are already in the Editorial Manager metadata, from which they will automatically be pulled.</p>
+<p>g) Please move the "Research transparency statement" into the main manuscript. Perhaps next to the Acknowledgements? (I don't have a precedent for this, so one of my Production colleagues might move it later)</p>
+<p>As you address these items, please take this last chance to review your reference list to ensure that it is complete and correct. If you have cited papers that have been retracted, please include the rationale for doing so in the manuscript text, or remove these references and replace them with relevant current references. Any changes to the reference list should be mentioned in the cover letter that accompanies your revised manuscript.</p>
+<p>We expect to receive your revised manuscript within two weeks. </p>
+<p>To submit your revision, please go to <ext-link ext-link-type="uri" xlink:href="https://www.editorialmanager.com/pbiology/" xlink:type="simple">https://www.editorialmanager.com/pbiology/</ext-link> and log in as an Author. Click the link labelled 'Submissions Needing Revision' to find your submission record. Your revised submission must include the following:</p>
+<p>-  a cover letter that should detail your responses to any editorial requests, if applicable, and whether changes have been made to the reference list</p>
+<p>-  a Response to Reviewers file that provides a detailed response to the reviewers' comments (if applicable, if not applicable please do not delete your existing 'Response to Reviewers' file.)</p>
+<p>-  a track-changes file indicating any changes that you have made to the manuscript. </p>
+<p>NOTE: If Supporting Information files are included with your article, note that these are not copyedited and will be published as they are submitted. Please ensure that these files are legible and of high quality (at least 300 dpi) in an easily accessible file format. For this reason, please be aware that any references listed in an SI file will not be indexed. For more information, see our Supporting Information guidelines:</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://journals.plos.org/plosbiology/s/supporting-information" xlink:type="simple">https://journals.plos.org/plosbiology/s/supporting-information</ext-link> </p>
+<p>*Published Peer Review History*</p>
+<p>Please note that you may have the opportunity to make the peer review history publicly available. The record will include editor decision letters (with reviews) and your responses to reviewer comments. If eligible, we will contact you to opt in or out. Please see here for more details:</p>
+<p><ext-link ext-link-type="uri" xlink:href="https://blogs.plos.org/plos/2019/05/plos-journals-now-open-for-published-peer-review/" xlink:type="simple">https://blogs.plos.org/plos/2019/05/plos-journals-now-open-for-published-peer-review/</ext-link></p>
+<p>*Press*</p>
+<p>Should you, your institution's press office or the journal office choose to press release your paper, please ensure you have opted out of Early Article Posting on the submission form. We ask that you notify us as soon as possible if you or your institution is planning to press release the article.</p>
+<p>*Protocols deposition*</p>
+<p>To enhance the reproducibility of your results, we recommend that if applicable you deposit your laboratory protocols in protocols.io, where a protocol can be assigned its own identifier (DOI) such that it can be cited independently in the future. Additionally, PLOS ONE offers an option for publishing peer-reviewed Lab Protocol articles, which describe protocols hosted on protocols.io. Read more information on sharing protocols at <ext-link ext-link-type="uri" xlink:href="https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols" xlink:type="simple">https://plos.org/protocols?utm_medium=editorial-email&amp;utm_source=authorletters&amp;utm_campaign=protocols</ext-link></p>
+<p>Please do not hesitate to contact me should you have any questions.</p>
+<p>Sincerely,</p>
+<p>Roli</p>
+<p>Roland Roberts, PhD</p>
+<p>Senior Editor</p>
+<p><email xlink:type="simple">rroberts@plos.org</email></p>
+<p>PLOS Biology</p>
+<p>------------------------------------------------------------------------</p>
+<p>DATA NOT SHOWN?</p>
+<p>- Please note that per journal policy, we do not allow the mention of "data not shown", "personal communication", "manuscript in preparation" or other references to data that is not publicly available or contained within this manuscript. Please either remove mention of these data or provide figures presenting the results and the data underlying the figure(s).</p>
+</body>
+</sub-article>
+<sub-article article-type="author-comment" id="pbio.3002645.r005">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r005</article-id>
+<title-group>
+<article-title>Author response to Decision Letter 2</article-title>
+</title-group>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="peer-reviewed-article" id="rel-obj005" link-type="rebutted-decision-letter" object-id="10.1371/journal.pbio.3002645.r004" object-id-type="doi" object-type="decision-letter"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>3</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="author-response-date">9 Jul 2024</named-content>
+</p>
+<supplementary-material id="pbio.3002645.s010" mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document" position="float" xlink:href="info:doi/10.1371/journal.pbio.3002645.s010" xlink:type="simple">
+<label>Attachment</label>
+<caption>
+<p>Submitted filename: <named-content content-type="submitted-filename">Response to reviews.docx</named-content></p>
+</caption>
+</supplementary-material>
+</body>
+</sub-article>
+<sub-article article-type="editor-report" id="pbio.3002645.r006" specific-use="decision-letter">
+<front-stub>
+<article-id pub-id-type="doi">10.1371/journal.pbio.3002645.r006</article-id>
+<title-group>
+<article-title>Decision Letter 3</article-title>
+</title-group>
+<contrib-group>
+<contrib contrib-type="author">
+<name name-style="western">
+<surname>Roberts</surname>
+<given-names>Roland G</given-names>
+</name>
+<role>Senior Editor</role>
+</contrib>
+</contrib-group>
+<permissions>
+<copyright-year>2024</copyright-year>
+<copyright-holder>Roland G Roberts</copyright-holder>
+<license xlink:href="http://creativecommons.org/licenses/by/4.0/">
+<license-p>This is an open access article distributed under the terms of the <ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/4.0/" xlink:type="simple">Creative Commons Attribution License</ext-link>, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.</license-p>
+</license>
+</permissions>
+<related-object document-id="10.1371/journal.pbio.3002645" document-id-type="doi" document-type="article" id="rel-obj006" link-type="peer-reviewed-article"/>
+<custom-meta-group>
+<custom-meta>
+<meta-name>Submission Version</meta-name>
+<meta-value>3</meta-value>
+</custom-meta>
+</custom-meta-group>
+</front-stub>
+<body>
+<p>
+<named-content content-type="letter-date">9 Jul 2024</named-content>
+</p>
+<p>Dear Tom,</p>
+<p>Thank you for the submission of your revised Preregistered Research Article "An empirical appraisal of eLife’s assessment vocabulary" for publication in PLOS Biology. On behalf of my colleagues and the Academic Editor, Christopher Chambers, I'm pleased to say that we can in principle accept your manuscript for publication, provided you address any remaining formatting and reporting issues. These will be detailed in an email you should receive within 2-3 business days from our colleagues in the journal operations team; no action is required from you until then. Please note that we will not be able to formally accept your manuscript and schedule it for publication until you have completed any requested changes.</p>
+<p>Please take a minute to log into Editorial Manager at <ext-link ext-link-type="uri" xlink:href="http://www.editorialmanager.com/pbiology/" xlink:type="simple">http://www.editorialmanager.com/pbiology/</ext-link>, click the "Update My Information" link at the top of the page, and update your user information to ensure an efficient production process.</p>
+<p>PRESS: We frequently collaborate with press offices. If your institution or institutions have a press office, please notify them about your upcoming paper at this point, to enable them to help maximise its impact. If the press office is planning to promote your findings, we would be grateful if they could coordinate with <email xlink:type="simple">biologypress@plos.org</email>. If you have previously opted in to the early version process, we ask that you notify us immediately of any press plans so that we may opt out on your behalf.</p>
+<p>We also ask that you take this opportunity to read our Embargo Policy regarding the discussion, promotion and media coverage of work that is yet to be published by PLOS. As your manuscript is not yet published, it is bound by the conditions of our Embargo Policy. Please be aware that this policy is in place both to ensure that any press coverage of your article is fully substantiated and to provide a direct link between such coverage and the published work. For full details of our Embargo Policy, please visit <ext-link ext-link-type="uri" xlink:href="http://www.plos.org/about/media-inquiries/embargo-policy/" xlink:type="simple">http://www.plos.org/about/media-inquiries/embargo-policy/</ext-link>.</p>
+<p>Thank you again for choosing PLOS Biology for publication and supporting Open Access publishing. We look forward to publishing your study. </p>
+<p>Sincerely, </p>
+<p>Roli</p>
+<p>Roland G Roberts, PhD, PhD</p>
+<p>Senior Editor</p>
+<p>PLOS Biology</p>
+<p><email xlink:type="simple">rroberts@plos.org</email></p>
+</body>
+</sub-article>
+</article>

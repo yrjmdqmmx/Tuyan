@@ -1,0 +1,62 @@
+{
+  "id": "pgen.1008646.g006",
+  "paper": "pgen.1008646",
+  "figure": {
+    "id": "pgen.1008646.g006",
+    "label": "Fig 6",
+    "caption": "Phylogenetic analyses of CoLT.\n(A) Maximum-likelihood phylogeny of different retroelements. Protein sequences of the reverse transcriptase (RT) domains were used to construct the tree [87] (see S4A File for the complete DNA and protein sequences). The tree was rooted in the midpoint and branch support values (> 50%) shown at the three nodes were determined by 10,000 replicates of both ultrafast bootstrap approximation (UFBoot) and the Shimodaira-Hasegawa approximate likelihood ratio test (SH-aLRT). (B) Maximum-likelihood phylogeny of full-length CoLT elements identified in the Psojae2010.1 genome assembly. CoLT copies located inside and outside of centromeres are denoted by blue and red circles. CoLT elements with full-length coding sequences (CDS) are depicted as filled circles. A CoLT sequence identified in P. citricola served as an outgroup. See S4B File for the CoLT copies used for the phylogenetic analysis.",
+    "xml": "<fig xmlns:ns0=\"http://www.w3.org/1999/xlink\" id=\"pgen.1008646.g006\" position=\"float\">\n<object-id pub-id-type=\"doi\">10.1371/journal.pgen.1008646.g006</object-id>\n<label>Fig 6</label>\n<caption>\n<title>Phylogenetic analyses of CoLT.</title>\n<p>(A) Maximum-likelihood phylogeny of different retroelements. Protein sequences of the reverse transcriptase (RT) domains were used to construct the tree [<xref ref-type=\"bibr\" rid=\"pgen.1008646.ref087\">87</xref>] (see <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s022\">S4A File</xref> for the complete DNA and protein sequences). The tree was rooted in the midpoint and branch support values (&gt; 50%) shown at the three nodes were determined by 10,000 replicates of both ultrafast bootstrap approximation (UFBoot) and the Shimodaira-Hasegawa approximate likelihood ratio test (SH-aLRT). (B) Maximum-likelihood phylogeny of full-length CoLT elements identified in the Psojae2010.1 genome assembly. CoLT copies located inside and outside of centromeres are denoted by blue and red circles. CoLT elements with full-length coding sequences (CDS) are depicted as filled circles. A CoLT sequence identified in <italic>P</italic>. <italic>citricola</italic> served as an outgroup. See <xref ref-type=\"supplementary-material\" rid=\"pgen.1008646.s022\">S4B File</xref> for the CoLT copies used for the phylogenetic analysis.</p>\n</caption>\n<graphic mimetype=\"image\" position=\"float\" ns0:href=\"info:doi/10.1371/journal.pgen.1008646.g006\" ns0:type=\"simple\" />\n</fig>\n",
+    "graphic": {
+      "mimetype": "image",
+      "position": "float",
+      "{http://www.w3.org/1999/xlink}href": "info:doi/10.1371/journal.pgen.1008646.g006",
+      "{http://www.w3.org/1999/xlink}type": "simple"
+    }
+  },
+  "metadata": {
+    "doi": "10.1371/journal.pgen.1008646",
+    "sourceUrl": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008646",
+    "title": "Long transposon-rich centromeres in an oomycete reveal divergence of centromere features in Stramenopila-Alveolata-Rhizaria lineages",
+    "journal": "PLOS Genetics",
+    "authors": [
+      "Yufeng Fang",
+      "Marco A. Coelho",
+      "Haidong Shu",
+      "Klaas Schotanus",
+      "Bhagya C. Thimmappa",
+      "Vikas Yadav",
+      "Han Chen",
+      "Ewa P. Malc",
+      "Jeremy Wang",
+      "Piotr A. Mieczkowski",
+      "Brent Kronmiller",
+      "Brett M. Tyler",
+      "Kaustuv Sanyal",
+      "Suomeng Dong",
+      "Minou Nowrousian",
+      "Joseph Heitman"
+    ],
+    "year": "2020",
+    "license": "2020\nFang et al\n\nThis is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "licenseAttributes": [
+      {
+        "{http://www.w3.org/1999/xlink}href": "http://creativecommons.org/licenses/by/4.0/",
+        "{http://www.w3.org/1999/xlink}type": "simple"
+      }
+    ]
+  },
+  "assets": {
+    "large": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=large&id=10.1371/journal.pgen.1008646.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g006.png",
+      "bytes": 2658714,
+      "sha256": "fb00a635dee8e7c79e043c27b7e97179fa68e534bd7287bca221ade5db57526a"
+    },
+    "original": {
+      "url": "https://journals.plos.org/plosgenetics/article/figure/image?size=original&id=10.1371/journal.pgen.1008646.g006",
+      "path": "apps/paperbanana-api/assets/reference-library/pgen.1008646.g006.tif",
+      "bytes": 3779680,
+      "sha256": "36a3b34518caf46c1381069190843f7c43a3f373491d61e2fd10bbb93b3fb08c"
+    }
+  }
+}

@@ -1,0 +1,727 @@
+{
+  "checkedAt": "2026-10-09",
+  "windowStart": "2026-09-27",
+  "parentImplementation": "74bbf10",
+  "base": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+  "providerInferenceCalls": 0,
+  "accountEntitlementVerified": false,
+  "deployment": false,
+  "catalogDelta": {
+    "firstPassCount": 1056,
+    "currentCount": 1066,
+    "baselineCount": 1040,
+    "allOldIdsRetained": true,
+    "allDefaultsUnchanged": true,
+    "added": [
+      {
+        "key": "ideogram/ideogram-4-5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+            "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5"
+          ],
+          "notes": [
+            "原生 v2，正式版/预览版与精确发布日期未单独确认。生图仅开放文档明确列举的3个尺寸。",
+            "精确编辑：图研接收1张原图，不接辅助图/遮罩；自动比例和清晰度。渠道限制原图JPEG/PNG/WebP、25MB、1:6至6:1，超大图片可能等比缩小。",
+            "上游返回图片URL，图研检测后归一化为PNG；无可调思考字段，quality和magic_prompt不等于思考档位。"
+          ],
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ]
+        }
+      },
+      {
+        "key": "replicate/black-forest-labs/flux-3-image",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://replicate.com/black-forest-labs/flux-3-image/api/schema"
+          ],
+          "reasoning": "unknown",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "Replicate 独立字段与版本已核对；固定已审核版本 b6b5b9417078a80ed3e6f1748ed6af3ca416b2425fa24debf164cad35dfb0f28。",
+            "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+            "关闭本渠道搜索增强，保留原有任务检索选择。",
+            "官方参考图上限10张；图研1张。每图至少256×256且最多16MP；768sq未在图研开放。"
+          ]
+        }
+      },
+      {
+        "key": "replicate/google/nano-banana-2.1",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://replicate.com/google/nano-banana-2.1/api/schema"
+          ],
+          "reasoning": "unknown",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "Replicate 独立字段与版本已核对；固定已审核版本 38c8908f74a5dd52852ca32926b2d9fadf6be729f3b4336834a9b6f29b74bd83。",
+            "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+            "关闭本渠道搜索增强，保留原有任务检索选择。",
+            "官方参考图上限14张；图研1张。"
+          ]
+        }
+      },
+      {
+        "key": "replicate/ideogram-ai/ideogram-4-5",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema"
+          ],
+          "reasoning": "unknown",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "Replicate 独立字段与版本已核对；固定已审核版本 2a9e025d8b9b109791919fa179b5e693f594cabff01191daf6df38eb63e5959d。",
+            "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+            "按Replicate的7个明确尺寸，不能套用原生2K预设。size=source与mask模式未开放；上游结果由图研归一化为PNG。"
+          ]
+        }
+      },
+      {
+        "key": "replicate/ideogram-ai/ideogram-4-5-precise-edit",
+        "roles": [
+          "image"
+        ],
+        "protocol": "provider-images",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema"
+          ],
+          "reasoning": "unknown",
+          "officialInputModalities": [
+            "text",
+            "image"
+          ],
+          "officialOutputModalities": [
+            "image"
+          ],
+          "notes": [
+            "Replicate 独立字段与版本已核对；固定已审核版本 59afac18e189c79312ce59c68aee67754c835f6a022ff360265fb9b4ae2d2021。",
+            "图研只接收1张原图，未开放辅助图或遮罩；不继承原厂或其他渠道的限制。",
+            "该独立身份仅精确编辑，不能选择为首次生图模型；不传size/aspect_ratio。Replicate schema未列文件/像素上限，沿用图研现有上传校验。"
+          ]
+        }
+      },
+      {
+        "key": "sensenova/deepseek-flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://platform.sensenova.cn/docs"
+          ],
+          "notes": [
+            "商汤 Chat 文档写上下文1M；最大输出393216 tokens（含思考），图研请求额度仍8192。",
+            "渠道图片上限200张、单图50MB、请求体64MB；图研更严格的3张/现有上传上限保持。视频与GIF未接入。",
+            "仅开放渠道原生effort none/low/high/max，不暴露兼容别名或另建思考开关。"
+          ],
+          "contextWindowTokens": 1000000,
+          "contextWindowApproximate": true,
+          "maxOutputTokens": 393216,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "key": "tokendance/ling-3.1-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://tokendance.space/models/ling-3.1-flash",
+            "https://tokendance.space/portal/api/models/ling-3.1-flash",
+            "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+          ],
+          "notes": [
+            "顶层目录1M与当前服务256K冲突；卡片采用约256K，最大输出和思考控制待确认。",
+            "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+          ],
+          "contextWindowTokens": 256000,
+          "contextWindowApproximate": true,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "key": "tokendance/mimo-v2.6-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://tokendance.space/models/mimo-v2.6-flash",
+            "https://tokendance.space/portal/api/models/mimo-v2.6-flash",
+            "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+          ],
+          "notes": [
+            "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+            "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+          ],
+          "contextWindowTokens": 1000000,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "key": "tokendance/mimo-v2.6-pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://tokendance.space/models/mimo-v2.6-pro",
+            "https://tokendance.space/portal/api/models/mimo-v2.6-pro",
+            "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+          ],
+          "notes": [
+            "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+            "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+          ],
+          "contextWindowTokens": 1000000,
+          "reasoning": "supported",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "key": "tokendance/mimo-v2.6-ultraspeed",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "verified": false,
+        "specifications": {
+          "version": 1,
+          "checkedAt": "2026-10-09",
+          "sourceUrls": [
+            "https://tokendance.space/models/mimo-v2.6-ultraspeed",
+            "https://tokendance.space/portal/api/models/mimo-v2.6-ultraspeed",
+            "https://tokendance.space/docs/protocol-openai-chat-completions.md"
+          ],
+          "notes": [
+            "当前仅适配文本；渠道视觉请求限制、思考控制与最大输出待确认。",
+            "仅复用已审核Chat文本协议；不继承原厂思考字段、档位或最大输出。账户、价格与真实推理未验证。"
+          ],
+          "contextWindowTokens": 1000000,
+          "reasoning": "unknown",
+          "officialInputModalities": [
+            "text",
+            "image",
+            "audio",
+            "video"
+          ],
+          "officialOutputModalities": [
+            "text"
+          ]
+        }
+      }
+    ],
+    "lifecycleUpdates": [
+      {
+        "key": "siliconflow/baidu/ERNIE-Image-Turbo",
+        "changes": {
+          "lifecycle": {
+            "before": "stable",
+            "after": "legacy"
+          },
+          "selectable": {
+            "before": true,
+            "after": false
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-09-30"
+          },
+          "lifecycleSourceUrl": {
+            "before": "",
+            "after": "https://docs.siliconflow.cn/docs/release-notes/overview"
+          }
+        }
+      },
+      {
+        "key": "tokendance/mimo-v2.5",
+        "changes": {
+          "lifecycle": {
+            "before": "stable",
+            "after": "legacy"
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-10-21"
+          },
+          "expirationAt": {
+            "before": null,
+            "after": "2026-10-21T10:00:00+08:00"
+          },
+          "lifecycleSourceUrl": {
+            "before": "https://tokendance.space/models/mimo-v2.5",
+            "after": "https://tokendance.space/docs/changelog.md"
+          }
+        }
+      },
+      {
+        "key": "tokendance/mimo-v2.5-pro",
+        "changes": {
+          "lifecycle": {
+            "before": "stable",
+            "after": "legacy"
+          },
+          "expirationDate": {
+            "before": null,
+            "after": "2026-10-21"
+          },
+          "expirationAt": {
+            "before": null,
+            "after": "2026-10-21T10:00:00+08:00"
+          },
+          "lifecycleSourceUrl": {
+            "before": "https://tokendance.space/models/mimo-v2.5-pro",
+            "after": "https://tokendance.space/docs/changelog.md"
+          }
+        }
+      }
+    ]
+  },
+  "publicSources": [
+    {
+      "key": "ideogram-generate",
+      "url": "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+      "finalUrl": "https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5",
+      "sha256": "a502b968724622e93725f50bd7070407e0ff07bfee211db97750c5f8a2d20c8b",
+      "bytes": 555517,
+      "textChars": 10131,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ideogram-edit",
+      "url": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5",
+      "finalUrl": "https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5",
+      "sha256": "1f996c614fc5734477bfed5621f88a34caad5d0d7ac480e89b66b6a8f486d6e5",
+      "bytes": 540377,
+      "textChars": 9136,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ideogram-index",
+      "url": "https://developer.ideogram.ai/v2/llms.txt",
+      "finalUrl": "https://developer.ideogram.ai/v2/llms.txt",
+      "sha256": "49736e56ea40aa77b8ab94e37d35401a798b0875a3c7b8a9c2ffa0469f988ec0",
+      "bytes": 10649,
+      "textChars": 10643,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-flux",
+      "url": "https://docs.together.ai/docs/quickstart-flux.md",
+      "finalUrl": "https://docs.together.ai/docs/quickstart-flux.md",
+      "sha256": "4654ed0a70801def9c98aac2b87ff8b609d6de99077c1da4da4bdac7e41f09a0",
+      "bytes": 32776,
+      "textChars": 32688,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-parameters",
+      "url": "https://docs.together.ai/docs/inference/images/parameters.md",
+      "finalUrl": "https://docs.together.ai/docs/inference/images/parameters.md",
+      "sha256": "7636172859015a1892f0cace1c7d8828e1557c7ed11d30c37e019bc06baca838",
+      "bytes": 15446,
+      "textChars": 15314,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-reference",
+      "url": "https://docs.together.ai/docs/inference/images/reference-images.md",
+      "finalUrl": "https://docs.together.ai/docs/inference/images/reference-images.md",
+      "sha256": "e0709c28e4ac9b166836fef580a8e01ab9e4762a58be829966f54462db2ddcf9",
+      "bytes": 4327,
+      "textChars": 4327,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-model",
+      "url": "https://developer.ant-ling.com/en/docs/models/ling",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/models/ling",
+      "sha256": "877381739750fd33ed4114e658d41a3f3723eec4fa9542fff624ab6192497d5a",
+      "bytes": 185665,
+      "textChars": 17853,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-api",
+      "url": "https://developer.ant-ling.com/en/docs/api-reference/openai/",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/api-reference/openai/",
+      "sha256": "66bd8ba1dddc89bf637448cd294103a0361927378a1147c5e02242ca6a875f15",
+      "bytes": 321877,
+      "textChars": 12613,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "ling-effort",
+      "url": "https://developer.ant-ling.com/en/docs/tutorials/effort/",
+      "finalUrl": "https://developer.ant-ling.com/en/docs/tutorials/effort/",
+      "sha256": "e1b28b04c99eed253493f81a467b4394417aac56b73be12b0b93da2cfb69e742",
+      "bytes": 202772,
+      "textChars": 6918,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "td-ling-3.1-flash-detail",
+      "url": "https://tokendance.space/portal/api/models/ling-3.1-flash",
+      "sha256": "625b186701e76dab44bb0287d16f65c7d47efd580ec62d2ac194caa68241bb87",
+      "bytes": 2435,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "td-mimo-v2.6-pro-detail",
+      "url": "https://tokendance.space/portal/api/models/mimo-v2.6-pro",
+      "sha256": "2120469e2d990e8370134e692229e581f6f638ffba749997bfe747fe385e1a75",
+      "bytes": 1777,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "td-mimo-v2.6-flash-detail",
+      "url": "https://tokendance.space/portal/api/models/mimo-v2.6-flash",
+      "sha256": "f77c925c20a2a1ed2792785fa88dc4e06f0bbebc1399fce20037a448f6471292",
+      "bytes": 1727,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "td-mimo-v2.6-ultraspeed-detail",
+      "url": "https://tokendance.space/portal/api/models/mimo-v2.6-ultraspeed",
+      "sha256": "71c4fdbb849336c1746c544c87de339138dcc823c0e9bf5de270c30cd0a0bcb2",
+      "bytes": 1740,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "td-qwen3.5-ocr-detail",
+      "url": "https://tokendance.space/portal/api/models/qwen3.5-ocr",
+      "sha256": "a8fb83b357af53114826cbf58c9bb377e5bf965f05ef766085c7cf1fb02c8068",
+      "bytes": 996,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "stability-openapi",
+      "url": "https://api.stability.ai/v2alpha/openapi",
+      "sha256": "77fe885cc8d445eb4799212f707d4417de78be63e201881dff641300863462ce",
+      "bytes": 228099,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "replicate-nano21",
+      "url": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "finalUrl": "https://replicate.com/google/nano-banana-2.1/api/schema",
+      "sha256": "c4eb3c9c36efd4131a244d89dcd595a76f2266643b051ef03d6b9bc7f3bae92f",
+      "bytes": 152801,
+      "textChars": 3350,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "replicate-flux3",
+      "url": "https://replicate.com/black-forest-labs/flux-3-image/api/schema",
+      "finalUrl": "https://replicate.com/black-forest-labs/flux-3-image/api/schema",
+      "sha256": "a0dc87777f88ad072d61cb753eeac3ad1d90fec45237f9e058f6462df816c8f9",
+      "bytes": 161920,
+      "textChars": 3250,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "replicate-ideogram45",
+      "url": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema",
+      "finalUrl": "https://replicate.com/ideogram-ai/ideogram-4-5/api/schema",
+      "sha256": "21222963a2db5510ff177b00ac178a0a85ead9a2262e1633d336203f6cede44b",
+      "bytes": 154889,
+      "textChars": 3174,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "replicate-ideogram45edit",
+      "url": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema",
+      "finalUrl": "https://replicate.com/ideogram-ai/ideogram-4-5-precise-edit/api/schema",
+      "sha256": "925f2c0df60eabae3d9e77a69b5fc50114659cf2dee34f1d0f6bac1e7db061e9",
+      "bytes": 147406,
+      "textChars": 3147,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "siliconflow-releases",
+      "url": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "finalUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "sha256": "9ad4764edc712a30d2f69153da060d30cafe69dac11c470d20089a5bfc5f0418",
+      "bytes": 296807,
+      "textChars": 15914,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-models",
+      "url": "https://docs.together.ai/docs/serverless/models",
+      "finalUrl": "https://docs.together.ai/docs/serverless/models",
+      "sha256": "389baab51671a7467d0d4a80f695d47345d91dd4146056750ff43991815a36aa",
+      "bytes": 540898,
+      "textChars": 13460,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "key": "together-flux3",
+      "url": "https://www.together.ai/models/flux-3",
+      "finalUrl": "https://www.together.ai/models/flux-3",
+      "sha256": "10eb364eda68af0ec6c7d0cf56cae9c7d8dff238f0cf1348fdda5a8604fd5000",
+      "bytes": 397270,
+      "textChars": 11716,
+      "checkedAt": "2026-10-09"
+    },
+    {
+      "file": "sensenova-rendered.txt",
+      "url": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-10-09",
+      "bytes": 135221,
+      "sha256": "29d0297de851e89d7de395db5c207f1d3d9036f49326163a4794ee264c1d74ab"
+    },
+    {
+      "file": "tokendance-live.json",
+      "url": "https://tokendance.space/gateway/v1/models",
+      "checkedAt": "2026-10-09",
+      "bytes": 66899,
+      "sha256": "0a5706ebf4b14738ec10e3b4b376f0426a2618bcae462e51a8bcc1c10a45c542"
+    },
+    {
+      "file": "td-changelog.md",
+      "url": "https://tokendance.space/docs/changelog.md",
+      "checkedAt": "2026-10-09",
+      "bytes": 43999,
+      "sha256": "d5c6c747a12c9b3c697fd519c298144827e6e46a60da0ac98fc628a6630992dd"
+    }
+  ],
+  "tokendanceDiscovery": {
+    "checkedAt": "2026-10-09T02:55:17.024Z",
+    "status": "review",
+    "newModels": [
+      "ateve-jev-v1",
+      "bocha-jev-v1",
+      "cogevol-base",
+      "cogevol-interactive-0828",
+      "cogevol-slide-0828",
+      "ling-3.1-flash",
+      "mimo-v2.6-flash",
+      "mimo-v2.6-pro",
+      "mimo-v2.6-ultraspeed",
+      "qwen-audio-3.0-asr-flash",
+      "qwen-audio-3.1-asr-flash",
+      "qwen-audio-3.1-asr-flash-message",
+      "qwen3.5-ocr",
+      "qwen3.7-text-rerank",
+      "yc-song-3.5",
+      "yc-song-4.0"
+    ],
+    "missingModels": [
+      "deepseek-chat-v3-0324",
+      "deepseek-ocr-2",
+      "deepseek-v4-flash-vision-exp"
+    ],
+    "protocolChanges": [
+      "deepseek-v4-flash",
+      "deepseek-v4-pro",
+      "kimi-k3",
+      "kling-3.0",
+      "step-5-preview"
+    ],
+    "metadataReview": [
+      "deepseek-v4-pro-0813",
+      "deepseek-v4.1-flash",
+      "glm-5.3-flash",
+      "kimi-k3",
+      "minimax-h3"
+    ],
+    "liveCount": 108,
+    "critical": {
+      "newMissingModels": [],
+      "selectedProtocolMissing": [],
+      "contextReductions": []
+    },
+    "knownMissingModels": [
+      "deepseek-chat-v3-0324",
+      "deepseek-v4-flash-vision-exp"
+    ],
+    "unusedMissingModels": [
+      "deepseek-ocr-2"
+    ],
+    "recoveredModels": [],
+    "autoPromotions": [],
+    "policy": "Discovery is report-only; new execution regressions fail. Known absences remain runtime-blocked while missing. No automatic model or protocol changes."
+  },
+  "remainingGaps": [
+    "Native Ant Ling 3.1 precise API identity and controls remain unconfirmed.",
+    "TokenDance multimodal and thinking controls for 4 new text identities are not adapted.",
+    "TokenDance 12 other discoveries are specialty protocols or lack audited task-role compatibility.",
+    "SiliconFlow account-scoped complete list not queried; public retirement notice applied.",
+    "fal and Replicate full community catalog coverage not claimed."
+  ],
+  "resolvedExclusions": [
+    {
+      "provider": "together",
+      "id": "black-forest-labs/FLUX-3",
+      "reason": "The channel places this identity under video models and documents /v2/videos. Not an image endpoint.",
+      "source": "https://docs.together.ai/docs/serverless/models"
+    }
+  ],
+  "localVerification": {
+    "coreFullRun": {
+      "tests": 1112,
+      "passed": 1110,
+      "failed": 2,
+      "failures": "Missing four Replicate schema entries in existing total table, and wrong image protocol label in four thinking profiles. Both corrected."
+    },
+    "correctedAffectedTests": {
+      "tests": 23,
+      "passed": 23
+    },
+    "finalVersionAndContractTests": {
+      "tests": 15,
+      "passed": 15
+    },
+    "web": {
+      "tests": 592,
+      "passed": 592
+    },
+    "miniprogram": {
+      "tests": 121,
+      "passed": 121,
+      "sourceBytes": 1570242,
+      "budgetBytes": 1572864,
+      "nativeUiVerified": false
+    },
+    "gatewayAffected": {
+      "tests": 54,
+      "passed": 54
+    },
+    "browser": {
+      "viewports": [
+        1440,
+        390,
+        320
+      ],
+      "cardCases": 15,
+      "pageErrors": 0,
+      "overflow": false,
+      "network": "Local Vite and mocked API; external requests intercepted."
+    },
+    "paidInference": false
+  },
+  "isolation": {
+    "worktree": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/model-catalog-20261009",
+    "branch": "codex/model-catalog-20261009",
+    "parallelWorktree": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+    "parallelHead": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+    "readOnlyOverlapAudit": [
+      "SYNC.md",
+      "apps/paperbanana-api/runtime/handler.ts",
+      "apps/paperbanana-api/tests/core-composition.test.ts",
+      "apps/paperbanana-api/tests/full-channel-catalog.test.ts",
+      "apps/paperbanana-api/tests/thinking-transport.test.ts",
+      "apps/paperbanana-api/tests/tokendance.test.ts",
+      "apps/web/src/components/ModelPicker.jsx",
+      "apps/web/src/components/ModelRoutingSettings.jsx",
+      "apps/web/src/i18n/workbench.en.json",
+      "packages/types/src/index.ts"
+    ],
+    "parallelWorktreeModifiedByThisTask": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "action": "createJob",
+  "configurationMode": "advanced",
+  "provider": "bailian",
+  "apiKeys": {
+    "bailian": "[REDACTED]"
+  },
+  "modelRoutes": {
+    "main": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "vision": {
+      "accessProvider": "bailian",
+      "modelId": "qwen3.7-plus"
+    },
+    "image": {
+      "accessProvider": "bailian",
+      "modelId": "wan2.7-image-pro"
+    }
+  },
+  "methodContent": "Synthetic teaching example of an instrument state machine. States: Idle, Running, Paused, Completed. Initial dot enters Idle. Transitions: Idle→Running: start; Running→Paused: pause; Paused→Running: resume; Running→Completed: finish; Paused→Idle: cancel; Completed→Idle: reset. Each named state appears once. Arrows are labelled events, not process activities. Completed is not a terminal state because reset returns to Idle. English text. Reference is for structural design only.",
+  "caption": "Explicit synthetic teaching example",
+  "negativePrompt": "No invented numbers, statistical significance, or scientific conclusions. Preserve all supplied labels and relations.",
+  "taskName": "diagram",
+  "figureTypeId": "state_transition",
+  "figureSpecVersion": "2026-10-10.v1",
+  "outputFormat": "svg",
+  "visionMode": "none",
+  "pipelineMode": "planner_critic",
+  "retrievalSetting": "manual",
+  "manualReferenceIds": [
+    "journal_pcbi.1009702.g001"
+  ],
+  "numCandidates": 1,
+  "maxCriticRounds": 1,
+  "aspectRatio": "16:9",
+  "imageSize": "1K"
+}
