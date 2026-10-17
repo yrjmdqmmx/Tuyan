@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFileSync } from 'node:fs'
+import { REFERENCE_UPLOAD_PLATFORM } from '../../../packages/api/src/reference-upload.js'
 
 import { loadConfig } from '../src/config.js'
 
@@ -156,9 +158,9 @@ test('startup config provides bounded admission and readiness defaults', () => {
     maxPerIp: 1,
   })
   assert.equal(config.readinessProbeTimeoutMs, 2000)
-  assert.equal(config.referenceImageMaxBytes, 20 * 1024 * 1024)
-  assert.equal(config.referenceImageMaxCount, 8)
-  assert.equal(config.referenceImageMaxTotalBytes, 80 * 1024 * 1024)
+  assert.equal(config.referenceImageMaxBytes, REFERENCE_UPLOAD_PLATFORM.maxBytes)
+  assert.equal(config.referenceImageMaxCount, REFERENCE_UPLOAD_PLATFORM.maxCount)
+  assert.equal(config.referenceImageMaxTotalBytes, REFERENCE_UPLOAD_PLATFORM.maxTotalBytes)
   assert.equal(config.providerImageMaxBytes, 20 * 1024 * 1024)
 })
 
@@ -173,13 +175,14 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '99'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '10001'],
     ['PAPERBANANA_MAX_REFERENCE_BYTES', '0'],
-    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(20 * 1024 * 1024 + 1)],
-    ['PAPERBANANA_MAX_REFERENCE_IMAGES', '9'],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(REFERENCE_UPLOAD_PLATFORM.maxBytes + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_BYTES', String(20 * 1024 * 1024)],
+    ['PAPERBANANA_MAX_REFERENCE_IMAGES', String(REFERENCE_UPLOAD_PLATFORM.maxCount + 1)],
     ['PAPERBANANA_MAX_REFERENCE_IMAGES', '1.5'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', 'invalid'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '1.5'],
     ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', '0'],
-    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', String(80 * 1024 * 1024 + 1)],
+    ['PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES', String(REFERENCE_UPLOAD_PLATFORM.maxTotalBytes + 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(5 * 1024 * 1024 - 1)],
     ['PAPERBANANA_MAX_PROVIDER_IMAGE_BYTES', String(50 * 1024 * 1024 + 1)],
   ]
@@ -187,6 +190,21 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
   for (const [name, value] of invalid) {
     assert.throws(() => loadConfig({ ...validEnv, [name]: value }), new RegExp(name))
   }
+})
+
+test('deployment template reference limits match the shared upload contract and startup parser', () => {
+  const template = readFileSync(new URL('../../../deploy/hk-single-host/scripts/generate-runtime-secrets.sh', import.meta.url), 'utf8')
+  const env = { ...validEnv }
+  for (const [key, expected] of Object.entries({
+    PAPERBANANA_MAX_REFERENCE_IMAGES: REFERENCE_UPLOAD_PLATFORM.maxCount,
+    PAPERBANANA_MAX_REFERENCE_BYTES: REFERENCE_UPLOAD_PLATFORM.maxBytes,
+    PAPERBANANA_MAX_REFERENCE_TOTAL_BYTES: REFERENCE_UPLOAD_PLATFORM.maxTotalBytes,
+  })) {
+    const value = template.match(new RegExp(`^${key}=(\\d+)$`, 'm'))?.[1]
+    assert.equal(Number(value), expected, key)
+    Object.assign(env, { [key]: value })
+  }
+  assert.doesNotThrow(() => loadConfig(env))
 })
 
 test('startup config requires distinct internal and public OSS endpoints', () => {
