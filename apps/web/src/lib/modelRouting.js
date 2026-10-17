@@ -34,13 +34,14 @@ export function providerDefaultRoutes(provider, registry, fallbackProviders) {
 export function registryReadinessMessage(status) {
   if (status === 'loading') return '正在读取模型与渠道能力，请稍候…'
   if (status === 'error') return '模型与渠道能力读取失败，请重试；当前配置已保留。'
+  if (status === 'stale') return '模型目录暂未更新，已保留上次目录和当前配置；请重新读取后再提交。'
   return ''
 }
 
 export function buildModelSubmission({ configurationMode, modelRoutes, registry, registryStatus = registry ? 'ready' : 'loading', providerRegions, requiredRoles = MODEL_ROUTE_ROLES }) {
   assertCompleteRoutes(modelRoutes, requiredRoles)
   const executionRoutes = requiredRoles.map(role => modelRoutes[role])
-  if (configurationMode === 'advanced' || executionRoutes.some(route => route.accessProvider === 'custom')) {
+  if (registryStatus === 'stale' || configurationMode === 'advanced' || executionRoutes.some(route => route.accessProvider === 'custom')) {
     const readinessMessage = registryReadinessMessage(registryStatus)
     if (readinessMessage) throw new Error(readinessMessage)
   }

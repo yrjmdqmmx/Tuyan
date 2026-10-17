@@ -26,6 +26,7 @@ import {
   formatClientPlatform,
   getJobRequest,
   modelRegistryRequest,
+  fetchBackendHealth,
   benchmarkLeaderboardRequest,
   benchmarkCaseEvidenceRequest,
   benchmarkModelProfileRequest,
@@ -797,6 +798,22 @@ test('modelRegistryRequest reads the server-authoritative model roles and defaul
     assert.equal(registry.providers.gemini.officialSourceUrl, 'https://ai.google.dev/');
     assert.equal(registry.providers.gemini.routeContractVersion, 1);
     assert.equal(registry.providers.gemini.accountCatalogRequired, true);
+  } finally {
+    fetchMock.restore();
+  }
+});
+
+test('health and registry reads pass cancellation to fetch without changing the API body', async () => {
+  const controller = new AbortController();
+  const fetchMock = mockJsonFetch(() => ({ body: { code: 0, runtime: 'gateway', providers: {} } }));
+  try {
+    await fetchBackendHealth('https://gateway.example', { signal: controller.signal });
+    await modelRegistryRequest('https://gateway.example', { backendMode: 'gateway' }, '', { signal: controller.signal });
+    assert.equal(fetchMock.calls[0].options.signal, controller.signal);
+    assert.equal(fetchMock.calls[1].options.signal, controller.signal);
+    assert.deepEqual(JSON.parse(fetchMock.calls[1].options.body), { action: 'modelRegistry' });
+    controller.abort();
+    assert.equal(fetchMock.calls[1].options.signal.aborted, true);
   } finally {
     fetchMock.restore();
   }

@@ -8,6 +8,6 @@ export default function ModelRegistryNotice({ status, supported, onRetry, unsupp
   const loading = status === 'loading'
   return <div className={loading ? 'route-contract-status' : 'route-contract-warning'} role={loading ? 'status' : 'alert'}>
     <span>{t(message || unsupportedMessage)}</span>
-    {status === 'error' && onRetry && <button type="button" className="universal-button" onClick={onRetry}>{t('重新读取模型与渠道能力')}</button>}
+    {['error', 'stale'].includes(status) && onRetry && <button type="button" className="universal-button" onClick={onRetry}>{t('重新读取模型与渠道能力')}</button>}
   </div>
 }

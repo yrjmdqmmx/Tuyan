@@ -147,10 +147,11 @@ test('catalog refresh preserves a valid channel, preserves a removed channel unt
   const original = globalThis.fetch, scroll = window.scrollTo;
   let providers = structuredClone(STATIC_MODEL_REGISTRY), registryReads = 0;
   let refresh;
-  const interval = globalThis.setInterval;
-  t.mock.method(globalThis, 'setInterval', (callback, delay, ...args) => {
-    if (delay === 60_000) refresh = () => callback(...args);
-    return interval(callback, delay, ...args);
+  const timeout = globalThis.setTimeout;
+  t.mock.method(globalThis, 'setTimeout', (callback, delay, ...args) => {
+    const timer = timeout(callback, delay, ...args);
+    if (delay === 60_000) refresh = () => { clearTimeout(timer); return callback(...args); };
+    return timer;
   });
   window.scrollTo = () => {};
   globalThis.fetch = async (_url, init = {}) => {

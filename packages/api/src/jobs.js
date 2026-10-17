@@ -15,8 +15,8 @@ export async function journalFigureExportRequest(apiBase, payload) {
   return fetchJson(apiEndpoint(apiBase), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'journalFigureExport',...payload})});
 }
 
-export async function fetchBackendHealth(apiBase) {
-  const data = await fetchJson(apiEndpoint(apiBase));
+export async function fetchBackendHealth(apiBase, options = {}) {
+  const data = await fetchJson(apiEndpoint(apiBase), { signal: options.signal });
   if (data.runtime !== 'gateway') throw new Error('当前地址不是图研认证网关');
   return { ...data, backendMode: 'gateway' };
 }
@@ -225,6 +225,7 @@ export async function modelRegistryRequest(apiBase, health, provider = '', optio
   assertGatewayBackend(health);
   return fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
+    signal: options.signal,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'modelRegistry', provider: provider || undefined, ...(options.refresh ? {refreshCatalog:true} : {}) }),
   });
