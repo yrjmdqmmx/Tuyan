@@ -163,6 +163,7 @@ jobs:
       - name: Deploy fixed images and verify Hangzhou, preserving model routes
         env:
           GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: python3 deploy/hangzhou/ci_send.py | tee deployment-receipt.json
       - uses: actions/upload-artifact@v4
         if: always()
