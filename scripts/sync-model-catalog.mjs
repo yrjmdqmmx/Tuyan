@@ -106,6 +106,7 @@ lines.push(fs.readFileSync(path.join(root, 'packages/api/src/execution-errors.ts
 const universalRuntime = fs.readFileSync(path.join(root, 'packages/api/src/universal-api.ts'), 'utf8')
 lines.push(universalRuntime)
 write(path.join(root, 'apps/web/src/lib/universalContract.js'), '// Generated from packages/api/src/universal-api.ts\n' + ts.transpileModule(universalRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/auth-gateway/src/universal-contract.js'), '// Generated from packages/api/src/universal-api.ts\n' + ts.transpileModule(universalRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
 const universalMiniTypes = universalRuntime.slice(0, universalRuntime.indexOf('const universalErrorMessages')) + universalRuntime.slice(universalRuntime.indexOf('export interface UniversalInputLimits'), universalRuntime.indexOf('export const UNIVERSAL_PLATFORM_LIMITS'))
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/universal-api.ts'), '// Generated shared history types; configuration and execution are Web/Core-only.\n' + universalMiniTypes)
 lines.push(fs.readFileSync(path.join(root, 'packages/api/src/tokendance-catalog.ts'), 'utf8'))

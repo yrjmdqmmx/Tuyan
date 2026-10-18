@@ -1,0 +1,24 @@
+.tw-main > .tw-topbar:has(> .tw-header-tools) { padding-right:160px; }
+.tw-header-tools { position:absolute; right:28px; top:0; bottom:0; display:flex; align-items:center; }
+.tw-shell .tw-status-trigger { color:var(--tw-muted); font-size:12px; gap:6px; }
+.tw-shell .tw-status-trigger.has-issue { color:#9a641c; background:#fff6e6; }
+.tw-status-notice { flex:none; display:flex; align-items:center; gap:10px; padding:8px 20px; background:#fff7e8; border-bottom:1px solid #eedcc0; color:#87551e; font:12px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; }
+.tw-status-notice > svg { flex:none; }
+.tw-status-notice > span { flex:1; min-width:0; overflow-wrap:anywhere; }
+.tw-status-notice > button { flex:none; border:0; border-radius:6px; padding:5px 8px; color:inherit; background:#f6e8d2; cursor:pointer; font:inherit; }
+.tw-status-notice > button:hover { background:#efdbba; }
+.tw-status-notice > button:focus-visible { outline:2px solid #9a641c; outline-offset:2px; }
+.tw-status-sections > section + section { border-top:1px solid var(--tw-border); margin-top:22px; padding-top:22px; }
+.tw-status-sections h3 { display:flex; align-items:center; gap:8px; margin:0 0 9px; font-size:14px; font-weight:600; }
+.tw-status-sections p { margin:0 0 12px; color:var(--tw-muted); font-size:13px; line-height:1.7; overflow-wrap:anywhere; }
+.tw-status-sections .tw-status-issue { color:#98621d; }
+.tw-status-actions { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.tw-dialog .tw-status-actions > :is(button,a) { display:inline-flex; align-items:center; justify-content:center; gap:6px; border:1px solid var(--tw-border); border-radius:8px; padding:7px 10px; min-height:34px; background:#fafbf9; color:var(--tw-accent); font-size:12px; text-decoration:none; }
+.tw-dialog .tw-status-actions > :is(button,a):hover { background:#edf1eb; }
+@media(max-width:767px) {
+  .tw-main > .tw-topbar:has(> .tw-header-tools) { grid-template-columns:40px minmax(0,1fr) 36px; padding-right:14px; }
+  .tw-header-tools { position:static; grid-column:3; grid-row:1; }
+  .tw-shell .tw-status-trigger { width:36px; height:36px; padding:7px; }
+  .tw-status-trigger > span { display:none; }
+  .tw-status-notice { gap:7px; padding:7px 10px; font-size:11px; }
+}

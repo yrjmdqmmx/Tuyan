@@ -9,7 +9,7 @@ import ImagePreviewDialog from './ImagePreviewDialog'
 
 const imageUrlFor = (item) => (item.localPreviewUrl ? appPath(item.localPreviewUrl) : '') || item.image_url || item.imageUrl || ''
 
-export default function ReferenceLibraryPanel({ references, selectedIds, pageInfo, isLoading, error, onToggle, onClear, onRequest }) {
+export default function ReferenceLibraryPanel({ references, selectedIds, pageInfo, isLoading, error, onToggle, onClear, onRequest, backdropClassName }) {
   const [showGallery, setShowGallery] = useState(false)
   const [previewIndex, setPreviewIndex] = useState(-1)
   const [query, setQuery] = useState('')
@@ -79,7 +79,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
       </button>
       {error ? <p className="reference-upload-error">{error}</p> : null}
 
-      <AccessibleDialog open={showGallery} onClose={() => setShowGallery(false)} labelledBy={galleryTitleId} describedBy={galleryDescriptionId} className="reference-gallery-dialog">
+      <AccessibleDialog backdropClassName={backdropClassName} open={showGallery} onClose={() => setShowGallery(false)} labelledBy={galleryTitleId} describedBy={galleryDescriptionId} className="reference-gallery-dialog">
         <header className="reference-gallery-dialog-head">
           <div><span className="reference-gallery-eyebrow">图研 Tuyan · 论文插图参考</span><h2 id={galleryTitleId}>参考案例图库</h2><p id={galleryDescriptionId}>点击图片查看大图与论文出处，点击“选用”添加参考。切换页面或筛选后，已选案例会保留。</p></div>
           <button type="button" className="reference-gallery-close" aria-label="关闭参考图库" onClick={() => setShowGallery(false)}><X size={20} /></button>
@@ -118,7 +118,7 @@ export default function ReferenceLibraryPanel({ references, selectedIds, pageInf
         <div className="reference-selection-tray"><div><strong>已选 {selectedItems.length}/10</strong><span>跨页选择会保留</span></div><div className="reference-selection-list">{selectedItems.map((item) => <button type="button" key={item.id} title={`移除 ${item.titleZh}`} onClick={() => onToggle(item.id)}>{item.titleZh}<X size={13} /></button>)}</div><div className="reference-selection-actions"><button type="button" onClick={onClear} disabled={!selectedItems.length}><Trash2 size={15} /> 清空</button><button type="button" className="primary-button" onClick={() => setShowGallery(false)}><Check size={16} /> 确认选择</button></div></div>
       </AccessibleDialog>
 
-      <ImagePreviewDialog item={currentPreview} imageUrl={currentPreview ? imageUrlFor(currentPreview) : ''} isSelected={Boolean(currentPreview && selected.has(currentPreview.id))} selectionDisabled={Boolean(currentPreview && !selected.has(currentPreview.id) && selected.size >= 10)} hasPrevious={previewIndex > 0} hasNext={previewIndex >= 0 && previewIndex < localizedReferences.length - 1} onPrevious={() => setPreviewIndex((index) => Math.max(0, index - 1))} onNext={() => setPreviewIndex((index) => Math.min(localizedReferences.length - 1, index + 1))} onToggle={() => currentPreview && toggleItem(currentPreview)} onClose={() => setPreviewIndex(-1)} />
+      <ImagePreviewDialog backdropClassName={backdropClassName?"tw-nested-preview":undefined} item={currentPreview} imageUrl={currentPreview ? imageUrlFor(currentPreview) : ''} isSelected={Boolean(currentPreview && selected.has(currentPreview.id))} selectionDisabled={Boolean(currentPreview && !selected.has(currentPreview.id) && selected.size >= 10)} hasPrevious={previewIndex > 0} hasNext={previewIndex >= 0 && previewIndex < localizedReferences.length - 1} onPrevious={() => setPreviewIndex((index) => Math.max(0, index - 1))} onNext={() => setPreviewIndex((index) => Math.min(localizedReferences.length - 1, index + 1))} onToggle={() => currentPreview && toggleItem(currentPreview)} onClose={() => setPreviewIndex(-1)} />
     </div>
   )
 }

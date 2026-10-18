@@ -1095,5 +1095,9 @@
   "官方未列支持": "Not listed as supported",
   "有条件支持": "Conditionally supported",
   "生图提示词上限": "Generation prompt limit",
-  "编辑提示词上限": "Editing prompt limit"
+  "编辑提示词上限": "Editing prompt limit",
+  "范围：{min}–{max} 的整数。": "Range: integers from {min} to {max}.",
+  "智能提示词改写（含思考）": "Smart prompt rewriting (with reasoning)",
+  "此型号的“智能思考”通过提示词改写实现，默认关闭；开启会增加费用和耗时，仅适用于纯文生图。": "This model implements smart reasoning through prompt rewriting, off by default. Enabling it costs more and takes longer; it applies only to text-to-image generation.",
+  "选择强度时会同时开启思考；恢复默认后不发送强度或开关。": "Selecting an effort level also enables reasoning. Restoring the default omits both effort and the switch."
 }

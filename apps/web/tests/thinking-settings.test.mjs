@@ -65,8 +65,8 @@ test('mode has only on and off; budget-only and unknown models expose no budget 
   fireEvent.change(mode,{target:{value:'"disabled"'}})
   assert.equal(mode.value,'"disabled"')
   assert.equal(screen.queryByRole('spinbutton'),null)
-  assert.equal(screen.queryByRole('region',{name:'视觉识别思考设置'}),null)
-  assert.equal(screen.queryByRole('region',{name:'图像生成 / 编辑思考设置'}),null)
+  assert.equal(Boolean(screen.queryByRole('region',{name:'视觉识别思考设置'})),false)
+  assert.equal(Boolean(screen.queryByRole('region',{name:'图像生成 / 编辑思考设置'})), false)
 })
 test('simple and advanced settings place each supported control immediately after its own model',()=>{
   const settings=fresh(), modelRoutes=Object.fromEntries(Object.entries(identity).map(([role,selection])=>[role,{accessProvider:selection.provider,modelId:selection.modelId}]))
@@ -214,14 +214,86 @@ test('unsupported image, wrong operation and older backend are honest and fail c
   const value=fresh();value.roles.image={provider:'replicate',modelId:'wan-video/wan-2.7-image',protocol:'provider-images',options:{mode:true}}
   render(React.createElement(Harness,{initial:value,operation:'editing'}))
   assert.equal(screen.queryByLabelText('图像生成 / 编辑思考开关'),null)
-  assert.equal(screen.queryByRole('region',{name:'图像生成 / 编辑思考设置'}),null)
-  assert.equal(screen.queryByText(/仅纯文生图支持|暂不支持|尚未核实/),null)
+  assert.match(screen.getByRole('region',{name:'图像生成 / 编辑思考设置'}).textContent,/当前编辑不支持已保存的思考参数/)
   assert.throws(()=>buildThinkingSubmission(value,{thinkingContractVersion:1},['image'],'editing'),/精修/)
   assert.throws(()=>buildThinkingSubmission(value,{},['image'],'generation'),/后端/)
   assert.deepEqual(buildThinkingSubmission(fresh(),{},['main'],'generation'),{})
   cleanup();render(React.createElement(Harness,{available:false}))
   assert.equal(screen.queryByRole('combobox'),null)
   assert.equal(screen.queryByRole('spinbutton'),null)
+})
+test('only verified adjustable contracts render a thinking section',()=>{
+  for(const [provider,modelId,label,hasControl] of [
+    ['siliconflow','Qwen/Qwen3-14B','可调',true],
+    ['tokendance','kimi-k2.7-code','固定模式',false],
+    ['tokendance','qwen3-30b-a3b-instruct-2507','接口无可调参数',false],
+    ['tokendance','qwen3.8-flash','尚未核实',false],
+  ]) {
+    const settings={roles:{main:{provider,modelId,protocol:'openai-chat-completions',options:{}}}}
+    render(React.createElement(ThinkingSettings,{role:'main',settings,registry:{thinkingContractVersion:1},onChange(){}}))
+    if (label === '可调') {
+      assert.ok(screen.getByText(`思考 · ${label}`))
+      assert.match(screen.getByText(/思考参数官方依据/).textContent,/2026-10-17/)
+    } else {
+      assert.equal(Boolean(screen.queryByRole('region')), false)
+      assert.equal(screen.queryByText(/思考参数官方依据/),null)
+    }
+    assert.equal(Boolean(screen.queryByRole('combobox')),hasControl)
+    assert.equal(screen.queryByRole('alert'),null)
+    assert.equal(screen.queryByRole('status'),null)
+    cleanup()
+  }
+})
+test('unsupported saved options can be cleared without changing the selected model',()=>{
+  const value=fresh();value.roles.main={provider:'tokendance',modelId:'qwen3.8-flash',protocol:'openai-chat-completions',options:{effort:'high'}}
+  render(React.createElement(Harness,{initial:value}))
+  assert.ok(screen.getByRole('alert'))
+  fireEvent.click(screen.getByRole('button',{name:'清除已保存的思考参数，使用渠道默认'}))
+  assert.equal(screen.queryByRole('alert'),null)
+  assert.equal(Boolean(screen.queryByRole('region',{name:'主模型 / 规划思考设置'})), false)
+})
+test('TokenDance unavailable contracts hide their whole explanation and evidence section',()=>{
+  for(const [modelId,description] of [
+    ['deepseek-v3.2','当前公开目录未收录此调用 ID，思考参数仍待渠道确认。'],
+    ['hy3','渠道介绍提到了思考开关或档位，但没有完整的请求字段与取值说明。'],
+    ['deepseek-v4-flash-0731','已找到此型号在其他接口的思考说明，当前接口的参数规则仍待确认。'],
+  ]) {
+    const settings={roles:{main:{provider:'tokendance',modelId,protocol:'openai-chat-completions',options:{}}}}
+    render(React.createElement(ThinkingSettings,{role:'main',settings,registry:{thinkingContractVersion:1},onChange(){}}))
+    assert.equal(Boolean(screen.queryByRole('region')), false)
+    assert.equal(screen.queryByText(description),null)
+    assert.equal(screen.queryByRole('combobox'),null)
+    assert.equal(screen.queryByRole('link'),null)
+    cleanup()
+  }
+})
+test('native Xiaomi UltraSpeed control saves on/off without adding unsupported effort or budgets',()=>{
+  const value=fresh();value.roles.main={provider:'xiaomi',modelId:'mimo-v2.6-pro-ultraspeed',protocol:'openai-chat-completions',options:{}}
+  render(React.createElement(Harness,{initial:value}))
+  const section=within(screen.getByRole('region',{name:'主模型 / 规划思考设置'}))
+  assert.ok(section.getByText('思考 · 可调'))
+  const mode=section.getByRole('combobox')
+  assert.equal(mode.value,'"enabled"')
+  fireEvent.change(mode,{target:{value:'"disabled"'}})
+  assert.equal(mode.value,'"disabled"');assert.equal(section.queryByRole('spinbutton'),null)
+  value.roles.main.options={mode:'disabled'}
+  const submitted=buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
+  assert.deepEqual(compileThinkingSelection(submitted,'main').wire,{thinking:{type:'disabled'}})
+})
+test('new image controls preserve implicit defaults and compile explicit choices for their own channel',()=>{
+  for(const [provider,modelId,protocol,wire] of [
+    ['bailian','qwen-image-3.0-pro','bailian-multimodal-generation',{parameters:{enable_thinking:false}}],
+    ['runware','alibaba:qwen-image@2.1-pro','provider-images',{settings:{thinking:false}}],
+  ]) {
+    const value=fresh();value.roles.image={provider,modelId,protocol,options:{}}
+    const submit=()=>buildThinkingSubmission(value,{thinkingContractVersion:1},['image'],'editing').thinkingConfig.roles.image
+    assert.deepEqual(compileThinkingSelection(submit(),'image').wire,{})
+    render(React.createElement(Harness,{initial:value,operation:'editing'}))
+    assert.ok(screen.getByLabelText('图像生成 / 编辑思考模式'))
+    value.roles.image.options={mode:false}
+    assert.deepEqual(compileThinkingSelection(submit(),'image').wire,wire)
+    cleanup()
+  }
 })
 test('same OpenRouter ID is resolved by role protocol, not the chat thinking options',()=>{
   const routes=Object.fromEntries(['main','vision','image'].map(role=>[role,{accessProvider:'openrouter',modelId:'google/gemini-3.1-flash-image-preview'}]))
@@ -275,4 +347,88 @@ test('untouched image defaults do not become explicit generation-only overrides 
  for(const operation of ['generation','editing'])assert.deepEqual(buildThinkingSubmission(value,{thinkingContractVersion:1},['image'],operation).thinkingConfig.roles.image.options,{});
  value.roles.image.options={mode:true};assert.equal(buildThinkingSubmission(value,{thinkingContractVersion:1},['image'],'generation').thinkingConfig.roles.image.options.mode,true);
  assert.throws(()=>buildThinkingSubmission(value,{thinkingContractVersion:1},['image'],'editing'),/精修/);
+})
+
+test('Together GLM 5.3 offers only audited effort levels and persists the explicit choice without a budget',()=>{
+  for(const modelId of ['zai-org/GLM-5.3','zai-org/GLM-5.3-Flash']) {
+    const initial=fresh();initial.roles.main={provider:'together',modelId,protocol:'openai-chat-completions',options:{}}
+    render(React.createElement(Harness,{initial}))
+    const region=screen.getByRole('region',{name:'主模型 / 规划思考设置'})
+    const effort=within(region).getByLabelText('主模型 / 规划思考强度')
+    assert.deepEqual([...effort.options].map(x=>x.value),['','"low"','"medium"','"high"','"max"'])
+    assert.equal(effort.value,'');assert.equal(within(region).queryByLabelText('主模型 / 规划思考模式'),null)
+    assert.equal(within(region).queryByRole('spinbutton'),null)
+    fireEvent.change(effort,{target:{value:'"medium"'}});assert.equal(effort.value,'"medium"')
+    const value={...initial,roles:{...initial.roles,main:{...initial.roles.main,options:{effort:'medium'}}}}
+    assert.equal(saveThinkingSettings(rememberThinkingSettings(value),window.localStorage),true)
+    const selected=buildThinkingSubmission(readThinkingSettings(window.localStorage),{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
+    assert.deepEqual(compileThinkingSelection(selected,'main').wire,{reasoning_effort:'medium'})
+    cleanup()
+  }
+})
+
+test('Mistral Large 4 explains none accurately and SiliconFlow retired evidence does not expose controls',()=>{
+  const initial=fresh();initial.roles.main={provider:'mistral',modelId:'mistral-large-4',protocol:'openai-chat-completions',options:{}}
+  render(React.createElement(Harness,{initial}))
+  const effort=screen.getByLabelText('主模型 / 规划思考强度')
+  assert.deepEqual([...effort.options].map(x=>x.textContent),['默认（未确认）','最少思考','高'])
+  assert.match(screen.getByRole('region',{name:'主模型 / 规划思考设置'}).textContent,/不代表完全关闭思考/)
+  fireEvent.change(effort,{target:{value:'"none"'}});assert.equal(effort.value,'"none"')
+  cleanup()
+  initial.roles.main={provider:'siliconflow',modelId:'MiniMaxAI/MiniMax-M2.5',protocol:'openai-chat-completions',options:{}}
+  render(React.createElement(Harness,{initial}))
+  assert.equal(Boolean(screen.queryByRole('region',{name:'主模型 / 规划思考设置'})), false)
+})
+
+test('Together integer effort stays optional, validates boundaries, and restores independently from enum models',()=>{
+  const initial=fresh();initial.roles.main={provider:'together',modelId:'deepseek-ai/DeepSeek-V4.1-Flash',protocol:'openai-chat-completions',options:{}}
+  render(React.createElement(Harness,{initial}))
+  const region=screen.getByRole('region',{name:'主模型 / 规划思考设置'})
+  const input=within(region).getByRole('spinbutton',{name:'主模型 / 规划思考强度'})
+  assert.equal(input.value,'');assert.equal(input.min,'1');assert.equal(input.max,'100');assert.equal(input.step,'1');assert.equal(input.required,false)
+  assert.match(region.textContent,/范围：1–100 的整数/)
+  fireEvent.change(input,{target:{value:'101'}});assert.match(within(region).getByRole('alert').textContent,/1–100/)
+  fireEvent.change(input,{target:{value:'50'}});assert.equal(within(region).queryByRole('alert'),null)
+  const configured={...initial,roles:{...initial.roles,main:{...initial.roles.main,options:{effort:50}}}}
+  const otherIds={...identity,main:{...initial.roles.main,modelId:'Qwen/Qwen3.8-Flash'}}
+  const changed=rememberThinkingSettings(reconcileThinkingSettings(configured,otherIds),configured)
+  assert.deepEqual(changed.roles.main.options,{})
+  saveThinkingSettings(changed,window.localStorage)
+  const restored=reconcileThinkingSettings(readThinkingSettings(window.localStorage),{...identity,main:initial.roles.main})
+  assert.deepEqual(compileThinkingSelection(buildThinkingSubmission(restored,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main,'main').wire,{reasoning_effort:50})
+  fireEvent.change(input,{target:{value:''}});assert.equal(input.value,'');assert.equal(within(region).queryByRole('alert'),null)
+})
+
+test('Z-Image preserves actionable editing recovery while retired thinking sections stay hidden',()=>{
+  const initial=fresh();initial.roles.image={provider:'bailian',modelId:'z-image-turbo',protocol:'bailian-multimodal-generation',options:{}}
+  initial.roles.main={provider:'ark',modelId:'doubao-seed-1-6-250615',protocol:'ark-openai-chat',options:{}}
+  const view=render(React.createElement(Harness,{initial}))
+  const control=screen.getByLabelText('图像生成 / 编辑智能提示词改写（含思考）')
+  assert.equal(control.value,'false')
+  assert.match(screen.getByRole('region',{name:'图像生成 / 编辑思考设置'}).textContent,/默认关闭；开启会增加费用/)
+  assert.equal(Boolean(screen.queryByRole('region',{name:'主模型 / 规划思考设置'})), false)
+  assert.deepEqual(buildThinkingSubmission(initial,{thinkingContractVersion:1},['image'],'generation').thinkingConfig.roles.image.options,{})
+  fireEvent.change(control,{target:{value:'true'}});assert.equal(control.value,'true')
+  view.rerender(React.createElement(Harness,{initial,operation:'editing'}))
+  assert.equal(screen.queryByLabelText('图像生成 / 编辑智能提示词改写（含思考）'),null)
+  assert.match(screen.getByRole('region',{name:'图像生成 / 编辑思考设置'}).textContent,/当前编辑不支持已保存的思考参数/)
+})
+
+test('Qianfan image contracts show no independent thinking controls and let users clear obsolete preferences',()=>{
+  for(const modelId of ['qwen-image','qwen-image-edit','musesteamer-air-image']) {
+    for(const operation of ['generation','editing']) {
+      const initial=fresh()
+      initial.roles.image={provider:'qianfan',modelId,protocol:'qianfan-images',options:{effort:'high'}}
+      render(React.createElement(Harness,{initial,operation}))
+      const region=screen.getByRole('region',{name:'图像生成 / 编辑思考设置'})
+      assert.equal(within(region).queryByText('思考 · 接口无可调参数'),null)
+      assert.equal(within(region).queryByRole('combobox'),null)
+      assert.equal(within(region).queryByRole('spinbutton'),null)
+      assert.ok(within(region).getByRole('alert'))
+      fireEvent.click(within(region).getByRole('button',{name:'清除已保存的思考参数，使用渠道默认'}))
+      assert.equal(Boolean(screen.queryByRole('region',{name:'图像生成 / 编辑思考设置'})), false)
+      assert.deepEqual(compileThinkingSelection({...initial.roles.image,options:{}},'image',operation).wire,{})
+      cleanup()
+    }
+  }
 })

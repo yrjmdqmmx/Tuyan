@@ -1,11 +1,15 @@
+import { createPortal } from 'react-dom'
+import { useDialogLayer } from './AccessibleDialog.jsx'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { ModelSpecifications } from './ModelSpecifications.jsx'
 import { ModelBrandLogo } from './ModelBrandLogo.jsx'
 import { modelCardName } from '../lib/modelCardSpecifications'
+import { thinkingProfile } from '../lib/thinking'
+import ThinkingStatus from './ThinkingStatus.jsx'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Search, Sparkles, X } from 'lucide-react'
 import { DEFAULT_WEB_PROVIDER } from '../lib/modelRouting'
-import { groupRegistryModels, partitionRegistryModels } from '../lib/modelRegistry'
+import { groupRegistryModels, partitionRegistryModels, modelMissingFromCatalog } from '../lib/modelRegistry'
 import { MODEL_CHANNEL_LABELS, presentRegistryModel, orderModelChannels } from '../lib/modelPresentation'
 
 const COMPATIBLE_PAGE_SIZE = 24
@@ -42,8 +46,18 @@ export default function ModelPicker({
   renderCustomSettings,
   customSummary,
   visionMode, onVisionModeChange,
+  savedSelection,
 }) {
   const { t } = useAppLocale()
+  // Saved choices retain the real provider/model IDs; their library IDs only
+  // distinguish connections to the same model and never enter model routing.
+  const savedOnly = Boolean(savedSelection)
+  const isSelected = (model) => savedOnly
+    ? model.savedChoice?.id === savedSelection.id
+    : model.id === effectiveRoute.modelId
+  const visiblePartition = (partition) => (savedOnly
+    ? [...partition.compatible, ...partition.incompatible].filter(model => !model.savedChoice?.hidden)
+    : partition.compatible).filter(model => !model.catalogMissing)
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
   const sourceRegistry = registry?.providers
     ? registry
@@ -57,16 +71,17 @@ export default function ModelPicker({
       }
   const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => {
     const presented = presentRegistryModel(id, model)
-    return { ...presented, label: modelCardName(id, presented) }
+    return { ...presented, label: modelCardName(id, presented), catalogMissing: modelMissingFromCatalog(sourceRegistry, id, model) }
   }) }])) }), [registry, models, provider])
   const providerIds = useMemo(() => [
-    ...(allowCustom ? ['custom'] : []),
-    ...orderModelChannels(Object.keys(effectiveRegistry.providers || {}).filter(id => id !== 'custom')).filter(id => {
+    ...(allowCustom && !savedOnly ? ['custom'] : []),
+    ...orderModelChannels(Object.keys(effectiveRegistry.providers || {}).filter(id => savedOnly || id !== 'custom')).filter(id => {
       const available = partitionRegistryModels(effectiveRegistry.providers[id]?.models || [], { role, outputFormat, operation })
-      return available.compatible.length > 0
+      return visiblePartition(available).length > 0
     }),
-  ], [effectiveRegistry, role, outputFormat, operation, allowCustom])
+  ], [effectiveRegistry, role, outputFormat, operation, allowCustom, savedOnly])
   const [open, setOpen] = useState(false)
+  const isTopDialog = useDialogLayer(open)
   const [query, setQuery] = useState('')
   const [selectedProvider, setSelectedProvider] = useState(effectiveRoute.accessProvider || DEFAULT_WEB_PROVIDER)
   const showVisionNone = role === 'vision' && visionMode === 'none' && selectedProvider === null
@@ -99,13 +114,13 @@ export default function ModelPicker({
     () => partitionRegistryModels(activeProviderRegistry.models, { role, query, outputFormat, operation }),
     [activeProviderRegistry.models, role, query, outputFormat, operation],
   )
-  const grouped = useMemo(() => groupRegistryModels(allPartition.compatible), [allPartition.compatible])
+  const grouped = useMemo(() => groupRegistryModels(visiblePartition(allPartition)), [allPartition, savedOnly])
   const availableVendors = grouped.map((group) => group.vendor)
   const activeVendor = availableVendors.includes(selectedVendor) ? selectedVendor
-    : grouped.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || availableVendors[0] || ''
+    : grouped.find((group) => group.models.some((model) => isSelected(model)))?.vendor || availableVendors[0] || ''
   const vendorModels = grouped.find((group) => group.vendor === activeVendor)?.models || []
-  const rows = vendorModels.filter((model) => !model.selectionDisabled)
-  const selectedModel = effectiveRegistry.providers?.[effectiveRoute.accessProvider]?.models?.find((model) => model.id === effectiveRoute.modelId)
+  const rows = savedOnly ? vendorModels : vendorModels.filter((model) => !model.selectionDisabled)
+  const selectedModel = effectiveRegistry.providers?.[effectiveRoute.accessProvider]?.models?.find((model) => isSelected(model))
     || models?.find((model) => model.id === value)
 
   function resetModelList() {
@@ -136,6 +151,7 @@ export default function ModelPicker({
     previousFocusRef.current = document.activeElement
     const frame = window.requestAnimationFrame(() => panelRef.current?.querySelector(FOCUSABLE)?.focus())
     const handleKeyDown = (event) => {
+      if (!isTopDialog()) return
       if (event.key === 'Escape') {
         event.preventDefault()
         event.stopPropagation()
@@ -205,11 +221,11 @@ export default function ModelPicker({
     const preferredProvider = effectiveRoute.accessProvider || DEFAULT_WEB_PROVIDER
     const nextProvider = providerIds.includes(preferredProvider) ? preferredProvider : providerIds.find(id => id !== 'custom') || providerIds[0] || null
     const nextRegistry = effectiveRegistry.providers?.[nextProvider]
-    const nextGroups = groupRegistryModels(partitionRegistryModels(nextRegistry?.models || [], { role, outputFormat, operation }).compatible)
+    const nextGroups = groupRegistryModels(visiblePartition(partitionRegistryModels(nextRegistry?.models || [], { role, outputFormat, operation })))
     // Retain the route as a draft, but do not reopen its editor when the role is disabled.
     setSelectedProvider(role === 'vision' && visionMode === 'none' ? null : nextProvider)
-    setSelectedVendor(nextGroups.find((group) => group.models.some((model) => model.id === effectiveRoute.modelId))?.vendor || nextGroups[0]?.vendor || '')
-    setMobileStep(nextProvider === 'custom' && visionMode !== 'none' ? 'custom' : 'providers')
+    setSelectedVendor(nextGroups.find((group) => group.models.some((model) => isSelected(model)))?.vendor || nextGroups[0]?.vendor || '')
+    setMobileStep(nextProvider === 'custom' && !savedOnly && visionMode !== 'none' ? 'custom' : 'providers')
     setQuery('')
     resetModelList()
     setOpen(true)
@@ -239,7 +255,7 @@ export default function ModelPicker({
 
   function chooseProvider(nextProvider) {
     rememberCustomPosition()
-    if (nextProvider === 'custom') {
+    if (nextProvider === 'custom' && !savedOnly) {
       onRouteChange?.({accessProvider: 'custom', modelId: effectiveRoute.accessProvider === 'custom' ? effectiveRoute.modelId : ''});
       setSelectedProvider('custom');
       setQuery('');
@@ -248,7 +264,7 @@ export default function ModelPicker({
     }
     const nextRegistry = effectiveRegistry.providers?.[nextProvider] || { models: [] }
     const nextPartition = partitionRegistryModels(nextRegistry.models, { role, outputFormat, operation })
-    const nextGroups = groupRegistryModels(nextPartition.compatible)
+    const nextGroups = groupRegistryModels(visiblePartition(nextPartition))
     setSelectedProvider(nextProvider)
     setSelectedVendor(nextGroups[0]?.vendor || '')
     setQuery('')
@@ -263,6 +279,12 @@ export default function ModelPicker({
   }
 
   function chooseModel(model) {
+    if (model.catalogMissing || model.savedChoice?.hidden || model.selectionDisabled || model.savedChoice?.disabledReason) return
+    if (savedOnly) {
+      savedSelection.onChange(model.savedChoice.reference)
+      closePicker()
+      return
+    }
     const nextRoute = { accessProvider: selectedProvider, modelId: model.id }
     if (role === 'vision') onVisionModeChange?.('assist')
     if (onRouteChange) onRouteChange(nextRoute)
@@ -332,7 +354,7 @@ export default function ModelPicker({
   const modelBrowser = (
     <section className="model-browser" aria-label={t("具体模型列表")}>
       <div className="model-browser-tools">
-        <div className="model-catalog-title"><Sparkles size={15} />{t(" 服务端模型目录 ")}<small>{rows.length}</small>
+        <div className="model-catalog-title"><Sparkles size={15} />{t(savedOnly ? "已添加模型" : " 服务端模型目录 ")}<small>{rows.length}</small>
           {catalogControls?.onLoad && ['public', 'key'].includes(catalogDefinition?.access) ? <button type="button" className="model-catalog-refresh" disabled={catalogState?.status === 'loading' || catalogDefinition.access === 'key' && !catalogControls.apiKeys?.[selectedProvider]} onClick={() => catalogControls.onLoad(selectedProvider)}>{t(catalogState?.status === 'loading' ? '正在刷新…' : '刷新目录')}</button> : null}
         </div>
         <label className="model-picker-search">
@@ -344,15 +366,18 @@ export default function ModelPicker({
       <div ref={windowRef} className="model-picker-window">
         <div ref={listRef} className="model-picker-list">
           {rows.slice(0, compatibleLimit).map((model, rowIndex) => (
-            <article key={model.id} data-model-id={model.id} onClick={(event) => {
+            <article key={model.savedChoice?.id || model.id} data-model-id={model.id} onClick={(event) => {
               // Keep source links and the keyboard-accessible title button independent.
               if (!event.target.closest('a, button, input, select, textarea, summary')) chooseModel(model)
-            }} className={`model-option ${visionMode !== 'none' && effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
-              <button type="button" className="model-option-select" data-model-index={rowIndex} aria-label={t("选择 {v0}", {v0: model.label || model.id})} onClick={() => chooseModel(model)}>
+            }} className={`model-option ${visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
+              <button type="button" className="model-option-select" data-model-index={rowIndex} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} aria-label={t("选择 {v0}", {v0: [model.label || model.id, model.savedChoice?.description].filter(Boolean).join(" · ")})} onClick={() => chooseModel(model)}>
                 <span className="model-option-main model-brand-heading"><ModelBrandLogo brand={model.vendorId} /><strong>{model.label || model.id}</strong></span>
-                {visionMode !== 'none' && effectiveRoute.modelId === model.id && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
+                {visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
               </button>
+              {model.savedChoice?.description ? <p className="model-option-note">{model.savedChoice.description}</p> : null}
               <ModelSpecifications provider={selectedProvider} model={model} />
+              {model.savedChoice?.disabledReason ? <p className="model-option-note" role="status">{model.savedChoice.disabledReason}</p> : null}
+              <ThinkingStatus compact profile={thinkingProfile(selectedProvider, model.id, role, model.roleProtocols?.[role] || model.protocol)} role={role} operation={operation} />
             </article>
           ))}
         </div>
@@ -372,25 +397,11 @@ export default function ModelPicker({
     </section>
   )
 
-  return (
-    <div className="model-picker" data-focus-setting={focusSetting || undefined} tabIndex={focusSetting ? -1 : undefined}>
-      <span id={labelId} className="model-picker-label">{t(label)}</span>
-      <button type="button" className={`model-picker-trigger${role === 'vision' && visionMode === 'none' ? ' model-picker-trigger-compact' : ''}`} aria-expanded={open} aria-labelledby={labelId} onClick={openPicker}>
-        <span>
-          <strong className="model-brand-heading">{selectedModel && visionMode !== 'none' ? <ModelBrandLogo brand={selectedModel.vendorId} /> : null}{t(role === 'vision' && visionMode === 'none' ? '无' : selectedModel?.label || effectiveRoute.modelId || '请选择模型')}</strong>
-          {role === 'vision' && visionMode === 'none' ? null : <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor].filter(Boolean))].join(' · ')}</small>}
-          {visionMode !== 'none' && effectiveRoute.accessProvider === 'custom' && customSummary ? <small className="model-custom-summary">{customSummary}</small> : null}
-        </span>
-        <ChevronDown size={17} />
-      </button>
-      {visionMode !== 'none' && selectedModel?.selectable === false && selectedModel.disabledReason ? (
-        <p className="model-picker-empty" role="status">{t("所选模型当前不可用，请重新选择。")}</p>
-      ) : null}
-      {open ? (
-        <div className="model-route-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) closePicker() }}>
+  const dialog = (
+        <div className={`model-route-backdrop${savedOnly ? " model-route-backdrop--saved" : ""}`} onMouseDown={(event) => { if (event.target === event.currentTarget) closePicker() }}>
           <aside ref={panelRef} className="model-route-drawer" role="dialog" aria-modal="true" aria-labelledby={dialogTitleId}>
             <header className="model-route-head">
-              <div><span>{t(showVisionNone ? '视觉模型 → 无' : selectedProvider === 'custom' ? "API 接入渠道 → 通用 API 配置" : "API 接入渠道 → 模型厂商 → 服务端模型目录")}</span><h2 id={dialogTitleId}>{t(label)}{t(" · API 渠道与模型")}</h2></div>
+              <div><span>{t(showVisionNone ? '视觉模型 → 无' : selectedProvider === 'custom' && !savedOnly ? "API 接入渠道 → 通用 API 配置" : (savedOnly ? "API 接入渠道 → 模型厂商 → 已添加模型" : "API 接入渠道 → 模型厂商 → 服务端模型目录"))}</span><h2 id={dialogTitleId}>{t(label)}{t(" · API 渠道与模型")}</h2></div>
               <button type="button" aria-label={t("关闭模型选择")} onClick={() => closePicker()}><X size={20} /></button>
             </header>
             {compact ? (
@@ -418,11 +429,27 @@ export default function ModelPicker({
                 ) : null}
               </div>
             ) : (
-              <div className={`model-route-desktop-layout ${showVisionNone ? 'has-none' : selectedProvider === 'custom' ? 'has-custom' : 'has-vendor'}`}>{providerRail}{showVisionNone ? visionNonePanel : selectedProvider === 'custom' ? customEditor : <>{vendorRail}{modelBrowser}</>}</div>
+              <div className={`model-route-desktop-layout ${showVisionNone ? 'has-none' : selectedProvider === 'custom' && !savedOnly ? 'has-custom' : 'has-vendor'}`}>{providerRail}{showVisionNone ? visionNonePanel : selectedProvider === 'custom' && !savedOnly ? customEditor : <>{vendorRail}{modelBrowser}</>}</div>
             )}
           </aside>
         </div>
+  )
+
+  return (
+    <div className="model-picker" data-focus-setting={focusSetting || undefined} tabIndex={focusSetting ? -1 : undefined}>
+      <span id={labelId} className="model-picker-label">{t(label)}</span>
+      <button type="button" className={`model-picker-trigger${role === 'vision' && visionMode === 'none' ? ' model-picker-trigger-compact' : ''}`} aria-expanded={open} aria-labelledby={labelId} onClick={openPicker}>
+        <span>
+          <strong className="model-brand-heading">{selectedModel && visionMode !== 'none' ? <ModelBrandLogo brand={selectedModel.vendorId} /> : null}{t(role === 'vision' && visionMode === 'none' ? '无' : selectedModel?.label || effectiveRoute.modelId || '请选择模型')}</strong>
+          {role === 'vision' && visionMode === 'none' ? null : <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor, selectedModel?.savedChoice?.description].filter(Boolean))].join(' · ')}</small>}
+          {visionMode !== 'none' && effectiveRoute.accessProvider === 'custom' && customSummary ? <small className="model-custom-summary">{customSummary}</small> : null}
+        </span>
+        <ChevronDown size={17} />
+      </button>
+      {visionMode !== 'none' && selectedModel?.selectable === false && selectedModel.disabledReason ? (
+        <p className="model-picker-empty" role="status">{t("所选模型当前不可用，请重新选择。")}</p>
       ) : null}
+      {open ? (savedOnly ? createPortal(dialog, document.body) : dialog) : null}
     </div>
   )
 }

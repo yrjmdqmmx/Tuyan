@@ -7,6 +7,11 @@ import { useWatcha } from '../src/hooks/useWatcha.js';
 import WatchaIdentityPanel from '../src/components/WatchaIdentityPanel.jsx';
 import AccountSettingsDialog from '../src/components/AccountSettingsDialog.jsx';
 import AuthPanel from '../src/components/AuthPanel.jsx';
+test('local account bridge displays existing Watcha binding and an explicit official-site management link without creating OAuth transactions',async()=>{
+ const original=globalThis.fetch;const calls=[];globalThis.fetch=async(url,options)=>{calls.push(options?.method||'GET');return Response.json({available:true,linked:true,managedExternally:true,managementUrl:'https://www.paperbanana.asia/',hasPassword:true});};
+ function Fixture(){const c=useWatcha('', 'existing',true,()=>{});return React.createElement(WatchaIdentityPanel,{controller:c,user:{id:'existing'}});}
+ try{render(React.createElement(Fixture));await waitFor(()=>assert.ok(screen.getByRole('link',{name:'管理观猹绑定'})));assert.equal(screen.getByRole('link',{name:'管理观猹绑定'}).getAttribute('href'),'https://www.paperbanana.asia/');assert.equal(screen.queryByRole('button',{name:'解绑观猹'})===null,true);assert.ok(calls.every(method=>method==='GET'));}finally{cleanup();globalThis.fetch=original;}
+});
 
 test('status failures keep a visible retry and preserve the pending signup form', async () => {
   const originalFetch = globalThis.fetch;

@@ -16,7 +16,8 @@ export function useWatcha(apiBase, userId, enabled, onAuthenticated) {
     try {
       const data = await watchaRequest(apiBase, 'status');
       const result = { available: data.available === true, linked: data.linked === true, hasPassword: data.hasPassword === true,
-        emailVerified: data.emailVerified === true, pending: data.pending && typeof data.pending.nickname === 'string' ? { nickname: data.pending.nickname.slice(0, 100) } : null };
+        emailVerified: data.emailVerified === true, pending: data.pending && typeof data.pending.nickname === 'string' ? { nickname: data.pending.nickname.slice(0, 100) } : null,
+        ...(data.managedExternally===true && data.managementUrl==='https://www.paperbanana.asia/' ? {managedExternally:true,managementUrl:data.managementUrl} : {}) };
       if (mounted.current && generation === sequence.current) {
         setStatus(result);
         setStatusError('');

@@ -1,6 +1,10 @@
+import { accountWorkspaceStore, WORKSPACE_ACCOUNT_COLLECTIONS } from './workspace-lifecycle.js';
+import { createWorkspaceExecutionStore } from './workspace-execution.js';
 import { createWatchaOAuth } from './watcha-oauth.js';
 import { createAdminAccounts } from './admin-accounts.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
+import { createWorkspaceStore } from './workspace-sync.js';
+import { createModelLibraryStore } from './model-library.js';
 import { randomBytes } from 'node:crypto';
 import { createAuthRateLimitStorage } from './auth-rate-limit-storage.js';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
@@ -166,6 +170,9 @@ export async function createAuthRuntime(
 
   return {
     deletionStore,
+    workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
+    modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),
+    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceStore, mutations:['put','saveResult','importHistory'] }),
     consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
     webHandler: createRegistrationPrivacyHandler(
       async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),
@@ -319,7 +326,7 @@ async function deleteAuthUser(mongoClient, db, userId, operation) {
         }, options);
         if (!op) throw new Error('ACCOUNT_DELETION_OPERATION_MISMATCH');
       }
-      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations']) {
+      for (const name of ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations', ...WORKSPACE_ACCOUNT_COLLECTIONS]) {
         await db.collection(name).deleteMany({ userId: id }, options);
       }
       await db.collection('session').deleteMany({ userId: { $in: candidates } }, options);

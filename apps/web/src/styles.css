@@ -463,7 +463,9 @@
   min-height: 0;
   flex: 1;
   margin-top: 14px;
+  padding-inline-end: 16px;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   overscroll-behavior: contain;
 }
 

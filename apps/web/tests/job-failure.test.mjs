@@ -31,3 +31,35 @@ test('old jobs remain readable and unknown billing never becomes a zero-charge p
   view.rerender(React.createElement(JobFailureNotice, { job: { status: 'succeeded' } }));
   assert.equal(screen.queryByRole('alert'), null);
 });
+
+test('plot timeout exposes collapsed channel evidence without blaming the configured image model', () => {
+  render(React.createElement(JobFailureNotice, {job:{error:'failed',imageModelName:'seedream-5.0-pro',failure:{
+    message:'统计图代码生成失败：等待模型响应超时。',billingMessage:'请求结果及费用尚未确认。',
+    diagnostic:{channel:'tokendance',phase:'response_body',requestedModel:'qwen3.8-flash',requestId:'request-code-fixture',elapsedMs:600532},
+  }}}));
+  const notice=screen.getByRole('alert');
+  assert.match(notice.textContent,/统计图代码生成失败/);
+  assert.match(notice.textContent,/qwen3.8-flash/);
+  assert.match(notice.textContent,/request-code-fixture/);
+  assert.match(notice.textContent,/600\.5 秒/);
+  assert.match(notice.textContent,/读取响应内容/);
+  assert.equal(notice.querySelector('details').open,false);
+  assert.doesNotMatch(notice.textContent,/seedream|未扣费|免费/);
+  assert.equal(screen.queryByRole('button',{name:/重试|继续/}),null);
+});
+
+for (const [timeoutKind, label, limit] of [
+  ['first_response', '未等到首个有效模型事件', 180000],
+  ['stream_idle', '模型输出连续停顿', 180000],
+  ['total', '达到单次请求总时限', 1800000],
+]) test(`TokenDance ${timeoutKind} identifies its actual timeout without offering replay`, () => {
+  render(React.createElement(JobFailureNotice, { job: { error: 'timeout', failure: {
+    message: '统计图代码生成失败：等待模型响应超时。', billingMessage: '请求结果及费用尚未确认，自动重试已停止。',
+    diagnostic: { channel: 'tokendance', phase: 'response_body', timeoutKind, timeoutMs: limit, elapsedMs: limit },
+  } } }));
+  const notice = screen.getByRole('alert');
+  assert.ok(notice.textContent.includes(label));
+  assert.ok(notice.textContent.includes(`上限 ${limit / 1000} 秒`));
+  assert.match(notice.textContent, /费用尚未确认/);
+  assert.equal(screen.queryByRole('button', { name: /重试|继续/ }), null);
+});

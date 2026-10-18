@@ -11,6 +11,7 @@ import {parseEditablePath,serializeEditablePath,movePathPoint,splitPathSegment,d
 import {arcGeometry,arcEditFrame,arcParameterHandles,dragArcParameter} from '../lib/svgArc.js';
 import SvgInspector from './SvgInspector.jsx';
 import SvgToolMenu from './SvgToolMenu.jsx';
+import SvgShapeIcon from './SvgShapeIcon.jsx';
 import SvgPathNodes from './SvgPathNodes.jsx';
 const objectNames={text:'文字',tspan:'文字片段',g:'分组',line:'连线',path:'路径',rect:'矩形',circle:'圆形',ellipse:'椭圆',image:'图片',use:'引用'};
 function ToolButton({icon:Icon,children,label,...props}){return <button type="button" aria-label={label} title={props.title||label} {...props}>{Icon&&<Icon size={16} aria-hidden="true"/>}{children&&<span>{children}</span>}</button>;}
@@ -38,7 +39,7 @@ function Field({label,value,onApply,type='text',...props}) {
   return <label>{label}<input aria-label={label} type={type} value={draft} {...props} onChange={e=>{cancelled.current=false;setDraft(e.target.value);}} onBlur={()=>{if(!cancelled.current&&draft!==String(value??''))onApply(type==='number'?Number(draft):draft);cancelled.current=false;setDraft(String(value??''));}} onKeyDown={e=>{if(e.key==='Enter')e.currentTarget.blur();if(e.key==='Escape'){cancelled.current=true;setDraft(String(value??''));e.currentTarget.blur();}}}/></label>;
 }
 
-export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,onRedo,canUndo,canRedo,dataProtected,geometryAllowed,onAllowGeometry,ratio='16:9'}) {
+export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,onRedo,canUndo,canRedo,dataProtected,geometryAllowed,onAllowGeometry,ratio='16:9',inspectorLayout='floating'}) {
   const host=useRef(null),viewport=useRef(null),rendered=useRef(null),gesture=useRef(null),current=useRef({});
   const [selected,setSelected]=useState([]),[zoom,setZoom]=useState(1),[pan,setPan]=useState({x:0,y:0}),[panMode,setPanMode]=useState(false),[overlay,setOverlay]=useState(null),[textEdit,setTextEdit]=useState(null),[measure,setMeasure]=useState(0);
   const [fontReport,setFontReport]=useState([]),[objectsOpen,setObjectsOpen]=useState(false),[hover,setHover]=useState(null),[spacePan,setSpacePan]=useState(false),[inspector,setInspector]=useState('style'),[keepRatio,setKeepRatio]=useState(true),[gestureHint,setGestureHint]=useState('');
@@ -347,7 +348,7 @@ export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,on
   const gradients=live?[...live.querySelectorAll('linearGradient,radialGradient')]:[];
   const fillId=attr('fill').match(/url\(["']?#([^)'" ]+)/)?.[1];
   const gradient=gradients.find(g=>g.id===fillId);
-  return <div className="svg-editor" onKeyDown={event=>{
+  return <div className={`svg-editor${inspectorLayout==='side'?' has-side-inspector':''}`} onKeyDown={event=>{
     if(event.target.matches('input,textarea,select')||event.target.isContentEditable)return;
     if(event.code==='Space'&&event.target===viewport.current){event.preventDefault();setSpacePan(true);return;}
     if(readOnly)return;
@@ -369,8 +370,8 @@ export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,on
         <ToolButton icon={Hand} label="平移" aria-pressed={panMode} onClick={()=>{setPanMode(!panMode);setMarqueeMode(false);}} title="拖动画布 · 空格临时平移">平移</ToolButton>
         <span className="svg-rail-divider"/>
         <ToolButton icon={Type} label="＋ 文字" disabled={readOnly} onClick={()=>addObject('text')}>文字</ToolButton>
-        <SvgToolMenu label="形状" icon={Shapes} disabled={readOnly} className="svg-rail-menu">{[['rect','矩形'],['roundrect','圆角矩形'],['ellipse','椭圆'],['circle','圆形']].map(([kind,label])=><button type="button" key={kind} disabled={readOnly} onClick={()=>addObject(kind)}>{label}</button>)}</SvgToolMenu>
-        <SvgToolMenu label="线条" icon={Spline} disabled={readOnly} className="svg-rail-menu">{[['line','直线'],['arrow','箭头'],['curve','贝塞尔曲线'],['arc','椭圆弧']].map(([kind,label])=><button type="button" key={kind} disabled={readOnly} onClick={()=>addObject(kind)}>{label}</button>)}</SvgToolMenu>
+        <SvgToolMenu label="形状" icon={Shapes} disabled={readOnly} className="svg-rail-menu">{[['rect','矩形'],['roundrect','圆角矩形'],['ellipse','椭圆'],['circle','圆形']].map(([kind,label])=><button type="button" key={kind} disabled={readOnly} onClick={()=>addObject(kind)}><SvgShapeIcon kind={kind}/><span>{label}</span></button>)}</SvgToolMenu>
+        <SvgToolMenu label="线条" icon={Spline} disabled={readOnly} className="svg-rail-menu">{[['line','直线'],['arrow','箭头'],['curve','贝塞尔曲线'],['arc','椭圆弧']].map(([kind,label])=><button type="button" key={kind} disabled={readOnly} onClick={()=>addObject(kind)}><SvgShapeIcon kind={kind}/><span>{label}</span></button>)}</SvgToolMenu>
         <span className="svg-rail-divider"/>
         <ToolButton icon={Layers} label="图层 / 对象" aria-expanded={objectsOpen} aria-pressed={objectsOpen} onClick={()=>setObjectsOpen(!objectsOpen)}>图层</ToolButton>
       </div>
@@ -396,8 +397,9 @@ export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,on
       {pathMode&&!blocked&&!selectionIssue&&!usingPan&&!marqueeMode&&guideMap&&<SvgPathNodes model={pathModel} selection={pathPoint} matrix={node?.getScreenCTM()} origin={guideMap} onPointDown={beginPathPoint} arcHandles={arcHandles} onArcDown={beginArcParameter}/>}
       {textEdit&&!readOnly&&<div className="svg-inline-text" style={{left:Math.max(4,Math.min(overlay?.left||20,(viewport.current?.clientWidth||400)-240)),top:Math.max(8,(overlay?.top||40)-8)}}><textarea autoFocus aria-label="直接修改文字" value={textEdit.value} onBlur={event=>{if(event.relatedTarget?.hasAttribute('data-svg-cancel'))return;mutate(root=>{findSvgNode(root,textEdit.id).textContent=textEdit.value;});setTextEdit(null);}} onChange={e=>setTextEdit({...textEdit,value:e.target.value})} onKeyDown={e=>{if(e.key==='Escape')setTextEdit(null);if((e.metaKey||e.ctrlKey)&&e.key==='Enter'){mutate(root=>{findSvgNode(root,textEdit.id).textContent=textEdit.value;});setTextEdit(null);}}}/><button type="button" onClick={()=>{mutate(root=>{findSvgNode(root,textEdit.id).textContent=textEdit.value;});setTextEdit(null);}}>确定文字</button><button type="button" data-svg-cancel onClick={()=>setTextEdit(null)}>取消</button></div>}
     </div>
-    </div>
-    {selected.length>0&&!readOnly&&!selectionIssue&&!marquee&&<SvgInspector viewport={viewport} avoid={inspectorAvoid} selectionKey={`${selected.join('|')}:${inspector}`} interacting={!!gesture.current?.moved||!!textEdit}>
+    <div className="svg-inspector-slot">
+    {inspectorLayout==='side'&&(!selected.length||readOnly||selectionIssue)&&<div className="svg-inspector-empty"><Palette size={22} aria-hidden="true"/><strong>对象属性</strong><span>{readOnly?'执行期间暂不可编辑':selectionIssue||'选择画布中的对象，调整外观、位置与尺寸。'}</span></div>}
+    {selected.length>0&&!readOnly&&!selectionIssue&&!marquee&&<SvgInspector layout={inspectorLayout} viewport={viewport} avoid={inspectorAvoid} selectionKey={`${selected.join('|')}:${inspector}`} interacting={!!gesture.current?.moved||!!textEdit}>
       <div className="svg-inspector-heading"><strong>{selected.length>1?`${selected.length} 个对象`:objectNames[type]||type}</strong><ToolButton icon={Copy} label="复制" disabled={readOnly||!!selectionIssue} onClick={duplicateObjects} title="复制选中对象（Ctrl / ⌘ D）"/><ToolButton icon={Trash2} label="删除" disabled={readOnly||!!selectionIssue} onClick={deleteObjects} title="删除选中对象（Delete / Backspace）"/></div>
       <div className="svg-property-tabs" role="group" aria-label="对象属性分组">{[['style',Palette,'外观'],...(textSelection?[['text',Type,'文字']]:[]),['transform',Move,'位置与尺寸'],...(type==='path'?[['nodes',Spline,'节点']]:[]),...(points?[['arrow',ArrowUpRight,'箭头与端点']]:[]),['arrange',AlignHorizontalJustifyCenter,'排列与分组'],...(gradient?[['gradient',Palette,'渐变色标']]:[])].map(([key,Icon,label])=><ToolButton key={key} icon={Icon} label={label} title={`${label} · 再次点击收起`} aria-pressed={inspector===key} onClick={()=>setInspector(inspector===key?'':key)}>{label}</ToolButton>)}</div>
       <div className="svg-property-section" hidden={inspector!=='style'}><Field label="填充" value={attr('fill')} onApply={v=>applyAttr('fill',v||'none')}/><Field label="描边" value={attr('stroke')} onApply={v=>applyAttr('stroke',v||'none')}/><Field label="线宽" type="number" min="0" max="100" value={attr('stroke-width')||1} onApply={v=>Number.isFinite(v)&&v>=0&&applyAttr('stroke-width',v)}/><Field label="透明度" type="number" min="0" max="1" step="0.1" value={attr('opacity')||1} onApply={v=>v>=0&&v<=1&&applyAttr('opacity',v)}/></div>
@@ -416,6 +418,8 @@ export default function SvgEditorCanvas({svg,readOnly,onChange,onError,onUndo,on
       {gradient&&<div className="svg-property-section" hidden={inspector!=='gradient'}><p className="svg-small">修改会同步影响使用此渐变的对象。</p>{[...gradient.querySelectorAll('stop')].map((stop,i)=><div className="svg-tool-row" key={i}><Field label={`色标 ${i+1} 颜色`} value={stop.style.getPropertyValue('stop-color')||stop.getAttribute('stop-color')} onApply={v=>mutate(root=>{assertSvgResourceEditable(root);const g=[...root.querySelectorAll('linearGradient,radialGradient')].find(g=>g.id===fillId);setSvgAttribute(g.querySelectorAll('stop')[i],'stop-color',v);})}/><Field label={`色标 ${i+1} 位置`} value={stop.getAttribute('offset')} onApply={v=>mutate(root=>{assertSvgResourceEditable(root);const g=[...root.querySelectorAll('linearGradient,radialGradient')].find(g=>g.id===fillId);g.querySelectorAll('stop')[i].setAttribute('offset',v);})}/></div>)}</div>}
       <div className="svg-property-section" hidden={inspector!=='arrange'}><div className="svg-tool-row"><button type="button" disabled={selected.length<2} onClick={()=>mutate(root=>groupSvg(root,selected),true)}>分组</button><button type="button" disabled={type!=='g'} onClick={()=>mutate(root=>ungroupSvg(root,selected),true)}>取消分组</button><button type="button" onClick={()=>mutate(root=>reorderSvgLayers(root,selected,'front'),true)}>置顶</button><button type="button" onClick={()=>mutate(root=>reorderSvgLayers(root,selected,'back'),true)}>置底</button>{[['x','start','左对齐'],['x','center','水平居中'],['x','end','右对齐'],['y','start','顶对齐'],['y','center','垂直居中'],['y','end','底对齐']].map(([axis,mode,label])=><button type="button" key={label} disabled={selected.length<2||blocked} onClick={()=>align(axis,mode)}>{label}</button>)}<button type="button" disabled={selected.length<3||blocked} onClick={()=>distribute('x')}>水平分布</button><button type="button" disabled={selected.length<3||blocked} onClick={()=>distribute('y')}>垂直分布</button></div></div>
     </SvgInspector>}
+    </div>
+    </div>
     <div className="svg-view-bar">      <div className="svg-tool-group" role="toolbar" aria-label="画布查看与历史">
         <ToolButton icon={Undo2} label="撤销" disabled={readOnly||!canUndo} onClick={onUndo}/><ToolButton icon={Redo2} label="重做" disabled={readOnly||!canRedo} onClick={onRedo}/>
       </div>

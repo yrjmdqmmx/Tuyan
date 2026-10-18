@@ -14,22 +14,22 @@ function Example({title, children}) {
   const {t} = useAppLocale()
   return <aside className="tuyan-guide-example"><strong>{t(title)}</strong><p>{children}</p></aside>
 }
-export default function GuidePanel({onStart, onContact, registryVersion = '等待服务端目录', routeSummary = {}, providerLabels = []}) {
+export default function GuidePanel({onStart, onContact, registryVersion = '等待服务端目录', routeSummary = {}, providerLabels = [], workspace = false}) {
   const {t} = useAppLocale()
-  return <section className="tuyan-guide" aria-label={t('使用教程')}>
+  return <section className={`tuyan-guide${workspace ? ' tuyan-guide--workspace' : ''}`} aria-label={t('使用教程')}>
     <header className="tuyan-guide-header">
-      <p className="tuyan-guide-eyebrow"><BookOpen size={18}/>{t('图研Tuyan 使用手册')}</p>
-      <h2>{t('从研究内容到可核对的图示')}</h2>
+      {!workspace && <p className="tuyan-guide-eyebrow"><BookOpen size={18}/>{t('图研Tuyan 使用手册')}</p>}
+      <h2>{t(workspace ? '从任务到图示的创作流程' : '从研究内容到可核对的图示')}</h2>
       <p>{t('先明确研究结构，再选择模型与流程。这里说明每一步由谁执行、何时读图、如何判断结果，以及设置会带来的调用与等待。')}</p>
-      <button type="button" onClick={onStart}>{t('开始生成')}<ArrowRight size={16}/></button>
+      {!workspace && <button type="button" onClick={onStart}>{t('开始生成')}<ArrowRight size={16}/></button>}
     </header>
     <div className="tuyan-guide-layout">
       <nav className="tuyan-guide-toc" aria-label={t('教程目录')}><strong>{t('本页目录')}</strong>{DIRECTORY.map(([id,label],index) => <a key={id} href={`#${id}`}><span>{String(index+1).padStart(2,'0')}</span>{t(label)}</a>)}</nav>
       <article className="tuyan-guide-content">
         <Section id="guide-start" title="快速开始">
-          <ol><li>{t('打开“生成候选图”，填写研究内容与图注，或上传图片、PDF、PPTX、文档及数据文件；也可从模板套用结构后改成真实研究内容。')}</li><li>{t('打开完整设置，确认当前格式需要的模型、视觉模式及凭据。先用默认 1 张候选图、最多 1 次修改。')}</li><li>{t('选择 PNG 或 SVG 及画幅；PNG 清晰度按所选图像模型能力设置。确认流程与文件后提交。')}</li><li>{t('核对图中文字、箭头、数据与结果状态。模型评审不能替代研究者核查；必要时下载文件或继续精修。')}</li></ol>
+          <ol><li>{t(workspace ? '点击“新建任务”，在底部输入绘图目标，按需添加图片、PDF、PPTX、文档或数据文件。也可以从绘图模板新建任务，再换成自己的研究内容。' : '打开“生成候选图”，填写研究内容与图注，或上传图片、PDF、PPTX、文档及数据文件；也可从模板套用结构后改成真实研究内容。')}</li><li>{t(workspace ? '在“模型管理”中配置连接与模型，再通过任务底部的“模型配置”和“绘图设置”确认模型、流程和视觉模式。建议先从 1 张候选图、1 轮评审开始。' : '打开完整设置，确认当前格式需要的模型、视觉模式及凭据。先用默认 1 张候选图、最多 1 次修改。')}</li><li>{t('选择 PNG 或 SVG 及画幅；PNG 清晰度按所选图像模型能力设置。确认流程与文件后提交。')}</li><li>{t('核对图中文字、箭头、数据与结果状态。模型评审不能替代研究者核查；必要时下载文件或继续精修。')}</li></ol>
           <Example title="示例：方法框架图">{t('方法内容写清“输入数据 → 编码器 → 融合模块 → 预测结果”，补充各模块职责和真实名称；图注说明读者应理解的关系，避免仅写“帮我画一张好看的图”。')}</Example>
-          <p>{t('套用模板会替换方法、图注和负向提示词；已有手动修改时会先确认。增加候选或评审不会替你补全缺失的研究事实。')}</p>
+          <p>{t(workspace ? '使用模板会创建独立任务，当前任务及草稿保持不变。模板提供教学示意内容，不会自动生成图片；请替换为真实的研究事实。' : '套用模板会替换方法、图注和负向提示词；已有手动修改时会先确认。增加候选或评审不会替你补全缺失的研究事实。')}</p>
         </Section>
         <Section id="guide-models" title="模型分工与视觉模式">
           <div className="tuyan-guide-table"><table><thead><tr><th>{t('角色')}</th><th>{t('负责什么')}</th></tr></thead><tbody>
@@ -43,19 +43,19 @@ export default function GuidePanel({onStart, onContact, registryVersion = '等�
           <div className="tuyan-guide-callout">{t('新任务与精修都需要检查实际画面。能力未知不等于支持；请启用可用视觉模型，或更换已确认能读图的主模型。输入与图片会保留。')}</div>
           <p>{t('当前新任务都检查成图。主模型需支持识图，或配置可用辅助视觉；SVG 同时检查实际画面与完整源码。')}</p>
           <p>{t('定量图不能免除数值与几何核对。辅助视觉报告中的问题和不确定项需由主模型逐项说明处理理由与证据；漏项或未解决项不会被认定为通过。评审记录不等于科研正确性证明。')}</p>
-          <dl className="tuyan-guide-runtime"><dt>{t('目录版本')}</dt><dd>{registryVersion}</dd><dt>{t('当前渠道')}</dt><dd>{providerLabels.join(' / ') || t('等待服务端目录')}</dd>{[['main','主模型'],['image','图像模型'],['vision','视觉模型']].map(([role,label]) => <div key={role}><dt>{t(label)}</dt><dd>{routeSummary[role] || t('等待选择')}</dd></div>)}</dl>
+          {!workspace && <dl className="tuyan-guide-runtime"><dt>{t('目录版本')}</dt><dd>{registryVersion}</dd><dt>{t('当前渠道')}</dt><dd>{providerLabels.join(' / ') || t('等待服务端目录')}</dd>{[['main','主模型'],['image','图像模型'],['vision','视觉模型']].map(([role,label]) => <div key={role}><dt>{t(label)}</dt><dd>{routeSummary[role] || t('等待选择')}</dd></div>)}</dl>}
         </Section>
         <Section id="guide-settings" title="候选数与评审轮数">
-          <p>{t('普通模式固定 1 张候选图、1 轮评审。专业模式可设 1–6 张、1–5 轮，只接受整数。两种模式均可选择生成流程；流程、专业模式候选数与评审轮数、视觉选择保存到当前浏览器，不保存密钥。')}</p>
+          <p>{t(workspace ? '普通模式固定 1 张候选图、1 轮评审。专业模式可设 1–6 张、1–5 轮，只接受整数。两种模式均可选择生成流程。设置保存在当前任务中，PNG 与 SVG 分别保留自己的设置；账号同步状态可在工作区查看。' : '普通模式固定 1 张候选图、1 轮评审。专业模式可设 1–6 张、1–5 轮，只接受整数。两种模式均可选择生成流程；流程、专业模式候选数与评审轮数、视觉选择保存到当前浏览器，不保存密钥。')}</p>
           <p>{t('每张候选独立执行完整流程，候选数量不是并发数量。更多候选会增加规划、生成及评审调用，也可能延长排队时间。服务端可以设置更低容量上限；超限会明确拒绝。')}</p>
           <p>{t('评审轮数设为 R 时，最多评审 R 次，每轮必要时修改一次。通过即提前结束；仅在还有剩余轮数时继续评审新版。最后一轮修改后结束，不自动追加最终复审。')}</p>
           <p>{t('评审轮数设为 1 的例子：生成 v1 → 评审一次 → 必要时修改为 v2 → 结束。若生成了 v2，该版尚未复审。材料读取、辅助视觉、风格与绘制可能各有调用，评审轮数不等于收费次数。')}</p>
           <Example title="建议从小规模验证">{t('先用 1 张 / 最多 1 次修改确认方向，再按需要增加候选、修改次数或 PNG 清晰度。增加调用不保证质量提升。')}</Example>
         </Section>
         <Section id="guide-workflow" title="两种生成流程">
-          <p>{t('生成设置中的流程卡片右上角有问号。鼠标悬停、键盘聚焦或点击即可查看当前格式、参考图和视觉模式下的说明；再次点击或按 Escape 关闭。')}</p>
+          <p>{t(workspace ? '在“绘图设置”中选择快速生成或完整生成，结合材料、格式与评审需求决定执行步骤。' : '生成设置中的流程卡片右上角有问号。鼠标悬停、键盘聚焦或点击即可查看当前格式、参考图和视觉模式下的说明；再次点击或按 Escape 关闭。')}</p>
           <h4>{t('快速生成')}</h4><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('省去风格整理，保留成图评审。视觉模型启用时先观察画面、主模型再决策；选择“无”时由支持识图的主模型直接检查。')}</p>
-          <h4>{t('完整生成')}</h4><p>{t('普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。')}</p><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 风格整理 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('每张候选多 1 次主模型风格整理，使用完整风格指南完善配色、层级与版式。可能简化细节，需核对研究含义；不是质量保证。')}</p>
+          <h4>{t('完整生成')}</h4><p>{t(workspace ? '普通模式和专业模式均默认完整生成；手动选择后保存到当前任务的对应分支。' : '普通模式和专业模式均默认完整生成；手动选择后会保存到当前浏览器。')}</p><p className="tuyan-guide-sequence">{t('材料 / 参考分析 → 主模型规划 → 风格整理 → 绘制 → 当前版本评审与按需修改')}</p><p>{t('每张候选多 1 次主模型风格整理，使用完整风格指南完善配色、层级与版式。可能简化细节，需核对研究含义；不是质量保证。')}</p>
           <p>{t('两种流程都遵循设置的评审轮数，不自动追加最终复审。历史结果保留原评审记录；把旧任务恢复为新输入后，采用当前新任务流程。')}</p>
         </Section>
         <Section id="guide-library" title="参考图与检索">
@@ -64,6 +64,7 @@ export default function GuidePanel({onStart, onContact, registryVersion = '等�
           <p>{t('原件先保存在当前浏览器，提交任务时上传临时副本。最多 10 份辅助文件，每份 10,000,000 字节；精修原图独立计算。清除站点数据或换设备后，原件可能无法自动恢复。')}</p>
         </Section>
         <Section id="guide-output" title="格式、比例与绘图">
+          {workspace && <p>PNG 与 SVG 是同一任务内的两条独立分支。切换分支不会转换或覆盖已有结果。</p>}
           <div className="tuyan-guide-table"><table><thead><tr><th>{t('输出路径')}</th><th>{t('生成与评审方式')}</th></tr></thead><tbody>
             <tr><th>PNG</th><td>{t('主模型规划，图像模型绘制；检查实际生成画面，再按需重绘。有剩余评审轮数时才继续检查新版。')}</td></tr>
             <tr><th>SVG</th><td>{t('新任务由主模型编写 SVG 源码，程序做静态检查与实际渲染，再检查画面和代码。声明的箭头标记另有本地像素对照，明确问题或覆盖不足会阻止通过。')}</td></tr>
@@ -74,6 +75,7 @@ export default function GuidePanel({onStart, onContact, registryVersion = '等�
           <p>{t('负向提示词用于排除模糊箭头、拥挤文字或不必要装饰，不能代替正向结构说明。正式使用前核对文字、标注、统计数据、因果方向和色彩可读性。')}</p>
         </Section>
         <Section id="guide-refine" title="精修与重绘">
+          {workspace && <p>选中一个结果版本后点击“继续修改”，底部会显示修改对象。手工编辑保存为新版本，原版本保留，可随时切回查看。</p>}
           <p>{t('可从本人任务的结果图继续精修，或上传一张原图并写明修改目标。所有精修先理解原图，再由主模型生成完整修改方案：启用视觉模型时读取它的报告，选择“无”时主模型直接读原图。')}</p>
           <p><strong>{t('直接编辑')}</strong>{t('：模型具备原图编辑能力时传入原图与完整方案；支持的辅助参考图、遮罩和结构字段会按具体模型校验。是否支持遮罩与是否支持参考图生成是不同能力。')}</p>
           <p><strong>{t('分析后重绘')}</strong>{t('：按原图分析与新方案生成，不能保证局部像素不变。PNG 精修后检查修改前后图；“修改 SVG”恢复源码与原材料，继续生成和评审 SVG。')}</p>
@@ -87,14 +89,14 @@ export default function GuidePanel({onStart, onContact, registryVersion = '等�
           <p>{t('记录中可查看输入、参考、阶段、调用信息和结果。关闭网页不会取消服务端任务；已登录提交的任务可从同一账号记录返回。中断结果不明时不要反复新建任务：先查看原任务恢复入口与状态，避免重复调用。')}</p>
         </Section>
         <Section id="guide-api" title="账户与 API 配置">
-          <p><KeyRound size={15}/>{t(' 普通模式使用同一渠道的预设模型；专业模式可以按角色混合渠道，并在角色选择器中配置通用 API。只填写当前任务实际使用角色所需的凭据，视觉停用时不需要视觉 Key。')}</p>
+          <p><KeyRound size={15}/>{t(workspace ? ' 普通模式使用同一连接的预设模型；专业模式可以按角色选择不同连接与模型。通用 API 在“模型管理”中配置；只需为实际使用的角色准备凭据，视觉停用时不需要视觉 Key。' : ' 普通模式使用同一渠道的预设模型；专业模式可以按角色混合渠道，并在角色选择器中配置通用 API。只填写当前任务实际使用角色所需的凭据，视觉停用时不需要视觉 Key。')}</p>
           <p>{t('通用 API 需准确填写地址、协议、模型 ID、鉴权及能力限制。目录可见或配置结构完整，不等于账户有推理权限、余额充足或模型质量已验证。账户授权、渠道密钥和任务执行状态应分别核对。')}</p>
-          <p>{t('专业模式的渠道、连接、型号和能力配置保存到此浏览器，不保存 Key 或验证结果。流程、候选数、评审轮数与视觉选择也会保存；切换模型不等于确认图片能力。')}</p>
+          <p>{t(workspace ? '在“模型管理”中维护连接与模型，并选择密钥保存在当前浏览器还是账号。任务保留使用的模型与绘图设置；切换模型不等于确认图片能力。' : '专业模式的渠道、连接、型号和能力配置保存到此浏览器，不保存 Key 或验证结果。流程、候选数、评审轮数与视觉选择也会保存；切换模型不等于确认图片能力。')}</p>
         </Section>
         <Section id="guide-trust" title="错误、费用与隐私">
           <p>{t('新版工作流要求后端声明支持。后端未更新、能力未知或参数无效时，界面会保留所有输入并拦截新任务，避免按旧流程调用。按提示更新后端或调整当前设置后再提交。')}</p>
           <p>{t('费用由所选服务与实际执行决定。候选、材料读取、风格整理、视觉观察、评审和修改都可能增加调用；本地像素检查不调用模型。修改次数不等于收费次数。')}</p>
-          <p>{t('研究内容、上传图片与结果按隐私政策处理，并可能发送至你选择的模型服务。不要上传无权提供的敏感材料。Key 仅保留页面内存；可恢复任务需要的凭据在服务端加密保存，任务完成删除，最长保留 7 天。')}</p>
+          <p>{t(workspace ? '研究内容、上传图片与结果可能发送至所选模型服务。原材料仅保存在当前浏览器，任务、设置与已保存结果随账号恢复；清除站点数据或换设备后需要重新添加原材料。密钥按连接中选择的保存位置处理，可在“模型管理”中管理。不要上传无权提供的敏感材料。' : '研究内容、上传图片与结果按隐私政策处理，并可能发送至你选择的模型服务。不要上传无权提供的敏感材料。Key 仅保留页面内存；可恢复任务需要的凭据在服务端加密保存，任务完成删除，最长保留 7 天。')}</p>
           <p>{t('任务失败请先查看错误与调用状态。未知是否已提交的付费调用不会自动重新发送；有原任务 ID 时优先恢复原任务。真实模型效果、账户权益和账单需要实际服务证据，不能由本地配置或模拟测试推断。')}</p>
           <p>{t('图研Tuyan 客户端以开源方式维护，可通过项目仓库查看实现与提交问题。')}</p>
           {onContact ? <button type="button" className="tuyan-guide-contact" onClick={onContact}>{t('仍有问题？联系作者')}</button> : null}

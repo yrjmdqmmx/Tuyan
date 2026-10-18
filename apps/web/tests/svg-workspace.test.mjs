@@ -27,7 +27,7 @@ test('native round trip preserves Unicode text, defs references, markers, groupi
  assert.equal(parseSvg(rich).root.querySelector('#box').getAttribute('fill'),'url(#grad)');
 });
 test('incomplete and hostile SVG never becomes a displayable document',()=>{
- const bad=['<svg xmlns="http://www.w3.org/2000/svg"><g>',wrap('<path fill="url(#later)"/>'),wrap('<script>alert(1)</script>'),wrap('<rect onload="x()"/>'),wrap('<foreignObject/>'),wrap('<image href="https://remote.test/x.png"/>'),wrap('<image href="data:image/svg+xml;base64,abc"/>'),wrap('<style>@import "https://x";</style>'),wrap('<style>:host{display:none}</style>'),wrap('<rect style="fill:u\\72l(https://x)"/>'),wrap('<use id="u" href="#u"/>'),wrap('<rect id="x"/><text id="x"/>'),wrap('<animate/>'),wrap('<filter/>')];
+ const bad=['<svg xmlns="http://www.w3.org/2000/svg"><g>',wrap('<path fill="url(#later)"/>'),wrap('<script>alert(1)</script>'),wrap('<rect onload="x()"/>'),wrap('<foreignObject/>'),wrap('<image href="https://remote.test/x.png"/>'),wrap('<image href="data:image/svg+xml;base64,abc"/>'),wrap('<style>@import "https://x";</style>'),wrap('<style>:host{display:none}</style>'),wrap('<rect style="fill:u\\72l(https://x)"/>'),wrap('<use id="u" href="#u"/>'),wrap('<rect id="x"/><text id="x"/>'),wrap('<animate/>'),wrap('<filter><feImage href="https://remote.test/image.svg"/></filter>')];
  for(const svg of bad)assert.throws(()=>parseSvg(svg),undefined,svg);
  assert.ok(parseSvg(wrap('<style>.label {fill:#123;font-size:18px}</style><text class="label">中文</text>')));
 });
@@ -286,4 +286,21 @@ test('guide controls use source history and drafts, without bypassing read-only 
  await click('撤销');assert.equal(latest,both);await click('清空辅助线');assert.equal(readSvgGuides(parseSvg(latest).root).length,0);await click('撤销');assert.equal(latest,both);
  assert.equal(parseSvg(latest).root.innerHTML,original,'guides must never change locked content, text or data geometry');
  view.rerender(React.createElement(Harness,{readOnly:true}));assert.equal(screen.getByRole('button',{name:'＋ 垂直'}).disabled,true);assert.equal(screen.getByLabelText('垂直辅助线 1').disabled,true);assert.equal(screen.getByRole('button',{name:'清空辅助线'}).disabled,true);assert.equal(latest,both);await act(async()=>{});
+});
+
+test('legacy static shadow survives edit and save without rasterization',()=>{
+ const source=wrap('<defs><filter id="shadow"><feGaussianBlur in="SourceAlpha" stdDeviation="2"/><feOffset dy="2"/><feComponentTransfer><feFuncA type="linear" slope="0.15"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g filter="url(#shadow)"><rect width="100" height="40"/><text id="label">旧版</text></g>');
+ const original=parseSvg(source), filter=original.root.querySelector('filter').outerHTML;
+ const changed=changeSvg(original.svg,root=>{root.querySelector('#label').textContent='编辑后';});
+ assert.equal(parseSvg(changed).root.querySelector('filter').outerHTML,filter);
+ assert.equal(parseSvg(changed).root.querySelector('#label').textContent,'编辑后');
+ assert.equal(parseSvg(changed).root.querySelector('image'),null);
+ assert.match(parseSvg(changed).root.querySelector('g').getAttribute('filter'),/#shadow/);
+});
+
+test('legacy symbol definitions and static shadow filters survive editing and reopening without rasterization',()=>{
+ const source=wrap('<defs><symbol id="node" viewBox="0 0 20 20"><rect width="20" height="20"/></symbol><filter id="shadow"><feGaussianBlur stdDeviation="2"/><feOffset dx="1" dy="1"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><use href="#node" x="20" y="20" width="40" height="40"/><text x="80" y="80" filter="url(#shadow)">original</text>');
+ const parsed=parseSvg(source),label=parsed.root.querySelector('text').getAttribute('data-tuyan-id');
+ const edited=changeSvg(parsed.svg,root=>{findSvgNode(root,label).textContent='edited';});const result=parseSvg(edited);
+ assert.equal(result.root.querySelector('text').textContent,'edited');assert.ok(result.root.querySelector('symbol rect'));assert.equal(result.root.querySelector('use').getAttribute('href'),'#node');assert.ok(result.root.querySelector('feGaussianBlur'));assert.equal(result.root.querySelectorAll('image').length,0);assert.equal(parseSvg(source).root.querySelector('text').textContent,'original');
 });

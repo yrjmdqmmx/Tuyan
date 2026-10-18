@@ -3,6 +3,8 @@ import { useId } from 'react'
 import { CircleHelp } from 'lucide-react'
 import { roleThinkingProfile, thinkingModeSwitch, thinkingUiSelection, thinkingRequestSelection, requiresThinkingBudget } from '../lib/thinkingSettings'
 import { validateThinkingOptions } from '../lib/thinking'
+import { modelMissingFromCatalog } from '../lib/modelRegistry'
+import ThinkingStatus, { hasVisibleThinkingStatus } from './ThinkingStatus.jsx'
 
 const labels = {main:'主模型 / 规划', vision:'视觉识别', image:'图像生成 / 编辑'}
 const values = {
@@ -18,12 +20,15 @@ function ThinkingHelp({ control, profile, label, toggle }) {
     <div className="thinking-help-content" role="note">
       <p>{t(control.key === 'budget' ? '此接口开启手动思考必须填写预算，图研不会自动补值。' : toggle ? '按所选开关发送思考设置。更多思考可能增加耗时和费用。' : '默认不发送此参数。更多思考可能增加耗时和费用。')}</p>
       {control.key === 'budget' && <p>{t('范围：{min}–{max} tokens。', {min:control.min,max:control.max})}</p>}
+      {control.type === 'integer' && control.key !== 'budget' && <p>{t('范围：{min}–{max} 的整数。', {min:control.min,max:control.max})}</p>}
+      {control.key === 'effort' && profile.effortEnableField && <p>{t('选择强度时会同时开启思考；恢复默认后不发送强度或开关。')}</p>}
       {toggle && toggle.off !== undefined && control.default == null && <p>{t('接口默认状态尚未确认；未保存选择时使用关闭。')}</p>}
       {toggle && toggle.off === undefined && <p>{t('此型号仅支持开启思考。')}</p>}
       {toggle && toggle.on === 'adaptive' && <p>{t('开启时由模型自适应分配思考。')}</p>}
       {control.default != null && <p>{t('接口默认：{value}。', {value:values[locale]?.[String(control.default)] || String(control.default)})}</p>}
       {toggle && profile.requiresBudgetWhenEnabled && toggle.on === 'enabled' && <p>{t('开启后需填写思考预算；关闭时不发送预算。')}</p>}
       {profile.requiresNoInputImages && <p>{t('此接口的思考设置仅适用于不带参考图的生成请求。')}</p>}
+      {profile.promptExtendField && <p>{t('设置思考参数需同时开启提示词改写；带图编辑仅支持 Direct 改写模式。')}</p>}
     </div>
   </details>
 }
@@ -39,11 +44,17 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
   const controls = profile?.controls?.filter(control => control.key !== 'budget' || requiresThinkingBudget(profile, selection?.options)).map(control => control.key === 'mode' && !toggle && control.label === '思考模式' ? {...control,label:'推理档位'} : control)
   const supported = Number(registry?.thinkingContractVersion) >= 1 && profile?.status === 'supported' && controls?.length
     && !(role === 'image' && operation === 'editing' && !profile.operations?.includes('editing'))
-  if (!supported) return null
+  if (!selection?.modelId) return null
   const custom=selection.provider==='custom'
-  const unavailable=custom&&!(Number(registry?.universalThinkingVersion)>=1)
+  const unavailable=!(Number(registry?.thinkingContractVersion)>=1)||custom&&!(Number(registry?.universalThinkingVersion)>=1)
   let error = ''
   try { validateThinkingOptions(profile, thinkingRequestSelection(role, selection).options) } catch (failure) { error = failure.message.replaceAll('服务商默认', '默认') }
+  if (modelMissingFromCatalog(registry, selection.provider, selection.modelId)) return null
+  const visibleStatus = hasVisibleThinkingStatus(profile, role, operation) && !unavailable && controls?.length > 0
+  if (role === 'image' && operation === 'editing' && !hasVisibleThinkingStatus(profile, role, operation) && profile?.status === 'supported' && Object.keys(savedSelection.options || {}).length > 0) error = t('当前编辑不支持已保存的思考参数，请清除后继续。')
+  const canClear = error && !supported || unavailable && Object.keys(savedSelection.options || {}).length > 0
+  // Keep recovery for invalid saved preferences, but omit informational-only sections.
+  if (!visibleStatus && !error && !canClear) return null
   const update = (key, value) => {
     const options = {...selection.options}
     if (value === undefined) delete options[key]; else options[key] = value
@@ -52,10 +63,10 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
   const valueLabel = value => values[locale]?.[String(value)] || String(value)
   const defaultLabel = control => t('默认（{value}）', {value:control.default == null ? t('未确认') : valueLabel(control.default)})
   return <section className="model-thinking-controls" data-thinking-role={role} aria-label={t('{v0}思考设置', {v0:t(labels[role])})}>
+    {visibleStatus && <ThinkingStatus profile={profile} role={role} operation={operation} /> }
     {custom&&<p className="universal-hint">{t('思考偏好按精确连接和型号独立保存，不含密钥。')}{unavailable ? t('当前后端未接入通用思考参数，请升级后端。') : ''}</p>}
     {saveState && saveState !== 'saved' && <div className={`universal-status ${saveState==='error'?'warning':'neutral'}`} role="status"><span>{t(saveState==='error'?'思考偏好保存失败，仅当前页有效；刷新前请重试或导出无密钥配置。':'思考偏好尚未保存。')}</span>{saveState==='error'&&onRetrySave&&<button type="button" className="universal-button" onClick={onRetrySave}>{t('重试保存思考偏好')}</button>}</div>}
-    {custom&&profile.sourceUrls?.length>0&&<details className="universal-details"><summary>思考参数官方依据</summary>{profile.sourceUrls.map(url=><p key={url}><a href={url} target="_blank" rel="noopener noreferrer">{url}</a></p>)}</details>}
-    {controls.map(control => {
+    {visibleStatus && supported && controls.map(control => {
       const controlId = `${id}-${control.key}`
       const accessibleLabel = `${t(labels[role])}${locale === 'en' ? ' ' : ''}${t(control.label)}`
       const modeToggle = control.key === 'mode' && toggle
@@ -77,5 +88,6 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
       </div>
     })}
     {error && <p className="thinking-error" role="alert" id={`${id}-error`}>{t(error)}</p>}
+    {canClear && <button type="button" className="universal-button" onClick={() => onChange(role, {...savedSelection, options:{}})}>{t('清除已保存的思考参数，使用渠道默认')}</button>}
   </section>
 }

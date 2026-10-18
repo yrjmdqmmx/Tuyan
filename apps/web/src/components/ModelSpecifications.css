@@ -13,7 +13,7 @@
 .model-modality-icon sup { position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; }
 .model-brand-logo { width: 24px; height: 24px; flex: 0 0 24px; object-fit: contain; vertical-align: middle; }
 .model-brand-placeholder { color: var(--text-secondary, #69726e); }
-.model-picker .model-brand-heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.model-picker .model-brand-heading, .model-route-drawer .model-brand-heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .model-brand-heading > strong { min-width: 0; overflow-wrap: anywhere; }
 .model-provider-rail button:has(.model-brand-logo), .model-vendor-rail button:has(.model-brand-logo) { display: flex; align-items: center; gap: 10px; }
 .model-brand-caption { display: grid; gap: 3px; min-width: 0; text-align: left; }

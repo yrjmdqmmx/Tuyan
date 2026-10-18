@@ -1,0 +1,140 @@
+/* Secondary pages share the task workspace, while standalone pages keep their own layout. */
+.tw-main > .tw-page { flex: 1; min-height: 0; width: 100%; max-width: none; margin: 0; padding: 28px 32px 64px; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.tw-page-body { max-width: 1120px; min-width: 0; margin: 0 auto; container-type: inline-size; }
+.tw-page-wide > .tw-page-body { max-width: 1440px; }
+.tw-main:has(> .tw-page) > .tw-topbar { min-height: 64px; padding: 12px 32px; border-bottom: 1px solid var(--tw-border); }
+.tw-navigation > button[aria-current=page], .tw-resource-links > button[aria-current=page] { background: #e7ebe5; color: #244d40; font-weight: 600; }
+.tw-page-intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.tw-page .tw-page-intro h2 { font-size: 23px; font-weight: 650; }
+.tw-page-intro p { color: var(--tw-muted); margin: 8px 0 0; line-height: 1.7; }
+.tw-page .tw-page-notice { margin: 0 0 24px; padding: 10px 14px; background: #f5f7f4; border: 1px solid var(--tw-border); border-radius: 8px; color: var(--tw-muted); font-size: 12px; line-height: 1.7; }
+
+/* A browsable library instead of a landing-page carousel. */
+.tw-template-search { display: flex; align-items: center; gap: 8px; flex: 0 1 240px; border: 1px solid var(--tw-border); border-radius: 8px; padding: 9px 12px; color: var(--tw-muted); }
+.tw-template-search input { width: 100%; border: 0; outline: none; padding: 0; box-shadow: none; }
+.tw-template-search:focus-within { outline: 2px solid var(--tw-accent); outline-offset: 2px; }
+.tw-template-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tw-template-card { min-width: 0; overflow: hidden; border: 1px solid var(--tw-border); border-radius: 12px; background: white; }
+.tw-template-card:has(button:focus-visible), .tw-template-card:hover { border-color: #b6c5bb; }
+.tw-shell .tw-template-preview { position: relative; display: flex; width: 100%; height: 190px; padding: 14px; border-radius: 0; background: #f5f6f3; border-bottom: 1px solid var(--tw-border); }
+.tw-template-preview img { height: 100%; width: 100%; object-fit: contain; }
+.tw-template-placeholder { display: grid; justify-items: center; gap: 10px; color: var(--tw-muted); font-size: 12px; }
+.tw-template-preview-label { position: absolute; right: 10px; bottom: 10px; display: flex; align-items: center; gap: 4px; padding: 4px 7px; border: 1px solid var(--tw-border); border-radius: 5px; background: #fffffff2; font-size: 11px; }
+.tw-template-card-body { padding: 16px; }
+.tw-template-category { color: var(--tw-muted); font-size: 11px; }
+.tw-template-card-body h3 { font-size: 16px; margin: 5px 0 8px; }
+.tw-template-card-body > p { min-height: 44px; margin: 0 0 14px; color: var(--tw-muted); font-size: 13px; line-height: 1.7; }
+.tw-template-card-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding-top: 10px; border-top: 1px solid var(--tw-border); }
+.tw-template-card-footer > span { font-size: 10px; color: var(--tw-muted); }
+.tw-shell .tw-template-card-footer button { color: var(--tw-accent); font-size: 12px; padding: 4px 0 4px 6px; min-height: 30px; }
+.tw-template-empty { padding: 48px 16px; text-align: center; color: var(--tw-muted); }
+.tw-template-detail > img { width: 100%; max-height: 350px; object-fit: contain; background: #f6f7f4; border-radius: 8px; padding: 16px; }
+.tw-template-detail > h3 { font-size: 16px; margin-top: 24px; }
+.tw-template-detail > p { font-size: 13px; line-height: 1.85; }
+.tw-template-source { font-size: 12px; line-height: 1.7; color: var(--tw-muted); padding: 12px 0; border-bottom: 1px solid var(--tw-border); overflow-wrap: anywhere; }
+.tw-template-source summary { cursor: pointer; }
+.tw-template-source > div { display: flex; flex-wrap: wrap; gap: 16px; }
+.tw-template-source a { display: inline-flex; align-items: center; gap: 4px; text-decoration: underline; }
+.tw-template-apply { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid var(--tw-border); padding-top: 16px; margin-top: 20px; }
+.tw-template-apply p { font-size: 12px; color: var(--tw-muted); max-width: 360px; }
+.tw-template-apply button { flex-shrink: 0; }
+
+/* Documentation uses a reading column and a quiet, sticky directory. */
+.tw-page .tuyan-guide--workspace { max-width: none; margin: 0; padding: 0; color: var(--tw-ink); }
+.tw-page .tuyan-guide--workspace .tuyan-guide-header { margin: 0 0 26px; padding: 0 0 22px; border-bottom: 1px solid var(--tw-border); }
+.tw-page .tuyan-guide--workspace .tuyan-guide-header h2 { font-size: 23px; line-height: 1.4; margin: 0 0 8px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-header > p { font-size: 14px; margin: 0; max-width: 760px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-layout { grid-template-columns: 190px minmax(0, 1fr); gap: 36px; margin: 0; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-toc { top: 0; padding: 0; font-size: 12px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-toc a { padding: 8px 0; gap: 8px; line-height: 1.5; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-content { max-width: 760px; min-width: 0; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-content > section { scroll-margin-top: 20px; padding-bottom: 26px; margin-bottom: 26px; }
+.tw-page .tuyan-guide--workspace h3 { font-size: 19px; margin: 0 0 14px; }
+.tw-page .tuyan-guide--workspace h4 { font-size: 15px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-content p, .tw-page .tuyan-guide--workspace .tuyan-guide-content li { font-size: 14px; line-height: 1.85; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-content ol { padding-left: 22px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-content li { padding-left: 4px; margin-bottom: 10px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-example, .tw-page .tuyan-guide--workspace .tuyan-guide-callout { background: #f5f7f4; border-color: var(--tw-border); padding: 14px 16px; }
+.tw-page .tuyan-guide--workspace .tuyan-guide-table { overflow-x: auto; }
+
+/* Embedded ranking keeps its evidence and controls, with workspace typography. */
+.tw-leaderboard { --bench-bg: #fff; --bench-paper: #fff; --bench-ink: #202322; --bench-muted: #696f6b; --bench-line: #e4e7e4; --bench-accent: #315f51; --bench-accent-soft: #edf2ed; }
+.tw-page .tw-leaderboard > nav { display: flex; gap: 20px; overflow-x: auto; margin: 0 0 24px; padding: 0; border-bottom: 1px solid var(--tw-border); white-space: nowrap; }
+.tw-page .tw-leaderboard > nav > button { border-radius: 0; padding: 0 2px 12px; min-height: 38px; background: transparent; border-bottom: 2px solid transparent; color: var(--tw-muted); }
+.tw-page .tw-leaderboard > nav > button[aria-current=page] { color: var(--tw-ink); font-weight: 600; border-bottom-color: var(--tw-accent); }
+.tw-page .tw-leaderboard .bench-shell { width: 100%; max-width: none; margin: 0; padding: 0; }
+.tw-page .tw-leaderboard .bench-state { min-height: 240px; padding: 32px; border: 1px solid var(--tw-border); border-radius: 10px; background: #f7f8f6; color: var(--tw-muted); text-align: center; }
+.tw-page .bench-workspace-hero { padding: 0 0 20px; margin-bottom: 18px; border-bottom: 1px solid var(--tw-border); }
+.tw-page .bench-workspace-hero h2 { font-size: 23px; }
+.tw-page .bench-workspace-hero > p { color: var(--tw-muted); margin: 8px 0 16px; font-size: 13px; }
+.tw-page .bench-workspace-kicker { display: block; color: var(--tw-accent); font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-bottom: 6px; }
+.tw-page .bench-workspace-hero > .bench-workspace-subtitle { color: var(--tw-ink); font-size: 15px; font-weight: 550; margin: 8px 0; }
+.tw-page .bench-workspace-hero > .bench-workspace-description { max-width: 940px; line-height: 1.75; margin: 6px 0 10px; }
+.tw-page .bench-workspace-method { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tw-accent); margin-bottom: 16px; }
+.tw-page .bench-workspace-method:hover { text-decoration: underline; }
+.tw-page .bench-workspace-hero .bench-meta { margin: 0; gap: 8px; }
+.tw-page .bench-workspace-hero .bench-meta span { background: #f6f7f5; color: var(--tw-muted); border: 0; border-radius: 5px; font-size: 11px; padding: 5px 8px; min-height: 0; }
+.tw-page .bench-workspace-hero .bench-meta span.accent { color: #315f51; background: #edf2ed; }
+.tw-page .tw-leaderboard .bench-section { margin-top: 28px; }
+.tw-page .tw-leaderboard .bench-section-head { margin-bottom: 14px; }
+.tw-page .tw-leaderboard .bench-section-head h2 { font-size: 19px; }
+.tw-page .tw-leaderboard .bench-section-head p { font-size: 12px; margin-top: 4px; }
+.tw-page .tw-leaderboard .bench-eyebrow { display: none; }
+.tw-page .tw-leaderboard .bench-dimension-card, .tw-page .tw-leaderboard .bench-matrix-scroll { box-shadow: none; border-radius: 10px; }
+.tw-page .tw-leaderboard .bench-dimension-card > header { padding: 12px 16px; }
+.tw-page .tw-leaderboard .bench-dimension-card > header > div > span { font-size: 14px; }
+.tw-page .tw-leaderboard .bench-dimension-card > header small { display: none; }
+.tw-page .tw-leaderboard .bench-mini-row { padding: 10px 16px; gap: 10px; }
+.tw-page .tw-leaderboard .bench-mini-row a > strong { font-size: 12px; }
+.tw-page .tw-leaderboard .bench-mini-row a > small, .tw-page .tw-leaderboard .bench-developer { font-size: 10px; }
+.tw-page .tw-leaderboard .bench-view-switch { background: #f1f3ef; }
+.tw-page .tw-leaderboard .bench-view-switch button[aria-pressed=true] { background: #fff; box-shadow: 0 1px 3px #0001; }
+.tw-page .tw-leaderboard :is(.bench-method-hero, .bench-subpage-hero, .bench-detail-hero) { padding: 18px 0; margin: 0 0 20px; background: none; border: 0; box-shadow: none; }
+.tw-page .tw-leaderboard :is(.bench-method-hero, .bench-subpage-hero, .bench-detail-hero) h1 { font-size: 25px; }
+.tw-page .tw-leaderboard :is(.bench-method-hero, .bench-subpage-hero, .bench-detail-hero) p { font-size: 13px; max-width: 840px; }
+
+/* Administration sits in the existing workspace; it does not add another sidebar. */
+.tw-page .ops-workspace--embedded { margin-top: 0; border: 0; border-radius: 0; background: #fff; box-shadow: none; color: var(--tw-ink); }
+.tw-page .ops-workspace--embedded .ops-header { background: none; color: var(--tw-ink); padding: 0 0 18px; gap: 16px; }
+.tw-page .ops-workspace--embedded .ops-header p { color: var(--tw-muted); margin: 0; font-size: 13px; }
+.tw-page .ops-workspace--embedded .ops-header > button { border: 1px solid var(--tw-border); background: white; color: var(--tw-ink); font-size: 12px; }
+.tw-page .ops-workspace--embedded .ops-layout { display: block; background: none; min-height: 0; border: 0; border-radius: 0; }
+.tw-page .ops-workspace--embedded .ops-nav { display: flex; gap: 18px; padding: 0; border: 0; border-bottom: 1px solid var(--tw-border); background: none; overflow-x: auto; }
+.tw-page .ops-workspace--embedded .ops-nav > button { flex-shrink: 0; width: auto; padding: 0 2px 12px; min-height: 40px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; font-size: 13px; color: var(--tw-muted); }
+.tw-page .ops-workspace--embedded .ops-nav > button[aria-current=page] { box-shadow: none; background: none; color: var(--tw-accent); border-bottom-color: var(--tw-accent); }
+.tw-page .ops-workspace--embedded .ops-nav > p { display: none; }
+.tw-page .ops-workspace--embedded .ops-content { padding: 24px 0; min-width: 0; }
+.tw-page .ops-workspace--embedded h2 { font-size: 21px; }
+.tw-page .ops-workspace--embedded .ops-metric { display: block; text-align: left; background: #f7f8f6; border: 1px solid var(--tw-border); box-shadow: none; border-radius: 10px; padding: 16px; }
+.tw-page .ops-workspace--embedded .ops-metric:hover { background: #eff3ed; }
+.tw-admin-pricing { border-top: 1px solid var(--tw-border); padding-top: 18px; color: var(--tw-muted); font-size: 13px; }
+.tw-admin-pricing > summary { cursor: pointer; }
+.tw-admin-pricing .tokendance-panel { margin-top: 16px; }
+.tw-page .changelog-page { max-width: none; width: 100%; padding: 0; margin: 0; }
+.tw-page .changelog-products { margin-top: 0; }
+
+@container (max-width: 900px) {
+  .tw-template-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tw-page .tuyan-guide--workspace .tuyan-guide-layout { grid-template-columns: 155px minmax(0, 1fr); gap: 24px; }
+}
+@container (max-width: 640px) {
+  .tw-page-intro { flex-direction: column; align-items: stretch; gap: 16px; }
+  .tw-template-search { flex-basis: auto; }
+  .tw-template-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .tw-shell .tw-template-preview { height: 210px; }
+  .tw-page .tuyan-guide--workspace .tuyan-guide-layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .tw-page .tuyan-guide--workspace .tuyan-guide-toc { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; padding-bottom: 16px; border-bottom: 1px solid var(--tw-border); }
+  .tw-page .tuyan-guide--workspace .tuyan-guide-toc > strong { grid-column: 1 / -1; }
+  .tw-page .tw-leaderboard .bench-dimension-grid { grid-template-columns: minmax(0, 1fr); }
+  .tw-page .tw-leaderboard .bench-mini-row { grid-template-columns: 30px minmax(0, 1fr) 44px; }
+  .tw-page .tw-leaderboard .bench-mini-row > i { display: none; }
+  .tw-page .ops-workspace--embedded .ops-header { align-items: flex-start; }
+}
+@media (max-width: 760px) {
+  .tw-main > .tw-page { padding: 20px 16px 48px; scrollbar-gutter: auto; }
+  .tw-main:has(> .tw-page) > .tw-topbar { min-height: 64px; padding: 12px 16px; }
+  .tw-page .tw-page-intro h2, .tw-page .bench-workspace-hero h2, .tw-page .tuyan-guide--workspace .tuyan-guide-header h2 { font-size: 21px; }
+  .tw-template-apply { flex-direction: column; align-items: stretch; gap: 8px; }
+  .tw-template-apply p { max-width: none; }
+  .tw-page .ops-workspace--embedded .ops-nav { gap: 16px; }
+}

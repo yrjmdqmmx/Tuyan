@@ -51,7 +51,9 @@ jobs:
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/benchmark-worker test
       - run: pnpm --filter @paperbanana/benchmark-worker check
-      - run: pnpm --filter @paperbanana/web test
+      - run: pnpm --filter @paperbanana/web test --test-concurrency=1
+        env:
+          NODE_OPTIONS: --max-old-space-size=1536
       - run: pnpm --filter @paperbanana/web build
         env:
           VITE_API_BASE: https://tuyansci.cn
@@ -100,6 +102,13 @@ jobs:
           build-args: PAPERBANANA_CODE_SHA=${{ github.sha }}
           cache-from: type=gha,scope=hangzhou-${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=hangzhou-${{ matrix.service }}
+      - name: Verify Gateway workspace runtime imports without network
+        if: matrix.service == 'gateway'
+        env:
+          IMAGE: ghcr.io/yrjmdqmmx/tuyan-hz-gateway@${{ steps.build.outputs.digest }}
+        run: >-
+          docker run --rm --network none "$IMAGE"
+          node --input-type=module -e "await import('./src/app.js'); await import('./src/auth.js'); console.log('Workspace gateway modules loaded')"
       - name: Verify Benchmark runtime without network or model keys
         if: matrix.service == 'benchmark'
         env:

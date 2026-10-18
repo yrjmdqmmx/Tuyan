@@ -116,6 +116,17 @@ test('overview renders seven Top10 cards with full-ranking links', () => {
   })
 })
 
+test('embedded leaderboard preserves its introduction and methodology link with the matrix first', () => {
+  const { container } = render(React.createElement(BenchmarkObservatory, { release, embedded: true, showNavigation: false }))
+  assert.ok(screen.getByRole('heading', { name: '图研 Tuyan Benchmark' }))
+  assert.ok(screen.getByText('科研图示生成与编辑模型基准评测'))
+  assert.ok(screen.getByText('面向真实科研图示任务，公开题集、评分标准、审核机制和模型证据的生成与编辑模型横向评测。'))
+  assert.match(screen.getByRole('link', { name: '查看完整方法说明' }).getAttribute('href'), /methodology/)
+  const headings = [...container.querySelectorAll('.bench-section-head h2')].map(heading => heading.textContent)
+  assert.equal(headings[0], '综合总矩阵')
+  assert.ok(headings[1].includes('维 Top10'))
+})
+
 test('scientific v2 overview renders ten Top10 cards and a ten-dimension matrix', () => {
   const scientificAxes = [
     'scientific_faithfulness', 'structural_topology', 'text_symbol_accuracy', 'quantitative_accuracy',
@@ -275,6 +286,8 @@ test('scientific v2 model evidence renders all nine fixed slots and edit before/
 test('scientific v2 case comparison renders edit before/after for every loaded model', async () => {
   const previousFetch = globalThis.fetch
   const profile = scientificUiProfile()
+  // Production scientific slots carry canonicalModelId, with modelId nested in model.
+  profile.modelId = 'openai/gpt-image-2'
   const item = profile.evidence[6]
   globalThis.fetch = async () => ({ ok: true, status: 200, async text() { return JSON.stringify({
     code: 0,
@@ -289,6 +302,10 @@ test('scientific v2 case comparison renders edit before/after for every loaded m
     assert.equal(screen.getAllByText('编辑后').length, 1)
     assert.ok(screen.getByText(/2048 × 1152/u))
     assert.ok(screen.getByText('固定指令 7'))
+    assert.ok(screen.getByText('openai/gpt-image-2'))
+    assert.ok(screen.getByText('OpenAI'))
+    fireEvent.change(screen.getByRole('searchbox', { name: '搜索模型' }), { target: { value: 'openai/gpt-image-2' } })
+    assert.ok(await screen.findByText('1 个已加载结果'))
   } finally { globalThis.fetch = previousFetch }
 })
 

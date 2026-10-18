@@ -27,7 +27,7 @@ export default function FigureTypePicker({value, onChange, coverage=REFERENCE_CO
  return <section className="figure-type-setting" data-focus-setting="figure-type">
   <label htmlFor={`${title}-trigger`}>信息图类别</label>
   <button type="button" id={`${title}-trigger`} className="figure-type-trigger" aria-haspopup="dialog" onClick={()=>{setGroup(selected?.group||'schematic');setQuery('');setPage(1);setPreviewTypeId(null);setOpen(true)}}><Shapes size={18}/><span>{figureTypePath(value)}</span><ChevronDown size={16}/></button>
-  <p>{selected?.definition||'这是历史大类，请选择本次要绘制的具体图型。'}</p>
+  <p>{selected?.definition||(value?'这是历史大类，请选择本次要绘制的具体图型。':'可按研究目标选择具体图型，也可以先在要求中自然描述。')}</p>
   <AccessibleDialog open={open} onClose={()=>setOpen(false)} labelledBy={title} describedBy={description} className="figure-type-dialog" backdropClassName="figure-picker-backdrop">
    <header className="figure-picker-head"><div><span>图研 · 科研图型</span><h2 id={title}>选择信息图类别</h2><p id={description}>点击图片认识图型，点击名称选择。预览用于说明结构，不代表生成效果。</p></div><button type="button" aria-label="关闭图类选择" onClick={()=>setOpen(false)}><X size={20}/></button></header>
    <label className="figure-picker-search"><Search size={18}/><input data-autofocus aria-label="搜索图类" type="search" value={query} onChange={e=>{setQuery(e.target.value);setPage(1)}} placeholder="搜索中文、英文或别名，例如：箱线 / box / PCA"/></label>

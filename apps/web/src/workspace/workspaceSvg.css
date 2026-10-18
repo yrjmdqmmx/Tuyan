@@ -1,0 +1,35 @@
+/* The SVG canvas and its tools are a normal workspace surface, with the composer below. */
+.tw-main:has(.tw-inline-svg-editor) { overflow:auto; }
+.tw-main:has(.tw-inline-svg-editor) > .tw-topbar { position:sticky; top:0; z-index:10; background:var(--tw-bg); }
+.tw-results.is-editing { flex:1 0 auto; min-height:560px; overflow:visible; }
+.tw-canvas.is-editing { flex:1 0 auto; overflow:visible; min-height:480px; }
+.tw-shell .tw-canvas.is-editing .tw-inline-svg-editor { height:auto; overflow:visible; }
+.tw-main:has(.tw-inline-svg-editor) > .tw-docked { padding-top:12px; }
+
+.tw-shell .tw-inline-svg-editor { --svg-line:var(--tw-border); overflow:auto; background:var(--tw-bg); }
+.tw-inline-svg-editor .tw-editor-actions { padding:2px 0 10px; gap:6px; }
+.tw-inline-svg-editor .tw-editor-caption { display:flex; align-items:center; gap:12px; flex:1; min-width:160px; }
+.tw-inline-svg-editor .tw-editor-caption strong { font-size:13px; font-weight:600; white-space:nowrap; }
+.tw-inline-svg-editor .tw-editor-caption > span { font-size:11px; color:var(--tw-muted); }
+.tw-shell .tw-inline-svg-editor .tw-editor-actions button { font-size:12px; padding:7px 10px; }
+.tw-shell .tw-inline-svg-editor .tw-editor-actions .tw-primary { background:#284b3e; color:white; }
+.tw-inline-svg-editor .svg-editing-area { min-height:390px; border-radius:12px; background:#f5f6f3; }
+.tw-inline-svg-editor .svg-viewport { min-height:390px; background-color:#f5f6f3; background-image:radial-gradient(#cfd6cd 0.7px,transparent 0.7px); background-size:16px 16px; border-radius:0 12px 12px 0; }
+.tw-inline-svg-editor .svg-tool-rail,.tw-inline-svg-editor .svg-object-tree,.tw-inline-svg-editor .svg-object-tree header { background:#fafbf9; }
+.tw-inline-svg-editor .svg-tool-rail { border-radius:12px 0 0 12px; }
+.tw-inline-svg-editor .svg-tool-rail > button[aria-pressed=true] { background:#e9eee6; color:#284b3e; border-color:#b9cbb9; }
+.tw-inline-svg-editor .svg-view-bar { padding:6px 0; border:0; background:transparent; }
+.tw-inline-svg-editor .svg-object-tools { border-color:var(--tw-border); box-shadow:0 6px 22px #243f4b12; }
+.tw-inline-svg-editor .tw-editor-error { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0 0 8px; color:#9b3d27; font-size:12px; }
+.tw-inline-svg-editor .tw-editor-loading { flex:1; min-height:280px; display:flex; align-items:center; justify-content:center; gap:10px; color:var(--tw-muted); }
+/* Selection handles and guide labels must track geometry exactly, even while hovered. */
+.tw-inline-svg-editor :is(.svg-selection,.svg-path-nodes,.svg-guide-line) button { translate:none!important; scale:1!important; }
+@media(max-width:767px) {
+  .tw-inline-svg-editor .tw-editor-actions { gap:4px; }
+  .tw-inline-svg-editor .tw-editor-caption { flex-basis:100%; gap:8px; padding-bottom:4px; }
+  .tw-shell .tw-inline-svg-editor .tw-editor-actions button { font-size:11px; padding:5px 7px; }
+  .tw-inline-svg-editor .svg-editing-area { flex:none; min-height:390px; }
+  .tw-inline-svg-editor .svg-viewport { height:390px; min-height:390px; }
+  .tw-inline-svg-editor .svg-view-bar { flex-wrap:wrap; }
+  .tw-inline-svg-editor .svg-object-tools.is-docked { max-height:240px; }
+}

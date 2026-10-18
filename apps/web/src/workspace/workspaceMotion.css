@@ -1,0 +1,81 @@
+/* The workspace and its portalled dialogs share restrained interaction feedback. */
+:where(body:has(.tw-preview-root), .tw-shell, .tw-dialog, .tw-resource-popover) :is(button, [role="button"], summary, a) {
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease, translate 160ms ease, scale 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  :where(body:has(.tw-preview-root), .tw-shell, .tw-dialog, .tw-resource-popover) :is(button, [role="button"], summary):not(:disabled):not([aria-disabled="true"]):hover { translate: 0 -1px; }
+  :where(body:has(.tw-preview-root), .tw-shell, .tw-dialog, .tw-resource-popover) a:hover { color: #315f51; }
+  :where(.tw-shell, .tw-dialog, .tw-resource-popover) button:not(:disabled):hover .lucide-search { animation: tw-search-turn 560ms cubic-bezier(.22,.7,.25,1) both; }
+}
+:where(body:has(.tw-preview-root), .tw-shell, .tw-dialog, .tw-resource-popover) :is(button, [role="button"], summary):not(:disabled):not([aria-disabled="true"]):active { translate: 0 0; scale: .97; }
+:where(.tw-shell, .tw-dialog, .tw-resource-popover) button:focus-visible .lucide-search { animation: tw-search-turn 560ms cubic-bezier(.22,.7,.25,1) both; }
+.tw-resources-chevron, .tw-account-chevron { transition: transform 220ms ease; }
+/* The diagonal axis passes through the lens (11, 11) and handle (21, 21).
+   Orthographic 3D rotation keeps that axis fixed and the line art two-sided. */
+:where(.tw-shell, .tw-dialog, .tw-resource-popover) .lucide-search { transform-box: view-box; transform-origin: 87.5% 87.5%; backface-visibility: visible; }
+@keyframes tw-search-turn { from { transform: rotate3d(1, 1, 0, 0deg); } to { transform: rotate3d(1, 1, 0, 360deg); } }
+
+/* The indicator stays mounted as the selected option changes. */
+.tw-shell .tw-segmented {
+  --tw-segment-inset: 4px;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--tw-segment-count), minmax(0, 1fr));
+  position: relative;
+  isolation: isolate;
+  flex-shrink: 0;
+  gap: 0;
+  padding: var(--tw-segment-inset);
+  background: #f0f2ee;
+  border-radius: 999px;
+}
+.tw-segment-indicator {
+  position: absolute;
+  inset: var(--tw-segment-inset) auto var(--tw-segment-inset) var(--tw-segment-inset);
+  width: calc((100% - var(--tw-segment-inset) * 2) / var(--tw-segment-count));
+  border-radius: inherit;
+  background: #fff;
+  box-shadow: 0 1px 4px #203b2e14, 0 0 0 1px #203b2e04;
+  transform: translateX(calc(var(--tw-segment-index) * 100%));
+  transition: transform 320ms cubic-bezier(.22,.8,.24,1);
+  pointer-events: none;
+  z-index: -1;
+}
+.tw-shell .tw-segmented > button {
+  position: relative;
+  min-width: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #727972;
+  box-shadow: none;
+  white-space: nowrap;
+  translate: none;
+  scale: 1;
+}
+.tw-shell .tw-segmented > button[aria-pressed="true"] { background: transparent; color: #244d40; font-weight: 600; }
+.tw-shell .tw-segmented > button:hover:not([aria-pressed="true"]) { background: #dfe6de80; color: #244d40; }
+.tw-shell .tw-segmented > button:active { scale: .96; }
+.tw-shell .tw-paths { min-width: 238px; }
+.tw-shell .tw-mode { --tw-segment-inset: 3px; width: 116px; }
+.tw-shell .tw-mode > button { padding: 5px 10px; min-height: 30px; font-size: 12px; }
+@media (max-width: 767px) {
+  .tw-shell .tw-paths { min-width: 0; }
+  .tw-shell .tw-mode { width: 100px; }
+  .tw-shell .tw-mode > button { padding: 5px 7px; font-size: 11px; min-height: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(body:has(.tw-preview-root), .tw-shell, .tw-dialog, .tw-resource-popover) :is(button, [role="button"], summary, a),
+  .tw-segment-indicator, .tw-resources-chevron, .tw-account-chevron { transition: none !important; translate: none !important; scale: 1 !important; }
+  :where(.tw-shell, .tw-dialog, .tw-resource-popover) .lucide-search { animation: none !important; }
+}
+
+.tw-composer-region > .tw-composer-summary { margin:5px 0 0; padding:0 24px; justify-content:flex-start; }
+.tw-composer-region > .tw-composer-summary .tw-composer-settings-summary { text-align:left; padding:3px 0; min-height:24px; font-size:11px; line-height:1.6; }
+.tw-composer-actions { display:flex; align-items:center; gap:5px; }
+
+@media (max-width:767px) {
+  .tw-composer-region > .tw-composer-summary { padding:0 20px; }
+  .tw-composer-toolbar { flex-wrap:wrap; }
+  .tw-composer-actions { flex:1 1 100%; justify-content:flex-end; flex-wrap:wrap; gap:2px; }
+  .tw-composer-actions .tw-tool { padding:7px 4px!important; gap:4px; }
+}

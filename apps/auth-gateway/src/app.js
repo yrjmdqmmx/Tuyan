@@ -1,3 +1,4 @@
+import { workspaceExecutionMiddleware } from './workspace-execution.js';
 import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
 import express from 'express';
@@ -9,6 +10,9 @@ import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { createTuyanMcpRouter } from './mcp.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
+import { createWorkspaceHistory } from './workspace-history.js';
+import { createWorkspaceRouter } from './workspace-sync.js';
+import { createModelLibraryRouter } from './model-library.js';
 
 const gzipAsync = promisify(gzip);
 
@@ -82,7 +86,7 @@ export function createApp({
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Workspace-Account'],
     }),
   );
 
@@ -92,7 +96,10 @@ export function createApp({
       || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
+  app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}) }));
+  app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));
+  app.use('/paperbanana-api', workspaceExecutionMiddleware({ auth, backend, store: auth.workspaceExecutionStore, libraryStore: auth.modelLibraryStore, workspaceStore: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use((request, response, next) => {
     response.on('finish', () => {
       logger.info?.('request completed', {
@@ -111,6 +118,10 @@ export function createApp({
       code: 0,
       ok: true,
       runtime: 'gateway',
+      workspaceExecutionContractVersion: 1,
+      executionMode: 'production',
+      executionEnabled: Boolean(auth.workspaceStore && auth.modelLibraryStore && auth.workspaceExecutionStore),
+      inputOptimizationMaterialsVersion: 1,
       auth: 'better-auth',
       authReady: authStatus.ok === true,
       backend: backendStatus,
@@ -293,9 +304,9 @@ export function createApp({
       }
 
       if (action === 'optimizeInputs') {
-        const td = ['tokendance','custom'].includes(request.body?.mainRoute?.accessProvider);
+        const td = ['tokendance','custom'].includes(request.body?.mainRoute?.accessProvider) || request.body?.materialFiles !== undefined;
         const session = td ? await requireSession(auth, request) : null;
-        return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
+        return relay(response, await backend.call({ ...normalizeOptimizeInputsBody(request.body), ...(td ? { userId: String(session.user.id) } : {}) }, context, { timeoutMs: request.body?.materialFiles?.length ? 120_000 : 50_000, ...(td ? { authUserId: String(session.user.id) } : {}) }));
       }
 
       if(MATERIAL_ACTIONS.has(action)){
@@ -436,6 +447,7 @@ export function createApp({
               action: 'userJobs',
               userId: String(session.user.id || ''),
               limit: request.body?.limit || 50,
+              offset: request.body?.offset || 0,
             },
             context,
             { authUserId: String(session.user.id || '') },
@@ -619,6 +631,7 @@ function normalizeOptimizeInputsBody(body) {
   return {
     action: 'optimizeInputs',
     target: body?.target,
+    ...(body?.materialFiles !== undefined ? { materialFiles: body.materialFiles } : {}),
     inputs: {
       methodContent: body?.inputs?.methodContent,
       caption: body?.inputs?.caption,

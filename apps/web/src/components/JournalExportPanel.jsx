@@ -8,21 +8,21 @@ export function downloadJournalFile(file) {
   const url=URL.createObjectURL(new Blob([bytes],{type:file.mimeType}));
   const a=document.createElement('a');a.href=url;a.download=file.filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-export default function JournalExportPanel({jobId,snapshot,candidateId,apiBase,svg=false}) {
+export default function JournalExportPanel({jobId,snapshot,candidateId,apiBase,svg=false,originalOnly=false,backdropClassName,inspectRequest=journalFigureExportRequest}) {
   const [open,setOpen]=useState(false),[report,setReport]=useState(null),[file,setFile]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const title=useId();
   async function inspect(format='original') {
     setOpen(true);setBusy(true);setError('');setReport(null);setFile(null);
-    try {const result=await journalFigureExportRequest(apiBase,{jobId,candidateId,format,flattenWhite:format==='tiff',download:true});setReport(result.report);setFile(result.file);}
+    try {const result=await inspectRequest(apiBase,{jobId,candidateId,format,flattenWhite:format==='tiff',download:true});setReport(result.report);setFile(result.file);}
     catch(e){setError(e.message);}finally{setBusy(false);}
   }
   return <>
     <button type="button" onClick={()=>inspect()} aria-label={`检查并导出候选图 ${Number(candidateId)+1}`}>检查并导出</button>
-    {createPortal(<AccessibleDialog open={open} onClose={()=>!busy&&setOpen(false)} labelledBy={title} className="journal-export-dialog">
+    {createPortal(<AccessibleDialog backdropClassName={backdropClassName} open={open} onClose={()=>!busy&&setOpen(false)} labelledBy={title} className="journal-export-dialog">
       <header className="journal-header"><h2 id={title}>期刊图件检查与导出</h2><button type="button" disabled={busy} onClick={()=>setOpen(false)}>关闭</button></header>
       <div className="journal-export-body"><p><strong>{snapshot.name}</strong> · {JOURNAL_STAGES[snapshot.selection.stage]} · {JOURNAL_PURPOSES[snapshot.selection.purpose]} · {snapshot.version}</p>
-        <p className="journal-muted">检查任务保存的原始文件和当时规则。白底 TIFF 转换保留像素数，不补造图像细节；科学真实性、字体和 AI 披露仍需人工检查。</p>
-        <div className="journal-export-actions"><button type="button" disabled={busy} onClick={()=>inspect()}>检查原始文件</button>{!svg&&<button type="button" disabled={busy} onClick={()=>inspect('tiff')}>转换并检查白底 TIFF</button>}</div>
+        <p className="journal-muted">检查任务保存的原始文件和当时规则。{originalOnly?'按原格式检查并下载，不改变文件格式。':'白底 TIFF 转换保留像素数，不补造图像细节。'}科学真实性、字体和 AI 披露仍需人工检查。</p>
+        <div className="journal-export-actions"><button type="button" disabled={busy} onClick={()=>inspect()}>检查原始文件</button>{!svg&&!originalOnly&&<button type="button" disabled={busy} onClick={()=>inspect('tiff')}>转换并检查白底 TIFF</button>}</div>
         {busy&&<p role="status">正在读取并检查实际文件…</p>}{error&&<p role="alert">{error} 未提供未经检查的下载替代。</p>}
         {report&&<>
           <p>{report.facts.format.toUpperCase()} · {report.facts.width} × {report.facts.height} {report.facts.format==='svg'?'坐标单位':'px'} · {(report.facts.size/1024).toFixed(1)} KiB · 排版 {report.facts.widthMm} × {report.facts.heightMm?.toFixed(1)||'未知'} mm{report.facts.effectiveDpi?` · ${report.facts.effectiveDpi.toFixed(1)} ppi`:''}</p>

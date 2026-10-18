@@ -72,6 +72,7 @@ test('domestic and global audit profiles reach runtime without identity or contr
     }
     assert.equal(target.checkedAt, source.checkedAt || audit.checkedAt, source.id)
     assert.equal(target.controls.length, source.controls.length, source.id)
+    assert.equal(target.effortEnableField, source.constraints?.effortEnableField, `${source.id}: effort activation`)
     for (const control of source.controls) {
       const actual = target.controls.find((c: any) => c.key === control.key)
       assert.ok(actual, `${source.id}: missing ${control.key}`)
@@ -122,6 +123,9 @@ test('each supported exact model/role/protocol maps every allowed enum value and
         for (const [key, input] of Object.entries(options)) {
           const audited = p.controls.find((c: any) => c.key === key)
           put(expected, audited.field, audited.wireValues?.[String(input)] ?? input)
+        }
+        if (options.effort !== undefined && p.constraints?.effortEnableField) {
+          put(expected, p.constraints.effortEnableField, true)
         }
         assert.deepEqual(snapshot.wire, expected, label)
         assert.deepEqual(snapshot.options, options, label)

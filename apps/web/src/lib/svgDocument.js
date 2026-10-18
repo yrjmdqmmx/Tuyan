@@ -2,8 +2,8 @@
 export const SVG_NS = 'http://www.w3.org/2000/svg';
 export const MAX_SVG_BYTES = 2 * 1024 * 1024;
 export const DRAWABLE = new Set(['g','text','tspan','rect','circle','ellipse','line','path','polygon','polyline','image','use']);
-const TAGS = new Set(['svg','g','defs','title','desc','metadata','text','tspan','textPath','rect','circle','ellipse','line','path','polygon','polyline','image','use','marker','linearGradient','radialGradient','stop','clipPath','mask','pattern','style']);
-const CSS_PROPERTIES = new Set(('fill fill-opacity fill-rule stroke stroke-width stroke-opacity stroke-dasharray stroke-dashoffset stroke-linecap stroke-linejoin stroke-miterlimit opacity color stop-color stop-opacity font font-family font-size font-style font-weight font-variant letter-spacing word-spacing text-anchor dominant-baseline alignment-baseline baseline-shift paint-order clip-path clip-rule mask marker marker-start marker-mid marker-end visibility display vector-effect').split(' '));
+const TAGS = new Set(['svg','g','defs','symbol','title','desc','metadata','text','tspan','textPath','rect','circle','ellipse','line','path','polygon','polyline','image','use','marker','linearGradient','radialGradient','stop','clipPath','mask','pattern','style','filter','feGaussianBlur','feOffset','feComponentTransfer','feFuncR','feFuncG','feFuncB','feFuncA','feMerge','feMergeNode','feBlend','feComposite','feColorMatrix','feFlood','feDropShadow']);
+const CSS_PROPERTIES = new Set(('filter flood-color flood-opacity color-interpolation-filters fill fill-opacity fill-rule stroke stroke-width stroke-opacity stroke-dasharray stroke-dashoffset stroke-linecap stroke-linejoin stroke-miterlimit opacity color stop-color stop-opacity font font-family font-size font-style font-weight font-variant letter-spacing word-spacing text-anchor dominant-baseline alignment-baseline baseline-shift paint-order clip-path clip-rule mask marker marker-start marker-mid marker-end visibility display vector-effect').split(' '));
 const fail = message => { throw new Error(message); };
 const localReferences = value => [...value.matchAll(/url\(\s*['"]?#([^\s)'";]+)['"]?\s*\)/gi)].map(m => m[1]);
 function checkCssValue(value) {
@@ -53,7 +53,7 @@ export function parseSvg(source, { assignIds = true } = {}) {
       if (css.replace(/([^{}]+)\{([^{}]*)\}/g,'').trim() || /:host|::|[<>]/i.test(css)) fail('暂不支持此 SVG 样式表，保留原件。');
       rules.forEach(([,selector,body])=>{ if (!selector.trim()) fail('无效样式选择器。'); checkDeclarations(body); refs.push(...localReferences(body)); });
     }
-    if (assignIds && DRAWABLE.has(node.localName) && !node.hasAttribute('data-tuyan-wrapper') && !node.closest('defs,clipPath,mask,marker,pattern')) {
+    if (assignIds && DRAWABLE.has(node.localName) && !node.hasAttribute('data-tuyan-wrapper') && !node.closest('defs,symbol,clipPath,mask,marker,pattern')) {
       let id=node.getAttribute('data-tuyan-id');
       if (!id || editorIds.has(id)) { let n=editorIds.size+1; do { id=`ty-${n++}`; } while(editorIds.has(id) || root.querySelector(`[data-tuyan-id="${id}"]`)); node.setAttribute('data-tuyan-id',id); }
       editorIds.add(id);
@@ -72,6 +72,7 @@ export function parseSvg(source, { assignIds = true } = {}) {
   for(const use of root.querySelectorAll('use')) { const href=use.getAttribute('href') || use.getAttributeNS('http://www.w3.org/1999/xlink','href'); if(href?.startsWith('#'))visit(href.slice(1),[]); }
   if(root.querySelector('image')) warnings.push('包含内嵌位图：可移动和缩放，位图内部元素不可编辑。图片宽高比与裁剪在不同查看器中可能显示不同，导出后请核对；未改写原图片结构。');
   if(root.querySelector('clipPath,mask,pattern,use,textPath')) warnings.push('裁剪、蒙版、图案、引用与路径文字保留原有结构；本版不提供其内部参数编辑。');
+  if(root.querySelector('filter')) warnings.push('阴影与滤镜保留原生结构；本版不修改滤镜参数，编辑形状和文字时继续保留效果。');
   if(root.querySelector('text')) warnings.push('文字保持为文字；显示依赖本机字体，导出不附带字体。');
   else if(root.querySelector('path'))warnings.push('此 SVG 没有独立文字元素；若字形已转成路径，本版保留原路径，不能直接改字。');
   let box=(root.getAttribute('viewBox') || '').trim().split(/[ ,]+/).map(Number);

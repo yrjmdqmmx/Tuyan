@@ -10,5 +10,6 @@ export type ThinkingSnapshotRole = ThinkingSelection & {
   budgetRelation?: string; budgetField?: string; budgetOutputField?: string;
   samplingFields?: string[]; operations?: string[]; requiresNoInputImages?: boolean; requiresNonSequentialGeneration?: boolean;
   endpointAliases?: string[]; pinnedSchemaVersion?: string
+  promptExtendField?: string; promptExtendModeField?: string
 }
 export type ThinkingSnapshot = { version: 1; roles: Partial<Record<'main' | 'vision' | 'image', ThinkingSnapshotRole>> }

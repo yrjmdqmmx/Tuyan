@@ -1,51 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUTH_ENABLED, authClient } from '../config';
 
-export function useAuthSession() {
+export function useAuthSession({ client = authClient, enabled = AUTH_ENABLED } = {}) {
   const [session, setSession] = useState(null);
-  const [isPending, setIsPending] = useState(AUTH_ENABLED);
+  const [isPending, setIsPending] = useState(enabled);
   const [error, setError] = useState(null);
+  const sequence = useRef(0), mounted = useRef(true);
 
-  async function refresh() {
-    if (!AUTH_ENABLED) {
+  const refresh = useCallback(async function refresh() {
+    const request = ++sequence.current;
+    if (!enabled) {
       setIsPending(false);
       setSession(null);
       setError(null);
       return null;
     }
     setIsPending(true);
-    const { data, error: authError } = await authClient.getSession();
-    setSession(data || null);
-    setError(authError || null);
-    setIsPending(false);
-    return data || null;
-  }
+    try {
+      const { data, error: authError } = await client.getSession();
+      if (!mounted.current || request !== sequence.current) return null;
+      if (authError) { setError(authError); return null; }
+      setSession(data || null);
+      setError(null);
+      return data || null;
+    } catch (reason) {
+      if (mounted.current && request === sequence.current) setError(reason);
+      return null;
+    } finally {
+      if (mounted.current && request === sequence.current) setIsPending(false);
+    }
+  }, [client, enabled]);
 
-  function clear() {
+  const clear = useCallback(function clear() {
+    sequence.current++;
     setSession(null);
     setError(null);
     setIsPending(false);
-  }
+  }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    if (!AUTH_ENABLED) {
-      setIsPending(false);
-      return undefined;
-    }
-    authClient.getSession()
-      .then(({ data, error: authError }) => {
-        if (cancelled) return;
-        setSession(data || null);
-        setError(authError || null);
-      })
-      .finally(() => {
-        if (!cancelled) setIsPending(false);
-      });
+    mounted.current = true;
+    void refresh();
     return () => {
-      cancelled = true;
+      mounted.current = false;
+      sequence.current++;
     };
-  }, []);
+  }, [refresh]);
 
   return { session, isPending, error, refresh, clear };
 }

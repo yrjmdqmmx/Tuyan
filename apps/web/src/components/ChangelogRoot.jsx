@@ -66,7 +66,7 @@ function selectionForHash(data, hash, currentView = 'all') {
   const visible = currentView === 'all' || (currentView === 'ecosystem' ? publicEvents(data) : publishedVersions(data, currentView)).some(entry => entry.id === anchor)
   return { view: visible ? currentView : 'all', anchor }
 }
-export function ChangelogPage({ data = changelog }) {
+export function ChangelogPage({ data = changelog, embedded = false }) {
   const { t } = useAppLocale()
   const [selection, setSelection] = useState(() => selectionForHash(data, window.location.hash))
   const { view, anchor } = selection
@@ -77,7 +77,7 @@ export function ChangelogPage({ data = changelog }) {
   }, [data])
   useEffect(() => { if (anchor) document.getElementById(anchor)?.scrollIntoView?.({ block: 'start' }) }, [anchor, view, data])
   return <main className="changelog-page" id="changelog-content">
-    <header className="changelog-intro"><span className="changelog-eyebrow">TUYAN · CHANGELOG</span><h1>{t("更新日志")}</h1></header>
+    {!embedded && <header className="changelog-intro"><span className="changelog-eyebrow">TUYAN · CHANGELOG</span><h1>{t("更新日志")}</h1></header>}
     <nav className="changelog-products" aria-label={t("更新分类")}>
       {Object.entries(CHANGELOG_VIEWS).map(([id, label]) => <a href={`#${id}`} key={id} aria-current={view === id ? 'page' : undefined}>{t(label)}</a>)}
     </nav>

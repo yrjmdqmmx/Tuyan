@@ -14,6 +14,7 @@ export default function WatchaIdentityPanel({ controller, user, onSignIn }) {
   const isNewDomain = globalThis.location?.origin === 'https://tuyansci.cn';
   if (!controller?.status || (!controller.status.available && !controller.error && !isNewDomain)) return null;
   const c = controller, pending = c.status.pending, linked = c.status.linked;
+  if(c.status.managedExternally)return <section className="watcha-identity" aria-label={t('观猹身份登录')}><div className="watcha-heading"><WatchaMark/><strong>{t(linked?'已绑定观猹':'观猹登录与绑定')}</strong></div><p>{t(linked?'观猹已绑定当前图研账号，任务与模型连接仍属于同一账号。':'观猹用于登录和绑定图研账号；TokenDance 是独立的模型授权连接。')}</p><p>{t('本地预览读取正式账号的绑定状态；登录、绑定和解绑继续由正式站点完成，返回后刷新状态。')}</p><div className="watcha-actions"><a className="account-button" href={c.status.managementUrl} target="_blank" rel="noopener noreferrer">{t(linked?'管理观猹绑定':'打开观猹登录入口')}</a><button className="account-button" onClick={c.refresh} disabled={c.busy}>{t('刷新登录状态')}</button></div>{c.error&&<p role="alert">{c.error}</p>}</section>;
   async function sendCode(purpose) { if (await c.requestCode(purpose, purpose === 'signup' ? email.trim() : undefined)) { setCooldown(60); setCode(''); } }
   async function sendLocalVerification() {
     if (cooldown > 0 || sendingVerification) return;

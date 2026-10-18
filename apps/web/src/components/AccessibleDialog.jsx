@@ -13,7 +13,25 @@ const FOCUSABLE_SELECTOR = [
 
 const dialogStack = [];
 
+// Shared by dialogs with different visual shells, including the legacy model picker.
+export function useDialogLayer(open) {
+  const entry = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const token = Symbol('dialog');
+    entry.current = token;
+    dialogStack.push(token);
+    return () => {
+      const index = dialogStack.indexOf(token);
+      if (index >= 0) dialogStack.splice(index, 1);
+      entry.current = null;
+    };
+  }, [open]);
+  return () => entry.current !== null && dialogStack.at(-1) === entry.current;
+}
+
 export default function AccessibleDialog({ open, onClose, labelledBy, describedBy, className = '', backdropClassName = '', children }) {
+  const isTopDialog = useDialogLayer(open);
   const panelRef = useRef(null);
   const previousFocusRef = useRef(null);
   const onCloseRef = useRef(onClose);
@@ -22,8 +40,6 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
   useEffect(() => {
     if (!open) return undefined;
 
-    const stackEntry = Symbol('dialog');
-    dialogStack.push(stackEntry);
     previousFocusRef.current = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -34,7 +50,7 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
     });
 
     const handleKeyDown = (event) => {
-      if (dialogStack.at(-1) !== stackEntry) return;
+      if (!isTopDialog()) return;
       if (event.key === 'Escape') {
         event.preventDefault();
         onCloseRef.current();
@@ -63,8 +79,6 @@ export default function AccessibleDialog({ open, onClose, labelledBy, describedB
     return () => {
       window.cancelAnimationFrame(focusFrame);
       window.removeEventListener('keydown', handleKeyDown);
-      const stackIndex = dialogStack.indexOf(stackEntry);
-      if (stackIndex >= 0) dialogStack.splice(stackIndex, 1);
       document.body.style.overflow = previousOverflow;
       previousFocusRef.current?.focus?.({ preventScroll: true });
     };

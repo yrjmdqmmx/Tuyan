@@ -6,7 +6,7 @@ import JournalBookshelf from './JournalBookshelf.jsx';
 import {getFigureType} from '../../../../packages/figure-taxonomy/src/index.js';
 import {JOURNALS,JOURNAL_VERSION,JOURNAL_STATUS,JOURNAL_STAGES,JOURNAL_PURPOSES,JOURNAL_CONTENT,JOURNAL_LEVELS,defaultJournalSelection,journalSnapshot,activeJournalRules,journalPreflight,journalFigureContent,journalSelectionForFigure} from '../../../../packages/api/src/journal-rules.js';
 
-export default function JournalRulePicker({value,onChange,figureTypeId,refineContext,outputFormat='png',saveFailed=false}) {
+export default function JournalRulePicker({value,onChange,figureTypeId,refineContext,outputFormat='png',saveFailed=false,backdropClassName=''}) {
   const [open,setOpen]=useState(false),[draft,setDraft]=useState(null);
   const shelfRef=useRef(null);
   const close=()=>shelfRef.current?shelfRef.current.dismiss(()=>setOpen(false)):setOpen(false);
@@ -41,7 +41,7 @@ export default function JournalRulePicker({value,onChange,figureTypeId,refineCon
     </button>
     {savedIssues.length>0&&<details className="journal-selection-notices"><summary>当前任务的期刊提示（{savedIssues.length}）</summary>{distinctNotices(savedIssues).map(i=><p className="journal-notice" key={i.code}>{i.text}</p>)}</details>}
     {saveFailed&&<p className="notice warning" role="status">本次选择仍有效，但浏览器设置保存失败；刷新后可能丢失。</p>}
-    {createPortal(<AccessibleDialog open={open} onClose={close} labelledBy={title} className="journal-dialog journal-bookshelf-dialog" backdropClassName="journal-backdrop">
+    {createPortal(<AccessibleDialog open={open} onClose={close} labelledBy={title} className="journal-dialog journal-bookshelf-dialog" backdropClassName={`journal-backdrop ${backdropClassName}`}>
       <header className="journal-header"><div><h2 id={title}>期刊规则</h2><p>选择目标期刊，查看适用要求</p></div><button type="button" aria-label="关闭期刊规则" onClick={close}><X size={20}/></button></header>
       {error&&!snapshot&&<p role="alert" className="journal-version-alert">{error} 保留原选择；可浏览其他期刊，或明确更新当前期刊规则。</p>}
       <JournalBookshelf ref={shelfRef} value={value} onBrowse={selectJournal} onDismiss={close} onNone={()=>{onChange(null);setOpen(false);}} footer={<><button type="button" onClick={close}>取消</button><button type="button" className="primary-button" disabled={Boolean(error||!snapshot||snapshot&&refineContext&&!refineContext.contentType)} onClick={()=>{onChange(snapshot.selection);close();}}>选择此期刊</button></>}>

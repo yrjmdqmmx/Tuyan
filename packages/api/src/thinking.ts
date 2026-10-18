@@ -109,6 +109,7 @@ export function compileThinkingSelection(selection: ThinkingSelection, role: 'ma
     const value = control.wireValues?.[String(raw)] ?? raw
     setThinkingPath(wire, control.field, value)
   }
+  if (options.effort !== undefined && profile?.effortEnableField) setThinkingPath(wire, profile.effortEnableField, true)
   const mode = options.mode ?? profile?.controls.find((c: any) => c.key === 'mode')?.default
   const effort = options.effort ?? profile?.controls.find((c: any) => c.key === 'effort')?.default
   const thinkingOn = !['disabled', 'none', 'off', false].includes(mode as any) && !(profile?.disabledEffortValues || ['none','off']).includes(effort)
@@ -117,6 +118,7 @@ export function compileThinkingSelection(selection: ThinkingSelection, role: 'ma
     dropSampling: Boolean(profile?.dropSamplingAlways || profile?.dropSamplingWhenThinking && thinkingOn || profile?.dropSamplingOnProviderDefault && !Object.keys(options).length),
     samplingFields: profile?.samplingFields, operations: profile?.operations,
     requiresNoInputImages: profile?.requiresNoInputImages, requiresNonSequentialGeneration: profile?.requiresNonSequentialGeneration,
+    promptExtendField: profile?.promptExtendField, promptExtendModeField: profile?.promptExtendModeField,
     endpointAliases: profile?.transport?.endpointAliases, pinnedSchemaVersion: profile?.transport?.pinnedSchemaVersion,
     ...(profile?.budgetRelation ? { budgetRelation: profile.budgetRelation, budgetField: profile.controls.find((c: any) => c.key === 'budget')?.field, budgetOutputField: profile.budgetOutputField || 'max_tokens' } : {}),
   }
@@ -153,6 +155,8 @@ export function applyThinkingSnapshot(body: any, snapshot?: ThinkingSnapshotRole
       return Object.entries(node).some(([key,value]) => ['images','image','image_url','image_urls','input_image','input_images','referenceImages','inlineData','inline_data'].includes(key) && Boolean(Array.isArray(value) ? value.length : value) || typeof value === 'object' && hasImages(value))
     }
     if (snapshot.requiresNoInputImages && hasImages(result)) thinkingError('此图片接口仅纯文生图支持思考参数；带图请求请使用服务商默认。')
+    if (snapshot.promptExtendField && snapshot.options.mode !== undefined && getThinkingPath(result, snapshot.promptExtendField) === false) thinkingError('此型号设置思考参数需要开启提示词改写；不会自动修改请求中的改写设置。')
+    if (snapshot.promptExtendModeField && hasImages(result) && getThinkingPath(result, snapshot.promptExtendModeField) === 'agent') thinkingError('此型号的 Agent 提示词改写不支持带图编辑，请使用 Direct 模式。')
     if (snapshot.requiresNonSequentialGeneration && (result.parameters?.enable_sequential || result.input?.image_set_mode || result.settings?.sequential)) thinkingError('此图片接口不支持序列生图与思考参数组合。')
   }
   if (snapshot.budgetRelation === 'inclusive' && snapshot.budgetField) {

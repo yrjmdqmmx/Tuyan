@@ -3,7 +3,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Check, ChevronDown, ChevronLeft, ChevronRight, Minus, Plus, RotateCcw, X } from 'lucide-react'
 import AccessibleDialog from './AccessibleDialog'
 
-export default function ImagePreviewDialog({ item, imageUrl, isSelected, selectionDisabled, hasPrevious, hasNext, onPrevious, onNext, onToggle, onClose }) {
+export default function ImagePreviewDialog({ item, imageUrl, isSelected, selectionDisabled, hasPrevious, hasNext, onPrevious, onNext, onToggle, onClose, backdropClassName }) {
   const titleId = useId()
   const descriptionId = useId()
   const [zoom, setZoom] = useState(1)
@@ -14,7 +14,7 @@ export default function ImagePreviewDialog({ item, imageUrl, isSelected, selecti
   const changeZoom = (next) => setZoom(Math.min(4, Math.max(0.5, next)))
 
   return (
-    <AccessibleDialog open={Boolean(item && imageUrl)} onClose={onClose} labelledBy={titleId} describedBy={descriptionId} className="image-preview-dialog">
+    <AccessibleDialog backdropClassName={backdropClassName} open={Boolean(item && imageUrl)} onClose={onClose} labelledBy={titleId} describedBy={descriptionId} className="image-preview-dialog">
       <header className="image-preview-toolbar">
         <div className="image-preview-zoom"><button type="button" aria-label="缩小" onClick={() => changeZoom(zoom - 0.25)}><Minus size={17} /></button><span>{Math.round(zoom * 100)}%</span><button type="button" aria-label="放大" onClick={() => changeZoom(zoom + 0.25)}><Plus size={17} /></button><button type="button" aria-label="重置" onClick={reset}><RotateCcw size={17} /> 重置</button></div>
         <button type="button" className="image-preview-close" aria-label="关闭大图预览" onClick={onClose}><X size={20} /></button>

@@ -1,4 +1,18 @@
 import { modelDeveloper, sortModelsNewestFirst } from './modelPresentation.js'
+// Missing catalogue entries are hidden in every selectable list, without
+// deleting saved identities or treating a failed catalogue load as removal.
+export function modelMissingFromCatalog(registry, provider, modelOrId) {
+  if (provider === 'custom') return false
+  const id = typeof modelOrId === 'string' ? modelOrId : modelOrId?.id
+  if (!id) return false
+  const channel = registry?.providers?.[provider]
+  const unavailable = Boolean(registry?.unavailableProviders?.[provider])
+  const model = typeof modelOrId === 'object' ? modelOrId : channel?.models?.find(entry => entry.id === id)
+  return Boolean(registry?.catalogHealth?.[provider]?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
+    || model?.disabledReason?.startsWith('当前目录未列出该模型')
+    || (!unavailable && registry?.providers && !channel)
+    || (!unavailable && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
+}
 export function modelUnavailableForSelection(model) {
   return model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
 }

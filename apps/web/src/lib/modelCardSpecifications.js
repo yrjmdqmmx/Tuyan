@@ -19,8 +19,22 @@ const formatFactModalities = (facts, key) => {
   const text = formatModalities(facts?.[key])
   return text && `${text}${facts.modalitiesComplete === false ? '；其他模态待确认' : ''}`
 }
+const formatDecimalLimit = value => {
+  const million = value >= 1_000_000
+  // Keep the exact integer limit when scaling; K/M are decimal, never binary.
+  const number = new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: million ? 6 : 3 })
+    .format(value / (million ? 1_000_000 : 1_000))
+  return `${number}${million ? 'M' : 'K'}`
+}
 const formatContext = facts => Number.isSafeInteger(facts?.contextWindowTokens) && facts.contextWindowTokens > 0
-  ? `${facts.contextWindowApproximate ? '≈ ' : ''}${facts.contextWindowTokens.toLocaleString('en-US')} tokens` : null
+  ? `${facts.contextWindowApproximate ? '≈ ' : ''}${formatDecimalLimit(facts.contextWindowTokens)} tokens` : null
+const formatReviewedContext = value => {
+  if (!value) return null
+  const match = /^([\d,]+(?:\.\d+)?)\s*([KM]?)(.*)$/i.exec(value)
+  if (!match) return `${value} tokens`
+  const count = Number(match[1].replaceAll(',', '')) * ({ K: 1_000, M: 1_000_000 }[match[2].toUpperCase()] || 1)
+  return Number.isSafeInteger(count) && count > 0 ? `${formatDecimalLimit(count)}${match[3]} tokens` : null
+}
 
 function reviewedSpecification(provider, model) {
   const entry = reviewedById.get(model.id)
@@ -31,8 +45,9 @@ function reviewedSpecification(provider, model) {
 // Display only. Neither request IDs nor adapter capabilities/limits are changed here.
 export function modelCardName(provider, model) {
   const resolved = model.specificModelSpecifications?.resolvedModel
-  if (resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length) return resolved.displayName
-  return reviewedSpecification(provider, model)?.displayName || model.label || model.id
+  const name = resolved?.modelId && resolved?.displayName && safeOfficialSources(resolved.sourceUrls).length
+    ? resolved.displayName : reviewedSpecification(provider, model)?.displayName || model.label || model.id
+  return name.replace(/（具体版本待确认）|\(具体版本待确认\)/g, '').trim()
 }
 
 export function modelCardSpecifications(provider, model) {
@@ -47,7 +62,7 @@ export function modelCardSpecifications(provider, model) {
   })
   if (reviewed) layers.push({
     input: reviewed.input, output: reviewed.output,
-    context: reviewed.context ? `${reviewed.context} tokens` : null,
+    context: formatReviewedContext(reviewed.context),
     sources: safeOfficialSources(reviewed.sources), scope: reviewed.sourceScope === 'service' ? '渠道' : '原厂',
     sourcesByField: Object.fromEntries(['input', 'output', 'context'].filter(key => reviewed[`${key}Sources`]).map(key => [key, safeOfficialSources(reviewed[`${key}Sources`])])),
     scopeByField: Object.fromEntries(['input', 'output', 'context'].filter(key => reviewed[`${key}SourceScope`]).map(key => [key, reviewed[`${key}SourceScope`] === 'service' ? '渠道' : '原厂'])),
@@ -86,7 +101,7 @@ export function modelCardSpecifications(provider, model) {
       if (limit) {
         const sources = safeOfficialSources(limit.sourceUrls)
         data.limitRows.push({ label: kind === 'generation' ? '生图提示词上限' : '编辑提示词上限',
-          value: `${limit.max.toLocaleString('en-US')} ${{ characters: '字符', bytes: '字节', tokens: 'tokens' }[limit.unit]}`, sources })
+          value: `${formatDecimalLimit(limit.max)} ${{ characters: '字符', bytes: '字节', tokens: 'tokens' }[limit.unit]}`, sources })
         data.sources.push(...sources)
       }
     }

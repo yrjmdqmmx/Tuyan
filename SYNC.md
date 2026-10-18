@@ -1,3 +1,12 @@
+## 2026-10-18 · 新版工作区正式发布集成（候选）
+
+- [x] Web：新版任务工作区成为首页，保留 `?view=legacy` 旧入口；正式包不含示例/模拟工具。已添加模型沿用原卡片样式，TokenDance 授权后自动加入目录型号；所有入口隐藏未核实或无可调思考设置及目录外型号。附件优化直接开始，执行详情按版本折叠。
+- [x] Gateway / Core：接入账号隔离的 `/api/workspace`、`/api/model-library` 与版本 1 执行信封；健康响应新增 `executionMode: production`、`executionEnabled`、`inputOptimizationMaterialsVersion: 1`。模型凭据沿用当前账号加密密钥，任务写入使用现有事务/账号生命周期保护。
+- [x] 共享 API：可选 `requirements`、历史分页 `offset/nextOffset`、附件优化 `materialFiles`，均保留旧调用兼容。历史读取只在各自账号下合并任务，不迁入本地预览数据库。
+- [x] 网关镜像包含工作区全部共享模块；保留此前已上线 d66ceb3d 固定分钟限流。模型线路、OSS、数据库卷不变。
+- [x] 小程序：继续暂停；旧协议兼容，无需变更。未同步或发布。
+- 候选核验与部署结果见后续发布记录；TokenDance 流式分阶段时限不在本次范围内。
+
 ## 2026-10-18 会话轮询限流窗口修复（待授权发布）
 - 根因：Better Auth 1.6.11 数据库 limiter 每次读取会话推进 lastRequest，连续低频轮询也会累加到 100；本地预览把上游 429 误报成 503。
 - `/get-session` 仍为每客户端 100 次 / 60 秒，改为固定分钟桶、Mongo 原子计数和 TTL 清理；每次仍查真实会话。登录、注册、密码及邮箱规则维持原逻辑。

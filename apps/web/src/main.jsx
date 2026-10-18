@@ -26,7 +26,12 @@ import './components/leaderboard-mobile.css';
 import './components/changelog.css';
 import './components/header-navigation.css';
 
+const WorkspaceRoot = lazy(() => import('./workspace/WorkspaceRoot.jsx'));
+const legacyWorkbench = new URLSearchParams(globalThis.location?.search).get('view') === 'legacy';
 const ChangelogRoot = lazy(() => import('./components/ChangelogRoot.jsx'));
+// Local acceptance only: the production build removes this branch and fixture.
+const WorkspacePreview = import.meta.env.DEV ? lazy(() => import('./workspace/WorkspacePreview.jsx')) : null;
+const workspacePreview = import.meta.env.DEV && new URLSearchParams(globalThis.location?.search).get('workspacePreview') === '1';
 
 const currentAppLocation = appRelativeLocation(globalThis.location, APP_BASE_URL);
 const leaderboardLocation = canonicalizeLeaderboardLocation(currentAppLocation, globalThis.history, APP_BASE_URL);
@@ -42,9 +47,11 @@ const pageTitle = isChangelog ? '更新日志 · 图研 Tuyan'
   : '图研Tuyan工作台';
 
 createRoot(document.getElementById('root')).render(
-  <AppLocaleProvider title={pageTitle}>{isChangelog
+  <AppLocaleProvider title={pageTitle}>{workspacePreview
+    ? <Suspense fallback={<p role="status">正在载入任务工作区…</p>}><WorkspacePreview /></Suspense>
+    : isChangelog
     ? <LeaderboardSessionProvider><Suspense fallback={<div className="changelog-page" role="status">正在载入更新日志…</div>}><ChangelogRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} /></Suspense></LeaderboardSessionProvider>
     : leaderboardRoute.isLeaderboard
     ? <LeaderboardSessionProvider><LeaderboardRoot apiBase={API_BASE_DEFAULT} backendMode={BACKEND_MODE || 'gateway'} enabled={PUBLIC_LEADERBOARD_ENABLED} pathname={leaderboardLocation.pathname} route={leaderboardRoute} /></LeaderboardSessionProvider>
-    : <App />}{globalThis.location?.origin === 'https://tuyansci.cn' && <footer className="icp-footer"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026071869号-3</a></footer>}</AppLocaleProvider>,
+    : legacyWorkbench ? <App /> : <Suspense fallback={<p role="status">正在载入任务工作区…</p>}><WorkspaceRoot /></Suspense>}{globalThis.location?.origin === 'https://tuyansci.cn' && <footer className="icp-footer"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026071869号-3</a></footer>}</AppLocaleProvider>,
 );

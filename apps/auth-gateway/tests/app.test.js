@@ -815,7 +815,8 @@ test('health is cached liveness, ready probes dependencies, and public routes ex
     assert.deepEqual(await health.json(), {
       code: 0,
       ok: true,
-      runtime: 'gateway',
+      runtime: 'gateway', workspaceExecutionContractVersion:1,
+      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1,
       auth: 'better-auth',
       authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
@@ -1165,3 +1166,17 @@ test('metadata catalog forwards only the selected channel key and explicit direc
   assert.deepEqual(backend.calls[1].body.catalogCredentials,{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS'})
  })
 })
+
+
+test('production workspace execution is advertised only with all durable stores mounted', async () => {
+  for (const enabled of [true, false]) {
+    const auth = fakeAuth({ workspaceStore: {}, modelLibraryStore: {}, ...(enabled ? { workspaceExecutionStore: {} } : {}) });
+    await withApp({ auth }, async ({ baseUrl }) => {
+      const health = await (await fetch(`${baseUrl}/paperbanana-api`)).json();
+      assert.equal(health.executionMode, 'production');
+      assert.equal(health.executionEnabled, enabled);
+      assert.equal(health.inputOptimizationMaterialsVersion, 1);
+      assert.equal(health.simulation, undefined);
+    });
+  }
+});

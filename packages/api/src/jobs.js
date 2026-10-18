@@ -25,10 +25,14 @@ export async function createJobRequest(apiBase, health, payload) {
   assertGatewayBackend(health);
   const data = await fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    ...(payload.workspaceExecution ? {signal: AbortSignal.timeout(120000)} : {}),
+    headers: { 'Content-Type': 'application/json', ...(payload.workspaceAccount ? { 'X-Workspace-Account': payload.workspaceAccount } : {}) },
     body: JSON.stringify({
       action: 'createJob',
       clientPlatform: CLIENT_PLATFORM,
+      workspaceExecution: payload.workspaceExecution,
+      ...(payload.requirements !== undefined ? { requirements: payload.requirements } : {}),
       journalSelection: payload.journalSelection,
       configurationMode: payload.configurationMode,
       provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
@@ -130,10 +134,14 @@ export async function refineImageRequest(apiBase, health, payload = {}) {
   assertGatewayBackend(health);
   const data = await fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    ...(payload.workspaceExecution ? {signal: AbortSignal.timeout(120000)} : {}),
+    headers: { 'Content-Type': 'application/json', ...(payload.workspaceAccount ? { 'X-Workspace-Account': payload.workspaceAccount } : {}) },
     body: JSON.stringify({
       action: 'refineImage',
       clientPlatform: CLIENT_PLATFORM,
+      workspaceExecution: payload.workspaceExecution,
+      ...(payload.requirements !== undefined ? { requirements: payload.requirements } : {}),
       journalSelection: payload.journalSelection,
       configurationMode: payload.configurationMode,
       provider: payload.modelRoutes?.main?.accessProvider || payload.provider,
@@ -177,12 +185,13 @@ export async function optimizeInputsRequest(apiBase, health, payload) {
       action: 'optimizeInputs',
       target: payload.target,
       inputs: payload.inputs,
+      ...(payload.materialFiles !== undefined ? { materialFiles: payload.materialFiles } : {}),
       mainRoute: payload.mainRoute,
       providerRegions: payload.providerRegions,
       apiKey: payload.apiKey,
     }),
   });
-  return { target: data.target, optimizedText: data.optimizedText };
+  return { target: data.target, optimizedText: data.optimizedText, ...(data.materialWarnings ? { materialWarnings: data.materialWarnings } : {}) };
 }
 
 export async function prepareReferenceUploadRequest(apiBase, health, files) {
@@ -320,8 +329,10 @@ export async function getJobRequest(apiBase, health, jobId, options = {}) {
   assertGatewayBackend(health);
   const data = await fetchJson(apiEndpoint(apiBase), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'getJob', jobId, adminToken: options.adminToken || undefined }),
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(options.workspaceAccount ? { 'X-Workspace-Account': options.workspaceAccount } : {}) },
+    ...(options.workspaceExecution ? {signal: AbortSignal.timeout(20000)} : {}),
+    body: JSON.stringify({ action: 'getJob', jobId, workspaceExecution: options.workspaceExecution, adminToken: options.adminToken || undefined }),
   });
   return normalizeJob(data.job);
 }

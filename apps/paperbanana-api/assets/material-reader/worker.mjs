@@ -53,7 +53,7 @@ async function run({bytes:encoded,format,operation:op={op:'overview'},filename})
   result.status='unread';result.sha256=hash(bytes);result.size=bytes.length;
   if(format==='pdf'){const p=await pdfOpen(bytes);try{result.pageCount=p.doc.numPages;result.metadata=await p.doc.getMetadata().then(m=>({title:m.info?.Title||''}));}finally{await p.task.destroy();}}
   else if(format==='pptx'){result.pageCount=slides(z).length;if(result.pageCount>MAX_PAGES)fail('演示文稿超过 300 页。');result.warnings.push('尚未读取文字、备注或页面画面。');}
-  else if(format==='xlsx')result.sheets=sheets(z).map(s=>s.name);
+  else if(format==='xlsx'){const ss=sheets(z);result.sheets=ss.map(s=>s.name);result.sheetRanges=ss.map(s=>({name:s.name,lastRow:all(xml(z[s.part]),'c').reduce((max,c)=>Math.max(max,Number(c.attrs.r?.replace(/\D/g,''))||0),0)}));}
   else result.warnings.push('正文尚未读取。');return result;
  }
  if(format==='pptx'&&op.op!=='render'){

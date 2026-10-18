@@ -8,7 +8,7 @@ function write(p,s){const file=path.join(root,p);if(check){if(!fs.existsSync(fil
 const dataFiles=['domestic','global'].filter(name=>fs.existsSync(path.join(root,'config/thinking-audit',name+'.json')))
 const audits=dataFiles.map(name=>JSON.parse(read('config/thinking-audit/'+name+'.json')))
 const rawProfiles=audits.flatMap(audit=>audit.profiles || [])
-const runtimeKeys=['id','sourceUrls','provider','modelIds','roles','protocols','regions','status','controls','clearFields','checkedAt','operations','transport','exclusiveEffortBudget','requiresBudgetWhenEnabled','budgetRequiresEnabled','invalidCombinations','budgetRelation','budgetOutputField','dropSamplingWhenThinking','dropSamplingOnProviderDefault','dropSamplingAlways','allowEffortWithoutThinking']
+const runtimeKeys=['id','sourceUrls','provider','modelIds','roles','protocols','regions','status','statusReason','controls','clearFields','checkedAt','operations','transport','exclusiveEffortBudget','requiresBudgetWhenEnabled','budgetRequiresEnabled','invalidCombinations','budgetRelation','budgetOutputField','dropSamplingWhenThinking','dropSamplingOnProviderDefault','dropSamplingAlways','allowEffortWithoutThinking']
 const profiles=rawProfiles.map(raw=>{
   const p=Object.fromEntries(runtimeKeys.filter(k=>raw[k]!==undefined).map(k=>[k,raw[k]]))
   const c=raw.constraints && !Array.isArray(raw.constraints) ? raw.constraints : {}
@@ -16,11 +16,15 @@ const profiles=rawProfiles.map(raw=>{
   p.budgetRelation ||= c.outputBudgetRelation
   p.dropSamplingWhenThinking ||= Boolean(c.dropSamplingWhenThinking)
   p.dropSamplingAlways ||= Boolean(c.omitSampling)
-  p.samplingFields=[...new Set([...(Array.isArray(c.dropSamplingWhenThinking)?c.dropSamplingWhenThinking:[]),...(c.omitSampling||[]),'temperature','top_p','top_k'])]
+  // Exact channel contracts can retain sampling fields that remain effective.
+  p.samplingFields=raw.samplingFields ?? [...new Set([...(Array.isArray(c.dropSamplingWhenThinking)?c.dropSamplingWhenThinking:[]),...(c.omitSampling||[]),'temperature','top_p','top_k'])]
   p.thinkingCannotDisable=Boolean(c.thinkingCannotDisable)
   p.effortRequiresThinking=Boolean(c.effortRequiresThinking)
+  p.effortEnableField=c.effortEnableField
   p.budgetRequiresThinking=Boolean(c.budgetRequiresThinking)
   p.disabledEffortValues=c.disabledEffortValues || ['none','off']
+  p.promptExtendField=c.promptExtendField
+  p.promptExtendModeField=c.promptExtendModeField
   p.requiresNoInputImages=Boolean(c.requiresNoInputImages || raw.provider==='replicate' && raw.modelIds.some(id=>/^wan-video\/wan-2\.7-image/.test(id)))
   p.requiresNonSequentialGeneration=Boolean(c.requiresNonSequentialGeneration || p.requiresNoInputImages)
   p.exclusiveEffortBudget ||= Boolean(c.mutuallyExclusiveFields?.includes('reasoning_effort') || c.exclusiveEffortBudget || c.mutuallyExclusive?.includes('effort') && c.mutuallyExclusive?.includes('budget'))

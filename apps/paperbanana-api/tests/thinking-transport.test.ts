@@ -13,6 +13,7 @@ function selectedOptions(profile:any) {
   const options:any={}
   for(const c of profile.controls) {
     if(c.key==='budget')continue
+    if(c.type==='integer') { options[c.key]=c.min; continue }
     const values=c.values.map(valueOf)
     options[c.key]=['adaptive','enabled',true,'high','medium','low'].find(v=>values.includes(v)) ?? values[0]
   }
@@ -105,7 +106,7 @@ test('actual image builders preserve quality/size while injecting documented nat
         identities++
       }catch(error:any){assert.fail(`${profile.provider}/${model}/image: ${String(error.message).slice(0,350)}`)}
     }
-    assert.equal(identities,24)
+    assert.equal(identities,32)
     t.diagnostic(`${identities} image generation and ${edits} eligible editing identities`)
   }finally{await r.close()}
 })

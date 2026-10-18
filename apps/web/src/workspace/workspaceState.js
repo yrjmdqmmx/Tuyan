@@ -1,0 +1,248 @@
+// UI state only. The execution adapter must enforce admission and idempotency on
+// the server; this reducer cannot be used as an account-wide concurrency lock.
+export const PATHS = { png: '图像创作', svg: '矢量绘图' };
+export const uid = () => globalThis.crypto.randomUUID();
+const copy = value => structuredClone(value);
+export { newDraft, newTask, newWorkspace } from '../../../../packages/api/src/workspace-defaults.mjs';
+import { newDraft, newTask } from '../../../../packages/api/src/workspace-defaults.mjs';
+const draftFields = ['text', 'caption', 'avoid', 'attachments', 'mode', 'settings'];
+const draftContent = d => JSON.stringify(draftFields.map(field => d[field]));
+const draftHasContent = d => draftContent({ ...d, mode: 'simple' }) !== draftContent(newDraft());
+export const hasRequirements = d => !!(d.text || d.caption || d.avoid || d.attachments.length);
+export const taskHasContent = t => !t.automaticTitle || t.runs.length > 0 || Object.values(t.branches).some(b => draftHasContent(b.draft) || Object.values(b.refinements).some(draftHasContent));
+export const currentTask = s => s.tasks.find(t => t.id === s.selectedTaskId);
+export const currentBranch = s => currentTask(s).branches[currentTask(s).path];
+export const draftOf = b => b.targetId ? b.refinements[b.targetId] : b.draft;
+export const currentDraft = s => draftOf(currentBranch(s));
+export const activeRun = s => currentTask(s).runs.find(r => r.id === currentTask(s).activeRunId) || null;
+export function groupLabel(task, group) {
+  const initialRun = task.runs.find(run => run.id === group.runId);
+  return initialRun?.kind === 'edit' && !initialRun.parentId ? '浏览器手工稿' : `第 ${group.number} 次生成`;
+}
+export function locateVersion(task, id) {
+  if (!id) return null;
+  for (const [path, branch] of Object.entries(task.branches)) for (const group of branch.groups) for (const candidate of group.candidates) {
+    const version = candidate.versions.find(v => v.id === id);
+    if (version) return { ...version, path, groupId: group.id, groupNumber: group.number, groupLabel: groupLabel(task, group), candidateId: candidate.id, candidateLabel: candidate.label };
+  }
+  return null;
+}
+export const selectedVersion = s => locateVersion(currentTask(s), currentBranch(s).versionId);
+export const refinementTarget = s => locateVersion(currentTask(s), currentBranch(s).targetId);
+export function canRestoreRun(task, run) {
+  if (!run) return false;
+  const branch = task.branches[run.path];
+  const draft = run.parentId ? branch.refinements[run.parentId] : branch.draft;
+  if (!draft) return false;
+  const cleared = { ...run.input, text: '', ...(!run.parentId && { caption: '', avoid: '', attachments: [] }) };
+  return draftContent(draft) === draftContent(run.input) || draftContent(draft) === draftContent(cleared);
+}
+export function versionLabel(v, full = false) {
+  return v ? `${full ? `${v.format.toUpperCase()} · ${v.groupLabel || `第 ${v.groupNumber} 次生成`} · ` : ''}候选 ${v.candidateLabel} · v${v.number}` : '';
+}
+export function taskMatches(t, query) {
+  const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const text = [t.title, ...t.runs.map(r => r.input.text), ...Object.values(t.branches).flatMap(b => [b.draft.text, ...Object.values(b.refinements).map(d => d.text)])].join('\n').toLocaleLowerCase();
+  return terms.every(term => text.includes(term));
+}
+export function submitIssue(s) {
+  const t = currentTask(s), b = currentBranch(s), d = currentDraft(s);
+  if (t.activeRunId) return '本任务已有执行，完成后可提交';
+  if (b.targetId && !refinementTarget(s)) return '修改目标已不可用，请重新选择版本';
+  if (!d.text.trim()) return b.targetId ? '请填写修改要求' : '请描述绘图目标';
+  if (d.attachments.some(a => a.status !== 'local')) return '请先完成原件的浏览器保存';
+  if (d.attachments.some(a => !a.purpose)) return '请确认每份附件的用途';
+  if (d.attachments.filter(a=>a.purpose==='source').length>1 || b.targetId && d.attachments.some(a=>a.purpose==='source')) return '请明确选择一个修改对象';
+  return '';
+}
+function view(task, branch, versionId, explicit = true) {
+  const v = locateVersion(task, versionId);
+  if (!v) return;
+  branch.groupId = v.groupId; branch.candidateId = v.candidateId; branch.versionId = v.id;
+  const c = branch.groups.find(g => g.id === v.groupId)?.candidates.find(c => c.id === v.candidateId);
+  if (c) c.viewedVersionId = v.id;
+  if (explicit) branch.navRevision++;
+  if (branch.unreadVersionId === v.id) branch.unreadVersionId = null;
+}
+// Each action is addressed to a task; late responses never use whichever task
+// happens to be selected now. Snapshots have no credential or routing-key field.
+export function workspaceReducer(state, action) {
+  if (action.type === 'SELECT_TASK') {
+    if (!state.tasks.some(t => t.id === action.id)) return state;
+    const next = copy(state), task = next.tasks.find(t => t.id === action.id), branch = task.branches[task.path];
+    next.selectedTaskId = task.id;
+    if (!branch.versionId) {
+      const group = branch.groups.find(g => g.id === branch.groupId) || branch.groups.at(-1);
+      const version = group?.candidates[0]?.versions[0];
+      if (version) view(task, branch, version.id, false);
+    }
+    return next;
+  }
+  const s = copy(state);
+  if (action.type === 'COPY_RUN') {
+    const source=s.tasks.find(t=>t.id===(action.taskId||s.selectedTaskId)),run=source?.runs.find(r=>r.id===action.runId);
+    if(!run)return state;
+    const task=newTask(action.id||uid(),run.path);task.title=source.title+' · 设置副本';task.automaticTitle=false;
+    task.branches[run.path].draft={...copy(run.input),revision:1};s.tasks.unshift(task);s.selectedTaskId=task.id;return s;
+  }
+  if (action.type === 'APPLY_TEMPLATE') {
+    const task=newTask(action.id || uid(),currentTask(s)?.path || 'png');
+    task.title=action.template.title;task.automaticTitle=false;
+    Object.assign(task.branches[task.path].draft,{text:action.template.methodContent,caption:action.template.caption,avoid:action.template.negativePrompt,revision:1});
+    s.tasks.unshift(task);s.selectedTaskId=task.id;return s;
+  }
+  if (action.type === 'CREATE_TASK') {
+    const empty = s.tasks.find(t => !t.archived && !taskHasContent(t));
+    if (empty) { empty.path = currentTask(s)?.path || empty.path; s.selectedTaskId = empty.id; return s; }
+    const task = newTask(action.id || uid(), currentTask(s)?.path || 'png');
+    s.tasks.unshift(task); s.selectedTaskId = task.id; return s;
+  }
+  const t = s.tasks.find(t => t.id === (action.taskId || s.selectedTaskId));
+  if (!t) return state;
+  let b = t.branches[action.path || t.path];
+  const d = Object.hasOwn(action, 'draftTargetId') ? (action.draftTargetId ? b.refinements[action.draftTargetId] : b.draft) : draftOf(b);
+  switch (action.type) {
+    case 'RENAME': t.title = action.title.trim().slice(0, 120) || '新任务'; t.automaticTitle = false; break;
+    case 'PIN': t.pinned = !t.pinned; break;
+    case 'ARCHIVE': t.archived = !t.archived; break;
+    case 'SET_PATH':
+      if (!PATHS[action.path] || action.path === t.path) return state;
+      t.branches[t.path].targetId = null;
+      t.branches[t.path].navRevision++;
+      t.path = action.path; b.targetId = null; b.navRevision++; break;
+    case 'EDIT_DRAFT': {
+      if (!d) return state;
+      // A mode switch selects an existing settings panel; it does not edit either configuration.
+      const changed = draftFields.filter(field => field in action.patch && JSON.stringify(d[field]) !== JSON.stringify(action.patch[field]));
+      if (!changed.length) return state;
+      for (const field of changed) d[field] = copy(action.patch[field]);
+      if (changed.every(field => field === 'mode')) return s;
+      d.revision++;
+      if (t.automaticTitle && !t.runs.length) t.title = d.text.trim().split('\n')[0].slice(0, 32) || '新任务';
+      break;
+    }
+    case 'ADD_ATTACHMENTS':
+      if (!d) return state;
+      d.attachments.push(...copy(action.attachments)); d.revision++; break;
+    case 'COPY_REQUIREMENTS': {
+      const other = t.branches[t.path === 'png' ? 'svg' : 'png'].draft;
+      if (hasRequirements(b.draft)) return state;
+      for (const field of ['text', 'caption', 'avoid', 'attachments']) b.draft[field] = copy(other[field]);
+      b.draft.revision++; break;
+    }
+    case 'REUSE': {
+      const r = [...t.runs].reverse().find(r => r.path === t.path && r.kind === 'generate');
+      if (!r || hasRequirements(d)) return state;
+      // Only explicit action overwrites a draft; keep attachment identities local.
+      for (const field of ['text', 'caption', 'avoid', 'attachments']) d[field] = copy(r.input[field]);
+      d.revision++; break;
+    }
+    case 'VIEW': view(t, b, action.versionId); break;
+    case 'VIEW_GROUP': {
+      const group = b.groups.find(g => g.id === action.id);
+      if (!group) return state;
+      b.groupId = group.id; b.navRevision++;
+      const c = group.candidates.find(c => c.versions.length);
+      b.candidateId = c?.id || null; b.versionId = null;
+      if (c) view(t, b, c.viewedVersionId || c.versions.at(-1).id, false);
+      break;
+    }
+    case 'REFINE': {
+      const v = locateVersion(t, action.versionId);
+      if (!v) return state;
+      t.path = v.path; b = t.branches[v.path];
+      if (!b.refinements[v.id]) b.refinements[v.id] = { ...newDraft(), mode: b.draft.mode, settings: copy(b.draft.settings) };
+      b.targetId = v.id; b.lastTargetId = v.id; view(t, b, v.id); break;
+    }
+    case 'EXIT_REFINE': b.targetId = null; b.navRevision++; break;
+    case 'INTERACT': b.navRevision++; break;
+    case 'BEGIN': {
+      if (submitIssue({ ...s, selectedTaskId: t.id }) || t.runs.some(r => r.id === action.runId)) return state;
+      const target = locateVersion(t, b.targetId);
+      const groupId = target?.groupId || `group-${action.runId}`;
+      const run = { id: action.runId, path: t.path, kind: target ? 'refine' : 'generate', status: 'submitting', accepted: false,
+        groupId, candidateId: target?.candidateId || null, parentId: target?.id || null,
+        ...(action.execution ? {execution: {...copy(action.execution), taskId:t.id}} : {}),
+        input: copy(d), draftRevision: d.revision, navRevision: b.navRevision, stage: '正在确认提交', createdAt: action.at || Date.now() };
+      t.runs.push(run); t.activeRunId = run.id; break;
+    }
+    case 'EXECUTION': {
+      const r=t.runs.find(r=>r.id===action.runId);if(!r || t.activeRunId!==r.id)return state;
+      if((!action.stage||action.stage===r.stage)&&(!action.execution||Object.entries(action.execution).every(([k,v])=>r.execution?.[k]===v)))return state;
+      if(action.execution)r.execution={...r.execution,...action.execution};
+      if(action.stage)r.stage=action.stage;break;
+    }
+    case 'SAVE_SVG': {
+      const parent=locateVersion(t,action.parentId), rb=t.branches.svg;
+      if(t.activeRunId || locateVersion(t,action.versionId) || (action.parentId && parent?.format!=='svg'))return state;
+      // Blank canvases create an ordinary manual group; existing results always append a child.
+      if(!parent && rb.groups.some(g=>g.candidates.length))return state;
+      const original=parent && t.runs.find(r=>r.id===parent.runId);
+      const groupId=parent?.groupId || `group-${action.runId}`, candidateId=parent?.candidateId || `candidate-${action.runId}`;
+      const input=original?.input || rb.draft;
+      const run={id:action.runId,kind:'edit',path:'svg',status:'succeeded',accepted:true,groupId,candidateId,parentId:parent?.id || null,input:{...copy(input),text:'SVG 手工编辑',attachments:[]},draftRevision:input.revision,navRevision:rb.navRevision,stage:'手工编辑已保存为新版本',createdAt:Date.now()};
+      if(!parent)rb.groups.push({id:groupId,number:rb.groups.length+1,runId:run.id,expected:1,candidates:[{id:candidateId,label:'A',versions:[],viewedVersionId:null}]});
+      const c=rb.groups.find(g=>g.id===groupId).candidates.find(c=>c.id===candidateId);
+      t.runs.push(run);c.versions.push({id:action.versionId,format:'svg',url:action.url,number:c.versions.length+1,parentId:parent?.id || null,runId:run.id,origin:'手工编辑',review:'修改后未复审',createdAt:Date.now()});
+      // The editor waits for durable local storage before selecting the child.
+      if(action.select!==false){t.path='svg';view(t,rb,action.versionId);}break;
+    }
+    case 'ACCEPT': {
+      const r = t.runs.find(r => r.id === action.runId);
+      if (!r || r.accepted || t.activeRunId !== r.id) return state;
+      r.accepted = true; r.status = 'running'; r.stage = r.kind === 'refine' ? `正在修改${versionLabel(locateVersion(t, r.parentId))}` : '正在生成候选'; b = t.branches[r.path];
+      if (r.kind === 'generate') b.groups.push({ id: r.groupId, number: b.groups.length + 1, runId: r.id, expected: r.input.attachments.some(a=>a.purpose==='source') ? 1 : r.input.settings[r.input.mode].candidates, candidates: [] });
+      const submitted = r.parentId ? b.refinements[r.parentId] : b.draft;
+      if (submitted?.revision === r.draftRevision) {
+        if (r.parentId) b.refinements[r.parentId] = { ...copy(submitted), text: '', revision: submitted.revision + 1 };
+        else b.draft = { ...copy(submitted), text: '', caption: '', avoid: '', attachments: [], revision: submitted.revision + 1 };
+        if (b.targetId === r.parentId) b.targetId = null;
+      }
+      if (!b.groupId) b.groupId = r.groupId;
+      break;
+    }
+    case 'RESULT': {
+      const r = t.runs.find(r => r.id === action.runId);
+      if (!r?.accepted || t.activeRunId !== r.id || !action.version?.url || !['png', 'svg'].includes(action.version.format)) return state;
+      if (locateVersion(t, action.version.id)) return state;
+      b = t.branches[r.path];
+      const group = b.groups.find(g => g.id === r.groupId);
+      if (!group) return state;
+      const id = r.candidateId || action.candidateId;
+      if (!id) return state;
+      let c = group.candidates.find(c => c.id === id);
+      if (!c) { c = { id, label: action.label || String.fromCharCode(65 + group.candidates.length), versions: [], viewedVersionId: null }; group.candidates.push(c); }
+      const v = { ...copy(action.version), number: c.versions.length + 1, parentId: r.parentId, runId: r.id, origin: r.kind === 'refine' || r.input.attachments.some(a=>a.purpose==='source') ? 'AI 修改' : '生成', review: action.version.review || '未复审', createdAt: action.at || Date.now() };
+      c.versions.push(v);
+      if (!c.viewedVersionId) c.viewedVersionId = v.id;
+      const canFollow = s.selectedTaskId === t.id && t.path === r.path && b.navRevision === r.navRevision && !b.targetId;
+      if (canFollow && (!b.versionId || r.kind === 'refine')) view(t, b, v.id, false);
+      else b.unreadVersionId = v.id;
+      r.stage = r.kind === 'refine' ? '修改结果已返回' : `${group.candidates.length} 个候选已返回`;
+      break;
+    }
+    case 'FINISH': {
+      const r = t.runs.find(r => r.id === action.runId);
+      if (!r || t.activeRunId !== r.id) return state;
+      r.status = action.error ? 'failed' : 'succeeded'; r.error = action.error || ''; r.stage = action.error || '本次执行完成'; t.activeRunId = null;
+      if (action.error && r.accepted) {
+        const rb = t.branches[r.path], draft = r.parentId ? rb.refinements[r.parentId] : rb.draft;
+        if (draft && !draft.text && draft.revision === r.draftRevision + 1) Object.assign(draft, copy(r.input), { revision: draft.revision + 1 });
+      }
+      break;
+    }
+    case 'RESTORE_RUN': {
+      const r = t.runs.find(r => r.id === action.runId);
+      if (!r) return state;
+      const rb = t.branches[r.path], dest = r.parentId ? rb.refinements[r.parentId] : rb.draft;
+      if (!canRestoreRun(t, r)) return state;
+      Object.assign(dest, copy(r.input), { revision: dest.revision + 1 });
+      t.path = r.path; rb.targetId = r.parentId; rb.navRevision++;
+      if (r.parentId) view(t, rb, r.parentId);
+      break;
+    }
+    default: return state;
+  }
+  if(['EDIT_DRAFT','ADD_ATTACHMENTS','COPY_REQUIREMENTS','REUSE','BEGIN','SAVE_SVG','RESULT','FINISH','RESTORE_RUN','RENAME'].includes(action.type))t.updatedAt=action.at || Date.now();
+  return s;
+}
