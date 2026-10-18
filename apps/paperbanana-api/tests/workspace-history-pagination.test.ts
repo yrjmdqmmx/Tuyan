@@ -3,7 +3,7 @@ import test from 'node:test'
 import fs from 'node:fs'
 import vm from 'node:vm'
 import { stripTypeScriptTypes } from 'node:module'
-import { matches } from '../../../test-support/memory-db.mjs'
+import { memoryDb } from '../../../test-support/memory-db.mjs'
 
 const source = fs.readFileSync(new URL('../runtime/handler.ts', import.meta.url), 'utf8')
 function extract(name: string) {
@@ -16,13 +16,7 @@ function extract(name: string) {
 function fixture() {
   const own = Array.from({length:253}, (_,i)=>({_id:`job-${String(i).padStart(3,'0')}`,createdAt:Math.floor(i/3),...(i%2 ? {user_id:'alice'} : {userId:'alice'})}))
   const rows = [...own,{_id:'other-account',userId:'bob',user_id:'alice',createdAt:10000},{_id:'same-email',userId:'bob',userEmail:'alice@example.test',createdAt:10001}]
-  const jobs = {find(query:object) {
-    let selected = rows.filter(row=>matches(row,query))
-    return {
-      sort(order:Record<string,number>) { selected.sort((a:any,b:any)=>{for(const [key,direction] of Object.entries(order)){if(a[key]!==b[key])return (a[key]>b[key]?1:-1)*direction} return 0});return this },
-      skip(n:number){selected=selected.slice(n);return this},limit(n:number){selected=selected.slice(0,n);return this},async toArray(){return selected},
-    }
-  }}
+  const jobs = memoryDb({ jobs: rows }).collection('jobs')
   const context = vm.createContext({jobs,clamp:(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n)),publicJob:async(row:any)=>({id:row._id}),ok:(body:any)=>({code:0,...body}),fail:(error:string,code:number)=>({error,code})})
   vm.runInContext(stripTypeScriptTypes([extract('userJobs'),extract('accountIdQuery')].join('\n')),context)
   return {run:(body:any)=>context.userJobs(body),own}
