@@ -81,6 +81,8 @@ export function attachFeaturedTemplateImages(references = []) {
   return FEATURED_TEMPLATES.map((template, index) => ({
     ...template,
     imageUrl: exact ? String((references[index]?.localPreviewUrl ? appPath(references[index].localPreviewUrl) : '') || references[index]?.imageUrl || references[index]?.image_url || '') : '',
+    previewUrl: exact && references[index]?.localPreviewUrl === `/reference-library/${template.sourceReferenceId.replace('journal_', '')}.png`
+      ? appPath(`/reference-library/previews/${template.sourceReferenceId.replace('journal_', '')}.webp`) : '',
     attribution: references[index]?.license?.attribution || references[index]?.attribution || '',
     sourceUrl: references[index]?.paper?.sourceUrl || '',
     licenseUrl: references[index]?.license?.url || '',

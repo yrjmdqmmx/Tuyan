@@ -7,7 +7,7 @@ import useCompactLayout from '../hooks/useCompactLayout'
 function TemplateArtwork({ template, className = '' }) {
   const { t } = useAppLocale()
   if (template.imageUrl) {
-    return <figure className="featured-licensed-figure"><img className={className} src={template.imageUrl} alt={t("{v0}参考图", {v0: t(template.title)})} /><figcaption><strong>论文原图 · 仅参考结构</strong><br/>{template.attribution} · {template.licenseUrl}</figcaption></figure>
+    return <figure className="featured-licensed-figure"><img className={className} src={template.previewUrl || template.imageUrl} decoding="async" alt={t("{v0}参考图", {v0: t(template.title)})} /><figcaption><strong>论文原图 · 仅参考结构</strong><br/>{template.attribution} · {template.licenseUrl}</figcaption></figure>
   }
   return (
     <div className={`featured-template-placeholder ${className}`.trim()} role="img" aria-label={t("{v0}结构预览", {v0: t(template.title)})}>
