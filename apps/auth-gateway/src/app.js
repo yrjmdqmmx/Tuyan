@@ -1,12 +1,16 @@
 import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
 import express from 'express';
+import { gzip } from 'node:zlib';
+import { promisify } from 'node:util';
 
 import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { createTuyanMcpRouter } from './mcp.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
+
+const gzipAsync = promisify(gzip);
 
 const ADMIN_BACKEND_ACTIONS = new Set([
   'adminOperationsOverview',
@@ -265,7 +269,8 @@ export function createApp({
         || action === 'benchmarkMethodology'
         || action === 'benchmarkCaseEvidence'
       ) {
-        return relay(response, await backend.call(request.body, context));
+        const result = await backend.call(request.body, context);
+        return action === 'modelRegistry' ? relayModelRegistry(request, response, result) : relay(response, result);
       }
 
       if (action === 'benchmarkPromptSubmission') {
@@ -478,6 +483,22 @@ function asyncRoute(handler) {
 
 function relay(response, result) {
   return response.status(boundedStatus(result?.status || 502)).json(result?.data || {});
+}
+
+async function relayModelRegistry(request, response, result) {
+  // Only the public capability catalog uses this path. Do not compress account,
+  // credential, authorization or task responses, or cache them alongside it.
+  response.set('Cache-Control', 'no-store');
+  response.vary('Accept-Encoding');
+  const data = result?.data;
+  if (result?.status !== 200 || data?.code !== 0 || !data.providers
+    || typeof data.providers !== 'object' || Array.isArray(data.providers)
+    || request.acceptsEncodings('gzip', 'identity') !== 'gzip') return relay(response, result);
+  const json = Buffer.from(JSON.stringify(data));
+  if (json.length < 1024) return relay(response, result);
+  const compressed = await gzipAsync(json);
+  if (compressed.length >= json.length) return relay(response, result);
+  return response.status(200).type('application/json').set('Content-Encoding', 'gzip').send(compressed);
 }
 
 function maintenanceResponse(response, config) {
