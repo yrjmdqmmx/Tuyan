@@ -35,7 +35,7 @@ class SafetyTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as tmp, contextlib.ExitStack() as stack:
    root=pathlib.Path(tmp);co=root/'compose';cn=root/'cn';back=root/'backups'
    for p in [root/'secrets',root/'control',co,cn,back]:p.mkdir()
-   for info in r.SERVICES.values():(root/'secrets'/info[2]).write_text('SECRET=fixture\nOSS_REGION=oss-cn-hongkong\n')
+   for info in [i for i in r.SERVICES.values() if i[2]]:(root/'secrets'/info[2]).write_text('SECRET=fixture\nOSS_REGION=oss-cn-hongkong\n')
    (co/'.env').write_text('UNCHANGED=fixture\n');(cn/'compose.yaml').write_text('services: {}\n')
    for k,v in {'ROOT':root,'COMPOSE':co,'CN':cn,'MARKER':root/'control/maintenance','BACKUPS':back,'LOCK':str(root/'lock')}.items():stack.enter_context(patch.object(r,k,v))
    stack.enter_context(patch.object(r.os,'geteuid',return_value=0));stack.enter_context(patch.object(r.os,'chown'))

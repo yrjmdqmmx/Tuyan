@@ -18,6 +18,7 @@ COPY apps/paperbanana-api apps/paperbanana-api
 COPY packages/benchmark-core packages/benchmark-core
 COPY packages/api/src packages/api/src
 COPY packages/types/src packages/types/src
+COPY packages/figure-taxonomy/src packages/figure-taxonomy/src
 RUN pnpm --filter @paperbanana/paperbanana-api build
 RUN pnpm --filter @paperbanana/benchmark-worker build
 RUN pnpm --filter @paperbanana/benchmark-worker deploy --prod --legacy /opt/benchmark-worker

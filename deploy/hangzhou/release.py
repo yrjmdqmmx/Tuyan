@@ -15,6 +15,7 @@ SERVICES = {
  'core': ('paperbanana-hk-paperbanana-api-1', 'paperbanana-api', 'core.env', 'PAPERBANANA_CORE_IMAGE'),
  'gateway': ('paperbanana-hk-auth-gateway-1', 'auth-gateway', 'gateway.env', 'PAPERBANANA_GATEWAY_IMAGE'),
  'cn-gateway': ('tuyan-cn-gateway-auth-gateway-1', 'auth-gateway', 'tuyan-cn-watcha.env', None),
+ 'plot': ('paperbanana-hk-plot-worker-1', 'plot-worker', None, 'PAPERBANANA_PLOT_WORKER_IMAGE'),
  'benchmark': ('paperbanana-hk-benchmark-worker-1', 'benchmark-worker', 'bench.env', 'PAPERBANANA_BENCH_WORKER_IMAGE'),
 }
 OSS_KEYS = {'PAPERBANANA_BUCKET', 'OSS_REGION', 'OSS_INTERNAL_ENDPOINT', 'OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_OSS_SERVER_ENDPOINT_MODE',
@@ -42,14 +43,14 @@ def patch_env(text, changes):
 def validate(m):
     if m.get('version') != 1 or not re.fullmatch(r'[a-z0-9-]{8,80}', m.get('id', '')): raise ValueError('invalid manifest')
     if not m.get('services') or set(m['services']) - SERVICES.keys(): raise ValueError('unknown service')
-    if set(m.get('expected_images', {})) != SERVICES.keys(): raise ValueError('all four current images are required')
+    if set(m.get('expected_images', {})) != SERVICES.keys(): raise ValueError('all five current images are required')
     for image in m['expected_images'].values():
         if not re.fullmatch(r'sha256:[a-f0-9]{64}', image): raise ValueError('expected immutable image ID')
     for name, change in m['services'].items():
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
-            if key not in OSS_KEYS | {'PAPERBANANA_CODE_SHA'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
+            if name == 'plot' or key not in OSS_KEYS | {'PAPERBANANA_CODE_SHA'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
             if key == 'PAPERBANANA_CODE_SHA':
                 if name not in {'core', 'benchmark'} or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError('invalid code provenance')
             elif key.endswith('_BUCKET') or key == 'PAPERBANANA_BUCKET':
@@ -82,7 +83,7 @@ def main(m, apply=False, keep=False):
             if before[name]['Image'] != image: raise ValueError('production changed; inspect again')
         bench_env = dict(v.split('=',1) for v in before['benchmark']['Config']['Env'])
         if bench_env.get('PAPERBANANA_BENCH_ENABLED') != 'false': raise ValueError('benchmark executor must remain disabled')
-        paths = {ROOT/'secrets'/s[2] for s in SERVICES.values()} | {COMPOSE/'.env', CN/'compose.yaml'}
+        paths = {ROOT/'secrets'/s[2] for s in SERVICES.values() if s[2]} | {COMPOSE/'.env', CN/'compose.yaml'}
         original = {p: p.read_text() for p in paths}
         files = {}; changes = m['services']; touched = set(changes)
         for name, change in changes.items():
@@ -130,7 +131,7 @@ def main(m, apply=False, keep=False):
             for p,text in files.items():
                 tmp=p.with_name(p.name+'.hangzhou-new');tmp.write_text(text);shutil.copystat(p,tmp);os.chown(tmp,p.stat().st_uid,p.stat().st_gid);os.replace(tmp,p)
             for name in touched: run(compose(name)+['config','--quiet'])
-            for name in ['core','benchmark','gateway','cn-gateway']:
+            for name in ['plot','core','benchmark','gateway','cn-gateway']:
                 if name in touched:
                     run(compose(name)+['up','-d','--no-deps',SERVICES[name][1]])
                     wait_healthy([name])
@@ -150,7 +151,7 @@ def main(m, apply=False, keep=False):
         except BaseException:
             if changed:
                 for i,p in enumerate(files): shutil.copy2(backup/str(i),p)
-                for name in ['core','benchmark','gateway','cn-gateway']:
+                for name in ['plot','core','benchmark','gateway','cn-gateway']:
                     if name in touched: run(compose(name)+['up','-d','--no-deps',SERVICES[name][1]])
                 wait_healthy(touched)
                 if any(inspect(SERVICES[n][0])['Image']!=before[n]['Image'] for n in touched): raise RuntimeError('rollback failed; maintenance retained')

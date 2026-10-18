@@ -5,7 +5,7 @@
 ## 发布
 
 1. 在独立工作树完成测试和构建，把候选镜像预先载入杭州。镜像引用必须是本机不可变 `sha256:<64 hex>` 或已存在的仓库 digest。Core/Benchmark 镜像必须带 `/app/build-provenance.json`，其中 `codeSha` 与清单一致。
-2. 读取四个现有容器的 `.Image`，写入清单 `expected_images`。`core`、`gateway`、`cn-gateway`、`benchmark` 四项都必须提供，以阻止覆盖其他会话刚发布的版本。
+2. 读取五个现有容器的 `.Image`，写入清单 `expected_images`。`core`、`gateway`、`cn-gateway`、`benchmark`、`plot` 五项都必须提供，以阻止覆盖其他会话刚发布的版本。
 3. 使用 `./deploy/hangzhou/release.sh manifest.json` 预检；复核后执行同一命令加 `--apply`。只更新清单指定服务；更新共享 gateway.env 时也重建新域名网关。保留其他变量、渠道线路、密钥、数据库、Plot、OpenAcad。
 4. 查看双入口 `/ready`、历史图片和公开评测详情；记录源码 SHA、镜像 ID、测试和回执。每次发布在 `/var/backups/hangzhou-<id>` 保存原文件和恢复映射。健康检查失败自动恢复配置和镜像；恢复失败保留维护状态。
 
@@ -19,7 +19,8 @@
     "core": "sha256:<current image>",
     "gateway": "sha256:<current image>",
     "cn-gateway": "sha256:<current image>",
-    "benchmark": "sha256:<current image>"
+    "benchmark": "sha256:<current image>",
+    "plot": "sha256:<current image>"
   },
   "services": {
     "core": {
@@ -44,3 +45,14 @@
 - 切换后香港副本逐渐落后，不能只改 env 回退；须维护停写并同步杭州新增/删除/更新对象，检查数据库和对象一致性再切回。香港旧桶暂不删除。
 
 详细实际结果见 `docs/operations/2026-10-18-hangzhou-storage.md`。
+
+
+## 分支自动发布
+
+用户选择独立 `codex/hangzhou-production` 作为正式发布源，基线为已上线的 4.0；`main` 和其他开发分支不部署生产。推送/合并代码到该分支自动运行 `Deploy Hangzhou Production`，仅文档改动不发布。CI 全部通过后，Linux amd64 的 Core、两套 Gateway、Plot、关闭执行器的 Benchmark 和国内 Web 同批发布杭州。更新发布器自身必须由运维经现有管理 SSH 安装，发布包不能替换宿主脚本。
+
+GitHub `hangzhou-production` 环境仅允许该分支。它只有专用受限 SSH Key 与固定 known_hosts，不包含模型 Key。SSH 只开放 `status` / `deploy` 两个固定入口，不接受 shell、端口转发或任意文件上传；短期 GitHub token 仅在 `/run` 临时 Docker 凭据中用于拉取本仓库镜像，结束即删除。
+
+发布器验证 GitHub 仓库、当前运行、最新分支 SHA、压缩包 SHA256、固定镜像 digest、主机身份和发布前现网快照。拒绝软链接、路径穿越、配置文件及异常大包。活动任务阻止切换；失败恢复原镜像和静态目录。模型出口与 OSS 环境逐项核对，不改变数据卷、密钥、WireGuard 或 Squid。
+
+GitHub Actions 链接及实际结果将在本次验收记录中补齐。无需模型调用；不保证 CI / 存储 / 网络本身在所有额度条件下永久免费，不启用额外付费资源。

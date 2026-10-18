@@ -1,0 +1,144 @@
+name: Deploy Hangzhou Production
+on:
+  push:
+    branches: [codex/hangzhou-production]
+    paths-ignore: ['docs/**', '**/*.md']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tuyan-hangzhou-production
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: python3 -m unittest discover -s deploy/hangzhou/tests -v
+      - run: pnpm --filter @paperbanana/auth-gateway test
+      - run: pnpm --filter @paperbanana/paperbanana-api test
+      - run: pnpm --filter @paperbanana/paperbanana-api check
+      - run: pnpm --filter @paperbanana/benchmark-worker test
+      - run: pnpm --filter @paperbanana/benchmark-worker check
+      - run: pnpm --filter @paperbanana/web test
+      - run: pnpm --filter @paperbanana/web build
+        env:
+          VITE_API_BASE: https://tuyansci.cn
+          VITE_AUTH_ENABLED: 'true'
+          VITE_AUTH_BASE: https://tuyansci.cn
+          VITE_BASE_PATH: /
+          VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'
+      - name: Record source version
+        run: node -e 'require("fs").writeFileSync("apps/web/dist/version.json", JSON.stringify({revision:process.env.GITHUB_SHA,target:"Hangzhou"}))'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hangzhou-web
+          path: apps/web/dist
+          retention-days: 3
+  images:
+    if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {service: core, dockerfile: apps/paperbanana-api/Dockerfile, context: .}
+          - {service: gateway, dockerfile: apps/auth-gateway/Dockerfile, context: .}
+          - {service: benchmark, dockerfile: apps/benchmark-worker/Dockerfile, context: .}
+          - {service: plot, dockerfile: apps/plot-worker/Dockerfile, context: apps/plot-worker}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/yrjmdqmmx/tuyan-hz-${{ matrix.service }}:sha-${{ github.sha }}
+          build-args: PAPERBANANA_CODE_SHA=${{ github.sha }}
+          cache-from: type=gha,scope=hangzhou-${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=hangzhou-${{ matrix.service }}
+      - name: Save immutable image reference
+        env:
+          SERVICE: ${{ matrix.service }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: python3 -c 'import os,json; s=os.environ["SERVICE"]; json.dump({s:"ghcr.io/yrjmdqmmx/tuyan-hz-"+s+"@"+os.environ["DIGEST"]},open("image-"+s+".json","w"))'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-${{ matrix.service }}
+          path: image-*.json
+          retention-days: 3
+  deploy:
+    needs: [verify, images]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: hangzhou-production
+    permissions:
+      contents: read
+      packages: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hangzhou-web
+          path: payload/web
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: image-*
+          merge-multiple: true
+          path: images
+      - name: Configure restricted Hangzhou SSH identity
+        env:
+          KEY: ${{ secrets.HANGZHOU_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.HANGZHOU_KNOWN_HOSTS }}
+        run: |
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0600 "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+      - name: Package verified files and record current production
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,os
+          images={}
+          for p in pathlib.Path('images').glob('image-*.json'):images.update(json.loads(p.read_text()))
+          assert set(images)=={'core','gateway','benchmark','plot'}
+          pathlib.Path('payload/manifest.json').write_text(json.dumps({'sha':os.environ['GITHUB_SHA'],'images':images}))
+          PY
+          tar -czf release.tar.gz -C payload manifest.json web
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes root@116.62.146.226 status > state.json
+      - name: Deploy fixed images and verify Hangzhou, preserving model routes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 deploy/hangzhou/ci_send.py | tee deployment-receipt.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hangzhou-deployment-receipt
+          path: deployment-receipt.json
+          retention-days: 30
+      - name: Remove ephemeral SSH identity
+        if: always()
+        run: rm -f "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
