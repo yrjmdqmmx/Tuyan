@@ -1,0 +1,26 @@
+{
+  "temporary_key_removed": true,
+  "temporary_authorization_removed": true,
+  "no_public_listener_created": true,
+  "allowed_destinations": [
+    "bedrock-runtime.us-east-1.amazonaws.com",
+    "bedrock-runtime.us-east-2.amazonaws.com",
+    "bedrock-runtime.us-west-2.amazonaws.com",
+    "api.bfl.ai",
+    "api.eu.bfl.ai",
+    "api.us.bfl.ai",
+    "queue.fal.run",
+    "api.fireworks.ai",
+    "api.ideogram.ai",
+    "api.minimax.io",
+    "api.mistral.ai",
+    "api.novita.ai",
+    "openrouter.ai",
+    "external.api.recraft.ai",
+    "api.replicate.com",
+    "api.runware.ai",
+    "api.stability.ai",
+    "api.together.ai",
+    "api.x.ai"
+  ]
+}

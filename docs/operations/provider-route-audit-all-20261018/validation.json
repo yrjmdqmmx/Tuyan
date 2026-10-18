@@ -1,0 +1,10 @@
+{
+  "provider_coverage": 32,
+  "extra_provider": "bedrock",
+  "endpoints": 42,
+  "samples": 845,
+  "transport_complete": 820,
+  "inference_calls": 0,
+  "temporary_authorization_cleaned": true,
+  "healthy_containers": 10
+}
