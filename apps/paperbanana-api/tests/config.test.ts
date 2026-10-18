@@ -67,6 +67,17 @@ test('disabled provider egress does not require or expose a proxy URL', () => {
   assert.deepEqual(loadConfig(validEnv).providerEgress, { mode: 'disabled' })
 })
 
+test('business OSS supports an explicit cross-region public server endpoint without relaxing endpoint validation', () => {
+  const original = loadConfig(validEnv).oss
+  assert.equal(original.serverEndpointMode, 'internal')
+  const publicConfig = loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: 'public' }).oss
+  assert.deepEqual(publicConfig, { ...original, serverEndpointMode: 'public' })
+  for (const value of ['', 'direct', ' public', 'PUBLIC']) {
+    assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: value }), /PAPERBANANA_OSS_SERVER_ENDPOINT_MODE/)
+  }
+  assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_OSS_SERVER_ENDPOINT_MODE: 'public', OSS_INTERNAL_ENDPOINT: validEnv.OSS_PUBLIC_ENDPOINT }), /OSS_INTERNAL_ENDPOINT/)
+})
+
 test('benchmark API is disabled by default and enabled only with isolated Mongo, OSS and immutable code provenance', () => {
   assert.equal(loadConfig(validEnv).benchmark, undefined)
   const buildCodeSha = 'eb31b2b3da4cbc73a436711f7183fef9df119c6b'

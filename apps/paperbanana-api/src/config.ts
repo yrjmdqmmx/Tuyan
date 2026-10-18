@@ -130,6 +130,10 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
   const internalEndpoint = ossEndpoint(env, 'OSS_INTERNAL_ENDPOINT', `${region}-internal.aliyuncs.com`)
   const publicEndpoint = ossEndpoint(env, 'OSS_PUBLIC_ENDPOINT', `${region}.aliyuncs.com`)
   if (internalEndpoint === publicEndpoint) throw new Error('OSS_INTERNAL_ENDPOINT and OSS_PUBLIC_ENDPOINT must be distinct')
+  const ossServerEndpointMode = env.PAPERBANANA_OSS_SERVER_ENDPOINT_MODE ?? 'internal'
+  if (ossServerEndpointMode !== 'internal' && ossServerEndpointMode !== 'public') {
+    throw new Error('PAPERBANANA_OSS_SERVER_ENDPOINT_MODE must be exactly internal or public')
+  }
   const benchmarkFlag = env.PAPERBANANA_BENCH_API_ENABLED?.trim() || 'false'
   if (benchmarkFlag !== 'true' && benchmarkFlag !== 'false') throw new Error('PAPERBANANA_BENCH_API_ENABLED must be exactly true or false')
   const benchmarkOssServerEndpointMode = env.PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE === undefined
@@ -197,6 +201,7 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
       bucket: required(env, 'PAPERBANANA_BUCKET'),
       internalEndpoint,
       publicEndpoint,
+      serverEndpointMode: ossServerEndpointMode,
       secure: true,
       pathStyle: false,
     },

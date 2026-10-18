@@ -1,3 +1,10 @@
+## 2026-10-18 · 杭州迁移的业务 OSS 服务端出口配置
+
+- 在线上 Core 基线 a68bb2684db01ee1e593260bd01eac86444b3831 上独立补充 `PAPERBANANA_OSS_SERVER_ENDPOINT_MODE=internal|public`，默认 internal。杭州显式使用 public；内网/公网域名白名单、HTTPS、签名、桶和权限保持原契约，Benchmark 的独立开关不变。
+- [x] Core：配置解析与既有 OSS 适配器衔接，拒绝未知值及非法域名；不混入原 4.0 开发工作区未发布功能。
+- [x] Web / 小程序：没有客户端字段或行为变化；小程序仍暂停。
+- [ ] 运维：迁移、校验与切换结果记录在独立运维报告；不得把本条配置改动当成完整迁移验收。
+
 # 平台同步日志 (Platform Sync Log)
 
 > 本文件为时间线。2026-09-27 之前的 Sealos / Sealaf / Laf 部署与回滚叙述均为历史状态，不得执行；以[当前架构](docs/operations/current-architecture.md)为准。
