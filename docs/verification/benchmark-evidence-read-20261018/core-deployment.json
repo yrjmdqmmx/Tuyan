@@ -1,0 +1,13 @@
+{
+  "changed_at": "2026-10-18T04:28:46.631817+00:00",
+  "code_sha": "f15510ce1a4d97ca117b01892cc9837638a51334",
+  "previous_image": "sha256:ebd72e8cc1dfd48bc53969ac24448c72ce67bcadd909e3be777c67ed5a899678",
+  "image": "sha256:631f11b065a9974c6f6034b4e37546ffc7e17199d2bd81ea2a9edaee775ea85d",
+  "status": "healthy",
+  "active_jobs_before": 0,
+  "core_env_changed_fields": [
+    "PAPERBANANA_CODE_SHA"
+  ],
+  "model_calls": 0,
+  "scope": "Core bundle, embedded build provenance and matching code SHA marker only"
+}

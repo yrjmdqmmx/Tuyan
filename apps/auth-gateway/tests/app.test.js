@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { request as httpRequest } from 'node:http';
+import { gunzipSync } from 'node:zlib';
 import test from 'node:test';
 
 import { createAccountDeletionService, createDeletionStore } from '../src/account-deletion.js';
@@ -359,6 +360,62 @@ test('modelRegistry is a public read-only backend action', async () => {
   });
 });
 
+test('large public registries negotiate gzip and preserve every catalog field on the wire', async () => {
+  const data = { code: 0, registryVersion: 'fixture', providers: { example: {
+    defaults: { main: 'model-0' },
+    models: Array.from({ length: 3500 }, (_, i) => ({
+      id: `model-${i}`, roles: ['main', 'vision'], selectable: i !== 3,
+      capabilities: { referenceImages: true }, disabledReason: i === 3 ? 'unavailable' : '',
+      specifications: { notes: ['offline catalog regression fixture '.repeat(45)] },
+    })),
+  } } };
+  const backend = fakeBackend(async () => ({ status: 200, data }));
+  await withApp({ backend }, async ({ baseUrl }) => {
+    async function raw(headers) {
+      return new Promise((resolve, reject) => {
+        const request = httpRequest(`${baseUrl}/paperbanana-api`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', ...headers },
+        }, response => {
+          const chunks = [];
+          response.on('data', chunk => chunks.push(chunk));
+          response.on('end', () => resolve({ status: response.statusCode, headers: response.headers, body: Buffer.concat(chunks) }));
+          response.on('error', reject);
+        });
+        request.on('error', reject);
+        request.end(JSON.stringify({ action: 'modelRegistry' }));
+      });
+    }
+    const compressed = await raw({ 'Accept-Encoding': 'br, gzip', Origin: 'https://paperbanana.asia' });
+    assert.equal(compressed.status, 200);
+    assert.equal(compressed.headers['content-encoding'], 'gzip');
+    assert.match(compressed.headers.vary, /Origin/);
+    assert.match(compressed.headers.vary, /Accept-Encoding/);
+    assert.equal(compressed.headers['cache-control'], 'no-store');
+    const decoded = gunzipSync(compressed.body);
+    assert.deepEqual(JSON.parse(decoded.toString()), data);
+    assert.ok(compressed.body.length < decoded.length / 10);
+    for (const headers of [{}, { 'Accept-Encoding': 'gzip;q=0, identity' }]) {
+      const plain = await raw(headers);
+      assert.equal(plain.headers['content-encoding'], undefined);
+      assert.deepEqual(JSON.parse(plain.body.toString()), data);
+    }
+  });
+});
+
+test('registry errors and other public responses are not compressed by the registry path', async () => {
+  const errorData = { code: 503, error: 'unavailable '.repeat(200) };
+  const backend = fakeBackend(async body => body.action === 'modelRegistry'
+    ? { status: 503, data: errorData } : { status: 200, data: { code: 0, text: 'other '.repeat(1000) } });
+  await withApp({ backend }, async ({ baseUrl }) => {
+    const error = await post(baseUrl, { action: 'modelRegistry' }, { 'Accept-Encoding': 'gzip' });
+    assert.equal(error.status, 503);
+    assert.equal(error.headers.get('content-encoding'), null);
+    assert.deepEqual(await error.json(), errorData);
+    const other = await post(baseUrl, { action: 'modelCapability' }, { 'Accept-Encoding': 'gzip' });
+    assert.equal(other.headers.get('content-encoding'), null);
+  });
+});
+
 test('benchmark public actions are anonymous read-only backend actions', async () => {
   const backend = fakeBackend(async (body) => ({ status: 200, data: { code: 0, action: body.action } }));
   await withApp({ backend }, async ({ baseUrl }) => {
@@ -368,6 +425,9 @@ test('benchmark public actions are anonymous read-only backend actions', async (
       assert.deepEqual(await response.json(), { code: 0, action });
     }
     assert.equal(backend.calls.length, 4);
+    assert.deepEqual(backend.calls.map(call => call.options), [
+      undefined, { timeoutMs: 60_000 }, undefined, { timeoutMs: 60_000 },
+    ]);
   });
 });
 
