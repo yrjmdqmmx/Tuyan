@@ -17,6 +17,7 @@ function fakeDatabase() {
       async createIndex() {},
       async deleteMany(query) { operations.push(['account.deleteMany', query]); },
     },
+    sessionReadRateLimit: { async createIndex() {} },
     accountDeletionOperations: { async createIndex() {} },
     accountVerificationTokens: { async createIndex() {} },
     user: {

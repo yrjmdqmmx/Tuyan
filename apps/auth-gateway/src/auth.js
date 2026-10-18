@@ -2,6 +2,7 @@ import { createWatchaOAuth } from './watcha-oauth.js';
 import { createAdminAccounts } from './admin-accounts.js';
 import { createAccountWriteGuard } from './account-write-guard.js';
 import { randomBytes } from 'node:crypto';
+import { createAuthRateLimitStorage } from './auth-rate-limit-storage.js';
 import { createAccountVerification, authUserFilter } from './account-verification.js';
 import { createDeletionStore } from './account-deletion.js';
 import { ensureAccountIndexes, normalizeAccountInput } from './account-indexes.js';
@@ -146,6 +147,7 @@ export async function createAuthRuntime(
     rateLimit: {
       enabled: true,
       storage: 'database',
+      customStorage: createAuthRateLimitStorage(db),
       window: 60,
       max: 100,
       customRules: {

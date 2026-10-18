@@ -17,6 +17,7 @@ export async function ensureAccountIndexes(db) {
   }
   await users.createIndex({ email: 1 }, { name: 'auth_email_unique_v1', unique: true, collation: { locale: 'en', strength: 2 } });
   await users.createIndex({ createdAt: -1, _id: -1 });
+  await db.collection('sessionReadRateLimit').createIndex({ expiresAt: 1 }, { name: 'session_read_rate_expiry', expireAfterSeconds: 0 });
   await db.collection('account').createIndex({ userId: 1 });
   await db.collection('session').createIndex({ userId: 1, createdAt: -1 });
   await db.collection('accountVerificationTokens').createIndex({ expiresAt: 1 }, { name: 'account_verification_expiry', expireAfterSeconds: 0 });
