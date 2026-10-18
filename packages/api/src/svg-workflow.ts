@@ -1,9 +1,10 @@
 import {VISUAL_ADJUDICATION_REQUIREMENTS,validateVisualAdjudications,type VisualIssue} from './review-adjudication.js'
 import {NUMERIC_REVIEW_REQUIREMENTS,validateNumericReview} from './numeric-review.js'
-import { workflowContext } from './workflow-prompts.js'
+import { CONCISE_WORKFLOW_OUTPUT, workflowContext } from './workflow-prompts.js'
 
 export function svgObservationPrompt() {
   return [
+    CONCISE_WORKFLOW_OUTPUT,
     'You are the visual observer assisting 图研. Inspect only the attached raster of the identified current SVG version against the complete task context.',
     'Check missing content, text readability, overlap, clipping, layout, arrows/connections, colors and scientific meaning. Describe actual arrow endpoints and any unexplained gap from the intended target, duplicate/overprinted text, and subscript fidelity. Report problems with the exact keys issue, location, evidence and suggestion. Do not invent unreadable text or missing reference requirements when no reference image is present.',
     'Return ONLY a JSON object with exactly this schema: {"content":"nonempty visible-content summary string","actual_text":["verbatim readable labels"],"layout":"nonempty layout summary string","connections":["observed source, direction and target"],"problems":[{"issue":"problem","location":"specific region","evidence":"visible evidence","suggestion":"proposed correction"}],"suggestions":["optional suggestions"],"uncertainties":["uncertain observations"]}. content and layout MUST be strings, NOT objects. actual_text, connections, problems, suggestions and uncertainties MUST be arrays. Use evidence and suggestion, never visible_evidence or suggested_correction. Empty arrays mean none observed. No Markdown fences. You provide observations and suggestions only; the main model makes all final decisions and the complete revision plan.',
@@ -23,6 +24,7 @@ export function parseSvgObservation(raw:string) {
 
 export function svgDecisionPrompt(requireNumericReview=false) {
   return [
+    CONCISE_WORKFLOW_OUTPUT,
     'You are the main model responsible for 图研 SVG visual AND code review, AFTER generation.',
     'Inspect the identified current SVG using its full source and either its actual attached raster or the auxiliary visual report. A plan alone is not evidence that a delivered diagram passed.',
     'Visual checks: content omissions, text readability, overlaps, clipping, layout, connections, colors and scientific meaning. Code checks: XML/structure validity, coordinates and canvas bounds, element/text completeness, connection relationships, grouping and forbidden content.',

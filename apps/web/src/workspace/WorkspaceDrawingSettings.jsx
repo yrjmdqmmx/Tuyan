@@ -1,6 +1,7 @@
 import FigureReferencePreferences from '../components/FigureReferencePreferences.jsx';
 import WorkspaceRefineControls from './WorkspaceRefineControls.jsx';
 import WorkspaceReferences from './WorkspaceReferences.jsx';
+import {workspaceImageResolution} from './workspaceImageSize.js';
 import {buildAspectRatioOptions,CANONICAL_ASPECT_RATIOS} from '../lib/aspectRatios.js';
 import RatioCanvas from './RatioCanvas.jsx';
 import FigureTypePicker from '../components/FigureTypePicker.jsx';
@@ -15,7 +16,7 @@ export default function WorkspaceDrawingSettings({ draft, path, editing, models,
   const entry = models.library?.models.find(m => m.id === image?.libraryModelId);
   const model = entry ? modelOption(entry, models.library, models.registry, 'image', path, editing, models.summary?.tokenDance).model : models.registry?.providers?.[image?.accessProvider]?.models.find(m => m.id === image?.modelId);
   const resolutions = editing ? model?.capabilities?.refineResolutions : model?.capabilities?.resolutions;
-  const ratioOptions=path==='svg'?['auto',...CANONICAL_ASPECT_RATIOS]:model?buildAspectRatioOptions({capabilities:model.capabilities,capabilityField:editing?'refineAspectRatios':'aspectRatios',resolution:settings.imageSize||'auto'}).map(o=>o.value):['auto','16:9','4:3','1:1','3:4'];
+  const ratioOptions=path==='svg'?['auto',...CANONICAL_ASPECT_RATIOS]:model?buildAspectRatioOptions({capabilities:model.capabilities,capabilityField:editing?'refineAspectRatios':'aspectRatios',resolution:workspaceImageResolution(model.capabilities,settings.imageSize,editing)}).map(o=>o.value):['auto','16:9','4:3','1:1','3:4'];
   const update = (key, value) => onChange({ ...settings, [key]: value });
   return <>
     <section className="tw-settings-section"><h3>内容与规范</h3>

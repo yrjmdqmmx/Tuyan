@@ -1,10 +1,11 @@
 import {VISUAL_ADJUDICATION_REQUIREMENTS,validateVisualAdjudications,type VisualIssue} from './review-adjudication.js'
 import {NUMERIC_REVIEW_REQUIREMENTS,validateNumericReview} from './numeric-review.js'
 import {validateRefineReviewChecks,refineReviewRequirements} from './refine-review.js'
-import { workflowContext, referenceRegenerationPrompt } from './workflow-prompts.js'
+import { CONCISE_WORKFLOW_OUTPUT, workflowContext, referenceRegenerationPrompt } from './workflow-prompts.js'
 
 export function pngObservationPrompt() {
   return [
+    CONCISE_WORKFLOW_OUTPUT,
     'You are the visual observer assisting 图研. Inspect the attached current PNG using the complete task context.',
     'Check scientific content, verbatim labels/formulas, readability, overlap, clipping, layout, arrows, colors and omissions. Apply reference-dependent requirements only when actual references are supplied.',
     'Return ONLY JSON: {"content":"visible-content summary string","actual_text":["readable labels"],"layout":"layout summary string","connections":["source, direction, target"],"problems":[{"issue":"problem","location":"region","evidence":"visible evidence","suggestion":"correction"}],"suggestions":["suggestion"],"uncertainties":["uncertain observation"]}. content and layout are nonempty strings; the remaining fields are arrays. Never invent unreadable text. Observations are evidence; the main model owns all decisions.',
@@ -25,6 +26,7 @@ export function parsePngObservation(raw:string) {
 }
 export function pngDecisionPrompt(requireNumericReview=false) {
   return [
+    CONCISE_WORKFLOW_OUTPUT,
     'You are the main model responsible for 图研 PNG visual review AFTER generation. Decide whether the current candidate needs modification using its actual image or auxiliary visual report, original method, caption, complete plan and constraints.',
     'Inspect content, labels/formulas, readability, overlap, clipping, layout, arrow endpoints/directions, color and scientific meaning. Reference-dependent requirements apply only when references are actually supplied. Auxiliary observations are evidence, not final decisions. Explicitly resolve reported issues and uncertainty; do not simply accept an observer verdict.',
     VISUAL_ADJUDICATION_REQUIREMENTS,

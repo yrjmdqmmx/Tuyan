@@ -3,6 +3,9 @@ import {numericReviewContract} from './numeric-review.js'
 import {figureContract} from '../../figure-taxonomy/src/index.js'
 export const SVG_RENDERING_CONSTRAINTS = 'The final SVG uses a strict static renderer: use static vector geometry and ordinary arrows; supported linear/radial gradients are allowed, including gradients observed in source materials. Do not infer that static geometry requires solid fills. Do not propose or emit shadows, filter/feDropShadow, mask, pattern, clipPath, any overall opacity attribute/style (including on individual leaf shapes), blending, embedded images, HTML or external assets, including unused definitions. For leaf shapes use fill-opacity/stroke-opacity if transparency is needed; never emit opacity. These constraints override any incompatible styling in plans or references. Use Noto Sans CJK SC / Noto Sans / Noto Sans Math with regular weight and normal style; preserve the required labels and relationships.'
 
+// Bound prose to figure complexity, never truncate required data or review evidence.
+export const CONCISE_WORKFLOW_OUTPUT = 'Keep output proportional to the requested figure. For a simple schematic, aim for at most 600 words excluding exact labels, source values and required schema fields; expand only when needed to preserve evidence or complex content. State each constraint once. Use short actionable descriptions, not essays, repeated task context, hypothetical alternatives or extra decorative content. Keep every required fact, numeric check, issue and uncertainty. Preserve user-specified labels and punctuation verbatim, including final periods. Return only the requested output schema or artifact.'
+
 /** Every observer and decision maker receives this same bounded task context. */
 export function workflowContext(body: Record<string, any>, description = '', extra: Record<string, any> = {}) {
   const original = body.generationContext || body
@@ -35,6 +38,7 @@ export function workflowContext(body: Record<string, any>, description = '', ext
 export function observerSystemPrompt() {
   return [
     'You are the visual observer assisting the main model.',
+    CONCISE_WORKFLOW_OUTPUT,
     'Inspect the attached image(s) using the complete task context. Report visible content, verbatim readable text, layout, arrows/connections, discrepancies and suggested corrections.',
     'Separate observations from uncertainty. Do not invent unreadable labels or unseen content.',
     'Your output is an observation report, NOT a final generation plan, revision decision or replacement prompt. The main model owns those decisions.',
@@ -46,6 +50,7 @@ export function observerSystemPrompt() {
 export function mainDecisionSystemPrompt(kind: 'review' | 'refine') {
   const common = [
     'You are the main model responsible for the scientific diagram and all final planning decisions.',
+    CONCISE_WORKFLOW_OUTPUT,
     'Use the original request, complete current plan, constraints and visual evidence. An auxiliary observation report is evidence, not an authoritative decision or a ready-to-use generation prompt.',
     'Preserve scientific content and explicitly resolve discrepancies. Output a complete self-contained executable plan, never a patch that requires the image model to reconstruct missing instructions.',
   ]

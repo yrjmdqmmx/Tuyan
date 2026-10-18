@@ -59,6 +59,19 @@ export async function saveSvgDraft(draft) {
   const journal=readJournal(draft.key);
   if(journal?.writer===draft.writer && journal.revision<=draft.revision)try{window.localStorage.removeItem(JOURNAL+draft.key);}catch{/* recovery copy is safe */}
 }
+// Only retire the exact draft just committed to the account. A concurrent tab's
+// newer work must survive, including its recovery journal.
+export async function retireSvgDraft(key, saved) {
+  const matches = draft => draft?.writer === saved.writer && draft.revision === saved.revision && draft.svg === saved.svg;
+  const db = await openDatabase();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction('drafts','readwrite'),store=tx.objectStore('drafts'),request=store.get(key);
+    request.onsuccess=()=>{if(matches(request.result))store.delete(key);};
+    tx.oncomplete=()=>{db.close();resolve();};
+    tx.onabort=tx.onerror=()=>{db.close();reject(tx.error);};
+  });
+  if(matches(readJournal(key)))try{window.localStorage.removeItem(JOURNAL+key);}catch{/* keep recoverable work */}
+}
 export function downloadSvg(svg,filename) {
   const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
   const link=document.createElement('a');link.href=url;link.download=filename;link.click();

@@ -189,3 +189,12 @@ test('model configuration hides unavailable thinking sections for all three role
   cleanup();
  }
 });
+
+test('ordinary connection preset retains full review but avoids a duplicate visual model',()=>{
+ const configured=structuredClone(models);configured.registry.providers.tokendance.defaults={main:'qwen-fixture',image:'draw-fixture',vision:'qwen-fixture'};
+ const draft=currentDraft(newWorkspace('preset'));let changed;
+ render(React.createElement(WorkspaceModelConfig,{draft,path:'png',models:configured,onChange:value=>changed=value}));
+ fireEvent.change(screen.getByRole('combobox',{name:'普通预设'}),{target:{value:'one'}});
+ fireEvent.click(screen.getByRole('button',{name:'应用此连接的默认组合'}));
+ assert.equal(changed.models.main.modelId,'qwen-fixture');assert.equal(changed.models.image.modelId,'draw-fixture');assert.equal(changed.models.vision,undefined);assert.equal(changed.reviews,1);
+});

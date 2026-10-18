@@ -7,7 +7,7 @@ import TaskWorkspace from '../src/workspace/TaskWorkspace.jsx';
 import WorkspaceSvgEditor from '../src/workspace/WorkspaceSvgEditor.jsx';
 import {newWorkspace,workspaceReducer,currentTask,selectedVersion} from '../src/workspace/workspaceState.js';
 import {parseSvg} from '../src/lib/svgDocument.js';
-import {readSvgDraft,svgDraftKey} from '../src/lib/svgDrafts.js';
+import {readSvgDraft,saveSvgDraft,retireSvgDraft,journalDraft,svgDraftKey} from '../src/lib/svgDrafts.js';
 window.indexedDB=indexedDB;
 window.matchMedia=query=>({matches:false,media:query,addEventListener(){},removeEventListener(){}});
 const fetchOriginal=globalThis.fetch;
@@ -26,8 +26,8 @@ async function recolor(value){
  fireEvent.keyDown(screen.getByLabelText('SVG 直接编辑画布'),{key:'Escape'});
 }
 test('editing stays inside the result canvas, restores local draft, and saves an immutable child without changing the prompt',async()=>{
- let latest;const saved=[];
- function Harness(){const [state,dispatch]=useReducer(workspaceReducer,initial('inline'));latest=state;return React.createElement(TaskWorkspace,{state,dispatch,renderSvgEditor:version=>React.createElement(WorkspaceSvgEditor,{key:version?.id || 'blank',version,taskId:currentTask(state).id,userId:'owner',base:'https://inline.test',dataProtected:false,onSave:async(svg,ids)=>{saved.push(svg);dispatch({type:'SAVE_SVG',taskId:'inline',parentId:version.id,...ids,url:'data:image/svg+xml,'+encodeURIComponent(svg)});}})});}
+ let latest,send;const saved=[];
+ function Harness(){const [state,dispatch]=useReducer(workspaceReducer,initial('inline'));latest=state;send=dispatch;return React.createElement(TaskWorkspace,{state,dispatch,renderSvgEditor:version=>React.createElement(WorkspaceSvgEditor,{key:version?.id || 'blank',version,taskId:currentTask(state).id,userId:'owner',base:'https://inline.test',dataProtected:false,onSave:async(svg,ids)=>{saved.push(svg);dispatch({type:'SAVE_SVG',taskId:'inline',parentId:version.id,...ids,url:'data:image/svg+xml,'+encodeURIComponent(svg)});}})});}
  const {container}=render(React.createElement(Harness));const original=structuredClone(selectedVersion(latest));
  await screen.findByLabelText('SVG 直接编辑画布');
  assert.equal(screen.queryByRole('button',{name:'手工编辑',exact:true}),null);
@@ -37,6 +37,8 @@ test('editing stays inside the result canvas, restores local draft, and saves an
  await waitFor(async()=>assert.equal(parseSvg((await readSvgDraft(svgDraftKey('https://inline.test','owner','inline','v1'))).svg).root.querySelector('#box').getAttribute('fill'),'#f00'));
  click('图像创作');assert.equal(screen.queryByLabelText('SVG 直接编辑画布'),null);
  click('矢量绘图');await screen.findByLabelText('SVG 直接编辑画布');
+ await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'url(#g)'));
+ click('恢复编辑草稿');
  await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'#f00'));
  assert.equal(screen.getByLabelText('绘图要求').value,'保留下一次要求');assert.equal(selectedVersion(latest).id,'v1');
  click('保存为新版本');await waitFor(()=>assert.equal(selectedVersion(latest).number,2));
@@ -45,13 +47,18 @@ test('editing stays inside the result canvas, restores local draft, and saves an
  assert.equal(saved.length,1);assert.equal(parseSvg(saved[0]).root.querySelector('#box').getAttribute('fill'),'#f00');assert.ok(parseSvg(saved[0]).root.querySelector('linearGradient'));
  const versions=currentTask(latest).branches.svg.groups[0].candidates[0].versions;
  assert.equal(versions.length,2);assert.equal(versions[0].url,original.url);assert.equal(versions[1].parentId,'v1');assert.equal(versions[1].review,'修改后未复审');assert.equal(screen.getByLabelText('绘图要求').value,'保留下一次要求');
+ await waitFor(async()=>assert.equal(await readSvgDraft(svgDraftKey('https://inline.test','owner','inline','v1')),null));
+ // Select the original through the reducer; the editor must load immutable v1.
+ await (await import('@testing-library/react')).act(async()=>send({type:'VIEW',path:'svg',versionId:'v1'}));
+ await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'url(#g)'));
+
 });
 test('failed save keeps inline draft and retries with the same version identity',async()=>{
  const calls=[];
  render(React.createElement(WorkspaceSvgEditor,{version:{id:'retry',url:'data:image/svg+xml,'+encodeURIComponent(source),candidateLabel:'A',number:1},taskId:'retry-task',base:'https://inline.test',userId:'owner',dataProtected:false,onSave:async(svg,ids)=>{calls.push(ids);if(calls.length===1)throw Error('本机保存失败');}}));
  await screen.findByLabelText('SVG 直接编辑画布');await recolor('#00f');click('保存为新版本');await screen.findByText('本机保存失败');
  assert.ok(screen.getByLabelText('SVG 直接编辑画布'));
- click('保存为新版本');await waitFor(()=>assert.equal(screen.getByRole('button',{name:'保存为新版本'}).disabled,true));assert.deepEqual(calls[0],calls[1]);
+ click('保存为新版本');await waitFor(()=>assert.equal(calls.length,2));await waitFor(()=>assert.equal(screen.queryByText('正在编辑本地草稿 · 原版本未改动'),null));assert.deepEqual(calls[0],calls[1]);
 });
 test('source load failure can be retried without leaving the result pane',async()=>{
  let calls=0;globalThis.fetch=async()=>++calls===1?new Response('',{status:503}):new Response(source);
@@ -85,4 +92,13 @@ test('shape menu glyphs match their tool and properties live beside the canvas',
  click('图层 / 对象');click('对象：矩形 · box');
  const panel=screen.getByRole('toolbar',{name:'选中对象属性'});assert.ok(panel.closest('.svg-editing-area'));assert.ok(panel.classList.contains('is-side'));
  fireEvent.keyDown(screen.getByLabelText('SVG 直接编辑画布'),{key:'Escape'});
+});
+
+test('retiring a committed draft never deletes a newer concurrent tab draft or journal',async()=>{
+ const key=svgDraftKey('https://inline.test','owner','cas','v1');
+ const committed={key,writer:'old',revision:1,baseRevision:0,svg:source};
+ await saveSvgDraft(committed);
+ const newer={...committed,writer:'new',baseRevision:1,revision:2,svg:source.replace('原始图示','new work')};
+ await saveSvgDraft(newer);journalDraft({...newer,revision:3});
+ await retireSvgDraft(key,committed);assert.equal((await readSvgDraft(key)).revision,3);
 });

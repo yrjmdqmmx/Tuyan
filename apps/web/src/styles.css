@@ -5884,3 +5884,18 @@ html[lang="en"] .brand h1 { font-size: clamp(21px, 2.2vw, 30px); }
 
 .icp-footer { padding: 18px 12px; text-align: center; font-size: 12px; color: #58675d; }
 .icp-footer a { color: inherit; }
+
+/* Shared folded stage records, including the legacy results entry. */
+.stage-timeline-folded .stage-item {display:block;border:1px solid var(--hairline);border-radius:10px;padding:10px 12px;}
+.stage-timeline-folded .stage-item > summary {display:flex;align-items:center;gap:9px;cursor:pointer;list-style:none;}
+.stage-timeline-folded .stage-item > summary::before {content:'›';color:var(--muted);}
+.stage-timeline-folded .stage-item[open] > summary::before {transform:rotate(90deg);}
+.stage-timeline-folded .stage-meta {margin-left:auto;color:var(--muted);font-size:12px;flex-wrap:wrap;}
+.stage-timeline-folded .stage-body {border:0;background:transparent;padding:12px 0 0;}
+.stage-timeline-folded .stage-text {white-space:pre-wrap;overflow-wrap:anywhere;}
+.stage-timeline-folded .stage-fields {display:grid;gap:10px;margin:0;}
+.stage-timeline-folded .stage-fields > div {display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;}
+.stage-timeline-folded dt {color:var(--muted);font-size:12px;}
+.stage-timeline-folded dd {margin:0;min-width:0;font-size:13px;line-height:1.7;}
+.stage-timeline-folded .stage-raw pre {max-height:300px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;}
+@media(max-width:600px){.stage-timeline-folded .stage-item > summary{flex-wrap:wrap;}.stage-timeline-folded .stage-meta{width:100%;margin-left:30px;}}

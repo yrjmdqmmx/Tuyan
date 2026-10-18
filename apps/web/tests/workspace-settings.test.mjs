@@ -15,3 +15,10 @@ test('ratio background represents landscape, square and portrait selections',()=
  rerender(React.createElement(RatioCanvas,{ratio:'1:1'}));assert.equal(parseFloat(container.querySelector('.tw-ratio-paper').style.aspectRatio),1);
  rerender(React.createElement(RatioCanvas,{ratio:'3:4'}));assert.equal(parseFloat(container.querySelector('.tw-ratio-paper').style.aspectRatio),0.75);
 });
+
+test('ordinary default resolution keeps supported aspect ratios selectable',()=>{
+ const draft=newDraft();draft.settings.simple.models={image:{accessProvider:'tokendance',modelId:'seedream-fixture'}};
+ const models={registry:{providers:{tokendance:{models:[{id:'seedream-fixture',capabilities:{resolutions:['2K','4K'],aspectRatiosByResolution:{'2K':['1:1','16:9'],'4K':['1:1']}}}]}}}};
+ render(React.createElement(WorkspaceDrawingSettings,{draft,path:'png',models,onChange(){}}));
+ assert.equal(screen.getByRole('option',{name:'16:9'}).disabled,false);assert.equal(screen.getByRole('option',{name:'自动'}).disabled,false);
+});

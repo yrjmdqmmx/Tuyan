@@ -1,3 +1,4 @@
+import {workspaceImageResolution} from './workspaceImageSize.js';
 import {workspaceThinkingSubmission} from './workspaceThinking.js';
 import {workspaceVersionDataUrl} from './workspaceResultAsset.js';
 import { createJobRequest, refineImageRequest, getJobRequest, materialFileRequest, uploadMaterialFileRequest, prepareReferenceUploadRequest, finalizeReferenceUploadRequest, abortReferenceUploadRequest } from '@paperbanana/api';
@@ -23,7 +24,7 @@ export function workspaceExecutionIssue(health,request) {
 export function buildWorkspaceRequest({task,run,models}) {
   const input=run.input,s=input.settings[input.mode],target=locateVersion(task,run.parentId),source=input.attachments.find(a=>a.purpose==='source');
   const sourceSettings=target?task.runs.find(r=>r.id===target.runId)?.input:null;
-  const pngEdit=run.path==='png'&&Boolean(target||source), settings={action:pngEdit?'refineImage':'createJob',generationPath:'model-v1',outputFormat:run.path,taskName:getFigureType(s.figureTypeId)?.kind==='data'?'plot':'diagram',visionMode:s.models?.vision?'assist':'none',pipelineMode:s.pipelineMode||'full',retrievalSetting:s.retrievalSetting||'auto',manualReferenceIds:s.manualReferenceIds||[],maxCriticRounds:s.reviews,numCandidates:(run.parentId||source)?1:s.candidates,figureTypeId:s.figureTypeId,aspectRatio:s.ratio,imageSize:s.imageSize||'auto',journalSelection:s.journalSelection||null};
+  const pngEdit=run.path==='png'&&Boolean(target||source), settings={action:pngEdit?'refineImage':'createJob',generationPath:'model-v1',outputFormat:run.path,taskName:getFigureType(s.figureTypeId)?.kind==='data'?'plot':'diagram',visionMode:s.models?.vision?'assist':'none',pipelineMode:s.pipelineMode||'full',retrievalSetting:s.retrievalSetting||'auto',manualReferenceIds:s.manualReferenceIds||[],maxCriticRounds:s.reviews,numCandidates:(run.parentId||source)?1:s.candidates,figureTypeId:s.figureTypeId,aspectRatio:s.ratio,...(s.imageSize?{imageSize:s.imageSize}:{}),journalSelection:s.journalSelection||null};
   if(pngEdit)Object.assign(settings,{maxCriticRounds:0,numCandidates:1,retrievalSetting:'none'});
   if(!pngEdit&&s.retrievalSetting==='manual'&&!s.manualReferenceIds?.length)throw Error('手动参考模式至少选择一个案例。');
   if(!pngEdit&&s.reviews<1)throw Error('现有 PNG／SVG 生成流程至少需要一轮成图评审，请在绘图设置调整。');
@@ -33,6 +34,14 @@ export function buildWorkspaceRequest({task,run,models}) {
   if(source&&run.path==='svg'&&source.format!=='svg')throw Error('矢量路径修改原件需要 SVG；不会自动把位图转换成 SVG。');
   if(source&&run.path==='png'&&!['png','jpg','jpeg','webp'].includes(source.format))throw Error('图像路径的待修改原图需要 PNG、JPEG 或 WebP。');
 
+  // Older ordinary presets saved the same connection/model twice. Reuse a
+  // confirmed multimodal main model; an explicit advanced assistant is retained.
+  const mainRef=s.models?.main,visionRef=s.models?.vision;
+  if(input.mode==='simple' && mainRef && visionRef && mainRef.connectionId===visionRef.connectionId && mainRef.modelId===visionRef.modelId){
+    const entry=models.library.models.find(m=>m.id===mainRef.libraryModelId);
+    const option=entry&&modelOption(entry,models.library,models.registry,'vision',run.path,pngEdit,models.summary?.tokenDance);
+    if(option&&!option.reason && workflowModelVisionStatus(option.model)==='supported')settings.visionMode='none';
+  }
   const roles=workflowRequiredRoles(settings),routes={},entries={},refs={},regions={};
   for(const role of roles){const ref=s.models?.[role],entry=models.library.models.find(m=>m.id===ref?.libraryModelId);if(!entry)throw Error(`请先配置${role==='main'?'主模型':role==='image'?'绘图模型':'视觉理解'}。`);const option=modelOption(entry,models.library,models.registry,role,run.path,pngEdit,models.summary?.tokenDance);if(option.reason)throw Error(option.reason);if(ref.connectionId!==entry.connectionId||ref.modelId!==entry.modelId)throw Error('已选型号发生变化，请重新选择。');const c=option.connection;routes[role]=c.provider==='custom'?normalizeUniversalRoute({accessProvider:'custom',modelId:entry.modelId,custom:{...entry.custom,...c.custom}}):{accessProvider:c.provider,modelId:entry.modelId};entries[role]=option.model;refs[role]=ref;if(c.provider==='minimax')regions.minimax=c.region;}
   if(pngEdit){
@@ -40,7 +49,7 @@ export function buildWorkspaceRequest({task,run,models}) {
     if(references.some(a=>!a.referencePurpose))throw Error('请明确每张辅助参考图用于内容、布局、配色还是风格。');
     const controls=entries.image?.capabilities?.refineControls||refineControlsFor(routes.image.accessProvider,routes.image.modelId);
     if(s.refineMask&&s.refineMask.sourceId!==(target?.id||source?.id))throw Error('遮罩属于另一张原图，请清除或重新绘制。');
-    const issue=refineInputIssue(controls,{version:1,...(s.refineMask?{mask:{objectKey:'pending-mask'}}:{}),...(s.refineStructured?{structured:s.refineStructured}:{}),references:references.map(a=>({objectKey:a.id,purpose:a.referencePurpose}))},settings.aspectRatio,settings.imageSize);
+    const issue=refineInputIssue(controls,{version:1,...(s.refineMask?{mask:{objectKey:'pending-mask'}}:{}),...(s.refineStructured?{structured:s.refineStructured}:{}),references:references.map(a=>({objectKey:a.id,purpose:a.referencePurpose}))},settings.aspectRatio,workspaceImageResolution(entries.image?.capabilities,settings.imageSize,true));
     if(issue)throw Error(issue);
   }
   const visionIssue=workflowVisionError(settings,workflowModelVisionStatus(entries.main),workflowModelVisionStatus(entries.vision));if(visionIssue)throw Error(visionIssue);

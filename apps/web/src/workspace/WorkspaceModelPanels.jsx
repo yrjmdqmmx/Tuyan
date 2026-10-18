@@ -88,6 +88,9 @@ export function WorkspaceModelConfig({ models, draft, path, editing, onChange, o
       const option = entry && modelOption(entry, library, registry, role, path, editing, summary?.tokenDance);
       if (option && !option.reason) next[role] = selectedModelReference(option);
     }
+    // A multimodal main model can inspect the actual image in the planning and
+    // review call itself. Do not default to a second pass through the same model.
+    if (next.main && next.vision?.libraryModelId === next.main.libraryModelId) delete next.vision;
     onChange({ ...settings, models: next, presetConnectionId: c.id });
   }
   return <div className="tw-model-config">{models.error && <p role="alert">{models.error}</p>}

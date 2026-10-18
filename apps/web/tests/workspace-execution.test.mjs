@@ -101,3 +101,17 @@ test('production execution uses exact catalog validation without local TokenDanc
   assert.equal(workspaceExecutionIssue({workspaceExecutionContractVersion:1, executionMode:'production', executionEnabled:true}, request), '');
   assert.match(workspaceExecutionIssue({workspaceExecutionContractVersion:1, executionMode:'production', executionEnabled:false}, request), /未明确开放/);
 });
+
+test('ordinary PNG omits default resolution but preserves an explicit native tier',()=>{
+ const state=setup(),task=state.tasks[0],run=task.runs[0];
+ const defaultRequest=buildWorkspaceRequest({task,run,models});
+ assert.equal(Object.hasOwn(defaultRequest,'imageSize'),false);
+ assert.equal(defaultRequest.pipelineMode,'full');assert.equal(defaultRequest.maxCriticRounds,1);
+ for(const imageSize of ['2K','auto']){run.input.settings.simple.imageSize=imageSize;assert.equal(buildWorkspaceRequest({task,run,models}).imageSize,imageSize);}
+});
+test('ordinary duplicate visual preset reuses capable main; advanced assistant stays explicit',()=>{
+ const state=setup(),task=state.tasks[0],run=task.runs[0];run.input.settings.simple.models.vision=ref('main','text');
+ const request=buildWorkspaceRequest({task,run,models});assert.equal(request.visionMode,'none');assert.deepEqual(Object.keys(request.modelRoutes),['main','image']);
+ run.input.mode='advanced';run.input.settings.advanced=structuredClone(run.input.settings.simple);
+ const advanced=buildWorkspaceRequest({task,run,models});assert.equal(advanced.visionMode,'assist');assert.ok(advanced.modelRoutes.vision);
+});
