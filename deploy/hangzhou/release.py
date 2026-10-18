@@ -21,6 +21,18 @@ SERVICES = {
 OSS_KEYS = {'PAPERBANANA_BUCKET', 'OSS_REGION', 'OSS_INTERNAL_ENDPOINT', 'OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_OSS_SERVER_ENDPOINT_MODE',
  'PAPERBANANA_BENCH_OSS_BUCKET', 'PAPERBANANA_BENCH_OSS_REGION', 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT', 'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE'}
 
+def pending_upload_filter(cutoff):
+    # Upload receipts are retained for account cleanup after their signed URLs
+    # expire. Only live preparations block a release; unknown states/deadlines
+    # remain conservative blockers. Allow five minutes for an in-flight PUT.
+    return {'$or': [
+        {'status': {'$nin': ['prepared', 'finalized', 'aborted']}},
+        {'status': 'prepared', '$or': [
+            {'expiresAt': {'$gt': cutoff}},
+            {'expiresAt': {'$not': {'$type': 'date'}}},
+        ]},
+    ]}
+
 def run(args):
     p = subprocess.run(args, capture_output=True, text=True)
     if p.returncode: raise RuntimeError('command failed: ' + args[0])  # Never echo credential-bearing output.
@@ -123,7 +135,8 @@ def main(m, apply=False, keep=False):
             os.write(fd,m['id'].encode());os.close(fd);os.chown(MARKER,0,1000)
         changed=False
         try:
-            query="const fs=require('fs');const m=new Mongo('mongodb://paperbanana_root:'+encodeURIComponent(fs.readFileSync('/run/secrets/mongo_root_password','utf8').trim())+'@127.0.0.1:27017/admin?replicaSet=rs0');const d=m.getDB('paperbanana_business');if(d.paperbanana_jobs.countDocuments({status:{$in:['queued','running','processing']}})||d.paperbanana_reference_upload_state.countDocuments({}))quit(3);print('idle');"
+            upload_filter=json.dumps(pending_upload_filter('__CUTOFF__')).replace('"__CUTOFF__"','new Date(Date.now()-5*60*1000)')
+            query="const fs=require('fs');const m=new Mongo('mongodb://paperbanana_root:'+encodeURIComponent(fs.readFileSync('/run/secrets/mongo_root_password','utf8').trim())+'@127.0.0.1:27017/admin?replicaSet=rs0');const d=m.getDB('paperbanana_business');if(d.paperbanana_jobs.countDocuments({status:{$in:['queued','running','processing']}})||d.paperbanana_reference_upload_state.countDocuments("+upload_filter+"))quit(3);print('idle');"
             run(['docker','exec','paperbanana-hk-mongodb-1','mongosh','--quiet','--nodb','--eval',query])
             for p in files:
                 if digest(p) != before_hashes[str(p)]: raise ValueError('configuration changed during preflight')

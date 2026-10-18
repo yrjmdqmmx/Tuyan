@@ -19,8 +19,9 @@ export default function StageTimeline({job,apiBase}){
     {stages.length>0&&<><h4 className="stage-title">生成过程</h4><div className="stage-list">{stages.map((stage,index)=>{
       const parsed=parse(stage.text),details=parsed?.decision||parsed,hasFields=details&&typeof details==='object'&&Object.keys(details).some(k=>labels[k]);
       const candidate=Number(stage.candidateId??stage.candidate_id??0);
+      const durationMs=stage.duration_ms??stage.durationMs??0;
       return <details className={`stage-item ${stage.error?'has-error':''}`} key={stage.id||`${stage.type}-${index}`}>
-        <summary><span className="stage-marker">{stage.type==='render'?<ImageIcon size={15}/>:stage.type==='critic'?<MessageSquareText size={15}/>:<CheckCircle2 size={15}/>}</span><strong>{stage.title||stage.type}</strong><span className="stage-meta">候选 {String.fromCharCode(65+candidate)}{stage.round?` · 第 ${stage.round} 轮`:''}{stage.durationMs>0&&` · ${elapsedLabel(stage.durationMs)}`}</span></summary>
+        <summary><span className="stage-marker">{stage.type==='render'?<ImageIcon size={15}/>:stage.type==='critic'?<MessageSquareText size={15}/>:<CheckCircle2 size={15}/>}</span><strong>{stage.title||stage.type}</strong><span className="stage-meta">候选 {String.fromCharCode(65+candidate)}{stage.round?` · 第 ${stage.round} 轮`:''}{durationMs>0&&` · ${elapsedLabel(durationMs)}`}</span></summary>
         <div className="stage-body">{stage.error&&<p role="alert">{stage.error}</p>}
           {hasFields?<Fields value={details}/>:!parsed&&stage.text?<p className="stage-text">{stage.text}</p>:null}
           {stage.image?.url&&<img src={resolveImageUrl(apiBase,stage.image.url)} alt={stage.title||'阶段图'} loading="lazy"/>}
