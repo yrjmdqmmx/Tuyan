@@ -26,7 +26,7 @@ test('selection sends zero requests, ten mixed files persist across remount; upl
   if(b.action==='finalizeMaterialUpload'){const s=pending.get(b.materialId);return Response.json({code:0,file:{id:s.id,clientFileId:s.id,filename:s.filename,sha256:s.sha256,status:'uploaded'}});}
   return Response.json({code:0});};
  const config={apiBase:'https://fixture.invalid',health:{runtime:'gateway'},ownerId:'alice',version:2,kind:'generate'};
- hook=renderHook(()=>useTaskMaterials(config));await act(async()=>{await new Promise(r=>setTimeout(r,10))});
+ hook=renderHook(()=>useTaskMaterials(config));await waitFor(()=>assert.equal(hook.result.current.busy,false));
  const files=Array.from({length:10},(_,i)=>new File(['value,'+i],i%2?`file${i}.png`:`file${i}.csv`,{type:i%2?'image/png':'text/csv'}));
  await act(()=>hook.result.current.panel.onAddFiles(files));assert.equal(hook.result.current.materials.length,10);assert.equal(calls,0);
  await act(()=>hook.result.current.panel.onAddFiles([files[0]]));assert.match(hook.result.current.error,/10 份/);assert.equal(calls,0);
@@ -38,7 +38,7 @@ test('selection sends zero requests, ten mixed files persist across remount; upl
 });
 test('storage unavailable or quota failure blocks server upload and preserves an existing replacement',async()=>{
  globalThis.indexedDB=new IDBFactory();let calls=0;globalThis.fetch=async()=>{calls++;throw Error('must not request')};
- const hook=renderHook(()=>useTaskMaterials({apiBase:'https://fixture.invalid',health:{runtime:'gateway'},ownerId:'a',version:2,kind:'refine'}));await act(async()=>{await new Promise(r=>setTimeout(r,10))});
+ const hook=renderHook(()=>useTaskMaterials({apiBase:'https://fixture.invalid',health:{runtime:'gateway'},ownerId:'a',version:2,kind:'refine'}));await waitFor(()=>assert.equal(hook.result.current.busy,false));
  await act(()=>hook.result.current.panel.onAddFiles([new File(['35'],'a.csv')]));const id=hook.result.current.materials[0].id;
  const idb=globalThis.indexedDB;globalThis.indexedDB=undefined;
  await act(()=>hook.result.current.panel.onReplaceMaterial(id,new File(['12'],'b.csv')));assert.equal(hook.result.current.materials[0].filename,'a.csv');assert.match(hook.result.current.error,/尚未上传/);assert.equal(calls,0);
