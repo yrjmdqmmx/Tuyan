@@ -24,7 +24,7 @@ async function withMockRouting(
   run: (context: {
     direct: MockAgent
     proxy: MockAgent
-    create(): ReturnType<typeof createProviderEgress>
+    create(directHosts?: string[]): ReturnType<typeof createProviderEgress>
   }) => Promise<void>,
 ) {
   const previous = getGlobalDispatcher()
@@ -38,9 +38,9 @@ async function withMockRouting(
     await run({
       direct,
       proxy,
-      create() {
+      create(directHosts?: string[]) {
         const egress = createProviderEgress(
-          mode === 'sg-required' ? { mode, proxyUrl } : { mode },
+          mode === 'sg-required' ? { mode, proxyUrl, directHosts } : { mode, directHosts },
           {
             createProxyAgent: () => proxy,
             directDispatcher: direct,
@@ -303,5 +303,72 @@ test('closing provider egress closes its single proxy dispatcher exactly once', 
     await egress.close()
     await egress.close()
     assert.equal(closes, 1)
+  })
+})
+
+test('measured domestic routes preserve model bodies and credentials while overseas requests still use SG', async () => {
+  await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
+    const egress = create(['tokendance.space', 'ark.cn-beijing.volces.com'])
+    for (const origin of ['https://tokendance.space', 'https://ark.cn-beijing.volces.com', 'https://ark.cn-beijing.volces.com.']) {
+      let observed: any
+      direct.get(origin).intercept({ path: '/fixture', method: 'POST' }).reply(options => {
+        observed = options
+        return { statusCode: 200, data: 'DIRECT' }
+      })
+      assert.equal(await (await egress.fetch(origin + '/fixture', {
+        method: 'POST', headers: { authorization: 'Bearer fixture-only-key', 'content-type': 'application/json' },
+        body: JSON.stringify({ model: 'unchanged-model', stream: true, messages: [{ role: 'user', content: 'fixture' }] }),
+      })).text(), 'DIRECT')
+      assert.equal(observed.headers.authorization, 'Bearer fixture-only-key')
+      const chunks: Buffer[] = []
+      for await (const chunk of observed.body) chunks.push(Buffer.from(chunk))
+      const body = JSON.parse(Buffer.concat(chunks).toString())
+      assert.equal(body.model, 'unchanged-model')
+      assert.equal(body.stream, true)
+    }
+    for (const origin of ['https://openrouter.ai', 'https://api.openai.com', 'https://api.anthropic.com']) {
+      proxy.get(origin).intercept({ path: '/fixture' }).reply(200, 'SG')
+      assert.equal(await (await egress.fetch(origin + '/fixture')).text(), 'SG')
+    }
+    direct.assertNoPendingInterceptors()
+    proxy.assertNoPendingInterceptors()
+  })
+})
+
+test('domestic opt-in does not allow plaintext, custom ports, unapproved direct origins, or retry after direct failure', async () => {
+  await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
+    const egress = create(['tokendance.space', 'openrouter.ai'])
+    let proxyAttempts = 0
+    const dispatch = proxy.dispatch.bind(proxy)
+    proxy.dispatch = (...args) => { proxyAttempts += 1; return dispatch(...args) }
+    for (const origin of ['http://tokendance.space', 'https://tokendance.space:444', 'https://openrouter.ai']) {
+      proxy.get(origin).intercept({ path: '/fixture' }).reply(403, 'SG POLICY')
+      assert.equal((await egress.fetch(origin + '/fixture')).status, 403)
+    }
+    let attempts = 0
+    direct.get('https://tokendance.space').intercept({ path: '/failure' }).reply(() => {
+      attempts += 1
+      return { statusCode: 503, data: 'provider unavailable' }
+    })
+    assert.equal((await egress.fetch('https://tokendance.space/failure')).status, 503)
+    assert.equal(attempts, 1)
+    direct.get('https://tokendance.space').intercept({ path: '/network-failure' }).replyWithError(new Error('fixture direct failure'))
+    await assert.rejects(egress.fetch('https://tokendance.space/network-failure'))
+    assert.equal(proxyAttempts, 3)
+    proxy.assertNoPendingInterceptors()
+  })
+})
+
+test('domestic to overseas redirect applies SG policy and strips cross-origin credentials', async () => {
+  await withMockRouting('sg-required', async ({ direct, proxy, create }) => {
+    direct.get('https://tokendance.space').intercept({ path: '/redirect' }).reply(302, '', { headers: { location: 'https://openrouter.ai/fixture' } })
+    let received: any
+    proxy.get('https://openrouter.ai').intercept({ path: '/fixture' }).reply(options => {
+      received = options
+      return { statusCode: 200, data: 'SG' }
+    })
+    const egress = create(['tokendance.space'])
+    assert.equal(await (await egress.fetch('https://tokendance.space/redirect', { headers: { authorization: 'Bearer fixture-only-key' } })).text(), 'SG')
+    assert.equal(received.headers.authorization, undefined)
   })
 })

@@ -67,6 +67,14 @@ test('disabled provider egress does not require or expose a proxy URL', () => {
   assert.deepEqual(loadConfig(validEnv).providerEgress, { mode: 'disabled' })
 })
 
+test('direct provider routes are explicit, exact and limited to the two measured domestic origins', () => {
+  assert.deepEqual(loadConfig({ ...validEnv, PAPERBANANA_PROVIDER_DIRECT_HOSTS: 'tokendance.space,ark.cn-beijing.volces.com' }).providerEgress,
+    { mode: 'disabled', directHosts: ['tokendance.space', 'ark.cn-beijing.volces.com'] })
+  for (const hosts of ['', '*', 'openrouter.ai', 'tokendance.space.evil.example', 'https://tokendance.space', 'tokendance.space:443', 'tokendance.space,', 'tokendance.space,tokendance.space', ' tokendance.space']) {
+    assert.throws(() => loadConfig({ ...validEnv, PAPERBANANA_PROVIDER_DIRECT_HOSTS: hosts }), /PAPERBANANA_PROVIDER_DIRECT_HOSTS/)
+  }
+})
+
 test('business OSS supports an explicit cross-region public server endpoint without relaxing endpoint validation', () => {
   const original = loadConfig(validEnv).oss
   assert.equal(original.serverEndpointMode, 'internal')

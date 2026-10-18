@@ -19,9 +19,10 @@ export type ServiceConfig = {
   referenceImageMaxCount: number
   referenceImageMaxTotalBytes: number
   providerImageMaxBytes: number
-  providerEgress:
+  providerEgress: (
     | { mode: 'disabled' }
     | { mode: 'sg-required'; proxyUrl: string }
+  ) & { directHosts?: string[] }
   mongodb: {
     uri: string
     database: string
@@ -86,11 +87,19 @@ function ossEndpoint(env: Environment, name: string, expectedHostname: string): 
 }
 
 function providerEgressConfig(env: Environment): ServiceConfig['providerEgress'] {
+  const rawDirectHosts = env.PAPERBANANA_PROVIDER_DIRECT_HOSTS
+  const directHosts = rawDirectHosts === undefined ? undefined : rawDirectHosts.split(',')
+  if (directHosts && (new Set(directHosts).size !== directHosts.length || directHosts.some(
+    host => !['tokendance.space', 'ark.cn-beijing.volces.com'].includes(host),
+  ))) {
+    throw new Error('PAPERBANANA_PROVIDER_DIRECT_HOSTS accepts only distinct tokendance.space and ark.cn-beijing.volces.com hosts')
+  }
+  const routes = directHosts ? { directHosts } : {}
   const mode = env.PAPERBANANA_PROVIDER_EGRESS_MODE
   if (mode !== 'disabled' && mode !== 'sg-required') {
     throw new Error('PAPERBANANA_PROVIDER_EGRESS_MODE must be exactly disabled or sg-required')
   }
-  if (mode === 'disabled') return { mode }
+  if (mode === 'disabled') return { mode, ...routes }
 
   const proxyUrl = env.PAPERBANANA_SG_PROXY_URL || ''
   let parsed: URL
@@ -110,7 +119,7 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
   ) {
     throw new Error('PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin')
   }
-  return { mode, proxyUrl: parsed.origin }
+  return { mode, proxyUrl: parsed.origin, ...routes }
 }
 
 export function loadConfig(env: Environment = process.env, buildCodeSha?: string): ServiceConfig {

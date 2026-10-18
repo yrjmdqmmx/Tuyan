@@ -47,7 +47,7 @@ function causedByProviderEgress(error: unknown): boolean {
   return false
 }
 
-function normalizedTargetOrigin(origin: string | URL | undefined): boolean {
+function normalizedTargetOrigin(origin: string | URL | undefined, directHosts: readonly string[] = []): boolean {
   if (!origin) return false
   let url: URL
   try {
@@ -63,6 +63,11 @@ function normalizedTargetOrigin(origin: string | URL | undefined): boolean {
   // Strip exactly one DNS root label. Multiple trailing dots and IDNA
   // lookalikes remain non-targets instead of being widened into the allowlist.
   if (!hostname || hostname.endsWith('.')) return false
+  // Only these measured domestic API origins may opt out of the overseas proxy.
+  // Keep other schemes, ports and all overseas origins on their existing policy.
+  if (url.protocol === 'https:' && (!url.port || url.port === '443')
+    && ['tokendance.space', 'ark.cn-beijing.volces.com'].includes(hostname)
+    && directHosts.includes(hostname)) return false
   // Azure resource names vary. Classify them for REQUIRED proxy routing only;
   // the proxy still requires an operator-added exact resource hostname ACL. No wildcard egress grant.
   return targetHosts.has(hostname) || /^[a-z0-9][a-z0-9-]{1,62}\.(?:openai\.azure\.com|services\.ai\.azure\.com)$/.test(hostname) || /^api\.[a-z0-9.-]+\.bfl\.ai$/.test(hostname)
@@ -150,12 +155,13 @@ class OriginAwareDispatcher extends Dispatcher {
     private readonly proxy: Dispatcher | undefined,
     private readonly onTargetSuccess: () => void,
     private readonly onTargetFailure: () => void,
+    private readonly directHosts: readonly string[] = [],
   ) {
     super()
   }
 
   dispatch(options: Dispatcher.DispatchOptions, handler: Dispatcher.DispatchHandler): boolean {
-    if (!normalizedTargetOrigin(options.origin)) {
+    if (!normalizedTargetOrigin(options.origin, this.directHosts)) {
       return this.direct.dispatch(options, handler)
     }
     if (!this.proxy) {
@@ -192,6 +198,7 @@ export function createProviderEgress(
     proxyDispatcher,
     () => { state = 'ready' },
     () => { state = 'degraded' },
+    config.directHosts,
   )
 
   return {
