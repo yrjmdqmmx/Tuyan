@@ -44,6 +44,15 @@ function Harness({ initial = newWorkspace('a'), onSend = () => {} }) {
     dispatch({ type: 'BEGIN', runId }); dispatch({ type: 'ACCEPT', taskId: state.selectedTaskId, runId });
   }, renderModels: () => React.createElement('p', null, '模型接口插槽'), renderSettings: () => React.createElement('p', null, '绘图设置插槽'), renderPage: () => React.createElement('p', null, '资源页面'), saveStatus: '本地草稿' });
 }
+test('an unread generated result offers selection instead of claiming the path is empty',()=>{
+ const initial=completed(),branch=initial.tasks[0].branches.png;branch.versionId=null;branch.candidateId=null;branch.unreadVersionId='A';
+ render(React.createElement(Harness,{initial}));
+ assert.ok(screen.getByRole('heading',{name:'已有结果可查看'}));
+ assert.equal(screen.queryByText('此路径尚无结果'),null);
+ fireEvent.click(screen.getByRole('button',{name:'查看已生成版本'}));
+ assert.equal(screen.getByRole('button',{name:'查看候选 A · v1'}).getAttribute('aria-pressed'),'true');
+ assert.ok(screen.getByRole('link',{name:'下载 PNG'}));
+});
 test('empty task has one unified input, independent paths and mode, accepts no hidden caption', async () => {
   const user = userEvent.setup(); let submitted;
   const { container } = render(React.createElement(Harness, { onSend: s => { submitted = s; } }));
