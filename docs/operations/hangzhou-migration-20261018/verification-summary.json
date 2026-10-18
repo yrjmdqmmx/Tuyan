@@ -1,0 +1,286 @@
+{
+  "retirement": {
+    "containers_removed": [
+      "openvac-production-web-1",
+      "openvac-full-smoke",
+      "opentrad-worker-1",
+      "opentrad-api-1",
+      "opentrad-clamav-1",
+      "openvac-staging-web-1",
+      "openvac-staging-worker-1",
+      "openvac-production-modeling-worker-1",
+      "openvac-production-worker-1",
+      "openvac-production-modeling-service-1",
+      "openvac-production-postgres-1",
+      "openvac-staging-postgres-1"
+    ],
+    "volumes_removed": [
+      "opentrad_auth_data",
+      "opentrad_clam_db",
+      "opentrad_job_ram",
+      "openvac-production_postgres-data",
+      "openvac-staging_postgres-data"
+    ],
+    "paths_removed": [
+      "/opt/openvac",
+      "/opt/openvac-staging",
+      "/opt/opentrad",
+      "/opt/age-of-mechs-server",
+      "/var/lib/age-of-mechs",
+      "/usr/local/libexec/openvac"
+    ],
+    "configs_removed": [
+      "/etc/nginx/sites-enabled/opentrad-http.conf",
+      "/etc/nginx/sites-enabled/opentrad-prestage.conf",
+      "/etc/nginx/sites-enabled/staging-openvac",
+      "/etc/nginx/sites-enabled/opentrad-live.conf",
+      "/etc/nginx/sites-enabled/age-of-mechs",
+      "/etc/nginx/sites-enabled/openvac",
+      "/etc/nginx/sites-available/opentrad-http.conf",
+      "/etc/nginx/sites-available/opentrad-prestage.conf",
+      "/etc/nginx/sites-available/staging-openvac",
+      "/etc/nginx/sites-available/opentrad-live.conf",
+      "/etc/nginx/sites-available/age-of-mechs",
+      "/etc/nginx/sites-available/openvac",
+      "/etc/systemd/system/openvac-problem-report-cleanup@.service",
+      "/etc/systemd/system/openvac-problem-report-cleanup@.timer",
+      "/etc/systemd/system/age-of-mechs-backup.timer",
+      "/etc/systemd/system/age-of-mechs.service",
+      "/etc/systemd/system/age-of-mechs-backup.service"
+    ],
+    "backup": "/var/backups/service-retirement-20261018/retired-services.tar.gz",
+    "sha256": "44f981c3c7cd9c144e2a0b84d1fe528afdcdf3c4e75801b20ec6426a427ec39d",
+    "images_removed": [
+      "sha256:0128dc9f1f6d96fcaa9669f1a8265760dd57b1170f2ef51674aab545ebad106d",
+      "sha256:15167977085b01d083812d42aa70d390c2e3fcaaf647dfe82a47328fa6d48c9c",
+      "sha256:50c5de95b07cf1641d4e2b9d5660ec72039c149bac7b8308dc6a44a2c79f8d97",
+      "sha256:7da2dade5469ccd93725b9246eab49cf7d68510ab4846e08ff89c7cbe891824e",
+      "sha256:b34f50929fc1387340af970290953539dd387df8ce2861fb3380be090180b8a4",
+      "sha256:b4b86fc203acc038913b2184552e344c3a3b5bf5c2b8991cdda40a6e2c8c5952",
+      "sha256:b7f220930fb93d40236d527a24d5ff67dbba6a2d0210083f7b445b92ff17f384",
+      "sha256:c24dd453470b30a1b8642a0ce4a18f08c85d1fc383a7de7d2d7b71dabdd8991a",
+      "sha256:c5d828724655f1b7a7d5d5a2ce316b796a6b0effa1a9b9309d8be70e5fbb224a",
+      "sha256:cce1d2a90ab1568db2453565512790d48ac3758dfaa5f89a6e0cc08f9f67a318",
+      "sha256:f6f664a36a9215fd1b04ad1109c74f2ced10346ac1b3ca1daa57fb980702eb3f"
+    ],
+    "certificates_removed": [
+      "opentrad.xyz",
+      "openvac.cn",
+      "staging-openvac.openvac.cn",
+      "116.62.146.226"
+    ],
+    "original_runtime_image_ids": [
+      "sha256:0128dc9f1f6d96fcaa9669f1a8265760dd57b1170f2ef51674aab545ebad106d",
+      "sha256:15167977085b01d083812d42aa70d390c2e3fcaaf647dfe82a47328fa6d48c9c",
+      "sha256:7da2dade5469ccd93725b9246eab49cf7d68510ab4846e08ff89c7cbe891824e",
+      "sha256:b34f50929fc1387340af970290953539dd387df8ce2861fb3380be090180b8a4",
+      "sha256:b4b86fc203acc038913b2184552e344c3a3b5bf5c2b8991cdda40a6e2c8c5952",
+      "sha256:b7f220930fb93d40236d527a24d5ff67dbba6a2d0210083f7b445b92ff17f384",
+      "sha256:cce1d2a90ab1568db2453565512790d48ac3758dfaa5f89a6e0cc08f9f67a318",
+      "sha256:f6f664a36a9215fd1b04ad1109c74f2ced10346ac1b3ca1daa57fb980702eb3f"
+    ]
+  },
+  "restored_counts": [
+    {
+      "database": "paperbanana_auth",
+      "collections": [
+        {
+          "name": "account",
+          "count": 22
+        },
+        {
+          "name": "accountDeletionOperationHistory",
+          "count": 0
+        },
+        {
+          "name": "accountDeletionOperations",
+          "count": 1
+        },
+        {
+          "name": "accountVerificationTokens",
+          "count": 0
+        },
+        {
+          "name": "authMailRateLimit",
+          "count": 0
+        },
+        {
+          "name": "rateLimit",
+          "count": 731
+        },
+        {
+          "name": "session",
+          "count": 52
+        },
+        {
+          "name": "user",
+          "count": 21
+        },
+        {
+          "name": "verification",
+          "count": 0
+        },
+        {
+          "name": "watchaDeletionConfirmations",
+          "count": 0
+        },
+        {
+          "name": "watchaEmailCodes",
+          "count": 0
+        },
+        {
+          "name": "watchaTransactions",
+          "count": 0
+        }
+      ]
+    },
+    {
+      "database": "paperbanana_benchmark",
+      "collections": [
+        {
+          "name": "paperbanana_benchmark_dispatches",
+          "count": 50
+        },
+        {
+          "name": "paperbanana_benchmark_judgments",
+          "count": 62
+        },
+        {
+          "name": "paperbanana_benchmark_models",
+          "count": 91
+        },
+        {
+          "name": "paperbanana_benchmark_prompt_digests",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_benchmark_prompt_submissions",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_benchmark_public_evidence",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_benchmark_release_heads",
+          "count": 1
+        },
+        {
+          "name": "paperbanana_benchmark_release_lifecycle",
+          "count": 13
+        },
+        {
+          "name": "paperbanana_benchmark_release_tombstones",
+          "count": 1
+        },
+        {
+          "name": "paperbanana_benchmark_releases",
+          "count": 72
+        },
+        {
+          "name": "paperbanana_benchmark_runs",
+          "count": 1
+        },
+        {
+          "name": "paperbanana_benchmark_samples",
+          "count": 24
+        },
+        {
+          "name": "paperbanana_benchmark_scientific_v2_batches",
+          "count": 27
+        },
+        {
+          "name": "paperbanana_benchmark_scientific_v2_dispatches",
+          "count": 2950
+        },
+        {
+          "name": "paperbanana_benchmark_scientific_v2_public_evidence",
+          "count": 5085
+        },
+        {
+          "name": "paperbanana_benchmark_scientific_v2_rereviews",
+          "count": 1
+        },
+        {
+          "name": "paperbanana_benchmark_scientific_v2_review_artifacts",
+          "count": 70
+        },
+        {
+          "name": "paperbanana_benchmark_suites",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "database": "paperbanana_business",
+      "collections": [
+        {
+          "name": "paperbanana_account_deletion_history",
+          "count": 1
+        },
+        {
+          "name": "paperbanana_account_deletions",
+          "count": 7
+        },
+        {
+          "name": "paperbanana_events",
+          "count": 46
+        },
+        {
+          "name": "paperbanana_feedback",
+          "count": 4
+        },
+        {
+          "name": "paperbanana_images",
+          "count": 17
+        },
+        {
+          "name": "paperbanana_jobs",
+          "count": 97
+        },
+        {
+          "name": "paperbanana_material_files",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_material_reads",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_provider_executions",
+          "count": 3
+        },
+        {
+          "name": "paperbanana_provider_step_chunks",
+          "count": 34
+        },
+        {
+          "name": "paperbanana_provider_steps",
+          "count": 18
+        },
+        {
+          "name": "paperbanana_reference_upload_state",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_references",
+          "count": 306
+        },
+        {
+          "name": "paperbanana_tokendance_connections",
+          "count": 5
+        },
+        {
+          "name": "paperbanana_tokendance_flows",
+          "count": 0
+        },
+        {
+          "name": "paperbanana_tokendance_payments",
+          "count": 0
+        }
+      ]
+    }
+  ],
+  "backup_status": "Result=success\nExecMainStatus=0\n",
+  "retired_image_tags_remaining": []
+}

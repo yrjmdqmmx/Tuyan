@@ -1,9 +1,18 @@
+## 2026-10-18 · 杭州业务迁移完成（实际生产变更）
+
+- [x] 运维 / Core：图研两套网关、Core、Mongo、Plot、禁用执行器的 Benchmark 与 OpenAcad API / Redis / 两个 Worker 已迁杭州；10 个容器健康。香港对应业务停机，兼容入口 HTTPS 转发杭州，新加坡受控出口增加杭州来源。数据库冷文件哈希与集合计数一致，实际 PNG 渲染、导出和备份通过。
+- [x] Core 配置：独立线上基线补丁 `95589896186bc077c6e142040464905ddfcac338` 新增 `PAPERBANANA_OSS_SERVER_ENDPOINT_MODE=internal|public`，默认 internal；杭州使用 public 访问原香港私有 OSS。补丁已同步开发工作区，不包含本工作区其他未发布改动。29 项配置 / OSS 测试通过。
+- [x] Web / 小程序契约：API 字段和公开域名不变，无客户端迁移要求；小程序继续暂停。
+- [x] 退役：按用户授权移除杭州 OpenVac 正式 / 预发布 / 测试、OpenTrad、Age of Mechs，保留 root-only 恢复归档；其他项目保持。
+- [ ] 后续发布：旧香港部署和 SG 出口工作流已停用。必须按新拓扑改造并验收后再启用，不能直接恢复香港旧业务写入。OSS 地域仍为香港；分渠道模型测速未完成，没有真实模型调用。
+- 生产位置、镜像、恢复边界与证据见[杭州迁移记录](docs/operations/2026-10-18-hangzhou-migration.md)。香港冻结副本切换后已经可能落后，回退须先同步杭州最新数据。
+
 ## 2026-10-18 · 杭州迁移的业务 OSS 服务端出口配置
 
 - 在线上 Core 基线 a68bb2684db01ee1e593260bd01eac86444b3831 上独立补充 `PAPERBANANA_OSS_SERVER_ENDPOINT_MODE=internal|public`，默认 internal。杭州显式使用 public；内网/公网域名白名单、HTTPS、签名、桶和权限保持原契约，Benchmark 的独立开关不变。
 - [x] Core：配置解析与既有 OSS 适配器衔接，拒绝未知值及非法域名；不混入原 4.0 开发工作区未发布功能。
 - [x] Web / 小程序：没有客户端字段或行为变化；小程序仍暂停。
-- [ ] 运维：迁移、校验与切换结果记录在独立运维报告；不得把本条配置改动当成完整迁移验收。
+- [x] 运维：迁移、校验与切换完成，结果见顶部杭州迁移记录；后续发布流程仍待新拓扑验收。
 
 # 平台同步日志 (Platform Sync Log)
 

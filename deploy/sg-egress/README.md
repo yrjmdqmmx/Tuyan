@@ -1,5 +1,7 @@
 # PaperBanana Singapore provider egress
 
+> **2026-10-18 生产拓扑已更新：** 图研 / OpenAcad 业务与数据库在杭州，香港旧业务停止，OSS 仍在香港，新加坡增加杭州隧道来源。旧 HK / SG 发布工作流已停用；不得直接执行本文旧主机部署或单来源出口重装流程。以[杭州迁移记录](../../docs/operations/2026-10-18-hangzhou-migration.md)为准。
+
 This is a deliberately small, single-purpose egress host. The PaperBanana application, database, user content, API keys, and Hong Kong public API stay in Hong Kong. The Singapore Ubuntu 24.04 host runs only native WireGuard, a restricted Squid CONNECT proxy, and a systemd health timer. It does not run Docker or any PaperBanana business service and must not hold user data or provider credentials.
 
 ## Topology and fixed boundary
