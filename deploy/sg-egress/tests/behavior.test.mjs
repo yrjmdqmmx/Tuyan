@@ -1359,7 +1359,7 @@ test('install pins dedicated public DNS resolvers for Squid provider lookups', (
     const result = run(fixture, 'install-egress.sh', ['--apply']);
     assert.equal(result.status, 0, result.stderr);
     const config = readFileSync(join(fixture.root, 'etc', 'squid', 'squid.conf'), 'utf8');
-    assert.match(config, /^dns_nameservers 1\.1\.1\.1 223\.5\.5\.5$/m);
+    assert.match(config, /^dns_nameservers 223\.5\.5\.5 223\.6\.6\.6$/m);
   } finally {
     fixture.cleanup();
   }

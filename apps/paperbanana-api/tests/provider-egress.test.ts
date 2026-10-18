@@ -372,3 +372,59 @@ test('domestic to overseas redirect applies SG policy and strips cross-origin cr
     assert.equal(received.headers.authorization, undefined)
   })
 })
+
+async function withThreeRoutes(run: (v: {direct:MockAgent;sg:MockAgent;hk:MockAgent;egress:ReturnType<typeof createProviderEgress>})=>Promise<void>) {
+  const direct=new MockAgent(),sg=new MockAgent(),hk=new MockAgent()
+  for(const agent of [direct,sg,hk])agent.disableNetConnect()
+  const egress=createProviderEgress({mode:'sg-required',proxyUrl,directHosts:['api.fireworks.ai','tokendance.space','ark.cn-beijing.volces.com'],hongkong:{proxyUrl:'http://10.78.0.1:3128',hosts:['openrouter.ai','api.x.ai','api.bfl.ai']}},{directDispatcher:direct,createProxyAgent:url=>url==='http://10.78.0.1:3128'?hk:sg})
+  try {await run({direct,sg,hk,egress})} finally {await egress.close();await direct.close()}
+}
+
+test('three-region routing retains POST model, parameters, authentication and body with one selected dispatcher',async()=>{
+  await withThreeRoutes(async({direct,sg,hk,egress})=>{
+    for(const [origin,agent,label] of [['https://openrouter.ai',hk,'HK'],['https://api.openai.com',sg,'SG'],['https://api.fireworks.ai',direct,'HZ']] as const){
+      const body=JSON.stringify({model:'exact-model',temperature:0,messages:[{role:'user',content:'fixture'}]})
+      let observed: any
+      agent.get(origin).intercept({path:'/fixture',method:'POST'}).reply(options=>{
+        observed=options
+        return {statusCode:200,data:label}
+      })
+      assert.equal(await(await egress.fetch(origin+'/fixture',{method:'POST',headers:{authorization:'Bearer fixture-key'},body})).text(),label)
+      assert.equal(observed.headers.authorization,'Bearer fixture-key')
+      const chunks: Buffer[]=[]
+      for await(const chunk of observed.body)chunks.push(Buffer.from(chunk))
+      assert.equal(Buffer.concat(chunks).toString(),body)
+    }
+    for(const agent of [direct,sg,hk])agent.assertNoPendingInterceptors()
+  })
+})
+
+test('HK failure is closed without SG fallback, direct fallback or request replay',async()=>{
+  await withThreeRoutes(async({direct,sg,hk,egress})=>{
+    let unintended=0
+    for(const agent of [direct,sg])agent.get('https://openrouter.ai').intercept({path:'/fixture',method:'POST'}).reply(()=>{unintended++;return {statusCode:200,data:'wrong'}})
+    hk.get('https://openrouter.ai').intercept({path:'/fixture',method:'POST'}).replyWithError(new Error('fixture proxy failure'))
+    await assert.rejects(egress.fetch('https://openrouter.ai/fixture',{method:'POST',body:'model fixture'}),{code:'PROVIDER_EGRESS_UNAVAILABLE'})
+    assert.equal(unintended,0);assert.equal(egress.snapshot(),'degraded');hk.assertNoPendingInterceptors()
+  })
+})
+
+test('HK redirects reselect the destination route and strip cross-origin credentials',async()=>{
+  await withThreeRoutes(async({sg,hk,egress})=>{
+    hk.get('https://openrouter.ai').intercept({path:'/fixture'}).reply(302,'',{headers:{location:'https://api.openai.com/destination'}})
+    sg.get('https://api.openai.com').intercept({path:'/destination'}).reply(options=>{
+      assert.equal((options.headers as Record<string,string>).authorization,undefined)
+      return {statusCode:200,data:'SG'}
+    })
+    assert.equal(await(await egress.fetch('https://openrouter.ai/fixture',{headers:{authorization:'Bearer fixture-key'}})).text(),'SG')
+  })
+})
+
+test('HK origin matching handles one root dot but excludes suffixes, non-443, HTTP and unselected regions',async()=>{
+  await withThreeRoutes(async({direct,sg,hk,egress})=>{
+    for(const [origin,agent,label] of [['https://openrouter.ai.',hk,'HK'],['https://openrouter.ai:8443',sg,'SG'],['http://openrouter.ai',sg,'SG'],['https://api.eu.bfl.ai',sg,'SG'],['https://openrouter.ai.evil.example',direct,'HZ']] as const){
+      agent.get(origin).intercept({path:'/fixture'}).reply(200,label)
+      assert.equal(await(await egress.fetch(origin+'/fixture')).text(),label)
+    }
+  })
+})

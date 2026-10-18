@@ -1,4 +1,5 @@
 import { REFERENCE_UPLOAD_PLATFORM } from '../../../packages/api/src/reference-upload.js'
+import { DIRECT_ELIGIBLE_HOSTS, HONG_KONG_ELIGIBLE_HOSTS } from './provider-route-policy.js'
 
 export type ServiceConfig = {
   host: string
@@ -22,7 +23,7 @@ export type ServiceConfig = {
   providerEgress: (
     | { mode: 'disabled' }
     | { mode: 'sg-required'; proxyUrl: string }
-  ) & { directHosts?: string[] }
+  ) & { directHosts?: string[]; hongkong?: { proxyUrl: string; hosts: string[] } }
   mongodb: {
     uri: string
     database: string
@@ -90,14 +91,25 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
   const rawDirectHosts = env.PAPERBANANA_PROVIDER_DIRECT_HOSTS
   const directHosts = rawDirectHosts === undefined ? undefined : rawDirectHosts.split(',')
   if (directHosts && (new Set(directHosts).size !== directHosts.length || directHosts.some(
-    host => !['tokendance.space', 'ark.cn-beijing.volces.com'].includes(host),
+    host => !DIRECT_ELIGIBLE_HOSTS.includes(host),
   ))) {
-    throw new Error('PAPERBANANA_PROVIDER_DIRECT_HOSTS accepts only distinct tokendance.space and ark.cn-beijing.volces.com hosts')
+    throw new Error('PAPERBANANA_PROVIDER_DIRECT_HOSTS accepts only distinct reviewed direct API hosts')
   }
   const routes = directHosts ? { directHosts } : {}
   const mode = env.PAPERBANANA_PROVIDER_EGRESS_MODE
   if (mode !== 'disabled' && mode !== 'sg-required') {
     throw new Error('PAPERBANANA_PROVIDER_EGRESS_MODE must be exactly disabled or sg-required')
+  }
+  let hongkong: ServiceConfig['providerEgress']['hongkong']
+  if (env.PAPERBANANA_HK_PROXY_URL !== undefined || env.PAPERBANANA_PROVIDER_HK_HOSTS !== undefined) {
+    const hosts = (env.PAPERBANANA_PROVIDER_HK_HOSTS || '').split(',')
+    if (mode !== 'sg-required'
+      || !/^http:\/\/10\.78\.0\.1:3128\/?$/.test(env.PAPERBANANA_HK_PROXY_URL || '')
+      || new Set(hosts).size !== hosts.length
+      || hosts.some(host => !HONG_KONG_ELIGIBLE_HOSTS.includes(host) || directHosts?.includes(host))) {
+      throw new Error('PAPERBANANA_PROVIDER_HK_HOSTS requires distinct reviewed hosts, sg-required and the approved PAPERBANANA_HK_PROXY_URL')
+    }
+    hongkong = { proxyUrl: 'http://10.78.0.1:3128', hosts }
   }
   if (mode === 'disabled') return { mode, ...routes }
 
@@ -119,7 +131,7 @@ function providerEgressConfig(env: Environment): ServiceConfig['providerEgress']
   ) {
     throw new Error('PAPERBANANA_SG_PROXY_URL must be the approved Singapore proxy origin')
   }
-  return { mode, proxyUrl: parsed.origin, ...routes }
+  return { mode, proxyUrl: parsed.origin, ...routes, ...(hongkong ? { hongkong } : {}) }
 }
 
 export function loadConfig(env: Environment = process.env, buildCodeSha?: string): ServiceConfig {

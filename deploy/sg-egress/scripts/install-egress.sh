@@ -228,9 +228,9 @@ cat > "$squid_candidate" <<'EOF'
 http_port 10.77.0.2:3128
 visible_hostname paperbanana-sg-egress
 host_verify_strict on
-dns_nameservers 1.1.1.1 223.5.5.5
+dns_nameservers 223.5.5.5 223.6.6.6
 
-acl hk src 10.77.0.1/32
+acl hk src 10.77.0.1/32 10.77.0.5/32
 acl CONNECT method CONNECT
 acl SSL_ports port 443
 # -n prevents reverse-DNS/PTR lookups from turning an IP literal into an approved name.

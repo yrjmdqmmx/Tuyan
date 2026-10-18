@@ -242,3 +242,18 @@ test('startup config requires distinct internal and public OSS endpoints', () =>
   assert.equal(config.oss.internalEndpoint, validEnv.OSS_INTERNAL_ENDPOINT)
   assert.equal(config.oss.publicEndpoint, validEnv.OSS_PUBLIC_ENDPOINT)
 })
+
+test('Hong Kong routing requires the fixed private proxy, reviewed exact hosts and SG mode', () => {
+  const env = {...validEnv, PAPERBANANA_PROVIDER_EGRESS_MODE:'sg-required', PAPERBANANA_SG_PROXY_URL:'http://10.77.0.2:3128', PAPERBANANA_HK_PROXY_URL:'http://10.78.0.1:3128', PAPERBANANA_PROVIDER_HK_HOSTS:'openrouter.ai,api.x.ai'}
+  assert.deepEqual(loadConfig(env).providerEgress, {mode:'sg-required',proxyUrl:'http://10.77.0.2:3128',hongkong:{proxyUrl:'http://10.78.0.1:3128',hosts:['openrouter.ai','api.x.ai']}})
+  for (const hosts of ['', '*', 'api.openai.com', 'api.anthropic.com', 'generativelanguage.googleapis.com', 'api.bfl.ai.evil.example', 'openrouter.ai,openrouter.ai', 'https://openrouter.ai', 'openrouter.ai:443', ' openrouter.ai', 'api.fireworks.ai']) {
+    assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_HK_HOSTS:hosts}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  }
+  for (const url of ['', 'http://10.77.0.1:3128', 'http://10.78.0.1:3128/path', 'http://user:secret@10.78.0.1:3128', 'http://10.78.0.1:3128?x=1', 'https://10.78.0.1:3128']) {
+    assert.throws(()=>loadConfig({...env,PAPERBANANA_HK_PROXY_URL:url}), /PAPERBANANA_HK_PROXY_URL/)
+  }
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_EGRESS_MODE:'disabled'}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_HK_PROXY_URL:undefined}), /PAPERBANANA_HK_PROXY_URL/)
+  assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_HK_HOSTS:undefined}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
+  assert.deepEqual(loadConfig({...validEnv,PAPERBANANA_PROVIDER_DIRECT_HOSTS:'api.fireworks.ai'}).providerEgress,{mode:'disabled',directHosts:['api.fireworks.ai']})
+})
