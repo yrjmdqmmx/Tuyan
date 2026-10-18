@@ -425,6 +425,9 @@ test('benchmark public actions are anonymous read-only backend actions', async (
       assert.deepEqual(await response.json(), { code: 0, action });
     }
     assert.equal(backend.calls.length, 4);
+    assert.deepEqual(backend.calls.map(call => call.options), [
+      undefined, { timeoutMs: 60_000 }, undefined, { timeoutMs: 60_000 },
+    ]);
   });
 });
 

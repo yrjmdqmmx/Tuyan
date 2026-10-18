@@ -269,7 +269,10 @@ export function createApp({
         || action === 'benchmarkMethodology'
         || action === 'benchmarkCaseEvidence'
       ) {
-        const result = await backend.call(request.body, context);
+        // Evidence reads verify complete OSS bytes, hashes and metadata. Allow
+        // their cross-region I/O a separate budget without slowing account checks.
+        const evidenceRead = action === 'benchmarkModelProfile' || action === 'benchmarkCaseEvidence';
+        const result = await backend.call(request.body, context, evidenceRead ? { timeoutMs: 60_000 } : undefined);
         return action === 'modelRegistry' ? relayModelRegistry(request, response, result) : relay(response, result);
       }
 
