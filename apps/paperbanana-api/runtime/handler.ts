@@ -4577,7 +4577,7 @@ async function assertTokenDanceLiveModel(model: string, expectedProtocol: string
 
 type PublicCatalogResult = CatalogResult & { previousModels?: any[]; previousFetchedAt?: string; previousAbsentIds?: string[] }
 const publicCatalogTtlMs = 60 * 60_000
-const publicCatalogCache = new Map<string, { expires: number; retryAt: number; pending: boolean; result: Promise<PublicCatalogResult> }>()
+const publicCatalogCache = new Map<string, { expires: number; retryAt: number; pending: boolean; snapshot?: PublicCatalogResult; result: Promise<PublicCatalogResult> }>()
 // Optional local checkpoint of previously fetched PUBLIC metadata. Never accepts
 // account directories, credentials, or inference permissions from a checkpoint.
 export function restorePublicCatalogCheckpoint(checkpoint: Record<string,PublicCatalogResult>) {
@@ -4585,7 +4585,8 @@ export function restorePublicCatalogCheckpoint(checkpoint: Record<string,PublicC
     const value=checkpoint?.[provider]
     if(!value || !Array.isArray(value.models) || !['ready','partial'].includes(value.state) || !Number.isFinite(Date.parse(value.fetchedAt)) || Date.now()-Date.parse(value.fetchedAt)>86_400_000)continue
     const retryAt=Date.parse(value.fetchedAt)+(value.retryAfterSeconds || 0)*1000
-    publicCatalogCache.set(provider,{expires:value.state==='ready'?Date.parse(value.fetchedAt)+publicCatalogTtlMs:0,retryAt,pending:false,result:Promise.resolve({...value,availabilityScope:provider==='novita'?'public-llm':'public-hosted'})})
+    const snapshot:PublicCatalogResult={...value,availabilityScope:provider==='novita'?'public-llm':'public-hosted'}
+    publicCatalogCache.set(provider,{expires:value.state==='ready'?Date.parse(value.fetchedAt)+publicCatalogTtlMs:0,retryAt,pending:false,snapshot,result:Promise.resolve(snapshot)})
   }
 }
 export async function publicCatalogCheckpoint() {
@@ -4607,10 +4608,29 @@ async function readPublicCatalog(provider: string) {
     return {...next,models,previousModels,previousFetchedAt,previousAbsentIds,pages:(resume?previous?.pages || 0:0)+next.pages,state:next.state==='error' && (models.length || previousModels?.length)?'partial' as const:next.state,
       message:next.state==='ready'?`在线目录已读取 ${models.length} 个型号（全部分页）`:`${next.message}${previousModels?.length?'；暂保留上次完整目录，更新尚未读完':''}`}
   })
-  const entry = {expires:Date.now()+60_000,retryAt:0,pending:true,result}
+  const entry = {expires:Date.now()+60_000,retryAt:0,pending:true,snapshot:previous,result}
   publicCatalogCache.set(provider,entry)
-  result.then(next=>{entry.pending=false;entry.retryAt=Date.now()+(next.retryAfterSeconds || 0)*1000;entry.expires=Date.now()+(next.state==='ready'?publicCatalogTtlMs:60_000)},()=>{entry.pending=false;entry.expires=Date.now()+60_000})
+  result.then(next=>{entry.snapshot=next;entry.pending=false;entry.retryAt=Date.now()+(next.retryAfterSeconds || 0)*1000;entry.expires=Date.now()+(next.state==='ready'?publicCatalogTtlMs:60_000)},()=>{entry.pending=false;entry.expires=Date.now()+60_000})
   return result
+}
+// Browsing all channels must not wait for hundreds of expanded schema pages.
+// Share the existing refresh, but keep its full result for explicit channel
+// refreshes and inference guards. Never turn an incomplete browse into ready.
+async function browsePublicCatalog(provider:string):Promise<PublicCatalogResult> {
+  let timer:ReturnType<typeof setTimeout> | undefined
+  try {
+    return await Promise.race([readPublicCatalog(provider),new Promise<PublicCatalogResult>(resolve=>{
+      timer=setTimeout(()=>{
+        const previous=publicCatalogCache.get(provider)?.snapshot
+        resolve({...previous,state:'partial',models:previous?.models || [],pages:previous?.pages || 0,
+          sourceUrls:previous?.sourceUrls || [PROVIDER_CATALOGS[provider].source],fetchedAt:previous?.fetchedAt || new Date().toISOString(),
+          previousModels:previous?.state==='ready'?previous.models:previous?.previousModels,
+          previousFetchedAt:previous?.state==='ready'?previous.fetchedAt:previous?.previousFetchedAt,
+          previousAbsentIds:previous?.state==='ready'?previous.confirmedAbsentIds:previous?.previousAbsentIds,
+          message:'在线目录正在后台更新，当前展示已知型号；调用前仍会核验渠道目录。'})
+      },1500)
+    })])
+  } finally { if(timer)clearTimeout(timer) }
 }
 function mergeDiscoveredCatalog(provider: string, registry: ProviderModelRegistry, discovered: any[]): ProviderModelRegistry {
   const byId = new Map(registry.models.map(model => [model.id, model]))
@@ -4711,7 +4731,7 @@ export async function modelRegistry(body: ModelRegistryBody) {
     }
   }
   await Promise.all(['fal', 'runware', 'novita'].filter(provider => !requestedProvider || provider === requestedProvider).map(async provider => {
-    const catalog = await readPublicCatalog(provider)
+    const catalog = await (requestedProvider ? readPublicCatalog(provider) : browsePublicCatalog(provider))
     const registry = providers[provider as Provider]
     if (registry) providers[provider as Provider] = applyPublicCatalogAvailability(provider,mergeDiscoveredCatalog(provider, registry, mergeCatalogRows([...(catalog.previousModels || []),...catalog.models])),catalog)
     catalogHealth[provider] = { ...catalog, models: undefined, previousModels:undefined, previousModelCount:catalog.previousModels?.length, modelCount: catalog.models.length }
