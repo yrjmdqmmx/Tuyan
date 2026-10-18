@@ -24,7 +24,7 @@ for r in manifest:r['recommendation']=decision(r)
 routes={'measured_at_utc':max(r['started_at'] for r in raw),'inference_calls':0,'model_api_cost':0,'production_changes_this_audit':False,'match_rule':'Match exact API hostname and channel. Preserve model/version/parameters/account-region. No automatic replay or provider substitution.','routes':manifest,'unmeasured':[{'channel':'custom / Azure OpenAI / Azure Foundry','reason':'缺少账户专属 API 主机名、部署和区域；不臆造地址。'},{'channel':'其他自定义连接','reason':'当前项目未提供固定可核验 API 地址；不能把 32 个内建渠道宣称为全球所有平台。'},{'channel':'模型输出、TTFT、tokens/s、图像生成与下载','reason':'本轮零推理；无免费额度/账户权限实证，未执行。'}]}
 root.joinpath('channel-route-candidates.json').write_text(json.dumps(routes,ensure_ascii=False,indent=2)+'\n')
 with root.joinpath('results.csv').open('w',newline='') as f:
- writer=csv.writer(f);writer.writerow(['入口','渠道','API 地址','测试类型','线路','样本数','传输完成数','HTTP 状态计数','首响应中位数 ms','最小 ms','最大 ms','TLS 完成中位数 ms','下载字节','建议'])
+ writer=csv.writer(f,lineterminator="\n");writer.writerow(['入口','渠道','API 地址','测试类型','线路','样本数','传输完成数','HTTP 状态计数','首响应中位数 ms','最小 ms','最大 ms','TLS 完成中位数 ms','下载字节','建议'])
  for m in manifest:
   for n,label in zip(nodes,labels):
    s=lookup.get((m['id'],n))
