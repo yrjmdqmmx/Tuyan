@@ -10,11 +10,12 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 let restore
 function backend({alternateVisualMain = false} = {}) {
   let state = 'partial', requests = 0, submissions = 0
-  const old = globalThis.fetch, oldInterval = globalThis.setInterval
+  const old = globalThis.fetch, oldTimeout = globalThis.setTimeout
   let refresh
-  globalThis.setInterval = (callback, delay, ...args) => {
-    if (delay === 60_000) refresh = () => callback(...args)
-    return oldInterval(callback, delay, ...args)
+  globalThis.setTimeout = (callback, delay, ...args) => {
+    const timer = oldTimeout(callback, delay, ...args)
+    if (delay === 60_000) refresh = () => { clearTimeout(timer); return callback(...args) }
+    return timer
   }
   globalThis.fetch = async (_url, init = {}) => {
     const body = init.body ? JSON.parse(String(init.body)) : null
@@ -39,7 +40,7 @@ function backend({alternateVisualMain = false} = {}) {
     if (body.action === 'createJob') submissions++
     throw new Error('Unexpected action: ' + body.action)
   }
-  restore = () => { globalThis.fetch = old; globalThis.setInterval = oldInterval }
+  restore = () => { globalThis.fetch = old; globalThis.setTimeout = oldTimeout }
   return { set: value => { state = value }, requests: () => requests, submissions: () => submissions, refresh: () => act(async () => { assert.ok(refresh, 'automatic catalog refresh remains scheduled'); refresh() }) }
 }
 afterEach(() => { cleanup(); document.body.innerHTML = ''; restore?.() })

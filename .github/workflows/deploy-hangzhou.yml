@@ -79,6 +79,22 @@ jobs:
           build-args: PAPERBANANA_CODE_SHA=${{ github.sha }}
           cache-from: type=gha,scope=hangzhou-${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=hangzhou-${{ matrix.service }}
+      - name: Verify Benchmark runtime without network or model keys
+        if: matrix.service == 'benchmark'
+        env:
+          IMAGE: ghcr.io/yrjmdqmmx/tuyan-hz-benchmark@${{ steps.build.outputs.digest }}
+        run: >-
+          docker run --rm --network none
+          -e EXPECTED_CODE_SHA=${{ github.sha }}
+          --mount "type=bind,src=${{ github.workspace }}/apps/benchmark-worker/scripts/runtime-image-smoke.mjs,dst=/app/runtime-image-smoke.mjs,readonly"
+          "$IMAGE" node /app/runtime-image-smoke.mjs
+      - name: Verify Plot auth and deterministic PNG/SVG rendering without network
+        if: matrix.service == 'plot'
+        env:
+          IMAGE: ghcr.io/yrjmdqmmx/tuyan-hz-plot@${{ steps.build.outputs.digest }}
+        run: |
+          docker run --rm --network none -e PYTHONPATH=/app --mount "type=bind,src=${{ github.workspace }}/apps/plot-worker/tests,dst=/tests,readonly" "$IMAGE" python -m unittest discover -s /tests
+          docker run --rm --network none -e PYTHONPATH=/app --mount "type=bind,src=${{ github.workspace }}/deploy/hangzhou/plot-smoke.py,dst=/app/ci-smoke.py,readonly" "$IMAGE" python /app/ci-smoke.py
       - name: Save immutable image reference
         env:
           SERVICE: ${{ matrix.service }}

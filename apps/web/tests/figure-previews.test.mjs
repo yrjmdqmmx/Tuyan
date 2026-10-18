@@ -2,7 +2,7 @@ import test, {afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import {createHash} from 'node:crypto'
-import {createRequire} from 'node:module'
+import sharp from 'sharp'
 import React from 'react'
 import {render,screen,fireEvent,cleanup,within} from '@testing-library/react'
 import FigureTypePicker from '../src/components/FigureTypePicker.jsx'
@@ -13,7 +13,6 @@ import {JOURNAL_REFERENCES} from '../../../packages/figure-taxonomy/src/referenc
 
 afterEach(cleanup)
 const asset = src => new URL(`../public${src}`,import.meta.url)
-const sharp=createRequire(new URL('../../paperbanana-api/package.json',import.meta.url))('sharp')
 
 test('every selectable type has a decodable, bounded thumbnail with accurate provenance',async()=>{
  assert.deepEqual(Object.keys(FIGURE_TYPE_PREVIEWS).sort(),FIGURE_TYPES.map(t=>t.id).sort())

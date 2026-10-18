@@ -72,7 +72,7 @@ export default function ModelRoutingSettings({
             <Settings2 size={16} /><span>{t("专业模式")}</span><small>{t("分角色选择渠道与模型")}</small>
           </button>
         </div>
-        {isAdvancedMode ? <ModelRegistryNotice status={registryStatus} supported={routeContractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端不支持专业模式的多渠道路由，请切回普通模式。" /> : null}
+        <ModelRegistryNotice status={registryStatus} supported={!isAdvancedMode || routeContractSupported} onRetry={onRetryRegistry} unsupportedMessage="当前后端不支持专业模式的多渠道路由，请切回普通模式。" />
       </div>
 
       {!isAdvancedMode ? (
