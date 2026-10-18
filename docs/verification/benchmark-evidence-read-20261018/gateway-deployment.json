@@ -1,0 +1,16 @@
+{
+  "time": "2026-10-18T04:38:41.093918+00:00",
+  "patch": "f6a3898628115358aa9faff48600a2804e5eaa37",
+  "image": "sha256:84bc9fd55434fa54c5f421e90232a7deab8266b62d2b40b7ce1267f80e5f8782",
+  "previousImage": "sha256:433abb8c85b9f33b1986eda8434231d9c1530c152dbb25beefe06fcb41df2733",
+  "containers": [
+    "paperbanana-hk-auth-gateway-1",
+    "tuyan-cn-gateway-auth-gateway-1"
+  ],
+  "unchangedOtherContainers": 8,
+  "ready": [
+    13005,
+    13006
+  ],
+  "backup": "/var/backups/benchmark-gateway-f6a38986-20261018"
+}
