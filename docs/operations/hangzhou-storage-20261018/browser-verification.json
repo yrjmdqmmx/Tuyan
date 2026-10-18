@@ -1,0 +1,11 @@
+{
+  "title": "模型生成证据 · 图研 Tuyan Benchmark",
+  "model": "GPT-image-2",
+  "evidenceSections": 10,
+  "ossImages": 12,
+  "loaded": 12,
+  "hosts": [
+    "paperbanana-bench-hz-20261018.oss-cn-hangzhou.aliyuncs.com"
+  ],
+  "modelCalls": 0
+}

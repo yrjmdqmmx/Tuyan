@@ -23,6 +23,8 @@ c = configparser.ConfigParser(interpolation=None)
 if not c.read(sys.argv[1]): raise SystemExit('Backup configuration missing')
 if {c.get(s, 'endpoint', fallback='').rstrip('/') for s in c.sections()} != {'https://oss-cn-hangzhou-internal.aliyuncs.com'}:
     raise SystemExit('Backup requires the Hangzhou internal HTTPS endpoint')
+if {c.get(s, 'region', fallback='') for s in c.sections()} != {'cn-hangzhou'}:
+    raise SystemExit('Backup requires the Hangzhou signing region')
 PY_CHECK
 install -d -m 0700 "$backup_dir"
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"

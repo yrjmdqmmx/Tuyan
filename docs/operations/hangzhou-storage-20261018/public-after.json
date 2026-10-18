@@ -1,0 +1,69 @@
+[
+  {
+    "origin": "https://tuyansci.cn",
+    "path": "/ready",
+    "status": 200,
+    "code": 0,
+    "ms": 180
+  },
+  {
+    "origin": "https://tuyansci.cn",
+    "path": "/paperbanana-api",
+    "status": 200,
+    "code": 0,
+    "ms": 3860,
+    "evidence": 9,
+    "signedImageUrls": 30,
+    "imageHosts": [
+      "paperbanana-bench-hz-20261018.oss-cn-hangzhou.aliyuncs.com"
+    ],
+    "publicImageChecks": [
+      {
+        "status": 200,
+        "bytes": 46264,
+        "contentType": "image/webp"
+      },
+      {
+        "status": 200,
+        "bytes": 81766,
+        "contentType": "image/webp"
+      }
+    ]
+  },
+  {
+    "origin": "https://api.paperbanana.asia",
+    "path": "/ready",
+    "status": 200,
+    "code": 0,
+    "ms": 1312
+  },
+  {
+    "origin": "https://api.paperbanana.asia",
+    "path": "/paperbanana-api",
+    "status": 200,
+    "code": 0,
+    "ms": 5546,
+    "evidence": 9,
+    "signedImageUrls": 30,
+    "imageHosts": [
+      "paperbanana-bench-hz-20261018.oss-cn-hangzhou.aliyuncs.com"
+    ],
+    "publicImageChecks": [
+      {
+        "status": 200,
+        "bytes": 46264,
+        "contentType": "image/webp"
+      },
+      {
+        "status": 200,
+        "bytes": 81766,
+        "contentType": "image/webp"
+      }
+    ]
+  },
+  {
+    "origin": "https://openacad.xyz",
+    "path": "/api/health",
+    "status": 200
+  }
+]

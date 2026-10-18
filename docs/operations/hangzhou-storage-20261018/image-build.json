@@ -1,0 +1,8 @@
+{
+  "code_sha": "3c90bb72011c69f350f41ec6fb27449022819682",
+  "base_image": "sha256:75cbc12e7969af32be4cd8a6e38d0adf5425623b0c14db5ac118d7dfa0248dfb",
+  "image_tag": "tuyan-core-hangzhou:3c90bb72011c",
+  "image_id": "sha256:f890e328295ed722021a45da8469f8c3dd805f78cbbe4c4b7270889f3630015f",
+  "server_cjs_sha256": "995d6fa31e9282eeff91e419fd53d41e4f433f7a3e63fb3298714dda8ebd75e9",
+  "staging_directory": "/opt/paperbanana/storage-migration-3c90bb72011c"
+}

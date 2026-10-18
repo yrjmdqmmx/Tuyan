@@ -1,6 +1,6 @@
 # PaperBanana Hong Kong single-host production
 
-> **2026-10-18 生产拓扑已更新：** 图研 / OpenAcad 业务与数据库在杭州，香港旧业务停止，OSS 仍在香港，新加坡增加杭州隧道来源。旧 HK / SG 发布工作流已停用；不得直接执行本文旧主机部署或单来源出口重装流程。以[杭州迁移记录](../../docs/operations/2026-10-18-hangzhou-migration.md)为准。
+> **2026-10-18 存储切换完成：** 图研 / OpenAcad 业务与数据库、业务素材、评测证据、每日 Mongo 备份均在杭州；服务端 OSS 使用内网。香港保留旧域名兼容转发、模型出口与冻结恢复副本，新加坡保留既有模型出口。旧 HK / SG GitHub Actions 继续停用，杭州受保护的 SSH 人工发布入口已验收，不能执行本文历史主机部署流程。见[存储验收与当前发布入口](../../docs/operations/2026-10-18-hangzhou-storage.md)。
 
 This deployment intentionally uses the existing 4 vCPU / 16 GiB Aliyun Hong
 Kong Lightweight server. The separate Singapore ECS provides controlled model egress; it does not host business services. MongoDB is local, not managed.

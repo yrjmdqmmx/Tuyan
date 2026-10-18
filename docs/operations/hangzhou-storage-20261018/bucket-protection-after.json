@@ -1,0 +1,29 @@
+[
+  {
+    "bucket": "paperbanana-prod-hz-20261018",
+    "region": "oss-cn-hangzhou",
+    "acl": "private",
+    "blockPublicAccess": "true",
+    "redundancy": "ZRS",
+    "versioning": "Enabled",
+    "encryption": "AES256"
+  },
+  {
+    "bucket": "paperbanana-bench-hz-20261018",
+    "region": "oss-cn-hangzhou",
+    "acl": "private",
+    "blockPublicAccess": "true",
+    "redundancy": "LRS",
+    "versioning": null,
+    "encryption": "None"
+  },
+  {
+    "bucket": "paperbanana-backup-hz-20261018",
+    "region": "oss-cn-hangzhou",
+    "acl": "private",
+    "blockPublicAccess": "true",
+    "redundancy": "ZRS",
+    "versioning": "Enabled",
+    "encryption": "AES256"
+  }
+]

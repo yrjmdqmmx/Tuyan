@@ -4,7 +4,9 @@
 
 2026-10-18 分渠道线路已部署：国内入口与 Fireworks 从杭州直连；OpenRouter、xAI、Novita、Stability、Together、Ideogram、Runware API、Mistral、BFL 三个入口、fal、Recraft、Replicate、MiniMax 国际共 16 个精确主机走新增香港受控代理（10.78.0.1:3128）；OpenAI / Anthropic / Gemini / Bedrock 等其余既有海外目标保留新加坡。SG 代理 DNS 已修正。禁止因网络超时自动换线重发付费请求。零推理测试不证明账户权益或模型质量；见[线路发布记录](docs/operations/provider-routing-rollout-20261018/report.md)。
 
-图研和 OpenAcad 业务与数据库已迁到杭州 `116.62.146.226`；香港保留兼容转发、受控模型出口和冻结恢复副本，原图研 / OpenAcad 容器不得直接重启写入。原香港私有 OSS 继续使用，杭州走公网端点；新加坡受控出口已允许杭州 WireGuard 来源。Compose 名 `paperbanana-hk` 是历史名称。旧香港业务部署与 SG 出口 GitHub Actions 已停用，新发布流程待改造验收。具体镜像、配置和恢复边界以[杭州迁移记录](docs/operations/2026-10-18-hangzhou-migration.md)及实时核查为准；下方 2026-09-27 架构仅为历史记录。
+图研和 OpenAcad 业务与数据库已在杭州 `116.62.146.226`；本轮业务素材、评测证据及 Mongo 备份也已迁杭州私有 OSS，服务端使用杭州 HTTPS 内网端点。2,775 个有效对象逐一校验，新备份完整读回通过，Core 源码 `3c90bb72011c69f350f41ec6fb27449022819682` 已上线。国内主入口 `tuyansci.cn` / `openacad.xyz` 直连杭州，旧 `api.paperbanana.asia` 仍经香港兼容转发。
+
+香港保留受控模型出口、冻结业务与 OSS 恢复副本，旧业务不得直接重启写入；切换后回退须先同步杭州新增数据。日常备份与业务同在杭州，香港旧备份不是持续异地保护。Compose 名 `paperbanana-hk` 只是历史名称。旧 HK / SG GitHub Actions 保持停用，当前受保护的[杭州 SSH 人工发布入口](deploy/hangzhou/README.md)已实测，不代表自动 CI/CD 已启用。结果和边界见[存储验收](docs/operations/2026-10-18-hangzhou-storage.md)与[业务迁移记录](docs/operations/2026-10-18-hangzhou-migration.md)；下方 2026-09-27 架构仅为历史记录。小程序继续暂停，恢复前核实杭州 OSS 合法域名。
 
 图研Tuyan monorepo：用户客户端只保留 Web（`apps/web`，React + Vite）与微信小程序（`apps/miniprogram`）；服务端继续保留 `paperbanana-api`、`auth-gateway`、`plot-worker` 和 `benchmark-worker`。**各模块常由不同的、互不可见的 AI 会话分别开发。**
 
