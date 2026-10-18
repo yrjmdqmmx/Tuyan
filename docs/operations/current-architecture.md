@@ -1,6 +1,6 @@
 # 当前架构与运行核查
 
-> **2026-10-18 渠道线路更新：** TokenDance / 方舟已在杭州直连，百炼保持直连，OpenRouter 保留 SG；香港候选未经模型推理验证。见[实测记录](provider-route-audit-20261018/report.md)。
+> **2026-10-18 分渠道线路已部署：** 国内入口 / Fireworks 杭州直连；OpenRouter 等 16 个精确 API 主机走香港新 WG + CONNECT 代理；OpenAI / Anthropic / Gemini / Bedrock 等保留 SG。SG DNS 选路修正，Core 5f15e5e0 保留现网排行榜证据修复；42 个实际容器无密钥 GET 选路核验通过，模型推理与账户权益未验证。见[发布记录及回退边界](provider-routing-rollout-20261018/report.md)。
 
 > **2026-10-18 生产拓扑已更新：** 图研 / OpenAcad 业务与数据库在杭州，香港旧业务停止，OSS 仍在香港，新加坡增加杭州隧道来源。旧 HK / SG 发布工作流已停用；不得直接执行本文旧主机部署或单来源出口重装流程。以[杭州迁移记录](2026-10-18-hangzhou-migration.md)为准。
 

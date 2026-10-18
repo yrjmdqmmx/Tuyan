@@ -1,0 +1,370 @@
+{
+  "runware": {
+    "hongkong": {
+      "median_ms": 454.9,
+      "max_ms": 788.0,
+      "transport_complete": 5,
+      "http": {
+        "400": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 497.8,
+      "max_ms": 529.3,
+      "transport_complete": 5,
+      "http": {
+        "400": 5
+      }
+    }
+  },
+  "mistral": {
+    "hongkong": {
+      "median_ms": 418.2,
+      "max_ms": 501.1,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 536.6,
+      "max_ms": 663.9,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "fal-queue": {
+    "hongkong": {
+      "median_ms": 776.4,
+      "max_ms": 874.4,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 990.6,
+      "max_ms": 1020.9,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "ideogram": {
+    "hongkong": {
+      "median_ms": 422.5,
+      "max_ms": 486.3,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 534.4,
+      "max_ms": 583.4,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "bfl-eu": {
+    "hongkong": {
+      "median_ms": 910.1,
+      "max_ms": 1050.9,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 990.1,
+      "max_ms": 1155.7,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "together": {
+    "hongkong": {
+      "median_ms": 439.3,
+      "max_ms": 533.1,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 517.2,
+      "max_ms": 819.5,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "recraft": {
+    "hongkong": {
+      "median_ms": 789.4,
+      "max_ms": 867.4,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 962.5,
+      "max_ms": 1020.6,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "stability": {
+    "hongkong": {
+      "median_ms": 487.7,
+      "max_ms": 656.9,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 606.9,
+      "max_ms": 967.9,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "novita": {
+    "hongkong": {
+      "median_ms": 391.9,
+      "max_ms": 455.1,
+      "transport_complete": 5,
+      "http": {
+        "200": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 483.2,
+      "max_ms": 556.1,
+      "transport_complete": 5,
+      "http": {
+        "200": 5
+      }
+    }
+  },
+  "xai": {
+    "hongkong": {
+      "median_ms": 422.0,
+      "max_ms": 457.8,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 485.5,
+      "max_ms": 601.3,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "replicate": {
+    "hongkong": {
+      "median_ms": 426.2,
+      "max_ms": 1034.8,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 578.8,
+      "max_ms": 980.3,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "bfl-us": {
+    "hongkong": {
+      "median_ms": 772.3,
+      "max_ms": 868.7,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 1024.5,
+      "max_ms": 1038.3,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "fal": {
+    "hongkong": {
+      "median_ms": 615.1,
+      "max_ms": 928.2,
+      "transport_complete": 5,
+      "http": {
+        "200": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 784.0,
+      "max_ms": 916.1,
+      "transport_complete": 5,
+      "http": {
+        "200": 5
+      }
+    }
+  },
+  "bfl": {
+    "hongkong": {
+      "median_ms": 761.1,
+      "max_ms": 1093.6,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 941.3,
+      "max_ms": 1003.1,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "openrouter": {
+    "hongkong": {
+      "median_ms": 205.0,
+      "max_ms": 314.5,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 315.1,
+      "max_ms": 339.0,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "minimax": {
+    "hongkong": {
+      "median_ms": 464.1,
+      "max_ms": 504.8,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    },
+    "singapore-dns-fixed": {
+      "median_ms": 1001.2,
+      "max_ms": 1109.6,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "bedrock-us-east-1": {
+    "singapore-dns-fixed": {
+      "median_ms": 975.4,
+      "max_ms": 1023.1,
+      "transport_complete": 5,
+      "http": {
+        "404": 5
+      }
+    }
+  },
+  "bedrock-us-east-2": {
+    "singapore-dns-fixed": {
+      "median_ms": 1037.6,
+      "max_ms": 1047.5,
+      "transport_complete": 5,
+      "http": {
+        "404": 5
+      }
+    }
+  },
+  "gemini": {
+    "singapore-dns-fixed": {
+      "median_ms": 309.7,
+      "max_ms": 547.3,
+      "transport_complete": 5,
+      "http": {
+        "403": 5
+      }
+    }
+  },
+  "openai": {
+    "singapore-dns-fixed": {
+      "median_ms": 528.9,
+      "max_ms": 690.0,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "fireworks-inference": {
+    "singapore-dns-fixed": {
+      "median_ms": 306.1,
+      "max_ms": 336.1,
+      "transport_complete": 5,
+      "http": {
+        "405": 5
+      }
+    }
+  },
+  "fireworks": {
+    "singapore-dns-fixed": {
+      "median_ms": 298.1,
+      "max_ms": 303.7,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  },
+  "bedrock-us-west-2": {
+    "singapore-dns-fixed": {
+      "median_ms": 1060.6,
+      "max_ms": 1099.5,
+      "transport_complete": 5,
+      "http": {
+        "404": 5
+      }
+    }
+  },
+  "anthropic": {
+    "singapore-dns-fixed": {
+      "median_ms": 541.6,
+      "max_ms": 587.7,
+      "transport_complete": 5,
+      "http": {
+        "401": 5
+      }
+    }
+  }
+}

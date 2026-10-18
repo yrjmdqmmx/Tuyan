@@ -1,0 +1,10 @@
+{
+  "code_sha": "5f15e5e0bb2e2c67f23ebe09000a9a7ec76e70ad",
+  "base_image": "sha256:631f11b065a9974c6f6034b4e37546ffc7e17199d2bd81ea2a9edaee775ea85d",
+  "base_tag": "tuyan-core-hangzhou:f15510ce1a4d",
+  "image_tag": "tuyan-core-hangzhou:5f15e5e0bb2e",
+  "image_id": "sha256:75cbc12e7969af32be4cd8a6e38d0adf5425623b0c14db5ac118d7dfa0248dfb",
+  "server_cjs_sha256": "7a80115dc2299e6d729d8131ff168434e99c36c0e5c2861def6e11b20e1720fe",
+  "staging_directory": "/opt/paperbanana/regional-routing-5f15e5e0bb2e",
+  "preserved_production_fix": "f15510ce1a4d97ca117b01892cc9837638a51334"
+}

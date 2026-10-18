@@ -1,0 +1,4 @@
+
+> @paperbanana/paperbanana-api@0.1.0 check /Users/a1-6/.codex/worktrees/tuyan-hangzhou-oss-migration/paperbanana（tuyan）/apps/paperbanana-api
+> tsc --noEmit
+

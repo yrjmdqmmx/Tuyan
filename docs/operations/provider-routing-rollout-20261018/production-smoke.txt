@@ -1,0 +1,3 @@
+Warning: Could not access file: EACCES: permission denied, mkdir '/data/db/.mongodb'
+Auth MongoDB replica-set transaction smoke passed.
+Local health, isolation, unauthorized-core and benchmark smoke checks passed.
