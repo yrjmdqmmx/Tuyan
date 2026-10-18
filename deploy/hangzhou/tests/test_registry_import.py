@@ -22,3 +22,10 @@ class RegistryImportTests(unittest.TestCase):
    root=pathlib.Path(td);self.fixture(root)
    with self.assertRaises(ValueError):r.config_digest(root,'missing')
    with self.assertRaises(ValueError):r.blob(root,'sha256:../../escape')
+
+ def test_docker_storage_backends_validate_identical_runtime_and_layers(self):
+  config={'architecture':'amd64','os':'linux','config':{'Cmd':['/app/server'],'Env':['SAFE=1']},'rootfs':{'diff_ids':['sha256:'+'a'*64]}}
+  actual={'Id':'sha256:'+'b'*64,'Architecture':'amd64','Os':'linux','Config':config['config'],'RootFS':{'Layers':config['rootfs']['diff_ids']}}
+  self.assertEqual(r.validate_imported(actual,config),actual['Id'])
+  for key,value in [('Config',{'Cmd':['wrong']}),('RootFS',{'Layers':[]}),('Architecture','arm64')]:
+   with self.assertRaisesRegex(ValueError,'identity'):r.validate_imported({**actual,key:value},config)

@@ -43,6 +43,16 @@ def config_digest(layout,tag):
  if config['architecture']!='amd64' or config['os']!='linux':raise ValueError('wrong OCI platform')
  return digest
 
+def validate_imported(actual,config):
+ # Docker's containerd image store uses a manifest ID; classic storage uses the
+ # config ID. Validate every runtime setting and uncompressed layer instead.
+ if (not re.fullmatch(r'sha256:[a-f0-9]{64}',actual.get('Id',''))
+     or actual.get('Architecture')!=config['architecture'] or actual.get('Os')!=config['os']
+     or actual.get('Config')!=config['config']
+     or actual.get('RootFS',{}).get('Layers')!=config['rootfs']['diff_ids']):
+  raise ValueError('imported image runtime or layer identity mismatch')
+ return actual['Id']
+
 def import_images(images,token,username):
  CACHE.mkdir(mode=0o700,parents=True,exist_ok=True)
  with open(LOCK,'a') as lock:
@@ -55,10 +65,9 @@ def import_images(images,token,username):
     tag=source.split('@sha256:')[1];local='ghcr.io/yrjmdqmmx/'+source.split('/')[2].split('@')[0]+':hz-import-'+tag
     cmd(['skopeo','--override-arch','amd64','--override-os','linux','copy','--src-authfile',str(auth),'docker://'+source,'oci:'+str(CACHE)+':'+tag],env=env,timeout=900)
     expected=config_digest(CACHE,tag)
-    found=subprocess.run(['docker','image','inspect',expected],capture_output=True)
+    found=subprocess.run(['docker','image','inspect',local],capture_output=True)
     if found.returncode:
      cmd(['skopeo','copy','oci:'+str(CACHE)+':'+tag,'docker-daemon:'+local],timeout=600)
-    actual=json.loads(cmd(['docker','image','inspect',expected]))[0]
-    if actual['Id']!=expected or actual['Architecture']!='amd64' or actual['Os']!='linux':raise ValueError('imported image identity mismatch')
-    out[name]=expected
+    actual=json.loads(cmd(['docker','image','inspect',local]))[0]
+    out[name]=validate_imported(actual,blob(CACHE,expected))
    return out

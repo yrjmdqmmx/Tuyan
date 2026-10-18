@@ -29,7 +29,12 @@ jobs:
           sudo apt-get install -y python3-venv fonts-noto-cjk libreoffice-impress libreoffice-writer
           /usr/bin/python3 -m venv "$RUNNER_TEMP/plot-venv"
           "$RUNNER_TEMP/plot-venv/bin/python" -m pip install -r apps/plot-worker/requirements.txt
-          echo "TUYAN_QA_PYTHON=$RUNNER_TEMP/plot-venv/bin/python" >> "$GITHUB_ENV"
+          # Linux RLIMIT_NPROC counts all threads for a UID. Keep real plot
+          # children separate from the runner/pnpm/Node processes, retaining 64.
+          sudo useradd --system --no-create-home tuyan-plot-qa
+          printf '#!/bin/sh\nexec sudo -n -u tuyan-plot-qa --preserve-env=PYTHONPATH "%s" "$@"\n' "$RUNNER_TEMP/plot-venv/bin/python" > "$RUNNER_TEMP/plot-python"
+          chmod 755 "$RUNNER_TEMP/plot-python"
+          echo "TUYAN_QA_PYTHON=$RUNNER_TEMP/plot-python" >> "$GITHUB_ENV"
           echo "TUYAN_QA_EVIDENCE_DIR=$RUNNER_TEMP/tuyan-qa-evidence" >> "$GITHUB_ENV"
       - name: Preflight actual scrubbed Python subprocess and PNG/SVG outputs
         run: PYTHONPATH="$PWD/apps/plot-worker" "$TUYAN_QA_PYTHON" deploy/hangzhou/plot-smoke.py
