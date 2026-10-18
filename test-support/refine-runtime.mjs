@@ -64,6 +64,13 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     define: { 'import.meta.url': JSON.stringify('data:text/javascript,isolated-test-runtime') },
     nodePaths: [fileURLToPath(new URL('../apps/paperbanana-api/node_modules', import.meta.url))],
     plugins: [{ name: 'local-infrastructure', setup(builder) {
+      // Diagnostics stay inside the isolated fixture bundle, never production logging.
+      if (process.env.TUYAN_QA_DIAGNOSTICS === '1') builder.onLoad({ filter: /execution-errors\.ts$/ }, args => ({
+        loader: 'ts', contents: readFileSync(args.path, 'utf8').replace(
+          'export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) {',
+          'export function publicExecutionFailure(error: any, completedCalls = 0, hasUnknownCall = false) { console.error("fixture failure detail", String(error?.stack || error).slice(0, 2500));',
+        ),
+      }));
       builder.onResolve({ filter: /(?:core-services\.(?:js|ts)|^sharp)$/ }, args => ({ path: args.path, namespace: 'local-test' }));
       builder.onLoad({ filter: /.*/, namespace: 'local-test' }, args => ({
         loader: 'js', contents: args.path === 'sharp' ? 'export default globalThis.__refineTestSharp' : 'export const database=globalThis.__refineTestCloud.mongo.db; export const objectStorage=globalThis.__refineTestCloud.storage;',

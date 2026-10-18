@@ -36,6 +36,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: python3 -m unittest discover -s deploy/hangzhou/tests -v
       - run: pnpm --filter @paperbanana/auth-gateway test
+      - name: Preflight real mixed figure workflow with offline model fixtures
+        working-directory: apps/paperbanana-api
+        run: pnpm exec tsx --test --test-name-pattern='original mixed workflow' tests/diagram-topology-runtime.test.ts
+        env:
+          TUYAN_QA_DIAGNOSTICS: '1'
       - run: pnpm --filter @paperbanana/paperbanana-api test
       - run: pnpm --filter @paperbanana/paperbanana-api check
       - run: pnpm --filter @paperbanana/benchmark-worker test

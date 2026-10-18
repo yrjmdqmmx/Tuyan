@@ -161,11 +161,10 @@ def deploy(project,stream):
   if set(m)!={'sha','images'} or m['sha']!=h['sha'] or set(m['images'])!=set(c['images']):raise ValueError('manifest mismatch')
   for name,image in m['images'].items():
    if not re.fullmatch('ghcr.io/yrjmdqmmx/'+c['images'][name]+r'@sha256:[a-f0-9]{64}',image):raise ValueError('unapproved image')
-  with registry(h['token'],h['username']) as config:
-   for image in m['images'].values():
-    command(['docker','--config',config,'pull',image])
-    d=json.loads(command(['docker','image','inspect',image]))[0]
-    if d['Architecture']!='amd64' or d['Os']!='linux':raise ValueError('wrong image platform')
+  # Only registry bytes use this separate SSH tunnel. Existing model proxies are untouched.
+  from registry_import import import_images
+  registry_sources=dict(m['images'])
+  m['images']=import_images(registry_sources,h['token'],h['username'])
   with open('/run/lock/hangzhou-ci-production.lock','a') as lock:
    fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
    if state(project)!=h['expected']:raise ValueError('production changed after CI preflight')
@@ -176,7 +175,7 @@ def deploy(project,stream):
    if project=='tuyan':
     (dest/'protected-before.json').write_text(json.dumps(protected_tuyan()));(dest/'protected-before.json').chmod(0o600);tuy_deploy(c,h,m,dest)
    else:openacad_deploy(c,h,m,dest)
-   receipt={'project':project,'source':h['sha'],'run':h['run'],'status':'healthy','target':'Hangzhou','modelCalls':0,'images':{k:inspect(v)['Image'] for k,v in c['services'].items()},'web':str(dest/'web'),'completedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
+   receipt={'project':project,'source':h['sha'],'run':h['run'],'status':'healthy','target':'Hangzhou','modelCalls':0,'registrySources':registry_sources,'images':{k:inspect(v)['Image'] for k,v in c['services'].items()},'web':str(dest/'web'),'completedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
    (dest/'receipt.json').write_text(json.dumps(receipt,indent=2));print(json.dumps(receipt),flush=True)
 
 def main():
