@@ -1,8 +1,8 @@
 # 当前架构与运行核查
 
-> **2026-10-18 分渠道线路已部署：** 国内入口 / Fireworks 杭州直连；OpenRouter 等 16 个精确 API 主机走香港新 WG + CONNECT 代理；OpenAI / Anthropic / Gemini / Bedrock 等保留 SG。SG DNS 选路修正，Core 5f15e5e0 保留现网排行榜证据修复；42 个实际容器无密钥 GET 选路核验通过，模型推理与账户权益未验证。见[发布记录及回退边界](provider-routing-rollout-20261018/report.md)。
+> **2026-10-18 分渠道线路已部署：** 国内入口 / Fireworks 杭州直连；OpenRouter 等 16 个精确 API 主机走香港新 WG + CONNECT 代理；OpenAI / Anthropic / Gemini / Bedrock 等保留 SG。SG DNS 选路修正，线路发布基线为 Core 5f15e5e0，后续杭州发布保留排行榜证据修复；42 个实际容器无密钥 GET 选路核验通过，模型推理与账户权益未验证。见[发布记录及回退边界](provider-routing-rollout-20261018/report.md)。
 
-> **2026-10-18 存储切换完成：** 图研 / OpenAcad 业务与数据库、业务素材、评测证据、每日 Mongo 备份均在杭州；服务端 OSS 使用内网。香港保留旧域名兼容转发、模型出口与冻结恢复副本，新加坡保留既有模型出口。旧 HK / SG GitHub Actions 继续停用，杭州受保护的 SSH 人工发布入口已验收，不能执行本文历史主机部署流程。见[存储验收与当前发布入口](2026-10-18-hangzhou-storage.md)。
+> **2026-10-18 存储切换完成：** 图研 / OpenAcad 业务与数据库、业务素材、评测证据、每日 Mongo 备份均在杭州；服务端 OSS 使用内网。香港保留旧域名兼容转发、模型出口与冻结恢复副本，新加坡保留既有模型出口。日常发布由 `codex/hangzhou-production` 的杭州自动流程执行，旧 HK / SG / Pages GitHub Actions 停用；不能执行本文历史主机部署流程。自动发布见[验收记录](2026-10-18-hangzhou-auto-deploy.md)。见[存储验收与当前发布入口](2026-10-18-hangzhou-storage.md)。
 
 > 2026-09-28 发布复核：Core 与 Benchmark 运行来源更新到 `f3bc73ed9a039e1cabf467c3cb12d338b5729377`，Gateway/Plot/Mongo 镜像保持原 digest，容器与依赖健康。SG 已增加三个精确 Bedrock runtime 域名；Azure 资源域名仍需单独配置。见[补充发布记录](../releases/2026-09-28-tuyan-v3.8.1-supplement.md)。下方带日期的核查保留当时状态。
 
