@@ -1,5 +1,7 @@
 # 当前架构与运行核查
 
+> **2026-10-18 渠道线路更新：** TokenDance / 方舟已在杭州直连，百炼保持直连，OpenRouter 保留 SG；香港候选未经模型推理验证。见[实测记录](provider-route-audit-20261018/report.md)。
+
 > **2026-10-18 生产拓扑已更新：** 图研 / OpenAcad 业务与数据库在杭州，香港旧业务停止，OSS 仍在香港，新加坡增加杭州隧道来源。旧 HK / SG 发布工作流已停用；不得直接执行本文旧主机部署或单来源出口重装流程。以[杭州迁移记录](2026-10-18-hangzhou-migration.md)为准。
 
 > 2026-09-28 发布复核：Core 与 Benchmark 运行来源更新到 `f3bc73ed9a039e1cabf467c3cb12d338b5729377`，Gateway/Plot/Mongo 镜像保持原 digest，容器与依赖健康。SG 已增加三个精确 Bedrock runtime 域名；Azure 资源域名仍需单独配置。见[补充发布记录](../releases/2026-09-28-tuyan-v3.8.1-supplement.md)。下方带日期的核查保留当时状态。

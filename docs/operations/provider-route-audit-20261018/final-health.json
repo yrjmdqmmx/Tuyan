@@ -1,0 +1,84 @@
+{
+  "checked_at": "2026-10-18T04:11:39.741447+00:00",
+  "containers": [
+    {
+      "name": "paperbanana-hk-paperbanana-api-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-auth-gateway-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-api-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-worker-two-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-worker-one-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "openacad-redis-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "tuyan-cn-gateway-auth-gateway-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-benchmark-worker-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-mongodb-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "paperbanana-hk-plot-worker-1",
+      "state": "running",
+      "health": "healthy",
+      "restarts": 0
+    }
+  ],
+  "health_checks": [
+    {
+      "url": "https://tuyansci.cn/ready",
+      "http_code": "200",
+      "curl_exit": 0
+    },
+    {
+      "url": "https://api.paperbanana.asia/ready",
+      "http_code": "200",
+      "curl_exit": 0
+    },
+    {
+      "url": "https://openacad.xyz/api/health",
+      "http_code": "200",
+      "curl_exit": 0
+    }
+  ],
+  "maintenance": false,
+  "temporary_hk_tunnel_directory_present": false
+}
