@@ -11243,7 +11243,7 @@ async function publicJob(job: any) {
     retrievalSetting: job.retrievalSetting || 'none',
     manualReferenceIds: job.manualReferenceIds || [],
     retrievedReferenceIds: job.retrievedReferenceIds || [],
-    retrievedReferences: job.retrievedReferences || [],
+    retrievedReferences: await refreshRetrievedReferenceUrls(job.retrievedReferences || []),
     stages: redactPublicValue(await refreshStageImages(job.stages || [])),
     criticMode: job.criticMode || '',
     aspectRatio: job.aspectRatio,
@@ -11331,6 +11331,18 @@ async function refreshReferenceImageUrls(images: any[]) {
       analysisMimeType: image.analysisMimeType || '',
       analysisSize: Number(image.analysisSize || 0),
     }
+  }))
+}
+
+async function refreshRetrievedReferenceUrls(references: any[]) {
+  const bucket = objectStorage.bucket(bucketName)
+  return Promise.all(references.map(async (reference) => {
+    if (!reference?.imageObjectKey) return reference
+    // Preserve the historical selection and its metadata; only renew the URL.
+    // Never resurrect a stale signature if signing fails after a bucket move.
+    let imageUrl = ''
+    try { imageUrl = await bucket.getDownloadUrl(reference.imageObjectKey, 3600 * 24 * 7) } catch {}
+    return { ...reference, imageUrl }
   }))
 }
 
