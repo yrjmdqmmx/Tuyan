@@ -60,9 +60,9 @@ test('applying a template creates a separate task and preserves every existing t
  assert.deepEqual(next.tasks.slice(1),before);assert.equal(next.selectedTaskId,'template-task');assert.equal(currentDraft(next).text,'Study');assert.equal(next.tasks[0].runs.length,0);
 });
 
-test('copying historical execution input creates a new task without overwriting current drafts or results',()=>{
+test('retired execution reuse action cannot create tasks or change drafts',()=>{
  const state=setup('svg'),original=structuredClone(state.tasks);const next=workspaceReducer(state,{type:'COPY_RUN',runId:'run',id:'copy'});
- assert.deepEqual(next.tasks.slice(1),original);assert.deepEqual(currentDraft(next).settings,original[0].runs[0].input.settings);assert.equal(next.tasks[0].runs.length,0);assert.equal(next.tasks[0].activeRunId,null);
+ assert.deepEqual(next.tasks,original);assert.deepEqual(next,state);
 });
 
 test('resume checks the saved job then uses the same execution identity, never a new generation',async()=>{

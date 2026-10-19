@@ -8,7 +8,7 @@ import useComposerViewport from './useComposerViewport.js';
 import ResultWorkspace from './ResultWorkspace.jsx';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
-import { currentTask, currentBranch, PATHS, taskMatches, taskHasContent, hasRequirements, currentDraft } from './workspaceState.js';
+import { currentTask, currentBranch, PATHS, taskMatches, taskHasContent, currentDraft } from './workspaceState.js';
 
 export default function TaskWorkspace({ state, dispatch, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
   const task = currentTask(state), branch = currentBranch(state);
@@ -61,7 +61,6 @@ export default function TaskWorkspace({ state, dispatch, onSubmit, onFiles, busy
       </header>
       {page !== 'workspace' ? <div key={page} className={`tw-page ${['models', '排行榜', '站长页', '社区评估题审核'].includes(page) ? 'tw-page-wide' : ''}`}><div className="tw-page-body">{page === 'models' ? renderModels?.({ management: true, onClose: () => setPage('workspace') }) : page === '账户设置' && renderAccount ? renderAccount() : renderPage?.(page, () => setPage('workspace'), setPage)}</div></div>
         : task.deleted ? <div className="tw-empty-body"><p role="status">此任务已删除。内容仍保留，可恢复后继续编辑。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button></div> : !hasStarted ? <div className="tw-empty-body"><div className="tw-welcome"><h2>HI！{nickname && <>{nickname}，</>}今天想绘制什么？</h2></div>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
-          {!hasRequirements(branch.draft) && hasRequirements(task.branches[task.path === 'png' ? 'svg' : 'png'].draft) && <button type="button" className="tw-copy-branch" onClick={() => dispatch({ type: 'COPY_REQUIREMENTS' })}>沿用另一条路径的需求</button>}
         </div> : <><ResultWorkspace executionProgress={executionProgress} renderRecovery={renderRecovery} userId={user?.id} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} renderSvgEditor={renderSvgEditor} onDownload={onDownload} onCloseUnaccepted={!busy ? onCloseUnaccepted : null} /><div className="tw-docked">{composer}</div></>}
     </main>
     {mobile && mobileOpen && <WorkspaceDialog title="任务导航" className="tw-mobile-nav-dialog" backdropClassName="tw-mobile-nav-backdrop" onClose={() => setMobileOpen(false)}>{sidebar}</WorkspaceDialog>}

@@ -37,7 +37,7 @@ The `import.meta.env.DEV` branch in `main.jsx` excludes this host from productio
 - `VIEW` only browses. `REFINE` explicitly binds a saved version. Switching paths exits refinement and retains its draft for explicit resumption.
 - A result never changes tasks or paths. Manual navigation prevents automatic result following. New versions retain their parent; old versions are not edited in place.
 - Failure preserves prior results and restores only an untouched submitted draft. `RESTORE_RUN` refuses to overwrite newer requirements, attachments, mode or settings. It does not execute a retry.
-- Requirements reuse is disabled when the destination already contains text, supplements or attachments. Settings-only and supplement-only tasks are not discarded as empty.
+- Requirements reuse and historical-input copy actions have been removed. Settings-only and supplement-only tasks are not discarded as empty.
 
 ## Execution and editing boundary
 

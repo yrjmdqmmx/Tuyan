@@ -18,6 +18,9 @@ export function mergeAccountHistory(state, jobs) {
   const next=structuredClone(state);let changed=false;
   const sorted=[...jobs].sort((a,b)=>a.createdAt-b.createdAt);
   for(const job of sorted){
+    // The account service knows accepted native runs before every tab has
+    // received their jobId. Do not turn that propagation gap into a new task.
+    if(job.workspaceExecution?.taskId && job.workspaceExecution?.runId)continue;
     const existing=next.tasks.flatMap(t=>t.runs).find(r=>r.history?.jobId===job.id);
     const runId=existing?.id || key(job);
     // A native workspace execution is already represented; never import it twice.

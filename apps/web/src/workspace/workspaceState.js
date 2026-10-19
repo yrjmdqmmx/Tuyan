@@ -80,12 +80,6 @@ export function workspaceReducer(state, action) {
     return next;
   }
   const s = copy(state);
-  if (action.type === 'COPY_RUN') {
-    const source=s.tasks.find(t=>t.id===(action.taskId||s.selectedTaskId)),run=source?.runs.find(r=>r.id===action.runId);
-    if(!run)return state;
-    const task=newTask(action.id||uid(),run.path);task.title=source.title+' · 设置副本';task.automaticTitle=false;
-    task.branches[run.path].draft={...copy(run.input),revision:1};s.tasks.unshift(task);s.selectedTaskId=task.id;return s;
-  }
   if (action.type === 'APPLY_TEMPLATE') {
     const task=newTask(action.id || uid(),currentTask(s)?.path || 'png');
     task.title=action.template.title;task.automaticTitle=false;
@@ -130,12 +124,6 @@ export function workspaceReducer(state, action) {
     case 'ADD_ATTACHMENTS':
       if (!d) return state;
       d.attachments.push(...copy(action.attachments)); d.revision++; break;
-    case 'COPY_REQUIREMENTS': {
-      const other = t.branches[t.path === 'png' ? 'svg' : 'png'].draft;
-      if (hasRequirements(b.draft)) return state;
-      for (const field of ['text', 'caption', 'avoid', 'attachments']) b.draft[field] = copy(other[field]);
-      b.draft.revision++; break;
-    }
     case 'VIEW': view(t, b, action.versionId); break;
     case 'VIEW_GROUP': {
       const group = b.groups.find(g => g.id === action.id);
@@ -244,6 +232,6 @@ export function workspaceReducer(state, action) {
     }
     default: return state;
   }
-  if(['EDIT_DRAFT','ADD_ATTACHMENTS','COPY_REQUIREMENTS','BEGIN','SAVE_SVG','RESULT','FINISH','RESTORE_RUN','RENAME'].includes(action.type))t.updatedAt=action.at || Date.now();
+  if(['EDIT_DRAFT','ADD_ATTACHMENTS','BEGIN','SAVE_SVG','RESULT','FINISH','RESTORE_RUN','RENAME'].includes(action.type))t.updatedAt=action.at || Date.now();
   return s;
 }

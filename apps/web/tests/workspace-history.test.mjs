@@ -28,6 +28,13 @@ test('PNG and SVG branches preserve both formats; native workspace jobs are not 
  assert.deepEqual(versionsOf(state).map(v=>v.format),['png','svg']);assert.equal(cleanWorkspace(state).tasks.length,2);
  const native=structuredClone(job('a'));native.source='server';const existing=newWorkspace('draft');existing.tasks[0].runs=[{execution:{jobId:'a'}}];assert.equal(mergeAccountHistory(existing,[native]),existing);
 });
+test('native account execution identity prevents history duplication in stale and fresh tabs',()=>{
+ const stale=workspaceReducer(newWorkspace('draft'),{type:'EDIT_DRAFT',patch:{text:'keep local draft'}});
+ const native={...job('pending'),workspaceExecution:{taskId:'native-task',runId:'native-run'}};
+ assert.equal(mergeAccountHistory(stale,[native]),stale);
+ const oldHistory=mergeAccountHistory(stale,[job('pending')]);
+ assert.equal(mergeAccountHistory(oldHistory,[native]),oldHistory,'already imported records and drafts are preserved');
+});
 test('history hydration renews URLs in one batch without downloading originals or uploading copies',async()=>{
  const source=mergeAccountHistory(newWorkspace('draft'),[job('a')]);const calls=[];
  const client=createWorkspaceClient({userId:'owner',fetcher:async(url,options)=>{calls.push([url,options.method]);return Response.json({jobs:[job('a')],nextOffset:null});}});

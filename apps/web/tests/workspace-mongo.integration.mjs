@@ -60,5 +60,14 @@ test('real Mongo replica set: account CAS, independent-origin clients and durabl
    const outcomes=await Promise.allSettled([auth.workspaceExecutionStore.claim('test-owner','two','run-a'),auth.workspaceExecutionStore.claim('test-owner','two','run-b')]);assert.equal(outcomes.filter(r=>r.status==='fulfilled').length,1);assert.equal(outcomes.find(r=>r.status==='rejected').reason.status,409);
    const winner=outcomes[0].status==='fulfilled'?'run-a':'run-b';await auth.workspaceExecutionStore.update('test-owner',winner,{jobId:'accepted-job',status:'running'});const retry=await auth.workspaceExecutionStore.claim('test-owner','two',winner);assert.equal(retry.fresh,false);assert.equal(retry.execution.jobId,'accepted-job');assert.equal(await db.collection('workspaceExecutionLocks').countDocuments(),1);
   });
+  await t.test('history reads identify a native execution before clients receive its acceptance',async()=>{
+   const {historyJob}=await import('../../../packages/api/src/workspace-history.mjs');
+   const {mergeAccountHistory}=await import('../src/workspace/workspaceHistory.js');
+   const job=historyJob({id:'accepted-job',userId:'test-owner',status:'running',methodContent:'submitted'},'server','test-owner');
+   const jobs=await auth.workspaceStore.identifyHistory('test-owner',[job]);assert.equal(jobs[0].workspaceExecution.taskId,'two');
+   const stale=edit(newWorkspace('different'),'different','unsaved local');assert.equal(mergeAccountHistory(stale,jobs),stale);
+   const before=await auth.workspaceStore.get('test-owner');await auth.workspaceStore.importHistory('test-owner',[job]);const after=await auth.workspaceStore.get('test-owner');assert.deepEqual(after,before);
+   assert.equal((await auth.workspaceStore.identifyHistory('other',[job]))[0].workspaceExecution,undefined);
+  });
  }finally{for(const c of tabs)c.dispose();await new Promise(r=>server.close(r));await auth.close();await db.dropDatabase();await mongo.close();}
 });

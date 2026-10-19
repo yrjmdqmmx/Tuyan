@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Copy, FilePenLine, Layers, Sparkles } from 'lucide-react';
+import { Check, ChevronDown, FilePenLine, Layers, Sparkles } from 'lucide-react';
 import WorkspaceArchive from './WorkspaceArchive.jsx';
 import WorkspaceRunEvidence from './WorkspaceRunEvidence.jsx';
 import { ROLE_NAMES } from './workspaceModels.js';
@@ -10,7 +10,7 @@ function timeLabel(value) {
 }
 const statusLabel = run => run.status === 'succeeded' || run.status === 'completed' ? (run.kind === 'edit' ? '已保存' : '已完成') : ({ failed:'执行失败', cancelled:'已停止', running:'执行中', queued:'等待中', submitting:'提交中' }[run.status] || '待确认');
 
-export default function WorkspaceExecutionDetails({ task, dispatch, userId, renderRecovery, onShowVersion }) {
+export default function WorkspaceExecutionDetails({ task, userId, renderRecovery, onShowVersion }) {
   const versions = Object.values(task.branches).flatMap(b => b.groups.flatMap(g => g.candidates.flatMap(c => c.versions.map(v => locateVersion(task, v.id)))));
   return <div className="tw-execution-details">
     <div className="tw-execution-overview"><div><span className="tw-execution-eyebrow">任务记录</span><h3>{task.title}</h3><p>{task.runs.length} 条记录<span>·</span>{versions.length} 个版本</p></div><WorkspaceArchive task={task} userId={userId}/></div>
@@ -31,7 +31,6 @@ export default function WorkspaceExecutionDetails({ task, dispatch, userId, rend
           </>}
           {run.execution && <p className="tw-execution-source">{run.execution.simulation ? '本地模拟 · 未调用真实模型' : '执行服务'} · {run.execution.jobId || '等待确认任务编号'}</p>}
           {run.history && <details className="tw-execution-history"><summary>服务器历史快照</summary><p>{run.history.jobId} · {run.history.status}</p><p>原设置：比例 {run.history.ratio === 'auto' ? '自动' : run.history.ratio} · {run.history.candidates} 个候选 · {run.history.reviews} 轮评审</p>{Object.entries(run.history.models || {}).map(([role,m]) => <p key={role}>{ROLE_NAMES[role] || role}：{m.modelId} · {m.accessProvider}</p>)}{run.history.originalCount > 0 && <p>历史执行包含 {run.history.originalCount} 份原材料。未迁移原件，需要用于新执行时请重新添加。</p>}</details>}
-          <div className="tw-execution-actions"><button type="button" onClick={() => dispatch({type:'COPY_RUN',taskId:task.id,runId:run.id})}><Copy size={14}/>使用本次输入与设置新建任务</button></div>
           <WorkspaceRunEvidence renderRecovery={run.id === task.activeRunId ? renderRecovery : null} taskId={task.id} run={run} userId={userId}/>
         </div>
       </details>;

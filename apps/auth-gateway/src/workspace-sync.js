@@ -23,9 +23,17 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
   };
   return {
     get,
+    async identifyHistory(userId, jobs) {
+      await assertActive(userId);
+      return Promise.all(jobs.map(async job => {
+        const execution = await db.collection('workspaceExecutions').findOne({userId,jobId:job.id});
+        return execution && !execution.historical ? {...job,workspaceExecution:{taskId:execution.taskId,runId:execution.runId}} : job;
+      }));
+    },
     async importHistory(userId, jobs) {
       // Input is the owner-checked projection from Core (never a request body).
       // CAS retries merge onto the newest state, preserving concurrent drafts.
+      jobs = await this.identifyHistory(userId, jobs);
       for (let attempt = 0; attempt < 5; attempt++) {
         const current = await get(userId);
         const before = current.state || newWorkspace('account-draft');
@@ -110,7 +118,7 @@ export function createWorkspaceRouter({ auth, store, frontendOrigins, isMaintena
   });
   router.use(express.json({ limit: '14mb' }));
   const route = fn => (req,res,next) => Promise.resolve(fn(req,res)).catch(next);
-  router.get('/history', route(async (req,res) => { if (!history) throw failure(503,'历史任务暂时不可用'); const data=await history(req); if (!isMaintenance()) await store.importHistory(req.workspaceUserId,data.jobs); res.json(data); }));
+  router.get('/history', route(async (req,res) => { if (!history) throw failure(503,'历史任务暂时不可用'); const data=await history(req); data.jobs=await store.identifyHistory(req.workspaceUserId,data.jobs); if (!isMaintenance()) await store.importHistory(req.workspaceUserId,data.jobs); res.json(data); }));
   router.get('/history/:id', route(async (req,res) => { if (!history) throw failure(503,'历史任务暂时不可用'); res.json(await history(req,req.params.id)); }));
   router.get('/history/:id/inspect/:index', route(async(req,res)=>{if(!auth.inspectWorkspaceHistoryResult)throw failure(503,'此服务未启用历史文件检查桥');res.json(await auth.inspectWorkspaceHistoryResult(req,req.params.id,Number(req.params.index)));}));
   router.get('/history/:id/results/:index', route(async (req,res) => {
