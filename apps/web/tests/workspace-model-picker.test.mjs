@@ -120,7 +120,7 @@ test('execution records retain versions and original inputs without invented man
  fireEvent.click(rows[0].querySelector('summary'));assert.equal(rows[0].open,true);
  assert.match(rows[0].textContent,/候选 A · v2/);assert.doesNotMatch(rows[0].textContent,/比例|普通|auto/);
  fireEvent.click(within(rows[0]).getByRole('button',{name:'查看 候选 A · v2'}));assert.equal(viewed,'v2');
- fireEvent.click(within(rows[0]).getByRole('button',{name:'使用本次输入与设置新建任务'}));assert.equal(action.runId,'manual');
+ assert.equal(screen.queryByRole('button',{name:'使用本次输入与设置新建任务'}),null);assert.equal(action,undefined);
  fireEvent.click(rows[1].querySelector('summary'));assert.ok(within(rows[1]).getByText('Original requirement'));
  assert.deepEqual(state.tasks[0],before);
 });
