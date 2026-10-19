@@ -35,6 +35,19 @@ export function workflowContext(body: Record<string, any>, description = '', ext
   }, null, 2)
 }
 
+/** Versioned planning only: never changes historical/review prompts or discards distinct evidence. */
+export const GENERATION_PROMPT_VERSION = 1
+export const COMPACT_PLAN_INSTRUCTION = 'Write one compact, complete drawing specification. Group shared appearance rules once, then list required elements and connections. Preserve every exact label, number, unit, relationship, source uncertainty and type constraint. Do not repeat the source narrative, explain your reasoning, list alternatives or restate common styles for each node. For a simple four-node schematic aim for 200-350 words; expand as needed for evidence and complexity. This is a soft prose target, never a limit on required data. Return the full required JSON plan, never a patch or a no-changes marker.'
+export function generationPlanningContext(body: Record<string, any>, description = '', extra: Record<string, any> = {}) {
+  const context = JSON.parse(workflowContext(body, description, extra))
+  if (context.methodology === context.originalRequest) delete context.methodology
+  // Refined or panel-specific execution instructions can differ from the saved original.
+  if (body.methodContent && body.methodContent !== context.originalRequest) context.executionRequest = body.methodContent
+  if (body.caption && body.caption !== context.visualIntent) context.executionVisualIntent = body.caption
+  if (body.negativePrompt && body.negativePrompt !== context.avoid) context.executionAvoid = body.negativePrompt
+  return JSON.stringify(context)
+}
+
 export function observerSystemPrompt() {
   return [
     'You are the visual observer assisting the main model.',
