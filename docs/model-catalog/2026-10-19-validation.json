@@ -1,0 +1,251 @@
+{
+  "checkedAt": "2026-10-19T01:27:07.006549+00:00",
+  "root": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+  "branch": "codex/tuyan-v400-workflow-20261009",
+  "origin": "https://github.com/yrjmdqmmx/Tuyan.git",
+  "head": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+  "registryVersion": "2026-10-19.v35",
+  "staticBefore": 1099,
+  "staticAfter": 1103,
+  "channels": 32,
+  "newChannelIdentities": 4,
+  "lifecycle": {
+    "arkExpired": 12,
+    "arkFuture": 8
+  },
+  "checks": {
+    "test-core-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/test-core-final.log",
+      "sha256": "924d68c46b7a909eb35d625f975461cb032336146b352ccdaed9bd317f713826",
+      "tests": 239,
+      "pass": 238,
+      "fail": 1
+    },
+    "test-weekly-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/test-weekly-final.log",
+      "sha256": "47e2db76542ccaa0f82cc6a8527cf043940346079afbee3bac0f84d7b3d84606",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0
+    },
+    "test-tokendance.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/test-tokendance.log",
+      "sha256": "cd3cd7746a8346b1ba9e4dcda7a5c75251d6e939f7255e9421fbdb9462b76c6e",
+      "tests": 23,
+      "pass": 23,
+      "fail": 0
+    },
+    "test-web-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/test-web-final.log",
+      "sha256": "3ef90997a087c7dc7af303f80ac733b458f2dcf9bbc8bef79ee99fb38d859091",
+      "tests": 52,
+      "pass": 52,
+      "fail": 0
+    },
+    "typecheck-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/typecheck-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build-web-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/build-web-final.log",
+      "sha256": "e407c2aac690b12311e819eb9faf44f5766e04878a47750851e7d0e316d9cf4e"
+    },
+    "generator-final.log": {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/generator-final.log",
+      "sha256": "f86f6632467072c815a8147b9172cec7c4cf6e2604277f437636a69fb71da9d4"
+    }
+  },
+  "testSummary": {
+    "coreUniqueCovered": 239,
+    "corePrimaryPass": 238,
+    "corePrimaryFailedAssertion": 1,
+    "weeklyAfterAssertionCorrection": "5/5 pass; 4 rechecked and 1 corrected; no unresolved failure",
+    "tokenDanceAdditional": "23/23",
+    "web": "52/52",
+    "coreTypecheck": "pass",
+    "webBuild": "pass; existing large-chunk warning",
+    "generator": "1103; no drift; --skip-miniprogram",
+    "gitDiffCheck": "pass"
+  },
+  "preservation": {
+    "baselineNonIgnoredFiles": 4850,
+    "baselineExpandedStatusLines": 3724,
+    "changedBaselineFiles": [
+      "SYNC.md",
+      "apps/paperbanana-api/runtime/handler.ts",
+      "apps/paperbanana-api/tests/catalog-20261016.test.ts",
+      "apps/paperbanana-api/tests/provider-catalog.test.ts",
+      "apps/web/src/data/model-brand-logos.json",
+      "apps/web/src/data/model-card-specifications.json",
+      "apps/web/src/lib/modelPresentation.js",
+      "apps/web/src/lib/staticModelCatalog.js",
+      "apps/web/tests/model-specifications.test.mjs",
+      "config/channel-audit/model-page-followup-20261016.json",
+      "config/model-catalog-updates.json",
+      "config/model-channel-schemas.json",
+      "config/model-presentation.json",
+      "config/model-specifications.json",
+      "config/tokendance/catalog.json",
+      "packages/api/src/audited-channel-data.ts",
+      "packages/api/src/provider-model-details.ts",
+      "packages/api/src/reference-upload.ts",
+      "packages/api/src/tokendance-models.ts",
+      "packages/types/src/model-presentation-data.ts",
+      "scripts/sync-model-catalog.mjs"
+    ],
+    "unchangedBaselineCount": 4829,
+    "missingBaselineFiles": [],
+    "newFiles": [
+      "apps/paperbanana-api/tests/catalog-20261019.test.ts",
+      "apps/web/public/brand/catalog/reflection.png",
+      "config/channel-audit/catalog-20261019-contracts.json",
+      "docs/model-catalog/2026-10-19-coverage.csv",
+      "docs/model-catalog/2026-10-19-coverage.json",
+      "docs/model-catalog/2026-10-19-evidence.json",
+      "docs/model-catalog/2026-10-19-update.md",
+      "docs/model-catalog/2026-10-19-validation.json"
+    ],
+    "miniProgramFilesUnchanged": 224,
+    "all1099PriorIdsPreserved": true,
+    "all31DefaultGroupsPreserved": true,
+    "nonGeneratedHandlerUnchanged": true,
+    "unexpectedConcurrentChanges": []
+  },
+  "hashes": {
+    "SYNC.md": {
+      "before": "7cd8acf4888d4eb939139d3e4caacbbf73f1028fc24359edb7d19093c9bf8fc2",
+      "after": "35cd770d08e2f5116d1bc9ab0fd9dacabe1abad12380e36c45449f9b6c2d4e4f"
+    },
+    "apps/paperbanana-api/runtime/handler.ts": {
+      "before": "87ed7879d6778b4a94c988c0195f771b16098ddab3c8f0209acdb61b234413b7",
+      "after": "4b76426d69d4ad9ac04cc2eca715effc8efcea933878725b6bb27337cab0b6b7"
+    },
+    "apps/paperbanana-api/tests/catalog-20261016.test.ts": {
+      "before": "03a8eb321c5710838ce8ff3aa4b879d2f5777144a703ccaeec5c0e1a705bc800",
+      "after": "247f1960e92d5ed4d0e6225afff273d0cf50408592e0b3304437c8cea600d493"
+    },
+    "apps/paperbanana-api/tests/provider-catalog.test.ts": {
+      "before": "ee991f4e3ca2b710d1bc7f5cd8b35869dd98face74a9a3f3dff84875b51aed16",
+      "after": "50334724c6efda1f83534ec8ac50a19e281ef1ec8c0dc7330b863c1f533c12ee"
+    },
+    "apps/web/src/data/model-brand-logos.json": {
+      "before": "e3a7e6927d57094c17dc0bb27538b679e0949b288307183516016ec55b2bc709",
+      "after": "646263bac1b1224d9c1378c83cee92d4de5d507ea702d3c699e7f5e3187d527b"
+    },
+    "apps/web/src/data/model-card-specifications.json": {
+      "before": "3f4a8d2708d73a4e8e40090013066d4275e3998fd39fa3d3cf30d569e8ca38ca",
+      "after": "24c129615bec2b4d31e4ffe2f09b371f111fc257ea8aba3ab9f18871d4e65cc6"
+    },
+    "apps/web/src/lib/modelPresentation.js": {
+      "before": "ef1c3e7d928893099c555d13ed0b903cd536b03ef47fdcfed51199936b55ba37",
+      "after": "ab9bf491d3213f340015ad414cdd3a196d0b8e9e73553481d4c25c7d3cd20ec0"
+    },
+    "apps/web/src/lib/staticModelCatalog.js": {
+      "before": "f9b558bfee1323255359b5f75dbe35ddadb68f02e7808e0608b5914e9ec36e6b",
+      "after": "e70cc52a4b5e943666998083c86a7aa988f8a0befc74d19bd012aa221ad61b22"
+    },
+    "apps/web/tests/model-specifications.test.mjs": {
+      "before": "8f7ba50d858d2538e2ac84484e2f01872818c17b17c6d224bac6b05e9c137692",
+      "after": "b8f9490e9d63ddc34a95f8155a19df30251c9d24c3b01c85736cd67157a52639"
+    },
+    "config/channel-audit/model-page-followup-20261016.json": {
+      "before": "f52d4e0b8f68e8d7b8456a0eb5d4a64f579a5a14b37f32d376cce863b995cd70",
+      "after": "139a95089319264e5e5d3d9f9a55f1f14814dad4bfad914fd83c00f21c618a22"
+    },
+    "config/model-catalog-updates.json": {
+      "before": "1398f083f389a8ce7ccb861b9a889400f86a1c9119b96acd32adce742620d0a4",
+      "after": "d3b487ea6bdc3c5e223ec032c7513104799e33789836917c5e4be773c949a2cd"
+    },
+    "config/model-channel-schemas.json": {
+      "before": "456bfbaa3b95d504623f2f43445445a4a00ebfca6e4f8d4a160a85dd07d434ae",
+      "after": "c83ead79409cf777ddaef6904fb8267b349a3cfc174f1c8e4c891a7906afa55e"
+    },
+    "config/model-presentation.json": {
+      "before": "8ddfc05a129432df3d5f4532804b85831dffa9a5e2804d3f2eaa426df91ea35d",
+      "after": "438438ddf11baf60571584442aa033fa0bb6a00d915d16d3ced693cc8c611b18"
+    },
+    "config/model-specifications.json": {
+      "before": "a4ac925dd483f319da47bbacfb1c0e8e257fcd0e25bfadb15f8b8fdfcfcf566d",
+      "after": "37800898d3c79e5340e3a70c204f3a20bdec56c835396e809c70a06c01b80ba8"
+    },
+    "config/tokendance/catalog.json": {
+      "before": "b7ff0fdb966383b33ae7c343dce92260d9cd3e26c7a41d85d5231c558a43b889",
+      "after": "ff9e52d49c4dfd96845bb64310d5142b496a556bbefac6cb1f8cc86d3a502d74"
+    },
+    "packages/api/src/audited-channel-data.ts": {
+      "before": "84cc39a23ae82f6484ba2f8e3252d9608f8a54ae50703cc59b8f3ac11aef96f1",
+      "after": "9205a37e3c90423c05e5bf6f2b032723fad3e372eb0c2ce9fdd86a2507e80493"
+    },
+    "packages/api/src/provider-model-details.ts": {
+      "before": "cecf32671f7cb96d3800bd9781b6999f0b824234f2532cb9ac22a8d714b29fc5",
+      "after": "797e5fbfc56b6118edd3a77e227c7b9ec50fe1a7dce313e23dd6728b7cf3759b"
+    },
+    "packages/api/src/reference-upload.ts": {
+      "before": "5342db4dab389284601c4bb86a627b953f87e9aa471de37f5ffa3ed02e90975b",
+      "after": "26b36afbee17ec89df77762dda1b5e3053e769de6c2c5755a99a5ba4955bb4ee"
+    },
+    "packages/api/src/tokendance-models.ts": {
+      "before": "af5db0368684b59b27df85cf381356277b092f69852a4abfc9b1a4595ebf3df4",
+      "after": "569dc441c8cd4909cf1aef30fa3af43f247163d5c7968e83de1afa235522511f"
+    },
+    "packages/types/src/model-presentation-data.ts": {
+      "before": "748b4a94d5070280e3e13eba0d59086146dc5aa0551fa795ebd8948d2660bd9c",
+      "after": "3d6ae3b2d48de1f98e9fde3e7d146f267f78e04c8c20fce06df737de116187d5"
+    },
+    "scripts/sync-model-catalog.mjs": {
+      "before": "5cfe34830a35d34692441180ea417cb99ce8a9809179a5adc0cd45fd8a9611ee",
+      "after": "786414826bbfcd584c751ed4361842f34c29f9d998a838cc245ac01b15917834"
+    },
+    "apps/paperbanana-api/tests/catalog-20261019.test.ts": {
+      "before": null,
+      "after": "7bca215cc9da6f8ec3a60c975db52b46c8f46580edbe8b0ad4db398f6d0dc954"
+    },
+    "apps/web/public/brand/catalog/reflection.png": {
+      "before": null,
+      "after": "8bbbb273abcf3a30dd4438f2b3434f629534d9cf2aa6d18bf7c4729010514c19"
+    },
+    "config/channel-audit/catalog-20261019-contracts.json": {
+      "before": null,
+      "after": "ddf699c943668727d8482b935b9dd269f88a75d3557082da4e4ac01bc3530d85"
+    },
+    "docs/model-catalog/2026-10-19-coverage.csv": {
+      "before": null,
+      "after": "5795e5e5d26c2604c6bd8fe47c9b8b9b2011b5cfe3a112bc731d18c598af27bb"
+    },
+    "docs/model-catalog/2026-10-19-coverage.json": {
+      "before": null,
+      "after": "391220ab5e8643fc467985a658c3e1daa43aa0813a74f40fa7661944a2679442"
+    },
+    "docs/model-catalog/2026-10-19-evidence.json": {
+      "before": null,
+      "after": "7862568ea06c5e83948b2c6ede7a408f2e22c975c9f540c45e999a843224c51a"
+    },
+    "docs/model-catalog/2026-10-19-update.md": {
+      "before": null,
+      "after": "5fe3b1cd5ca6b6ef09ab0cc683a150a5632df2b032d1924bf49b07f06a0e109c"
+    }
+  },
+  "network": {
+    "paidInferenceCalls": 0,
+    "authenticatedCatalogRequests": 0,
+    "offlineGuard": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261019/offline-guard.mjs",
+    "publicDocumentationOnly": true
+  },
+  "limits": [
+    "No real inference or image generation",
+    "No Judge or Benchmark",
+    "No account or regional entitlement verification",
+    "No visual quality acceptance",
+    "No Mini Program operations",
+    "No commit, push, PR or production deployment",
+    "fal list incomplete after HTTP 429; no absence-based delisting"
+  ],
+  "commands": {
+    "core": "node --import <offline-guard.mjs> --import tsx --test --test-concurrency=1 tests/catalog-20261019.test.ts tests/catalog-20261016.test.ts tests/provider-catalog.test.ts tests/catalog-retirement-followup.test.ts tests/model-channel-contracts.test.ts tests/full-channel-catalog.test.ts",
+    "weeklyRerun": "node --import <offline-guard.mjs> --import tsx --test --test-concurrency=1 tests/catalog-20261019.test.ts",
+    "web": "node --import <offline-guard.mjs> --import tsx --import ./tests/dom-setup.mjs --test tests/model-specifications.test.mjs tests/catalog-isolation.test.mjs tests/model-registry-ui-contract.test.mjs tests/provider-catalogs.test.mjs src/lib/modelRegistry.test.js",
+    "typecheck": "apps/paperbanana-api/node_modules/.bin/tsc --noEmit (cwd apps/paperbanana-api)",
+    "build": "NODE_OPTIONS=--import=<offline-guard.mjs> npm run build (cwd apps/web)",
+    "generator": "node scripts/sync-model-catalog.mjs --check --skip-miniprogram"
+  }
+}

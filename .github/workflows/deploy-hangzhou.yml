@@ -189,3 +189,44 @@ jobs:
       - name: Remove ephemeral SSH identity
         if: always()
         run: rm -f "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"
+  pages:
+    # Publish the same verified revision only after Hangzhou is healthy.
+    needs: deploy
+    if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --filter @paperbanana/web... --frozen-lockfile
+      - name: Build legacy domain with its existing authentication origin
+        run: pnpm --filter @paperbanana/web build
+        env:
+          VITE_API_BASE: https://api.paperbanana.asia
+          VITE_AUTH_ENABLED: 'true'
+          VITE_AUTH_BASE: https://api.paperbanana.asia
+          VITE_BASE_PATH: /
+          VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'
+      - name: Record matching source version
+        run: node -e 'require("fs").writeFileSync("apps/web/dist/version.json", JSON.stringify({revision:process.env.GITHUB_SHA,target:"GitHub Pages"}))'
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+      - id: publish
+        uses: actions/deploy-pages@v4

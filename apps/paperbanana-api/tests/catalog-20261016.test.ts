@@ -49,13 +49,13 @@ test('reviewed TokenDance absences remain blocked and newly discovered specialis
 })
 
 test('v32 preserves all channel defaults and exposes 20 exact unverified identities',()=>{
-  assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-16.v34')
+  assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-19.v35')
   for(const [provider,defaults]of Object.entries(fixture('baseline-defaults.json')))assert.deepEqual(catalog[provider].defaults,defaults)
   assert.equal(added.length,20)
   for(const {provider,modelId}of added){
     const m=catalog[provider].models.find((m:any)=>m.id===modelId)
     assert.ok(m,provider+'/'+modelId);assert.equal(m.verified,false);assert.equal(m.verificationState,'catalog')
-    assert.equal(m.specifications.checkedAt,'2026-10-16')
+    assert.equal(m.specifications.checkedAt,['gemini-4-argon','krea/v3/text-to-image'].includes(modelId)?'2026-10-19':'2026-10-16')
   }
   assert.equal(catalog.tokenhub.models.find((m:any)=>m.id==='deepseek-v4-flash-0731').expirationAt,'2026-10-31T00:00:00+08:00')
   assert.equal(catalog.tokenhub.models.find((m:any)=>m.id==='deepseek/deepseek-v4-flash-0731').expirationAt,undefined,'hosted retirement must not retire the manufacturer-direct ID')

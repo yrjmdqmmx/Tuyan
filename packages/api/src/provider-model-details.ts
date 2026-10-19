@@ -29483,7 +29483,7 @@ const details: { checkedAt: string; models: Record<string, any> } = {
     "deepseek/deepseek-flash": {
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-19",
         "officialInputModalities": [
           "text",
           "image"
@@ -29495,18 +29495,26 @@ const details: { checkedAt: string; models: Record<string, any> } = {
         "contextWindowApproximate": true,
         "sourceScope": "service",
         "sourceUrls": [
-          "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "notes": [
           "仅 DeepSeek 直连：官方精确型号表与脚注明确当前版本/旧别名转发，保留请求 ID，不向其他渠道传播。"
-        ]
+        ],
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
+          "sourceUrls": [
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
+          ]
+        }
       }
     },
     "deepseek/deepseek-v4-flash": {
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-19",
         "officialInputModalities": [
           "text",
           "image"
@@ -29518,15 +29526,16 @@ const details: { checkedAt: string; models: Record<string, any> } = {
         "contextWindowApproximate": true,
         "sourceScope": "service",
         "resolvedModel": {
-          "modelId": "deepseek-v4.1-flash",
-          "displayName": "DeepSeek V4.1 Flash（deepseek-v4-flash 别名）",
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
           "sourceUrls": [
-            "https://api-docs.deepseek.com/quick_start/pricing"
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
           ]
         },
         "sourceUrls": [
-          "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "notes": [
           "仅 DeepSeek 直连：官方精确型号表与脚注明确当前版本/旧别名转发，保留请求 ID，不向其他渠道传播。"
@@ -29536,7 +29545,7 @@ const details: { checkedAt: string; models: Record<string, any> } = {
     "deepseek/deepseek-v4-flash-vision-exp": {
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-19",
         "officialInputModalities": [
           "text",
           "image"
@@ -29548,15 +29557,16 @@ const details: { checkedAt: string; models: Record<string, any> } = {
         "contextWindowApproximate": true,
         "sourceScope": "service",
         "resolvedModel": {
-          "modelId": "deepseek-v4.1-flash",
-          "displayName": "DeepSeek V4.1 Flash（deepseek-v4-flash-vision-exp 别名）",
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
           "sourceUrls": [
-            "https://api-docs.deepseek.com/quick_start/pricing"
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
           ]
         },
         "sourceUrls": [
-          "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "notes": [
           "仅 DeepSeek 直连：官方精确型号表与脚注明确当前版本/旧别名转发，保留请求 ID，不向其他渠道传播。"
@@ -37762,6 +37772,35 @@ const details: { checkedAt: string; models: Record<string, any> } = {
         "contextWindowApproximate": true,
         "notes": [
           "直接读取该精确型号的渠道官方详情页和 API 示例；规格仅限 TokenDance 服务，不外推原厂或其他渠道。"
+        ]
+      }
+    },
+    "tokenhub/deepseek/deepseek-flash": {
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-19",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017（原厂直供）",
+          "sourceUrls": [
+            "https://cloud.tencent.com/document/product/1823/130051"
+          ]
+        },
+        "notes": [
+          "仅 TokenHub 官方模型表中的 deepseek/deepseek-flash；不外推到其他 TokenHub DeepSeek ID。"
         ]
       }
     }

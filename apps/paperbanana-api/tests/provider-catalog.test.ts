@@ -154,7 +154,7 @@ test('specific pages distinguish exact versions and metadata from generated text
  assert.deepEqual(f('stability','stable-image-core').officialInputModalities,['text'])
  assert.deepEqual(f('stability','sd3.5-flash').promptLimits.map((x:any)=>[x.kind,x.max,x.unit]),[['generation',10000,'characters'],['editing',10000,'characters']])
  assert.equal(f('siliconflow','Qwen/Qwen3-Omni-30B-A3B-Instruct').contextWindowTokens,65536)
- assert.equal(f('deepseek','deepseek-v4-flash').resolvedModel.modelId,'deepseek-v4.1-flash')
+ assert.equal(f('deepseek','deepseek-v4-flash').resolvedModel.modelId,'deepseek-v4.1-flash-1017')
  assert.deepEqual(f('deepseek','deepseek-v4-flash').officialInputModalities,['text','image'])
  assert.equal(f('openrouter','deepseek/deepseek-v4-flash').resolvedModel,undefined)
  assert.deepEqual(f('openrouter','deepseek/deepseek-v4-flash').officialInputModalities,['text'])

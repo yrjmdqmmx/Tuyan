@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-16.v34",
+  "version": "2026-10-19.v35",
   "providers": {
     "deepseek": [
       {
@@ -10,7 +10,7 @@
           "vision"
         ],
         "protocol": "openai-chat-completions",
-        "availabilityNotes": "官方目录核对日期 2026-09-21；账户权限与真实推理未验证。",
+        "availabilityNotes": "2026-10-19 核对：DeepSeek 直连当前由 DeepSeek-V4.1-Flash-1017 服务；请求 ID、默认选择、原停用状态和额度保持。真实调用未验证。",
         "capabilities": {
           "referenceImages": true,
           "maxReferenceImages": 3
@@ -14465,6 +14465,32 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "reflection/Beam-1.0-501B-A23B",
+        "label": "Reflection Beam 1.0 501B A23B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-19 官方目录与现有 Chat Completions 请求协议核对；账户、真实调用及模型质量未验证。仅文本角色；不从其他渠道继承视觉或思考控件。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "reflection",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "fireworks": [
@@ -15114,6 +15140,34 @@
           "verificationState": "catalog",
           "lifecycle": "preview",
           "officialSourceUrl": "https://fireworks.ai/models/fireworks/muse-spark-open",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+        "label": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-19 官方目录与现有 Chat Completions 请求协议核对；账户、真实调用及模型质量未验证。视觉使用现有图片输入适配；不扩大现有请求额度。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
           "inputModalities": [
             "text",
             "image"
@@ -25652,7 +25706,7 @@
           "vision"
         ],
         "protocol": "openai-chat-completions",
-        "availabilityNotes": "逐型号字段适配；广州端点，真实调用与权限未验证。",
+        "availabilityNotes": "2026-10-19 TokenHub 官方模型表将此精确原厂直供 ID 标为 DeepSeek-V4.1-Flash-1017；其他托管与旧别名不继承此映射。真实调用未验证。",
         "capabilities": {
           "referenceImages": true,
           "maxReferenceImages": 3
@@ -28864,6 +28918,34 @@
             "cn-account-global-endpoint"
           ]
         }
+      },
+      {
+        "id": "deepseek-v4.1-flash-1017",
+        "label": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-19 官方目录与现有 Chat Completions 请求协议核对；账户、真实调用及模型质量未验证。视觉使用现有图片输入适配；不扩大现有请求额度。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "iflytek": [
@@ -30644,6 +30726,172 @@
         "expirationAt": "2026-10-21T10:00:00+08:00",
         "lifecycle": "legacy",
         "lifecycleSourceUrl": "https://tokendance.space/docs/changelog.md"
+      }
+    },
+    "ark": {
+      "deepseek-v4-flash-260425": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "glm-4-7-251222": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-code-preview-251028": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-8-251228": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-6-vision-250815": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-6-250615": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-6-251015": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-6-flash-250828": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-1-6-flash-250615": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-1-5-lite-32k-250115": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-1-5-vision-pro-32k-250115": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-1-5-pro-32k-250115": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-09-21",
+        "expirationAt": "2026-09-21T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-09-21 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。",
+        "selectable": false,
+        "disabledReason": "官方已于 2026-09-21 14:00（UTC+8）停服；保留历史 ID，请手动选择可用型号。"
+      },
+      "doubao-seed-2-0-lite-260215": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-10-22",
+        "expirationAt": "2026-10-22T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-10-22 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seed-2-0-mini-260215": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-10-22",
+        "expirationAt": "2026-10-22T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-10-22 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seed-2-0-pro-260215": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seed-2-0-code-preview-260215": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seedream-4-0-250828": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seedream-4-5-251128": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "doubao-seedream-5-0-260128": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
+      },
+      "deepseek-v4-pro-260425": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "expirationAt": "2026-11-24T14:00:00+08:00",
+        "lifecycleSourceUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+        "availabilityNotes": "2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"
       }
     }
   },

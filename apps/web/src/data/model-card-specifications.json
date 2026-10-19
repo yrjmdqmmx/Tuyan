@@ -3404,13 +3404,14 @@
           "input": "文本、图像",
           "output": "文本",
           "context": "1M",
-          "displayName": "DeepSeek V4.1 Flash",
+          "displayName": "DeepSeek V4.1 Flash 1017",
           "sources": [
-            "https://api-docs.deepseek.com/",
-            "https://api-docs.deepseek.com/quick_start/pricing"
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
           ],
           "status": "verified",
-          "note": "官方旧 ID 当前均由 V4.1 Flash 服务。"
+          "note": "2026-10-19 官方直连旧 ID 当前由 V4.1 Flash 1017 服务；其他渠道不继承。",
+          "checkedAt": "2026-10-19"
         }
       }
     },
@@ -3463,13 +3464,14 @@
           "input": "文本、图像",
           "output": "文本",
           "context": "1M",
-          "displayName": "DeepSeek V4.1 Flash",
+          "displayName": "DeepSeek V4.1 Flash 1017",
           "sources": [
-            "https://api-docs.deepseek.com/",
-            "https://api-docs.deepseek.com/quick_start/pricing"
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
           ],
           "status": "verified",
-          "note": "官方旧 ID 当前均由 V4.1 Flash 服务。"
+          "note": "2026-10-19 官方直连旧 ID 当前由 V4.1 Flash 1017 服务；其他渠道不继承。",
+          "checkedAt": "2026-10-19"
         }
       }
     },

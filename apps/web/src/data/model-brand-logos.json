@@ -539,5 +539,12 @@
     "page": "https://shengshu.jobs.feishu.cn/",
     "license": "Brand asset; respective owner retains rights",
     "sha256": "089119bd88ccc578396708f74c4297bc4aed054d219e9a02440eafa4ae1a01d9"
+  },
+  "reflection": {
+    "src": "/brand/catalog/reflection.png",
+    "source": "https://reflection.ai/icon1.png?icon1.3u5qlce9ow76o.png",
+    "license": "Official website favicon; brand identification only; no open license asserted",
+    "sha256": "8bbbb273abcf3a30dd4438f2b3434f629534d9cf2aa6d18bf7c4729010514c19",
+    "checkedAt": "2026-10-19"
   }
 }

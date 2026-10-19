@@ -79,7 +79,7 @@ test('official facts are not inferred from application roles or output formats',
 
 test('official alias migration never changes the same ID at another provider',()=>{
   const model={id:'deepseek-v4-flash-vision-exp',label:'DeepSeek V4 Flash Vision Exp'}
-  assert.equal(modelCardName('deepseek',model),'DeepSeek V4.1 Flash')
+  assert.equal(modelCardName('deepseek',model),'DeepSeek V4.1 Flash 1017')
   assert.equal(modelCardName('tokendance',model),model.label)
   assert.equal(modelCardSpecifications('deepseek',model).context,'1M tokens')
   assert.equal(modelCardSpecifications('tokendance',model).context,'待确认')

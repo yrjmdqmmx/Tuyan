@@ -237,9 +237,10 @@
       "protocol": "openai-chat-completions",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-09",
+        "checkedAt": "2026-10-19",
         "sourceUrls": [
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "reasoning": "supported",
         "officialInputModalities": [
@@ -256,7 +257,15 @@
         "contextWindowTokens": 1000000,
         "maxOutputTokens": 384000,
         "contextWindowApproximate": true,
-        "maxOutputApproximate": true
+        "maxOutputApproximate": true,
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
+          "sourceUrls": [
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
+          ]
+        }
       }
     },
     {
@@ -265,9 +274,10 @@
       "protocol": "openai-chat-completions",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-09",
+        "checkedAt": "2026-10-19",
         "sourceUrls": [
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "reasoning": "supported",
         "officialInputModalities": [
@@ -279,13 +289,21 @@
         ],
         "notes": [
           "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
-          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash 服务。图研不替换保存的 ID。",
+          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash-1017 服务。图研不替换保存的 ID。",
           "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
         ],
         "contextWindowTokens": 1000000,
         "maxOutputTokens": 384000,
         "contextWindowApproximate": true,
-        "maxOutputApproximate": true
+        "maxOutputApproximate": true,
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
+          "sourceUrls": [
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
+          ]
+        }
       }
     },
     {
@@ -294,9 +312,10 @@
       "protocol": "openai-chat-completions",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-09",
+        "checkedAt": "2026-10-19",
         "sourceUrls": [
-          "https://api-docs.deepseek.com/quick_start/pricing"
+          "https://api-docs.deepseek.com/quick_start/pricing",
+          "https://api-docs.deepseek.com/news/news261017/"
         ],
         "reasoning": "supported",
         "officialInputModalities": [
@@ -308,13 +327,21 @@
         ],
         "notes": [
           "官方标注 1M 上下文 / 384K 最大输出；精确整数 token 数待确认。",
-          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash 服务。图研不替换保存的 ID。",
+          "旧 API ID 仍接受；原模型已退役，渠道自动由 DeepSeek-V4.1-Flash-1017 服务。图研不替换保存的 ID。",
           "≈ 为官方 K/M 标称数量；精确整数 token 上限未确认，不能据此扩展提交额度。"
         ],
         "contextWindowTokens": 1000000,
         "maxOutputTokens": 384000,
         "contextWindowApproximate": true,
-        "maxOutputApproximate": true
+        "maxOutputApproximate": true,
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017",
+          "sourceUrls": [
+            "https://api-docs.deepseek.com/quick_start/pricing",
+            "https://api-docs.deepseek.com/news/news261017/"
+          ]
+        }
       }
     },
     {
@@ -2751,10 +2778,11 @@
       "protocol": "gemini-generate-content",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-19",
         "sourceUrls": [
           "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
-          "https://ai.google.dev/gemini-api/docs/generate-content/thinking"
+          "https://ai.google.dev/gemini-api/docs/generate-content/thinking",
+          "https://ai.google.dev/gemini-api/docs/pricing"
         ],
         "contextWindowTokens": 1048576,
         "maxOutputTokens": 65536,
@@ -2771,7 +2799,8 @@
         ],
         "notes": [
           "同步默认输出上限 65,536；1,048,576 为共享上下文，不作为独立输入额度。后台 long decode 尚未接入。",
-          "思考支持 low/medium/high，不支持关闭或混用 thinkingBudget；省略时使用官方 medium 默认。"
+          "思考支持 low/medium/high，不支持关闭或混用 thinkingBudget；省略时使用官方 medium 默认。",
+          "2026-10-19 官方 latest-model 与定价页明确不提供 Free tier；未据此确认账户权益。"
         ]
       }
     },
@@ -3203,7 +3232,7 @@
       "protocol": "provider-images",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-19",
         "sourceUrls": [
           "https://fal.ai/models/krea/v3/text-to-image/api",
           "https://fal.ai/models/krea/v3/edit/api"
@@ -3216,7 +3245,108 @@
           "image"
         ],
         "notes": [
-          "独立 generation/edit 端点绑定，原图计入参考图数。仅 berry 默认变体与 low 推理；不自动产生 high 模式额外开销或联网。"
+          "独立 generation/edit 端点绑定，原图计入参考图数。仅 berry 默认变体与 low 推理；不自动产生 high 模式额外开销或联网。",
+          "2026-10-19 官方 generation/edit 默认 reasoning_level 已为 medium；图研仍显式发送 low，保留原选择、费用与联网边界。"
+        ]
+      }
+    },
+    {
+      "provider": "together",
+      "modelId": "reflection/Beam-1.0-501B-A23B",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-19",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "contextWindowTokens": 1048576,
+        "notes": [
+          "最大输出与渠道特定思考控制尚未确认；保留 API 默认参数。",
+          "公开标准价每百万 tokens：输入 USD 0.40、缓存输入 0.04、输出 1.20；非账户账单。"
+        ]
+      }
+    },
+    {
+      "provider": "fireworks",
+      "modelId": "accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-19",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+          "https://fireworks.ai/models"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "contextWindowTokens": 1048576,
+        "notes": [
+          "精确目录数据为 1048576；详情摘要写作 1040k。最大输出未单独确认；不继承原厂 384K。",
+          "公开标准价每百万 tokens：输入 USD 0.30、缓存输入 0.006、输出 1.20；非账户账单。"
+        ]
+      }
+    },
+    {
+      "provider": "qianfan",
+      "modelId": "deepseek-v4.1-flash-1017",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-19",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 393216,
+        "notes": [
+          "1M 为官方标称上下文；393216 为型号表单独列出的最大输出。现有请求仍固定 max_tokens=8192。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "deepseek-v4.1-flash-1017",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-19",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://tokendance.space/gateway/v1/models"
+        ],
+        "contextWindowTokens": 1000000,
+        "officialInputModalities": [
+          "text"
+        ],
+        "inputModalitiesPartial": true,
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "仅从公开目录确认文本 Chat Completions；视觉、输出上限与额外思考参数待渠道专页核实。"
         ]
       }
     }

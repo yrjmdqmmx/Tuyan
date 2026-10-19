@@ -24152,7 +24152,7 @@
           ]
         },
         "reasoning_level": {
-          "default": "low",
+          "default": "medium",
           "type": "string",
           "enum": [
             "low",
@@ -24394,8 +24394,8 @@
     "official": true,
     "sourceUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
     "schemaSource": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/text-to-image",
-    "schemaSha256": "d31fa1b672e14bdddb54faf5ce407ede66ef59b0a45b1d9e173cc8a3e2796893",
-    "checkedAt": "2026-10-16"
+    "schemaSha256": "3384b4a45077bf115d7108e3c5bdab22d8c747fc90c32f7003a4e6f7b77eb283",
+    "checkedAt": "2026-10-19"
   },
   "fal/krea/v3/edit": {
     "input": {
@@ -24434,7 +24434,7 @@
           ]
         },
         "reasoning_level": {
-          "default": "low",
+          "default": "medium",
           "type": "string",
           "enum": [
             "low",
@@ -24688,7 +24688,7 @@
     "official": true,
     "sourceUrl": "https://fal.ai/models/krea/v3/edit/api",
     "schemaSource": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/edit",
-    "schemaSha256": "bdacc47e47e2516e90761054552085105da0d5d7011e9df39322d2c69d37fd76",
-    "checkedAt": "2026-10-16"
+    "schemaSha256": "7fef795b20e341f15a946128b733dbea9ba42253cc576e54b6bd5cb8b92168de",
+    "checkedAt": "2026-10-19"
   }
 }

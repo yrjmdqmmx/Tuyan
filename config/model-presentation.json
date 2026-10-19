@@ -647,6 +647,14 @@
         "cogevol"
       ],
       "source": "https://tokendance.space/models/cogevol-base"
+    },
+    "reflection": {
+      "label": "Reflection",
+      "labelEn": "Reflection",
+      "aliases": [
+        "reflection"
+      ],
+      "source": "https://huggingface.co/reflection/Beam-1.0-501B-A23B"
     }
   },
   "routes": [
@@ -1585,6 +1593,14 @@
       "pattern": "^ming-image-",
       "vendorId": "ant",
       "source": "https://github.com/inclusionAI/Ming-Image"
+    },
+    {
+      "channels": [
+        "together"
+      ],
+      "pattern": "^reflection/Beam-1\\.0-501B-A23B$",
+      "vendorId": "reflection",
+      "source": "https://docs.together.ai/docs/serverless/models"
     }
   ],
   "families": [

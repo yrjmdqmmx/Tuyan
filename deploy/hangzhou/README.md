@@ -67,6 +67,12 @@ GitHub Actions、实际镜像、线上版本与零模型验收结果见 [2026-10
 
 发布日志管道明确启用 Bash `pipefail`，SSH/接收器失败必须让 CI 失败；绿色状态还必须有服务器健康回执与对应公开 `version.json`，不能仅凭日志保存成功判定上线。
 
+## 双域名前端（2026-10-19）
+
+用户确认同时保留 `tuyansci.cn` 与 `www.paperbanana.asia`。杭州健康发布完成后，同一流水线的 `pages` job 从同一 Git SHA 构建旧域名前端并发布 GitHub Pages，使用原有 `https://api.paperbanana.asia` API/Auth 地址；不迁移登录 Cookie 或改写 OAuth 回调。两边 `version.json` 的 revision 必须一致，target 分别为 Hangzhou / GitHub Pages。
+
+GitHub Pages 环境仅新增精确发布分支 `codex/hangzhou-production` 的部署许可。历史独立 `Deploy GitHub Pages` 工作流仍停用，避免旧 main 覆盖新版。Pages 失败须单独报告，不能把杭州成功等同于双域名成功。
+
 ## 国内静态资源传输
 
 `nginx/` 保存当前杭州域名配置，静态 JS / CSS / SVG 启用 gzip 与 Accept-Encoding Vary；账号和任务 JSON 不加入此压缩范围。宿主配置由运维单独备份、`nginx -t` 验证后 reload；CI 只切换静态 release 目录，不覆盖 Nginx。不要用 `deploy/icp-domains-20261015` 的历史跨境 upstream 配置覆盖现网。

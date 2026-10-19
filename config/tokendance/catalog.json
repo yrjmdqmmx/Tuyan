@@ -1,8 +1,8 @@
 {
-  "version": "2026-10-09.2",
+  "version": "2026-10-19.1",
   "appUrl": "https://www.paperbanana.asia/",
   "apiSource": "https://tokendance.space/gateway/v1/models",
-  "reviewedAt": "2026-10-09",
+  "reviewedAt": "2026-10-19",
   "models": [
     {
       "id": "bocha-web-search",
@@ -3027,6 +3027,37 @@
       "selectedProtocol": "openai:chat-completions",
       "vendorId": "cogevol",
       "lifecycle": "unknown"
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
+      "created": 1792226641,
+      "description": " DeepSeek-V4.1-Flash-1017 在提升性能的同时，还缩短了模型的任务运行时间与输出长度，让用户能够以更低成本、更快速度完成任务，在多个 Harness 下达到新的性能-费用帕累托最优。DeepSeek 官方特别针对 DeepSeek Harness、腾讯 CodeBuddy、WorkBuddy 等平台框架进行了优化。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "公开目录已确认 Chat Completions；视觉专页字段未取得，暂不开放视觉角色。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-19",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "deepseek"
     }
   ]
 }
