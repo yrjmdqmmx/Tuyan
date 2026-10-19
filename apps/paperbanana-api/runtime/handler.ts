@@ -1,4 +1,5 @@
 import {readOptimizationMaterials} from '../src/optimization-materials.js'
+import { readDrawingActivity } from '../src/drawing-activity.js'
 import { catalogAbsenceReason, verifyPublicCatalogOmissions, PROVIDER_CATALOGS, readProviderCatalog, normalizeCatalogModel, exactModelDetails, mergeCatalogRows, type CatalogContinuation, type CatalogResult } from '../../../packages/api/src/provider-catalog.js'
 import {admitJournal,journalFields,JOURNAL_VERSION,journalPrompt,journalFigureContent,JOURNAL_CONTENT,journalError} from '../../../packages/api/src/journal-rules.js'
 import {inspectJournalFile} from '../src/journal-export.js'
@@ -1067,6 +1068,7 @@ type JobStage = {
 }
 
 type RequestBody =
+  | {action:'userDrawingActivity';userId?:string}
   | {action:'journalFigureExport';jobId:string;candidateId:number;userId?:string;clientPlatform?:ClientPlatform}
   | CreateJobBody
   | RefineImageBody
@@ -4377,6 +4379,7 @@ const identityScopedActions = new Set([
   'optimizeInputs',
   'submitFeedback',
   'userJobs',
+  'userDrawingActivity',
   'getJob',
   'journalFigureExport',
   'prepareReferenceUpload',
@@ -4464,6 +4467,11 @@ export default async function (ctx: CoreContext) {
     }
     if (action === 'userJobs') {
       return await userJobs(body as UserJobsBody)
+    }
+    if (action === 'userDrawingActivity') {
+      const userId = String(ctx.headers['x-paperbanana-auth-user-id'] || '')
+      if (!userId) return fail('SIGN_IN_REQUIRED',401)
+      return ok({activity:await readDrawingActivity(jobs,userId)})
     }
     if (action === 'accountDeletionStatus') return await accountDeletionStatus(body as DeleteAccountBody)
     if (action === 'completeAccountDeletion') return await completeAccountDeletion(body as DeleteAccountBody)

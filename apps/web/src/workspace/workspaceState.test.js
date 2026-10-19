@@ -125,9 +125,8 @@ test('restoring failed input cannot overwrite newer settings or attachments with
   const unchanged = act(s, 'RESTORE_RUN', { runId: 'failed' });
   assert.deepEqual(unchanged, s);
 });
-test('reusing requirements cannot replace a newly attached file or supplement', () => {
+test('copying branch requirements cannot replace a newly attached file or supplement', () => {
   let s = act(generated(), 'EDIT_DRAFT', { patch: { caption: '本轮指定图注', attachments: [{ id: 'new-file', status: 'local', purpose: 'research' }] } });
-  assert.deepEqual(act(s, 'REUSE'), s);
   s = act(s, 'SET_PATH', { path: 'svg' });
   s = act(s, 'EDIT_DRAFT', { patch: { avoid: '本路径排除要求' } });
   assert.deepEqual(act(s, 'COPY_REQUIREMENTS'), s);

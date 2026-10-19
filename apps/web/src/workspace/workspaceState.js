@@ -48,7 +48,7 @@ export function taskMatches(t, query) {
 export function submitIssue(s) {
   const t = currentTask(s), b = currentBranch(s), d = currentDraft(s);
   if(t.deleted)return '任务已删除，可恢复后继续编辑';
-  if (t.activeRunId) return '本任务已有执行，完成后可提交';
+  if (t.activeRunId) return '任务正在进行';
   if (b.targetId && !refinementTarget(s)) return '修改目标已不可用，请重新选择版本';
   if (!d.text.trim()) return b.targetId ? '请填写修改要求' : '请描述绘图目标';
   if (d.attachments.some(a => a.status !== 'local')) return '请先完成原件的浏览器保存';
@@ -135,13 +135,6 @@ export function workspaceReducer(state, action) {
       if (hasRequirements(b.draft)) return state;
       for (const field of ['text', 'caption', 'avoid', 'attachments']) b.draft[field] = copy(other[field]);
       b.draft.revision++; break;
-    }
-    case 'REUSE': {
-      const r = [...t.runs].reverse().find(r => r.path === t.path && r.kind === 'generate');
-      if (!r || hasRequirements(d)) return state;
-      // Only explicit action overwrites a draft; keep attachment identities local.
-      for (const field of ['text', 'caption', 'avoid', 'attachments']) d[field] = copy(r.input[field]);
-      d.revision++; break;
     }
     case 'VIEW': view(t, b, action.versionId); break;
     case 'VIEW_GROUP': {
@@ -251,6 +244,6 @@ export function workspaceReducer(state, action) {
     }
     default: return state;
   }
-  if(['EDIT_DRAFT','ADD_ATTACHMENTS','COPY_REQUIREMENTS','REUSE','BEGIN','SAVE_SVG','RESULT','FINISH','RESTORE_RUN','RENAME'].includes(action.type))t.updatedAt=action.at || Date.now();
+  if(['EDIT_DRAFT','ADD_ATTACHMENTS','COPY_REQUIREMENTS','BEGIN','SAVE_SVG','RESULT','FINISH','RESTORE_RUN','RENAME'].includes(action.type))t.updatedAt=action.at || Date.now();
   return s;
 }

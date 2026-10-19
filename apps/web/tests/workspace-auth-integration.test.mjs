@@ -42,6 +42,7 @@ test('existing login form refreshes authoritative identity, settings open in pla
   await user.click(within(login).getByRole('button', { name: '登录', exact: true }));
   const account = await screen.findByRole('button', { name: '账户与设置' });
   assert.equal(account.querySelector('strong').textContent, identity.user.name);
+  assert.ok(screen.getByRole('heading', { name: `HI！${identity.user.name}，今天想绘制什么？` }));
   assert.equal(account.querySelector('img').getAttribute('src'), logoUrl);
   assert.equal(screen.queryByRole('dialog'), null);
   await user.click(account); assert.ok(screen.getByText(identity.user.email));
@@ -51,6 +52,7 @@ test('existing login form refreshes authoritative identity, settings open in pla
   await user.click(screen.getByRole('button', { name: '关闭账号设置' }));
   await user.click(account); await user.click(screen.getByRole('menuitem', { name: '退出登录' }));
   const signedOut = await screen.findByRole('button', { name: '登录图研', exact: true });
+  assert.ok(screen.getByRole('heading', { name: 'HI！今天想绘制什么？' }));
   assert.equal(signedOut.querySelector('img').getAttribute('src'), logoUrl);
   assert.equal(screen.queryByText(identity.user.name), null);
   assert.equal(screen.queryByText(identity.user.email), null);

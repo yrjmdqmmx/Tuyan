@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle, Trash2 } from 'lucide-react';
+import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle, SquarePen, Trash2 } from 'lucide-react';
 import { logoUrl } from '../config.js';
 import { taskHasContent } from './workspaceState.js';
 import ResourceLinks from './ResourceLinks.jsx';
@@ -34,7 +34,7 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
     </div>
     <div className="tw-sidebar-content">
       <nav className="tw-navigation" aria-label="常用功能">
-        <button type="button" onClick={create}><Plus size={20} />新建任务</button>
+        {!mobile && <button type="button" onClick={create}><Plus size={20} />新建任务</button>}
         <button type="button" aria-current={page === 'models' ? 'page' : undefined} onClick={() => { onNavigate('models'); if (mobile) onClose(); }}><Boxes size={19} />模型管理</button>
         <button type="button" aria-current={page === '排行榜' ? 'page' : undefined} onClick={() => onNavigate('排行榜')}><ChartNoAxesColumn size={19} />排行榜</button>
       </nav>
@@ -46,6 +46,9 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
         <section><h2>最近任务</h2>{rows(visible.filter(t => !t.pinned))}{!visible.length && <p className="tw-muted">还没有任务</p>}</section>
       </nav>
     </div>
-    <SidebarAccount user={user} onSignIn={onSignIn} onSignOut={onSignOut} onAccountSettings={onAccountSettings} onAdmin={onAdmin} accountPending={accountPending} />
+    <div className={mobile ? "tw-mobile-nav-footer" : "tw-sidebar-account-slot"}>
+      {mobile && <button type="button" className="tw-mobile-create" onClick={create}><SquarePen size={22} />新建任务</button>}
+      <SidebarAccount mobile={mobile} user={user} onSignIn={onSignIn} onSignOut={onSignOut} onAccountSettings={onAccountSettings} onAdmin={onAdmin} accountPending={accountPending} />
+    </div>
   </aside>;
 }

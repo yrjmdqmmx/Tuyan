@@ -5,6 +5,7 @@ export const WORKSPACE_ACCOUNT_COLLECTIONS = Object.freeze([
   'workspaceMigrationBackups', 'workspaceDocuments', 'workspaceResults',
   'workspaceQuotas', 'workspaceModelLibraries', 'workspaceExecutions',
   'workspaceExecutionLocks', 'workspaceHistoryExecutions',
+  'accountEmailChanges',
 ]);
 
 export async function assertWorkspaceAccountActive(db, userId) {

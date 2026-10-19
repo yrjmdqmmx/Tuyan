@@ -47,6 +47,9 @@ importers:
       mongodb:
         specifier: ^6.21.0
         version: 6.21.0(socks@2.8.9)
+      sharp:
+        specifier: 0.35.3
+        version: 0.35.3(@types/node@25.8.0)
 
   apps/benchmark-worker:
     dependencies:

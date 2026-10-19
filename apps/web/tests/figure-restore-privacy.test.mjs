@@ -116,7 +116,7 @@ test('App reuses chart settings, saves classification changes, and restores the 
  fireEvent.click(within(screen.getByRole('navigation',{name:'期刊列表'})).getByRole('button',{name:/PLOS ONE/}));
  assert.ok(screen.getByText(/沿用信息图类别：流程图/));
  fireEvent.click(screen.getAllByRole('button',{name:'返回书架'})[0]);
- fireEvent.click(screen.getByRole('button',{name:/ACS Omega/}));fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
+ fireEvent.click(screen.getByRole('button',{name:/ACS Omega/}));fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));await waitFor(()=>assert.equal(screen.queryByRole('dialog',{name:'期刊规则'}),null));
  assert.equal(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)).journalId,'plos-one');
  fireEvent.click(screen.getByRole('button',{name:'关闭生成设置'}));
  fireEvent.click(within(screen.getByRole('navigation',{name:'主导航'})).getByRole('button',{name:'精修图片'}));
@@ -149,7 +149,7 @@ test('refining a task reuses its figure and journal; replacing the source discar
  fireEvent.click(within(screen.getByRole('navigation',{name:'期刊列表'})).getByRole('button',{name:/Frontiers in Artificial Intelligence/}));
  assert.ok(within(screen.getByRole('dialog',{name:'期刊规则'})).getByText(/沿用原任务：流程图/));
  assert.ok(screen.queryByRole('combobox',{name:'内容类型'})===null,'Expected no matching DOM element');
- fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));await waitFor(()=>assert.equal(screen.queryByRole('dialog',{name:'期刊规则'}),null));
  fireEvent.click(screen.getByRole('button',{name:'关闭生成设置'}));
  assert.deepEqual(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)),generationSelection);
  // A second task read is still pending when a new upload becomes the active original.

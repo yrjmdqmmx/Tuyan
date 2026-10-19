@@ -56,7 +56,7 @@ test('an unread generated result offers selection instead of claiming the path i
 test('empty task has one unified input, independent paths and mode, accepts no hidden caption', async () => {
   const user = userEvent.setup(); let submitted;
   const { container } = render(React.createElement(Harness, { onSend: s => { submitted = s; } }));
-  assert.ok(screen.getByRole('heading', { name: '你想绘制什么？' }));
+  assert.ok(screen.getByRole('heading', { name: 'HI！今天想绘制什么？' }));
   assert.equal(container.querySelectorAll('textarea').length, 1);
   await user.type(screen.getByLabelText('绘图要求'), 'PNG 要求');
   await user.click(screen.getByRole('button', { name: '矢量绘图' }));
@@ -69,7 +69,9 @@ test('empty task has one unified input, independent paths and mode, accepts no h
   await user.click(screen.getByRole('button', { name: '生成图像' }));
   assert.ok(submitted); assert.equal(currentTask(submitted).branches.png.draft.caption, '');
   assert.equal(container.querySelector('.tw-empty'), null);
-  assert.ok(screen.getByText('本任务已有执行，完成后可提交'));
+  assert.equal(screen.queryByText('本任务已有执行，完成后可提交'), null);
+  assert.equal(screen.getByRole('button', { name:'生成图像' }).disabled, true);
+  assert.equal(screen.queryByRole('button', { name:'复用上次要求' }), null);
 });
 test('candidate browsing leaves explicit modification target and send label intact', async () => {
   const user = userEvent.setup(); render(React.createElement(Harness, { initial: completed() }));

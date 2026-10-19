@@ -1,27 +1,35 @@
 import WorkspaceExecutionDetails from './WorkspaceExecutionDetails.jsx';
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { History, Columns2, Download, Sparkles, LoaderCircle, FileImage, AlertCircle, ArrowRight } from 'lucide-react';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import RatioCanvas from './RatioCanvas.jsx';
 import FigureViewport from './FigureViewport.jsx';
+import GenerationCanvas from './GenerationCanvas.jsx';
+import GenerationProgressPanel from './GenerationProgressPanel.jsx';
 import { currentTask, currentBranch, selectedVersion, groupLabel, versionLabel, locateVersion, activeRun, currentDraft, canRestoreRun, PATHS } from './workspaceState.js';
 
 function Preview({ version, className = '' }) {
   const [failed, setFailed] = useState(false);
   return <div className={`tw-image-view ${className}`}>{failed ? <p role="alert">此版本预览加载失败，原记录仍保留。<button type="button" onClick={() => setFailed(false)}>重新载入</button></p> : <img key={version.id} src={version.url} alt={versionLabel(version, true)} onError={() => setFailed(true)} />}</div>;
 }
-export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDownload, onCloseUnaccepted, userId, renderRecovery }) {
+export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDownload, onCloseUnaccepted, userId, renderRecovery, executionProgress }) {
   const t = currentTask(state), b = currentBranch(state), v = selectedVersion(state), running = activeRun(state);
   const [panel, setPanel] = useState(null), [compareId, setCompareId] = useState('');
   const [downloading,setDownloading]=useState(false);
-  const editableCanvas = t.path === 'svg' && !!renderSvgEditor && !v?.loadError;
+  const [progressOpen,setProgressOpen]=useState(false);
+  const progressTrigger = useRef(null), progressPanelId = useId();
+  const currentRun = running?.path === t.path && (running.groupId === b.groupId || !running.accepted && !v) ? running : null;
+  const showGeneration = currentRun && !v;
+  const editableCanvas = !showGeneration && t.path === 'svg' && !!renderSvgEditor && !v?.loadError;
+  useEffect(() => setProgressOpen(false), [t.id, t.path, currentRun?.id]);
+  function closeProgress(restoreFocus) { setProgressOpen(false); if (restoreFocus) progressTrigger.current?.focus({ preventScroll: true }); }
   async function download(){if(downloading)return;setDownloading(true);try{await onDownload(v);}finally{setDownloading(false);}}
   const group = b.groups.find(g => g.id === b.groupId);
   const candidate = group?.candidates.find(c => c.id === b.candidateId);
   const latest = running || t.runs.filter(r => r.path === t.path).at(-1);
   const versions = Object.values(t.branches).flatMap(branch => branch.groups.flatMap(g => g.candidates.flatMap(c => c.versions.map(v => locateVersion(t, v.id)))));
   const compare = versions.find(item => item.id === compareId && item.id !== v?.id) || versions.find(item => item.id === v?.parentId) || versions.find(item => item.id !== v?.id);
-  function open(next) { dispatch({ type: 'INTERACT' }); setPanel(next); }
+  function open(next) { setProgressOpen(false); dispatch({ type: 'INTERACT' }); setPanel(next); }
   function showVersion(id) { dispatch({ type: 'VIEW', versionId: id }); setPanel(null); }
   const status = latest?.status === 'failed' ? latest.error : running ? `${PATHS[running.path]} · ${running.stage}` : latest ? latest.kind === 'edit' ? latest.stage || '手工编辑已保存' : '本次执行完成' : '';
   const restoreConflict = !canRestoreRun(t, latest);
@@ -29,7 +37,7 @@ export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDo
   const missing = Math.max(0, expected - (group?.candidates.length || 0));
   const availableVersionId=b.unreadVersionId||group?.candidates[0]?.versions.at(-1)?.id;
   return <section className={`tw-results ${editableCanvas ? 'is-editing' : ''}`} aria-label="绘图结果">
-    {latest && latest.kind !== 'edit' && <div className={`tw-run-status ${latest.status === 'failed' ? 'is-error' : ''}`} role="status">{running ? <LoaderCircle size={16} className="tw-spin" /> : latest.status === 'failed' ? <AlertCircle size={16} /> : <span className="tw-status-dot" />}<span>{status}</span>{running?.accepted && (running.path !== t.path || running.groupId !== b.groupId) && <button type="button" onClick={() => { dispatch({ type: 'SET_PATH', path: running.path }); dispatch({ type: 'VIEW_GROUP', id: running.groupId }); }}>查看本次结果</button>}{b.unreadVersionId && <button type="button" className="tw-new-version" onClick={() => showVersion(b.unreadVersionId)}>有新版本可查看<ArrowRight size={14} /></button>}{running?.execution && !running.accepted && !running.execution.jobId && onCloseUnaccepted && <button type="button" onClick={onCloseUnaccepted}>取消未接收提交</button>}<button type="button" onClick={() => open('execution')}>执行详情</button></div>}
+    {latest && latest.kind !== 'edit' && <div className={`tw-run-status ${latest.status === 'failed' ? 'is-error' : ''}`} role="status">{running ? <LoaderCircle size={16} className="tw-spin" /> : latest.status === 'failed' ? <AlertCircle size={16} /> : <span className="tw-status-dot" />}<span>{status}</span>{running?.accepted && (running.path !== t.path || running.groupId !== b.groupId) && <button type="button" onClick={() => { dispatch({ type: 'SET_PATH', path: running.path }); dispatch({ type: 'VIEW_GROUP', id: running.groupId }); }}>查看本次结果</button>}{b.unreadVersionId && <button type="button" className="tw-new-version" onClick={() => showVersion(b.unreadVersionId)}>有新版本可查看<ArrowRight size={14} /></button>}{running?.execution && !running.accepted && !running.execution.jobId && onCloseUnaccepted && <button type="button" onClick={onCloseUnaccepted}>取消未接收提交</button>}{currentRun && <button type="button" ref={progressTrigger} className="tw-stage-trigger" aria-expanded={progressOpen} aria-controls={progressPanelId} onClick={() => setProgressOpen(value => !value)}>阶段记录</button>}<button type="button" onClick={() => open('execution')}>执行详情</button></div>}
     {latest?.status === 'failed' && <div className="tw-run-status"><button type="button" disabled={restoreConflict} onClick={() => dispatch({ type: 'RESTORE_RUN', runId: latest.id })}>恢复本次输入</button><span>{restoreConflict ? '当前草稿已有新内容；原要求保留在执行详情，不会覆盖。' : '先恢复草稿，再由你决定是否重新执行。'}</span></div>}
     <div className="tw-result-toolbar">
       {!!b.groups.length && <label><span className="tw-sr">生成组</span><select aria-label="生成组" value={b.groupId || ''} onChange={e => dispatch({ type: 'VIEW_GROUP', id: e.target.value })}>{b.groups.map(g => <option value={g.id} key={g.id}>{groupLabel(t, g)}</option>)}</select></label>}
@@ -44,9 +52,10 @@ export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDo
       </div>}
     </div>
     {!latest && b.unreadVersionId && <button type="button" className="tw-new-version" onClick={() => showVersion(b.unreadVersionId)}>有新版本可查看<ArrowRight size={14} /></button>}
-    <div className={`tw-canvas ${v ? 'has-figure' : ''} ${editableCanvas ? 'is-editing' : ''}`}>
-      {editableCanvas ? renderSvgEditor(v) : v?.loadError ? <div className="tw-preview-failure" role="alert">{v.loadError}</div> : v ? <FigureViewport key={v.id} version={v} interactionKey={running?.id} onInteract={() => dispatch({ type: 'INTERACT' })} onFullscreen={() => open('fullscreen')} />
+    <div className={`tw-canvas ${v ? 'has-figure' : ''} ${editableCanvas ? 'is-editing' : ''} ${showGeneration ? 'is-generating' : ''}`}>
+      {showGeneration ? <GenerationCanvas key={currentRun.id} run={currentRun} taskId={t.id} progress={executionProgress} /> : editableCanvas ? renderSvgEditor(v) : v?.loadError ? <div className="tw-preview-failure" role="alert">{v.loadError}</div> : v ? <FigureViewport key={v.id} version={v} interactionKey={running?.id} onInteract={() => dispatch({ type: 'INTERACT' })} onFullscreen={() => open('fullscreen')} />
         : <RatioCanvas ratio={(running?.path === t.path ? running.input : currentDraft(state)).settings[(running?.path === t.path ? running.input : currentDraft(state)).mode].ratio}><div className="tw-canvas-empty">{running?.path === t.path ? <LoaderCircle className="tw-spin" size={28} /> : <FileImage size={32} />}<h2>{availableVersionId?'已有结果可查看':running?.path === t.path ? '图像正在形成' : '此路径尚无结果'}</h2>{availableVersionId?<button type="button" onClick={()=>showVersion(availableVersionId)}>查看已生成版本</button>:<p>{running?.path === t.path ? '候选返回后会显示在这里。你可以继续准备下一次操作。' : '在下方描述绘图目标，开始一个新方案。'}</p>}</div></RatioCanvas>}
+      {progressOpen && currentRun && <GenerationProgressPanel key={currentRun.id} id={progressPanelId} run={currentRun} taskId={t.id} progress={executionProgress} triggerRef={progressTrigger} onClose={closeProgress} />}
     </div>
     {group && <nav className={`tw-candidates ${expected === 1 ? 'is-single' : ''}`} aria-label="候选图">
       {group.candidates.map(c => { const cv = c.versions.find(v => v.id === c.viewedVersionId) || c.versions.at(-1); return <button type="button" className={`tw-candidate ${b.candidateId === c.id ? 'is-selected' : ''}`} key={c.id} aria-pressed={b.candidateId === c.id} aria-label={`查看候选 ${c.label} · v${cv.number}`} onClick={() => showVersion(cv.id)}>

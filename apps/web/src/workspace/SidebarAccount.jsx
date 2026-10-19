@@ -86,12 +86,12 @@ function AccountPopover({ id, triggerRef, compact, user, onClose, onSignIn, onSi
   return createPortal(menu, triggerRef.current?.closest('[role="dialog"]') || document.body);
 }
 
-export default function SidebarAccount({ compact = false, user, onSignIn, onSignOut, onAccountSettings, onAdmin, accountPending = false }) {
+export default function SidebarAccount({ compact = false, mobile = false, user, onSignIn, onSignOut, onAccountSettings, onAdmin, accountPending = false }) {
   const [open, setOpen] = useState(false), trigger = useRef(null), id = useId();
   const label = accountPending ? '正在检查账号状态' : user ? '账户与设置' : '登录图研';
   function close(restoreFocus) { setOpen(false); if (restoreFocus) trigger.current?.focus({ preventScroll: true }); }
-  const button = <button type="button" ref={trigger} className={compact ? 'tw-rail-control tw-rail-account' : 'tw-account'} onClick={() => setOpen(value => !value)} aria-label={label} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined}>
-    <img src={user?.image || logoUrl} alt="" />{!compact && <><span><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '登录图研'))}</strong><small>{user ? '账户与设置' : '登录后同步任务与结果'}</small></span><MoreHorizontal size={19} aria-hidden="true" /></>}
+  const button = <button type="button" ref={trigger} className={mobile ? 'tw-mobile-account' : compact ? 'tw-rail-control tw-rail-account' : 'tw-account'} onClick={() => setOpen(value => !value)} aria-label={label} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined}>
+    {mobile ? <Settings size={25} aria-hidden="true" /> : <img src={user?.image || logoUrl} alt="" />}{!compact && !mobile && <><span><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '登录图研'))}</strong><small>{user ? '账户与设置' : '登录后同步任务与结果'}</small></span><MoreHorizontal size={19} aria-hidden="true" /></>}
   </button>;
   return <>{compact ? <SidebarTooltip label={label} disabled={open}>{button}</SidebarTooltip> : button}{open && <AccountPopover id={id} triggerRef={trigger} compact={compact} user={user} onClose={close} onSignIn={onSignIn} onSignOut={onSignOut} onAccountSettings={onAccountSettings} onAdmin={onAdmin} accountPending={accountPending} />}</>;
 }

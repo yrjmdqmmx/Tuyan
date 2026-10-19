@@ -1,4 +1,6 @@
 import { accountWorkspaceStore, WORKSPACE_ACCOUNT_COLLECTIONS } from './workspace-lifecycle.js';
+import { createAccountProfile } from './account-profile.js';
+import { APIError } from 'better-auth/api';
 import { createWorkspaceExecutionStore } from './workspace-execution.js';
 import { createWatchaOAuth } from './watcha-oauth.js';
 import { createAdminAccounts } from './admin-accounts.js';
@@ -102,15 +104,18 @@ export async function createAuthRuntime(
     account: { accountLinking: { disableImplicitLinking: true } },
     appName: 'PaperBanana',
     databaseHooks: { ...createAccountWriteGuard(db), user: {
-      create: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
-      update: { before: async (user) => ({ data: normalizeAccountInput(user) }) },
+      create: { before: async (user) => ({ data: { ...normalizeAccountInput(user), image: null } }) },
+      update: { before: async (user) => {
+        if (user.image !== undefined) throw new APIError('BAD_REQUEST', { code:'PROFILE_AVATAR_ENDPOINT_REQUIRED', message:'Use the avatar upload endpoint.' });
+        return { data: normalizeAccountInput(user) };
+      } },
     } },
     secret: config.authSecret,
     baseURL: config.authBaseUrl,
     trustedOrigins: config.frontendOrigins,
     // The custom confirmation handler is the only verification endpoint.
     // Disable the library route as well, including its normalized path aliases.
-    disabledPaths: ['/verify-email', '/unlink-account'],
+    disabledPaths: ['/verify-email', '/unlink-account', '/change-email'],
     // Better Auth 1.6.11 includes full email addresses in several negative-path
     // log records. Application and account-email logs remain available through
     // the injected redacting logger, so disable the library logger completely.
@@ -135,6 +140,13 @@ export async function createAuthRuntime(
       revokeSessionsOnPasswordReset: true,
       autoSignIn: false,
       async sendResetPassword({ user, url, token }, request) {
+        // A reset request may have read the old email just before a profile
+        // change. Its token already exists now: never send it to a stale inbox.
+        const current = await db.collection('user').findOne(authUserFilter(user.id));
+        if (current?.email !== user.email || await db.collection('accountDeletionOperations').findOne({_id:String(user.id)})) {
+          await db.collection('verification').deleteMany({identifier:`reset-password:${token}`,value:user.id});
+          return;
+        }
         await accountEmail.sendPasswordReset({ email: user.email, url, token, request });
       },
       async onPasswordReset({ user }) {
@@ -169,6 +181,7 @@ export async function createAuthRuntime(
   });
 
   return {
+    accountProfile: createAccountProfile({db,mongoClient,limiter,transport,deliveryEnabled:emailConfig.deliveryEnabled,secret:config.authSecret}),
     deletionStore,
     workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
     modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),

@@ -6,7 +6,7 @@ const EDGE = 4;
 
 // Read-only preview for both saved PNG and SVG results. The actual SVG editor
 // owns its separate grid, selection handles and editing tools.
-export default function FigureViewport({ version, onFullscreen, fullscreen = false, onInteract, interactionKey = 'idle' }) {
+export default function FigureViewport({ version, onFullscreen, fullscreen = false, onInteract, interactionKey = 'idle', previewLabel }) {
   const viewport = useRef(null), previous = useRef(null), interacted = useRef(null);
   const [box, setBox] = useState({ width: 0, height: 0 });
   const [natural, setNatural] = useState({ width: 0, height: 0 });
@@ -43,7 +43,7 @@ export default function FigureViewport({ version, onFullscreen, fullscreen = fal
   return <div className={`tw-figure-viewport ${zoom === null ? 'is-fit' : ''} ${fullscreen ? 'is-fullscreen' : ''}`}>
     <div ref={viewport} className="tw-figure-scroll" tabIndex={0} role="region" aria-label="作品预览，放大后可滚动查看" onPointerDown={interact} onWheel={interact} onKeyDown={e => { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.key)) interact(); }}>
       {failed ? <div className="tw-preview-failure" role="alert">此版本预览加载失败，原记录仍保留。<button type="button" onClick={() => { setFailed(false); setNatural({ width: 0, height: 0 }); }}>重新载入</button></div>
-        : <div className="tw-figure-stage" style={ready ? stage : undefined}><img src={version.url} alt={versionLabel(version, true)} draggable={false} style={ready ? size : { visibility: 'hidden' }} onLoad={e => setNatural({ width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight })} onError={() => setFailed(true)} /></div>}
+        : <div className="tw-figure-stage" style={ready ? stage : undefined}><img src={version.url} alt={previewLabel || versionLabel(version, true)} draggable={false} style={ready ? size : { visibility: 'hidden' }} onLoad={e => setNatural({ width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight })} onError={() => setFailed(true)} /></div>}
     </div>
     <div className="tw-view-tools" role="toolbar" aria-label="预览工具">
       <span className="tw-view-meta">{version.review}<span> · {version.origin}</span></span>
@@ -52,7 +52,7 @@ export default function FigureViewport({ version, onFullscreen, fullscreen = fal
       <button type="button" aria-label="放大预览" title="放大" disabled={!ready || scale >= 4} onClick={() => changeZoom(scale * 1.25)}><Plus size={16} /></button>
       <span className="tw-view-divider" aria-hidden="true" />
       <button type="button" aria-label="适应画布" aria-pressed={zoom === null} title="完整显示图片" disabled={!ready} onClick={() => changeZoom(null)}><Scan size={16} /><span>适应</span></button>
-      <button type="button" aria-label={fullscreen ? '退出全屏预览' : '全屏预览'} title={fullscreen ? '退出全屏' : '全屏预览'} onClick={onFullscreen}>{fullscreen ? <Minimize2 size={16} /> : <Expand size={16} />}</button>
+      {onFullscreen && <button type="button" aria-label={fullscreen ? '退出全屏预览' : '全屏预览'} title={fullscreen ? '退出全屏' : '全屏预览'} onClick={onFullscreen}>{fullscreen ? <Minimize2 size={16} /> : <Expand size={16} />}</button>}
     </div>
   </div>;
 }

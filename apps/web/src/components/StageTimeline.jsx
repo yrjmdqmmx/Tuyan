@@ -24,6 +24,8 @@ export default function StageTimeline({job,apiBase}){
         <summary><span className="stage-marker">{stage.type==='render'?<ImageIcon size={15}/>:stage.type==='critic'?<MessageSquareText size={15}/>:<CheckCircle2 size={15}/>}</span><strong>{stage.title||stage.type}</strong><span className="stage-meta">候选 {String.fromCharCode(65+candidate)}{stage.round?` · 第 ${stage.round} 轮`:''}{durationMs>0&&` · ${elapsedLabel(durationMs)}`}</span></summary>
         <div className="stage-body">{stage.error&&<p role="alert">{stage.error}</p>}
           {hasFields?<Fields value={details}/>:!parsed&&stage.text?<p className="stage-text">{stage.text}</p>:null}
+          {stage.suggestion&&<div className="stage-text"><strong>建议</strong><Fields value={stage.suggestion}/></div>}
+          {!stage.text&&!stage.suggestion&&!stage.image?.url&&!stage.error&&<p className="stage-text">此阶段尚未返回详细内容。</p>}
           {stage.image?.url&&<img src={resolveImageUrl(apiBase,stage.image.url)} alt={stage.title||'阶段图'} loading="lazy"/>}
           {parsed&&<details className="stage-raw"><summary>原始记录</summary><pre>{JSON.stringify(parsed,null,2)}</pre></details>}
         </div>

@@ -21,6 +21,8 @@ function fakeDatabase() {
     sessionReadRateLimit: { async createIndex() {} },
     accountDeletionOperations: { async createIndex() {} },
     accountVerificationTokens: { async createIndex() {} },
+    accountEmailChanges: { async createIndex() {} },
+    verification: { async deleteMany(query) { operations.push(['verification.deleteMany', query]); } },
     user: {
       async createIndex() {},
       async deleteOne(query) { operations.push(['user.deleteOne', query]); },
@@ -111,6 +113,12 @@ test('auth runtime connects only when constructed and exposes readiness and grac
   assert.equal(betterConfig.rateLimit.storage, 'database');
   assert.deepEqual(betterConfig.rateLimit.customRules['/sign-in/email'], { window: 900, max: 10 });
   assert.equal(typeof runtime.webHandler, 'function');
+  assert.deepEqual(await betterConfig.databaseHooks.user.update.before({name:'new name',image:undefined}),{data:{name:'new name',image:undefined}});
+  await assert.rejects(betterConfig.databaseHooks.user.update.before({image:'https://external.test/avatar.png'}));
+  await assert.rejects(betterConfig.databaseHooks.user.update.before({image:null}));
+  assert.ok(betterConfig.disabledPaths.includes('/change-email'));
+  await betterConfig.emailAndPassword.sendResetPassword({user:{id:'gone',email:'old@example.test'},token:'fixture-reset-token'});
+  assert.ok(db.operations.some(([op,q])=>op==='verification.deleteMany'&&q.identifier==='reset-password:fixture-reset-token'&&q.value==='gone'));
   assert.deepEqual(runtime.cachedStatus(), { ok: true, checkedAt: null });
   assert.deepEqual(await runtime.ready(), { ok: true });
   assert.deepEqual(db.commands, [{ ping: 1 }]);

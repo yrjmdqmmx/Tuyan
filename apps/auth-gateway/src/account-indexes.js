@@ -21,5 +21,6 @@ export async function ensureAccountIndexes(db) {
   await db.collection('account').createIndex({ userId: 1 });
   await db.collection('session').createIndex({ userId: 1, createdAt: -1 });
   await db.collection('accountVerificationTokens').createIndex({ expiresAt: 1 }, { name: 'account_verification_expiry', expireAfterSeconds: 0 });
+  await db.collection('accountEmailChanges').createIndex({ expiresAt: 1 }, { name: 'account_email_change_expiry', expireAfterSeconds: 0 });
   await db.collection('accountDeletionOperations').createIndex({ status: 1, nextAttemptAt: 1 }, { name: 'account_deletion_recovery' });
 }
