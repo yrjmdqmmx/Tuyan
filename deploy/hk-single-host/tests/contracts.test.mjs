@@ -396,6 +396,8 @@ test('nginx overwrites forwarding headers and enforces the JSON body limit', () 
   assert.match(nginx, /server_name\s+api\.paperbanana\.asia;/);
   assert.match(nginx, /proxy_pass\s+http:\/\/127\.0\.0\.1:13005;/);
   assert.match(nginx, /client_max_body_size\s+1100k;/);
+  assert.match(nginx, /location = \/api\/workspace \{\s+client_max_body_size 3m;/);
+  assert.match(nginx, /location = \/api\/workspace\/results \{\s+client_max_body_size 15m;/);
   assert.match(nginx, /proxy_set_header\s+X-Forwarded-For\s+\$remote_addr;/);
   assert.match(nginx, /proxy_set_header\s+X-Real-IP\s+\$remote_addr;/);
   assert.match(nginx, /access_log\s+\/var\/log\/nginx\/paperbanana-api\.access\.log;/);

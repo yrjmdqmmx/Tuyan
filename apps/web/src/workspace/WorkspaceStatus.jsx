@@ -39,6 +39,11 @@ export default function WorkspaceStatus({ preview = false, sync, execution, sign
           <h3><Cloud size={17} aria-hidden="true" />账号同步</h3>
           <p className={sync.error ? 'tw-status-issue' : ''}>{sync.error || sync.saveStatus}</p>
           {sync.notice && <p className="tw-status-issue">{sync.notice}</p>}
+          {sync.state?.tasks.filter(t=>t.syncConflict&&!t.deleted).map(t=><article key={t.id} className="tw-sync-conflict">
+            <h4>{t.title}</h4><p>同一内容发生并发修改，原任务和这份草稿均已保存。可先打开副本核对，再保留为独立任务。</p>
+            <div className="tw-status-actions"><button type="button" onClick={()=>{sync.setState(s=>({...s,selectedTaskId:t.id}));onClose();}}>打开冲突副本</button>
+            <button type="button" onClick={()=>sync.setState(s=>({...s,tasks:s.tasks.map(task=>{if(task.id!==t.id)return task;const copy={...task};delete copy.syncConflict;return copy;})}))}>保留为独立任务</button></div>
+          </article>)}
           <div className="tw-status-actions">
             {signedIn && <button type="button" onClick={sync.retry} disabled={sync.status === 'syncing'}><RefreshCw size={14} />重新同步</button>}
             <button type="button" onClick={onExport}><Download size={14} />导出本机备份</button>

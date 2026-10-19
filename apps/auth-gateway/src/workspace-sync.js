@@ -117,7 +117,7 @@ export function createWorkspaceRouter({ auth, store, frontendOrigins, isMaintena
     if(!auth.readWorkspaceHistoryResult)throw failure(503,'此服务未启用历史结果读取桥。');
     res.json(await auth.readWorkspaceHistoryResult(req,req.params.id,Number(req.params.index)));
   }));
-  router.get('/', route(async (req,res) => res.json(await store.get(req.workspaceUserId))));
+  router.get('/', route(async (req,res) => {const saved=await store.get(req.workspaceUserId);res.json(req.query.revision===String(saved.revision)?{revision:saved.revision,unchanged:true}:saved);}));
   router.put('/', route(async (req,res) => res.json(await store.put(req.workspaceUserId, req.body?.revision, req.body?.state))));
   router.post('/results', route(async (req,res) => res.json(await store.saveResult(req.workspaceUserId, req.body))));
   router.get('/results/:id', route(async (req,res) => res.json(await store.result(req.workspaceUserId, req.params.id))));

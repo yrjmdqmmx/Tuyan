@@ -47,6 +47,7 @@ export function taskMatches(t, query) {
 }
 export function submitIssue(s) {
   const t = currentTask(s), b = currentBranch(s), d = currentDraft(s);
+  if(t.deleted)return '任务已删除，可恢复后继续编辑';
   if (t.activeRunId) return '本任务已有执行，完成后可提交';
   if (b.targetId && !refinementTarget(s)) return '修改目标已不可用，请重新选择版本';
   if (!d.text.trim()) return b.targetId ? '请填写修改要求' : '请描述绘图目标';
@@ -92,7 +93,7 @@ export function workspaceReducer(state, action) {
     s.tasks.unshift(task);s.selectedTaskId=task.id;return s;
   }
   if (action.type === 'CREATE_TASK') {
-    const empty = s.tasks.find(t => !t.archived && !taskHasContent(t));
+    const empty = s.tasks.find(t => !t.deleted && !t.archived && !taskHasContent(t));
     if (empty) { empty.path = currentTask(s)?.path || empty.path; s.selectedTaskId = empty.id; return s; }
     const task = newTask(action.id || uid(), currentTask(s)?.path || 'png');
     s.tasks.unshift(task); s.selectedTaskId = task.id; return s;
@@ -102,7 +103,12 @@ export function workspaceReducer(state, action) {
   let b = t.branches[action.path || t.path];
   const d = Object.hasOwn(action, 'draftTargetId') ? (action.draftTargetId ? b.refinements[action.draftTargetId] : b.draft) : draftOf(b);
   switch (action.type) {
-    case 'RENAME': t.title = action.title.trim().slice(0, 120) || '新任务'; t.automaticTitle = false; break;
+    case 'DELETE': if(t.activeRunId)return state;t.deleted=true;break;
+    case 'RESTORE_TASK': delete t.deleted;break;
+    case 'KEEP_CONFLICT': delete t.syncConflict;break;
+    case 'RENAME':
+      if(action.baseTitle!==undefined&&t.title!==action.baseTitle&&t.title!==action.title.trim()){s.tasks.push({...copy(t),id:uid(),title:action.title.trim().slice(0,105)+' · 冲突副本',automaticTitle:false,deleted:false,activeRunId:null,syncConflict:{taskId:t.id,fields:['title']}});return s;}
+      t.title = action.title.trim().slice(0, 120) || '新任务'; t.automaticTitle = false; break;
     case 'PIN': t.pinned = !t.pinned; break;
     case 'ARCHIVE': t.archived = !t.archived; break;
     case 'SET_PATH':
@@ -167,7 +173,8 @@ export function workspaceReducer(state, action) {
       t.runs.push(run); t.activeRunId = run.id; break;
     }
     case 'EXECUTION': {
-      const r=t.runs.find(r=>r.id===action.runId);if(!r || t.activeRunId!==r.id)return state;
+      const r=t.runs.find(r=>r.id===action.runId);if(!r || ['succeeded','failed'].includes(r.status))return state;
+      if(t.activeRunId!==r.id){if(!action.execution?.jobId)return state;t.activeRunId=r.id;}
       if((!action.stage||action.stage===r.stage)&&(!action.execution||Object.entries(action.execution).every(([k,v])=>r.execution?.[k]===v)))return state;
       if(action.execution)r.execution={...r.execution,...action.execution};
       if(action.stage)r.stage=action.stage;break;
@@ -223,7 +230,8 @@ export function workspaceReducer(state, action) {
     }
     case 'FINISH': {
       const r = t.runs.find(r => r.id === action.runId);
-      if (!r || t.activeRunId !== r.id) return state;
+      if (!r || ['succeeded','failed'].includes(r.status)) return state;
+      if(t.activeRunId!==r.id){if(!action.error)return state;r.status='failed';r.error=action.error;r.stage=action.error;break;}
       r.status = action.error ? 'failed' : 'succeeded'; r.error = action.error || ''; r.stage = action.error || '本次执行完成'; t.activeRunId = null;
       if (action.error && r.accepted) {
         const rb = t.branches[r.path], draft = r.parentId ? rb.refinements[r.parentId] : rb.draft;

@@ -68,3 +68,16 @@ test('offline pre-import skips closed and unknown accounts; repeated apply prese
  assert.equal((await db.collection('workspaceMigrationBackups').findOne({_id:'history-v1:A'})).revision,1);
  assert.equal((await store.get('unknown')).state,null);assert.equal((await store.get('closed')).state,null);
 });
+
+test('revision-only reads work across trusted origins with the same account and preserve CAS',async()=>{
+ const app=express(),store=createWorkspaceStore({db:database()}),origins=['http://origin-a.test','http://origin-b.test'];
+ app.use('/api/workspace',createWorkspaceRouter({store,frontendOrigins:origins,auth:{optionalSession:async()=>({user:{id:'A'}})}}));
+ const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));const base=`http://127.0.0.1:${server.address().port}/api/workspace`;
+ try{
+ const state=newWorkspace('task');state.tasks[0].deleted=true;state.tasks[0].syncConflict={taskId:'source',fields:['branches.png.draft.text']};await store.put('A',0,state);
+ const get=(origin,revision,user='A')=>fetch(base+'?revision='+revision,{headers:{Origin:origin,'X-Workspace-Account':user}});
+ assert.deepEqual(await(await get(origins[1],1)).json(),{revision:1,unchanged:true});assert.equal((await get(origins[1],1,'B')).status,409);
+ const next=await(await get(origins[0],0)).json();assert.equal(next.state.tasks[0].deleted,true);assert.deepEqual(next.state.tasks[0].syncConflict,state.tasks[0].syncConflict);
+ next.state.tasks[0].deleted=false;await store.put('A',1,next.state);await assert.rejects(store.put('A',1,state),{status:409});assert.equal((await(await get(origins[1],1)).json()).state.tasks[0].deleted,false);
+ }finally{await new Promise(r=>server.close(r));}
+});

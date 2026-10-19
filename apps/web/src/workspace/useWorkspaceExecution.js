@@ -19,11 +19,12 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
   async function refresh(){
     if(polling.current||!live.current||!stateRef.current||!userId)return;
     polling.current=true;
-    try{for(const t of stateRef.current.tasks){const run=t.runs.find(r=>r.id===t.activeRunId&&r.execution);if(!run||submitting.current.has(run.id))continue;
+    try{for(const t of stateRef.current.tasks){const run=t.runs.find(r=>r.id===t.activeRunId&&r.execution);if(t.deleted||t.syncConflict||!run||submitting.current.has(run.id))continue;
       try{const remote=run.execution.jobId?{jobId:run.execution.jobId}:await recoverWorkspaceRun(base,userId,run.execution.taskId||t.id,run.id);if(!live.current)return;
         if(!remote?.jobId){if(remote?.status==='failed')dispatch({type:'FINISH',taskId:t.id,runId:run.id,error:'执行未获接收，原要求已保留。'});else dispatch({type:'EXECUTION',taskId:t.id,runId:run.id,stage:'正在核对提交状态；不会重复发送。'});continue;}
         dispatch({type:'EXECUTION',taskId:t.id,runId:run.id,execution:{jobId:remote.jobId}});dispatch({type:'ACCEPT',taskId:t.id,runId:run.id});
         const job=await pollWorkspaceRun(base,userId,run.execution.taskId||t.id,run.id,remote.jobId);if(!live.current)return;
+        if(stateRef.current.tasks.find(task=>task.id===t.id)?.activeRunId!==run.id)continue;
         if(run.history){sync.setState(current=>mergeAccountHistory(current,[historyJob(job,run.history.source,userId)]));continue;}
         for(const [i,image]of(job.result_images||[]).entries()){const format=image.mime_type==='image/svg+xml'||/\.svg(?:$|\?)/i.test(image.filename)?'svg':'png';if(format!==run.path)throw Error('返回格式与此执行不一致，未替换已有版本。');if(!image.url)continue;const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`${run.id}:${image.candidate_id}:${image.filename}`));const versionId=Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');if(!live.current)return;dispatch({type:'RESULT',taskId:t.id,runId:run.id,candidateId:`${run.id}-${image.candidate_id}`,label:String.fromCharCode(65+i),version:{id:versionId,format,url:await workspaceResultDataUrl(image.url,format,base),review:reviewSummary(image.review,run.execution.simulation)}});}
         if(terminal.includes(job.status))dispatch({type:'FINISH',taskId:t.id,runId:run.id,error:['failed','cancelled'].includes(job.status)?job.error||'执行未完成，已有结果及要求保留。':''});
@@ -32,7 +33,7 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
     }finally{polling.current=false;}
   }
   const refreshRef=useRef(refresh);refreshRef.current=refresh;
-  useEffect(()=>{const tick=()=>void refreshRef.current();tick();const timer=setInterval(tick,5000);window.addEventListener('online',tick);return()=>{clearInterval(timer);window.removeEventListener('online',tick);};},[userId]);
+  useEffect(()=>{const tick=()=>void refreshRef.current();tick();const timer=setInterval(tick,5000);const visible=()=>{if(document.visibilityState==='visible')tick();};window.addEventListener('online',tick);document.addEventListener('visibilitychange',visible);window.addEventListener('pageshow',tick);return()=>{clearInterval(timer);window.removeEventListener('online',tick);document.removeEventListener('visibilitychange',visible);window.removeEventListener('pageshow',tick);};},[userId]);
   async function submit(){
     if(submitting.current.size)return;setError('');if(!userId){setError('请先登录图研，任务执行需要账号归属。草稿已保留。');return;}
     const unavailable=workspaceExecutionIssue(health);if(unavailable){setError(unavailable);return;}
@@ -44,7 +45,9 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
       const request=buildWorkspaceRequest({task,run,models});
       const issue=workspaceExecutionIssue(health,request);if(issue)throw Error(issue);
       dispatch({type:'BEGIN',taskId:task.id,runId,execution:{version:1,simulation}});begun=true;
-      await sync.ensureSynced();if(!live.current)return;requestStarted=true;
+      await sync.ensureSynced();if(!live.current)return;
+      if(stateRef.current.tasks.find(t=>t.id===task.id)?.activeRunId!==runId)throw Error('另一标签页已更新本任务的执行，请查看当前进度。');
+      requestStarted=true;
       const result=await startWorkspaceRun({base,userId,task,run,models,simulation,request});if(!live.current)return;
       dispatch({type:'EXECUTION',taskId:task.id,runId,execution:{jobId:result.id}});dispatch({type:'ACCEPT',taskId:task.id,runId});
     }catch(e){if(live.current){if(begun&&(!requestStarted||e.beforeDispatch||e.status>=400&&e.status<500))dispatch({type:'FINISH',taskId:task.id,runId,error:e.message});else if(begun)dispatch({type:'EXECUTION',taskId:task.id,runId,stage:'提交状态待核对；不重复发送。'});setError(e.message);}}

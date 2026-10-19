@@ -5,13 +5,13 @@ import { newWorkspace, uid, taskHasContent } from './workspaceState.js';
 export const LEGACY_WORKSPACE_KEY = 'tuyan.workspace-ui-preview.v1';
 export const ORIGINAL_SCOPE = 'workspace-ui-preview:local';
 function canonical(value, context = '') {
-  if(Array.isArray(value))return value.map(item=>canonical(item,context));
+  if(Array.isArray(value)){const items=value.map(item=>canonical(item,context));return ['tasks','runs','groups','candidates','versions'].includes(context)?items.sort((a,b)=>a.id.localeCompare(b.id)):items;}
   if(!value||typeof value!=='object')return value;
   return Object.fromEntries(Object.keys(value).sort().filter(key=> !(
-    ['url','loadError'].includes(key)&&(value.resultId || value.history) || ['status','browserSaved'].includes(key)&&value.clientFileId ||
+    key==='deleted'&&!value.deleted || ['url','loadError'].includes(key)&&(value.resultId || value.history) || ['status','browserSaved'].includes(key)&&value.clientFileId ||
     key==='selectedTaskId'&&value.tasks || key==='path'&&value.branches ||
     ['targetId','lastTargetId','groupId','candidateId','versionId','navRevision','unreadVersionId'].includes(key)&&value.groups&&value.draft ||
-    key==='viewedVersionId'&&value.versions || key==='mode'&&context==='draft'
+    key==='viewedVersionId'&&value.versions
   )).map(key=>[key,canonical(value[key], context==='refinements'?'draft':key)]));
 }
 const comparable = value => JSON.stringify(canonical(value));
@@ -28,35 +28,124 @@ export function readLegacy(storage = globalThis.localStorage) {
   if (state?.schema !== 1 || !state.tasks?.length || !state.tasks.some(t=>t.id===state.selectedTaskId) || !state.tasks.every(t=>t.runs && ['png','svg'].every(p=>t.branches?.[p]?.draft?.settings && Array.isArray(t.branches[p].groups)))) throw Error('原浏览器草稿无法读取，已保留原存储；请先导出备份后处理。');
   return state;
 }
-// Each device retains its own view selection. Concurrent edits to the same task
-// keep both complete branches/settings/version histories as an explicit copy.
-export function mergeWorkspaces(base, local, remote, makeId = uid) {
-  if (!remote) return { state: local, conflicts: 0 };
-  if (!base && !local.tasks.some(taskHasContent)) return { state: remote, conflicts: 0 };
-  const baseline = new Map((base?.tasks || []).map(t=>[t.id,t])), theirs = new Map(remote.tasks.map(t=>[t.id,t]));
-  const tasks = [], seen = new Set(); let selectedTaskId = local.selectedTaskId, conflicts = 0;
-  for (const task of local.tasks) {
-    const other = theirs.get(task.id), before = baseline.get(task.id); seen.add(task.id);
-    if (!other) { tasks.push(task); continue; }
-    if (equal(task,other)) { tasks.push(task); continue; }
-    if (equal(task,before)) { tasks.push(preserveView(other,task)); continue; }
-    if (equal(other,before)) { tasks.push(task); continue; }
-    const duplicate = { ...structuredClone(task), id: makeId(), title: `${task.title.slice(0,105)} · 冲突副本`, automaticTitle: false };
-    tasks.push(duplicate, other); if (selectedTaskId === task.id) selectedTaskId = duplicate.id; conflicts++;
+// Three-way merge at editable fields and stable entity IDs. Derived execution
+// observations never become user conflicts. Local navigation is projected last.
+const clone = value => value === undefined ? undefined : structuredClone(value);
+const same = (a,b) => JSON.stringify(a) === JSON.stringify(b);
+function conflictId(task) {
+  // Stable across retries/tabs; two independent 64-bit hashes over canonical data.
+  const source=comparable(task);let a=14695981039346656037n,b=7809847782465536322n;
+  for(let i=0;i<source.length;i++){const c=BigInt(source.charCodeAt(i));a=BigInt.asUintN(64,(a^c)*1099511628211n);b=BigInt.asUintN(64,(b^c)*14029467366897019727n);}
+  return `conflict-${a.toString(16)}-${b.toString(16)}`;
+}
+function mergeText(base,local,remote) {
+  const change=value=>{let start=0,end=base.length,tail=value.length;while(start<end&&start<tail&&base[start]===value[start])start++;while(end>start&&tail>start&&base[end-1]===value[tail-1]){end--;tail--;}return {start,end,text:value.slice(start,tail)};};
+  const a=change(local),b=change(remote);
+  if(a.start===b.start||a.start<b.end&&b.start<a.end)return null;
+  return [a,b].sort((x,y)=>y.start-x.start).reduce((text,c)=>text.slice(0,c.start)+c.text+text.slice(c.end),base);
+}
+function mergeValue(base, local, remote, fields, path='') {
+  if(same(local,remote))return clone(local);
+  if(same(local,base))return clone(remote);
+  if(same(remote,base))return clone(local);
+  const key=path.split('.').at(-1);
+  if(['text','caption','avoid'].includes(key)&&[base,local,remote].every(v=>typeof v==='string')){const merged=mergeText(base,local,remote);if(merged!==null)return merged;}
+  if(['updatedAt','revision'].includes(key)&&Number.isFinite(local)&&Number.isFinite(remote))return Math.max(local,remote)+(key==='revision'?1:0);
+  if(key==='createdAt'&&Number.isFinite(local)&&Number.isFinite(remote))return Math.min(local,remote);
+  if(Array.isArray(local)&&Array.isArray(remote)&&[...(base||[]),...local,...remote].every(v=>v&&typeof v.id==='string')) {
+    const before=new Map((base||[]).map(v=>[v.id,v])),ours=new Map(local.map(v=>[v.id,v])),theirs=new Map(remote.map(v=>[v.id,v]));
+    return [...new Set([...ours.keys(),...theirs.keys()])].map(id=>mergeValue(before.get(id),ours.get(id),theirs.get(id),fields,`${path}.${id}`)).filter(v=>v!==undefined);
   }
-  for (const task of remote.tasks) if (!seen.has(task.id)) tasks.push(task);
-  return { state: { schema: 1, selectedTaskId: tasks.some(t=>t.id===selectedTaskId) ? selectedTaskId : tasks[0].id, tasks }, conflicts };
+  if(local&&remote&&typeof local==='object'&&typeof remote==='object'&&!Array.isArray(local)&&!Array.isArray(remote)) {
+    // A terminal server observation wins over a delayed running poll.
+    const isRun=local.input&&local.groupId&&local.status&&remote.status;
+    const rank=r=>['succeeded','failed'].includes(r.status)?2:r.accepted?1:0;
+    const observation=isRun?(rank(local)>rank(remote)?local:remote):null;
+    const out={};
+    for(const k of new Set([...Object.keys(base||{}),...Object.keys(local),...Object.keys(remote)])) {
+      if(observation&&['status','stage','accepted','error'].includes(k)){if(observation[k]!==undefined)out[k]=clone(observation[k]);continue;}
+      if(k==='activeRunId')continue;
+      if(k==='title'&&(local.automaticTitle||remote.automaticTitle)){out[k]=!local.automaticTitle?local[k]:remote[k];continue;}
+      const v=mergeValue(base?.[k],local[k],remote[k],fields,path?`${path}.${k}`:k);if(v!==undefined)out[k]=v;
+    }
+    if(local.runs&&remote.runs) {
+      const running=out.runs.filter(r=>['running','submitting'].includes(r.status));
+      out.activeRunId=running.find(r=>(r.accepted||r.execution?.jobId)&&[remote.activeRunId,local.activeRunId].includes(r.id))?.id||running.find(r=>r.id===remote.activeRunId)?.id||running.find(r=>r.id===local.activeRunId)?.id||null;
+      if(out.automaticTitle&&!out.runs.length)out.title=out.branches[local.path||remote.path||'png'].draft.text.trim().split('\n')[0].slice(0,32)||'新任务';
+    }
+    return out;
+  }
+  // Deleting an entity while someone edits it is a real conflict too.
+  fields.add(path);return clone(remote);
+}
+// ACCEPT clears only the submitted input. A concurrently typed next draft is
+// independent user work, so that derived clear must not conflict with it.
+function preserveConcurrentDraft(task, other, before) {
+  for(const run of task.runs) {
+    if(!run.accepted)continue;
+    const get=t=>{const branch=t?.branches?.[run.path];return run.parentId?branch?.refinements?.[run.parentId]:branch?.draft;};
+    const draft=get(task),prior=get(before),concurrent=get(other);
+    if(!draft||!prior||!concurrent||draft.revision!==run.draftRevision+1||prior.revision!==run.draftRevision)continue;
+    for(const key of run.parentId?['text']:['text','caption','avoid','attachments']) {
+      const empty=key==='attachments'?[]:'';
+      if(same(draft[key],empty)&&!same(concurrent[key],empty)&&same(prior[key],run.input[key])&&!same(concurrent[key],prior[key]))draft[key]=clone(prior[key]);
+    }
+  }
+}
+export function mergeWorkspaces(base, local, remote, makeId = conflictId) {
+  if(!remote)return {state:local,conflicts:0};
+  if(!base&&!local.tasks.some(taskHasContent))return {state:remote,conflicts:0};
+  const baseline=new Map((base?.tasks||[]).map(t=>[t.id,t])),ours=new Map(local.tasks.map(t=>[t.id,t])),theirs=new Map(remote.tasks.map(t=>[t.id,t]));
+  const tasks=[],copies=[];let conflicts=0;
+  for(const id of new Set([...ours.keys(),...theirs.keys()])) {
+    const before=baseline.get(id),task=ours.get(id),other=theirs.get(id),fields=new Set();
+    if(!task&&!before){tasks.push(clone(other));continue;}
+    if(!other&&!before){tasks.push(clone(task));continue;}
+    // Compare content without view cursors, URLs or local material availability.
+    let merged;
+    if(equal(task,other)||equal(other,before))merged=clone(task);
+    else if(equal(task,before))merged=task&&other?preserveView(other,task):clone(other);
+    else if(!task||!other){fields.add('deleted');merged=clone(other);}
+    else {
+      const left=canonical(task),right=canonical(other),prior=canonical(before);
+      preserveConcurrentDraft(left,canonical(other),prior);preserveConcurrentDraft(right,canonical(task),prior);
+      merged=mergeValue(prior,left,right,fields);
+      // Preserve hydrated assets and browser material flags after canonical merge.
+      merged=restoreLocalAssets(merged,[other,task]);
+      if(task.deleted!==other.deleted&&(task.deleted||other.deleted)){fields.add('deleted');merged.deleted=!!other.deleted;}
+      merged=preserveView(merged,task);
+    }
+    if(merged)tasks.push(merged);
+    if(fields.size&&task) {
+      const copy={...clone(task),id:makeId(task),title:`${task.title.slice(0,105)} · 冲突副本`,automaticTitle:false,deleted:false,
+        syncConflict:{taskId:id,fields:[...fields].slice(0,40)},activeRunId:null};
+      // Copies are evidence/drafts, never a second execution owner.
+      copies.push(copy);conflicts++;
+    }
+  }
+  for(const copy of copies)if(!tasks.some(t=>t.id===copy.id))tasks.push(copy);
+  // Old clients can still remove records. Keep a selected deleted task as a
+  // tombstone instead of navigating away; new clients use explicit tombstones.
+  if(!tasks.some(t=>t.id===local.selectedTaskId)&&ours.has(local.selectedTaskId))tasks.push({...clone(ours.get(local.selectedTaskId)),deleted:true,activeRunId:null});
+  return {state:{schema:1,selectedTaskId:local.selectedTaskId,tasks},conflicts};
+}
+function restoreLocalAssets(task,sources) {
+  const assets=new Map();for(const source of sources)for(const v of versionsOf({tasks:[source]}))if(v.url&&!assets.has(v.id))assets.set(v.id,v);
+  for(const d of [...Object.values(task.branches).flatMap(b=>[b.draft,...Object.values(b.refinements)]),...task.runs.map(r=>r.input)])for(const a of d.attachments){a.status='local';a.browserSaved=true;}
+  for(const v of versionsOf({tasks:[task]})){const source=assets.get(v.id);if(source){v.url=source.url;if(source.loadError)v.loadError=source.loadError;}}
+  return task;
 }
 function preserveView(remote, local) {
   const task=structuredClone(remote);task.path=local.path;
   for(const path of ['png','svg']) {
     const b=task.branches[path], old=local.branches[path], ids=new Set(b.groups.flatMap(g=>g.candidates.flatMap(c=>c.versions.map(v=>v.id))));
-    for(const key of ['targetId','lastTargetId','versionId','unreadVersionId'])if(!old[key]||ids.has(old[key]))b[key]=old[key];
+    for(const key of ['targetId','lastTargetId','versionId','unreadVersionId'])b[key]=old[key]&&ids.has(old[key])?old[key]:null;
     if(b.targetId&&!b.refinements[b.targetId])b.targetId=null;
-    if(b.groups.some(g=>g.id===old.groupId)){b.groupId=old.groupId;b.candidateId=old.candidateId;}
-    b.navRevision=old.navRevision;b.draft.mode=old.draft.mode;
-    for(const [id,draft] of Object.entries(b.refinements))if(old.refinements[id])draft.mode=old.refinements[id].mode;
-    for(const g of b.groups)for(const c of g.candidates){const previous=old.groups.find(x=>x.id===g.id)?.candidates.find(x=>x.id===c.id);if(c.versions.some(v=>v.id===previous?.viewedVersionId))c.viewedVersionId=previous.viewedVersionId;}
+    b.groupId=b.groups.some(g=>g.id===old.groupId)?old.groupId:null;b.candidateId=b.groupId?old.candidateId:null;
+    if(!b.versionId&&ids.size)b.unreadVersionId=[...ids].at(-1);
+    if(!old.versionId&&!old.groups.some(g=>g.candidates.some(c=>c.versions.length))&&!old.targetId){const g=b.groups.find(g=>g.candidates.some(c=>c.versions.length)),c=g?.candidates.find(c=>c.versions.length);if(c){b.groupId=g.id;b.candidateId=c.id;b.versionId=c.versions[0].id;b.unreadVersionId=null;}}
+    b.navRevision=old.navRevision;
+    for(const g of b.groups)for(const c of g.candidates){const previous=old.groups.find(x=>x.id===g.id)?.candidates.find(x=>x.id===c.id);c.viewedVersionId=c.versions.some(v=>v.id===previous?.viewedVersionId)?previous.viewedVersionId:null;}
   }
   return task;
 }
@@ -124,85 +213,121 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
     for (const t of out.tasks) for (const d of [...Object.values(t.branches).flatMap(b=>[b.draft,...Object.values(b.refinements)]), ...t.runs.map(r=>r.input)]) for (const a of d.attachments) { a.status='local'; a.browserSaved=true; }
     return out;
   }
-  return { history, get:()=>request(''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
+  return { history, get:revision=>request(Number.isSafeInteger(revision)?`?revision=${revision}`:''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
 }
 
 export class WorkspaceSyncController {
-  constructor({cache, key, client, legacy = readLegacy, notify = () => {}}) {
-    Object.assign(this,{cache,key,client,legacy,notify});
-    this.state=null;this.base=null;this.revision=0;this.cacheRevision=0;this.queue=Promise.resolve();this.disposed=false;this.blocked=false;this.running=false;this.generation=0;this.importedGuest=false;this.notice='';
+  constructor({cache,key,client,legacy=readLegacy,notify=()=>{},broadcast=()=>{},recoveryId,restoreId}) {
+    Object.assign(this,{cache,key,client,legacy,notify,broadcast,recoveryId,restoreId});
+    this.state=null;this.base=null;this.cacheBase=null;this.revision=0;this.cacheRevision=0;this.queue=Promise.resolve();this.disposed=false;this.blocked=false;this.running=false;this.generation=0;this.importedGuest=false;this.notice='';
   }
-  emit(status, error='') { this.status=status;this.error=error;if (!this.disposed) this.notify(this); }
+  emit(status,error='') {
+    this.status=status;this.error=error;
+    const count=this.state?.tasks.filter(t=>t.syncConflict&&!t.deleted).length||0;
+    this.notice=count?`有 ${count} 份并发修改的冲突副本已保留，请查看处理；其他任务继续自动同步。`:'';
+    if(!this.disposed)this.notify(this);
+  }
   async init() {
     try {
       const saved=await this.cache.read(this.key);
-      if (this.disposed) return;
-      if (saved) { this.state=saved.state;this.base=saved.base;this.revision=saved.revision;this.cacheRevision=saved.cacheRevision;this.importedGuest=saved.importedGuest || false; }
-      else this.state=this.client ? newWorkspace() : this.legacy();
-      this.emit('local'); await this.persist();
-      if(this.client && !this.blocked) this.schedule(0);
-    } catch(error) { this.blocked=true;this.emit('error',error.message); }
+      const recovery=this.restoreId&&await this.cache.read(`${this.key}:tab:${this.restoreId}`);
+      if(this.disposed)return;
+      if(recovery){Object.assign(this,{state:recovery.state,base:recovery.base,revision:recovery.revision,importedGuest:recovery.importedGuest||false});this.cacheBase=recovery.cacheBase;this.cacheRevision=recovery.cacheRevision||0;}
+      else if(saved){Object.assign(this,{state:saved.state,base:saved.base,revision:saved.revision,cacheRevision:saved.cacheRevision,importedGuest:saved.importedGuest||false});this.cacheBase=clone(saved.state);}
+      else this.state=this.client?newWorkspace():this.legacy();
+      this.emit('local');await this.persist();if(this.client&&!this.blocked)this.schedule(0);
+    }catch(error){this.blocked=true;this.emit('error',error.message);}
   }
   setState(update) {
-    if (!this.state || this.disposed) return;
+    if(!this.state||this.disposed)return;
     const next=typeof update==='function'?update(this.state):update;
-    if(next===this.state || JSON.stringify(next)===JSON.stringify(this.state))return;
-    const contentChanged=!equal(next,this.state);
-    this.state=next;
+    if(next===this.state||same(next,this.state))return;
+    const contentChanged=!equal(next,this.state);this.state=next;
     if(contentChanged)this.generation++;
-    // Navigation and renewed signed URLs are local cache changes, not new edits.
     this.emit(this.blocked?'error':contentChanged?'saving':this.status,this.error);
     void this.persist();if(contentChanged)this.schedule();
   }
+  async backup() {
+    if(this.recoveryId&&this.cache.backup)await this.cache.backup(`${this.key}:tab:${this.recoveryId}`,clone({state:this.state,base:this.base,revision:this.revision,cacheBase:this.cacheBase,cacheRevision:this.cacheRevision,importedGuest:this.importedGuest}));
+  }
   persist() {
     const write=async()=>{
-      if(this.blocked || !this.state) return;
-      const snapshot=structuredClone({state:this.state,base:this.base,revision:this.revision,importedGuest:this.importedGuest});
-      try { this.cacheRevision=await this.cache.write(this.key,this.cacheRevision,snapshot);if(!this.running && this.status!=='error')this.emit(this.client?(this.base&&equal(this.state,this.base)?'synced':'pending'):'local'); }
-      catch(error){this.blocked=true;this.emit('error',error.message);}
+      if(!this.state||this.disposed)return;
+      try {
+        // Independent per-document recovery is durable before any merge/CAS retry.
+        await this.backup();
+        for(let attempt=0;attempt<12;attempt++) {
+          const latest=await this.cache.read(this.key);if(this.disposed)return;
+          if(latest&&latest.cacheRevision!==this.cacheRevision) {
+            this.state=mergeWorkspaces(this.cacheBase,this.state,latest.state).state;
+            if(latest.revision>=this.revision){this.base=latest.base;this.revision=latest.revision;}
+            this.cacheRevision=latest.cacheRevision;this.cacheBase=clone(latest.state);this.importedGuest=latest.importedGuest||this.importedGuest;
+            this.emit(this.status,this.error);await this.backup();
+          }
+          const snapshot=clone({state:this.state,base:this.base,revision:this.revision,importedGuest:this.importedGuest});
+          const previous=this.cacheRevision;
+          try {
+            this.cacheRevision=await this.cache.write(this.key,previous,snapshot);this.cacheBase=clone(snapshot.state);this.blocked=false;
+            await this.backup();
+            if(this.cacheRevision!==previous)this.broadcast({key:this.key,cacheRevision:this.cacheRevision});
+            if(!this.running&&this.status!=='error')this.emit(this.client?(this.base&&equal(this.state,this.base)?'synced':'pending'):'local');
+            return;
+          }catch(error){if(error.code!=='LOCAL_CONFLICT')throw error;}
+        }
+        // Contention is retryable, never a workspace-wide permanent lock.
+        this.emit('pending');this.schedule(200);setTimeout(()=>{if(!this.disposed)void this.persist();},200);
+      }catch(error){this.blocked=true;this.emit('error',error.message);}
     };
     this.queue=this.queue.then(write);return this.queue;
   }
+  async receive(message) {
+    if(this.disposed||message?.key!==this.key||message.cacheRevision<=this.cacheRevision)return;
+    await this.persist();this.schedule(100);
+  }
   schedule(delay=700) {
-    if(!this.client||this.disposed||this.blocked)return;
-    clearTimeout(this.timer);this.timer=setTimeout(()=>void this.sync(),delay);
+    if(!this.client||this.disposed)return;
+    clearTimeout(this.timer);this.timer=setTimeout(()=>void this.sync({background:true}),delay);
   }
-  async sync({ background = false } = {}) {
-    if(!this.client||!this.state||this.running||this.blocked||this.disposed)return;
-    const quiet=background && this.status==='synced' && this.base && equal(this.state,this.base);
-    this.running=true;if(!quiet)this.emit('syncing');let startGeneration;
+  async sync({background=false}={}) {
+    if(!this.client||!this.state||this.disposed)return;
+    if(this.running){this.resync=true;return this.inFlight;}
+    this.running=true;
+    this.inFlight=this.performSync(background).finally(()=>{this.running=false;this.inFlight=null;if(this.resync){this.resync=false;this.schedule(100);}});
+    return this.inFlight;
+  }
+  async performSync(background) {
+    let quiet=background&&this.status==='synced'&&this.base&&equal(this.state,this.base);
+    if(!quiet)this.emit('syncing');
     try {
-      if(!quiet)await this.persist();if(this.blocked||this.disposed)return;
-      const remote=await this.client.get();if(this.disposed)return;
-      // An unchanged background revision needs no hydration, cache write or announcement.
-      if(quiet && remote.revision===this.revision && equal(this.state,this.base))return;
-      const hydrated=await this.client.hydrate(remote.state,this.state);if(this.disposed)return;
-      const merged=mergeWorkspaces(this.base,this.state,hydrated);
-      this.state=merged.state;this.base=hydrated;this.revision=remote.revision;
-      if(merged.conflicts)this.notice=`发现同时修改，已保留 ${merged.conflicts} 份冲突副本。`;
-      if(!quiet)this.emit('syncing');await this.persist();if(this.blocked||this.disposed)return;
-      if(hydrated && equal(this.state,hydrated)){this.emit('synced');return;}
-      const snapshot=structuredClone(this.state);startGeneration=this.generation;
-      const wire=await this.client.wire(snapshot);if(this.disposed)return;
-      const wireVersions=versionsOf(wire), snapshotVersions=versionsOf(snapshot);
-      const ids=new Map(snapshotVersions.map((v,i)=>[v.url,wireVersions[i].resultId]).filter(([,id])=>id));
-      // Enrich only the captured result identities; never replace newer typing.
-      for(const v of [...versionsOf(this.state),...snapshotVersions]) if(ids.has(v.url))v.resultId=ids.get(v.url);
-      const saved=await this.client.put(this.revision,wire);if(this.disposed)return;
-      this.revision=saved.revision;this.base=await this.client.hydrate(wire,snapshot);if(this.disposed)return;
-      await this.persist();if(this.blocked)return;
-      this.emit(this.generation===startGeneration?'synced':'pending');
-    } catch(error) {
-      if(this.disposed)return;
-      this.emit('error',error.status===401?'登录已过期，本机草稿已保留；请重新登录后同步。':error.message);
-      if(error.status===409 && error.message==='WORKSPACE_CONFLICT')this.schedule(200);
-    } finally {
-      this.running=false;
-      if(startGeneration!==undefined && this.generation!==startGeneration)this.schedule();
-    }
+      if(!quiet||this.blocked)await this.persist();if(this.blocked||this.disposed)return;
+      for(let attempt=0;attempt<6;attempt++) {
+        const remote=await this.client.get(quiet?this.revision:undefined);if(this.disposed)return;
+        if(remote.unchanged&&equal(this.state,this.base)||quiet&&remote.revision===this.revision&&equal(this.state,this.base))return;
+        // A revision-only reply may race with typing. We already have its base.
+        const hydrated=remote.unchanged?this.base:await this.client.hydrate(remote.state,this.state);if(this.disposed)return;
+        if(remote.revision<this.revision){quiet=false;continue;}
+        this.state=mergeWorkspaces(this.base,this.state,hydrated).state;this.base=hydrated;this.revision=remote.revision;
+        this.emit('syncing');await this.persist();if(this.blocked||this.disposed)return;
+        if(this.base&&equal(this.state,this.base)){this.emit('synced');return;}
+        const snapshot=clone(this.state),expected=this.revision;
+        const wire=await this.client.wire(snapshot);if(this.disposed)return;
+        const wireVersions=versionsOf(wire),snapshotVersions=versionsOf(snapshot);
+        const ids=new Map(snapshotVersions.map((v,i)=>[v.id,wireVersions[i].resultId]).filter(([,id])=>id));
+        for(const v of [...versionsOf(this.state),...snapshotVersions])if(ids.has(v.id))v.resultId=ids.get(v.id);
+        let saved;
+        try{saved=await this.client.put(expected,wire);}catch(error){if(error.status===409&&error.message==='WORKSPACE_CONFLICT'){quiet=false;continue;}throw error;}
+        if(this.disposed)return;
+        const acknowledged=await this.client.hydrate(wire,snapshot);if(this.disposed)return;
+        // A broadcast can advance the shared base while an older PUT is in flight.
+        if(saved.revision>=this.revision){this.revision=saved.revision;this.base=acknowledged;}
+        await this.persist();if(this.blocked)return;
+        const clean=equal(this.state,this.base);this.emit(clean?'synced':'pending');if(!clean)this.schedule(200);return;
+      }
+      this.emit('pending');this.schedule(300);
+    }catch(error){if(this.disposed)return;this.emit('error',error.status===401?'登录已过期，本机草稿已保留；请重新登录后同步。':error.message);if(!error.status||error.status>=500)this.schedule(5000);}
   }
-  async flush() { await this.persist();if(this.blocked)throw Error('草稿尚未安全保存，请先导出备份再退出。'); }
-  dispose() { this.disposed=true;clearTimeout(this.timer); }
+  async flush(){await this.persist();if(this.blocked)throw Error('草稿尚未安全保存，请先导出备份再退出。');}
+  dispose(){this.disposed=true;clearTimeout(this.timer);}
 }
 function bytesToBase64(bytes) {
   let value=''; for (let i=0;i<bytes.length;i+=8192) value+=String.fromCharCode(...bytes.subarray(i,i+8192));
@@ -220,6 +345,7 @@ export function createWorkspaceCache(indexed = globalThis.indexedDB) {
   }
   return {
     async read(key) { const d=await db(); return new Promise((resolve,reject)=>{const r=d.transaction('snapshots').objectStore('snapshots').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);}); },
+    async backup(key,value) { const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('snapshots','readwrite');tx.objectStore('snapshots').put({...value,key});tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(Error('本机恢复草稿保存失败，请保持页面打开。'));}); },
     async write(key, expected, value) {
       const d=await db(); return new Promise((resolve,reject)=>{
         const tx=d.transaction('snapshots','readwrite'), s=tx.objectStore('snapshots'); let revision, conflict=false;
@@ -228,11 +354,11 @@ export function createWorkspaceCache(indexed = globalThis.indexedDB) {
           const sameContent=previous && equal(previous.state,value.state) && equal(previous.base,value.base) && previous.revision===value.revision && previous.importedGuest===value.importedGuest;
           // A stale tab may renew signed URLs or browse a different version without
           // conflicting. The current writer still persists its own view for reload.
-          if(sameContent && (previous.cacheRevision!==expected || JSON.stringify(previous.state)===JSON.stringify(value.state) && JSON.stringify(previous.base)===JSON.stringify(value.base))){revision=previous.cacheRevision;return;}
+          if(sameContent){revision=previous.cacheRevision;return;}
           if ((previous?.cacheRevision||0)!==expected) { conflict=true; tx.abort(); return; }
           revision=expected+1; s.put({...value,key,cacheRevision:revision});
         };
-        tx.oncomplete=()=>resolve(revision);tx.onerror=tx.onabort=()=>reject(conflict ? Object.assign(Error('另一标签页已有更新。当前草稿保留，请导出后刷新；已停止覆盖保存。'),{code:'LOCAL_CONFLICT'}) : Error('本机保存失败，请保持页面打开并导出草稿。'));
+        tx.oncomplete=()=>resolve(revision);tx.onerror=tx.onabort=()=>reject(conflict ? Object.assign(Error('另一标签页已有更新，正在合并本机草稿。'),{code:'LOCAL_CONFLICT'}) : Error('本机保存失败，请保持页面打开并导出草稿。'));
       });
     },
   };

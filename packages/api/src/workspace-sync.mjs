@@ -71,7 +71,7 @@ function branch(b) {
 }
 function task(t) {
   obj(t); obj(t.branches);
-  const out = { id: id(t.id), ...(t.updatedAt ? {updatedAt:num(t.updatedAt)} : {}), title: str(t.title, 160), automaticTitle: bool(t.automaticTitle), pinned: bool(t.pinned), archived: bool(t.archived), path: choice(t.path, ['png', 'svg']), activeRunId: optionalId(t.activeRunId),
+  const out = { id: id(t.id), ...(Object.hasOwn(t,'deleted')?{deleted:bool(t.deleted)}:{}), ...(t.syncConflict?{syncConflict:{taskId:id(t.syncConflict.taskId),fields:list(t.syncConflict.fields,40,v=>str(v,1000))}}:{}), ...(t.updatedAt ? {updatedAt:num(t.updatedAt)} : {}), title: str(t.title, 160), automaticTitle: bool(t.automaticTitle), pinned: bool(t.pinned), archived: bool(t.archived), path: choice(t.path, ['png', 'svg']), activeRunId: optionalId(t.activeRunId),
     branches: { png: branch(t.branches.png), svg: branch(t.branches.svg) },
     runs: list(t.runs, 1000, r => ({ id: id(r.id), path: choice(r.path, ['png', 'svg']), kind: choice(r.kind, ['generate', 'refine', 'edit']), status: choice(r.status, ['submitting','running','succeeded','failed']), accepted: bool(r.accepted), groupId: id(r.groupId), candidateId: optionalId(r.candidateId), parentId: optionalId(r.parentId), input: draft(r.input), draftRevision: num(r.draftRevision), navRevision: num(r.navRevision), stage: str(r.stage, 2000), createdAt: num(r.createdAt), ...(r.history ? {history:historyRun(r.history)} : {}), ...(r.execution ? {execution:{version:1,...(r.execution.taskId?{taskId:id(r.execution.taskId)}:{}),simulation:bool(r.execution.simulation),...(r.execution.jobId?{jobId:id(r.execution.jobId)}:{})}} : {}), ...(r.error !== undefined ? {error: str(r.error, 2000)} : {}) })) };
   unique(out.runs.map(r=>r.id));

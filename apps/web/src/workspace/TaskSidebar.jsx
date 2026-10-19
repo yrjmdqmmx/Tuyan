@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle } from 'lucide-react';
+import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle, Trash2 } from 'lucide-react';
 import { logoUrl } from '../config.js';
 import { taskHasContent } from './workspaceState.js';
 import ResourceLinks from './ResourceLinks.jsx';
@@ -8,7 +8,7 @@ import SidebarTooltip, { searchShortcut } from './SidebarTooltip.jsx';
 
 export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavigate, onRename, onSignIn, onSignOut, onAccountSettings, onAdmin, accountPending = false, user, mobile = false, page = 'workspace' }) {
   const [resources, setResources] = useState(false);
-  const visible = state.tasks.filter(t => !t.archived && taskHasContent(t)).sort((a,b)=>Math.max(b.updatedAt||0,...b.runs.map(r=>r.createdAt))-Math.max(a.updatedAt||0,...a.runs.map(r=>r.createdAt)));
+  const visible = state.tasks.filter(t => !t.deleted && !t.archived && taskHasContent(t)).sort((a,b)=>Math.max(b.updatedAt||0,...b.runs.map(r=>r.createdAt))-Math.max(a.updatedAt||0,...a.runs.map(r=>r.createdAt)));
   function select(id) { dispatch({ type: 'SELECT_TASK', id }); onNavigate('workspace'); if (mobile) onClose(); }
   function create() { dispatch({ type: 'CREATE_TASK' }); onNavigate('workspace'); if (mobile) onClose(); }
   const rows = tasks => tasks.map(t => {
@@ -22,6 +22,7 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
         <button type="button" onClick={e => { e.currentTarget.closest('details').open = false; onRename(t); }}><Pencil size={15} />重命名</button>
         <button type="button" onClick={e => { e.currentTarget.closest('details').open = false; dispatch({ type: 'PIN', taskId: t.id }); }}><Pin size={15} />{t.pinned ? '取消置顶' : '置顶'}</button>
         <button type="button" onClick={() => dispatch({ type: 'ARCHIVE', taskId: t.id })}><Archive size={15} />归档</button>
+        <button type="button" disabled={!!t.activeRunId} onClick={() => dispatch({type:'DELETE',taskId:t.id})}><Trash2 size={15} />删除任务</button>
       </div></details>
     </div>;
   });

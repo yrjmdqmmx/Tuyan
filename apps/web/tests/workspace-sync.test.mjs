@@ -8,7 +8,7 @@ import { createWorkspaceCache, WorkspaceSyncController, createWorkspaceClient, m
 import { saveBrowserMaterial, browserFile } from '../src/lib/browserMaterials.js';
 import { restoreWorkspaceOriginal } from '../src/workspace/workspaceMaterials.js';
 const draft = (state,text) => workspaceReducer(state,{type:'EDIT_DRAFT',patch:{text}});
-const ready = async (client, cache=createWorkspaceCache(new IDBFactory()), key='account-a') => {const c=new WorkspaceSyncController({cache,key,client});await c.init();clearTimeout(c.timer);return c;};
+const ready = async (client, cache=createWorkspaceCache(new IDBFactory()), key='account-a') => {const c=new WorkspaceSyncController({cache,key,client,recoveryId:'test-tab'});await c.init();clearTimeout(c.timer);return c;};
 function server() {
  let state=null,revision=0,fail=false;
  return {get:async()=>{if(fail)throw Error('offline');return {state:structuredClone(state),revision};},hydrate:async s=>structuredClone(s),wire:async s=>structuredClone(s),put:async(r,s)=>{if(r!==revision)throw Object.assign(Error('WORKSPACE_CONFLICT'),{status:409});state=structuredClone(s);return {revision:++revision};},offline:v=>{fail=v;}};
@@ -20,8 +20,8 @@ test('legacy migration reads without changing original bytes; malformed data is 
 });
 test('same-task conflicts preserve both complete histories; unrelated tasks merge without copies',()=>{
  const base=draft(newWorkspace('t'),'base'),local=draft(base,'device A'),remote=draft(base,'device B');
- const merged=mergeWorkspaces(base,local,remote,()=> 'copy');assert.equal(merged.conflicts,1);assert.equal(merged.state.selectedTaskId,'copy');
- assert.equal(merged.state.tasks[0].branches.png.draft.text,'device A');assert.equal(merged.state.tasks[1].branches.png.draft.text,'device B');
+ const merged=mergeWorkspaces(base,local,remote,()=> 'copy');assert.equal(merged.conflicts,1);assert.equal(merged.state.selectedTaskId,'t');
+ assert.equal(merged.state.tasks.find(t=>t.id==='copy').branches.png.draft.text,'device A');assert.equal(merged.state.tasks.find(t=>t.id==='t').branches.png.draft.text,'device B');
  const other=workspaceReducer(remote,{type:'CREATE_TASK',id:'other'});const result=mergeWorkspaces(base,base,other);assert.equal(result.conflicts,0);assert.equal(result.state.tasks.length,2);
 });
 test('two isolated devices sync drafts/settings, handle offline conflict and retain queued state across reload',async()=>{
@@ -106,8 +106,8 @@ test('different tab view selections and refreshed signed URLs do not conflict wi
  const other=structuredClone(value);other.state.tasks[0].path='svg';other.state.tasks[0].branches.png.navRevision=10;
  other.state.tasks[0].branches.png.groups[0].candidates[0].versions[0].url='https://storage.test/renewed';
  assert.equal(await cache.write('account',0,other),1);
- assert.equal(await cache.write('account',1,other),2);
- assert.equal((await cache.read('account')).state.tasks[0].path,'svg');
+ assert.equal(await cache.write('account',1,other),1);
+ assert.equal((await cache.read('account')).state.tasks[0].path,'png','shared cache does not publish tab navigation');
  await assert.rejects(cache.write('account',0,{...other,state:draft(other.state,'actual concurrent text')}),/另一标签页/);
 });
 
@@ -150,7 +150,7 @@ test('an edit made during a quiet revision check is uploaded, not dropped by the
  }finally{c.dispose();}
 });
 
-test('task, path and mode browsing stays local; real edits still upload and failures remain visible',async()=>{
+test('task and path browsing stays local; real edits still upload and failures remain visible',async()=>{
  const backend=server(),cache=createWorkspaceCache(new IDBFactory()),c=await ready(backend,cache);
  try {
   c.setState(()=>draft(newWorkspace('one'),'first draft'));c.setState(s=>workspaceReducer(s,{type:'CREATE_TASK',id:'two'}));
@@ -159,15 +159,15 @@ test('task, path and mode browsing stays local; real edits still upload and fail
   let scheduled=0;c.schedule=()=>{scheduled++;};
   const originalGet=backend.get,originalPut=backend.put;let gets=0,puts=0;
   backend.get=async()=>{gets++;return originalGet();};backend.put=async(...args)=>{puts++;return originalPut(...args);};
-  for(let i=0;i<3;i++)for(const action of [{type:'SELECT_TASK',id:'one'},{type:'SET_PATH',path:'svg'},{type:'EDIT_DRAFT',patch:{mode:'advanced'}},{type:'EDIT_DRAFT',patch:{mode:'advanced'}},{type:'SET_PATH',path:'png'},{type:'SELECT_TASK',id:'two'}])c.setState(s=>workspaceReducer(s,action));
+  for(let i=0;i<3;i++)for(const action of [{type:'SELECT_TASK',id:'one'},{type:'SET_PATH',path:'svg'},{type:'SET_PATH',path:'png'},{type:'SELECT_TASK',id:'two'}])c.setState(s=>workspaceReducer(s,action));
   await c.queue;assert.equal(scheduled,0);assert.equal(gets,0);assert.equal(puts,0);assert.equal(c.generation,generation);assert.equal(c.revision,revision);assert.ok(events.every(status=>status==='synced'));
-  assert.equal((await cache.read(c.key)).state.tasks.find(t=>t.id==='one').branches.svg.draft.mode,'advanced');
+  assert.equal((await cache.read(c.key+':tab:test-tab')).state.tasks.find(t=>t.id==='one').path,'png');
   c.setState(s=>draft(s,'second draft'));assert.equal(scheduled,0,'identical input should not create a revision');
   c.setState(s=>draft(s,'actual change'));assert.equal(scheduled,1);await c.sync();assert.equal(puts,1);assert.equal(currentDraft((await originalGet()).state).text,'actual change');
   backend.offline(true);await c.sync();assert.equal(c.status,'error');c.setState(s=>workspaceReducer(s,{type:'SELECT_TASK',id:'one'}));await c.queue;assert.equal(c.status,'error');
  }finally{c.dispose();}
 });
-test('remote edits preserve local settings depth',()=>{
+test('local settings depth merges with unrelated remote text edits',()=>{
  const base=draft(newWorkspace('mode'),'original'),local=workspaceReducer(base,{type:'EDIT_DRAFT',patch:{mode:'advanced'}}),remote=draft(base,'remote edit');
  const result=mergeWorkspaces(base,local,remote);assert.equal(result.conflicts,0);assert.equal(currentDraft(result.state).mode,'advanced');assert.equal(currentDraft(result.state).text,'remote edit');
 });

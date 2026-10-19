@@ -102,7 +102,7 @@ export function workspaceExecutionMiddleware({auth,store,libraryStore,workspaceS
       if(envelope.version!==1||!identifier(envelope.taskId)||!identifier(envelope.runId))throw fail(400,'无效执行标识');
       const {taskId,runId}=envelope;
       const task=(await workspaceStore.get(user)).state?.tasks.find(t=>t.id===taskId);
-      if(!task)throw fail(409,'请先完成此任务的账号同步，再开始执行。');
+      if(!task||task.deleted)throw fail(409,'请先完成此任务的账号同步，再开始执行。');
       const prior=await store.get(user,runId);
       if(req.body.action==='workspaceAdoptHistory') {
         const run=task.runs?.find(r=>r.id===runId);
@@ -146,9 +146,14 @@ export function workspaceExecutionMiddleware({auth,store,libraryStore,workspaceS
       } else {
         if(!['createJob','refineImage','optimizeInputs'].includes(req.body.action))throw fail(400,'不支持的工作区操作');
         if(prior) {if(prior.taskId!==taskId)throw fail(409,'执行标识冲突');if(req.body.action==='optimizeInputs'&&prior.optimizationResult)return send(prior.optimizationResult);return prior.jobId?send({jobId:prior.jobId,status:prior.status}):res.status(409).json({error:'执行已接收，结果尚未确认；请恢复状态，不要重复提交。'});}
+        if(req.body.action!=='optimizeInputs'&&(task.activeRunId!==runId||!task.runs?.some(r=>r.id===runId&&r.status==='submitting')))throw fail(409,'此提交已被其他标签页更新，请同步当前任务；不会重复发起生成。');
         const routing=await resolveWorkspaceModels({libraryStore,user,body:req.body,simulation});
         const {fresh,execution}=await store.claim(user,taskId,runId);
         if(!fresh)return execution.jobId?send({jobId:execution.jobId,status:execution.status}):res.status(409).json({error:'执行正在确认'});
+        if(req.body.action!=='optimizeInputs'){
+          const latest=(await workspaceStore.get(user)).state?.tasks.find(t=>t.id===taskId);
+          if(latest?.deleted||latest?.activeRunId!==runId||!latest?.runs?.some(r=>r.id===runId&&r.status==='submitting')){await store.update(user,runId,{status:'failed',closedUnaccepted:true});throw fail(409,'此提交已被其他标签页更新，未发送生成请求。');}
+        }
         Object.assign(req.body,routing);
         if(req.body.action==='optimizeInputs'){req.body.mainRoute=routing.modelRoutes.main;req.body.apiKey=routing.apiKeys[req.body.mainRoute.accessProvider];}
       }
