@@ -7,14 +7,14 @@ import { newWorkspace, workspaceReducer, currentDraft } from '../src/workspace/w
 
 window.matchMedia = query => ({ matches: query.includes('767px'), media: query, addEventListener() {}, removeEventListener() {} });
 afterEach(cleanup);
-function Harness({ initial = newWorkspace('mobile'), onSend = () => {}, onOptimize = () => {}, onState = () => {} }) {
+function Harness({ initial = newWorkspace('mobile'), onSend = () => {}, onOptimize = () => {}, onState = () => {}, optimizing = false, optimizationContent }) {
   const [state, dispatch] = useReducer(workspaceReducer, initial);
   onState(state, dispatch);
   return React.createElement(TaskWorkspace, { state, dispatch, onSubmit: () => onSend(state),
     onFiles: files => dispatch({ type:'EDIT_DRAFT', patch: { attachments: files.map((file, i) => ({ id:String(i), filename:file.name, purpose:null, status:'local' })) } }),
     renderModels: () => React.createElement('p', null, '模型选择内容'),
     renderSettings: () => React.createElement('p', null, '绘图设置内容'),
-    renderOptimize: composer => composer({ start:onOptimize }),
+    renderOptimize: composer => composer({ start:onOptimize, optimizing, content:optimizationContent }),
   });
 }
 
@@ -58,6 +58,7 @@ test('mobile composer reveals tools only while expanded and preserves the draft 
   assert.equal(screen.queryByRole('dialog'), null, 'upload plus never opens a tools sheet');
   act(() => input.focus());
   act(() => input.blur());
+  fireEvent.pointerDown(screen.getByRole('heading', { name:'HI！今天想绘制什么？' }));
   assert.equal(screen.queryByRole('button', {name:'模型配置'}), null);
   assert.equal(screen.queryByRole('group', {name:'设置深度'}), null);
   assert.equal(input.style.height, '44px');
@@ -65,6 +66,78 @@ test('mobile composer reveals tools only while expanded and preserves the draft 
   act(() => input.focus());
   assert.equal(screen.getByRole('button', {name:'专业', exact:true}).getAttribute('aria-pressed'), 'true');
   assert.equal(sent, 0);
+});
+
+for (const control of ['专业', '优化输入', '模型配置', '绘图设置']) test(`mobile ${control} survives a touch blur with no focus destination`, async () => {
+  let latest, optimized = 0;
+  render(React.createElement(Harness, { onState: state => latest = state, onOptimize: () => optimized++ }));
+  const input = screen.getByRole('textbox', { name:'绘图要求' });
+  fireEvent.change(input, { target:{value:'手机点击工具时保留草稿'} });
+  act(() => input.focus());
+  const button = screen.getByRole('button', { name:control, exact:true });
+  fireEvent.pointerDown(button, {pointerType:'touch'});
+  // Mobile browsers can blur the textarea without focusing the tapped button.
+  act(() => input.blur());
+  assert.ok(button.isConnected, 'the control must remain mounted until its click');
+  assert.ok(input.closest('.tw-composer-region').classList.contains('is-input-focused'));
+  fireEvent.pointerUp(button, {pointerType:'touch'});
+  fireEvent.click(button);
+  if (control === '专业') assert.equal(currentDraft(latest).mode, 'advanced');
+  if (control === '优化输入') assert.equal(optimized, 1);
+  if (control === '模型配置' || control === '绘图设置') {
+    const close = screen.getByRole('button', { name:`关闭${control}` });
+    await waitFor(() => assert.ok(document.activeElement === close));
+    fireEvent.pointerDown(close, {pointerType:'touch'});
+    fireEvent.click(close);
+    assert.equal(screen.queryByRole('dialog'), null);
+  }
+  assert.ok(screen.getByRole('button', {name:'模型配置'}));
+  assert.equal(input.value, '手机点击工具时保留草稿');
+  // A second interaction need not refocus the textarea first.
+  const simple = screen.getByRole('button', {name:'普通', exact:true});
+  fireEvent.pointerDown(simple, {pointerType:'touch'});
+  fireEvent.pointerUp(simple, {pointerType:'touch'});
+  fireEvent.click(simple);
+  assert.equal(currentDraft(latest).mode, 'simple');
+  fireEvent.pointerDown(screen.getByRole('heading', {name:'HI！今天想绘制什么？'}), {pointerType:'touch'});
+  assert.equal(screen.queryByRole('button', {name:'模型配置'}), null, 'tapping outside still collapses');
+  assert.equal(input.value, '手机点击工具时保留草稿');
+});
+
+test('mobile expansion follows the interaction boundary, including summary, keyboard focus and cancelled touches', () => {
+  render(React.createElement(Harness));
+  const input = screen.getByRole('textbox', {name:'绘图要求'});
+  act(() => input.focus());
+  const tools = screen.getByRole('group', {name:'绘图工具'});
+  const settings = screen.getByRole('button', {name:/普通 ·\s*比例 自动/});
+  fireEvent.pointerDown(settings, {pointerType:'touch'});
+  act(() => input.blur());
+  fireEvent.pointerCancel(settings, {pointerType:'touch'});
+  assert.ok(tools.contains(screen.getByRole('button', {name:'模型配置'})));
+  act(() => settings.focus());
+  assert.ok(screen.getByRole('button', {name:'模型配置'}));
+  act(() => screen.getByRole('button', {name:'打开侧边栏'}).focus());
+  assert.equal(screen.queryByRole('button', {name:'模型配置'}), null, 'keyboard navigation outside collapses');
+});
+
+test('optimization pending and inline result controls retain the mobile editing layout', () => {
+  const { rerender } = render(React.createElement(Harness));
+  const input = screen.getByRole('textbox', {name:'绘图要求'});
+  fireEvent.change(input, {target:{value:'原文保持不变'}});
+  act(() => input.focus());
+  act(() => screen.getByRole('button', {name:'优化输入'}).focus());
+  rerender(React.createElement(Harness, {optimizing:true}));
+  act(() => document.activeElement.blur());
+  assert.equal(screen.getByRole('button', {name:'优化中…'}).disabled, true);
+  assert.ok(screen.getByRole('button', {name:'模型配置'}));
+  const content = React.createElement('button', null, '采用优化稿');
+  rerender(React.createElement(Harness, {optimizationContent:content}));
+  const apply = screen.getByRole('button', {name:'采用优化稿'});
+  fireEvent.pointerDown(apply, {pointerType:'touch'});
+  act(() => apply.focus());
+  fireEvent.click(apply);
+  assert.ok(screen.getByRole('button', {name:'模型配置'}));
+  assert.equal(input.value, '原文保持不变');
 });
 
 test('mobile attachments still require an explicit purpose and sending keeps all typed content', () => {

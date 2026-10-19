@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUp, Plus, SlidersHorizontal, Boxes, Sparkles, X, FileText, ChevronDown } from 'lucide-react';
 import { getFigureType } from '../../../../packages/figure-taxonomy/src/index.js';
 import { JOURNALS } from '../../../../packages/api/src/journal-rules.js';
@@ -6,10 +6,25 @@ import { MATERIAL_ACCEPT } from '../lib/materials.js';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
 import { currentTask, currentBranch, currentDraft, refinementTarget, selectedVersion, activeRun, versionLabel, PATHS, submitIssue } from './workspaceState.js';
 
-export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy, uploadError, missingOriginal, onRestoreOriginal, onModels, onSettings, onOptimize, optimizing, optimizationContent, saveStatus, mobile = false }) {
+export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy, uploadError, missingOriginal, onRestoreOriginal, onModels, onSettings, onOptimize, optimizing, optimizationContent, saveStatus, mobile = false, toolDialogOpen = false }) {
   const t = currentTask(state), b = currentBranch(state), d = currentDraft(state), target = refinementTarget(state), shown = selectedVersion(state), run = activeRun(state);
-  const inputId = useId(), fileRef = useRef(), restoreRef=useRef(), textRef = useRef();
-  const [focused, setFocused] = useState(false);
+  const inputId = useId(), fileRef = useRef(), restoreRef=useRef(), textRef = useRef(), regionRef = useRef();
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    if (!mobile || !expanded) return;
+    // A touch blur may have no relatedTarget, even when the user is tapping a
+    // composer control. Keep that control mounted through pointerup/click and
+    // collapse only when the user actually interacts outside the editing area.
+    const leave = event => {
+      if (!toolDialogOpen && !regionRef.current?.contains(event.target)) setExpanded(false);
+    };
+    document.addEventListener('pointerdown', leave, true);
+    document.addEventListener('focusin', leave);
+    return () => {
+      document.removeEventListener('pointerdown', leave, true);
+      document.removeEventListener('focusin', leave);
+    };
+  }, [mobile, expanded, toolDialogOpen]);
   const source=d.attachments.find(a=>a.purpose==='source'), editing=!!(target||source), pngEditing=editing&&t.path==='png';
   const mismatch = target && shown && target.id !== shown.id;
   const issue = busy ? '正在准备提交，请稍候' : submitIssue(state);
@@ -20,7 +35,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     const input = textRef.current;
     if (!mobile) { input.style.height = ''; return; }
     const resize = () => {
-      if (!focused) { input.style.height = '44px'; input.scrollTop = 0; input.scrollLeft = 0; return; }
+      if (!expanded) { input.style.height = '44px'; input.scrollTop = 0; input.scrollLeft = 0; return; }
       input.style.height = '0px'; input.style.height = `${Math.min(136, Math.max(88, input.scrollHeight))}px`;
     };
     resize();
@@ -28,23 +43,21 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     const observer = new ResizeObserver(() => { if (input.clientWidth !== width) { width = input.clientWidth; resize(); } });
     observer.observe(input);
     return () => observer.disconnect();
-  }, [mobile, d.text, focused]);
+  }, [mobile, d.text, expanded]);
   const modeControl = <WorkspaceSegments className="tw-mode" label="设置深度" value={d.mode} onChange={mode => edit({ mode })} options={[{ value: 'simple', label: '普通' }, { value: 'advanced', label: '专业' }]} />;
   const sendButton = <button type="submit" className="tw-send" disabled={!!issue} aria-label={sendLabel} title={issue || sendLabel} aria-describedby={`${inputId}-status`}><ArrowUp size={21} /><span>{sendLabel}</span></button>;
   const statusText = uploadError || (busy ? '正在准备提交，请稍候…' : issue && d.text && !t.activeRunId ? issue : saveStatus);
   const summary = <div className="tw-composer-summary"><button className="tw-composer-settings-summary" type="button" onClick={onSettings}><span className="tw-composer-summary-label">{mobile && <span>{d.mode === 'advanced' ? '专业' : '普通'} · </span>}{settings.journalSelection && `${JOURNALS.find(j => j.id === settings.journalSelection.journalId)?.name || settings.journalSelection.journalId} · `}{settings.figureTypeId && `${getFigureType(settings.figureTypeId)?.label || settings.figureTypeId} · `}比例 {settings.ratio === 'auto' ? '自动' : settings.ratio} · {pngEditing ? '单张精修 · 执行后评审' : <>{editing ? '版本修改' : `${settings.candidates} 个候选`} · {settings.reviews} 轮评审</>}{t.path === 'png' && settings.imageSize ? ` · ${settings.imageSize}` : ''}{!target && settings.retrievalSetting === 'none' ? ' · 不检索' : ''}{!target && settings.pipelineMode === 'planner_critic' ? ' · 快速生成' : ''}</span>{mobile && <ChevronDown size={12} />}</button></div>;
   function submit(e) { e.preventDefault(); if (!issue) onSubmit(); }
-  return <section className={`tw-composer-region ${mobile ? 'is-mobile' : ''} ${mobile && focused ? 'is-input-focused' : ''}`} aria-label="任务输入区">
+  return <section ref={regionRef} className={`tw-composer-region ${mobile ? 'is-mobile' : ''} ${mobile && expanded ? 'is-input-focused' : ''}`} aria-label="任务输入区">
     {mismatch && <div className="tw-target-mismatch" role="status">正在查看 {versionLabel(shown)}；待修改 {versionLabel(target)}<button type="button" onClick={() => dispatch({ type: 'REFINE', versionId: shown.id })}>改为修改当前版本</button></div>}
     {target ? <div className="tw-target"><img src={target.url} alt="修改目标缩略图" /><span><small>修改对象</small><strong>基于{versionLabel(target, true)}修改</strong></span><button type="button" className="tw-text-button" onClick={() => dispatch({ type: 'VIEW', versionId: target.id })}>返回目标</button><button type="button" className="tw-icon" aria-label="退出修改" onClick={() => dispatch({ type: 'EXIT_REFINE' })}><X size={17} /></button></div>
       : <div className="tw-composer-intent"><span>{source ? `修改对象：${source.filename}` : run ? '下一次操作草稿' : '新方案'} · {PATHS[t.path]}</span>{b.lastTargetId && (b.refinements[b.lastTargetId]?.text || b.refinements[b.lastTargetId]?.attachments.length > 0) && <button type="button" onClick={() => dispatch({ type: 'REFINE', versionId: b.lastTargetId })}>继续未完成修改</button>}</div>}
     {mobile && summary}
-    <form className="tw-composer" onSubmit={submit} onBlurCapture={e => {
-      if (!e.currentTarget.contains(e.relatedTarget) && !e.relatedTarget?.closest?.('.tw-dialog')) setFocused(false);
-    }}>
+    <form className="tw-composer" onSubmit={submit}>
       <label className="tw-sr" htmlFor={inputId}>{target ? '修改要求' : '绘图要求'}</label>
       <input className="tw-sr" type="file" tabIndex={-1} ref={fileRef} accept={MATERIAL_ACCEPT} multiple onChange={e => { const files = [...e.target.files]; e.target.value = ''; onFiles(files); }} />
-      <textarea onFocus={() => setFocused(true)} wrap={mobile && !focused ? 'off' : 'soft'} ref={textRef} id={inputId} value={d.text} maxLength={100000} rows={mobile ? 1 : 3} placeholder={mobile ? target ? '描述修改要求…' : '描述你想绘制的图…' : target ? '说明希望修改什么，以及哪些内容需要保持…' : '描述研究内容、绘图目标，以及需要保留或避免的细节…'} onChange={e => edit({ text: e.target.value })} onKeyDown={e => {
+      <textarea onFocus={() => setExpanded(true)} wrap={mobile && !expanded ? 'off' : 'soft'} ref={textRef} id={inputId} value={d.text} maxLength={100000} rows={mobile ? 1 : 3} placeholder={mobile ? target ? '描述修改要求…' : '描述你想绘制的图…' : target ? '说明希望修改什么，以及哪些内容需要保持…' : '描述研究内容、绘图目标，以及需要保留或避免的细节…'} onChange={e => edit({ text: e.target.value })} onKeyDown={e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !e.nativeEvent.isComposing && e.keyCode !== 229) submit(e);
       }} />
       {!!d.attachments.length && <div className="tw-attachments">{d.attachments.map(a => <div className="tw-attachment" key={a.id}><FileText size={17} /><span title={a.filename}>{a.filename}</span><select aria-label={`${a.filename} 的用途`} value={a.purpose || ''} onChange={e => edit({ attachments: d.attachments.map(item => item.id === a.id ? { ...item, purpose: e.target.value } : item) })}>
@@ -56,7 +69,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
         if (e.target.closest('button') && document.activeElement === textRef.current) e.preventDefault();
       }}>
         <button type="button" aria-label="添加附件" title="上传文件" disabled={busy} onClick={() => fileRef.current?.click()}><Plus size={23} /></button>
-        {focused && <>
+        {expanded && <>
           {modeControl}
           <span className="tw-toolbar-spacer" />
           {onOptimize && <button type="button" aria-label={optimizing ? '优化中…' : '优化输入'} title={optimizing ? '优化中…' : '优化输入'} disabled={busy || !!run || optimizing} onClick={onOptimize}><Sparkles size={19} /></button>}
