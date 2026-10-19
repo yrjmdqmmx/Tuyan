@@ -25,10 +25,10 @@ test('figure-bound content follows taxonomy while manual declarations and histor
  assert.throws(()=>journalSnapshot({...bound,contentSource:'untrusted'}),/不一致/);
 });
 test('catalog provenance, scope and status do not imply full adaptation',()=>{
- assert.deepEqual(JOURNALS.map(j=>j.id),['plos-one','frontiers-ai','advanced-materials-interfaces','acs-omega','ieee-access','cell-reports','scientific-reports','jingjixuejia','caijing-luncong','shanxi-finance-economics','social-sciences-in-china','sage-open','hssc','population-research','acta-psychologica-sinica','advances-psychological-science','library-information-service']);assert.ok(JOURNALS.every(j=>j.status!=='supported'));
+ assert.deepEqual(JOURNALS.map(j=>j.id),['nature','plos-one','frontiers-ai','advanced-materials-interfaces','acs-omega','ieee-access','cell-reports','scientific-reports','jingjixuejia','caijing-luncong','shanxi-finance-economics','social-sciences-in-china','sage-open','hssc','population-research','acta-psychologica-sinica','advances-psychological-science','library-information-service']);assert.ok(JOURNALS.every(j=>j.status!=='supported'));
  for(const journal of JOURNALS){
-  const archivedRules=['sage-open','hssc','population-research','acta-psychologica-sinica','advances-psychological-science','library-information-service'].includes(journal.id)?[]:journalSnapshot(select(journal.id,{version:'2026-10-13.v5'}))!.rules;
-  for(const rule of journal.rules){assert.equal(rule.version,JOURNAL_VERSION);const archived=archivedRules.find(r=>r.id===rule.id);assert.equal(rule.verifiedOn,journal.id==='cell-reports'&&rule.id!=='author-integrity'?'2026-10-14':archived?.verifiedOn??'2026-10-14');assert.ok(rule.applicability.purposes?.length);if(rule.id!=='author-integrity')assert.ok(rule.sourceIds.length);}
+  const archivedRules=['nature','sage-open','hssc','population-research','acta-psychologica-sinica','advances-psychological-science','library-information-service'].includes(journal.id)?[]:journalSnapshot(select(journal.id,{version:'2026-10-13.v5'}))!.rules;
+  for(const rule of journal.rules){assert.equal(rule.version,JOURNAL_VERSION);const archived=archivedRules.find(r=>r.id===rule.id);assert.equal(rule.verifiedOn,journal.id==='nature'?'2026-10-19':journal.id==='cell-reports'&&rule.id!=='author-integrity'?'2026-10-14':archived?.verifiedOn??'2026-10-14');assert.ok(rule.applicability.purposes?.length);if(rule.id!=='author-integrity')assert.ok(rule.sourceIds.length);}
  }
  assert.equal(admitJournal(null),null);
  for(const version of ['old-unknown','__proto__','constructor'])assert.throws(()=>journalSnapshot(select('plos-one',{version})),/规则版本不可用/);

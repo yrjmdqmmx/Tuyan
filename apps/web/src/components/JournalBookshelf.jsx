@@ -117,6 +117,8 @@ const JournalBookshelf=forwardRef(function JournalBookshelf({value,onBrowse,onNo
           <p className="journal-subjects">{meta?.tags.join(' · ')}</p>
           <p className="journal-description">{meta?.description||'期刊介绍待补充。'}</p>
           <a className="journal-about-link" href={meta?.descriptionSource} target="_blank" rel="noreferrer">期刊官方介绍 ↗</a>
+          {meta?.homepageUrl&&<a className="journal-about-link" href={meta.homepageUrl} target="_blank" rel="noreferrer">期刊官网 ↗</a>}
+          {meta?.submissionUrl&&<a className="journal-about-link" href={meta.submissionUrl} target="_blank" rel="noreferrer">官方投稿入口 ↗</a>}
         </div>
         <div className="journal-detail">{children}</div>
       </div>

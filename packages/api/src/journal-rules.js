@@ -59,7 +59,7 @@ export function journalPolicyIssues(snapshot,operation) {
   if(activeJournalRules(snapshot).some(rule=>rule.value?.blockAI))issues.push({code:'ai-use-restricted',blocking:true,kind:'policy',text:'ACS 不应将 AI 生成图用于 TOC/Abstract Graphic；本工作台的生成与精修均涉及生成式 AI，当前用途不可执行。'});
   // Only scopes actually verified as visual-generation permissions are enabled.
   if(['graphical_abstract','toc','cover'].includes(s.purpose)&&!(snapshot.id==='advanced-materials-interfaces'&&s.purpose==='toc')&&!issues.some(i=>i.code==='ai-use-restricted'))issues.push({code:'purpose-unverified',blocking:true,kind:'pending',text:'此特殊图件用途的 AI 许可或编辑条件尚未完整核实；当前只提供规则查看与文件检查。'});
-  } else if(['2026-10-13.v3','2026-10-13.v4','2026-10-13.v5','2026-10-14.v6','2026-10-14.v7','2026-10-14.v8','2026-10-14.v9','2026-10-14.v10'].includes(snapshot.version)) {
+  } else if(['2026-10-13.v3','2026-10-13.v4','2026-10-13.v5','2026-10-14.v6','2026-10-14.v7','2026-10-14.v8','2026-10-14.v9','2026-10-14.v10','2026-10-19.v11'].includes(snapshot.version)) {
     const rules=activeJournalRules(snapshot);
     const restrictions=rules.filter(r=>r.value?.blockAI&&r.requirement==='hard');
     for(const r of restrictions)issues.push({code:`policy-${r.id}`,blocking:true,kind:'policy',text:r.text});

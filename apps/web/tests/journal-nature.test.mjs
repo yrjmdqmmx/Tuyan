@@ -1,0 +1,31 @@
+import test,{afterEach} from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {cleanup,render,screen,fireEvent} from '@testing-library/react';
+import JournalRulePicker from '../src/components/JournalRulePicker.jsx';
+import {filterJournalBooks} from '../src/components/JournalBookshelf.jsx';
+import books from '../src/data/journal-books.json';
+afterEach(cleanup);
+
+test('Nature main journal is searchable and the existing reader shows official links, cover and dated rules',()=>{
+ assert.deepEqual(filterJournalBooks('自然主刊').map(j=>j.id),['nature']);
+ let saved;render(React.createElement(JournalRulePicker,{value:null,onChange:v=>{saved=v},figureTypeId:'workflow'}));
+ fireEvent.click(document.querySelector('.journal-entry'));
+ fireEvent.change(screen.getByRole('searchbox'),{target:{value:'自然主刊'}});
+ fireEvent.click(screen.getByRole('button',{name:/Nature/}));
+ assert.equal(saved,undefined);
+ assert.equal(screen.getByRole('link',{name:'期刊官网 ↗'}).getAttribute('href'),'https://www.nature.com/nature/');
+ assert.equal(screen.getByRole('link',{name:'官方投稿入口 ↗'}).getAttribute('href'),'https://mts-nature.nature.com/');
+ assert.ok(Array.from(document.images).some(img=>img.getAttribute('src')===books.nature.cover.src));
+ assert.ok(screen.getByText(books.nature.description));
+ assert.ok(screen.getByText(/规则版本 2026-10-19.v11 · 核验 2026-10-19/));
+ fireEvent.change(screen.getByLabelText('投稿阶段'),{target:{value:'production'}});
+ assert.ok(screen.getByText(/正文图栏宽存在差异/));
+ assert.ok(screen.getAllByText('来源冲突').length>0);
+ fireEvent.change(screen.getByLabelText('图件用途'),{target:{value:'cover'}});
+ assert.ok(screen.getByRole('status').textContent.includes('当前不可执行：封面'));
+ assert.ok(screen.getByText(/213×285 mm/));
+ fireEvent.change(screen.getByLabelText('图件用途'),{target:{value:'main'}});
+ fireEvent.click(screen.getByRole('button',{name:'选择此期刊'}));
+ assert.equal(saved.journalId,'nature');assert.equal(saved.version,'2026-10-19.v11');assert.equal(saved.stage,'production');
+});

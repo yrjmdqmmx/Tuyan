@@ -1,4 +1,39 @@
 {
+  "nature": {
+    "category": "综合科学",
+    "tags": [
+      "自然科学",
+      "生命科学",
+      "物理科学",
+      "医学",
+      "工程"
+    ],
+    "aliases": [
+      "自然",
+      "自然主刊",
+      "Nature 主刊"
+    ],
+    "description": "每周出版的国际综合科学期刊，发表科学与技术领域的同行评议研究，也提供科学新闻及评论。此条目为 Nature 主刊。",
+    "descriptionSource": "https://www.nature.com/nature/journal-information",
+    "homepageUrl": "https://www.nature.com/nature/",
+    "submissionUrl": "https://mts-nature.nature.com/",
+    "checkedOn": "2026-10-19",
+    "cover": {
+      "sourceUrl": "https://www.nature.com/nature/volumes/634/issues/8033",
+      "assetUrl": "https://media.springernature.com/w440/springer-static/cover-hires/journal/41586/634/8033",
+      "kind": "issue",
+      "src": "/journal-covers/nature.2c32d6e92e.webp",
+      "width": 440,
+      "height": 584,
+      "sha256": "2c32d6e92e46f6d456ad2ac3953162033dfaa0250ebb168bbd231599c915c0de",
+      "originalSha256": "aef2524da1eadd2a8079a1dec1bcc2dc02f4e70efb249af1634f503b2958d60a",
+      "acquiredOn": "2026-10-19",
+      "issue": "Volume 634 · Issue 8033 · 2024-10-10",
+      "credit": "Emily Geyman",
+      "usageNote": "封面版权归原权利人；已核对官方来源，用于期刊识别展示。用户已授权随本条目上线，但独立再分发授权尚未确认，不将官网公开展示推定为开放许可。",
+      "note": "官方期次封面 Cold comfort，采用 2024-10-10 历史期次作为期刊识别图，不标作最新一期；仅转换为 WebP，未改动图中文字。"
+    }
+  },
   "plos-one": {
     "category": "综合科学",
     "tags": [

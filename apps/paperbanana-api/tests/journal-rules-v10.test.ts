@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
-import {JOURNALS,JOURNAL_VERSION,defaultJournalSelection,journalSnapshot,activeJournalRules,journalPolicyIssues,journalPreflight,journalPrompt,admitJournal} from '../../../packages/api/src/journal-rules.js';
+import {defaultJournalSelection,journalSnapshot,activeJournalRules,journalPolicyIssues,journalPreflight,journalPrompt,admitJournal} from '../../../packages/api/src/journal-rules.js';
+import {JOURNALS,JOURNAL_VERSION} from '../../../packages/api/src/journal-catalog-v10.js';
 import {inspectJournalFile} from '../src/journal-export.js';
-const profile=(id:string,extra:any={})=>journalSnapshot({...defaultJournalSelection(id),...extra})!;
+const profile=(id:string,extra:any={})=>journalSnapshot({...defaultJournalSelection(id),version:JOURNAL_VERSION,...extra})!;
 const domestic=['population-research','acta-psychologica-sinica','advances-psychological-science','library-information-service'];
 
 test('v10 sources and scopes are complete while versioned evidence retains its old meaning',()=>{

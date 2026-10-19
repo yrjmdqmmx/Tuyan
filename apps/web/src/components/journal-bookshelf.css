@@ -52,6 +52,7 @@
 .journal-subjects{font-size:11px;color:#748174;line-height:1.8;margin:0 0 18px}
 .journal-description{font-size:13px;line-height:1.9;color:#465148;margin:0 0 10px}
 .journal-about-link{font-size:11px;color:#526c56;text-underline-offset:3px}
+.journal-about-link+.journal-about-link{margin-left:12px}
 .journal-bookshelf-dialog .journal-detail{padding:26px 30px;box-shadow:inset 12px 0 18px -17px #51473299;scrollbar-gutter:stable;background:linear-gradient(90deg,#ede8d9,#fffdf7 5%,#fffef9 94%,#f4f0e5)}
 .journal-bookshelf-dialog .journal-title h3{font-size:17px}
 .journal-bookshelf-dialog .journal-scope{grid-template-columns:repeat(2,minmax(0,1fr))}
