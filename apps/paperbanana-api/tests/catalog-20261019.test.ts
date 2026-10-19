@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 import { exactModelDetails } from '../../../packages/api/src/provider-catalog.js'
+import { thinkingProfile } from '../../../packages/api/src/thinking.js'
 import { IMAGE_CHANNEL_ROUTES } from '../../../packages/api/src/image-channel-routes.js'
 // @ts-ignore independent generated Web consumer
 import { STATIC_MODEL_REGISTRY as catalog, STATIC_MODEL_REGISTRY_VERSION } from '../../web/src/lib/staticModelCatalog.js'
@@ -20,6 +21,7 @@ test('weekly additions preserve all prior defaults, remain unverified and keep u
  const defaults=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261016/baseline-defaults.json',import.meta.url),'utf8'))
  for(const [provider,expected]of Object.entries(defaults))assert.deepEqual(catalog[provider].defaults,expected)
  for(const [provider,id,,vision]of added){const m=catalog[provider].models.find((m:any)=>m.id===id);assert.ok(m.selectable);assert.equal(m.verified,false);assert.equal(m.verificationState,'catalog');assert.deepEqual(m.roles,vision?['main','vision']:['main'])}
+ for(const [provider,id,,vision]of added)for(const role of vision?['main','vision']:['main']){const profile=thinkingProfile(provider,id,role as 'main'|'vision','openai-chat-completions');assert.equal(profile?.status,'unconfirmed');assert.deepEqual(profile?.controls,[])}
  for(const id of ['qwen-image-2.1-pro','qwen-image-2.1-turbo','seedream-5.0-flash'])assert.equal(catalog.tokendance.models.some((m:any)=>m.id===id),false)
  for(const id of ['beam-1p0-501b-a23b','step-5-preview-fp8','muse-spark-open-nvfp4'])assert.equal(catalog.fireworks.models.some((m:any)=>m.id==='accounts/fireworks/models/'+id),false)
  assert.equal(catalog.qianfan.models.find((m:any)=>m.id==='deepseek-v4.1-flash-1017').specifications.maxOutputTokens,393216)

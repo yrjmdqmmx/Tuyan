@@ -1695,7 +1695,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   assert.deepEqual(arkModels.get('doubao-seed-2-1-pro-260628')?.roles, ['main', 'vision'])
   assert.equal(arkModels.get('doubao-seed-2-1-pro-260628')?.recommended, true)
   assert.equal(arkModels.get('doubao-seed-evolving')?.lifecycle, 'unknown')
-  assert.equal(arkModels.get('doubao-seed-2-0-code-preview-260215')?.lifecycle, 'preview')
+  assert.equal(arkModels.get('doubao-seed-2-0-code-preview-260215')?.lifecycle, 'legacy')
   assert.equal(arkModels.get('doubao-seed-character-260628'), undefined)
   assert.equal(arkModels.get('doubao-seed-translation-250915'), undefined)
   assert.deepEqual(arkModels.get('glm-5-2-260617')?.roles, ['main'])
@@ -3010,7 +3010,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-16.v34')
+    assert.equal(registry.registryVersion, '2026-10-19.v35')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5175,7 +5175,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-16.v34')
+    assert.equal(registry.registryVersion, '2026-10-19.v35')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities

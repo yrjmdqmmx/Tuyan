@@ -14090,6 +14090,67 @@
         "https://console.bce.baidu.com/qianfan/onlineTest/image2text/Qwen3.5-35B-A3B",
         "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb"
       ]
+    },
+    {
+      "id": "catalog-v35:qianfan:deepseek-v4.1-flash-1017",
+      "provider": "qianfan",
+      "modelIds": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "channel-contract-missing",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "2026-10-19 v35 新增精确渠道型号的目录与协议已接入；未完成该精确 ID 的可配置思考控制核验。",
+        "维持渠道默认请求；不继承同名原厂或其他渠道参数，不新增控制，不宣称不支持思考。无真实调用或账单验证。"
+      ],
+      "sourceUrls": [
+        "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j"
+      ],
+      "checkedAt": "2026-10-19"
+    },
+    {
+      "id": "catalog-v35:tokendance:deepseek-v4.1-flash-1017",
+      "provider": "tokendance",
+      "modelIds": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "channel-contract-missing",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "2026-10-19 v35 新增精确渠道型号的目录与协议已接入；未完成该精确 ID 的可配置思考控制核验。",
+        "维持渠道默认请求；不继承同名原厂或其他渠道参数，不新增控制，不宣称不支持思考。无真实调用或账单验证。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/models/deepseek-v4.1-flash-1017"
+      ],
+      "checkedAt": "2026-10-19"
     }
   ],
   "excluded": [

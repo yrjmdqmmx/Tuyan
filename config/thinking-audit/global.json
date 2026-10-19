@@ -65184,6 +65184,67 @@
           "krea/v3/edit"
         ]
       }
+    },
+    {
+      "id": "catalog-v35:together:reflection/Beam-1.0-501B-A23B",
+      "provider": "together",
+      "modelIds": [
+        "reflection/Beam-1.0-501B-A23B"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "channel-contract-missing",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "2026-10-19 v35 新增精确渠道型号的目录与协议已接入；未完成该精确 ID 的可配置思考控制核验。",
+        "维持渠道默认请求；不继承同名原厂或其他渠道参数，不新增控制，不宣称不支持思考。无真实调用或账单验证。"
+      ],
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "checkedAt": "2026-10-19"
+    },
+    {
+      "id": "catalog-v35:fireworks:accounts/fireworks/models/deepseek-v4p1-flash-1017",
+      "provider": "fireworks",
+      "modelIds": [
+        "accounts/fireworks/models/deepseek-v4p1-flash-1017"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "channel-contract-missing",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "2026-10-19 v35 新增精确渠道型号的目录与协议已接入；未完成该精确 ID 的可配置思考控制核验。",
+        "维持渠道默认请求；不继承同名原厂或其他渠道参数，不新增控制，不宣称不支持思考。无真实调用或账单验证。"
+      ],
+      "sourceUrls": [
+        "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017"
+      ],
+      "checkedAt": "2026-10-19"
     }
   ],
   "excluded": [
