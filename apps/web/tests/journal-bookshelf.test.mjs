@@ -77,7 +77,7 @@ test('reduced motion preserves filters and returns focus to the originating book
  fireEvent.change(screen.getByRole('searchbox'),{target:{value:'Cell'}});
  const book=screen.getByRole('button',{name:/Cell Reports/});fireEvent.click(book);
  assert.ok(document.activeElement===screen.getByRole('heading',{name:'Cell Reports'}),'Details receive focus');
- fireEvent.click(screen.getAllByRole('button',{name:'返回书架'})[0]);
+ fireEvent.click(screen.getByRole('button',{name:'返回书架'}));
  assert.equal(screen.getByRole('searchbox').value,'Cell');
  await waitFor(()=>assert.ok(document.activeElement===book,'Focus returns to the original book'));
  assert.ok(document.querySelector('.journal-book-flight')===null,'Expected no matching DOM element');
@@ -97,22 +97,40 @@ test('interrupted opening has one reverse animation, ignores stale completion an
  const transitions=[];
  // jsdom has no layout; provide nonzero book/body geometry for the animation lifecycle.
  window.Element.prototype.getBoundingClientRect=function(){return new window.DOMRect(40,100,this.classList.contains('journal-library')?900:120,this.classList.contains('journal-library')?600:160);};
- window.Element.prototype.animate=function(){const a={cancelled:false,cancel(){this.cancelled=true;},onfinish:null};transitions.push(a);return a;};
+ window.Element.prototype.animate=function(){const a={target:this,cancelled:false,cancel(){this.cancelled=true;},onfinish:null};transitions.push(a);return a;};
+ const motions=()=>transitions.filter(a=>a.target.classList.contains('journal-reader'));
  const ref=createRef();render(React.createElement(JournalBookshelf,{ref,onBrowse:()=>{},onNone:()=>{}}));
  const book=screen.getByRole('button',{name:/Cell Reports/});fireEvent.click(book);
  assert.equal(document.querySelectorAll('.journal-book-flight').length,1);
  assert.equal(book.getAttribute('data-reading'),'true','The source book retains its shelf slot during flight');
- const stale=transitions[0].onfinish;
+ const stale=motions()[0].onfinish;
  act(()=>ref.current.dismiss());
- assert.equal(transitions[0].cancelled,true);assert.equal(document.querySelectorAll('.journal-book-flight').length,1);
+ assert.equal(motions()[0].cancelled,true);assert.equal(document.querySelectorAll('.journal-book-flight').length,1);
  act(()=>stale());assert.ok(document.querySelector('.phase-closing'));
- act(()=>transitions[2].onfinish());
+ act(()=>motions()[1].onfinish());
  assert.ok(document.querySelector('.journal-book-flight')===null,'Expected no matching DOM element');
  assert.equal(book.getAttribute('data-reading'),null,'The cover returns to its original slot');
  await waitFor(()=>assert.ok(document.activeElement===book,'Focus returns after interrupted opening'));
  fireEvent.click(screen.getByRole('button',{name:/ACS Omega/}));
- act(()=>transitions[4].onfinish());assert.ok(screen.getByRole('heading',{name:'ACS Omega'}));
+ act(()=>motions()[2].onfinish());assert.ok(screen.getByRole('heading',{name:'ACS Omega'}));
  assert.equal(document.querySelectorAll('.journal-reader').length,1);
  let closed=0;act(()=>{ref.current.dismiss(()=>closed++);ref.current.dismiss(()=>closed++);});
- act(()=>transitions[6].onfinish());assert.equal(closed,1);
+ act(()=>motions()[3].onfinish());assert.equal(closed,1);
 });
+
+ test('reader has one back action, keeps confirmation inside the book, and closes only explicitly',async()=>{
+ let saved=null;render(React.createElement(JournalRulePicker,{value:null,onChange:v=>{saved=v;},figureTypeId:'workflow'}));
+ fireEvent.click(document.querySelector('.journal-entry'));
+ fireEvent.change(screen.getByRole('searchbox'),{target:{value:'Nature'}});
+ const book=screen.getByRole('button',{name:/Nature/});fireEvent.click(book);
+ assert.equal(screen.getAllByRole('button',{name:'返回书架'}).length,1);
+ assert.ok(screen.queryByRole('button',{name:'取消'})===null,'Reading has no ambiguous cancel action');
+ assert.ok(Boolean(screen.getByRole('button',{name:'选择此期刊'}).closest('.journal-reading-pages')));
+ fireEvent.click(screen.getByRole('button',{name:'返回书架'}));
+ assert.ok(screen.getByRole('dialog'));assert.equal(screen.getByRole('searchbox').value,'Nature');assert.equal(saved,null);
+ await waitFor(()=>assert.ok(document.activeElement===book,'Focus returns to the filtered source book'));
+ fireEvent.click(book);fireEvent.keyDown(document,{key:'Escape'});
+ assert.ok(screen.getByRole('navigation'));assert.equal(saved,null);
+ fireEvent.click(book);fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
+ assert.ok(screen.queryByRole('dialog')===null,'Explicit close exits the library');assert.equal(saved,null);
+ });

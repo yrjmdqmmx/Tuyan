@@ -10,6 +10,7 @@ export default function JournalRulePicker({value,onChange,figureTypeId,refineCon
   const [open,setOpen]=useState(false),[draft,setDraft]=useState(null);
   const shelfRef=useRef(null);
   const close=()=>shelfRef.current?shelfRef.current.dismiss(()=>setOpen(false)):setOpen(false);
+  const stepBack=()=>{if(!shelfRef.current?.backToShelf())close();};
   const title=useId();
   const current=JOURNALS.find(j=>j.id===value?.journalId);
   const figureType=getFigureType(figureTypeId),canReuse=Boolean(journalFigureContent(figureType?.id));
@@ -41,12 +42,13 @@ export default function JournalRulePicker({value,onChange,figureTypeId,refineCon
     </button>
     {savedIssues.length>0&&<details className="journal-selection-notices"><summary>当前任务的期刊提示（{savedIssues.length}）</summary>{distinctNotices(savedIssues).map(i=><p className="journal-notice" key={i.code}>{i.text}</p>)}</details>}
     {saveFailed&&<p className="notice warning" role="status">本次选择仍有效，但浏览器设置保存失败；刷新后可能丢失。</p>}
-    {createPortal(<AccessibleDialog open={open} onClose={close} labelledBy={title} className="journal-dialog journal-bookshelf-dialog" backdropClassName={`journal-backdrop ${backdropClassName}`}>
-      <header className="journal-header"><div><h2 id={title}>期刊规则</h2><p>选择目标期刊，查看适用要求</p></div><button type="button" aria-label="关闭期刊规则" onClick={close}><X size={20}/></button></header>
-      {error&&!snapshot&&<p role="alert" className="journal-version-alert">{error} 保留原选择；可浏览其他期刊，或明确更新当前期刊规则。</p>}
-      <JournalBookshelf ref={shelfRef} value={value} onBrowse={selectJournal} onDismiss={close} onNone={()=>{onChange(null);setOpen(false);}} footer={<><button type="button" onClick={close}>取消</button><button type="button" className="primary-button" disabled={Boolean(error||!snapshot||snapshot&&refineContext&&!refineContext.contentType)} onClick={()=>{onChange(snapshot.selection);close();}}>选择此期刊</button></>}>
+    {createPortal(<AccessibleDialog open={open} onClose={stepBack} labelledBy={title} className="journal-dialog journal-bookshelf-dialog" backdropClassName={`journal-backdrop ${backdropClassName}`}>
+      <JournalBookshelf ref={shelfRef} value={value} onBrowse={selectJournal} onDismiss={close} onNone={()=>{onChange(null);setOpen(false);}} header={<>
+        <header className="journal-header"><div><h2 id={title}>期刊规则</h2><p>选择目标期刊，查看适用要求</p></div><button type="button" aria-label="关闭期刊规则" onClick={close}><X size={20}/></button></header>
+        {error&&!snapshot&&<p role="alert" className="journal-version-alert">{error} 保留原选择；可浏览其他期刊，或明确更新当前期刊规则。</p>}
+      </>} footer={<button type="button" className="primary-button" disabled={Boolean(error||!snapshot||snapshot&&refineContext&&!refineContext.contentType)} onClick={()=>{onChange(snapshot.selection);close();}}>选择此期刊</button>}>
           {draft?.version!==JOURNAL_VERSION&&draft&&<div className="journal-version-note"><p>当前沿用 {draft.version}，浏览不会更新任务规则。</p><button type="button" onClick={()=>setDraft({...draft,version:JOURNAL_VERSION})}>采用当前规则 {JOURNAL_VERSION}</button></div>}
-          {error&&!snapshot?<p role="alert" className="notice warning">{error} 原选择版本：{draft?.version}。选择其他期刊会采用 {JOURNAL_VERSION}；取消保留历史选择。</p>:snapshot?<>
+          {error&&!snapshot?<p role="alert" className="notice warning">{error} 原选择版本：{draft?.version}。选择其他期刊会采用 {JOURNAL_VERSION}；关闭或返回书架保留历史选择。</p>:snapshot?<>
             <div className="journal-title"><h3>{snapshot.name}</h3><span className={`journal-badge ${snapshot.status}`}>{JOURNAL_STATUS[snapshot.status]}</span></div>
             <p className="journal-muted">{snapshot.summary}</p>
             {error&&<p role="alert" className="notice warning">{error}</p>}

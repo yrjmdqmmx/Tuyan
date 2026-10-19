@@ -24,7 +24,7 @@ test('new journal reuses the existing chart category; special content is explici
  assert.ok(screen.getByText(/当前生成\/精修会改写图像/));
  tapJournal(/Frontiers in Artificial Intelligence/);
  assert.equal(screen.getByLabelText('图像性质').value,'primary','Journal switching must preserve the declaration');
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.equal(saved.contentType,'data');
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.equal(saved.contentType,'data');
  tapJournal(/PLOS ONE/);browse('PLOS ONE');fireEvent.change(screen.getByLabelText('图像性质'),{target:{value:'primary'}});fireEvent.click(screen.getByRole('button',{name:'选择此期刊'}));
  assert.equal(saved.contentType,'primary');assert.equal(saved.contentSource,undefined);
 });
@@ -32,12 +32,14 @@ test('picker search, cancel, confirm and Escape preserve selection transactional
  render(React.createElement(Picker));tapJournal(/不指定期刊/);
  fireEvent.change(screen.getByRole('searchbox',{name:'搜索期刊'}),{target:{value:'PLOS'}});
  assert.ok(within(screen.getByRole('navigation',{name:'期刊列表'})).queryByRole('button',{name:/ACS Omega/})===null,'Expected no matching DOM element');
- tapJournal(/PLOS ONE/);fireEvent.click(screen.getByRole('button',{name:'取消'}));
+ tapJournal(/PLOS ONE/);fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
  assert.ok(screen.getByRole('button',{name:/不指定期刊/}));
  tapJournal(/不指定期刊/);tapJournal(/PLOS ONE/);browse('PLOS ONE');
  fireEvent.change(screen.getByLabelText('投稿阶段'),{target:{value:'production'}});fireEvent.click(screen.getByRole('button',{name:'选择此期刊'}));
  assert.ok(screen.getByRole('button',{name:/PLOS ONE.*录用后/}));
  tapJournal(/PLOS ONE/);tapJournal(/Frontiers in/);fireEvent.keyDown(window,{key:'Escape'});
+ assert.ok(screen.getByRole('navigation',{name:'期刊列表'}),'Escape first returns to the shelf');
+ fireEvent.keyDown(window,{key:'Escape'});
  assert.ok(screen.queryByRole('dialog')===null,'Expected no matching DOM element');assert.ok(screen.getByRole('button',{name:/PLOS ONE/}));
 });
 test('pending scopes, unknown versions, invalid width and no journal remain explicit',()=>{
@@ -84,7 +86,7 @@ test('v1 task reopens with its original rules; selecting current journal and can
  assert.ok(screen.getByText(/正文图与补充图的 AI 生成、生成式精修按可核验来源等具体条件判断/));
  fireEvent.change(screen.getByLabelText('图件用途'),{target:{value:'graphical_abstract'}});
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('不接受图形摘要')));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.deepEqual(saved,original);
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.deepEqual(saved,original);
  tapJournal(/Scientific Reports/);
  if(!screen.queryByRole('region',{name:'Scientific Reports 详情'}))browse('Scientific Reports');updateRules();
  fireEvent.click(screen.getByRole('button',{name:'选择此期刊'}));assert.equal(saved.version,JOURNAL_VERSION);assert.equal(saved.purpose,'main');
@@ -132,7 +134,7 @@ test('humanities search and new Chinese journals preserve confirmation, settings
  fireEvent.click(list.getByRole('button',{name:/山西财经大学学报/}));
  assert.ok(screen.getByText(/正文图表采用黑白格式/));
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('未查到不等于禁止')));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.deepEqual(saved,original);
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.deepEqual(saved,original);
  tapJournal(/Cell Reports/);
  fireEvent.change(screen.getByRole('searchbox',{name:'搜索期刊'}),{target:{value:'财经论丛'}});
  tapJournal(/财经论丛/);
@@ -157,7 +159,7 @@ test('Sage Open and HSSC expose scoped rules and preserve line-art settings acro
  fireEvent.change(screen.getByLabelText('图像构成'),{target:{value:'lineart'}});
  assert.ok(screen.getAllByText(/800 dpi/).length);
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('未逐项授予局部重绘')));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
  assert.deepEqual(saved,original);
  tapJournal(/Cell Reports/);
  tapJournal(/Sage Open/);
@@ -213,7 +215,7 @@ test('domestic journals are searchable and selectable with distinct rules, expli
  fireEvent.click(list.getByRole('button',{name:/人口研究/}));
  assert.ok(screen.getByText(/均置于上方居中/));
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('不能据未写明判断允许或禁止')));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.deepEqual(saved,original);assert.equal(loadJournalSelection(window.localStorage),null);
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.deepEqual(saved,original);assert.equal(loadJournalSelection(window.localStorage),null);
  tapJournal(/Humanities and Social Sciences Communications/);
  fireEvent.change(screen.getByRole('searchbox',{name:'搜索期刊'}),{target:{value:'数字人文'}});
  tapJournal(/图书情报工作/);browse('图书情报工作');
@@ -226,7 +228,7 @@ test('domestic journals are searchable and selectable with distinct rules, expli
  view.rerender(React.createElement(JournalRulePicker,props()));
  tapJournal(/图书情报工作/);browse('图书情报工作');
  assert.ok(screen.getByText(new RegExp(`规则版本 ${JOURNAL_VERSION}`)));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
 });
 
 test('HSSC width uncertainty is scoped to the chosen value and cancelling retains the historical version',()=>{
@@ -242,7 +244,7 @@ test('HSSC width uncertainty is scoped to the chosen value and cancelling retain
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('当前排版宽度 87 mm 的适用条件待确认')));
  fireEvent.change(screen.getByLabelText('最终排版宽度（mm）'),{target:{value:'180'}});
  assert.ok(!screen.getAllByRole('status').some(e=>e.textContent.includes('当前排版宽度')));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.deepEqual(saved,original);
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.deepEqual(saved,original);
  view.rerender(React.createElement(JournalRulePicker,{value:saved,onChange:v=>{saved=v},figureTypeId:'workflow'}));
  tapJournal(/Humanities and Social Sciences Communications/);browse('Humanities and Social Sciences Communications');
  assert.ok(screen.getByText(/规则版本 2026-10-14.v6/));
@@ -257,7 +259,7 @@ test('Cell current evidence is selected explicitly while cancelled history and t
  assert.ok(screen.getByText(/规则版本 2026-10-14.v7/));
  if(!screen.queryByRole('region',{name:'Cell Reports 详情'}))browse('Cell Reports');updateRules();
  assert.ok(screen.getByText(/现行正文\/GA 格式已核实/));
- fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.deepEqual(saved,original);
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));assert.deepEqual(saved,original);
  tapJournal(/Cell Reports/);
  if(!screen.queryByRole('region',{name:'Cell Reports 详情'}))browse('Cell Reports');updateRules();
  fireEvent.change(screen.getByLabelText('投稿阶段'),{target:{value:'production'}});
@@ -270,7 +272,7 @@ test('Cell current evidence is selected explicitly while cancelled history and t
  assert.ok(screen.getByText(/沿用原任务：数据图/));
  assert.ok(screen.getAllByRole('status').some(e=>e.textContent.includes('当前不可执行：本刊不允许')));
  assert.ok(screen.queryByLabelText('精修原图性质')===null,'Expected no matching DOM element');
- fireEvent.click(screen.getByRole('button',{name:'取消'}));
+ fireEvent.click(screen.getByRole('button',{name:'关闭期刊规则'}));
  view.rerender(React.createElement(JournalRulePicker,props()));
  tapJournal(/Cell Reports/);browse('Cell Reports');
  assert.ok(!screen.getAllByRole('status').some(e=>e.textContent.includes('当前不可执行')));
