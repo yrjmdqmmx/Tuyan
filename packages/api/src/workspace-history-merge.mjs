@@ -20,11 +20,11 @@ export function mergeAccountHistory(state, jobs) {
   for(const job of sorted){
     // The account service knows accepted native runs before every tab has
     // received their jobId. Do not turn that propagation gap into a new task.
-    if(job.workspaceExecution?.taskId && job.workspaceExecution?.runId)continue;
     const existing=next.tasks.flatMap(t=>t.runs).find(r=>r.history?.jobId===job.id);
+    if(!existing && job.workspaceExecution?.taskId && job.workspaceExecution?.runId)continue;
     const runId=existing?.id || key(job);
     // A native workspace execution is already represented; never import it twice.
-    if(next.tasks.some(t=>t.runs.some(r=>!r.history&&r.execution?.jobId===job.id)))continue;
+    if(!existing && next.tasks.some(t=>t.runs.some(r=>!r.history&&r.execution?.jobId===job.id)))continue;
     let task=next.tasks.find(t=>t.runs.some(r=>r.id===runId));
     if(!task && job.sourceTaskId)task=next.tasks.find(t=>t.runs.some(r=>r.history?.jobId===job.sourceTaskId));
     if(!task){task=newTask(runId,job.format);task.title=job.title || '历史任务';task.automaticTitle=false;next.tasks.push(task);}

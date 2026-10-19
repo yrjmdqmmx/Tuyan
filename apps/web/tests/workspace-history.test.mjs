@@ -34,6 +34,11 @@ test('native account execution identity prevents history duplication in stale an
  assert.equal(mergeAccountHistory(stale,[native]),stale);
  const oldHistory=mergeAccountHistory(stale,[job('pending')]);
  assert.equal(mergeAccountHistory(oldHistory,[native]),oldHistory,'already imported records and drafts are preserved');
+ const running=mergeAccountHistory(stale,[job('pending',{status:'running',resultImages:[]})]);
+ const draft=structuredClone(running.tasks[1].branches.png.draft);
+ const completed=mergeAccountHistory(running,[native]);
+ assert.equal(completed.tasks.length,2);assert.equal(completed.tasks[1].activeRunId,null);
+ assert.equal(completed.tasks[1].runs[0].status,'succeeded');assert.deepEqual(completed.tasks[1].branches.png.draft,draft);
 });
 test('history hydration renews URLs in one batch without downloading originals or uploading copies',async()=>{
  const source=mergeAccountHistory(newWorkspace('draft'),[job('a')]);const calls=[];
