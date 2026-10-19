@@ -5,14 +5,17 @@ import {createRefineRuntime} from '../../../test-support/refine-runtime.mjs'
 test('server pins compact prompts into encrypted snapshots; missing version retains old full-stage prompts',async()=>{
   const r=await createRefineRuntime({tokenDance:true})
   try {
+    const workflow=r.workflow,cipher=r.tokenDanceService?.cipher
+    assert.ok(workflow,'TokenDance fixture must provide the durable workflow')
+    assert.ok(cipher,'TokenDance fixture must provide encrypted snapshots')
     let legacy=false
     const captured:any[]=[]
-    r.legacy.configureProviderWorkflow({...r.workflow,prepare:async(task:any)=>{
+    r.legacy.configureProviderWorkflow({...workflow,prepare:async(task:any)=>{
       assert.equal(task.body.generationPromptVersion,1,'client cannot choose or omit the server version')
       if(legacy)delete task.body.generationPromptVersion // Simulate an admitted pre-upgrade snapshot.
-      await r.workflow.prepare(task)
+      await workflow.prepare(task)
       const row=await r.db.collection('paperbanana_provider_executions').findOne({_id:task.jobId})
-      assert.equal(r.tokenDanceService.cipher.open(row.secret,task.jobId).task.body.generationPromptVersion,legacy?undefined:1)
+      assert.equal(cipher.open(row.secret,task.jobId).task.body.generationPromptVersion,legacy?undefined:1)
     }})
     r.legacy.configureRuntimeFetch(async(url:any,init:any={})=>{
       if(String(url).endsWith('/models'))return Response.json({data:[]})
