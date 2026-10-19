@@ -19,7 +19,7 @@
 
 www.paperbanana.asia 原本是独立 GitHub Pages 前端，杭州发布只更新 tuyansci.cn，因此旧域名仍显示旧工作台，不是单纯浏览器缓存。已在杭州流水线增加依赖健康部署成功的 Pages 发布任务：相同 Git SHA 构建，保持 www.paperbanana.asia 自己的 https://api.paperbanana.asia API/Auth 与现有回调。旧独立 Pages 工作流保持停用；GitHub Pages CNAME 与 HTTPS 设置保留。
 
-两域名分别写 version.json，revision 必须相同，target 为 Hangzhou / GitHub Pages。旧域名的 ready、workspace、model-library 和 auth 会话路由已只读核实存在，CORS 允许 www.paperbanana.asia；未携带会话的账号接口正常返回 401。上线后仍需浏览器核验新首页和模型库。
+两域名分别写 version.json，revision 必须相同，target 为 Hangzhou / GitHub Pages。旧域名的 ready、workspace、model-library 和 auth 会话路由已只读核实存在，CORS 允许 www.paperbanana.asia；未携带会话的账号接口正常返回 401。上线后的新首页和模型库浏览器核验已完成，结果见下文。
 
 ## 发布前检查
 
