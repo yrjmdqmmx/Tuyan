@@ -134,8 +134,11 @@ function handlerHeaders(request: Request): Request['headers'] {
   const headers: Request['headers'] = {}
   const clientIp = safeLegacyHeader(request.get('x-paperbanana-client-ip'), 128)
   const userAgent = safeLegacyHeader(request.get('user-agent'), 512)
+  const authUserId = safeLegacyHeader(request.get('x-paperbanana-auth-user-id'), 200)
   if (clientIp) headers['x-paperbanana-client-ip'] = clientIp
   if (userAgent) headers['user-agent'] = userAgent
+  // invokeLegacy validates the internal transport before exposing this assertion.
+  if (authUserId) headers['x-paperbanana-auth-user-id'] = authUserId
   return headers
 }
 

@@ -16,4 +16,5 @@ for _ in $(seq 1 30); do
 done
 port="$(docker port "$container" 27017/tcp | sed -n 's/^127\.0\.0\.1://p')"
 [[ "$port" =~ ^[0-9]+$ ]] || { echo 'Loopback Mongo port unavailable' >&2; exit 1; }
-WORKSPACE_COMPAT_TEST_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --test "$repo_dir/apps/auth-gateway/tests/workspace-compatibility.test.js" "$repo_dir/apps/web/tests/workspace-mongo.integration.mjs" "$repo_dir/apps/auth-gateway/tests/integration/account-profile.mongo.mjs"
+cd "$repo_dir/apps/paperbanana-api"
+WORKSPACE_COMPAT_TEST_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --import tsx --test "$repo_dir/apps/auth-gateway/tests/workspace-compatibility.test.js" "$repo_dir/apps/web/tests/workspace-mongo.integration.mjs" "$repo_dir/apps/auth-gateway/tests/integration/account-profile.mongo.mjs"

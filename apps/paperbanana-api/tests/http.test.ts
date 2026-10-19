@@ -123,6 +123,26 @@ test('POST exposes only the gateway-authenticated client IP and safe user agent 
   })
 })
 
+test('activity identity comes only from the authenticated gateway assertion', async () => {
+  let calls = 0
+  await withServer(async (ctx) => {
+    calls++
+    const userId = ctx.headers['x-paperbanana-auth-user-id']
+    return userId ? { code: 0, userId } : { code: 401, error: 'SIGN_IN_REQUIRED' }
+  }, async (baseUrl) => {
+    const request = (token: string, identity?: string) => fetch(`${baseUrl}/paperbanana-api`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-paperbanana-gateway-token': token,
+        ...(identity ? { 'x-paperbanana-auth-user-id': identity } : {}) },
+      body: JSON.stringify({ action: 'userDrawingActivity', userId: 'body-spoof' }),
+    })
+    assert.deepEqual(await (await request(config.gatewayToken, 'verified-account')).json(), { code: 0, userId: 'verified-account' })
+    assert.deepEqual(await (await request(config.gatewayToken)).json(), { code: 401, error: 'SIGN_IN_REQUIRED' })
+    assert.equal((await request('wrong', 'forged-account')).status, 401)
+    assert.equal(calls, 2)
+  })
+})
+
 test('POST accepts a JSON string request body before token sanitization', async () => {
   let receivedBody: unknown
   await withServer(async (ctx) => {

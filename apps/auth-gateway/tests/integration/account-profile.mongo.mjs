@@ -6,6 +6,8 @@ import sharp from 'sharp';
 import {ensureAccountIndexes} from '../../src/account-indexes.js';
 import {createAccountProfile,createAccountProfileRouter} from '../../src/account-profile.js';
 import {readDrawingActivity} from '../../../paperbanana-api/src/drawing-activity.ts';
+import {createServer} from '../../../paperbanana-api/src/server.ts';
+import {createBackendClient} from '../../src/backend-client.js';
 const uri=process.env.WORKSPACE_COMPAT_TEST_URI;
 
 test('real Mongo: profile transactions, concurrent email ownership and activity isolation',{skip:!uri},async t=>{
@@ -44,6 +46,27 @@ test('real Mongo: profile transactions, concurrent email ownership and activity 
     });
     await t.test('real activity cursor filters ownership and counts final candidate images only',async()=>{
       const image={candidateId:0,mimeType:'image/png',filename:'output.png'};await db.collection('jobs').insertMany([{_id:'own',userId:'activity',status:'succeeded',completedAt:now,resultImages:[image,image],prompt:'private excluded'},{_id:'legacy',user_id:'activity',status:'succeeded',completedAt:now,resultImages:[image]},{_id:'other',userId:'other',user_id:'activity',status:'succeeded',completedAt:now,resultImages:[image]},{_id:'failed',userId:'activity',status:'failed',completedAt:now,resultImages:[image]}]);const result=await readDrawingActivity(db.collection('jobs'),'activity',now);assert.equal(result.total,2);assert.equal(JSON.stringify(result).includes('private excluded'),false);
+    });
+    await t.test('both domains read real activity through gateway authentication and Core HTTP identity transport',async()=>{
+      const session=await seed('activity'),gatewayToken='isolated-activity-transport';
+      const core=createServer({config:{gatewayToken,serviceName:'activity-test',version:'test'},logger:{info(){},warn(){},error(){}},readinessProbe:async()=>({ready:true}),handler:async ctx=>{
+        assert.equal(ctx.body.action,'userDrawingActivity');
+        const userId=ctx.headers['x-paperbanana-auth-user-id'];
+        return userId ? {code:0,activity:await readDrawingActivity(db.collection('jobs'),userId,now)} : {code:401,error:'SIGN_IN_REQUIRED'};
+      }});
+      await new Promise(r=>core.listen(0,'127.0.0.1',r));
+      const backend=createBackendClient({mode:'node',url:`http://127.0.0.1:${core.address().port}/paperbanana-api`,timeoutMs:10000,gatewayToken});
+      const app=express();app.use('/api/account/profile',createAccountProfileRouter({auth:{accountProfile:service,optionalSession:async req=>req.get('cookie')==='fixture=activity'?session:null},frontendOrigins:['https://tuyansci.cn','https://www.paperbanana.asia'],backend}));
+      const gateway=app.listen(0,'127.0.0.1');await new Promise(r=>gateway.once('listening',r));
+      try {
+        const url=`http://127.0.0.1:${gateway.address().port}/api/account/profile/activity`;
+        for(const origin of ['https://tuyansci.cn','https://www.paperbanana.asia']){
+          const response=await fetch(url,{headers:{origin,cookie:'fixture=activity','x-workspace-account':'activity'}});
+          assert.equal(response.status,200);const activity=await response.json();assert.equal(activity.contractVersion,1);assert.equal(activity.total,2);assert.equal(JSON.stringify(activity).includes('private excluded'),false);
+        }
+        assert.equal((await fetch(url,{headers:{origin:'https://tuyansci.cn','x-workspace-account':'activity'}})).status,401);
+        assert.equal((await fetch(url,{headers:{origin:'https://tuyansci.cn',cookie:'fixture=activity','x-workspace-account':'other'}})).status,409);
+      } finally {await new Promise(r=>gateway.close(r));await new Promise(r=>core.close(r));}
     });
   }finally{await db.dropDatabase();await mongo.close();}
 });
