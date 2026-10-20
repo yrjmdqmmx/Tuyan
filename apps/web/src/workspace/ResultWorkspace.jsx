@@ -10,7 +10,7 @@ import { currentTask, currentBranch, selectedVersion, groupLabel, versionLabel, 
 
 function Preview({ version, className = '' }) {
   const [failed, setFailed] = useState(false);
-  return <div className={`tw-image-view ${className}`}>{failed ? <p role="alert">此版本预览加载失败，原记录仍保留。<button type="button" onClick={() => setFailed(false)}>重新载入</button></p> : <img key={version.id} src={version.url} alt={versionLabel(version, true)} onError={() => setFailed(true)} />}</div>;
+  return <div className={`tw-image-view ${className}`}>{version.loadError?<p role="status">{version.loadError}</p>:failed ? <p role="alert">此版本预览加载失败，原记录仍保留。<button type="button" onClick={() => setFailed(false)}>重新载入</button></p> : <img key={version.id} src={version.url} alt={versionLabel(version, true)} onError={() => setFailed(true)} />}</div>;
 }
 export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDownload, onCloseUnaccepted, userId, renderRecovery, executionProgress }) {
   const t = currentTask(state), b = currentBranch(state), v = selectedVersion(state), running = activeRun(state);
@@ -59,12 +59,12 @@ export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDo
     </div>
     {group && <nav className={`tw-candidates ${expected === 1 ? 'is-single' : ''}`} aria-label="候选图">
       {group.candidates.map(c => { const cv = c.versions.find(v => v.id === c.viewedVersionId) || c.versions.at(-1); return <button type="button" className={`tw-candidate ${b.candidateId === c.id ? 'is-selected' : ''}`} key={c.id} aria-pressed={b.candidateId === c.id} aria-label={`查看候选 ${c.label} · v${cv.number}`} onClick={() => showVersion(cv.id)}>
-        {expected !== 1 && <img src={cv.url} alt="" />}<span>候选 {c.label}<small>v{cv.number}{c.versions.at(-1).id !== cv.id ? ' · 有更新' : ''}</small></span>
+        {expected !== 1 && !cv.loadError && <img src={cv.url} alt="" />}{cv.loadError&&<span className="tw-muted">{cv.loadError}</span>}<span>候选 {c.label}<small>v{cv.number}{c.versions.at(-1).id !== cv.id ? ' · 有更新' : ''}</small></span>
       </button>; })}
       {Array.from({ length: missing }, (_, i) => <div className="tw-candidate-placeholder" key={i}>{running?.groupId === group.id ? <LoaderCircle size={15} className="tw-spin" /> : <AlertCircle size={15} />}<span>候选 {String.fromCharCode(65 + group.candidates.length + i)}<small>{running?.groupId === group.id ? '等待结果' : '未产生结果'}</small></span></div>)}
     </nav>}
     {panel === 'versions' && v && <WorkspaceDialog title="版本记录" onClose={() => setPanel(null)}><p className="tw-muted">{groupLabel(t, group)} · 候选 {candidate.label}。查看版本不会改变修改对象。</p><div className="tw-version-list">{[...candidate.versions].reverse().map(item => <button type="button" key={item.id} aria-pressed={item.id === v.id} onClick={() => showVersion(item.id)}><strong>v{item.number} · {item.origin}</strong><span>{item.parentId ? `基于 v${locateVersion(t, item.parentId)?.number}` : '初始版本'} · {item.review}</span></button>)}</div></WorkspaceDialog>}
-    {panel === 'fullscreen' && v && <WorkspaceDialog fullscreen title={versionLabel(v, true)} onClose={() => setPanel(null)}><FigureViewport key={v.id} version={v} fullscreen onFullscreen={() => setPanel(null)} /></WorkspaceDialog>}
+    {panel === 'fullscreen' && v && <WorkspaceDialog fullscreen title={versionLabel(v, true)} onClose={() => setPanel(null)}>{v.loadError?<p role="status">{v.loadError}</p>:<FigureViewport key={v.id} version={v} fullscreen onFullscreen={() => setPanel(null)} />}</WorkspaceDialog>}
     {panel === 'compare' && v && compare && <WorkspaceDialog wide title="版本比较" onClose={() => setPanel(null)}><label className="tw-compare-picker">与哪个版本比较<select value={compare.id} onChange={e => setCompareId(e.target.value)}>{versions.filter(item => item.id !== v.id).map(item => <option value={item.id} key={item.id}>{versionLabel(item, true)}</option>)}</select></label><div className="tw-compare"><figure><figcaption>{versionLabel(v, true)}</figcaption><Preview version={v} /></figure><figure><figcaption>{versionLabel(compare, true)}</figcaption><Preview key={compare.id} version={compare} /></figure></div><p className="tw-muted">比较仅用于查看，底部输入区的修改对象保持不变。</p></WorkspaceDialog>}
     {panel === 'execution' && <WorkspaceDialog className="tw-execution-dialog" title="执行详情" onClose={() => setPanel(null)}><WorkspaceExecutionDetails task={t} dispatch={dispatch} userId={userId} renderRecovery={renderRecovery} onShowVersion={showVersion}/></WorkspaceDialog>}
   </section>;

@@ -816,7 +816,7 @@ test('health is cached liveness, ready probes dependencies, and public routes ex
       code: 0,
       ok: true,
       runtime: 'gateway', workspaceExecutionContractVersion:1,
-      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1,
+      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1, imageLibraryEnabled: false,
       auth: 'better-auth',
       authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },

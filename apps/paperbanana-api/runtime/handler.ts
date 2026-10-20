@@ -1,4 +1,6 @@
 import { createWorkspaceJobDeletion } from '../src/workspace-task-deletion.js'
+import type { createImageLibrary } from '../src/image-library.js'
+import { accountImagePrefix } from '../src/image-library.js'
 import {readOptimizationMaterials} from '../src/optimization-materials.js'
 import { readDrawingActivity } from '../src/drawing-activity.js'
 import { catalogAbsenceReason, verifyPublicCatalogOmissions, PROVIDER_CATALOGS, readProviderCatalog, normalizeCatalogModel, exactModelDetails, mergeCatalogRows, type CatalogContinuation, type CatalogResult } from '../../../packages/api/src/provider-catalog.js'
@@ -1071,6 +1073,7 @@ type JobStage = {
 type RequestBody =
   | { action: 'deleteWorkspaceJobs'; jobIds: string[] }
   | {action:'userDrawingActivity';userId?:string}
+  | {action:'imageLibraryList'|'imageLibraryStatus'|'imageLibraryRead'|'imageLibraryRemove'|'imageLibrarySave';id?:string;format?:string;base64?:string;taskId?:string}
   | {action:'journalFigureExport';jobId:string;candidateId:number;userId?:string;clientPlatform?:ClientPlatform}
   | CreateJobBody
   | RefineImageBody
@@ -1098,7 +1101,12 @@ const references = db.collection('paperbanana_references')
 const accountDeletions = db.collection('paperbanana_account_deletions')
 const referenceUploadState = db.collection('paperbanana_reference_upload_state')
 const bucketName = process.env.PAPERBANANA_BUCKET || 'paperbanana'
-const deleteWorkspaceJobs=createWorkspaceJobDeletion({db,bucket:()=>objectStorage.bucket(bucketName),listKeys:listAccountObjectKeys,objectKeys:storedObjectKeysForJob,deleteMaterials:(job:any)=>materialFilesService.deleteJob(job)})
+let imageLibrary: ReturnType<typeof createImageLibrary> | undefined
+let imageLibraryEnabled = false
+export function configureImageLibrary(service: ReturnType<typeof createImageLibrary>, enabled = false) {
+  imageLibrary = service; imageLibraryEnabled = enabled
+}
+const deleteWorkspaceJobs=createWorkspaceJobDeletion({db,bucket:()=>objectStorage.bucket(bucketName),listKeys:listAccountObjectKeys,objectKeys:storedObjectKeysForJob,deleteMaterials:(job:any)=>materialFilesService.deleteJob(job),preserveResults:(userId:string,job:any)=>imageLibraryEnabled&&imageLibrary?imageLibrary.preserveLegacyResults(userId,job):[]})
 const materialFilesService=createMaterialFiles({db,bucket:()=>objectStorage.bucket(bucketName),ownerPrefix:referenceUploadOwner,assertOwner:async owner=>{if(!owner.userId||!(await ensureAccountAcceptingWork(owner)))materialError('材料账号不可用。',403)}})
 const materialActions=new Set(['prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial'])
 function referenceEnvironmentLimit(name: string, maximum: number) {
@@ -4383,6 +4391,7 @@ const identityScopedActions = new Set([
   'submitFeedback',
   'userJobs',
   'userDrawingActivity',
+  'imageLibraryList', 'imageLibraryStatus', 'imageLibraryRead', 'imageLibraryRemove', 'imageLibrarySave',
   'getJob',
   'journalFigureExport',
   'prepareReferenceUpload',
@@ -4481,6 +4490,18 @@ export default async function (ctx: CoreContext) {
       if (!userId) return fail('SIGN_IN_REQUIRED',401)
       return ok({activity:await readDrawingActivity(jobs,userId)})
     }
+    if (['imageLibraryList','imageLibraryStatus','imageLibraryRead','imageLibraryRemove','imageLibrarySave'].includes(action)) {
+      const userId = String(ctx.headers['x-paperbanana-auth-user-id'] || '')
+      if (!userId) return fail('SIGN_IN_REQUIRED',401)
+      if (!imageLibrary || !imageLibraryEnabled) return fail('图片库尚未完成历史数据核对，暂未启用。',503)
+      const input = body as any
+      if (action === 'imageLibraryList') return ok(await imageLibrary.list(userId))
+      if (action === 'imageLibraryStatus') return ok(await imageLibrary.status(userId))
+      if (action === 'imageLibraryRead') return ok(await imageLibrary.read(userId,input.id))
+      if (action === 'imageLibraryRemove') return ok(await imageLibrary.remove(userId,input.id))
+      if (typeof input.base64 !== 'string' || input.base64.length > 13_333_336) return fail('工作区版本超过现有 10 MB 上传上限。',413)
+      return ok(await imageLibrary.save(userId,{format:input.format,bytes:Buffer.from(input.base64,'base64'),source:{taskId:input.taskId}}))
+    }
     if (action === 'accountDeletionStatus') return await accountDeletionStatus(body as DeleteAccountBody)
     if (action === 'completeAccountDeletion') return await completeAccountDeletion(body as DeleteAccountBody)
     if (action === 'deleteAccount') {
@@ -4497,6 +4518,7 @@ export default async function (ctx: CoreContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
+    if (String(action).startsWith('imageLibrary') && error?.status) return fail(error.message,error.status)
     if(error?.name==='MaterialError')return {...fail(error.message,error.statusCode||400),businessCode:error.businessCode||'MATERIAL_READ_ERROR'}
     if (error?.name === 'UniversalApiError') return {...fail(error.message, error.status || 400), failure: publicExecutionFailure(error), requestState: error.requestState}
     if (error?.name === 'JournalRuleError') return {...fail(error.message,400),businessCode:'JOURNAL_RULE_CONFLICT',requestState:'not_sent'}
@@ -6103,13 +6125,14 @@ async function deleteAccount(body: DeleteAccountBody) {
       if (jobIds.some((id: string) => !/^[A-Za-z0-9._-]{1,200}$/.test(id))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
       const referencePrefix = `references/${userId}/`
       const jobPrefixes = jobIds.map((id: string) => `${id}/`)
-      const inScope = (key: string) => key.startsWith(referencePrefix) || jobPrefixes.some((prefix: string) => key.startsWith(prefix))
+      const imagePrefix = accountImagePrefix(userId)
+      const inScope = (key: string) => key.startsWith(referencePrefix) || key.startsWith(imagePrefix) || jobPrefixes.some((prefix: string) => key.startsWith(prefix))
       const keys = new Set<string>(ownedJobs.flatMap(storedObjectKeysForJob))
       for (const upload of uploads) keys.add(String(upload.objectKey || upload._id))
       if ([...keys].some((key) => !inScope(key))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
       // Inventory exact immutable-ID prefixes once, including untracked files.
       // Never enumerate a reusable email prefix, even for historical rows.
-      for (const prefix of [referencePrefix, ...jobPrefixes]) {
+      for (const prefix of [referencePrefix, imagePrefix, ...jobPrefixes]) {
         for (const key of await listAccountObjectKeys(prefix)) keys.add(key)
         await checkpoint({ lastErrorCode: '' })
       }
@@ -6131,6 +6154,7 @@ async function deleteAccount(body: DeleteAccountBody) {
       if (remainingJobs.some((job: any) => !row.jobIds.includes(String(job._id)))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
       await checkpoint({ irreversibleStartedAt: row.irreversibleStartedAt || new Date() })
       await deleteAdditionalAccountData(userId)
+      await imageLibrary?.deleteOwner(userId)
       await db.collection('paperbanana_task_deletions').deleteMany({userId})
       const jobsResult = await jobs.deleteMany({ ...accountIdQuery(userId), _id: { $in: row.jobIds } })
       const feedbackResult = await feedback.deleteMany(accountIdQuery(userId))
@@ -6496,7 +6520,7 @@ async function runJob(
       const result = await atJobStage('planning', () => providerWorkflow.scope(`candidate-${i}`, () => runCandidate(jobId, i, body, routeSecrets, maxCriticRounds, referenceAnalysis, retrievalContext, referenceVisionInputs, message => appendLog(jobId, `Candidate ${i+1}: ${message}`), actualReferenceInputs)))
       const saved = await saveResult(jobId, i, result.content, result.mimeType, result.encoding)
       const journalCheck=await checkGeneratedJournalFile(body,Buffer.from(result.content,result.encoding==='base64'?'base64':'utf8'))
-      results[i] = {journalCheck,candidateId:i,filename:saved.filename,objectKey:saved.objectKey || saved.filename,url:saved.url,storage:saved.storage,mimeType:result.mimeType,description:result.description,review:result.review}
+      results[i] = {journalCheck,candidateId:i,...saved,objectKey:saved.objectKey || saved.filename,mimeType:result.mimeType,description:result.description,review:result.review}
       progress[i] = {candidateId:i,status:'succeeded',review:result.review}
       await persist()
       if ('stopError' in result && result.stopError) throw result.stopError
@@ -7328,7 +7352,8 @@ async function exportJournalFigure(body:any) {
   const image=(job.resultImages||[]).find((item:any)=>Number(item.candidateId??item.candidate_id)===candidateId)
   if(!image)return fail('Result not found',404)
   const key=String(image.objectKey||image.filename||'')
-  if(!key.startsWith(`${job._id}/`))return fail('Result unavailable',400)
+  if(image.libraryId&&imageLibrary)await imageLibrary.get(body.userId,image.libraryId)
+  else if(!key.startsWith(`${job._id}/`))return fail('Result unavailable',400)
   const bytes=await readStoredObject(objectStorage.bucket(bucketName),key,40*1024*1024,'期刊图件检查')
   const {bytes:output,report}=await inspectJournalFile(bytes,snapshot,{format:body.format,flattenWhite:body.flattenWhite})
   return ok({report,...(body.download===true?{file:{filename:`tuyan-candidate-${candidateId+1}.${report.facts.format}`,mimeType:report.facts.format==='svg'?'image/svg+xml':`image/${report.facts.format}`,base64:output.toString('base64')}}:{})})
@@ -7348,7 +7373,7 @@ async function sourceGenerationContext(body:RefineImageBody) {
   if(body.sourceTaskId!==undefined)materialError('原任务关联仅用于恢复已记录的上传原图。')
   const objectKey=String(body.sourceImageObjectKey || '')
   if(!objectKey || !body.userId)return undefined
-  const sourceJob=await jobs.findOne({_id:objectKey.split('/')[0],userId:body.userId})
+  const sourceJob=await imageSourceJob(body.userId,objectKey)
   if(!sourceJob)return undefined
   const original={...sourceJob,...sourceJob.generationContext,...journalFields(sourceJob)}
   const sourceImage=(sourceJob.resultImages || []).find((item:any)=>(item.objectKey || item.filename)===objectKey)
@@ -9483,6 +9508,16 @@ export async function saveResult(
   await assertJobOwnerAcceptingWork(jobId)
   const filename = `${jobId}/candidate-${candidateId}.${resultExtension(mimeType)}`
   const buffer = encoding === 'base64' ? Buffer.from(content, 'base64') : Buffer.from(content, 'utf8')
+  if (imageLibraryEnabled && imageLibrary && ['image/png','image/svg+xml'].includes(mimeType)) {
+    const job = await jobs.findOne({_id:jobId})
+    const userId = String(job?.userId || job?.user_id || '')
+    if (userId) {
+      const saved = await imageLibrary.save(userId,{format:mimeType==='image/png'?'png':'svg',bytes:buffer,source:{jobId,candidateId}})
+      await assertJobOwnerAcceptingWork(jobId)
+      const row = saved.status === 'saved' ? await imageLibrary.get(userId,saved.id) : null
+      return imageLibrary.projection(userId,{storage:'library',libraryId:saved.id,filename:`${saved.id}.${saved.format}`,objectKey:row?.objectKey||'',mimeType})
+    }
+  }
   try {
     const bucket = objectStorage.bucket(bucketName)
     await bucket.writeFile(filename, buffer, { ContentType: mimeType })
@@ -11353,7 +11388,7 @@ async function publicJob(job: any) {
     promptCharCount: job.promptCharCount,
     referenceImageCount: (job.referenceImages || []).length,
     referenceImages: await refreshReferenceImageUrls(job.referenceImages || []),
-    resultImages: redactPublicValue(await refreshStoredImageUrls(job.resultImages || [])),
+    resultImages: redactPublicValue(await refreshStoredImageUrls(job.resultImages || [],String(job.userId || job.user_id || ''))),
     logs: redactPublicValue(job.logs || []),
     error: failure?.message || redactSecretText(job.error || ''),
     createdAt: job.createdAt,
@@ -11446,10 +11481,12 @@ async function refreshRetrievedReferenceUrls(references: any[]) {
   }))
 }
 
-async function refreshStoredImageUrls(images: any[]) {
+async function refreshStoredImageUrls(images: any[], userId = '') {
   if (!images.length) return []
   const bucket = objectStorage.bucket(bucketName)
   return await Promise.all(images.map(async (image) => {
+    if (image.libraryId && imageLibrary) return userId ? imageLibrary.projection(userId,image) : {...image,url:'',storageError:'图片需要账号验证'}
+    if(imageLibraryEnabled&&imageLibrary&&userId){const projected=await imageLibrary.projection(userId,image);if(projected.storageError&&projected.url==='')return projected}
     const objectKey = image?.objectKey || (image?.storage === 'bucket' ? image?.filename : '')
     if (!objectKey || String(image.url || '').startsWith('data:')) return image
     try {
@@ -11806,6 +11843,10 @@ async function prepareRefineAssets(body: RefineImageBody, route: ModelRoute, upl
   const policy = routeReferencePolicy(route,'refine')
   let source = uploadedSource
   if (!source) {
+    if(String(body.sourceImageObjectKey||'').startsWith('account-images/')){
+      if(!imageLibrary)throw new Error('图片库暂不可用')
+      await imageLibrary.byObjectKey(String(body.userId||''),String(body.sourceImageObjectKey))
+    }
     const bytes = await readStoredObject(objectStorage.bucket(bucketName),String(body.sourceImageObjectKey || ''),maxProviderImageBytes,'Refine original')
     source = await withReferenceProcessing(async () => {
       const mime = isPngBytes(bytes) ? 'image/png' : isJpegBytes(bytes) ? 'image/jpeg' : 'image/webp'
@@ -11850,7 +11891,7 @@ async function loadRefineAssets(inputs: RefineInputs): Promise<NonNullable<Image
 async function ownedRefineWhiteCanvas(body:RefineExecutionBody){
  const key=String(body.sourceImageObjectKey||''),route=body.modelRoutes.image
  if(body.refineMode!=='direct-edit'||route.accessProvider!=='bailian'||!/^wan2\.7-image/.test(route.modelId)||!body.userId||!key)return null
- const job=await jobs.findOne({_id:key.split('/')[0],userId:body.userId})
+ const job=await imageSourceJob(body.userId,key)
  if(!job||String(job.accountGeneration||'')!==String(body.accountGeneration||''))return null
  const result=(job.resultImages||[]).find((item:any)=>(item.objectKey||item.filename)===key)
  return result?.review?.displayBackground==='#ffffff'&&/^[0-9a-f]{64}$/.test(result.review.deliveredPngHash||'')?{pngHash:result.review.deliveredPngHash}:null
@@ -11859,6 +11900,10 @@ async function ownedRefineWhiteCanvas(body:RefineExecutionBody){
 async function resolveSourceImageUrl(body: RefineExecutionBody) {
   const objectKey = limitText(body.sourceImageObjectKey, 300)
   if (!objectKey) throw new Error('请先上传精修原图或选择当前账号的任务图片；不支持外部图片 URL。')
+  if(objectKey.startsWith('account-images/')) {
+    if(!imageLibrary)throw new Error('图片库暂不可用')
+    await imageLibrary.byObjectKey(String(body.userId||''),objectKey)
+  }
   const route = body.modelRoutes[body.refineMode === 'direct-edit' ? 'image' : body.visionMode === 'none' ? 'main' : 'vision']
   const policy = routeReferencePolicy(route, body.refineMode === 'direct-edit' ? 'refine' : 'generation')
   return withReferenceProcessing(async () => {
@@ -11873,6 +11918,13 @@ async function resolveSourceImageUrl(body: RefineExecutionBody) {
     if(body.refineMode==='direct-edit'&&route.accessProvider==='bailian'&&/^wan2\.7-image/.test(route.modelId))return wan27SourceDataUrl({base64:processed.bytes.toString('base64'),mimeType:processed.mimeType},false)
     return `data:${processed.mimeType};base64,${processed.bytes.toString('base64')}`
   }, true)
+}
+
+async function imageSourceJob(userId:string,objectKey:string) {
+  if(!objectKey.startsWith('account-images/'))return jobs.findOne({_id:objectKey.split('/')[0],userId})
+  if(!imageLibrary)throw new Error('图片库暂不可用')
+  await imageLibrary.byObjectKey(userId,objectKey)
+  return jobs.findOne({userId,'resultImages.objectKey':objectKey})
 }
 
 function inferMimeTypeFromUrl(url: string) {
@@ -12094,7 +12146,7 @@ async function evaluateJob(body: EvaluateJobBody) {
 }
 
 async function firstResultImageUrl(job: any): Promise<string> {
-  const images = await refreshStoredImageUrls(job.resultImages || [])
+  const images = await refreshStoredImageUrls(job.resultImages || [],String(job.userId || job.user_id || ''))
   for (const image of images) {
     const url = String(image?.url || '')
     if (url) return url

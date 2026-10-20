@@ -73,6 +73,7 @@ type LegacyPolicyModule = {
   saveResult(jobId: string, candidateId: number, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
   saveStageImage(jobId: string, candidateId: number, stage: string, content: string, mimeType: string, encoding: 'base64' | 'utf8'): Promise<any>
   createJobAdmissionController(config: Record<string, number>, dependencies: Record<string, unknown>): any
+  configureImageLibrary(service:any,enabled?:boolean):void
   configureJobAdmission(config: Record<string, number>): void
   getJobAdmissionState(): Record<string, unknown>
   stopJobAdmission(): void
@@ -6836,4 +6837,19 @@ test('cancelled admission is not acknowledged and a stale executor cannot overwr
   assert.equal(executions, 1)
   assert.equal(terminalWrites, 0)
   assert.equal(controller.snapshot().active, 0)
+})
+
+
+test('image library internal actions bind immutable identity and preserve expiry failures',async()=>{
+  const core=await loadLegacy(),calls:any[]=[]
+  core.configureImageLibrary({list:async(userId:string)=>{calls.push(userId);return {images:[],usedBytes:0}},read:async()=>{throw Object.assign(Error('图片已过期'),{status:410})}},true)
+  const response={setHeader(){},status(){}}
+  try{
+    const base={request:{method:'POST'},response,body:{action:'imageLibraryList',userId:'forged-owner'}}
+    assert.equal((await invokeTrusted(core,{...base,headers:{}})).code,401)
+    const value=await invokeTrusted(core,{...base,headers:{'x-paperbanana-auth-user-id':'real-owner'}})
+    assert.equal(value.code,0);assert.deepEqual(calls,['real-owner'])
+    const expired=await invokeTrusted(core,{...base,body:{action:'imageLibraryRead',id:'a'.repeat(64)},headers:{'x-paperbanana-auth-user-id':'real-owner'}})
+    assert.equal(expired.code,410);assert.equal(expired.error,'图片已过期')
+  }finally{core.configureImageLibrary(undefined,false)}
 })

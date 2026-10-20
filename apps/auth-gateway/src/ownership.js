@@ -68,7 +68,9 @@ function normalizedObjectKey(value) {
   }
   return {
     objectKey,
-    jobId: parts[0],
+    // Core validates the immutable account-image key against its active owner
+    // record before reading bytes. It no longer relies on a surviving task.
+    jobId: parts[0] === 'account-images' ? '' : parts[0],
     payload: { sourceImageObjectKey: objectKey },
   };
 }

@@ -651,3 +651,16 @@ test('health remains responsive while a readiness request is actively stalled', 
     () => ({ ready: false, dependencies: { mongodb: 'unavailable', oss: 'unavailable' } }),
   )
 })
+
+
+test('large image bodies require the authenticated internal image transport',async()=>{
+  let calls=0
+  await withServer(async()=>{calls++;return {code:0}},async base=>{
+    const body=JSON.stringify({action:'imageLibrarySave',format:'svg',base64:'A'.repeat(1_200_000)})
+    const send=(headers:any)=>fetch(base+'/paperbanana-api',{method:'POST',headers:{'content-type':'application/json',...headers},body})
+    assert.equal((await send({'x-paperbanana-image-storage':'1'})).status,413)
+    assert.equal((await send({'x-paperbanana-gateway-token':config.gatewayToken})).status,413)
+    assert.equal((await send({'x-paperbanana-gateway-token':config.gatewayToken,'x-paperbanana-image-storage':'1'})).status,200)
+    assert.equal(calls,1)
+  })
+})

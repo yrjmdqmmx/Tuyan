@@ -106,6 +106,7 @@ export function loadGatewayConfig(env = process.env) {
     cookieDomain: stringValue(env.COOKIE_DOMAIN),
     cookieSameSite: sameSite || (production ? 'lax' : 'lax'),
     backend,
+    imageLibraryEnabled: parseBoolean(env.PAPERBANANA_IMAGE_LIBRARY_ENABLED),
     gatewayToken: required(env, 'PAPERBANANA_GATEWAY_TOKEN'),
     adminTransportToken: stringValue(env.PAPERBANANA_ADMIN_TRANSPORT_TOKEN),
     adminUserIds: new Set(adminUserIds),

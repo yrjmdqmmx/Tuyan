@@ -4,7 +4,7 @@ import { historyJob } from '../../../../packages/api/src/workspace-history.mjs';
 import { mergeAccountHistory } from './workspaceHistory.js';
 import {useEffect,useRef,useState} from 'react';
 import {API_BASE_DEFAULT} from '../config.js';
-import {workspaceResultDataUrl} from './workspaceResultAsset.js';
+import {workspaceResultDataUrl,workspaceAccountResultDataUrl} from './workspaceResultAsset.js';
 import {buildWorkspaceRequest,startWorkspaceRun,recoverWorkspaceRun,pollWorkspaceRun,workspaceExecutionIssue} from './workspaceExecution.js';
 import {currentTask,workspaceReducer,uid} from './workspaceState.js';
 const terminal=['completed','succeeded','failed','cancelled'];
@@ -31,7 +31,7 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
         if(stateRef.current.tasks.find(task=>task.id===t.id)?.activeRunId!==run.id)continue;
         setProgressByRunId(current=>({...current,[run.id]:generationProgressSnapshot(job,{taskId:t.id,runId:run.id,base})}));
         if(run.history){sync.setState(current=>mergeAccountHistory(current,[historyJob(job,run.history.source,userId)]));continue;}
-        for(const [i,image]of(job.result_images||[]).entries()){const format=image.mime_type==='image/svg+xml'||/\.svg(?:$|\?)/i.test(image.filename)?'svg':'png';if(format!==run.path)throw Error('返回格式与此执行不一致，未替换已有版本。');if(!image.url)continue;const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`${run.id}:${image.candidate_id}:${image.filename}`));const versionId=Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');if(!live.current)return;dispatch({type:'RESULT',taskId:t.id,runId:run.id,candidateId:`${run.id}-${image.candidate_id}`,label:String.fromCharCode(65+i),version:{id:versionId,format,url:await workspaceResultDataUrl(image.url,format,base),review:reviewSummary(image.review,run.execution.simulation)}});}
+        for(const [i,image]of(job.result_images||[]).entries()){const format=image.mime_type==='image/svg+xml'||/\.svg(?:$|\?)/i.test(image.filename)?'svg':'png';if(format!==run.path)throw Error('返回格式与此执行不一致，未替换已有版本。');if(!image.url&&!image.storage_error)continue;const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`${run.id}:${image.candidate_id}:${image.filename}`));const versionId=Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');if(!live.current)return;dispatch({type:'RESULT',taskId:t.id,runId:run.id,candidateId:`${run.id}-${image.candidate_id}`,label:String.fromCharCode(65+i),version:{id:versionId,format,url:image.storage_error?'':image.library_id?await workspaceAccountResultDataUrl(image.library_id,format,base,userId):await workspaceResultDataUrl(image.url,format,base),...(image.library_id?{resultId:image.library_id}:{}),...(image.storage_error?{loadError:image.storage_error}:{}),review:reviewSummary(image.review,run.execution.simulation)}});}
         if(terminal.includes(job.status))dispatch({type:'FINISH',taskId:t.id,runId:run.id,error:['failed','cancelled'].includes(job.status)?job.error||'执行未完成，已有结果及要求保留。':''});
         else dispatch({type:'EXECUTION',taskId:t.id,runId:run.id,stage:`${run.execution.simulation?'本地模拟 · ':''}${workspaceProgress(job)}`});
       }catch(e){if(live.current){setProgressByRunId(current=>current[run.id]?{...current,[run.id]:{...current[run.id],refreshFailed:true}}:current);dispatch({type:'EXECUTION',taskId:t.id,runId:run.id,stage:e.message+'；保留当前执行并稍后查询。'});}}}

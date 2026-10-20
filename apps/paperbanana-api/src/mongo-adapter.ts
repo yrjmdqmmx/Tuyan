@@ -13,6 +13,7 @@ type MongoClientLike = {
   db(name: string): Db
   connect(): Promise<unknown>
   close(): Promise<unknown>
+  startSession?(): any
 }
 
 export async function reconcileInterruptedJobs(
@@ -44,6 +45,15 @@ export function createMongoAdapter(
 
   return {
     db,
+    async transaction<T>(work: (session: any) => Promise<T>): Promise<T> {
+      if (!client.startSession) throw new Error('IMAGE_LIBRARY_TRANSACTION_REQUIRED')
+      const session = client.startSession()
+      try {
+        return await session.withTransaction(() => work(session), {
+          readConcern: { level: 'snapshot' }, writeConcern: { w: 'majority' },
+        })
+      } finally { await session.endSession() }
+    },
     async connect(): Promise<void> {
       await client.connect()
     },

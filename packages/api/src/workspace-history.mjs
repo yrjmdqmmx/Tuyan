@@ -24,5 +24,6 @@ export function historyJob(job, source, owner, details = false) {
     results:(job.resultImages || job.result_images || []).slice(0,6).map((image,index) => ({ index, format:/svg/i.test(image.mimeType || image.mime_type || image.filename || '') ? 'svg' : 'png',
       // Only URLs returned by the authenticated job API may reach the preview. Never persist them.
       url:typeof image.url === 'string' && image.url.length <= 14_000_000 && (/^https?:\/\//.test(image.url) || /^data:image\/(?:png|svg\+xml)(?:;charset=utf-8)?(?:;base64)?,/i.test(image.url)) ? image.url : '',
+      ...((image.storageError||image.storage_error)?{storageError:text(image.storageError||image.storage_error,200)}:{}),
       review:text(image.review?.note || image.review?.status,1000), candidate:String(image.candidateId ?? image.candidate_id ?? index) })) };
 }

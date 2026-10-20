@@ -1,6 +1,9 @@
+import {IMAGE_LIBRARY_MAX_BYTES} from '../../../../packages/api/src/image-library.mjs';
+
 // Persist actual bytes before a remote/signed result URL expires. No redirects
 // with credentials, and no generated result can become an original attachment.
 export async function workspaceVersionDataUrl(version,base,userId){
+ if(version.resultId)return workspaceAccountResultDataUrl(version.resultId,version.format,base,userId);
  if(version.history?.source!=='production')return workspaceResultDataUrl(version.url,version.format,base);
  const {jobId,index}=version.history;
  const res=await fetch(base.replace(/\/$/,'')+'/api/workspace/history/'+encodeURIComponent(jobId)+'/results/'+index,{credentials:'include',cache:'no-store',headers:{'X-Workspace-Account':userId},signal:AbortSignal.timeout(45000)});
@@ -21,4 +24,13 @@ export async function workspaceResultDataUrl(url,format,base){
  if(format==='svg'&&!/<svg[\s/>]/i.test(new TextDecoder().decode(bytes)))throw Error('返回的文件不是 SVG');
  let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));
  return `data:image/${format==='svg'?'svg+xml':'png'};base64,${btoa(binary)}`;
+}
+
+// Saved account results are read through the server on every download. A local
+// data URL is not evidence that an expired or recycled object is still saved.
+export async function workspaceAccountResultDataUrl(resultId,format,base,userId){
+ const res=await fetch(base.replace(/\/$/,'')+'/api/workspace/results/'+encodeURIComponent(resultId),{credentials:'include',cache:'no-store',headers:{'X-Workspace-Account':userId},signal:AbortSignal.timeout(45000)});
+ const data=await res.json();if(!res.ok)throw Error(data.error||'已保存图片读取失败');
+ if(data.format!==format||typeof data.base64!=='string'||data.base64.length>Math.ceil(IMAGE_LIBRARY_MAX_BYTES/3)*4)throw Error('已保存图片格式或大小无效');
+ return `data:image/${format==='svg'?'svg+xml':'png'};base64,${data.base64}`;
 }

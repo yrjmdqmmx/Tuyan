@@ -4,7 +4,7 @@ const terminal=new Set(['succeeded','completed','failed','cancelled','canceled']
 
 // Internal gateway operation. The durable inventory permits safe retries after
 // partial OSS failures; no prompt, image or credential survives in the marker.
-export function createWorkspaceJobDeletion({db,bucket,listKeys,objectKeys,deleteMaterials}:any) {
+export function createWorkspaceJobDeletion({db,bucket,listKeys,objectKeys,deleteMaterials,preserveResults=async()=>[]}:any) {
   return async (userId:string, jobIds:string[])=>{
     if(!userId)throw failure(401,'SIGN_IN_REQUIRED');
     if(!Array.isArray(jobIds)||jobIds.length>1000||jobIds.some(id=>typeof id!=='string'||! /^[\w-]{1,160}$/.test(id)))throw failure(400,'INVALID_JOB_IDS');
@@ -16,6 +16,7 @@ export function createWorkspaceJobDeletion({db,bucket,listKeys,objectKeys,delete
       let operation=await deletions.findOne(identity);
       if(operation?.complete)continue;
       const job=await jobs.findOne({_id:id,...owned(userId)});
+      const retainedImages=new Set(await preserveResults(userId,job));
       if(!job&&!operation)continue;
       if(!operation){
         const prefix=`${id}/`;
@@ -36,7 +37,7 @@ export function createWorkspaceJobDeletion({db,bucket,listKeys,objectKeys,delete
       const executions=db.collection('paperbanana_provider_executions'), execution=await executions.findOne({_id:id,userId});
       if(execution){const claimed=await executions.updateOne({_id:id,userId,state:{$nin:['running','queued']}},{$set:{state:'deleting'}});if(!claimed.matchedCount)throw failure(409,'JOB_STILL_RUNNING');}
       if(job)await deleteMaterials(job);
-      for(const key of operation.keys){if(!operation.allowedPrefixes.some((prefix:string)=>key.startsWith(prefix)))throw failure(409,'INVALID_DELETE_SCOPE');await bucket().deleteFile(key);}
+      for(const key of operation.keys){if(retainedImages.has(key))continue;if(!operation.allowedPrefixes.some((prefix:string)=>key.startsWith(prefix)))throw failure(409,'INVALID_DELETE_SCOPE');await bucket().deleteFile(key);}
       // Step chunks carry the job id in their immutable key, including orphaned
       // chunks written immediately before a crash (without a step count).
       await db.collection('paperbanana_provider_step_chunks').deleteMany({userId,_id:{$gte:id+':',$lt:id+';'}});

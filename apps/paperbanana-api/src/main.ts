@@ -1,4 +1,5 @@
 import { createUniversalRuntime } from './universal-adapters.js'
+import { createImageLibrary } from './image-library.js'
 import { createTokenDanceService } from './tokendance-service.js'
 import { createProviderWorkflow } from './provider-workflow.js'
 import type { Db } from 'mongodb'
@@ -32,6 +33,8 @@ async function main(): Promise<void> {
 
   const mongo = createMongoAdapter(config.mongodb)
   const oss = createOssAdapter(config.oss)
+  const imageLibrary = createImageLibrary({ db: mongo.db, transaction: mongo.transaction, bucket: () => oss.bucket(config.oss.bucket) })
+  const imageLibraryEnabled = ['1', 'true', 'yes', 'on'].includes(String(process.env.PAPERBANANA_IMAGE_LIBRARY_ENABLED || '').trim().toLowerCase())
   const providerEgress = createProviderEgress(config.providerEgress)
   let configureDeletionCleanup: (cleanup: (userId: string) => Promise<void>) => void = () => {}
   let coreLifecycle = {
@@ -48,6 +51,8 @@ async function main(): Promise<void> {
       core.configureRuntimeFetch(providerEgress.fetch)
       core.configureUniversalRuntime(createUniversalRuntime({officialFetch: providerEgress.fetch}))
       core.configureJobAdmission(config.admission)
+      core.configureImageLibrary(imageLibrary, imageLibraryEnabled)
+      await imageLibrary.ensureIndexes()
       configureDeletionCleanup = core.configureAccountDeletionDataCleanup
       core.startAccountDeletionSweep()
       coreLifecycle = {
@@ -136,6 +141,7 @@ async function main(): Promise<void> {
     }
   }
   const closeAll = async () => {
+    await imageLibrary.stop()
     let failure: unknown
     try { await closeBenchmark() } catch (error) { failure = error }
     try { await runtime.close() } catch (error) { failure ||= error }
@@ -160,6 +166,8 @@ async function main(): Promise<void> {
     await closeAll().catch(() => {})
     throw error
   }
+  // Existing managed images keep expiring even when new admission is disabled.
+  imageLibrary.start()
   const server = createServer({
     adminOperations,
     tokenDance, providerWorkflow, resumeTokenDanceJob: core.resumeTokenDanceJob, requiresTokenDanceCredential: core.requiresTokenDanceCredential, requiresCustomCredential: core.requiresCustomCredential,

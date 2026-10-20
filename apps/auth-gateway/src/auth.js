@@ -1,5 +1,6 @@
 import { accountWorkspaceStore, WORKSPACE_ACCOUNT_COLLECTIONS } from './workspace-lifecycle.js';
 import { createAccountProfile } from './account-profile.js';
+import { createLegacyImageCleanup } from './image-library.js';
 import { APIError } from 'better-auth/api';
 import { createWorkspaceExecutionStore } from './workspace-execution.js';
 import { createWatchaOAuth } from './watcha-oauth.js';
@@ -40,6 +41,7 @@ export async function createAuthRuntime(
   const mongoClient = new MongoClientClass(config.mongoUri);
   await mongoClient.connect();
   const db = mongoClient.db(config.mongoDbName);
+  let imageLibrary, legacyImageCleanup;
   let status = { ok: true, checkedAt: null };
   try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
   const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user') });
@@ -181,11 +183,15 @@ export async function createAuthRuntime(
   });
 
   return {
+    configureImageLibrary(service) {
+      imageLibrary=service;
+      if(!legacyImageCleanup){legacyImageCleanup=createLegacyImageCleanup({db,imageLibrary:service});legacyImageCleanup.start();}
+    },
     accountProfile: createAccountProfile({db,mongoClient,limiter,transport,deliveryEnabled:emailConfig.deliveryEnabled,secret:config.authSecret}),
     deletionStore,
     workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
     modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),
-    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceStore, mutations:['put','saveResult','importHistory','beginDelete','finishDelete'] }),
+    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createWorkspaceStore({...options,imageLibrary:config.imageLibraryEnabled?{save:(...args)=>imageLibrary.save(...args),read:(...args)=>imageLibrary.read(...args),status:(...args)=>imageLibrary.status(...args)}:undefined}), mutations:['put','saveResult','importHistory','beginDelete','finishDelete'] }),
     consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
     webHandler: createRegistrationPrivacyHandler(
       async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),
@@ -248,6 +254,7 @@ export async function createAuthRuntime(
       }
     },
     async close() {
+      await legacyImageCleanup?.stop();
       await mongoClient.close();
     },
   };

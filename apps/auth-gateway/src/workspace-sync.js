@@ -9,7 +9,7 @@ import { newWorkspace } from '../../../packages/api/src/workspace-defaults.mjs';
 
 const failure = (status, message) => Object.assign(new Error(message), { status });
 const MAX_ACCOUNT_RESULT_BYTES = 100_000_000;
-export function createWorkspaceStore({ db, assertActive = async () => {} }) {
+export function createWorkspaceStore({ db, assertActive = async () => {}, imageLibrary }) {
   const key = userId => createHash('sha256').update(String(userId)).digest('hex');
   const get = async userId => {
     await assertActive(userId);
@@ -25,7 +25,7 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
   };
   return {
     get,
-    ...taskDeletionStore({db,key,get,assertActive}),
+    ...taskDeletionStore({db,key,get,assertActive,retainResults:!!imageLibrary}),
     async identifyHistory(userId, jobs) {
       await assertActive(userId);
       return Promise.all(jobs.map(async job => {
@@ -55,8 +55,12 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
       await assertActive(userId);
       const current=await get(userId);
       if(JSON.stringify(deletionMarkers(current.state))!==JSON.stringify(deletionMarkers(state)))throw failure(409,'WORKSPACE_CONFLICT');
-      for (const resultId of resultReferences(state)) {
-        if (!await db.collection('workspaceResults').findOne({ _id: `${key(userId)}:${resultId}` }, { projection: { _id: 1 } })) throw failure(400, 'RESULT_NOT_SAVED');
+      const missing=[];
+      for(const resultId of resultReferences(state))if(!await db.collection('workspaceResults').findOne({_id:`${key(userId)}:${resultId}`},{projection:{_id:1}}))missing.push(resultId);
+      if(missing.length){
+        if(!imageLibrary)throw failure(400,'RESULT_NOT_SAVED');
+        const owned=new Set((await imageLibrary.status(userId)).images.map(image=>image.id));
+        if(missing.some(id=>!owned.has(id)))throw failure(400,'RESULT_NOT_SAVED');
       }
       const collection = db.collection('workspaceDocuments');
       const document = { userId, state, revision: revision + 1, updatedAt: new Date() };
@@ -87,6 +91,12 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
       const resultId = createHash('sha256').update(format).update(bytes).digest('hex'), ownerKey = key(userId), _id = `${ownerKey}:${resultId}`;
       const results = db.collection('workspaceResults'), quotas = db.collection('workspaceQuotas');
       if (await results.findOne({ _id }, { projection: { _id: 1 } })) return { resultId };
+      if (imageLibrary) {
+        const saved=await imageLibrary.save(userId,{format,base64,taskId});
+        if(saved.id!==resultId)throw failure(503,'IMAGE_ID_MISMATCH');
+        await results.insertOne({_id,userId,resultId,format,size:saved.size,createdAt:new Date(saved.savedAt),library:true});
+        return {resultId};
+      }
       await quotas.updateOne({ _id: ownerKey }, { $setOnInsert: { userId, bytes: 0 } }, { upsert: true });
       const reserved = await quotas.updateOne({ _id: ownerKey, bytes: { $lte: MAX_ACCOUNT_RESULT_BYTES - bytes.length } }, { $inc: { bytes: bytes.length } });
       if (!reserved.matchedCount) throw failure(413, '账号结果存储已达当前 100 MB 上限，本机结果仍保留。');
@@ -102,7 +112,12 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
       await assertActive(userId);
       if (!/^[a-f0-9]{64}$/.test(resultId)) throw failure(404, 'RESULT_NOT_FOUND');
       const row = await db.collection('workspaceResults').findOne({ _id: `${key(userId)}:${resultId}` });
-      if (!row) throw failure(404, 'RESULT_NOT_FOUND');
+      if (!row&&!imageLibrary) throw failure(404, 'RESULT_NOT_FOUND');
+      if(!row||row.library){
+        if(!imageLibrary)throw failure(503,'图片库暂时不可用。');
+        const image=await imageLibrary.read(userId,resultId);
+        return {resultId,format:image.format,base64:image.base64};
+      }
       return { resultId, format: row.format, base64: row.base64 };
     },
   };

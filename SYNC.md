@@ -1,3 +1,15 @@
+## 2026-10-20 · 账户三页与账号图片库（历史演练通过，待发布回执）
+
+- [x] Web：设置拆成个人资料 / 账户 / 存储。复用原 `DrawingActivity`、头像与双邮箱验证码流程；同一账号头像刷新全局。桌面分类导航、手机分类与返回、真实错误状态、服务器图片网格 / 预览 / 下载 / 返回仍存在任务已实现。
+- [x] 共享规则：`packages/api/src/image-library.mjs` 统一 **100,000,000 字节**（十进制 100 MB）、首次保存成功后 **30 × 24 小时**。不新增图片数量上限。同账号按格式与文件内容摘要去重；查看 / 下载 / 任务改名 / 重建引用不续期。
+- [x] Core：独立账号归属、对象先写并校验实际字节数及摘要、Mongo 事务串行容量决策、连续回收最早图片、服务端每 60 秒自动清理、失败重试与上传结算。任务删除不删除独立图片，注销另行清空。回收保留结果元信息和可读状态，不改变既有统计口径。
+- [x] Gateway：认证后的 `GET /api/account/images`、`GET /status`、`GET /:id`、`DELETE /:id`；绑定会话和 `X-Workspace-Account`，写操作验证 Origin。生成结果与手工 SVG 版本共用 Core 图片库，原材料 / 临时链接不纳入。Core `imageLibrary*` action 仅限认证内部网关，不通过公共 action 代理开放。
+- [x] 开关 / 契约：Core 与 Gateway 同步配置 `PAPERBANANA_IMAGE_LIBRARY_ENABLED=true` 后接收新图片，默认关闭。Gateway health 增加 `imageLibraryEnabled`；结果可选 `libraryId`、`storageError`；历史投影可选 `storageError`。已纳管图片的定时清理不因关闭新写入开关而停止。
+- [x] 本地验证：Web 全量 1,125、最终相关 57；Core 相关 241；Gateway 196（另 1 项无 Mongo URI 的既有集成跳过）；独立 Mongo 副本集 37。类型检查及 Web / Core 构建通过；1440 / 390 / 320 的合成账号 UI 验收及截图完成，零真实模型调用。详见 [实现与验收记录](docs/operations/2026-10-20-account-storage-local.md)。
+- [x] 历史盘点 / 演练：真实只读快照中 40 个引用去重为 33 张、42,934,959 字节、3 个账号。22 张未知时间与 9 张已超期历史暂予保留，新增 `retentionHold` / `holdReason`、列表 `protectedBytes` / `unavailableHistoryCount`；保护图片仍计配额但不自动回收。23 个文件缺失的引用保留原任务并返回 `historical-missing` 状态；匿名 / 归属不明记录不迁入账号。隔离迁移、失败恢复、逐文件读回、39 项真实 Mongo 测试通过，详见[盘点与迁移记录](docs/operations/2026-10-20-account-storage-migration.md)。
+- [ ] 发布：用户已授权演练后上线，生产迁移 / 开关与双域名回执待实际执行后补充；迁移不删除原图片、任务或输入正文，不调用真实模型。
+- [ ] 小程序 / 其他端：恢复开发后读取可选结果状态，禁用已回收图片的预览 / 下载，沿用同一字节与生命周期规则；小程序继续暂停。
+
 ## 2026-10-20 · 搜索 / 科研生态 / 删除联合发布完成
 
 - [x] Web：全局搜索联动科研生态共享目录，按名称、别名、关键词直接进入三个工具；搜索和跳转不触发执行或模型调用，保留侧栏位置和任务草稿。

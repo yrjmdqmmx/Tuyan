@@ -38,6 +38,7 @@ export function configureAccountDeletionDataCleanup(cleanup: (userId: string) =>
 export default handler
 
 export function configureProviderWorkflow(hooks: any): void
+export function configureImageLibrary(service: ReturnType<typeof import('./image-library.js').createImageLibrary>, enabled?: boolean): void
 export function resumeTokenDanceJob(task: any): Promise<any>
 
 export function requiresTokenDanceCredential(body: Record<string, any>): Promise<boolean>

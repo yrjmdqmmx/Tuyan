@@ -17,6 +17,13 @@ class SafetyTests(unittest.TestCase):
   for key in ['PAPERBANANA_BENCH_ENABLED','OSS_ACCESS_KEY_SECRET','PAPERBANANA_PROVIDER_HK_HOSTS']:
    m=manifest();m['services']['core']['env']={key:'true'}
    with self.assertRaises(ValueError):r.validate(m)
+ def test_image_library_switch_is_bounded_to_its_three_consumers(self):
+  for name in ['core','gateway','cn-gateway']:
+   for value in ['true','false']:
+    m=manifest();m['services']={name:{'env':{'PAPERBANANA_IMAGE_LIBRARY_ENABLED':value}}};r.validate(m)
+  for name,value in [('benchmark','true'),('plot','true'),('core','yes'),('gateway','true\nSECRET=x')]:
+   m=manifest();m['services']={name:{'env':{'PAPERBANANA_IMAGE_LIBRARY_ENABLED':value}}}
+   with self.assertRaises(ValueError):r.validate(m)
  def test_rejects_unknown_services_mutable_images_and_wrong_regions(self):
   for bad in [{'mongodb':{}},{'core':{'image':'latest'}},{'core':{'env':{'OSS_PUBLIC_ENDPOINT':'https://evil.example'}}},{'core':{'env':{'OSS_REGION':'oss-cn-hongkong'}}}]:
    m=manifest();m['services']=bad

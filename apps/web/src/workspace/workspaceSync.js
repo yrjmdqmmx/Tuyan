@@ -202,13 +202,15 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
         try {
           if(!historyCache.has(k))throw Error('历史结果暂不可用');
           const job=historyCache.get(k).job,asset=job.results.find(r=>r.index===h.index&&r.format===v.format);
+          if(asset?.storageError){v.url='';v.loadError=asset.storageError;continue;}
           if(job.source!==h.source || !asset?.url)throw Error('历史结果文件暂不可用，记录已保留。');
           v.url=asset.url;
         }catch(error){if(error.status===401 || error.status===409)throw error;v.url='';v.loadError='历史结果暂不可用，可重新同步重试；原记录仍保留。';}
         continue;
       }
       if (!known.has(v.resultId)) {
-        const result = await request('/results/'+v.resultId);
+        let result;try{result = await request('/results/'+v.resultId);}
+        catch(error){if(error.status!==410)throw error;v.url='';v.loadError=error.message;continue;}
         if (result.format !== v.format) throw Error('保存结果的格式与版本记录不一致，请重试同步。');
         known.set(v.resultId, `data:image/${v.format==='png'?'png':'svg+xml'};base64,${result.base64}`);
       }

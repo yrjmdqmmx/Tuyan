@@ -62,9 +62,11 @@ def validate(m):
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
-            if name == 'plot' or key not in OSS_KEYS | {'PAPERBANANA_CODE_SHA'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
+            if name == 'plot' or key not in OSS_KEYS | {'PAPERBANANA_CODE_SHA', 'PAPERBANANA_IMAGE_LIBRARY_ENABLED'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
             if key == 'PAPERBANANA_CODE_SHA':
                 if name not in {'core', 'benchmark'} or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError('invalid code provenance')
+            elif key == 'PAPERBANANA_IMAGE_LIBRARY_ENABLED':
+                if name not in {'core', 'gateway', 'cn-gateway'} or value not in {'true', 'false'}: raise ValueError('invalid image library switch')
             elif key.endswith('_BUCKET') or key == 'PAPERBANANA_BUCKET':
                 if not re.fullmatch(r'paperbanana-(prod|bench)-hz-[0-9]{8}', value): raise ValueError('expected Hangzhou bucket')
             elif key.endswith('_REGION') and value != 'oss-cn-hangzhou': raise ValueError('expected Hangzhou region')

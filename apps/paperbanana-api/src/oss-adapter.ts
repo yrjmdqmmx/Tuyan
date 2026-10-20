@@ -130,8 +130,8 @@ export function createOssAdapter(
       async put(key: string, content: unknown, metadata: Record<string, unknown> = {}): Promise<unknown> {
         return serverClient.put(key, content, { headers: normalizeHeaders(metadata) })
       },
-      async writeFile(key: string, content: unknown, metadata: Record<string, unknown> = {}): Promise<unknown> {
-        return serverClient.put(key, content, { headers: normalizeHeaders(metadata) })
+      async writeFile(key: string, content: unknown, metadata: Record<string, unknown> = {}, options: {timeoutMs?:number} = {}): Promise<unknown> {
+        return serverClient.put(key, content, { headers: normalizeHeaders(metadata), ...(options.timeoutMs?{timeout:options.timeoutMs}:{}) })
       },
       async headFile(key: string): Promise<{ size: number; mimeType: string; etag: string; cacheControl: string; sha256: string; acl: string }> {
         if (!serverClient.head || !serverClient.getACL) throw new Error('OSS client does not support authoritative object metadata')

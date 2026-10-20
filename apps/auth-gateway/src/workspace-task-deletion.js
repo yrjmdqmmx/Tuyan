@@ -3,7 +3,7 @@ import { cleanWorkspace, resultReferences } from '../../../packages/api/src/work
 const fail=(status,message)=>Object.assign(Error(message),{status});
 
 // All mutations run inside the account's Mongo transaction, shared with claims.
-export function taskDeletionStore({db,key,get,assertActive}) {
+export function taskDeletionStore({db,key,get,assertActive,retainResults=false}) {
   const operations=db.collection('workspaceTaskDeletions');
   return {
     async pendingDeletions(userId) {await assertActive(userId);const next=await operations.findOne({userId,complete:false});return next?[next]:[];},
@@ -36,7 +36,7 @@ export function taskDeletionStore({db,key,get,assertActive}) {
       const retained=new Set([...resultReferences(state),...backups.flatMap(b=>b.state?resultReferences(applyTaskDeletions(b.state,state.purgedTasks)):[])]);
       for(const resultId of resultReferences({tasks:[...removed,...oldRemoved]}).filter(id=>!retained.has(id))) {
         const result=await db.collection('workspaceResults').findOne({_id:key(userId)+':'+resultId});
-        if(result){await db.collection('workspaceResults').deleteOne({_id:result._id});await db.collection('workspaceQuotas').updateOne({_id:key(userId)},{$inc:{bytes:-result.size}});}
+        if(result&&!result.library&&!retainResults){await db.collection('workspaceResults').deleteOne({_id:result._id});await db.collection('workspaceQuotas').updateOne({_id:key(userId)},{$inc:{bytes:-result.size}});}
       }
       for(const name of ['workspaceExecutions','workspaceHistoryExecutions'])await db.collection(name).deleteMany({userId,taskId:{$in:ids}});
       const operation={_id,userId,taskId,jobIds,complete:false};

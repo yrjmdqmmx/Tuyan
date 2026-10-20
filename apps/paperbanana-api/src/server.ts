@@ -150,6 +150,7 @@ export function createApp({
   app.disable('x-powered-by')
   const standardJsonParser = express.json({ limit: '1mb', strict: false })
   const scientificV2FreezeJsonParser = express.json({ limit: '8mb', strict: false })
+  const imageLibraryJsonParser = express.json({ limit: '14mb', strict: false })
   app.use((request, response, next) => {
     const declaredScientificOperation = request.get(scientificV2AdminOperationHeader)
     const protectedFreezeTransport = request.method === 'POST'
@@ -158,7 +159,10 @@ export function createApp({
       && Boolean(config.adminTransportToken)
       && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
       && tokensMatch(request.get('x-paperbanana-admin-transport-token') || '', config.adminTransportToken || '')
-    return (protectedFreezeTransport ? scientificV2FreezeJsonParser : standardJsonParser)(request, response, next)
+    const imageTransport = request.method === 'POST' && request.path === '/paperbanana-api'
+      && request.get('x-paperbanana-image-storage') === '1'
+      && tokensMatch(request.get('x-paperbanana-gateway-token') || '', config.gatewayToken)
+    return (imageTransport ? imageLibraryJsonParser : protectedFreezeTransport ? scientificV2FreezeJsonParser : standardJsonParser)(request, response, next)
   })
   app.use((request, response, next) => {
     applyCors(response)

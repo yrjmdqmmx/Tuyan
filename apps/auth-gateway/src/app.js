@@ -1,4 +1,5 @@
 import { createTaskDeletionCleanup } from './workspace-task-deletion.js';
+import { createImageLibraryRouter, createImageLibraryBridge } from './image-library.js';
 import { workspaceExecutionMiddleware } from './workspace-execution.js';
 import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
@@ -99,6 +100,8 @@ export function createApp({
       || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
+  if(config.imageLibraryEnabled)auth.configureImageLibrary?.(createImageLibraryBridge(backend));
+  app.use('/api/account/images',createImageLibraryRouter({auth,backend,frontendOrigins:config.frontendOrigins,isMaintenance,enabled:config.imageLibraryEnabled}));
   app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}), cleanupTask:createTaskDeletionCleanup({backend}) }));
   app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
@@ -127,6 +130,7 @@ export function createApp({
       executionMode: 'production',
       executionEnabled: Boolean(auth.workspaceStore && auth.modelLibraryStore && auth.workspaceExecutionStore),
       inputOptimizationMaterialsVersion: 1,
+      imageLibraryEnabled: config.imageLibraryEnabled === true,
       auth: 'better-auth',
       authReady: authStatus.ok === true,
       backend: backendStatus,

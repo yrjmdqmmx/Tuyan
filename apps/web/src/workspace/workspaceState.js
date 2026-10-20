@@ -191,7 +191,7 @@ export function workspaceReducer(state, action) {
     }
     case 'RESULT': {
       const r = t.runs.find(r => r.id === action.runId);
-      if (!r?.accepted || t.activeRunId !== r.id || !action.version?.url || !['png', 'svg'].includes(action.version.format)) return state;
+      if (!r?.accepted || t.activeRunId !== r.id || (!action.version?.url && !(action.version?.resultId && action.version?.loadError)) || !['png', 'svg'].includes(action.version.format)) return state;
       if (locateVersion(t, action.version.id)) return state;
       b = t.branches[r.path];
       const group = b.groups.find(g => g.id === r.groupId);

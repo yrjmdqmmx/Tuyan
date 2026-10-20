@@ -546,6 +546,8 @@ function normalizeJob(job = {}) {
       url: image.url,
       storage: image.storage || '',
       candidate_id: image.candidate_id ?? image.candidateId ?? index,
+      ...((image.libraryId||image.library_id)?{library_id:image.libraryId||image.library_id}:{}),
+      ...((image.storageError||image.storage_error)?{storage_error:image.storageError||image.storage_error}:{}),
       ...(image.journalCheck ? {journalCheck:image.journalCheck} : {}),
       mime_type: image.mime_type || image.mimeType || '',
       ...(image.review ? { review: image.review } : {}),
