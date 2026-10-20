@@ -21,6 +21,7 @@ import './workspacePages.css';
 import './workspaceMotion.css';
 import './workspaceModels.css';
 import './workspaceStatus.css';
+import '../ecosystem/ecosystem.css';
 import WorkspaceStatus, { WorkspaceStatusNotice, workspaceStatusIssues } from './WorkspaceStatus.jsx';
 import useWorkspaceModels from './useWorkspaceModels.js';
 import { WorkspaceModelManager, WorkspaceModelConfig } from './WorkspaceModelPanels.jsx';

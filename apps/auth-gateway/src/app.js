@@ -14,6 +14,7 @@ import { createWorkspaceHistory } from './workspace-history.js';
 import { createWorkspaceRouter } from './workspace-sync.js';
 import { createModelLibraryRouter } from './model-library.js';
 import { createAccountProfileRouter } from './account-profile.js';
+import { createEcosystemRouter } from './ecosystem.js';
 
 const gzipAsync = promisify(gzip);
 
@@ -100,6 +101,7 @@ export function createApp({
   app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}) }));
   app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
+  app.use('/api/ecosystem', createEcosystemRouter({ auth, frontendOrigins: config.frontendOrigins, worker: config.ecosystem, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));
   app.use('/paperbanana-api', workspaceExecutionMiddleware({ auth, backend, store: auth.workspaceExecutionStore, libraryStore: auth.modelLibraryStore, workspaceStore: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use((request, response, next) => {

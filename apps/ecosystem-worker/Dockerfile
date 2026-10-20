@@ -4,7 +4,8 @@ COPY node/package.json node/package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 
 FROM python:3.12.13-slim-bookworm
-RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources \
+ARG DEBIAN_MIRROR=https://deb.debian.org
+RUN sed -i "s|http://deb.debian.org|${DEBIAN_MIRROR}|g" /etc/apt/sources.list.d/debian.sources \
     && apt-get update && apt-get install -y --no-install-recommends \
     libosmesa6 libgl1 libegl1 libglib2.0-0 fonts-dejavu-core fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/* \

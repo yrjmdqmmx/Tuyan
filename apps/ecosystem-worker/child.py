@@ -131,6 +131,7 @@ async def viznoir(request):
         colormap=o.get("colormap", "Viridis"),
         width=960,
         height=640,
+        zoom=1.0,
         output_filename="render.png",
     )
     if not result.image_bytes or not result.image_bytes.startswith(

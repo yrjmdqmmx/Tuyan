@@ -1,0 +1,68 @@
+.te-root { color: var(--tw-ink, #222823); padding: 10px 0; }
+.te-intro { padding: 14px 0 30px; }
+.te-root h2 { margin: 0; font-size: 25px; line-height: 1.5; font-weight: 650; letter-spacing: -.03em; }
+.te-intro p, .te-tool-heading p { margin: 8px 0 0; color: var(--tw-muted, #737b73); font-size: 14px; line-height: 1.8; }
+.te-catalog { border-top: 1px solid var(--tw-border, #e3e7e1); }
+.te-tool { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 30px 10px; border-bottom: 1px solid var(--tw-border, #e3e7e1); }
+.te-tool-symbol { display: grid; place-items: center; width: 96px; height: 108px; background: #edf2ed; border-radius: 16px; color: #42634f; }
+.te-tool-viznoir .te-tool-symbol { background: #edf0f5; color: #506382; }
+.te-tool-dataviz .te-tool-symbol { background: #f4f0e7; color: #806c43; }
+.te-engine { font-size: 12px; letter-spacing: .02em; color: var(--tw-muted, #737b73); }
+.te-root h3 { font-size: 18px; line-height: 1.5; font-weight: 620; margin: 4px 0 7px; }
+.te-tool-copy > p { margin: 0; font-size: 14px; color: var(--tw-muted, #737b73); line-height: 1.8; }
+.te-formats { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 14px; color: #697568; font-size: 11px; }
+.tw-shell .te-open { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border: 1px solid #dce4da; border-radius: 9px; color: #315647; font-size: 13px; white-space: nowrap; }
+.tw-shell .te-open:hover { background: #edf2ed; border-color: #b9cbbd; }
+.te-attribution { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: #81887e; line-height: 1.8; margin: 24px 0 0; }
+.te-attribution a { color: inherit; text-underline-offset: 3px; }
+.te-workbench-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 25px; }
+.te-workbench-header nav { display: flex; flex-wrap: wrap; gap: 4px; }
+.tw-shell .te-back, .tw-shell .te-workbench-header nav button { display: inline-flex; gap: 7px; align-items: center; padding: 8px 10px; font-size: 12px; color: #657264; border-radius: 7px; }
+.tw-shell .te-workbench-header nav button[aria-current=page] { background: #eaf0e8; color: #2e5a46; font-weight: 600; }
+.te-tool-heading { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 26px; }
+.te-tool-heading > a { display: flex; align-items: center; gap: 4px; white-space: nowrap; color: #6a7669; text-decoration: none; font-size: 12px; padding-top: 10px; }
+.te-workbench { display: grid; grid-template-columns: minmax(280px, 340px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.te-input { min-width: 0; border: 1px solid var(--tw-border, #e3e7e1); border-radius: 12px; padding: 18px; background: #fafbf9; }
+.te-input-title, .te-output-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+.te-root .te-input-title h3, .te-root .te-output-heading h3 { font-size: 14px; margin: 0; }
+.tw-shell .te-input-title button, .tw-shell .te-output-heading button { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #35604c; padding: 4px 0; }
+.te-file-native { display: none; }
+.tw-shell .te-upload { display: flex; width: 100%; gap: 9px; align-items: center; justify-content: center; background: #fff; padding: 13px 10px; border: 1px dashed #bdcabb; border-radius: 8px; font-size: 12px; color: #4d6755; }
+.te-upload span { overflow-wrap: anywhere; }
+.te-field { display: flex; flex-direction: column; gap: 7px; color: #505e50; font-size: 12px; line-height: 1.5; min-width: 0; }
+.te-data-label { margin-top: 18px; }
+.tw-shell .te-field input, .tw-shell .te-field select, .tw-shell .te-field textarea { border: 1px solid #dce2d9; border-radius: 7px; padding: 9px 10px; width: 100%; min-width: 0; background: #fff; color: #29382d; font-size: 12px; line-height: 1.5; }
+.tw-shell .te-field textarea { min-height: 155px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; }
+.te-options { display: flex; flex-direction: column; gap: 13px; margin: 20px 0; }
+.te-field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.te-root .te-hint { color: #828a7e; font-size: 11px; font-weight: 400; line-height: 1.7; margin: 9px 0 0; }
+.te-root .te-retention { margin-top: 12px; }
+.te-sample-note { display: flex; gap: 5px; align-items: flex-start; color: #796b45; font-size: 11px; line-height: 1.65; margin: 12px 0 0; }
+.te-sample-note svg { flex-shrink: 0; margin-top: 2px; }
+.te-validation { margin: 10px 0; font-size: 12px; line-height: 1.6; color: #925830; }
+.te-table-details { margin-top: 12px; font-size: 11px; color: #64715f; }
+.te-table-details summary { cursor: pointer; padding: 5px 0; }
+.te-table-scroll { max-width: 100%; overflow: auto; margin-top: 7px; }
+.te-table-scroll table { border-collapse: collapse; background: white; font-size: 11px; width: 100%; }
+.te-table-scroll th, .te-table-scroll td { padding: 7px 9px; border-bottom: 1px solid #e7ebe3; text-align: left; white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.te-table-scroll th { color: #465a46; background: #eff3ec; font-weight: 500; }
+.tw-shell .te-submit { display: flex; width: 100%; align-items: center; justify-content: center; gap: 9px; color: #fff; background: #2d5140; border-radius: 9px; padding: 12px; font-size: 13px; font-weight: 550; }
+.tw-shell .te-submit:hover:not(:disabled) { background: #234332; }
+.te-root button:disabled { opacity: .5; cursor: wait; }
+.te-error { margin: 15px 0; border-left: 2px solid #bc7465; padding-left: 10px; color: #9e493e; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+.te-output { min-width: 0; padding: 4px 0; }
+.te-output-heading { min-height: 32px; }
+.te-empty-result { display: flex; min-height: 460px; flex-direction: column; align-items: center; justify-content: center; padding: 35px; background: #f6f8f4; border: 1px solid #e8ece4; border-radius: 12px; text-align: center; color: #8b9b84; }
+.te-empty-result p { color: #566a50; font-size: 15px; margin: 22px 0 8px; }
+.te-empty-result span { font-size: 12px; line-height: 1.8; color: #8a9385; }
+.te-image-result { display: flex; align-items: flex-start; width: 100%; overflow: auto; max-height: 680px; min-height: 300px; border: 1px solid #e6eae2; border-radius: 9px; background: #fff; }
+.te-image-result img { display: block; flex: 0 0 auto; object-fit: contain; }
+.te-zoom { display: flex; align-items: center; justify-content: flex-end; gap: 10px; font-size: 11px; color: #737f6e; margin-top: 12px; }
+.te-zoom input { width: 100px; accent-color: #456b50; }
+.te-html-result { display: block; width: 100%; min-height: 760px; border: 1px solid #e5e9e1; border-radius: 9px; background: #fff; }
+.te-result-meta { font-size: 11px; line-height: 1.8; color: #899081; margin: 12px 0 0; }
+.te-root :is(button, input, select, textarea, a, summary):focus-visible { outline: 2px solid #668768; outline-offset: 3px; }
+@media (max-width: 1100px) { .te-workbench { grid-template-columns: minmax(260px, 300px) minmax(0, 1fr); gap: 20px; } .te-tool { gap: 20px; } }
+@media (max-width: 900px) { .te-workbench { grid-template-columns: 1fr; } .te-input { display: block; } .te-empty-result { min-height: 270px; } }
+@media (max-width: 900px) and (min-width: 601px) { .te-html-result { min-height: 840px; } }
+@media (max-width: 600px) { .te-intro { padding: 5px 0 20px; } .te-root h2 { font-size: 21px; } .te-intro p, .te-tool-heading p { font-size: 13px; } .te-tool { grid-template-columns: 54px minmax(0, 1fr); gap: 12px 16px; padding: 22px 0; } .te-tool-symbol { width: 54px; height: 64px; border-radius: 10px; align-self: start; } .te-tool-symbol svg { width: 25px; } .te-root .te-tool-copy h3 { font-size: 16px; } .te-tool-copy p { font-size: 12px; } .te-tool .te-open { grid-column: 2; justify-self: start; font-size: 12px; padding: 8px 11px; } .te-formats { margin-top: 10px; font-size: 10px; gap: 8px 14px; } .te-workbench-header { flex-wrap: wrap; margin-bottom: 20px; } .te-tool-heading { display: block; } .te-tool-heading > a { display: inline-flex; padding-top: 8px; } .te-input { padding: 16px; } .te-html-result { min-height: 1080px; } }

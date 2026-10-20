@@ -85,6 +85,7 @@ export function loadGatewayConfig(env = process.env) {
     watcha: { enabled: watchaEnabled, clientId: watchaEnabled ? required(env, 'WATCHA_CLIENT_ID') : '',
       clientSecret: watchaEnabled ? required(env, 'WATCHA_CLIENT_SECRET') : '', scopes: watchaScopes.join(' ') },
     production,
+    ecosystem: ecosystemConfig(env),
     port: boundedInteger(env.PORT, 3005, 1, 65_535),
     listenHost: stringValue(env.HOST) || '0.0.0.0',
     authBaseUrl: validHttpUrl('AUTH_BASE_URL', required(env, 'AUTH_BASE_URL')),
@@ -126,6 +127,15 @@ export function loadGatewayConfig(env = process.env) {
     },
     trustProxy: 1,
   };
+}
+
+function ecosystemConfig(env) {
+  const url = stringValue(env.ECOSYSTEM_WORKER_URL), token = stringValue(env.ECOSYSTEM_WORKER_TOKEN);
+  if (!url && !token) return {};
+  const parsed = new URL(validHttpUrl('ECOSYSTEM_WORKER_URL', url));
+  if (parsed.username || parsed.password || parsed.search || parsed.hash || parsed.pathname !== '/') throw new Error('ECOSYSTEM_WORKER_URL must be a service origin');
+  requireMinBytes('ECOSYSTEM_WORKER_TOKEN', token, 32);
+  return { url: parsed.origin, token };
 }
 
 function required(env, name) {

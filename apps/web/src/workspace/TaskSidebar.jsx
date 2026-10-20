@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle, SquarePen, Trash2 } from 'lucide-react';
+import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, Mountain, BookOpen, MoreHorizontal, Pin, Archive, Pencil, ChevronDown, LoaderCircle, SquarePen, Trash2 } from 'lucide-react';
 import { logoUrl } from '../config.js';
 import { taskHasContent } from './workspaceState.js';
 import ResourceLinks from './ResourceLinks.jsx';
@@ -37,6 +37,7 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
         {!mobile && <button type="button" onClick={create}><Plus size={20} />新建任务</button>}
         <button type="button" aria-current={page === 'models' ? 'page' : undefined} onClick={() => { onNavigate('models'); if (mobile) onClose(); }}><Boxes size={19} />模型管理</button>
         <button type="button" aria-current={page === '排行榜' ? 'page' : undefined} onClick={() => onNavigate('排行榜')}><ChartNoAxesColumn size={19} />排行榜</button>
+        <button type="button" aria-current={page === '他山科研生态' ? 'page' : undefined} onClick={() => { onNavigate('他山科研生态'); if (mobile) onClose(); }}><Mountain size={19} />他山科研生态</button>
       </nav>
       <div className="tw-resources"><button type="button" onClick={() => setResources(!resources)} aria-expanded={resources}><BookOpen size={19} aria-hidden="true" /><span>资源与帮助</span><ChevronDown size={15} className="tw-resources-chevron" aria-hidden="true" /></button>
         {resources && <ResourceLinks onNavigate={onNavigate} page={page} />}
