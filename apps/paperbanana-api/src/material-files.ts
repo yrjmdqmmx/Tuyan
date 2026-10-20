@@ -1,3 +1,4 @@
+import { operationalMetrics } from './operational-metrics.js'
 import {createHash,randomUUID} from 'node:crypto'
 import {access} from 'node:fs/promises'
 import path from 'node:path'
@@ -13,12 +14,17 @@ export function materialError(message:string,status=400):never {throw Object.ass
 export function materialDescriptor(file:any){const filename=String(file?.filename||'');const format=filename.split('.').pop()?.toLowerCase()||'';if(format==='ppt')materialError('暂不支持旧版 PPT，请在 PowerPoint 中另存为 PPTX。');if(!filename||filename.length>240||/[\x00-\x1f/\\]/.test(filename)||!MATERIAL_MIME[format])materialError('不支持该文件格式。');if(!Number.isSafeInteger(file.size)||file.size<1||file.size>MATERIAL_MAX_BYTES)materialError('文件须大于 0 且不超过 10 MB。');return {filename,format,size:file.size,mimeType:MATERIAL_MIME[format]};}
 let running=0
 export async function readMaterialBytes(bytes:Buffer,filename:string,operation:any){
- if(running>=2)materialError('材料读取繁忙，请稍后重试。',429)
+ if(running>=2){operationalMetrics.increment('material.busy');materialError('材料读取繁忙，请稍后重试。',429)}
  const descriptor=materialDescriptor({filename,size:bytes.length});
  const candidates=[path.resolve('assets/material-reader/worker.mjs'),path.resolve('apps/paperbanana-api/assets/material-reader/worker.mjs')]
  let worker='';for(const p of candidates){try{await access(p);worker=p;break}catch{}}
  if(!worker)materialError('后端缺少材料读取运行文件。',503)
+ // Worker discovery yields; recheck before atomically taking the process slot.
+ if(running>=2){operationalMetrics.increment('material.busy');materialError('材料读取繁忙，请稍后重试。',429)}
  running++
+ operationalMetrics.gauge('material.active',running)
+ const started=performance.now();let failed=false
+ operationalMetrics.increment('material.started')
  try{return await new Promise<any>((resolve,reject)=>{
   // A separate process receives no auth, API, database or object-store credentials.
   const env:NodeJS.ProcessEnv={PATH:process.env.PATH,TMPDIR:process.env.TMPDIR,LANG:'C.UTF-8',...(process.env.TUYAN_SOFFICE_PATH?{TUYAN_SOFFICE_PATH:process.env.TUYAN_SOFFICE_PATH}:{})}
@@ -32,7 +38,7 @@ export async function readMaterialBytes(bytes:Buffer,filename:string,operation:a
   child.on('error',e=>finish(e));child.stdin.on('error',()=>{})
   child.on('close',()=>{try{const start=output.indexOf('{"ok":');const parsed=JSON.parse(output.slice(start));if(!parsed.ok)finish(new Error(parsed.error));else finish(undefined,parsed.result)}catch{finish(new Error('读取进程失败或返回无效结果；请重试或更换文件。'))}})
   child.stdin.end(JSON.stringify({bytes:bytes.toString('base64'),filename,format:descriptor.format,operation}))
- })}finally{running--}
+ })}catch(error){failed=true;throw error}finally{running--;operationalMetrics.gauge('material.active',running);operationalMetrics.increment(failed?'material.failed':'material.completed');operationalMetrics.observe('material.duration',performance.now()-started,failed)}
 }
 const digest=(b:Buffer|string)=>createHash('sha256').update(b).digest('hex')
 export function createMaterialFiles({db,bucket,ownerPrefix,assertOwner}: {db:any;bucket:()=>any;ownerPrefix:(owner:MaterialOwner)=>string;assertOwner:(owner:MaterialOwner)=>Promise<void>}){

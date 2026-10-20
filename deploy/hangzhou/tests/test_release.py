@@ -28,6 +28,11 @@ class SafetyTests(unittest.TestCase):
   for bad in [{'mongodb':{}},{'core':{'image':'latest'}},{'core':{'env':{'OSS_PUBLIC_ENDPOINT':'https://evil.example'}}},{'core':{'env':{'OSS_REGION':'oss-cn-hongkong'}}}]:
    m=manifest();m['services']=bad
    with self.assertRaises(ValueError):r.validate(m)
+ def test_operations_configuration_is_core_only_and_bounded(self):
+  m=manifest();m['services']['core']['env']={'PAPERBANANA_OPERATIONS_ENABLED':'true','PAPERBANANA_OPERATIONS_TOKEN':'a'*64};r.validate(m)
+  for service,key,value in [('gateway','PAPERBANANA_OPERATIONS_ENABLED','true'),('benchmark','PAPERBANANA_OPERATIONS_TOKEN','a'*64),('core','PAPERBANANA_OPERATIONS_TOKEN','short'),('core','PAPERBANANA_OPERATIONS_ENABLED','yes')]:
+   m=manifest();m['services']={service:{'env':{key:value}}}
+   with self.assertRaises(ValueError):r.validate(m)
  def test_all_existing_services_must_be_guarded(self):
   m=manifest();del m['expected_images']['cn-gateway']
   with self.assertRaises(ValueError):r.validate(m)

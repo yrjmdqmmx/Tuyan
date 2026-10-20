@@ -33,6 +33,7 @@ export type AppConfig = {
   adminToken?: string
   adminTransportToken?: string
   benchmarkDiscoveryToken?: string
+  operationsToken?: string
   serviceName: string
   version: string
 }
@@ -46,6 +47,7 @@ type AppDependencies = {
   handler: CoreHandler
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
+  operationsSnapshot?: () => unknown | Promise<unknown>
   config: AppConfig
   logger: ServiceLogger
   adminOperations?: { handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>> }
@@ -143,7 +145,7 @@ function handlerHeaders(request: Request): Request['headers'] {
 }
 
 export function createApp({
-  handler, readinessProbe, healthSnapshot, config, logger, benchmarkService, adminOperations,
+  handler, readinessProbe, healthSnapshot, operationsSnapshot, config, logger, benchmarkService, adminOperations,
   prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential, requiresCustomCredential,
 }: AppDependencies): Express {
   const app = express()
@@ -201,6 +203,19 @@ export function createApp({
 
   app.get('/health', (_request, response) => sendHealth(response, healthSnapshot(), false))
   app.get('/ready', (_request, response) => readyResponse(response))
+
+  // Read-only credential, independent of Gateway/admin authority. Never forward
+  // this endpoint from public gateways; query and body tokens do not count.
+  app.get('/internal/operations', async (request, response) => {
+    response.set('Cache-Control', 'no-store')
+    response.removeHeader('Access-Control-Allow-Origin')
+    if (!operationsSnapshot || !config.operationsToken) return response.sendStatus(404)
+    if (!tokensMatch(request.get('x-paperbanana-operations-token') || '', config.operationsToken)) {
+      return response.status(401).json({ error: 'Unauthorized internal transport' })
+    }
+    try { return response.json(await operationsSnapshot()) }
+    catch { return response.status(503).json({ error: 'Operations snapshot unavailable' }) }
+  })
 
   async function invokeLegacy(request: Request, response: Response) {
     const token = request.get('x-paperbanana-gateway-token') || ''

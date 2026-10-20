@@ -36,8 +36,8 @@ function workflowTextResponse(body) {
   return 'Create a clear scientific workflow diagram with readable labels and directional arrows. Preserve all reference labels, values, colors and connections.';
 }
 
-export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173' } = {}) {
-  const db = memoryDb();
+export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173', database, authStores = {}, secondFrontendOrigin, secondaryAuthStores = {} } = {}) {
+  const db = database || memoryDb();
   const objects = new Map();
   const prepared = new Map();
   const providerCalls = [];
@@ -191,7 +191,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   const oldGateway = process.env.PAPERBANANA_GATEWAY_TOKEN;
   process.env.PAPERBANANA_GATEWAY_TOKEN = 'local-refine-gateway';
   const invoke = body => legacy.default({ body: { ...body, gatewayToken: 'local-refine-gateway' }, request: { method: 'POST' }, headers: {}, response: { setHeader() {}, status() {} } });
-  const backend = { mode: 'node', async call(body, _context, options = {}) { if (tokenDance) { const response = await fetch(baseUrl+'/core/paperbanana-api', {method:'POST',headers:{'content-type':'application/json','x-paperbanana-gateway-token':'local-refine-gateway',...(options.authUserId?{'x-paperbanana-auth-user-id':options.authUserId}:{})},body:JSON.stringify(body)}); const data=await response.json(); if (body.action==='tokenDanceAuthorize' && data.authorizationUrl) data.authorizationUrl=baseUrl+'/fixture/authorize?target='+encodeURIComponent(new URL(data.authorizationUrl).searchParams.get('callback_url')); return {status:response.status,data}; } const data = await invoke(body); return { status: data.code >= 400 ? data.code : 200, data }; }, cachedStatus: () => ({ mode: 'node', ok: true }), ready: async () => ({ ok: true }) };
+  const backend = { mode: 'node', async call(body, _context, options = {}) { if (tokenDance) { const response = await fetch(baseUrl+'/core/paperbanana-api', {method:'POST',headers:{'content-type':'application/json','x-paperbanana-gateway-token':'local-refine-gateway',...(_context?.clientIp?{'x-paperbanana-client-ip':_context.clientIp}:{}),...(options.authUserId?{'x-paperbanana-auth-user-id':options.authUserId}:{})},body:JSON.stringify(body)}); const data=await response.json(); if (body.action==='tokenDanceAuthorize' && data.authorizationUrl) data.authorizationUrl=baseUrl+'/fixture/authorize?target='+encodeURIComponent(new URL(data.authorizationUrl).searchParams.get('callback_url')); return {status:response.status,data}; } const data = await invoke(body); return { status: data.code >= 400 ? data.code : 200, data }; }, cachedStatus: () => ({ mode: 'node', ok: true }), ready: async () => ({ ok: true }) };
   const app = express();
   let tokenDanceService, workflow;
   if (tokenDance) {
@@ -229,6 +229,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     oss: { bucket: 'paperbanana-hk', publicEndpoint: 'https://oss-cn-hongkong.aliyuncs.com', allowLegacyExternalRefineUrl: false },
   };
   const auth = {
+    ...authStores,
     async optionalSession(req) { if (req.get('x-test-user')==='anonymous') return null; return { user: { id: req.get('x-test-user') || 'refine-owner', email: 'local@example.invalid', emailVerified: true } }; },
     handler(_req, res) { res.json({ user: { id: 'refine-owner', email: 'local@example.invalid', emailVerified: true }, session: { id: 'local' } }); },
     async webHandler() { return Response.json({ user: { id: 'refine-owner', email: 'local@example.invalid', emailVerified: true }, session: { id: 'local' } }); },
@@ -238,17 +239,24 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
   const server = app.listen(port, '127.0.0.1');
   await once(server, 'listening');
   baseUrl = 'http://127.0.0.1:' + server.address().port;
+  let secondServer, secondaryBaseUrl;
+  if (secondFrontendOrigin) {
+    secondServer = createApp({ config: { ...config, frontendOrigins: [secondFrontendOrigin] }, auth: { ...auth, ...secondaryAuthStores }, backend, isMaintenance: () => false, logger: { info() {}, warn() {}, error() {} } }).listen(0, '127.0.0.1');
+    await once(secondServer, 'listening');
+    secondaryBaseUrl = 'http://127.0.0.1:' + secondServer.address().port;
+  }
   return {
-    baseUrl, db, objects, providerCalls, catalogCalls, image, output, legacy, invoke, tokenDanceService, workflow, tokenDanceCalls,
+    baseUrl, secondaryBaseUrl, db, objects, providerCalls, catalogCalls, image, output, legacy, invoke, tokenDanceService, workflow, tokenDanceCalls,
     setTokenDanceFailure(action) { tdFailure = action; }, payTokenDance() { tdPaid = true; tdFailure = ''; },
     failProvider(value) { providerFailure = value; },
     setChannelFailure(value) { channelFailure = value; },
-    async post(body, user = 'refine-owner') {
-      const response = await fetch(baseUrl + '/paperbanana-api', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-test-user': user }, body: JSON.stringify(body) });
+    async post(body, user = 'refine-owner', headers = {}, targetBaseUrl = baseUrl) {
+      const response = await fetch(targetBaseUrl + '/paperbanana-api', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-test-user': user, ...headers }, body: JSON.stringify(body) });
       return { status: response.status, data: await response.json() };
     },
     async close() {
       await legacy.drainJobAdmission(); legacy.configureRuntimeFetch();
+      if (secondServer) await new Promise(resolve => { secondServer.close(resolve); secondServer.closeAllConnections(); });
       await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
       if (oldGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN;
       else process.env.PAPERBANANA_GATEWAY_TOKEN = oldGateway;

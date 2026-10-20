@@ -1,3 +1,5 @@
+import { operationalMetrics } from '../src/operational-metrics.js'
+export { operationalMetrics } from '../src/operational-metrics.js'
 import { createWorkspaceJobDeletion } from '../src/workspace-task-deletion.js'
 import type { createImageLibrary } from '../src/image-library.js'
 import { accountImagePrefix } from '../src/image-library.js'
@@ -574,6 +576,7 @@ export function createJobAdmissionController(
     principal: JobPrincipal
     slot: 'active' | 'queued'
     committed: boolean
+    reservedAt: number
     task?: AdmittedJobTask
   }
 
@@ -599,6 +602,12 @@ export function createJobAdmissionController(
     else counts.delete(key)
   }
   const activeSlots = () => [...entries.values()].filter((entry) => entry.slot === 'active').length
+  const recordOccupancy = () => {
+    const values = [...entries.values()]
+    operationalMetrics.gauge('admission.active', values.filter(entry => entry.committed && entry.slot === 'active').length)
+    operationalMetrics.gauge('admission.queued', values.filter(entry => entry.committed && entry.slot === 'queued').length)
+    operationalMetrics.gauge('admission.reserved', values.filter(entry => !entry.committed).length)
+  }
   const notifyDrained = () => {
     for (const waiter of [...ownerDrainWaiters]) {
       const ownerBusy = [...entries.values()].some((entry) => waiter.ownerKeys.has(entry.principal.ownerKey))
@@ -618,6 +627,7 @@ export function createJobAdmissionController(
     if (pendingIndex >= 0) pendingOrder.splice(pendingIndex, 1)
     decrement(ownerCounts, entry.principal.ownerKey)
     decrement(ipCounts, entry.principal.ipKey)
+    recordOccupancy()
     pump()
     notifyDrained()
   }
@@ -625,11 +635,19 @@ export function createJobAdmissionController(
   const launch = (entry: Entry) => {
     if (!entry.task) return
     const task = entry.task
+    recordOccupancy()
+    const started = performance.now()
+    operationalMetrics.increment('execution.started')
+    operationalMetrics.observe('admission.wait', started - entry.reservedAt)
+    let threw = false
     const promise = (async () => {
       try {
         await dependencies.execute(task)
+        operationalMetrics.increment('execution.returned')
       } catch (error: any) {
-        if (error?.executionClaimLost === true) return
+        threw = true
+        if (error?.executionClaimLost === true) { operationalMetrics.increment('execution.claim_lost'); return }
+        operationalMetrics.increment('execution.threw')
         const safeTaskError = redactSecretText(
           error?.message || String(error),
           Object.values(task.routeSecrets || {}).filter(Boolean) as string[],
@@ -637,6 +655,7 @@ export function createJobAdmissionController(
         try {
           await dependencies.markFailed(task.jobId, safeTaskError, error instanceof ReferenceUploadValidationError, { ...error, name: error?.name, message: safeTaskError, status: error?.status, failureStage: error?.failureStage })
         } catch (persistenceError: any) {
+          operationalMetrics.increment('execution.persistence_failed')
           try {
             dependencies.logError(
               `Failed to persist terminal state for ${task.jobId}: ${persistenceError?.message || String(persistenceError)}`,
@@ -646,6 +665,7 @@ export function createJobAdmissionController(
           }
         }
       } finally {
+        operationalMetrics.observe('execution.duration', performance.now() - started, threw)
         release(entry)
       }
     })()
@@ -672,15 +692,19 @@ export function createJobAdmissionController(
   return {
     reserve(principal: JobPrincipal) {
       if (!accepting) {
+        operationalMetrics.increment('admission.draining')
         return { ok: false as const, code: 503, error: 'Job admission is draining. Please retry after restart.' }
       }
       if (frozenOwners.has(principal.ownerKey)) {
+        operationalMetrics.increment('admission.frozen')
         return { ok: false as const, code: 409, error: 'Account deletion is in progress. New jobs and uploads are disabled.' }
       }
       if (countFor(ownerCounts, principal.ownerKey) >= config.maxPerOwner) {
+        operationalMetrics.increment('admission.owner_limit')
         return { ok: false as const, code: 429, error: 'Job owner limit exceeded. Please wait for the current job to finish.' }
       }
       if (countFor(ipCounts, principal.ipKey) >= config.maxPerIp) {
+        operationalMetrics.increment('admission.ip_limit')
         return { ok: false as const, code: 429, error: 'Job IP limit exceeded. Please wait for the current job to finish.' }
       }
 
@@ -689,13 +713,15 @@ export function createJobAdmissionController(
         : pendingOrder.length < config.maxPending
           ? 'queued' as const
           : null
-      if (!slot) return { ok: false as const, code: 429, error: 'Job queue is full. Please try again later.' }
+      if (!slot) { operationalMetrics.increment('admission.queue_full'); return { ok: false as const, code: 429, error: 'Job queue is full. Please try again later.' } }
 
-      const entry: Entry = { id: nextId++, principal, slot, committed: false }
+      const entry: Entry = { id: nextId++, principal, slot, committed: false, reservedAt: performance.now() }
+      operationalMetrics.increment(slot === 'active' ? 'admission.accepted_active' : 'admission.accepted_queued')
       entries.set(entry.id, entry)
       if (slot === 'queued') pendingOrder.push(entry)
       increment(ownerCounts, principal.ownerKey)
       increment(ipCounts, principal.ipKey)
+      recordOccupancy()
       return { ok: true as const, id: entry.id }
     },
     commit(reservation: { ok: true; id: number }, task: AdmittedJobTask) {
@@ -703,6 +729,7 @@ export function createJobAdmissionController(
       if (!entry || entry.committed) return false
       entry.committed = true
       entry.task = task
+      recordOccupancy()
       if (entry.slot === 'active') launch(entry)
       else pump()
       return true

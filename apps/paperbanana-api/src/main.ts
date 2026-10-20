@@ -21,6 +21,8 @@ import { prepareRuntime } from './runtime.js'
 import { createServer, type CoreHandler } from './server.js'
 import { createScientificV2RegistryAuthority } from './scientific-v2-production-bridge.js'
 import { createGracefulShutdown } from './shutdown.js'
+import { createProcessObservation, operationalMetrics } from './operational-metrics.js'
+import { createDatabaseObservation } from './operations-snapshot.js'
 
 const serviceName = 'paperbanana-api'
 const version = '0.1.0'
@@ -29,6 +31,11 @@ const logger = createLogger()
 async function main(): Promise<void> {
   const buildProvenance = await loadBuildProvenance()
   const config = loadConfig(process.env, buildProvenance.codeSha)
+  const operationsEnabled = process.env.PAPERBANANA_OPERATIONS_ENABLED === 'true'
+  const operationsToken = operationsEnabled ? process.env.PAPERBANANA_OPERATIONS_TOKEN?.trim() : undefined
+  if (operationsEnabled && (!operationsToken || operationsToken.length < 32 || [config.gatewayToken, config.adminToken, config.adminTransportToken].includes(operationsToken))) {
+    throw new Error('PAPERBANANA_OPERATIONS_TOKEN must be a separate read-only token of at least 32 characters')
+  }
   process.env.RESVG_WASM_PATH ||= path.join(process.cwd(), 'node_modules/@resvg/resvg-wasm/index_bg.wasm')
 
   const mongo = createMongoAdapter(config.mongodb)
@@ -140,7 +147,10 @@ async function main(): Promise<void> {
       throw error
     }
   }
+  const processObservation = operationsEnabled ? createProcessObservation() : undefined
+  const databaseObservation = createDatabaseObservation(mongo.db)
   const closeAll = async () => {
+    processObservation?.close()
     await imageLibrary.stop()
     let failure: unknown
     try { await closeBenchmark() } catch (error) { failure = error }
@@ -174,7 +184,14 @@ async function main(): Promise<void> {
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,
-    config: { gatewayToken: config.gatewayToken, adminToken: config.adminToken, adminTransportToken: config.adminTransportToken, benchmarkDiscoveryToken: config.benchmarkDiscoveryToken, serviceName, version },
+    ...(operationsEnabled ? { operationsSnapshot: async () => ({
+      version: 1, sampledAt: new Date().toISOString(), codeSha: buildProvenance.codeSha,
+      metrics: operationalMetrics.snapshot(), admission: core.getJobAdmissionState(),
+      limits: { ...config.admission, candidateConcurrency: Math.max(1, Math.min(6, Number(process.env.PAPERBANANA_CANDIDATE_CONCURRENCY || 1) || 1)), singleReplica: config.singleReplica },
+      process: processObservation!.snapshot(), database: await databaseObservation(),
+      dependencies: healthSnapshot().dependencies,
+    }) } : {}),
+    config: { gatewayToken: config.gatewayToken, adminToken: config.adminToken, adminTransportToken: config.adminTransportToken, benchmarkDiscoveryToken: config.benchmarkDiscoveryToken, operationsToken, serviceName, version },
     logger,
     benchmarkService,
     ...(config.benchmark ? {

@@ -1,3 +1,4 @@
+import { operationalMetrics } from './operational-metrics.js'
 import {sourceProtocolMismatch,assertSourceProtocolTask,type SourceProtocolSnapshot} from './source-provenance.js'
 import { normalizeUniversalRoute, universalCredential, UniversalApiError } from '../../../packages/api/src/universal-api.js'
 import { AsyncLocalStorage } from 'node:async_hooks'
@@ -92,9 +93,15 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     current.counts.set(digest, occurrence + 1)
     const id = `${current.task.jobId}:${current.scope}:${digest}:${occurrence}`
     const existing = await steps.findOne({ _id: id })
-    if (existing?.state === 'complete') return readResult(id, existing.chunks)
-    if (existing && !['rejected','awaiting'].includes(existing.state)) throw new TokenDanceError(409, '上次调用结果不确定，已暂停以避免重复扣费，请核对所用渠道的调用记录。', 'review_request', 0, true)
-    if (existing?.retryAt && existing.retryAt.getTime() > now()) throw new TokenDanceError(429, '限流等待时间尚未结束。', 'rate_limit', Math.ceil((existing.retryAt.getTime() - now()) / 1000))
+    if (existing?.state === 'complete') { operationalMetrics.increment('workflow.cache_hit'); return readResult(id, existing.chunks) }
+    if (existing && !['rejected','awaiting'].includes(existing.state)) {
+      operationalMetrics.increment('workflow.unknown_blocked')
+      throw new TokenDanceError(409, '上次调用结果不确定，已暂停以避免重复扣费，请核对所用渠道的调用记录。', 'review_request', 0, true)
+    }
+    if (existing?.retryAt && existing.retryAt.getTime() > now()) {
+      operationalMetrics.increment('workflow.retry_wait')
+      throw new TokenDanceError(429, '限流等待时间尚未结束。', 'rate_limit', Math.ceil((existing.retryAt.getTime() - now()) / 1000))
+    }
     if (existing) {
       const claim = await steps.updateOne({ _id: id, state: existing.state }, { $set: { state: existing.state === 'awaiting' ? 'awaiting' : 'running', startedAt: new Date(now()) } })
       if (!claim.modifiedCount) throw new TokenDanceError(409, '该调用正在处理。', 'review_request', 0, true)
@@ -108,11 +115,17 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       assertCallsAllowed(current)
       // Composite steps (e.g. reference selection) may contain multiple paid
       // calls. Keep their own checkpoints when the enclosing step fails later.
+      operationalMetrics.increment('workflow.started')
       const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id, thinkingRole: thinkingRole || current.thinkingRole }, operation)
       const count = await writeResult(id, current.task.body.userId, result)
       await steps.updateOne({ _id: id, state: { $in: ['running','awaiting'] } }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
+      operationalMetrics.increment('workflow.completed')
       return result
     } catch (error: any) {
+      if (error?.status === 429) {
+        operationalMetrics.increment('workflow.rate_limit')
+        operationalMetrics.observe('workflow.retry_after', Number(error.retryAfterSeconds || 0) * 1000)
+      }
       const rejected = error?.workflowStopped || isReferenceValidationError(error) || (['TokenDanceError', 'UniversalApiError'].includes(error?.name) && !error.uncertain && (error.requestState === 'not_sent' || Boolean(error.recoveryAction) || error.requestState === 'rejected'))
       let failure = rejected || error?.pollOnly ? error : uncertainCallError(error)
       // Publish the fatal outcome synchronously, before any journal read/write
@@ -126,8 +139,10 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
           failure = uncertainCallError(error)
           stopCalls(current, failure)
         }
+        operationalMetrics.increment(`workflow.${state}`)
         await steps.updateOne({ _id: id }, { $set: { state, retryAt: new Date(now() + (error?.retryAfterSeconds || 0) * 1000) } })
       } catch {
+        operationalMetrics.increment('workflow.journal_failed')
         // The original request outcome stays unknown if its journal cannot be
         // finalized; a database error must not turn it into a safe fallback.
         failure = uncertainCallError(error)

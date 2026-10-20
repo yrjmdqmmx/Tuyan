@@ -1,3 +1,4 @@
+import { operationalMetrics } from './operational-metrics.js'
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { performance } from 'node:perf_hooks'
 
@@ -29,5 +30,16 @@ export async function measureGeneration<T>(name: string, operation: () => Promis
     span.outcome = 'ok'
     if (typeof result === 'string') span.outputChars = result.length
     return result
-  } finally { span.durationMs = Math.round(performance.now() - start) }
+  } catch (error: any) {
+    // Count only leaf model operations here; enclosing workflow checkpoints
+    // may propagate the same failure and must not be interpreted as paid calls.
+    if (name === 'model:text' || name === 'model:image') {
+      if (error?.status === 429) operationalMetrics.increment('model.rate_limit')
+      if (error?.uncertain || error?.requestState === 'unknown') operationalMetrics.increment('model.unknown')
+    }
+    throw error
+  } finally {
+    span.durationMs = Math.round(performance.now() - start)
+    operationalMetrics.observe(name, span.durationMs, span.outcome === 'error')
+  }
 }

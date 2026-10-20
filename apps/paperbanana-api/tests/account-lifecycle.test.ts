@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import vm from 'node:vm'
 import { stripTypeScriptTypes } from 'node:module'
 import {createMaterialFiles} from '../src/material-files.js'
+import {accountImagePrefix} from '../src/image-library.js'
 import { memoryDb } from '../../../test-support/memory-db.mjs'
 
 // Execute the actual production lifecycle functions with only Mongo, OSS and
@@ -31,7 +32,7 @@ function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : an
     async deleteFile(key: string) { if (key === failureKey) throw new Error('mock OSS outage'); deleted.push(key); files.delete(key) },
   }
   const materialFilesService=createMaterialFiles({db,bucket:()=>bucket,ownerPrefix:o=>o.userId,assertOwner:async()=>{}})
-  const context = vm.createContext({db,materialFilesService,
+  const context = vm.createContext({db,materialFilesService,imageLibrary:undefined,accountImagePrefix,
     Date: Clock, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: db.collection('paperbanana_jobs'),
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
     jobAdmission: { freezeOwners() {} }, objectStorage: { bucket: () => bucket }, bucketName: 'fake',
@@ -132,6 +133,21 @@ test('business cleanup failure keeps manifest for retry and completion cannot ju
   assert.equal((await f.context.completeAccountDeletion(f.body)).code, 409)
   f.context.deleteAdditionalAccountData = async () => {}
   assert.equal((await f.run()).phase, 'awaiting_auth')
+})
+
+test('image library cleanup failure keeps account deletion retryable and retains its job manifest until cleanup succeeds', async () => {
+  const f = fixture({ jobs: [oldJob, newJob], objects: ['old-job/result.png', 'new-job/result.png'] })
+  const owners: string[] = []
+  f.context.imageLibrary = { async deleteOwner(userId: string) { owners.push(userId); throw new Error('image cleanup unavailable') } }
+  assert.equal((await f.run()).code, 503)
+  assert.deepEqual(f.deleted, ['old-job/result.png'])
+  assert.equal(f.db.collection('paperbanana_jobs').rows.length, 2)
+  assert.equal((await f.context.completeAccountDeletion(f.body)).code, 409)
+  f.context.imageLibrary.deleteOwner = async (userId: string) => { owners.push(userId) }
+  assert.equal((await f.run()).phase, 'awaiting_auth')
+  assert.deepEqual(owners, ['old-id', 'old-id'])
+  assert.deepEqual(f.db.collection('paperbanana_jobs').rows, [newJob])
+  assert.deepEqual([...f.files], ['new-job/result.png'])
 })
 
 test('claim rereads persisted phase instead of replaying stale waiting state from another worker', async () => {
