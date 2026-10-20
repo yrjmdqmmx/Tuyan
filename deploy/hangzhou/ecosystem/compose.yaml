@@ -1,0 +1,28 @@
+name: tuyan-ecosystem
+services:
+  ecosystem-worker:
+    image: ${ECOSYSTEM_WORKER_IMAGE:?set immutable reviewed image digest}
+    platform: linux/amd64
+    init: true
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    env_file: ["${ECOSYSTEM_ENV_FILE:-/opt/paperbanana/secrets/ecosystem-worker.env}"]
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=256m,uid=10001,gid=10001,mode=1700
+    networks: [ecosystem]
+    cpus: 1.5
+    mem_limit: 2g
+    pids_limit: 96
+    ulimits:
+      nofile: {soft: 256, hard: 256}
+    restart: unless-stopped
+    stop_grace_period: 10s
+    logging:
+      driver: local
+      options: {max-size: 5m, max-file: "2"}
+networks:
+  ecosystem:
+    name: tuyan-ecosystem-private
+    internal: true

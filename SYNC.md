@@ -8,6 +8,15 @@
 - [ ] 小程序 / 其他消费者：开发恢复后保留 `purgedTasks` 并按删除标记清理旧缓存，不再把已删 ID 上传或导入；小程序继续暂停。当前普通接口、生成和模型调用契约不变。
 - [ ] 发布：本次没有部署、push、真实模型调用或删除原有任务数据；上线需 Web / Gateway / Core 一起发布后再验收。
 
+## 2026-10-20 · 他山科研生态（三工具本地集成，未部署）
+
+- [x] Web：排行榜下方新增「他山科研生态」，展开/收起/移动侧栏一致；Semiotic / VizNoir / DataViz 统一列表与实际工作台，CSV/JSON/科学网格输入、有限参数、SVG/PNG/离线 HTML 预览及下载。切页/切工具/账号取消请求并清除当前材料，不改任务草稿和历史 schema。
+- [x] Gateway / 新 Worker：新增 `POST /api/ecosystem/render` 和认证后的 `GET /api/ecosystem/health`；会话、Origin、`X-Workspace-Account`、维护、限频/并发保护。正文 8 MiB、文件 5 MiB、表格最多 5,000 行 / 40 列；结果 `{tool,format,base64,filename,engineVersion,summary}`。Worker 单并发/75 秒、临时目录清理，真实三个引擎；DataViz 仅执行固定模板，不接收用户代码。
+- [x] 运维配置：新增 `ECOSYSTEM_WORKER_URL` / `ECOSYSTEM_WORKER_TOKEN`（至少 32 字节）和独立 Worker Compose；省略两变量时原业务兼容、新接口明确 503。两网关须持久接专属 internal 网络，Nginx 精确 render 路由 9m、110 秒、关闭请求/响应落盘缓冲。配置已编写，未在生产应用。
+- [x] 本地验证：Web 首轮全量 1,063 项、最终相关用例 7 项；Gateway 最终全量 190 通过（1 项既有 Mongo 集成跳过）；Worker 原生及最终 Linux amd64 受限容器均 45 项通过。三真实引擎与浏览器端到端通过，Compose 与三份 Nginx 配置检查通过；详见[本轮记录](docs/operations/2026-10-20-tashan-ecosystem.md)。零模型调用。
+- [ ] 发布：本地 Linux 容器与资源限制已验证，生产发布等待单独授权；目标宿主、真实账号、两域名与上传/下载仍需上线核验。
+- [ ] 小程序：继续暂停，无需同步新页面；原任务、绘图、模型和共享 schema 均保持兼容。
+
 ## 2026-10-19 · 跨页历史导入与复用入口补齐
 
 - [x] Gateway / Web：账号历史投影增加可选 `workspaceExecution: {taskId, runId}`，由当前账号的服务端执行记录关联。新标签尚未收到执行回执时也跳过原生任务历史导入；现有历史记录和草稿不删除，生成幂等与 CAS 保留。
