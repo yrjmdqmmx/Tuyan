@@ -5,6 +5,7 @@ import {createRoot} from 'react-dom/client';
 import TaskWorkspace from '../../src/workspace/TaskWorkspace.jsx';
 import WorkspacePages from '../../src/workspace/WorkspacePages.jsx';
 import {newWorkspace, workspaceReducer} from '../../src/workspace/workspaceState.js';
+import '../../src/styles.css';
 import '../../src/workspace/workspace.css';
 import '../../src/workspace/workspacePages.css';
 import '../../src/workspace/workspaceMotion.css';
@@ -16,6 +17,6 @@ function Harness() {
     return initial;
   });
   const account = {user:{id:'ecosystem-qa',name:'本地合成账号'}};
-  return <TaskWorkspace state={state} dispatch={dispatch} user={account.user} onSubmit={()=>{}} onFiles={()=>{}} renderPage={(page,onClose,onNavigate)=><WorkspacePages page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={{}}/>}/>;
+  return <TaskWorkspace state={state} dispatch={dispatch} user={account.user} onSubmit={()=>{}} onFiles={()=>{}} renderPage={(page,onClose,onNavigate,options)=><WorkspacePages {...options} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={{}}/>}/>;
 }
 if (import.meta.env.DEV) createRoot(document.getElementById('root')).render(<Harness/>);

@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React, { useReducer } from 'react';
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import ResearchEcosystem from '../src/ecosystem/ResearchEcosystem.jsx';
+import { ECOSYSTEM_TOOLS } from '../src/ecosystem/catalog.js';
 import TaskWorkspace from '../src/workspace/TaskWorkspace.jsx';
 import WorkspaceDrawingSettings from '../src/workspace/WorkspaceDrawingSettings.jsx';
 import { WorkspaceModelManager } from '../src/workspace/WorkspaceModelPanels.jsx';
@@ -13,7 +15,7 @@ const settle = () => act(() => new Promise(resolve => requestAnimationFrame(() =
 const models = {library:{connections:[],models:[]},registry:{providers:{}},summary:{},registryStatus:'ready',ready:true};
 const fixture = () => workspaceReducer(newWorkspace('search'), {type:'EDIT_DRAFT',patch:{text:'需要保留的实验流程图'}});
 let latest, actions, effects, destinations;
-function Harness({mobile = true, isAdmin = false, actualModels = false, actualSettings = false} = {}) {
+function Harness({mobile = true, isAdmin = false, actualModels = false, actualSettings = false, actualEcosystem = false} = {}) {
   window.matchMedia = query => ({matches:mobile && query.includes('767px'),media:query,addEventListener(){},removeEventListener(){}});
   const [state, dispatch] = useReducer(workspaceReducer, undefined, fixture);
   latest = state;
@@ -27,7 +29,7 @@ function Harness({mobile = true, isAdmin = false, actualModels = false, actualSe
       ? React.createElement(WorkspaceDrawingSettings,{focusSection,models,draft:currentDraft(state),path:'png',onChange:() => effects.push('settings')})
       : React.createElement('p',null,'绘图设置入口');},
     renderAccount:() => React.createElement('p',null,'账户页面'),
-    renderPage:page => {destinations.page=page;return React.createElement('p',null,`页面内容 ${page}`);},
+    renderPage:(page, _close, _navigate, options) => {destinations.page=page;destinations.tool=options?.initialTool;return actualEcosystem && page === '他山科研生态' ? React.createElement(ResearchEcosystem,{...options,account:{user:{id:'fixture'}},request:() => effects.push('render')}) : React.createElement('p',null,`页面内容 ${page}`);},
   });
 }
 function setup(props) { actions=[];effects=[];destinations={};return render(React.createElement(Harness,props)); }
@@ -159,4 +161,30 @@ test('desktop collapsed navigation and shortcut support safe Enter selection and
   fireEvent.keyDown(window,{key:'Escape'});await settle();assert.equal(document.activeElement,trigger);
   assert.ok(screen.getByRole('complementary',{name:'快捷导航'}));
   assert.deepEqual(effects,[]);assert.deepEqual(actions,[]);assert.equal(JSON.stringify(latest),before);
+});
+
+
+test('ecosystem search resolves shared names, engine aliases and research keywords', () => {
+  for (const tool of ECOSYSTEM_TOOLS) for (const query of [tool.name, ...tool.aliases, ...tool.keywords]) {
+    assert.ok(searchDestinations(query).some(entry => entry.target.tool === tool.id), `${query} reaches ${tool.id}`);
+  }
+  assert.equal(searchDestinations('他山科研生态')[0].id, 'research-ecosystem');
+  assert.equal(searchDestinations('VTK')[0].target.tool, 'viznoir');
+  assert.equal(searchDestinations('仪表盘')[0].target.tool, 'dataviz');
+});
+
+test('search directly opens each ecosystem tool and repeated selection without rendering or editing tasks', async () => {
+  setup({actualEcosystem:true});const before=JSON.stringify(latest);
+  for (const query of ['桑基图','VTK','仪表盘','Semiotic','Semiotic']) {
+    const dialog=await openSearch();
+    fireEvent.change(within(dialog).getByRole('textbox',{name:'搜索任务、功能和工具'}),{target:{value:query}});
+    const entry=searchDestinations(query).find(entry => entry.target.tool);
+    fireEvent.click(within(dialog).getByRole('button',{name:`${entry.name} ${entry.description}`,exact:true}));await settle();
+    assert.ok(screen.getByRole('heading',{name:entry.name,exact:true}));
+    assert.equal(destinations.tool,entry.target.tool);
+    assert.equal(screen.queryByRole('dialog',{name:'搜索',exact:true}),null);
+    assert.equal(screen.queryByRole('dialog',{name:'任务导航',exact:true}),null);
+    assert.deepEqual(effects,[]);assert.deepEqual(actions,[]);assert.equal(JSON.stringify(latest),before);
+    fireEvent.click(screen.getByRole('button',{name:'全部工具'}));
+  }
 });

@@ -4,7 +4,7 @@ repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 container="tuyan-workspace-sync-test-$$-${RANDOM}"
 cleanup() { docker rm -f -v "$container" >/dev/null 2>&1 || true; }
 trap cleanup EXIT
-docker run --detach --name "$container" --publish 127.0.0.1::27017 mongo:8.0.16-noble mongod --replSet rs0 --bind_ip_all >/dev/null
+docker run --detach --memory 512m --cpus 1 --name "$container" --publish 127.0.0.1::27017 mongo:8.0.16-noble mongod --replSet rs0 --bind_ip_all >/dev/null
 for _ in $(seq 1 30); do
   if docker exec "$container" mongosh --quiet --eval 'quit(db.adminCommand({ping:1}).ok ? 0 : 1)' >/dev/null 2>&1; then break; fi
   sleep 1
@@ -17,4 +17,4 @@ done
 port="$(docker port "$container" 27017/tcp | sed -n 's/^127\.0\.0\.1://p')"
 [[ "$port" =~ ^[0-9]+$ ]] || { echo 'Loopback Mongo port unavailable' >&2; exit 1; }
 cd "$repo_dir/apps/paperbanana-api"
-WORKSPACE_COMPAT_TEST_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --import tsx --test "$repo_dir/apps/auth-gateway/tests/workspace-compatibility.test.js" "$repo_dir/apps/web/tests/workspace-mongo.integration.mjs" "$repo_dir/apps/auth-gateway/tests/integration/account-profile.mongo.mjs"
+WORKSPACE_COMPAT_TEST_URI="mongodb://127.0.0.1:${port}/?directConnection=true" node --import tsx --test --test-concurrency=1 "$repo_dir/apps/auth-gateway/tests/workspace-compatibility.test.js" "$repo_dir/apps/web/tests/workspace-mongo.integration.mjs" "$repo_dir/apps/auth-gateway/tests/integration/account-profile.mongo.mjs" "$repo_dir/apps/auth-gateway/tests/integration/workspace-deletion.mongo.mjs"

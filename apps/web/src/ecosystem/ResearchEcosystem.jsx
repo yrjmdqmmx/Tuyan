@@ -4,19 +4,18 @@ import { API_BASE_DEFAULT } from '../config.js';
 import { exampleTable, MAX_FILE_BYTES, parseTable, readScientificFile } from './data.js';
 import { downloadResult, isolatedHtml, renderEcosystem, RESULT_MIME } from './client.js';
 
-const TOOLS = [
-  { id: 'semiotic', name: '交互图表与关系图', engine: 'Semiotic', icon: ChartNoAxesCombined, description: '把表格变成清晰的图表，探索变量关系、趋势与数据流向。', input: 'CSV / JSON', output: 'SVG 矢量图', source: 'https://github.com/nteract/semiotic', catalog: 'https://world.tashan.chat/mcphub/nteract-semiotic', license: 'Apache-2.0' },
-  { id: 'viznoir', name: '三维科研渲染', engine: 'VizNoir', icon: Box, description: '呈现科学数据的空间形态，用字段、色标与视角表达研究结果。', input: 'VTK / VTU / VTP / STL', output: 'PNG 图片', source: 'https://github.com/kimimgo/viznoir', catalog: 'https://world.tashan.chat/mcphub/kimimgo-viznoir', license: 'MIT' },
-  { id: 'dataviz', name: '交互数据探索', engine: 'DataViz', icon: Layers3, description: '用可筛选的交互视图观察数据，在浏览器中探索和分享。', input: 'CSV / JSON', output: '交互 HTML', source: 'https://github.com/SuMayaBee/DataViz-MCP', catalog: 'https://world.tashan.chat/mcphub/pypi-holoviz-mcp-server', license: 'BSD-3-Clause' },
-];
+import { ECOSYSTEM_TOOLS } from './catalog.js';
+const ICONS = { semiotic: ChartNoAxesCombined, viznoir: Box, dataviz: Layers3 };
+const TOOLS = ECOSYSTEM_TOOLS.map(tool => ({ ...tool, icon: ICONS[tool.id] }));
+
 const PREVIEWS = {
   semiotic: new URL('./previews/semiotic.svg', import.meta.url).href,
   viznoir: new URL('./previews/viznoir.png', import.meta.url).href,
   dataviz: new URL('./previews/dataviz.png', import.meta.url).href,
 };
 
-export default function ResearchEcosystem({ account = {}, base = API_BASE_DEFAULT, request = renderEcosystem }) {
-  const [selected, setSelected] = useState(null);
+export default function ResearchEcosystem({ account = {}, base = API_BASE_DEFAULT, request = renderEcosystem, initialTool = null }) {
+  const [selected, setSelected] = useState(() => TOOLS.some(tool => tool.id === initialTool) ? initialTool : null);
   const tool = TOOLS.find(item => item.id === selected);
   return <section className="te-root" aria-label="他山科研生态">
     {!tool ? <>

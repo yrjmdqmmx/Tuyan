@@ -130,7 +130,7 @@ function WorkspaceHost({ account, beforeExit, preview }) {
       renderOptimize={children=><WorkspaceOptimize stateRef={stateRef} models={models} userId={account.user?.id} health={execution.health} sync={sync} dispatch={dispatch}>{children}</WorkspaceOptimize>}
       renderAccount={() => <WorkspaceAccountPage preview={preview} account={account} sync={sync} state={state} models={models} onExport={exportDraft}/>}
       renderSettings={({focusSection} = {}) => <WorkspaceDrawingSettings focusSection={focusSection} target={refinementTarget(state)} userId={account.user?.id} base={API_BASE_DEFAULT} draft={d} path={path} editing={!!currentBranch(state).targetId || d.attachments.some(a=>a.purpose==='source')} models={models} onChange={next => dispatch({ type: 'EDIT_DRAFT', patch: { settings: { ...d.settings, [d.mode]: next } } })}/>}
-      renderPage={(page,onClose,onNavigate) => <WorkspacePages onRestoreSvg={async task=>{setState(s=>mergeSvgRecovery(s,task));}} onTemplate={template=>dispatch({type:"APPLY_TEMPLATE",template})} key={page} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={models} health={execution.health} isAdmin={isAdmin}/>}
+      renderPage={(page,onClose,onNavigate,options) => <WorkspacePages {...options} onRestoreSvg={async task=>{setState(s=>mergeSvgRecovery(s,task));}} onTemplate={template=>dispatch({type:"APPLY_TEMPLATE",template})} key={page} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={models} health={execution.health} isAdmin={isAdmin}/>}
     />
 
   </div>;

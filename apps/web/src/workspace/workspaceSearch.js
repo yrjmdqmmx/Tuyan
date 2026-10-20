@@ -1,3 +1,4 @@
+import { ECOSYSTEM_TOOLS } from '../ecosystem/catalog.js';
 import { PATHS, taskHasContent } from './workspaceState.js';
 
 // Navigation only. Never put execution, creation, import, or save callbacks here.
@@ -28,6 +29,8 @@ export const SEARCH_ENTRIES = [
   { id:'figure-types', name:'信息图类别', group:'工具', description:'定位到绘图设置中的科研图型入口', aliases:['图型','图类','图表类型','信息图','figure type'], keywords:['流程图','机制图','示意图','统计图','科研图型'], target:{panel:'settings',section:'figure-type'} },
   { id:'optimize', name:'优化输入', group:'工具', description:'定位到输入区的优化按钮，点击按钮后才执行', aliases:['优化提示词','提示词优化','润色需求','prompt'], keywords:['改写','绘图要求','描述优化'], target:{composer:'optimize'} },
   { id:'attachments', name:'添加附件', group:'工具', description:'定位到输入区的文件添加入口', aliases:['上传文件','上传材料','附件','上传 PDF','上传 PPT'], keywords:['论文','原材料','参考图片','原图','文档','PPTX'], target:{composer:'attachments'} },
+  { id:'research-ecosystem', name:'他山科研生态', group:'功能', description:'浏览他山收录的科研可视化工具', aliases:['他山','科研生态','科研工具','Tashan'], keywords:['数据可视化','图表','三维','数据探索'], target:{page:'他山科研生态'} },
+  ...ECOSYSTEM_TOOLS.map(tool => ({id:`ecosystem-${tool.id}`, name:tool.name, group:'工具', description:`${tool.engine} · ${tool.description}`, aliases:tool.aliases, keywords:tool.keywords, target:{page:'他山科研生态',tool:tool.id}})),
   ...RESOURCE_ENTRIES,
   { id:'admin', name:'站长页', group:'功能', description:'打开站长管理后台', aliases:['管理后台','站长后台','admin'], keywords:['运营','管理'], admin:true, target:{page:'站长页'} },
   { id:'community-review', name:'社区评估题审核', group:'功能', description:'打开社区评估题审核页面', aliases:['评估题审核','社区审核'], keywords:['评测','审核'], admin:true, target:{page:'社区评估题审核'} },
