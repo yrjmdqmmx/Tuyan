@@ -2,6 +2,7 @@
 
 import html
 import json
+import math
 from pathlib import Path
 
 import panel as pn
@@ -10,6 +11,21 @@ from bokeh.plotting import figure
 from bokeh.resources import INLINE
 
 pn.extension()
+
+
+def histogram_bounds(lo, hi):
+    # Keep at least 128 ULPs across narrow ranges so up to 50 bins remain
+    # representable. A constant column also gets a readable 0.5 minimum pad.
+    padding = max(
+        max(abs(lo), abs(hi)) * 2.220446049250313e-16 * 128, math.ulp(0.0) * 128
+    )
+    if lo == hi:
+        padding = max(padding, 0.5)
+    if hi - lo < padding:
+        lo, hi = lo - padding, hi + padding
+    return lo, hi
+
+
 request = json.loads(Path("request.json").read_text())
 data = request["data"]
 o = request.get("options", {})
@@ -24,12 +40,26 @@ x = o["x"]
 y = o.get("y", x)
 if y not in numeric:
     y = x
+group_key = o.get("group")
+# Carry server-assigned IDs into JavaScript: Python and JS stringify numeric
+# and null values differently, so display labels must never be filter keys.
+group_values = (
+    {json.dumps(r.get(group_key), ensure_ascii=False): r.get(group_key) for r in data}
+    if group_key
+    else {}
+)
+group_keys = sorted(group_values)
+group_ids = {key: i for i, key in enumerate(group_keys)}
+row_groups = [
+    group_ids[json.dumps(r.get(group_key), ensure_ascii=False)] if group_key else 0
+    for r in data
+]
 raw = ColumnDataSource({key: [r.get(key) for r in data] for key in columns})
 chart = o.get("chart", "scatter")
 selected = sorted(
     [
-        (r[x], r.get(y))
-        for r in data
+        (r[x], r.get(y), row_groups[i])
+        for i, r in enumerate(data)
         if type(r.get(x)) in (int, float)
         and (chart == "histogram" or type(r.get(y)) in (int, float))
     ],
@@ -38,14 +68,23 @@ selected = sorted(
 source = ColumnDataSource(
     {"x": [r[0] for r in selected], "y": [r[1] for r in selected]}
 )
+series = {}
+for vx, vy, group_id in selected:
+    series.setdefault(group_id, {"x": [], "y": []})
+    series[group_id]["x"].append(vx)
+    series[group_id]["y"].append(vy)
+line_source = ColumnDataSource(
+    {
+        "xs": [values["x"] for values in series.values()],
+        "ys": [values["y"] for values in series.values()],
+    }
+)
 hist_data = {"left": [], "right": [], "top": []}
 if chart == "histogram" and selected:
-    lo, hi = selected[0][0], selected[-1][0]
-    if lo == hi:
-        lo, hi = lo - 0.5, hi + 0.5
+    lo, hi = histogram_bounds(selected[0][0], selected[-1][0])
     width = (hi - lo) / 20
     counts = [0] * 20
-    for value, _ in selected:
+    for value, _, _ in selected:
         counts[min(19, max(0, int((value - lo) / width)))] += 1
     hist_data = {
         "left": [lo + i * width for i in range(20)],
@@ -74,8 +113,13 @@ points = p.scatter(
     color="#3c7c78",
     visible=chart == "scatter",
 )
-line = p.line(
-    "x", "y", source=source, line_width=2, color="#3c7c78", visible=chart == "line"
+line = p.multi_line(
+    "xs",
+    "ys",
+    source=line_source,
+    line_width=2,
+    color="#3c7c78",
+    visible=chart == "line",
 )
 bars = p.quad(
     left="left",
@@ -112,12 +156,17 @@ bins = Slider(
     **control_size,
     disabled=chart != "histogram",
 )
-group_key = o.get("group")
-groups = sorted(set(str(r.get(group_key, "")) for r in data))[:100] if group_key else []
 group_select = Select(
     title="分组筛选",
     value="__all__",
-    options=[("__all__", "全部")] + [(str(i), v) for i, v in enumerate(groups)],
+    options=[("__all__", "全部")]
+    + [
+        (
+            str(group_ids[key]),
+            "（空值）" if group_values[key] is None else str(group_values[key]),
+        )
+        for key in group_keys[:100]
+    ],
     **control_size,
 )
 status = Div(
@@ -127,6 +176,7 @@ callback = CustomJS(
     args=dict(
         raw=raw,
         source=source,
+        line_source=line_source,
         hist=hist,
         p=p,
         xaxis=p.xaxis[0],
@@ -142,28 +192,37 @@ callback = CustomJS(
         gs=group_select,
         status=status,
         group_key=group_key,
-        groups=groups,
+        row_groups=row_groups,
     ),
     code="""
 const d=raw.data, keys=Object.keys(d), n=d[keys[0]].length;
 const term=search.value_input.trim().toLocaleLowerCase(), pairs=[];
 for(let i=0;i<n;i++) {
   if(term && !keys.some(k=>String(d[k][i]??'').toLocaleLowerCase().includes(term))) continue;
-  if(group_key && gs.value!=='__all__' && String(d[group_key][i]??'')!==groups[Number(gs.value)]) continue;
+  if(group_key && gs.value!=='__all__' && row_groups[i]!==Number(gs.value)) continue;
   const x=d[xs.value][i], y=d[ys.value][i];
   if(typeof x!=='number'||!Number.isFinite(x)) continue;
   if(cs.value!=='histogram' && (typeof y!=='number'||!Number.isFinite(y))) continue;
-  pairs.push([x,y]);
+  pairs.push([x,y,row_groups[i]]);
 }
 pairs.sort((a,b)=>a[0]-b[0]);
 source.data={x:pairs.map(v=>v[0]),y:pairs.map(v=>v[1])}; source.change.emit();
+const series=new Map();
+for(const [x,y,group] of pairs) {
+  if(!series.has(group)) series.set(group,{x:[],y:[]});
+  series.get(group).x.push(x); series.get(group).y.push(y);
+}
+line_source.data={xs:[...series.values()].map(v=>v.x),ys:[...series.values()].map(v=>v.y)};
+line_source.change.emit();
 const isHist=cs.value==='histogram';
 points.visible=cs.value==='scatter'; line.visible=cs.value==='line'; bars.visible=isHist;
 ys.disabled=isHist; bins.disabled=!isHist;
 xaxis.axis_label=xs.value; yaxis.axis_label=isHist?'计数':ys.value;
 if(isHist && pairs.length) {
   let lo=pairs[0][0],hi=pairs[pairs.length-1][0];
-  if(lo===hi){lo-=0.5;hi+=0.5;}
+  let padding=Math.max(Math.max(Math.abs(lo),Math.abs(hi))*Number.EPSILON*128,Number.MIN_VALUE*128);
+  if(lo===hi) padding=Math.max(padding,0.5);
+  if(hi-lo<padding){lo-=padding;hi+=padding;}
   const size=(hi-lo)/bins.value, top=Array(bins.value).fill(0);
   for(const v of pairs) top[Math.min(bins.value-1,Math.max(0,Math.floor((v[0]-lo)/size)))]++;
   hist.data={left:top.map((_,i)=>lo+i*size),right:top.map((_,i)=>lo+(i+1)*size),top};

@@ -12,6 +12,8 @@ Upstreams: [Semiotic](https://github.com/nteract/semiotic), [VizNoir](https://gi
 
 DataViz's upstream service executes arbitrary Python and exposes editing/publishing. That server is **not** started here. This adapter invokes the real upstream syntax/import/security/extension validation and module executor on `dashboard_template.py`; it reads client data from a private JSON file. Users cannot supply Python, JavaScript, renderer arguments, local paths, remote URLs, or packages. Dashboard controls are fixed Bokeh CustomJS: numeric X/Y selection, chart switching, full-text filtering, group filtering (first 100 distinct groups), and histogram bin count. The HTML works without a Python server or network connection. Controls wrap with Panel FlexBox and the plot stretches to the iframe width; a 730-pixel embed uses three control columns, while a 300-pixel embed stacks them without horizontal scrolling.
 
+Group filters use server-assigned IDs, so numeric formatting and null values cannot change which rows match in JavaScript. Line charts draw each selected group as a separate series, including after filtering or switching chart type. Histogram bounds use representable, scale-relative padding for constant or extremely narrow ranges; both initial Python rendering and browser updates handle the accepted numeric range through ±1e100.
+
 ## Run locally
 
 From this directory, with Python 3.12 and Node 24 or later:
@@ -67,6 +69,8 @@ Sankey uses `x` = source, `group` = target, `y` = positive flow value. It accept
 
 VizNoir cameras: `isometric` (default), `top`, `front`, `right`, `left`, `back`, `bottom`. Colormaps: `Viridis` (default), `Plasma`, `Cool to Warm`. The optional field is an exact scalar-array name, with point/cell association detected from the mesh. Omission selects the first finite scalar array. Geometry without scalar arrays receives a clearly reported, generated `Elevation` field. This is a geometric coordinate gradient, not measured simulation data. The built-in sphere is explicitly a synthetic sample.
 
+Legacy VTK input loads every `SCALARS` declaration before field selection. The private normalized dataset retains only the selected scalar in its correct point/cell association, preventing VizNoir's point-first name lookup from choosing a same-named array in the other association. `availableFields` still reports all eligible original scalar arrays; if both associations have a scalar with the exact same name, the existing point-first selection rule applies.
+
 Mesh support is deliberately narrower than upstream VizNoir: legacy ASCII `.vtk` POLYDATA / UNSTRUCTURED_GRID, uncompressed ASCII XML `.vtu` / `.vtp`, and ASCII or binary `.stl`. XML entities, references, compressed/binary/appended arrays and all other formats are rejected. Export with ASCII/no compression. Parsed meshes require 1–1,000,000 points and cells, finite coordinate bounds and finite scalar ranges. This is a bounded surface render, not the full upstream CFD/animation/pipeline editor.
 
 Success:
@@ -89,4 +93,4 @@ Display HTML in an iframe sandbox with `allow-scripts` **without** `allow-same-o
 
 ## Verification boundary
 
-Native verification covers actual upstream output for three tools, changed data/output, all Semiotic chart modes, DataViz offline interaction, uploaded VTK, invalid files, strict auth/body/schema, subprocess timeout and descendant cleanup, diagnostic bounds, disconnect handling and concurrency cleanup. No model inference is used. Docker is not started automatically by these tests; Linux image build, OSMesa rendering and runtime resource controls must be checked on a Docker-capable staging host before production publication.
+Native verification covers actual upstream output for three tools, changed data/output, all Semiotic chart modes, DataViz offline interaction, uploaded VTK/VTP/VTU/STL, second legacy scalar selection in point/cell data, same-name array collisions, extreme histogram ranges, group filters and separate line series, invalid files, strict auth/body/schema, subprocess timeout and descendant cleanup, diagnostic bounds, disconnect handling and concurrency cleanup. Regression tests run the actual shipped CustomJS callbacks in Node and inspect real DataViz-generated Bokeh models. No model inference is used. Docker is not started automatically by these tests; Linux image build, OSMesa rendering and runtime resource controls must be checked on a Docker-capable staging host before production publication.

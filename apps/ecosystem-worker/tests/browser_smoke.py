@@ -39,7 +39,7 @@ with sync_playwright() as playwright:
     page.locator("input[type=text]").press("Enter")
     page.locator("select").nth(2).select_option("折线图")
     page.wait_for_function(
-        "[...Bokeh.documents[0]._all_models.values()].some(m=>m.type==='GlyphRenderer' && m.glyph.type==='Line' && m.visible)"
+        "[...Bokeh.documents[0]._all_models.values()].some(m=>m.type==='GlyphRenderer' && m.glyph.type==='MultiLine' && m.visible)"
     )
     page.locator("select").first.select_option("value")
     # Exercise the result-pane widths, including the narrow mobile iframe.

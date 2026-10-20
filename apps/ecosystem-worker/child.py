@@ -37,6 +37,14 @@ async def viznoir(request):
         sphere.SetPhiResolution(48)
         sphere.Update()
         dataset = sphere.GetOutput()
+    elif Path(request["_mesh"]).suffix == ".vtk":
+        # Legacy readers otherwise load only the first SCALARS declaration.
+        # Keep every scalar available for explicit field selection.
+        reader = vtk.vtkGenericDataObjectReader()
+        reader.SetFileName(request["_mesh"])
+        reader.ReadAllScalarsOn()
+        reader.Update()
+        dataset = reader.GetOutput()
     else:
         dataset = read_dataset(request["_mesh"])
     if (
@@ -79,6 +87,14 @@ async def viznoir(request):
             "Requested scalar field does not exist; omit field to select automatically."
         )
     association = matching[0][1]
+    attrs = dataset.GetPointData() if association == "POINTS" else dataset.GetCellData()
+    # VizNoir resolves names point-first, even when association is supplied.
+    # Keep only the chosen scalar in the private normalized dataset so a
+    # same-named array in the other association cannot silently win.
+    chosen = attrs.GetArray(field)
+    dataset.GetPointData().Initialize()
+    dataset.GetCellData().Initialize()
+    attrs.SetScalars(chosen)
     # Normalize to a private, server-named VTK file before the upstream compiler.
     writer = vtk.vtkDataSetWriter()
     writer.SetFileName(str(Path("normalized.vtk").resolve()))
