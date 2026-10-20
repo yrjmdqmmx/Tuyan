@@ -42,7 +42,20 @@ with sync_playwright() as playwright:
         "[...Bokeh.documents[0]._all_models.values()].some(m=>m.type==='GlyphRenderer' && m.glyph.type==='Line' && m.visible)"
     )
     page.locator("select").first.select_option("value")
-    page.screenshot(path="smoke-output/dataviz-browser.png", full_page=True)
+    # Exercise the result-pane widths, including the narrow mobile iframe.
+    for width in [730, 300]:
+        page.set_viewport_size({"width": width, "height": 1050})
+        page.wait_for_function(
+            "document.body.scrollWidth <= document.body.clientWidth + 1"
+        )
+        geometry = page.locator("select").evaluate_all(
+            "es => es.map(e => ({right:e.getBoundingClientRect().right, width:e.getBoundingClientRect().width}))"
+        )
+        assert all(0 < item["width"] and item["right"] <= width for item in geometry), (
+            geometry
+        )
+        page.screenshot(path=f"smoke-output/dataviz-{width}px.png", full_page=True)
+
     print(
         json.dumps(
             {

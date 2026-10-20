@@ -10,7 +10,7 @@ Private HTTP worker for the Tuyan gateway. It actually invokes three pinned upst
 
 Upstreams: [Semiotic](https://github.com/nteract/semiotic), [VizNoir](https://github.com/kimimgo/viznoir), [DataViz MCP](https://github.com/SuMayaBee/DataViz-MCP). The published packages and installed source were inspected on 2026-10-20. `requirements.lock` pins every Python transitive dependency with hashes; `node/package-lock.json` pins the Node graph. The nested Node project is deliberately outside the root `apps/*` pnpm workspace package pattern.
 
-DataViz's upstream service executes arbitrary Python and exposes editing/publishing. That server is **not** started here. This adapter invokes the real upstream syntax/import/security/extension validation and module executor on `dashboard_template.py`; it reads client data from a private JSON file. Users cannot supply Python, JavaScript, renderer arguments, local paths, remote URLs, or packages. Dashboard controls are fixed Bokeh CustomJS: numeric X/Y selection, chart switching, full-text filtering, group filtering (first 100 distinct groups), and histogram bin count. The HTML works without a Python server or network connection.
+DataViz's upstream service executes arbitrary Python and exposes editing/publishing. That server is **not** started here. This adapter invokes the real upstream syntax/import/security/extension validation and module executor on `dashboard_template.py`; it reads client data from a private JSON file. Users cannot supply Python, JavaScript, renderer arguments, local paths, remote URLs, or packages. Dashboard controls are fixed Bokeh CustomJS: numeric X/Y selection, chart switching, full-text filtering, group filtering (first 100 distinct groups), and histogram bin count. The HTML works without a Python server or network connection. Controls wrap with Panel FlexBox and the plot stretches to the iframe width; a 730-pixel embed uses three control columns, while a 300-pixel embed stacks them without horizontal scrolling.
 
 ## Run locally
 
@@ -33,7 +33,7 @@ uv pip install --python .venv/bin/python -r requirements-test.txt
 .venv/bin/python tests/browser_smoke.py
 ```
 
-`tests/smoke.py` writes real rendered artifacts to ignored `smoke-output/`; it compares changed-input bytes for all three engines, and exercises a real uploaded mesh. The browser smoke launches an isolated headless Chrome (override `CHROME_BIN`), verifies dashboard controls update Bokeh models, and checks there are no page errors or HTTP(S) resource requests. The smoke outputs contain synthetic data only. On macOS, first VTK import may spend tens of seconds in OS dylib signature validation; it can exceed the request timeout on a cold cache. Linux is the supported deployment target; native macOS smoke does not prove the container backend.
+`tests/smoke.py` writes real rendered artifacts to ignored `smoke-output/`; it compares changed-input bytes for all three engines, and exercises a real uploaded mesh. The browser smoke launches an isolated headless Chrome (override `CHROME_BIN`), verifies dashboard controls update Bokeh models, and checks 730/300-pixel layouts have no horizontal overflow or clipped controls, page errors, or HTTP(S) resource requests. The smoke outputs contain synthetic data only. On macOS, first VTK import may spend tens of seconds in OS dylib signature validation; it can exceed the request timeout on a cold cache. Linux is the supported deployment target; native macOS smoke does not prove the container backend.
 
 ## HTTP contract
 

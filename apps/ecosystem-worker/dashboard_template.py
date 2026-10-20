@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 import panel as pn
-from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS, Div, Select, Slider, TextInput
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
@@ -55,9 +54,10 @@ if chart == "histogram" and selected:
     }
 hist = ColumnDataSource(hist_data)
 p = figure(
-    width=900,
-    height=500,
-    title=o.get("title", "他山科研生态 · DataViz MCP"),
+    sizing_mode="stretch_width",
+    min_width=200,
+    height=420,
+    title=None,
     x_axis_label=x,
     y_axis_label=y,
     tools="pan,wheel_zoom,box_zoom,reset,save",
@@ -87,24 +87,29 @@ bars = p.quad(
     line_color="white",
     visible=chart == "histogram",
 )
-x_select = Select(title="X 字段", value=x, options=numeric, width=200)
+control_size = dict(sizing_mode="stretch_width", min_width=140, margin=0)
+x_select = Select(title="X 字段", value=x, options=numeric, **control_size)
 y_select = Select(
-    title="Y 字段", value=y, options=numeric, width=200, disabled=chart == "histogram"
+    title="Y 字段",
+    value=y,
+    options=numeric,
+    disabled=chart == "histogram",
+    **control_size,
 )
 chart_select = Select(
     title="图型",
     value=o.get("chart", "scatter"),
     options=[("scatter", "散点图"), ("line", "折线图"), ("histogram", "直方图")],
-    width=180,
+    **control_size,
 )
-search = TextInput(title="全文筛选（各列匹配）", value="", width=350)
+search = TextInput(title="全文筛选（各列匹配）", value="", **control_size)
 bins = Slider(
     title="直方图区间数",
     start=5,
     end=50,
     value=20,
     step=1,
-    width=250,
+    **control_size,
     disabled=chart != "histogram",
 )
 group_key = o.get("group")
@@ -113,9 +118,11 @@ group_select = Select(
     title="分组筛选",
     value="__all__",
     options=[("__all__", "全部")] + [(str(i), v) for i, v in enumerate(groups)],
-    width=200,
+    **control_size,
 )
-status = Div(text=f"{len(selected)} / {len(data)} 行", width=850)
+status = Div(
+    text=f"{len(selected)} / {len(data)} 行", sizing_mode="stretch_width", margin=0
+)
 callback = CustomJS(
     args=dict(
         raw=raw,
@@ -170,18 +177,42 @@ for widget in [x_select, y_select, chart_select, bins, group_select]:
     widget.js_on_change("value", callback)
 if chart == "histogram":
     p.yaxis[0].axis_label = "计数"
-layout = column(
-    Div(
-        text="<h2>"
-        + html.escape(o.get("title", "他山科研生态 · DataViz MCP"))
-        + "</h2><p>切换字段、图型，或输入文本筛选数据。所有交互均在当前页面本地执行。</p>"
-    ),
-    row(x_select, y_select, chart_select),
-    row(search, group_select, bins),
-    status,
-    p,
+# FlexBox wraps controls at the actual iframe width; no desktop-sized row
+# or canvas can impose a minimum horizontal scroll area on a narrow embed.
+controls = pn.FlexBox(
+    *[
+        pn.Column(
+            pn.pane.Bokeh(widget, sizing_mode="stretch_width", margin=0),
+            width=190,
+            min_width=140,
+            margin=0,
+            styles={"flex": "1 1 190px", "min-width": "140px", "max-width": "100%"},
+        )
+        for widget in [x_select, y_select, chart_select, search, group_select, bins]
+    ],
+    sizing_mode="stretch_width",
+    flex_wrap="wrap",
+    align_items="start",
+    gap="12px",
+    margin=0,
 )
-pn.pane.Bokeh(layout).save(
+layout = pn.Column(
+    pn.pane.HTML(
+        "<h2 style='font-size:18px;margin:0 0 8px;overflow-wrap:anywhere'>"
+        + html.escape(o.get("title", "他山科研生态 · DataViz MCP"))
+        + "</h2><p style='margin:0;line-height:1.5'>切换字段、图型，或输入文本筛选数据。所有交互均在当前页面本地执行。</p>",
+        sizing_mode="stretch_width",
+        margin=0,
+    ),
+    controls,
+    pn.pane.Bokeh(status, sizing_mode="stretch_width", margin=0),
+    pn.pane.Bokeh(p, sizing_mode="stretch_width", min_width=200, margin=0),
+    sizing_mode="stretch_width",
+    min_width=200,
+    margin=12,
+    styles={"gap": "12px", "box-sizing": "border-box"},
+)
+layout.save(
     "output.html", resources=INLINE, title=o.get("title", "DataViz MCP"), embed=False
 )
 path = Path("output.html")
