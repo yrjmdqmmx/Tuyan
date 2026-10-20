@@ -13,11 +13,11 @@ function extract(name: string) {
   const end = rest.slice(1).search(/\n(?:export )?(?:async )?function |\n(?:export )?(?:const|let|type) /)
   return rest.slice(0, end < 0 ? undefined : end + 1)
 }
-function fixture() {
+function fixture(purged:any[] = []) {
   const own = Array.from({length:253}, (_,i)=>({_id:`job-${String(i).padStart(3,'0')}`,createdAt:Math.floor(i/3),...(i%2 ? {user_id:'alice'} : {userId:'alice'})}))
   const rows = [...own,{_id:'other-account',userId:'bob',user_id:'alice',createdAt:10000},{_id:'same-email',userId:'bob',userEmail:'alice@example.test',createdAt:10001}]
-  const jobs = memoryDb({ jobs: rows }).collection('jobs')
-  const context = vm.createContext({jobs,clamp:(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n)),publicJob:async(row:any)=>({id:row._id}),ok:(body:any)=>({code:0,...body}),fail:(error:string,code:number)=>({error,code})})
+  const db = memoryDb({ jobs: rows, paperbanana_task_deletions: purged }), jobs=db.collection('jobs')
+  const context = vm.createContext({db,jobs,clamp:(n:number,min:number,max:number)=>Math.max(min,Math.min(max,n)),publicJob:async(row:any)=>({id:row._id}),ok:(body:any)=>({code:0,...body}),fail:(error:string,code:number)=>({error,code})})
   vm.runInContext(stripTypeScriptTypes([extract('userJobs'),extract('accountIdQuery')].join('\n')),context)
   return {run:(body:any)=>context.userJobs(body),own}
 }
@@ -38,3 +38,13 @@ test('invalid offsets fail rather than silently skipping or repeating account hi
   const {run}=fixture();for(const offset of [-1,1.5,100001,'bad'])assert.equal((await run({userId:'alice',offset})).code,400)
   assert.equal((await run({userId:''})).code,400)
 })
+
+
+test('permanent deletion markers hide jobs throughout pagination without hiding another account marker target',async()=>{
+  const {run,own}=fixture([{_id:'remove',userId:'alice',jobId:'job-252',complete:false},{_id:'foreign-marker',userId:'bob',jobId:'job-251',complete:true}]);
+  const ids:string[]=[];let offset:number|null=0;
+  while(offset!==null){const page=await run({userId:'alice',limit:25,offset});assert.equal(page.code,0);ids.push(...page.jobs.map((j:any)=>j.id));offset=page.nextOffset}
+  assert.equal(ids.length,252);assert.equal(new Set(ids).size,252);
+  assert.deepEqual(new Set(ids),new Set(own.filter(job=>job._id!=='job-252').map(job=>job._id)));
+  assert.equal(ids[0],'job-251');
+});

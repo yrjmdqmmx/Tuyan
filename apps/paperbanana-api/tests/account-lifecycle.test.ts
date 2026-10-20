@@ -31,7 +31,7 @@ function fixture({ jobs = [], tombstones = [], uploads = [], objects = [] } : an
     async deleteFile(key: string) { if (key === failureKey) throw new Error('mock OSS outage'); deleted.push(key); files.delete(key) },
   }
   const materialFilesService=createMaterialFiles({db,bucket:()=>bucket,ownerPrefix:o=>o.userId,assertOwner:async()=>{}})
-  const context = vm.createContext({materialFilesService,
+  const context = vm.createContext({db,materialFilesService,
     Date: Clock, console, accountDeletions: db.collection('paperbanana_account_deletions'), jobs: db.collection('paperbanana_jobs'),
     feedback: db.collection('feedback'), referenceUploadState: db.collection('paperbanana_reference_upload_state'),
     jobAdmission: { freezeOwners() {} }, objectStorage: { bucket: () => bucket }, bucketName: 'fake',
@@ -66,10 +66,12 @@ test('same-email new identity survives old identity deletion, acknowledgement an
   await f.db.collection('feedback').insertOne({ _id: 'new-feedback', userId: 'new-id', userEmail: 'same@example.test' })
   for(const userId of ['old-id','new-id']){await f.db.collection('paperbanana_material_files').insertOne({_id:userId,userId,status:'uploaded',expiresAt:new Date('2099-01-01')});await f.db.collection('paperbanana_material_reads').insertOne({_id:userId,userId});}
   await f.db.collection('submissions').insertOne({ _id: 'old-submission', userId: 'old-id' })
+  for (const userId of ['old-id','new-id']) await f.db.collection('paperbanana_task_deletions').insertOne({_id:userId,userId,jobId:`deleted-${userId}`,complete:true})
   assert.equal((await f.run()).phase, 'awaiting_auth')
   assert.deepEqual(f.db.collection('paperbanana_jobs').rows, [newJob])
   assert.equal(f.db.collection('feedback').rows.length, 1)
   assert.equal(f.db.collection('submissions').rows.length, 0)
+  assert.deepEqual(f.db.collection('paperbanana_task_deletions').rows.map((row:any)=>row.userId),['new-id'])
   assert.deepEqual(f.db.collection('paperbanana_material_files').rows.map((r:any)=>r.userId),['new-id']);assert.deepEqual(f.db.collection('paperbanana_material_reads').rows.map((r:any)=>r.userId),['new-id'])
   assert.equal((await f.context.completeAccountDeletion(f.body)).phase, 'completed')
   await f.context.sweepDeletedAccountObjects()
