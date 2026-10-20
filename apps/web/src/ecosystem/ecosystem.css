@@ -2,17 +2,38 @@
 .te-intro { padding: 14px 0 30px; }
 .te-root h2 { margin: 0; font-size: 25px; line-height: 1.5; font-weight: 650; letter-spacing: -.03em; }
 .te-intro p, .te-tool-heading p { margin: 8px 0 0; color: var(--tw-muted, #737b73); font-size: 14px; line-height: 1.8; }
-.te-catalog { border-top: 1px solid var(--tw-border, #e3e7e1); }
-.te-tool { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 30px 10px; border-bottom: 1px solid var(--tw-border, #e3e7e1); }
-.te-tool-symbol { display: grid; place-items: center; width: 96px; height: 108px; background: #edf2ed; border-radius: 16px; color: #42634f; }
-.te-tool-viznoir .te-tool-symbol { background: #edf0f5; color: #506382; }
-.te-tool-dataviz .te-tool-symbol { background: #f4f0e7; color: #806c43; }
-.te-engine { font-size: 12px; letter-spacing: .02em; color: var(--tw-muted, #737b73); }
+.te-catalog { display: grid; gap: 18px; }
+.te-tool { --te-accent: #37695a; --te-tint: #edf4ef; display: grid; grid-template-columns: minmax(220px, 27%) minmax(0, 1fr) auto; gap: 28px; align-items: center; min-width: 0; padding: 12px 26px 12px 12px; border: 1px solid #e3e8e1; border-radius: 20px; background: #fff; box-shadow: 0 3px 14px #263d3010; transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+.te-tool-viznoir { --te-accent: #496a80; --te-tint: #edf2f7; }
+.te-tool-dataviz { --te-accent: #85704c; --te-tint: #f5f2e9; }
+.te-tool:focus-within { border-color: #91aa98; }
+.te-tool-preview { position: relative; display: grid; place-items: center; height: 180px; min-width: 0; overflow: hidden; border-radius: 12px; background: var(--te-tint); isolation: isolate; }
+.te-preview-sheet { width: calc(100% - 34px); border-radius: 6px; background: #fff; box-shadow: 0 8px 20px #334b3820, 0 1px 3px #334b3810; transform: rotate(-4deg); transition: transform .35s ease; overflow: hidden; }
+.te-preview-sheet img { display: block; width: 100%; height: auto; }
+.te-tool-dataviz .te-preview-sheet { transform: rotate(3deg); }
+.te-tool-viznoir .te-tool-preview { background: #192930; }
+.te-tool-viznoir .te-preview-sheet { width: 100%; border-radius: 0; background: none; box-shadow: none; transform: none; }
+.te-preview-caption { position: absolute; bottom: 9px; left: 12px; color: #647c6b; font-size: 10px; line-height: 1.5; letter-spacing: .03em; }
+.te-tool-viznoir .te-preview-caption { color: #b5c9d0; }
+.te-tool-dataviz .te-preview-caption { color: #8a7c62; }
+.te-tool-copy { min-width: 0; padding: 10px 0; }
+.te-engine { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 550; letter-spacing: .025em; color: var(--te-accent, #637463); }
 .te-root h3 { font-size: 18px; line-height: 1.5; font-weight: 620; margin: 4px 0 7px; }
-.te-tool-copy > p { margin: 0; font-size: 14px; color: var(--tw-muted, #737b73); line-height: 1.8; }
-.te-formats { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-top: 14px; color: #697568; font-size: 11px; }
-.tw-shell .te-open { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border: 1px solid #dce4da; border-radius: 9px; color: #315647; font-size: 13px; white-space: nowrap; }
-.tw-shell .te-open:hover { background: #edf2ed; border-color: #b9cbbd; }
+.te-root .te-tool-copy h3 { margin: 9px 0 8px; font-size: 21px; letter-spacing: -.025em; line-height: 1.4; }
+.te-tool-copy > p { max-width: 430px; margin: 0; font-size: 13px; color: #687365; line-height: 1.8; text-wrap: pretty; }
+.te-formats { display: flex; align-items: center; flex-wrap: wrap; gap: 7px 10px; margin-top: 19px; color: #697568; font-size: 11px; line-height: 1.5; }
+.te-formats > svg { color: #a4b0a0; flex-shrink: 0; }
+.te-formats > span:last-child { color: var(--te-accent); }
+.tw-shell .te-open { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 44px; padding: 11px 16px; border: 1px solid #dce5da; border-radius: 11px; color: #315647; background: #f3f6f1; font-size: 12px; font-weight: 550; white-space: nowrap; transition: color .2s ease, background .2s ease, border-color .2s ease; }
+.te-open svg { transition: transform .2s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .te-tool:hover { border-color: #bfcfc1; box-shadow: 0 10px 28px #263d3015; transform: translateY(-2px); }
+  .te-tool:hover .te-preview-sheet { transform: rotate(0deg) scale(1.025); }
+  .te-tool-viznoir:hover .te-preview-sheet { transform: scale(1.025); }
+  .tw-shell .te-open:hover { color: #fff; background: #315647; border-color: #315647; }
+  .te-open:hover svg { transform: translate(2px, -2px); }
+}
+@media (prefers-reduced-motion: reduce) { .te-tool, .te-preview-sheet, .tw-shell .te-open, .te-open svg { transition: none; } .te-tool:hover, .te-tool:hover .te-preview-sheet, .te-open:hover svg { transform: none; } }
 .te-attribution { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: #81887e; line-height: 1.8; margin: 24px 0 0; }
 .te-attribution a { color: inherit; text-underline-offset: 3px; }
 .te-workbench-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 25px; }
@@ -62,7 +83,7 @@
 .te-html-result { display: block; width: 100%; min-height: 760px; border: 1px solid #e5e9e1; border-radius: 9px; background: #fff; }
 .te-result-meta { font-size: 11px; line-height: 1.8; color: #899081; margin: 12px 0 0; }
 .te-root :is(button, input, select, textarea, a, summary):focus-visible { outline: 2px solid #668768; outline-offset: 3px; }
-@media (max-width: 1100px) { .te-workbench { grid-template-columns: minmax(260px, 300px) minmax(0, 1fr); gap: 20px; } .te-tool { gap: 20px; } }
+@media (max-width: 1100px) { .te-workbench { grid-template-columns: minmax(260px, 300px) minmax(0, 1fr); gap: 20px; } .te-tool { grid-template-columns: 190px minmax(0, 1fr); gap: 0 22px; padding-right: 20px; } .te-tool-preview { grid-row: 1 / 3; height: 100%; min-height: 200px; } .te-tool-copy { padding: 10px 0; } .te-tool .te-open { justify-self: start; margin: 2px 0 10px; } .te-root .te-tool-copy h3 { font-size: 19px; } .te-formats { margin-top: 12px; } }
 @media (max-width: 900px) { .te-workbench { grid-template-columns: 1fr; } .te-input { display: block; } .te-empty-result { min-height: 270px; } }
 @media (max-width: 900px) and (min-width: 601px) { .te-html-result { min-height: 840px; } }
-@media (max-width: 600px) { .te-intro { padding: 5px 0 20px; } .te-root h2 { font-size: 21px; } .te-intro p, .te-tool-heading p { font-size: 13px; } .te-tool { grid-template-columns: 54px minmax(0, 1fr); gap: 12px 16px; padding: 22px 0; } .te-tool-symbol { width: 54px; height: 64px; border-radius: 10px; align-self: start; } .te-tool-symbol svg { width: 25px; } .te-root .te-tool-copy h3 { font-size: 16px; } .te-tool-copy p { font-size: 12px; } .te-tool .te-open { grid-column: 2; justify-self: start; font-size: 12px; padding: 8px 11px; } .te-formats { margin-top: 10px; font-size: 10px; gap: 8px 14px; } .te-workbench-header { flex-wrap: wrap; margin-bottom: 20px; } .te-tool-heading { display: block; } .te-tool-heading > a { display: inline-flex; padding-top: 8px; } .te-input { padding: 16px; } .te-html-result { min-height: 1080px; } }
+@media (max-width: 600px) { .te-intro { padding: 5px 0 24px; } .te-root h2 { font-size: 21px; } .te-intro p, .te-tool-heading p { font-size: 13px; } .te-catalog { gap: 20px; } .te-tool { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 10px; border-radius: 18px; } .te-tool-preview { grid-row: auto; height: 170px; min-height: 0; } .te-preview-sheet { width: 230px; max-width: calc(100% - 44px); } .te-tool-viznoir .te-preview-sheet { width: 280px; max-width: 100%; } .te-tool-copy { padding: 20px 12px 18px; } .te-root .te-tool-copy h3 { font-size: 20px; margin: 8px 0; } .te-tool-copy p { font-size: 13px; } .te-engine { font-size: 11px; } .te-tool .te-open { justify-self: stretch; justify-content: space-between; margin: 0 12px 12px; padding: 11px 14px; } .te-formats { margin-top: 16px; gap: 8px 10px; } .te-workbench-header { flex-wrap: wrap; margin-bottom: 20px; } .te-tool-heading { display: block; } .te-tool-heading > a { display: inline-flex; padding-top: 8px; } .te-input { padding: 16px; } .te-html-result { min-height: 1080px; } }

@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Box, ChartNoAxesCombined, Download, FlaskConical, Layers3, LoaderCircle, Upload } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Box, ChartNoAxesCombined, Download, FlaskConical, Layers3, LoaderCircle, Upload } from 'lucide-react';
 import { API_BASE_DEFAULT } from '../config.js';
 import { exampleTable, MAX_FILE_BYTES, parseTable, readScientificFile } from './data.js';
 import { downloadResult, isolatedHtml, renderEcosystem, RESULT_MIME } from './client.js';
@@ -9,6 +9,11 @@ const TOOLS = [
   { id: 'viznoir', name: '三维科研渲染', engine: 'VizNoir', icon: Box, description: '呈现科学数据的空间形态，用字段、色标与视角表达研究结果。', input: 'VTK / VTU / VTP / STL', output: 'PNG 图片', source: 'https://github.com/kimimgo/viznoir', catalog: 'https://world.tashan.chat/mcphub/kimimgo-viznoir', license: 'MIT' },
   { id: 'dataviz', name: '交互数据探索', engine: 'DataViz', icon: Layers3, description: '用可筛选的交互视图观察数据，在浏览器中探索和分享。', input: 'CSV / JSON', output: '交互 HTML', source: 'https://github.com/SuMayaBee/DataViz-MCP', catalog: 'https://world.tashan.chat/mcphub/pypi-holoviz-mcp-server', license: 'BSD-3-Clause' },
 ];
+const PREVIEWS = {
+  semiotic: new URL('./previews/semiotic.svg', import.meta.url).href,
+  viznoir: new URL('./previews/viznoir.png', import.meta.url).href,
+  dataviz: new URL('./previews/dataviz.png', import.meta.url).href,
+};
 
 export default function ResearchEcosystem({ account = {}, base = API_BASE_DEFAULT, request = renderEcosystem }) {
   const [selected, setSelected] = useState(null);
@@ -17,8 +22,11 @@ export default function ResearchEcosystem({ account = {}, base = API_BASE_DEFAUL
     {!tool ? <>
       <div className="te-intro"><h2>让科研数据，成为看得见的结果</h2><p>精选他山收录的科研工具，在图研中完成可视化与探索。</p></div>
       <div className="te-catalog">{TOOLS.map(({ icon: Icon, ...item }) => <article className={`te-tool te-tool-${item.id}`} key={item.id}>
-        <div className="te-tool-symbol"><Icon size={32} strokeWidth={1.5} aria-hidden="true" /></div>
-        <div className="te-tool-copy"><span className="te-engine">{item.engine}</span><h3>{item.name}</h3><p>{item.description}</p><div className="te-formats"><span>{item.input}</span><span>{item.output}</span></div></div>
+        <div className="te-tool-preview" aria-hidden="true">
+          <div className="te-preview-sheet"><img src={PREVIEWS[item.id]} alt="" width="720" height="440" decoding="async" /></div>
+          <span className="te-preview-caption">示例预览</span>
+        </div>
+        <div className="te-tool-copy"><span className="te-engine"><Icon size={16} strokeWidth={1.6} aria-hidden="true" />{item.engine}</span><h3>{item.name}</h3><p>{item.description}</p><div className="te-formats"><span>{item.input}</span><ArrowRight size={13} aria-hidden="true" /><span>{item.output}</span></div></div>
         <button type="button" className="te-open" onClick={() => setSelected(item.id)} aria-label={`打开${item.name}`}>打开工具<ArrowUpRight size={18} aria-hidden="true" /></button>
       </article>)}</div>
       <p className="te-attribution">工具由原作者开源提供，他山收录，图研适配。各工具保留原项目来源与许可。</p>
