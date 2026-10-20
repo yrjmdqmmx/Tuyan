@@ -1,0 +1,8 @@
+fastapi==0.150.0
+uvicorn==0.54.0
+viznoir==0.10.1
+dataviz-mcp==0.3.1
+# Pin rendering assets and binary readers independently of upstream lower bounds.
+panel==1.9.4
+bokeh==3.9.2
+vtk==9.7.1

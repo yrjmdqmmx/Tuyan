@@ -1,0 +1,1 @@
+{"name":"tuyan-ecosystem-renderer","private":true,"type":"module","engines":{"node":">=24"},"dependencies":{"semiotic":"3.12.1","react":"19.2.4","react-dom":"19.2.4"}}
