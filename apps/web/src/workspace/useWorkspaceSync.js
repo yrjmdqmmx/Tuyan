@@ -1,5 +1,6 @@
+import { purgeLocalTaskAssets } from './workspaceDeletion.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AUTH_BASE_DEFAULT } from '../config.js';
+import { AUTH_BASE_DEFAULT, API_BASE_DEFAULT } from '../config.js';
 import { createWorkspaceCache, createWorkspaceClient, importBrowserDrafts, readLegacy, WorkspaceSyncController, workspaceFingerprint } from './workspaceSync.js';
 import { mergeAccountHistory } from './workspaceHistory.js';
 import { taskHasContent } from './workspaceState.js';
@@ -44,7 +45,7 @@ export default function useWorkspaceSync(userId, baseUrl = AUTH_BASE_DEFAULT) {
     const key=prefix+(userId||'guest');
     const channel=typeof window.BroadcastChannel==='function'?new window.BroadcastChannel('tuyan-workspace-updates-v1'):null;
     const broadcast=message=>{channel?.postMessage(message);try{localStorage.setItem('tuyan-workspace-update',JSON.stringify({...message,nonce:crypto.randomUUID()}));}catch{}};
-    const controller=new WorkspaceSyncController({cache,key,...recoveryIds(key),broadcast,client:userId?createWorkspaceClient({baseUrl,userId}):null,notify:c=>setView({state:c.state,status:c.status,error:c.error,notice:c.notice,importedGuest:c.importedGuest})});
+    const controller=new WorkspaceSyncController({cache,key,purgeLocal:state=>purgeLocalTaskAssets({state,key,cache,baseUrl:API_BASE_DEFAULT,userId}),...recoveryIds(key),broadcast,client:userId?createWorkspaceClient({baseUrl,userId}):null,notify:c=>setView({state:c.state,status:c.status,error:c.error,notice:c.notice,importedGuest:c.importedGuest})});
     current.current=controller;void controller.init();
     const receive=event=>{try{const data=event.type==='storage'?JSON.parse(event.newValue):event.data;void controller.receive(data);}catch{}};
     const storage=event=>{if(event.key==='tuyan-workspace-update')receive(event);};
@@ -62,5 +63,5 @@ export default function useWorkspaceSync(userId, baseUrl = AUTH_BASE_DEFAULT) {
   const setState=useCallback(update=>current.current?.setState(update),[]);
   const flush=useCallback(()=>current.current?.flush(),[]);
   const importGuest=()=>{current.current.importedGuest=guest.fingerprint;current.current.setState(s=>importBrowserDrafts(s,guest.state));};
-  return {...view,historyStatus,historyIssue,loadHistory,setState,saveStatus:labels[view.status],retry:()=>current.current?.sync(),flush,ensureSynced:async()=>{const c=current.current;await c.flush();await c.sync();if(c.status==='pending')await c.sync();if(c.status!=='synced')throw Error(c.error||'请等待账号同步完成再执行。');},canImport:!!(userId&&guest&&view.importedGuest!==guest.fingerprint),importGuest};
+  return {...view,deleteTask:taskId=>current.current.deleteTask(taskId),historyStatus,historyIssue,loadHistory,setState,saveStatus:labels[view.status],retry:()=>current.current?.sync(),flush,ensureSynced:async()=>{const c=current.current;await c.flush();await c.sync();if(c.status==='pending')await c.sync();if(c.status!=='synced')throw Error(c.error||'请等待账号同步完成再执行。');},canImport:!!(userId&&guest&&view.importedGuest!==guest.fingerprint),importGuest};
 }

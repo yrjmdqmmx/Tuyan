@@ -14,15 +14,15 @@ import { ROLE_NAMES, modelOption, selectedModelReference, libraryModelMissingFro
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import TokenDancePanel from '../components/TokenDancePanel.jsx';
 
-export function WorkspaceModelManager({ models, onSignIn, health, onUseApi }) {
+export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, initialView }) {
   const { library, registry, summary, busy, error, ready } = models;
   const [form, setForm] = useState(null), [secret, setSecret] = useState(''), [formError, setFormError] = useState('');
-  const [connectionId, setConnectionId] = useState(''), [role, setRole] = useState('main'), [tab, setTab] = useState('catalog');
+  const [connectionId, setConnectionId] = useState(''), [role, setRole] = useState('main'), [tab, setTab] = useState(['library','connections'].includes(initialView) ? initialView : 'catalog');
   const connection = library.connections.find(c => c.id === connectionId && !c.disabled);
   const visibleModels = library.models.filter(entry => !libraryModelMissingFromCatalog(entry, library, registry));
   const providers = orderModelChannels([...new Set([...Object.keys(registry?.providers || {}), 'custom'])]);
   const [query, setQuery] = useState(''),[editingCustom,setEditingCustom]=useState(null);
-  const [channelOpen,setChannelOpen]=useState(false), [apiSetup,setApiSetup]=useState(false);
+  const [channelOpen,setChannelOpen]=useState(false), [apiSetup,setApiSetup]=useState(initialView === 'api');
   async function saveConnection(e) {
     e.preventDefault(); setFormError('');
     if (!form.label.trim()) { setFormError('请填写连接名称'); return; }

@@ -2,7 +2,7 @@ import { authUserFilter } from './account-verification.js';
 
 // One inventory for hard deletion, migration and execution identity storage.
 export const WORKSPACE_ACCOUNT_COLLECTIONS = Object.freeze([
-  'workspaceMigrationBackups', 'workspaceDocuments', 'workspaceResults',
+  'workspaceTaskDeletions', 'workspaceMigrationBackups', 'workspaceDocuments', 'workspaceResults',
   'workspaceQuotas', 'workspaceModelLibraries', 'workspaceExecutions',
   'workspaceExecutionLocks', 'workspaceHistoryExecutions',
   'accountEmailChanges',

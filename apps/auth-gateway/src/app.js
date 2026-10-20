@@ -1,3 +1,4 @@
+import { createTaskDeletionCleanup } from './workspace-task-deletion.js';
 import { workspaceExecutionMiddleware } from './workspace-execution.js';
 import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
@@ -97,7 +98,7 @@ export function createApp({
       || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
-  app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}) }));
+  app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}), cleanupTask:createTaskDeletionCleanup({backend}) }));
   app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));

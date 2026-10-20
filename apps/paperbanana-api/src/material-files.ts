@@ -125,7 +125,12 @@ export function createMaterialFiles({db,bucket,ownerPrefix,assertOwner}: {db:any
   catch{await db.collection('paperbanana_jobs').updateOne({_id:jobId},{$set:{materialCleanup:{status:'pending',at:new Date()}}}).catch(()=>{});}
  }
 
- return {prepare,finalize,bind,read,get,claim,finishJob,source:(owner:MaterialOwner,id:string)=>owned(owner,id),
+ return {prepare,finalize,bind,read,get,claim,finishJob,
+  async deleteJob(job:any){
+   const rows=await files.find({jobId:job._id,userId:job.userId,accountGeneration:job.accountGeneration||''}).toArray();
+   for(const f of rows){await erase(f,true);const keep=new Set(['_id','userId','accountGeneration','jobId','status','objectKey','uploadObjectKey','pendingObjectKeys','putExpiresAt','expiresAt','cleanupComplete','cleanupCheckedAt']);await files.updateOne({_id:f._id},{$unset:Object.fromEntries(Object.keys(f).filter(k=>!keep.has(k)).map(k=>[k,'']))});}
+   if(job.materialSourceSnapshotKey)await bucket().deleteFile(job.materialSourceSnapshotKey);
+  },source:(owner:MaterialOwner,id:string)=>owned(owner,id),
   async list(owner:MaterialOwner){await assertOwner(owner);return (await files.find({userId:owner.userId,accountGeneration:owner.accountGeneration||'',status:'uploaded',expiresAt:{$gt:new Date()}}).sort({createdAt:-1}).limit(50).toArray()).map(publicFile)},
   async remove(owner:MaterialOwner,id:string){const f=await owned(owner,id,true);const active=await db.collection('paperbanana_jobs').find({userId:owner.userId,status:{$in:['queued','running']}}).toArray();if(active.some((j:any)=>(j.materialFiles||j.generationContext?.materialFiles||[]).some((m:any)=>m.id===id)))materialError('任务正在读取此文件，请任务结束后再删除原件。',409);await erase(f,true)},
   async sweep(){await ensureIndexes();const pendingJobs=await db.collection('paperbanana_jobs').find({'materialCleanup.status':'pending'}).limit(100).toArray();for(const j of pendingJobs)await finishJob(j._id,false);const claimed=await files.find({status:{$in:['uploaded','deleted']},jobId:{$exists:true},cleanupComplete:{$ne:true}}).limit(100).toArray();for(const f of claimed)await finishJob(f.jobId,false);const settling=await files.find({status:"deleted"}).sort({cleanupCheckedAt:1}).limit(100).toArray();for(const f of settling){await bucket().deleteFile(f.objectKey);if(f.uploadObjectKey)await bucket().deleteFile(f.uploadObjectKey);await files.updateOne({_id:f._id,status:"deleted"},{$set:{cleanupCheckedAt:new Date()}})}const expired=await files.find({expiresAt:{$lt:new Date()}}).limit(25).toArray();for(const f of expired){const job=f.jobId?await db.collection('paperbanana_jobs').findOne({_id:f.jobId}):null;if(job&&['queued','running'].includes(job.status))continue;await erase(f)}},

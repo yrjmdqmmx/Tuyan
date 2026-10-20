@@ -1,4 +1,7 @@
 const DB_NAME='tuyan-svg-drafts-v1';
+const PURGED='tuyan.svg-purged.v1:';
+function purgedKey(key){const [api,owner,task]=JSON.parse(key);return PURGED+JSON.stringify([api,owner,task]);}
+function isPurged(key){return window.localStorage.getItem(purgedKey(key))==='1';}
 const JOURNAL='tuyan.svg-recovery.v1:';
 export const svgDraftKey = (api,owner,job,candidate) => JSON.stringify([api,owner||'anonymous',job,candidate]);
 function openDatabase() {
@@ -9,12 +12,13 @@ function openDatabase() {
   });
 }
 export function journalDraft(draft) {
-  try { window.localStorage.setItem(JOURNAL+draft.key,JSON.stringify(draft));return true; } catch { return false; }
+  try { if(isPurged(draft.key))return false;window.localStorage.setItem(JOURNAL+draft.key,JSON.stringify(draft));return true; } catch { return false; }
 }
 export function readJournal(key) {
-  try { const value=JSON.parse(window.localStorage.getItem(JOURNAL+key));return value?.key===key?value:null; } catch { return null; }
+  try { if(isPurged(key))return null;const value=JSON.parse(window.localStorage.getItem(JOURNAL+key));return value?.key===key?value:null; } catch { return null; }
 }
 export async function readSvgDraft(key) {
+  if(isPurged(key))return null;
   const recovery=readJournal(key);
   try {
     const db=await openDatabase();
@@ -29,7 +33,7 @@ export async function listSvgDrafts(api,owner) {
   found=await new Promise((resolve,reject)=>{
     const result=[],tx=db.transaction('drafts'),request=tx.objectStore('drafts').openCursor();
     request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;const item=cursor.value;let scope=[];try{scope=JSON.parse(item.key);}catch{}
-      if(scope[0]===api&&scope[1]===(owner||'anonymous'))result.push({key:item.key,taskId:item.taskId,candidateId:item.candidateId,updatedAt:item.updatedAt,jobSnapshot:item.jobSnapshot});cursor.continue();};
+      if(!isPurged(item.key)&&scope[0]===api&&scope[1]===(owner||'anonymous'))result.push({key:item.key,taskId:item.taskId,candidateId:item.candidateId,updatedAt:item.updatedAt,jobSnapshot:item.jobSnapshot});cursor.continue();};
     tx.oncomplete=()=>{db.close();resolve(result);};tx.onabort=tx.onerror=()=>{db.close();reject(tx.error);};
   }); } catch(error) {databaseError=error;}
   // Recover journals even when a database write never completed.
@@ -43,12 +47,14 @@ export async function listSvgDrafts(api,owner) {
   return found.sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,50);
 }
 export async function saveSvgDraft(draft) {
+  if(isPurged(draft.key))throw Error('任务已彻底删除，无法保存旧手工稿。');
   const db=await openDatabase();
   await new Promise((resolve,reject)=>{
     const tx=db.transaction('drafts','readwrite'),store=tx.objectStore('drafts');
     const request=store.get(draft.key);
     let conflict=false;
     request.onsuccess=()=>{
+      if(isPurged(draft.key)){tx.abort();return;}
       const previous=request.result;
       if(previous && previous.writer!==draft.writer && previous.revision>draft.baseRevision){conflict=true;tx.abort();return;}
       if(!previous || previous.revision<=draft.revision)store.put(draft);
@@ -76,4 +82,17 @@ export function downloadSvg(svg,filename) {
   const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
   const link=document.createElement('a');link.href=url;link.download=filename;link.click();
   setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+
+export async function purgeTaskSvgDrafts(api,owner,taskIds) {
+  const ids=new Set(taskIds);
+  const matches=key=>{try{const scope=JSON.parse(key);return scope[0]===api&&scope[1]===(owner||'anonymous')&&ids.has(scope[2]);}catch{return false;}};
+  for(const id of ids)window.localStorage.setItem(PURGED+JSON.stringify([api,owner||'anonymous',id]),'1');
+  for(const key of Object.keys(window.localStorage))if(key.startsWith(JOURNAL)&&matches(key.slice(JOURNAL.length)))window.localStorage.removeItem(key);
+  const db=await openDatabase();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction('drafts','readwrite'),request=tx.objectStore('drafts').openCursor();
+    request.onsuccess=()=>{const c=request.result;if(!c)return;if(matches(c.value.key))c.delete();c.continue();};
+    tx.oncomplete=()=>{db.close();resolve();};tx.onabort=tx.onerror=()=>{db.close();reject(tx.error);};
+  });
 }

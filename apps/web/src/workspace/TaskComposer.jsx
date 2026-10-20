@@ -36,7 +36,20 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     if (!mobile) { input.style.height = ''; return; }
     const resize = () => {
       if (!expanded) { input.style.height = '44px'; input.scrollTop = 0; input.scrollLeft = 0; return; }
-      input.style.height = '0px'; input.style.height = `${Math.min(136, Math.max(88, input.scrollHeight))}px`;
+      // Measure a hidden copy so typing/width changes never reset the animated,
+      // focused textarea to zero height (which also makes Safari scroll it).
+      const measure = input.cloneNode();
+      measure.removeAttribute('id');
+      measure.setAttribute('aria-hidden', 'true');
+      measure.tabIndex = -1;
+      measure.value = input.value;
+      Object.assign(measure.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
+        height:'0px', minHeight:'0px', maxHeight:'none', width:`${input.clientWidth}px`,
+        padding:'10px 9px', transition:'none'});
+      input.parentNode.appendChild(measure);
+      const height = Math.min(136, Math.max(88, measure.scrollHeight));
+      measure.remove();
+      input.style.height = `${height}px`;
     };
     resize();
     let width = input.clientWidth;
@@ -68,21 +81,21 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
         // Keep the keyboard and toolbar still until the button's click fires.
         if (e.target.closest('button') && document.activeElement === textRef.current) e.preventDefault();
       }}>
-        <button type="button" aria-label="添加附件" title="上传文件" disabled={busy} onClick={() => fileRef.current?.click()}><Plus size={23} /></button>
-        {expanded && <>
+        <button type="button" data-composer-action="attachments" aria-label="添加附件" title="上传文件" disabled={busy} onClick={() => fileRef.current?.click()}><Plus size={23} /></button>
+        <div className="tw-mobile-composer-options" inert={!expanded ? true : undefined} aria-hidden={!expanded ? true : undefined}>
           {modeControl}
           <span className="tw-toolbar-spacer" />
-          {onOptimize && <button type="button" aria-label={optimizing ? '优化中…' : '优化输入'} title={optimizing ? '优化中…' : '优化输入'} disabled={busy || !!run || optimizing} onClick={onOptimize}><Sparkles size={19} /></button>}
+          {onOptimize && <button type="button" aria-label={optimizing ? '优化中…' : '优化输入'} title={optimizing ? '优化中…' : '优化输入'} disabled={busy || !!run || optimizing} data-composer-action="optimize" onClick={onOptimize}><Sparkles size={19} /></button>}
           <button type="button" aria-label="模型配置" title="模型配置" onClick={onModels}><Boxes size={20} /></button>
           <button type="button" aria-label="绘图设置" title="绘图设置" onClick={onSettings}><SlidersHorizontal size={20} /></button>
-        </>}
+        </div>
         {sendButton}
       </div> : <div className="tw-composer-toolbar">
-        <button type="button" className="tw-icon tw-upload" aria-label="添加附件" disabled={busy} onClick={() => fileRef.current?.click()}><Plus size={22} /></button>
+        <button type="button" className="tw-icon tw-upload" data-composer-action="attachments" aria-label="添加附件" disabled={busy} onClick={() => fileRef.current?.click()}><Plus size={22} /></button>
         {modeControl}
         <div className="tw-toolbar-spacer" />
         <div className="tw-composer-actions">
-        {onOptimize && <button type="button" className="tw-tool" disabled={busy || !!run || optimizing} onClick={onOptimize}><Sparkles size={17} /><span>{optimizing ? '优化中…' : '优化输入'}</span></button>}
+        {onOptimize && <button type="button" className="tw-tool" disabled={busy || !!run || optimizing} data-composer-action="optimize" onClick={onOptimize}><Sparkles size={17} /><span>{optimizing ? '优化中…' : '优化输入'}</span></button>}
         <button type="button" className="tw-tool" onClick={onModels}><Boxes size={17} /><span>模型配置</span></button>
         <button type="button" className="tw-tool" onClick={onSettings}><SlidersHorizontal size={17} /><span>绘图设置</span></button>
         {sendButton}

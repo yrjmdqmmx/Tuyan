@@ -185,7 +185,7 @@ export async function createAuthRuntime(
     deletionStore,
     workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
     modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),
-    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceStore, mutations:['put','saveResult','importHistory'] }),
+    workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceStore, mutations:['put','saveResult','importHistory','beginDelete','finishDelete'] }),
     consumeDeletionConfirmation: watcha.consumeDeletionConfirmation,
     webHandler: createRegistrationPrivacyHandler(
       async (request) => await verification.handler(request) || watcha.handle(request, (input) => auth.handler(input)),

@@ -29,6 +29,9 @@ export function createWorkspaceExecutionStore({ db, assertActive = async () => {
     async get(user, runId) { await assertActive(user); const row = await runs.findOne({_id:key(user,runId)}); if (!row) return null; const {_id,userId,...safe}=row; return safe; },
     async claim(user, taskId, runId) {
       await assertActive(user);
+      if(await db.collection('workspaceTaskDeletions').findOne({userId:user,taskId}))throw fail(409,'任务已彻底删除。');
+      const document=await db.collection('workspaceDocuments').findOne({userId:user});
+      if(document?.state?.purgedTasks?.some(p=>p.id===taskId))throw fail(409,'任务已彻底删除。');
       const existing = await this.get(user,runId); if(existing) { if(existing.taskId!==taskId)throw fail(409,'执行标识已用于其他任务');return {fresh:false,execution:existing}; }
       const lockId=key(user,taskId);
       if(await locks.findOne({_id:lockId}))throw fail(409,'本任务已有活动执行；请恢复执行状态，不要重复提交。');

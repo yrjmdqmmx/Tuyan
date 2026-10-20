@@ -8,6 +8,7 @@ export function matches(row, query = {}) {
     if (expected && typeof expected === 'object' && !(expected instanceof Date)) {
       return Object.entries(expected).every(([op, value]) => {
         if (op === '$in') return value.some((v) => v == null ? actual == null : String(v) === String(actual));
+        if (op === '$nin') return !value.some((v) => v == null ? actual == null : String(v) === String(actual));
         if (op === '$exists') return value === (actual !== undefined);
         if (op === '$lte') return actual <= value;
         if (op === '$lt') return actual < value;

@@ -10,7 +10,7 @@ import { modelOption } from './workspaceModels.js';
 import WorkflowOptions from '../components/WorkflowOptions.jsx';
 import { journalSelectionForFigure, journalFigureContent } from '../../../../packages/api/src/journal-rules.js';
 
-export default function WorkspaceDrawingSettings({ draft, path, editing, models, target, userId, base, onChange }) {
+export default function WorkspaceDrawingSettings({ draft, path, editing, models, target, userId, base, onChange, focusSection }) {
   const settings = draft.settings[draft.mode], advanced = draft.mode === 'advanced';
   const image = settings.models?.image;
   const entry = models.library?.models.find(m => m.id === image?.libraryModelId);
@@ -20,8 +20,8 @@ export default function WorkspaceDrawingSettings({ draft, path, editing, models,
   const update = (key, value) => onChange({ ...settings, [key]: value });
   return <>
     <section className="tw-settings-section"><h3>内容与规范</h3>
-      <FigureTypePicker value={settings.figureTypeId || ''} onChange={figureTypeId => onChange({ ...settings, figureTypeId, journalSelection: journalSelectionForFigure(settings.journalSelection, figureTypeId) || null })}/>
-      <JournalRulePicker backdropClassName="tw-nested-backdrop" value={settings.journalSelection || null} onChange={value => update('journalSelection', value)} figureTypeId={settings.figureTypeId} refineContext={editing ? { hasSource: true, contentType: settings.journalSelection?.contentType || journalFigureContent(settings.figureTypeId) || 'schematic' } : undefined} outputFormat={path}/>
+      <div data-autofocus={focusSection === 'figure-type' ? true : undefined} tabIndex={focusSection === 'figure-type' ? -1 : undefined}><FigureTypePicker value={settings.figureTypeId || ''} onChange={figureTypeId => onChange({ ...settings, figureTypeId, journalSelection: journalSelectionForFigure(settings.journalSelection, figureTypeId) || null })}/></div>
+      <div data-autofocus={focusSection === 'journal' ? true : undefined} tabIndex={focusSection === 'journal' ? -1 : undefined}><JournalRulePicker backdropClassName="tw-nested-backdrop" value={settings.journalSelection || null} onChange={value => update('journalSelection', value)} figureTypeId={settings.figureTypeId} refineContext={editing ? { hasSource: true, contentType: settings.journalSelection?.contentType || journalFigureContent(settings.figureTypeId) || 'schematic' } : undefined} outputFormat={path}/></div>
     </section>
     <section className="tw-settings-section"><h3>画面</h3><label className="tw-setting-row">比例<select value={settings.ratio} onChange={e => update('ratio', e.target.value)}>{!ratioOptions.includes(settings.ratio)&&<option value={settings.ratio} disabled>{settings.ratio} · 当前模型尚未确认支持</option>}{ratioOptions.map(value => <option key={value} value={value}>{value === 'auto' ? '自动' : value}</option>)}</select></label><RatioCanvas ratio={settings.ratio} compact/>
       {path === 'png' && (advanced && resolutions?.length ? <label className="tw-setting-row">清晰度<select value={settings.imageSize || ''} onChange={e => update('imageSize', e.target.value)}><option value="">沿用模型默认</option>{settings.imageSize && !resolutions.includes(settings.imageSize) && <option value={settings.imageSize} disabled>{settings.imageSize} · 当前模型不适用</option>}{resolutions.map(size => <option key={size}>{size}</option>)}</select></label> : <p className="tw-muted">清晰度：{settings.imageSize || '沿用所选模型默认'}{!model ? '，选择绘图模型后显示可用选项。' : '。'}</p>)}

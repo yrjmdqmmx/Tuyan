@@ -100,7 +100,10 @@ export function cleanWorkspace(state) {
   obj(state); if (state.schema !== WORKSPACE_SYNC_VERSION) fail();
   const tasks = list(state.tasks, 1000, task); unique(tasks.map(t=>t.id));
   if (!tasks.length || !tasks.some(t=>t.id===state.selectedTaskId)) fail();
-  const clean = { schema: WORKSPACE_SYNC_VERSION, selectedTaskId: id(state.selectedTaskId), tasks };
+  const purgedTasks = state.purgedTasks == null ? [] : list(state.purgedTasks, 10000, p => ({id:id(p.id),jobIds:list(p.jobIds,1000,id),...(p.materialIds?{materialIds:list(p.materialIds,10000,id)}:{})}));
+  unique(purgedTasks.map(p=>p.id));
+  if (tasks.some(t=>purgedTasks.some(p=>p.id===t.id || p.id===t.syncConflict?.taskId))) fail();
+  const clean = { ...(purgedTasks.length ? {purgedTasks} : {}), schema: WORKSPACE_SYNC_VERSION, selectedTaskId: id(state.selectedTaskId), tasks };
   if (new TextEncoder().encode(JSON.stringify(clean)).length > MAX_WORKSPACE_BYTES) throw Object.assign(new Error('工作区超过当前同步容量，原草稿仍保留在本机。'), { status: 413 });
   return clean;
 }

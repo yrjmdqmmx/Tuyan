@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
-import React, { useReducer } from 'react';
+import React, { useReducer, act } from 'react';
 import { cleanup, render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TaskWorkspace from '../src/workspace/TaskWorkspace.jsx';
@@ -116,12 +116,12 @@ test('running task blocks another path but does not block a new task or clear it
   await user.click(screen.getByRole('button', { name: /任务一/ }));
   assert.equal(screen.getByLabelText('绘图要求').value, 'SVG 后续要求');
 });
-test('search includes requirement text, no models; Escape returns focus', async () => {
+test('search includes requirement text; Escape returns focus', async () => {
   const user = userEvent.setup(); render(React.createElement(Harness, { initial: completed() }));
   const trigger = screen.getByRole('button', { name: '搜索', exact: true });
   await user.click(trigger);
-  const search = screen.getByRole('dialog', { name: '搜索任务' });
-  await user.type(within(search).getByLabelText('搜索任务标题和需求'), '科研');
+  const search = screen.getByRole('dialog', { name: '搜索' });
+  await user.type(within(search).getByLabelText('搜索任务、功能和工具'), '科研');
   assert.ok(within(search).getByRole('button', { name: /科研流程图/ }));
   await user.keyboard('{Escape}');
   await waitFor(() => assert.equal(screen.queryByRole('dialog'), null));
@@ -237,4 +237,15 @@ test('leaderboard opens inside both sidebar sizes and returning retains the task
  await user.click(screen.getByRole('button',{name:'排行榜',exact:true}));assert.ok(screen.getByRole('heading',{name:'排行榜'}));assert.equal(screen.queryByRole('link',{name:'排行榜'}),null);
  await user.click(screen.getByRole('button',{name:'返回任务'}));assert.equal(screen.getByLabelText('绘图要求').value,'keep me');
  await user.click(screen.getByRole('button',{name:'收起侧边栏'}));await user.click(screen.getByRole('button',{name:'排行榜',exact:true}));assert.ok(screen.getByRole('heading',{name:'排行榜'}));
+});
+
+test('permanent deletion requires confirmation, cancellation is inert, failures stay visible and duplicate clicks are blocked',async()=>{
+ const state=newWorkspace('delete-fixture');state.tasks[0].title='删除验收样例';state.tasks[0].branches.png.draft.text='fixture';
+ let calls=0,finish;render(React.createElement(TaskWorkspace,{state,dispatch:()=>{},onDeleteTask:()=>{calls++;return new Promise((resolve,reject)=>{finish={resolve,reject};});}}));
+ const open=()=>{fireEvent.click(screen.getByLabelText('删除验收样例 的操作'));fireEvent.click(screen.getByRole('button',{name:'删除',exact:true}));};
+ open();assert.equal(calls,0);assert.ok(screen.getByText(/无法恢复/));assert.equal(screen.queryByRole('button',{name:'归档',exact:true}),null);
+ fireEvent.click(screen.getByRole('button',{name:'取消',exact:true}));assert.equal(calls,0);assert.equal(screen.queryByRole('dialog',{name:'彻底删除任务'}),null);
+ open();fireEvent.click(screen.getByRole('button',{name:'彻底删除',exact:true}));assert.equal(calls,1);assert.equal(screen.getByRole('button',{name:'正在彻底删除…'}).disabled,true);
+ await act(async()=>{finish.reject(Error('清理未完成'));});assert.ok(screen.getByRole('alert'));assert.ok(screen.getByRole('dialog',{name:'彻底删除任务'}));
+ fireEvent.click(screen.getByRole('button',{name:'彻底删除',exact:true}));assert.equal(calls,2);await act(async()=>{finish.resolve();});assert.equal(screen.queryByRole('dialog',{name:'彻底删除任务'}),null);
 });

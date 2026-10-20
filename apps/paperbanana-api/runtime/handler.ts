@@ -1,3 +1,4 @@
+import { createWorkspaceJobDeletion } from '../src/workspace-task-deletion.js'
 import {readOptimizationMaterials} from '../src/optimization-materials.js'
 import { readDrawingActivity } from '../src/drawing-activity.js'
 import { catalogAbsenceReason, verifyPublicCatalogOmissions, PROVIDER_CATALOGS, readProviderCatalog, normalizeCatalogModel, exactModelDetails, mergeCatalogRows, type CatalogContinuation, type CatalogResult } from '../../../packages/api/src/provider-catalog.js'
@@ -1068,6 +1069,7 @@ type JobStage = {
 }
 
 type RequestBody =
+  | { action: 'deleteWorkspaceJobs'; jobIds: string[] }
   | {action:'userDrawingActivity';userId?:string}
   | {action:'journalFigureExport';jobId:string;candidateId:number;userId?:string;clientPlatform?:ClientPlatform}
   | CreateJobBody
@@ -1096,6 +1098,7 @@ const references = db.collection('paperbanana_references')
 const accountDeletions = db.collection('paperbanana_account_deletions')
 const referenceUploadState = db.collection('paperbanana_reference_upload_state')
 const bucketName = process.env.PAPERBANANA_BUCKET || 'paperbanana'
+const deleteWorkspaceJobs=createWorkspaceJobDeletion({db,bucket:()=>objectStorage.bucket(bucketName),listKeys:listAccountObjectKeys,objectKeys:storedObjectKeysForJob,deleteMaterials:(job:any)=>materialFilesService.deleteJob(job)})
 const materialFilesService=createMaterialFiles({db,bucket:()=>objectStorage.bucket(bucketName),ownerPrefix:referenceUploadOwner,assertOwner:async owner=>{if(!owner.userId||!(await ensureAccountAcceptingWork(owner)))materialError('材料账号不可用。',403)}})
 const materialActions=new Set(['prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial'])
 function referenceEnvironmentLimit(name: string, maximum: number) {
@@ -4387,6 +4390,7 @@ const identityScopedActions = new Set([
   'abortReferenceUpload',
   'providerAccountCatalog',
   'deleteAccount',
+  'deleteWorkspaceJobs',
   'completeAccountDeletion',
   'accountDeletionStatus',
 ])
@@ -4467,6 +4471,10 @@ export default async function (ctx: CoreContext) {
     }
     if (action === 'userJobs') {
       return await userJobs(body as UserJobsBody)
+    }
+    if (action === 'deleteWorkspaceJobs') {
+      const userId=String(ctx.headers['x-paperbanana-auth-user-id'] || '')
+      return ok(await deleteWorkspaceJobs(userId,(body as any).jobIds))
     }
     if (action === 'userDrawingActivity') {
       const userId = String(ctx.headers['x-paperbanana-auth-user-id'] || '')
@@ -5916,7 +5924,7 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
 async function getJob(jobId: string) {
   if (!jobId) return fail('jobId is required', 400)
   const job = await jobs.findOne({ _id: jobId })
-  if (!job) return fail('Job not found', 404)
+  if (!job || await db.collection('paperbanana_task_deletions').findOne({jobId})) return fail('Job not found', 404)
   return ok({ job: await publicJob(job) })
 }
 
@@ -5988,7 +5996,8 @@ async function userJobs(body: UserJobsBody) {
   const userId = body.userId?.trim() || ''
   if (!userId) return fail('userId is required', 400)
   const limit = clamp(Number(body.limit || 50), 1, 200)
-  const query = accountIdQuery(userId)
+  const purged=await db.collection('paperbanana_task_deletions').find({userId}).toArray()
+  const query = {...accountIdQuery(userId),_id:{$nin:purged.map((p:any)=>p.jobId)}}
   const offset = Number(body.offset || 0)
   if (!Number.isSafeInteger(offset) || offset < 0 || offset > 100000) return fail('Invalid history offset',400)
   const list = await jobs.find(query).sort({ createdAt: -1, _id: -1 }).skip(offset).limit(limit + 1).toArray()
@@ -6122,6 +6131,7 @@ async function deleteAccount(body: DeleteAccountBody) {
       if (remainingJobs.some((job: any) => !row.jobIds.includes(String(job._id)))) throw new Error('ACCOUNT_DELETION_SCOPE_REVIEW_REQUIRED')
       await checkpoint({ irreversibleStartedAt: row.irreversibleStartedAt || new Date() })
       await deleteAdditionalAccountData(userId)
+      await db.collection('paperbanana_task_deletions').deleteMany({userId})
       const jobsResult = await jobs.deleteMany({ ...accountIdQuery(userId), _id: { $in: row.jobIds } })
       const feedbackResult = await feedback.deleteMany(accountIdQuery(userId))
       await referenceUploadState.deleteMany({ ownerKey })

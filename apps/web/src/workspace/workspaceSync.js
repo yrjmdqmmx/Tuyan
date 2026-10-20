@@ -1,3 +1,4 @@
+import { applyTaskDeletions, deletionMarkers, permanentlyRemoveTask, taskMaterialIds } from '../../../../packages/api/src/workspace-deletion.mjs';
 import { readAccountHistory } from './workspaceHistory.js';
 import { cleanWorkspace } from '../../../../packages/api/src/workspace-sync.mjs';
 import { newWorkspace, uid, taskHasContent } from './workspaceState.js';
@@ -93,6 +94,8 @@ function preserveConcurrentDraft(task, other, before) {
   }
 }
 export function mergeWorkspaces(base, local, remote, makeId = conflictId) {
+  const purgedTasks=deletionMarkers(base,local,remote);
+  base=applyTaskDeletions(base,purgedTasks);local=applyTaskDeletions(local,purgedTasks);remote=applyTaskDeletions(remote,purgedTasks);
   if(!remote)return {state:local,conflicts:0};
   if(!base&&!local.tasks.some(taskHasContent))return {state:remote,conflicts:0};
   const baseline=new Map((base?.tasks||[]).map(t=>[t.id,t])),ours=new Map(local.tasks.map(t=>[t.id,t])),theirs=new Map(remote.tasks.map(t=>[t.id,t]));
@@ -127,7 +130,7 @@ export function mergeWorkspaces(base, local, remote, makeId = conflictId) {
   // Old clients can still remove records. Keep a selected deleted task as a
   // tombstone instead of navigating away; new clients use explicit tombstones.
   if(!tasks.some(t=>t.id===local.selectedTaskId)&&ours.has(local.selectedTaskId))tasks.push({...clone(ours.get(local.selectedTaskId)),deleted:true,activeRunId:null});
-  return {state:{schema:1,selectedTaskId:local.selectedTaskId,tasks},conflicts};
+  return {state:applyTaskDeletions({schema:1,selectedTaskId:local.selectedTaskId,tasks},purgedTasks),conflicts};
 }
 function restoreLocalAssets(task,sources) {
   const assets=new Map();for(const source of sources)for(const v of versionsOf({tasks:[source]}))if(v.url&&!assets.has(v.id))assets.set(v.id,v);
@@ -173,13 +176,13 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
       if (!resultCache.has(v.url)) {
         const split = v.url.indexOf(','), header = v.url.slice(0,split), content = v.url.slice(split+1);
         const base64 = header.endsWith(';base64') ? content : bytesToBase64(new TextEncoder().encode(decodeURIComponent(content)));
-        resultCache.set(v.url, (await request('/results','POST',{format:v.format,base64})).resultId);
+        resultCache.set(v.url, (await request('/results','POST',{format:v.format,base64,taskId:out.tasks.find(t=>versionsOf({tasks:[t]}).some(item=>item===v))?.id})).resultId);
       }
       v.resultId = resultCache.get(v.url);
     }
     return cleanWorkspace(out);
   }
-  const historyCache=new Map();
+  const historyCache=new Map();let hydratedDeletions='';
   async function history(offset=0) {
     const data=await readAccountHistory({baseUrl,userId,fetcher,offset});
     for(const job of data.jobs)historyCache.set(job.id,{expires:Date.now()+240000,job});
@@ -187,6 +190,7 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
   }
   async function hydrate(wireState, existing) {
     if (!wireState) return null;
+    const deleted=JSON.stringify(wireState.purgedTasks||[]);if(deleted!==hydratedDeletions){resultCache.clear();historyCache.clear();hydratedDeletions=deleted;}
     const out = cleanWorkspace(wireState), known = new Map(versionsOf(existing || {tasks:[]}).filter(v=>v.resultId && v.url).map(v=>[v.resultId,v.url]));
     if(versionsOf(out).some(v=>v.history && (!historyCache.has(v.history.jobId) || historyCache.get(v.history.jobId).expires<Date.now()))){
       try {let offset=0;do {const data=await history(offset);if(data.nextOffset==null || data.nextOffset<=offset)break;offset=data.nextOffset;}while(true);}
@@ -213,13 +217,13 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
     for (const t of out.tasks) for (const d of [...Object.values(t.branches).flatMap(b=>[b.draft,...Object.values(b.refinements)]), ...t.runs.map(r=>r.input)]) for (const a of d.attachments) { a.status='local'; a.browserSaved=true; }
     return out;
   }
-  return { history, get:revision=>request(Number.isSafeInteger(revision)?`?revision=${revision}`:''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
+  return { history, deleteTask:async(taskId,revision)=>{const saved=await request('/tasks/'+encodeURIComponent(taskId),'DELETE',{revision});resultCache.clear();historyCache.clear();return saved;}, get:revision=>request(Number.isSafeInteger(revision)?`?revision=${revision}`:''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
 }
 
 export class WorkspaceSyncController {
-  constructor({cache,key,client,legacy=readLegacy,notify=()=>{},broadcast=()=>{},recoveryId,restoreId}) {
-    Object.assign(this,{cache,key,client,legacy,notify,broadcast,recoveryId,restoreId});
-    this.state=null;this.base=null;this.cacheBase=null;this.revision=0;this.cacheRevision=0;this.queue=Promise.resolve();this.disposed=false;this.blocked=false;this.running=false;this.generation=0;this.importedGuest=false;this.notice='';
+  constructor({cache,key,client,legacy=readLegacy,notify=()=>{},broadcast=()=>{},recoveryId,restoreId,purgeLocal}) {
+    Object.assign(this,{cache,key,client,legacy,notify,broadcast,recoveryId,restoreId,purgeLocal});
+    this.purgedLocally='';this.state=null;this.base=null;this.cacheBase=null;this.revision=0;this.cacheRevision=0;this.queue=Promise.resolve();this.disposed=false;this.blocked=false;this.running=false;this.generation=0;this.importedGuest=false;this.notice='';
   }
   emit(status,error='') {
     this.status=status;this.error=error;
@@ -240,7 +244,8 @@ export class WorkspaceSyncController {
   }
   setState(update) {
     if(!this.state||this.disposed)return;
-    const next=typeof update==='function'?update(this.state):update;
+    const updateState=typeof update==='function'?update(this.state):update;
+    const next=applyTaskDeletions(updateState,deletionMarkers(this.state,updateState));
     if(next===this.state||same(next,this.state))return;
     const contentChanged=!equal(next,this.state);this.state=next;
     if(contentChanged)this.generation++;
@@ -264,6 +269,9 @@ export class WorkspaceSyncController {
             this.cacheRevision=latest.cacheRevision;this.cacheBase=clone(latest.state);this.importedGuest=latest.importedGuest||this.importedGuest;
             this.emit(this.status,this.error);await this.backup();
           }
+          const deletionKey=JSON.stringify(this.state.purgedTasks||[]);
+          if(this.purgeLocal&&deletionKey!==this.purgedLocally){await this.purgeLocal(this.state);this.purgedLocally=deletionKey;}
+          this.base=applyTaskDeletions(this.base,this.state.purgedTasks);this.cacheBase=applyTaskDeletions(this.cacheBase,this.state.purgedTasks);
           const snapshot=clone({state:this.state,base:this.base,revision:this.revision,importedGuest:this.importedGuest});
           const previous=this.cacheRevision;
           try {
@@ -302,12 +310,14 @@ export class WorkspaceSyncController {
       if(!quiet||this.blocked)await this.persist();if(this.blocked||this.disposed)return;
       for(let attempt=0;attempt<6;attempt++) {
         const remote=await this.client.get(quiet?this.revision:undefined);if(this.disposed)return;
-        if(remote.unchanged&&equal(this.state,this.base)||quiet&&remote.revision===this.revision&&equal(this.state,this.base))return;
+
+        if(!remote.deletionPending&&(remote.unchanged&&equal(this.state,this.base)||quiet&&remote.revision===this.revision&&equal(this.state,this.base)))return;
         // A revision-only reply may race with typing. We already have its base.
         const hydrated=remote.unchanged?this.base:await this.client.hydrate(remote.state,this.state);if(this.disposed)return;
         if(remote.revision<this.revision){quiet=false;continue;}
         this.state=mergeWorkspaces(this.base,this.state,hydrated).state;this.base=hydrated;this.revision=remote.revision;
         this.emit('syncing');await this.persist();if(this.blocked||this.disposed)return;
+        if(remote.deletionPending)throw Error('任务已移除，服务器文件清理仍在重试，请稍后同步确认。');
         if(this.base&&equal(this.state,this.base)){this.emit('synced');return;}
         const snapshot=clone(this.state),expected=this.revision;
         const wire=await this.client.wire(snapshot);if(this.disposed)return;
@@ -326,12 +336,36 @@ export class WorkspaceSyncController {
       this.emit('pending');this.schedule(300);
     }catch(error){if(this.disposed)return;this.emit('error',error.status===401?'登录已过期，本机草稿已保留；请重新登录后同步。':error.message);if(!error.status||error.status>=500)this.schedule(5000);}
   }
+  async deleteTask(taskId) {
+    if(this.deleting)throw Error('正在删除任务，请稍候。');
+    this.deleting=true;
+    try {
+      await this.flush();
+      if(this.client){
+        await this.sync();
+        if(this.status!=='synced')throw Error(this.error||'请先完成账号同步再删除。');
+        try {
+          const saved=await this.client.deleteTask(taskId,this.revision);
+          const state=await this.client.hydrate(saved.state,this.state);
+          this.state=mergeWorkspaces(this.base,this.state,state).state;this.base=state;this.revision=saved.revision;
+        } catch(error) {await this.sync();throw error;}
+      } else this.state=permanentlyRemoveTask(this.state,taskId);
+      this.base=applyTaskDeletions(this.base,this.state.purgedTasks);
+      this.cacheBase=applyTaskDeletions(this.cacheBase,this.state.purgedTasks);
+      await this.persist();if(this.blocked)throw Error(this.error);
+      this.emit(this.client?'synced':'local');
+    } finally {this.deleting=false;}
+  }
   async flush(){await this.persist();if(this.blocked)throw Error('草稿尚未安全保存，请先导出备份再退出。');}
   dispose(){this.disposed=true;clearTimeout(this.timer);}
 }
 function bytesToBase64(bytes) {
   let value=''; for (let i=0;i<bytes.length;i+=8192) value+=String.fromCharCode(...bytes.subarray(i,i+8192));
   return btoa(value);
+}
+
+function scrubSnapshot(snapshot,markers=[]) {
+  return {...snapshot,...Object.fromEntries(['state','base','cacheBase'].filter(k=>snapshot[k]).map(k=>[k,applyTaskDeletions(snapshot[k],markers)]))};
 }
 
 // Atomic CAS works even in browsers without navigator.locks. An older tab must
@@ -344,19 +378,28 @@ export function createWorkspaceCache(indexed = globalThis.indexedDB) {
     return database;
   }
   return {
+    async materialIds(key,markers){
+      const d=await db();return new Promise((resolve,reject)=>{
+        const ids=new Set(),r=d.transaction('snapshots').objectStore('snapshots').openCursor();
+        r.onsuccess=()=>{const c=r.result;if(!c){resolve(ids);return;}const row=c.value;
+          for(const field of ['state','base','cacheBase']){const state=row.key===key||row.key.startsWith(key+':tab:')?applyTaskDeletions(row[field],markers):row[field];for(const t of state?.tasks||[])for(const id of taskMaterialIds(t))ids.add(id);}c.continue();};r.onerror=()=>reject(r.error);
+      });
+    },
     async read(key) { const d=await db(); return new Promise((resolve,reject)=>{const r=d.transaction('snapshots').objectStore('snapshots').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);}); },
-    async backup(key,value) { const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('snapshots','readwrite');tx.objectStore('snapshots').put({...value,key});tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(Error('本机恢复草稿保存失败，请保持页面打开。'));}); },
+    async backup(key,value) { const d=await db();return new Promise((resolve,reject)=>{const tx=d.transaction('snapshots','readwrite');const store=tx.objectStore('snapshots'), root=key.split(':tab:')[0], r=store.get(root);r.onsuccess=()=>store.put({...scrubSnapshot(value,r.result?.state?.purgedTasks),key});tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(Error('本机恢复草稿保存失败，请保持页面打开。'));}); },
     async write(key, expected, value) {
       const d=await db(); return new Promise((resolve,reject)=>{
         const tx=d.transaction('snapshots','readwrite'), s=tx.objectStore('snapshots'); let revision, conflict=false;
         const r=s.get(key); r.onsuccess=()=>{
           const previous=r.result;
+          value=scrubSnapshot(value,deletionMarkers(previous?.state,value.state));
           const sameContent=previous && equal(previous.state,value.state) && equal(previous.base,value.base) && previous.revision===value.revision && previous.importedGuest===value.importedGuest;
           // A stale tab may renew signed URLs or browse a different version without
           // conflicting. The current writer still persists its own view for reload.
           if(sameContent){revision=previous.cacheRevision;return;}
           if ((previous?.cacheRevision||0)!==expected) { conflict=true; tx.abort(); return; }
           revision=expected+1; s.put({...value,key,cacheRevision:revision});
+          if(value.state.purgedTasks?.length){const cursor=s.openCursor();cursor.onsuccess=()=>{const c=cursor.result;if(!c)return;if(c.key!==key&&String(c.key).startsWith(key+':tab:'))c.update(scrubSnapshot(c.value,value.state.purgedTasks));c.continue();};}
         };
         tx.oncomplete=()=>resolve(revision);tx.onerror=tx.onabort=()=>reject(conflict ? Object.assign(Error('另一标签页已有更新，正在合并本机草稿。'),{code:'LOCAL_CONFLICT'}) : Error('本机保存失败，请保持页面打开并导出草稿。'));
       });

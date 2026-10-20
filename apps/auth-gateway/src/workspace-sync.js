@@ -1,3 +1,5 @@
+import { taskDeletionStore } from './workspace-task-deletion.js';
+import { deletionMarkers } from '../../../packages/api/src/workspace-deletion.mjs';
 import express from 'express';
 import { createHash } from 'node:crypto';
 import { cleanWorkspace, resultReferences, MAX_RESULT_BYTES } from '../../../packages/api/src/workspace-sync.mjs';
@@ -23,6 +25,7 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
   };
   return {
     get,
+    ...taskDeletionStore({db,key,get,assertActive}),
     async identifyHistory(userId, jobs) {
       await assertActive(userId);
       return Promise.all(jobs.map(async job => {
@@ -50,6 +53,8 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
       if (!Number.isSafeInteger(revision) || revision < 0) throw failure(400, 'INVALID_REVISION');
       const state = cleanWorkspace(input);
       await assertActive(userId);
+      const current=await get(userId);
+      if(JSON.stringify(deletionMarkers(current.state))!==JSON.stringify(deletionMarkers(state)))throw failure(409,'WORKSPACE_CONFLICT');
       for (const resultId of resultReferences(state)) {
         if (!await db.collection('workspaceResults').findOne({ _id: `${key(userId)}:${resultId}` }, { projection: { _id: 1 } })) throw failure(400, 'RESULT_NOT_SAVED');
       }
@@ -64,7 +69,7 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
       await compensate(userId);
       return { revision: document.revision };
     },
-    async saveResult(userId, { format, base64 } = {}) {
+    async saveResult(userId, { format, base64, taskId } = {}) {
       if (!['png','svg'].includes(format) || typeof base64 !== 'string' || base64.length > Math.ceil(MAX_RESULT_BYTES/3)*4 || (base64.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(base64))) throw failure(400, 'INVALID_RESULT');
       const bytes = Buffer.from(base64, 'base64');
       if (!bytes.length || bytes.length > MAX_RESULT_BYTES) throw failure(413, 'RESULT_TOO_LARGE');
@@ -77,6 +82,8 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
         if (!/<svg[\s/>]/i.test(source) || unsafeReference || unsafeCss || /<!DOCTYPE|<!ENTITY|<\?xml-stylesheet|@import|<\s*(?:[\w.-]+:)?(?:script|foreignObject|iframe|object|embed)\b|\bon\w+\s*=/i.test(source)) throw failure(400, 'UNSAFE_SVG_RESULT');
       }
       await assertActive(userId);
+      const purged=(await get(userId)).state?.purgedTasks||[];
+      if(purged.length && (!taskId||purged.some(p=>p.id===taskId)))throw failure(409,'任务已删除或客户端需要刷新，未保存旧结果。');
       const resultId = createHash('sha256').update(format).update(bytes).digest('hex'), ownerKey = key(userId), _id = `${ownerKey}:${resultId}`;
       const results = db.collection('workspaceResults'), quotas = db.collection('workspaceQuotas');
       if (await results.findOne({ _id }, { projection: { _id: 1 } })) return { resultId };
@@ -101,7 +108,7 @@ export function createWorkspaceStore({ db, assertActive = async () => {} }) {
   };
 }
 
-export function createWorkspaceRouter({ auth, store, frontendOrigins, isMaintenance = () => false, history }) {
+export function createWorkspaceRouter({ auth, store, frontendOrigins, isMaintenance = () => false, history, cleanupTask }) {
   const router = express.Router(), origins = new Set(frontendOrigins);
   router.use(async (req, res, next) => {
     res.set('Cache-Control','no-store'); res.set('X-Content-Type-Options','nosniff');
@@ -125,7 +132,15 @@ export function createWorkspaceRouter({ auth, store, frontendOrigins, isMaintena
     if(!auth.readWorkspaceHistoryResult)throw failure(503,'此服务未启用历史结果读取桥。');
     res.json(await auth.readWorkspaceHistoryResult(req,req.params.id,Number(req.params.index)));
   }));
-  router.get('/', route(async (req,res) => {const saved=await store.get(req.workspaceUserId);res.json(req.query.revision===String(saved.revision)?{revision:saved.revision,unchanged:true}:saved);}));
+  const finishDeletion=async operation=>{if(!operation.complete){if(operation.jobIds?.length&&!cleanupTask)throw failure(503,'任务文件清理服务不可用，请稍后重试。');await cleanupTask?.(operation);await store.finishDelete(operation.userId,operation.taskId);}};
+  router.delete('/tasks/:id',route(async(req,res)=>{const operation=await store.beginDelete(req.workspaceUserId,req.params.id,req.body?.revision);await finishDeletion(operation);res.json(await store.get(req.workspaceUserId));}));
+  router.get('/', route(async (req,res) => {
+    const pending=await store.pendingDeletions?.(req.workspaceUserId)||[];
+    if(!isMaintenance()&&pending[0])try{await finishDeletion(pending[0]);}catch{/* Keep the pending state visible and retry on the next sync. */}
+    const deletionPending=!!(await store.pendingDeletions?.(req.workspaceUserId))?.length;
+    const saved=await store.get(req.workspaceUserId),notice=deletionPending?{deletionPending:true}:{};
+    res.json(req.query.revision===String(saved.revision)?{revision:saved.revision,unchanged:true,...notice}:{...saved,...notice});
+  }));
   router.put('/', route(async (req,res) => res.json(await store.put(req.workspaceUserId, req.body?.revision, req.body?.state))));
   router.post('/results', route(async (req,res) => res.json(await store.saveResult(req.workspaceUserId, req.body))));
   router.get('/results/:id', route(async (req,res) => res.json(await store.result(req.workspaceUserId, req.params.id))));

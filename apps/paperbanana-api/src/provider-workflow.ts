@@ -288,6 +288,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       await jobs.updateOne({ _id: current.task.jobId }, { $addToSet: { providerCalls: thinking ? {...(info as object), thinking} : info } } as any)
     } },
     async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>, customKeys?: string) {
+      if(await db.collection('paperbanana_task_deletions').findOne({userId,jobId}))throw new TokenDanceError(409,'任务已彻底删除，无法恢复。')
       await reconcile(jobId); await service.accepting(userId)
       const existing = await executions.findOne({ _id: jobId, userId })
       if (existing && existing.version !== version) throw new TokenDanceError(409, '原任务使用旧执行版本，成功步骤已保留；请核对原调用记录后处理，不能自动重放。', 'review_request', 0, true)

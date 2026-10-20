@@ -17,7 +17,9 @@ export function historyDraft(job) {
 export function mergeAccountHistory(state, jobs) {
   const next=structuredClone(state);let changed=false;
   const sorted=[...jobs].sort((a,b)=>a.createdAt-b.createdAt);
+  const purged=new Set((state.purgedTasks||[]).flatMap(p=>p.jobIds));
   for(const job of sorted){
+    if(purged.has(job.id))continue;
     // The account service knows accepted native runs before every tab has
     // received their jobId. Do not turn that propagation gap into a new task.
     const existing=next.tasks.flatMap(t=>t.runs).find(r=>r.history?.jobId===job.id);
