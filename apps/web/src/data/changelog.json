@@ -2,9 +2,657 @@
   "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-09-28"
+    "through": "2026-10-20"
   },
   "entries": [
+    {
+      "id": "v4-0-0",
+      "product": "tuyan",
+      "version": "4.0.0",
+      "announcementDate": null,
+      "release": {
+        "status": "released",
+        "date": "2026-10-20",
+        "surfaces": [
+          "Web"
+        ]
+      },
+      "title": "新版 UI、生成工作流与模型路由升级",
+      "summary": "新版任务式 UI 支持多任务管理与后台进度，信息图扩展至 13 大类、92 种图型；升级候选、评审及 PNG／SVG 工作流，优化国内、香港和新加坡渠道路由，并补齐期刊规范、SVG 编辑、同步搜索与科研工具。",
+      "surfaces": [
+        "Web"
+      ],
+      "notes": [
+        "汇总 3.8.1 之后至 2026-10-20 已上线的改动；本条日期为本次联合发布完成日。"
+      ],
+      "changes": [
+        {
+          "kind": "新增",
+          "text": "新版 UI：重构为左侧任务导航、中央大画布与底部输入区，整合模型、绘图设置和账户入口；PNG 与 SVG 分别保留草稿、设置和结果版本。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "account"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "多任务管理：支持新建、重命名、置顶、搜索与快速切换，每项任务分别保存草稿、执行记录和候选版本；生成期间可编辑其他任务或准备下一次草稿，后台结果回到原任务，不打断当前查看位置。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "sync"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "登录后同步工作区与模型库；多个标签页及两个站点之间自动同步任务内容，冲突时保留双方内容和独立副本，当前查看位置不随其他页面跳转。",
+          "state": "released",
+          "sourceIds": [
+            "sync",
+            "account"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "历史与草稿接续：分页载入账号历史任务，按需查看旧结果及执行记录；支持将此浏览器的访客草稿加入当前账号、导出本机备份，保存或同步失败时保留本地内容并提供重试。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "sync"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "统一上传图片、PDF、PPTX、DOCX、XLSX、CSV、TSV、JSON、TXT 和 Markdown 等原始材料；生成最多附加 10 份文件，每份不超过 10 MB，精修原图单独计算。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "原材料本地保存：原文件先保存在当前浏览器，提交时上传任务临时副本；任务结束后清理临时材料，保留结果与读取记录。换设备或原件缺失时可按文件校验重新补传，补传不会自动开始生成。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment",
+            "workspace"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "模型可按绘图需要查找原文、表格和 PDF／PPTX 页面，并保留材料读取记录；缺少必要数据、读取失败或格式不支持时明确提示。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "材料来源追溯：读取记录标明文件、页码、工作表或行范围，区分已读、未读及部分读取；材料结论可关联实际读取位置，页图超过模型单次容量时分批观察并记录覆盖情况。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "“优化输入”支持结合已上传附件整理绘图要求，仅有附件时也可发起；确认采用后再写回当前草稿。",
+          "state": "released",
+          "sourceIds": [
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "信息图类别大扩容：从 8 个粗分类升级为 13 大类、92 种具体图型，涵盖研究机制、流程与控制、系统结构、统计分布、空间场、组学与模型评价等；补充森林图、生存曲线、火山图、基因组环形图及多面板组合图等选择。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "图型检索与专属规范：支持中文、英文及别名搜索、分层浏览和放大预览，提供必要输入、适用范围、易混淆图型与 142 项变体定义；所选图型规范贯穿规划和评审。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "论文参考图库更新：纳入 107 张逐图核验来源与使用许可的论文图，覆盖 89 种图型，其余 3 种提供结构示例；参考检索按具体图型匹配，预览可查看完整原图、论文来源和许可说明。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增期刊规则库，覆盖 Nature、Scientific Reports、Cell Reports 及人文社科等期刊；按投稿阶段和图件用途查看尺寸、格式、字体及 AI 使用要求与官方来源。",
+          "state": "released",
+          "sourceIds": [
+            "journals",
+            "contracts"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "期刊书架：以 18 本期刊的封面、简介和出版社信息组织规则，支持刊名、简称与出版社搜索及筛选；可进入期刊官网、官方投稿入口和具体规则来源，书架与阅读页面保留各自滚动位置。",
+          "state": "released",
+          "sourceIds": [
+            "journals",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "期刊设置随任务保存规则版本，历史任务继续使用原快照；检查实际文件的尺寸、像素、格式等并下载报告。新版工作区保留原格式导出，旧版工作台另提供 PNG 转白底 TIFF，保留像素数而不补造细节。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "期刊规则参与生成与精修：按投稿阶段、图件用途和操作类型判断适用要求，明确禁止的 AI 用途及原始科研图像改写会被拦截；来源冲突、条件性许可和待确认项单独提示，不将规则检查当作投稿批准。",
+          "state": "released",
+          "sourceIds": [
+            "journals",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "SVG 结果可直接编辑文字、字体、颜色、填充、描边、透明度及渐变色标，支持拖动、等比缩放、旋转、分组、对齐、均匀分布与撤销重做；文字和图形继续作为可编辑元素保存。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "SVG 对象与图层：可添加文字、基础形状、连线和箭头，复制或删除对象；图层列表支持选择、隐藏、锁定和排序，框选、对齐吸附与可保存的辅助线帮助精确排版。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "SVG 曲线编辑：支持可编辑路径的节点与贝塞尔控制柄拖动、增删节点，以及椭圆弧的半径、方向、大小弧和旋转参数；复杂或受保护结构显示限制，避免静默破坏原稿。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "SVG 空白画布与草稿恢复：无需先调用模型即可手工绘图，支持缩放、平移和聚焦所选对象；当前编辑稿保存在本浏览器，保存为新版本后随账号同步，旧版浏览器手工稿可恢复或单独导出。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "workspace-fixes",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "候选方案与版本管理：候选分别保存并支持并排比较，可指定某个候选的版本继续修改；PNG、原始 SVG 和手工修改稿保留各自版本关系，支持单独下载与整项任务打包导出。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增“我的模型”管理，按渠道、厂商和型号选择已添加模型；TokenDance 授权后自动加入其返回目录中的可用型号。",
+          "state": "released",
+          "sourceIds": [
+            "workspace"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "模型连接统一管理：渠道连接可关联多个精确型号，密钥可选择仅保存在当前浏览器或在服务端加密绑定账号；切换保存位置不自动复制密钥，专业模式可按实际角色选用已有连接。",
+          "state": "released",
+          "sourceIds": [
+            "workspace"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "模型规格卡片：展示输入／输出模态、上下文与输出上限、生图或编辑提示词限制及官方来源；区分渠道规格、原厂参考、实际服务版本与待确认信息，字符、字节和 token 使用各自单位。",
+          "state": "released",
+          "sourceIds": [
+            "catalog",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "账户设置支持头像上传与恢复默认头像、双邮箱验证更换登录邮箱；新增绘制活动热力图、日／周／累计统计与连续绘制记录。",
+          "state": "released",
+          "sourceIds": [
+            "account"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "全局搜索覆盖任务、功能与工具，支持名称、别名和关键词；可直达模型、期刊、账户设置及科研工具，选择结果只打开对应入口。",
+          "state": "released",
+          "sourceIds": [
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "接入他山科研生态：Semiotic 图表、VizNoir 科学网格可视化与 DataViz 交互仪表盘，支持实际渲染及 SVG、PNG、离线 HTML 下载；工具渲染无需调用模型。",
+          "state": "released",
+          "sourceIds": [
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "任务支持确认后彻底删除，清理草稿、执行记录、结果及关联恢复副本；共享文件保留，进行中的任务禁止删除，已下载或自行备份的文件不受影响。",
+          "state": "released",
+          "sourceIds": [
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "渠道路由优化：国内渠道与 Fireworks 从国内服务直连，OpenRouter、xAI、Novita 等海外渠道按实测改走香港，OpenAI、Anthropic、Gemini 等保留新加坡线路；原型号、参数与账号配置保持不变。",
+          "state": "released",
+          "sourceIds": [
+            "routing"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "生成工作流重构：主模型按需读取材料并制定完整方案，PNG 交给生图模型绘制，SVG 由主模型编写源码后检查和渲染；数据图与组合图也按所选格式执行。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "视觉协作与检索优化：上传文件不改变自动、随机、手动或不检索的选择；有视觉能力的主模型可直接读图，辅助视觉负责观察、主模型统一规划和判断，未使用的角色不参与调用。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "明确快速／完整生成流程：快速生成完成材料理解、规划、绘制与评审，完整生成增加风格整理；支持最多 6 个候选、5 轮评审，候选数量不等于并发数量。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "评审流程优化：先生成实际图件，再检查当前画面；SVG 同时检查完整源码。每轮必要时修改一次，通过可提前结束；末轮修改不追加隐藏复审，修改后的版本标记为尚未复审。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "performance"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "评审证据绑定当前版本：同时核对实际成图、相关原材料与 SVG 源码，定量图件增加原值、单位、尺度及图形编码的核对记录；记录缺失或问题未解决时不能判为通过，科学结论仍需人工确认。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "辅助视觉问题逐项处理：主模型须对观察到的问题给出接受、驳回或未解决的结论与依据；SVG 声明的箭头标记另做本地可见性检查，发现问题或检查覆盖不足时不沿用模型的通过结论。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "多候选与失败保护：逐张保存候选进度和已完成结果，修改失败保留上一张成功图及评审记录；调用结果不确定时不盲目重发，历史任务按原流程恢复。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "自动修订保留完整新方案：已确认支持参考图生成的图像接口会同时接收上一张候选图；其他接口明确按文字重新绘制，保持所选模型。原生输出已满足目标清晰度时减少冗余升清，不将带图重绘当作像素锁定。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "并发提交与后台执行保护：同一任务跨标签页提交时防止重复执行，已接收任务在切换页面或刷新后继续查询进度；按服务端容量接收或排队，超限明确提示并保留草稿。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "sync"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "生成画布展示实际已产出的过程图，阶段记录可展开查看规划、设计和评审正文及耗时；执行详情可核对每个候选的状态、失败原因、采用参考、请求型号与渠道实际回报，查看记录不挤压画布。",
+          "state": "released",
+          "sourceIds": [
+            "account",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "精修和 SVG 修改保留原图对应的材料、图型及期刊设置；切换原图时清除不再适用的旧判断，避免沿用其他图片的配置。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "精修逐项核对修改要求：将原图、当前修改指令、遮罩、辅助图用途和结构化约束带入规划及评审，并对照修改前后图；漏项、缺少依据或未解决的不确定项不判为通过，完整流程缺少有效风格方案时在绘图前停止。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "模型目录持续更新，补充精确渠道型号、生命周期和规格来源，区分渠道能力与原厂参考；停服型号显示原因并禁选，不自动替换历史选择。",
+          "state": "released",
+          "sourceIds": [
+            "catalog"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "模型目录扩展：相较 3.8.1，静态渠道型号身份从 1,040 条增至 1,103 条，另保留 OpenRouter 动态发现；补充新型号及精确渠道适配，最新一批包括三渠道 DeepSeek V4.1 Flash 1017 和 Together Beam。目录收录不等于账号已获调用权限。",
+          "state": "released",
+          "sourceIds": [
+            "catalog",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "动态目录与故障恢复：公开渠道目录支持分页刷新，读取未完成或失败时保留上次完整结果，渠道故障明确可见；旧版专业配置入口增加按渠道凭据读取账号目录，未适配型号不会仅因出现在目录中就开放调用。",
+          "state": "released",
+          "sourceIds": [
+            "catalog",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "整理模型配置与思考设置，只显示当前角色和型号已核实的可调项；目录刷新、搜索与详情查看保留已有选择和草稿。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "catalog"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "工作流性能优化：去除规划与风格阶段完全重复的上下文，复用普通模式中同一模型的视觉能力，减少重复传递和不必要的角色调用；原始材料、数值要求与既定评审仍保留。",
+          "state": "released",
+          "sourceIds": [
+            "performance",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "移动端采用可收起输入区、普通／专业模式滑块、独立上传按钮与抽屉侧栏；完善键盘避让、长文输入及弹窗切换。",
+          "state": "released",
+          "sourceIds": [
+            "account",
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "国内入口与原站保持同版工作台，国内业务及素材服务迁至杭州；改善静态资源传输、模板预览、首页响应与目录后台刷新，保留原账号、任务、结果和旧站入口。",
+          "state": "released",
+          "sourceIds": [
+            "delivery",
+            "catalog",
+            "storage"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "新站账号与授权回跳：国内站接入观猹登录，TokenDance 授权按发起站点返回新站或原站；登录、验证邮件及重置密码链接适配对应入口，保留原账号关联和已有授权。",
+          "state": "released",
+          "sourceIds": [
+            "watcha",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "帮助教程按新版工作区重写：说明任务与格式分支、快速／完整流程、候选与评审轮数、精修方式、材料保存和恢复；明确实际调用与费用取决于材料读取、观察、评审及修改过程，不能只按候选数量估算。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复新加坡代理 DNS 解析导致部分连接绕远的问题，并调整 Fireworks 连接路径；线路异常时不自动换线重发可能已经计费的请求。",
+          "state": "released",
+          "sourceIds": [
+            "routing"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复多标签或断网重连时保存被阻断、迟到结果干扰当前任务的问题；生成中可继续编辑下一次草稿，重复历史导入不再新增同一执行的显示副本。",
+          "state": "released",
+          "sourceIds": [
+            "sync",
+            "account"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复 iPhone 键盘及模型／设置弹窗关闭后输入框意外收起、页面空白跳动、工具栏裁切和长文收起残留。",
+          "state": "released",
+          "sourceIds": [
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复打开搜索导致侧栏退出及结果数量变化引起的弹窗跳动；取消搜索保留侧栏滚动位置，重复选择同一工具也能正确进入。",
+          "state": "released",
+          "sourceIds": [
+            "joint-release"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复普通 PNG 使用默认清晰度时提交无效尺寸的问题，保留模型支持的默认比例与明确选择的尺寸设置。",
+          "state": "released",
+          "sourceIds": [
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复旧 SVG 草稿覆盖历史原件、保存后残留草稿及版本串写问题；历史原件保持不变，恢复草稿需要明确操作。",
+          "state": "released",
+          "sourceIds": [
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "完善原文件保存、刷新恢复与任务临时副本清理；保存或恢复完成前阻止提交，原件缺失时明确提示；材料解析或 SVG 本地渲染失败显示具体原因，不把已收到模型回复的失败误报为调用结果未知。",
+          "state": "released",
+          "sourceIds": [
+            "contracts",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复账户绘制活动读取失败、执行耗时字段显示不全及已有结果未选中时仍显示等待的问题，让统计、进度与实际结果保持一致。",
+          "state": "released",
+          "sourceIds": [
+            "account",
+            "workspace-fixes"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复长时间打开页面后正常会话轮询被错误累积限流的问题，减少账号、模型目录和历史结果读取受到的连带影响；会话读取仍校验真实登录状态。",
+          "state": "released",
+          "sourceIds": [
+            "workspace",
+            "contracts",
+            "deployment"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "补齐精确渠道适配：修正 TokenDance 部分文本与思考字段、fal 生成／编辑端点和 Replicate 文本结果解析；纠正视频型号被误列为生图及部分图像尺寸、参考输入校验问题，保留旧型号记录。",
+          "state": "released",
+          "sourceIds": [
+            "catalog",
+            "contracts",
+            "deployment"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "joint-release",
+          "kind": "release-record",
+          "label": "搜索、任务删除与科研生态联合发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-20-search-ecosystem-release.md"
+        },
+        {
+          "id": "workspace",
+          "kind": "release-record",
+          "label": "任务工作区发布记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-18-workspace-release.md"
+        },
+        {
+          "id": "workspace-fixes",
+          "kind": "release-record",
+          "label": "工作区与文件版本验收",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-18-workspace-fixes.md"
+        },
+        {
+          "id": "sync",
+          "kind": "release-record",
+          "label": "多标签与跨站同步验收",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-19-multitab-sync-release.md"
+        },
+        {
+          "id": "account",
+          "kind": "release-record",
+          "label": "账户、生成过程与移动端发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-19-session-complete-release.md"
+        },
+        {
+          "id": "catalog",
+          "kind": "release-record",
+          "label": "模型目录与双站发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-19-catalog-dual-domain-release.md"
+        },
+        {
+          "id": "journals",
+          "kind": "release-record",
+          "label": "Nature 与期刊规则发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-19-nature-journal-release.md"
+        },
+        {
+          "id": "performance",
+          "kind": "release-record",
+          "label": "生成流程优化与对照记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-19-generation-performance-results.md"
+        },
+        {
+          "id": "delivery",
+          "kind": "release-record",
+          "label": "站点交付与访问验收",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-18-hangzhou-auto-deploy.md"
+        },
+        {
+          "id": "contracts",
+          "kind": "release-record",
+          "label": "功能与共享契约记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/SYNC.md"
+        },
+        {
+          "id": "routing",
+          "kind": "release-record",
+          "label": "分渠道线路与 DNS 优化发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/provider-routing-rollout-20261018/report.md"
+        },
+        {
+          "id": "watcha",
+          "kind": "release-record",
+          "label": "新站观猹登录运行验收",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-16-tuyan-watcha-client.md"
+        },
+        {
+          "id": "storage",
+          "kind": "release-record",
+          "label": "国内素材与存储迁移验收",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/1d963ef7bab2a7f093f475361dd42cc7a9ea1855/docs/operations/2026-10-18-hangzhou-storage.md"
+        },
+        {
+          "id": "deployment",
+          "kind": "deployment",
+          "label": "4.0 联合发布流水线",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/39370164968"
+        }
+      ],
+      "legacyAnchors": []
+    },
     {
       "id": "v3-8-1",
       "version": "3.8.1",
