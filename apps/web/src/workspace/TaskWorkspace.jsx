@@ -9,6 +9,7 @@ import ResultWorkspace from './ResultWorkspace.jsx';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
 import WorkspaceSearch from './WorkspaceSearch.jsx';
+import WorkspacePromptGuide from './WorkspacePromptGuide.jsx';
 import { currentTask, currentBranch, PATHS, currentDraft } from './workspaceState.js';
 
 export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
@@ -85,7 +86,7 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
     if (target.page === '账户设置' && !renderAccount) onAccountSettings?.();
   }
   const sidebar = <TaskSidebar page={page} state={state} dispatch={dispatch} onClose={() => mobile ? setMobileOpen(false) : toggleSidebar(true)} onSearch={openSearch} onNavigate={next => { setPage(next); setMobileOpen(false); }} onDelete={askDelete} onRename={t => { setRename(t); setTitle(t.title); }} {...accountActions} accountPending={accountPending} user={user} mobile={mobile} />;
-  const renderComposer = (optimization = {}) => <TaskComposer mobile={mobile} toolDialogOpen={panel === 'models' || panel === 'settings'} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} onSubmit={onSubmit} onFiles={onFiles} busy={busy} uploadError={uploadError} missingOriginal={missingOriginal} onRestoreOriginal={onRestoreOriginal} saveStatus={saveStatus} onModels={event => openComposerPanel('models', event)} onSettings={event => openComposerPanel('settings', event)} onOptimize={optimization.start} optimizing={optimization.optimizing} optimizationContent={optimization.content} />;
+  const renderComposer = (optimization = {}) => <TaskComposer mobile={mobile} toolDialogOpen={panel === 'models' || panel === 'settings' || panel === 'prompt-guide'} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} onSubmit={onSubmit} onFiles={onFiles} busy={busy} uploadError={uploadError} missingOriginal={missingOriginal} onRestoreOriginal={onRestoreOriginal} saveStatus={saveStatus} onModels={event => openComposerPanel('models', event)} onSettings={event => openComposerPanel('settings', event)} onPromptGuide={event => openComposerPanel('prompt-guide', event)} onOptimize={optimization.start} optimizing={optimization.optimizing} optimizationContent={optimization.content} />;
   const composer = renderOptimize ? <div className="tw-optimization-host" key={`${task.id}:${task.path}:${branch.targetId || 'new'}`}>{renderOptimize(renderComposer)}</div> : renderComposer();
   function navigate(path) { dispatch({ type: 'SET_PATH', path }); }
   return <div ref={shellRef} className={`tw-shell ${collapsed ? 'tw-collapsed' : ''} ${mobile && mobileOpen ? 'tw-mobile-nav-open' : ''}`}>
@@ -117,5 +118,6 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
     {rename && <WorkspaceDialog title="重命名任务" onClose={() => setRename(null)}><form onSubmit={e => { e.preventDefault(); dispatch({ type: 'RENAME', taskId: rename.id, title, baseTitle: rename.title }); setRename(null); }}><label className="tw-field">任务名称<input data-autofocus value={title} maxLength={120} onChange={e => setTitle(e.target.value)} /></label><button type="submit" className="tw-primary">保存名称</button></form></WorkspaceDialog>}
     {panel === 'models' && <WorkspaceDialog title="模型配置" returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)}>{renderModels?.({ management: false, onClose: () => setPanel(null), onManage: () => { setPanel(null); setPage('models'); } })}</WorkspaceDialog>}
     {panel === 'settings' && <WorkspaceDialog title="绘图设置" returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)}>{renderSettings?.({focusSection:settingsSection})}</WorkspaceDialog>}
+    {panel === 'prompt-guide' && <WorkspacePromptGuide path={task.path} returnFocusRef={composerDialogTriggerRef} onClose={() => setPanel(null)} />}
   </div>;
 }

@@ -8,11 +8,12 @@ import WorkspaceCustomModel, {CustomConnectionFields,cleanCustomConnection} from
 import {universalModelEntry} from '../lib/universalContract.js';
 import { useState } from 'react';
 import { Plus, KeyRound, Link2, RefreshCw } from 'lucide-react';
-import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../lib/modelPresentation.js';
+import { orderModelChannels } from '../lib/modelPresentation.js';
 import { providerDefaultRoutes } from '../lib/modelRouting.js';
 import { ROLE_NAMES, modelOption, selectedModelReference, libraryModelMissingFromCatalog } from './workspaceModels.js';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import TokenDancePanel from '../components/TokenDancePanel.jsx';
+import WorkspaceChannelPicker, { channelLabel } from './WorkspaceChannelPicker.jsx';
 
 export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, initialView }) {
   const { library, registry, summary, busy, error, ready } = models;
@@ -46,8 +47,8 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
     {(error || models.registryStatus !== 'ready') && <p role="status">{error || (models.registryStatus === 'loading' ? '正在读取现有模型目录…' : '模型目录暂时不可用，已有配置仍保留。')}</p>}
     {tab==='catalog' && <WorkspaceModelCatalog models={models} onConnection={provider=>{setTab('connections');if(provider!=='tokendance')openConnection(null,provider);}}/>}
     {tab==='connections' && <><section className="tw-management-section"><div className="tw-section-heading"><h3><Link2 size={18}/>渠道连接</h3><button className="tw-text-button" disabled={!ready || busy} onClick={() => openConnection()}><Plus size={16}/>添加连接</button></div>
-      <div className="tw-connection-card"><strong>观猹 TokenDance</strong><span>{summary?.tokenDance?.connected ? '已读取现有授权，无需 API 密钥' : summary?.error || (models.userId ? '未连接或正在检查授权' : '登录后读取已有授权')}</span><button onClick={()=>setChannelOpen(true)}>授权与钱包</button><button disabled={!models.userId || !summary?.tokenDance?.connected || !ready || busy} onClick={useAuthorization}>复用已有授权</button></div>
-      {library.connections.map(c => <div className="tw-connection-card" key={c.id}><div><strong>{c.label}</strong><small>{c.provider==='custom'?'自定义 API':MODEL_CHANNEL_LABELS[c.provider] || c.provider} · {c.scope === 'browser' ? '当前浏览器' : c.scope === 'account' ? '图研账号' : '已有授权'} · {c.id.slice(0, 8)}</small></div><span>{c.disabled ? '已停用' : c.scope === 'authorization' ? (summary?.tokenDance?.connected ? '授权已连接' : '需重新确认授权') : c.hasCredential ? '密钥已保存 · 调用结果见执行记录' : '缺少密钥'}</span>{c.scope !== 'authorization' && <button onClick={() => openConnection(c)}>配置</button>}</div>)}
+      <div className="tw-connection-card"><span className="tw-connection-logo"><ModelBrandLogo brand="tokendance" channel/></span><div className="tw-connection-identity"><strong>观猹 TokenDance</strong><small>{summary?.tokenDance?.connected ? '已读取现有授权，无需 API 密钥' : summary?.error || (models.userId ? '未连接或正在检查授权' : '登录后读取已有授权')}</small></div><div className="tw-connection-actions"><button onClick={()=>setChannelOpen(true)}>授权与钱包</button><button disabled={!models.userId || !summary?.tokenDance?.connected || !ready || busy} onClick={useAuthorization}>复用已有授权</button></div></div>
+      {library.connections.map(c => <div className="tw-connection-card" key={c.id}><span className="tw-connection-logo"><ModelBrandLogo brand={c.provider} channel/></span><div className="tw-connection-identity"><strong>{c.label}</strong><small>{channelLabel(c.provider)} · {c.scope === 'browser' ? '当前浏览器' : c.scope === 'account' ? '图研账号' : '已有授权'} · {c.id.slice(0, 8)}</small></div><span className="tw-connection-status">{c.disabled ? '已停用' : c.scope === 'authorization' ? (summary?.tokenDance?.connected ? '授权已连接' : '需重新确认授权') : c.hasCredential ? '密钥已保存 · 调用结果见执行记录' : '缺少密钥'}</span>{c.scope !== 'authorization' && <div className="tw-connection-actions"><button onClick={() => openConnection(c)}>配置</button></div>}</div>)}
       {!library.connections.length && <p className="tw-muted">还没有添加连接。只保存配置不会调用模型。</p>}
     </section>
     <section className="tw-management-section"><h3>自定义模型</h3><p className="tw-muted">标准渠道的型号可直接从模型目录添加。自定义连接可在此填写精确型号及能力。</p><div className="tw-library-controls"><label>自定义连接<select value={connection?.provider==='custom'?connection.id:''} onChange={e => setConnectionId(e.target.value)}><option value="">选择连接</option>{library.connections.filter(c => !c.disabled && c.provider==='custom').map(c => <option key={c.id} value={c.id}>{c.label} · {c.id.slice(0, 8)}</option>)}</select></label><label>模型角色<select value={role} onChange={e => setRole(e.target.value)}>{Object.entries(ROLE_NAMES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label></div>
@@ -62,15 +63,22 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
     {apiSetup&&<WorkspaceDialog wide title="自定义 API 高级配置" onClose={()=>setApiSetup(false)}><WorkspaceApiSetup models={models} health={health} onUse={onUseApi} onSaved={()=>setApiSetup(false)}/></WorkspaceDialog>}
     {channelOpen&&<WorkspaceDialog wide title="TokenDance 授权与钱包" onClose={()=>{setChannelOpen(false);void models.refresh();}}><TokenDancePanel controller={models.tokenDance}/></WorkspaceDialog>}
     {editingCustom&&<WorkspaceDialog wide title="自定义模型能力" onClose={()=>setEditingCustom(null)}><WorkspaceCustomModel entry={editingCustom} connection={library.connections.find(c=>c.id===editingCustom.connectionId)} role={editingCustom.custom.capabilities.imageGeneration?'image':'main'} models={models} onSaved={()=>setEditingCustom(null)}/></WorkspaceDialog>}
-    {form && <WorkspaceDialog title="配置渠道连接" onClose={() => { setForm(null); setSecret(''); }}><form className="tw-connection-form" onSubmit={saveConnection}>
-      <label>连接名称<input required maxLength={100} value={form.label} onChange={e => setForm({ ...form, label: e.target.value })}/></label>
-      <label>渠道<select value={form.provider} disabled={library.connections.some(c => c.id === form.id)} onChange={e => setForm({ ...form, provider: e.target.value, ...(e.target.value==='custom'?{custom:{version:1,connectionId:form.id,protocol:'openai-chat',baseUrl:'',auth:'bearer',catalogFormat:'none'}}:{}) })}>{providers.filter(p => p !== 'tokendance').map(p => <option key={p} value={p}>{MODEL_CHANNEL_LABELS[p] || p}</option>)}</select></label>
-      {form.provider==='custom'?<CustomConnectionFields value={form} onChange={next=>{setForm(next);setSecret('');}}/>:<p className="tw-muted">使用现有渠道适配器的官方 API 地址。此连接不会修改目录中的协议、模型能力或调用权限。</p>}
+    {form && <WorkspaceDialog className="tw-connection-dialog" title="配置渠道连接" onClose={() => { setForm(null); setSecret(''); }}><form className="tw-connection-form" onSubmit={saveConnection}>
+      <div className="tw-connection-fields">
+      <div className="tw-connection-basics">
+      <label>连接名称<input required maxLength={100} placeholder="例如：科研项目" value={form.label} onChange={e => setForm({ ...form, label: e.target.value })}/></label>
+      <WorkspaceChannelPicker value={form.provider} providers={providers.filter(p => p !== 'tokendance')} disabled={library.connections.some(c => c.id === form.id)} onChange={provider => setForm({ ...form, provider, ...(provider==='custom'?{custom:{version:1,connectionId:form.id,protocol:'openai-chat',baseUrl:'',auth:'bearer',catalogFormat:'none'}}:{}) })}/>
+      </div>
+      {form.provider==='custom'?<CustomConnectionFields value={form} onChange={next=>{setForm(next);setSecret('');}}/>:<p className="tw-muted tw-connection-hint">使用该渠道的官方 API 地址。</p>}
       {form.provider === 'minimax' && <label>服务区域<select value={form.region} onChange={e => setForm({ ...form, region: e.target.value })}><option value="global">国际</option><option value="cn">国内</option></select></label>}
-      <fieldset><legend>密钥保存位置</legend>{[['browser', '保存在当前浏览器', '仅在当前浏览器中使用，清除网站数据后需要重新配置。'], ['account', '绑定图研账号', '登录同一图研账号后可使用此连接。密钥在服务端加密保存，页面不显示已保存的密钥。']].map(([value, title, description]) => <label className="tw-storage-option" key={value}><input type="radio" name="scope" checked={form.scope === value} disabled={value === 'account' && !models.userId} onChange={() => { setForm({ ...form, scope: value }); setSecret(''); }}/><span><strong>{title}</strong><small>{description}</small></span></label>)}</fieldset>
-      <label><span><KeyRound size={16}/> API 密钥</span><input type="password" autoComplete="off" value={secret} onChange={e => setSecret(e.target.value)} placeholder="填写新密钥；留空保留同一保存范围内的现有密钥" maxLength={16384}/></label>
-      <p className="tw-muted">切换保存位置不会自动复制或上传已有密钥。添加成功仅表示保存配置，未验证真实调用。</p>
-      {(formError || error) && <p role="alert">{formError || error}</p>}<button className="tw-primary" disabled={busy} type="submit">{busy ? '正在保存…' : '保存连接'}</button>
+      <fieldset><legend>密钥保存位置</legend>{[['browser', '保存在当前浏览器', '仅此浏览器可用；清除网站数据后需重新填写。'], ['account', '绑定图研账号', models.userId ? '同一图研账号可用；密钥在服务端加密保存。' : '登录图研后可用；密钥在服务端加密保存。']].map(([value, title, description]) => <label className={`tw-storage-option ${form.scope === value ? 'is-selected' : ''}`} key={value}><input type="radio" name="scope" checked={form.scope === value} disabled={value === 'account' && !models.userId} onChange={() => { setForm({ ...form, scope: value }); setSecret(''); }}/><span><strong>{title}</strong><small>{description}</small></span></label>)}</fieldset>
+      <label><span><KeyRound size={16} aria-hidden="true"/> API 密钥</span><input aria-label="API 密钥" type="password" autoComplete="off" value={secret} onChange={e => setSecret(e.target.value)} placeholder="输入 API 密钥" maxLength={16384}/><small className="tw-connection-hint">留空保留同一保存位置的已有密钥。切换位置不会自动复制或上传密钥。</small></label>
+      <p className="tw-muted tw-connection-hint">保存仅记录连接配置，不会调用模型或验证调用权限。</p>
+      </div>
+      <div className="tw-connection-footer">
+        {(formError || error) && <p role="alert">{formError || error}</p>}
+        <div><button type="button" onClick={() => { setForm(null); setSecret(''); }}>取消</button><button className="tw-primary" disabled={busy} type="submit">{busy ? '正在保存…' : '保存连接'}</button></div>
+      </div>
     </form></WorkspaceDialog>}
   </div>;
 }

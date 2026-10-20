@@ -1,3 +1,62 @@
+.tw-connection-dialog { width:min(560px,100%); }
+.tw-connection-dialog > .tw-dialog-head { flex:none; }
+.tw-connection-dialog > .tw-dialog-body { display:flex; padding:0; overflow:hidden; min-height:0; }
+.tw-connection-form { display:flex; flex-direction:column; gap:0; width:100%; min-height:0; }
+.tw-connection-fields { display:grid; align-content:start; gap:20px; padding:24px; min-height:0; overflow:auto; overscroll-behavior:contain; }
+.tw-connection-basics { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; }
+.tw-connection-basics > label,.tw-connection-fields > label { display:grid; gap:8px; min-width:0; font-size:13px; font-weight:500; }
+.tw-connection-fields > label > span { display:flex; align-items:center; gap:7px; }
+.tw-connection-label { display:block; margin-bottom:8px; font-size:13px; font-weight:500; }
+.tw-connection-dialog .tw-connection-form input:not([type=radio]),.tw-connection-form select { min-height:44px; border-color:#dce1dc; }
+.tw-connection-form .tw-connection-hint { margin:0; font-size:12px; line-height:1.65; font-weight:400; color:var(--tw-muted); }
+.tw-connection-fields > .tw-connection-hint { margin-top:-8px; }
+.tw-connection-form fieldset { min-width:0; margin:0; padding:0; border:0; border-radius:0; }
+.tw-connection-form legend { padding:0; margin-bottom:10px; font-size:13px; font-weight:500; }
+.tw-connection-form .tw-storage-option { display:grid; grid-template-columns:18px minmax(0,1fr); align-items:start; gap:12px; margin:0 0 8px; padding:13px 14px; border:1px solid #e1e5e0; border-radius:10px; cursor:pointer; }
+.tw-connection-form .tw-storage-option:last-child { margin-bottom:0; }
+.tw-connection-form .tw-storage-option.is-selected { border-color:#90aa9c; background:#f4f8f5; }
+.tw-connection-form .tw-storage-option:has(input:disabled) { opacity:.55; cursor:not-allowed; }
+/* The generic dialog input rule also matches radios; keep them at their native size. */
+.tw-connection-dialog .tw-storage-option > input[type=radio] { appearance:auto; width:16px; height:16px; min-height:0; max-width:16px; padding:0; margin:2px 0 0; border:0; border-radius:50%; box-shadow:none; accent-color:var(--tw-accent); }
+.tw-connection-form .tw-storage-option strong { font-size:13px; font-weight:550; line-height:1.5; }
+.tw-connection-form .tw-storage-option small { font-size:12px; line-height:1.6; margin-top:3px; }
+.tw-connection-footer { flex:none; padding:16px 24px; border-top:1px solid var(--tw-border); background:white; border-radius:0 0 18px 18px; }
+.tw-connection-footer > div { display:flex; justify-content:flex-end; gap:10px; }
+.tw-connection-footer button { min-width:84px; min-height:40px; }
+.tw-connection-footer > p { margin:0 0 12px; color:#9f3b32; font-size:13px; }
+.tw-channel-picker { position:relative; min-width:0; }
+.tw-dialog .tw-channel-trigger { width:100%; min-height:44px; padding:9px 12px; gap:10px; border:1px solid #dce1dc; border-radius:8px; background:white; justify-content:flex-start; text-align:left; font-size:14px; }
+.tw-dialog .tw-channel-trigger:disabled { background:#f7f8f6; color:var(--tw-ink); opacity:1; }
+.tw-channel-trigger > span,.tw-channel-options button > span { flex:1; min-width:0; overflow-wrap:anywhere; }
+.tw-channel-trigger > svg,.tw-channel-options button > svg { flex:none; }
+.tw-channel-picker .model-brand-logo,.tw-channel-options .model-brand-logo { width:22px; height:22px; object-fit:contain; flex:none; }
+.tw-channel-options { position:fixed; z-index:2; padding:5px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; border:1px solid #dce1dc; border-radius:10px; background:white; box-shadow:0 8px 24px #172b211a; }
+.tw-dialog .tw-channel-options > button { display:flex; justify-content:flex-start; width:100%; min-height:42px; padding:8px; gap:10px; text-align:left; font-size:13px; }
+.tw-channel-options > button[aria-selected=true] { background:#edf3ee; color:#244d40; }
+.tw-channel-options > button:focus-visible { outline-offset:-2px; }
+.tw-connection-card { display:grid; grid-template-columns:38px minmax(160px,1fr) auto auto; column-gap:14px; }
+.tw-connection-card > .tw-connection-logo { display:flex; align-items:center; justify-content:center; width:38px; height:38px; border:1px solid #e8ece6; border-radius:10px; background:white; }
+.tw-connection-logo .model-brand-logo { width:24px; height:24px; object-fit:contain; }
+.tw-connection-identity strong { display:block; font-size:14px; font-weight:550; overflow-wrap:anywhere; }
+.tw-connection-card .tw-connection-identity small { margin-top:4px; }
+.tw-connection-card > .tw-connection-status { max-width:240px; font-size:12px; }
+.tw-connection-card > .tw-connection-actions { display:flex; flex:none; grid-column:4; gap:8px; }
+@media(max-width:767px) {
+  .tw-connection-card { grid-template-columns:34px minmax(0,1fr) auto; column-gap:10px; row-gap:8px; }
+  .tw-connection-card > .tw-connection-logo { width:34px; height:34px; }
+  .tw-connection-card > .tw-connection-identity { grid-column:2 / -1; }
+  .tw-connection-card > .tw-connection-status { grid-column:2; max-width:none; }
+  .tw-connection-card > .tw-connection-actions { grid-column:3; justify-self:end; }
+  .tw-connection-card > .tw-connection-identity + .tw-connection-actions { grid-column:2 / -1; }
+  .tw-connection-card .tw-connection-actions button { font-size:12px; padding:7px 10px; min-height:40px; }
+  .tw-connection-dialog { width:100%; min-height:0; }
+  .tw-connection-basics { grid-template-columns:minmax(0,1fr); gap:16px; }
+  .tw-connection-fields { padding:20px 16px; gap:18px; }
+  .tw-connection-footer { padding:12px 16px max(12px,env(safe-area-inset-bottom)); border-radius:0; }
+  .tw-connection-footer button { min-height:44px; }
+  .tw-connection-footer .tw-primary { flex:1; }
+}
+
 .tw-model-management { width:100%; max-width:1240px; padding:4px 0 48px; }
 .tw-model-intro { align-items:center; margin-bottom:24px; }
 .tw-model-eyebrow { font-size:11px; letter-spacing:1px; color:#6b7c70; }

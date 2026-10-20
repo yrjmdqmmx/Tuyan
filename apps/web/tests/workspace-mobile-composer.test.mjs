@@ -19,6 +19,40 @@ function Harness({ initial = newWorkspace('mobile'), onSend = () => {}, onOptimi
   });
 }
 
+for (const path of ['png', 'svg']) test(`${path} prompt guide preserves the full draft and returns touch focus without submitting`, async () => {
+  let latest, sent = 0, optimized = 0;
+  const initial = workspaceReducer(newWorkspace('guide'), {type:'SET_PATH', path});
+  render(React.createElement(Harness, {initial, onState:state => latest = state, onSend:() => sent++, onOptimize:() => optimized++}));
+  const input = screen.getByRole('textbox', {name:'绘图要求'});
+  fireEvent.change(input, {target:{value:'保留我尚未提交的研究内容'}});
+  act(() => input.focus());
+  fireEvent.click(screen.getByRole('button', {name:'专业', exact:true}));
+  const before = structuredClone(latest);
+  const trigger = screen.getByRole('button', {name:'提示词建议'});
+  assert.equal(trigger.closest('form'), null, 'guide entry is outside the prompt field');
+  fireEvent.pointerDown(trigger, {pointerType:'touch'});
+  act(() => input.blur());
+  fireEvent.click(trigger);
+  const close = screen.getByRole('button', {name:'关闭提示词建议'});
+  await waitFor(() => assert.ok(document.activeElement === close, 'dialog receives focus'));
+  assert.ok(screen.getByRole('dialog', {name:'提示词建议'}));
+  assert.ok(screen.getByText(path === 'svg' ? '矢量绘图示例' : '方法流程图示例'));
+  assert.deepEqual(latest, before);
+  fireEvent.keyDown(window, {key:'Escape'});
+  await settleFocus();
+  assert.ok(document.activeElement === trigger, 'focus returns to guide entry');
+  assert.ok(input.closest('.tw-composer-region').classList.contains('is-input-focused'));
+  fireEvent.click(trigger);
+  fireEvent.click(screen.getByRole('button', {name:'知道了'}));
+  await settleFocus();
+  assert.equal(screen.queryByRole('dialog'), null);
+  assert.ok(document.activeElement === trigger, 'focus returns to guide entry');
+  assert.equal(input.value, '保留我尚未提交的研究内容');
+  assert.deepEqual(latest, before);
+  assert.equal(sent, 0);
+  assert.equal(optimized, 0);
+});
+
 test('mobile composer reveals tools only while expanded and preserves the draft across dialogs', async () => {
   let sent = 0, latest;
   const { container } = render(React.createElement(Harness, { onSend: () => sent++, onState: state => latest = state }));

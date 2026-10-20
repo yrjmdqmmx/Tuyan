@@ -272,7 +272,13 @@
 .tw-composer-region.is-mobile .tw-attachment select{min-height:40px;font-size:12px;max-width:120px}
 .tw-composer-region.is-mobile .tw-attachment .tw-icon{width:40px;height:40px}
 .tw-composer-region.is-mobile .tw-supplements{grid-column:1/-1;grid-row:2;margin:4px 9px 10px}
-.tw-shell .tw-composer-region.is-mobile>.tw-composer-summary{padding:0 14px;margin:0 0 4px;justify-content:center;min-width:0}
+.tw-composer-topline{display:flex;align-items:center;gap:12px;padding:0 8px 5px;min-width:0}
+.tw-composer-topline:empty{display:none}
+.tw-shell .tw-prompt-guide-trigger{flex:none;font-size:12px;min-height:32px;padding:4px 6px;color:var(--tw-accent)}
+.tw-composer-region.is-mobile>.tw-composer-topline{margin:0 20px;padding:0 4px 4px;gap:10px;transition:margin var(--tw-composer-duration) var(--tw-composer-ease)}
+.tw-composer-region.is-mobile.is-input-focused>.tw-composer-topline{margin:0}
+.tw-shell .tw-composer-region.is-mobile .tw-prompt-guide-trigger{min-height:36px;padding:4px 2px}
+.tw-shell .tw-composer-region.is-mobile .tw-composer-topline>.tw-composer-summary{flex:1;padding:0;margin:0;justify-content:flex-end;min-width:0}
 .tw-shell .tw-composer-region.is-mobile .tw-composer-settings-summary{max-width:100%;min-width:0;min-height:28px;padding:2px 0;font-size:11px;gap:5px}
 .tw-composer-region.is-mobile .tw-composer-summary-label{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tw-composer-region.is-mobile .tw-composer-settings-summary>svg{flex:none}
@@ -348,7 +354,7 @@
 }
 @media(max-width:767px) and (prefers-reduced-motion:reduce){.tw-shell>.tw-main{transition:none}.tw-dialog.tw-mobile-nav-dialog{animation:none}}
 
-@media(prefers-reduced-motion:reduce){.tw-composer-region.is-mobile>.tw-composer,.tw-composer-region.is-mobile>.tw-composer>textarea,.tw-mobile-composer-options{transition:none}}
+@media(prefers-reduced-motion:reduce){.tw-composer-region.is-mobile>.tw-composer,.tw-composer-region.is-mobile>.tw-composer-topline,.tw-composer-region.is-mobile>.tw-composer>textarea,.tw-mobile-composer-options{transition:none}}
 /* Keep the field anchored while filtering changes the number of results. */
 .tw-global-search{width:min(600px,100%);height:min(680px,90dvh)}
 .tw-global-search>.tw-dialog-body{flex:1}
@@ -370,3 +376,24 @@
 .tw-search-empty{font-size:13px;color:var(--tw-muted);margin:8px 0}
 
 .tw-delete-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}.tw-delete-actions button{padding:10px 18px;border-radius:12px}.tw-delete-actions .tw-danger{background:#b42318;color:white}
+
+/* Prompt-writing guide, shared by image and vector composers. */
+.tw-prompt-guide-dialog{width:660px}
+.tw-prompt-guide-dialog .tw-dialog-head{flex-shrink:0}
+.tw-prompt-guide{display:grid;gap:20px}
+.tw-prompt-guide h3{font-size:14px;font-weight:600}
+.tw-prompt-guide p{margin:5px 0 0;font-size:13px;line-height:1.75;color:var(--tw-muted)}
+.tw-prompt-guide-intro h3{font-size:18px}
+.tw-prompt-guide-tips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px;list-style:none;margin:0;padding:0}
+.tw-prompt-guide-tips li{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.tw-prompt-guide-number{display:grid;place-items:center;width:24px;height:24px;flex:none;border-radius:50%;background:#edf3ef;color:var(--tw-accent);font-size:12px;font-weight:600}
+.tw-prompt-guide-example{padding:16px;background:#f5f7f4;border:1px solid var(--tw-border);border-radius:12px}
+.tw-prompt-guide-example-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.tw-prompt-guide-example-heading>span{font-size:11px;color:var(--tw-muted)}
+.tw-prompt-guide-example p{color:var(--tw-ink);margin-top:10px}
+.tw-prompt-guide .tw-prompt-guide-refine{margin:0}
+.tw-prompt-guide-refine strong{color:var(--tw-ink);font-weight:600}
+.tw-prompt-guide .tw-prompt-guide-note{margin:0;font-size:12px}
+.tw-prompt-guide-actions{display:flex;justify-content:flex-end}
+.tw-prompt-guide-actions>button{min-width:100px}
+@media(max-width:767px){.tw-prompt-guide-dialog{width:100%}.tw-prompt-guide{gap:20px}.tw-prompt-guide-tips{grid-template-columns:minmax(0,1fr);gap:16px}.tw-prompt-guide-actions>button{width:100%;min-height:44px}}

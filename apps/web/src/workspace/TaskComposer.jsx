@@ -1,12 +1,12 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import { ArrowUp, Plus, SlidersHorizontal, Boxes, Sparkles, X, FileText, ChevronDown } from 'lucide-react';
+import { ArrowUp, Plus, SlidersHorizontal, Boxes, Sparkles, Lightbulb, X, FileText, ChevronDown } from 'lucide-react';
 import { getFigureType } from '../../../../packages/figure-taxonomy/src/index.js';
 import { JOURNALS } from '../../../../packages/api/src/journal-rules.js';
 import { MATERIAL_ACCEPT } from '../lib/materials.js';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
 import { currentTask, currentBranch, currentDraft, refinementTarget, selectedVersion, activeRun, versionLabel, PATHS, submitIssue } from './workspaceState.js';
 
-export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy, uploadError, missingOriginal, onRestoreOriginal, onModels, onSettings, onOptimize, optimizing, optimizationContent, saveStatus, mobile = false, toolDialogOpen = false }) {
+export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy, uploadError, missingOriginal, onRestoreOriginal, onModels, onSettings, onPromptGuide, onOptimize, optimizing, optimizationContent, saveStatus, mobile = false, toolDialogOpen = false }) {
   const t = currentTask(state), b = currentBranch(state), d = currentDraft(state), target = refinementTarget(state), shown = selectedVersion(state), run = activeRun(state);
   const inputId = useId(), fileRef = useRef(), restoreRef=useRef(), textRef = useRef(), regionRef = useRef();
   const [expanded, setExpanded] = useState(false);
@@ -66,7 +66,10 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     {mismatch && <div className="tw-target-mismatch" role="status">正在查看 {versionLabel(shown)}；待修改 {versionLabel(target)}<button type="button" onClick={() => dispatch({ type: 'REFINE', versionId: shown.id })}>改为修改当前版本</button></div>}
     {target ? <div className="tw-target"><img src={target.url} alt="修改目标缩略图" /><span><small>修改对象</small><strong>基于{versionLabel(target, true)}修改</strong></span><button type="button" className="tw-text-button" onClick={() => dispatch({ type: 'VIEW', versionId: target.id })}>返回目标</button><button type="button" className="tw-icon" aria-label="退出修改" onClick={() => dispatch({ type: 'EXIT_REFINE' })}><X size={17} /></button></div>
       : <div className="tw-composer-intent"><span>{source ? `修改对象：${source.filename}` : run ? '下一次操作草稿' : '新方案'} · {PATHS[t.path]}</span>{b.lastTargetId && (b.refinements[b.lastTargetId]?.text || b.refinements[b.lastTargetId]?.attachments.length > 0) && <button type="button" onClick={() => dispatch({ type: 'REFINE', versionId: b.lastTargetId })}>继续未完成修改</button>}</div>}
-    {mobile && summary}
+    <div className="tw-composer-topline">
+      {onPromptGuide && <button type="button" className="tw-prompt-guide-trigger" aria-haspopup="dialog" onClick={onPromptGuide}><Lightbulb size={15} aria-hidden="true" /><span>提示词建议</span></button>}
+      {mobile && summary}
+    </div>
     <form className="tw-composer" onSubmit={submit}>
       <label className="tw-sr" htmlFor={inputId}>{target ? '修改要求' : '绘图要求'}</label>
       <input className="tw-sr" type="file" tabIndex={-1} ref={fileRef} accept={MATERIAL_ACCEPT} multiple onChange={e => { const files = [...e.target.files]; e.target.value = ''; onFiles(files); }} />
