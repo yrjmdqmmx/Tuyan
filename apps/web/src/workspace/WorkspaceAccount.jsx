@@ -54,7 +54,7 @@ export default function WorkspaceAccount({ children, beforeSignOut, client = aut
       : '暂时无法检查登录状态，任务与草稿已保留。请确认连接后重试。' : '');
   return <>
     {requireLogin && !user ? <main className="tw-login-required" style={{maxWidth:520,margin:'8vh auto',padding:'0 20px'}}>
-      <header style={{textAlign:'center',marginBottom:24}}><img src={logoUrl} alt="图研 Tuyan" width="56" height="56" /><h1>登录图研</h1><p>登录后使用工作台。每个账号最多同时提交两个任务。</p></header>
+      <header style={{textAlign:'center',marginBottom:24}}><img src={logoUrl} alt="图研 Tuyan" width="56" height="56" /><h1>登录图研</h1><p>登录后使用工作台。每个账号最多同时执行两个任务，其余任务排队。</p></header>
       {auth.isPending ? <p role="status">正在确认登录状态…</p> : <AuthPanel client={client} watcha={watcha} onAuthenticated={authenticated} />}
     </main> : children({ user, watcha, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
       onEmailChanged: async () => { action.current++; auth.clear(); afterLogin.current=null; setError('登录邮箱已更换，请使用新邮箱重新登录。'); setPanel('login'); },

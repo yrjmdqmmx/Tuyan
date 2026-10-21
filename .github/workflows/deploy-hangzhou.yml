@@ -44,6 +44,8 @@ jobs:
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Verify workspace and profile lifecycle transactions on real MongoDB
         run: bash apps/auth-gateway/tests/integration/run-workspace-sync.sh
+      - name: Verify account queues and eight concurrent tasks with offline models
+        run: bash apps/paperbanana-api/tests/integration/run-concurrent-tasks.sh
       - name: Preflight real mixed figure workflow with offline model fixtures
         working-directory: apps/paperbanana-api
         run: pnpm exec tsx --test --test-name-pattern='original mixed workflow' tests/diagram-topology-runtime.test.ts

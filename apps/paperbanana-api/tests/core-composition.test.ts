@@ -4746,28 +4746,25 @@ test('job admission bounds active and FIFO pending work with stable saturation',
   assert.equal(reservations.length, 3)
 })
 
-test('job admission enforces owner and IP limits across active and queued work', async () => {
+test('job admission queues an account at its active cap while preserving the shared IP bound', async () => {
   const legacy = await loadLegacy()
-  assert.equal(typeof legacy.createJobAdmissionController, 'function')
+  const started: string[] = []
   const controller = legacy.createJobAdmissionController(
     { maxActive: 2, maxPending: 2, maxPerOwner: 1, maxPerIp: 1 },
-    { execute: async () => new Promise(() => {}), markFailed: async () => {}, logError: () => {} },
+    { execute: async (task: any) => { started.push(task.jobId) }, markFailed: async () => {}, logError: () => {} },
   )
-
   const first = controller.reserve({ ownerKey: 'owner-a', ipKey: 'ip-a' })
+  const second = controller.reserve({ ownerKey: 'owner-a', ipKey: 'ip-b' })
   assert.equal(first.ok, true)
-  assert.deepEqual(controller.reserve({ ownerKey: 'owner-a', ipKey: 'ip-b' }), {
-    ok: false,
-    code: 429,
-    error: 'Job owner limit exceeded. Please wait for the current job to finish.',
-  })
+  assert.equal(second.ok, true)
+  controller.commit(second, { jobId: 'second', kind: 'create', body: {}, apiKey: '' })
+  assert.deepEqual(started, [])
   assert.deepEqual(controller.reserve({ ownerKey: 'owner-b', ipKey: 'ip-a' }), {
-    ok: false,
-    code: 429,
-    error: 'Job IP limit exceeded. Please wait for the current job to finish.',
+    ok: false, code: 429, error: 'Job IP limit exceeded. Please wait for the current job to finish.',
   })
   controller.cancel(first)
-  assert.equal(controller.reserve({ ownerKey: 'owner-a', ipKey: 'ip-a' }).ok, true)
+  assert.deepEqual(started, ['second'])
+  await controller.drain()
 })
 
 test('job admission catches markFailed errors and drains without an unhandled rejection', async () => {
@@ -6867,8 +6864,6 @@ test('eight global slots keep independent two-job account quotas and FIFO queue 
       const r=controller.reserve({ownerKey:`owner-${owner}`,ipKey:'shared-NAT'});assert.equal(r.ok,true);
       controller.commit(r,{jobId:`${owner}:${job}`,kind:'create',body:{userId:`owner-${owner}`}});
     }
-    const third=controller.reserve({ownerKey:`owner-${owner}`,ipKey:'another-IP'});
-    assert.equal(third.ok,false);assert.match(third.error,/owner limit/);
   }
   assert.equal(started.length,8);assert.equal(controller.snapshot().active,8);assert.equal(controller.snapshot().queued,32);
   const overflow=controller.reserve({ownerKey:'extra',ipKey:'other-network'});assert.equal(overflow.ok,false);assert.match(overflow.error,/queue is full/);
@@ -6879,3 +6874,44 @@ test('eight global slots keep independent two-job account quotas and FIFO queue 
   await controller.drain();assert.equal(peak,8);assert.equal(finished.length,40);assert.deepEqual(started,Array.from({length:40},(_,i)=>`${Math.floor(i/2)}:${i%2}`));
   assert.equal(controller.snapshot().active,0);assert.equal(controller.snapshot().queued,0);
 });
+
+
+test('account third task queues while other accounts use spare slots, with no duplicate dispatch', async () => {
+  const legacy = await loadLegacy(), started: string[] = [], finished: string[] = []
+  const releases = new Map<string, () => void>(), activeByOwner = new Map<string, number>()
+  let peakOwner = 0
+  const controller = legacy.createJobAdmissionController({ maxActive: 8, maxPending: 32, maxPerOwner: 2, maxPerIp: 40 }, {
+    execute: async (task: any) => {
+      const owner = task.body.userId
+      activeByOwner.set(owner, (activeByOwner.get(owner) || 0) + 1)
+      peakOwner = Math.max(peakOwner, activeByOwner.get(owner)!)
+      started.push(task.jobId)
+      await new Promise<void>(resolve => releases.set(task.jobId, resolve))
+      activeByOwner.set(owner, activeByOwner.get(owner)! - 1)
+      finished.push(task.jobId)
+    }, markFailed: async () => { throw Error('Unexpected task failure') }, logError: () => {},
+  })
+  const submit = (id: string) => {
+    const owner = id[0], reservation = controller.reserve({ ownerKey: owner, ipKey: 'shared-network' })
+    assert.equal(reservation.ok, true)
+    assert.equal(controller.commit(reservation, { jobId: id, kind: 'create', body: { userId: owner } }), true)
+    return reservation
+  }
+  submit('A1'); submit('A2'); submit('A3'); submit('B1'); submit('A4'); submit('B2')
+  assert.deepEqual(started, ['A1', 'A2', 'B1', 'B2'])
+  assert.equal(controller.snapshot().queued, 2)
+  releases.get('A1')!(); await new Promise(resolve => setImmediate(resolve))
+  assert.deepEqual(started, ['A1', 'A2', 'B1', 'B2', 'A3'])
+  releases.get('B1')!(); await new Promise(resolve => setImmediate(resolve))
+  submit('C1')
+  assert.equal(started.at(-1), 'C1')
+  assert.equal(started.includes('A4'), false)
+  releases.get('A2')!(); await new Promise(resolve => setImmediate(resolve))
+  assert.equal(started.at(-1), 'A4')
+  for (const id of started.filter(id => !finished.includes(id))) releases.get(id)!()
+  await controller.drain()
+  assert.equal(peakOwner, 2)
+  assert.equal(started.length, 7)
+  assert.equal(new Set(started).size, 7)
+  assert.deepEqual(new Set(finished), new Set(started))
+})
