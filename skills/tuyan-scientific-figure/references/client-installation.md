@@ -4,7 +4,9 @@ The canonical standalone skill source is `https://github.com/yrjmdqmmx/Tuyan-Ski
 
 ## Agent-assisted setup
 
-The stable, machine-readable installation entry is:
+The domestic machine-readable index is `https://tuyansci.cn/.well-known/skills/index.json`; the same version is mirrored at `https://www.paperbanana.asia/.well-known/skills/index.json`. Each manifest lists the complete files and their SHA-256 hashes, knowledge version/hash, taxonomy version and journal version. Verify all files after installation; do not update only SKILL.md or keep an older offline snapshot/runtime.
+
+The stable installation guide is:
 `https://www.paperbanana.asia/.well-known/skills/tuyan-scientific-figure/references/client-installation.md`.
 If the site is unreachable, read the installation reference in the canonical standalone Skill repository above.
 
@@ -15,6 +17,12 @@ If the site is unreachable, read the installation reference in the canonical sta
 5. Report configuration and verification separately. A copied prompt, copied files, or saved MCP URL alone does not establish a working connection. Name the discovered Skill/tool/resource, the check actually performed, any errors or unverified steps, and how the user can invoke the capability. If the client cannot verify its new configuration until restart, say so.
 
 Skill installation and public MCP access need no Tuyan account, OAuth approval, API key, or paid-model call. Users may need to approve local installation, enable a client tool, restart their Agent, or configure their Agent's own renderer. This MCP does not log into the Web workbench or create cloud generation jobs. Image generation uses the Agent's own tools and may require that tool's authorization and credits; without a renderer the Skill can stop at FigureSpec. PaperBananaBench retrieval is optional and requires explicit user consent before downloading the dataset. Do not use generation or dataset download as an installation smoke test.
+
+## Updating an existing installation
+
+Back up the existing Skill directory first. Copy the complete published file set, preserving unrelated skills and MCP/client configuration. Compare each published file hash and the offline snapshot manifest with the online `tuyan://manifest`. An installed older version must not label new online knowledge with its bundled version. New local work uses FigureSpec/CritiqueRecord/OutputBundle v2; v1 resources remain available to read historical work. Journal rules and original source wording are versioned; upgrading the Skill does not upgrade a saved journal selection automatically. Start a new Agent task if its Skill or MCP discovery is cached.
+
+Offline helpers require Node.js 24 or later and are self-contained; no npm install, dataset download or model call is needed. Verify the generated runtime can import, compare its manifest to `references/offline-snapshot.v1.json`, and read a workflow or journal resource. Native discovery and actual local renderer availability are separate checks.
 
 ## Codex
 

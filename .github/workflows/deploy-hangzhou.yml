@@ -2,7 +2,7 @@ name: Deploy Hangzhou Production
 on:
   push:
     branches: [codex/hangzhou-production]
-    paths-ignore: ['docs/**', '**/*.md']
+    paths: ['**', '!docs/**', '!**/*.md', 'skills/tuyan-scientific-figure/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -40,6 +40,10 @@ jobs:
       - name: Preflight actual scrubbed Python subprocess and PNG/SVG outputs
         run: PYTHONPATH="$PWD/apps/plot-worker" "$TUYAN_QA_PYTHON" deploy/hangzhou/plot-smoke.py
       - run: pnpm install --frozen-lockfile
+      - name: Verify complete Agent knowledge, offline runtime and provenance
+        run: |
+          node scripts/sync-agent-knowledge.mjs --check
+          node --test packages/tuyan-knowledge/tests/*.test.js skills/tuyan-scientific-figure/tests/*.test.mjs
       - run: python3 -m unittest discover -s deploy/hangzhou/tests -v
       - run: pnpm --filter @paperbanana/auth-gateway test
       - name: Verify workspace and profile lifecycle transactions on real MongoDB
@@ -72,6 +76,7 @@ jobs:
         with:
           name: hangzhou-web
           path: apps/web/dist
+          include-hidden-files: true
           retention-days: 3
   images:
     if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
@@ -155,6 +160,8 @@ jobs:
         with:
           name: hangzhou-web
           path: payload/web
+      - name: Verify transferred Skill files and hashes before deployment
+        run: node scripts/verify-agent-distribution.mjs payload/web
       - uses: actions/download-artifact@v4
         with:
           pattern: image-*
@@ -231,6 +238,8 @@ jobs:
           VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'
       - name: Record matching source version
         run: node -e 'require("fs").writeFileSync("apps/web/dist/version.json", JSON.stringify({revision:process.env.GITHUB_SHA,target:"GitHub Pages"}))'
+      - name: Verify Pages Skill distribution
+        run: node scripts/verify-agent-distribution.mjs apps/web/dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/web/dist

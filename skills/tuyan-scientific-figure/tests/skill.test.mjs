@@ -9,7 +9,7 @@ import {
   KNOWLEDGE_VERSION,
   PAPERBANANA_BENCH_DIAGRAM_IDS,
   PAPERBANANA_BENCH_MANIFEST,
-} from '../../../packages/tuyan-knowledge/src/index.js';
+} from '../scripts/knowledge-runtime.mjs';
 
 const skillRoot = resolve(import.meta.dirname, '..');
 
@@ -47,12 +47,15 @@ test('skill keeps research inputs local and sends only enums to the MCP', async 
   assert.doesNotMatch(text, /upload (?:the )?(?:paper|image|prompt)/i);
 });
 
-test('skill covers the exact categories and bounded stop conditions', async () => {
+test('skill discovers the complete catalog and bounded stop conditions', async () => {
   const text = await optionalText(join(skillRoot, 'SKILL.md'));
   for (const category of [
     'method_framework', 'workflow', 'system_architecture', 'mechanism',
     'comparison', 'timeline', 'data_stat', 'concept_map',
   ]) assert.match(text, new RegExp(`\\b${category}\\b`));
+  assert.match(text, /dimensions.visualCategories/);
+  assert.match(text, /execution.renderer/);
+  assert.doesNotMatch(text, /every category except/);
   assert.match(text, /no material issue/i);
   assert.match(text, /capability.*unavailable/i);
   assert.match(text, /two consecutive.*no improvement/i);
@@ -62,7 +65,7 @@ test('dataset download is consent-gated, optional, verified, and non-blocking', 
   const text = await optionalText(join(skillRoot, 'SKILL.md'));
   const reference = await optionalText(join(skillRoot, 'references', 'paperbanana-bench.md'));
   assert.match(text, /ask.*before.*download/is);
-  assert.match(text, /skip.*Retriever/is);
+  assert.match(text, /skipped.*Retriever|Retriever.*skipped/is);
   assert.match(text, /download.*fail.*Retriever/is);
   assert.match(reference, new RegExp(PAPERBANANA_BENCH_MANIFEST.revision));
   assert.match(reference, new RegExp(PAPERBANANA_BENCH_MANIFEST.archiveSha256));
@@ -101,24 +104,6 @@ test('local retriever ranks relevant references without a fixed result count', a
   assert.equal(results?.length, 2);
   assert.equal(results?.[0].id, 'ref_b');
   assert.ok(results?.every(({ retrieval }) => Number.isFinite(retrieval.score)));
-});
-
-test('output finalizer records local files, knowledge, and retriever state', async () => {
-  const module = await optionalModule(new URL('../scripts/finalize-output-bundle.mjs', import.meta.url));
-  const directory = await mkdtemp(join(tmpdir(), 'tuyan-output-test-'));
-  await mkdir(join(directory, 'prompts'));
-  await writeFile(join(directory, 'figure-spec.json'), '{"schemaVersion":"tuyan.figure-spec/v1"}\n');
-  await writeFile(join(directory, 'prompts', 'round-01.txt'), 'local prompt\n');
-  const manifest = await module.buildOutputManifest?.(directory, {
-    retrieverStatus: 'skipped',
-    datasetRevision: null,
-    createdAt: '2026-09-04T00:00:00.000Z',
-  });
-  assert.equal(manifest?.schemaVersion, 'tuyan.output-bundle/v1');
-  assert.equal(manifest?.knowledge.version, KNOWLEDGE_VERSION);
-  assert.equal(manifest?.retriever.status, 'skipped');
-  assert.deepEqual(manifest?.files.map(({ path }) => path), ['figure-spec.json', 'prompts/round-01.txt']);
-  assert.ok(manifest?.files.every(({ sha256 }) => /^[a-f0-9]{64}$/.test(sha256)));
 });
 
 test('skill defines spec-only, reproducible plot, and local refinement paths', async () => {

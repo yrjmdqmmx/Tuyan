@@ -1,5 +1,6 @@
 import {FIGURE_TYPES} from '../../figure-taxonomy/src/index.js';
-export const KNOWLEDGE_VERSION = '1.1.0';
+import { CATEGORY_ENGLISH } from './category-english.js';
+export const KNOWLEDGE_VERSION = '1.2.0';
 export const KNOWLEDGE_MAJOR = 1;
 
 export const VISUAL_CATEGORIES = Object.freeze([...FIGURE_TYPES.map(type=>type.id),'data_stat']);
@@ -103,7 +104,8 @@ const enUS = {
 
 for(const type of FIGURE_TYPES){
  zhCN[type.id]={label:type.label,description:type.definition,requiredChecks:type.reviewRequirements};
- enUS[type.id]={label:type.en,description:type.definition,requiredChecks:type.reviewRequirements};
+ if (!CATEGORY_ENGLISH[type.id]) throw new Error(`MISSING_ENGLISH_CATEGORY: ${type.id}`);
+ enUS[type.id]={label:type.en,...CATEGORY_ENGLISH[type.id]};
 }
 export const CATEGORY_CATALOG = Object.freeze({ 'zh-CN': Object.freeze(Object.fromEntries(VISUAL_CATEGORIES.map(id=>[id,zhCN[id]]))), 'en-US': Object.freeze(Object.fromEntries(VISUAL_CATEGORIES.map(id=>[id,enUS[id]]))) });
 

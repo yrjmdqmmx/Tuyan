@@ -116,9 +116,9 @@ function methodName(request) {
   return LOGGABLE_METHODS.has(method) ? method : 'unknown';
 }
 
-export function createTuyanMcpRouter({ logger = console, nowMs = () => Date.now() } = {}) {
+export function createTuyanMcpRouter({ host = 'api.paperbanana.asia', logger = console, nowMs = () => Date.now() } = {}) {
   const router = express.Router();
-  const mcpApp = createMcpExpressApp({ host: 'api.paperbanana.asia', jsonLimit: MCP_REQUEST_LIMIT });
+  const mcpApp = createMcpExpressApp({ host, jsonLimit: MCP_REQUEST_LIMIT });
   const server = createTuyanMcpServer();
 
   router.use((request, response, next) => {

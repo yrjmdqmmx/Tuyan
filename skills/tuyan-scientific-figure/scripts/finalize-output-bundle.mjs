@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { lstat, readFile, readdir, writeFile } from 'node:fs/promises';
-import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { extname, join, relative, resolve, sep } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { validateArtifactDocument, verifyKnowledgeEvidence, sha256Canonical, FIGURE_TAXONOMY } from './knowledge-runtime.mjs';
 
 const RETRIEVER_STATUSES = new Set(['enabled', 'skipped', 'download-failed', 'validation-failed', 'not-requested']);
 const REVISION = 'a876264bcd1e826a0320f805f8fb1cd705cf510f';
@@ -44,10 +45,6 @@ async function filesUnder(root, directory = root) {
   return results.sort();
 }
 
-function snapshotPath() {
-  return resolve(dirname(fileURLToPath(import.meta.url)), '../references/offline-snapshot.v1.json');
-}
-
 export async function buildOutputManifest(directory, {
   retrieverStatus = 'not-requested',
   datasetRevision = retrieverStatus === 'enabled' ? REVISION : null,
@@ -59,20 +56,65 @@ export async function buildOutputManifest(directory, {
   const figureSpecPath = join(root, 'figure-spec.json');
   const figureSpec = await readFile(figureSpecPath).catch(() => null);
   if (!figureSpec) throw new Error('OUTPUT_BUNDLE_INVALID: figure-spec.json is required');
-  const snapshot = JSON.parse(await readFile(snapshotPath(), 'utf8'));
+  const spec = validateArtifactDocument(JSON.parse(figureSpec));
+  const knowledgePath = 'knowledge-used.json';
   const paths = await filesUnder(root);
   const files = [];
   for (const path of paths) {
     const bytes = await readFile(join(root, path));
     files.push({ kind: kind(path), path, sha256: sha256(bytes), mediaType: mediaType(path) });
   }
-  return {
-    schemaVersion: 'tuyan.output-bundle/v1',
+  // Read only files already enumerated inside the bundle; symlinks and outside
+  // references cannot be followed by a critique or knowledge evidence file.
+  if (!paths.includes(knowledgePath)) throw new Error('OUTPUT_BUNDLE_INVALID: knowledge-used.json is required; capture actual MCP responses or prepare explicit offline knowledge');
+  const evidence = verifyKnowledgeEvidence(JSON.parse(await readFile(join(root, knowledgePath), 'utf8')));
+  const { manifest: knowledge, workflow, journalProfile } = evidence;
+  if (spec.operation !== workflow.workflow.operation || spec.visualCategory !== workflow.workflow.visualCategory || spec.output.format !== workflow.execution.outputFormat || spec.locale !== workflow.workflow.locale) throw new Error('OUTPUT_BUNDLE_INVALID: FigureSpec differs from captured workflow');
+  if (spec.taxonomyVersion !== knowledge.taxonomyVersion) throw new Error('OUTPUT_BUNDLE_INVALID: taxonomy version mismatch');
+  if (sha256Canonical(spec.journalSelection ?? null) !== sha256Canonical(journalProfile?.snapshot.selection ?? null)) throw new Error('OUTPUT_BUNDLE_INVALID: journal selection differs from captured rules');
+  if (journalProfile && journalProfile.operation !== ({ create: 'generate', refine: 'generative-refine', evaluate: 'evaluate' })[spec.operation] && !(spec.operation === 'refine' && journalProfile.operation === 'non-generative-edit' && ['code', 'vector-authoring'].includes(spec.output.renderer))) throw new Error('OUTPUT_BUNDLE_INVALID: journal operation does not match actual workflow');
+  const assertFileHash = (path, hash) => {
+    if (!files.some(file => file.path === path && file.sha256 === hash)) throw new Error(`OUTPUT_BUNDLE_INVALID: missing or changed evidence file ${path}`);
+  };
+  for (const data of [spec.data, ...(spec.panels || []).map(panel => panel.data)].filter(Boolean)) assertFileHash(data.sourcePath, data.sourceSha256);
+  const dataFigure = spec.visualCategory === 'data_stat' || FIGURE_TAXONOMY.types.some(type => type.id === spec.visualCategory && type.kind === 'data') || spec.panels?.some(panel => FIGURE_TAXONOMY.types.some(type => type.id === panel.visualCategory && type.kind === 'data'));
+  const critiques = [];
+  for (const file of files.filter(file => file.kind === 'critique' && file.path.endsWith('.json'))) {
+    const record = validateArtifactDocument(JSON.parse(await readFile(join(root, file.path), 'utf8')));
+    if (record.schemaVersion !== 'tuyan.critique-record/v2') throw new Error('OUTPUT_BUNDLE_INVALID: critique schema v2 required');
+    assertFileHash(record.figureSpecPath || 'figure-spec.json', record.figureSpecSha256);
+    assertFileHash(record.artifactPath, record.artifactSha256);
+    if (record.renderedArtifact) assertFileHash(record.renderedArtifact.path, record.renderedArtifact.sha256);
+    if (record.artifactPath.endsWith('.svg') && record.renderedArtifact?.path === record.artifactPath) throw new Error('OUTPUT_BUNDLE_INVALID: SVG render evidence must be a separate raster image');
+    if (record.renderedArtifact && !/\.(png|jpe?g|webp)$/i.test(record.renderedArtifact.path)) throw new Error('OUTPUT_BUNDLE_INVALID: inspect a raster rendering of SVG');
+    if (!record.artifactPath.endsWith('.svg') && !record.inspected.includes('raster')) throw new Error('OUTPUT_BUNDLE_INVALID: actual raster inspection is required');
+    if (record.figureSpecSha256 === sha256(figureSpec) && record.decision === 'finalize' && dataFigure && !record.numericChecks?.length) throw new Error('OUTPUT_BUNDLE_INVALID: numeric evidence is required separately from visual review');
+    critiques.push({ path: file.path, record });
+  }
+  const reviewSummary = [];
+  const incompleteNumericPackage = dataFigure && (!files.some(file => file.kind === 'plot-code') || !files.some(file => file.kind === 'final' && file.path.endsWith('.png')) || !files.some(file => file.kind === 'final' && file.path.endsWith('.svg')));
+  for (const file of files.filter(file => file.kind === 'final' && /\.(png|svg|jpe?g|webp)$/i.test(file.path))) {
+    if (file.path.endsWith('.svg')) {
+      const svg = await readFile(join(root, file.path), 'utf8');
+      if (!/<svg\b/i.test(svg) || !/<(?:path|text|rect|circle|line|polyline|polygon|ellipse|use)\b/i.test(svg)) throw new Error('OUTPUT_BUNDLE_INVALID: final SVG must contain real vector content, not a renamed/wrapped bitmap');
+    }
+    const review = critiques.filter(({ record }) => record.figureSpecSha256 === sha256(figureSpec) && (record.artifactSha256 === file.sha256 || record.renderedArtifact?.sha256 === file.sha256)).sort((a, b) => b.record.round - a.record.round || Number(a.record.decision === 'finalize') - Number(b.record.decision === 'finalize'))[0];
+    const unresolvedJournal = journalProfile && (!review?.record.journalChecks?.length || journalProfile.rules.some(rule => !review.record.journalChecks.some(check => check.ruleId === rule.id && ['passed', 'not-applicable'].includes(check.status))));
+    const missingInput = [...spec.inputEvidence, ...(spec.panels || []).flatMap(panel => panel.inputEvidence)].some(input => input.status !== 'available');
+    reviewSummary.push({ path: file.path, sha256: file.sha256, status: !review ? 'unreviewed' : review.record.decision === 'finalize' && !unresolvedJournal && !missingInput && !journalProfile?.blocksExecution && !incompleteNumericPackage && spec.output.renderer !== 'spec-only' ? 'accepted' : 'needs-review', ...(review ? { critiquePath: review.path } : {}) });
+  }
+  const result = {
+    schemaVersion: 'tuyan.output-bundle/v2',
     createdAt,
     figureSpecSha256: sha256(figureSpec),
     knowledge: {
-      version: snapshot.manifest.knowledgeVersion,
-      sha256: snapshot.manifest.knowledgeHash,
+      version: knowledge.knowledgeVersion,
+      sha256: knowledge.knowledgeHash,
+      source: evidence.source,
+      evidencePath: knowledgePath,
+      workflowSha256: workflow.contentHash,
+      taxonomyVersion: knowledge.taxonomyVersion,
+      journalVersion: journalProfile?.snapshot.version || knowledge.journalVersion,
     },
     retriever: {
       status: retrieverStatus,
@@ -80,7 +122,9 @@ export async function buildOutputManifest(directory, {
       selectedReferences: [...selectedReferences],
     },
     files,
+    reviewSummary,
   };
+  return validateArtifactDocument(result);
 }
 
 function parseArgs(argv) {

@@ -35,6 +35,10 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      - name: Verify complete Agent knowledge and local artifact contracts
+        run: |
+          node scripts/sync-agent-knowledge.mjs --check
+          node --test packages/tuyan-knowledge/tests/*.test.js skills/tuyan-scientific-figure/tests/*.test.mjs
       - name: Shared reference upload policy stays synchronized
         run: node scripts/sync-reference-upload.mjs --check
       - run: pnpm --filter @paperbanana/auth-gateway test
