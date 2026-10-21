@@ -15,7 +15,7 @@ import WelcomeTypewriter from './WelcomeTypewriter.jsx';
 import { currentTask, currentBranch, PATHS, currentDraft } from './workspaceState.js';
 import { ACCOUNT_SETTINGS_SECTIONS } from './accountSettingsSections.js';
 
-export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
+export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
   const task = currentTask(state), branch = currentBranch(state);
   const nickname = user?.name?.trim();
   const [welcomeStoppedTasks, setWelcomeStoppedTasks] = useState(() => new Set());
@@ -27,14 +27,15 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
   const composerDialogTriggerRef = useRef(null);
   const searchTriggerRef = useRef(null);
   const searchStateRef = useRef({query:'', archived:false});
-  const [panel, setPanel] = useState(null), [page, setPageState] = useState('workspace');
-  const [accountSection, setAccountSection] = useState(null);
+  const [panel, setPanel] = useState(null), [localPage, setPageState] = useState('workspace');
+  const page = navigation?.route.page || localPage;
+  const [accountSection, setAccountSection] = useState(navigation?.route.accountSection || null);
   const accountHeadingRef = useRef(null);
   const [modelView, setModelView] = useState(null), [settingsSection, setSettingsSection] = useState(null);
   const [modelVisit, setModelVisit] = useState(0);
   const [pageTool, setPageTool] = useState(null);
   const [composerFocus, setComposerFocus] = useState(null);
-  function setPage(next) { setPageState(next); setModelView(null); setPageTool(null); setAccountSection(null); }
+  function setPage(next) { if (navigation) navigation.navigate(next); else setPageState(next); setModelView(null); setPageTool(null); setAccountSection(null); }
   function changeAccountSection(next) {
     const previous = accountSection;
     setAccountSection(next);
@@ -45,6 +46,13 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
       else shellRef.current?.querySelector(`[data-settings-section="${previous}"]`)?.focus({preventScroll:true});
     });
   }
+  useEffect(() => {
+    if (!navigation) return;
+    setAccountSection(navigation.route.accountSection || null);
+    if (navigation.route.page !== 'workspace') setPanel(null);
+    setMobileOpen(false);
+    if (navigation.route.composerAction) setComposerFocus({action:navigation.route.composerAction});
+  }, [navigation?.route.href]);
   const mobileSettings = mobile && page === '账户设置';
   const accountSectionTitle = ACCOUNT_SETTINGS_SECTIONS.find(section => section.id === accountSection)?.label;
   const deleteTriggerRef=useRef(null);
@@ -128,7 +136,7 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
         {page === 'workspace' && <WorkspaceSegments className="tw-paths" label="创作路径" value={task.path} onChange={navigate} options={Object.entries(PATHS).map(([path, label]) => ({ value: path, label, suffix: task.activeRunId && task.runs.find(r => r.id === task.activeRunId)?.path === path ? <span className="tw-path-running" aria-label="执行中" /> : null }))} />}
         {headerTools && <div className="tw-header-tools">{headerTools}</div>}
       </header>}
-      {page !== 'workspace' ? <div key={`${page}:${modelView || ""}:${modelVisit}:${pageTool || ""}`} data-settings-view={page === '账户设置' ? (accountSection ? 'detail' : 'index') : undefined} className={`tw-page ${['models', '排行榜', '他山科研生态', '站长页', '社区评估题审核', '账户设置'].includes(page) ? 'tw-page-wide' : ''} ${page === '账户设置' ? 'tw-settings-page' : ''}`}><div className="tw-page-body">{page === 'models' ? renderModels?.({ management: true, initialView: modelView, onClose: () => setPage('workspace') }) : page === '账户设置' && renderAccount ? renderAccount({mobile,section:accountSection,onSectionChange:changeAccountSection,onOpenTask:id=>{if(state.tasks.some(t=>t.id===id&&!t.deleted)){dispatch({type:'SELECT_TASK',id});setPage('workspace');}}}) : renderPage?.(page, () => setPage('workspace'), setPage, {initialTool:pageTool})}</div></div>
+      {page !== 'workspace' ? <div key={`${page}:${modelView || ""}:${modelVisit}:${pageTool || ""}`} data-settings-view={page === '账户设置' ? (accountSection ? 'detail' : 'index') : undefined} className={`tw-page ${['models', '排行榜', '他山科研生态', '站长页', '社区评估题审核', '账户设置'].includes(page) ? 'tw-page-wide' : ''} ${page === '账户设置' ? 'tw-settings-page' : ''}`}><div className="tw-page-body">{page === 'models' ? renderModels?.({ management: true, initialView: modelView, onClose: () => setPage('workspace') }) : page === '账户设置' && renderAccount ? renderAccount({mobile,section:accountSection,onSectionChange:changeAccountSection,onOpenTask:id=>{if(state.tasks.some(t=>t.id===id&&!t.deleted)){dispatch({type:'SELECT_TASK',id});setPage('workspace');}}}) : renderPage?.(page, () => setPage('workspace'), setPage, {initialTool:pageTool, navigation, tasks:state.tasks, onSelectTask:id=>selectSearchResult({taskId:id})})}</div></div>
         : task.deleted ? <div className="tw-empty-body"><p role="status">此任务由旧版本移除，内容仍保留。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button><button type="button" disabled={!askDelete} onClick={()=>askDelete(task)}>彻底删除</button></div> : !hasStarted ? <div className="tw-empty-body"><div className="tw-welcome"><WelcomeTypewriter key={task.id} nickname={nickname} stopped={welcomeStopped} paused={Boolean(panel || mobileOpen)} /></div><HomeTemplateCarousel key={task.id} mobile={mobile} stopped={welcomeStopped} paused={Boolean(panel || mobileOpen)} onApply={template=>dispatch({type:'APPLY_TEMPLATE',template})}/>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
         </div> : <><ResultWorkspace executionProgress={executionProgress} renderRecovery={renderRecovery} userId={user?.id} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} renderSvgEditor={renderSvgEditor} onDownload={onDownload} onCloseUnaccepted={!busy ? onCloseUnaccepted : null} /><div className="tw-docked">{composer}</div></>}
     </main>

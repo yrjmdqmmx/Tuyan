@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUTH_BASE_DEFAULT, AUTH_ENABLED, AUTH_REQUIRED, logoUrl, LOCAL_CONSUMPTION_TEST, authClient } from '../config.js';
 import { useAuthSession } from '../hooks/useAuthSession.js';
 import { useWatcha } from '../hooks/useWatcha.js';
@@ -9,9 +9,10 @@ import { X } from 'lucide-react';
 
 // UI adapter only: the host uses the existing Better Auth client and account components.
 // Session data never enters task drafts, snapshots, exports or browser task storage.
-export default function WorkspaceAccount({ children, beforeSignOut, client = authClient, enabled = AUTH_ENABLED, apiBase = AUTH_BASE_DEFAULT, productionPreview = LOCAL_CONSUMPTION_TEST, requireLogin = AUTH_REQUIRED }) {
+export default function WorkspaceAccount({ children, beforeSignOut, loginRequested = false, client = authClient, enabled = AUTH_ENABLED, apiBase = AUTH_BASE_DEFAULT, productionPreview = LOCAL_CONSUMPTION_TEST, requireLogin = AUTH_REQUIRED }) {
   const auth = useAuthSession({ client, enabled });
   const [panel, setPanel] = useState(null), [signingOut, setSigningOut] = useState(false), [error, setError] = useState('');
+  useEffect(() => { if (loginRequested) setPanel('login'); }, [loginRequested]);
   const action = useRef(0), logoutLock = useRef(false), afterLogin = useRef(null);
   const user = auth.session?.user || null;
   const authenticated = useCallback(async () => {

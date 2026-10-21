@@ -1,6 +1,6 @@
-## Production entry (2026-10-18)
+## Production entry (2026-10-21)
 
-`WorkspaceRoot` is now the default homepage. `?view=legacy` retains the existing App as a recovery entry; leaderboard and changelog routes retain their dedicated pages. Production excludes `previewFixtures` and simulation tools. `WorkspacePreview` remains a DEV-only wrapper. Gateway advertises production execution only when all durable workspace/model/execution stores exist; existing Core validates channel, exact model, workflow limits and materials. No local preview database or credentials are migrated.
+`WorkspaceRoot` owns all application entry routes, including `/changelog`, `/leaderboard/**`, `/bench/**`, their `index.html` forms and Pages `__route` fallbacks. Existing query entries (guide, account, records, refine and admin) and changelog anchors resolve inside the same workspace. `?view=legacy` also opens the new workspace; no production entry mounts the old App or standalone page shell. Anonymous public pages use a transient navigation shell without initializing task, model or execution stores. Account callbacks, password reset, email verification and legal documents retain their dedicated non-workbench flows. Production excludes `previewFixtures` and simulation tools. `WorkspacePreview` remains a DEV-only wrapper. Gateway advertises production execution only when all durable workspace/model/execution stores exist; existing Core validates channel, exact model, workflow limits and materials. No local preview database or credentials are migrated.
 
 The text below records earlier local implementation and acceptance boundaries; it is not the production rollout record.
 

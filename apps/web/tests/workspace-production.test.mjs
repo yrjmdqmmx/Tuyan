@@ -10,6 +10,6 @@ test('production workspace tools show account service and omit all simulation ex
   assert.equal(Boolean(screen.queryByRole('button',{name:'载入示例'})),false);
   assert.equal(Boolean(screen.queryByRole('button',{name:'竖图示例'})),false);
   assert.equal(Boolean(screen.queryByRole('button',{name:'模拟失败'})),false);
-  assert.equal(screen.getByRole('link',{name:'原工作台'}).getAttribute('href'), '/?view=legacy');
+  assert.equal(screen.queryByRole('link',{name:'原工作台'}), null);
   assert.ok(screen.getByText('任务与版本随账号保存，执行使用所选渠道。'));
 });

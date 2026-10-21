@@ -9,9 +9,9 @@ import config from '../vite.config.js'
 
 function builtScript(outputDir, relativeHtml) {
   const html = readFileSync(join(outputDir, relativeHtml), 'utf8')
-  const source = html.match(/<script[^>]+src="(\/paperbanana\/assets\/[^"]+\.js)"/u)?.[1]
-  assert.ok(source, `${relativeHtml} should load a base-prefixed JavaScript entry`)
-  return readFileSync(join(outputDir, source.slice('/paperbanana/'.length)), 'utf8')
+  const sources = [...html.matchAll(/<script[^>]+src="(\/paperbanana\/assets\/[^"]+\.js)"/gu)].map(match => match[1])
+  assert.ok(sources.length, `${relativeHtml} should load base-prefixed JavaScript entries`)
+  return sources.map(source => readFileSync(join(outputDir, source.slice('/paperbanana/'.length)), 'utf8')).join('\n')
 }
 
 test('non-root Vite build keeps every leaderboard entry and runtime fallback under BASE_URL', async () => {

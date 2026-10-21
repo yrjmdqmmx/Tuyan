@@ -1,6 +1,5 @@
-import { Activity, AlertTriangle, Cloud, Download, ExternalLink, History, Monitor, RefreshCw } from 'lucide-react';
+import { Activity, AlertTriangle, Cloud, Download, History, Monitor, RefreshCw } from 'lucide-react';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
-import { appPath } from '../appPaths.js';
 
 export function workspaceStatusIssues(sync, serviceIssue = '') {
   return [...new Set([sync.error || (sync.status === 'error' ? sync.saveStatus : ''), sync.notice, sync.historyIssue, serviceIssue].filter(Boolean))];
@@ -32,7 +31,6 @@ export default function WorkspaceStatus({ preview = false, sync, execution, sign
             <>{preview && <button type="button" onClick={() => onExamples('portrait')} disabled={stepping}>竖图示例</button>}</>
             <button type="button" onClick={execution.refresh} disabled={!run || stepping}><RefreshCw size={14} />刷新执行状态</button>
             {preview && health?.simulation && <button type="button" disabled={!run?.execution} onClick={execution.simulateFailure}>模拟失败</button>}
-            <a href={appPath('/?view=legacy')}><ExternalLink size={14} />原工作台</a>
           </div>
         </section>
         <section>

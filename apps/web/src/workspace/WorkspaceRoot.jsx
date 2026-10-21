@@ -5,11 +5,11 @@ import {resumeWorkspaceRun} from './workspaceExecution.js';
 import {journalFigureContent} from '../../../../packages/api/src/journal-rules.js';
 import useWorkspaceExecution from './useWorkspaceExecution.js';
 import WorkspaceSvgEditor from './WorkspaceSvgEditor.jsx';
-import {API_BASE_DEFAULT} from '../config.js';
+import {API_BASE_DEFAULT, AUTH_REQUIRED} from '../config.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import TaskWorkspace from './TaskWorkspace.jsx';
 import WorkspaceAccount from './WorkspaceAccount.jsx';
-import { workspaceReducer, currentTask, currentBranch, currentDraft, refinementTarget, activeRun, uid, submitIssue, locateVersion } from './workspaceState.js';
+import { newWorkspace, workspaceReducer, currentTask, currentBranch, currentDraft, refinementTarget, activeRun, uid, submitIssue, locateVersion } from './workspaceState.js';
 import useWorkspaceSync from './useWorkspaceSync.js';
 import { ORIGINAL_SCOPE } from './workspaceSync.js';
 import { restoreWorkspaceOriginal } from './workspaceMaterials.js';
@@ -33,13 +33,26 @@ import WorkspacePages, {useWorkspaceAdmin} from './WorkspacePages.jsx';
 import WorkspaceOptimize from './WorkspaceOptimize.jsx';
 import WorkspaceDrawingSettings from './WorkspaceDrawingSettings.jsx';
 
+import { isLoginEntry } from '../appPaths.js';
+import useWorkspaceNavigation from './useWorkspaceNavigation.js';
+
 export default function WorkspaceRoot({ preview = false }) {
   const beforeExit = useRef(null);
-  return <WorkspaceAccount beforeSignOut={() => beforeExit.current?.()}>{account => account.accountPending && !account.user
-    ? <div role="status" className="tw-sync-loading">正在确认账号，浏览器草稿保持不变…</div>
-    : <WorkspaceHost key={account.user?.id || 'guest'} account={account} beforeExit={beforeExit} preview={preview} />}</WorkspaceAccount>;
+  const navigation = useWorkspaceNavigation();
+  const publicPage = navigation.route.publicPage;
+  return <WorkspaceAccount loginRequested={isLoginEntry(navigation.route.search)} beforeSignOut={() => beforeExit.current?.()} requireLogin={AUTH_REQUIRED && !publicPage}>{account => !account.user && publicPage
+    ? <PublicWorkspaceHost account={account} navigation={navigation}/>
+    : account.accountPending && !account.user ? <p role="status">正在确认账号并载入任务…</p>
+      : <WorkspaceHost key={account.user?.id || 'guest'} account={account} beforeExit={beforeExit} preview={preview} navigation={navigation}/>}</WorkspaceAccount>;
 }
-function WorkspaceHost({ account, beforeExit, preview }) {
+// Anonymous public navigation never initializes task/model stores or execution.
+function PublicWorkspaceHost({account, navigation}) {
+  const [state] = useState(() => newWorkspace('public-navigation'));
+  return <TaskWorkspace state={state} dispatch={() => {}} {...account} navigation={navigation}
+    onSubmit={account.onSignIn} onFiles={account.onSignIn}
+    renderPage={(page,onClose,onNavigate,options) => <WorkspacePages {...options} key={page} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={{}}/>}/>;
+}
+function WorkspaceHost({ account, beforeExit, preview, navigation }) {
   const sync = useWorkspaceSync(account.user?.id);
   const models = useWorkspaceModels(account.user?.id);
   const { state, setState } = sync;
@@ -118,7 +131,7 @@ function WorkspaceHost({ account, beforeExit, preview }) {
   const statusIssues = workspaceStatusIssues(sync, !execution.health ? execution.error : '');
   return <div className="tw-preview-root">
     <WorkspaceStatusNotice issues={statusIssues} onOpen={() => setStatusOpen(true)} />
-    <TaskWorkspace onDeleteTask={async taskId=>{if(lock.current)throw Error('正在保存，请稍后删除。');lock.current=true;setBusy(true);try{await sync.deleteTask(taskId);}finally{lock.current=false;if(alive.current)setBusy(false);}}} executionProgress={execution.progressByRunId[currentTask(state).activeRunId]} renderRecovery={(job,run,taskId)=><TokenDanceRecovery job={job} controller={{...models.tokenDance,request:async()=>{if(lock.current)throw Error('正在保存材料，请稍后继续。');lock.current=true;setBusy(true);try{const task=stateRef.current.tasks.find(t=>t.id===taskId);return await resumeWorkspaceRun({base:API_BASE_DEFAULT,userId:account.user.id,task,run,models,simulation:execution.health?.simulation===true,onAdopted:execution=>dispatch({type:'EXECUTION',taskId,runId:run.id,execution}),isCurrent:()=>alive.current,onMissingOriginal:ref=>{if(alive.current&&currentTask(stateRef.current).id===taskId)setMissingOriginal(ref);}});}finally{lock.current=false;if(alive.current)setBusy(false);}}}} onOpenAccount={account.onAccountSettings} onResumed={execution.refresh}/>} isAdmin={isAdmin} onDownload={downloadVersion} onCloseUnaccepted={execution.closeUnaccepted} {...account} state={displayState} dispatch={dispatch} onSubmit={submit} onFiles={files} busy={busy || execution.busy} uploadError={uploadError || execution.error} missingOriginal={missingOriginal} onRestoreOriginal={restoreOriginal}
+    <TaskWorkspace navigation={navigation} onDeleteTask={async taskId=>{if(lock.current)throw Error('正在保存，请稍后删除。');lock.current=true;setBusy(true);try{await sync.deleteTask(taskId);}finally{lock.current=false;if(alive.current)setBusy(false);}}} executionProgress={execution.progressByRunId[currentTask(state).activeRunId]} renderRecovery={(job,run,taskId)=><TokenDanceRecovery job={job} controller={{...models.tokenDance,request:async()=>{if(lock.current)throw Error('正在保存材料，请稍后继续。');lock.current=true;setBusy(true);try{const task=stateRef.current.tasks.find(t=>t.id===taskId);return await resumeWorkspaceRun({base:API_BASE_DEFAULT,userId:account.user.id,task,run,models,simulation:execution.health?.simulation===true,onAdopted:execution=>dispatch({type:'EXECUTION',taskId,runId:run.id,execution}),isCurrent:()=>alive.current,onMissingOriginal:ref=>{if(alive.current&&currentTask(stateRef.current).id===taskId)setMissingOriginal(ref);}});}finally{lock.current=false;if(alive.current)setBusy(false);}}}} onOpenAccount={account.onAccountSettings} onResumed={execution.refresh}/>} isAdmin={isAdmin} onDownload={downloadVersion} onCloseUnaccepted={execution.closeUnaccepted} {...account} state={displayState} dispatch={dispatch} onSubmit={submit} onFiles={files} busy={busy || execution.busy} uploadError={uploadError || execution.error} missingOriginal={missingOriginal} onRestoreOriginal={restoreOriginal}
       headerTools={<WorkspaceStatus preview={preview} sync={sync} execution={execution} signedIn={!!account.user} run={run} stepping={stepping} onExamples={examples} onExport={exportDraft} issues={statusIssues} open={statusOpen} onOpen={() => setStatusOpen(true)} onClose={() => setStatusOpen(false)} />}
       renderSvgEditor={version=>{const task=currentTask(state),input=task.runs.find(r=>r.id===version?.runId)?.input;return <WorkspaceSvgEditor key={`${account.user?.id}:${task.id}`} version={version} versionIds={task.branches.svg.groups.flatMap(g=>g.candidates.filter(c=>!version||c.id===version.candidateId).flatMap(c=>c.versions.map(v=>v.id)))} registerFlush={registerSvgFlush} syncStatus={sync.status} syncError={sync.error} onRetrySync={sync.retry} taskId={task.id} userId={account.user?.id} base={API_BASE_DEFAULT} ratio={d.settings[d.mode].ratio} readOnly={!!task.activeRunId} dataProtected={!!version && (input?.settings[input.mode]?.journalSelection?.contentType||journalFigureContent(input?.settings[input.mode]?.figureTypeId))!=='schematic'} onInteract={()=>dispatch({type:'INTERACT',taskId:task.id,path:'svg'})} onSave={async(svg,identity)=>{
         if(!alive.current)throw Error('账号已切换，编辑备份仍保留在原账号的本机记录中。');

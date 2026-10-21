@@ -5,9 +5,12 @@ import test from 'node:test'
 const main = readFileSync(new URL('../src/main.jsx', import.meta.url), 'utf8')
 const rootUrl = new URL('../src/components/LeaderboardRoot.jsx', import.meta.url)
 
-test('every leaderboard route boots one unified root and session provider', () => {
-  assert.match(main, /LeaderboardRoot/u)
-  assert.match(main, /LeaderboardSessionProvider/u)
+test('every leaderboard route boots the new workspace and reuses its account session', () => {
+  assert.match(main, /WorkspaceRoot/u)
+  assert.doesNotMatch(main, /LeaderboardRoot|LeaderboardSessionProvider/u)
+  const embedded = readFileSync(new URL('../src/workspace/WorkspaceLeaderboard.jsx', import.meta.url), 'utf8')
+  assert.match(embedded, /LeaderboardSessionProvider/u)
+  assert.match(embedded, /authEnabled=\{false\}/u)
   assert.doesNotMatch(main.slice(main.indexOf('createRoot(document')), /leaderboardRoute\.methodology\s*\?/u)
 })
 

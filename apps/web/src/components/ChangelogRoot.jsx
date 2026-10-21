@@ -73,7 +73,8 @@ export function ChangelogPage({ data = changelog, embedded = false }) {
   useEffect(() => {
     const syncSelection = () => setSelection(current => selectionForHash(data, window.location.hash, current.view))
     window.addEventListener('hashchange', syncSelection)
-    return () => window.removeEventListener('hashchange', syncSelection)
+    window.addEventListener('popstate', syncSelection)
+    return () => { window.removeEventListener('hashchange', syncSelection); window.removeEventListener('popstate', syncSelection) }
   }, [data])
   useEffect(() => { if (anchor) document.getElementById(anchor)?.scrollIntoView?.({ block: 'start' }) }, [anchor, view, data])
   return <main className="changelog-page" id="changelog-content">
