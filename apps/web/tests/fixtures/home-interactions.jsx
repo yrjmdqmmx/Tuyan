@@ -36,11 +36,12 @@ function Harness(){
  const [dialog,setDialog]=useState(false),[notice,setNotice]=useState('');
  const account={user:fixtureUser,refreshAccount:async()=>{},onAccountSettings(){setDialog(true);},onSignOut(){setNotice('本地合成预览：已触发退出入口，未操作真实账号。');}};
  const draft=currentDraft(state);
- return <AppLocaleProvider><TaskWorkspace state={state} dispatch={dispatch} user={fixtureUser} onSubmit={()=>setNotice('本地交互预览，不调用生成模型。')} onFiles={()=>{}} onSignOut={account.onSignOut}
+ return <AppLocaleProvider><div className="tw-preview-root"><TaskWorkspace state={state} dispatch={dispatch} user={fixtureUser} onSubmit={()=>setNotice('本地交互预览，不调用生成模型。')} onFiles={()=>{}} onSignOut={account.onSignOut}
+  renderOptimize={composer=>composer({start:()=>setNotice('本地交互预览，不调用优化模型。')})}
   renderAccount={navigation=><WorkspaceAccountPage {...navigation} state={state} account={account} sync={{saveStatus:'本地合成预览',retry(){}}} models={models} onExport={()=>{}} apiBase=""/>}
   renderSettings={()=><WorkspaceDrawingSettings draft={draft} path={currentTask(state).path} models={models} onChange={settings=>dispatch({type:'EDIT_DRAFT',patch:{settings:{...draft.settings,[draft.mode]:settings}}})}/>}/>
   {dialog&&<AccountSettingsDialog apiBase="" email={fixtureUser.email} onClose={()=>setDialog(false)} onDeleted={()=>setDialog(false)}/>}
-  {notice&&<div className="tw-auth-message" role="status">{notice}<button onClick={()=>setNotice('')}>关闭</button></div>}
+  {notice&&<div className="tw-auth-message" role="status">{notice}<button onClick={()=>setNotice('')}>关闭</button></div>}</div>
  </AppLocaleProvider>;
 }
 if(import.meta.env.DEV){

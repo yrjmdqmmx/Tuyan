@@ -264,10 +264,10 @@
 /* Mobile composer has distinct resting and editing layouts; the input stays mounted. */
 .tw-composer-region.is-mobile{--tw-composer-duration:200ms;--tw-composer-ease:cubic-bezier(.2,.75,.25,1)}
 .tw-composer-region.is-mobile .tw-segment-indicator{transition:transform var(--tw-composer-duration) var(--tw-composer-ease)}
-.tw-composer-region.is-mobile>.tw-composer{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:0;padding:6px;border-radius:28px;margin:0 20px;transition:margin var(--tw-composer-duration) var(--tw-composer-ease),padding-bottom var(--tw-composer-duration) var(--tw-composer-ease),border-radius var(--tw-composer-duration) var(--tw-composer-ease),box-shadow var(--tw-composer-duration) ease;box-shadow:0 3px 16px #1d342008}
-.tw-composer-region.is-mobile.is-input-focused>.tw-composer{margin:0;padding-bottom:48px;border-radius:26px;box-shadow:0 5px 22px #1d342013}
-.tw-composer-region.is-mobile>.tw-composer>textarea{grid-column:1;grid-row:3;width:100%;min-height:44px;max-height:136px;height:44px;padding:0 47px;line-height:44px;font-size:16px;overflow:hidden;white-space:pre;border-radius:0;outline:none;transition:height var(--tw-composer-duration) var(--tw-composer-ease),padding var(--tw-composer-duration) var(--tw-composer-ease),line-height var(--tw-composer-duration) var(--tw-composer-ease)}
-.tw-composer-region.is-mobile.is-input-focused>.tw-composer>textarea{padding:10px 9px;line-height:24px;overflow-y:auto;overscroll-behavior:contain;white-space:pre-wrap}
+.tw-composer-region.is-mobile>.tw-composer{position:relative;display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:0;padding:6px;border-radius:28px;margin:0 20px;transition:margin var(--tw-composer-duration) var(--tw-composer-ease),border-radius var(--tw-composer-duration) var(--tw-composer-ease),box-shadow var(--tw-composer-duration) ease;box-shadow:0 3px 16px #1d342008}
+.tw-composer-region.is-mobile.is-multiline>.tw-composer{margin:0;padding-bottom:48px;border-radius:26px;box-shadow:0 5px 22px #1d342013}
+.tw-composer-region.is-mobile>.tw-composer>textarea{grid-column:1;grid-row:3;width:100%;min-height:44px;max-height:136px;height:44px;padding:0 47px;line-height:44px;font-size:16px;overflow:hidden;white-space:pre;border-radius:0;outline:none}
+.tw-composer-region.is-mobile.is-multiline>.tw-composer>textarea{padding:10px 9px;line-height:24px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;white-space:pre-wrap;overflow-wrap:anywhere}
 .tw-composer-region.is-mobile .tw-mobile-composer-toolbar{position:absolute;left:6px;right:6px;bottom:6px;display:flex;align-items:center;gap:2px;height:42px;min-width:0;pointer-events:none}
 .tw-mobile-composer-toolbar>button,.tw-mobile-composer-options>button{height:40px;width:40px;min-height:40px;min-width:40px;flex:none;border-radius:50%;padding:9px}
 .tw-mobile-composer-toolbar>button{pointer-events:auto}
@@ -290,7 +290,7 @@
 .tw-composer-topline:empty{display:none}
 .tw-shell .tw-prompt-guide-trigger{flex:none;font-size:12px;min-height:32px;padding:4px 6px;color:var(--tw-accent)}
 .tw-composer-region.is-mobile>.tw-composer-topline{margin:0 20px;padding:0 4px 4px;gap:10px;transition:margin var(--tw-composer-duration) var(--tw-composer-ease)}
-.tw-composer-region.is-mobile.is-input-focused>.tw-composer-topline{margin:0}
+.tw-composer-region.is-mobile.is-multiline>.tw-composer-topline{margin:0}
 .tw-shell .tw-composer-region.is-mobile .tw-prompt-guide-trigger{min-height:36px;padding:4px 2px}
 .tw-shell .tw-composer-region.is-mobile .tw-composer-topline>.tw-composer-summary{flex:1;padding:0;margin:0;justify-content:flex-end;min-width:0}
 .tw-shell .tw-composer-region.is-mobile .tw-composer-settings-summary{max-width:100%;min-width:0;min-height:28px;padding:2px 0;font-size:11px;gap:5px}
@@ -307,6 +307,10 @@
  .tw-shell,.tw-main{overscroll-behavior:none;overflow-anchor:none}
  .tw-shell[data-keyboard-open=true]{position:fixed;top:var(--tw-keyboard-top);left:0;right:0;height:var(--tw-keyboard-height)!important;min-height:0;flex:none}
  .tw-shell[data-keyboard-open=true] .tw-main{overflow:hidden;min-height:0}
+ .tw-shell[data-keyboard-open=true] .tw-main:has(.tw-composer>textarea:focus)>.tw-results{display:none}
+ .tw-shell[data-keyboard-open=true] .tw-empty .tw-welcome{display:none}
+ .tw-shell[data-keyboard-open=true] .tw-empty-body>.tw-composer-region,.tw-shell[data-keyboard-open=true] .tw-empty-body>.tw-optimization-host{margin-top:auto}
+ .tw-shell[data-keyboard-open=true] .tw-composer-region.is-mobile>.tw-composer>textarea{max-height:clamp(64px,calc(var(--tw-keyboard-height) - 240px),136px)}
  .tw-shell[data-keyboard-open=true] .tw-backdrop{top:var(--tw-keyboard-top);bottom:auto;height:var(--tw-keyboard-height)}
  .tw-shell[data-keyboard-open=true] .tw-backdrop>.tw-dialog{max-height:100%;min-height:0}
  .tw-dialog-head{flex:none}

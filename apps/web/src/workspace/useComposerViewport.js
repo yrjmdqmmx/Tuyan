@@ -8,6 +8,8 @@ export default function useComposerViewport(mobile) {
     const shell = shellRef.current, viewport = window.visualViewport;
     if (!mobile || !shell || !viewport) return;
     let frame, keyboardActive = false, innerTracksKeyboard = false, lastHeight, lastTop, lastInput;
+    let restingHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+    let restingWidth = document.documentElement.clientWidth || window.innerWidth;
     const reset = () => {
       delete shell.dataset.keyboardOpen;
       shell.style.removeProperty('--tw-keyboard-height');
@@ -20,7 +22,15 @@ export default function useComposerViewport(mobile) {
       const input = document.activeElement;
       const typing = shell.contains(input) && input?.matches('.tw-composer > textarea, .tw-dialog :is(input:not([type=checkbox]):not([type=radio]),textarea,select)');
       const layoutHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-      const occluded = layoutHeight - viewport.height;
+      const layoutWidth = document.documentElement.clientWidth || window.innerWidth;
+      // Some mobile browsers resize both viewport measurements. Comparing only
+      // their current heights then reports zero occlusion while the keyboard is
+      // covering the 100dvh workspace. Retain the height from before focus.
+      if (layoutWidth !== restingWidth || (!typing && !keyboardActive)) {
+        restingHeight = layoutHeight;
+        restingWidth = layoutWidth;
+      } else restingHeight = Math.max(restingHeight, layoutHeight);
+      const occluded = Math.max(layoutHeight, restingHeight) - viewport.height;
       if (Math.abs(viewport.scale - 1) > 0.05 || occluded <= 1) { reset(); return; }
       if (typing && occluded > 120) keyboardActive = true;
       if (!keyboardActive) return;

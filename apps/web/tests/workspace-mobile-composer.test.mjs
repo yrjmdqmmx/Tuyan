@@ -96,7 +96,8 @@ test('mobile composer reveals tools only while expanded and preserves the draft 
   fireEvent.pointerDown(screen.getByRole('heading', { name:'HI！今天想绘制什么？' }));
   assert.equal(screen.queryByRole('button', {name:'模型配置'}), null);
   assert.equal(screen.queryByRole('group', {name:'设置深度'}), null);
-  assert.equal(input.style.height, '44px');
+  assert.equal(input.style.height, '88px', 'a nonempty draft stays readable after leaving the composer');
+  assert.equal(input.wrap, 'soft');
   assert.equal(input.value, '描述科研流程\n保留精确数值');
   act(() => input.focus());
   assert.equal(screen.getByRole('button', {name:'专业', exact:true}).getAttribute('aria-pressed'), 'true');
@@ -308,6 +309,43 @@ test('keyboard viewport avoids an overlay, restores on dismissal, and ignores pi
     unmount();
   } finally {
     Object.defineProperty(window, 'visualViewport', {configurable:true, value:original});
+  }
+});
+
+test('keyboard is detected when both layout and visual viewports shrink, then resets on dismissal', async () => {
+  const originalViewport = window.visualViewport, originalHeight = window.innerHeight;
+  const clientHeight = Object.getOwnPropertyDescriptor(document.documentElement, 'clientHeight');
+  const viewport = new window.EventTarget();
+  Object.assign(viewport, {height:796, offsetTop:0, scale:1});
+  Object.defineProperty(window, 'visualViewport', {configurable:true, value:viewport});
+  Object.defineProperty(document.documentElement, 'clientHeight', {configurable:true, value:796});
+  window.innerHeight = 796;
+  try {
+    const {container} = render(React.createElement(Harness));
+    const input = screen.getByRole('textbox', {name:'绘图要求'});
+    act(() => input.focus());
+    window.innerHeight = 400;
+    Object.defineProperty(document.documentElement, 'clientHeight', {configurable:true, value:400});
+    viewport.height = 400;
+    act(() => viewport.dispatchEvent(new window.Event('resize')));
+    const shell = container.querySelector('.tw-shell');
+    assert.equal(shell.dataset.keyboardOpen, 'true');
+    assert.equal(shell.style.getPropertyValue('--tw-keyboard-height'), '400px');
+    act(() => input.blur());
+    await settleFocus();
+    assert.equal(shell.dataset.keyboardOpen, 'true', 'blur must not jump ahead of keyboard dismissal');
+    window.innerHeight = 796;
+    Object.defineProperty(document.documentElement, 'clientHeight', {configurable:true, value:796});
+    viewport.height = 796;
+    act(() => viewport.dispatchEvent(new window.Event('resize')));
+    assert.equal(shell.dataset.keyboardOpen, undefined);
+    assert.equal(shell.style.getPropertyValue('--tw-keyboard-height'), '');
+  } finally {
+    cleanup();
+    window.innerHeight = originalHeight;
+    Object.defineProperty(window, 'visualViewport', {configurable:true, value:originalViewport});
+    if (clientHeight) Object.defineProperty(document.documentElement, 'clientHeight', clientHeight);
+    else delete document.documentElement.clientHeight;
   }
 });
 

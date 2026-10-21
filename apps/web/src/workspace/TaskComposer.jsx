@@ -10,6 +10,9 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
   const t = currentTask(state), b = currentBranch(state), d = currentDraft(state), target = refinementTarget(state), run = activeRun(state);
   const inputId = useId(), fileRef = useRef(), restoreRef=useRef(), textRef = useRef(), regionRef = useRef();
   const [expanded, setExpanded] = useState(false);
+  // A saved or blurred draft still needs a readable, scrollable text area.
+  // Only an empty, inactive composer uses the compact single-line layout.
+  const multiline = expanded || Boolean(d.text);
   useEffect(() => {
     if (!mobile || !expanded) return;
     // A touch blur may have no relatedTarget, even when the user is tapping a
@@ -38,7 +41,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     const input = textRef.current;
     if (!mobile) { input.style.height = ''; return; }
     const resize = () => {
-      if (!expanded) { input.style.height = '44px'; input.scrollTop = 0; input.scrollLeft = 0; return; }
+      if (!multiline) { input.style.height = '44px'; input.scrollTop = 0; input.scrollLeft = 0; return; }
       // Measure a hidden copy so typing/width changes never reset the animated,
       // focused textarea to zero height (which also makes Safari scroll it).
       const measure = input.cloneNode();
@@ -48,7 +51,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
       measure.value = input.value;
       Object.assign(measure.style, {position:'absolute', visibility:'hidden', pointerEvents:'none',
         height:'0px', minHeight:'0px', maxHeight:'none', width:`${input.clientWidth}px`,
-        padding:'10px 9px', transition:'none'});
+        padding:'10px 9px', lineHeight:'24px', whiteSpace:'pre-wrap', overflowWrap:'anywhere', transition:'none'});
       input.parentNode.appendChild(measure);
       const height = Math.min(136, Math.max(88, measure.scrollHeight));
       measure.remove();
@@ -59,13 +62,13 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     const observer = new ResizeObserver(() => { if (input.clientWidth !== width) { width = input.clientWidth; resize(); } });
     observer.observe(input);
     return () => observer.disconnect();
-  }, [mobile, d.text, expanded]);
+  }, [mobile, d.text, multiline]);
   const modeControl = <WorkspaceSegments className="tw-mode" label="设置深度" value={d.mode} onChange={mode => edit({ mode })} options={[{ value: 'simple', label: '普通' }, { value: 'advanced', label: '专业' }]} />;
   const sendButton = <button type="submit" className="tw-send" disabled={!!issue} aria-label={sendLabel} title={issue || sendLabel} aria-describedby={`${inputId}-status`}><ArrowUp size={21} /><span>{sendLabel}</span></button>;
   const statusText = uploadError || (busy ? '正在准备提交，请稍候…' : issue && d.text && !t.activeRunId ? issue : saveStatus);
   const summary = <div className="tw-composer-summary"><button className="tw-composer-settings-summary" type="button" onClick={onSettings}><span className="tw-composer-summary-label">{mobile && <span>{d.mode === 'advanced' ? '专业' : '普通'} · </span>}{settings.journalSelection && `${JOURNALS.find(j => j.id === settings.journalSelection.journalId)?.name || settings.journalSelection.journalId} · `}{settings.figureTypeId && `${getFigureType(settings.figureTypeId)?.label || settings.figureTypeId} · `}比例 {settings.ratio === 'auto' ? '自动' : settings.ratio} · {pngEditing ? '1 个结果 · 执行后评审' : <>{editing ? '版本修改' : `${settings.candidates} 个候选`} · {settings.reviews} 轮评审</>}{t.path === 'png' && settings.imageSize ? ` · ${settings.imageSize}` : ''}{!target && settings.retrievalSetting === 'none' ? ' · 不检索' : ''}{!target && settings.pipelineMode === 'planner_critic' ? ' · 快速生成' : ''}</span>{mobile && <ChevronDown size={12} />}</button></div>;
   function submit(e) { e.preventDefault(); if (!issue) onSubmit(); }
-  return <section ref={regionRef} className={`tw-composer-region ${mobile ? 'is-mobile' : ''} ${mobile && expanded ? 'is-input-focused' : ''}`} aria-label="任务输入区">
+  return <section ref={regionRef} className={`tw-composer-region ${mobile ? 'is-mobile' : ''} ${mobile && multiline ? 'is-multiline' : ''} ${mobile && expanded ? 'is-input-focused' : ''}`} aria-label="任务输入区">
     {target ? <div className="tw-target">
       {!target.loadError && <img src={target.url} alt="修改目标缩略图" />}
       <label className="tw-target-picker"><span>当前修改对象</span><select aria-label="当前修改对象" value={target.id} onChange={e => dispatch({ type: 'VIEW', versionId: e.target.value })}>{targets.map(v => <option key={v.id} value={v.id}>{versionLabel(v, true)}{v.loadError ? ' · 图片不可用' : ''}</option>)}</select></label>
@@ -78,7 +81,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
     <form className="tw-composer" onSubmit={submit}>
       <label className="tw-sr" htmlFor={inputId}>{target ? '修改要求' : '绘图要求'}</label>
       <input className="tw-sr" type="file" tabIndex={-1} ref={fileRef} accept={MATERIAL_ACCEPT} multiple onChange={e => { const files = [...e.target.files]; e.target.value = ''; onFiles(files); }} />
-      <textarea onBeforeInput={onInputStart} onCompositionStart={onInputStart} onFocus={() => setExpanded(true)} wrap={mobile && !expanded ? 'off' : 'soft'} ref={textRef} id={inputId} value={d.text} maxLength={100000} rows={mobile ? 1 : 3} placeholder={mobile ? target ? '描述修改要求…' : '描述你想绘制的图…' : target ? '说明希望修改什么，以及哪些内容需要保持…' : '描述研究内容、绘图目标，以及需要保留或避免的细节…'} onChange={e => edit({ text: e.target.value })} onKeyDown={e => {
+      <textarea onBeforeInput={onInputStart} onCompositionStart={onInputStart} onFocus={() => setExpanded(true)} wrap="soft" ref={textRef} id={inputId} value={d.text} maxLength={100000} rows={mobile ? 1 : 3} placeholder={mobile ? target ? '描述修改要求…' : '描述你想绘制的图…' : target ? '说明希望修改什么，以及哪些内容需要保持…' : '描述研究内容、绘图目标，以及需要保留或避免的细节…'} onChange={e => edit({ text: e.target.value })} onKeyDown={e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !e.nativeEvent.isComposing && e.keyCode !== 229) submit(e);
       }} />
       {!!d.attachments.length && <div className="tw-attachments">{d.attachments.map(a => <div className="tw-attachment" key={a.id}><FileText size={17} /><span title={a.filename}>{a.filename}</span><select aria-label={`${a.filename} 的用途`} value={a.purpose || ''} onChange={e => edit({ attachments: d.attachments.map(item => item.id === a.id ? { ...item, purpose: e.target.value } : item) })}>
