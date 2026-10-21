@@ -34,7 +34,7 @@ test('mobile settings opens a category list, returns from each page without losi
   assert.ok(screen.getByRole('navigation',{name:'设置分类'}));
   assert.equal(screen.queryByRole('region',{name:'使用情况'}),null);
   assert.equal(screen.queryByRole('button',{name:'返回账户设置'}),null);
-  for(const label of ['个人资料','账户','存储']){
+  for(const label of ['个人资料','账户','存储','语言']){
     await userEvent.click(screen.getByRole('button',{name:label,exact:true}));
     assert.ok(screen.getByRole('heading',{level:1,name:label,exact:true}));
     assert.equal(screen.queryByRole('navigation',{name:'设置分类'}),null);
@@ -115,4 +115,32 @@ test('unknown historical dates remain readable and are never presented as 1970 o
   assert.ok(screen.getByText(/保存于 时间待核对/));assert.ok(screen.getByText(/暂不自动清理/));
   assert.ok(screen.getByText(/2 个历史结果引用的文件已缺失/));
   assert.doesNotMatch(document.body.textContent,/1970|Invalid Date/);
+});
+
+
+test('language is separate; top account actions retain logout and deletion confirmation',async()=>{
+ const {AppLocaleProvider}=await import('../src/components/BenchmarkLocale.jsx');
+ const {default:AccountSettingsDialog}=await import('../src/components/AccountSettingsDialog.jsx');
+ let signouts=0;const writes=[];
+ globalThis.fetch=async(url,options)=>{if(options?.method==='POST')writes.push(url);return Response.json(url.endsWith('/activity')?activity:{code:0,state:'active'});};
+ function Harness(){const [open,setOpen]=React.useState(false);return React.createElement(AppLocaleProvider,null,
+  React.createElement(WorkspaceAccountPage,{...props,account:{...props.account,onSignOut(){signouts++;},onAccountSettings(){setOpen(true);}}}),
+  open&&React.createElement(AccountSettingsDialog,{apiBase:'http://127.0.0.1:9999',email:user.email,onClose(){setOpen(false);},onDeleted(){assert.fail('must not delete');}}));}
+ render(React.createElement(Harness));
+ await userEvent.click(screen.getByRole('button',{name:'账户',exact:true}));
+ assert.equal(screen.queryByRole('group',{name:'界面语言'}),null);
+ const logout=screen.getByRole('button',{name:'退出登录'}),remove=screen.getByRole('button',{name:'永久删除账号'}),edit=screen.getByRole('button',{name:'编辑昵称'});
+ assert.ok(logout.compareDocumentPosition(edit)&Node.DOCUMENT_POSITION_FOLLOWING);
+ assert.ok(remove.compareDocumentPosition(edit)&Node.DOCUMENT_POSITION_FOLLOWING);
+ await userEvent.click(remove);
+ const dialog=screen.getByRole('dialog',{name:'账号与隐私'});
+ assert.equal(dialog.querySelector('button[type=submit]').disabled,true);assert.ok(screen.getByLabelText('输入“删除账号”确认'));
+ await userEvent.click(screen.getByRole('button',{name:'关闭账号设置'}));assert.equal(writes.length,0);
+ await userEvent.click(logout);assert.equal(signouts,1);
+ await userEvent.click(screen.getByRole('button',{name:'语言',exact:true}));
+ assert.ok(screen.getByRole('region',{name:'语言设置'}));assert.equal(screen.queryByRole('button',{name:'退出登录'}),null);
+ await userEvent.click(screen.getByRole('button',{name:'English',exact:true}));assert.equal(screen.getByRole('button',{name:'English',exact:true}).getAttribute('aria-pressed'),'true');
+ await userEvent.click(screen.getByRole('button',{name:'账户',exact:true}));await userEvent.click(screen.getByRole('button',{name:'语言',exact:true}));
+ assert.equal(screen.getByRole('button',{name:'English',exact:true}).getAttribute('aria-pressed'),'true');
+ await userEvent.click(screen.getByRole('button',{name:'简体中文',exact:true}));
 });

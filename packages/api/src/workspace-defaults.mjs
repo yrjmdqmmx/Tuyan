@@ -1,6 +1,6 @@
 export function newDraft() {
   return { text: '', caption: '', avoid: '', attachments: [], mode: 'simple', revision: 0,
-    settings: { simple: { ratio: 'auto', candidates: 1, reviews: 1 }, advanced: { ratio: 'auto', candidates: 3, reviews: 1 } } };
+    settings: { simple: { ratio: 'auto', candidates: 1, reviews: 1 }, advanced: { ratio: 'auto', candidates: 1, reviews: 1 } } };
 }
 function newBranch() {
   return { draft: newDraft(), refinements: {}, targetId: null, lastTargetId: null, groups: [], groupId: null, candidateId: null, versionId: null, navRevision: 0, unreadVersionId: null };

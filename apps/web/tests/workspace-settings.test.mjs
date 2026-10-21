@@ -22,3 +22,20 @@ test('ordinary default resolution keeps supported aspect ratios selectable',()=>
  render(React.createElement(WorkspaceDrawingSettings,{draft,path:'png',models,onChange(){}}));
  assert.equal(screen.getByRole('option',{name:'16:9'}).disabled,false);assert.equal(screen.getByRole('option',{name:'自动'}).disabled,false);
 });
+
+test('professional starts with one candidate; saved choices survive PNG/SVG mode switches',async()=>{
+ const {newWorkspace,workspaceReducer,currentDraft}=await import('../src/workspace/workspaceState.js');
+ for(const path of ['png','svg']){
+  let state=newWorkspace('defaults');state=workspaceReducer(state,{type:'SET_PATH',path});
+  state=workspaceReducer(state,{type:'EDIT_DRAFT',patch:{mode:'advanced'}});
+  assert.equal(currentDraft(state).settings.advanced.candidates,1);
+  const settings=structuredClone(currentDraft(state).settings);settings.advanced.candidates=4;
+  state=workspaceReducer(state,{type:'EDIT_DRAFT',patch:{settings}});
+  state=workspaceReducer(state,{type:'EDIT_DRAFT',patch:{mode:'simple'}});
+  state=workspaceReducer(state,{type:'EDIT_DRAFT',patch:{mode:'advanced'}});
+  assert.equal(currentDraft(state).settings.advanced.candidates,4);
+ }
+ const draft=newDraft();draft.mode='advanced';
+ render(React.createElement(WorkspaceDrawingSettings,{draft,path:'png',models:{},onChange(){}}));
+ assert.equal(screen.getByRole('combobox',{name:'候选数量'}).value,'1');
+});

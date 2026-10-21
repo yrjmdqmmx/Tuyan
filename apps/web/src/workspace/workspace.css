@@ -419,10 +419,10 @@
 .tw-home-templates{position:relative;isolation:isolate;flex:none;width:100%;margin:0 0 24px}
 .tw-template-deck{height:194px;position:relative;overflow:hidden;perspective:1200px;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none;cursor:grab;mask-image:linear-gradient(to bottom,#000 0%,#000 89%,transparent 100%)}
 .tw-template-deck.is-dragging{cursor:grabbing}
-.tw-template-deck-inner{height:100%;transform:translateX(var(--template-drag,0px));transform-style:preserve-3d}
+.tw-template-deck-inner{height:100%;transform-style:preserve-3d}
 .tw-shell button.tw-home-template{position:absolute;left:50%;top:12px;width:244px;height:158px;min-height:0;margin-left:-122px;border:1px solid #dce3da;background:#fff;border-radius:14px;box-shadow:0 8px 20px #243d2910;padding:10px 11px 0;display:flex;flex-direction:column;gap:0;overflow:hidden;backface-visibility:hidden;transform-origin:50% 86%;-webkit-tap-highlight-color:transparent;cursor:inherit}
-.tw-shell button.tw-home-template[data-active=true]{box-shadow:0 14px 30px #27402e19,0 2px 5px #22382b05;border-color:#cdd9ce;cursor:pointer}
-.tw-shell button.tw-home-template{filter:blur(1.2px);transition:filter 760ms cubic-bezier(.22,.7,.18,1)}
+.tw-shell button.tw-home-template[data-active=true]{box-shadow:0 14px 30px #27402e19,0 2px 5px #22382b05;border-color:#cdd9ce;cursor:inherit}
+.tw-shell button.tw-home-template{filter:blur(1.2px)}
 .tw-shell button.tw-home-template[data-active=true]{filter:blur(0)}
 .tw-home-template>img{width:100%;height:106px;object-fit:contain;pointer-events:none;user-select:none}
 .tw-home-template-label{display:flex;align-items:center;gap:8px;flex:1;width:100%;padding-top:4px;border-top:1px solid #f2f3ef}
@@ -450,3 +450,11 @@
 .tw-target:has(.tw-target-error){flex-wrap:wrap}
 .tw-target-error{flex-basis:100%;color:#8a523a;font-size:12px}
 @media(max-width:767px){.tw-target-picker>select{min-height:32px;font-size:12px}.tw-target{margin-bottom:5px}}
+
+/* Keep native menus and keyboard support; inset arrows consistently across workspace controls. */
+.tw-shell select:not([multiple]):not([size]),.tw-dialog select:not([multiple]):not([size]){
+  appearance:none;-webkit-appearance:none;padding-right:36px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2359685f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:16px 16px;
+}
+@media(forced-colors:active){.tw-shell select:not([multiple]):not([size]),.tw-dialog select:not([multiple]):not([size]){appearance:auto;-webkit-appearance:auto;background-image:none}}

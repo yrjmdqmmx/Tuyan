@@ -57,3 +57,72 @@ test('repeated keyboard navigation keeps focus on the front card',()=>{
   assert.equal(document.activeElement.getAttribute('aria-hidden'),'false');
  }
 });
+
+function pointer(node, type, x, y, time, pointerId=1) {
+ const event=new window.MouseEvent(type,{bubbles:true,button:0,clientX:x,clientY:y});
+ Object.defineProperties(event,{pointerId:{value:pointerId},isPrimary:{value:pointerId===1},timeStamp:{value:time}});
+ fireEvent(node,event);
+}
+function finishAnimation(t) {
+ const frames=new Map();let id=0;
+ t.mock.method(globalThis,'requestAnimationFrame',callback=>{frames.set(++id,callback);return id;});
+ t.mock.method(globalThis,'cancelAnimationFrame',key=>frames.delete(key));
+ return ()=>act(()=>{for(const [key,callback] of frames){frames.delete(key);callback(performance.now()+1000);}});
+}
+test('mouse drag follows fan poses, snaps, and cannot open preview on release',async t=>{
+ const finish=finishAnimation(t);
+ const originalFetch=globalThis.fetch;globalThis.fetch=async()=>Response.json({code:0,references:[]});
+ try{
+  const {container}=render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true}));
+  const front=screen.getByRole('button',{name:/^预览/}), initial=front.style.transform;
+  pointer(front,'pointerdown',300,100,0);pointer(front,'pointermove',240,100,400);
+  assert.notEqual(front.style.transform,initial);assert.ok(Math.abs(parseFloat(front.style.transform.slice(12))+60)<.01);assert.equal(active(),'0');
+  pointer(front,'pointerup',240,100,600);assert.equal(active(),'1');finish();
+  fireEvent.click(front);assert.equal(screen.queryByRole('dialog'),null);assert.equal(container.querySelector('.is-dragging'),null);
+  const next=screen.getByRole('button',{name:/^预览/});assert.match(next.style.transform,/translate3d\(0px,0px,0px\)/);
+  pointer(next,'pointerdown',300,100,1000);pointer(next,'pointerup',300,100,1100);fireEvent.click(next);
+  assert.ok(screen.getByRole('dialog'));await act(async()=>{});
+ }finally{globalThis.fetch=originalFetch;}
+});
+test('slow short drag returns; fast short flick advances; holding removes momentum',t=>{
+ const finish=finishAnimation(t);render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true}));
+ let front=screen.getByRole('button',{name:/^预览/});
+ pointer(front,'pointerdown',300,100,0);pointer(front,'pointermove',280,100,300);pointer(front,'pointerup',280,100,500);
+ assert.equal(active(),'0');finish();assert.match(front.style.transform,/translate3d\(0px,0px,0px\)/);
+ pointer(front,'pointerdown',300,100,1000);pointer(front,'pointermove',280,100,1020);pointer(front,'pointerup',280,100,1030);
+ assert.equal(active(),'1');finish();front=screen.getByRole('button',{name:/^预览/});
+ pointer(front,'pointerdown',300,100,2000);pointer(front,'pointermove',280,100,2020);pointer(front,'pointerup',280,100,2500);
+ assert.equal(active(),'1');finish();
+});
+test('mobile deck wraps both ways; cancellation and vertical scroll do not change cards',t=>{
+ const finish=finishAnimation(t);const {container}=render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true,mobile:true}));
+ let front=screen.getByRole('button',{name:/^预览/});
+ pointer(front,'pointerdown',150,100,0);pointer(front,'pointermove',190,100,300);pointer(front,'pointerup',190,100,500);
+ assert.equal(active(),'5');finish();front=screen.getByRole('button',{name:/^预览/});
+ pointer(front,'pointerdown',150,100,1000);pointer(front,'pointermove',110,100,1300);pointer(front,'pointercancel',110,100,1400);
+ assert.equal(active(),'5');finish();assert.equal(container.querySelector('.is-dragging'),null);
+ pointer(front,'pointerdown',150,100,2000);pointer(front,'pointermove',154,140,2300);pointer(front,'pointerup',154,160,2400);
+ assert.equal(active(),'5');finish();
+ pointer(front,'pointerdown',150,100,3000);pointer(front,'pointermove',110,100,3300);pointer(front,'pointerup',110,100,3500);
+ assert.equal(active(),'0');finish();
+});
+test('reduced motion keeps direct dragging but settles immediately; blur cancels a grab',t=>{
+ window.matchMedia=q=>({...media(q),matches:q.includes('reduced-motion')});
+ const finish=finishAnimation(t);const {container}=render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true}));
+ const front=screen.getByRole('button',{name:/^预览/});
+ pointer(front,'pointerdown',300,100,0);pointer(front,'pointermove',240,100,300);pointer(front,'pointerup',240,100,500);
+ assert.equal(active(),'1');assert.match(screen.getByRole('button',{name:/^预览/}).style.transform,/translate3d\(0px,0px,0px\)/);
+ pointer(front,'pointerdown',300,100,1000);pointer(front,'pointermove',200,100,1200);fireEvent.blur(window);
+ assert.equal(active(),'1');assert.equal(container.querySelector('.is-dragging'),null);finish();
+});
+
+test('long drag keeps focus on the new visible card and ignores unrelated pointers',t=>{
+ const finish=finishAnimation(t);render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true}));
+ const front=screen.getByRole('button',{name:/^预览/});act(()=>front.focus());
+ pointer(front,'pointerdown',500,100,0);const initial=front.style.transform;
+ pointer(front,'pointermove',100,100,100,2);pointer(front,'pointerup',100,100,200,2);
+ assert.equal(front.style.transform,initial);
+ pointer(front,'pointermove',200,100,400);pointer(front,'pointerup',200,100,600);finish();
+ assert.equal(active(),'2');assert.equal(document.activeElement,screen.getByRole('button',{name:/^预览/}));
+ assert.equal(document.activeElement.getAttribute('aria-hidden'),'false');
+});
