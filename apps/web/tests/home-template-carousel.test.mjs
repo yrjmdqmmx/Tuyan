@@ -46,3 +46,14 @@ test('clearing typed text does not restart the fan for the same task', t=>{
  fireEvent.input(screen.getByRole('textbox',{name:'绘图要求'}),{target:{value:''}});
  act(()=>t.mock.timers.tick(12000));assert.equal(active(),'0');
 });
+
+test('repeated keyboard navigation keeps focus on the front card',()=>{
+ render(React.createElement(HomeTemplateCarousel,{onApply(){},stopped:true}));
+ for(let n=1;n<=8;n++){
+  const front=screen.getByRole('button',{name:/^预览/});
+  fireEvent.keyDown(front,{key:'ArrowRight'});
+  assert.equal(active(),String(n%6));
+  assert.equal(document.activeElement,screen.getByRole('button',{name:/^预览/}));
+  assert.equal(document.activeElement.getAttribute('aria-hidden'),'false');
+ }
+});

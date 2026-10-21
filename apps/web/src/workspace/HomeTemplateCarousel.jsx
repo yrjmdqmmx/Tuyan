@@ -63,7 +63,11 @@ export default function HomeTemplateCarousel({ onApply, stopped = false, paused 
     });
     return () => animations.forEach(animation => animation.cancel());
   }, [active, reduced, mobile, templates.length]);
-  function move(delta) { setActive(index => (index + delta + templates.length) % templates.length); }
+  function move(delta, focusCard = false) {
+    const next = (active + delta + templates.length) % templates.length;
+    setActive(next);
+    if (focusCard) cards.current[next]?.focus({preventScroll:true});
+  }
   function endGesture(event) {
     const g = gesture.current; if (!g) return;
     gesture.current = null; setDragging(false); deckRef.current?.style.removeProperty('--template-drag');
@@ -73,7 +77,7 @@ export default function HomeTemplateCarousel({ onApply, stopped = false, paused 
   return <>
     <section className="tw-home-templates" aria-label="绘图模板轮播" aria-roledescription="轮播" data-template-index={active}
       onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }}
-      onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); move(event.key === 'ArrowRight' ? 1 : -1); } }}>
+      onKeyDown={event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); move(event.key === 'ArrowRight' ? 1 : -1, true); } }}>
       <div ref={deckRef} className={`tw-template-deck${dragging ? ' is-dragging' : ''}`}
         onPointerDown={event => { if (event.button !== 0) return; const capture=event.target.closest('button') || event.currentTarget; gesture.current = {id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,dragged:false,capture}; setDragging(true); capture.setPointerCapture?.(event.pointerId); }}
         onPointerMove={event => { const g = gesture.current; if (!g || g.id !== event.pointerId) return; const dx = event.clientX-g.x, dy = event.clientY-g.y;
