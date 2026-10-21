@@ -10,11 +10,16 @@ import WorkspaceDialog from './WorkspaceDialog.jsx';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
 import WorkspaceSearch from './WorkspaceSearch.jsx';
 import WorkspacePromptGuide from './WorkspacePromptGuide.jsx';
+import HomeTemplateCarousel from './HomeTemplateCarousel.jsx';
 import { currentTask, currentBranch, PATHS, currentDraft } from './workspaceState.js';
 
 export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
   const task = currentTask(state), branch = currentBranch(state);
   const nickname = user?.name?.trim();
+  const [templateStoppedTasks, setTemplateStoppedTasks] = useState(() => new Set());
+  const draft = currentDraft(state);
+  const templatesStopped = templateStoppedTasks.has(task.id) || Boolean(draft.text || draft.caption || draft.avoid || draft.attachments.length);
+  function stopTemplates(event) { if (event.target.tagName === 'TEXTAREA') setTemplateStoppedTasks(previous => previous.has(task.id) ? previous : new Set([...previous, task.id])); }
   const [collapsed, setCollapsed] = useState(false), [mobile, setMobile] = useState(false), [mobileOpen, setMobileOpen] = useState(false);
   const shellRef = useComposerViewport(mobile);
   const composerDialogTriggerRef = useRef(null);
@@ -104,7 +109,7 @@ export default function TaskWorkspace({ state, dispatch, onDeleteTask, onSubmit,
         {headerTools && <div className="tw-header-tools">{headerTools}</div>}
       </header>
       {page !== 'workspace' ? <div key={`${page}:${modelView || ""}:${modelVisit}:${pageTool || ""}`} className={`tw-page ${['models', '排行榜', '他山科研生态', '站长页', '社区评估题审核', '账户设置'].includes(page) ? 'tw-page-wide' : ''}`}><div className="tw-page-body">{page === 'models' ? renderModels?.({ management: true, initialView: modelView, onClose: () => setPage('workspace') }) : page === '账户设置' && renderAccount ? renderAccount({onOpenTask:id=>{if(state.tasks.some(t=>t.id===id&&!t.deleted)){dispatch({type:'SELECT_TASK',id});setPage('workspace');}}}) : renderPage?.(page, () => setPage('workspace'), setPage, {initialTool:pageTool})}</div></div>
-        : task.deleted ? <div className="tw-empty-body"><p role="status">此任务由旧版本移除，内容仍保留。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button><button type="button" disabled={!askDelete} onClick={()=>askDelete(task)}>彻底删除</button></div> : !hasStarted ? <div className="tw-empty-body"><div className="tw-welcome"><h2>HI！{nickname && <>{nickname}，</>}今天想绘制什么？</h2></div>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
+        : task.deleted ? <div className="tw-empty-body"><p role="status">此任务由旧版本移除，内容仍保留。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button><button type="button" disabled={!askDelete} onClick={()=>askDelete(task)}>彻底删除</button></div> : !hasStarted ? <div className="tw-empty-body" onInputCapture={stopTemplates} onCompositionStartCapture={stopTemplates}><div className="tw-welcome"><h2>HI！{nickname && <>{nickname}，</>}今天想绘制什么？</h2></div><HomeTemplateCarousel key={task.id} mobile={mobile} stopped={templatesStopped} paused={Boolean(panel || mobileOpen)} onApply={template=>dispatch({type:'APPLY_TEMPLATE',template})}/>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
         </div> : <><ResultWorkspace executionProgress={executionProgress} renderRecovery={renderRecovery} userId={user?.id} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} renderSvgEditor={renderSvgEditor} onDownload={onDownload} onCloseUnaccepted={!busy ? onCloseUnaccepted : null} /><div className="tw-docked">{composer}</div></>}
     </main>
     {mobile && mobileOpen && <div inert={panel === 'search' || deletion ? true : undefined} aria-hidden={panel === 'search' || deletion ? true : undefined}><WorkspaceDialog title="任务导航" className="tw-mobile-nav-dialog" backdropClassName="tw-mobile-nav-backdrop" onClose={() => setMobileOpen(false)}>{sidebar}</WorkspaceDialog></div>}

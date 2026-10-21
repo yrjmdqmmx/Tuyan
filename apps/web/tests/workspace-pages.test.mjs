@@ -2,13 +2,14 @@ import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React from 'react';
 import { cleanup, fireEvent, render, screen, within, act } from '@testing-library/react';
-import WorkspaceTemplates from '../src/workspace/WorkspaceTemplates.jsx';
+import HomeTemplateCarousel from '../src/workspace/HomeTemplateCarousel.jsx';
 import GuidePanel from '../src/components/GuidePanel.jsx';
 import AdminWorkspace from '../src/components/admin/AdminWorkspace.jsx';
 import { FEATURED_TEMPLATE_REFERENCE_IDS } from '../src/lib/featuredTemplates.js';
 
 const originalFetch = globalThis.fetch;
 window.scrollTo = () => {};
+window.matchMedia = query => ({matches:false,media:query,addEventListener(){},removeEventListener(){}});
 afterEach(() => { cleanup(); globalThis.fetch = originalFetch; });
 
 test('workspace template browsing and dismissal never apply a template; explicit use applies the selected content once', async () => {
@@ -17,12 +18,13 @@ test('workspace template browsing and dismissal never apply a template; explicit
     requests.push(JSON.parse(options.body));
     return Response.json({ code: 0, references: FEATURED_TEMPLATE_REFERENCE_IDS.map(id => ({ id, imageUrl: `https://example.test/${id}.png`, attribution: `Verified source ${id}`, license: { url: 'https://example.test/license' } })) });
   };
-  render(React.createElement(WorkspaceTemplates, { onApply: template => applied.push(template) }));
-  await screen.findByRole('img', { name: '统计对比面板参考图' });
-  fireEvent.change(screen.getByRole('searchbox'), { target: { value: '统计' } });
-  assert.equal(screen.getAllByRole('article').length, 1);
+  render(React.createElement(HomeTemplateCarousel, { onApply: template => applied.push(template) }));
+  assert.equal(requests.length, 0);
+  assert.equal(screen.getAllByRole('button', {name:/^(预览|切换到)/}).length, 3);
+  fireEvent.keyDown(screen.getByRole('region', {name:'绘图模板轮播'}), {key:'ArrowLeft'});
   fireEvent.click(screen.getByRole('button', { name: '预览统计对比面板' }));
   assert.ok(within(screen.getByRole('dialog')).getByText(/教学示意任务/));
+  await screen.findByText(/Verified source/);
   assert.deepEqual(applied, []);
   fireEvent.click(screen.getByRole('button', { name: '关闭统计对比面板' }));
   assert.deepEqual(applied, []);

@@ -135,7 +135,8 @@ test('collapsed resources use a menu with keyboard navigation, Escape and outsid
   await user.click(trigger);
   const menu = screen.getByRole('menu', { name: '资源与帮助' });
   const items = within(menu).getAllByRole('menuitem');
-  assert.equal(items.length, 11);
+  assert.equal(items.length, 10);
+  assert.equal(within(menu).queryByRole('menuitem', { name: '绘图模板' }), null);
   assert.equal(screen.queryByRole('dialog', { name: '资源与帮助' }), null);
   assert.ok(document.activeElement === items[0]);
   await user.keyboard('{ArrowDown}'); assert.ok(document.activeElement === items[1]);

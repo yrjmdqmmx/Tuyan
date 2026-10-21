@@ -7,7 +7,6 @@ import ContactDialog from '../components/ContactDialog.jsx';
 import MiniProgramDialog from '../components/MiniProgramDialog.jsx';
 import FeedbackDialog from '../components/FeedbackDialog.jsx';
 import WorkspaceLocalDrafts from './WorkspaceLocalDrafts.jsx';
-import WorkspaceTemplates from './WorkspaceTemplates.jsx';
 import WorkspaceLeaderboard from './WorkspaceLeaderboard.jsx';
 const ResearchEcosystem = lazy(() => import('../ecosystem/ResearchEcosystem.jsx'));
 const AdminWorkspace = lazy(() => import('../components/admin/AdminWorkspace.jsx'));
@@ -22,7 +21,7 @@ export function useWorkspaceAdmin(userId, health) {
   },[userId,health?.runtime]);
   return !!userId && identity===userId;
 }
-export default function WorkspacePages({page,initialTool,onClose,onNavigate,account,models,health,isAdmin,onTemplate,onRestoreSvg}) {
+export default function WorkspacePages({page,initialTool,onClose,onNavigate,account,models,health,isAdmin,onRestoreSvg}) {
   const [feedback,setFeedback]=useState({busy:false,error:'',success:false});
   async function submit(payload){setFeedback({busy:true,error:'',success:false});try{await submitFeedbackRequest(API_BASE_DEFAULT,health,{...payload,platform:'web',clientVersion:CLIENT_VERSION});setFeedback({busy:false,error:'',success:true});return true;}catch(error){setFeedback({busy:false,error:error.message,success:false});return false;}}
   const dialogs={'智能体接入':AgentConnectionDialog,'联系作者':ContactDialog,'微信小程序':MiniProgramDialog};
@@ -30,7 +29,6 @@ export default function WorkspacePages({page,initialTool,onClose,onNavigate,acco
   if(Dialog)return <><p>通过下方窗口查看{page}。</p><Dialog open onClose={onClose}/></>;
   if(page==='意见反馈')return <FeedbackDialog open isSubmitting={feedback.busy} error={feedback.error} success={feedback.success} onSubmit={submit} onClose={onClose}/>;
   if(page==='浏览器手工稿')return <WorkspaceLocalDrafts userId={account.user?.id} onRestore={onRestoreSvg} onClose={onClose}/>;
-  if(page==='绘图模板')return <WorkspaceTemplates onApply={template=>{onTemplate(template);onClose();}}/>;
   if(page==='排行榜')return <WorkspaceLeaderboard account={account} isAdmin={isAdmin} onReturn={onClose} onAdmin={()=>onNavigate('社区评估题审核')}/>;
   if(page==='他山科研生态')return <Suspense fallback={<p role="status">正在加载科研工具…</p>}><ResearchEcosystem account={account} initialTool={initialTool}/></Suspense>;
   if(page==='使用教程')return <GuidePanel workspace onStart={onClose} onContact={()=>onNavigate('联系作者')} registryVersion={models.registry?.registryVersion} providerLabels={Object.keys(models.registry?.providers||{})}/>;
