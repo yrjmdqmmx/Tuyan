@@ -333,7 +333,7 @@ Object.assign(critiqueV2.properties, {
 critiqueV2.required.push('artifactSha256', 'artifactVersion', 'inspected', 'uncertainties');
 critiqueV2.properties.issues.items.properties.dimension.enum.push('journal', 'preservation', 'export');
 critiqueV2.allOf = [
-  { if: { properties: { artifactPath: { pattern: '\\.svg$' } } }, then: { required: ['renderedArtifact'], properties: { inspected: { allOf: [{ contains: { const: 'svg-source' } }, { contains: { const: 'svg-render' } }] } } } },
+  { if: { properties: { artifactPath: { pattern: '\\.[sS][vV][gG]$' } } }, then: { required: ['renderedArtifact'], properties: { inspected: { allOf: [{ contains: { const: 'svg-source' } }, { contains: { const: 'svg-render' } }] } } } },
   { if: { properties: { decision: { const: 'finalize' } } }, then: { properties: {
     uncertainties: { maxItems: 0 },
     issues: { items: { properties: { severity: { const: 'minor' } } } },

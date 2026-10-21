@@ -4,6 +4,6 @@ export const ENGINE_FINGERPRINT = {
   "packages/tuyan-knowledge/src/journals.js": "5409fb491e18cac67c84d8ce9c7843e59c77f4bd53d26ad4681a1bccdd7838ca",
   "packages/tuyan-knowledge/src/workflows.js": "9274dc51169f226316be6e90d90ba6e9d6aef1ece9112dd6f5a9ee442897f50c",
   "packages/tuyan-knowledge/src/agent-runtime-entry.js": "8d98b34cb3781fc6953320c420bb5c7837b60d9bf5b924d6b134a51ee34a0abd",
-  "skills/tuyan-scientific-figure/scripts/finalize-output-bundle.mjs": "46ba1cb1fc75dd9557f8d7131915bcb666deb2b84eced794c7069521e728b303",
+  "skills/tuyan-scientific-figure/scripts/finalize-output-bundle.mjs": "7b43bc615af9e8435f315b24710662de946b5bbb5a49d41665f50c88bbf2c7c3",
   "skills/tuyan-scientific-figure/scripts/prepare-knowledge.mjs": "7b1e36ed68f91b516caf8ca1f4962b8da8e4d5b7cfe71ba832136a9ad586c201"
 };

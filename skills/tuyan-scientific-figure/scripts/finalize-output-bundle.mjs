@@ -1,8 +1,12 @@
 import { createHash } from 'node:crypto';
+import { constants } from 'node:fs';
 import { lstat, readFile, readdir, writeFile } from 'node:fs/promises';
 import { extname, join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { validateArtifactDocument, verifyKnowledgeEvidence, sha256Canonical, FIGURE_TAXONOMY } from './knowledge-runtime.mjs';
+
+const isSvgPath = path => /\.svg$/i.test(path);
+const isPngPath = path => /\.png$/i.test(path);
 
 const RETRIEVER_STATUSES = new Set(['enabled', 'skipped', 'download-failed', 'validation-failed', 'not-requested']);
 const REVISION = 'a876264bcd1e826a0320f805f8fb1cd705cf510f';
@@ -36,9 +40,9 @@ async function filesUnder(root, directory = root) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const absolute = join(directory, entry.name);
     const relativePath = relative(root, absolute).split(sep).join('/');
-    if (relativePath === 'manifest.json') continue;
     const status = await lstat(absolute);
     if (status.isSymbolicLink()) throw new Error(`OUTPUT_BUNDLE_INVALID: symbolic link ${relativePath}`);
+    if (relativePath === 'manifest.json') continue;
     if (status.isDirectory()) results.push(...await filesUnder(root, absolute));
     else if (status.isFile()) results.push(relativePath);
   }
@@ -53,12 +57,12 @@ export async function buildOutputManifest(directory, {
 } = {}) {
   if (!RETRIEVER_STATUSES.has(retrieverStatus)) throw new Error(`OUTPUT_BUNDLE_INVALID: retriever status ${retrieverStatus}`);
   const root = resolve(directory);
+  const paths = await filesUnder(root);
   const figureSpecPath = join(root, 'figure-spec.json');
   const figureSpec = await readFile(figureSpecPath).catch(() => null);
   if (!figureSpec) throw new Error('OUTPUT_BUNDLE_INVALID: figure-spec.json is required');
   const spec = validateArtifactDocument(JSON.parse(figureSpec));
   const knowledgePath = 'knowledge-used.json';
-  const paths = await filesUnder(root);
   const files = [];
   for (const path of paths) {
     const bytes = await readFile(join(root, path));
@@ -85,16 +89,16 @@ export async function buildOutputManifest(directory, {
     assertFileHash(record.figureSpecPath || 'figure-spec.json', record.figureSpecSha256);
     assertFileHash(record.artifactPath, record.artifactSha256);
     if (record.renderedArtifact) assertFileHash(record.renderedArtifact.path, record.renderedArtifact.sha256);
-    if (record.artifactPath.endsWith('.svg') && record.renderedArtifact?.path === record.artifactPath) throw new Error('OUTPUT_BUNDLE_INVALID: SVG render evidence must be a separate raster image');
+    if (isSvgPath(record.artifactPath) && record.renderedArtifact?.path === record.artifactPath) throw new Error('OUTPUT_BUNDLE_INVALID: SVG render evidence must be a separate raster image');
     if (record.renderedArtifact && !/\.(png|jpe?g|webp)$/i.test(record.renderedArtifact.path)) throw new Error('OUTPUT_BUNDLE_INVALID: inspect a raster rendering of SVG');
-    if (!record.artifactPath.endsWith('.svg') && !record.inspected.includes('raster')) throw new Error('OUTPUT_BUNDLE_INVALID: actual raster inspection is required');
+    if (!isSvgPath(record.artifactPath) && !record.inspected.includes('raster')) throw new Error('OUTPUT_BUNDLE_INVALID: actual raster inspection is required');
     if (record.figureSpecSha256 === sha256(figureSpec) && record.decision === 'finalize' && dataFigure && !record.numericChecks?.length) throw new Error('OUTPUT_BUNDLE_INVALID: numeric evidence is required separately from visual review');
     critiques.push({ path: file.path, record });
   }
   const reviewSummary = [];
-  const incompleteNumericPackage = dataFigure && (!files.some(file => file.kind === 'plot-code') || !files.some(file => file.kind === 'final' && file.path.endsWith('.png')) || !files.some(file => file.kind === 'final' && file.path.endsWith('.svg')));
+  const incompleteNumericPackage = dataFigure && (!files.some(file => file.kind === 'plot-code') || !files.some(file => file.kind === 'final' && isPngPath(file.path)) || !files.some(file => file.kind === 'final' && isSvgPath(file.path)));
   for (const file of files.filter(file => file.kind === 'final' && /\.(png|svg|jpe?g|webp)$/i.test(file.path))) {
-    if (file.path.endsWith('.svg')) {
+    if (isSvgPath(file.path)) {
       const svg = await readFile(join(root, file.path), 'utf8');
       if (!/<svg\b/i.test(svg) || !/<(?:path|text|rect|circle|line|polyline|polygon|ellipse|use)\b/i.test(svg)) throw new Error('OUTPUT_BUNDLE_INVALID: final SVG must contain real vector content, not a renamed/wrapped bitmap');
     }
@@ -147,7 +151,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     .then(async ({ directory, options }) => {
       const manifest = await buildOutputManifest(directory, options);
       const path = join(resolve(directory), 'manifest.json');
-      await writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`, { flag: 'w' });
+      await writeFile(path, `${JSON.stringify(manifest, null, 2)}\n`, { flag: constants.O_WRONLY | constants.O_CREAT | constants.O_TRUNC | constants.O_NOFOLLOW });
       console.log(path);
     })
     .catch((error) => {

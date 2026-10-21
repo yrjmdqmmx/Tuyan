@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { mkdtemp, mkdir, readFile, writeFile, symlink } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, symlink, rename } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -176,4 +176,37 @@ test('preparation CLI writes explicit source evidence and preserves existing cap
   const evidence = JSON.parse(await readFile(join(root, 'knowledge-used.json'), 'utf8'));
   assert.equal(evidence.source, 'offline'); assert.equal(evidence.workflow.retriever.task, 'plot');
   assert.throws(() => execFileSync(process.execPath, args, { stdio: 'pipe' }), /EEXIST/);
+});
+
+
+test('uppercase SVG keeps source/render review and vector validation', async () => {
+  const { root, record } = await fixture();
+  const rasterOnly = { ...record, artifactPath: 'drafts/round-01.SVG', inspected: ['raster'] };
+  delete rasterOnly.renderedArtifact;
+  assert.throws(() => validateArtifactDocument(rasterOnly), /ARTIFACT_INVALID/);
+  await writeFile(join(root, 'final/bitmap.SVG'), '<svg><image href="data:image/png;base64,example"/></svg>');
+  await assert.rejects(buildOutputManifest(root), /real vector content/);
+});
+
+test('valid uppercase SVG and PNG retain complete numeric review', async () => {
+  const { root, record } = await fixture({ category: 'bar' });
+  for (const path of ['drafts/round-01.svg', 'drafts/round-01.png', 'final/figure.svg', 'final/figure.png']) {
+    await rename(join(root, path), join(root, path.replace(/\.(svg|png)$/, value => value.toUpperCase())));
+  }
+  record.artifactPath = 'drafts/round-01.SVG';
+  record.renderedArtifact.path = 'drafts/round-01.PNG';
+  await writeFile(join(root, 'critiques/round-01.json'), JSON.stringify(record));
+  assert.deepEqual((await buildOutputManifest(root)).reviewSummary.map(item => item.status), ['accepted', 'accepted']);
+});
+
+test('an existing manifest symlink cannot overwrite a file outside the output bundle', async () => {
+  const { root } = await fixture();
+  const sentinel = root + '-sentinel.json';
+  const original = '{"preserve":"synthetic sentinel"}';
+  await writeFile(sentinel, original);
+  await symlink(sentinel, join(root, 'manifest.json'));
+  await assert.rejects(buildOutputManifest(root), /symbolic link manifest.json/);
+  const script = fileURLToPath(new URL('../scripts/finalize-output-bundle.mjs', import.meta.url));
+  assert.throws(() => execFileSync(process.execPath, [script, root], { stdio: 'pipe' }), /symbolic link manifest.json/);
+  assert.equal(await readFile(sentinel, 'utf8'), original);
 });

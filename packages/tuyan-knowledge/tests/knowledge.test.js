@@ -16,7 +16,7 @@ test('exports the shared taxonomy and version-one workflow dimensions', () => {
   assert.deepEqual(knowledge.OPERATIONS, ['create', 'refine', 'evaluate']);
   assert.deepEqual(knowledge.OUTPUT_FORMATS, ['png', 'svg']);
   assert.deepEqual(knowledge.LOCALES, ['zh-CN', 'en-US']);
-  assert.equal(knowledge.KNOWLEDGE_VERSION, '1.2.0');
+  assert.equal(knowledge.KNOWLEDGE_VERSION, '1.2.1');
 });
 
 test('keeps bilingual category coverage in lockstep', () => {
@@ -169,7 +169,7 @@ test('resources have a stable order and resolve without mutable state', () => {
 
 test('offline snapshot hash binds every version-one public knowledge object', () => {
   const snapshot = knowledge.createOfflineSnapshot();
-  assert.equal(snapshot.manifest.knowledgeVersion, '1.2.0');
+  assert.equal(snapshot.manifest.knowledgeVersion, '1.2.1');
   assert.match(snapshot.manifest.knowledgeHash, /^[a-f0-9]{64}$/);
   assert.deepEqual(snapshot.categories, knowledge.CATEGORY_CATALOG);
   assert.deepEqual(snapshot.schemas.figureSpec, knowledge.FIGURE_SPEC_V2_SCHEMA);

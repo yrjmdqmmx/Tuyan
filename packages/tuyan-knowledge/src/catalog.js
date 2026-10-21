@@ -1,6 +1,6 @@
 import {FIGURE_TYPES} from '../../figure-taxonomy/src/index.js';
 import { CATEGORY_ENGLISH } from './category-english.js';
-export const KNOWLEDGE_VERSION = '1.2.0';
+export const KNOWLEDGE_VERSION = '1.2.1';
 export const KNOWLEDGE_MAJOR = 1;
 
 export const VISUAL_CATEGORIES = Object.freeze([...FIGURE_TYPES.map(type=>type.id),'data_stat']);
