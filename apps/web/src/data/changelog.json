@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "coverage": {
     "from": "2026-05-14",
-    "through": "2026-10-20"
+    "through": "2026-10-21"
   },
   "entries": [
     {
@@ -12,19 +12,17 @@
       "announcementDate": null,
       "release": {
         "status": "released",
-        "date": "2026-10-20",
+        "date": "2026-10-21",
         "surfaces": [
           "Web"
         ]
       },
       "title": "新版 UI、生成工作流与模型路由升级",
-      "summary": "新版任务式 UI 支持多任务管理与后台进度，信息图扩展至 13 大类、92 种图型；升级候选、评审及 PNG／SVG 工作流，优化国内、香港和新加坡渠道路由，并补齐期刊规范、SVG 编辑、同步搜索与科研工具。",
+      "summary": "新版任务式 UI 支持多任务管理、连续创作与后台进度，信息图扩展至 13 大类、92 种图型；升级 PNG／SVG 生成评审、期刊规范与模型路由，新增账号图片库，完善移动端输入，并同步 Skill／MCP 智能体知识与离线使用。",
       "surfaces": [
         "Web"
       ],
-      "notes": [
-        "汇总 3.8.1 之后至 2026-10-20 已上线的改动；本条日期为本次联合发布完成日。"
-      ],
+      "notes": [],
       "changes": [
         {
           "kind": "新增",
@@ -202,21 +200,23 @@
         },
         {
           "kind": "新增",
-          "text": "SVG 空白画布与草稿恢复：无需先调用模型即可手工绘图，支持缩放、平移和聚焦所选对象；当前编辑稿保存在本浏览器，保存为新版本后随账号同步，旧版浏览器手工稿可恢复或单独导出。",
+          "text": "SVG 空白画布与自动保存：无需先调用模型即可手工绘图，支持缩放、平移和聚焦所选对象；手工修改自动保存到原任务并随账号同步，重开任务可继续编辑，原图与历史版本保留；旧版浏览器备份在能精确匹配的任务内恢复。",
           "state": "released",
           "sourceIds": [
             "workspace",
             "workspace-fixes",
-            "deployment"
+            "deployment",
+            "session-ui"
           ]
         },
         {
           "kind": "新增",
-          "text": "候选方案与版本管理：候选分别保存并支持并排比较，可指定某个候选的版本继续修改；PNG、原始 SVG 和手工修改稿保留各自版本关系，支持单独下载与整项任务打包导出。",
+          "text": "候选方案与连续创作：候选分别保存并支持并排比较，可切换当前候选或历史版本，在同一输入框继续提出修改要求；每轮追加到原任务历史，PNG、原始 SVG 和手工修改稿保留各自版本关系，支持单独下载与整项任务打包导出。",
           "state": "released",
           "sourceIds": [
             "workspace",
-            "workspace-fixes"
+            "workspace-fixes",
+            "session-ui"
           ]
         },
         {
@@ -247,10 +247,12 @@
         },
         {
           "kind": "新增",
-          "text": "账户设置支持头像上传与恢复默认头像、双邮箱验证更换登录邮箱；新增绘制活动热力图、日／周／累计统计与连续绘制记录。",
+          "text": "账户设置按个人资料、账户、存储与语言分组，手机支持分类与子页返回；支持头像上传与恢复默认头像、双邮箱验证更换登录邮箱，以及绘制活动热力图、日／周／累计统计与连续绘制记录。",
           "state": "released",
           "sourceIds": [
-            "account"
+            "account",
+            "account-library",
+            "home-interactions"
           ]
         },
         {
@@ -271,10 +273,51 @@
         },
         {
           "kind": "新增",
-          "text": "任务支持确认后彻底删除，清理草稿、执行记录、结果及关联恢复副本；共享文件保留，进行中的任务禁止删除，已下载或自行备份的文件不受影响。",
+          "text": "任务支持确认后彻底删除，清理任务草稿、执行记录、结果引用及关联恢复副本；独立账号图片库中的已保存图片与共享文件保留，进行中的任务禁止删除，已下载或自行备份的文件不受影响。",
           "state": "released",
           "sourceIds": [
-            "joint-release"
+            "joint-release",
+            "account-library"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "新增“提示词建议”，按绘图目标、元素、关系、布局、视觉与内容约束整理输入，并提供 PNG／SVG 和修改已有图的示例；查看指南保留当前草稿与设置，不触发模型调用。",
+          "state": "released",
+          "sourceIds": [
+            "prompt-channel"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "账号图片库集中管理已保存的 PNG／SVG 结果，支持预览、下载和返回来源任务；即使来源任务已删除，图片仍可独立查看，存储容量与累计绘制统计分别展示。",
+          "state": "released",
+          "sourceIds": [
+            "account-library"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "图片保存规则明确为每账号 100 MB、首次保存后 30 天；相同内容去重计量，到期自动清理，容量不足时按规则回收最早图片。缺少可靠保存时间及迁移时已超期的历史图片暂予保护，缺失原文件明确提示，不虚构恢复。",
+          "state": "released",
+          "sourceIds": [
+            "account-library"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "智能体接入同步 Tuyan Skill／MCP 知识 1.2.1：覆盖 13 大类、92 种图型与 18 本期刊规则，保留必要输入、图型变体、投稿阶段、官方来源、核验日期及历史规则版本；匿名 MCP 仅提供只读知识，不接收论文、图片、提示词或密钥。",
+          "state": "released",
+          "sourceIds": [
+            "agent-knowledge"
+          ]
+        },
+        {
+          "kind": "新增",
+          "text": "智能体工作流补齐输入证据与缺失数据检查、图型选择、多面板语义及能力不足时的方案交付；PNG 检查实际成图，SVG 同时检查源码与渲染图，评审关联实际文件版本，数值核对与视觉评价分开记录。",
+          "state": "released",
+          "sourceIds": [
+            "agent-knowledge"
           ]
         },
         {
@@ -305,11 +348,12 @@
         },
         {
           "kind": "优化",
-          "text": "明确快速／完整生成流程：快速生成完成材料理解、规划、绘制与评审，完整生成增加风格整理；支持最多 6 个候选、5 轮评审，候选数量不等于并发数量。",
+          "text": "明确快速／完整生成流程：快速生成完成材料理解、规划、绘制与评审，完整生成增加风格整理；支持最多 6 个候选、5 轮评审。新任务普通与专业模式均默认 1 个候选，保留已有任务的候选选择；候选数量不等于并发数量。",
           "state": "released",
           "sourceIds": [
             "contracts",
-            "deployment"
+            "deployment",
+            "home-interactions"
           ]
         },
         {
@@ -478,6 +522,41 @@
           ]
         },
         {
+          "kind": "优化",
+          "text": "首页模板改为紧凑卡片轮播，支持鼠标拖动、手机滑动与轻点预览，拖动不会误开预览；欢迎语逐字切换，开始输入后停止，并适配减少动态效果的偏好。",
+          "state": "released",
+          "sourceIds": [
+            "session-ui",
+            "home-interactions"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "渠道连接与型号选择统一品牌图标，配置弹窗在桌面采用双列、手机采用单列；表单滚动与操作按钮分开，下拉菜单支持键盘选择并避免裁切，取消操作保留原配置。",
+          "state": "released",
+          "sourceIds": [
+            "prompt-channel",
+            "home-interactions"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "工作台统一要求登录后使用，会话失效时引导重新登录并保留本机草稿；同一账号超出同时执行额度的任务进入有界队列，繁忙账号不阻塞其他账号，队列已满时明确提示。",
+          "state": "released",
+          "sourceIds": [
+            "account-access",
+            "session-ui"
+          ]
+        },
+        {
+          "kind": "优化",
+          "text": "Skill、MCP 独立仓库与离线包同步同一知识内容，离线包包含运行所需知识与依赖；保留旧格式读取能力，新增英文摘要与检查清单，并明确原始规则的语言及来源。",
+          "state": "released",
+          "sourceIds": [
+            "agent-knowledge"
+          ]
+        },
+        {
           "kind": "修复",
           "text": "修复新加坡代理 DNS 解析导致部分连接绕远的问题，并调整 Fireworks 连接路径；线路异常时不自动换线重发可能已经计费的请求。",
           "state": "released",
@@ -496,10 +575,11 @@
         },
         {
           "kind": "修复",
-          "text": "修复 iPhone 键盘及模型／设置弹窗关闭后输入框意外收起、页面空白跳动、工具栏裁切和长文收起残留。",
+          "text": "修复手机键盘遮挡输入框、文字与光标位置偏移，以及长文本裁切或失焦后异常收起；键盘展开时收起欢迎区，长文保持多行、自动换行并可在框内滚动，兼顾模型／设置弹窗返回与键盘收起后的布局恢复。",
           "state": "released",
           "sourceIds": [
-            "joint-release"
+            "joint-release",
+            "mobile-composer"
           ]
         },
         {
@@ -562,6 +642,23 @@
             "catalog",
             "contracts",
             "deployment"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "完善 PNG 生成与精修评审的格式约束和当前图像版本绑定；无效评审仍保留已生成图片并提示评审未完成，不自动补成“通过”，也不增加隐藏重试。",
+          "state": "released",
+          "sourceIds": [
+            "png-review",
+            "session-ui"
+          ]
+        },
+        {
+          "kind": "修复",
+          "text": "修复国内 Skill 下载入口返回网页而非安装文件，以及知识版本记录与本轮实际来源不一致的问题；下载清单提供文件校验信息，SVG 文件扩展名大小写一致执行源码与渲染检查。",
+          "state": "released",
+          "sourceIds": [
+            "agent-knowledge"
           ]
         }
       ],
@@ -649,6 +746,54 @@
           "kind": "deployment",
           "label": "4.0 联合发布流水线",
           "url": "https://github.com/yrjmdqmmx/Tuyan/actions/runs/39370164968"
+        },
+        {
+          "id": "prompt-channel",
+          "kind": "release-record",
+          "label": "提示词建议与渠道界面发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-20-prompt-channel-release.md"
+        },
+        {
+          "id": "account-library",
+          "kind": "release-record",
+          "label": "账号图片库与历史保护发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-account-storage-joint-release.md"
+        },
+        {
+          "id": "session-ui",
+          "kind": "release-record",
+          "label": "连续创作与账户界面发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-session-ui-release.md"
+        },
+        {
+          "id": "account-access",
+          "kind": "release-record",
+          "label": "登录要求与账号队列实现",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-login-account-concurrency.md"
+        },
+        {
+          "id": "png-review",
+          "kind": "release-record",
+          "label": "PNG 评审格式修复记录",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-png-review-retest.md"
+        },
+        {
+          "id": "home-interactions",
+          "kind": "release-record",
+          "label": "首页模板交互与默认候选发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-home-interactions-release.md"
+        },
+        {
+          "id": "mobile-composer",
+          "kind": "release-record",
+          "label": "移动端输入框修复发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-mobile-composer-release.md"
+        },
+        {
+          "id": "agent-knowledge",
+          "kind": "release-record",
+          "label": "Skill／MCP 知识同步与双站发布",
+          "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-agent-knowledge-release.md"
         }
       ],
       "legacyAnchors": []

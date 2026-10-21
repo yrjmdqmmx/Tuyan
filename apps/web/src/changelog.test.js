@@ -96,7 +96,7 @@ test('runtime selection and anchors never expose a pending version or event', ()
 })
 test('drafts and independent drawing module stay outside the public archive', () => {
   assert.doesNotMatch(JSON.stringify(data), /figure-studio|论文画布|历史微信公告整理稿/)
-  assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /Benchmark v|MCP|微信小程序/)
+  assert.doesNotMatch(JSON.stringify(publishedVersions(data, 'tuyan')), /Benchmark v|微信小程序/)
   assert.ok(publishedVersions(data, 'tuyan').some(e => e.changes.some(c => c.text.includes('精修'))))
   assert.ok(publishedVersions(data, 'openacad').some(e => e.changes.some(c => c.text.includes('AB1'))))
 })
@@ -108,7 +108,7 @@ test('direct, trailing-slash, static and base-path routes remain valid', () => {
 test('overview merges every public entry once and groups confirmed dates in descending order', () => {
   const before = structuredClone(data)
   const groups = groupPublishedUpdates(data)
-  assert.equal(groups[0].date, '2026-10-20')
+  assert.equal(groups[0].date, '2026-10-21')
   assert.deepEqual(groups.map(group => group.date), [...new Set(groups.map(group => group.date))].sort().reverse())
   const ids = groups.flatMap(group => group.items.map(item => item.entry.id))
   assert.equal(new Set(ids).size, 28)
@@ -120,7 +120,7 @@ test('overview merges every public entry once and groups confirmed dates in desc
 })
 test('new source records automatically appear in both views without dates or publication being inferred', () => {
   const copy = structuredClone(data)
-  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '4.0.1', release: { status: 'released', date: '2026-10-20', surfaces: ['Web'] } }
+  const next = { ...structuredClone(copy.entries[0]), id: 'next-release', version: '4.0.1', release: { status: 'released', date: '2026-10-21', surfaces: ['Web'] } }
   copy.entries.unshift(next)
   assert.equal(groupPublishedUpdates(copy)[0].items[0].entry, next)
   assert.equal(publishedVersions(copy, 'tuyan')[0], next)
