@@ -5,6 +5,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testi
 import { resolveWorkspaceLocation, workspacePageHref } from '../src/workspace/workspaceRoutes.js';
 import useWorkspaceNavigation from '../src/workspace/useWorkspaceNavigation.js';
 import TaskWorkspace from '../src/workspace/TaskWorkspace.jsx';
+import WorkspaceLeaderboard from '../src/workspace/WorkspaceLeaderboard.jsx';
 import WorkspacePages from '../src/workspace/WorkspacePages.jsx';
 import WorkspaceAccount from '../src/workspace/WorkspaceAccount.jsx';
 import { newWorkspace, workspaceReducer } from '../src/workspace/workspaceState.js';
@@ -151,4 +152,14 @@ test('leaderboard deep routes and navigation use browser history; signed-out sub
   await act(async () => { window.history.back(); });
   await waitFor(() => assert.equal(within(nav).getByRole('button', {name:'评估方法'}).getAttribute('aria-current'), 'page'));
   assert.ok(requests.every(request => !/generate|refine|submitPrompt|promptSubmission/.test(request.body || '')));
+});
+
+// The maintenance override must survive migration from the standalone root.
+test('public leaderboard maintenance override prevents evidence reads in the new shell', async () => {
+  let requests = 0;
+  globalThis.fetch = async () => { requests++; throw Error('must not read disabled public data'); };
+  render(React.createElement(WorkspaceLeaderboard, {account:{}, enabled:false}));
+  fireEvent.click(screen.getByRole('button', {name:'评估方法'}));
+  await act(async () => {});
+  assert.equal(requests, 0);
 });
