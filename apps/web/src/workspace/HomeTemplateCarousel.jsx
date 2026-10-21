@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowUpRight, Plus } from 'lucide-react';
 import { referenceLibraryRequest } from '@paperbanana/api';
 import { attachFeaturedTemplateImages, featuredTemplateRequest, FEATURED_TEMPLATE_REFERENCE_IDS } from '../lib/featuredTemplates.js';
@@ -99,7 +100,7 @@ export default function HomeTemplateCarousel({ onApply, stopped = false, paused 
         })}</div>
       </div>
     </section>
-    {selected && <WorkspaceDialog title={selected.title} wide returnFocusRef={triggerRef} onClose={() => setSelectedId('')}>
+    {selected && createPortal(<WorkspaceDialog title={selected.title} wide returnFocusRef={triggerRef} onClose={() => setSelectedId('')}>
       <div className="tw-template-detail">
         <img src={localImage(selected,false)} alt={`${selected.title}参考图`}/>
         <p className="tw-muted">论文原图 · 仅参考结构</p>
@@ -110,6 +111,6 @@ export default function HomeTemplateCarousel({ onApply, stopped = false, paused 
         <h3>教学模板内容</h3><p>{selected.methodContent}</p><p className="tw-muted">{selected.caption}</p>
         <div className="tw-template-apply"><p>使用模板会新建任务，保留当前任务和草稿。确认内容后再生成图片。</p><button type="button" className="tw-primary" onClick={() => {onApply(selected);setSelectedId('');}}><Plus size={16}/>使用模板新建任务</button></div>
       </div>
-    </WorkspaceDialog>}
+    </WorkspaceDialog>, document.body)}
   </>;
 }

@@ -30,7 +30,7 @@ test('template application preserves the original draft and does not generate; d
  const originalFetch=globalThis.fetch;globalThis.fetch=async()=>Response.json({code:0,references:[]});
  try{
   render(React.createElement(Harness));fireEvent.click(screen.getByRole('button',{name:'预览多智能体方法框架'}));
-  await act(async()=>{});fireEvent.click(screen.getByRole('button',{name:'使用模板新建任务'}));
+  await act(async()=>{});assert.equal(screen.getByRole('dialog').closest('.tw-empty-body'),null);fireEvent.click(screen.getByRole('button',{name:'使用模板新建任务'}));
   assert.equal(latest.tasks.length,2);assert.equal(latest.tasks.find(t=>t.id==='original').branches.png.draft.text,'我的原始要求');
   assert.match(currentTask(latest).branches.png.draft.text,/教学示意任务/);assert.equal(submissions,0);
   fireEvent.click(screen.getByRole('button',{name:'资源与帮助'}));
