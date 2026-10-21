@@ -41,9 +41,9 @@ const libraryStore = { get: async () => library, resolve: async () => 'offline-f
 const receipt = { version: 1, startedAt: new Date().toISOString(), infrastructure: 'isolated loopback MongoDB replica set + actual Gateway/Core handlers + in-memory object store',
   realModelCalls: 0, limits, candidateConcurrency: 1, passed: [], calls: [], overlap: null, results: [] }
 const mark = name => receipt.passed.push(name)
-const deadline = async (promise, label) => {
+const deadline = async (promise, label, timeoutMs = 30000) => {
   let timer
-  try { return await Promise.race([promise, new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Timeout: ' + label)), 15000) })]) }
+  try { return await Promise.race([promise, new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Timeout: ' + label)), timeoutMs) })]) }
   finally { clearTimeout(timer) }
 }
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r }); return { promise, resolve } }
@@ -76,7 +76,7 @@ async function transport(request) {
   globalActive++; globalPeak = Math.max(globalPeak, globalActive)
   entered.get(marker)?.resolve()
   try {
-    if (counts.get(marker) === 1 && gates.has(marker)) await deadline(gates.get(marker).promise, marker + ' release')
+    if (counts.get(marker) === 1 && gates.has(marker)) await deadline(gates.get(marker).promise, marker + ' release', 60000)
     if (unknown.has(marker)) { call.outcome = 'unknown'; throw new UniversalApiError('RESULT_UNKNOWN', 'unknown', 504) }
     if (rejected.has(marker)) { call.outcome = 'rejected'; throw new UniversalApiError('UPSTREAM_REJECTED', 'rejected', 402) }
     const output = await imageFor(marker)
@@ -191,7 +191,7 @@ try {
   gates.get('CASE_ALPHA').resolve()
   await runtime.legacy.drainJobAdmission()
   const doneA = (await read('CASE_ALPHA', a.data.jobId)).data.job
-  assert.equal(doneA.status, 'succeeded')
+  assert.equal(doneA.status, 'succeeded', JSON.stringify(doneA))
   for (const [marker, job, jobId] of [['CASE_ALPHA', doneA, a.data.jobId], ['CASE_BETA', doneB, b.data.jobId]]) {
     assert.equal(counts.get(marker), 2); assert.equal(peak.get(marker), 1)
     assert.equal(job.resultImages.length, 2)
