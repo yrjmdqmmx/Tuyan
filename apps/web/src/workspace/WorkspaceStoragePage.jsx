@@ -69,7 +69,7 @@ export default function WorkspaceStoragePage({userId,apiBase,onOpenTask,active=t
   return <div className="tw-storage-page">
     <div className="tw-storage-summary"><div><h2>存储</h2><p className="tw-storage-capacity">已用 {data?imageBytesLabel(data.usedBytes):'—'} / {data?imageBytesLabel(data.maxBytes):'100 MB'}</p></div><button type="button" aria-label="刷新存储" onClick={()=>setRevision(v=>v+1)}><RefreshCw size={17}/></button></div>
     {data&&<progress max={data.maxBytes} value={Math.min(data.usedBytes,data.maxBytes)} aria-label="已用图片存储空间"/>}
-    <p className="tw-storage-notice">{IMAGE_LIBRARY_NOTICE}</p><p className="tw-storage-unit">1 MB = 1,000,000 字节 · 按服务器首次保存时间排序</p>
+    <p className="tw-storage-notice">{IMAGE_LIBRARY_NOTICE}</p>
     {!!data?.protectedBytes&&<p role="status" className="tw-storage-cleanup">历史图片中有 {imageBytesLabel(data.protectedBytes)} 的保留期限待核对，已计入容量，暂不自动清理。时间未知的图片列于末尾。</p>}
     {!!data?.unavailableHistoryCount&&<p role="status" className="tw-storage-cleanup">另有 {data.unavailableHistoryCount} 个历史结果引用的文件已缺失，未计入已保存图片。原任务记录保留。</p>}
     {!!data?.pendingBytes&&<p role="status" className="tw-storage-cleanup">有 {imageBytesLabel(data.pendingBytes)} 等待服务器清理，仍计入实际占用；服务端会自动重试。</p>}

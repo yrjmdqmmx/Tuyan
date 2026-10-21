@@ -41,7 +41,7 @@ async function openSearch(mobile = true) {
 }
 
 test('search matches names, common aliases, keywords, multiword queries, casing and fullwidth input', () => {
-  for (const [query,id] of [['模型管理','models'],['模型库','models'],['API Key','connections'],['ＡＰＩ　ＫＥＹ','connections'],['base-url','custom-api'],['mcp','agents'],['期刊规范','journals'],['Nature','journals'],['SVG 编辑器','svg'],['图型','figure-types'],['热力图','account'],['新手入门','guide'],['本地草稿','local-drafts']]) {
+  for (const [query,id] of [['模型管理','models'],['模型库','models'],['API Key','connections'],['ＡＰＩ　ＫＥＹ','connections'],['base-url','custom-api'],['mcp','agents'],['期刊规范','journals'],['Nature','journals'],['SVG 编辑器','svg'],['图型','figure-types'],['热力图','account'],['新手入门','guide']]) {
     assert.ok(searchDestinations(query).some(entry => entry.id === id), `${query} must reach ${id}`);
   }
   assert.equal(searchDestinations('模型管理')[0].id,'models');
@@ -188,3 +188,5 @@ test('search directly opens each ecosystem tool and repeated selection without r
     fireEvent.click(screen.getByRole('button',{name:'全部工具'}));
   }
 });
+
+test("standalone browser drafts are not exposed as a navigation destination",()=>{assert.equal(searchDestinations("浏览器手工稿").length,0);});

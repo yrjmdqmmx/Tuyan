@@ -27,7 +27,7 @@ export async function readSvgDraft(key) {
     return stored||null;
   } catch(error) { if(recovery)return {...recovery,recovered:true};throw error; }
 }
-export async function listSvgDrafts(api,owner) {
+export async function listSvgDrafts(api,owner,{taskId}={}) {
   let found=[],databaseError;
   try { const db=await openDatabase();
   found=await new Promise((resolve,reject)=>{
@@ -44,7 +44,7 @@ export async function listSvgDrafts(api,owner) {
     const item=readJournal(key);if(item?.taskId&&!found.some(x=>x.key===key))found.push({key,taskId:item.taskId,candidateId:item.candidateId,updatedAt:item.updatedAt,jobSnapshot:item.jobSnapshot});
   }} catch(error) {if(!found.length)throw error;}
   if(!found.length&&databaseError)throw databaseError;
-  return found.sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,50);
+  return found.filter(row=>!taskId||row.taskId===taskId).sort((a,b)=>b.updatedAt-a.updatedAt).slice(0,50);
 }
 export async function saveSvgDraft(draft) {
   if(isPurged(draft.key))throw Error('任务已彻底删除，无法保存旧手工稿。');

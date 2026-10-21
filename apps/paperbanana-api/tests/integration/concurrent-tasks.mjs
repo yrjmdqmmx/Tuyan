@@ -18,7 +18,7 @@ const client = new MongoClient(uri)
 const database = 'stage01_concurrency_' + randomBytes(8).toString('hex')
 const db = client.db(database), owner = 'isolated-owner', origin = 'http://127.0.0.1:5173'
 const secondOrigin = 'http://127.0.0.1:5174'
-const limits = { maxActive: 2, maxPending: 2, maxPerOwner: 2, maxPerIp: 2 }
+const limits = { maxActive: 8, maxPending: 32, maxPerOwner: 2, maxPerIp: 40 }
 const routes = Object.fromEntries(['main', 'image'].map(role => [role, normalizeUniversalRoute({
   accessProvider: 'custom', modelId: 'fixture-' + role,
   custom: { version: 1, connectionId: role, protocol: role === 'image' ? 'openai-images' : 'openai-chat',
@@ -103,10 +103,10 @@ async function seed(marker, user = owner) {
 async function read(marker, jobId, user = owner) {
   return request(marker, { action: 'getJob', jobId }, user)
 }
-async function waitTerminal(marker, jobId) {
+async function waitTerminal(marker, jobId, user = owner) {
   return deadline((async () => {
     for (;;) {
-      const response = await read(marker, jobId)
+      const response = await read(marker, jobId, user)
       if (['succeeded', 'failed'].includes(response.data.job?.status)) return response.data.job
       await new Promise(resolve => setTimeout(resolve, 20))
     }
@@ -135,16 +135,22 @@ try {
   assert.equal(await db.collection('paperbanana_provider_executions').countDocuments({ userId: owner, state: 'running' }), 2)
   mark('two independent tasks under the same account through two Gateway instances actually overlap in Core and provider fixtures')
 
-  await seed('CASE_THIRD')
+  await seed('CASE_THIRD'); gates.set('CASE_THIRD', deferred()); entered.set('CASE_THIRD', deferred())
   const third = await request('CASE_THIRD')
-  assert.equal(third.data.code, 429); assert.match(third.data.error, /owner limit/i)
+  assertAccepted(third)
+  assert.equal(runtime.legacy.getJobAdmissionState().queued, 1)
   assert.equal(counts.get('CASE_THIRD'), undefined)
-  mark('third same-account task rejected before any provider call')
-  await seed('CASE_IPLIMIT', 'nat-other-owner')
-  const ipLimited = await request('CASE_IPLIMIT', {}, 'nat-other-owner', true)
-  assert.equal(ipLimited.data.code, 429); assert.match(ipLimited.data.error, /IP limit/i)
-  assert.equal(counts.get('CASE_IPLIMIT'), undefined)
-  mark('shared NAT IP cap is distinguished from the owner cap before dispatch')
+  mark('third same-account task queues before any provider call even while global slots remain free')
+  const peers = ['CASE_GAMMA', 'CASE_DELTA', 'CASE_EPSILON', 'CASE_ZETA', 'CASE_ETA', 'CASE_THETA'].map((marker, index) => ({ marker, user: 'parallel-owner-' + Math.floor(index / 2) }))
+  for (const { marker, user } of peers) { await seed(marker, user); gates.set(marker, deferred()); entered.set(marker, deferred()) }
+  const peerJobs = await Promise.all(peers.map(({ marker, user }) => request(marker, {}, user, true)))
+  peerJobs.forEach(assertAccepted)
+  await deadline(Promise.all(peers.map(({ marker }) => entered.get(marker).promise)), 'eight independent tasks active')
+  assert.equal(runtime.legacy.getJobAdmissionState().active, 8)
+  assert.equal(runtime.legacy.getJobAdmissionState().queued, 1)
+  assert.equal(globalActive, 8)
+  for (const user of new Set([owner, ...peers.map(row => row.user)])) assert.equal(await db.collection('paperbanana_jobs').countDocuments({ userId: user, status: 'running' }), 2)
+  mark('four accounts sharing one NAT run eight independent tasks; the ninth waits without blocking other accounts')
   const beforeReplay = receipt.calls.length
   const duplicates = await Promise.all([request('CASE_ALPHA'), request('CASE_ALPHA', {}, owner, true)])
   for (const response of duplicates) assert.equal(response.data.jobId, a.data.jobId)
@@ -164,6 +170,24 @@ try {
   const doneB = await waitTerminal('CASE_BETA', b.data.jobId)
   assert.equal(doneB.status, 'succeeded')
   assert.equal((await read('CASE_ALPHA', a.data.jobId)).data.job.status, 'running')
+  await deadline(entered.get('CASE_THIRD').promise, 'queued account task starts after prior completion')
+  assert.equal(runtime.legacy.getJobAdmissionState().active, 8)
+  gates.get('CASE_THIRD').resolve()
+  for (const { marker } of peers) gates.get(marker).resolve()
+  for (const { marker, user, response } of [{ marker: 'CASE_THIRD', user: owner, response: third }, ...peers.map((row, index) => ({ ...row, response: peerJobs[index] }))]) {
+    const job = await waitTerminal(marker, response.data.jobId, user)
+    assert.equal(job.status, 'succeeded'); assert.equal(counts.get(marker), 2); assert.equal(peak.get(marker), 1)
+    const expected = await imageFor(marker)
+    for (const image of job.resultImages) { assert.deepEqual(runtime.objects.get(image.objectKey)?.bytes, expected); assert.ok(image.objectKey.includes(response.data.jobId)) }
+    assert.equal((await db.collection('paperbanana_jobs').findOne({ _id: response.data.jobId })).userId, user)
+    const execution = await store.get(user, 'run-' + marker)
+    assert.equal(execution.jobId, response.data.jobId); assert.equal(execution.taskId, 'task-' + marker)
+    const calls = receipt.calls.filter(call => call.marker === marker).length
+    assert.equal((await request(marker, {}, user, true)).data.jobId, response.data.jobId)
+    assert.equal(receipt.calls.filter(call => call.marker === marker).length, calls)
+    receipt.results.push({ marker, taskId: execution.taskId, runId: execution.runId, jobId: response.data.jobId, images: job.resultImages.length, sha256: createHash('sha256').update(expected).digest('hex') })
+  }
+  mark('queued and parallel results stay with their account/run and completed replay creates no provider calls')
   gates.get('CASE_ALPHA').resolve()
   await runtime.legacy.drainJobAdmission()
   const doneA = (await read('CASE_ALPHA', a.data.jobId)).data.job
@@ -301,7 +325,8 @@ try {
   assert.equal(await db.collection('workspaceExecutions').countDocuments({ userId: 'foreign-owner' }), 0)
   mark('unrelated existing account/job/file sentinel unchanged')
   receipt.metrics = runtime.legacy.operationalMetrics.snapshot()
-  assert.equal(receipt.metrics.counters['admission.owner_limit'], 1)
+  assert.ok(receipt.metrics.counters['admission.accepted_queued'] >= 1)
+  assert.equal(globalPeak, 8)
   assert.ok(receipt.metrics.durations['model:image'].count > 0)
   assert.doesNotMatch(JSON.stringify(receipt.metrics), /CASE_ALPHA|isolated-owner|fixture-key|example.com/)
   receipt.completedAt = new Date().toISOString()

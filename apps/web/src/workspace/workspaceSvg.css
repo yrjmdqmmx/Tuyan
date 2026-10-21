@@ -33,3 +33,6 @@
   .tw-inline-svg-editor .svg-view-bar { flex-wrap:wrap; }
   .tw-inline-svg-editor .svg-object-tools.is-docked { max-height:240px; }
 }
+
+.tw-svg-save-status { display:inline-flex; align-items:center; gap:6px; color:var(--tw-muted); font-size:12px; }
+.tw-svg-save-status svg { flex-shrink:0; }

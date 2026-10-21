@@ -1,8 +1,13 @@
-.tw-account-page.tw-settings-layout{display:grid;grid-template-columns:168px minmax(0,1fr);gap:44px;max-width:1140px;margin:0 auto;padding:20px 0 48px}
-.tw-settings-nav{display:flex;flex-direction:column;gap:6px;align-self:start;position:sticky;top:12px}
-.tw-account-page .tw-settings-nav button{border:0;border-radius:10px;text-align:left;padding:12px 18px;background:transparent;color:#69736d;font:inherit;cursor:pointer}
+.tw-main>.tw-page.tw-settings-page{padding:0}
+.tw-page.tw-settings-page>.tw-page-body{max-width:none;min-height:100%}
+.tw-account-page.tw-settings-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0;width:100%;max-width:none;margin:0;padding:0}
+.tw-settings-nav{display:flex;flex-direction:column;gap:6px;align-self:start;position:sticky;top:0;min-height:calc(100dvh - 64px);padding:24px 16px;border-right:1px solid #e8ece5;background:#fafbf9}
+.tw-account-page .tw-settings-nav button{border:0;border-radius:10px;justify-content:flex-start;text-align:left;padding:12px 16px;background:transparent;color:#69736d;font:inherit;cursor:pointer}
 .tw-account-page .tw-settings-nav button[aria-current=page]{background:#edf2ec;color:#244d3b;font-weight:600}
-.tw-settings-content{min-width:0}.tw-settings-content [hidden]{display:none!important}
+.tw-account-page.tw-settings-layout>[hidden]{display:none!important}
+.tw-settings-entry-copy{min-width:0}
+.tw-settings-entry-icon,.tw-settings-entry-chevron,.tw-settings-entry-copy small{display:none}
+.tw-settings-content{min-width:0;width:100%;max-width:1040px;margin:0 auto;padding:28px clamp(24px,3vw,56px) 64px}.tw-settings-content [hidden]{display:none!important}
 .tw-settings-title{margin:6px 0 24px;font-size:24px;font-weight:600}.tw-settings-content .tw-profile-hero{margin:0 0 30px;padding:10px 0 0}
 .tw-usage-title{font-size:18px;margin:0}.tw-settings-content .tw-drawing-activity{padding-top:20px}
 .tw-account-rows{border-top:1px solid #e3e7e1;margin-bottom:28px}
@@ -16,7 +21,7 @@
 .tw-storage-summary>button{border:1px solid #dfe5dc;background:white;border-radius:8px;width:36px;height:36px;display:grid;place-items:center;cursor:pointer}
 .tw-storage-page progress{display:block;width:100%;height:6px;border:0;border-radius:6px;overflow:hidden;background:#edf1eb;accent-color:#416c51}
 .tw-storage-page progress::-webkit-progress-bar{background:#edf1eb}.tw-storage-page progress::-webkit-progress-value{background:#416c51;border-radius:6px}
-.tw-storage-notice{font-size:13px;color:#647167;line-height:1.8;margin:18px 0 6px}.tw-storage-unit{font-size:11px;color:#89928c;margin:0 0 28px}.tw-storage-cleanup{font-size:13px;line-height:1.7;color:#8d5c28;background:#fcf6ec;padding:12px 16px;border-radius:10px}
+.tw-storage-notice{font-size:13px;color:#647167;line-height:1.8;margin:18px 0 24px}.tw-storage-cleanup{font-size:13px;line-height:1.7;color:#8d5c28;background:#fcf6ec;padding:12px 16px;border-radius:10px}
 .tw-storage-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 16px;margin-bottom:32px}
 .tw-stored-image{min-width:0;border:1px solid #e2e7df;border-radius:13px;overflow:hidden;background:white}
 .tw-account-page .tw-storage-thumbnail{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;width:100%;border:0;border-bottom:1px solid #e8ece5;border-radius:0;padding:10px;background:#f8faf6;cursor:zoom-in;overflow:hidden}
@@ -27,6 +32,31 @@
 .tw-storage-empty{padding:56px 20px;text-align:center;color:#7d8980;border:1px dashed #dfe6dc;border-radius:14px;margin-bottom:32px}.tw-storage-empty h3{font-size:16px;color:#485b4e}.tw-storage-empty p{font-size:13px}
 .tw-storage-preview{display:block;max-width:100%;max-height:65vh;object-fit:contain;margin:auto}.tw-storage-preview-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px;font-size:12px;color:#738078}
 .tw-settings-nav button:focus-visible,.tw-storage-page button:focus-visible,.tw-account-row button:focus-visible{outline:2px solid #355f4a;outline-offset:3px}
-@media(max-width:1100px){.tw-account-page.tw-settings-layout{gap:28px;grid-template-columns:135px minmax(0,1fr)}.tw-storage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:767px){.tw-account-page.tw-settings-layout{display:block;padding:0 0 28px}.tw-settings-nav{position:sticky;top:0;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:8px 0 16px;background:white;margin-bottom:18px}.tw-account-page .tw-settings-nav button{text-align:center;padding:10px 6px;font-size:14px}.tw-settings-title,.tw-storage-summary h2{font-size:21px;margin-top:0}.tw-account-row{grid-template-columns:64px minmax(0,1fr) auto;gap:10px;padding:20px 0}.tw-account-row strong{font-size:13px}.tw-account-row .tw-profile-form{flex-direction:column;align-items:stretch}.tw-account-avatar-row{gap:8px}.tw-account-avatar-row small{display:none}.tw-storage-grid{gap:12px}.tw-stored-image-details{padding:10px}.tw-stored-image-details p{font-size:10px}.tw-storage-actions>span{font-size:10px}.tw-storage-capacity{font-size:18px}.tw-storage-preview-footer{align-items:start;flex-direction:column}}
+@media(max-width:1100px){.tw-account-page.tw-settings-layout{grid-template-columns:160px minmax(0,1fr)}.tw-settings-content{padding-inline:24px}.tw-storage-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:767px){
+  .tw-main>.tw-page.tw-settings-page{padding:0 16px 28px;scrollbar-gutter:auto}
+  .tw-page.tw-settings-page[data-settings-view=index]{background:#f4f5f2}
+  .tw-account-page.tw-settings-layout{display:block}
+  .tw-shell .tw-main>.tw-topbar.tw-mobile-settings-topbar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:8px;min-height:64px;padding:10px 16px;border-bottom:0}
+  .tw-mobile-settings-topbar[data-settings-view=index]{background:#f4f5f2}
+  .tw-topbar.tw-mobile-settings-topbar h1{margin:0;max-width:none;text-align:center;font-size:18px;font-weight:600;line-height:26px}
+  .tw-mobile-settings-topbar h1:focus{outline:none}
+  .tw-shell .tw-settings-header-button{width:44px;height:44px;padding:0;border:1px solid #e2e6df;border-radius:50%;background:#fff;color:#283b30;display:flex;align-items:center;justify-content:center}
+  .tw-settings-overview-identity{display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 12px 30px}
+  .tw-settings-overview-identity>img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:1px solid #dfe5db;background:#fff}
+  .tw-settings-overview-identity h2{margin:16px 0 6px;font-size:22px;font-weight:600;overflow-wrap:anywhere;max-width:100%}
+  .tw-settings-overview-identity p{margin:0;color:#778176;font-size:13px;overflow-wrap:anywhere;max-width:100%}
+  .tw-settings-nav{position:static;display:flex;flex-direction:column;gap:0;min-height:0;padding:0;background:#fff;border:1px solid #e4e8e0;border-radius:22px;overflow:hidden}
+  .tw-account-page .tw-settings-nav button{position:relative;justify-content:flex-start;gap:14px;min-height:80px;padding:18px;text-align:left;border-radius:0;color:#26372c;font-size:16px}
+  .tw-account-page .tw-settings-nav button+button:before{content:"";position:absolute;top:0;left:54px;right:18px;border-top:1px solid #e8ece4}
+  .tw-account-page .tw-settings-nav button:hover{background:#f6f8f3}
+  .tw-account-page .tw-settings-nav button:focus-visible{outline-offset:-3px}
+  .tw-settings-entry-copy{display:flex;flex:1;flex-direction:column;gap:5px}
+  .tw-settings-entry-copy small{display:block;font-size:12px;font-weight:400;line-height:1.5;color:#788174}
+  .tw-settings-entry-icon{display:block;flex:0 0 22px;color:#45624d}
+  .tw-settings-entry-chevron{display:block;flex:0 0 19px;color:#9ca697}
+  .tw-settings-content{padding:24px 0 0}
+  .tw-settings-content .tw-settings-title,.tw-settings-content .tw-storage-summary h2{display:none}
+  .tw-account-row{grid-template-columns:64px minmax(0,1fr) auto;gap:10px;padding:20px 0}.tw-account-row strong{font-size:13px}.tw-account-row .tw-profile-form{flex-direction:column;align-items:stretch}.tw-account-avatar-row{gap:8px}.tw-account-avatar-row small{display:none}.tw-storage-grid{gap:12px}.tw-stored-image-details{padding:10px}.tw-stored-image-details p{font-size:10px}.tw-storage-actions>span{font-size:10px}.tw-storage-capacity{font-size:18px}.tw-storage-preview-footer{align-items:start;flex-direction:column}
+}
 @media(max-width:359px){.tw-storage-grid{grid-template-columns:1fr}.tw-account-row{grid-template-columns:54px minmax(0,1fr)}.tw-account-row>button,.tw-account-row>.tw-profile-avatar-actions{grid-column:2;justify-self:start}.tw-account-row .tw-profile-avatar-actions{flex-direction:row}}

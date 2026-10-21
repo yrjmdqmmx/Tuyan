@@ -17,12 +17,12 @@ The `import.meta.env.DEV` branch in `main.jsx` excludes this host from productio
 ## Component boundary
 
 - `TaskWorkspace`: navigation, responsive shell, task switching/search, model/settings dialogs and host account actions. Must be mounted under the existing `AppLocaleProvider`, with `workspace.css` imported by the host.
-- `TaskSidebar`: task actions and grouped existing entry points; account avatar defaults to the current site logo.
+- `TaskSidebar`: task actions and grouped existing entry points; account avatar defaults to the circular account artwork, independently of the site logo.
 - `TaskSidebarRail`: collapsed navigation with a fixed account avatar. `ResourcePopover` opens the shared single-column resource links beside its trigger, with outside/Escape dismissal and keyboard navigation. `SidebarTooltip` supplies 100 ms hover hints and separate badges for existing shortcuts.
 - `SidebarAccount`: shared fixed-avatar trigger and upward anchored menu for expanded/collapsed navigation. Includes host identity, login/sign-out, account settings and the existing global language preference. Outside click, Escape, arrows and Tab are supported; on mobile the menu stays inside the navigation dialog's accessible subtree. Optional `onAccountSettings` opens host settings; without it, the entry links to the existing `/?view=account` page. Missing auth callbacks are visibly disabled in local acceptance, never treated as an authenticated session.
-- `TaskComposer`: one natural-language input, optional caption/avoid, attachment purpose, mode and setting summaries, explicit target. Its submit label follows the bound target, not whichever result happens to be viewed.
-- `ResultWorkspace`: execution summary, generation groups, candidates, saved versions, comparison, downloads, and explicit refinement binding. `onEditSvg` mounts the existing SVG editor through `WorkspaceSvgEditor`; saves append immutable child versions.
-- `FigureViewport`: read-only PNG/SVG display fitted to actual image proportions and available width/height, plus zoom, original-size view, fit and viewport-filling preview. Zoomed images scroll inside the viewer; controls stay outside the scrolling content. Viewing actions do not rebind refinement. Editing backgrounds/tools belong to the separate SVG editor.
+- `TaskComposer`: one natural-language input, optional caption/avoid, attachment purpose, mode and setting summaries, current source selector. The selected result is the next AI source; its submit label follows that candidate and version.
+- `ResultWorkspace`: execution summary, generation groups, candidates, saved versions, comparison, downloads, and continuous creation from the selected result. `WorkspaceSvgEditor` keeps manual edits in the original task through automatic immutable child versions.
+- `FigureViewport`: read-only PNG/SVG display fitted to actual image proportions and available width/height, plus zoom, original-size view, fit and viewport-filling preview. Zoomed images scroll inside the viewer; controls stay outside the scrolling content. Selecting another candidate or version also changes the next AI source. Editing backgrounds/tools belong to the separate SVG editor.
 - `WorkspaceDialog`: existing accessible dialog with workspace styling and focus recovery.
 - `WorkspaceAccount`: reuses `useAuthSession`, `AuthPanel`, `AccountSettingsDialog` and the existing Watcha controller. Reads server identity after login, preserves it on failed logout, and handles the existing bridge's uncertain remote logout. Account settings requested while signed out resume after login. Session data and credentials never enter task state. `accountPending` prevents duplicate account actions while checking or signing out.
 
@@ -34,7 +34,7 @@ The `import.meta.env.DEV` branch in `main.jsx` excludes this host from productio
 
 - `BEGIN` reserves a local UI slot; `ACCEPT` moves the empty task to the result layout. Real adapters must obtain server acceptance and resolve ambiguous responses before dispatching it.
 - Asynchronous acceptance, result and completion actions carry the original `taskId` and `runId`; attachment completion also carries `path` and `draftTargetId`. Switching tasks cannot redirect a late response.
-- `VIEW` only browses. `REFINE` explicitly binds a saved version. Switching paths exits refinement and retains its draft for explicit resumption.
+- `VIEW` selects both the visible version and the source of the next instruction. The first instruction generates; subsequent instructions append versions in the same task. Per-version unsent drafts remain available when switching candidates or versions. Manual SVG saves advance the selected source without resetting the canvas. There is no separate refinement mode.
 - A result never changes tasks or paths. Manual navigation prevents automatic result following. New versions retain their parent; old versions are not edited in place.
 - Failure preserves prior results and restores only an untouched submitted draft. `RESTORE_RUN` refuses to overwrite newer requirements, attachments, mode or settings. It does not execute a retry.
 - Requirements reuse and historical-input copy actions have been removed. Settings-only and supplement-only tasks are not discarded as empty.
@@ -106,3 +106,11 @@ Validation for the connection integration: 67 targeted Web tests, 12 production-
 The resource menu includes account-scoped browser SVG drafts. Restoring a draft validates its original service/account scope and creates an independent task; content-derived IDs deduplicate repeated imports without overwriting newer work. Original draft records remain untouched. The model manager exposes the existing advanced custom API editor (templates, named browser configurations, key-free files, catalog and configuration checks). Saving creates a new connection/model; applying it to the current professional-mode role is a separate explicit action. Old keys are never imported.
 
 Embedded leaderboard navigation includes community submission and an administrator-only review entry. Account privacy opens the existing lifecycle dialog and respects the local production-auth bridge restrictions. Execution details retain existing failure/billing guidance, candidate failure reasons, available reference echoes and both legacy and current review shapes. These are read-only views; viewing them never retries or regenerates a task.
+
+## Continuous creation (2026-10-21)
+
+The same composer generates the first result and then modifies the currently selected candidate/version. Viewing a candidate or choosing a historical version sets the next AI source directly; there is no separate refinement entry or exit. Each round still uses the existing run snapshot, admission, idempotency and workspace persistence contracts, appending an immutable child version to the same candidate/task. Per-version unfinished requirements remain available when switching sources. Masks remain bound to their exact source image.
+
+`prepareWorkspaceInput` drains pending SVG manual saves before execution takes its snapshot. Task/source/input changes during the wait cancel submission; automatic manual-save descendants are accepted. Failed saves and unavailable source images block submission. Input optimization results are invalidated when their source changes.
+
+DEV-only `tests/fixtures/continuous-creation.html?path=svg` (or `path=png`) exercises the real composer/reducer/editor/local persistence with synthetic results and no API/model calls. It uses a separate browser cache namespace.

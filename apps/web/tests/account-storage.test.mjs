@@ -6,16 +6,57 @@ import userEvent from '@testing-library/user-event';
 import {registerHooks} from 'node:module';
 const hooks=registerHooks({load(url,context,next){return url.endsWith('.css')?{format:'module',source:'export default {}',shortCircuit:true}:next(url,context);}});
 const {default:WorkspaceAccountPage}=await import('../src/workspace/WorkspaceAccountPage.jsx');
+const {default:TaskWorkspace}=await import('../src/workspace/TaskWorkspace.jsx');
 hooks.deregister();
 import WorkspaceStoragePage from '../src/workspace/WorkspaceStoragePage.jsx';
 import {projectImageAvailability} from '../src/workspace/useImageAvailability.js';
 import {newWorkspace} from '../../../packages/api/src/workspace-defaults.mjs';
 import {workspaceReducer} from '../src/workspace/workspaceState.js';
 const originalFetch=globalThis.fetch;
-afterEach(()=>{cleanup();globalThis.fetch=originalFetch;});
+const originalMatchMedia=window.matchMedia;
+afterEach(()=>{cleanup();globalThis.fetch=originalFetch;window.matchMedia=originalMatchMedia;});
 const activity={today:'2026-10-20',total:7,peak:4,longestStreak:2,currentStreak:1,days:[{date:'2026-10-20',count:3},{date:'2026-10-19',count:4}]};
 const user={id:'fixture-A',name:'合成验收账号',email:'fixture@example.test',image:'data:image/webp;base64,AA=='};
 const props={account:{user,refreshAccount:async()=>{},onSignIn(){},onAccountSettings(){},onSignOut(){}},state:newWorkspace('fixture-task'),sync:{saveStatus:'已同步',retry(){}},models:{tokenDance:{connection:{connected:false},userId:null}},onExport(){},apiBase:'http://127.0.0.1:9999'};
+test('mobile settings opens a category list, returns from each page without losing edits, and closes to the original task',async()=>{
+  window.matchMedia=query=>({matches:query==='(max-width: 767px)',media:query,addEventListener(){},removeEventListener(){}});
+  const calls=[];
+  globalThis.fetch=async(url,options)=>{calls.push([url,options]);return new Response(JSON.stringify(url.endsWith('/activity')?activity:{maxBytes:100000000,usedBytes:0,images:[]}));};
+  function Harness(){
+    const [state,dispatch]=React.useReducer(workspaceReducer,newWorkspace('fixture-task'));
+    return React.createElement(TaskWorkspace,{state,dispatch,user,onFiles(){},onSubmit(){throw Error('navigation must not generate');},renderAccount:navigation=>React.createElement(WorkspaceAccountPage,{...props,...navigation,state})});
+  }
+  render(React.createElement(Harness));
+  fireEvent.change(screen.getByRole('textbox',{name:'绘图要求'}),{target:{value:'保留原任务草稿'}});
+  await userEvent.click(screen.getByRole('button',{name:'打开侧边栏'}));
+  await userEvent.click(screen.getByRole('button',{name:'账户与设置',exact:true}));
+  await userEvent.click(screen.getByRole('menuitem',{name:'账户设置'}));
+  assert.ok(screen.getByRole('navigation',{name:'设置分类'}));
+  assert.equal(screen.queryByRole('region',{name:'使用情况'}),null);
+  assert.equal(screen.queryByRole('button',{name:'返回账户设置'}),null);
+  for(const label of ['个人资料','账户','存储']){
+    await userEvent.click(screen.getByRole('button',{name:label,exact:true}));
+    assert.ok(screen.getByRole('heading',{level:1,name:label,exact:true}));
+    assert.equal(screen.queryByRole('navigation',{name:'设置分类'}),null);
+    if(label==='个人资料')await screen.findByRole('region',{name:'使用情况'});
+    if(label==='账户'){
+      await userEvent.click(screen.getByRole('button',{name:'编辑昵称'}));
+      fireEvent.change(screen.getByLabelText('账号昵称'),{target:{value:'尚未保存的昵称'}});
+    }
+    if(label==='存储')await screen.findByText('已用 0 MB / 100 MB');
+    await userEvent.click(screen.getByRole('button',{name:'返回账户设置'}));
+    const entry=screen.getByRole('button',{name:label,exact:true});
+    await waitFor(()=>assert.ok(document.activeElement===entry,'return should focus the selected category'));
+    assert.ok(screen.getByRole('heading',{level:1,name:'账户设置',exact:true}));
+  }
+  await userEvent.click(screen.getByRole('button',{name:'账户',exact:true}));
+  assert.equal(screen.getByLabelText('账号昵称').value,'尚未保存的昵称');
+  await userEvent.click(screen.getByRole('button',{name:'返回账户设置'}));
+  assert.equal(calls.filter(([url])=>url.endsWith('/activity')).length,1);
+  assert.ok(calls.every(([,options])=>options?.method!=='POST'));
+  await userEvent.click(screen.getByRole('button',{name:'关闭账户设置，返回任务'}));
+  assert.equal(screen.getByRole('textbox',{name:'绘图要求'}).value,'保留原任务草稿');
+});
 test('three settings pages reuse activity and avatar workflow, preserve switching state and show server storage errors',async()=>{
   const calls=[];globalThis.fetch=async(url,options)=>{calls.push([url,options]);return new Response(JSON.stringify(url.endsWith('/activity')?activity:{error:'真实存储读取失败'}),{status:url.endsWith('/activity')?200:503});};
   render(React.createElement(WorkspaceAccountPage,props));

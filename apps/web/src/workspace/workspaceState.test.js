@@ -24,19 +24,19 @@ test('task, path, mode and target drafts stay independent', () => {
   s = act(s, 'SET_PATH', { path: 'png' });
   assert.equal(currentDraft(s).text, 'PNG 草稿');
 });
-test('browsing A never replaces the explicit B target, target drafts are not carried over', () => {
+test('selecting a candidate binds the next instruction and keeps each previous draft', () => {
   let s = act(generated(), 'REFINE', { versionId: 'b-v1' });
   s = act(s, 'EDIT_DRAFT', { patch: { text: '只修改 B 配色' } });
   s = act(s, 'VIEW', { versionId: 'a-v1' });
   assert.equal(selectedVersion(s).id, 'a-v1');
-  assert.equal(refinementTarget(s).id, 'b-v1');
-  s = act(s, 'REFINE', { versionId: 'a-v1' });
+  assert.equal(refinementTarget(s).id, 'a-v1');
+  s = act(s, 'VIEW', { versionId: 'a-v1' });
   assert.equal(currentDraft(s).text, '');
   s = act(s, 'REFINE', { versionId: 'b-v1' });
   assert.equal(currentDraft(s).text, '只修改 B 配色');
   s = act(s, 'SET_PATH', { path: 'svg' });
   s = act(s, 'SET_PATH', { path: 'png' });
-  assert.equal(refinementTarget(s), null);
+  assert.equal(refinementTarget(s).id, 'b-v1');
   assert.equal(currentBranch(s).lastTargetId, 'b-v1');
 });
 test('submission reserves one local slot across paths; snapshot remains immutable', () => {
@@ -87,7 +87,9 @@ test('background result cannot switch task, terminal failure keeps saved candida
   assert.equal(s.selectedTaskId, 'task-b');
   const t = s.tasks.find(t => t.id === 'task-a');
   assert.equal(t.activeRunId, null);
-  assert.equal(t.branches.png.groups[1].candidates[0].versions.length, 1);
+  assert.equal(t.branches.png.groups.length, 1);
+  assert.equal(t.branches.png.groups[0].candidates[0].versions.length, 2);
+  assert.equal(t.branches.png.groups[0].candidates[0].versions[1].parentId, 'a-v1');
 });
 test('file completion is attached to the original task, path and target after navigating away', () => {
   let s = act(generated(), 'REFINE', { versionId: 'b-v1' });

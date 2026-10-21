@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { logoUrl, AUTH_BASE_DEFAULT } from '../config.js';
+import { ChevronRight, HardDrive, ShieldCheck, UserRound } from 'lucide-react';
+import { defaultAvatarUrl, AUTH_BASE_DEFAULT } from '../config.js';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 import TokenDancePanel from '../components/TokenDancePanel.jsx';
 import WatchaIdentityPanel from '../components/WatchaIdentityPanel.jsx';
@@ -7,13 +8,20 @@ import '../components/watcha.css';
 import '../components/tokendance.css';
 import AccountProfileEditor from './AccountProfileEditor.jsx';
 import WorkspaceStoragePage from './WorkspaceStoragePage.jsx';
+import { ACCOUNT_SETTINGS_SECTIONS } from './accountSettingsSections.js';
 import './account-settings.css';
 import DrawingActivity from './DrawingActivity.jsx';
 import './account-profile.css';
 
-export default function WorkspaceAccountPage({ preview = false, account, sync, state, models, onExport, onOpenTask, apiBase = AUTH_BASE_DEFAULT }) {
+const SECTION_ICONS = { profile: UserRound, account: ShieldCheck, storage: HardDrive };
+
+export default function WorkspaceAccountPage({ preview = false, account, sync, state, models, onExport, onOpenTask, mobile = false, section, onSectionChange, apiBase = AUTH_BASE_DEFAULT }) {
   const { locale, setLocale } = useAppLocale();
-  const [page,setPage]=useState('profile');
+  const [localSection,setLocalSection]=useState(null);
+  const selectedSection = section === undefined ? localSection : section;
+  const page = selectedSection || 'profile';
+  const overview = mobile && !selectedSection;
+  const selectSection = onSectionChange || setLocalSection;
   const userId = account.user?.id;
   const request = useCallback(async(path,body,signal)=>{
     const response=await fetch(`${apiBase}/api/account/profile${path}`,{method:body===undefined?'GET':'POST',credentials:'include',headers:{'Content-Type':'application/json','X-Workspace-Account':userId},...(body===undefined?{}:{body:JSON.stringify(body)}),signal:signal?AbortSignal.any([signal,AbortSignal.timeout(20000)]):AbortSignal.timeout(20000)});
@@ -27,10 +35,14 @@ export default function WorkspaceAccountPage({ preview = false, account, sync, s
       const result = await response.json(); if (!response.ok || result.error) throw Error(result.message || result.error?.message || '保存失败');
   }
   return <div className="tw-account-page tw-settings-layout">
-    <nav className="tw-settings-nav" aria-label="设置分类">{[['profile','个人资料'],['account','账户'],['storage','存储']].map(([id,label])=><button type="button" key={id} aria-current={page===id?'page':undefined} onClick={()=>setPage(id)}>{label}</button>)}</nav>
-    <div className="tw-settings-content">
+    {overview && <div className="tw-settings-overview-identity"><img src={account.user?.image || defaultAvatarUrl} alt="当前头像"/><h2>{account.user?.name?.trim() || (account.user ? '图研用户' : '未登录')}</h2><p>{account.user?.email || '登录后管理个人资料和已保存图片'}</p></div>}
+    <nav className="tw-settings-nav" aria-label="设置分类" hidden={mobile && !overview}>{ACCOUNT_SETTINGS_SECTIONS.map(({id,label,description})=>{
+      const Icon = SECTION_ICONS[id];
+      return <button type="button" key={id} data-settings-section={id} aria-label={label} aria-current={!mobile && page===id?'page':undefined} onClick={()=>selectSection(id)}><Icon className="tw-settings-entry-icon" size={22} aria-hidden="true"/><span className="tw-settings-entry-copy"><span>{label}</span><small>{description}</small></span><ChevronRight className="tw-settings-entry-chevron" size={19} aria-hidden="true"/></button>;
+    })}</nav>
+    <div className="tw-settings-content" hidden={overview}>
       <div hidden={page==='storage'}>
-        {account.user?<><h2 className="tw-settings-title">{page==='account'?'账户':'个人资料'}</h2><AccountProfileEditor key={userId} view={page==='account'?'account':'profile'} account={account} request={request} saveNickname={saveName}/></>:<section className="tw-account-identity"><img src={logoUrl} alt="图研默认头像"/><div><h2>未登录</h2><p>登录后查看个人资料和使用情况</p><button className="tw-primary" onClick={account.onSignIn}>登录图研</button></div></section>}
+        {account.user?<><h2 className="tw-settings-title">{page==='account'?'账户':'个人资料'}</h2><AccountProfileEditor key={userId} view={page==='account'?'account':'profile'} account={account} request={request} saveNickname={saveName}/></>:<section className="tw-account-identity"><img src={defaultAvatarUrl} alt="图研默认头像"/><div><h2>未登录</h2><p>登录后查看个人资料和使用情况</p><button className="tw-primary" onClick={account.onSignIn}>登录图研</button></div></section>}
       </div>
       <section hidden={page!=='profile'} aria-label="使用情况">{account.user&&<><h3 className="tw-usage-title">使用情况</h3><DrawingActivity key={`activity:${userId}`} userId={userId} request={request}/></>}</section>
       <div hidden={page!=='account'}>

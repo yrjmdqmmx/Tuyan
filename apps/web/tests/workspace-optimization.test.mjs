@@ -56,3 +56,11 @@ test('missing originals and navigation stop before inference; unknown responses 
  await assert.rejects(withOptimizationMaterials({ ...opts, isCurrent: () => false }, async () => calls++, io), /切换/); assert.equal(calls, 0);
  await assert.rejects(withOptimizationMaterials(opts, async () => { calls++; throw Error('lost'); }, io), /lost/); assert.equal(removed, 0); assert.equal(calls, 1);
 });
+test('changing the selected source clears an old optimization offer without remounting the textbox',async()=>{
+ function Ready(){let s=initial();for(const a of [{type:'BEGIN',runId:'r'},{type:'ACCEPT',runId:'r'},...['a','b'].map(id=>({type:'RESULT',runId:'r',candidateId:id,version:{id,format:'png',url:'data:image/png;base64,AA=='}})),{type:'FINISH',runId:'r'},{type:'EDIT_DRAFT',patch:{text:'change color'}}])s=workspaceReducer(s,a);return s;}
+ function Sources(){const [state,dispatch]=useReducer(workspaceReducer,undefined,Ready),stateRef=useRef(state);stateRef.current=state;return React.createElement(TaskWorkspace,{state,dispatch,renderOptimize:children=>React.createElement(WorkspaceOptimize,{stateRef,dispatch,models,userId:'u',health:{simulation:true},sync:{ensureSynced:async()=>{}}},children)});}
+ globalThis.fetch=async()=>Response.json({target:'editInstruction',optimizedText:'更精确的修改要求'});
+ render(React.createElement(Sources));const textbox=screen.getByLabelText('修改要求');click('优化输入');await screen.findByText('优化稿');
+ fireEvent.change(screen.getByLabelText('当前修改对象'),{target:{value:'b'}});
+ assert.equal(screen.queryByRole('button',{name:'采用优化稿',exact:true}),null);assert.equal(screen.getByLabelText('修改要求'),textbox);
+});

@@ -586,7 +586,6 @@ export function createJobAdmissionController(
   const entries = new Map<number, Entry>()
   const pendingOrder: Entry[] = []
   const tracked = new Set<Promise<void>>()
-  const ownerCounts = new Map<string, number>()
   const ipCounts = new Map<string, number>()
   const drainWaiters = new Set<() => void>()
   const frozenOwners = new Set<string>()
@@ -603,6 +602,8 @@ export function createJobAdmissionController(
     else counts.delete(key)
   }
   const activeSlots = () => [...entries.values()].filter((entry) => entry.slot === 'active').length
+  // Active reservations count too, so async persistence cannot overbook an account.
+  const activeOwnerSlots = (key: string) => key ? [...entries.values()].filter(entry => entry.slot === 'active' && entry.principal.ownerKey === key).length : 0
   const recordOccupancy = () => {
     const values = [...entries.values()]
     operationalMetrics.gauge('admission.active', values.filter(entry => entry.committed && entry.slot === 'active').length)
@@ -626,7 +627,6 @@ export function createJobAdmissionController(
     if (!entries.delete(entry.id)) return
     const pendingIndex = pendingOrder.indexOf(entry)
     if (pendingIndex >= 0) pendingOrder.splice(pendingIndex, 1)
-    decrement(ownerCounts, entry.principal.ownerKey)
     decrement(ipCounts, entry.principal.ipKey)
     recordOccupancy()
     pump()
@@ -679,14 +679,16 @@ export function createJobAdmissionController(
 
   function pump() {
     while (activeSlots() < config.maxActive && pendingOrder.length) {
-      const entry = pendingOrder.shift()!
+      // Oldest eligible task wins. An account at its cap must not block other accounts.
+      const index = pendingOrder.findIndex(entry => frozenOwners.has(entry.principal.ownerKey) || activeOwnerSlots(entry.principal.ownerKey) < config.maxPerOwner)
+      if (index < 0) break
+      const [entry] = pendingOrder.splice(index, 1)
       if (frozenOwners.has(entry.principal.ownerKey)) {
         release(entry)
         continue
       }
       entry.slot = 'active'
-      if (!entry.committed) break
-      launch(entry)
+      if (entry.committed) launch(entry)
     }
   }
 
@@ -700,16 +702,12 @@ export function createJobAdmissionController(
         operationalMetrics.increment('admission.frozen')
         return { ok: false as const, code: 409, error: 'Account deletion is in progress. New jobs and uploads are disabled.' }
       }
-      if (countFor(ownerCounts, principal.ownerKey) >= config.maxPerOwner) {
-        operationalMetrics.increment('admission.owner_limit')
-        return { ok: false as const, code: 429, error: 'Job owner limit exceeded. Please wait for the current job to finish.' }
-      }
       if (countFor(ipCounts, principal.ipKey) >= config.maxPerIp) {
         operationalMetrics.increment('admission.ip_limit')
         return { ok: false as const, code: 429, error: 'Job IP limit exceeded. Please wait for the current job to finish.' }
       }
 
-      const slot = activeSlots() < config.maxActive
+      const slot = activeSlots() < config.maxActive && activeOwnerSlots(principal.ownerKey) < config.maxPerOwner
         ? 'active' as const
         : pendingOrder.length < config.maxPending
           ? 'queued' as const
@@ -720,7 +718,6 @@ export function createJobAdmissionController(
       operationalMetrics.increment(slot === 'active' ? 'admission.accepted_active' : 'admission.accepted_queued')
       entries.set(entry.id, entry)
       if (slot === 'queued') pendingOrder.push(entry)
-      increment(ownerCounts, principal.ownerKey)
       increment(ipCounts, principal.ipKey)
       recordOccupancy()
       return { ok: true as const, id: entry.id }
