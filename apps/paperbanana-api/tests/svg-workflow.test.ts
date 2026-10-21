@@ -319,13 +319,14 @@ test('portrait SVG planning requests a bounded canvas preserving 1:4 ratio',asyn
 })
 
 
-test('basic direct image understanding ignores inactive custom/TokenDance vision drafts without bypassing real observer auth',async()=>{
+test('basic direct image understanding ignores inactive vision drafts for signed-in users and rejects anonymous submissions',async()=>{
   const r=await createRefineRuntime({tokenDance:true})
   try {
     await galleryBytes()
     for(const vision of [{accessProvider:'custom',modelId:'draft'},{accessProvider:'tokendance',modelId:'qwen3.8-flash'}]) {
       const calls=mock(r),payload=body({pipelineMode:'vanilla',visionMode:'assist',retrievalSetting:'manual',manualReferenceIds:[galleryReference.id],modelRoutes:{...routes(),vision}})
-      const accepted=await r.post(payload,'anonymous');assert.equal(accepted.data.code,0,JSON.stringify(accepted))
+      const anonymous=await r.post(payload,'anonymous');assert.equal(anonymous.status,401);assert.equal(calls.length,0)
+      const accepted=await r.post(payload);assert.equal(accepted.data.code,0,JSON.stringify(accepted))
       await r.legacy.drainJobAdmission()
       assert.deepEqual(calls.map(c=>c.kind),['plan','svg'])
       assert.equal(images(calls[0].wire).length,1)

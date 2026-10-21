@@ -286,12 +286,15 @@ test('unsupported image route regenerates text only with a visible reason and no
   }finally{await r.close()}
 })
 
-test('disabled observer ignores invalid custom credentials and does not require guest authentication',async()=>{
+test('disabled observer ignores inactive credentials for signed-in users and rejects anonymous submissions',async()=>{
   const r=await createRefineRuntime()
   try {
     for(const disabled of [{accessProvider:'custom',modelId:'draft',custom:{}},{accessProvider:'tokendance',modelId:'qwen3.8-flash'}]){
       const calls=stub(r)
-      const response=await r.post(body({visionMode:'none',modelRoutes:{...routes(),vision:disabled}}),'anonymous')
+      const payload=body({visionMode:'none',modelRoutes:{...routes(),vision:disabled}})
+      const anonymous=await r.post(payload,'anonymous')
+      assert.equal(anonymous.status,401);assert.equal(calls.length,0)
+      const response=await r.post(payload)
       assert.equal(response.data.code,0,JSON.stringify(response))
       await r.legacy.drainJobAdmission()
       assert.deepEqual(calls.map(c=>c.kind),['plan','image','decision'])

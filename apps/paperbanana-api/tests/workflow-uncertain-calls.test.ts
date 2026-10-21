@@ -116,7 +116,7 @@ test('uncertain redraw stops later candidates and retains completed results and 
   }finally{await r.close()}
 })
 
-test('anonymous plot enhancement transport uncertainty also stops later candidates',async()=>{
+test('authenticated unmanaged plot enhancement transport uncertainty also stops later candidates',async()=>{
   const previous=process.env.PLOT_WORKER_URL
   process.env.PLOT_WORKER_URL='http://plot-uncertain-fixture.invalid'
   const r=await createRefineRuntime()
@@ -135,7 +135,10 @@ test('anonymous plot enhancement transport uncertainty also stops later candidat
       const content=plans===1?'MAIN_PLAN_SENTINEL: Plot the measured values without changing any data.':'import matplotlib.pyplot as plt\nplt.plot([1,2],[3,4])\nplt.savefig("output.png")'
       return Response.json({output_text:content,choices:[{message:{content}}]})
     })
-    const created=await r.post(body({taskName:'plot',imageSize:'2K',visionMode:'none',maxCriticRounds:0,numCandidates:2}),'anonymous')
+    const payload=body({taskName:'plot',imageSize:'2K',visionMode:'none',maxCriticRounds:0,numCandidates:2})
+    const anonymous=await r.post(payload,'anonymous')
+    assert.equal(anonymous.status,401);assert.deepEqual([images,workers,plans],[0,0,0])
+    const created=await r.post(payload)
     assert.equal(created.data.code,0,JSON.stringify(created.data))
     await r.legacy.drainJobAdmission()
     const job=await r.db.collection('paperbanana_jobs').findOne({_id:created.data.jobId})
@@ -206,7 +209,7 @@ for(const reviewRounds of [0,1])test(`parallel uncertainty waits for submitted i
   }
 })
 
-for(const managed of [true,false])test(`${managed?'managed':'anonymous'} in-flight planning cannot start an image after a sibling becomes unknown`,async()=>{
+for(const managed of [true,false])test(`${managed?'managed':'authenticated unmanaged'} in-flight planning cannot start an image after a sibling becomes unknown`,async()=>{
   const previous=process.env.PAPERBANANA_CANDIDATE_CONCURRENCY
   process.env.PAPERBANANA_CANDIDATE_CONCURRENCY='2'
   const r=await createRefineRuntime({tokenDance:managed})
@@ -223,7 +226,10 @@ for(const managed of [true,false])test(`${managed?'managed':'anonymous'} in-flig
       const content='Complete plan: module A connects to module B.'
       return Response.json({output_text:content,choices:[{message:{content}}]})
     })
-    const created=await r.post(body({visionMode:'none',numCandidates:4,maxCriticRounds:0}),managed?undefined:'anonymous')
+    const payload=body({visionMode:'none',numCandidates:4,maxCriticRounds:0})
+    const anonymous=await r.post(payload,'anonymous')
+    assert.equal(anonymous.status,401);assert.deepEqual([images,plans],[0,0])
+    const created=await r.post(payload)
     assert.equal(created.data.code,0,JSON.stringify(created.data))
     let during:any
     for(let attempt=0;attempt<500;attempt++){
@@ -252,7 +258,7 @@ for(const managed of [true,false])test(`${managed?'managed':'anonymous'} in-flig
   }
 })
 
-for(const responseStatus of [500,200])test(`anonymous ${responseStatus===500?'HTTP 500':'incomplete HTTP 200'} enhancement stops instead of silently retaining and continuing`,async()=>{
+for(const responseStatus of [500,200])test(`authenticated unmanaged ${responseStatus===500?'HTTP 500':'incomplete HTTP 200'} enhancement stops instead of silently retaining and continuing`,async()=>{
   const previous=process.env.PLOT_WORKER_URL
   process.env.PLOT_WORKER_URL='http://plot-server-error-fixture.invalid'
   const r=await createRefineRuntime()
@@ -266,7 +272,10 @@ for(const responseStatus of [500,200])test(`anonymous ${responseStatus===500?'HT
       const content=++plans%2===1?'Complete main plan.':'import matplotlib.pyplot as plt\nplt.plot([1,2],[3,4])\nplt.savefig("output.png")'
       return Response.json({output_text:content,choices:[{message:{content}}]})
     })
-    const created=await r.post(body({taskName:'plot',imageSize:'2K',visionMode:'none',maxCriticRounds:0,numCandidates:2}),'anonymous')
+    const payload=body({taskName:'plot',imageSize:'2K',visionMode:'none',maxCriticRounds:0,numCandidates:2})
+    const anonymous=await r.post(payload,'anonymous')
+    assert.equal(anonymous.status,401);assert.deepEqual([images,workers,plans],[0,0,0])
+    const created=await r.post(payload)
     assert.equal(created.data.code,0,JSON.stringify(created.data))
     await r.legacy.drainJobAdmission()
     const job=await r.db.collection('paperbanana_jobs').findOne({_id:created.data.jobId})

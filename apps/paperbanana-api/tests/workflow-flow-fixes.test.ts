@@ -97,7 +97,9 @@ try{
  await run('legacy-basic-text-main-unused-malformed-vision',{pipelineMode:'vanilla',provider:'deepseek',modelRoutes:{...roles,main:textRoute,vision:{accessProvider:'custom',modelId:''}},visionMode:'assist'});
  await run('new-planner-SVG-unused-malformed-image',{generationPath:'model-v1',outputFormat:'svg',modelRoutes:{...roles,image:{accessProvider:'custom',modelId:''}}});
  await run('new-planner-SVG-legacy-fields-main-only',{generationPath:'model-v1',outputFormat:'svg',modelRoutes:undefined,mainModelName:'gpt-5.6-sol',imageModelName:undefined});
- await run('new-planner-SVG-unused-custom-image-guest',{generationPath:'model-v1',outputFormat:'svg',modelRoutes:{...roles,image:{accessProvider:'custom',modelId:'draft'}}},{},'anonymous');
+ const guestInactive=await run('guest-inactive-custom-image',{generationPath:'model-v1',outputFormat:'svg',modelRoutes:{...roles,image:{accessProvider:'custom',modelId:'draft'}}},{},'anonymous');
+ assert.equal(guestInactive.code,401);assert.deepEqual(guestInactive.calls,[]);
+ await run('new-planner-SVG-unused-custom-image-signed-in',{generationPath:'model-v1',outputFormat:'svg',modelRoutes:{...roles,image:{accessProvider:'custom',modelId:'draft'}}});
  for(const outputFormat of ['png','svg'])await run('new-planner-observer-contradiction-'+outputFormat,{generationPath:'model-v1',outputFormat,visionMode:'assist'},{observerContradiction:true});
  await run('new-planner-explicit-bar-numeric-waiver',{generationPath:'model-v1',outputFormat:'svg',figureTypeId:'bar',figureSpecVersion:'2026-10-10.v1',methodContent:'Draw a quantitative bar chart: category A is 35, category B is 12; use a common zero baseline and equal scale.',caption:'A=35 and B=12 bar chart.'},{numericContradiction:true});
 
@@ -115,7 +117,7 @@ try{
  const vision={accessProvider:'custom',modelId:'fixture-vision',custom:{version:1,connectionId:'vision',protocol:'openai-chat',baseUrl:'https://vision.example.com/v1',auth:'bearer',capabilities:{text:true,vision:true,imageGeneration:false,imageEditing:false},outputSizes:[],outputLimits:{maxBytes:10e6,maxDimension:4096,maxPixels:16e6,mimeTypes:['image/png']},inputLimits:{maxCount:2,maxBytes:5e6,maxTotalBytes:10e6,maxDimension:4096,maxPixels:16e6,requestMaxBytes:32e6,mimeTypes:['image/png']}}};
  const protectedRole=await run('guest-active-custom-observer',{pipelineMode:'vanilla',provider:'deepseek',modelRoutes:{...roles,main:textRoute,vision},visionMode:'assist',referenceImageMode:'main_model',retrievalSetting:'auto'},{},'anonymous');
  assert.equal(protectedRole.code,401,JSON.stringify(protectedRole));assert.deepEqual(protectedRole.calls,[]);
- for(const name of ['legacy-basic-text-main-unused-malformed-vision','new-planner-SVG-unused-malformed-image','new-planner-SVG-legacy-fields-main-only','new-planner-SVG-unused-custom-image-guest']){
+ for(const name of ['legacy-basic-text-main-unused-malformed-vision','new-planner-SVG-unused-malformed-image','new-planner-SVG-legacy-fields-main-only','new-planner-SVG-unused-custom-image-signed-in']){
   const record=reports.find(x=>x.name===name);assert.equal(record.code,0,JSON.stringify(record));assert.equal(record.taskStatus,'succeeded',JSON.stringify(record));
  }
  for(const record of reports.filter(x=>/observer-contradiction|numeric-waiver|quantitative-waiver/.test(x.name))){
