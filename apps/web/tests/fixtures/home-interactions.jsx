@@ -7,7 +7,25 @@ import WorkspaceDrawingSettings from '../../src/workspace/WorkspaceDrawingSettin
 import AccountSettingsDialog from '../../src/components/AccountSettingsDialog.jsx';
 import {AppLocaleProvider} from '../../src/components/BenchmarkLocale.jsx';
 import {newWorkspace,workspaceReducer,currentDraft,currentTask} from '../../src/workspace/workspaceState.js';
+// Match main.jsx's global styles: rendering components alone omits their entry-level CSS.
+import '../../src/components/journal-rules.css';
+import '../../src/components/journal-bookshelf.css';
+import '../../src/components/svgWorkspace.css';
+import '../../src/components/referenceTaxonomy.css';
+import '../../src/components/figureTypePicker.css';
+import '../../src/components/workflowOptions.css';
+import '../../src/components/guidePanel.css';
+import '../../src/components/ThinkingSettings.css';
 import '../../src/styles.css';
+import '../../src/components/tokendance.css';
+import '../../src/components/watcha.css';
+import '../../src/components/benchmark.css';
+import '../../src/components/admin/admin.css';
+import '../../src/mobile-workbench.css';
+import '../../src/components/generationSettingsDrawer.css';
+import '../../src/components/leaderboard-mobile.css';
+import '../../src/components/changelog.css';
+import '../../src/components/header-navigation.css';
 import '../../src/workspace/workspace.css';
 import '../../src/workspace/workspacePages.css';
 import '../../src/workspace/workspaceMotion.css';
@@ -34,5 +52,7 @@ if(import.meta.env.DEV){
   if(url.includes('/images'))return Response.json({maxBytes:100000000,usedBytes:0,images:[]});
   return Response.json({code:0,references:[]});
  };
- createRoot(document.getElementById('root')).render(<Harness/>);
+ const root=createRoot(document.getElementById('root'));
+ root.render(<Harness/>);
+ import.meta.hot?.dispose(()=>root.unmount());
 }
