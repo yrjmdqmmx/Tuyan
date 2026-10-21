@@ -5,6 +5,7 @@ import { publicLeaderboardEnabled } from './publicLeaderboard.js';
 const META_ENV = import.meta.env || {};
 
 export const logoUrl = appPath('/brand/tuyan-logo-transparent.png');
+export const defaultAvatarUrl = appPath('/brand/tuyan-avatar-round-v1.png');
 export const API_BASE_DEFAULT = META_ENV.VITE_API_BASE || '';
 export const CUSTOM_API_BASE_ENABLED = META_ENV.DEV && META_ENV.VITE_ALLOW_CUSTOM_API_BASE === 'true';
 export const BACKEND_MODE = 'gateway';

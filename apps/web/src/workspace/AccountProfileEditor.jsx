@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Camera } from 'lucide-react';
-import { logoUrl } from '../config.js';
+import { defaultAvatarUrl } from '../config.js';
 
 export default function AccountProfileEditor({account,request,saveNickname,view="legacy"}) {
   const user=account.user, fileInput=useRef(null);
@@ -19,7 +19,7 @@ export default function AccountProfileEditor({account,request,saveNickname,view=
   async function start(e){e.preventDefault();await action(async()=>{const value=await request('/email/start',{newEmail:newEmail.trim()});setChallenge(value);setOldCode('');setNewCode('');setCooldown(60);setMessage('验证码已分别发送至当前邮箱和新邮箱，10 分钟内有效。');});}
   async function confirm(e){e.preventDefault();await action(async()=>{await account.beforeEmailChange?.();await request('/email/confirm',{requestId:challenge.requestId,oldCode,newCode});setOldCode('');setNewCode('');setChallenge(null);setMessage('邮箱已更换，请使用新邮箱重新登录。');if(account.onEmailChanged)await account.onEmailChanged();else await account.refreshAccount();});}
   const fileControl=<input ref={fileInput} type="file" hidden aria-label="上传头像" accept="image/png,image/jpeg,image/webp" onChange={e=>{const file=e.target.files?.[0];e.target.value='';void avatar(file);}}/>;
-  const avatarButton=<button type="button" className="tw-avatar-edit" aria-label="更换头像" disabled={busy} onClick={()=>fileInput.current?.click()}><img src={user.image||logoUrl} alt="当前头像"/><span><Camera size={17}/></span></button>;
+  const avatarButton=<button type="button" className="tw-avatar-edit" aria-label="更换头像" disabled={busy} onClick={()=>fileInput.current?.click()}><img src={user.image||defaultAvatarUrl} alt="当前头像"/><span><Camera size={17}/></span></button>;
   const avatarActions=<div className="tw-profile-avatar-actions"><button type="button" onClick={()=>fileInput.current?.click()} disabled={busy}>更换头像</button>{user.image&&<button type="button" disabled={busy} onClick={()=>action(async()=>{await request('/avatar',{base64:null});await account.refreshAccount();setMessage('已恢复默认头像');})}>恢复默认</button>}</div>;
   const nameForm=<form className="tw-profile-form" onSubmit={e=>{e.preventDefault();void action(async()=>{await saveNickname(name.trim());await account.refreshAccount();setEditingName(false);setMessage('账号昵称已更新');});}}><label>账号昵称<input required maxLength={100} value={name} onChange={e=>setName(e.target.value)} disabled={busy}/></label><button type="submit" className="tw-primary" disabled={busy||!name.trim()||name.trim()===user.name}>保存昵称</button></form>;
   return <section className="tw-profile-editor" aria-label={view==='account'?'账户资料':'个人资料'}>

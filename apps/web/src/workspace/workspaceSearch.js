@@ -4,7 +4,6 @@ import { PATHS, taskHasContent } from './workspaceState.js';
 // Navigation only. Never put execution, creation, import, or save callbacks here.
 // ResourceLinks uses the same page list so navigation and search cannot drift.
 export const RESOURCE_ENTRIES = [
-  { id:'local-drafts', name:'浏览器手工稿', group:'工具', description:'查看当前浏览器保存的 SVG 手工稿', aliases:['本地草稿','手工草稿','SVG 草稿'], keywords:['恢复','找回','导出','矢量原稿'] },
   { id:'guide', name:'使用教程', group:'功能', description:'了解绘图、材料、模型和结果操作', aliases:['帮助','指南','新手入门','教程','help'], keywords:['怎么用','说明','操作流程'] },
   { id:'agents', name:'智能体接入', group:'工具', description:'查看 MCP 与技能的接入说明', aliases:['MCP','Agent','AI 接入','Skills','技能'], keywords:['接口','自动化','Claude','Codex','ChatGPT'] },
   { id:'feedback', name:'意见反馈', group:'功能', description:'打开问题与建议反馈表', aliases:['反馈','报错','bug','建议'], keywords:['故障','问题','改进'] },

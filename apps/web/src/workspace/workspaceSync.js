@@ -1,7 +1,7 @@
 import { applyTaskDeletions, deletionMarkers, permanentlyRemoveTask, taskMaterialIds } from '../../../../packages/api/src/workspace-deletion.mjs';
 import { readAccountHistory } from './workspaceHistory.js';
 import { cleanWorkspace } from '../../../../packages/api/src/workspace-sync.mjs';
-import { newWorkspace, uid, taskHasContent } from './workspaceState.js';
+import { newWorkspace, uid, taskHasContent, hasRequirements } from './workspaceState.js';
 
 export const LEGACY_WORKSPACE_KEY = 'tuyan.workspace-ui-preview.v1';
 export const ORIGINAL_SCOPE = 'workspace-ui-preview:local';
@@ -146,7 +146,14 @@ function preserveView(remote, local) {
     if(b.targetId&&!b.refinements[b.targetId])b.targetId=null;
     b.groupId=b.groups.some(g=>g.id===old.groupId)?old.groupId:null;b.candidateId=b.groupId?old.candidateId:null;
     if(!b.versionId&&ids.size)b.unreadVersionId=[...ids].at(-1);
-    if(!old.versionId&&!old.groups.some(g=>g.candidates.some(c=>c.versions.length))&&!old.targetId){const g=b.groups.find(g=>g.candidates.some(c=>c.versions.length)),c=g?.candidates.find(c=>c.versions.length);if(c){b.groupId=g.id;b.candidateId=c.id;b.versionId=c.versions[0].id;b.unreadVersionId=null;}}
+    if(!old.versionId&&!old.groups.some(g=>g.candidates.some(c=>c.versions.length))&&!old.targetId){const g=b.groups.find(g=>g.candidates.some(c=>c.versions.length)),c=g?.candidates.find(c=>c.versions.length);if(c){
+      b.groupId=g.id;b.candidateId=c.id;b.versionId=c.versions[0].id;b.unreadVersionId=null;
+      // First results can arrive from another tab while this tab is already
+      // drafting the next instruction. Carry that merged draft into the first
+      // source, without overwriting a real per-version draft from another tab.
+      const next=b.refinements[b.versionId];
+      if(!next || !hasRequirements(next)&&(b.draft.revision>next.revision||hasRequirements(b.draft)))b.refinements[b.versionId]=clone(b.draft);
+    }}
     b.navRevision=old.navRevision;
     for(const g of b.groups)for(const c of g.candidates){const previous=old.groups.find(x=>x.id===g.id)?.candidates.find(x=>x.id===c.id);c.viewedVersionId=c.versions.some(v=>v.id===previous?.viewedVersionId)?previous.viewedVersionId:null;}
   }

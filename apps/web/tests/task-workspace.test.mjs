@@ -73,19 +73,19 @@ test('empty task has one unified input, independent paths and mode, accepts no h
   assert.equal(screen.getByRole('button', { name:'生成图像' }).disabled, true);
   assert.equal(screen.queryByRole('button', { name:'复用上次要求' }), null);
 });
-test('candidate browsing leaves explicit modification target and send label intact', async () => {
+test('candidate and version selection directly binds the next instruction and retains drafts', async () => {
   const user = userEvent.setup(); render(React.createElement(Harness, { initial: completed() }));
+  assert.equal(screen.queryByRole('button', {name:'继续修改'}),null);
+  assert.equal(screen.queryByRole('button', {name:'退出修改'}),null);
+  assert.equal(screen.getByLabelText('当前修改对象').value,'A');
   await user.click(screen.getByRole('button', { name: '查看候选 B · v1' }));
-  await user.click(screen.getByRole('button', { name: '继续修改' }));
   await user.type(screen.getByLabelText('修改要求'), '只改 B 颜色');
-  await user.click(screen.getByRole('button', { name: '查看候选 A · v1' }));
-  assert.equal(screen.getByLabelText('修改要求').value, '只改 B 颜色');
-  assert.ok(screen.getByRole('button', { name: '修改 B · v1' }));
-  await user.click(screen.getByRole('button', { name: '改为修改当前版本' }));
+  await user.selectOptions(screen.getByLabelText('当前修改对象'),'A');
   assert.equal(screen.getByLabelText('修改要求').value, '');
   assert.ok(screen.getByRole('button', { name: '修改 A · v1' }));
-  await user.click(screen.getByRole('button', { name: '退出修改' }));
-  assert.ok(screen.getByLabelText('绘图要求'));
+  await user.selectOptions(screen.getByLabelText('当前修改对象'),'B');
+  assert.equal(screen.getByLabelText('修改要求').value,'只改 B 颜色');
+  assert.ok(screen.getByRole('button', { name: '修改 B · v1' }));
 });
 test('segmented controls support keyboard selection without submitting and retain each path mode', async () => {
   const user = userEvent.setup(); let submissions = 0;
@@ -135,7 +135,7 @@ test('collapsed resources use a menu with keyboard navigation, Escape and outsid
   await user.click(trigger);
   const menu = screen.getByRole('menu', { name: '资源与帮助' });
   const items = within(menu).getAllByRole('menuitem');
-  assert.equal(items.length, 10);
+  assert.equal(items.length, 9);
   assert.equal(within(menu).queryByRole('menuitem', { name: '绘图模板' }), null);
   assert.equal(screen.queryByRole('dialog', { name: '资源与帮助' }), null);
   assert.ok(document.activeElement === items[0]);
@@ -178,7 +178,6 @@ test('versions and comparison are view-only; download uses actual saved format',
   const user = userEvent.setup(); render(React.createElement(Harness, { initial: completed() }));
   const link = screen.getByRole('link', { name: '下载 PNG' });
   assert.ok(link.getAttribute('download').endsWith('.png'));
-  await user.click(screen.getByRole('button', { name: '继续修改' }));
   await user.type(screen.getByLabelText('修改要求'), '不要改数值');
   await user.click(screen.getByRole('button', { name: '比较' }));
   assert.ok(screen.getByRole('dialog', { name: '版本比较' }));
@@ -188,7 +187,6 @@ test('versions and comparison are view-only; download uses actual saved format',
 });
 test('fullscreen preview exits with Escape and preserves the bound refinement and draft', async () => {
   const user = userEvent.setup(); render(React.createElement(Harness, { initial: completed() }));
-  await user.click(screen.getByRole('button', { name: '继续修改' }));
   await user.type(screen.getByLabelText('修改要求'), '只调整布局');
   const trigger = screen.getByRole('button', { name: '全屏预览' });
   await user.click(trigger);

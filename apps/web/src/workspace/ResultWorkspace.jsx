@@ -1,6 +1,6 @@
 import WorkspaceExecutionDetails from './WorkspaceExecutionDetails.jsx';
 import { useEffect, useId, useRef, useState } from 'react';
-import { History, Columns2, Download, Sparkles, LoaderCircle, FileImage, AlertCircle, ArrowRight } from 'lucide-react';
+import { History, Columns2, Download, LoaderCircle, FileImage, AlertCircle, ArrowRight } from 'lucide-react';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import RatioCanvas from './RatioCanvas.jsx';
 import FigureViewport from './FigureViewport.jsx';
@@ -48,7 +48,6 @@ export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDo
         <button type="button" onClick={() => open('versions')}><History size={16} /><span>版本</span></button>
         <button type="button" onClick={() => open('compare')} disabled={versions.length < 2}><Columns2 size={16} /><span>比较</span></button>
         {onDownload ? <button type="button" disabled={downloading} onClick={download}><Download size={16} /><span>{downloading?'准备下载…':`下载 ${v.format.toUpperCase()}`}</span></button> : <a href={v.url} download={`Tuyan-${v.candidateLabel}-v${v.number}.${v.format}`}><Download size={16} /><span>下载 {v.format.toUpperCase()}</span></a>}
-        <button type="button" className="tw-refine-button" onClick={() => dispatch({ type: 'REFINE', versionId: v.id })}><Sparkles size={16} /><span>继续修改</span></button>
       </div>}
     </div>
     {!latest && b.unreadVersionId && <button type="button" className="tw-new-version" onClick={() => showVersion(b.unreadVersionId)}>有新版本可查看<ArrowRight size={14} /></button>}
@@ -63,7 +62,7 @@ export default function ResultWorkspace({ state, dispatch, renderSvgEditor, onDo
       </button>; })}
       {Array.from({ length: missing }, (_, i) => <div className="tw-candidate-placeholder" key={i}>{running?.groupId === group.id ? <LoaderCircle size={15} className="tw-spin" /> : <AlertCircle size={15} />}<span>候选 {String.fromCharCode(65 + group.candidates.length + i)}<small>{running?.groupId === group.id ? '等待结果' : '未产生结果'}</small></span></div>)}
     </nav>}
-    {panel === 'versions' && v && <WorkspaceDialog title="版本记录" onClose={() => setPanel(null)}><p className="tw-muted">{groupLabel(t, group)} · 候选 {candidate.label}。查看版本不会改变修改对象。</p><div className="tw-version-list">{[...candidate.versions].reverse().map(item => <button type="button" key={item.id} aria-pressed={item.id === v.id} onClick={() => showVersion(item.id)}><strong>v{item.number} · {item.origin}</strong><span>{item.parentId ? `基于 v${locateVersion(t, item.parentId)?.number}` : '初始版本'} · {item.review}</span></button>)}</div></WorkspaceDialog>}
+    {panel === 'versions' && v && <WorkspaceDialog title="版本记录" onClose={() => setPanel(null)}><p className="tw-muted">{groupLabel(t, group)} · 候选 {candidate.label}。选择版本后，下方输入将基于该版本继续修改。</p><div className="tw-version-list">{[...candidate.versions].reverse().map(item => <button type="button" key={item.id} aria-pressed={item.id === v.id} onClick={() => showVersion(item.id)}><strong>v{item.number} · {item.origin}</strong><span>{item.parentId ? `基于 v${locateVersion(t, item.parentId)?.number}` : '初始版本'} · {item.review}</span></button>)}</div></WorkspaceDialog>}
     {panel === 'fullscreen' && v && <WorkspaceDialog fullscreen title={versionLabel(v, true)} onClose={() => setPanel(null)}>{v.loadError?<p role="status">{v.loadError}</p>:<FigureViewport key={v.id} version={v} fullscreen onFullscreen={() => setPanel(null)} />}</WorkspaceDialog>}
     {panel === 'compare' && v && compare && <WorkspaceDialog wide title="版本比较" onClose={() => setPanel(null)}><label className="tw-compare-picker">与哪个版本比较<select value={compare.id} onChange={e => setCompareId(e.target.value)}>{versions.filter(item => item.id !== v.id).map(item => <option value={item.id} key={item.id}>{versionLabel(item, true)}</option>)}</select></label><div className="tw-compare"><figure><figcaption>{versionLabel(v, true)}</figcaption><Preview version={v} /></figure><figure><figcaption>{versionLabel(compare, true)}</figcaption><Preview key={compare.id} version={compare} /></figure></div><p className="tw-muted">比较仅用于查看，底部输入区的修改对象保持不变。</p></WorkspaceDialog>}
     {panel === 'execution' && <WorkspaceDialog className="tw-execution-dialog" title="执行详情" onClose={() => setPanel(null)}><WorkspaceExecutionDetails task={t} dispatch={dispatch} userId={userId} renderRecovery={renderRecovery} onShowVersion={showVersion}/></WorkspaceDialog>}

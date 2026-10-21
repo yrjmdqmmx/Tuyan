@@ -1,3 +1,4 @@
+import {prepareWorkspaceInput} from './workspaceSubmission.js';
 import {TokenDanceRecovery} from '../components/TokenDancePanel.jsx';
 import useImageAvailability from './useImageAvailability.js';
 import {resumeWorkspaceRun} from './workspaceExecution.js';
@@ -8,7 +9,7 @@ import {API_BASE_DEFAULT} from '../config.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import TaskWorkspace from './TaskWorkspace.jsx';
 import WorkspaceAccount from './WorkspaceAccount.jsx';
-import { workspaceReducer, currentTask, currentBranch, currentDraft, refinementTarget, activeRun, uid, submitIssue } from './workspaceState.js';
+import { workspaceReducer, currentTask, currentBranch, currentDraft, refinementTarget, activeRun, uid, submitIssue, locateVersion } from './workspaceState.js';
 import useWorkspaceSync from './useWorkspaceSync.js';
 import { ORIGINAL_SCOPE } from './workspaceSync.js';
 import { restoreWorkspaceOriginal } from './workspaceMaterials.js';
@@ -30,7 +31,6 @@ import WorkspaceAccountPage from './WorkspaceAccountPage.jsx';
 import {workspaceVersionDataUrl} from './workspaceResultAsset.js';
 import WorkspacePages, {useWorkspaceAdmin} from './WorkspacePages.jsx';
 import WorkspaceOptimize from './WorkspaceOptimize.jsx';
-import {mergeSvgRecovery} from './workspaceSvgRecovery.js';
 import WorkspaceDrawingSettings from './WorkspaceDrawingSettings.jsx';
 
 export default function WorkspaceRoot({ preview = false }) {
@@ -44,6 +44,8 @@ function WorkspaceHost({ account, beforeExit, preview }) {
   const models = useWorkspaceModels(account.user?.id);
   const { state, setState } = sync;
   const stateRef = useRef(state); stateRef.current = state;
+  const svgFlush=useRef(null);
+  const registerSvgFlush=useCallback(flush=>{svgFlush.current=flush;},[]);
   const [busy, setBusy] = useState(false), [uploadError, setUploadError] = useState(''), [stepping, setStepping] = useState(false);
   const [missingOriginal,setMissingOriginal]=useState(null);
   const [statusOpen,setStatusOpen]=useState(false);
@@ -53,29 +55,26 @@ function WorkspaceHost({ account, beforeExit, preview }) {
   const displayState=useImageAvailability(state,execution.health?.imageLibraryEnabled?account.user?.id:null,API_BASE_DEFAULT);
   const isAdmin=useWorkspaceAdmin(account.user?.id,execution.health);
   useEffect(() => { alive.current = true; return () => { alive.current = false; for (const timer of timers.current) clearTimeout(timer); }; }, []);
-  useEffect(() => { beforeExit.current = async () => { if(lock.current || execution.busy)throw Error('正在保存原件，请稍后退出。');await sync.flush(); }; return () => { beforeExit.current = null; }; }, [beforeExit, sync.flush, execution.busy]);
-  useEffect(()=>{setMissingOriginal(null);setUploadError('');},[state?.selectedTaskId,state && currentTask(state)?.path,state && currentBranch(state)?.targetId]);
+  useEffect(() => { beforeExit.current = async () => { if(lock.current || execution.busy)throw Error('正在保存原件，请稍后退出。');await svgFlush.current?.();await sync.flush(); }; return () => { beforeExit.current = null; }; }, [beforeExit, sync.flush, execution.busy]);
+  useEffect(()=>{setMissingOriginal(null);setUploadError('');},[state?.selectedTaskId,state && currentTask(state)?.path,state && currentBranch(state)?.versionId]);
   async function submit() {
     if (submitIssue(stateRef.current) || lock.current) return;
-    // Presence is checked only for attachments consumed by this operation.
-    // Browsing, settings, downloads, and saved-version refinement need no old originals.
-    const starting = stateRef.current, taskId = currentTask(starting).id, path = currentTask(starting).path;
-    const draft = currentDraft(starting), address = currentBranch(starting).targetId;
-    lock.current = true; setBusy(true); setUploadError('');
+    const taskId=currentTask(stateRef.current).id,path=currentTask(stateRef.current).path;
+    lock.current=true;setBusy(true);setUploadError('');
     try {
-      for (const material of [...draft.attachments,...(draft.settings[draft.mode].refineMask?[draft.settings[draft.mode].refineMask]:[])]) {
-        try { await browserFile(ORIGINAL_SCOPE, material); }
-        catch(error) { if(alive.current && currentTask(stateRef.current).id===taskId && currentTask(stateRef.current).path===path)setMissingOriginal(material);throw error; }
-      }
-    } catch (error) { if (alive.current) setUploadError(error.message); return; }
-    finally { lock.current = false; if (alive.current) setBusy(false); }
-    if (!alive.current || currentTask(stateRef.current).id !== taskId || currentTask(stateRef.current).path !== path || currentBranch(stateRef.current).targetId !== address || currentDraft(stateRef.current).revision !== draft.revision) return;
-    await execution.submit();
+      await prepareWorkspaceInput({getState:()=>stateRef.current,flushSvg:svgFlush.current,isCurrent:()=>alive.current,readFile:async material=>{
+        try{await browserFile(ORIGINAL_SCOPE,material);}
+        catch(error){if(alive.current&&currentTask(stateRef.current).id===taskId&&currentTask(stateRef.current).path===path)setMissingOriginal(material);throw error;}
+      }});
+      await execution.submit();
+    } catch(error){if(alive.current)setUploadError(error.message);}
+    finally{lock.current=false;if(alive.current)setBusy(false);}
   }
+
   async function files(selected) {
     if (!selected.length || lock.current) return;
     const t = currentTask(stateRef.current), branch = currentBranch(stateRef.current), d = currentDraft(stateRef.current);
-    const address = { taskId: t.id, path: t.path, draftTargetId: branch.targetId };
+    const address = { taskId: t.id, path: t.path, draftTargetId: branch.versionId };
     lock.current = true; setBusy(true); setUploadError('');
     try {
       selected.forEach(checkOriginalMaterial);
@@ -121,18 +120,21 @@ function WorkspaceHost({ account, beforeExit, preview }) {
     <WorkspaceStatusNotice issues={statusIssues} onOpen={() => setStatusOpen(true)} />
     <TaskWorkspace onDeleteTask={async taskId=>{if(lock.current)throw Error('正在保存，请稍后删除。');lock.current=true;setBusy(true);try{await sync.deleteTask(taskId);}finally{lock.current=false;if(alive.current)setBusy(false);}}} executionProgress={execution.progressByRunId[currentTask(state).activeRunId]} renderRecovery={(job,run,taskId)=><TokenDanceRecovery job={job} controller={{...models.tokenDance,request:async()=>{if(lock.current)throw Error('正在保存材料，请稍后继续。');lock.current=true;setBusy(true);try{const task=stateRef.current.tasks.find(t=>t.id===taskId);return await resumeWorkspaceRun({base:API_BASE_DEFAULT,userId:account.user.id,task,run,models,simulation:execution.health?.simulation===true,onAdopted:execution=>dispatch({type:'EXECUTION',taskId,runId:run.id,execution}),isCurrent:()=>alive.current,onMissingOriginal:ref=>{if(alive.current&&currentTask(stateRef.current).id===taskId)setMissingOriginal(ref);}});}finally{lock.current=false;if(alive.current)setBusy(false);}}}} onOpenAccount={account.onAccountSettings} onResumed={execution.refresh}/>} isAdmin={isAdmin} onDownload={downloadVersion} onCloseUnaccepted={execution.closeUnaccepted} {...account} state={displayState} dispatch={dispatch} onSubmit={submit} onFiles={files} busy={busy || execution.busy} uploadError={uploadError || execution.error} missingOriginal={missingOriginal} onRestoreOriginal={restoreOriginal}
       headerTools={<WorkspaceStatus preview={preview} sync={sync} execution={execution} signedIn={!!account.user} run={run} stepping={stepping} onExamples={examples} onExport={exportDraft} issues={statusIssues} open={statusOpen} onOpen={() => setStatusOpen(true)} onClose={() => setStatusOpen(false)} />}
-      renderSvgEditor={version=>{const task=currentTask(state),input=task.runs.find(r=>r.id===version?.runId)?.input;return <WorkspaceSvgEditor key={`${account.user?.id}:${task.id}:${version?.id || 'blank'}`} version={version} taskId={task.id} userId={account.user?.id} base={API_BASE_DEFAULT} ratio={d.settings[d.mode].ratio} readOnly={!!task.activeRunId} dataProtected={!!version && (input?.settings[input.mode]?.journalSelection?.contentType||journalFigureContent(input?.settings[input.mode]?.figureTypeId))!=='schematic'} onInteract={()=>dispatch({type:'INTERACT',taskId:task.id,path:'svg'})} onSave={async(svg,identity)=>{
+      renderSvgEditor={version=>{const task=currentTask(state),input=task.runs.find(r=>r.id===version?.runId)?.input;return <WorkspaceSvgEditor key={`${account.user?.id}:${task.id}`} version={version} versionIds={task.branches.svg.groups.flatMap(g=>g.candidates.filter(c=>!version||c.id===version.candidateId).flatMap(c=>c.versions.map(v=>v.id)))} registerFlush={registerSvgFlush} syncStatus={sync.status} syncError={sync.error} onRetrySync={sync.retry} taskId={task.id} userId={account.user?.id} base={API_BASE_DEFAULT} ratio={d.settings[d.mode].ratio} readOnly={!!task.activeRunId} dataProtected={!!version && (input?.settings[input.mode]?.journalSelection?.contentType||journalFigureContent(input?.settings[input.mode]?.figureTypeId))!=='schematic'} onInteract={()=>dispatch({type:'INTERACT',taskId:task.id,path:'svg'})} onSave={async(svg,identity)=>{
+        if(!alive.current)throw Error('账号已切换，编辑备份仍保留在原账号的本机记录中。');
         const sourceTask=stateRef.current.tasks.find(t=>t.id===task.id);if(!sourceTask)throw Error('原任务已不可用，请导出当前稿。');if(sourceTask.activeRunId)throw Error('本任务有活动执行，请完成后保存编辑版本。当前编辑稿已保留在本机。');
-        const navigation=sourceTask.branches.svg.navRevision;
-        dispatch({type:'SAVE_SVG',taskId:task.id,parentId:version?.id,...identity,select:false,url:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});await sync.flush();
-        const now=currentTask(stateRef.current);
-        if(now.id===task.id && now.path==='svg' && now.branches.svg.navRevision===navigation)dispatch({type:'VIEW',taskId:task.id,path:'svg',versionId:identity.versionId});
+        dispatch({type:'SAVE_SVG',taskId:task.id,...identity,select:false,url:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});await sync.flush();
+        if(!alive.current)throw Error('账号已切换，编辑备份仍保留。');
+        const savedTask=stateRef.current.tasks.find(t=>t.id===task.id);
+        if(!savedTask||!locateVersion(savedTask,identity.versionId))throw Error('修改尚未写入原任务，编辑备份仍保留，请重试。');
+        dispatch({type:'FOLLOW_SVG_SAVE',taskId:task.id,parentId:identity.parentId,versionId:identity.versionId});
+        await sync.flush();
       }}/>;}}
-      renderModels={({ management, onManage, initialView }) => management ? <WorkspaceModelManager initialView={initialView} models={models} health={execution.health} onSignIn={account.onSignIn} onUseApi={({role,reference,thinking})=>{const draft=currentDraft(stateRef.current), settings=draft.settings.advanced;dispatch({type:"EDIT_DRAFT",patch:{mode:"advanced",settings:{...draft.settings,advanced:{...settings,models:{...settings.models,[role]:reference},...(thinking?{thinking:{...settings.thinking,[role]:{libraryModelId:reference.libraryModelId,options:thinking.options}}}:{})}}}});}}/> : <WorkspaceModelConfig models={models} draft={d} path={path} editing={!!currentBranch(state).targetId || d.attachments.some(a=>a.purpose==='source')} onManage={onManage} onChange={next => dispatch({ type: 'EDIT_DRAFT', patch: { settings: { ...d.settings, [d.mode]: next } } })}/>}
+      renderModels={({ management, onManage, initialView }) => management ? <WorkspaceModelManager initialView={initialView} models={models} health={execution.health} onSignIn={account.onSignIn} onUseApi={({role,reference,thinking})=>{const draft=currentDraft(stateRef.current), settings=draft.settings.advanced;dispatch({type:"EDIT_DRAFT",patch:{mode:"advanced",settings:{...draft.settings,advanced:{...settings,models:{...settings.models,[role]:reference},...(thinking?{thinking:{...settings.thinking,[role]:{libraryModelId:reference.libraryModelId,options:thinking.options}}}:{})}}}});}}/> : <WorkspaceModelConfig models={models} draft={d} path={path} editing={!!currentBranch(state).versionId || d.attachments.some(a=>a.purpose==='source')} onManage={onManage} onChange={next => dispatch({ type: 'EDIT_DRAFT', patch: { settings: { ...d.settings, [d.mode]: next } } })}/>}
       renderOptimize={children=><WorkspaceOptimize stateRef={stateRef} models={models} userId={account.user?.id} health={execution.health} sync={sync} dispatch={dispatch}>{children}</WorkspaceOptimize>}
-      renderAccount={({onOpenTask}={}) => <WorkspaceAccountPage onOpenTask={onOpenTask} preview={preview} account={account} sync={sync} state={state} models={models} onExport={exportDraft}/>}
-      renderSettings={({focusSection} = {}) => <WorkspaceDrawingSettings focusSection={focusSection} target={refinementTarget(state)} userId={account.user?.id} base={API_BASE_DEFAULT} draft={d} path={path} editing={!!currentBranch(state).targetId || d.attachments.some(a=>a.purpose==='source')} models={models} onChange={next => dispatch({ type: 'EDIT_DRAFT', patch: { settings: { ...d.settings, [d.mode]: next } } })}/>}
-      renderPage={(page,onClose,onNavigate,options) => <WorkspacePages {...options} onRestoreSvg={async task=>{setState(s=>mergeSvgRecovery(s,task));}} key={page} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={models} health={execution.health} isAdmin={isAdmin}/>}
+      renderAccount={(navigation={}) => <WorkspaceAccountPage {...navigation} preview={preview} account={account} sync={sync} state={state} models={models} onExport={exportDraft}/>}
+      renderSettings={({focusSection} = {}) => <WorkspaceDrawingSettings focusSection={focusSection} target={refinementTarget(state)} userId={account.user?.id} base={API_BASE_DEFAULT} draft={d} path={path} editing={!!currentBranch(state).versionId || d.attachments.some(a=>a.purpose==='source')} models={models} onChange={next => dispatch({ type: 'EDIT_DRAFT', patch: { settings: { ...d.settings, [d.mode]: next } } })}/>}
+      renderPage={(page,onClose,onNavigate,options) => <WorkspacePages {...options} key={page} page={page} onClose={onClose} onNavigate={onNavigate} account={account} models={models} health={execution.health} isAdmin={isAdmin}/>}
     />
 
   </div>;

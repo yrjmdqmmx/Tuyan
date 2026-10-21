@@ -8,7 +8,7 @@ import TaskWorkspace from '../src/workspace/TaskWorkspace.jsx';
 import { AppLocaleProvider } from '../src/components/BenchmarkLocale.jsx';
 import { useAuthSession } from '../src/hooks/useAuthSession.js';
 import { newWorkspace, workspaceReducer } from '../src/workspace/workspaceState.js';
-import { logoUrl } from '../src/config.js';
+import { defaultAvatarUrl } from '../src/config.js';
 
 const desktopMedia = query => ({ matches: false, media: query, addEventListener() {}, removeEventListener() {} });
 window.matchMedia = desktopMedia;
@@ -30,7 +30,7 @@ function Harness({ client }) {
   const [state, dispatch] = useReducer(workspaceReducer, undefined, () => newWorkspace('task'));
   return React.createElement(AppLocaleProvider, null, React.createElement(WorkspaceAccount, { client, enabled: true, productionPreview: true, apiBase: 'https://account.example.test' }, account => React.createElement(TaskWorkspace, { state, dispatch, onFiles() {}, onSubmit() {}, ...account })));
 }
-test('existing login form refreshes authoritative identity, settings open in place, logout restores logo and draft', async () => {
+test('existing login form refreshes authoritative identity, settings open in place, logout restores default avatar and draft', async () => {
   const client = clientFixture(); const user = userEvent.setup(); const { container } = render(React.createElement(Harness, { client }));
   const trigger = await screen.findByRole('button', { name: '登录图研', exact: true });
   await user.type(screen.getByLabelText('绘图要求'), '保留这份任务草稿');
@@ -43,7 +43,7 @@ test('existing login form refreshes authoritative identity, settings open in pla
   const account = await screen.findByRole('button', { name: '账户与设置' });
   assert.equal(account.querySelector('strong').textContent, identity.user.name);
   assert.ok(screen.getByRole('heading', { name: `HI！${identity.user.name}，今天想绘制什么？` }));
-  assert.equal(account.querySelector('img').getAttribute('src'), logoUrl);
+  assert.equal(account.querySelector('img').getAttribute('src'), defaultAvatarUrl);
   assert.equal(screen.queryByRole('dialog'), null);
   await user.click(account); assert.ok(screen.getByText(identity.user.email));
   await user.click(screen.getByRole('menuitem', { name: '账户设置' }));
@@ -53,7 +53,7 @@ test('existing login form refreshes authoritative identity, settings open in pla
   await user.click(account); await user.click(screen.getByRole('menuitem', { name: '退出登录' }));
   const signedOut = await screen.findByRole('button', { name: '登录图研', exact: true });
   assert.ok(screen.getByRole('heading', { name: 'HI！今天想绘制什么？' }));
-  assert.equal(signedOut.querySelector('img').getAttribute('src'), logoUrl);
+  assert.equal(signedOut.querySelector('img').getAttribute('src'), defaultAvatarUrl);
   assert.equal(screen.queryByText(identity.user.name), null);
   assert.equal(screen.queryByText(identity.user.email), null);
   assert.equal(screen.getByLabelText('绘图要求').value, '保留这份任务草稿');

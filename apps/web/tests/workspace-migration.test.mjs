@@ -23,7 +23,7 @@ test('browser SVG recovery deduplicates content, preserves edits and never fabri
  assert.equal(mergeSvgRecovery(edited,task).tasks[0].title,'My recovered version');
  assert.notEqual((await svgRecoveryTask({...draft,svg:sampleSvg('B')},'http://api.test','owner')).id,task.id);
  assert.equal(draft.svg,sampleSvg('A'));
- assert.match(versionLabel(selectedVersion(first),true),/浏览器手工稿/);
+ assert.match(versionLabel(selectedVersion(first),true),/手工绘图/);
  assert.doesNotMatch(versionLabel(selectedVersion(first),true),/次生成/);
 });
 test('advanced API import saves a separate connection without copying old credentials or changing task selection',async()=>{

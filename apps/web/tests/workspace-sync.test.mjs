@@ -177,3 +177,20 @@ test('switching settings depth alone does not turn an empty task into a saved dr
  assert.equal(taskHasContent(changed.tasks[0]),false);
  const next=workspaceReducer(changed,{type:'CREATE_TASK',id:'unnecessary'});assert.equal(next.tasks.length,1);assert.equal(next.selectedTaskId,'empty');
 });
+
+test('automatic SVG edits survive offline reload and sync into the same task on another device',async()=>{
+ const remote=server(),cache=createWorkspaceCache(new IDBFactory()),a=await ready(remote,cache);let restored,b;
+ try {
+  a.setState(newWorkspace('autosave-account-task'));
+  const source='<svg xmlns="http://www.w3.org/2000/svg"><text>original</text></svg>';
+  a.setState(s=>workspaceReducer(s,{type:'SAVE_SVG',taskId:'autosave-account-task',versionId:'original',runId:'original-run',url:'data:image/svg+xml,'+encodeURIComponent(source)}));
+  await a.sync();remote.offline(true);
+  a.setState(s=>workspaceReducer(s,{type:'SAVE_SVG',taskId:'autosave-account-task',parentId:'original',versionId:'edited',runId:'edited-run',select:false,url:'data:image/svg+xml,'+encodeURIComponent(source.replace('original','edited'))}));
+  a.setState(s=>workspaceReducer(s,{type:'FOLLOW_SVG_SAVE',taskId:'autosave-account-task',parentId:'original',versionId:'edited'}));
+  await a.flush();await a.sync();assert.equal(a.status,'error');a.dispose();
+  restored=await ready(remote,cache);assert.equal(restored.state.tasks.find(t=>t.id==='autosave-account-task').branches.svg.versionId,'edited');
+  remote.offline(false);await restored.sync();assert.equal(restored.status,'synced');
+  b=await ready(remote);await b.sync();const task=b.state.tasks.find(t=>t.id==='autosave-account-task');
+  const versions=task.branches.svg.groups[0].candidates[0].versions;assert.equal(versions.length,2);assert.equal(versions[0].id,'original');assert.equal(versions[1].id,'edited');assert.equal(versions[1].parentId,'original');assert.equal(b.state.tasks.filter(t=>t.id.startsWith('autosave-account-task')).length,1);
+ }finally{a.dispose();restored?.dispose();b?.dispose();}
+});

@@ -2,22 +2,24 @@ import { useEffect, useRef, useState } from 'react';
 import { X, Check, Undo2 } from 'lucide-react';
 import { modelOption, selectedModelReference, browserCredentialKey } from './workspaceModels.js';
 import { API_BASE_DEFAULT } from '../config.js';
-import { uid, currentTask, currentBranch, currentDraft } from './workspaceState.js';
+import { uid, currentTask, currentBranch, currentDraft, draftOf } from './workspaceState.js';
 import { withOptimizationMaterials } from './workspaceOptimization.js';
 
 export default function WorkspaceOptimize({ stateRef, models, userId, health, sync, dispatch, children }) {
   const pending = useRef(false), alive = useRef(true), request = useRef(null);
   const [result, setResult] = useState(null), [progress, setProgress] = useState(''), [error, setError] = useState('');
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
+  const sourceId=currentBranch(stateRef.current).versionId;
+  useEffect(()=>{setResult(null);setError('');setProgress('');},[sourceId]);
   function addressedDraft(address) {
     const task = stateRef.current.tasks.find(t => t.id === address.taskId), branch = task?.branches[address.path];
-    return address.draftTargetId ? branch?.refinements[address.draftTargetId] : branch?.draft;
+    return address.draftTargetId ? branch?.refinements[address.draftTargetId] || (branch?.versionId===address.draftTargetId ? draftOf(branch) : undefined) : branch?.draft;
   }
   async function optimize() {
     if (pending.current) return;
-    const s = stateRef.current, address = { taskId: currentTask(s).id, path: currentTask(s).path, draftTargetId: currentBranch(s).targetId };
+    const s = stateRef.current, address = { taskId: currentTask(s).id, path: currentTask(s).path, draftTargetId: currentBranch(s).versionId };
     const draft = structuredClone(currentDraft(s));
-    const isCurrent = () => alive.current && currentTask(stateRef.current).id === address.taskId && currentTask(stateRef.current).path === address.path && currentBranch(stateRef.current).targetId === address.draftTargetId && !currentTask(stateRef.current).activeRunId;
+    const isCurrent = () => alive.current && currentTask(stateRef.current).id === address.taskId && currentTask(stateRef.current).path === address.path && currentBranch(stateRef.current).versionId === address.draftTargetId && !currentTask(stateRef.current).activeRunId;
     pending.current = true; setError(''); setResult(null); setProgress('正在准备优化…');
     try {
       if (!draft.text.trim() && !draft.attachments.length) throw Error('请先填写绘图要求或添加附件。');
@@ -37,7 +39,7 @@ export default function WorkspaceOptimize({ stateRef, models, userId, health, sy
       if (request.current?.fingerprint !== fingerprint) request.current = { fingerprint, runId: uid() };
       const runId = request.current.runId;
       await sync.ensureSynced();
-      const data = await withOptimizationMaterials({ base: API_BASE_DEFAULT, attachments: draft.attachments, simulation: health.simulation, isCurrent, onProgress: value => { if (alive.current) setProgress(value); } }, async materialFiles => {
+      const data = await withOptimizationMaterials({ base: API_BASE_DEFAULT, attachments: draft.attachments, simulation: health.simulation, isCurrent, onProgress: value => { if (isCurrent()) setProgress(value); } }, async materialFiles => {
         if (!isCurrent()) throw Error('任务已切换，未开始优化。');
         const response = await fetch(API_BASE_DEFAULT + '/paperbanana-api', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-Workspace-Account': userId }, body: JSON.stringify({
           action: 'optimizeInputs', target,
@@ -52,10 +54,11 @@ export default function WorkspaceOptimize({ stateRef, models, userId, health, sy
       });
       request.current = null;
       if (isCurrent()) setResult({ address, original: draft.text, candidate: data.optimizedText, applied: false, warnings: data.materialWarnings || [] });
-    } catch (e) { if (alive.current) setError(e.message); }
+    } catch (e) { if (isCurrent()) setError(e.message); }
     finally { pending.current = false; if (alive.current) setProgress(''); }
   }
   function apply(undo = false) {
+    if(currentBranch(stateRef.current).versionId!==result.address.draftTargetId){setError('修改对象已变化，请重新优化当前要求。');return;}
     const current = addressedDraft(result.address), expected = undo ? result.candidate : result.original;
     if (!current || current.text !== expected) { setError('要求已修改，请手动合并优化稿；不会覆盖最新文字。'); return; }
     dispatch({ type: 'EDIT_DRAFT', ...result.address, patch: { text: undo ? result.original : result.candidate } });

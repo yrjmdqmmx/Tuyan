@@ -115,3 +115,19 @@ test('ordinary duplicate visual preset reuses capable main; advanced assistant s
  run.input.mode='advanced';run.input.settings.advanced=structuredClone(run.input.settings.simple);
  const advanced=buildWorkspaceRequest({task,run,models});assert.equal(advanced.visionMode,'assist');assert.ok(advanced.modelRoutes.vision);
 });
+
+test('continuous PNG and SVG rounds use existing execution contracts and transmit exactly the selected source',async()=>{
+ const previous=globalThis.fetch,wires=[];globalThis.fetch=async(url,options)=>{if(String(url).startsWith('data:'))return previous(url,options);wires.push(JSON.parse(options.body));return Response.json({jobId:'synthetic-'+wires.length});};
+ try{for(const path of ['png','svg']){
+  let s=setup(path);const send=(type,rest={})=>{s=workspaceReducer(s,{type,...rest});};
+  for(let i=0;i<3;i++){
+   if(i){send('EDIT_DRAFT',{patch:{text:'Round '+i}});send('BEGIN',{runId:'round-'+i});}
+   const task=s.tasks[0],run=task.runs.at(-1);
+   await startWorkspaceRun({base:'http://localhost',userId:'isolated',task,run,models,simulation:true});
+   const wire=wires.at(-1);assert.equal(wire.workspaceExecution.taskId,'task');assert.equal(wire.workspaceExecution.simulation.sourceCount,i?1:0);assert.equal(wire.workspaceExecution.simulation.sourceVersionId,i?'result-'+(i-1):null);
+   assert.equal(wire.action,path==='png'&&i?'refineImage':'createJob');assert.equal(buildWorkspaceRequest({task,run,models}).numCandidates,1);
+   send('ACCEPT',{runId:run.id});send('RESULT',{runId:run.id,candidateId:'candidate',version:{id:'result-'+i,format:path,url:path==='svg'?'data:image/svg+xml,<svg/>':'data:image/png;base64,iVBORw0KGgo='}});send('FINISH',{runId:run.id});
+  }
+  assert.equal(s.tasks.length,1);assert.equal(s.tasks[0].branches[path].groups[0].candidates[0].versions.length,3);
+ }}finally{globalThis.fetch=previous;}
+});

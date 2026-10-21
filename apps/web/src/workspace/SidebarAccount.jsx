@@ -2,7 +2,7 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, ChevronRight, Languages, LogIn, LogOut, MoreHorizontal, Settings, ShieldCheck } from 'lucide-react';
 import { appPath } from '../appPaths.js';
-import { logoUrl } from '../config.js';
+import { defaultAvatarUrl } from '../config.js';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 import SidebarTooltip from './SidebarTooltip.jsx';
 
@@ -67,7 +67,7 @@ function AccountPopover({ id, triggerRef, compact, user, onClose, onSignIn, onSi
   function run(action) { onClose(true); action?.(); }
   const settingsContent = <><Settings size={20} aria-hidden="true" /><span>账户设置</span><ChevronRight size={16} className="tw-account-chevron" aria-hidden="true" /></>;
   const menu = <div className="tw-account-popover" ref={panel} onKeyDown={moveFocus}>
-    <div className="tw-account-identity"><img src={user?.image || logoUrl} alt="" /><div><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '未登录'))}</strong><small>{user ? (user.name && user.email ? user.email : '已登录图研账号') : '登录后同步任务与结果'}</small></div></div>
+    <div className="tw-account-identity"><img src={user?.image || defaultAvatarUrl} alt="" /><div><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '未登录'))}</strong><small>{user ? (user.name && user.email ? user.email : '已登录图研账号') : '登录后同步任务与结果'}</small></div></div>
     <div role="menu" aria-label="账户菜单" id={id}>
       <div className="tw-account-separator" role="separator" />
       {onAccountSettings ? <button type="button" role="menuitem" tabIndex={-1} disabled={accountPending} onClick={() => run(onAccountSettings)}>{settingsContent}</button>
@@ -91,7 +91,7 @@ export default function SidebarAccount({ compact = false, mobile = false, user, 
   const label = accountPending ? '正在检查账号状态' : user ? '账户与设置' : '登录图研';
   function close(restoreFocus) { setOpen(false); if (restoreFocus) trigger.current?.focus({ preventScroll: true }); }
   const button = <button type="button" ref={trigger} className={mobile ? 'tw-mobile-account' : compact ? 'tw-rail-control tw-rail-account' : 'tw-account'} onClick={() => setOpen(value => !value)} aria-label={label} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? id : undefined}>
-    {mobile ? <Settings size={25} aria-hidden="true" /> : <img src={user?.image || logoUrl} alt="" />}{!compact && !mobile && <><span><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '登录图研'))}</strong><small>{user ? '账户与设置' : '登录后同步任务与结果'}</small></span><MoreHorizontal size={19} aria-hidden="true" /></>}
+    {mobile ? <Settings size={25} aria-hidden="true" /> : <img src={user?.image || defaultAvatarUrl} alt="" />}{!compact && !mobile && <><span><strong>{user?.name || user?.email || (user ? '图研用户' : (accountPending ? '正在检查账号状态' : '登录图研'))}</strong><small>{user ? '账户与设置' : '登录后同步任务与结果'}</small></span><MoreHorizontal size={19} aria-hidden="true" /></>}
   </button>;
   return <>{compact ? <SidebarTooltip label={label} disabled={open}>{button}</SidebarTooltip> : button}{open && <AccountPopover id={id} triggerRef={trigger} compact={compact} user={user} onClose={close} onSignIn={onSignIn} onSignOut={onSignOut} onAccountSettings={onAccountSettings} onAdmin={onAdmin} accountPending={accountPending} />}</>;
 }

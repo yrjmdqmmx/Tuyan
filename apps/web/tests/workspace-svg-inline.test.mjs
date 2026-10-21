@@ -25,40 +25,36 @@ async function recolor(value){
  await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),value));
  fireEvent.keyDown(screen.getByLabelText('SVG 直接编辑画布'),{key:'Escape'});
 }
-test('editing stays inside the result canvas, restores local draft, and saves an immutable child without changing the prompt',async()=>{
+test('edits automatically save in the original task, keep the editor and undo history, and reopen the latest version',async()=>{
  let latest,send;const saved=[];
- function Harness(){const [state,dispatch]=useReducer(workspaceReducer,initial('inline'));latest=state;send=dispatch;return React.createElement(TaskWorkspace,{state,dispatch,renderSvgEditor:version=>React.createElement(WorkspaceSvgEditor,{key:version?.id || 'blank',version,taskId:currentTask(state).id,userId:'owner',base:'https://inline.test',dataProtected:false,onSave:async(svg,ids)=>{saved.push(svg);dispatch({type:'SAVE_SVG',taskId:'inline',parentId:version.id,...ids,url:'data:image/svg+xml,'+encodeURIComponent(svg)});}})});}
+ function Harness(){const [state,dispatch]=useReducer(workspaceReducer,initial('inline-auto'));latest=state;send=dispatch;return React.createElement(TaskWorkspace,{state,dispatch,renderSvgEditor:version=>React.createElement(WorkspaceSvgEditor,{key:currentTask(state).id,version,versionIds:currentTask(state).branches.svg.groups.flatMap(g=>g.candidates.flatMap(c=>c.versions.map(v=>v.id))),taskId:currentTask(state).id,userId:'owner',base:'https://inline.test',dataProtected:false,onSave:async(svg,ids)=>{saved.push(svg);dispatch({type:'SAVE_SVG',taskId:'inline-auto',...ids,select:false,url:'data:image/svg+xml,'+encodeURIComponent(svg)});dispatch({type:'FOLLOW_SVG_SAVE',taskId:'inline-auto',...ids});}})});}
  const {container}=render(React.createElement(Harness));const original=structuredClone(selectedVersion(latest));
  await screen.findByLabelText('SVG 直接编辑画布');
- assert.equal(screen.queryByRole('button',{name:'手工编辑',exact:true}),null);
- assert.equal(screen.getByRole('button',{name:'保存为新版本'}).disabled,true);
- assert.equal(screen.queryByRole('dialog'),null);assert.ok(container.querySelector('.tw-results .tw-canvas .svg-viewport'));
+ assert.equal(screen.queryByRole('button',{name:'保存为新版本'}),null);
+ assert.ok(container.querySelector('.tw-results .tw-canvas .svg-viewport'));
+ const canvas=screen.getByLabelText('SVG 直接编辑画布');
  await recolor('#f00');click('撤销');click('重做');
- await waitFor(async()=>assert.equal(parseSvg((await readSvgDraft(svgDraftKey('https://inline.test','owner','inline','v1'))).svg).root.querySelector('#box').getAttribute('fill'),'#f00'));
- click('图像创作');assert.equal(screen.queryByLabelText('SVG 直接编辑画布'),null);
- click('矢量绘图');await screen.findByLabelText('SVG 直接编辑画布');
- await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'url(#g)'));
- click('恢复编辑草稿');
- await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'#f00'));
- assert.equal(screen.getByLabelText('绘图要求').value,'保留下一次要求');assert.equal(selectedVersion(latest).id,'v1');
- click('保存为新版本');await waitFor(()=>assert.equal(selectedVersion(latest).number,2));
- await screen.findByLabelText('SVG 直接编辑画布');
- assert.equal(screen.queryByText(/手工编辑已保存/),null);
+ await waitFor(()=>assert.equal(selectedVersion(latest).number,2),{timeout:2500});
+ assert.equal(screen.getByLabelText('SVG 直接编辑画布'),canvas,'automatic save must not remount the editor');
+ assert.equal(screen.getByRole('button',{name:'撤销',exact:true}).disabled,false);
  assert.equal(saved.length,1);assert.equal(parseSvg(saved[0]).root.querySelector('#box').getAttribute('fill'),'#f00');assert.ok(parseSvg(saved[0]).root.querySelector('linearGradient'));
+ assert.equal(screen.getByLabelText('修改要求').value,'保留下一次要求');
  const versions=currentTask(latest).branches.svg.groups[0].candidates[0].versions;
- assert.equal(versions.length,2);assert.equal(versions[0].url,original.url);assert.equal(versions[1].parentId,'v1');assert.equal(versions[1].review,'修改后未复审');assert.equal(screen.getByLabelText('绘图要求').value,'保留下一次要求');
- await waitFor(async()=>assert.equal(await readSvgDraft(svgDraftKey('https://inline.test','owner','inline','v1')),null));
- // Select the original through the reducer; the editor must load immutable v1.
+ assert.equal(versions.length,2);assert.equal(versions[0].url,original.url);assert.equal(versions[1].parentId,'v1');assert.equal(versions[1].review,'修改后未复审');
+ click('图像创作');click('矢量绘图');await screen.findByLabelText('SVG 直接编辑画布');
+ await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'#f00'));
+ await waitFor(async()=>assert.equal(await readSvgDraft(svgDraftKey('https://inline.test','owner','inline-auto','v1')),null));
  await (await import('@testing-library/react')).act(async()=>send({type:'VIEW',path:'svg',versionId:'v1'}));
  await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),'url(#g)'));
-
+ assert.equal(latest.tasks.length,1);
 });
-test('failed save keeps inline draft and retries with the same version identity',async()=>{
+test('failed auto-save keeps the draft and retries the same version identity',async()=>{
  const calls=[];
  render(React.createElement(WorkspaceSvgEditor,{version:{id:'retry',url:'data:image/svg+xml,'+encodeURIComponent(source),candidateLabel:'A',number:1},taskId:'retry-task',base:'https://inline.test',userId:'owner',dataProtected:false,onSave:async(svg,ids)=>{calls.push(ids);if(calls.length===1)throw Error('本机保存失败');}}));
- await screen.findByLabelText('SVG 直接编辑画布');await recolor('#00f');click('保存为新版本');await screen.findByText('本机保存失败');
- assert.ok(screen.getByLabelText('SVG 直接编辑画布'));
- click('保存为新版本');await waitFor(()=>assert.equal(calls.length,2));await waitFor(()=>assert.equal(screen.queryByText('正在编辑本地草稿 · 原版本未改动'),null));assert.deepEqual(calls[0],calls[1]);
+ await screen.findByLabelText('SVG 直接编辑画布');await recolor('#00f');
+ await screen.findByText('本机保存失败',{}, {timeout:2500});
+ assert.ok(await readSvgDraft(svgDraftKey('https://inline.test','owner','retry-task','retry')));
+ click('重试自动保存');await waitFor(()=>assert.equal(calls.length,2));await waitFor(()=>assert.equal(screen.queryByText('本机保存失败'),null));assert.deepEqual(calls[0],calls[1]);
 });
 test('source load failure can be retried without leaving the result pane',async()=>{
  let calls=0;globalThis.fetch=async()=>++calls===1?new Response('',{status:503}):new Response(source);
@@ -76,7 +72,7 @@ test('renewed URLs for the same version do not reload or erase an unsaved edit',
 test('a fresh vector task shows a blank editor without saving an empty version; first saves are idempotent',async()=>{
  let state=workspaceReducer(newWorkspace('blank-task'),{type:'SET_PATH',path:'svg'}),saved=0;
  render(React.createElement(TaskWorkspace,{state,dispatch(){},renderSvgEditor:version=>React.createElement(WorkspaceSvgEditor,{version,taskId:'blank-task',base:'https://inline.test',userId:'owner',dataProtected:false,onSave(){saved++;}})}));
- await screen.findByLabelText('SVG 直接编辑画布');assert.equal(screen.getByRole('button',{name:'保存为新版本'}).disabled,true);assert.equal(currentTask(state).runs.length,0);assert.equal(saved,0);
+ await screen.findByLabelText('SVG 直接编辑画布');assert.equal(screen.queryByRole('button',{name:'保存为新版本'}),null);assert.equal(currentTask(state).runs.length,0);assert.equal(saved,0);
  const first={type:'SAVE_SVG',taskId:'blank-task',versionId:'manual-first',runId:'manual-run',url:'data:image/svg+xml,'+encodeURIComponent(source),select:false};
  state=workspaceReducer(state,first);assert.equal(selectedVersion(state),null);assert.equal(currentTask(state).runs.length,1);
  state=workspaceReducer(state,first);assert.equal(currentTask(state).runs.length,1);
@@ -101,4 +97,46 @@ test('retiring a committed draft never deletes a newer concurrent tab draft or j
  const newer={...committed,writer:'new',baseRevision:1,revision:2,svg:source.replace('原始图示','new work')};
  await saveSvgDraft(newer);journalDraft({...newer,revision:3});
  await retireSvgDraft(key,committed);assert.equal((await readSvgDraft(key)).revision,3);
+});
+
+test('reopening the original task resumes a pending automatic edit, while old manual backups require explicit recovery',async()=>{
+ const taskId='resume-original',base='https://inline.test',key=svgDraftKey(base,'owner',taskId,'v1');
+ const pending=source.replace('原始图示','未同步的最后修改');
+ await saveSvgDraft({key,writer:'previous-page',revision:1,baseRevision:0,taskId,candidateId:'v1',svg:pending,autoSave:true,baseVersionId:'v1',resumeVersionId:'not-yet-committed',updatedAt:Date.now()});
+ const props={version:{id:'v1',url:'data:image/svg+xml,'+encodeURIComponent(source)},versionIds:['v1'],taskId,base,userId:'owner',dataProtected:false,onSave:async()=>{throw Error('offline fixture');}};
+ const view=render(React.createElement(WorkspaceSvgEditor,props));await screen.findByLabelText('SVG 直接编辑画布');
+ assert.match(document.querySelector('.svg-document-host').shadowRoot.textContent,/未同步的最后修改/);
+ assert.equal(screen.queryByRole('button',{name:'恢复编辑内容'}),null);view.unmount();
+ const legacyTask='legacy-original',legacyKey=svgDraftKey(base,'owner',legacyTask,'v1');
+ await saveSvgDraft({key:legacyKey,writer:'legacy',revision:1,baseRevision:0,taskId:legacyTask,candidateId:'v1',svg:pending,updatedAt:Date.now()});
+ render(React.createElement(WorkspaceSvgEditor,{...props,taskId:legacyTask,onSave:async()=>{}}));await screen.findByLabelText('SVG 直接编辑画布');
+ assert.match(document.querySelector('.svg-document-host').shadowRoot.textContent,/原始图示/);
+ click('恢复编辑内容');assert.match(document.querySelector('.svg-document-host').shadowRoot.textContent,/未同步的最后修改/);
+});
+test('a backup from a save interrupted after task commit resumes at its committed version without replacing historic views',async()=>{
+ const base='https://inline.test',taskId='interrupted-commit',key=svgDraftKey(base,'owner',taskId,'v1');
+ await saveSvgDraft({key,writer:'interrupted',revision:1,baseRevision:0,taskId,candidateId:'v1',svg:source.replace('原始图示','编辑仍在进行'),autoSave:true,baseVersionId:'v1',resumeVersionId:'v2',updatedAt:Date.now()});
+ render(React.createElement(WorkspaceSvgEditor,{version:{id:'v2',url:'data:image/svg+xml,'+encodeURIComponent(source.replace('原始图示','已保存修改'))},versionIds:['v1','v2'],taskId,base,userId:'owner',onSave:async()=>{}}));
+ await screen.findByLabelText('SVG 直接编辑画布');assert.match(document.querySelector('.svg-document-host').shadowRoot.textContent,/编辑仍在进行/);
+});
+test('cloud failures are shown as unsynced rather than claiming an account save',async()=>{
+ render(React.createElement(WorkspaceSvgEditor,{version:{id:'offline-label',url:'data:image/svg+xml,'+encodeURIComponent(source)},taskId:'offline-label',base:'https://inline.test',userId:'owner',syncStatus:'error',syncError:'合成账号离线',onRetrySync(){},onSave:async()=>{}}));
+ await screen.findByLabelText('SVG 直接编辑画布');assert.ok(screen.getByText('已保存在本机，账号同步未完成'));assert.ok(screen.getByText('合成账号离线'));assert.equal(screen.queryByText('已自动保存并同步账号'),null);
+});
+test('starting a different edit preserves an un-restored legacy backup',async()=>{
+ const base='https://inline.test',taskId='keep-legacy',key=svgDraftKey(base,'owner',taskId,'v1');
+ const legacy=source.replace('原始图示','保留旧备份');
+ await saveSvgDraft({key,writer:'legacy',revision:1,baseRevision:0,taskId,candidateId:'v1',svg:legacy,updatedAt:Date.now()});
+ let saves=0;
+ render(React.createElement(WorkspaceSvgEditor,{version:{id:'v1',url:'data:image/svg+xml,'+encodeURIComponent(source)},taskId,base,userId:'owner',dataProtected:false,onSave:async()=>{saves++;}}));
+ await screen.findByLabelText('SVG 直接编辑画布');await recolor('#009900');await waitFor(()=>assert.equal(saves,1),{timeout:2500});
+ assert.equal((await readSvgDraft(key)).svg,legacy);
+});
+test('legacy job-index backups are offered only inside the exact source task and retained after recovery',async()=>{
+ const base='https://inline.test',jobId='confirmed-server-job',key=svgDraftKey(base,'owner',jobId,0),legacy=source.replace('原始图示','旧工作台编辑');
+ await saveSvgDraft({key,writer:'old-editor',revision:1,baseRevision:0,taskId:jobId,candidateId:0,svg:legacy,updatedAt:Date.now()});
+ let calls=[];
+ render(React.createElement(WorkspaceSvgEditor,{version:{id:'imported-v1',url:'data:image/svg+xml,'+encodeURIComponent(source),history:{source:'core',jobId,index:0}},taskId:'original-imported-task',base,userId:'owner',onSave:async(svg,ids)=>calls.push({svg,ids})}));
+ await screen.findByLabelText('SVG 直接编辑画布');assert.match(document.querySelector('.svg-document-host').shadowRoot.textContent,/原始图示/);click('恢复编辑内容');
+ await waitFor(()=>assert.equal(calls.length,1),{timeout:2500});assert.equal(calls[0].ids.parentId,'imported-v1');assert.match(calls[0].svg,/旧工作台编辑/);assert.equal((await readSvgDraft(key)).svg,legacy);
 });

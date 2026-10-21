@@ -12,12 +12,14 @@ export const hasRequirements = d => !!(d.text || d.caption || d.avoid || d.attac
 export const taskHasContent = t => !t.automaticTitle || t.runs.length > 0 || Object.values(t.branches).some(b => draftHasContent(b.draft) || Object.values(b.refinements).some(draftHasContent));
 export const currentTask = s => s.tasks.find(t => t.id === s.selectedTaskId);
 export const currentBranch = s => currentTask(s).branches[currentTask(s).path];
-export const draftOf = b => b.targetId ? b.refinements[b.targetId] : b.draft;
+// The visible version is the next operation's source. Existing per-version
+// drafts remain intact when switching candidates or reopening older tasks.
+export const draftOf = b => b.versionId ? b.refinements[b.versionId] || b.refinements[b.targetId] || b.draft : b.draft;
 export const currentDraft = s => draftOf(currentBranch(s));
 export const activeRun = s => currentTask(s).runs.find(r => r.id === currentTask(s).activeRunId) || null;
 export function groupLabel(task, group) {
   const initialRun = task.runs.find(run => run.id === group.runId);
-  return initialRun?.kind === 'edit' && !initialRun.parentId ? '浏览器手工稿' : `第 ${group.number} 次生成`;
+  return initialRun?.kind === 'edit' && !initialRun.parentId ? '手工绘图' : `第 ${group.number} 次生成`;
 }
 export function locateVersion(task, id) {
   if (!id) return null;
@@ -28,11 +30,11 @@ export function locateVersion(task, id) {
   return null;
 }
 export const selectedVersion = s => locateVersion(currentTask(s), currentBranch(s).versionId);
-export const refinementTarget = s => locateVersion(currentTask(s), currentBranch(s).targetId);
+export const refinementTarget = selectedVersion;
 export function canRestoreRun(task, run) {
   if (!run) return false;
   const branch = task.branches[run.path];
-  const draft = run.parentId ? branch.refinements[run.parentId] : branch.draft;
+  const draft = run.parentId ? branch.refinements[run.parentId] : draftOf(branch);
   if (!draft) return false;
   const cleared = { ...run.input, text: '', ...(!run.parentId && { caption: '', avoid: '', attachments: [] }) };
   return draftContent(draft) === draftContent(run.input) || draftContent(draft) === draftContent(cleared);
@@ -49,16 +51,31 @@ export function submitIssue(s) {
   const t = currentTask(s), b = currentBranch(s), d = currentDraft(s);
   if(t.deleted)return '任务已删除，可恢复后继续编辑';
   if (t.activeRunId) return '任务正在进行';
-  if (b.targetId && !refinementTarget(s)) return '修改目标已不可用，请重新选择版本';
-  if (!d.text.trim()) return b.targetId ? '请填写修改要求' : '请描述绘图目标';
+  if (b.versionId && !refinementTarget(s)) return '修改目标已不可用，请重新选择版本';
+  if (refinementTarget(s)?.loadError) return refinementTarget(s).loadError;
+  if (!d.text.trim()) return b.versionId ? '请填写修改要求' : '请描述绘图目标';
   if (d.attachments.some(a => a.status !== 'local')) return '请先完成原件的浏览器保存';
   if (d.attachments.some(a => !a.purpose)) return '请确认每份附件的用途';
-  if (d.attachments.filter(a=>a.purpose==='source').length>1 || b.targetId && d.attachments.some(a=>a.purpose==='source')) return '请明确选择一个修改对象';
+  if (d.attachments.filter(a=>a.purpose==='source').length>1 || b.versionId && d.attachments.some(a=>a.purpose==='source')) return '请明确选择一个修改对象';
   return '';
+}
+function bindComposer(branch, versionId, previous = draftOf(branch)) {
+  if (versionId && !branch.refinements[versionId]) {
+    const next = copy(previous);
+    // Masks are tied to the exact source image. Keep the old draft's mask but
+    // never carry its geometry onto a different version.
+    for (const settings of Object.values(next.settings)) {
+      if (settings.refineMask?.sourceId !== versionId) delete settings.refineMask;
+    }
+    branch.refinements[versionId] = next;
+  }
+  branch.targetId = versionId || null;
+  if (versionId) branch.lastTargetId = versionId;
 }
 function view(task, branch, versionId, explicit = true) {
   const v = locateVersion(task, versionId);
   if (!v) return;
+  bindComposer(branch, v.id);
   branch.groupId = v.groupId; branch.candidateId = v.candidateId; branch.versionId = v.id;
   const c = branch.groups.find(g => g.id === v.groupId)?.candidates.find(c => c.id === v.candidateId);
   if (c) c.viewedVersionId = v.id;
@@ -72,11 +89,14 @@ export function workspaceReducer(state, action) {
     if (!state.tasks.some(t => t.id === action.id)) return state;
     const next = copy(state), task = next.tasks.find(t => t.id === action.id), branch = task.branches[task.path];
     next.selectedTaskId = task.id;
+    const latestEdit=branch.groups.find(g=>g.id===branch.groupId)?.candidates.find(c=>c.id===branch.candidateId)?.versions.at(-1);
+    if(state.selectedTaskId!==action.id && latestEdit?.origin==='手工编辑')view(task,branch,latestEdit.id,false);
     if (!branch.versionId) {
       const group = branch.groups.find(g => g.id === branch.groupId) || branch.groups.at(-1);
       const version = group?.candidates[0]?.versions[0];
       if (version) view(task, branch, version.id, false);
     }
+    bindComposer(branch, branch.versionId);
     return next;
   }
   const s = copy(state);
@@ -95,6 +115,7 @@ export function workspaceReducer(state, action) {
   const t = s.tasks.find(t => t.id === (action.taskId || s.selectedTaskId));
   if (!t) return state;
   let b = t.branches[action.path || t.path];
+  bindComposer(b, b.versionId);
   const d = Object.hasOwn(action, 'draftTargetId') ? (action.draftTargetId ? b.refinements[action.draftTargetId] : b.draft) : draftOf(b);
   switch (action.type) {
     case 'DELETE': if(t.activeRunId)return state;t.deleted=true;break;
@@ -107,9 +128,14 @@ export function workspaceReducer(state, action) {
     case 'ARCHIVE': t.archived = !t.archived; break;
     case 'SET_PATH':
       if (!PATHS[action.path] || action.path === t.path) return state;
-      t.branches[t.path].targetId = null;
       t.branches[t.path].navRevision++;
-      t.path = action.path; b.targetId = null; b.navRevision++; break;
+      t.path = action.path; b.navRevision++;
+      if(!b.versionId) {
+        const group=b.groups.find(g=>g.id===b.groupId&&g.candidates.some(c=>c.versions.length)) || b.groups.findLast(g=>g.candidates.some(c=>c.versions.length));
+        const candidate=group?.candidates.find(c=>c.versions.length);
+        if(candidate)view(t,b,candidate.viewedVersionId || candidate.versions.at(-1).id,false);
+      }
+      break;
     case 'EDIT_DRAFT': {
       if (!d) return state;
       // A mode switch selects an existing settings panel; it does not edit either configuration.
@@ -134,14 +160,13 @@ export function workspaceReducer(state, action) {
       if (c) view(t, b, c.viewedVersionId || c.versions.at(-1).id, false);
       break;
     }
+    // Legacy callers still select a source; there is no separate edit mode.
     case 'REFINE': {
       const v = locateVersion(t, action.versionId);
       if (!v) return state;
-      t.path = v.path; b = t.branches[v.path];
-      if (!b.refinements[v.id]) b.refinements[v.id] = { ...newDraft(), mode: b.draft.mode, settings: copy(b.draft.settings) };
-      b.targetId = v.id; b.lastTargetId = v.id; view(t, b, v.id); break;
+      t.path = v.path; b = t.branches[v.path]; view(t, b, v.id); break;
     }
-    case 'EXIT_REFINE': b.targetId = null; b.navRevision++; break;
+    case 'EXIT_REFINE': break;
     case 'INTERACT': b.navRevision++; break;
     case 'BEGIN': {
       if (submitIssue({ ...s, selectedTaskId: t.id }) || t.runs.some(r => r.id === action.runId)) return state;
@@ -159,6 +184,13 @@ export function workspaceReducer(state, action) {
       if((!action.stage||action.stage===r.stage)&&(!action.execution||Object.entries(action.execution).every(([k,v])=>r.execution?.[k]===v)))return state;
       if(action.execution)r.execution={...r.execution,...action.execution};
       if(action.stage)r.stage=action.stage;break;
+    }
+    case 'FOLLOW_SVG_SAVE': {
+      const branch=t.branches.svg;
+      // Remember the latest edit even after leaving this task/path. Never move
+      // another task or an explicitly selected historical version.
+      if((branch.versionId||null)!==(action.parentId||null))return state;
+      view(t,branch,action.versionId,false);break;
     }
     case 'SAVE_SVG': {
       const parent=locateVersion(t,action.parentId), rb=t.branches.svg;
@@ -184,7 +216,7 @@ export function workspaceReducer(state, action) {
       if (submitted?.revision === r.draftRevision) {
         if (r.parentId) b.refinements[r.parentId] = { ...copy(submitted), text: '', revision: submitted.revision + 1 };
         else b.draft = { ...copy(submitted), text: '', caption: '', avoid: '', attachments: [], revision: submitted.revision + 1 };
-        if (b.targetId === r.parentId) b.targetId = null;
+        // Keep the selected source visible while the next version is running.
       }
       if (!b.groupId) b.groupId = r.groupId;
       break;
@@ -203,7 +235,7 @@ export function workspaceReducer(state, action) {
       const v = { ...copy(action.version), number: c.versions.length + 1, parentId: r.parentId, runId: r.id, origin: r.kind === 'refine' || r.input.attachments.some(a=>a.purpose==='source') ? 'AI 修改' : '生成', review: action.version.review || '未复审', createdAt: action.at || Date.now() };
       c.versions.push(v);
       if (!c.viewedVersionId) c.viewedVersionId = v.id;
-      const canFollow = s.selectedTaskId === t.id && t.path === r.path && b.navRevision === r.navRevision && !b.targetId;
+      const canFollow = b.navRevision === r.navRevision && (b.versionId || null) === r.parentId;
       if (canFollow && (!b.versionId || r.kind === 'refine')) view(t, b, v.id, false);
       else b.unreadVersionId = v.id;
       r.stage = r.kind === 'refine' ? '修改结果已返回' : `${group.candidates.length} 个候选已返回`;
@@ -223,10 +255,12 @@ export function workspaceReducer(state, action) {
     case 'RESTORE_RUN': {
       const r = t.runs.find(r => r.id === action.runId);
       if (!r) return state;
-      const rb = t.branches[r.path], dest = r.parentId ? rb.refinements[r.parentId] : rb.draft;
+      const rb = t.branches[r.path];
+      bindComposer(rb,rb.versionId);
+      const dest = r.parentId ? rb.refinements[r.parentId] : draftOf(rb);
       if (!canRestoreRun(t, r)) return state;
       Object.assign(dest, copy(r.input), { revision: dest.revision + 1 });
-      t.path = r.path; rb.targetId = r.parentId; rb.navRevision++;
+      t.path = r.path; rb.navRevision++;
       if (r.parentId) view(t, rb, r.parentId);
       break;
     }
