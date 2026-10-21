@@ -8,6 +8,7 @@ const events = [
   'workflow.completed', 'workflow.rejected', 'workflow.awaiting', 'workflow.unknown', 'workflow.journal_failed',
   'workflow.rate_limit', 'material.busy', 'material.started', 'material.completed', 'material.failed',
   'model.rate_limit', 'model.unknown',
+  'review.png_passed', 'review.png_issues_found', 'review.png_protocol_failed',
 ] as const
 type Event = typeof events[number]
 const stages = [

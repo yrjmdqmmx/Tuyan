@@ -85,6 +85,7 @@ export function loadGatewayConfig(env = process.env) {
     watcha: { enabled: watchaEnabled, clientId: watchaEnabled ? required(env, 'WATCHA_CLIENT_ID') : '',
       clientSecret: watchaEnabled ? required(env, 'WATCHA_CLIENT_SECRET') : '', scopes: watchaScopes.join(' ') },
     production,
+    requireLogin: env.PAPERBANANA_REQUIRE_LOGIN !== 'false',
     ecosystem: ecosystemConfig(env),
     port: boundedInteger(env.PORT, 3005, 1, 65_535),
     listenHost: stringValue(env.HOST) || '0.0.0.0',

@@ -33,6 +33,8 @@
 
 发布使用原项目锁 `/run/lock/paperbanana-hk-production.lock` 和共享维护文件；检查活动任务、未完成上传及 Benchmark 执行器关闭状态。`--keep-maintenance` 仅用于需要额外数据验收的迁移；清单 ID 必须与已有维护标记相同，验收完成由该次运维操作解除标记。若存在并发写入或其他维护所有者，停止而不覆盖。
 
+任务准入配置可在用户授权后通过清单的 `core.env` 调整：`PAPERBANANA_MAX_ACTIVE_JOBS`、`PAPERBANANA_MAX_JOBS_PER_OWNER`、`PAPERBANANA_MAX_JOBS_PER_IP` 分别允许整数串 1–8、1–2、1–40；`PAPERBANANA_MAX_PENDING_JOBS` 允许 0–32。IP 上限应覆盖同一网络的多个账号，不把它当账号额度。仅改变这些配置时保持当前镜像；候选并发和单实例不随之改变。生产最新策略与生效记录见 [2026-10-21 登录和账号并发](../../docs/operations/2026-10-21-login-account-concurrency.md)；此前全局两槽记录保留作历史回执。
+
 人工清单命令本身不发布静态 Web/OpenAcad，也不升级数据库或执行 schema 迁移。自动发布接收器调用同一清单机制并原子切换国内 Web；OpenAcad 由其独立仓库的杭州流程维护。旧香港工作流保持停用。
 
 ## 杭州 OSS

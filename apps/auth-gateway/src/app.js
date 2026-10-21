@@ -20,6 +20,8 @@ import { createEcosystemRouter } from './ecosystem.js';
 
 const gzipAsync = promisify(gzip);
 
+const PUBLIC_READ_ACTIONS = new Set(['health', 'adminStatus', 'modelRegistry', 'modelCapability', 'referenceLibrary', 'benchmarkLeaderboard', 'benchmarkModelProfile', 'benchmarkMethodology', 'benchmarkCaseEvidence']);
+
 const ADMIN_BACKEND_ACTIONS = new Set([
   'adminOperationsOverview',
   'adminTaskList',
@@ -107,6 +109,13 @@ export function createApp({
   app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use('/api/ecosystem', createEcosystemRouter({ auth, frontendOrigins: config.frontendOrigins, worker: config.ecosystem, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));
+  // Enforce account access before either workspace execution or the legacy action router.
+  app.use('/paperbanana-api', asyncRoute(async (request, _response, next) => {
+    if (request.method === 'POST' && config.requireLogin !== false && !PUBLIC_READ_ACTIONS.has(String(request.body?.action || 'health'))) {
+      await requireSession(auth, request);
+    }
+    next();
+  }));
   app.use('/paperbanana-api', workspaceExecutionMiddleware({ auth, backend, store: auth.workspaceExecutionStore, libraryStore: auth.modelLibraryStore, workspaceStore: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use((request, response, next) => {
     response.on('finish', () => {
@@ -131,6 +140,7 @@ export function createApp({
       executionEnabled: Boolean(auth.workspaceStore && auth.modelLibraryStore && auth.workspaceExecutionStore),
       inputOptimizationMaterialsVersion: 1,
       imageLibraryEnabled: config.imageLibraryEnabled === true,
+      loginRequired: config.requireLogin !== false,
       auth: 'better-auth',
       authReady: authStatus.ok === true,
       backend: backendStatus,

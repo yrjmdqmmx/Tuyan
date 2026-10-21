@@ -20,6 +20,8 @@ SERVICES = {
 }
 OSS_KEYS = {'PAPERBANANA_BUCKET', 'OSS_REGION', 'OSS_INTERNAL_ENDPOINT', 'OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_OSS_SERVER_ENDPOINT_MODE',
  'PAPERBANANA_BENCH_OSS_BUCKET', 'PAPERBANANA_BENCH_OSS_REGION', 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT', 'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE'}
+ADMISSION_BOUNDS = {'PAPERBANANA_MAX_ACTIVE_JOBS': (1, 8), 'PAPERBANANA_MAX_JOBS_PER_OWNER': (1, 2), 'PAPERBANANA_MAX_JOBS_PER_IP': (1, 40), 'PAPERBANANA_MAX_PENDING_JOBS': (0, 32)}
+ADMISSION_KEYS = set(ADMISSION_BOUNDS)
 
 def pending_upload_filter(cutoff):
     # Upload receipts are retained for account cleanup after their signed URLs
@@ -62,7 +64,7 @@ def validate(m):
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
-            if name == 'plot' or key not in OSS_KEYS | {'PAPERBANANA_CODE_SHA', 'PAPERBANANA_IMAGE_LIBRARY_ENABLED', 'PAPERBANANA_OPERATIONS_ENABLED', 'PAPERBANANA_OPERATIONS_TOKEN'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
+            if name == 'plot' or key not in OSS_KEYS | ADMISSION_KEYS | {'PAPERBANANA_CODE_SHA', 'PAPERBANANA_IMAGE_LIBRARY_ENABLED', 'PAPERBANANA_OPERATIONS_ENABLED', 'PAPERBANANA_OPERATIONS_TOKEN'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
             if key == 'PAPERBANANA_CODE_SHA':
                 if name not in {'core', 'benchmark'} or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError('invalid code provenance')
             elif key == 'PAPERBANANA_IMAGE_LIBRARY_ENABLED':
@@ -71,6 +73,9 @@ def validate(m):
                 if name != 'core' or value not in {'true', 'false'}: raise ValueError('invalid operations switch')
             elif key == 'PAPERBANANA_OPERATIONS_TOKEN':
                 if name != 'core' or not re.fullmatch('[a-f0-9]{64}', value): raise ValueError('invalid dedicated operations token')
+            elif key in ADMISSION_KEYS:
+                low, high = ADMISSION_BOUNDS[key]
+                if name != 'core' or not re.fullmatch(r'0|[1-9][0-9]*', value) or not low <= int(value) <= high: raise ValueError('invalid bounded admission limit')
             elif key.endswith('_BUCKET') or key == 'PAPERBANANA_BUCKET':
                 if not re.fullmatch(r'paperbanana-(prod|bench)-hz-[0-9]{8}', value): raise ValueError('expected Hangzhou bucket')
             elif key.endswith('_REGION') and value != 'oss-cn-hangzhou': raise ValueError('expected Hangzhou region')

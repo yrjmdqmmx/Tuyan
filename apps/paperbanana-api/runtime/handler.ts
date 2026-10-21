@@ -1,4 +1,5 @@
 import { operationalMetrics } from '../src/operational-metrics.js'
+import { parsePngReviewDecision } from '../src/png-review.js'
 export { operationalMetrics } from '../src/operational-metrics.js'
 import { createWorkspaceJobDeletion } from '../src/workspace-task-deletion.js'
 import type { createImageLibrary } from '../src/image-library.js'
@@ -21,7 +22,7 @@ import {imageEvidenceBatches} from '../src/image-evidence.js'
 import {refineReviewRequirements,REFINE_REVIEW_REQUIREMENTS} from '../../../packages/api/src/refine-review.js'
 import {materialReviewImages} from '../src/material-review.js'
 import { figureRequestFields, validateFigureExecution, curatedFigureBytes } from '../src/figure-contract.js'
-import { pngObservationPrompt, parsePngObservation, pngDecisionPrompt, parsePngDecision, pngGenerationPrompt, pngPlanningConstraint, PNG_REVISION_REQUIREMENTS } from '../../../packages/api/src/png-workflow.js'
+import { pngObservationPrompt, parsePngObservation, pngDecisionPrompt, pngGenerationPrompt, pngPlanningConstraint, PNG_REVISION_REQUIREMENTS } from '../../../packages/api/src/png-workflow.js'
 import {composeVectorPanels,allocateVectorPanels,figureOutputViewport} from '../src/figure-composition.js'
 import {compileDiagramTopology,parseDiagramTopology,resolveTopologySourceRefs,topologyExtractionPrompt,topologyReviewPrompt,validateTopologyAudit,isTopologyDiagram,inspectTopologySvg,topologyRendererContract} from '../src/diagram-topology.js'
 import {rendererContext,rendererPlanningPrompt,rendererReviewPrompt,programRendererReviewPrompt,rendererObservationPrompt,validateRendererAudit} from '../src/renderer-contract.js'
@@ -6627,8 +6628,8 @@ async function runCandidate(
         await recordStage(jobId,{candidateId,type:'observation',title:`PNG v${version} 视觉观察（第${round}轮）`,round,text:JSON.stringify({...evidence,observation:report,auxiliaryVisualIssues}),image:submitted})
       }
       const main=modelRouteAccess(body,routeSecrets,'main')
-      const raw=await atJobStage('review',()=>callTextModel(main.provider,main.model,main.apiKey,pngDecisionPrompt(body.generationPath==='model-v1'),workflowContext(body,description,{...evidence,auxiliaryVisualIssues,auxiliaryVisualReport:observation || null}),observation?[]:reviewImages,{region:main.region,custom:main.custom,attempts:1}))
-      const decision=parsePngDecision(raw,version,pngHash,body.generationPath==='model-v1',body.generationPath==='model-v1'?numericReviewContract(body):undefined,auxiliaryVisualIssues)
+      const raw=await atJobStage('review',()=>callTextModel(main.provider,main.model,main.apiKey,pngDecisionPrompt(body.generationPath==='model-v1',{version,pngHash}),workflowContext(body,description,{...evidence,auxiliaryVisualIssues,auxiliaryVisualReport:observation || null}),observation?[]:reviewImages,{region:main.region,custom:main.custom,attempts:1}))
+      const decision=parsePngReviewDecision(raw,version,pngHash,body.generationPath==='model-v1',body.generationPath==='model-v1'?numericReviewContract(body):undefined,auxiliaryVisualIssues)
       entry.status=decision.passed?'passed':'issues_found';entry.assessment=decision.assessment
       review.reviewedVersion=version;review.reviewedPngHash=pngHash
       previousReview=decision.assessment
@@ -7503,8 +7504,8 @@ async function runRefineJob(jobId:string,body:RefineExecutionBody,routeSecrets:R
       }
       auxiliaryVisualIssues=[...sourceVisualIssues,...auxiliaryVisualIssues]
       if(auxiliaryVisualIssues.length)await recordStage(jobId,{candidateId:0,type:'observation',title:'精修观察逐项裁决依据',text:JSON.stringify({...comparison,auxiliaryVisualIssues,observation:observation||null}),image:submitted})
-      const raw=await atJobStage('review',()=>callTextModel(main.provider,main.model,main.apiKey,pngDecisionPrompt(true)+(editRequirements.length?'\n'+REFINE_REVIEW_REQUIREMENTS:''),workflowContext(body,description,{...comparison,auxiliaryVisualIssues,auxiliaryVisualReport:observation||null}),observation?[]:reviewImages,{region:main.region,custom:main.custom,attempts:1}))
-      const decision=parsePngDecision(raw,1,pngHash,true,numericReviewContract(body),auxiliaryVisualIssues,editRequirements)
+      const raw=await atJobStage('review',()=>callTextModel(main.provider,main.model,main.apiKey,pngDecisionPrompt(true,{version:1,pngHash})+(editRequirements.length?'\n'+REFINE_REVIEW_REQUIREMENTS:''),workflowContext(body,description,{...comparison,auxiliaryVisualIssues,auxiliaryVisualReport:observation||null}),observation?[]:reviewImages,{region:main.region,custom:main.custom,attempts:1}))
+      const decision=parsePngReviewDecision(raw,1,pngHash,true,numericReviewContract(body),auxiliaryVisualIssues,editRequirements)
       Object.assign(review,{status:decision.passed?'passed':'issues_found',reviewedVersion:1,reviewedPngHash:pngHash,history:[{round:1,version:1,pngHash,submittedImageHash,status:decision.passed?'passed':'issues_found',assessment:decision.assessment}],note:decision.passed?'精修后的实际图片已独立评审。':'精修后的实际图片已评审，仍有问题；请查看评审意见。'})
       await recordStage(jobId,{candidateId:0,type:'critic',title:'精修结果独立评审',round:1,text:JSON.stringify({...comparison,decision:JSON.parse(decision.assessment)}),image:submitted})
     }catch(error:any){

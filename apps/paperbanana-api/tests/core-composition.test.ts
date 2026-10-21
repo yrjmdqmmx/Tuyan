@@ -6853,3 +6853,29 @@ test('image library internal actions bind immutable identity and preserve expiry
     assert.equal(expired.code,410);assert.equal(expired.error,'图片已过期')
   }finally{core.configureImageLibrary(undefined,false)}
 })
+
+
+test('eight global slots keep independent two-job account quotas and FIFO queue for a shared NAT', async () => {
+  const legacy=await loadLegacy(), started:string[]=[], finished:string[]=[], releases=new Map<string,()=>void>();
+  let active=0,peak=0;
+  const controller=legacy.createJobAdmissionController({maxActive:8,maxPending:32,maxPerOwner:2,maxPerIp:40},{
+    execute:async(task:any)=>{active++;peak=Math.max(peak,active);started.push(task.jobId);await new Promise<void>(r=>releases.set(task.jobId,r));finished.push(task.jobId);active--;},
+    markFailed:async()=>{throw Error('Unexpected job failure')},logError:()=>{},
+  });
+  for(let owner=0;owner<20;owner++) {
+    for(let job=0;job<2;job++) {
+      const r=controller.reserve({ownerKey:`owner-${owner}`,ipKey:'shared-NAT'});assert.equal(r.ok,true);
+      controller.commit(r,{jobId:`${owner}:${job}`,kind:'create',body:{userId:`owner-${owner}`}});
+    }
+    const third=controller.reserve({ownerKey:`owner-${owner}`,ipKey:'another-IP'});
+    assert.equal(third.ok,false);assert.match(third.error,/owner limit/);
+  }
+  assert.equal(started.length,8);assert.equal(controller.snapshot().active,8);assert.equal(controller.snapshot().queued,32);
+  const overflow=controller.reserve({ownerKey:'extra',ipKey:'other-network'});assert.equal(overflow.ok,false);assert.match(overflow.error,/queue is full/);
+  for(let batch=0;batch<5;batch++) {
+    const ids=started.filter(id=>!finished.includes(id));for(const id of ids)releases.get(id)!();
+    await new Promise(r=>setImmediate(r));
+  }
+  await controller.drain();assert.equal(peak,8);assert.equal(finished.length,40);assert.deepEqual(started,Array.from({length:40},(_,i)=>`${Math.floor(i/2)}:${i%2}`));
+  assert.equal(controller.snapshot().active,0);assert.equal(controller.snapshot().queued,0);
+});

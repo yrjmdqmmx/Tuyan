@@ -13,6 +13,7 @@ import { createGuestToken, readGuestIdentity } from '../src/guest-identity.js';
 function config(overrides = {}) {
   return {
     production: true,
+    requireLogin: false, // Explicit legacy compatibility fixture; production defaults to required.
     frontendOrigins: ['https://paperbanana.asia'],
     trustProxy: 1,
     adminToken: 'internal-admin-token',
@@ -816,7 +817,7 @@ test('health is cached liveness, ready probes dependencies, and public routes ex
       code: 0,
       ok: true,
       runtime: 'gateway', workspaceExecutionContractVersion:1,
-      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1, imageLibraryEnabled: false,
+      executionMode: 'production', executionEnabled: false, inputOptimizationMaterialsVersion: 1, imageLibraryEnabled: false, loginRequired: false,
       auth: 'better-auth',
       authReady: true,
       backend: { mode: 'node', ok: true, checkedAt: 'cached-backend' },
@@ -1179,4 +1180,26 @@ test('production workspace execution is advertised only with all durable stores 
       assert.equal(health.simulation, undefined);
     });
   }
+});
+
+
+test('production requires login before any task, upload, export or paid helper can be dispatched', async () => {
+  const backend = fakeBackend();
+  await withApp({ backend, appConfig: productionConfig() }, async ({baseUrl}) => {
+    const actions = ['createJob','refineImage','getJob','optimizeInputs','providerAccountCatalog','universalApiCheck','prepareReferenceUpload','finalizeReferenceUpload','abortReferenceUpload','prepareMaterialUpload','finalizeMaterialUpload','getMaterial','listMaterialFiles','readMaterial','deleteMaterial','journalFigureExport','submitFeedback','tokenDanceResume','providerResume'];
+    for (const action of actions) {
+      const response = await post(baseUrl,{action,userId:'forged-user',userEmail:'forged@example.test',provider:'openai',apiKeys:{openai:'fixture-only'},workspaceExecution:{taskId:'task',runId:'run'}});
+      assert.equal(response.status,401,action);
+      assert.equal(response.headers.get('set-cookie'),null,action);
+    }
+    assert.equal(backend.calls.length,0);
+    assert.equal((await post(baseUrl,{action:'health'})).status,200);
+    assert.equal((await post(baseUrl,{action:'modelRegistry'})).status,200);
+    const authenticated = await post(baseUrl,{action:'createJob',userId:'forged-user',provider:'openai'},{'x-test-session':'actual-user|real@example.test'});
+    assert.equal(authenticated.status,200);
+    assert.equal(backend.calls.at(-1).body.userId,'actual-user');
+    assert.equal(backend.calls.at(-1).options.authUserId,'actual-user');
+    const expired = await post(baseUrl,{action:'createJob'},{cookie:'__Host-paperbanana_guest=old-cookie; better-auth.session_token=expired'});
+    assert.equal(expired.status,401);
+  });
 });

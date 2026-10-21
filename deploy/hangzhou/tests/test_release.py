@@ -36,6 +36,19 @@ class SafetyTests(unittest.TestCase):
  def test_all_existing_services_must_be_guarded(self):
   m=manifest();del m['expected_images']['cn-gateway']
   with self.assertRaises(ValueError):r.validate(m)
+ def test_admission_change_is_core_only_and_independently_bounded(self):
+  for key in r.ADMISSION_KEYS:
+   for value in ['1','2']:
+    m=manifest();m['services']={'core':{'env':{key:value}}};r.validate(m)
+   for service,value in [('gateway','2'),('cn-gateway','2'),('benchmark','2'),('plot','2'),('core',str(r.ADMISSION_BOUNDS[key][1]+1)),('core','-1'),('core','02'),('core',2),('core','2\nSECRET=x')]:
+    m=manifest();m['services']={service:{'env':{key:value}}}
+    with self.assertRaises(ValueError):r.validate(m)
+  for key in ['PAPERBANANA_CANDIDATE_CONCURRENCY','PAPERBANANA_SINGLE_REPLICA']:
+   m=manifest();m['services']={'core':{'env':{key:'2'}}}
+   with self.assertRaises(ValueError):r.validate(m)
+ def test_authorized_eight_global_two_per_owner_and_bounded_queue(self):
+  m=manifest();m['services']={'core':{'env':{'PAPERBANANA_MAX_ACTIVE_JOBS':'8','PAPERBANANA_MAX_JOBS_PER_OWNER':'2','PAPERBANANA_MAX_JOBS_PER_IP':'40','PAPERBANANA_MAX_PENDING_JOBS':'32'}}};r.validate(m)
+  m['services']['core']['env']['PAPERBANANA_MAX_PENDING_JOBS']='0';r.validate(m)
  def test_immutable_release_and_environment_only_change(self):
   m=manifest();r.validate(m)
   m['services']['core']['image']='sha256:'+'b'*64;m['services']['core']['env']['PAPERBANANA_CODE_SHA']='c'*40;r.validate(m)

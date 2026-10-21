@@ -60,6 +60,7 @@ jobs:
         env:
           VITE_API_BASE: https://tuyansci.cn
           VITE_AUTH_ENABLED: 'true'
+          VITE_AUTH_REQUIRED: 'true'
           VITE_AUTH_BASE: https://tuyansci.cn
           VITE_BASE_PATH: /
           VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'
@@ -222,6 +223,7 @@ jobs:
         env:
           VITE_API_BASE: https://api.paperbanana.asia
           VITE_AUTH_ENABLED: 'true'
+          VITE_AUTH_REQUIRED: 'true'
           VITE_AUTH_BASE: https://api.paperbanana.asia
           VITE_BASE_PATH: /
           VITE_PUBLIC_LEADERBOARD_ENABLED: 'true'

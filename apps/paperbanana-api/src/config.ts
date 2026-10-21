@@ -203,7 +203,7 @@ export function loadConfig(env: Environment = process.env, buildCodeSha?: string
       maxActive: boundedInteger(env, 'PAPERBANANA_MAX_ACTIVE_JOBS', 1, 1, 8),
       maxPending: boundedInteger(env, 'PAPERBANANA_MAX_PENDING_JOBS', 2, 0, 32),
       maxPerOwner: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_OWNER', 1, 1, 8),
-      maxPerIp: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_IP', 1, 1, 8),
+      maxPerIp: boundedInteger(env, 'PAPERBANANA_MAX_JOBS_PER_IP', 1, 1, 40),
     },
     readinessProbeTimeoutMs: boundedInteger(env, 'PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', 2000, 100, 10_000),
     referenceImageMaxBytes: boundedInteger(env, 'PAPERBANANA_MAX_REFERENCE_BYTES', REFERENCE_UPLOAD_PLATFORM.maxBytes, 1, REFERENCE_UPLOAD_PLATFORM.maxBytes),

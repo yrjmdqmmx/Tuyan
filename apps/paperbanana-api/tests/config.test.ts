@@ -190,7 +190,7 @@ test('startup config rejects unsafe admission and readiness bounds', () => {
     ['PAPERBANANA_MAX_PENDING_JOBS', '-1'],
     ['PAPERBANANA_MAX_PENDING_JOBS', '33'],
     ['PAPERBANANA_MAX_JOBS_PER_OWNER', '0'],
-    ['PAPERBANANA_MAX_JOBS_PER_IP', '9'],
+    ['PAPERBANANA_MAX_JOBS_PER_IP', '41'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '99'],
     ['PAPERBANANA_READINESS_PROBE_TIMEOUT_MS', '10001'],
     ['PAPERBANANA_MAX_REFERENCE_BYTES', '0'],
@@ -257,3 +257,9 @@ test('Hong Kong routing requires the fixed private proxy, reviewed exact hosts a
   assert.throws(()=>loadConfig({...env,PAPERBANANA_PROVIDER_HK_HOSTS:undefined}), /PAPERBANANA_PROVIDER_HK_HOSTS/)
   assert.deepEqual(loadConfig({...validEnv,PAPERBANANA_PROVIDER_DIRECT_HOSTS:'api.fireworks.ai'}).providerEgress,{mode:'disabled',directHosts:['api.fireworks.ai']})
 })
+
+
+test('eight running plus thirty-two queued tasks can share NAT without merging account quotas',()=>{
+ const c=loadConfig({...validEnv,PAPERBANANA_MAX_ACTIVE_JOBS:'8',PAPERBANANA_MAX_PENDING_JOBS:'32',PAPERBANANA_MAX_JOBS_PER_OWNER:'2',PAPERBANANA_MAX_JOBS_PER_IP:'40'});
+ assert.deepEqual(c.admission,{maxActive:8,maxPending:32,maxPerOwner:2,maxPerIp:40});
+});
