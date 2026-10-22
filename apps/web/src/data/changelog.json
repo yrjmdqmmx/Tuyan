@@ -31,7 +31,8 @@
           "sourceIds": [
             "workspace",
             "account"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -40,7 +41,8 @@
           "sourceIds": [
             "workspace",
             "sync"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -49,7 +51,8 @@
           "sourceIds": [
             "sync",
             "account"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -58,7 +61,8 @@
           "sourceIds": [
             "workspace",
             "sync"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -67,7 +71,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "新增",
@@ -77,7 +82,8 @@
             "contracts",
             "deployment",
             "workspace"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "新增",
@@ -86,7 +92,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "新增",
@@ -95,7 +102,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "新增",
@@ -103,7 +111,8 @@
           "state": "released",
           "sourceIds": [
             "workspace-fixes"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "新增",
@@ -112,7 +121,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "figures"
         },
         {
           "kind": "新增",
@@ -121,7 +131,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "figures"
         },
         {
           "kind": "新增",
@@ -130,7 +141,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "figures"
         },
         {
           "kind": "新增",
@@ -139,7 +151,8 @@
           "sourceIds": [
             "journals",
             "contracts"
-          ]
+          ],
+          "topic": "journals"
         },
         {
           "kind": "新增",
@@ -149,7 +162,8 @@
             "journals",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "journals"
         },
         {
           "kind": "新增",
@@ -158,7 +172,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "journals"
         },
         {
           "kind": "新增",
@@ -168,7 +183,8 @@
             "journals",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "journals"
         },
         {
           "kind": "新增",
@@ -178,7 +194,8 @@
             "contracts",
             "deployment",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "svg"
         },
         {
           "kind": "新增",
@@ -187,7 +204,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "svg"
         },
         {
           "kind": "新增",
@@ -196,7 +214,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "svg"
         },
         {
           "kind": "新增",
@@ -207,7 +226,8 @@
             "workspace-fixes",
             "deployment",
             "session-ui"
-          ]
+          ],
+          "topic": "svg"
         },
         {
           "kind": "新增",
@@ -217,7 +237,8 @@
             "workspace",
             "workspace-fixes",
             "session-ui"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -225,7 +246,8 @@
           "state": "released",
           "sourceIds": [
             "workspace"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "新增",
@@ -233,7 +255,8 @@
           "state": "released",
           "sourceIds": [
             "workspace"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "新增",
@@ -243,7 +266,8 @@
             "catalog",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "新增",
@@ -253,7 +277,8 @@
             "account",
             "account-library",
             "home-interactions"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "新增",
@@ -261,7 +286,8 @@
           "state": "released",
           "sourceIds": [
             "joint-release"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -269,7 +295,8 @@
           "state": "released",
           "sourceIds": [
             "joint-release"
-          ]
+          ],
+          "topic": "resources"
         },
         {
           "kind": "新增",
@@ -278,7 +305,8 @@
           "sourceIds": [
             "joint-release",
             "account-library"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "新增",
@@ -286,7 +314,8 @@
           "state": "released",
           "sourceIds": [
             "prompt-channel"
-          ]
+          ],
+          "topic": "resources"
         },
         {
           "kind": "新增",
@@ -294,7 +323,8 @@
           "state": "released",
           "sourceIds": [
             "account-library"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "新增",
@@ -302,7 +332,8 @@
           "state": "released",
           "sourceIds": [
             "account-library"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "新增",
@@ -310,7 +341,8 @@
           "state": "released",
           "sourceIds": [
             "agent-knowledge"
-          ]
+          ],
+          "topic": "agents"
         },
         {
           "kind": "新增",
@@ -318,7 +350,8 @@
           "state": "released",
           "sourceIds": [
             "agent-knowledge"
-          ]
+          ],
+          "topic": "agents"
         },
         {
           "kind": "优化",
@@ -326,7 +359,8 @@
           "state": "released",
           "sourceIds": [
             "routing"
-          ]
+          ],
+          "topic": "performance"
         },
         {
           "kind": "优化",
@@ -335,7 +369,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -344,7 +379,8 @@
           "sourceIds": [
             "contracts",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -354,7 +390,8 @@
             "contracts",
             "deployment",
             "home-interactions"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -363,7 +400,8 @@
           "sourceIds": [
             "contracts",
             "performance"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -372,7 +410,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -381,7 +420,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -390,7 +430,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -399,7 +440,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -408,7 +450,8 @@
           "sourceIds": [
             "workspace",
             "sync"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "优化",
@@ -417,7 +460,8 @@
           "sourceIds": [
             "account",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "优化",
@@ -426,7 +470,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -435,7 +480,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -443,7 +489,8 @@
           "state": "released",
           "sourceIds": [
             "catalog"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "优化",
@@ -453,7 +500,8 @@
             "catalog",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "优化",
@@ -463,7 +511,8 @@
             "catalog",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "优化",
@@ -472,7 +521,8 @@
           "sourceIds": [
             "workspace",
             "catalog"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "优化",
@@ -481,7 +531,8 @@
           "sourceIds": [
             "performance",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "优化",
@@ -490,7 +541,8 @@
           "sourceIds": [
             "account",
             "joint-release"
-          ]
+          ],
+          "topic": "mobile"
         },
         {
           "kind": "优化",
@@ -500,7 +552,8 @@
             "delivery",
             "catalog",
             "storage"
-          ]
+          ],
+          "topic": "performance"
         },
         {
           "kind": "优化",
@@ -510,7 +563,8 @@
             "watcha",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "优化",
@@ -519,7 +573,8 @@
           "sourceIds": [
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "resources"
         },
         {
           "kind": "优化",
@@ -528,7 +583,8 @@
           "sourceIds": [
             "session-ui",
             "home-interactions"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "优化",
@@ -537,7 +593,8 @@
           "sourceIds": [
             "prompt-channel",
             "home-interactions"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "优化",
@@ -546,7 +603,8 @@
           "sourceIds": [
             "account-access",
             "session-ui"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "优化",
@@ -554,7 +612,8 @@
           "state": "released",
           "sourceIds": [
             "agent-knowledge"
-          ]
+          ],
+          "topic": "agents"
         },
         {
           "kind": "修复",
@@ -562,7 +621,8 @@
           "state": "released",
           "sourceIds": [
             "routing"
-          ]
+          ],
+          "topic": "performance"
         },
         {
           "kind": "修复",
@@ -571,7 +631,8 @@
           "sourceIds": [
             "sync",
             "account"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "修复",
@@ -580,7 +641,8 @@
           "sourceIds": [
             "joint-release",
             "mobile-composer"
-          ]
+          ],
+          "topic": "mobile"
         },
         {
           "kind": "修复",
@@ -588,7 +650,8 @@
           "state": "released",
           "sourceIds": [
             "joint-release"
-          ]
+          ],
+          "topic": "workspace"
         },
         {
           "kind": "修复",
@@ -596,7 +659,8 @@
           "state": "released",
           "sourceIds": [
             "workspace-fixes"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "修复",
@@ -604,7 +668,8 @@
           "state": "released",
           "sourceIds": [
             "workspace-fixes"
-          ]
+          ],
+          "topic": "svg"
         },
         {
           "kind": "修复",
@@ -613,7 +678,8 @@
           "sourceIds": [
             "contracts",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "materials"
         },
         {
           "kind": "修复",
@@ -622,7 +688,8 @@
           "sourceIds": [
             "account",
             "workspace-fixes"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "修复",
@@ -632,7 +699,8 @@
             "workspace",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "account"
         },
         {
           "kind": "修复",
@@ -642,7 +710,8 @@
             "catalog",
             "contracts",
             "deployment"
-          ]
+          ],
+          "topic": "models"
         },
         {
           "kind": "修复",
@@ -651,7 +720,8 @@
           "sourceIds": [
             "png-review",
             "session-ui"
-          ]
+          ],
+          "topic": "workflow"
         },
         {
           "kind": "修复",
@@ -659,7 +729,8 @@
           "state": "released",
           "sourceIds": [
             "agent-knowledge"
-          ]
+          ],
+          "topic": "agents"
         }
       ],
       "sources": [
@@ -796,7 +867,69 @@
           "url": "https://github.com/yrjmdqmmx/Tuyan/blob/cc5fad07d95a71ec742387df8c0b7db71d052a92/docs/operations/2026-10-21-agent-knowledge-release.md"
         }
       ],
-      "legacyAnchors": []
+      "legacyAnchors": [],
+      "topics": [
+        {
+          "id": "workspace",
+          "title": "工作台与任务管理",
+          "summary": "全新界面、多任务、任务同步、连续创作与历史恢复。"
+        },
+        {
+          "id": "materials",
+          "title": "材料上传与读取",
+          "summary": "统一上传原始材料，按需读取、追溯来源并恢复本地文件。"
+        },
+        {
+          "id": "figures",
+          "title": "信息图类别与参考图库",
+          "summary": "更细的图型分类、专属规范，以及可追溯来源的论文参考图。"
+        },
+        {
+          "id": "journals",
+          "title": "期刊规则与投稿检查",
+          "summary": "期刊书架、投稿阶段要求、文件检查与 AI 使用规则。"
+        },
+        {
+          "id": "svg",
+          "title": "SVG 编辑与手工绘图",
+          "summary": "文字、对象、图层与曲线编辑，支持空白画布和自动保存。"
+        },
+        {
+          "id": "workflow",
+          "title": "生成、精修与评审",
+          "summary": "PNG／SVG 工作流、逐轮评审、修改核对与失败保护。"
+        },
+        {
+          "id": "models",
+          "title": "模型配置与渠道适配",
+          "summary": "统一管理连接、型号与思考设置，完善目录和接口适配。"
+        },
+        {
+          "id": "account",
+          "title": "账户与图片库",
+          "summary": "账户设置、独立图片保存、登录授权与执行额度。"
+        },
+        {
+          "id": "mobile",
+          "title": "移动端体验",
+          "summary": "输入区、键盘避让、长文本与弹窗返回体验。"
+        },
+        {
+          "id": "performance",
+          "title": "新网址与访问速度",
+          "summary": "国内入口、素材传输及国内、香港、新加坡渠道线路优化。"
+        },
+        {
+          "id": "resources",
+          "title": "科研工具与使用帮助",
+          "summary": "他山科研生态、提示词建议与新版工作区教程。"
+        },
+        {
+          "id": "agents",
+          "title": "Skill／MCP 智能体接入",
+          "summary": "同步图型、期刊与工作流知识，完善离线包和国内下载。"
+        }
+      ]
     },
     {
       "id": "v3-8-1",

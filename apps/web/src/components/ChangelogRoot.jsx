@@ -1,8 +1,8 @@
 import { useAppLocale } from './BenchmarkLocale.jsx'
-import { useEffect, useState } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ChevronDown, ExternalLink } from 'lucide-react'
 import changelog from '../data/changelog.json'
-import { CHANGE_KINDS, CHANGELOG_VIEWS, groupPublishedUpdates, publishedVersions, publicEvents, resolveChangelogAnchor, versionLabel } from '../changelog.js'
+import { CHANGE_KINDS, CHANGELOG_VIEWS, groupChangesByTopic, groupPublishedUpdates, publishedVersions, publicEvents, resolveChangelogAnchor, versionLabel } from '../changelog.js'
 import { SitePageShell } from './LeaderboardRoot.jsx'
 
 function Sources({ entry }) {
@@ -13,18 +13,52 @@ function Sources({ entry }) {
     <div>{sources.map(source => <a href={source.url} key={source.id} target="_blank" rel="noopener noreferrer">{t(source.label)}<ExternalLink size={12} aria-hidden="true" /></a>)}</div>
   </details>
 }
+function ChangeSections({ changes, label }) {
+  const { t } = useAppLocale()
+  return CHANGE_KINDS.map(kind => {
+    const items = changes.filter(change => change.kind === kind)
+    return items.length ? <section className="changelog-change-group" aria-label={`${label} ${t(kind === '优化' ? '更新类型：优化' : kind)}`} key={kind}>
+      <h5><span className={`changelog-kind changelog-kind-${kind}`}>{t(kind === '优化' ? '更新类型：优化' : kind)}</span></h5>
+      <ul className="changelog-changes">{items.map((change, index) => <li key={index}>{t(change.text)}</li>)}</ul>
+    </section> : null
+  })
+}
+function TopicChanges({ entry, groups }) {
+  const { t } = useAppLocale()
+  const listRef = useRef(null)
+  const label = entry.product ? versionLabel(entry) : t(entry.title)
+  const setAll = open => {
+    for (const details of listRef.current?.children || []) details.open = open
+  }
+  return <div className="changelog-topics">
+    <div className="changelog-topic-toolbar">
+      <span>{t('按主题浏览')}</span>
+      <div role="group" aria-label={t('{version} 的更新展开控制', { version: label })}>
+        <button type="button" aria-controls={`${entry.id}-topics`} onClick={() => setAll(true)}>{t('全部展开')}</button>
+        <button type="button" aria-controls={`${entry.id}-topics`} onClick={() => setAll(false)}>{t('全部收起')}</button>
+      </div>
+    </div>
+    <div className="changelog-topic-list" id={`${entry.id}-topics`} ref={listRef}>
+      {groups.map(group => <details className="changelog-topic" key={group.id}>
+        <summary>
+          <span className="changelog-topic-heading">
+            <span className="changelog-topic-title"><strong>{t(group.title)}</strong><span className="changelog-topic-count">{t('{count} 项更新', { count: group.changes.length })}</span></span>
+            {group.summary && <span className="changelog-topic-summary">{t(group.summary)}</span>}
+          </span>
+          <ChevronDown size={18} className="changelog-topic-chevron" aria-hidden="true"/>
+        </summary>
+        <div className="changelog-topic-content"><ChangeSections changes={group.changes} label={`${label} ${t(group.title)}`}/></div>
+      </details>)}
+    </div>
+  </div>
+}
 function EntryDetails({ entry }) {
   const { t } = useAppLocale()
+  const groups = groupChangesByTopic(entry)
   return <>
     <h4>{t(entry.title)}</h4><p className="changelog-summary">{t(entry.summary)}</p>
     {entry.notes?.length > 0 && <ul className="changelog-notes">{entry.notes.map(note => <li key={note}>{t(note)}</li>)}</ul>}
-    {CHANGE_KINDS.map(kind => {
-      const changes = entry.changes.filter(change => change.kind === kind)
-      return changes.length ? <section className="changelog-change-group" aria-label={`${entry.product ? versionLabel(entry) : t(entry.title)} ${kind}`} key={kind}>
-        <h5><span className={`changelog-kind changelog-kind-${kind}`}>{t(kind === '优化' ? '更新类型：优化' : kind)}</span></h5>
-        <ul className="changelog-changes">{changes.map((change, index) => <li key={index}>{t(change.text)}</li>)}</ul>
-      </section> : null
-    })}
+    {groups.length ? <TopicChanges entry={entry} groups={groups}/> : <ChangeSections changes={entry.changes} label={entry.product ? versionLabel(entry) : t(entry.title)}/>}
     <Sources entry={entry}/>
   </>
 }

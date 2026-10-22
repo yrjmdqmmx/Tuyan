@@ -12,6 +12,15 @@ const RELEASE_PROOF = ['deployment', 'release-record', 'owner-confirmation', 'ar
 const VERSION_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const BENCHMARK_VERSION_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 export function versionLabel(entry) { return `${PRODUCTS[entry.product]} v${entry.version}` }
+export function groupChangesByTopic(entry) {
+  const topics = entry.topics || []
+  if (!topics.length) return []
+  const groups = topics.map(topic => ({ ...topic, changes: entry.changes.filter(change => change.topic === topic.id) })).filter(group => group.changes.length)
+  // Keep a newly appended, unassigned update readable even before its topic is supplied.
+  const remaining = entry.changes.filter(change => !topics.some(topic => topic.id === change.topic))
+  if (remaining.length) groups.push({ id: 'other-updates', title: '其他更新', changes: remaining })
+  return groups
+}
 export function compareVersions(a, b) {
   const left = a.split('.').map(Number), right = b.split('.').map(Number)
   for (let i = 0; i < Math.max(left.length, right.length); i++) {
@@ -70,9 +79,19 @@ export function validateChangelog(data) {
     anchor(entry.id); for (const alias of entry.legacyAnchors || []) anchor(alias)
     if (!text(entry.title) || !text(entry.summary) || !Array.isArray(entry.surfaces) || !entry.surfaces.length || entry.surfaces.some(s => !['Web', '微信小程序', 'Android', 'Windows', 'Agent', '平台'].includes(s))) errors.push(`${entry.id}: invalid display fields`)
     const ids = sources(entry)
+    const topicIds = new Set()
+    if (entry.topics !== undefined) {
+      if (!Array.isArray(entry.topics) || !entry.topics.length) errors.push(`${entry.id}: topics must be a nonempty array`)
+      else for (const topic of entry.topics) {
+        fields(topic, ['id', 'title', 'summary'], entry.id)
+        if (!/^[a-z][a-z0-9-]*$/.test(topic?.id || '') || topicIds.has(topic?.id) || !text(topic?.title) || !text(topic?.summary)) errors.push(`${entry.id}: invalid or duplicate topic`)
+        topicIds.add(topic?.id)
+      }
+    }
     if (!Array.isArray(entry.changes) || !entry.changes.length) { errors.push(`${entry.id}: changes required`); return }
     for (const change of entry.changes) {
-      fields(change, ['kind', 'text', 'state', 'surfaces', 'sourceIds'], entry.id)
+      fields(change, ['kind', 'text', 'state', 'surfaces', 'sourceIds', 'topic'], entry.id)
+      if ((entry.topics !== undefined || change.topic !== undefined) && !topicIds.has(change.topic)) errors.push(`${entry.id}: each grouped change needs an existing topic`)
       if (!CHANGE_KINDS.includes(change.kind) || !text(change.text)) errors.push(`${entry.id}: invalid change`)
       if (change.state !== 'released') errors.push(`${entry.id}: unreleased changes cannot enter public history`)
       if (!Array.isArray(change.sourceIds) || !change.sourceIds.length || change.sourceIds.some(id => !ids.has(id))) errors.push(`${entry.id}: each change needs existing source IDs`)
@@ -80,6 +99,7 @@ export function validateChangelog(data) {
       const proof = isEvent ? [...RELEASE_PROOF, 'announcement'] : RELEASE_PROOF
       if (!entry.sources?.some(s => change.sourceIds?.includes(s.id) && proof.includes(s.kind))) errors.push(`${entry.id}: a PR or announcement alone does not prove version publication`)
     }
+    for (const id of topicIds) if (!entry.changes.some(change => change.topic === id)) errors.push(`${entry.id}: empty topic`)
   }
   fields(data, ['schemaVersion', 'coverage', 'entries', 'events'], 'archive')
   fields(data?.coverage, ['from', 'through'], 'coverage')
@@ -87,7 +107,7 @@ export function validateChangelog(data) {
   if (!isDate(data?.coverage?.from) || !isDate(data?.coverage?.through) || data.coverage.from > data.coverage.through) errors.push('invalid coverage')
   if (!Array.isArray(data?.entries) || !data.entries.length) return [...errors, 'versions required']
   for (const entry of data.entries) {
-    fields(entry, ['id', 'product', 'version', 'announcementDate', 'release', 'title', 'summary', 'surfaces', 'changes', 'sources', 'notes', 'legacyAnchors'], entry.id)
+    fields(entry, ['id', 'product', 'version', 'announcementDate', 'release', 'title', 'summary', 'surfaces', 'changes', 'sources', 'notes', 'legacyAnchors', 'topics'], entry.id)
     const identity = `${entry.product}:${entry.version}`, pattern = entry.product === 'benchmark' ? BENCHMARK_VERSION_PATTERN : VERSION_PATTERN
     if (!Object.hasOwn(PRODUCTS, entry.product) || !pattern.test(entry.version || '')) errors.push(`${entry.id}: invalid product version format`)
     if (identities.has(identity) || (previous.has(entry.product) && compareVersions(previous.get(entry.product), entry.version) <= 0)) errors.push(`${entry.id}: product versions must be unique and numerically descending`)

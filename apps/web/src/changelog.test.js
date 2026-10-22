@@ -2,8 +2,27 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
 import { appRelativePath } from './appPaths.js'
-import { compareVersions, groupPublishedUpdates, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
+import { compareVersions, groupChangesByTopic, groupPublishedUpdates, isChangelogPath, publishedVersions, publicEvents, resolveChangelogAnchor, validateChangelog, versionLabel } from './changelog.js'
+import { benchmarkText } from './components/benchmarkLocale.js'
 const data = JSON.parse(readFileSync(new URL('./data/changelog.json', import.meta.url), 'utf8'))
+test('topic grouping preserves every original update and its evidence exactly once', () => {
+  const entry = data.entries[0], before = structuredClone(entry)
+  const groups = groupChangesByTopic(entry)
+  const changes = groups.flatMap(group => group.changes)
+  assert.equal(groups.length, 12)
+  assert.equal(changes.length, entry.changes.length)
+  assert.equal(new Set(changes).size, entry.changes.length)
+  for (const change of entry.changes) assert.ok(changes.includes(change))
+  assert.deepEqual(entry, before)
+  for (const group of groups) {
+    assert.doesNotMatch(benchmarkText('en', group.title), /[\u4e00-\u9fff]/)
+    assert.doesNotMatch(benchmarkText('en', group.summary), /[\u4e00-\u9fff]/)
+  }
+  assert.deepEqual(groupChangesByTopic(data.entries[1]), [])
+  const extended = structuredClone(entry)
+  extended.changes.push({ ...entry.changes[0], topic: 'unassigned', text: 'Future update' })
+  assert.equal(groupChangesByTopic(extended).at(-1).changes[0].text, 'Future update')
+})
 test('independent product lines contain only published versions with their own numbering', () => {
   assert.deepEqual(validateChangelog(data), [])
   assert.equal(publishedVersions(data, 'tuyan').length, 15)
@@ -58,6 +77,11 @@ test('published Pareto and bilingual improvements belong to Benchmark v2.5 only'
   assert.equal(pending.benchmark, null)
 })
 for (const [name, mutate, expected] of [
+  ['duplicate topic', copy => { copy.entries[0].topics.push(copy.entries[0].topics[0]) }, /duplicate topic/],
+  ['missing topic', copy => { delete copy.entries[0].changes[0].topic }, /existing topic/],
+  ['unknown topic', copy => { copy.entries[0].changes[0].topic = 'unknown' }, /existing topic/],
+  ['empty topic', copy => { copy.entries[0].topics.push({ id: 'empty', title: 'Empty', summary: 'Empty' }) }, /empty topic/],
+  ['private topic field', copy => { copy.entries[0].topics[0].privateNotes = 'hidden' }, /unsupported field/],
   ['draft version', copy => { copy.entries.find(e => e.id === 'v3-7-1').release.status = 'unreleased' }, /only released versions/],
   ['local change', copy => { copy.entries[0].changes[0].state = 'local-verified' }, /unreleased changes/],
   ['invalid date', copy => { copy.entries[0].release.date = '2026-02-30' }, /calendar date/],
