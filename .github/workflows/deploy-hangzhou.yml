@@ -26,8 +26,14 @@ jobs:
           cache: pnpm
       - name: Install system plotting and Office runtimes for actual file tests
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y acl python3-venv fonts-noto-cjk libreoffice-impress libreoffice-writer
+          # The runner's Azure mirror repeatedly stalled large Office/font downloads.
+          # Keep its official Ubuntu archive/security fallbacks and normal signatures.
+          if [ -f /etc/apt/apt-mirrors.txt ]; then
+            sudo sed -i '/azure\.archive\.ubuntu\.com/d' /etc/apt/apt-mirrors.txt
+          fi
+          apt_options=(-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30)
+          sudo apt-get "${apt_options[@]}" update -qq
+          sudo apt-get "${apt_options[@]}" install -y acl python3-venv fonts-noto-cjk libreoffice-impress libreoffice-writer
           /usr/bin/python3 -m venv "$RUNNER_TEMP/plot-venv"
           "$RUNNER_TEMP/plot-venv/bin/python" -m pip install -r apps/plot-worker/requirements.txt
           # Linux RLIMIT_NPROC counts all threads for a UID. Keep real plot
