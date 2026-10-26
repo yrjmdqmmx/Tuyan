@@ -34,7 +34,7 @@ test('8 real uploads, >5MiB originals, processing and vanilla main-model analysi
     let releaseInspection!: () => void
     const inspection = r.legacy.withReferenceProcessing(() => new Promise<void>(resolve => { releaseInspection = resolve }))
     const result = await r.post({ action: 'createJob', provider: 'openai', apiKeys: { openai: 'fixture-only' },
-      mainModelName: 'gpt-4.1', imageModelName: 'gpt-image-1', referenceVisionModelName: 'gpt-4.1',
+      mainModelName: 'gpt-4.1', imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-4.1',
       visionMode: 'none', referenceImageMode: 'main_model', referenceImages: uploads, pipelineMode: 'vanilla',
       methodContent: 'Compare scientific cell pathways with eight reference diagrams and clear labels.', caption: 'Scientific workflow',
       retrievalSetting: 'none', imageSize: '1K', aspectRatio: '1:1', maxCriticRounds: 0, numCandidates: 1 })
@@ -62,6 +62,7 @@ test('8 real uploads, >5MiB originals, processing and vanilla main-model analysi
     const generationCall = r.providerCalls.find((x: any) => x.url.endsWith('/images/generations'))
     assert.ok(generationCall)
     const generation = JSON.parse(String(generationCall.options.body))
+    assert.equal(generation.model, 'gpt-image-2')
     assert.match(generation.prompt, /readable labels.*Preserve all reference labels/s, 'the main model full plan enters the image generation prompt')
     assert.equal(r.providerCalls.filter((x: any) => x.url.endsWith('/chat/completions')).length, 1, 'basic none uses one main planning call')
     assert.equal(r.legacy.referenceProcessingState().peak, 1)
@@ -124,7 +125,7 @@ test('supported photographic WebP is retained before PNG expansion, and Bailian 
       for (const key of ['maxCount','maxBytes','maxTotalBytes','maxDimension','maxPixels','requestMaxBytes'] as const) assert.ok(selected[key] <= fallback[key],key)
     }
     for (const url of ['http://127.0.0.1/a.jpg','https://169.254.169.254/latest/meta-data','https://legacy-cdn.example/image?id=1']) {
-      const denied = await r.invoke({action:'refineImage',provider:'openai',imageModelName:'gpt-image-1',sourceImageUrl:url,editInstruction:'Enlarge labels',userId:'refine-owner'})
+      const denied = await r.invoke({action:'refineImage',provider:'openai',imageModelName:'gpt-image-2',sourceImageUrl:url,editInstruction:'Enlarge labels',userId:'refine-owner'})
       assert.notEqual(denied.code,0)
       assert.match(denied.error,/上传精修原图/)
     }
@@ -172,13 +173,14 @@ test('owned extensionless JPEG sources keep working through Gateway and the real
     const jpeg = await sharp(r.image).jpeg().toBuffer()
     r.objects.set(key,{bytes:jpeg,mimeType:'image/jpeg'})
     await r.db.collection('paperbanana_jobs').insertOne({_id:'owned-jpeg-job',userId:'refine-owner',status:'succeeded',resultImages:[{objectKey:key,url:r.baseUrl+'/objects/'+key}]})
-    const queued = await r.post({action:'refineImage',provider:'openai',apiKeys:{openai:'fixture-only'},mainModelName:'gpt-4.1',imageModelName:'gpt-image-1',referenceVisionModelName:'gpt-4.1',sourceImageObjectKey:key,editInstruction:'Enlarge labels',aspectRatio:'1:1',imageSize:'1K',outputFormat:'png'})
+    const queued = await r.post({action:'refineImage',provider:'openai',apiKeys:{openai:'fixture-only'},mainModelName:'gpt-4.1',imageModelName:'gpt-image-2',referenceVisionModelName:'gpt-4.1',sourceImageObjectKey:key,editInstruction:'Enlarge labels',aspectRatio:'1:1',imageSize:'1K',outputFormat:'png'})
     assert.equal(queued.data.code,0,JSON.stringify(queued))
     await r.legacy.drainJobAdmission()
     const job = await r.db.collection('paperbanana_jobs').findOne({_id:queued.data.jobId})
     assert.equal(job.status,'succeeded',JSON.stringify(job))
     const call = r.providerCalls.find((item:any)=>item.url.endsWith('/images/edits'))!
     const form = call.options.body as FormData
+    assert.equal(form.get('model'), 'gpt-image-2')
     const part = (form.get('image') || form.get('image[]')) as Blob
     const pixels = await sharp(Buffer.from(await part.arrayBuffer())).raw().toBuffer()
     assert.deepEqual(pixels,await sharp(jpeg).raw().toBuffer())

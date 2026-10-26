@@ -13,7 +13,7 @@ test(`real gateway/Core upload, ownership validation, source snapshot and image 
   const source = { filename: 'source.png', mimeType: 'image/png', size: runtime.image.length }
   const refine = {
     action: 'refineImage', provider: 'openai', apiKeys: { openai: 'local-fixture-key' }, mainModelName: 'gpt-4.1',
-    imageModelName: 'gpt-image-1', referenceVisionModelName: 'gpt-4.1', editInstruction: '放大标签，保留配色和布局',
+    imageModelName: 'gpt-image-2', referenceVisionModelName: 'gpt-4.1', editInstruction: '放大标签，保留配色和布局',
     aspectRatio: '1:1', imageSize: '1K', outputFormat: 'png',
   }
   try {
@@ -55,6 +55,7 @@ test(`real gateway/Core upload, ownership validation, source snapshot and image 
     const editCall = runtime.providerCalls.find((call: any) => call.url.endsWith('/images/edits'))
     assert.ok(editCall, 'uploaded source reaches the real image editing adapter')
     const form = editCall!.options.body as FormData
+    assert.equal(form.get('model'), 'gpt-image-2')
     const imagePart = form.get('image') || form.get('image[]')
     assert.ok(imagePart instanceof Blob)
     const submittedPixels = await sharp(Buffer.from(await (imagePart as Blob).arrayBuffer())).raw().toBuffer()

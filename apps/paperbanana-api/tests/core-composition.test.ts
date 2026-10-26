@@ -1279,7 +1279,9 @@ test('refinement rejects noncanonical image sizes before persistence or provider
   }
 })
 
-test('direct-edit refinement rejects registered but unsupported 4K before persistence or provider dispatch', async () => {
+test('direct-edit refinement rejects registered but unsupported 4K before persistence or provider dispatch', async (t) => {
+  // Exercise the legacy size contract before its separate retirement gate.
+  t.mock.timers.enable({ apis: ['Date'], now: Date.parse('2026-10-22T00:00:00Z') })
   const legacy = await loadLegacy()
   const state = ((globalThis as any).__paperbananaLegacyTestState ||= {})
   const previousStoredObjects = state.storedObjectBytes

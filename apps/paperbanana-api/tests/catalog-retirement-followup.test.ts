@@ -33,10 +33,12 @@ test('OpenAI shutdown metadata is account-scoped and announced future retirement
   const account=await r.legacy.readAccountModelCatalog({provider:'openai',apiKeys:{openai:'fixture'}})
   assert.equal(account.providerRegistry.models.find((m:any)=>m.id==='gpt-6-sol').selectable,false)
   assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id==='gpt-6-sol').selectable,true)
-  const id='gpt-4o-2024-11-20',cutoff=Date.parse('2027-01-14T00:00:00Z')
-  Date.now=()=>cutoff-1
-  assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id===id).selectable,true)
-  Date.now=()=>cutoff
-  assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id===id).selectable,false)
+  for (const [id, date] of [['gpt-4o-2024-11-20','2027-01-14'],['gpt-image-1','2026-10-23']]) {
+   const cutoff=Date.parse(date+'T00:00:00Z')
+   Date.now=()=>cutoff-1
+   assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id===id).selectable,true,id)
+   Date.now=()=>cutoff
+   assert.equal((await r.legacy.modelRegistry({provider:'openai'})).providers.openai.models.find((m:any)=>m.id===id).selectable,false,id)
+  }
  }finally{Date.now=now;await r.close()}
 })
