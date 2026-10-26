@@ -13,7 +13,8 @@ jobs:
   verify:
     if: github.repository == 'yrjmdqmmx/Tuyan' && github.ref == 'refs/heads/codex/hangzhou-production'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Full offline Core and serial Web regressions can exceed 30m on shared runners.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
