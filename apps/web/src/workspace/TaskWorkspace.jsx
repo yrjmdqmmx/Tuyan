@@ -5,6 +5,7 @@ import TaskSidebar from './TaskSidebar.jsx';
 import TaskSidebarRail from './TaskSidebarRail.jsx';
 import TaskComposer from './TaskComposer.jsx';
 import useComposerViewport from './useComposerViewport.js';
+import { useWorkspaceEntrance } from './useWorkspaceMotion.js';
 import ResultWorkspace from './ResultWorkspace.jsx';
 import WorkspaceDialog from './WorkspaceDialog.jsx';
 import WorkspaceSegments from './WorkspaceSegments.jsx';
@@ -91,6 +92,7 @@ export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTas
     onAccountSettings: (renderAccount || onAccountSettings) && (() => { setMobileOpen(false); if (renderAccount) setPage('账户设置'); else onAccountSettings(); }),
   };
   const hasStarted = task.runs.length > 0 || task.path === 'svg';
+  useWorkspaceEntrance(shellRef, page === 'workspace' && !hasStarted && !task.deleted);
   function openComposerPanel(next, event) {
     composerDialogTriggerRef.current = event.currentTarget;
     setSettingsSection(null);

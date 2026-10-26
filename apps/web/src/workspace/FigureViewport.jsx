@@ -40,7 +40,7 @@ export default function FigureViewport({ version, onFullscreen, fullscreen = fal
     if (interacted.current !== interactionKey) { interacted.current = interactionKey; onInteract?.(); }
   }
   function changeZoom(next) { interact(); setZoom(next === null ? null : Math.max(.05, Math.min(4, next))); }
-  return <div className={`tw-figure-viewport ${zoom === null ? 'is-fit' : ''} ${fullscreen ? 'is-fullscreen' : ''}`}>
+  return <div data-image-ready={ready || undefined} className={`tw-figure-viewport ${zoom === null ? 'is-fit' : ''} ${fullscreen ? 'is-fullscreen' : ''}`}>
     <div ref={viewport} className="tw-figure-scroll" tabIndex={0} role="region" aria-label="作品预览，放大后可滚动查看" onPointerDown={interact} onWheel={interact} onKeyDown={e => { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.key)) interact(); }}>
       {failed ? <div className="tw-preview-failure" role="alert">此版本预览加载失败，原记录仍保留。<button type="button" onClick={() => { setFailed(false); setNatural({ width: 0, height: 0 }); }}>重新载入</button></div>
         : <div className="tw-figure-stage" style={ready ? stage : undefined}><img src={version.url} alt={previewLabel || versionLabel(version, true)} draggable={false} style={ready ? size : { visibility: 'hidden' }} onLoad={e => setNatural({ width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight })} onError={() => setFailed(true)} /></div>}

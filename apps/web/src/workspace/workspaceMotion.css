@@ -79,3 +79,38 @@
   .tw-composer-actions { flex:1 1 100%; justify-content:flex-end; flex-wrap:wrap; gap:2px; }
   .tw-composer-actions .tw-tool { padding:7px 4px!important; gap:4px; }
 }
+
+/* Recovered 2026-10-26 preview: use its rhythm on real controls and results. */
+.tw-composer {
+  transition: border-color 220ms ease, box-shadow 260ms ease;
+}
+.tw-composer:focus-within {
+  border-color: #87a794;
+  box-shadow: 0 0 0 3px #4978590b, 0 6px 24px #2248340c;
+}
+@media (hover: hover) {
+  .tw-send:not(:disabled):hover { box-shadow: 0 5px 14px #315f5126; }
+}
+.tw-backdrop:not(.tw-mobile-nav-backdrop) { animation: tw-panel-backdrop 250ms ease; }
+.tw-dialog:not(.tw-mobile-nav-dialog):not(.tw-dialog-fullscreen) { animation: tw-panel-enter 360ms cubic-bezier(.22,1,.36,1); }
+.tw-dialog:not(.tw-mobile-nav-dialog):not(.tw-dialog-fullscreen) > .tw-dialog-body > :is(section,fieldset) {
+  animation: tw-content-enter 280ms 55ms cubic-bezier(.22,1,.36,1) backwards;
+}
+.tw-dialog:not(.tw-mobile-nav-dialog):not(.tw-dialog-fullscreen) > .tw-dialog-body > :is(section,fieldset):nth-child(2) { animation-delay: 95ms; }
+.tw-dialog:not(.tw-mobile-nav-dialog):not(.tw-dialog-fullscreen) > .tw-dialog-body > :is(section,fieldset):nth-child(3) { animation-delay: 135ms; }
+.tw-generation-placeholder > h2 { animation: tw-content-enter 300ms cubic-bezier(.22,1,.36,1); }
+/* Trigger only after real image loading, not on progress polling or zooming. */
+.tw-figure-viewport[data-image-ready] .tw-figure-stage > img { animation: tw-result-enter 600ms cubic-bezier(.22,1,.36,1); }
+@keyframes tw-panel-backdrop { from { opacity: 0; } to { opacity: 1; } }
+@keyframes tw-panel-enter { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes tw-content-enter { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: none; } }
+@keyframes tw-result-enter { from { opacity: 0; translate: 0 12px; scale: .985; } to { opacity: 1; translate: none; scale: 1; } }
+@media (max-width:767px) {
+  .tw-dialog:not(.tw-mobile-nav-dialog):not(.tw-dialog-fullscreen) { animation-name: tw-sheet-enter; }
+  @keyframes tw-sheet-enter { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tw-composer { transition: none; }
+  .tw-backdrop, .tw-dialog, .tw-dialog > .tw-dialog-body > :is(section,fieldset),
+  .tw-generation-placeholder > h2, .tw-figure-viewport[data-image-ready] .tw-figure-stage > img { animation: none !important; }
+}
