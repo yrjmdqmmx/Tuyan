@@ -3,6 +3,7 @@ import {generationProgressSnapshot} from './generationProgress.js';
 import { historyJob } from '../../../../packages/api/src/workspace-history.mjs';
 import { mergeAccountHistory } from './workspaceHistory.js';
 import {useEffect,useRef,useState} from 'react';
+import useBackendHealth from '../hooks/useBackendHealth.js';
 import {API_BASE_DEFAULT} from '../config.js';
 import {workspaceResultDataUrl,workspaceAccountResultDataUrl} from './workspaceResultAsset.js';
 import {buildWorkspaceRequest,startWorkspaceRun,recoverWorkspaceRun,pollWorkspaceRun,workspaceExecutionIssue} from './workspaceExecution.js';
@@ -14,10 +15,12 @@ function reviewSummary(review,simulation){
   return ({passed:'模型评审通过',issues_found:'模型评审发现问题',modified_unreviewed:'修改后的版本尚未复审',review_failed:'模型评审未完成'})[review?.status]||'未提供评审结论';
 }
 export default function useWorkspaceExecution({stateRef,dispatch,sync,models,userId,base=API_BASE_DEFAULT}){
-  const [health,setHealth]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+  const {health,healthError,healthStatus,retryHealth}=useBackendHealth(base);
+  const [error,setError]=useState(''),[busy,setBusy]=useState(false);
+  const [waitingForConnection,setWaitingForConnection]=useState(false);
   const [progressByRunId,setProgressByRunId]=useState({});
   const live=useRef(true),submitting=useRef(new Set()),polling=useRef(false);
-  useEffect(()=>{live.current=true;const ac=new AbortController();fetch(base+'/paperbanana-api',{credentials:'include',signal:ac.signal}).then(r=>r.json()).then(data=>{if(live.current)setHealth(data);}).catch(()=>{if(live.current)setError('无法确认执行服务状态');});return()=>{live.current=false;ac.abort();};},[base]);
+  useEffect(()=>{live.current=true;return()=>{live.current=false;};},[base]);
   async function refresh(){
     if(polling.current||!live.current||!stateRef.current||!userId)return;
     polling.current=true;
@@ -41,6 +44,8 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
   useEffect(()=>{const tick=()=>void refreshRef.current();tick();const timer=setInterval(tick,5000);const visible=()=>{if(document.visibilityState==='visible')tick();};window.addEventListener('online',tick);document.addEventListener('visibilitychange',visible);window.addEventListener('pageshow',tick);return()=>{clearInterval(timer);window.removeEventListener('online',tick);document.removeEventListener('visibilitychange',visible);window.removeEventListener('pageshow',tick);};},[userId]);
   async function submit(){
     if(submitting.current.size)return;setError('');if(!userId){setError('请先登录图研，任务执行需要账号归属。草稿已保留。');return;}
+    if(!health){setWaitingForConnection(true);void retryHealth();return;}
+    setWaitingForConnection(false);
     const unavailable=workspaceExecutionIssue(health);if(unavailable){setError(unavailable);return;}
     const simulation=health.simulation===true;
     setBusy(true);const original=stateRef.current,task=currentTask(original),runId=uid();submitting.current.add(runId);
@@ -68,5 +73,6 @@ export default function useWorkspaceExecution({stateRef,dispatch,sync,models,use
     }catch(e){if(live.current)setError(e.message);}
   }
   async function simulateFailure(){const t=currentTask(stateRef.current),run=t.runs.find(r=>r.id===t.activeRunId);if(!run?.execution||!health?.simulation)return;await fetch(base+'/paperbanana-api',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','X-Workspace-Account':userId},body:JSON.stringify({action:'workspaceSimulationFail',runId:run.id,jobId:run.execution.jobId})});await refresh();}
-  return {submit,refresh,simulateFailure,closeUnaccepted,busy,error,health,progressByRunId};
+  const connectionNotice=!health&&waitingForConnection?'正在检查服务连接，恢复后请再次提交。':'';
+  return {submit,refresh,simulateFailure,closeUnaccepted,busy,error:error||healthError||connectionNotice,health,healthError,healthStatus,retryHealth,progressByRunId};
 }

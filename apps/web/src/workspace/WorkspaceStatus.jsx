@@ -24,8 +24,8 @@ export default function WorkspaceStatus({ preview = false, sync, execution, sign
       <div className="tw-status-sections">
         <section>
           <h3><Monitor size={17} aria-hidden="true" />{preview ? '本地预览' : '执行服务'}</h3>
-          <p>{!preview && health?.executionMode === 'production' && health.executionEnabled ? '任务与版本随账号保存，执行使用所选渠道。' : health?.executionEnabled === true ? '真实 TokenDance 执行 · 消耗已授权额度 · 任务保存在本机服务' : health?.simulation ? '本地模拟执行 · 不调用真实模型 · 原材料仅存此浏览器' : '正在确认执行服务…'}</p>
-          {!health && execution.error && <p className="tw-status-issue">{execution.error}</p>}
+          <p>{!preview && health?.executionMode === 'production' && health.executionEnabled ? '任务与版本随账号保存，执行使用所选渠道。' : health?.executionEnabled === true ? '真实 TokenDance 执行 · 消耗已授权额度 · 任务保存在本机服务' : health?.simulation ? '本地模拟执行 · 不调用真实模型 · 原材料仅存此浏览器' : execution.healthStatus === 'retrying' ? '连接暂时中断，正在自动重新检查…' : execution.healthStatus === 'paused' ? '连接检查已暂停，联网并回到页面后会自动继续。' : execution.healthStatus === 'error' ? '暂时无法连接执行服务，任务和草稿已保留。' : '正在确认执行服务…'}</p>
+          {!health && (execution.healthError || execution.error) && <p className="tw-status-issue">{execution.healthError || execution.error}</p>}
           <div className="tw-status-actions">
             <>{preview && <button type="button" onClick={() => onExamples()} disabled={stepping}>载入示例</button>}</>
             <>{preview && <button type="button" onClick={() => onExamples('portrait')} disabled={stepping}>竖图示例</button>}</>
