@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React from 'react';
@@ -86,7 +87,7 @@ test('successful mesh render discovers fields; switching field requests a new re
   fireEvent.click(screen.getByRole('button',{name:'载入示例'}));
   fireEvent.click(screen.getByRole('button',{name:'开始渲染'}));
   const selector=await screen.findByRole('combobox',{name:/着色字段/});
-  fireEvent.change(selector,{target:{value:'temperature'}});
+  changeControl(selector,{target:{value:'temperature'}});
   assert.equal(screen.queryByRole('button',{name:'下载 PNG'}),null);
   fireEvent.click(screen.getByRole('button',{name:'开始渲染'}));
   await screen.findByRole('button',{name:'下载 PNG'});

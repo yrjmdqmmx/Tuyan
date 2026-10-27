@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import {useId,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {BookOpen,ChevronRight,X} from 'lucide-react';
@@ -53,10 +54,10 @@ export default function JournalRulePicker({value,onChange,figureTypeId,refineCon
             <p className="journal-muted">{snapshot.summary}</p>
             {error&&<p role="alert" className="notice warning">{error}</p>}
             <div className="journal-scope">
-              {snapshot.rules.some(r=>r.applicability?.stages?.length<3)&&<label>投稿阶段<select value={draft.stage} onChange={e=>change('stage',e.target.value)}>{Object.entries(JOURNAL_STAGES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>}
-              {snapshot.rules.some(r=>r.applicability?.purposes?.length<5)&&<label>图件用途<select value={draft.purpose} onChange={e=>change('purpose',e.target.value)}>{Object.entries(JOURNAL_PURPOSES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>}
+              {snapshot.rules.some(r=>r.applicability?.stages?.length<3)&&<label>投稿阶段<MenuSelect value={draft.stage} onChange={e=>change('stage',e.target.value)}>{Object.entries(JOURNAL_STAGES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</MenuSelect></label>}
+              {snapshot.rules.some(r=>r.applicability?.purposes?.length<5)&&<label>图件用途<MenuSelect value={draft.purpose} onChange={e=>change('purpose',e.target.value)}>{Object.entries(JOURNAL_PURPOSES).map(([id,label])=><option key={id} value={id}>{label}</option>)}</MenuSelect></label>}
               <label>最终排版宽度（mm）<input type="number" min="10" max="1000" step="0.1" value={draft.widthMm} onChange={e=>change('widthMm',e.target.value)}/></label>
-              {rules.some(r=>r.field==='dpi'&&r.value?.byKind)&&<label>图像构成<select value={draft.rasterKind} onChange={e=>change('rasterKind',e.target.value)}><option value="color">彩色</option><option value="grayscale">灰度</option><option value="lineart">纯线稿</option></select></label>}
+              {rules.some(r=>r.field==='dpi'&&r.value?.byKind)&&<label>图像构成<MenuSelect value={draft.rasterKind} onChange={e=>change('rasterKind',e.target.value)}><option value="color">彩色</option><option value="grayscale">灰度</option><option value="lineart">纯线稿</option></MenuSelect></label>}
             </div>
             <p className="journal-width-help">排版宽度用于检查实际像素密度，不改变画面比例或像素数。</p>
             {refineContext?<div className="journal-content-basis">
@@ -66,13 +67,13 @@ export default function JournalRulePicker({value,onChange,figureTypeId,refineCon
               <p>{draft.contentSource==='figure-type'?`沿用信息图类别：${figureType.label}`:`已保存的图像性质：${JOURNAL_CONTENT[draft.contentType]}`}<span>{draft.contentSource==='figure-type'?JOURNAL_CONTENT[draft.contentType]:''}</span></p>
               <details><summary>特殊内容或调整判断</summary>
                 <p>图型决定表达方式，不能证明素材是否为原始科研图像。涉及显微照片、实验成像等原始证据时，请单独声明。</p>
-                <label>图像性质<select value={draft.contentSource==='figure-type'?'figure-type':draft.contentType} onChange={e=>changeContent(e.target.value)}>
+                <label>图像性质<MenuSelect value={draft.contentSource==='figure-type'?'figure-type':draft.contentType} onChange={e=>changeContent(e.target.value)}>
                   <option value="figure-type">沿用信息图类别（{figureType.label}）</option>
                   {Object.entries(JOURNAL_CONTENT).map(([id,label])=><option key={id} value={id}>{label}</option>)}
-                </select></label>
+                </MenuSelect></label>
               </details>
             </div>:<div className="journal-content-basis">
-              <label>精修原图性质<select value={draft.contentType} onChange={e=>changeContent(e.target.value)}>{Object.entries(JOURNAL_CONTENT).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
+              <label>精修原图性质<MenuSelect value={draft.contentType} onChange={e=>changeContent(e.target.value)}>{Object.entries(JOURNAL_CONTENT).map(([id,label])=><option key={id} value={id}>{label}</option>)}</MenuSelect></label>
               <p>精修原图不能从生成页的图型推断，请确认其性质；历史任务沿用已保存的判断。</p>
             </div>}
             <ul className="journal-rules">{rules.filter(primaryRule).map(r=><Rule key={r.id} rule={r} sources={snapshot.sources}/>)}</ul>

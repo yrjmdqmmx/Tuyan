@@ -1,3 +1,4 @@
+import { menuOptions, changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -23,10 +24,10 @@ test('Fireworks exact effort lists persist and reset without adding an unsupport
     const control = screen.getByLabelText(role === 'main' ? '主模型 / 规划思考强度' : '视觉识别思考强度')
     assert.equal(screen.getAllByRole('combobox').length, 1)
     assert.equal(screen.queryByRole('spinbutton'), null)
-    assert.deepEqual(Array.from(control.options).map(o => o.value), ['', ...efforts.map(JSON.stringify)])
-    assert.match(control.options[0].textContent, /默认.*未确认/)
+    assert.deepEqual(Array.from(menuOptions(control)).map(o => o.value), ['', ...efforts.map(JSON.stringify)])
+    assert.match(menuOptions(control)[0].textContent, /默认.*未确认/)
     for (const effort of [...efforts, undefined]) {
-      fireEvent.change(control, { target: { value: effort === undefined ? '' : JSON.stringify(effort) } })
+      changeControl(control, { target: { value: effort === undefined ? '' : JSON.stringify(effort) } })
       assert.equal(saveThinkingSettings(settings, window.localStorage), true)
       const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identities('fireworks', id))
       const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, [role], 'generation')

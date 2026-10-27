@@ -1,3 +1,4 @@
+import { chooseMenuOption, changeControl, menuOptions } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test } from 'node:test'
 import { IDBFactory } from 'fake-indexeddb'
@@ -126,13 +127,13 @@ test('MiniMax region selector keeps independent keys and submits only the select
   await user.click(screen.getByRole('button',{name:'稀宇科技',exact:true}))
   const key = screen.getByLabelText('稀宇科技 接入密钥')
   await user.type(key,'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),'cn')
   assert.equal(key.value,'')
   assert.match(document.body.textContent,/api\.minimax\.cn/)
   await user.type(key,'fixture-cn-key')
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'global')
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),'global')
   assert.equal(key.value,'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),'cn')
   assert.equal(key.value,'fixture-cn-key')
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.click(submitButton())
@@ -158,11 +159,11 @@ for (const region of ['cn','global']) test('rendered MiniMax refine submits the 
   await user.click(await screen.findByRole('button',{name:'精修候选图 1'},{timeout:5000}))
   await user.click(await screen.findByRole('button',{name:'精修设置'}))
   await user.click(screen.getByRole('button',{name:'稀宇科技',exact:true}))
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'global')
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),'global')
   await user.type(screen.getByLabelText('稀宇科技 接入密钥'),'fixture-global-key')
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),'cn')
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),'cn')
   await user.type(screen.getByLabelText('稀宇科技 接入密钥'),'fixture-cn-key')
-  await user.selectOptions(screen.getByLabelText('稀宇科技区域'),region)
+  await chooseMenuOption(screen.getByLabelText('稀宇科技区域'),region)
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
   await user.type(screen.getByLabelText('精修指令'),'放大标签并保持版式')
   await user.click(screen.getByRole('button',{name:'提交精修'}))
@@ -297,7 +298,7 @@ test('Ark verification is optional and a failed probe does not block submit', as
   await user.click(submitButton())
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   const createCount = requests.filter((request) => request.body?.action === 'createJob').length
-  fireEvent.change(screen.getByLabelText('火山方舟 接入密钥'), { target: { value: 'changed-key' } })
+  changeControl(screen.getByLabelText('火山方舟 接入密钥'), { target: { value: 'changed-key' } })
   await user.click(submitButton())
   await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'createJob').length, createCount + 1))
 })
@@ -318,7 +319,7 @@ test('Ark discards an in-flight verification response after the key changes', as
   await user.click(screen.getByRole('button', { name: '验证所选模型' }))
   await waitFor(() => assert.equal(requests.filter((request) => request.body?.action === 'providerAccountCatalog').length, 1))
 
-  fireEvent.change(keyInput, { target: { value: 'replacement-key' } })
+  changeControl(keyInput, { target: { value: 'replacement-key' } })
   gate.resolve(Response.json({
     code: 0,
     provider: 'ark',
@@ -390,7 +391,7 @@ test('an older Ark completion cannot clear the busy state owned by a newer reque
   await user.click(verifyButton)
   await waitFor(() => assert.equal(probeRequestCount, 1))
 
-  fireEvent.change(keyInput, { target: { value: 'second-key' } })
+  changeControl(keyInput, { target: { value: 'second-key' } })
   await user.click(verifyButton)
   await waitFor(() => assert.equal(probeRequestCount, 2))
   assert.ok(verifyButton.querySelector('.spin'))
@@ -411,13 +412,13 @@ test('SVG generation preserves an unused disabled image draft without blocking t
   image.disabledReason = '图像模型已停用'
   const { requests, user } = await renderReadyApp(invalidRegistry)
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
+  await chooseMenuOption(screen.getByLabelText('导出格式'), 'svg')
   await user.type(screen.getByLabelText('阿里云百炼 接入密钥'), 'bailian-key')
   await user.click(submitButton())
 
   await waitFor(() => assert.ok(requests.some((request) => request.body?.action === 'createJob')))
   assert.equal(requests.find(request => request.body?.action === 'createJob').body.modelRoutes.image, undefined)
-  await user.selectOptions(screen.getByLabelText('导出格式'), 'png')
+  await chooseMenuOption(screen.getByLabelText('导出格式'), 'png')
   await user.click(screen.getByRole('button',{name:/专业模式/}))
   assert.match(screen.getByRole('button',{name:'图像生成模型',exact:true}).textContent,/Wan Image/)
 })
@@ -452,17 +453,17 @@ test('refine tab independently shows route summary and opens shared settings foc
 test('refine resolution choices use refine metadata while generation keeps its separate resolution metadata', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  assert.deepEqual([...screen.getByLabelText('输出清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+  assert.deepEqual([...menuOptions(screen.getByLabelText('输出清晰度'))].map((option) => option.value), ['1K', '2K', '4K'])
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
 
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   const refineResolutionSelect = await screen.findByLabelText('清晰度')
-  assert.deepEqual([...refineResolutionSelect.options].map((option) => option.value), ['1K', '2K'])
+  assert.deepEqual([...menuOptions(refineResolutionSelect)].map((option) => option.value), ['1K', '2K'])
 
   await user.click(screen.getByRole('button', { name: '精修设置' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['2K'])
+  assert.deepEqual([...menuOptions(screen.getByLabelText('清晰度'))].map((option) => option.value), ['2K'])
 })
 
 test('Gemini and Ark expose their declared 4K refine capability', async () => {
@@ -471,12 +472,12 @@ test('Gemini and Ark expose their declared 4K refine capability', async () => {
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
   await user.click(screen.getByRole('button', { name: 'Google' }))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+  assert.deepEqual([...menuOptions(screen.getByLabelText('清晰度'))].map((option) => option.value), ['1K', '2K', '4K'])
 
   await user.click(screen.getByRole('button', { name: '精修设置' }))
   await user.click(screen.getByRole('button', { name: '火山方舟' }))
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  assert.deepEqual([...screen.getByLabelText('清晰度').options].map((option) => option.value), ['1K', '2K', '4K'])
+  assert.deepEqual([...menuOptions(screen.getByLabelText('清晰度'))].map((option) => option.value), ['1K', '2K', '4K'])
 })
 
 test('legacy registry without refine resolution metadata fails safe to 2K only', async () => {
@@ -485,7 +486,7 @@ test('legacy registry without refine resolution metadata fails safe to 2K only',
   const { user } = await renderReadyApp(legacyRegistry)
   await user.click(screen.getByRole('button', { name: '精修图片' }))
   const refineResolutionSelect = await screen.findByLabelText('清晰度')
-  assert.deepEqual([...refineResolutionSelect.options].map((option) => option.value), ['2K'])
+  assert.deepEqual([...menuOptions(refineResolutionSelect)].map((option) => option.value), ['2K'])
 })
 
 test('model without supported refine resolutions shows an honest disabled capability state', async () => {
@@ -519,7 +520,7 @@ test('switching from a 4K refine model preserves the selected size and blocks un
   await user.click(screen.getByRole('button', { name: 'Google' }))
   await user.type(screen.getByLabelText('Google 接入密钥'), 'gemini-key')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
-  await user.selectOptions(screen.getByLabelText('清晰度'), '4K')
+  await chooseMenuOption(screen.getByLabelText('清晰度'), '4K')
 
   await user.click(screen.getByRole('button', { name: '精修设置' }))
   await user.click(screen.getByRole('button', { name: 'OpenAI' }))
@@ -529,7 +530,7 @@ test('switching from a 4K refine model preserves the selected size and blocks un
   await user.type(screen.getByLabelText('精修指令'), '放大标签并保持版式')
   assert.equal(screen.getByRole('button', { name: '提交精修' }).disabled, true)
   assert.equal(requests.some((request) => request.body?.action === 'refineImage'), false)
-  await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
+  await chooseMenuOption(screen.getByLabelText('清晰度'), '2K')
   await user.click(screen.getByRole('button', { name: '目标比例 自动' }))
   await user.click(screen.getByRole('button', { name: '提交精修' }))
 
@@ -549,10 +550,10 @@ test('opening refine settings preserves legacy simple routing instead of forcing
 test('refine model selection stays PNG-capable after the generation output was changed to SVG', async () => {
   const { user } = await renderReadyApp()
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.selectOptions(screen.getByLabelText('导出格式'), 'svg')
+  await chooseMenuOption(screen.getByLabelText('导出格式'), 'svg')
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  await user.selectOptions(await screen.findByLabelText('清晰度'), '1K')
+  await chooseMenuOption(await screen.findByLabelText('清晰度'), '1K')
   await user.click(screen.getByRole('button', { name: '目标比例 1:1' }))
   await user.click(await screen.findByRole('button', { name: '精修设置' }))
   assert.equal(screen.queryByLabelText('导出格式'), null)

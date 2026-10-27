@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import {afterEach,test} from 'node:test'
 import React from 'react'
@@ -26,15 +27,15 @@ test('metadata persistence excludes keys; changed endpoints reject old bindings;
 test('professional custom channel preserves preset choices and input while address change clears only its key',async()=>{
  globalThis.localStorage=window.localStorage;saveUniversalDrafts(drafts());const requests=backend(),user=userEvent.setup();render(React.createElement(App))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='modelRegistry')))
- fireEvent.change(screen.getByLabelText(/论文方法内容/u),{target:{value:'保留这段论文方法，不因模型配置切换而丢失已有输入。'}})
+ changeControl(screen.getByLabelText(/论文方法内容/u),{target:{value:'保留这段论文方法，不因模型配置切换而丢失已有输入。'}})
  await user.click(screen.getByRole('button',{name:'打开完整设置'}));await user.click(screen.getByRole('button',{name:/普通模式/}));
  const before=screen.getByRole('region',{name:'当前生成设置'}).textContent
  await user.click(screen.getByRole('button',{name:/专业模式/}))
  await user.click(screen.getByRole('button',{name:'主模型',exact:true}))
  assert.equal(screen.getByLabelText('主模型 模型 ID').value,'User/Exact-main')
  assert.equal(screen.queryByText(/API 密钥不会发送到用户指定的第三方地址/),null)
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'old-bound-key'}})
- fireEvent.change(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://changed.example.com/v2'}})
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'old-bound-key'}})
+ changeControl(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://changed.example.com/v2'}})
  assert.equal(screen.getByLabelText('主模型 API Key').value,'');assert.equal(screen.getByLabelText('主模型 模型 ID').value,'User/Exact-main')
  await user.click(screen.getByRole('button',{name:'返回生成设置'}));await user.click(screen.getByRole('button',{name:/普通模式/}));await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
  assert.equal(screen.getByRole('region',{name:'当前生成设置'}).textContent,before)
@@ -48,13 +49,13 @@ test('custom submit preserves exact IDs and scoped readonly catalog check makes 
  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
  for(const [label,trigger] of [['主模型','主模型'],['视觉模型','视觉模型'],['图像模型','图像生成模型']]){
   await user.click(screen.getByRole('button',{name:trigger,exact:true}))
-  fireEvent.change(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','视觉模型','图像模型'].indexOf(label)}`}})
+  changeControl(screen.getByLabelText(`${label} API Key`),{target:{value:`fixture-key-${['主模型','视觉模型','图像模型'].indexOf(label)}`}})
   await user.click(screen.getByRole('button',{name:'返回生成设置'}))
  }
  await user.click(screen.getByRole('button',{name:'主模型',exact:true}))
  await user.click(screen.getAllByRole('button',{name:'获取模型'})[0]);await screen.findAllByText(/已隔离 1 条异常/)
  assert.equal(Object.keys(JSON.parse(requests.find(x=>x?.action==='universalApiCheck').apiKeys.custom)).length,1)
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'new-account-key'}})
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'new-account-key'}})
  assert.equal(screen.queryByText(/已隔离 1 条异常/),null)
  await user.click(screen.getByRole('button',{name:'返回生成设置'}));await user.click(screen.getByRole('button',{name:'关闭生成设置'}));await user.click(screen.getAllByRole('button',{name:'生成候选图'}).find(x=>x.type==='submit'))
  await waitFor(()=>assert.ok(requests.some(x=>x?.action==='createJob')))

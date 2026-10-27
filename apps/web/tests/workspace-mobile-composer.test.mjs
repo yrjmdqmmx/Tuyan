@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React, { useReducer } from 'react';
@@ -216,7 +217,7 @@ test('mobile attachments still require an explicit purpose and sending keeps all
   fireEvent.change(screen.getByRole('textbox', { name:'绘图要求' }), { target:{ value:'流程图\n要求不截断' } });
   fireEvent.change(container.querySelector('input[type=file]'), { target:{ files:[new window.File(['demo'], 'research.txt', {type:'text/plain'})] } });
   assert.equal(screen.getByRole('button', { name:'生成图像' }).disabled, true);
-  fireEvent.change(screen.getByRole('combobox', { name:'research.txt 的用途' }), { target:{ value:'research' } });
+  changeControl(screen.getByRole('combobox', { name:'research.txt 的用途' }), { target:{ value:'research' } });
   fireEvent.click(screen.getByRole('button', { name:'生成图像' }));
   assert.equal(currentDraft(submitted).text, '流程图\n要求不截断');
   assert.equal(currentDraft(submitted).attachments[0].purpose, 'research');

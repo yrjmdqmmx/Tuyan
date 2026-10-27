@@ -1,3 +1,4 @@
+import { changeControl, chooseMenuOption } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React, { useReducer, act } from 'react';
@@ -80,10 +81,10 @@ test('candidate and version selection directly binds the next instruction and re
   assert.equal(screen.getByLabelText('当前修改对象').value,'A');
   await user.click(screen.getByRole('button', { name: '查看候选 B · v1' }));
   await user.type(screen.getByLabelText('修改要求'), '只改 B 颜色');
-  await user.selectOptions(screen.getByLabelText('当前修改对象'),'A');
+  chooseMenuOption(screen.getByLabelText('当前修改对象'),'A');
   assert.equal(screen.getByLabelText('修改要求').value, '');
   assert.ok(screen.getByRole('button', { name: '修改 A · v1' }));
-  await user.selectOptions(screen.getByLabelText('当前修改对象'),'B');
+  chooseMenuOption(screen.getByLabelText('当前修改对象'),'B');
   assert.equal(screen.getByLabelText('修改要求').value,'只改 B 颜色');
   assert.ok(screen.getByRole('button', { name: '修改 B · v1' }));
 });
@@ -113,7 +114,7 @@ test('running task blocks another path but does not block a new task or clear it
   await user.click(screen.getByRole('button', { name: '新建任务' }));
   await user.type(screen.getByLabelText('绘图要求'), '任务二');
   assert.equal(screen.getByRole('button', { name: '生成矢量图' }).disabled, false);
-  await user.click(screen.getByRole('button', { name: /任务一/ }));
+  await user.click(screen.getAllByRole('button', { name: /任务一/ }).find(button => button.classList.contains('tw-task-select')));
   assert.equal(screen.getByLabelText('绘图要求').value, 'SVG 后续要求');
 });
 test('search includes requirement text; Escape returns focus', async () => {
@@ -201,7 +202,7 @@ test('fullscreen preview exits with Escape and preserves the bound refinement an
 test('Ctrl/Cmd+Enter submits only outside IME composition, ordinary Enter is a newline', async () => {
   let sends = 0; render(React.createElement(Harness, { onSend: () => { sends++; } }));
   const input = screen.getByLabelText('绘图要求');
-  fireEvent.change(input, { target: { value: '研究绘图' } });
+  changeControl(input, { target: { value: '研究绘图' } });
   fireEvent.keyDown(input, { key: 'Enter' });
   fireEvent.keyDown(input, { key: 'Enter', metaKey: true, isComposing: true });
   assert.equal(sends, 0);
@@ -220,7 +221,7 @@ test('unconfirmed attachment purpose blocks send and is editable inline', async 
   let initial = newWorkspace('a'); initial = workspaceReducer(initial, { type: 'EDIT_DRAFT', patch: { text: '绘制机制图', attachments: [{ id: 'file', filename: 'example.png', purpose: '', status: 'local' }] } });
   render(React.createElement(Harness, { initial }));
   assert.equal(screen.getByRole('button', { name: '生成图像' }).disabled, true);
-  await userEvent.setup().selectOptions(screen.getByLabelText('example.png 的用途'), 'reference');
+  await chooseMenuOption(screen.getByLabelText('example.png 的用途'), 'reference');
   assert.equal(screen.getByRole('button', { name: '生成图像' }).disabled, false);
 });
 test('local scientific figure fixtures are valid SVG including text containing ampersands', () => {
@@ -241,7 +242,7 @@ test('leaderboard opens inside both sidebar sizes and returning retains the task
 test('permanent deletion requires confirmation, cancellation is inert, failures stay visible and duplicate clicks are blocked',async()=>{
  const state=newWorkspace('delete-fixture');state.tasks[0].title='删除验收样例';state.tasks[0].branches.png.draft.text='fixture';
  let calls=0,finish;render(React.createElement(TaskWorkspace,{state,dispatch:()=>{},onDeleteTask:()=>{calls++;return new Promise((resolve,reject)=>{finish={resolve,reject};});}}));
- const open=()=>{fireEvent.click(screen.getByLabelText('删除验收样例 的操作'));fireEvent.click(screen.getByRole('button',{name:'删除',exact:true}));};
+ const open=()=>{fireEvent.click(screen.getByLabelText('删除验收样例 的操作'));fireEvent.click(screen.getByRole('menuitem',{name:'删除',exact:true}));};
  open();assert.equal(calls,0);assert.ok(screen.getByText(/无法恢复/));assert.equal(screen.queryByRole('button',{name:'归档',exact:true}),null);
  fireEvent.click(screen.getByRole('button',{name:'取消',exact:true}));assert.equal(calls,0);assert.equal(screen.queryByRole('dialog',{name:'彻底删除任务'}),null);
  open();fireEvent.click(screen.getByRole('button',{name:'彻底删除',exact:true}));assert.equal(calls,1);assert.equal(screen.getByRole('button',{name:'正在彻底删除…'}).disabled,true);

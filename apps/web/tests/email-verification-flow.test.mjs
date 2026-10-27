@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -15,8 +16,8 @@ function clientFixture(data = { verificationStatusToken: 'observer-fixture' }) {
 async function signup(client, onAuthenticated = () => assert.fail('verification must not sign in')) {
   render(React.createElement(AuthPanel, { client, onAuthenticated }));
   fireEvent.click(screen.getByRole('button', { name: '没有账号，去注册' }));
-  fireEvent.change(screen.getByLabelText('邮箱'), { target: { value: 'fixture@163.test' } });
-  fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'fixture-password' } });
+  changeControl(screen.getByLabelText('邮箱'), { target: { value: 'fixture@163.test' } });
+  changeControl(screen.getByLabelText('密码'), { target: { value: 'fixture-password' } });
   fireEvent.click(screen.getByRole('button', { name: '注册并验证邮箱' }));
   await waitFor(() => assert.ok(screen.getByRole('heading', { name: '等待验证' })));
 }
@@ -108,8 +109,8 @@ test('ordinary login refreshes the app session instead of redirecting to email-v
   client.signIn.email = async (input) => { payload = input; return { data: {} }; };
   try {
     render(React.createElement(AuthPanel, { client, onAuthenticated: () => { authenticated++; } }));
-    fireEvent.change(screen.getByLabelText('邮箱'), { target: { value: 'fixture@example.test' } });
-    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'fixture-password' } });
+    changeControl(screen.getByLabelText('邮箱'), { target: { value: 'fixture@example.test' } });
+    changeControl(screen.getByLabelText('密码'), { target: { value: 'fixture-password' } });
     fireEvent.click(screen.getByRole('button', { name: '登录', exact: true }));
     await waitFor(() => assert.equal(authenticated, 1));
     assert.deepEqual(payload, { email: 'fixture@example.test', password: 'fixture-password' });

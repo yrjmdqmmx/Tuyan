@@ -11,6 +11,7 @@ export function modelMissingFromCatalog(registry, provider, modelOrId) {
   return Boolean(registry?.catalogHealth?.[provider]?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
     || model?.catalogPresence?.status === 'absent'
     || model?.disabledReason?.startsWith('当前目录未列出该模型')
+    || model?.disabledReason?.startsWith('当前渠道的完整公开目录已不再提供此精确型号')
     || (!unavailable && registry?.providers && !channel)
     || (!unavailable && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
 }

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test, { afterEach } from 'node:test';
 import React from 'react';
@@ -43,9 +44,9 @@ test('wallet uses microyuan while payment submits integer yuan and rejects fract
   assert.equal(formatTokenDanceMoney(1_234_567), '1.234567');
   assert.ok(screen.getByText(/Key 额度需在观猹 TokenDance/));
   const input = screen.getByRole('spinbutton', { name: '观猹 TokenDance 充值金额' });
-  fireEvent.change(input, { target: { value: '1.5' } });
+  changeControl(input, { target: { value: '1.5' } });
   assert.equal(screen.getByRole('button', { name: '创建 ¥1.5 充值单' }).disabled, true);
-  fireEvent.change(input, { target: { value: '10' } });
+  changeControl(input, { target: { value: '10' } });
   fireEvent.click(screen.getByRole('button', { name: '创建 ¥10 充值单' }));
   assert.deepEqual(amounts, [10]);
 });

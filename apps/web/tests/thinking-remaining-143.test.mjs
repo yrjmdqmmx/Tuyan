@@ -1,3 +1,4 @@
+import { changeControl, menuOptions } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -21,7 +22,7 @@ test('MaaS Kimi switch restores and submits independently for text and vision wi
     render(React.createElement(Harness, { identity, role, capture: value => { settings = value } }))
     assert.equal(screen.getAllByRole('combobox').length, 1)
     assert.equal(screen.queryByRole('spinbutton'), null)
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: JSON.stringify(mode) } })
+    changeControl(screen.getByRole('combobox'), { target: { value: JSON.stringify(mode) } })
     assert.equal(saveThinkingSettings(settings, window.localStorage), true)
     const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)
     const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, [role], 'generation')
@@ -47,19 +48,19 @@ test('MaaS effort explains activation, restores exact service choices and return
     const identity = identities(modelId)
     render(React.createElement(Harness, { identity, role: 'main', capture: value => { settings = value } }))
     const effort = screen.getByRole('combobox')
-    assert.deepEqual([...effort.options].map(x => x.value), ['', '"high"', '"max"'])
+    assert.deepEqual([...menuOptions(effort)].map(x => x.value), ['', '"high"', '"max"'])
     assert.equal(effort.value, '')
     assert.equal(screen.queryByRole('spinbutton'), null)
     assert.equal(screen.queryByLabelText('主模型 / 规划思考模式'), null)
     assert.match(screen.getByRole('region').textContent, /选择强度时会同时开启思考；恢复默认后不发送强度或开关/)
     const compile = value => compileThinkingSelection(buildThinkingSubmission(value, { thinkingContractVersion: 1 }, ['main'], 'generation').thinkingConfig.roles.main, 'main').wire
     assert.deepEqual(compile(settings), {})
-    fireEvent.change(effort, { target: { value: '"max"' } })
+    changeControl(effort, { target: { value: '"max"' } })
     assert.equal(saveThinkingSettings(settings, window.localStorage), true)
     assert.deepEqual(compile(reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)), { reasoning_effort: 'max', enable_thinking: true })
     const otherIdentity = identities(modelId === 'xopglm52' ? 'xopdeepseekv4pro' : 'xopglm52')
     assert.deepEqual(compile(reconcileThinkingSettings(readThinkingSettings(window.localStorage), otherIdentity)), {})
-    fireEvent.change(effort, { target: { value: '' } })
+    changeControl(effort, { target: { value: '' } })
     assert.deepEqual(compile(settings), {})
     cleanup()
   }

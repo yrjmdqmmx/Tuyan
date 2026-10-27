@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import {IDBFactory} from 'fake-indexeddb';
 import {saveBrowserMaterial,browserFile,listBrowserMaterials} from '../src/lib/browserMaterials.js';
 import test,{afterEach} from 'node:test'
@@ -108,7 +109,7 @@ test('App reuses chart settings, saves classification changes, and restores the 
  render(React.createElement(App));await waitFor(()=>assert.ok(screen.getAllByText('old@example.test').length));
  fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));
  fireEvent.click(screen.getByRole('button',{name:'信息图类别'}));
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'流程图'}});
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'流程图'}});
  fireEvent.click(screen.getByRole('button',{name:/^流程图 Flowchart/}));
  await waitFor(()=>assert.equal(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)).contentType,'schematic'));
  assert.equal(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)).figureTypeId,'workflow');
@@ -156,9 +157,9 @@ test('refining a task reuses its figure and journal; replacing the source discar
  records();fireEvent.click(await screen.findByRole('button',{name:'精修结果图 1'}));
  await waitFor(()=>assert.equal(actions.filter(a=>a==='getJob').length,2));
  const late=pendingJobs.get('source-a');
- fireEvent.change(screen.getByLabelText('上传精修原图'),{target:{files:[new File(['new bytes'],'replacement.png',{type:'image/png'})]}});
+ changeControl(screen.getByLabelText('上传精修原图'),{target:{files:[new File(['new bytes'],'replacement.png',{type:'image/png'})]}});
  await screen.findByLabelText('原图性质');
- fireEvent.change(screen.getByLabelText('原图性质'),{target:{value:'illustration'}});
+ changeControl(screen.getByLabelText('原图性质'),{target:{value:'illustration'}});
  await act(async()=>{late(Response.json({code:0,job:saved}));});
  await screen.findByText('原图已保存到浏览器 · 提交时上传');
  assert.equal(screen.getByLabelText('原图性质').value,'illustration');
@@ -167,7 +168,7 @@ test('refining a task reuses its figure and journal; replacing the source discar
  fireEvent.click(screen.getByRole('button',{name:'精修设置',exact:true}));
  assert.ok(screen.getByRole('button',{name:/不指定期刊/}));
  fireEvent.click(screen.getByRole('button',{name:'关闭生成设置'}));
- fireEvent.change(screen.getByLabelText('上传精修原图'),{target:{files:[new File(['other'],'other.png',{type:'image/png'})]}});
+ changeControl(screen.getByLabelText('上传精修原图'),{target:{files:[new File(['other'],'other.png',{type:'image/png'})]}});
  assert.equal(screen.getByLabelText('原图性质').value,'');
  assert.deepEqual(JSON.parse(window.localStorage.getItem(JOURNAL_SETTINGS_KEY)),generationSelection);
  assert.equal(actions.filter(a=>a==='refineImage'||a==='createJob').length,0);

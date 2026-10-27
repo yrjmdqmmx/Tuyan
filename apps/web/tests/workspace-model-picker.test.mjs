@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -99,7 +100,7 @@ test('saved mobile navigation and search preserve exact connection selection', (
   assert.ok(screen.getByRole('heading',{name:'选择 API 接入渠道'}));
   fireEvent.click(screen.getByRole('button',{name:'观猹 TokenDance',exact:true}));
   fireEvent.click(screen.getByRole('button',{name:'厂商 阿里巴巴',exact:true}));
-  fireEvent.change(screen.getByRole('searchbox',{name:'搜索主模型'}),{target:{value:'qwen'}});
+  changeControl(screen.getByRole('searchbox',{name:'搜索主模型'}),{target:{value:'qwen'}});
   assert.equal(screen.getAllByRole('article').length,2);
   const selectedCard=document.querySelector('.model-option.active');assert.match(selectedCard.textContent,/Second/);
   fireEvent.click(screen.getByRole('button',{name:'选择 Qwen fixture · First · one'}));
@@ -194,7 +195,7 @@ test('ordinary connection preset retains full review but avoids a duplicate visu
  const configured=structuredClone(models);configured.registry.providers.tokendance.defaults={main:'qwen-fixture',image:'draw-fixture',vision:'qwen-fixture'};
  const draft=currentDraft(newWorkspace('preset'));let changed;
  render(React.createElement(WorkspaceModelConfig,{draft,path:'png',models:configured,onChange:value=>changed=value}));
- fireEvent.change(screen.getByRole('combobox',{name:'普通预设'}),{target:{value:'one'}});
+ changeControl(screen.getByRole('combobox',{name:'普通预设'}),{target:{value:'one'}});
  fireEvent.click(screen.getByRole('button',{name:'应用此连接的默认组合'}));
  assert.equal(changed.models.main.modelId,'qwen-fixture');assert.equal(changed.models.image.modelId,'draw-fixture');assert.equal(changed.models.vision,undefined);assert.equal(changed.reviews,1);
 });

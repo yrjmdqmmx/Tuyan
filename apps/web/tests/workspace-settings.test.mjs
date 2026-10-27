@@ -1,3 +1,4 @@
+import { menuOptions, chooseMenuOption } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';import assert from 'node:assert/strict';import React from 'react';
 import {render,screen,fireEvent,cleanup}from'@testing-library/react';
 import WorkspaceDialog from '../src/workspace/WorkspaceDialog.jsx';
@@ -19,8 +20,10 @@ test('ratio background represents landscape, square and portrait selections',()=
 test('ordinary default resolution keeps supported aspect ratios selectable',()=>{
  const draft=newDraft();draft.settings.simple.models={image:{accessProvider:'tokendance',modelId:'seedream-fixture'}};
  const models={registry:{providers:{tokendance:{models:[{id:'seedream-fixture',capabilities:{resolutions:['2K','4K'],aspectRatiosByResolution:{'2K':['1:1','16:9'],'4K':['1:1']}}}]}}}};
- render(React.createElement(WorkspaceDrawingSettings,{draft,path:'png',models,onChange(){}}));
- assert.equal(screen.getByRole('option',{name:'16:9'}).disabled,false);assert.equal(screen.getByRole('option',{name:'自动'}).disabled,false);
+ let changed;render(React.createElement(WorkspaceDrawingSettings,{draft,path:'png',models,onChange:value=>{changed=value;}}));
+ const ratio=screen.getByRole('combobox',{name:'比例'}),options=menuOptions(ratio);
+ assert.equal(options.find(option=>option.textContent==='16:9').disabled,false);assert.equal(options.find(option=>option.textContent==='自动').disabled,false);
+ chooseMenuOption(ratio,'16:9');assert.equal(changed.ratio,'16:9');
 });
 
 test('professional starts with one candidate; saved choices survive PNG/SVG mode switches',async()=>{

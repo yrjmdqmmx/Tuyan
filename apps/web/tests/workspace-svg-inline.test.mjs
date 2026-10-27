@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React,{useReducer} from 'react';
@@ -21,7 +22,7 @@ function initial(id){
 const click=name=>fireEvent.click(screen.getByRole('button',{name,exact:true}));
 async function recolor(value){
  click('图层 / 对象');click('对象：矩形 · box');
- const fill=screen.getByLabelText('填充');fireEvent.change(fill,{target:{value}});fireEvent.blur(fill);
+ const fill=screen.getByLabelText('填充');changeControl(fill,{target:{value}});fireEvent.blur(fill);
  await waitFor(()=>assert.equal(document.querySelector('.svg-document-host')?.shadowRoot.querySelector('#box')?.getAttribute('fill'),value));
  fireEvent.keyDown(screen.getByLabelText('SVG 直接编辑画布'),{key:'Escape'});
 }

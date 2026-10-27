@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -38,9 +39,9 @@ test('connection form saves workspace metadata only, and changing region require
  try{
   fireEvent.click(screen.getByRole('button',{name:/渠道连接/}));fireEvent.click(screen.getByRole('button',{name:'配置',exact:true}));
   assert.equal(screen.getByLabelText('百炼业务空间 ID').value,bailian.workspaceId);
-  fireEvent.change(screen.getByLabelText('百炼服务地区'),{target:{value:'us-east-1'}});
+  changeControl(screen.getByLabelText('百炼服务地区'),{target:{value:'us-east-1'}});
   fireEvent.click(screen.getByRole('button',{name:'保存连接'}));assert.match(screen.getByRole('alert').textContent,/重新输入/);assert.equal(saved,undefined);
-  fireEvent.change(screen.getByLabelText(/API 密钥/),{target:{value:'fixture-new-key'}});
+  changeControl(screen.getByLabelText(/API 密钥/),{target:{value:'fixture-new-key'}});
   fireEvent.click(screen.getByRole('button',{name:'保存连接'}));await waitFor(()=>assert.ok(saved));
   assert.deepEqual(saved.value.connections[0].bailian,{...bailian,region:'us-east-1'});assert.doesNotMatch(JSON.stringify(saved.value),/fixture-new-key/);assert.equal(saved.credential.value,'fixture-new-key');
  }finally{cleanup()}

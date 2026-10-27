@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test } from 'node:test'
 import { IDBFactory } from 'fake-indexeddb'
@@ -56,7 +57,7 @@ test('refinement optimization previews, cancels, adopts and restores only the ed
   const input = await screen.findByLabelText('精修指令')
   const original = '放大标签，保留文字、配色和布局。'
   assert.equal(screen.getByRole('button', { name: '优化输入：精修指令' }).disabled, true)
-  fireEvent.change(input, { target: { value: original } })
+  changeControl(input, { target: { value: original } })
   async function optimize() {
     await user.click(screen.getByRole('button', { name: '优化输入：精修指令' }))
     return screen.findByRole('dialog', { name: '优化精修指令' })
@@ -186,9 +187,9 @@ test('blank requirements disable each entry with an accessible reason while an e
   const method = screen.getByLabelText(/论文方法内容/u)
   const caption = screen.getByLabelText(/目标图注/u)
   const negative = screen.getByLabelText(/负向提示词（可选）/u)
-  fireEvent.change(method, { target: { value: '   ' } })
-  fireEvent.change(caption, { target: { value: '\n' } })
-  fireEvent.change(negative, { target: { value: '' } })
+  changeControl(method, { target: { value: '   ' } })
+  changeControl(caption, { target: { value: '\n' } })
+  changeControl(negative, { target: { value: '' } })
 
   for (const name of ['优化输入：方法栏', '优化输入：图注栏', '优化输入：负向提示栏']) {
     const button = screen.getByRole('button', { name })
@@ -200,7 +201,7 @@ test('blank requirements disable each entry with an accessible reason while an e
     assert.equal(reason?.classList.contains('sr-only'), false)
   }
 
-  fireEvent.change(method, { target: { value: '可作为上下文的方法内容' } })
+  changeControl(method, { target: { value: '可作为上下文的方法内容' } })
   assert.equal(screen.getByRole('button', { name: '优化输入：方法栏' }).disabled, false)
   assert.equal(screen.getByRole('button', { name: '优化输入：图注栏' }).disabled, true)
   assert.equal(screen.getByRole('button', { name: '优化输入：负向提示栏' }).disabled, false)
@@ -292,9 +293,9 @@ test('a valid click sends only the three-input snapshot, selected main route, an
   const method = screen.getByLabelText(/论文方法内容/u)
   const caption = screen.getByLabelText(/目标图注/u)
   const negative = screen.getByLabelText(/负向提示词（可选）/u)
-  fireEvent.change(method, { target: { value: '本轮方法原文' } })
-  fireEvent.change(caption, { target: { value: '本轮图注原文' } })
-  fireEvent.change(negative, { target: { value: '本轮负向原文' } })
+  changeControl(method, { target: { value: '本轮方法原文' } })
+  changeControl(caption, { target: { value: '本轮图注原文' } })
+  changeControl(negative, { target: { value: '本轮负向原文' } })
   await enterMainKey(user)
   await user.click(screen.getByRole('button', { name: '优化输入：图注栏' }))
   await waitFor(() => assert.equal(optimizationRequests(requests).length, 1))
@@ -389,7 +390,7 @@ test('each target supports one-step restore and manual edits or applying a templ
 
   for (const [label, controlLabel, target] of targets) {
     const input = screen.getByLabelText(new RegExp(label, 'u'))
-    if (target === 'negativePrompt' && !input.value) fireEvent.change(input, { target: { value: '原始负向内容' } })
+    if (target === 'negativePrompt' && !input.value) changeControl(input, { target: { value: '原始负向内容' } })
     const original = input.value
     await user.click(screen.getByRole('button', { name: `优化输入：${controlLabel}` }))
     const dialog = await screen.findByRole('dialog', { name: new RegExp(`优化${label}`, 'u') })
@@ -406,7 +407,7 @@ test('each target supports one-step restore and manual edits or applying a templ
   let dialog = await screen.findByRole('dialog', { name: /优化目标图注/u })
   await expectCandidate(dialog, '优化后的caption')
   await user.click(within(dialog).getByRole('button', { name: '采用优化稿' }))
-  fireEvent.change(screen.getByLabelText(/目标图注/u), { target: { value: '用户手工改写' } })
+  changeControl(screen.getByLabelText(/目标图注/u), { target: { value: '用户手工改写' } })
   assert.equal(screen.queryByRole('button', { name: '恢复图注栏优化前内容' }), null)
 
   await user.click(screen.getByRole('button', { name: '优化输入：方法栏' }))

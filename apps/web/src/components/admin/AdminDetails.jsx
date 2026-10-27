@@ -1,3 +1,4 @@
+import MenuSelect from '../MenuSelect.jsx';
 import JobFailureNotice from '../JobFailureNotice';
 import { useEffect, useRef, useState } from 'react';
 import { adminOperationsRequest } from '@paperbanana/api';
@@ -26,7 +27,7 @@ function Mutation({ apiBase, entity, type, onSaved }) {
   if (type === 'community' && !OPEN_REVIEW.includes(entity.status)) return <div className="ops-notice">该提交已完成审核，保留原稿与审核记录。当前正式题集和评估结果不受此操作影响。</div>;
   return <section className="ops-card"><h3>{type === 'task' ? '运营跟进' : '编辑与审核'}</h3><p className="ops-muted">{type === 'task' ? '仅修改跟进状态并记录说明，不会取消、重试或改变任务执行结果。' : '编辑保留原始提交；审核通过进入下期候选，不会自动发布，也不会改动已有评估结果。'}</p>
     <fieldset disabled={busy || Boolean(confirm)}>
-      {type === 'task' ? <label>跟进状态<select aria-label="跟进状态" value={followup} onChange={(e) => setFollowup(e.target.value)}>{['unreviewed', 'followup', 'resolved'].map((v) => <option key={v} value={v}>{label(v)}</option>)}</select></label> : <><label>能力分类<input aria-label="能力分类" maxLength={1000} value={capability} onChange={(e) => setCapability(e.target.value)} /></label><label>题目内容<textarea aria-label="题目内容" rows={7} maxLength={4000} value={prompt} onChange={(e) => setPrompt(e.target.value)} /></label></>}
+      {type === 'task' ? <label>跟进状态<MenuSelect aria-label="跟进状态" value={followup} onChange={(e) => setFollowup(e.target.value)}>{['unreviewed', 'followup', 'resolved'].map((v) => <option key={v} value={v}>{label(v)}</option>)}</MenuSelect></label> : <><label>能力分类<input aria-label="能力分类" maxLength={1000} value={capability} onChange={(e) => setCapability(e.target.value)} /></label><label>题目内容<textarea aria-label="题目内容" rows={7} maxLength={4000} value={prompt} onChange={(e) => setPrompt(e.target.value)} /></label></>}
       <label>处理说明<textarea aria-label="处理说明" rows={3} maxLength={1000} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={type === 'task' ? '记录已检查的问题、处理结果或下一步' : '说明修改、通过、合并或拒绝的依据；合并请写明目标候选'} required /></label>
       <div className="ops-actions">{type === 'task' ? <button disabled={!notes.trim()} onClick={() => setConfirm('followup')}>保存跟进记录</button> : <><button disabled={!notes.trim() || !prompt.trim()} onClick={() => setConfirm('edit')}>保存编辑</button><button className="ops-primary" disabled={!notes.trim() || !prompt.trim()} onClick={() => setConfirm('approved_for_next_suite')}>通过为下期候选</button><button disabled={!notes.trim() || !prompt.trim()} onClick={() => setConfirm('merged')}>标记已合并</button><button className="ops-danger" disabled={!notes.trim() || !prompt.trim()} onClick={() => setConfirm('rejected')}>拒绝</button></>}</div>
     </fieldset>

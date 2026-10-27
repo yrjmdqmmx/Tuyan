@@ -13,6 +13,15 @@ export default function WorkspaceChannelPicker({ providers, value, disabled, onC
   const [active, setActive] = useState(value);
   const [position, setPosition] = useState(null);
 
+  // A top-layer popup keeps viewport positioning correct even while the dialog
+  // animates with a transform, without leaving its accessibility boundary.
+  useLayoutEffect(() => {
+    if (!open || !position) return;
+    const popup = list.current;
+    popup?.showPopover?.();
+    return () => { if (popup?.hidePopover && popup.matches(':popover-open')) popup.hidePopover(); };
+  }, [open, Boolean(position)]);
+
   // Keep the menu inside the dialog's accessibility/focus boundary, but outside
   // its scrolling form so short windows and on-screen keyboards cannot clip it.
   useLayoutEffect(() => {
@@ -94,6 +103,7 @@ export default function WorkspaceChannelPicker({ providers, value, disabled, onC
       {!disabled && <ChevronDown size={16} aria-hidden="true"/>}
     </button>
     {open && position && createPortal(<div ref={list} id={`${id}-list`} role="listbox" aria-labelledby={`${id}-label`}
+      popover={typeof window.HTMLElement.prototype.showPopover === 'function' ? 'manual' : undefined}
       className="tw-channel-options" style={position} onKeyDown={handleKeyDown}
       onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }}>
       {providers.map(provider => <button key={provider} type="button" role="option"

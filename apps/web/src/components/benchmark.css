@@ -260,7 +260,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .benchmark-admin legend{padding:0 7px;font-weight:700}
 .benchmark-admin p{color:#68707a;font-size:12px;margin:0}
 .benchmark-admin label{display:flex;flex-direction:column;gap:4px;color:#68707a;font-size:11px;flex:1}
-.benchmark-admin input,.benchmark-admin select,.benchmark-admin textarea{width:100%;min-height:36px;border:1px solid #ccc4b6;border-radius:7px;padding:6px 8px;background:#fff}
+.benchmark-admin input,.benchmark-admin :is(select, .ui-select),.benchmark-admin textarea{width:100%;min-height:36px;border:1px solid #ccc4b6;border-radius:7px;padding:6px 8px;background:#fff}
 .benchmark-admin textarea{min-height:64px;resize:vertical;font:11px/1.4 ui-monospace,SFMono-Regular,monospace}
 .benchmark-admin button,.benchmark-file-button{display:flex;justify-content:center;align-items:center;gap:5px;border:1px solid #c9c1b4;border-radius:7px;padding:8px 10px;background:#fff;color:#292c32;cursor:pointer;font-size:11px}
 .benchmark-admin button:disabled,.benchmark-file-button:has(input:disabled){opacity:.5;cursor:not-allowed}
@@ -365,7 +365,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
 .bench-ranking-filters { margin: 22px 0 26px; font-size: 13px; }
 .bench-ranking-filters .pareto-toolbar { flex-wrap: wrap; }
 .bench-ranking-filters .pareto-search { flex: 1 1 300px; margin-left: auto; max-width: 480px; }
-.bench-ranking-filters button, .bench-ranking-filters input, .bench-ranking-filters select { font: inherit; }
+.bench-ranking-filters button, .bench-ranking-filters input, .bench-ranking-filters :is(select, .ui-select) { font: inherit; }
 .bench-ranking-filter-panel { grid-template-columns: minmax(180px, 320px); }
 .bench-ranking-summary, .pareto-active-filters { flex-wrap: wrap; }
 .bench-filter-chip { padding: 4px 9px; border: 1px solid #d7dfd1; border-radius: 6px; background: #f0f4eb; overflow-wrap: anywhere; }
@@ -392,7 +392,7 @@ body:has(.bench-shell),body:has(.bench-state){margin:0;background:var(--bench-bg
   .bench-ranking-filters .pareto-toolbar { display: flex; flex-wrap: wrap; }
   .bench-ranking-filters .bench-view-switch { flex-basis: 100%; width: 100%; }
   .bench-ranking-filters .pareto-search { flex: 1; margin-left: 0; max-width: none; }
-  .bench-ranking-filters .pareto-search input, .bench-ranking-filters select { min-height: 48px; font-size: 16px; }
+  .bench-ranking-filters .pareto-search input, .bench-ranking-filters :is(select, .ui-select) { min-height: 48px; font-size: 16px; }
   .bench-ranking-filters .pareto-filter-toggle, .bench-ranking-summary button, .bench-ranking-filters .bench-empty button { min-height: 44px; }
   .bench-ranking-filter-panel { grid-template-columns: minmax(0, 1fr); }
   .bench-ranking-scope { font-size: 13px; }

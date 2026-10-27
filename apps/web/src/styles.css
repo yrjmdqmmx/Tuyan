@@ -637,7 +637,7 @@
   font-weight: 760;
 }
 
-.reference-facet select {
+.reference-facet :is(select, .ui-select) {
   min-width: 0;
   min-height: 34px;
   color: var(--ink-soft);
@@ -1117,7 +1117,7 @@ body {
 button,
 input,
 textarea,
-select {
+:is(select, .ui-select) {
   font: inherit;
 }
 
@@ -1637,7 +1637,7 @@ button {
   line-height: 1.4;
 }
 
-.field select:disabled {
+.field :is(select, .ui-select):disabled {
   color: var(--muted);
   background: var(--surface-muted);
   cursor: not-allowed;
@@ -1646,7 +1646,7 @@ button {
 
 .field input,
 .field textarea,
-.field select,
+.field :is(select, .ui-select),
 .admin-controls input {
   width: 100%;
   border: 1px solid var(--hairline);
@@ -1677,7 +1677,7 @@ button {
 
 .field input:focus,
 .field textarea:focus,
-.field select:focus,
+.field :is(select, .ui-select):focus,
 .admin-controls input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(213, 154, 31, 0.16);
@@ -2313,10 +2313,7 @@ button {
   border-radius: 9px;
 }
 
-.reference-gallery-search:focus-within {
-  border-color: var(--sage);
-  box-shadow: 0 0 0 3px rgba(49, 95, 81, 0.1);
-}
+
 
 .reference-gallery-search input {
   width: 100%;
@@ -5425,7 +5422,7 @@ figcaption {
 .refine-parameter-fields { min-width: 0; margin: 0; padding: 0; border: 0; }
 .refine-parameter-fields > .field { max-width: 210px; }
 .refine-parameter-fields .field > span { font-size: 12px; }
-.refine-parameter-fields select { min-height: 36px; padding-block: 7px; font-size: 12px; }
+.refine-parameter-fields :is(select, .ui-select) { min-height: 36px; padding-block: 7px; font-size: 12px; }
 .refine-submit-area { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); }
 .refine-submit-area > .primary-button { margin: 0; width: 100%; min-height: 44px; }
 .refine-submit-hint { margin: 8px 0 0; font-size: 11px; line-height: 1.5; color: var(--ink-soft); text-align: center; }
@@ -5501,7 +5498,7 @@ figcaption {
 .universal-role .field { margin: 0 0 13px; gap: 6px; }
 .universal-role .field span { font-size: 12px; }
 .universal-role .field small { color: var(--muted); font-size: 11px; line-height: 1.6; font-weight: 400; }
-.universal-role input, .universal-role select { min-width: 0; width: 100%; font-size: 13px; }
+.universal-role input, .universal-role :is(select, .ui-select) { min-width: 0; width: 100%; font-size: 13px; }
 .universal-role input[type="checkbox"] { width: 16px; height: 16px; flex: 0 0 16px; accent-color: var(--sage); }
 .universal-details { margin: 10px 0 14px; border-top: 1px solid var(--hairline); }
 .universal-details > summary { cursor: pointer; font-size: 12px; font-weight: 650; padding: 12px 0; color: var(--ink-soft); }
@@ -5780,7 +5777,7 @@ figcaption {
 /* Refinement controls reuse the reference uploader, with the original kept separate. */
 .reference-purpose { display:grid; gap:8px; padding:0 10px 10px; }
 .reference-purpose label { display:grid; gap:4px; font-size:12px; }
-.reference-purpose input, .reference-purpose select { width:100%; min-width:0; border:1px solid var(--border, #ddd); border-radius:6px; padding:7px; background:var(--surface, #fff); color:inherit; }
+.reference-purpose input, .reference-purpose :is(select, .ui-select) { width:100%; min-width:0; border:1px solid var(--border, #ddd); border-radius:6px; padding:7px; background:var(--surface, #fff); color:inherit; }
 .refine-mask-editor, .refine-structured { margin-top:18px; padding-top:16px; border-top:1px solid var(--border, #e2e5e0); }
 .refine-mask-editor p, .refine-structured p { font-size:12px; color:var(--text-secondary, #62675f); line-height:1.65; }
 .refine-control-head, .refine-mask-tools { display:flex; align-items:center; flex-wrap:wrap; gap:12px; justify-content:space-between; }

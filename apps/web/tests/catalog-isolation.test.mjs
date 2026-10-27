@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React from 'react'
@@ -68,9 +69,9 @@ test('catalog partial, unavailable, missing, network failure and recovery preser
   assert.equal(screen.queryByRole('button', { name: '重试目录' }), null)
   const summary = screen.getByRole('region', { name: '当前生成设置' })
   assert.match(summary.textContent, /Seedream[ -]5\.0[ -]Pro/i)
-  fireEvent.change(screen.getByLabelText(/论文方法内容/u), { target: { value: '保留完整的方法输入 ABC' } })
-  fireEvent.change(screen.getByLabelText(/目标图注/u), { target: { value: '保留完整图注 XYZ' } })
-  fireEvent.change(screen.getByLabelText(/负向提示词（可选）/u), { target: { value: '不要替换我的输入' } })
+  changeControl(screen.getByLabelText(/论文方法内容/u), { target: { value: '保留完整的方法输入 ABC' } })
+  changeControl(screen.getByLabelText(/目标图注/u), { target: { value: '保留完整图注 XYZ' } })
+  changeControl(screen.getByLabelText(/负向提示词（可选）/u), { target: { value: '不要替换我的输入' } })
   for (const state of ['unavailable', 'missing', 'network', 'ready']) {
     const before = f.requests(); f.set(state)
     await f.refresh()

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -67,7 +68,7 @@ test('custom form edits retain the universal draft shape, saves a confirmed rout
  let saved;const models={busy:false,library:{connections:[connection],models:[]},save:async value=>{saved=value;return true;}};
  render(React.createElement(CustomModel,{connection,role:'main',models}));
  try{
-  fireEvent.change(screen.getByLabelText('精确模型 ID'),{target:{value:'fixture-v1'}});
+  changeControl(screen.getByLabelText('精确模型 ID'),{target:{value:'fixture-v1'}});
   fireEvent.click(screen.getByLabelText('生成文字'));fireEvent.click(screen.getByLabelText('接收图片并理解内容'));
   fireEvent.click(screen.getByLabelText('我已核对能力与已知服务限制；未知字段按平台及我的限制执行'));
   fireEvent.click(screen.getByRole('button',{name:'校验配置并添加模型'}));

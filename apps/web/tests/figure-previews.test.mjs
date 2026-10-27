@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test, {afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -46,7 +47,7 @@ test('every selectable type has a decodable, bounded thumbnail with accurate pro
 test('enlarging a paper panel does not select it; full context and source remain accessible',()=>{
  const chosen=[];render(React.createElement(FigureTypePicker,{value:'workflow',onChange:id=>chosen.push(id)}))
  fireEvent.click(screen.getByLabelText('信息图类别'))
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'柱形图'}})
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'柱形图'}})
  fireEvent.click(screen.getByRole('button',{name:'查看柱形图预览'}))
  assert.deepEqual(chosen,[]);assert.equal(screen.getAllByRole('dialog').length,2)
  const preview=screen.getByRole('dialog',{name:/柱形图.*Bar chart/})
@@ -64,7 +65,7 @@ test('teaching preview labels simulated data without claiming a generation guara
  const candidate=FIGURE_TYPES.find(t=>t.id==='streamgraph')
  render(React.createElement(FigureTypePicker,{value:'workflow',onChange:()=>assert.fail('preview must not select')}))
  fireEvent.click(screen.getByLabelText('信息图类别'))
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:candidate.en}})
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:candidate.en}})
  fireEvent.click(screen.getByRole('button',{name:`查看${candidate.label}预览`}))
  const preview=screen.getAllByRole('dialog').at(-1)
  assert.ok(within(preview).getByText(/模拟数据/))
@@ -75,7 +76,7 @@ test('real paper previews keep base render support separate from unverified vari
  const candidate=FIGURE_TYPES.find(t=>t.id==='qq')
  render(React.createElement(FigureTypePicker,{value:'workflow',onChange:()=>assert.fail('preview must not select')}))
  fireEvent.click(screen.getByLabelText('信息图类别'))
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:candidate.en}})
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:candidate.en}})
  fireEvent.click(screen.getByRole('button',{name:`查看${candidate.label}预览`}))
  const preview=screen.getAllByRole('dialog').at(-1)
  assert.equal(FIGURE_TYPE_PREVIEWS.qq.source,'journal')

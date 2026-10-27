@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -40,7 +41,7 @@ test('search supports aliases, publishers and multiple tags without duplicating 
 
 test('generic book stays first with empty filters and clears directly without a detail page',()=>{
  let cleared=0;render(React.createElement(JournalBookshelf,{onBrowse:()=>{},onNone:()=>cleared++}));
- fireEvent.change(screen.getByRole('searchbox'),{target:{value:'no-such-journal'}});
+ changeControl(screen.getByRole('searchbox'),{target:{value:'no-such-journal'}});
  const nav=within(screen.getByRole('navigation'));
  assert.match(nav.getAllByRole('button')[0].textContent,/不指定期刊/);
  assert.ok(screen.getByRole('status').textContent.includes('没有符合'));
@@ -74,7 +75,7 @@ test('custom image has a neutral accessible label and retains source metadata on
 test('reduced motion preserves filters and returns focus to the originating book',async()=>{
  window.matchMedia=()=>({matches:true});window.Element.prototype.animate=()=>{throw Error('Animation should be skipped');};
  render(React.createElement(JournalBookshelf,{onBrowse:()=>{},onNone:()=>{}}));
- fireEvent.change(screen.getByRole('searchbox'),{target:{value:'Cell'}});
+ changeControl(screen.getByRole('searchbox'),{target:{value:'Cell'}});
  const book=screen.getByRole('button',{name:/Cell Reports/});fireEvent.click(book);
  assert.ok(document.activeElement===screen.getByRole('heading',{name:'Cell Reports'}),'Details receive focus');
  fireEvent.click(screen.getByRole('button',{name:'返回书架'}));

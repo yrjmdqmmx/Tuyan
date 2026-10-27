@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useId } from 'react'
 import { CircleHelp } from 'lucide-react'
@@ -76,7 +77,7 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
         {control.type === 'integer' ? <input id={controlId} disabled={unavailable} type="number" required={control.key === 'budget'} step="1" min={control.allowedSpecialValues?.length ? Math.min(control.min,...control.allowedSpecialValues) : control.min} max={control.max}
           aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined} value={selection.options[control.key] ?? ''} placeholder={t(control.key === 'budget' ? '必填' : '默认')}
           onChange={event=>update(control.key,event.target.value === '' ? undefined : Number(event.target.value))} />
-          : <select id={controlId} disabled={disabled} aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined}
+          : <MenuSelect id={controlId} disabled={disabled} aria-label={accessibleLabel} aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined}
             value={selection.options[control.key] === undefined ? '' : JSON.stringify(selection.options[control.key])}
             onChange={event=>update(control.key,event.target.value === '' ? undefined : JSON.parse(event.target.value))}>
             {!modeToggle && <option value="">{defaultLabel(control)}</option>}
@@ -84,7 +85,7 @@ export default function ThinkingSettings({ role, settings, registry, operation, 
               {toggle.on !== undefined && <option value={JSON.stringify(toggle.on)}>{t('开启')}</option>}
               {toggle.off !== undefined && <option value={JSON.stringify(toggle.off)}>{t('关闭')}</option>}
             </> : control.values.map(entry=>{const value=entry && typeof entry === 'object' ? entry.value : entry;return <option key={String(value)} value={JSON.stringify(value)}>{t(entry?.label) || (control.providerAliases?.[value] ? t('{value}（映射为 {alias}）', {value:valueLabel(value),alias:control.providerAliases[value]}) : valueLabel(value))}</option>})}
-          </select>}
+          </MenuSelect>}
       </div>
     })}
     {error && <p className="thinking-error" role="alert" id={`${id}-error`}>{t(error)}</p>}

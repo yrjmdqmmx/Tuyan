@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import React,{useState} from 'react'
@@ -47,8 +48,8 @@ test('layered controls permit unknown vendor limits without changing platform ca
  let latest;const d=main();d.declared=true;d.custom.capabilities.text=true;d.ui.capabilityMode='manual'
  const view=render(React.createElement(UniversalCapabilities,{draft:d,role:'main',label:'主模型',onChange:p=>latest=p}));assert.equal(screen.queryByLabelText('主模型 单图 MiB'),null)
  assert.equal(screen.getByLabelText('主模型 完整请求 MiB 服务方').value,'');assert.equal(screen.getByLabelText('主模型 完整请求 MiB').value,'32')
- fireEvent.change(screen.getByLabelText('主模型 完整请求 MiB 服务方'),{target:{value:'20'}});assert.equal(latest.custom.inputLimits.requestMaxBytes,20*1024*1024);assert.equal(latest.custom.limitPolicy.user.input.requestMaxBytes,32*1024*1024)
- view.rerender(React.createElement(UniversalCapabilities,{draft:updateUniversalDraft(d,latest).draft,role:'main',label:'主模型',onChange:p=>latest=p}));fireEvent.change(screen.getByLabelText('主模型 完整请求 MiB 服务方'),{target:{value:''}});assert.equal(latest.custom.inputLimits.requestMaxBytes,32*1024*1024)
+ changeControl(screen.getByLabelText('主模型 完整请求 MiB 服务方'),{target:{value:'20'}});assert.equal(latest.custom.inputLimits.requestMaxBytes,20*1024*1024);assert.equal(latest.custom.limitPolicy.user.input.requestMaxBytes,32*1024*1024)
+ view.rerender(React.createElement(UniversalCapabilities,{draft:updateUniversalDraft(d,latest).draft,role:'main',label:'主模型',onChange:p=>latest=p}));changeControl(screen.getByLabelText('主模型 完整请求 MiB 服务方'),{target:{value:''}});assert.equal(latest.custom.inputLimits.requestMaxBytes,32*1024*1024)
  assert.equal(effectiveUniversalLimits({version:1,service:{},user:{input:{requestMaxBytes:500*1024*1024}}}).inputLimits.requestMaxBytes,120*1024*1024)
 })
 test('custom thinking UI and submission share exact identity; changing connection restores independent preferences',()=>{
@@ -64,7 +65,7 @@ test('named connection UI makes persistence and impact explicit',async()=>{
  Object.defineProperty(globalThis.navigator,'locks',{configurable:true,value:{request:async(_name,callback)=>callback()}})
  const d=main();let patch
  render(React.createElement(UniversalConnections,{role:'main',label:'主模型',draft:d,onChange:p=>patch=p}))
- const u=userEvent.setup();await u.click(screen.getByText('已命名连接与无密钥配置文件'));fireEvent.change(screen.getByLabelText('主模型 连接名称'),{target:{value:'Research'}});await u.click(screen.getByRole('button',{name:'将当前连接另存到浏览器'}));assert.equal(readConnectionLibrary().length,1)
+ const u=userEvent.setup();await u.click(screen.getByText('已命名连接与无密钥配置文件'));changeControl(screen.getByLabelText('主模型 连接名称'),{target:{value:'Research'}});await u.click(screen.getByRole('button',{name:'将当前连接另存到浏览器'}));assert.equal(readConnectionLibrary().length,1)
  await u.click(screen.getByRole('button',{name:'应用连接到主模型（不含密钥）'}));assert.equal(patch.custom.protocol,'openai-chat');assert.equal(patch.modelId,undefined)
  await u.click(screen.getByRole('button',{name:'删除连接条目'}));assert.equal(readConnectionLibrary().length,0)
 })

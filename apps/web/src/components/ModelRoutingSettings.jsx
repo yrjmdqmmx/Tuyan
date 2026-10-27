@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { TokenDanceStatus } from './TokenDancePanel'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../lib/modelPresentation'
@@ -129,9 +130,9 @@ export default function ModelRoutingSettings({
             <div className="credential-provider" key={provider}>
               {provider === 'minimax' ? <label className="field">
                 <span>{t("稀宇科技区域")}</span>
-                <select aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
+                <MenuSelect aria-label={t("稀宇科技区域")} value={minimaxRegion(providerRegions)} onChange={event => onMiniMaxRegionChange(event.target.value)}>
                   {Object.entries(MINIMAX_REGIONS).map(([id, region]) => <option key={id} value={id} disabled={id === 'cn' && !modelRegistry?.providerRegionContractVersion}>{t(region.label)}</option>)}
-                </select>
+                </MenuSelect>
                 <small>{MINIMAX_REGIONS[minimaxRegion(providerRegions)].apiBase}{t(" · 请填写该区域平台的 Key")}</small>
               </label> : null}
               <label className="field">

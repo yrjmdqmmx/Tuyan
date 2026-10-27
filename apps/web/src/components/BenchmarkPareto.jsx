@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { ChevronDown, Search, SlidersHorizontal, X } from 'lucide-react'
 import { OFFICIAL_PRICES, comparisonPrice, filterModels, metricScore, paretoFrontier } from './benchmarkParetoMath.js'
@@ -13,7 +14,7 @@ function BudgetFilters({ vendors, vendor, min, max, ceiling, error, onVendor, on
   const { t, locale } = useBenchmarkLocale()
   const lower = clamp(Number(min) || 0, 0, ceiling), upper = clamp(max === '' || !Number.isFinite(Number(max)) ? ceiling : Number(max), 0, ceiling)
   return <div className="pareto-filters" id="pareto-filters" aria-label={t("模型研发厂商与预算筛选")}>
-    <label className="pareto-vendor-label">{t("模型研发厂商")}<select aria-label={t("模型研发厂商")} value={vendor} onChange={e => onVendor(e.target.value)}><option value="">{t("全部研发厂商")}</option>{vendors.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}</select></label>
+    <label className="pareto-vendor-label">{t("模型研发厂商")}<MenuSelect aria-label={t("模型研发厂商")} value={vendor} onChange={e => onVendor(e.target.value)}><option value="">{t("全部研发厂商")}</option>{vendors.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}</MenuSelect></label>
     <fieldset className="pareto-budget"><legend>{t("每张预算")}<span>USD</span></legend>
       <div className="pareto-budget-values"><span>{displayCost(lower)}</span><span>{displayCost(upper)}</span></div>
       <div className="pareto-range-track" style={{ '--range-low': `${lower / ceiling * 100}%`, '--range-high': `${upper / ceiling * 100}%` }}>
@@ -52,7 +53,7 @@ function CostRanking({ rows, frontier, metric, label, costBasis, selectedId, onS
   const frontierIds = new Set(frontier.map(r => benchmarkRecordKey(r.model)))
   return <section className="pareto-cost-ranking" aria-label={t("单张成本榜")}>
     <header><div><h2>{t("单张成本")}<CostInfo costBasis={costBasis} onShowData={onShowData} /></h2><p>{t("USD/张 · 条形按成本等比例显示")}</p></div>
-      <div className="pareto-cost-controls"><label className="pareto-checkbox"><input type="checkbox" checked={optimalOnly} onChange={e => { setOptimalOnly(e.target.checked);setExpanded(false) }} />{t("仅帕累托最优")}</label><select aria-label={t("成本榜排序")} value={order} onChange={e => setOrder(e.target.value)}><option value="score">{t("按评分排名")}</option><option value="low">{t("成本从低到高")}</option><option value="high">{t("成本从高到低")}</option></select></div>
+      <div className="pareto-cost-controls"><label className="pareto-checkbox"><input type="checkbox" checked={optimalOnly} onChange={e => { setOptimalOnly(e.target.checked);setExpanded(false) }} />{t("仅帕累托最优")}</label><MenuSelect aria-label={t("成本榜排序")} value={order} onChange={e => setOrder(e.target.value)}><option value="score">{t("按评分排名")}</option><option value="low">{t("成本从低到高")}</option><option value="high">{t("成本从高到低")}</option></MenuSelect></div>
     </header>
     <div className="pareto-cost-columns" aria-hidden="true"><span>{t("模型")}</span><span>0 <i />{displayCost(maxCost)}</span><span>{t("USD/张")}</span><span>{label}</span></div>
     <ol className="pareto-cost-rows">{visible.map(({ model, price }, index) => <li key={benchmarkRecordKey(model)}>
@@ -101,7 +102,7 @@ export default function BenchmarkPareto({ models, axes, viewSwitch, sharedFilter
   return <section className="pareto-view" aria-label={t("帕累托视图")}>
     <div className="pareto-toolbar">
       {viewSwitch}
-      <label className="pareto-metric-label"><span className="pareto-sr-only">{t("评测维度")}</span><select aria-label={t("评测维度")} value={metric} onChange={e => { setMetric(e.target.value);clear() }}><option value="overall">{t("总分")}</option>{axes.map(a => <option key={a.id} value={a.id}>{t(a.label)}</option>)}</select></label>
+      <label className="pareto-metric-label"><span className="pareto-sr-only">{t("评测维度")}</span><MenuSelect aria-label={t("评测维度")} value={metric} onChange={e => { setMetric(e.target.value);clear() }}><option value="overall">{t("总分")}</option>{axes.map(a => <option key={a.id} value={a.id}>{t(a.label)}</option>)}</MenuSelect></label>
       <label className="pareto-search"><Search size={17} /><input aria-label={t("模型搜索")} value={query} placeholder={t("搜索模型")} onChange={e => { setQuery(e.target.value);clear() }} />{query && <button type="button" aria-label={t("清空搜索")} onClick={() => { setQuery('');clear() }}><X size={14} /></button>}</label>
       <button type="button" className="pareto-filter-toggle" aria-expanded={filtersOpen} aria-controls="pareto-filters" onClick={() => setFiltersOpen(v => !v)}><SlidersHorizontal size={16} />{filtersOpen ? t("收起筛选") : t("筛选")}{filterCount > 0 && <b>{filterCount}</b>}</button>
     </div>
@@ -114,7 +115,7 @@ export default function BenchmarkPareto({ models, axes, viewSwitch, sharedFilter
     </div>
     <CostRanking key={filterKey} rows={filtered.visible} frontier={frontier} metric={metric} label={label} costBasis={costBasis} selectedId={selection} onSelect={select} onHover={setHoverId} onShowData={showData} />
     <details className="pareto-data" ref={dataRef} id="pareto-pricing"><summary>{t("数据与计费说明")}<ChevronDown size={17} /></summary>
-      <div className="pareto-data-content"><div className="pareto-data-settings"><label>{t("成本来源")}<select aria-label={t("成本来源")} value={costBasis} onChange={e => { setCostBasis(e.target.value);clear() }}><option value="combined">{compact ? t("官方报价 + 测试费用") : t("官方报价 + 7 项已核对测试费用")}</option><option value="official">{t("仅官方定价")}</option></select></label><p>{t("默认包含 28 个官方报价与 7 个历史测试账单，费用来源逐模型保留。两类来源不同，不将测试费用解释为当前厂商直营价格。")}</p></div>
+      <div className="pareto-data-content"><div className="pareto-data-settings"><label>{t("成本来源")}<MenuSelect aria-label={t("成本来源")} value={costBasis} onChange={e => { setCostBasis(e.target.value);clear() }}><option value="combined">{compact ? t("官方报价 + 测试费用") : t("官方报价 + 7 项已核对测试费用")}</option><option value="official">{t("仅官方定价")}</option></MenuSelect></label><p>{t("默认包含 28 个官方报价与 7 个历史测试账单，费用来源逐模型保留。两类来源不同，不将测试费用解释为当前厂商直营价格。")}</p></div>
         <div className="pareto-method-grid"><div><h3>{t("固定九题等权")}</h3><p>{t("单张成本 =（6 道生成费用 + 3 道编辑费用）÷ 9。每题 1 张，编辑含 1 张 2048×1152 源图。沿用原分辨率和质量条件，不按成功图片数重新加权。测试费用含当前公开题位内的调用尝试，不含审评费用。")}</p></div><div><h3>{t("汇率与精度")}</h3><p>{t("CNY × 1.1460 ÷ 7.6755 = USD；采用 ECB")}{OFFICIAL_PRICES.fx.date} {t("参考汇率。USD 账单不换汇。前沿使用原始分数与精确价格，主界面小数位仅用于显示。")}</p><a href={OFFICIAL_PRICES.fx.source} target="_blank" rel="noreferrer">{t("ECB 参考汇率")}</a></div><div><h3>{t("数据与计算范围")}</h3><p>{t("正式榜单")}{models.length} {t("个模型；前沿只在当前维度、搜索、模型研发厂商与预算范围内计算。缩放只改变视窗。连线为视觉引导。缺价不记零，官方估算不进入前沿。")}</p><p>{t("价格查询 / 账单读取：")}{OFFICIAL_PRICES.checkedAt}{t("。原评分、评语、费用和生成证据保持不变。")}</p></div></div>
         <details className="pareto-exclusions"><summary>{t("未纳入成本比较的模型 · 当前搜索与模型研发厂商范围")}{filtered.missing.length} {t("个")}</summary><ul>{filtered.missing.map(({ model, price }) => <li key={benchmarkRecordKey(model)}><a href={profileHref(model)}>{model.displayName}</a><code>{model.modelId}</code><p>{t(price.reason || '当前评分维度无正式分数。')}</p></li>)}</ul></details>
         <details className="pareto-source-details"><summary>{t("完整价格来源与逐题计算 ·")}{rows.length} {t("个模型")}</summary><PriceTable rows={rows} /></details>

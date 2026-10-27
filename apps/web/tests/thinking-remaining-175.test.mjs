@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -28,7 +29,7 @@ test('new boolean and string switches restore independently without unverified s
     const control = screen.getByLabelText('主模型 / 规划思考模式')
     assert.equal(screen.queryByLabelText('主模型 / 规划思考强度'), null)
     assert.equal(screen.queryByRole('spinbutton'), null)
-    fireEvent.change(control, { target: { value: JSON.stringify(off) } })
+    changeControl(control, { target: { value: JSON.stringify(off) } })
     assert.equal(saveThinkingSettings(settings, window.localStorage), true)
     const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)
     const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, ['main'], 'generation')

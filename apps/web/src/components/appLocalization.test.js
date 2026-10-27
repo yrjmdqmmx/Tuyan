@@ -1,3 +1,4 @@
+import { changeControl } from '../../tests/menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import test, { afterEach } from 'node:test'
 import fs from 'node:fs'
@@ -26,7 +27,7 @@ test('one app locale crosses legacy page boundaries without resetting drafts or 
   render(h(AppLocaleProvider, { title: '图研Tuyan工作台' }, h(LanguageSwitch), h(Draft),
     h(BenchmarkLocaleProvider, null, h(ChangelogPage))))
   fireEvent.change(screen.getByLabelText('论文方法内容'), { target: { value: 'Keep 我的输入 exactly' } })
-  fireEvent.change(screen.getByLabelText('主模型'), { target: { value: 'model-b' } })
+  changeControl(screen.getByLabelText('主模型'), { target: { value: 'model-b' } })
   fireEvent.click(screen.getByRole('button', { name: 'Switch to English' }))
   assert.equal(screen.getByLabelText('Research methods').value, 'Keep 我的输入 exactly')
   assert.equal(screen.getByLabelText('Main model').value, 'model-b')

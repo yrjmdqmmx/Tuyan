@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import React from 'react';
@@ -58,7 +59,7 @@ test('embedded administration keeps section navigation and read filters without 
   assert.equal(screen.queryByRole('heading', { level: 1 }), null);
   fireEvent.click(within(screen.getByRole('navigation', { name: '后台导航' })).getByRole('button', { name: '近期任务' }));
   await screen.findByText('没有符合条件的记录');
-  fireEvent.change(screen.getByLabelText('执行状态'), { target: { value: 'failed' } });
+  changeControl(screen.getByLabelText('执行状态'), { target: { value: 'failed' } });
   await act(async () => { fireEvent.click(screen.getByRole('button', { name: '应用筛选' })); });
   assert.equal(window.location.href, before);
   assert.ok(actions.every(action => ['adminOverview', 'adminTaskList'].includes(action)));

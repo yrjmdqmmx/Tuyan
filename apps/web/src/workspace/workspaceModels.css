@@ -58,35 +58,42 @@
 }
 
 .tw-model-management { width:100%; max-width:1240px; padding:4px 0 48px; }
-.tw-model-intro { align-items:center; margin-bottom:24px; }
-.tw-model-eyebrow { font-size:11px; letter-spacing:1px; color:#6b7c70; }
-.tw-model-intro h2 { font-size:26px; font-weight:600; letter-spacing:-.5px; margin:8px 0; }
-.tw-model-intro p { margin:0; font-size:13px; color:#747c75; line-height:1.8; }
-.tw-model-top-actions { display:flex; gap:10px; flex-shrink:0; }
-.tw-model-tabs { display:flex; align-items:center; gap:20px; border-bottom:1px solid #e3e7e1; margin-bottom:24px; }
+.tw-model-top-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.tw-model-tabs { display:flex; align-items:center; gap:20px; border-bottom:1px solid #e3e7e1; margin-bottom:8px; }
 .tw-model-tabs > button { border-radius:0; padding:12px 2px; gap:8px; border-bottom:2px solid transparent; color:#69726b; white-space:nowrap; }
 .tw-model-tabs > button[aria-pressed=true] { border-bottom-color:#315f51; color:#244d40; font-weight:600; }
 .tw-model-tabs > button > span { padding:1px 6px; border-radius:5px; background:#f0f2ee; color:#727970; font-size:11px; font-weight:400; }
 .tw-model-tabs .tw-model-custom-link { margin-left:auto; font-size:12px; }
-.tw-catalog { display:grid; grid-template-columns:160px 148px minmax(0,1fr); gap:16px; align-items:start; }
-.tw-catalog-rail { position:sticky; top:0; max-height:calc(100dvh - 265px); overflow-y:auto; scrollbar-width:thin; padding-right:6px; }
-.tw-catalog-rail > p { color:#858d83; font-size:11px; margin:0 10px 10px; }
+.tw-catalog { display:grid; grid-template-columns:160px 148px minmax(0,1fr); gap:16px; align-items:stretch; min-height:0; flex:1; overflow:hidden; }
+.tw-catalog-rail { position:relative; min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; padding-right:6px; }
+.tw-catalog-rail > p { position:sticky; top:0; z-index:1; background:#fff; padding:2px 0 8px; color:#858d83; font-size:11px; margin:0 10px 10px; }
 .tw-catalog-rail > button { display:flex; width:100%; justify-content:flex-start; text-align:left; gap:9px; min-height:37px; padding:8px 10px; margin-bottom:2px; border-radius:8px; }
 .tw-model-management .tw-catalog-rail > button { font-size:12px; }
 .tw-catalog-rail > button[aria-pressed=true] { background:#eaf0e7; color:#244d40; font-weight:600; }
 .tw-catalog-rail > button > span { flex:1; min-width:0; }
 .tw-catalog-rail > button small { font-size:10px; font-weight:400; color:#929a90; }
 .tw-catalog-rail .model-brand-logo { width:17px; height:17px; object-fit:contain; flex-shrink:0; }
-.tw-catalog-content { min-width:0; }
+.tw-catalog-content { min-width:0; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
+.tw-catalog-filters, .tw-catalog-caption { flex-shrink:0; }
+.tw-catalog-scroll, .tw-model-connections { flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-gutter:stable; padding:0 2px 8px; }
+.tw-catalog-scroll:focus-visible, .tw-catalog-rail:focus-visible { outline:2px solid #879e8c; outline-offset:-2px; }
+.tw-catalog-connection { display:flex; align-items:center; gap:8px; min-height:20px; font-size:10px; color:#7e897d; }
+.tw-catalog-connection > span { flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.tw-model-management .tw-catalog-connection > button { font-size:10px; min-height:20px; padding:0 4px; }
+.tw-model-management .tw-catalog-caption > button { font-size:11px; min-height:0; padding:0; }
 .tw-catalog-filters { display:flex; gap:12px; }
 .tw-catalog-search { display:flex; flex:1; min-width:0; align-items:center; gap:10px; padding:0 12px; border:1px solid #e0e5dd; border-radius:10px; background:#fff; color:#7c877c; }
-.tw-catalog-search:focus-within { border-color:#879e8c; box-shadow:0 0 0 3px #315f5108; }
+
 .tw-catalog-search input { width:100%; min-width:0; padding:11px 0; border:0; outline:0; background:transparent; font:inherit; font-size:13px; color:#262827; box-shadow:none; }
-.tw-catalog-role select { height:42px; border:1px solid #e0e5dd; border-radius:10px; padding:0 28px 0 12px; background:#fff; color:#536353; font-size:12px; }
-.tw-catalog-caption { display:flex; justify-content:space-between; gap:12px; font-size:11px; color:#92998f; margin:15px 1px; line-height:1.6; }
+.tw-catalog-filters > .tw-catalog-role { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; gap:16px; height:42px; width:116px; border:1px solid #e0e5dd; border-radius:10px; padding:0 12px; background:#fff; color:#536353; font-size:12px; font-weight:400; cursor:pointer; }
+.tw-catalog-role svg { flex-shrink:0; }
+.tw-model-management .tw-catalog-filters > button.tw-catalog-role { font-size:12px; white-space:nowrap; }
+.tw-catalog-filters > .tw-catalog-role:hover { background:#f8faf7; border-color:#bac5bc; }
+.tw-catalog-filters > .tw-catalog-role[aria-expanded=true] { border-color:var(--control-focus,#82918b); }
+.tw-catalog-caption { display:flex; justify-content:space-between; gap:12px; font-size:11px; color:#92998f; margin:6px 1px; min-height:26px; align-items:center; line-height:1.6; }
 .tw-catalog-caption > span:first-child { color:#667564; }
 .tw-catalog-caption strong { margin:0 3px; font-weight:500; }
-.tw-catalog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.tw-catalog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; align-content:start; }
 .tw-catalog-card { border:1px solid #e2e7df; border-radius:14px; padding:12px; background:#fff; min-width:0; box-sizing:border-box; display:flex; flex-direction:column; gap:6px; transition:border-color 160ms,box-shadow 160ms; }
 .tw-catalog-card:hover { border-color:#b2c4b3; box-shadow:0 4px 16px #28472c05; }
 .tw-catalog-card-head { display:flex; align-items:flex-start; gap:10px; }
@@ -128,23 +135,18 @@
 .tw-catalog-add code { display:block; overflow-wrap:anywhere; color:#7b8677; font-size:12px; }
 .tw-catalog-add p { font-size:13px; line-height:1.8; }
 .tw-catalog-add label { display:grid; gap:8px; font-size:13px; margin:20px 0; }
-.tw-catalog-add select { width:100%; padding:10px; border:1px solid #dce2d7; border-radius:8px; background:#fff; color:inherit; }
+.tw-catalog-add :is(select, .ui-select) { width:100%; padding:10px; border:1px solid #dce2d7; border-radius:8px; background:#fff; color:inherit; }
 .tw-saved-models { margin-top:0; }
 .tw-model-management .tw-management-section { border:1px solid #e3e7df; border-radius:14px; padding:20px; margin:0 0 20px; }
 .tw-model-management .tw-management-section h3 { margin:0; }
 .tw-model-management .tw-management-section > .tw-muted { font-size:12px; margin:10px 0 18px; }
 .tw-model-management .tw-library-model .tw-catalog-logo { flex:0 0 34px; }
 /* Give the catalog the available workspace instead of a centered reading width. */
-.tw-page-body:has(> .tw-model-management) { max-width:none; }
-.tw-page .tw-model-management { width:100%; max-width:none; }
+.tw-main > .tw-page:has(.tw-model-management) { display:flex; min-height:0; overflow:hidden; padding:0 24px 8px; scrollbar-gutter:auto; }
+.tw-page > .tw-page-body:has(> .tw-model-management) { display:flex; flex:1; min-height:0; max-width:none; overflow:hidden; }
+.tw-page .tw-model-management { display:flex; flex-direction:column; flex:1; min-height:0; width:100%; max-width:none; margin:0; padding:0; overflow:hidden; }
 @media(min-width:768px) {
-  .tw-main > .tw-page:has(.tw-model-management) { padding:16px 24px 48px; }
-  .tw-page .tw-model-management { margin:0; padding:0 0 32px; }
-  .tw-page .tw-model-intro { margin-bottom:12px; gap:16px; }
-  .tw-model-intro .tw-model-eyebrow { display:block; line-height:1.4; }
-  .tw-page .tw-model-intro h2 { margin:4px 0; font-size:22px; line-height:1.3; }
-  .tw-page .tw-model-intro p { margin:0; font-size:12px; line-height:1.5; }
-  .tw-model-tabs { margin-bottom:12px; }
+  .tw-model-tabs { margin-bottom:8px; }
   .tw-model-tabs > button { padding:8px 2px; }
   .tw-model-management > .tw-info { margin:0 0 14px; padding:8px 12px; font-size:12px; line-height:1.6; }
   .tw-model-management > .tw-info > button { display:inline-flex; min-height:0; padding:0 2px; font-size:inherit; line-height:inherit; vertical-align:baseline; }
@@ -152,32 +154,56 @@
 }
 @media(min-width:1550px) { .tw-catalog-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(max-width:1250px) {
-  .tw-catalog { grid-template-columns:145px minmax(0,1fr); gap:12px 18px; }
+  .tw-catalog { grid-template-columns:145px minmax(0,1fr); grid-template-rows:auto minmax(0,1fr); gap:12px 18px; }
   .tw-catalog-channels { grid-row:1 / span 2; }
-  .tw-catalog-developers { position:static; grid-column:2; display:flex; align-items:center; gap:4px; max-height:none; overflow-x:auto; padding:0 0 6px; }
+  .tw-catalog-developers { position:static; overflow-y:hidden; grid-column:2; display:flex; align-items:center; gap:4px; max-height:none; overflow-x:auto; padding:0 0 6px; }
   .tw-catalog-developers > p { flex:none; margin:0 6px 0 0; white-space:nowrap; }
   .tw-catalog-developers > button { flex:none; width:auto; min-height:34px; padding:7px 9px; white-space:nowrap; margin:0; }
   .tw-catalog-content { grid-column:2; }
 }
-@media(max-width:1100px) {.tw-catalog-card { padding:12px; }.tw-model-intro { align-items:flex-start; }.tw-model-top-actions { flex-direction:column; gap:4px; } }
+@media(max-width:1100px) {.tw-catalog-card { padding:12px; } }
 @media(max-width:767px) {
   .tw-model-management { padding:0 0 32px; }
-  .tw-model-intro { display:block; margin-bottom:16px; }
-  .tw-model-intro h2 { font-size:23px; }.tw-model-intro p { font-size:12px; }
-  .tw-model-top-actions { flex-direction:row; margin-top:12px; justify-content:flex-end; }
-  .tw-model-tabs { gap:14px; flex-wrap:wrap; margin-bottom:16px; }
+  .tw-model-top-actions { flex-direction:row; margin-top:0; justify-content:flex-end; }
+  .tw-model-tabs { gap:12px; flex-wrap:nowrap; overflow-x:auto; overscroll-behavior:contain; margin-bottom:8px; }
   .tw-model-management .tw-model-tabs > button { font-size:12px; gap:4px; padding:8px 0; }
-  .tw-model-tabs .tw-model-custom-link { margin:0 0 0 auto; flex-basis:100%; justify-content:flex-end; padding-top:0!important; }
-  .tw-catalog { display:block; }
+  .tw-model-tabs .tw-model-custom-link { margin:0 0 0 auto; justify-content:flex-end; }
+  .tw-main > .tw-page:has(.tw-model-management) { padding:0 12px 8px; }
+  .tw-catalog { display:flex; flex-direction:column; gap:0; }
+  .tw-catalog-content { flex:1; }
+  .tw-catalog-rail { flex-shrink:0; }
   .tw-catalog-developers { margin-bottom:8px; }
   .tw-catalog-channels { position:static; display:flex; gap:4px; overflow-x:auto; max-height:none; padding:0 0 10px; margin-bottom:6px; }
   .tw-catalog-channels > p { display:none; }
   .tw-catalog-channels > button { width:auto; flex:none; padding:7px 9px; min-height:34px; white-space:nowrap; }
   .tw-catalog-channels small { display:none; }
   .tw-catalog-filters { gap:7px; }.tw-catalog-search { padding:0 9px; gap:6px; }.tw-catalog-search input { font-size:12px; }
-  .tw-catalog-role select { padding-left:8px; width:94px; }
+  .tw-catalog-filters > .tw-catalog-role { padding:0 9px; gap:8px; width:94px; }
   .tw-catalog-caption { font-size:10px; gap:8px; }
   .tw-catalog-grid { grid-template-columns:minmax(0,1fr); gap:10px; }
   .tw-catalog-card { padding:12px; }
   .tw-model-management .tw-management-section { padding:16px; }
+}
+
+@media(max-height:600px) {
+  .tw-shell:has(.tw-model-management) { min-height:0; }
+  .tw-main:has(.tw-model-management) { min-height:0; overflow:hidden; }
+}
+
+/* Model actions share the workspace title row; the three list panes keep the remaining height. */
+.tw-main:has(> .tw-page) > .tw-topbar.tw-models-topbar { min-height:56px; padding:8px 24px; gap:12px; }
+.tw-models-topbar > .tw-header-tools { position:static; flex:none; }
+.tw-models-topbar h1, .tw-model-standalone-header h1 { font-size:16px; font-weight:600; }
+.tw-model-header-actions { margin-left:auto; }
+.tw-model-standalone-header { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:56px; flex-shrink:0; }
+.tw-model-management > .tw-model-tabs, .tw-model-management > p { flex-shrink:0; }
+.tw-model-tabs > button { border-radius:6px 6px 0 0; }
+@media(max-width:767px) {
+  .tw-main:has(> .tw-page) > .tw-topbar.tw-models-topbar { min-height:52px; padding:6px 12px; gap:4px; flex-wrap:wrap; }
+  .tw-models-topbar h1 { flex:1; white-space:nowrap; }
+  .tw-model-top-actions { gap:2px; }
+  .tw-model-top-actions > button { font-size:12px; padding:7px 6px; gap:4px; white-space:nowrap; }
+  .tw-models-topbar .tw-header-tools { margin-left:0; }
+  .tw-model-tabs > button { padding-top:6px; padding-bottom:6px; }
+  .tw-catalog-caption { margin:4px 1px; }
 }

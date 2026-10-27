@@ -110,7 +110,13 @@ test('creating repeatedly does not multiply empty sidebar tasks', () => {
   assert.equal(s.tasks.length, 1);
 });
 test('supplements and setting-only drafts are preserved as separate tasks', () => {
-  for (const patch of [{ caption: '研究流程图' }, { avoid: '不要装饰边框' }, { settings: { ...currentDraft(newWorkspace()).settings, simple: { ratio: '16:9', candidates: 1, reviews: 1 } } }]) {
+  const settings = currentDraft(newWorkspace('defaults')).settings;
+  for (const patch of [
+    { caption: '研究流程图' },
+    { avoid: '不要装饰边框' },
+    { settings: { ...settings, simple: { ...settings.simple, ratio: '16:9' } } },
+    { mode: 'advanced', settings: { ...settings, advanced: { ...settings.advanced, candidates: 2 } } },
+  ]) {
     let s = act(newWorkspace('a'), 'EDIT_DRAFT', { patch });
     s = act(s, 'CREATE_TASK', { id: 'b' });
     assert.equal(s.tasks.length, 2);

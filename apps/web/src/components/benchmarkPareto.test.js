@@ -1,3 +1,4 @@
+import { changeControl } from '../../tests/menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import test, { afterEach } from 'node:test'
 import React from 'react'
@@ -21,14 +22,14 @@ test('compact controls, budget, dimensions, cost bars and advanced source filter
   assert.match(screen.getByLabelText('比较范围').textContent, /1 个模型/)
   assert.equal(within(screen.getByLabelText('单张成本榜')).getAllByRole('listitem').length, 1)
   fireEvent.click(screen.getByRole('button', { name: '重置筛选' }))
-  fireEvent.change(screen.getByLabelText('评测维度'), { target: { value: 'scientific_faithfulness' } })
+  changeControl(screen.getByLabelText('评测维度'), { target: { value: 'scientific_faithfulness' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /科研忠实度.*2 个模型/)
   assert.equal(within(screen.getByLabelText('帕累托最优模型')).getAllByRole('listitem').length, 1)
   fireEvent.click(screen.getByRole('button', { name: '放大图表' }))
   assert.equal(screen.getByLabelText('当前缩放').textContent, '2×')
   fireEvent.click(screen.getByRole('button', { name: '重置视图' }))
   assert.equal(screen.getByLabelText('当前缩放').textContent, '1×')
-  fireEvent.change(screen.getByLabelText('模型研发厂商'), { target: { value: 'openai' } })
+  changeControl(screen.getByLabelText('模型研发厂商'), { target: { value: 'openai' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /0 个模型/)
   assert.ok(screen.getByText('没有符合条件的模型'))
 })
@@ -48,9 +49,9 @@ test('seven bills remain included with normalized names and full provenance behi
   assert.match(within(detail).getByRole('link', { name: /公开逐题账单/ }).href, /leaderboard/)
   fireEvent.keyDown(document, { key: 'Escape' })
   assert.equal(screen.queryByLabelText('模型计价详情'), null)
-  fireEvent.change(screen.getByLabelText('成本来源'), { target: { value: 'official' } })
+  changeControl(screen.getByLabelText('成本来源'), { target: { value: 'official' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /0 个模型/)
-  fireEvent.change(screen.getByLabelText('成本来源'), { target: { value: 'combined' } })
+  changeControl(screen.getByLabelText('成本来源'), { target: { value: 'combined' } })
   assert.match(screen.getByLabelText('比较范围').textContent, /1 个模型/)
 })
 test('ordinary ranking remains default; toggle is deep-linkable and history aware', () => {

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import {afterEach,test} from 'node:test';
 import React from 'react';
@@ -71,7 +72,7 @@ test('weekly and cumulative columns expose exact totals and preserve earlier his
  const data=summarizeDrawingDays({'2025-01-01':10,'2026-10-17':2,'2026-10-18':1,'2026-10-19':3},new Date('2026-10-19T12:00:00Z'));
  render(React.createElement(DrawingActivity,{userId:'A',request:async()=>data}));
  await screen.findByRole('button',{name:'2026 年 10 月 19 日，绘制 3 张'});
- fireEvent.change(screen.getByLabelText('活动时间范围'),{target:{value:'2026'}});
+ changeControl(screen.getByLabelText('活动时间范围'),{target:{value:'2026'}});
  fireEvent.click(screen.getByRole('button',{name:'每周',exact:true}));
  const last=screen.getByRole('button',{name:'2026年10月18日 起的一周，绘制 4 张'});
  fireEvent.mouseEnter(last);assert.equal(screen.getByRole('tooltip').textContent,'2026年10月18日 起的一周4 张图');
@@ -82,7 +83,7 @@ test('weekly and cumulative columns expose exact totals and preserve earlier his
  assert.equal(screen.getByRole('tooltip').textContent,'累计至 2026年10月18日 起的一周16 张图');
  fireEvent.click(screen.getByRole('button',{name:'累计至 2025年12月28日 起的一周，累计 10 张'}));
  assert.equal(screen.getByRole('tooltip').textContent,'累计至 2025年12月28日 起的一周10 张图');
- fireEvent.change(screen.getByLabelText('活动时间范围'),{target:{value:'2025'}});assert.equal(screen.queryByRole('tooltip'),null);
+ changeControl(screen.getByLabelText('活动时间范围'),{target:{value:'2025'}});assert.equal(screen.queryByRole('tooltip'),null);
  fireEvent.click(screen.getByRole('button',{name:'累计至 2025年12月28日 起的一周，累计 10 张'}));
  assert.equal(screen.getByRole('tooltip').textContent,'累计至 2025年12月28日 起的一周10 张图');
  fireEvent.pointerDown(document.body);assert.equal(screen.queryByRole('tooltip'),null);

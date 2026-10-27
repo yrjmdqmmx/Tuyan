@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import { File } from 'node:buffer'
@@ -57,10 +58,10 @@ test('rendered SVG submit ignores the image model format because the main model 
 
     await user.click(screen.getByRole('button', { name: '打开完整设置' }))
     await user.click(screen.getByRole('button', { name: '阿里云百炼' }))
-    fireEvent.change(screen.getByLabelText('导出格式'), { target: { value: 'svg' } })
+    changeControl(screen.getByLabelText('导出格式'), { target: { value: 'svg' } })
     assert.equal(document.querySelector('[data-model-role="image"]'),null,'SVG must not expose an unused image model')
     assert.ok(screen.getByText(/主模型规划、编写和修改 SVG/))
-    fireEvent.change(screen.getByLabelText('检索设置'), { target:{value:'none'} })
+    changeControl(screen.getByLabelText('检索设置'), { target:{value:'none'} })
     await user.type(screen.getByPlaceholderText('sk-...'), 'test-key')
     await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
     const submit = screen.getAllByRole('button', { name: '生成候选图' }).find((button) => button.type === 'submit')
@@ -338,7 +339,7 @@ test('rendered reference upload blocks file selection until advanced retrieval i
   const input = container.querySelector('input[type="file"]')
   assert.ok(input)
   assert.equal(input.disabled, true)
-  fireEvent.change(input, { target: { files: [new window.File(['image'], 'reference.png', { type: 'image/png' })] } })
+  changeControl(input, { target: { files: [new window.File(['image'], 'reference.png', { type: 'image/png' })] } })
   assert.deepEqual(added, [])
 })
 
@@ -382,7 +383,7 @@ for (const [retrievalValue, retrievalLabel] of [
       await user.click(screen.getByRole('button', { name: /专业模式/ }))
 
       const retrieval = screen.getByLabelText('检索设置')
-      fireEvent.change(retrieval, { target: { value: retrievalValue } })
+      changeControl(retrieval, { target: { value: retrievalValue } })
       assert.equal(retrieval.value, retrievalValue)
       assert.equal(screen.queryByText(/请先将检索设置切换为“不使用检索”/),null)
       if (retrievalValue === 'manual') {
@@ -392,7 +393,7 @@ for (const [retrievalValue, retrievalLabel] of [
       await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
       const fileInput = screen.getByLabelText('上传文件')
       await waitFor(()=>assert.equal(fileInput.disabled,false))
-      fireEvent.change(fileInput, {
+      changeControl(fileInput, {
         target: { files: [new File(['group,value\nA,35'], `${retrievalValue}-data.csv`, { type: 'text/csv' })] },
       })
       await screen.findByText('已保存到浏览器 · 待读取')
@@ -431,7 +432,7 @@ test('rendered model search resets both incremental state and a deeply scrolled 
   fireEvent.scroll(modelWindow)
   assert.equal(modelWindow.scrollTop, 1260)
 
-  fireEvent.change(screen.getByRole('searchbox', { name: '搜索图像生成模型' }), { target: { value: 'Model 35' } })
+  changeControl(screen.getByRole('searchbox', { name: '搜索图像生成模型' }), { target: { value: 'Model 35' } })
 
   assert.equal(modelWindow.scrollTop, 0)
   assert.ok(screen.getByText('Model 35'))
@@ -493,7 +494,7 @@ test('rendered generation drawer focuses its target, closes on Escape, restores 
   const input = screen.getByRole('textbox', { name: '测试字段' })
   await new Promise((resolve) => setTimeout(resolve, 120))
   assert.equal(document.activeElement === input, true)
-  fireEvent.change(input, { target: { value: '保留的配置' } })
+  changeControl(input, { target: { value: '保留的配置' } })
 
   fireEvent.keyDown(window, { key: 'Escape' })
 

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -25,7 +26,7 @@ test('Qianfan exact switches survive save/reload with correct wire types and no 
     assert.match(screen.getByRole('region').textContent, /接口默认状态尚未确认/)
     const modes = id === 'ernie-5.1' ? ['enabled', 'disabled'] : [true, false]
     for (const mode of modes) {
-      fireEvent.change(control, { target: { value: JSON.stringify(mode) } })
+      changeControl(control, { target: { value: JSON.stringify(mode) } })
       assert.equal(saveThinkingSettings(settings, window.localStorage), true)
       const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identities(id))
       const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, [role], 'generation')

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import {IDBFactory} from 'fake-indexeddb'
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
@@ -21,14 +22,14 @@ test('App reload retains original input, format and legacy typed drafts without 
  assert.deepEqual(JSON.parse(window.localStorage.getItem('tuyan.figure-settings.v1')).figureDrafts.qq,draft)
  assert.equal(JSON.parse(window.localStorage.getItem('tuyan.figure-settings.v1')).aspectRatio,'3:2')
  assert.equal(screen.getByLabelText(/论文方法内容/).value,'User supplied analysis and explicit reference distribution')
- fireEvent.change(screen.getByLabelText(/论文方法内容/),{target:{value:'Edited original analysis remains across type changes and reload.'}})
+ changeControl(screen.getByLabelText(/论文方法内容/),{target:{value:'Edited original analysis remains across type changes and reload.'}})
  await user.click(screen.getByRole('button',{name:'打开完整设置'}))
  assert.equal(screen.getByLabelText('导出格式').value,'svg')
  await user.click(screen.getByLabelText('信息图类别'))
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'柱形图'}})
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'柱形图'}})
  fireEvent.click(screen.getByRole('button',{name:/柱形图 Bar chart/}))
  await user.click(screen.getByLabelText('信息图类别'))
- fireEvent.change(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'分位数比较图'}})
+ changeControl(screen.getByRole('searchbox',{name:'搜索图类'}),{target:{value:'分位数比较图'}})
  fireEvent.click(screen.getByRole('button',{name:/^分位数比较图 /}))
  assert.equal(screen.getByLabelText(/论文方法内容/).value,'Edited original analysis remains across type changes and reload.')
  assert.deepEqual(JSON.parse(window.localStorage.getItem('tuyan.figure-settings.v1')).figureDrafts.qq,draft)

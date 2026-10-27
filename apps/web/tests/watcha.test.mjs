@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -25,8 +26,8 @@ test('status failures keep a visible retry and preserve the pending signup form'
     assert.equal(screen.queryByRole('button', { name: '使用观猹登录' }) === null, true);
     failed = false;
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '刷新登录状态' })));
-    fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'keep@example.test' } });
-    fireEvent.change(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'keep@example.test' } });
+    changeControl(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
     failed = true;
     await act(async () => window.dispatchEvent(new window.Event('focus')));
     assert.ok(screen.getByRole('alert'));
@@ -60,7 +61,7 @@ test('focus recovers a completed pending authorization when the provider severs 
       assert.equal(authenticated, 0);
       if (user) assert.equal(screen.getByRole('button', { name: '确认绑定当前图研账号' }).disabled, false);
       else {
-        fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'signup@example.test' } });
+        changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'signup@example.test' } });
         assert.equal(screen.getByRole('button', { name: '发送验证码' }).disabled, false);
       }
       cleanup();
@@ -109,9 +110,9 @@ test('passwordless deletion verifies a purpose-specific code and submits only it
     await waitFor(() => assert.equal(screen.getByRole('button', { name: '发送注销验证码' }).disabled, false));
     assert.equal(screen.queryByLabelText('当前登录密码'), null);
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '发送注销验证码' })));
-    fireEvent.change(screen.getByLabelText('注销邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('注销邮箱验证码'), { target: { value: '123456' } });
     assert.equal(screen.getByRole('button', { name: '永久删除账号' }).disabled, true);
-    fireEvent.change(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } });
+    changeControl(screen.getByLabelText('输入“删除账号”确认'), { target: { value: '删除账号' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '永久删除账号' })));
     assert.deepEqual(calls, [['code', 'delete'], ['confirm', '123456'], ['delete', { email: 'person@example.test', confirmationToken: 'one-use-test-proof' }], ['deleted']]);
   } finally { cleanup(); globalThis.fetch = originalFetch; }
@@ -124,8 +125,8 @@ test('choosing an existing account returns to email sign-in and never implicitly
     render(React.createElement(AuthPanel, { watcha, client: { signIn: { email: async data => { calls.push(data); return { data: {} }; } } }, onAuthenticated: async () => calls.push('authenticated') }));
     assert.equal(screen.queryByLabelText('密码'), null);
     fireEvent.click(screen.getByRole('button', { name: '登录已有图研账号并绑定' }));
-    fireEvent.change(screen.getByLabelText('邮箱'), { target: { value: 'existing@example.test' } });
-    fireEvent.change(screen.getByLabelText('密码'), { target: { value: 'test-password' } });
+    changeControl(screen.getByLabelText('邮箱'), { target: { value: 'existing@example.test' } });
+    changeControl(screen.getByLabelText('密码'), { target: { value: 'test-password' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '登录' })));
     assert.deepEqual(calls, [{ email: 'existing@example.test', password: 'test-password' }, 'authenticated']);
   } finally { cleanup(); }
@@ -182,10 +183,10 @@ test('pending identity signup and existing-account choice require explicit actio
   try {
     render(React.createElement(WatchaIdentityPanel, { controller, onSignIn: () => calls.push(['signin']) }));
     assert.ok(screen.getByText('观猹授权已完成'));
-    fireEvent.change(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'new@example.test' } });
+    changeControl(screen.getByLabelText('接收验证的邮箱'), { target: { value: 'new@example.test' } });
     await act(async () => fireEvent.click(screen.getByRole('button', { name: '发送验证码' })));
     assert.deepEqual(calls[0], ['code', 'signup', 'new@example.test']);
-    fireEvent.change(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
+    changeControl(screen.getByLabelText('邮箱验证码'), { target: { value: '123456' } });
     await act(async () => fireEvent.submit(screen.getByRole('form', { name: '验证邮箱并创建图研账号' })));
     assert.deepEqual(calls[1], ['complete', 'new@example.test', '123456']);
     fireEvent.click(screen.getByRole('button', { name: '登录已有图研账号并绑定' }));

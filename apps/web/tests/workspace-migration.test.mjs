@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -37,7 +38,7 @@ test('advanced API import saves a separate connection without copying old creden
  assert.equal(screen.getByLabelText('主模型 API Key').value,'');
  assert.equal(screen.getByLabelText('主模型 模型 ID').value,'fixture-main');
  fireEvent.click(screen.getByLabelText('我已核对能力与已知服务限制；未知字段按平台及我的限制执行'));
- fireEvent.change(screen.getByLabelText('新连接名称'),{target:{value:'Imported configuration'}});
+ changeControl(screen.getByLabelText('新连接名称'),{target:{value:'Imported configuration'}});
  fireEvent.click(screen.getByRole('button',{name:'保存为新连接与模型'}));
  await waitFor(()=>assert.equal(saved,1));
  assert.equal(used,0);assert.deepEqual(library,before);
@@ -48,15 +49,15 @@ test('advanced API import saves a separate connection without copying old creden
 test('advanced API save validates roles and clears a newly typed key when its binding changes',async()=>{
  const saves=[];let used;
  render(React.createElement(WorkspaceApiSetup,{models:{ready:true,userId:'fixture',registry:{universalApiContractVersion:1},library:{connections:[],models:[]},save:async(...args)=>{saves.push(args);return true;}},onSaved:()=>{},onUse:value=>{used=value;}}));
- fireEvent.change(screen.getByLabelText('新连接名称'),{target:{value:'Explicit connection'}});
+ changeControl(screen.getByLabelText('新连接名称'),{target:{value:'Explicit connection'}});
  fireEvent.click(screen.getByRole('button',{name:'保存为新连接与模型'}));
  assert.equal(saves.length,0);
- fireEvent.change(screen.getByLabelText('主模型 模型 ID'),{target:{value:'gpt-4.1'}});
- fireEvent.change(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture-only-key'}});
- fireEvent.change(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://other.example.com/v1'}});
+ changeControl(screen.getByLabelText('主模型 模型 ID'),{target:{value:'gpt-4.1'}});
+ changeControl(screen.getByLabelText('主模型 API Key'),{target:{value:'fixture-only-key'}});
+ changeControl(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://other.example.com/v1'}});
  assert.equal(screen.getByLabelText('主模型 API Key').value,'');
- fireEvent.change(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://api.openai.com/v1'}});
- fireEvent.change(screen.getByLabelText('密钥保存位置'),{target:{value:'account'}});
+ changeControl(screen.getByLabelText('主模型 Base URL'),{target:{value:'https://api.openai.com/v1'}});
+ changeControl(screen.getByLabelText('密钥保存位置'),{target:{value:'account'}});
  fireEvent.click(screen.getByRole('button',{name:'保存并用于当前任务的专业模式'}));
  await waitFor(()=>assert.equal(saves.length,1));
  assert.equal(saves[0][0].connections[0].scope,'account');assert.equal(saves[0][1].value,'');

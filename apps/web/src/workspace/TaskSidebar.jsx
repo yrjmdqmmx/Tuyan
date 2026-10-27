@@ -1,5 +1,6 @@
+import TaskActionMenu from './TaskActionMenu.jsx';
 import { useState } from 'react';
-import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, MoreHorizontal, Pin, Pencil, ChevronDown, LoaderCircle, SquarePen, Trash2 } from 'lucide-react';
+import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, ChevronDown, LoaderCircle, SquarePen } from 'lucide-react';
 import { logoUrl } from '../config.js';
 import { taskHasContent } from './workspaceState.js';
 import ResourceLinks from './ResourceLinks.jsx';
@@ -19,11 +20,7 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
       <button type="button" className="tw-task-select" onClick={() => select(t.id)} aria-current={page === 'workspace' && state.selectedTaskId === t.id ? 'page' : undefined} title={t.title}>
         <span className="tw-task-title">{t.title}</span>{running ? <LoaderCircle size={14} className="tw-spin" aria-label="执行中" /> : failed ? <span className="tw-error-dot" aria-label="执行失败">!</span> : null}
       </button>
-      <details className="tw-task-menu"><summary aria-label={`${t.title} 的操作`}><MoreHorizontal size={16} /></summary><div>
-        <button type="button" onClick={e => { e.currentTarget.closest('details').open = false; onRename(t); }}><Pencil size={15} />重命名</button>
-        <button type="button" onClick={e => { e.currentTarget.closest('details').open = false; dispatch({ type: 'PIN', taskId: t.id }); }}><Pin size={15} />{t.pinned ? '取消置顶' : '置顶'}</button>
-        <button type="button" disabled={!!t.activeRunId || !onDelete} onClick={e => { e.currentTarget.closest('details').open = false; onDelete(t,e.currentTarget.closest('details').querySelector('summary')); }}><Trash2 size={15} />删除</button>
-      </div></details>
+      <TaskActionMenu task={t} onRename={onRename} dispatch={dispatch} onDelete={onDelete} />
     </div>;
   });
   return <aside className="tw-sidebar" aria-label="任务侧边栏">

@@ -52,7 +52,7 @@
 .te-upload span { overflow-wrap: anywhere; }
 .te-field { display: flex; flex-direction: column; gap: 7px; color: #505e50; font-size: 12px; line-height: 1.5; min-width: 0; }
 .te-data-label { margin-top: 18px; }
-.tw-shell .te-field input, .tw-shell .te-field select, .tw-shell .te-field textarea { border: 1px solid #dce2d9; border-radius: 7px; padding: 9px 10px; width: 100%; min-width: 0; background: #fff; color: #29382d; font-size: 12px; line-height: 1.5; }
+.tw-shell .te-field input, .tw-shell .te-field :is(select, .ui-select), .tw-shell .te-field textarea { border: 1px solid #dce2d9; border-radius: 7px; padding: 9px 10px; width: 100%; min-width: 0; background: #fff; color: #29382d; font-size: 12px; line-height: 1.5; }
 .tw-shell .te-field textarea { min-height: 155px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 11px; }
 .te-options { display: flex; flex-direction: column; gap: 13px; margin: 20px 0; }
 .te-field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }

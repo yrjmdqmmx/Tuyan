@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import React,{useState} from 'react'
@@ -48,8 +49,8 @@ test('specialist UI starts empty, creates synthetic data only after opt-in and s
  assert.equal(screen.getByLabelText('options.nodes').value,'')
  fireEvent.click(screen.getByRole('button',{name:/填入模拟教学示例/}))
  assert.match(screen.getByLabelText('数据来源').value,/Synthetic/)
- fireEvent.change(screen.getByLabelText('options.nodes'),{target:{value:'[{"id":"A"},{"id":"B"},{"id":"C"},{"id":"D"}]'}})
- fireEvent.change(screen.getByLabelText('options.directed'),{target:{value:'false'}})
+ changeControl(screen.getByLabelText('options.nodes'),{target:{value:'[{"id":"A"},{"id":"B"},{"id":"C"},{"id":"D"}]'}})
+ changeControl(screen.getByLabelText('options.directed'),{target:{value:'false'}})
  const draft=JSON.parse(screen.getByTestId('draft').textContent)
  const payload=figurePayload('network',draft)
  assert.equal(payload.figureData.options.directed,false)
@@ -70,9 +71,9 @@ test('composite UI preserves per-type data drafts and per-panel content while ch
  const initial={panels:[{label:'A',typeId:'bar',methodContent:'A research method describes supplied observations',caption:'Panel A',draft:{csv:'label,value\nA,7',source:'batch A',units:{value:'mg'}}},{label:'B',typeId:'workflow',methodContent:'B research method describes process structure',caption:'Panel B',draft:{}}]}
  render(React.createElement(Editor,{typeId:'multipanel',initial}))
  const panel=within(screen.getAllByRole('group')[0])
- fireEvent.change(panel.getByLabelText('子图类型'),{target:{value:'network'}})
+ changeControl(panel.getByLabelText('子图类型'),{target:{value:'network'}})
  assert.equal(panel.getByLabelText('节点连接网络图数据行 JSON').value,'')
- fireEvent.change(panel.getByLabelText('子图类型'),{target:{value:'bar'}})
+ changeControl(panel.getByLabelText('子图类型'),{target:{value:'bar'}})
  assert.equal(panel.getByLabelText('柱形图数据表').value,'label,value\nA,7')
  assert.equal(panel.getByLabelText('本面板图注').value,'Panel A')
  const draft=JSON.parse(screen.getByTestId('draft').textContent),body=figurePayload('multipanel',draft)

@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -19,13 +20,13 @@ test('Nature main journal is searchable and the existing reader shows official l
  assert.ok(Array.from(document.images).some(img=>img.getAttribute('src')===books.nature.cover.src));
  assert.ok(screen.getByText(books.nature.description));
  assert.ok(screen.getByText(/规则版本 2026-10-19.v11 · 核验 2026-10-19/));
- fireEvent.change(screen.getByLabelText('投稿阶段'),{target:{value:'production'}});
+ changeControl(screen.getByLabelText('投稿阶段'),{target:{value:'production'}});
  assert.ok(screen.getByText(/正文图栏宽存在差异/));
  assert.ok(screen.getAllByText('来源冲突').length>0);
- fireEvent.change(screen.getByLabelText('图件用途'),{target:{value:'cover'}});
+ changeControl(screen.getByLabelText('图件用途'),{target:{value:'cover'}});
  assert.ok(screen.getByRole('status').textContent.includes('当前不可执行：封面'));
  assert.ok(screen.getByText(/213×285 mm/));
- fireEvent.change(screen.getByLabelText('图件用途'),{target:{value:'main'}});
+ changeControl(screen.getByLabelText('图件用途'),{target:{value:'main'}});
  fireEvent.click(screen.getByRole('button',{name:'选择此期刊'}));
  assert.equal(saved.journalId,'nature');assert.equal(saved.version,'2026-10-19.v11');assert.equal(saved.stage,'production');
 });

@@ -1,3 +1,4 @@
+import { menuOptions, changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -24,15 +25,15 @@ test('TokenHub K2.8 UI offers only audited effort levels and preserves explicit 
   render(React.createElement(Harness, { modelId: 'kimi-k2.8-preview', capture: value => { settings = value } }))
   assert.equal(screen.queryByLabelText('主模型 / 规划思考模式'), null)
   const effort = screen.getByLabelText('主模型 / 规划思考强度')
-  assert.deepEqual([...effort.options].map(x => x.textContent), ['默认（最高）', '低', '高', '最高'])
+  assert.deepEqual([...menuOptions(effort)].map(x => x.textContent), ['默认（最高）', '低', '高', '最高'])
   assert.equal(effort.value, '')
   assert.deepEqual(compileThinkingSelection(settings.roles.main, 'main').wire, {})
-  fireEvent.change(effort, { target: { value: '"high"' } })
+  changeControl(effort, { target: { value: '"high"' } })
   assert.equal(saveThinkingSettings(settings, window.localStorage), true)
   const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity('kimi-k2.8-preview'))
   const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, ['main'], 'generation').thinkingConfig.roles.main
   assert.deepEqual(compileThinkingSelection(submitted, 'main').wire, { reasoning_effort: 'high' })
-  fireEvent.change(effort, { target: { value: '' } })
+  changeControl(effort, { target: { value: '' } })
   assert.deepEqual(compileThinkingSelection(settings.roles.main, 'main').wire, {})
   assert.equal(screen.getByRole('link', { name: /依据 1/ }).getAttribute('href'), 'https://cloud.tencent.com/document/product/1823/132232')
 })
@@ -44,7 +45,7 @@ test('TokenHub MiMo toggles are separate from unknown and image interfaces witho
     const mode = screen.getByLabelText('主模型 / 规划思考模式')
     assert.equal(mode.value, '"enabled"')
     assert.equal(screen.queryByLabelText('主模型 / 规划思考强度'), null)
-    fireEvent.change(mode, { target: { value: '"disabled"' } })
+    changeControl(mode, { target: { value: '"disabled"' } })
     const submitted = buildThinkingSubmission(settings, { thinkingContractVersion: 1 }, ['main'], 'generation').thinkingConfig.roles.main
     assert.deepEqual(compileThinkingSelection(submitted, 'main').wire, { thinking: { type: 'disabled' } })
     cleanup()

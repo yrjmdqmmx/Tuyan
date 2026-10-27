@@ -1,3 +1,5 @@
+import './components/menus.css';
+import './focus.css';
 import './components/journal-rules.css'
 import './components/journal-bookshelf.css'
 import './components/svgWorkspace.css'

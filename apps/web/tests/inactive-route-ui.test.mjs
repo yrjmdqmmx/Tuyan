@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -13,7 +14,7 @@ test('SVG submission excludes an unfinished custom image route while retaining t
  try{
   render(React.createElement(App));await waitFor(()=>assert.ok(requests.some(b=>b.action==='modelRegistry')));
   await user.click(screen.getByRole('button',{name:'打开完整设置'}));
-  fireEvent.change(screen.getByLabelText('导出格式'),{target:{value:'svg'}});
+  changeControl(screen.getByLabelText('导出格式'),{target:{value:'svg'}});
   await waitFor(()=>assert.equal(document.querySelector('[data-model-role="image"]'),null));
   await user.type(screen.getByLabelText('OpenAI 接入密钥'),'fixture-only');
   await user.click(screen.getByRole('button',{name:'关闭生成设置'}));
@@ -23,7 +24,7 @@ test('SVG submission excludes an unfinished custom image route while retaining t
   assert.equal(sent.outputFormat,'svg');assert.equal(sent.pipelineMode,'planner_critic');assert.equal(sent.modelRoutes.image,undefined);assert.equal(sent.modelRoutes.vision,undefined);assert.deepEqual(Object.keys(sent.apiKeys),['openai']);
   assert.equal(JSON.parse(window.localStorage.getItem('tuyan.model-routing.v1')).roles.image.accessProvider,'custom');
   await user.click(screen.getByRole('button',{name:'打开完整设置'}));
-  fireEvent.change(screen.getByLabelText('导出格式'),{target:{value:'png'}});
+  changeControl(screen.getByLabelText('导出格式'),{target:{value:'png'}});
   await waitFor(()=>assert.ok(document.querySelector('[data-model-role="image"]')));
   assert.equal(JSON.parse(window.localStorage.getItem('tuyan.model-routing.v1')).roles.image.accessProvider,'custom');
  }finally{cleanup();window.localStorage.clear();globalThis.fetch=original;}

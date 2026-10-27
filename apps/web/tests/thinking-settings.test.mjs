@@ -1,3 +1,4 @@
+import { changeControl, menuOptions } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import {afterEach, test} from 'node:test'
 import React, {useState} from 'react'
@@ -25,11 +26,11 @@ test('all three role controls retain provider default and update independently',
   render(React.createElement(Harness))
   const main=screen.getByLabelText('主模型 / 规划思考强度'), vision=screen.getByLabelText('视觉识别思考强度'), image=screen.getByLabelText('图像生成 / 编辑思考强度')
   assert.equal(main.value,'');assert.equal(vision.value,'');assert.equal(image.value,'')
-  fireEvent.change(main,{target:{value:'"low"'}})
-  fireEvent.change(vision,{target:{value:'"high"'}})
-  fireEvent.change(image,{target:{value:'"minimal"'}})
+  changeControl(main,{target:{value:'"low"'}})
+  changeControl(vision,{target:{value:'"high"'}})
+  changeControl(image,{target:{value:'"minimal"'}})
   assert.equal(main.value,'"low"');assert.equal(vision.value,'"high"');assert.equal(image.value,'"minimal"')
-  fireEvent.change(main,{target:{value:''}})
+  changeControl(main,{target:{value:''}})
   assert.equal(main.value,'');assert.equal(vision.value,'"high"')
 })
 test('thinking preferences save quietly while failures retain the retry action',()=>{
@@ -46,8 +47,8 @@ test('thinking preferences save quietly while failures retain the retry action',
 test('effort defaults identify the exact profile value and omit explicit effort at submission',()=>{
   const settings=fresh()
   render(React.createElement(Harness,{initial:settings}))
-  assert.equal(screen.getByLabelText('主模型 / 规划思考强度').options[0].textContent,'默认（高）')
-  assert.equal(screen.getByLabelText('视觉识别思考强度').options[0].textContent,'默认（中）')
+  assert.equal(menuOptions(screen.getByLabelText('主模型 / 规划思考强度'))[0].textContent,'默认（高）')
+  assert.equal(menuOptions(screen.getByLabelText('视觉识别思考强度'))[0].textContent,'默认（中）')
   assert.equal(screen.queryByText('服务商默认'),null)
   for(const role of ['main','vision','image']) assert.deepEqual(compileThinkingSelection(settings.roles[role],role).wire,{})
   assert.equal(formatErrorMessage(new Error('精修请使用服务商默认。')),'精修请使用默认。')
@@ -60,9 +61,9 @@ test('mode has only on and off; budget-only and unknown models expose no budget 
   render(React.createElement(Harness,{initial:value}))
   assert.equal(screen.queryByLabelText('主模型 / 规划思考强度'),null)
   const mode=screen.getByRole('combobox')
-  assert.deepEqual([...mode.options].map(x=>[x.textContent,x.value]),[['开启','"enabled"'],['关闭','"disabled"']])
+  assert.deepEqual([...menuOptions(mode)].map(x=>[x.textContent,x.value]),[['开启','"enabled"'],['关闭','"disabled"']])
   assert.equal(mode.value,'"enabled"')
-  fireEvent.change(mode,{target:{value:'"disabled"'}})
+  changeControl(mode,{target:{value:'"disabled"'}})
   assert.equal(mode.value,'"disabled"')
   assert.equal(screen.queryByRole('spinbutton'),null)
   assert.equal(Boolean(screen.queryByRole('region',{name:'视觉识别思考设置'})),false)
@@ -85,8 +86,8 @@ test('simple and advanced settings place each supported control immediately afte
 })
 test('on maps to adaptive where supported and obsolete budgets cannot leak into requests',()=>{
   render(React.createElement(Harness))
-  assert.deepEqual([...screen.getByLabelText('主模型 / 规划思考模式').options].map(x=>x.textContent),['开启','关闭'])
-  fireEvent.change(screen.getByLabelText('主模型 / 规划思考模式'),{target:{value:'"adaptive"'}})
+  assert.deepEqual([...menuOptions(screen.getByLabelText('主模型 / 规划思考模式'))].map(x=>x.textContent),['开启','关闭'])
+  changeControl(screen.getByLabelText('主模型 / 规划思考模式'),{target:{value:'"adaptive"'}})
   assert.equal(screen.queryByRole('alert'),null)
   assert.equal(screen.queryByRole('spinbutton'),null)
   const value=fresh();value.roles.main.options={mode:'enabled',budget:8192}
@@ -101,8 +102,8 @@ test('new Claude 5.5 profiles preserve the simplified switch without inventing a
   ]) {
     const value=fresh();value.roles.main={provider:'anthropic',modelId,protocol:'anthropic-messages',options}
     render(React.createElement(Harness,{initial:value}))
-    assert.deepEqual([...screen.getByLabelText('主模型 / 规划思考模式').options].map(x=>x.textContent),labels)
-    assert.equal(screen.getByLabelText('主模型 / 规划思考强度').options[0].textContent,defaultEffort)
+    assert.deepEqual([...menuOptions(screen.getByLabelText('主模型 / 规划思考模式'))].map(x=>x.textContent),labels)
+    assert.equal(menuOptions(screen.getByLabelText('主模型 / 规划思考强度'))[0].textContent,defaultEffort)
     assert.equal(screen.queryByRole('spinbutton'),null)
     const selected=buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
     assert.equal(compileThinkingSelection(selected,'main').wire.thinking.type,'adaptive')
@@ -135,12 +136,12 @@ test('Bailian on/off display and request agree, and off clears dependent effort'
   render(React.createElement(Harness,{initial:value}))
   const mode=screen.getByLabelText('主模型 / 规划思考模式'),effort=screen.getByLabelText('主模型 / 规划思考强度')
   assert.equal(mode.value,'true')
-  assert.equal(effort.options[0].textContent,'默认（更高）')
+  assert.equal(menuOptions(effort)[0].textContent,'默认（更高）')
   assert.equal(screen.queryByRole('spinbutton'),null)
   const submit=()=>buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
   assert.deepEqual(compileThinkingSelection(submit(),'main').wire,{enable_thinking:true})
-  fireEvent.change(effort,{target:{value:'"low"'}})
-  fireEvent.change(mode,{target:{value:'false'}})
+  changeControl(effort,{target:{value:'"low"'}})
+  changeControl(mode,{target:{value:'false'}})
   assert.equal(effort.disabled,true)
   assert.equal(effort.value,'')
   value.roles.main.options={mode:false,effort:'low',budget:9000}
@@ -162,7 +163,7 @@ test('required manual budgets persist by identity and are sent unchanged; disabl
   const budget=screen.getByRole('spinbutton',{name:'主模型 / 规划思考预算（tokens）'})
   assert.equal(budget.value,'12000')
   assert.equal(budget.required,true)
-  fireEvent.change(screen.getByLabelText('主模型 / 规划思考模式'),{target:{value:'"disabled"'}})
+  changeControl(screen.getByLabelText('主模型 / 规划思考模式'),{target:{value:'"disabled"'}})
   assert.equal(screen.queryByRole('spinbutton'),null)
   value.roles.main.options={mode:'disabled',budget:12000}
   const selected=buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
@@ -177,9 +178,9 @@ test('required budget begins empty, enforces bounds and uses the exact custom co
   assert.equal(budget.placeholder,'必填')
   assert.match(screen.getByRole('alert').textContent,/需要同时填写思考预算/)
   assert.throws(()=>buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation'),/需要同时填写思考预算/)
-  fireEvent.change(budget,{target:{value:'4096'}})
+  changeControl(budget,{target:{value:'4096'}})
   assert.equal(screen.queryByRole('alert'),null)
-  fireEvent.change(budget,{target:{value:''}})
+  changeControl(budget,{target:{value:''}})
   assert.match(screen.getByRole('alert').textContent,/需要同时填写思考预算/)
   for(const amount of [0,1023,16384,1024.5]) {
     value.roles.main.options.budget=amount
@@ -208,7 +209,7 @@ test('unknown mode defaults resolve explicitly to off and unknown effort default
   cleanup()
   value.roles.main={provider:'bailian',modelId:'glm-5.2',protocol:'bailian-openai-chat',options:{}}
   render(React.createElement(Harness,{initial:value}))
-  assert.equal(screen.getByLabelText('主模型 / 规划思考强度').options[0].textContent,'默认（未确认）')
+  assert.equal(menuOptions(screen.getByLabelText('主模型 / 规划思考强度'))[0].textContent,'默认（未确认）')
 })
 test('unsupported image, wrong operation and older backend are honest and fail closed',()=>{
   const value=fresh();value.roles.image={provider:'replicate',modelId:'wan-video/wan-2.7-image',protocol:'provider-images',options:{mode:true}}
@@ -274,7 +275,7 @@ test('native Xiaomi UltraSpeed control saves on/off without adding unsupported e
   assert.ok(section.getByText('思考 · 可调'))
   const mode=section.getByRole('combobox')
   assert.equal(mode.value,'"enabled"')
-  fireEvent.change(mode,{target:{value:'"disabled"'}})
+  changeControl(mode,{target:{value:'"disabled"'}})
   assert.equal(mode.value,'"disabled"');assert.equal(section.queryByRole('spinbutton'),null)
   value.roles.main.options={mode:'disabled'}
   const submitted=buildThinkingSubmission(value,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
@@ -326,7 +327,7 @@ test('September 23 exact models expose only native options and changing identiti
   const ids={main:{provider:'openai',modelId:'gpt-6-sol',protocol:'openai-responses'},vision:{provider:'anthropic',modelId:'claude-opus-5-5',protocol:'anthropic-messages'},image:{provider:'openai',modelId:'gpt-image-2',protocol:'openai-images'}}
   const settings=reconcileThinkingSettings(null,ids)
   render(React.createElement(Harness,{initial:settings}))
-  const values=label=>Array.from(screen.getByLabelText(label).options).map(option=>option.value)
+  const values=label=>Array.from(menuOptions(screen.getByLabelText(label))).map(option=>option.value)
   assert.deepEqual(values('主模型 / 规划思考强度'),['','"none"','"low"','"medium"','"high"','"xhigh"','"max"'])
   assert.deepEqual(values('主模型 / 规划推理档位'),['','"standard"','"pro"'])
   assert.deepEqual(values('视觉识别思考强度'),['','"low"','"medium"','"high"','"xhigh"','"max"'])
@@ -355,10 +356,10 @@ test('Together GLM 5.3 offers only audited effort levels and persists the explic
     render(React.createElement(Harness,{initial}))
     const region=screen.getByRole('region',{name:'主模型 / 规划思考设置'})
     const effort=within(region).getByLabelText('主模型 / 规划思考强度')
-    assert.deepEqual([...effort.options].map(x=>x.value),['','"low"','"medium"','"high"','"max"'])
+    assert.deepEqual([...menuOptions(effort)].map(x=>x.value),['','"low"','"medium"','"high"','"max"'])
     assert.equal(effort.value,'');assert.equal(within(region).queryByLabelText('主模型 / 规划思考模式'),null)
     assert.equal(within(region).queryByRole('spinbutton'),null)
-    fireEvent.change(effort,{target:{value:'"medium"'}});assert.equal(effort.value,'"medium"')
+    changeControl(effort,{target:{value:'"medium"'}});assert.equal(effort.value,'"medium"')
     const value={...initial,roles:{...initial.roles,main:{...initial.roles.main,options:{effort:'medium'}}}}
     assert.equal(saveThinkingSettings(rememberThinkingSettings(value),window.localStorage),true)
     const selected=buildThinkingSubmission(readThinkingSettings(window.localStorage),{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main
@@ -371,9 +372,9 @@ test('Mistral Large 4 explains none accurately and SiliconFlow retired evidence 
   const initial=fresh();initial.roles.main={provider:'mistral',modelId:'mistral-large-4',protocol:'openai-chat-completions',options:{}}
   render(React.createElement(Harness,{initial}))
   const effort=screen.getByLabelText('主模型 / 规划思考强度')
-  assert.deepEqual([...effort.options].map(x=>x.textContent),['默认（未确认）','最少思考','高'])
+  assert.deepEqual([...menuOptions(effort)].map(x=>x.textContent),['默认（未确认）','最少思考','高'])
   assert.match(screen.getByRole('region',{name:'主模型 / 规划思考设置'}).textContent,/不代表完全关闭思考/)
-  fireEvent.change(effort,{target:{value:'"none"'}});assert.equal(effort.value,'"none"')
+  changeControl(effort,{target:{value:'"none"'}});assert.equal(effort.value,'"none"')
   cleanup()
   initial.roles.main={provider:'siliconflow',modelId:'MiniMaxAI/MiniMax-M2.5',protocol:'openai-chat-completions',options:{}}
   render(React.createElement(Harness,{initial}))
@@ -387,8 +388,8 @@ test('Together integer effort stays optional, validates boundaries, and restores
   const input=within(region).getByRole('spinbutton',{name:'主模型 / 规划思考强度'})
   assert.equal(input.value,'');assert.equal(input.min,'1');assert.equal(input.max,'100');assert.equal(input.step,'1');assert.equal(input.required,false)
   assert.match(region.textContent,/范围：1–100 的整数/)
-  fireEvent.change(input,{target:{value:'101'}});assert.match(within(region).getByRole('alert').textContent,/1–100/)
-  fireEvent.change(input,{target:{value:'50'}});assert.equal(within(region).queryByRole('alert'),null)
+  changeControl(input,{target:{value:'101'}});assert.match(within(region).getByRole('alert').textContent,/1–100/)
+  changeControl(input,{target:{value:'50'}});assert.equal(within(region).queryByRole('alert'),null)
   const configured={...initial,roles:{...initial.roles,main:{...initial.roles.main,options:{effort:50}}}}
   const otherIds={...identity,main:{...initial.roles.main,modelId:'Qwen/Qwen3.8-Flash'}}
   const changed=rememberThinkingSettings(reconcileThinkingSettings(configured,otherIds),configured)
@@ -396,7 +397,7 @@ test('Together integer effort stays optional, validates boundaries, and restores
   saveThinkingSettings(changed,window.localStorage)
   const restored=reconcileThinkingSettings(readThinkingSettings(window.localStorage),{...identity,main:initial.roles.main})
   assert.deepEqual(compileThinkingSelection(buildThinkingSubmission(restored,{thinkingContractVersion:1},['main'],'generation').thinkingConfig.roles.main,'main').wire,{reasoning_effort:50})
-  fireEvent.change(input,{target:{value:''}});assert.equal(input.value,'');assert.equal(within(region).queryByRole('alert'),null)
+  changeControl(input,{target:{value:''}});assert.equal(input.value,'');assert.equal(within(region).queryByRole('alert'),null)
 })
 
 test('Z-Image preserves actionable editing recovery while retired thinking sections stay hidden',()=>{
@@ -408,7 +409,7 @@ test('Z-Image preserves actionable editing recovery while retired thinking secti
   assert.match(screen.getByRole('region',{name:'图像生成 / 编辑思考设置'}).textContent,/默认关闭；开启会增加费用/)
   assert.equal(Boolean(screen.queryByRole('region',{name:'主模型 / 规划思考设置'})), false)
   assert.deepEqual(buildThinkingSubmission(initial,{thinkingContractVersion:1},['image'],'generation').thinkingConfig.roles.image.options,{})
-  fireEvent.change(control,{target:{value:'true'}});assert.equal(control.value,'true')
+  changeControl(control,{target:{value:'true'}});assert.equal(control.value,'true')
   view.rerender(React.createElement(Harness,{initial,operation:'editing'}))
   assert.equal(screen.queryByLabelText('图像生成 / 编辑智能提示词改写（含思考）'),null)
   assert.match(screen.getByRole('region',{name:'图像生成 / 编辑思考设置'}).textContent,/当前编辑不支持已保存的思考参数/)

@@ -1,3 +1,4 @@
+import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUp, Plus, SlidersHorizontal, Boxes, Sparkles, Lightbulb, X, FileText, ChevronDown } from 'lucide-react';
 import { getFigureType } from '../../../../packages/figure-taxonomy/src/index.js';
@@ -71,7 +72,7 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
   return <section ref={regionRef} className={`tw-composer-region ${mobile ? 'is-mobile' : ''} ${mobile && multiline ? 'is-multiline' : ''} ${mobile && expanded ? 'is-input-focused' : ''}`} aria-label="任务输入区">
     {target ? <div className="tw-target">
       {!target.loadError && <img src={target.url} alt="修改目标缩略图" />}
-      <label className="tw-target-picker"><span>当前修改对象</span><select aria-label="当前修改对象" value={target.id} onChange={e => dispatch({ type: 'VIEW', versionId: e.target.value })}>{targets.map(v => <option key={v.id} value={v.id}>{versionLabel(v, true)}{v.loadError ? ' · 图片不可用' : ''}</option>)}</select></label>
+      <label className="tw-target-picker"><span>当前修改对象</span><MenuSelect aria-label="当前修改对象" value={target.id} onChange={e => dispatch({ type: 'VIEW', versionId: e.target.value })}>{targets.map(v => <option key={v.id} value={v.id}>{versionLabel(v, true)}{v.loadError ? ' · 图片不可用' : ''}</option>)}</MenuSelect></label>
       {target.loadError && <span role="status" className="tw-target-error">{target.loadError}</span>}
     </div> : <div className="tw-composer-intent"><span>{source ? `修改对象：${source.filename}` : run ? '正在生成，可准备下一轮要求' : '新方案'} · {PATHS[t.path]}</span></div>}
     <div className="tw-composer-topline">
@@ -84,9 +85,9 @@ export default function TaskComposer({ state, dispatch, onSubmit, onFiles, busy,
       <textarea onBeforeInput={onInputStart} onCompositionStart={onInputStart} onFocus={() => setExpanded(true)} wrap="soft" ref={textRef} id={inputId} value={d.text} maxLength={100000} rows={mobile ? 1 : 3} placeholder={mobile ? target ? '描述修改要求…' : '描述你想绘制的图…' : target ? '说明希望修改什么，以及哪些内容需要保持…' : '描述研究内容、绘图目标，以及需要保留或避免的细节…'} onChange={e => edit({ text: e.target.value })} onKeyDown={e => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !e.nativeEvent.isComposing && e.keyCode !== 229) submit(e);
       }} />
-      {!!d.attachments.length && <div className="tw-attachments">{d.attachments.map(a => <div className="tw-attachment" key={a.id}><FileText size={17} /><span title={a.filename}>{a.filename}</span><select aria-label={`${a.filename} 的用途`} value={a.purpose || ''} onChange={e => edit({ attachments: d.attachments.map(item => item.id === a.id ? { ...item, purpose: e.target.value } : item) })}>
+      {!!d.attachments.length && <div className="tw-attachments">{d.attachments.map(a => <div className="tw-attachment" key={a.id}><FileText size={17} /><span title={a.filename}>{a.filename}</span><MenuSelect aria-label={`${a.filename} 的用途`} value={a.purpose || ''} onChange={e => edit({ attachments: d.attachments.map(item => item.id === a.id ? { ...item, purpose: e.target.value } : item) })}>
         <option value="">确认用途</option><option value="research">研究材料</option><option value="reference">参考图片</option><option value="source">待修改原图</option>
-      </select>{pngEditing && a.purpose === 'reference' && <select aria-label={`${a.filename} 的参考目的`} value={a.referencePurpose || ''} onChange={e => edit({attachments:d.attachments.map(item => item.id===a.id ? {...item,referencePurpose:e.target.value} : item)})}><option value="">确认参考目的</option><option value="content">内容</option><option value="layout">布局</option><option value="color">配色</option><option value="style">风格</option></select>}<button type="button" className="tw-icon" aria-label={`移除 ${a.filename}`} onClick={() => edit({ attachments: d.attachments.filter(item => item.id !== a.id) })}><X size={15} /></button></div>)}</div>}
+      </MenuSelect>{pngEditing && a.purpose === 'reference' && <MenuSelect aria-label={`${a.filename} 的参考目的`} value={a.referencePurpose || ''} onChange={e => edit({attachments:d.attachments.map(item => item.id===a.id ? {...item,referencePurpose:e.target.value} : item)})}><option value="">确认参考目的</option><option value="content">内容</option><option value="layout">布局</option><option value="color">配色</option><option value="style">风格</option></MenuSelect>}<button type="button" className="tw-icon" aria-label={`移除 ${a.filename}`} onClick={() => edit({ attachments: d.attachments.filter(item => item.id !== a.id) })}><X size={15} /></button></div>)}</div>}
       {(d.caption || d.avoid) && <div className="tw-supplements"><label>指定图注<input value={d.caption} onChange={e => edit({ caption: e.target.value })} /></label><label>避免出现<input value={d.avoid} onChange={e => edit({ avoid: e.target.value })} /></label></div>}
       {mobile ? <div className="tw-mobile-composer-toolbar" role="group" aria-label="绘图工具" onPointerDown={e => {
         // Keep the keyboard and toolbar still until the button's click fires.

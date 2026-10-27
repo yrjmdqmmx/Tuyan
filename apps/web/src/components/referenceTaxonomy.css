@@ -1,11 +1,11 @@
 .reference-gallery-dialog .reference-gallery-toolbar{display:grid;grid-template-columns:minmax(170px,1fr) repeat(3,minmax(120px,.55fr)) auto;gap:10px}
-.reference-gallery-dialog .reference-facet{min-width:0}.reference-gallery-dialog .reference-facet select{min-width:0;width:100%}
+.reference-gallery-dialog .reference-facet{min-width:0}.reference-gallery-dialog .reference-facet :is(select, .ui-select){min-width:0;width:100%}
 .reference-gallery-dialog .reference-gallery-toolbar{align-items:end}
 .reference-gallery-dialog .reference-gallery-eyebrow{font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:none}
 .reference-gallery-dialog .reference-gallery-dialog-head h2{font-size:26px;font-weight:600;line-height:1.35}
 .reference-gallery-dialog .reference-facet{gap:6px}
 .reference-gallery-dialog .reference-facet>span{font-size:12px;font-weight:500}
-.reference-gallery-dialog .reference-facet select{box-sizing:border-box;min-height:44px;padding:10px 36px 10px 12px;font-size:14px;font-weight:400;line-height:1.5}
+.reference-gallery-dialog .reference-facet :is(select, .ui-select){box-sizing:border-box;min-height:44px;padding:10px 36px 10px 12px;font-size:14px;font-weight:400;line-height:1.5}
 .reference-gallery-dialog .reference-gallery-search{box-sizing:border-box;min-height:44px}
 .reference-gallery-dialog .reference-gallery-search input{font-size:14px;line-height:1.5}
 .reference-gallery-dialog .reference-card-copy{gap:8px}

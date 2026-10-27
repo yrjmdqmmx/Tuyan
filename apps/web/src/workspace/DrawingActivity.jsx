@@ -1,3 +1,4 @@
+import MenuSelect from '../components/MenuSelect.jsx';
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { shiftDrawingDay } from '../../../../packages/api/src/drawing-activity.mjs';
@@ -114,9 +115,9 @@ export default function DrawingActivity({ userId, request }) {
     <div className="tw-activity-heading">
       <h3 id="drawing-activity-heading">绘制活动</h3>
       <div className="tw-activity-controls">
-        <select aria-label="活动时间范围" value={period} onChange={e => { setPeriod(e.target.value); setSelected(''); dismissTooltip(); }}>
+        <MenuSelect aria-label="活动时间范围" value={period} onChange={e => { setPeriod(e.target.value); setSelected(''); dismissTooltip(); }}>
           <option value="recent">近 12 个月</option>{years.map(year => <option key={year} value={year}>{year} 年</option>)}
-        </select>
+        </MenuSelect>
         <div className="tw-activity-tabs" role="group" aria-label="绘制活动视图">
           {[['daily', '每天'], ['weekly', '每周'], ['cumulative', '累计总量']].map(([value, label]) =>
             <button type="button" key={value} aria-pressed={mode === value} onClick={() => { setMode(value); dismissTooltip(); }}>{label}</button>)}

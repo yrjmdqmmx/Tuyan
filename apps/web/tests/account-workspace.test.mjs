@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import React from 'react';
@@ -19,13 +20,13 @@ test('access mode switches retain the complete ordinary preset and allow incompl
     await waitFor(()=>assert.ok(actions.includes('modelRegistry')));
     fireEvent.click(screen.getByRole('button',{name:'打开完整设置'}));
     fireEvent.click(screen.getByRole('button',{name:'Google',exact:true}));
-    fireEvent.change(screen.getByLabelText('主模型 / 规划思考强度'),{target:{value:'"low"'}});
+    changeControl(screen.getByLabelText('主模型 / 规划思考强度'),{target:{value:'"low"'}});
     fireEvent.click(screen.getByRole('button',{name:/专业模式/}));
     assert.match(screen.getByRole('button',{name:'视觉模型',exact:true}).textContent,/无/);
     fireEvent.click(screen.getByRole('button',{name:'视觉模型',exact:true}));
     fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'Google',exact:true}));
     fireEvent.click(screen.getByRole('button',{name:'选择 Gemini 3.7 Flash',exact:true}));
-    fireEvent.change(screen.getByLabelText('视觉识别思考强度'),{target:{value:'"high"'}});
+    changeControl(screen.getByLabelText('视觉识别思考强度'),{target:{value:'"high"'}});
     fireEvent.click(screen.getByRole('button',{name:'主模型',exact:true}));
     fireEvent.click(within(document.querySelector('.model-provider-rail')).getByRole('button',{name:'Kimi',exact:true}));
     fireEvent.click(screen.getByRole('button',{name:'选择 Kimi K2.6',exact:true}));
@@ -41,7 +42,7 @@ test('access mode switches retain the complete ordinary preset and allow incompl
     assert.equal(document.querySelectorAll('.universal-role').length,1);
     assert.equal(document.querySelector('.mode-switch').children.length,2);
     const customModel=document.querySelector('.universal-role input[placeholder="从目录选择，或粘贴服务提供的准确 ID"]');
-    fireEvent.change(customModel,{target:{value:'draft-model'}});
+    changeControl(customModel,{target:{value:'draft-model'}});
     assert.equal(customModel.value,'draft-model');
     fireEvent.click(screen.getByRole('button',{name:/普通模式/}));
     assert.equal(screen.getByRole('button',{name:'Google',exact:true}).getAttribute('aria-pressed'),'true');
@@ -69,7 +70,7 @@ test('generation waits for a selected original to finish durable browser storage
     render(React.createElement(App));
     const input=screen.getByLabelText('上传文件');
     await waitFor(()=>assert.equal(input.disabled,false));
-    fireEvent.change(input,{target:{files:[file]}});
+    changeControl(input,{target:{files:[file]}});
     await waitFor(()=>assert.equal(typeof release,'function'));
     assert.equal(document.querySelector('.generation-form button[type="submit"]').disabled,true);
     fireEvent.submit(document.querySelector('.generation-form'));
@@ -99,7 +100,7 @@ test('account entry keeps the actual generation/refine subtree and selected mode
     const nav = within(screen.getByRole('navigation', { name: '主导航' }));
     assert.deepEqual(nav.getAllByRole('button').map(button => button.textContent), ['生成候选图', '任务记录', '精修图片', '账户', '使用教程']);
     const method = screen.getByRole('textbox', { name: '论文方法内容', exact: true });
-    fireEvent.change(method, { target: { value: '保留研究方法和模型选择。' } });
+    changeControl(method, { target: { value: '保留研究方法和模型选择。' } });
     fireEvent.click(screen.getByRole('button', { name: '打开完整设置' }));
     const channels = screen.getByRole('group', { name: 'API 接入渠道', exact: true });
     assert.equal(channels.querySelector('button').textContent.trim(), '观猹 TokenDance');
@@ -127,7 +128,7 @@ test('account entry keeps the actual generation/refine subtree and selected mode
     assert.equal(document.querySelector('.td-recharge'), null, 'wallet only exists on account page');
     fireEvent.click(screen.getByRole('button', { name: '精修图片', exact: true }));
     const instruction = await screen.findByRole('textbox', { name: '精修指令', exact: true });
-    fireEvent.change(instruction, { target: { value: '仅放大标签，保留结构。' } });
+    changeControl(instruction, { target: { value: '仅放大标签，保留结构。' } });
     const refineImageInput = document.querySelector('input[type="file"]');
     fireEvent.click(nav.getByRole('button', { name: '账户', exact: true }));
     assert.ok(screen.getByRole('button', { name: '返回精修图片' }));

@@ -1,7 +1,8 @@
+import { changeControl } from './menu-helpers.mjs';
 import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, within } from '@testing-library/react';
 import ModelPicker from '../src/components/ModelPicker.jsx';
 import ThinkingSettings from '../src/components/ThinkingSettings.jsx';
 import ThinkingStatus from '../src/components/ThinkingStatus.jsx';
@@ -25,22 +26,22 @@ test('catalog and saved library hide missing entries with accurate counts and re
   const view = render(React.createElement(WorkspaceModelManager, { models }));
   assert.equal(screen.getByRole('button', { name: /模型目录/ }).textContent, '模型目录2');
   fireEvent.click(screen.getByRole('button', { name: /我的模型/ }));
-  assert.equal(document.querySelectorAll('.tw-library-model').length, 1);
+  assert.equal(document.querySelectorAll('.tw-catalog-card').length, 1);
   assert.equal(screen.getByRole('button', { name: /我的模型/ }).textContent, '我的模型1');
   assert.equal(Boolean(screen.queryByText('Missing model')), false);
   view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: null, registryStatus: 'loading' } }));
-  assert.equal(document.querySelectorAll('.tw-library-model').length, 3, 'a load failure is not evidence of removal');
+  assert.equal(document.querySelectorAll('.tw-catalog-card').length, 3, 'a load failure is not evidence of removal');
   assert.equal(library.models.length, 3);
   view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: { providers: {} } } }));
-  assert.equal(document.querySelectorAll('.tw-library-model').length, 0, 'removed channel has no selectable catalogue entries');
+  assert.equal(document.querySelectorAll('.tw-catalog-card').length, 0, 'removed channel has no selectable catalogue entries');
   view.rerender(React.createElement(WorkspaceModelManager, { models: { ...models, registry: { providers: {}, unavailableProviders: { openai: 'temporary failure' } } } }));
-  assert.equal(document.querySelectorAll('.tw-library-model').length, 3, 'failed channel read preserves saved identities');
+  assert.equal(document.querySelectorAll('.tw-catalog-card').length, 3, 'failed channel read preserves saved identities');
 });
 
 test('catalog refresh blocks adding a model removed while its dialog is open', () => {
   const noSaved = { ...models, library: { ...library, models: [] } };
   const view = render(React.createElement(WorkspaceModelCatalog, { models: { ...noSaved, registry: { ...registry, catalogHealth: {} } } }));
-  fireEvent.click(screen.getByRole('button', { name: /^OpenAI2$/ }));
+  fireEvent.click(within(screen.getByRole('complementary', { name: '模型渠道筛选' })).getByRole('button', { name: /^OpenAI/ }));
   fireEvent.click(screen.getByRole('button', { name: '添加 Missing model · OpenAI' }));
   assert.equal(screen.getByRole('button', { name: '确认添加' }).disabled, false);
   view.rerender(React.createElement(WorkspaceModelCatalog, { models: noSaved }));
@@ -120,7 +121,7 @@ test('ordinary workspace preset cannot select a missing channel model', () => {
   let changed;
   const presetRegistry = { ...registry, providers: { ...registry.providers, openai: { ...registry.providers.openai, defaults: { main: 'missing', image: 'missing', vision: 'missing' } } } };
   render(React.createElement(WorkspaceModelConfig, { models: { ...models, registry: presetRegistry }, draft: { mode: 'simple', settings: { simple: { models: {} } } }, path: 'png', onChange(value) { changed = value; } }));
-  fireEvent.change(screen.getByLabelText('普通预设'), { target: { value: 'direct' } });
+  changeControl(screen.getByLabelText('普通预设'), { target: { value: 'direct' } });
   fireEvent.click(screen.getByRole('button', { name: '应用此连接的默认组合' }));
   assert.deepEqual(changed.models, {});
 });

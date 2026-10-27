@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -168,16 +169,16 @@ test('bulk font and spacing edits reach explicit tspan overrides without flatten
  fireEvent.click(screen.getByRole('button',{name:'展开 分组'}));
  fireEvent.click(screen.getByRole('button',{name:'对象：文字 · 中文 μ ≤ β2',exact:true}));
  fireEvent.click(screen.getByRole('button',{name:'选择全部文字'}));
- const font=screen.getByRole('textbox',{name:'字体'});fireEvent.change(font,{target:{value:'Liberation Sans, WenQuanYi Micro Hei'}});fireEvent.blur(font);
- const spacing=screen.getByLabelText('字距');fireEvent.change(spacing,{target:{value:'0.5px'}});fireEvent.blur(spacing);
- const word=screen.getByLabelText('词距');fireEvent.change(word,{target:{value:'1'}});fireEvent.blur(word);
- const weight=screen.getByLabelText('字重');fireEvent.change(weight,{target:{value:'700'}});fireEvent.blur(weight);
+ const font=screen.getByRole('textbox',{name:'字体'});changeControl(font,{target:{value:'Liberation Sans, WenQuanYi Micro Hei'}});fireEvent.blur(font);
+ const spacing=screen.getByLabelText('字距');changeControl(spacing,{target:{value:'0.5px'}});fireEvent.blur(spacing);
+ const word=screen.getByLabelText('词距');changeControl(word,{target:{value:'1'}});fireEvent.blur(word);
+ const weight=screen.getByLabelText('字重');changeControl(weight,{target:{value:'700'}});fireEvent.blur(weight);
  const root=parseSvg(latest).root;
  for(const n of root.querySelectorAll('text,tspan')){assert.equal(n.style.fontFamily,'"Liberation Sans", "WenQuanYi Micro Hei"');assert.equal(n.style.letterSpacing,'0.5px');assert.equal(n.style.wordSpacing,'1px');assert.equal(n.style.fontWeight,'700');}
  assert.equal(root.querySelector('text').textContent,'中文 μ ≤ β2');assert.equal(root.querySelector('tspan').getAttribute('dy'),'-5');
  assert.equal(root.querySelector('g').getAttribute('transform'),'translate(10 20)');assert.equal(root.querySelector('rect').getAttribute('fill'),'url(#g)');assert.equal(root.querySelectorAll('path').length,0);
  fireEvent.click(screen.getByRole('button',{name:'外观',exact:true}));
- const opacity=screen.getByLabelText('透明度');fireEvent.change(opacity,{target:{value:'0.5'}});fireEvent.blur(opacity);
+ const opacity=screen.getByLabelText('透明度');changeControl(opacity,{target:{value:'0.5'}});fireEvent.blur(opacity);
  const faded=parseSvg(latest).root;assert.equal(faded.querySelector('text').getAttribute('opacity'),'0.5');assert.equal(faded.querySelector('tspan').hasAttribute('opacity'),false,'nested text opacity must not be multiplied twice');
  await act(async()=>{});
 });
@@ -237,7 +238,7 @@ test('visible object tools use normal history, direct text edits and data/read-o
  const view=render(React.createElement(Harness));
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'＋ 文字'})));
  assert.ok(screen.getByRole('textbox',{name:'字体'}),'new text immediately exposes typography controls');
- assert.ok(screen.getByRole('textbox',{name:'直接修改文字'}));fireEvent.change(screen.getByRole('textbox',{name:'直接修改文字'}),{target:{value:'新增 中文 Δ ≤ β'}});await act(async()=>fireEvent.click(screen.getByRole('button',{name:'确定文字'})));
+ assert.ok(screen.getByRole('textbox',{name:'直接修改文字'}));changeControl(screen.getByRole('textbox',{name:'直接修改文字'}),{target:{value:'新增 中文 Δ ≤ β'}});await act(async()=>fireEvent.click(screen.getByRole('button',{name:'确定文字'})));
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'复制',exact:true})));assert.equal(parseSvg(latest).root.querySelectorAll('text').length,3);
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'图层 / 对象'})));assert.equal(screen.getAllByRole('button',{name:'对象：文字 · 新增 中文 Δ ≤ β'}).length,2);
  await act(async()=>fireEvent.click(screen.getByRole('button',{name:'删除',exact:true})));assert.equal(parseSvg(latest).root.querySelectorAll('text').length,2);

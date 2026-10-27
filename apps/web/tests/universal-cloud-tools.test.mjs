@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -49,8 +50,8 @@ test('expiring tokens bind expiry in current page only and cannot be used after 
 test('tool UI displays only applicable fields and explicit unsupported-service recovery',()=>{
  let patch;const d=draft('xai-image-tool'),v=render(React.createElement(UniversalExtensions,{draft:d,role:'image',onChange:p=>patch=p}))
  assert.equal(screen.queryByLabelText('图像工具质量'),null);assert.equal(screen.queryByLabelText('图像工具格式'),null)
- v.rerender(React.createElement(UniversalExtensions,{draft:draft('openai-image-tool'),role:'image',onChange:p=>patch=p}));fireEvent.change(screen.getByLabelText('图像工具格式'),{target:{value:'jpeg'}});assert.equal(patch.custom.imageTool.format,'jpeg')
- const b=draft('bedrock-image');b.modelId='stability.sd3-5-large-v1:0';v.rerender(React.createElement(UniversalExtensions,{draft:b,role:'image',onChange:p=>patch=p}));fireEvent.change(screen.getByLabelText('Bedrock 重绘强度'),{target:{value:'0.65'}});assert.equal(patch.custom.bedrock.strength,0.65)
+ v.rerender(React.createElement(UniversalExtensions,{draft:draft('openai-image-tool'),role:'image',onChange:p=>patch=p}));changeControl(screen.getByLabelText('图像工具格式'),{target:{value:'jpeg'}});assert.equal(patch.custom.imageTool.format,'jpeg')
+ const b=draft('bedrock-image');b.modelId='stability.sd3-5-large-v1:0';v.rerender(React.createElement(UniversalExtensions,{draft:b,role:'image',onChange:p=>patch=p}));changeControl(screen.getByLabelText('Bedrock 重绘强度'),{target:{value:'0.65'}});assert.equal(patch.custom.bedrock.strength,0.65)
 })
 test('image orchestration thinking supports editing and restores by exact tool identity',()=>{
  const d=draft('openai-image-tool');d.modelId='gpt-5';const r=universalDraftRoute(d),routes={main:r,vision:r,image:r},ids=thinkingIdentities(routes,{},{}),settings=reconcileThinkingSettings(null,ids);settings.roles.image.options={effort:'low'}

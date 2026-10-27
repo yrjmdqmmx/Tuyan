@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -28,7 +29,7 @@ test('supplier toggles show documented defaults and persist on/off without extra
     assert.equal(screen.queryByLabelText('主模型 / 规划思考强度'), null)
     assert.equal(screen.queryByRole('spinbutton'), null)
     for (const mode of [off, on]) {
-      fireEvent.change(control, { target: { value: JSON.stringify(mode) } })
+      changeControl(control, { target: { value: JSON.stringify(mode) } })
       assert.equal(saveThinkingSettings(settings, window.localStorage), true)
       const restored = reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)
       const submitted = buildThinkingSubmission(restored, { thinkingContractVersion: 1 }, ['main'], 'generation')

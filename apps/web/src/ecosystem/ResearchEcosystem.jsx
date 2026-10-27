@@ -1,3 +1,4 @@
+import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Box, ChartNoAxesCombined, Download, FlaskConical, Layers3, LoaderCircle, Upload } from 'lucide-react';
 import { API_BASE_DEFAULT } from '../config.js';
@@ -86,7 +87,7 @@ function ToolWorkbench({ tool, account, base, request }) {
       finally { if (alive.current && revision.current === current) { setBusy(false); pending.current = null; } }
     } catch (e) { setError(e.message); }
   }
-  const select = (label, name, choices, value, optional = false) => <label className="te-field">{label}<select value={value} onChange={event => edit(() => setFields(current => ({ ...current, [name]: event.target.value })))}><option value="">{optional ? '不分组' : '选择字段'}</option>{choices.map(key => <option value={key} key={key}>{key}</option>)}</select></label>;
+  const select = (label, name, choices, value, optional = false) => <label className="te-field">{label}<MenuSelect value={value} onChange={event => edit(() => setFields(current => ({ ...current, [name]: event.target.value })))}><option value="">{optional ? '不分组' : '选择字段'}</option>{choices.map(key => <option value={key} key={key}>{key}</option>)}</MenuSelect></label>;
   return <div className="te-workbench">
     <form className="te-input" onSubmit={run}>
       <div className="te-input-title"><h3>{spatial ? '科学数据' : '数据与图表'}</h3><button type="button" onClick={useExample} disabled={reading}>载入示例</button></div>
@@ -98,11 +99,11 @@ function ToolWorkbench({ tool, account, base, request }) {
       {table?.rows && <details className="te-table-details"><summary>{table.rows.length} 行 · {columns.length} 列 · 查看数据</summary><div className="te-table-scroll"><table><thead><tr>{columns.slice(0, 8).map(key => <th key={key}>{key}</th>)}</tr></thead><tbody>{table.rows.slice(0, 5).map((row, i) => <tr key={i}>{columns.slice(0, 8).map(key => <td key={key}>{String(row[key] ?? '—')}</td>)}</tr>)}</tbody></table></div><p className="te-hint">预览前 5 行、8 列，计算使用全部已载入数据。</p></details>}
       <div className="te-options">
         {spatial ? <>
-          <label className="te-field">着色字段{availableFields.length ? <select value={field} onChange={event => edit(() => setField(event.target.value))}><option value="">自动选择</option>{availableFields.map(name=><option key={name} value={name}>{name}</option>)}</select> : <input value={field} maxLength={128} placeholder="自动选择（可填写字段名称）" onChange={event => edit(() => setField(event.target.value))} />}<span className="te-hint">首次渲染后，可从数据中识别到的字段中选择。</span></label>
-          <label className="te-field">视角<select value={camera} onChange={event => edit(() => setCamera(event.target.value))}><option value="isometric">等轴测</option><option value="front">正面</option><option value="top">俯视</option><option value="right">右侧</option></select></label>
-          <label className="te-field">色标<select value={colormap} onChange={event => edit(() => setColormap(event.target.value))}><option value="Viridis">Viridis</option><option value="Cool to Warm">冷暖对比</option><option value="Plasma">Plasma</option></select></label>
+          <label className="te-field">着色字段{availableFields.length ? <MenuSelect value={field} onChange={event => edit(() => setField(event.target.value))}><option value="">自动选择</option>{availableFields.map(name=><option key={name} value={name}>{name}</option>)}</MenuSelect> : <input value={field} maxLength={128} placeholder="自动选择（可填写字段名称）" onChange={event => edit(() => setField(event.target.value))} />}<span className="te-hint">首次渲染后，可从数据中识别到的字段中选择。</span></label>
+          <label className="te-field">视角<MenuSelect value={camera} onChange={event => edit(() => setCamera(event.target.value))}><option value="isometric">等轴测</option><option value="front">正面</option><option value="top">俯视</option><option value="right">右侧</option></MenuSelect></label>
+          <label className="te-field">色标<MenuSelect value={colormap} onChange={event => edit(() => setColormap(event.target.value))}><option value="Viridis">Viridis</option><option value="Cool to Warm">冷暖对比</option><option value="Plasma">Plasma</option></MenuSelect></label>
         </> : <>
-          <label className="te-field">图表类型<select value={chart} onChange={event => edit(() => { setChart(event.target.value); setFields({}); })}><option value="scatter">散点图</option><option value="line">折线图</option>{tool.id === 'semiotic' ? <><option value="bar">柱状图</option><option value="sankey">桑基图</option></> : <option value="histogram">直方图</option>}</select></label>
+          <label className="te-field">图表类型<MenuSelect value={chart} onChange={event => edit(() => { setChart(event.target.value); setFields({}); })}><option value="scatter">散点图</option><option value="line">折线图</option>{tool.id === 'semiotic' ? <><option value="bar">柱状图</option><option value="sankey">桑基图</option></> : <option value="histogram">直方图</option>}</MenuSelect></label>
           <div className="te-field-pair">{select(chart === 'sankey' ? '来源字段' : '横轴字段', 'x', chart === 'bar' || chart === 'sankey' ? columns : numeric, x)}{select(chart === 'sankey' ? '流量字段' : '纵轴字段', 'y', numeric, y)}</div>
           {select(chart === 'sankey' ? '目标字段' : '分组字段（可选）', 'group', columns, group, chart !== 'sankey')}
           <label className="te-field">图表标题（可选）<input value={title} maxLength={120} placeholder="为这次结果命名" onChange={event => edit(() => setTitle(event.target.value))} /></label>

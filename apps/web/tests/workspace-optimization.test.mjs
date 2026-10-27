@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test, { afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import React, { useReducer, useRef, StrictMode } from 'react';
@@ -61,6 +62,6 @@ test('changing the selected source clears an old optimization offer without remo
  function Sources(){const [state,dispatch]=useReducer(workspaceReducer,undefined,Ready),stateRef=useRef(state);stateRef.current=state;return React.createElement(TaskWorkspace,{state,dispatch,renderOptimize:children=>React.createElement(WorkspaceOptimize,{stateRef,dispatch,models,userId:'u',health:{simulation:true},sync:{ensureSynced:async()=>{}}},children)});}
  globalThis.fetch=async()=>Response.json({target:'editInstruction',optimizedText:'更精确的修改要求'});
  render(React.createElement(Sources));const textbox=screen.getByLabelText('修改要求');click('优化输入');await screen.findByText('优化稿');
- fireEvent.change(screen.getByLabelText('当前修改对象'),{target:{value:'b'}});
+ changeControl(screen.getByLabelText('当前修改对象'),{target:{value:'b'}});
  assert.equal(screen.queryByRole('button',{name:'采用优化稿',exact:true}),null);assert.equal(screen.getByLabelText('修改要求'),textbox);
 });

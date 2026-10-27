@@ -6,7 +6,7 @@ export const emptyLibrary = () => ({ revision: 0, connections: [], models: [] })
 export const customBindingChanged=(entry,connection)=>entry.custom&&['connectionId','baseUrl','protocol','auth'].some(key=>normalizeUniversalConnection(entry.custom)[key]!==connection?.custom?.[key]);
 export function libraryModelMissingFromCatalog(entry, library, registry) {
   const provider = library.connections.find(c => c.id === entry.connectionId)?.provider;
-  return !entry.custom && modelMissingFromCatalog(registry, provider, entry.modelId);
+  return Boolean(provider) && !entry.custom && modelMissingFromCatalog(registry, provider, entry.modelId);
 }
 export function modelOption(entry, library, registry, role, path, editing, tokenDance) {
   const connection = library.connections.find(c => c.id === entry.connectionId);

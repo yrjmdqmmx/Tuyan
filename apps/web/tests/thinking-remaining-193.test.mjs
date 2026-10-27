@@ -1,3 +1,4 @@
+import { changeControl, menuOptions } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React, { useState } from 'react'
@@ -27,7 +28,7 @@ test('Bailian defaults and boolean overrides are preserved independently by exac
     assert.equal(mode.value, String(initial))
     assert.equal(screen.queryByRole('spinbutton'), null, 'unconfirmed budget limits are not offered')
     assert.equal(screen.queryByLabelText('主模型 / 规划思考强度'), null)
-    fireEvent.change(mode, { target: { value: String(!initial) } })
+    changeControl(mode, { target: { value: String(!initial) } })
     assert.equal(saveThinkingSettings(settings, window.localStorage), true)
     assert.deepEqual(wire(reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)), { enable_thinking: !initial })
     cleanup()
@@ -40,12 +41,12 @@ test('Mistral aliases distinguish minimal reasoning from off and remember the se
     const identity = identities('mistral', modelId)
     render(React.createElement(Harness, { identity, capture: value => { settings = value } }))
     const effort = screen.getByLabelText('主模型 / 规划思考强度')
-    assert.deepEqual([...effort.options].map(option => option.textContent), ['默认（未确认）', '最少思考', '高'])
+    assert.deepEqual([...menuOptions(effort)].map(option => option.textContent), ['默认（未确认）', '最少思考', '高'])
     assert.match(screen.getByRole('region').textContent, /不代表完全关闭思考/)
-    fireEvent.change(effort, { target: { value: '"none"' } })
+    changeControl(effort, { target: { value: '"none"' } })
     saveThinkingSettings(settings, window.localStorage)
     assert.deepEqual(wire(reconcileThinkingSettings(readThinkingSettings(window.localStorage), identity)), { reasoning_effort: 'none' })
-    fireEvent.change(effort, { target: { value: '' } })
+    changeControl(effort, { target: { value: '' } })
     assert.deepEqual(wire(settings), {})
     cleanup()
   }

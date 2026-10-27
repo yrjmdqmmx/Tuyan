@@ -1,3 +1,4 @@
+import { changeControl, chooseMenuOption } from './menu-helpers.mjs';
 import assert from 'node:assert/strict'
 import { afterEach, test } from 'node:test'
 import React from 'react'
@@ -105,7 +106,7 @@ test('initial sample is clean, then edited text requires confirmation and cancel
   assert.equal(screen.getByLabelText(/目标图注/u).value, FEATURED_TEMPLATES[1].caption)
   assert.equal(screen.getByLabelText(/负向提示词（可选）/u).value, FEATURED_TEMPLATES[1].negativePrompt)
 
-  fireEvent.change(screen.getByLabelText(/目标图注/u), { target: { value: '我精确修改过的图注' } })
+  changeControl(screen.getByLabelText(/目标图注/u), { target: { value: '我精确修改过的图注' } })
   const exactMethod = screen.getByLabelText(/论文方法内容/u).value
   const exactNegative = screen.getByLabelText(/负向提示词（可选）/u).value
   await user.click(screen.getByRole('button', { name: '浏览模板' }))
@@ -179,16 +180,16 @@ test('generation adjusts ratio, while refinement preserves incompatible input un
     refineAspectRatiosByResolution: { '1K': ['1:1'], '2K': ['1:1','2:3'] },
   } })
   await user.click(screen.getByRole('button', { name: '打开完整设置' }))
-  await user.selectOptions(screen.getByLabelText('输出清晰度'), '2K')
+  await chooseMenuOption(screen.getByLabelText('输出清晰度'), '2K')
   await user.click(screen.getByRole('button', { name: '画面比例 4:1' }))
-  await user.selectOptions(screen.getByLabelText('输出清晰度'), '1K')
+  await chooseMenuOption(screen.getByLabelText('输出清晰度'), '1K')
   await waitFor(() => assert.equal(screen.getByRole('button', { name: '画面比例 自动' }).getAttribute('aria-pressed'), 'true'))
   assert.equal(screen.queryByRole('button', { name: /画面比例 4:1，/u }), null)
   await user.click(screen.getByRole('button', { name: '关闭生成设置' }))
   await user.click(screen.getByRole('button', { name: '精修图片' }))
-  await user.selectOptions(screen.getByLabelText('清晰度'), '2K')
+  await chooseMenuOption(screen.getByLabelText('清晰度'), '2K')
   await user.click(screen.getByRole('button', { name: '目标比例 2:3' }))
-  await user.selectOptions(screen.getByLabelText('清晰度'), '1K')
+  await chooseMenuOption(screen.getByLabelText('清晰度'), '1K')
   assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'false')
   await user.click(screen.getByRole('button', { name: '目标比例 自动' }))
   assert.equal(screen.getByRole('button', { name: '目标比例 自动' }).getAttribute('aria-pressed'), 'true')

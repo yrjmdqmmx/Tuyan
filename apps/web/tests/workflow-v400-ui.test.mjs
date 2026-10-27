@@ -1,3 +1,4 @@
+import { changeControl, menuOptions, chooseMenuOption } from './menu-helpers.mjs';
 import test, {afterEach} from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -143,8 +144,8 @@ test('App submits and restores numeric workflow settings while none keeps the vi
     assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
     await user.click(screen.getByRole('button',{name:/专业模式/}))
     assert.equal(screen.getByRole('radio',{name:/完整生成/}).checked,true)
-    fireEvent.change(screen.getByLabelText('候选图数量'),{target:{value:'6'}})
-    fireEvent.change(screen.getByLabelText('评审轮数'),{target:{value:'5'}})
+    changeControl(screen.getByLabelText('候选图数量'),{target:{value:'6'}})
+    changeControl(screen.getByLabelText('评审轮数'),{target:{value:'5'}})
     assert.equal(screen.queryByLabelText('火山方舟 接入密钥'),null)
     await user.type(screen.getByLabelText('OpenAI 接入密钥'),'fixture-key')
     await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
@@ -173,7 +174,7 @@ test('App blocks an older workflow backend before submission and preserves the i
     render(React.createElement(App))
     await waitFor(()=>assert.ok(requests.some(body=>body.action==='modelRegistry')))
     const method=screen.getByLabelText(/论文方法内容/)
-    fireEvent.change(method,{target:{value:'保留输入：模型尚未调用，后端不支持新版工作流。'}})
+    changeControl(method,{target:{value:'保留输入：模型尚未调用，后端不支持新版工作流。'}})
     fireEvent.click(screen.getAllByRole('button',{name:'生成候选图'}).find(button=>button.type==='submit'))
     assert.ok(screen.getAllByRole('alert').some(alert=>alert.textContent.includes('更新后端')))
     assert.equal(method.value,'保留输入：模型尚未调用，后端不支持新版工作流。')
@@ -213,14 +214,14 @@ test('model-v1 SVG data figure omits an unused editing-only image route credenti
     await waitFor(()=>assert.ok(requests.some(body=>body.action==='modelRegistry')))
     await user.click(screen.getByRole('button',{name:'打开完整设置'}))
     await user.click(document.querySelector('.figure-type-trigger'))
-    fireEvent.change(screen.getByLabelText('搜索图类'),{target:{value:'柱形图'}})
+    changeControl(screen.getByLabelText('搜索图类'),{target:{value:'柱形图'}})
     await user.click(screen.getByRole('button',{name:/柱形图 Bar chart/}))
-    assert.deepEqual([...screen.getByLabelText('导出格式').options].map(option=>option.value),['png','svg'])
-    await user.selectOptions(screen.getByLabelText('导出格式'),'svg')
+    assert.deepEqual([...menuOptions(screen.getByLabelText('导出格式'))].map(option=>option.value),['png','svg'])
+    await chooseMenuOption(screen.getByLabelText('导出格式'),'svg')
     await waitFor(()=>assert.equal(document.querySelector('[data-model-role="image"]'),null))
     await user.click(screen.getByRole('button',{name:'关闭生成设置'}))
     assert.equal(screen.queryByLabelText('柱形图数据表'),null)
-    fireEvent.change(screen.getByLabelText(/论文方法内容/),{target:{value:'柱形图数据：A=2，B=4，单位 count；来源为模拟测试数据。'}})
+    changeControl(screen.getByLabelText(/论文方法内容/),{target:{value:'柱形图数据：A=2，B=4，单位 count；来源为模拟测试数据。'}})
     await user.click(screen.getByRole('button',{name:'打开完整设置'}))
     assert.equal(screen.queryByLabelText('fal 接入密钥'),null)
     await user.type(screen.getByLabelText('OpenAI 接入密钥'),'fixture-main-only')

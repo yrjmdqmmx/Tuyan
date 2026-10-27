@@ -1,3 +1,4 @@
+import MenuSelect from './MenuSelect.jsx';
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { ArrowRight, Maximize2, Minus, Plus, RotateCcw, Settings2, X } from 'lucide-react'
@@ -220,7 +221,7 @@ export default function BenchmarkParetoScatter({ active = true, rows, frontier, 
   return <div ref={root} className={`pareto-chart${mobile ? ' is-touch' : ''}${expanded ? ' is-expanded' : ''}`} role={expanded ? 'dialog' : undefined} aria-modal={expanded || undefined} aria-labelledby={expanded ? titleId : undefined}>
     <header className="pareto-chart-heading"><div><h2 id={titleId}>{t("帕累托前沿")}</h2><span aria-label={t("比较范围")}>{label} · {rows.length} {t("个模型")}</span></div>
       <div className="pareto-chart-controls" data-chart-controls>
-        <details className="pareto-chart-settings"><summary aria-label={t("图表设置")}><Settings2 size={17} /></summary><label>{t("成本刻度")}<select aria-label={t("成本刻度")} value={scale} onChange={e => { setScale(e.target.value);reset() }}><option value="log">{t("对数")}</option><option value="linear">{t("线性")}</option></select></label><small>{t("⌘ / Ctrl + 滚轮缩放，放大后拖动平移。")}</small></details>
+        <details className="pareto-chart-settings"><summary aria-label={t("图表设置")}><Settings2 size={17} /></summary><label>{t("成本刻度")}<MenuSelect aria-label={t("成本刻度")} value={scale} onChange={e => { setScale(e.target.value);reset() }}><option value="log">{t("对数")}</option><option value="linear">{t("线性")}</option></MenuSelect></label><small>{t("⌘ / Ctrl + 滚轮缩放，放大后拖动平移。")}</small></details>
         <button type="button" aria-label={t("缩小图表")} disabled={view.zoom <= 1} onClick={() => zoom(view.zoom - 1)}><Minus size={17} /></button>
         <output aria-label={t("当前缩放")}>{Number(view.zoom.toFixed(1))}×</output>
         <button type="button" aria-label={t("放大图表")} disabled={view.zoom >= 8} onClick={() => zoom(view.zoom + 1)}><Plus size={17} /></button>

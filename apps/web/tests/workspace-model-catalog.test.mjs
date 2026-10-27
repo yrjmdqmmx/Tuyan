@@ -1,3 +1,4 @@
+import { changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -14,12 +15,13 @@ test('catalog is visible before connection setup, filters real roles and retains
  assert.equal(screen.getAllByRole('article').length,1);
  fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/^OpenAI\s*2$/}));
  assert.equal(screen.getAllByRole('article').length,2);
- fireEvent.change(screen.getByLabelText('搜索模型目录'),{target:{value:'shared-v1'}});
+ changeControl(screen.getByLabelText('搜索模型目录'),{target:{value:'shared-v1'}});
  assert.equal(screen.getAllByRole('article').length,1);
  assert.deepEqual(new Set(catalogRows(registry,{query:'shared-v1'}).map(row=>row.provider)),new Set(['openai','tokendance']));
- fireEvent.change(screen.getByLabelText('模型角色'),{target:{value:'vision'}});
+ fireEvent.click(screen.getByRole('combobox',{name:'模型角色'}));
+ fireEvent.click(screen.getByRole('option',{name:'视觉理解'}));
  assert.equal(screen.getAllByRole('article').length,1);
- fireEvent.change(screen.getByLabelText('搜索模型目录'),{target:{value:'no-match'}});
+ changeControl(screen.getByLabelText('搜索模型目录'),{target:{value:'no-match'}});
  assert.ok(screen.getByText('没有匹配的模型'));
  fireEvent.click(screen.getByRole('button',{name:'清除筛选'}));assert.equal(screen.getAllByRole('article').length,2);
 });
@@ -126,7 +128,7 @@ test('catalog shows only concrete channels and manufacturers, preserving valid c
  assert.ok(manufacturers.getByRole('button',{name:/^深度求索\s*1$/,pressed:true}));
  fireEvent.click(channels.getByRole('button',{name:/^OpenAI\s*1$/}));
  assert.ok(manufacturers.getByRole('button',{name:/^OpenAI\s*1$/,pressed:true}));
- fireEvent.change(screen.getByLabelText('搜索模型目录'),{target:{value:'no-match'}});
+ changeControl(screen.getByLabelText('搜索模型目录'),{target:{value:'no-match'}});
  fireEvent.click(screen.getByRole('button',{name:'清除筛选'}));
  assert.ok(channels.getByRole('button',{name:/^OpenAI\s*1$/,pressed:true}));
  assert.ok(manufacturers.getByRole('button',{name:/^OpenAI\s*1$/,pressed:true}));
@@ -154,11 +156,60 @@ test('audited absent models stay out of cards, manufacturer counts and search du
  const {rerender}=render(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,registry:r}}));
  assert.equal(screen.getAllByRole('article').length,1);
  assert.ok(within(screen.getByRole('complementary',{name:'模型厂商筛选'})).getByRole('button',{name:/深度求索\s*1$/}));
- fireEvent.change(screen.getByLabelText('搜索模型目录'),{target:{value:'old-deepseek'}});
+ changeControl(screen.getByLabelText('搜索模型目录'),{target:{value:'old-deepseek'}});
  assert.equal(screen.queryByRole('article'),null);
  const recovered={providers:{tokendance:{models:[active,{...absent,selectable:true,disabledReason:undefined,catalogPresence:{...absent.catalogPresence,status:'listed'}}]}}};
  rerender(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,registry:recovered}}));
  assert.equal(screen.getAllByRole('article').length,1);
  assert.ok(screen.getByRole('heading',{name:'Historical DeepSeek'}));
  assert.equal(r.providers.tokendance.models.length,2,'saved identities are not deleted');
+});
+
+
+test('unreviewed tools and unsupported modality discoveries never inflate cards or counts',()=>{
+ const r={providers:{fal:{models:[
+  {id:'image',roles:['image'],selectable:false,disabledReason:'适配待核对'},
+  {id:'fetch',roles:[],catalogDiscovered:true},
+  {id:'embedding',roles:['embedding']},
+  {id:'audio',roles:['audio']},
+  {id:'absent',roles:['image'],selectable:false,disabledReason:'当前渠道的完整公开目录已不再提供此精确型号，已暂停选择与调用；原配置保留，请选择其他型号。'},
+ ]}}};
+ assert.deepEqual(catalogRows(r).map(row=>row.model.id),['image']);
+ assert.equal(r.providers.fal.models.length,5);
+});
+
+test('my model cards preserve connection identity, specifications and exact-entry toggles',async()=>{
+ let saved;
+ const savedLibrary={...library,connections:[...library.connections,{id:'backup',label:'Backup',provider:'tokendance'}],models:[
+  {id:'primary-entry',modelId:'shared-v1',connectionId:'gateway'},
+  {id:'backup-entry',modelId:'shared-v1',connectionId:'backup',disabled:true},
+ ]};
+ const view=render(React.createElement(WorkspaceModelCatalog,{...props,mode:'library',models:{...props.models,library:savedLibrary,save:async value=>{saved=value;return true;}}}));
+ assert.equal(screen.getAllByRole('article').length,2);
+ for(const card of screen.getAllByRole('article')){
+  assert.deepEqual([...card.querySelectorAll('dt')].map(node=>node.textContent),['输入','输出','上下文窗口']);
+  assert.equal(card.querySelector('details,summary'),null);
+ }
+ fireEvent.click(screen.getByRole('button',{name:'停用 Shared model · Gateway'}));
+ await waitFor(()=>assert.ok(saved));
+ assert.equal(saved.models[0].disabled,true);assert.equal(saved.models[1].disabled,true);
+ assert.equal(saved.models[0].id,'primary-entry');assert.deepEqual(saved.connections,savedLibrary.connections);
+ view.rerender(React.createElement(WorkspaceModelCatalog,{...props,mode:'library',models:{...props.models,library:saved,save:async value=>{saved=value;return true;}}}));
+ fireEvent.click(screen.getByRole('button',{name:'启用 Shared model · Backup'}));
+ await waitFor(()=>assert.equal(saved.models[1].disabled,false));
+ assert.equal(saved.models[0].disabled,true);
+ changeControl(screen.getByLabelText('搜索已添加模型'),{target:{value:'Backup'}});
+ assert.equal(screen.getAllByRole('article').length,1);
+ assert.match(screen.getByRole('article').textContent,/Backup/);
+ assert.equal(screen.queryByRole('button',{name:/全部渠道|全部厂商/}),null);
+});
+
+test('my models retain offline entries and missing connections without allowing unintended writes',()=>{
+ const savedLibrary={connections:library.connections,models:[{id:'orphan',modelId:'custom-id',connectionId:'missing'}, {id:'offline',modelId:'shared-v1',connectionId:'gateway'}]};
+ const r={providers:{},unavailableProviders:{tokendance:'网络错误'}};
+ render(React.createElement(WorkspaceModelCatalog,{...props,mode:'library',models:{...props.models,registry:r,library:savedLibrary,ready:false}}));
+ assert.ok(screen.getByRole('button',{name:'停用 shared-v1 · Gateway'}).disabled);
+ fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/自定义/}));
+ assert.ok(screen.getByText('连接不存在'));
+ assert.ok(screen.getByRole('button',{name:'停用 custom-id · missing'}).disabled);
 });

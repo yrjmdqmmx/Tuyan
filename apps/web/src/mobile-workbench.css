@@ -61,8 +61,8 @@
   .input-optimization-trigger, .input-optimization-restore { min-height: 44px; padding: 0 4px; color: var(--sage); background: transparent; border: 0; border-radius: 6px; font-size: 12px; font-weight: 500; box-shadow: none; }
   .input-optimization-disabled-reason { flex-basis: 100%; }
   .app-shell .field { min-width: 0; }
-  .app-shell input:not([type=checkbox]):not([type=radio]):not([type=file]), .app-shell select, .app-shell textarea { max-width: 100%; min-width: 0; border-radius: 10px; font-size: 16px; }
-  .app-shell input:not([type=checkbox]):not([type=radio]):not([type=file]), .app-shell select { min-height: 48px; }
+  .app-shell input:not([type=checkbox]):not([type=radio]):not([type=file]), .app-shell :is(select, .ui-select), .app-shell textarea { max-width: 100%; min-width: 0; border-radius: 10px; font-size: 16px; }
+  .app-shell input:not([type=checkbox]):not([type=radio]):not([type=file]), .app-shell :is(select, .ui-select) { min-height: 48px; }
   .app-shell textarea { padding: 14px; line-height: 1.75; scroll-margin-block: 24px; background: #fff; }
   .input-copy #method-content { min-height: 244px; height: 244px; }
   .input-copy #target-caption { min-height: 132px; height: 132px; }
@@ -161,11 +161,11 @@
   .model-picker-trigger > svg { flex-shrink: 0; }
   .model-id-row code { white-space: normal; overflow-wrap: anywhere; }
   .model-option-details summary { min-height: 44px; align-content: center; }
-  .generation-drawer-body :is(input, textarea, select), .accessible-dialog :is(input, textarea, select), .feedback-dialog :is(input, textarea, select), .model-route-drawer input { font-size: 16px; }
+  .generation-drawer-body :is(input, textarea, :is(select, .ui-select)), .accessible-dialog :is(input, textarea, :is(select, .ui-select)), .feedback-dialog :is(input, textarea, :is(select, .ui-select)), .model-route-drawer input { font-size: 16px; }
   .generation-drawer-body :is(button, summary), .accessible-dialog button, .feedback-dialog button, .contact-dialog-close, .model-route-drawer button { min-height: 44px; }
   .universal-role-heading, .universal-catalog-toolbar, .universal-key-row { flex-wrap: wrap; }
   .universal-catalog-toolbar > button { flex: 1 1 auto; }
-  .universal-role input, .universal-role select, .universal-role textarea { width: 100%; }
+  .universal-role input, .universal-role :is(select, .ui-select), .universal-role textarea { width: 100%; }
   .universal-model-list button { overflow-wrap: anywhere; white-space: normal; }
   .accessible-dialog { max-width: 100%; max-height: 100%; min-height: 0; }
   .featured-template-dialog, .reference-gallery-dialog, .image-preview-dialog, .model-route-drawer { width: 100%; height: 100%; max-height: 100%; min-height: 0; border: 0; border-radius: 0; }

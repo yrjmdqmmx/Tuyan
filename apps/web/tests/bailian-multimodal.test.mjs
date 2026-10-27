@@ -1,3 +1,4 @@
+import { menuOptions, changeControl } from './menu-helpers.mjs';
 import test,{afterEach} from 'node:test';
 import assert from 'node:assert/strict';
 import React,{useState} from 'react';
@@ -37,7 +38,7 @@ test('old workspace backend cannot accept new visual selections; v2 allows both 
 });
 function Harness({role,capture}){const identities=Object.fromEntries(['main','vision','image'].map(r=>[r,{provider:'bailian',modelId:r==='image'?'':ids[1],protocol:'bailian-openai-chat'}]));const [settings,setSettings]=useState(()=>reconcileThinkingSettings(null,identities));capture(settings);return React.createElement(ThinkingSettings,{role,settings,registry:{thinkingContractVersion:1},operation:'generation',onChange:(r,v)=>setSettings(s=>({...s,roles:{...s.roles,[r]:v}}))})}
 test('MiniMax UI offers five efforts and provider default, persists role selection without a disable switch',()=>{
- for(const role of ['main','vision']){let settings;render(React.createElement(Harness,{role,capture:v=>settings=v}));const select=screen.getByRole('combobox');assert.equal(select.value,'');assert.deepEqual([...select.options].map(o=>o.value),['','"low"','"medium"','"high"','"xhigh"','"max"']);
-  assert.doesNotMatch(select.textContent,/关闭/);fireEvent.change(select,{target:{value:'"xhigh"'}});assert.deepEqual(buildThinkingSubmission(settings,{thinkingContractVersion:1},[role],'generation').thinkingConfig.roles[role].options,{effort:'xhigh'});cleanup();
+ for(const role of ['main','vision']){let settings;render(React.createElement(Harness,{role,capture:v=>settings=v}));const select=screen.getByRole('combobox');assert.equal(select.value,'');assert.deepEqual([...menuOptions(select)].map(o=>o.value),['','"low"','"medium"','"high"','"xhigh"','"max"']);
+  assert.doesNotMatch(select.textContent,/关闭/);changeControl(select,{target:{value:'"xhigh"'}});assert.deepEqual(buildThinkingSubmission(settings,{thinkingContractVersion:1},[role],'generation').thinkingConfig.roles[role].options,{effort:'xhigh'});cleanup();
  }
 });
