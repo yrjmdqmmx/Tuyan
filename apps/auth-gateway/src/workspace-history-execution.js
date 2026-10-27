@@ -1,3 +1,4 @@
+import { bailianRouteFields } from './bailian-workspace.js';
 import { createHash } from 'node:crypto';
 import { normalizeUniversalRoute } from './universal-contract.js';
 
@@ -15,7 +16,7 @@ export async function readHistoricalExecution(backend, userId, jobId) {
     const route = (job.modelRoutes || job.model_routes)?.[role];
     if (!route) continue;
     if (typeof route.modelId !== 'string' || !route.modelId || route.modelId.length>500 || !/^[\w-]{1,80}$/.test(route.accessProvider)) throw fail('原模型身份不完整，未接管历史执行。');
-    routes[role] = route.accessProvider === 'custom' ? normalizeUniversalRoute(route) : {accessProvider:route.accessProvider,modelId:route.modelId};
+    routes[role] = route.accessProvider === 'custom' ? normalizeUniversalRoute(route) : {accessProvider:route.accessProvider,modelId:route.modelId,...bailianRouteFields(route.accessProvider,route.modelId,route.bailian)};
   }
   if (!Object.keys(routes).length) throw fail('原模型身份不完整，未接管历史执行。');
   // Only non-secret immutable identity; the original encrypted Core checkpoint

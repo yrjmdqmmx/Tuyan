@@ -1,5 +1,6 @@
 import { createTaskDeletionCleanup } from './workspace-task-deletion.js';
 import { createImageLibraryRouter, createImageLibraryBridge } from './image-library.js';
+import { bailianRouteFields } from './bailian-workspace.js';
 import { workspaceExecutionMiddleware } from './workspace-execution.js';
 import {workflowRequiredRoles} from './workflow.js';
 import cors from 'cors';
@@ -660,6 +661,7 @@ function normalizeOptimizeInputsBody(body) {
     mainRoute: {
       accessProvider: body?.mainRoute?.accessProvider,
       modelId: body?.mainRoute?.modelId,
+      ...bailianRouteFields(body?.mainRoute?.accessProvider, body?.mainRoute?.modelId, body?.mainRoute?.bailian),
       ...(body?.mainRoute?.accessProvider === 'custom' ? {custom: body.mainRoute.custom} : {}),
     },
     apiKey: body?.apiKey,

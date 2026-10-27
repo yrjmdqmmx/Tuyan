@@ -1,3 +1,4 @@
+import { normalizeBailianWorkspace } from './bailian-workspace.js';
 import { normalizeUniversalConnection, normalizeUniversalRoute } from './universal-contract.js';
 import express from 'express';
 import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
@@ -10,7 +11,7 @@ export function cleanModelLibrary(input) {
   if (!Array.isArray(input?.connections) || input.connections.length > 64 || !Array.isArray(input?.models) || input.models.length > 500) throw fail(400, '模型库超过容量或格式无效');
   const connections = input.connections.map(c => {
     if (!['browser', 'account', 'authorization'].includes(c.scope) || (c.provider === 'tokendance') !== (c.scope === 'authorization')) throw fail(400, '连接保存范围无效');
-    return { id: id(c.id), provider: id(c.provider), label: text(c.label, 100), scope: c.scope, region: c.region === 'cn' ? 'cn' : 'global', disabled: c.disabled === true, ...(c.provider === 'custom' ? { custom: normalizeUniversalConnection({ ...c.custom, connectionId: c.id }), ...(Number.isSafeInteger(c.expiresAt)?{expiresAt:c.expiresAt}:{}) } : {}) };
+    return { id: id(c.id), provider: id(c.provider), label: text(c.label, 100), scope: c.scope, region: c.region === 'cn' ? 'cn' : 'global', disabled: c.disabled === true, ...(c.provider === 'bailian' && c.bailian != null ? {bailian:normalizeBailianWorkspace(c.bailian)} : {}), ...(c.provider === 'custom' ? { custom: normalizeUniversalConnection({ ...c.custom, connectionId: c.id }), ...(Number.isSafeInteger(c.expiresAt)?{expiresAt:c.expiresAt}:{}) } : {}) };
   });
   const models = input.models.map(m => ({ id: id(m.id), connectionId: id(m.connectionId), modelId: text(m.modelId, 500), disabled: m.disabled === true, ...(connections.find(c=>c.id===m.connectionId)?.provider === 'custom' ? { custom: normalizeUniversalRoute({ accessProvider:'custom', modelId:m.modelId, custom:m.custom }).custom } : {}) }));
   if (new Set(connections.map(c => c.id)).size !== connections.length || new Set(models.map(m => m.id)).size !== models.length || models.some(m => !m.modelId || !connections.some(c => c.id === m.connectionId))) throw fail(400, '模型与连接关系无效');
@@ -42,7 +43,7 @@ export function createModelLibraryStore({ db, secret, assertActive = async () =>
       await assertActive(user);
       const _id = owner(user), previous = await collection.findOne({ _id });
       if ((previous?.revision || 0) !== input.revision) throw fail(409, '模型库已在其他页面更新，请刷新后重试。');
-      const sealed = Object.fromEntries(data.connections.filter(c => c.scope === 'account' && previous?.connections.some(old => old.id === c.id && old.provider === c.provider && old.region === c.region && old.scope === c.scope && JSON.stringify(old.custom) === JSON.stringify(c.custom)) && previous?.sealed?.[c.id]).map(c => [c.id, previous.sealed[c.id]]));
+      const sealed = Object.fromEntries(data.connections.filter(c => c.scope === 'account' && previous?.connections.some(old => old.id === c.id && old.provider === c.provider && old.region === c.region && old.scope === c.scope && JSON.stringify(old.custom) === JSON.stringify(c.custom) && JSON.stringify(old.bailian) === JSON.stringify(c.bailian)) && previous?.sealed?.[c.id]).map(c => [c.id, previous.sealed[c.id]]));
       for (const [connectionId, value] of Object.entries(input.credentials || {})) {
         const c = data.connections.find(c => c.id === connectionId);
         if (!c || c.scope !== 'account') throw fail(400, '浏览器密钥不得上传到账号');

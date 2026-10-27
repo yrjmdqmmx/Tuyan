@@ -6,10 +6,9 @@ import { uploadReferenceFiles } from '../lib/referenceUpload.js';
 import { refineControlsFor, refineInputIssue } from '../lib/refineControls.js';
 import { browserFile } from '../lib/browserMaterials.js';
 import { ORIGINAL_SCOPE } from './workspaceSync.js';
-import { modelOption, browserCredentialKey } from './workspaceModels.js';
+import { workspaceModelRoute, modelOption, browserCredentialKey } from './workspaceModels.js';
 import { buildModelSubmission } from '../lib/modelRouting.js';
 import { workflowRequiredRoles, workflowVisionError, workflowModelVisionStatus } from '../lib/workflow.js';
-import { normalizeUniversalRoute } from '../lib/universalContract.js';
 import { TAXONOMY_VERSION, getFigureType } from '../../../../packages/figure-taxonomy/src/index.js';
 import { journalFigureContent } from '../../../../packages/api/src/journal-rules.js';
 import { locateVersion } from './workspaceState.js';
@@ -43,7 +42,7 @@ export function buildWorkspaceRequest({task,run,models}) {
     if(option&&!option.reason && workflowModelVisionStatus(option.model)==='supported')settings.visionMode='none';
   }
   const roles=workflowRequiredRoles(settings),routes={},entries={},refs={},regions={};
-  for(const role of roles){const ref=s.models?.[role],entry=models.library.models.find(m=>m.id===ref?.libraryModelId);if(!entry)throw Error(`请先配置${role==='main'?'主模型':role==='image'?'绘图模型':'视觉理解'}。`);const option=modelOption(entry,models.library,models.registry,role,run.path,pngEdit,models.summary?.tokenDance);if(option.reason)throw Error(option.reason);if(ref.connectionId!==entry.connectionId||ref.modelId!==entry.modelId)throw Error('已选型号发生变化，请重新选择。');const c=option.connection;routes[role]=c.provider==='custom'?normalizeUniversalRoute({accessProvider:'custom',modelId:entry.modelId,custom:{...entry.custom,...c.custom}}):{accessProvider:c.provider,modelId:entry.modelId};entries[role]=option.model;refs[role]=ref;if(c.provider==='minimax')regions.minimax=c.region;}
+  for(const role of roles){const ref=s.models?.[role],entry=models.library.models.find(m=>m.id===ref?.libraryModelId);if(!entry)throw Error(`请先配置${role==='main'?'主模型':role==='image'?'绘图模型':'视觉理解'}。`);const option=modelOption(entry,models.library,models.registry,role,run.path,pngEdit,models.summary?.tokenDance);if(option.reason)throw Error(option.reason);if(ref.connectionId!==entry.connectionId||ref.modelId!==entry.modelId)throw Error('已选型号发生变化，请重新选择。');const c=option.connection;routes[role]=workspaceModelRoute(c,entry);entries[role]=option.model;refs[role]=ref;if(c.provider==='minimax')regions.minimax=c.region;}
   if(pngEdit){
     const references=input.attachments.filter(a=>a.purpose==='reference');
     if(references.some(a=>!a.referencePurpose))throw Error('请明确每张辅助参考图用于内容、布局、配色还是风格。');

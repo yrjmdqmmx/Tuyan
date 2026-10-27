@@ -24196,15 +24196,15 @@
     {
       "channel": "runware",
       "apiModelId": "bria:21@1",
-      "displayName": "Bria FIBO Edit",
+      "displayName": "Bria FIBO 2.0 Edit",
       "kind": "unconfirmed",
       "versionId": "bria:21@1",
-      "checkedAt": "2026-09-22",
+      "checkedAt": "2026-10-26",
       "sourceUrls": [
-        "https://runware.ai/docs/models/bria-fibo-edit"
+        "https://runware.ai/docs/models/bria-fibo-2-0-edit"
       ],
       "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+      "notes": "官方目录/Schema 更名为 2.0，AIR 不变；不宣称不可变权重快照，保持现有请求及历史 ID。"
     },
     {
       "channel": "runware",
@@ -24482,15 +24482,15 @@
     {
       "channel": "runware",
       "apiModelId": "bria:20@1",
-      "displayName": "Bria FIBO",
+      "displayName": "Bria FIBO 2.0",
       "kind": "unconfirmed",
       "versionId": "bria:20@1",
-      "checkedAt": "2026-09-22",
+      "checkedAt": "2026-10-26",
       "sourceUrls": [
-        "https://runware.ai/docs/models/bria-fibo"
+        "https://runware.ai/docs/models/bria-fibo-2-0"
       ],
       "idEvidence": "official-doc",
-      "notes": "准确渠道调用ID已核对；不可变权重快照待确认。真实权限/调用未验证。"
+      "notes": "官方目录/Schema 更名为 2.0，AIR 不变；不宣称不可变权重快照，保持现有请求及历史 ID。"
     },
     {
       "channel": "runware",
@@ -27713,6 +27713,321 @@
         }
       },
       "apiIdentifier": "qwen/qwen3-235b-a22b-instruct-2507"
+    },
+    {
+      "channel": "kimi",
+      "apiModelId": "kimi-k3.1-pro",
+      "displayName": "Kimi K3.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3.1-pro",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://platform.kimi.com/docs/models",
+        "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+        "https://platform.kimi.com/docs/pricing/chat"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "kimi",
+      "apiModelId": "kimi-k3.1-pro-highspeed",
+      "displayName": "Kimi K3.1 Pro Highspeed",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3.1-pro-highspeed",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://platform.kimi.com/docs/models",
+        "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+        "https://platform.kimi.com/docs/pricing/chat"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "minimax",
+      "apiModelId": "MiniMax-M3.1-Flash",
+      "displayName": "MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "MiniMax-M3.1-Flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://platform.minimax.io/docs/guides/text-generation",
+        "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+        "https://platform.minimax.io/docs/pricing/overview",
+        "https://platform.minimax.cn/docs/guides/text-generation"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "mistral",
+      "apiModelId": "zai-glm-5-3-flash",
+      "displayName": "GLM 5.3 Flash",
+      "kind": "unconfirmed",
+      "versionId": "zai-glm-5-3-flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.mistral.ai/models/zai-glm-5-3-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "together",
+      "apiModelId": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "together",
+      "apiModelId": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "displayName": "MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "fireworks",
+      "apiModelId": "accounts/fireworks/models/minimax-m3p1-flash",
+      "displayName": "MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "accounts/fireworks/models/minimax-m3p1-flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/minimax-m3p1-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "ark",
+      "apiModelId": "kimi-k3-1-pro-261024",
+      "displayName": "Kimi K3.1 Pro (261024)",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3-1-pro-261024",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "ark",
+      "apiModelId": "deepseek-v4-1-flash-261017",
+      "displayName": "DeepSeek V4.1 Flash (261017)",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-1-flash-261017",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+        "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "ark",
+      "apiModelId": "deepseek-v4-1-flash-economy-261017",
+      "displayName": "DeepSeek V4.1 Flash Economy (261017)",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4-1-flash-economy-261017",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+        "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "deepseek-v4.1-flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "versionId": "deepseek-v4.1-flash-1017",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/130079",
+        "https://cloud.tencent.com/document/product/1823/130055"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k3.1-pro",
+      "displayName": "Kimi K3.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3.1-pro",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/132232",
+        "https://cloud.tencent.com/document/product/1823/130055"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "kimi-k3.1-pro-highspeed",
+      "displayName": "Kimi K3.1 Pro Highspeed",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3.1-pro-highspeed",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/132232",
+        "https://cloud.tencent.com/document/product/1823/130055"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokenhub",
+      "apiModelId": "minimax-m3.1-flash",
+      "displayName": "MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "minimax-m3.1-flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051",
+        "https://cloud.tencent.com/document/product/1823/132246",
+        "https://cloud.tencent.com/document/product/1823/130055"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "spark-x2.6",
+      "displayName": "Spark X2.6",
+      "kind": "unconfirmed",
+      "versionId": "spark-x2.6",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "iflytek",
+      "apiModelId": "spark-x2.6-4b",
+      "displayName": "Spark X2.6 4B",
+      "kind": "unconfirmed",
+      "versionId": "spark-x2.6-4b",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "kimi-k3.1-pro",
+      "displayName": "MoonshotAI: Kimi K3.1 Pro",
+      "kind": "unconfirmed",
+      "versionId": "kimi-k3.1-pro",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://tokendance.space/gateway/v1/models"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "tokendance",
+      "apiModelId": "minimax-m3.1-flash",
+      "displayName": "MiniMax: MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "versionId": "minimax-m3.1-flash",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://tokendance.space/gateway/v1/models"
+      ],
+      "idEvidence": "official-doc",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。不将发布名称或日期后缀推断为不可变权重。"
+    },
+    {
+      "channel": "replicate",
+      "apiModelId": "anthropic/claude-opus-5.5",
+      "displayName": "Claude Opus 5.5",
+      "kind": "fixed",
+      "versionId": "2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "精确渠道 API ID 与本地请求合同已核对；账户/真实调用未验证。固定版本请求。",
+      "transport": {
+        "text": {
+          "version": "2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48"
+        }
+      },
+      "apiIdentifier": "anthropic/claude-opus-5.5"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "deepseek-v4.1-flash-1017",
+      "apiIdentifier": "deepseek-v4.1-flash-1017",
+      "displayName": "DeepSeek V4.1 Flash 1017",
+      "kind": "unconfirmed",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/deepseek-api",
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/rate-limit"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "MiniMax/MiniMax-M3.1-Flash",
+      "apiIdentifier": "MiniMax/MiniMax-M3.1-Flash",
+      "displayName": "MiniMax M3.1 Flash",
+      "kind": "unconfirmed",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+        "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
+    },
+    {
+      "channel": "bailian",
+      "apiModelId": "xiaomi/mimo-v2.6-pro-ultraspeed",
+      "apiIdentifier": "xiaomi/mimo-v2.6-pro-ultraspeed",
+      "displayName": "MiMo V2.6 Pro UltraSpeed",
+      "kind": "unconfirmed",
+      "checkedAt": "2026-10-26",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/mimo",
+        "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+      ],
+      "idEvidence": "exact-wire-selector",
+      "notes": "WorkspaceId 地区接口精确 ID；目录与文本离线合同已核对，不代表固定权重、账户开通或真实推理已验证。"
     }
   ],
   "baselineCommit": "ec24b730282c820881e206986df1f48b7dd98215",

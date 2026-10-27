@@ -1,0 +1,137 @@
+{
+  "checkedAt": "2026-10-26T07:06:33.356080+00:00",
+  "scope": "User-authorized interactive Bailian workspace adapter after weekly catalog v36",
+  "sources": [
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+      "checkedAt": "2026-10-26T06:45:20.765027+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+      "checkedAt": "2026-10-26T06:45:20.765285+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+      "checkedAt": "2026-10-26T06:45:20.765375+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/mimo",
+      "checkedAt": "2026-10-26T06:45:20.765442+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "checkedAt": "2026-10-26T06:45:20.922451+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/rate-limit",
+      "checkedAt": "2026-10-26T06:45:20.922694+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "checkedAt": "2026-10-26T06:45:20.928904+00:00",
+      "sourceScope": "Bailian service",
+      "paidCall": false,
+      "error": "URLError",
+      "verifiedVia": "Official pages read with web tool during this turn",
+      "scope": "API and public catalog documentation only; account/inference not verified"
+    }
+  ],
+  "webEvidence": [
+    {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/sources/web-model-pages.json",
+      "sha256": "37e515ea50a615ba3a4f023caf6ea19cd0abe2348b831f2c2978e69f458dad7b",
+      "bytes": 26422
+    },
+    {
+      "path": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/sources/web-api-pages.json",
+      "sha256": "3d6cd24d69e7ed566f8084de59d1a207c72d6408a6ceabf8dd1b72f7a2a4552c",
+      "bytes": 24461
+    }
+  ],
+  "contract": "config/bailian-workspace.json",
+  "facts": [
+    {
+      "models": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "chatRegions": [
+        "cn-beijing",
+        "ap-southeast-1",
+        "us-east-1",
+        "eu-central-1",
+        "ap-northeast-1"
+      ],
+      "boundary": "Hong Kong is not enabled: the examined Chat endpoint table does not list it; Responses is a separate protocol."
+    },
+    {
+      "models": [
+        "MiniMax/MiniMax-M3.1-Flash",
+        "xiaomi/mimo-v2.6-pro-ultraspeed"
+      ],
+      "chatRegions": [
+        "cn-beijing"
+      ],
+      "boundary": "Bailian activation and API Key for Beijing required; no current account was inspected."
+    },
+    {
+      "models": [
+        "deepseek-v4.1-flash-1017",
+        "MiniMax/MiniMax-M3.1-Flash",
+        "xiaomi/mimo-v2.6-pro-ultraspeed"
+      ],
+      "baseUrlTemplate": "https://{workspaceId}.{region}.maas.aliyuncs.com/compatible-mode/v1",
+      "operation": "POST /chat/completions",
+      "auth": "Bearer API Key supplied by user at execution; never stored in route metadata",
+      "productInput": [
+        "text"
+      ],
+      "productOutput": [
+        "text"
+      ],
+      "parameters": "messages + exact model + stream:true; sampling and reasoning controls omitted (provider defaults); final content only",
+      "deferred": "Exact-model Data URL coverage, image/video/audio/tools/Responses; no automatic protocol or model fallback."
+    }
+  ],
+  "failedReads": [
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/mimo-api",
+      "reason": "Wrong candidate slug; resolved through official MiMo model page to /mimo."
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash-1017",
+      "reason": "Page read failed; exact ID verified through official API, rate limits and newly-released-models; precise numeric limits/price not invented."
+    }
+  ],
+  "realInferenceCalls": 0,
+  "paidCalls": 0
+}

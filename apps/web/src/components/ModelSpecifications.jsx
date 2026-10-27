@@ -8,7 +8,7 @@ const stateLabels = { supported: '支持', unlisted: '官方未列支持', unkno
 
 function ModalityIcons({ value, scope, direction }) {
   const { t } = useAppLocale()
-  return <span className="model-modality-icons" role="group" aria-label={t(direction)} title={t(value)}>
+  return <span className="model-modality-icons" role="group" aria-label={t(direction)} title={`${t(value)}${scope ? ` · ${t(scope)}` : ''}`}>
     {modalityIconStates(value).map(({ id, label, state, detail }) => {
       const Icon = icons[id]
       const description = `${t(label)}：${t(stateLabels[state])}${detail && detail !== label ? ` · ${t(detail)}` : ''}`
@@ -21,19 +21,20 @@ function ModalityIcons({ value, scope, direction }) {
   </span>
 }
 
-export function ModelSpecifications({ provider, model }) {
+export function ModelSpecifications({ provider, model, compactSources = false, footerActions }) {
   const { t } = useAppLocale()
   const data = modelCardSpecifications(provider, model)
+  const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
+      {data.sources.length ? data.sources.map((url, index) => <a key={url} href={url} title={url} aria-label={`${t('官方文档')} ${index + 1} · ${new URL(url).hostname}`} target="_blank" rel="noopener noreferrer">
+        {compactSources && index > 0 ? index + 1 : <><ExternalLink size={13} aria-hidden="true" /><span>{t('官方文档')}{!compactSources && data.sources.length > 1 ? ` ${index + 1}` : ''} · {new URL(url).hostname}</span></>}
+      </a>) : <span>{t('官方文档待确认')}</span>}
+    </div>
   return <div className="model-card-specifications">
     <dl className="model-specs" aria-label={t('官方文档规格')}>
       <div><dt><ArrowDownToLine size={14} aria-hidden="true" />{t('输入')}</dt><dd><ModalityIcons value={data.input} scope={data.inputScope} direction="输入模态" /></dd></div>
       <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd><ModalityIcons value={data.output} scope={data.outputScope} direction="输出模态" /></dd></div>
-      {data.limitRows.map(row => <div key={row.label}><dt><ScanText size={14} aria-hidden="true" />{t(row.label)}</dt><dd>{t(row.value)}</dd></div>)}
+      <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={`${t(data.context)}${data.contextScope ? ` · ${t(data.contextScope)}` : ''}`}>{t(data.context)}</dd></div>
     </dl>
-    <div className="model-spec-sources" aria-label={t('官方文档')}>
-      {data.sources.length ? data.sources.map((url, index) => <a key={url} href={url} title={url} target="_blank" rel="noopener noreferrer">
-        <ExternalLink size={13} aria-hidden="true" />{t('官方文档')}{data.sources.length > 1 ? ` ${index + 1}` : ''} · {new URL(url).hostname}
-      </a>) : <span>{t('官方文档待确认')}</span>}
-    </div>
+    {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
   </div>
 }

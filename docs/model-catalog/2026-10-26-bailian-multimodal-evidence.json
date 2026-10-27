@@ -1,0 +1,271 @@
+{
+  "checkedAt": "2026-10-26",
+  "completedAtUtc": "2026-10-26T07:55:33.434868+00:00",
+  "report": "docs/model-catalog/2026-10-26-bailian-multimodal.md",
+  "catalogVersion": "2026-10-26.v38",
+  "scope": "existing Tuyan text/image workflows, three Bailian workspace model IDs",
+  "models": {
+    "deepseek-v4.1-flash-1017": {
+      "version": 1,
+      "checkedAt": "2026-10-26",
+      "sourceScope": "service",
+      "officialOutputModalities": [
+        "text"
+      ],
+      "reasoning": "supported",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/deepseek-api",
+        "https://help.aliyun.com/zh/model-studio/newly-released-models",
+        "https://help.aliyun.com/zh/model-studio/rate-limit",
+        "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+        "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "https://help.aliyun.com/zh/model-studio/context-cache"
+      ],
+      "officialInputModalities": [
+        "text",
+        "image"
+      ],
+      "notes": [
+        "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+        "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+      ],
+      "contextWindowTokens": 1000000,
+      "contextWindowApproximate": true,
+      "maxOutputTokens": 393216,
+      "serviceDetails": [
+        {
+          "label": "输入上限",
+          "value": "官方公开页未单列；上下文“1M”为近似展示",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api",
+            "https://help.aliyun.com/zh/model-studio/newly-released-models"
+          ]
+        },
+        {
+          "label": "可用地区",
+          "value": "北京；新加坡（国际）；弗吉尼亚、法兰克福、东京（全球部署范围）",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api",
+            "https://help.aliyun.com/zh/model-studio/newly-released-models"
+          ]
+        },
+        {
+          "label": "公开价格 · 北京/全球",
+          "value": "输入 忙时¥2 / 闲时¥1；输出 忙时¥8 / 闲时¥4，每百万Token",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/model-pricing"
+          ]
+        },
+        {
+          "label": "公开价格 · 新加坡国际",
+          "value": "输入 忙时¥2.188 / 闲时¥1.094；输出 忙时¥8.75 / 闲时¥4.375，每百万Token",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/model-pricing"
+          ]
+        },
+        {
+          "label": "计费时段与缓存",
+          "value": "北京时间08:00–22:00为忙时；其余为闲时。缓存命中输入按当时单价10%；思考计入输出",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "https://help.aliyun.com/zh/model-studio/context-cache"
+          ]
+        },
+        {
+          "label": "思考设置",
+          "value": "已确认支持深度思考；1017精确型号的开关、强度枚举与默认值未完整列出，当前使用服务默认",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api",
+            "https://help.aliyun.com/zh/model-studio/deep-thinking"
+          ]
+        },
+        {
+          "label": "请求默认",
+          "value": "temperature=1、top_p=1、max_tokens=393216为官方默认；图研省略这些字段，不另加额度",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api"
+          ]
+        },
+        {
+          "label": "图片限制",
+          "value": "已确认图片与Data URL输入；未单列1017的单图/总量上限，使用图研保守额度",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ]
+        },
+        {
+          "label": "验证状态",
+          "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/deepseek-api",
+            "https://help.aliyun.com/zh/model-studio/newly-released-models"
+          ]
+        }
+      ]
+    },
+    "MiniMax/MiniMax-M3.1-Flash": {
+      "version": 1,
+      "checkedAt": "2026-10-26",
+      "sourceScope": "service",
+      "officialOutputModalities": [
+        "text"
+      ],
+      "reasoning": "supported",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+        "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+        "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+      ],
+      "contextWindowTokens": 1000000,
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "notes": [
+        "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+        "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+      ],
+      "serviceDetails": [
+        {
+          "label": "输入/输出上限",
+          "value": "公开型号页未单列最大输入、最大输出；1,000,000是上下文窗口",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+          ]
+        },
+        {
+          "label": "可用地区",
+          "value": "仅北京；需开通MiniMax直供服务",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+          ]
+        },
+        {
+          "label": "公开价格 · 北京",
+          "value": "输入¥1、输出¥4、缓存命中输入¥0.1，每百万Token；原价，不含优惠",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+          ]
+        },
+        {
+          "label": "思考设置",
+          "value": "始终开启；可选low/medium/high/xhigh/max，服务默认max；思考与回答共用输出预算",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+          ]
+        },
+        {
+          "label": "固定参数",
+          "value": "temperature=1、top_p=0.95；不提供无效的采样控件。stop不生效，reasoning_split不能为false",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+          ]
+        },
+        {
+          "label": "图片限制",
+          "value": "官方支持PNG/JPEG/WebP/GIF、URL/Base64、单张≤10MB；图研提交静态PNG/JPEG/WebP，4MiB/张",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+          ]
+        },
+        {
+          "label": "验证状态",
+          "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+            "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+          ]
+        }
+      ]
+    },
+    "xiaomi/mimo-v2.6-pro-ultraspeed": {
+      "version": 1,
+      "checkedAt": "2026-10-26",
+      "sourceScope": "service",
+      "officialOutputModalities": [
+        "text"
+      ],
+      "reasoning": "supported",
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/mimo",
+        "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+        "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+      ],
+      "contextWindowTokens": 1048576,
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 131072,
+      "officialInputModalities": [
+        "text",
+        "image",
+        "video",
+        "audio"
+      ],
+      "notes": [
+        "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+        "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+      ],
+      "serviceDetails": [
+        {
+          "label": "可用地区",
+          "value": "仅北京；需开通小米直供服务",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+          ]
+        },
+        {
+          "label": "公开价格 · 北京",
+          "value": "输入¥30、输出¥60、缓存命中输入¥0.25，每百万Token；原价，不含优惠",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+          ]
+        },
+        {
+          "label": "思考设置",
+          "value": "官方确认深度思考；UltraSpeed精确开关与默认值未完整列明，当前使用服务默认，不套用旧2.5参数",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+          ]
+        },
+        {
+          "label": "固定参数",
+          "value": "temperature=1、top_p=0.95；max_tokens包含思考和回答，131072不是二者各自可用的额度",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo"
+          ]
+        },
+        {
+          "label": "图片限制",
+          "value": "已确认图片与Data URL输入；未单列UltraSpeed的单图/总量上限，使用图研保守额度",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+          ]
+        },
+        {
+          "label": "验证状态",
+          "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+          "sourceUrls": [
+            "https://help.aliyun.com/zh/model-studio/mimo",
+            "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+          ]
+        }
+      ]
+    }
+  },
+  "rawPublicReads": "/Users/a1-6/.codex/artifacts/tuyan-bailian-multimodal-20261026/sources/web-results.json",
+  "imageEvidence": "Exact model visual input declarations plus Alibaba OpenAI Chat image_url.url Base64 Data URL schema; MiniMax additionally states 10MB and four formats in exact shared M3/M3.1 guide.",
+  "unknowns": [
+    "DeepSeek1017 exact max input, image limits, adjustable thinking enum/switch/default",
+    "MiniMax independent maximum input and output",
+    "MiMo UltraSpeed exact image limits and thinking switch/default",
+    "Account eligibility, real inference/quality/billing/network, production",
+    "Hong Kong exact model Chat route and non-Beijing account catalog remain outside current validated routes"
+  ]
+}

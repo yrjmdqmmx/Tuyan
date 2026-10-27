@@ -1,0 +1,97 @@
+[
+  {
+    "provider": "kimi",
+    "id": "kimi-k3.1-pro",
+    "vision": false
+  },
+  {
+    "provider": "kimi",
+    "id": "kimi-k3.1-pro-highspeed",
+    "vision": false
+  },
+  {
+    "provider": "minimax",
+    "id": "MiniMax-M3.1-Flash",
+    "vision": true
+  },
+  {
+    "provider": "mistral",
+    "id": "zai-glm-5-3-flash",
+    "vision": true
+  },
+  {
+    "provider": "together",
+    "id": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+    "vision": false
+  },
+  {
+    "provider": "together",
+    "id": "MiniMaxAI/MiniMax-M3.1-Flash",
+    "vision": false
+  },
+  {
+    "provider": "fireworks",
+    "id": "accounts/fireworks/models/minimax-m3p1-flash",
+    "vision": true
+  },
+  {
+    "provider": "ark",
+    "id": "kimi-k3-1-pro-261024",
+    "vision": false
+  },
+  {
+    "provider": "ark",
+    "id": "deepseek-v4-1-flash-261017",
+    "vision": true
+  },
+  {
+    "provider": "ark",
+    "id": "deepseek-v4-1-flash-economy-261017",
+    "vision": true
+  },
+  {
+    "provider": "tokenhub",
+    "id": "deepseek-v4.1-flash-1017",
+    "vision": true
+  },
+  {
+    "provider": "tokenhub",
+    "id": "kimi-k3.1-pro",
+    "vision": true
+  },
+  {
+    "provider": "tokenhub",
+    "id": "kimi-k3.1-pro-highspeed",
+    "vision": true
+  },
+  {
+    "provider": "tokenhub",
+    "id": "minimax-m3.1-flash",
+    "vision": true
+  },
+  {
+    "provider": "iflytek",
+    "id": "spark-x2.6",
+    "vision": false
+  },
+  {
+    "provider": "iflytek",
+    "id": "spark-x2.6-4b",
+    "vision": false
+  },
+  {
+    "provider": "tokendance",
+    "id": "kimi-k3.1-pro",
+    "vision": false
+  },
+  {
+    "provider": "tokendance",
+    "id": "minimax-m3.1-flash",
+    "vision": false
+  },
+  {
+    "provider": "replicate",
+    "id": "anthropic/claude-opus-5.5",
+    "vision": false
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "finishedAt": "2026-10-26T07:09:42.567935+00:00",
+  "durationMinutes": 53.95,
+  "identity": {
+    "root": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+    "head": "5e6989f59416e44d9f22fd26703d3830ed861ea7",
+    "branch": "codex/tuyan-v400-workflow-20261009",
+    "origin": "https://github.com/yrjmdqmmx/Tuyan.git"
+  },
+  "version": "2026-10-26.v37",
+  "catalogPreservation": {
+    "before": 1122,
+    "after": 1125,
+    "added": [
+      "bailian/deepseek-v4.1-flash-1017",
+      "bailian/MiniMax/MiniMax-M3.1-Flash",
+      "bailian/xiaomi/mimo-v2.6-pro-ultraspeed"
+    ],
+    "missing": [],
+    "changedDefaults": [],
+    "defaultSets": 31
+  },
+  "newTargetedTestsPassed": 12,
+  "testGroups": {
+    "core-new": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/core-new.log"
+    },
+    "core-regression": {
+      "tests": 262,
+      "pass": 261,
+      "fail": 1,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/core-regression.log"
+    },
+    "gateway": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/gateway.log"
+    },
+    "gateway-new": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/gateway-new.log"
+    },
+    "gateway-app": {
+      "tests": 46,
+      "pass": 46,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/gateway-app.log"
+    },
+    "web-new": {
+      "tests": 30,
+      "pass": 30,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/web-new.log"
+    },
+    "web-regression": {
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "log": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/web-regression.log"
+    }
+  },
+  "inheritedFailure": {
+    "files": [
+      {
+        "file": "apps/paperbanana-api/tests/thinking-bailian-qianfan-57.test.ts",
+        "unchanged": true
+      },
+      {
+        "file": "packages/api/src/thinking.ts",
+        "unchanged": true
+      },
+      {
+        "file": "packages/api/src/thinking-data.ts",
+        "unchanged": true
+      }
+    ],
+    "failure": "thinking-bailian-qianfan-57.test.ts:70 expects unconfirmed for Qianfan qwen3.5-27b / ernie-5.1; start-of-turn thinkingProfile already returns supported.",
+    "resolution": "Preserve inherited files; out of this Bailian workspace increment."
+  },
+  "typecheck": "passed",
+  "webBuild": "passed Vite build; existing chunk size warning",
+  "catalogCheck": "passed --check --skip-miniprogram",
+  "versionReportCheck": "passed 1512 rows",
+  "inheritedFilesChecked": 4869,
+  "miniProgramFilesUnchanged": 224,
+  "concurrentChanges": [],
+  "filesExcludingThisRecord": {
+    "changed": [
+      "SYNC.md",
+      "apps/auth-gateway/src/app.js",
+      "apps/auth-gateway/src/model-library.js",
+      "apps/auth-gateway/src/workspace-execution.js",
+      "apps/auth-gateway/src/workspace-history-execution.js",
+      "apps/auth-gateway/tests/model-library.test.js",
+      "apps/paperbanana-api/runtime/handler.ts",
+      "apps/paperbanana-api/tests/catalog-20261016.test.ts",
+      "apps/paperbanana-api/tests/catalog-20261019.test.ts",
+      "apps/paperbanana-api/tests/catalog-20261026.test.ts",
+      "apps/web/src/lib/modelRouting.js",
+      "apps/web/src/lib/staticModelCatalog.js",
+      "apps/web/src/workspace/WorkspaceModelPanels.jsx",
+      "apps/web/src/workspace/WorkspaceOptimize.jsx",
+      "apps/web/src/workspace/workspaceExecution.js",
+      "apps/web/src/workspace/workspaceModels.js",
+      "config/model-catalog-updates.json",
+      "config/model-specifications.json",
+      "config/model-version-audit.json",
+      "docs/model-catalog/2026-10-26-pending.json",
+      "docs/model-catalog/2026-10-26-update.md",
+      "docs/model-version-mapping.csv",
+      "docs/model-version-unconfirmed.csv",
+      "packages/api/src/provider-catalog.ts",
+      "packages/types/src/index.ts",
+      "scripts/sync-model-catalog.mjs"
+    ],
+    "new": [
+      "config/bailian-workspace.json",
+      "packages/api/src/bailian-workspace.ts",
+      "apps/web/src/workspace/WorkspaceBailianConnection.jsx",
+      "packages/api/src/bailian-workspace-data.ts",
+      "apps/web/src/lib/bailianWorkspace.js",
+      "apps/auth-gateway/src/bailian-workspace.js",
+      "apps/paperbanana-api/tests/bailian-workspace.test.ts",
+      "apps/auth-gateway/tests/bailian-workspace.test.js",
+      "apps/web/tests/bailian-workspace.test.mjs",
+      "docs/model-catalog/2026-10-26-bailian-workspace-evidence.json",
+      "docs/model-catalog/2026-10-26-bailian-workspace.md"
+    ]
+  },
+  "offlineNetworkGuard": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/offline-guard.mjs",
+  "realInferenceCalls": 0,
+  "paidCalls": 0,
+  "accountAccessVerified": false,
+  "imageTransportVerified": false,
+  "foreignEgressVerified": false,
+  "productionPublished": false,
+  "miniProgramActions": [],
+  "baseline": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/baseline.json",
+  "incrementalPatch": "/Users/a1-6/.codex/artifacts/tuyan-bailian-workspace-20261026/increment.patch"
+}

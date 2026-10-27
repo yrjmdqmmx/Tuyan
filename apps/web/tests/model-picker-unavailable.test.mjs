@@ -61,7 +61,7 @@ for (const role of ['main', 'image', 'vision']) test(`${role} card body selects 
   await user.click(screen.getByRole('link', { name: /官方文档/ }))
   assert.deepEqual(changes, [], 'source clicks do not select a model')
   assert.ok(screen.getByRole('dialog'))
-  await user.click(screen.getByText('12.345K tokens'))
+  await user.click(screen.getByText('≈ 12K tokens'))
   assert.deepEqual(changes, [{ accessProvider: 'openrouter', modelId: 'live-model' }])
   assert.deepEqual(modes, role === 'vision' ? ['assist'] : [])
   assert.equal(screen.queryByRole('dialog'), null)

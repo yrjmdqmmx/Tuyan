@@ -6473,14 +6473,8 @@
         "1K": {
           "sizes": {
             "1:1": "1024x1024",
-            "2:3": "832x1216",
-            "3:2": "1216x832",
-            "7:9": "896x1152",
-            "9:7": "1152x896",
-            "14:17": "896x1088",
-            "17:14": "1088x896",
-            "4:7": "768x1344",
-            "7:4": "1344x768"
+            "2:3": "832x1248",
+            "3:2": "1248x832"
           }
         }
       },
@@ -11897,12 +11891,11 @@
     "runware/bria:20@1": {
       "generation": "runware:bria-fibo",
       "editing": "runware:bria-fibo",
-      "reviewedAt": "2026-09-22",
+      "reviewedAt": "2026-10-26",
       "sources": [
-        "https://runware.ai/docs/models/bria-fibo",
-        "https://runware.ai/docs/models/bria-fibo/schema.json"
+        "https://runware.ai/docs/models/bria-fibo-2-0/schema.json"
       ],
-      "notes": "逐型号 schema；保守子集，未静默裁图。预设以实际像素为准；720p/1080p 在清晰度栏分别归入1K/2K。"
+      "notes": "FIBO 2.0 同 AIR；当前只保留原比例集合与新官方 1K 预设的交集。2:3/3:2 像素更正为832×1248/1248×832，旧非标准比例不再可选；默认1:1不变，不扩大2K或4MP档位。"
     },
     "runware/runware:201@10": {
       "generation": "runware:alibaba-wan2-5-preview-image",

@@ -40,6 +40,7 @@ test('catalog and saved library hide missing entries with accurate counts and re
 test('catalog refresh blocks adding a model removed while its dialog is open', () => {
   const noSaved = { ...models, library: { ...library, models: [] } };
   const view = render(React.createElement(WorkspaceModelCatalog, { models: { ...noSaved, registry: { ...registry, catalogHealth: {} } } }));
+  fireEvent.click(screen.getByRole('button', { name: /^OpenAI2$/ }));
   fireEvent.click(screen.getByRole('button', { name: '添加 Missing model · OpenAI' }));
   assert.equal(screen.getByRole('button', { name: '确认添加' }).disabled, false);
   view.rerender(React.createElement(WorkspaceModelCatalog, { models: noSaved }));

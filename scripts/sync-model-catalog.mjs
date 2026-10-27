@@ -45,7 +45,7 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json','catalog-20261016-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
@@ -79,6 +79,15 @@ lines.push(regionRuntime)
 const regionJs = ts.transpileModule(regionRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText
 write(path.join(root, 'apps/web/src/lib/providerRegions.js'), '// Generated from packages/types/src/provider-regions.ts\n' + regionJs)
 write(path.join(root, 'apps/miniprogram/miniprogram/utils/provider-regions.ts'), '// Generated from packages/types/src/provider-regions.ts\n' + regionRuntime)
+// New Bailian workspace routes share one validator across Web, Gateway and Core.
+const bailianContract = JSON.parse(fs.readFileSync(path.join(root, 'config/bailian-workspace.json'), 'utf8'))
+const bailianData = 'export const BAILIAN_WORKSPACE_CONTRACT: {version:number; checkedAt:string; regions:Record<string,string>; models:Record<string,{regions:string[]; sourceUrls:string[]; productInputModalities:string[]; notes:string}>} = ' + JSON.stringify(bailianContract) + '\n'
+write(path.join(root, 'packages/api/src/bailian-workspace-data.ts'), '// Generated from config/bailian-workspace.json\n' + bailianData)
+const bailianRuntime = bailianData + fs.readFileSync(path.join(root, 'packages/api/src/bailian-workspace.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+lines.push(bailianRuntime)
+const bailianJs = '// Generated from config/bailian-workspace.json and packages/api/src/bailian-workspace.ts\n' + ts.transpileModule(bailianRuntime, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText
+write(path.join(root, 'apps/web/src/lib/bailianWorkspace.js'), bailianJs)
+write(path.join(root, 'apps/auth-gateway/src/bailian-workspace.js'), bailianJs)
 const textChannelRuntime = fs.readFileSync(path.join(root, 'packages/api/src/text-channel-adapters.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
 for (const [file, names] of [['official-image-channels.ts',['callOfficialImageChannel','buildOfficialImageRequest','STEP_IMAGE_SUBMISSION_CUTOFF']],['qianfan-image-channel.ts',['callQianfanImageChannel','buildQianfanImageRequest']],['novita-image-channel.ts',['callNovitaImageChannel','buildNovitaImageRequest']]]) {
   const moduleSource=fs.readFileSync(path.join(root,'packages/api/src',file),'utf8').replace(/^import .* from .*\n/gm,'').replace(/\bexport /g,'')
@@ -98,7 +107,7 @@ config.providers.tokendance = [...tokenDanceCatalog.models].filter(m => m.roles.
     roles:m.roles.filter(role => ['main','vision','image'].includes(role)), protocol:image?'ark-images':'openai-chat-completions',
     availabilityNotes:'官方目录及协议已核对，真实调用待验证。'+m.conflicts.join(''),
     capabilities:{referenceImages:vision||image,maxReferenceImages:vision?3:image?1:0,imageGeneration:image,imageEditing:image,imageEditMode:image?'direct-edit':'none',outputFormats:image?['png']:[],...(image?{providerMaxReferenceImages:m.id.endsWith('pro')?10:14}:{})},
-    metadata:{vendor:m.vendorId,lifecycle:m.lifecycle || 'unknown',releaseKind:m.releaseKind || '',lifecycleSourceUrl:m.lifecycleSourceUrl,verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
+    metadata:{catalogPresence:m.catalogPresence,vendor:m.vendorId,lifecycle:m.lifecycle || 'unknown',releaseKind:m.releaseKind || '',lifecycleSourceUrl:m.lifecycleSourceUrl,verified:false,verificationState:'catalog',officialSourceUrl:m.sourceUrl,inputModalities:m.inputModalities,outputModalities:m.outputModalities,regions:['tokendance-global']}}
 })
 const tokenDanceModels = 'export const TOKENDANCE_MODELS: {id: string; roles: string[]; protocols: string[]}[] = ' + JSON.stringify(tokenDanceCatalog.models.map(m => ({id:m.id, roles:m.roles, protocols:m.supported_protocols}))) + '\n'
 write(path.join(root, 'packages/api/src/tokendance-models.ts'), '// Generated from config/tokendance/catalog.json\n' + tokenDanceModels)
@@ -201,6 +210,8 @@ function useModule(file, embedded) {
     }
   }
   const specifier = '../../../' + file.replace(/\.ts$/, '.js')
+  // Core wraps job stages in the existing performance recorder; regeneration must retain it.
+  if (file === 'packages/api/src/execution-errors.ts') names[names.indexOf('atJobStage')] = 'atJobStage as rawAtJobStage'
   if (names.length) runtimeImports.push(`import { ${names.join(', ')} } from '${specifier}'`)
   runtimeImports.push(`export * from '${specifier}'`)
 }
@@ -225,6 +236,8 @@ for (const file of ['execution-errors.ts','reference-selection.ts','universal-ap
 useModule('packages/api/src/tokendance-models.ts', tokenDanceModels)
 useModule('packages/api/src/tokendance.ts', fs.readFileSync(path.join(root,'packages/api/src/tokendance.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
 useModule('packages/types/src/image-size-contract.ts', sizeRuntime)
+runtimeImports.push("import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'",
+  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { return measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)) }")
 runtimeBlock = runtimeBlock.replace(start, start+'\n'+runtimeImports.join('\n'))
 source = source.includes(start)
   ? source.slice(0, source.indexOf(start)) + runtimeBlock + source.slice(source.indexOf(end) + end.length)

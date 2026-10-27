@@ -71,7 +71,7 @@ test('all three official directories have one disposition per ID; not merely rep
   const all=['runware','cn'].flatMap(k=>JSON.parse(fs.readFileSync(new URL(`config/channel-audit/${k}-directory.json`,root),'utf8')))
   assert.equal(all.filter(r=>r.channel==='runware').length,362)
   assert.equal(all.filter(r=>r.channel==='xiaomi').length,9)
-  for(const row of all){assert.ok(row.decision,JSON.stringify(row));assert.ok(row.source);assert.ok(['2026-09-22','2026-10-09'].includes(row.checkedAt))}
+  for(const row of all){assert.ok(row.decision,JSON.stringify(row));assert.ok(row.source);assert.ok((['bria:20@1','bria:21@1'].includes(row.apiModelId)?['2026-10-26']:['2026-09-22','2026-10-09']).includes(row.checkedAt))}
 })
 test('scheduled retirement retains the original ID until its documented product cutoff, then rejects without transport',()=>{
   const realNow=Date.now

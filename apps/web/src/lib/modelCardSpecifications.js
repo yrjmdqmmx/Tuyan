@@ -26,14 +26,21 @@ const formatDecimalLimit = value => {
     .format(value / (million ? 1_000_000 : 1_000))
   return `${number}${million ? 'M' : 'K'}`
 }
+// Context cards favor readable magnitudes; source values and request limits stay exact.
+const formatContextLimit = (value, approximate = false) => {
+  const unit = value >= 999_500 ? 1_000_000 : value >= 1_000 ? 1_000 : 1
+  const number = new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: unit === 1_000_000 ? 1 : 0 }).format(value / unit)
+  const rounded = Number(number) * unit !== value
+  return `${approximate || rounded ? '≈ ' : ''}${number}${unit === 1_000_000 ? 'M' : unit === 1_000 ? 'K' : ''}`
+}
 const formatContext = facts => Number.isSafeInteger(facts?.contextWindowTokens) && facts.contextWindowTokens > 0
-  ? `${facts.contextWindowApproximate ? '≈ ' : ''}${formatDecimalLimit(facts.contextWindowTokens)} tokens` : null
+  ? `${formatContextLimit(facts.contextWindowTokens, facts.contextWindowApproximate)} tokens` : null
 const formatReviewedContext = value => {
   if (!value) return null
   const match = /^([\d,]+(?:\.\d+)?)\s*([KM]?)(.*)$/i.exec(value)
   if (!match) return `${value} tokens`
   const count = Number(match[1].replaceAll(',', '')) * ({ K: 1_000, M: 1_000_000 }[match[2].toUpperCase()] || 1)
-  return Number.isSafeInteger(count) && count > 0 ? `${formatDecimalLimit(count)}${match[3]} tokens` : null
+  return Number.isSafeInteger(count) && count > 0 ? `${formatContextLimit(count)}${match[3]} tokens` : null
 }
 
 function reviewedSpecification(provider, model) {
@@ -79,7 +86,9 @@ export function modelCardSpecifications(provider, model) {
   const data = { sources: [], limitRows: [] }
   for (const key of ['input', 'output', 'context']) {
     // A hosted API's numeric window takes precedence over native weight configuration.
-    const ordered = key === 'context' && detailed?.sourceScope !== 'service' && formatContext(channel)
+    const ordered = channel?.serviceDetails?.length
+      ? [layers.at(-1), ...layers.slice(0, -1)]
+      : key === 'context' && detailed?.sourceScope !== 'service' && formatContext(channel)
       ? [layers.find(item => item.scope === '渠道' && item.context === formatContext(channel)), ...layers].filter(Boolean) : layers
     const layer = ordered.find(item => item[key] && (item.sourcesByField?.[key] || item.sources).length)
     data[key] = layer?.[key] || '待确认'
@@ -107,6 +116,17 @@ export function modelCardSpecifications(provider, model) {
     }
   }
   if (!data.limitRows.length) data.limitRows.push({ label: '上下文窗口', value: data.context, sources: [] })
+  if (channel?.serviceDetails?.length) {
+    for (const [key, label] of [['maxInputTokens','最大输入'], ['maxOutputTokens','最大输出']]) {
+      if (Number.isSafeInteger(channel[key]) && channel[key] > 0) data.limitRows.push({label, value: `${channel[key].toLocaleString('en-US')} tokens`, sources: safeOfficialSources(channel.sourceUrls)})
+    }
+    data.serviceDetails = channel.serviceDetails.filter(row => row.label && row.value && safeOfficialSources(row.sourceUrls).length)
+    data.checkedAt = channel.checkedAt
+    data.productInput = model.capabilities?.referenceImages === true ? `文本、图像（最多${model.capabilities.maxReferenceImages || '待确认'}张）` : '文本；图片尚未接入'
+    data.productOutput = '文本；图片理解可用于绘图规划与评审，不直接生成图片'
+    data.productLimits = '图片：4MiB/张、12MiB合计、4096像素边长、8MP/张；编码后请求≤20MB'
+    data.sources.push(...channel.sourceUrls, ...data.serviceDetails.flatMap(row => row.sourceUrls))
+  }
   if (!data.sources.length) data.sources.push(...(detailed?.sourceUrls || []), ...(channel?.sourceUrls || []), ...(reviewed?.sources || []), model.officialSourceUrl, model.releaseSourceUrl, model.releaseOrderSourceUrl)
   data.sources = safeOfficialSources(data.sources)
   return data

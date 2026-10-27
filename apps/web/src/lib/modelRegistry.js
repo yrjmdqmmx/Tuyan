@@ -9,12 +9,22 @@ export function modelMissingFromCatalog(registry, provider, modelOrId) {
   const unavailable = Boolean(registry?.unavailableProviders?.[provider])
   const model = typeof modelOrId === 'object' ? modelOrId : channel?.models?.find(entry => entry.id === id)
   return Boolean(registry?.catalogHealth?.[provider]?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
+    || model?.catalogPresence?.status === 'absent'
     || model?.disabledReason?.startsWith('当前目录未列出该模型')
     || (!unavailable && registry?.providers && !channel)
     || (!unavailable && Array.isArray(channel?.models) && !channel.models.some(entry => entry.id === id)))
 }
+// Browsing hides confirmed retirements, not temporary failures or adapter gaps.
+// Historical identities remain in the registry and saved task configuration.
+export function modelRetiredFromCatalog(model, now = Date.now()) {
+  const cutoff = model?.expirationAt || (model?.expirationDate && !model.expirationDate.startsWith('2098') ? `${model.expirationDate}T00:00:00Z` : '');
+  const cutoffTime = Date.parse(cutoff);
+  if (Number.isFinite(cutoffTime)) return now >= cutoffTime;
+  return model?.selectable === false && Boolean(model.lifecycleSourceUrl)
+    && /已确认.*停用|官方已.*(?:停服|退役)|公告此型号.*停用|完整托管目录已不再提供/.test(model.disabledReason || '');
+}
 export function modelUnavailableForSelection(model) {
-  return model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
+  return model?.catalogPresence?.status === 'absent' || model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
 }
 export function mergeProviderRegistry(fallback, registry) {
   if (!registry?.defaults || !Array.isArray(registry.models)) return fallback

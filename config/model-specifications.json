@@ -2855,10 +2855,11 @@
       "protocol": "openai-chat-completions",
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-26",
         "sourceUrls": [
           "https://www.siliconflow.cn/models",
-          "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions"
+          "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions",
+          "https://docs.siliconflow.cn/docs/release-notes/overview"
         ],
         "contextWindowTokens": 1048576,
         "officialInputModalities": [
@@ -2869,8 +2870,18 @@
           "text"
         ],
         "notes": [
-          "渠道目录明确视觉输入及 1024K 上下文；最大输出未单独确认，不套用原厂值。"
-        ]
+          "渠道目录明确视觉输入及 1024K 上下文；最大输出未单独确认，不套用原厂值。",
+          "2026-10-21 升级至 1017，API ID 不变；渠道 1024K 与原厂 1000000 分别记录，不继承原厂最大输出。"
+        ],
+        "sourceScope": "service",
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017（渠道同 ID 升级）",
+          "effectiveDate": "2026-10-21",
+          "sourceUrls": [
+            "https://docs.siliconflow.cn/docs/release-notes/overview"
+          ]
+        }
       }
     },
     {
@@ -3347,6 +3358,779 @@
         ],
         "notes": [
           "仅从公开目录确认文本 Chat Completions；视觉、输出上限与额外思考参数待渠道专页核实。"
+        ]
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k3.1-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+          "https://platform.kimi.com/docs/pricing/chat"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。",
+          "始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。",
+          "固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "kimi",
+      "modelId": "kimi-k3.1-pro-highspeed",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+          "https://platform.kimi.com/docs/pricing/chat"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。",
+          "始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。",
+          "固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "minimax",
+      "modelId": "MiniMax-M3.1-Flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.minimax.io/docs/guides/text-generation",
+          "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+          "https://platform.minimax.io/docs/pricing/overview",
+          "https://platform.minimax.cn/docs/guides/text-generation"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方支持视频但图研仅文本/图片；当前沿用 reasoning_split=true。",
+          "始终思考；effort 默认 max，可选 low/medium/high/xhigh/max；不新增思考控件。max_completion_tokens 建议 131072（不是默认值证据），最大 524288；max_tokens 已废弃但兼容。",
+          "国际公开单价 USD/百万 token：输入 0.15、输出 0.60、缓存读取 0.015；不外推国内账单。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 524288
+      }
+    },
+    {
+      "provider": "mistral",
+      "modelId": "zai-glm-5-3-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.mistral.ai/models/zai-glm-5-3-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "2026-10-22 GA；官方上下文写作 1M、输出 128k，后者没有精确整数字段证据，未猜测最大值。",
+          "USD/百万 token：输入 0.15、缓存 0.03、输出 0.50。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "together",
+      "modelId": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。",
+          "标准路由公开 USD/百万 token：输入 0.30、缓存 0.006、输出 1.20；US/Canada 专用路由及 25% 加价需独立适配。"
+        ],
+        "contextWindowTokens": 1000000
+      }
+    },
+    {
+      "provider": "together",
+      "modelId": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。",
+          "标准路由公开 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；US/Canada 专用路由及 25% 加价需独立适配。"
+        ],
+        "contextWindowTokens": 1048576
+      }
+    },
+    {
+      "provider": "fireworks",
+      "modelId": "accounts/fireworks/models/minimax-m3p1-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://fireworks.ai/models/fireworks/minimax-m3p1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "该精确 ID 的 Serverless 与图像输入均明确支持；上下文显示 1040k，未转换为未经证实的精确 token 数。",
+          "USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；最大输出待确认。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "modelId": "kimi-k3-1-pro-261024",
+      "protocol": "ark-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "发布表仅确认深度思考/函数调用/缓存；仅开放文本，视觉及参数上限待渠道专页核实。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "modelId": "deepseek-v4-1-flash-261017",
+      "protocol": "ark-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "modelId": "deepseek-v4-1-flash-economy-261017",
+      "protocol": "ark-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "deepseek-v4.1-flash-1017",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方输出写作 384k，未猜测精确 token 数。广州 CNY/百万 token：空闲输入/输出/缓存 1/4/0.02，高峰 2/8/0.04；按北京时间工作日 9–12、14–18 判峰，账户账单未验。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "kimi-k3.1-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132232",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道默认 reasoning_effort=high（与原厂 max 不同）；保持 K3 产品请求预算 16384 和 low。广州 CNY/百万 token 输入13、输出68、缓存1.3；最大输出受共享上下文约束。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "kimi-k3.1-pro-highspeed",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132232",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道默认 high；产品请求 low、16384。价格页写 K3 Pro HighSpeed，与该精确 API 名存在歧义，未强行绑定价格。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "modelId": "minimax-m3.1-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132246",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方输出写作 512k；不套用原厂精确值。渠道默认 adaptive，保留 reasoning_split=true，未传禁用思考。广州 CNY/百万 token 输入1、输出4、缓存0.1。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "iflytek",
+      "modelId": "spark-x2.6",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。",
+          "公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "iflytek",
+      "modelId": "spark-x2.6-4b",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。",
+          "公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "kimi-k3.1-pro",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://tokendance.space/gateway/v1/models"
+        ],
+        "contextWindowTokens": 1000000,
+        "officialInputModalities": [
+          "text"
+        ],
+        "inputModalitiesPartial": true,
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道只核实文本 Chat Completions；视觉、额外参数与价格未确认。"
+        ]
+      }
+    },
+    {
+      "provider": "tokendance",
+      "modelId": "minimax-m3.1-flash",
+      "protocol": "openai-chat-completions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://tokendance.space/gateway/v1/models"
+        ],
+        "contextWindowTokens": 1000000,
+        "officialInputModalities": [
+          "text"
+        ],
+        "inputModalitiesPartial": true,
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道只核实文本 Chat Completions；视觉、额外参数与价格未确认。"
+        ]
+      }
+    },
+    {
+      "provider": "replicate",
+      "modelId": "anthropic/claude-opus-5.5",
+      "protocol": "replicate-predictions",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
+        ],
+        "maxOutputTokens": 128000,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "固定渠道版本 2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48；不套用原厂上下文或价格。",
+          "effort 默认 low，可选 low/medium/high/xhigh/max；始终 adaptive thinking。max_tokens 默认 8192、范围1024–128000，包含思考，产品仍请求8192。",
+          "图片字段 image 与当前数组 images 不同且默认缩为0.5MP；未开放视觉或新增控件。"
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "deepseek-v4.1-flash-1017",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/deepseek-api",
+          "https://help.aliyun.com/zh/model-studio/newly-released-models",
+          "https://help.aliyun.com/zh/model-studio/rate-limit",
+          "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+          "https://help.aliyun.com/zh/model-studio/model-pricing",
+          "https://help.aliyun.com/zh/model-studio/context-cache"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "notes": [
+          "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+          "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 393216,
+        "serviceDetails": [
+          {
+            "label": "输入上限",
+            "value": "官方公开页未单列；上下文“1M”为近似展示",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api",
+              "https://help.aliyun.com/zh/model-studio/newly-released-models"
+            ]
+          },
+          {
+            "label": "可用地区",
+            "value": "北京；新加坡（国际）；弗吉尼亚、法兰克福、东京（全球部署范围）",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api",
+              "https://help.aliyun.com/zh/model-studio/newly-released-models"
+            ]
+          },
+          {
+            "label": "公开价格 · 北京/全球",
+            "value": "输入 忙时¥2 / 闲时¥1；输出 忙时¥8 / 闲时¥4，每百万Token",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/model-pricing"
+            ]
+          },
+          {
+            "label": "公开价格 · 新加坡国际",
+            "value": "输入 忙时¥2.188 / 闲时¥1.094；输出 忙时¥8.75 / 闲时¥4.375，每百万Token",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/model-pricing"
+            ]
+          },
+          {
+            "label": "计费时段与缓存",
+            "value": "北京时间08:00–22:00为忙时；其余为闲时。缓存命中输入按当时单价10%；思考计入输出",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/model-pricing",
+              "https://help.aliyun.com/zh/model-studio/context-cache"
+            ]
+          },
+          {
+            "label": "思考设置",
+            "value": "已确认支持深度思考；1017精确型号的开关、强度枚举与默认值未完整列出，当前使用服务默认",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api",
+              "https://help.aliyun.com/zh/model-studio/deep-thinking"
+            ]
+          },
+          {
+            "label": "请求默认",
+            "value": "temperature=1、top_p=1、max_tokens=393216为官方默认；图研省略这些字段，不另加额度",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api"
+            ]
+          },
+          {
+            "label": "图片限制",
+            "value": "已确认图片与Data URL输入；未单列1017的单图/总量上限，使用图研保守额度",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api",
+              "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+            ]
+          },
+          {
+            "label": "验证状态",
+            "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/deepseek-api",
+              "https://help.aliyun.com/zh/model-studio/newly-released-models"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "MiniMax/MiniMax-M3.1-Flash",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash",
+          "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+        ],
+        "contextWindowTokens": 1000000,
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "notes": [
+          "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+          "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+        ],
+        "serviceDetails": [
+          {
+            "label": "输入/输出上限",
+            "value": "公开型号页未单列最大输入、最大输出；1,000,000是上下文窗口",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+              "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+            ]
+          },
+          {
+            "label": "可用地区",
+            "value": "仅北京；需开通MiniMax直供服务",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+              "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+            ]
+          },
+          {
+            "label": "公开价格 · 北京",
+            "value": "输入¥1、输出¥4、缓存命中输入¥0.1，每百万Token；原价，不含优惠",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+            ]
+          },
+          {
+            "label": "思考设置",
+            "value": "始终开启；可选low/medium/high/xhigh/max，服务默认max；思考与回答共用输出预算",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+            ]
+          },
+          {
+            "label": "固定参数",
+            "value": "temperature=1、top_p=0.95；不提供无效的采样控件。stop不生效，reasoning_split不能为false",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions",
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+            ]
+          },
+          {
+            "label": "图片限制",
+            "value": "官方支持PNG/JPEG/WebP/GIF、URL/Base64、单张≤10MB；图研提交静态PNG/JPEG/WebP，4MiB/张",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"
+            ]
+          },
+          {
+            "label": "验证状态",
+            "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+              "https://help.aliyun.com/zh/model-studio/minimax-m3-1-flash"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider": "bailian",
+      "modelId": "xiaomi/mimo-v2.6-pro-ultraspeed",
+      "protocol": "bailian-openai-chat",
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "officialOutputModalities": [
+          "text"
+        ],
+        "reasoning": "supported",
+        "sourceUrls": [
+          "https://help.aliyun.com/zh/model-studio/mimo",
+          "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+          "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxInputTokens": 1048576,
+        "maxOutputTokens": 131072,
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video",
+          "audio"
+        ],
+        "notes": [
+          "图研支持文本和图片输入、文本输出；最多3张、4MiB/张、12MiB合计、4096像素边长、8MP/张、编码后请求20MB。这些是产品额度，不是厂商最大值。",
+          "使用 Chat Completions 的 image_url Base64 Data URL；不增加输出预算，不发送工具/音视频请求；账户权益、模型质量、真实账单与生产未验证。"
+        ],
+        "serviceDetails": [
+          {
+            "label": "可用地区",
+            "value": "仅北京；需开通小米直供服务",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo",
+              "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+            ]
+          },
+          {
+            "label": "公开价格 · 北京",
+            "value": "输入¥30、输出¥60、缓存命中输入¥0.25，每百万Token；原价，不含优惠",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+            ]
+          },
+          {
+            "label": "思考设置",
+            "value": "官方确认深度思考；UltraSpeed精确开关与默认值未完整列明，当前使用服务默认，不套用旧2.5参数",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo",
+              "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+            ]
+          },
+          {
+            "label": "固定参数",
+            "value": "temperature=1、top_p=0.95；max_tokens包含思考和回答，131072不是二者各自可用的额度",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo"
+            ]
+          },
+          {
+            "label": "图片限制",
+            "value": "已确认图片与Data URL输入；未单列UltraSpeed的单图/总量上限，使用图研保守额度",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo",
+              "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+            ]
+          },
+          {
+            "label": "验证状态",
+            "value": "目录与请求适配已离线验证；真实调用、账户权限、质量与生产未验收",
+            "sourceUrls": [
+              "https://help.aliyun.com/zh/model-studio/mimo",
+              "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed"
+            ]
+          }
         ]
       }
     }

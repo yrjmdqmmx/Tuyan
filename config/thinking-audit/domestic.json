@@ -14151,6 +14151,121 @@
         "https://tokendance.space/models/deepseek-v4.1-flash-1017"
       ],
       "checkedAt": "2026-10-19"
+    },
+    {
+      "provider": "bailian",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "bailian-openai-chat"
+      ],
+      "checkedAt": "2026-10-26",
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "id": "bailian-deepseek1017-20261026",
+      "modelIds": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "已确认深度思考；精确型号可调参数与默认值证据不足，保留服务默认。",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/deepseek-api",
+        "https://help.aliyun.com/zh/model-studio/deep-thinking"
+      ],
+      "notes": [
+        "未从相近旧型号或原厂参数继承此渠道的开关、强度枚举和默认值。"
+      ]
+    },
+    {
+      "provider": "bailian",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "bailian-openai-chat"
+      ],
+      "checkedAt": "2026-10-26",
+      "constraints": {
+        "thinkingCannotDisable": true,
+        "neverIncreaseOutputBudget": true,
+        "omitSampling": [
+          "temperature",
+          "top_p"
+        ]
+      },
+      "conflicts": [],
+      "id": "bailian-minimax-m31-flash-20261026",
+      "modelIds": [
+        "MiniMax/MiniMax-M3.1-Flash"
+      ],
+      "status": "supported",
+      "controls": [
+        {
+          "key": "effort",
+          "label": "思考强度",
+          "type": "enum",
+          "values": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "field": "reasoning_effort",
+          "default": "max"
+        }
+      ],
+      "clearFields": [
+        "reasoning_effort",
+        "thinking",
+        "enable_thinking",
+        "thinking_budget",
+        "reasoning_split"
+      ],
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+        "https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions"
+      ],
+      "notes": [
+        "始终思考，不接受关闭；显式强度才写入请求，空选项保持服务默认。思考和回答共用输出预算。"
+      ]
+    },
+    {
+      "provider": "bailian",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "bailian-openai-chat"
+      ],
+      "checkedAt": "2026-10-26",
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "id": "bailian-mimo-ultraspeed-20261026",
+      "modelIds": [
+        "xiaomi/mimo-v2.6-pro-ultraspeed"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "已确认深度思考；精确型号可调参数与默认值证据不足，保留服务默认。",
+      "controls": [],
+      "clearFields": [],
+      "sourceUrls": [
+        "https://help.aliyun.com/zh/model-studio/mimo",
+        "https://help.aliyun.com/zh/model-studio/deep-thinking"
+      ],
+      "notes": [
+        "未从相近旧型号或原厂参数继承此渠道的开关、强度枚举和默认值。"
+      ]
     }
   ],
   "excluded": [

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { X, Check, Undo2 } from 'lucide-react';
-import { modelOption, selectedModelReference, browserCredentialKey } from './workspaceModels.js';
+import { workspaceModelRoute, modelOption, selectedModelReference, browserCredentialKey } from './workspaceModels.js';
 import { API_BASE_DEFAULT } from '../config.js';
 import { uid, currentTask, currentBranch, currentDraft, draftOf } from './workspaceState.js';
 import { withOptimizationMaterials } from './workspaceOptimization.js';
@@ -32,7 +32,7 @@ export default function WorkspaceOptimize({ stateRef, models, userId, health, sy
       if (!entry) throw Error('请先在模型配置选择主模型。');
       const option = modelOption(entry, models.library, models.registry, 'main', address.path, false, models.summary?.tokenDance);
       if (option.reason) throw Error(option.reason);
-      const c = option.connection, route = { accessProvider: c.provider, modelId: entry.modelId, ...(c.provider === 'custom' ? { custom: { ...entry.custom, ...c.custom } } : {}) };
+      const c = option.connection, route = workspaceModelRoute(c,entry);
       if (!health.simulation && health.executionMode !== 'production' && !health.allowedProviders?.includes(c.provider)) throw Error('当前真实验收未开放该渠道。');
       const target = address.draftTargetId ? 'editInstruction' : 'methodContent';
       const fingerprint = JSON.stringify({ address, draft, route });

@@ -1,0 +1,2103 @@
+{
+  "checkedAt": "2026-10-26T15:21:58.323590+00:00",
+  "scope": "TokenDance entire anonymous public directory, exact ID/protocol reconciliation; no inference",
+  "sourceUrl": "https://tokendance.space/gateway/v1/models",
+  "websiteSource": "https://tokendance.space/models?author_id=01KMDPW3BJZA1CDS3E1TRF9N9J&output_modality=text",
+  "changelogSource": "https://tokendance.space/docs/changelog.md",
+  "publicSnapshotSha256": "85a9441d4e67a188530259832755d37813c9629659654d8571110338ed3658e6",
+  "changelogSha256": "6706f602d7411b0ce5a5a4d80fa16711c1c4c49ed9a8dad2274166f4360b3ae6",
+  "counts": {
+    "adapted-current": 66,
+    "retired-but-listed": 2,
+    "previously-excluded": 30,
+    "new-pending-review": 14
+  },
+  "rows": [
+    {
+      "id": "glm-4.7",
+      "name": "Z.ai: GLM 4.7",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5",
+      "name": "Z.ai: GLM 5",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-h3-max",
+      "name": "MiniMax: MiniMax H3 Max",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-m2.5",
+      "name": "MiniMax: MiniMax M2.5",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kimi-k2.5",
+      "name": "MoonshotAI: Kimi K2.5",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-m2.7",
+      "name": "MiniMax: MiniMax M2.7",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kimi-k3.1-pro",
+      "name": "MoonshotAI: Kimi K3.1 Pro",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-4.5-air",
+      "name": "Z.ai: GLM 4.5 Air",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-4.6v",
+      "name": "Z.ai: GLM 4.6V",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "step-3.5-flash",
+      "name": "StepFun: Step 3.5 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.0-pro",
+      "name": "ByteDance Seed: Seed-2.0-Pro",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.0-mini",
+      "name": "ByteDance Seed: Seed-2.0-Mini",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5v-turbo",
+      "name": "Z.ai: GLM 5V Turbo",
+      "context_length": 202752,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedream-5.0-lite",
+      "name": "ByteDance Seed: Seedream 5.0 lite",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations",
+        "openai:image-generations"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "image",
+        "refine"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5.1",
+      "name": "Z.ai: GLM 5.1",
+      "context_length": 202752,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.0-lite",
+      "name": "ByteDance Seed: Seed-2.0-Lite",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "ling-3.1-flash",
+      "name": "Ling: Ling 3.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "ateve-jev-v1",
+      "name": "Ateve: Ateve Jev V1",
+      "context_length": 32000,
+      "supported_protocols": [
+        "typesafe:systemone"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "typesafe:systemone 专有协议，现有模型适配未覆盖。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.5",
+      "name": "Xiaomi: MiMo-V2.5",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "retired-but-listed",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "已有明确 2026-10-21 停服证据优先于仍保留的目录行。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3-vl-plus",
+      "name": "Qwen: Qwen3 VL Plus",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-image-2.1-pro",
+      "name": "Qwen: Qwen-Image-2.1-Pro",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "TokenDance dashscope:multimodal-generation 请求合同待核对，不能复用百炼账号/端点。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-ocr",
+      "name": "Z.ai: GLM-OCR",
+      "context_length": 128000,
+      "supported_protocols": [
+        "zai:layout-parsing"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "专用文档 OCR 协议；图研视觉角色需要通用图像分析及评审，需新增文档 OCR 角色与解析能力。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kimi-k2.6",
+      "name": "MoonshotAI: Kimi K2.6",
+      "context_length": 262144,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-text-embedding-v4",
+      "name": "Qwen: Text Embedding V4",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:embeddings"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "embedding 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-m3.1-flash",
+      "name": "MiniMax: MiniMax M3.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-fetch",
+      "name": "DeepSeek: DeepSeek Fetch",
+      "context_length": 0,
+      "supported_protocols": [
+        "deepseek:web-fetch"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "网页抓取工具；deepseek:web-fetch 不是聊天模型协议。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.5-plus",
+      "name": "Qwen: Qwen3.5 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.5-flash",
+      "name": "Qwen: Qwen3.5 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-image-2.1-turbo",
+      "name": "Qwen: Qwen-Image-2.1-Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "TokenDance dashscope:multimodal-generation 请求合同待核对，不能复用百炼账号/端点。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-search",
+      "name": "DeepSeek: DeepSeek Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "deepseek:web-search"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "网页搜索工具；deepseek:web-search 不是聊天模型协议。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.0-video-edit",
+      "name": "Alibaba: HappyHorse 1.0 Video Edit",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.0-i2v",
+      "name": "Alibaba: HappyHorse 1.0 Image To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.0-t2v",
+      "name": "Alibaba: HappyHorse 1.0 Text To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.0-r2v",
+      "name": "Alibaba: HappyHorse 1.0 Reference To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek: DeepSeek V4 Pro Preview",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.6-plus",
+      "name": "Qwen: Qwen3.6 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.5-pro",
+      "name": "Xiaomi: MiMo-V2.5-Pro",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "retired-but-listed",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "已有明确 2026-10-21 停服证据优先于仍保留的目录行。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedream-5.0-flash",
+      "name": "ByteDance Seed: Seedream 5.0 Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "ark:image-generations 协议名已识别；该精确型号的尺寸、参考图、返回和编辑约束尚未核对，暂不自动开放。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-s3",
+      "name": "UniFuncs: Deep Search S3",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-u3",
+      "name": "UniFuncs: Deep Research U3",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedance-2.0",
+      "name": "ByteDance: Seedance 2.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedance-2.0-fast",
+      "name": "ByteDance: Seedance 2.0 Fast",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.5-tts",
+      "name": "Xiaomi: MiMo-V2.5-TTS",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.5-tts-voicedesign",
+      "name": "Xiaomi: MiMo-V2.5-TTS-VoiceDesign",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.5-tts-voiceclone",
+      "name": "Xiaomi: MiMo-V2.5-TTS-VoiceClone",
+      "context_length": 8000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.7-plus",
+      "name": "Qwen: Qwen3.7 Plus",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.7-max",
+      "name": "Qwen: Qwen3.7 Max",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-speech-2.8-hd",
+      "name": "MiniMax: Speech-2.8-HD",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-speech-2.8-turbo",
+      "name": "MiniMax: Speech-2.8-Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:t2a_v2",
+        "minimax:t2a_v2_ws",
+        "minimax:voice_clone"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "step-3.7-flash",
+      "name": "StepFun: Step 3.7 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "bocha-web-search",
+      "name": "Bocha: Web Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "bocha:web-search"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "网页搜索接口；现有参考库检索并非开放网页搜索，需要新增检索工具契约。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-u3-pro",
+      "name": "UniFuncs: Deep Research U3 Pro",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-s3-pro",
+      "name": "UniFuncs: Deep Search S3 Pro",
+      "context_length": 200000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-web-reader",
+      "name": "UniFuncs: Web Reader",
+      "context_length": 0,
+      "supported_protocols": [
+        "unifuncs:web-reader"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "网页抓取接口；需要新增阅读工具与 URL 输入能力。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "unifuncs-web-search",
+      "name": "UniFuncs: Web Search",
+      "context_length": 0,
+      "supported_protocols": [
+        "unifuncs:web-search"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "网页搜索接口；需要新增搜索工具与结果引用处理。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "hy3-preview",
+      "name": "Tencent: Hy3 preview",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "name": "MoonshotAI: Kimi K2.7 Code",
+      "context_length": 262144,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5.2",
+      "name": "Z.ai: GLM 5.2",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.1-r2v",
+      "name": "Alibaba: HappyHorse 1.1 Reference To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-evolving",
+      "name": "ByteDance Seed: Seed-Evolving",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.1-turbo",
+      "name": "ByteDance Seed: Seed-2.1-Turbo",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-m3",
+      "name": "MiniMax: MiniMax M3",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.1-pro",
+      "name": "ByteDance Seed: Seed-2.1-Pro",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "wan3.0-video",
+      "name": "Qwen: Wan3.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedance-2.0-mini",
+      "name": "ByteDance: Seedance 2.0 Mini",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.8-max",
+      "name": "Qwen: Qwen3.8 Max",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "longcat-2.0",
+      "name": "Meituan: LongCat-2.0",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "name": "DeepSeek: DeepSeek V4 Flash Preview",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "hy3",
+      "name": "Tencent: Hy3",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kling-3.0",
+      "name": "Kling: Video 3.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video",
+        "kling:motion-control"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.1-t2v",
+      "name": "Alibaba: HappyHorse 1.1 Text To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "cogevol-interactive-0828",
+      "name": "CogEvol: CogEvol Interactive 0828",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedream-5.0-pro",
+      "name": "ByteDance Seed: Seedream 5.0 Pro",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:image-generations"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "image",
+        "refine"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.5-35b-a3b",
+      "name": "Qwen: Qwen3.5-35B-A3B",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "happyhorse-1.1-i2v",
+      "name": "Alibaba: HappyHorse 1.1 Image To Video",
+      "context_length": 0,
+      "supported_protocols": [
+        "happyhorse:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "name": "DeepSeek: DeepSeek V4 Flash 0731",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seedance-2.5",
+      "name": "ByteDance: Seedance 2.5",
+      "context_length": 0,
+      "supported_protocols": [
+        "seedance:generations"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "Z.ai: GLM 5.3 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "ling-3.0-flash",
+      "name": "Ling: Ling 3.0 Flash",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "wan3.0-video-prime",
+      "name": "Qwen: Wan3.0 Prime",
+      "context_length": 0,
+      "supported_protocols": [
+        "wan3:video-synthesis"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "dots-3-note-preview",
+      "name": "Dots Studio: Dots3-Note Preview（Free）",
+      "context_length": 512000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-2.0-code",
+      "name": "ByteDance Seed: Seed-2.0-Code",
+      "context_length": 256000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kling-3.0-turbo",
+      "name": "Kling: Video 3.0 Turbo",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:text2video",
+        "kling:image2video"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5.3",
+      "name": "Z.ai: GLM 5.3",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "seed-tts-2.0",
+      "name": "ByteDance Seed: Doubao-Seed-TTS 2.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "ark:tts",
+        "ark:tts_ws"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "audio 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "hy4-preview",
+      "name": "Tencent: Hy4 preview",
+      "context_length": 1024000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.7-text-embedding",
+      "name": "Qwen: Qwen3.7 Text Embedding",
+      "context_length": 128000,
+      "supported_protocols": [
+        "openai:embeddings"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "embedding 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kling-3.0-omni",
+      "name": "Kling: Video 3.0 Omni",
+      "context_length": 0,
+      "supported_protocols": [
+        "kling:omni-video"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.8-max-0902",
+      "name": "Qwen: Qwen3.8-Max-0902",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "spark-x2.5-1.7b",
+      "name": "Xunfei: Spark-X2.5-1.7B",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "spark-x2.5-4b",
+      "name": "Xunfei: Spark-X2.5-4B",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.7-text-rerank",
+      "name": "Qwen: Qwen3.7 Text Rerank",
+      "context_length": 0,
+      "supported_protocols": [
+        "qwen:text-rerank"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "重排序专用协议，尚无对应角色。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "cogevol-slide-0828",
+      "name": "CogEvol: CogEvol Slide 0828",
+      "context_length": 32768,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "cogevol-base",
+      "name": "CogEvol: CogEvol Base",
+      "context_length": 65536,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "kimi-k3",
+      "name": "MoonshotAI: Kimi K3",
+      "context_length": 1048576,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "name": "DeepSeek: DeepSeek V4.1 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:responses",
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "glm-5.3-flashx",
+      "name": "GLM: GLM 5.3 FlashX",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.5-ocr",
+      "name": "Qwen: Qwen3.5-OCR",
+      "context_length": 64000,
+      "supported_protocols": [
+        "openai:chat-completions"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "OCR 专用；Chat 协议相同不能据此宣称通用推理、绘图规划及视觉评审能力。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "step-5-preview",
+      "name": "StepFun: Step 5 Preview",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.6-ultraspeed",
+      "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen3.8-flash",
+      "name": "Qwen: Qwen3.8 Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "openai:responses",
+        "anthropic:messages"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "name": "DeepSeek: DeepSeek V4 Pro 0813",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "minimax-h3",
+      "name": "MiniMax: MiniMax H3",
+      "context_length": 0,
+      "supported_protocols": [
+        "minimax:video_generation_v2"
+      ],
+      "classification": "previously-excluded",
+      "auditedRoles": [],
+      "reason": "video 输出无法映射图研现有功能；本次不扩展产品范围。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.6-pro",
+      "name": "Xiaomi: Mimo-V2.6-Pro",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "mimo-v2.6-flash",
+      "name": "Xiaomi: Mimo-V2.6-Flash",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "classification": "adapted-current",
+      "auditedRoles": [
+        "main",
+        "optimize"
+      ],
+      "reason": "",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "bocha-jev-v1",
+      "name": "Bocha: Bocha Jev V1",
+      "context_length": 32000,
+      "supported_protocols": [
+        "typesafe:systemone"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "typesafe:systemone 专有协议，现有模型适配未覆盖。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash",
+      "name": "Qwen: Qwen-Audio-3.1-ASR-Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "语音识别专用；音频输入与解析能力未接入。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-audio-3.0-asr-flash",
+      "name": "Qwen: Qwen-Audio-3.0-ASR-Flash",
+      "context_length": 0,
+      "supported_protocols": [
+        "dashscope:multimodal-generation"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "语音识别专用；音频输入与解析能力未接入。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "yc-song-4.0",
+      "name": "Yinchao: Song V4.0",
+      "context_length": 0,
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "yinchao:song / lyric-generate 专用协议未接入。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "qwen-audio-3.1-asr-flash-message",
+      "name": "Qwen: Qwen-Audio-3.1-ASR-Flash-Message",
+      "context_length": 0,
+      "supported_protocols": [
+        "qwen:audio-asr-streaming"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "qwen:audio-asr-streaming 流式音频协议未接入。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    },
+    {
+      "id": "yc-song-3.5",
+      "name": "Yinchao: Song V3.5",
+      "context_length": 0,
+      "supported_protocols": [
+        "yinchao:song",
+        "yinchao:lyric-generate"
+      ],
+      "classification": "new-pending-review",
+      "auditedRoles": [],
+      "reason": "yinchao:song / lyric-generate 专用协议未接入。",
+      "inputOutputVerification": "本公开接口没有输入/输出模态字段；沿用已有逐型号证据，新增条目不猜测。"
+    }
+  ],
+  "historicalAbsences": [
+    {
+      "id": "deepseek-chat-v3-0324",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "deepseek-ocr-2",
+      "roles": [],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "deepseek-v3.2",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "deepseek-v4-flash-vision-exp",
+      "roles": [
+        "main",
+        "optimize",
+        "vision"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "qwen3-max",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    },
+    {
+      "id": "qwen3.6-max-preview",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "presence": {
+        "status": "absent",
+        "checkedAt": "2026-10-26",
+        "sourceUrl": "https://tokendance.space/gateway/v1/models"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "id": "deepseek-chat-v3-0324",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "deepseek-ocr-2",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "deepseek-v3.2",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "changes": {
+        "description": {
+          "before": "【指定服务商限时调用八折】DeepSeek-V4 拥有百万字超长上下文，在 Agent 能力、世界知识和推理性能上均实现国内与开源领域的领先。相比 DeepSeek-V4-Pro，DeepSeek-V4-Flash 在世界知识储备方面稍逊一筹，但展现出了接近的推理能力。而由于模型参数和激活更小，相较之下 V4-Flash 能够提供更加快捷、经济的 API 服务。  在 Agent 测评中，DeepSeek-V4-Flash 在简单任务上与 DeepSeek-V4-Pro 旗鼓相当，但在高难度任务上仍有差距。",
+          "after": "DeepSeek-V4 拥有百万字超长上下文，在 Agent 能力、世界知识和推理性能上均实现国内与开源领域的领先。相比 DeepSeek-V4-Pro，DeepSeek-V4-Flash 在世界知识储备方面稍逊一筹，但展现出了接近的推理能力。而由于模型参数和激活更小，相较之下 V4-Flash 能够提供更加快捷、经济的 API 服务。  在 Agent 测评中，DeepSeek-V4-Flash 在简单任务上与 DeepSeek-V4-Pro 旗鼓相当，但在高难度任务上仍有差距。"
+        },
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "anthropic:messages"
+          ]
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "openai:responses",
+            "anthropic:messages"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ]
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-flash-vision-exp",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "anthropic:messages"
+          ]
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "changes": {
+        "name": {
+          "before": "DeepSeek：DeepSeek V4 Pro 0813",
+          "after": "DeepSeek: DeepSeek V4 Pro 0813"
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "changes": {
+        "description": {
+          "before": "【抢先体验】模型采用了新的模型结构，原生多模态支持、能力更强、速度更快",
+          "after": "【特别说明：该模型DeepSeek 端点已升级为 1017 版本，其余为原版模型】模型采用了新的模型结构，原生多模态支持、能力更强、速度更快。"
+        },
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:responses",
+            "openai:chat-completions",
+            "anthropic:messages"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glm-5.3-flash",
+      "changes": {
+        "description": {
+          "before": "【官方同价，限时五折至 2026 年 9 月 9 日 24:00】GLM-5.3-Flash 是 GLM-5 系列首个原生多模态模型，以极致低成本架构实现超越 GLM-5.2 的更强智能：",
+          "after": "GLM-5.3-Flash 是 GLM-5 系列首个原生多模态模型，以极致低成本架构实现超越 GLM-5.2 的更强智能："
+        }
+      }
+    },
+    {
+      "id": "kimi-k3",
+      "changes": {
+        "description": {
+          "before": "【指定服务商限时 8 折】Kimi K3 是 Kimi 迄今能力最强的模型，拥有 2.8 万亿参数。它基于 Kimi 混合线性注意力机制（Kimi Delta Attention）和注意力残差（Attention Residuals）技术构建，原生支持视觉理解，并拥有 100 万 token 上下文窗口，面向软件工程、知识工作和深度推理等前沿智能场景而设计。",
+          "after": "【指定服务商限时峰谷优惠至2026-09-30 23:59:59】Kimi K3 是 Kimi 迄今能力最强的模型，拥有 2.8 万亿参数。它基于 Kimi 混合线性注意力机制（Kimi Delta Attention）和注意力残差（Attention Residuals）技术构建，原生支持视觉理解，并拥有 100 万 token 上下文窗口，面向软件工程、知识工作和深度推理等前沿智能场景而设计。"
+        },
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "kling-3.0",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "kling:text2video",
+            "kling:image2video"
+          ],
+          "after": [
+            "kling:text2video",
+            "kling:image2video",
+            "kling:motion-control"
+          ]
+        }
+      }
+    },
+    {
+      "id": "ling-3.0-flash",
+      "changes": {
+        "name": {
+          "before": "Ling: Ling-3.0-flash",
+          "after": "Ling: Ling 3.0 Flash"
+        }
+      }
+    },
+    {
+      "id": "mimo-v2.5",
+      "changes": {
+        "description": {
+          "before": "MiMo-V2.5 是小米自研的原生全模态大模型，在智能体场景下具备旗舰水准的综合能力，却只需约一半推理成本。相比 MiMo-V2-Omni，它在图像、视频等多模态理解任务上的感知能力全面提升。它提供最高 100 万上下文窗口，可在单次推理中容纳整份文档、超长对话与复杂任务上下文，非常适合集成进各类智能体框架，在同时追求强推理力、丰富感知和成本效率的场景中发挥作用。",
+          "after": "【官方即将退役此模型，将于 2026.10.14 18:00（UTC+8）自动转发至 V2.6 系列，最终于 2026.10.21 10:00（UTC+8）正式下线】MiMo-V2.5 是小米自研的原生全模态大模型，在智能体场景下具备旗舰水准的综合能力，却只需约一半推理成本。相比 MiMo-V2-Omni，它在图像、视频等多模态理解任务上的感知能力全面提升。它提供最高 100 万上下文窗口，可在单次推理中容纳整份文档、超长对话与复杂任务上下文，非常适合集成进各类智能体框架，在同时追求强推理力、丰富感知和成本效率的场景中发挥作用。"
+        }
+      }
+    },
+    {
+      "id": "mimo-v2.5-pro",
+      "changes": {
+        "description": {
+          "before": "MiMo-V2.5-Pro 是小米的旗舰大模型，在通用智能体能力、复杂软件工程以及长周期任务上表现强劲，在 ClawEval、GDPVal 和 SWE-bench Pro 等基准测试中名列前茅。它能够独立而自主地完成专业级任务，这类任务在人类专家手中往往需要耗费数天甚至数周，并且过程中可能涉及上千次工具调用。  它支持最高约 100 万上下文长度，非常适合嵌入各类智能体框架之中，作为大体量任务编排与执行的核心引擎来使用。",
+          "after": "【官方即将退役此模型，将于 2026.10.14 18:00（UTC+8）自动转发至 V2.6 系列，最终于 2026.10.21 10:00（UTC+8）正式下线】MiMo-V2.5-Pro 是小米的旗舰大模型，在通用智能体能力、复杂软件工程以及长周期任务上表现强劲，在 ClawEval、GDPVal 和 SWE-bench Pro 等基准测试中名列前茅。它能够独立而自主地完成专业级任务，这类任务在人类专家手中往往需要耗费数天甚至数周，并且过程中可能涉及上千次工具调用。  它支持最高约 100 万上下文长度，非常适合嵌入各类智能体框架之中，作为大体量任务编排与执行的核心引擎来使用。"
+        }
+      }
+    },
+    {
+      "id": "minimax-h3",
+      "changes": {
+        "description": {
+          "before": "【限时 5 折至 2026 年 8 月 15 日 23:59:59】通用全模态生成模型，支持对文本、图像、视频、声音组成的多模态上下文进行统一理解，能够输出具备原生双声道的音视频内容，最高可支持15秒2K分辨率",
+          "after": "通用全模态生成模型，支持对文本、图像、视频、声音组成的多模态上下文进行统一理解，能够输出具备原生双声道的音视频内容，最高可支持15秒2K分辨率"
+        }
+      }
+    },
+    {
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "qwen3-max",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "qwen3.6-max-preview",
+      "changes": {
+        "catalogPresence": {
+          "before": null,
+          "after": {
+            "status": "absent",
+            "checkedAt": "2026-10-26",
+            "sourceUrl": "https://tokendance.space/gateway/v1/models"
+          }
+        }
+      }
+    },
+    {
+      "id": "seed-2.0-lite",
+      "changes": {
+        "description": {
+          "before": "面向高频企业场景兼顾性能与成本的均衡型模型，综合能力超越上一代Doubao-Seed-1.8。胜任非结构化信息处理、内容创作、搜索推荐、数据分析等生产型工作，支持长上下文、多源信息融合、多步指令执行与高保真结构化输出。在保障稳定效果的同时显著优化成本。",
+          "after": "面向高频企业场景兼顾性能与成本的均衡型模型，综合能力超越上一代Doubao-Seed-1.8。胜任非结构化信息处理、内容创作、搜索推荐、数据分析等生产型工作，支持长上下文、多源信息融合、多步指令执行与高保真结构化输出。在保障稳定效果的同时显著优化成本。目前实际响应模型为doubao-seed-2-1-lite-260915"
+        }
+      }
+    },
+    {
+      "id": "seed-2.1-pro",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "openai:responses",
+            "anthropic:messages"
+          ]
+        }
+      }
+    },
+    {
+      "id": "seed-2.1-turbo",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "openai:responses",
+            "anthropic:messages"
+          ]
+        }
+      }
+    },
+    {
+      "id": "seed-evolving",
+      "changes": {
+        "context_length": {
+          "before": 256000,
+          "after": 1000000
+        }
+      }
+    },
+    {
+      "id": "step-5-preview",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "anthropic:messages"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ]
+        }
+      }
+    },
+    {
+      "id": "ling-3.1-flash",
+      "changes": {
+        "name": {
+          "before": "Ling: Ling-3.1-flash",
+          "after": "Ling: Ling 3.1 Flash"
+        },
+        "description": {
+          "before": "【限时两周的免费体验，免费体验期间模型服务长度为 256K】Ling-3.1-flash 拥有约 560B 总参数，每个 Token 激活约 25B 参数；模型上下文窗口上限为 1M，可容纳更长的文档、代码和任务历史。在研发过程中，我们围绕通用智能体、搜索、日常办公和软件研发等任务持续优化，并在医疗、金融和材料科学研究等场景持续提升模型能力。",
+          "after": "【免费期至 2026 年 10 月 14 日 10 时】Ling-3.1-flash 拥有约 560B 总参数，每个 Token 激活约 25B 参数；模型上下文窗口上限为 1M，可容纳更长的文档、代码和任务历史。在研发过程中，我们围绕通用智能体、搜索、日常办公和软件研发等任务持续优化，并在医疗、金融和材料科学研究等场景持续提升模型能力。"
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4.1-flash-1017",
+      "changes": {
+        "supported_protocols": {
+          "before": [
+            "openai:chat-completions",
+            "anthropic:messages",
+            "openai:responses"
+          ],
+          "after": [
+            "openai:chat-completions",
+            "openai:responses",
+            "anthropic:messages"
+          ]
+        }
+      }
+    }
+  ]
+}

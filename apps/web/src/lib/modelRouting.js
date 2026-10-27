@@ -1,3 +1,4 @@
+import { bailianWorkspaceModel, bailianRouteFields } from './bailianWorkspace.js'
 import { workflowRequiredRoles, workflowModelVisionStatus } from './workflow.js'
 import { normalizeProviderRegions } from './providerRegions.js'
 export const MODEL_ROUTE_ROLES = Object.freeze(['main', 'image', 'vision'])
@@ -41,6 +42,10 @@ export function registryReadinessMessage(status) {
 export function buildModelSubmission({ configurationMode, modelRoutes, registry, registryStatus = registry ? 'ready' : 'loading', providerRegions, requiredRoles = MODEL_ROUTE_ROLES }) {
   assertCompleteRoutes(modelRoutes, requiredRoles)
   const executionRoutes = requiredRoles.map(role => modelRoutes[role])
+  for (const route of executionRoutes) if (route.accessProvider === 'bailian' && bailianWorkspaceModel(route.modelId)) {
+    if (!(registry?.bailianWorkspaceContractVersion >= 2) || !(registry?.routeContractVersion >= 1)) throw new Error('当前后端尚未支持百炼业务空间接入，配置已保留。')
+    bailianRouteFields('bailian',route.modelId,route.bailian)
+  }
   if (registryStatus === 'stale' || configurationMode === 'advanced' || executionRoutes.some(route => route.accessProvider === 'custom')) {
     const readinessMessage = registryReadinessMessage(registryStatus)
     if (readinessMessage) throw new Error(readinessMessage)

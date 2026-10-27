@@ -1,3 +1,4 @@
+import { bailianRouteFields } from './bailian-workspace.js';
 import { createHash } from 'node:crypto';
 import { readHistoricalExecution, requireHistoricalPause } from './workspace-history-execution.js';
 import { workflowRequiredRoles } from './workflow.js';
@@ -71,7 +72,7 @@ export async function resolveWorkspaceModels({libraryStore,user,body,simulation=
     const c=library.connections.find(c=>c.id===entry?.connectionId && !c.disabled);
     if(!entry||!c||ref.accessProvider!==c.provider)throw fail(400,`${role} 的型号或连接已失效，请重新选择。`);
     if(c.provider==='custom'&&['connectionId','baseUrl','protocol','auth'].some(key=>normalizeUniversalConnection(entry.custom)[key]!==c.custom[key]))throw fail(409,'连接已改变，请重新确认型号能力');
-    const route=c.provider==='custom'?normalizeUniversalRoute({accessProvider:'custom',modelId:entry.modelId,custom:{...entry.custom,...c.custom}}):{accessProvider:c.provider,modelId:entry.modelId};
+    const route=c.provider==='custom'?normalizeUniversalRoute({accessProvider:'custom',modelId:entry.modelId,custom:{...entry.custom,...c.custom}}):{accessProvider:c.provider,modelId:entry.modelId,...bailianRouteFields(c.provider,entry.modelId,c.bailian)};
     if(JSON.stringify(route)!==JSON.stringify(body.modelRoutes?.[role]))throw fail(409,'模型能力或连接已改变，请重新确认配置。');
     routes[role]=route;
     if(c.provider==='minimax') { if(regions.minimax&&regions.minimax!==c.region)throw fail(400,'同次执行不支持不同区域的稀宇连接'); regions.minimax=c.region; }

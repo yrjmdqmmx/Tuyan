@@ -25865,7 +25865,13 @@ const details: { checkedAt: string; models: Record<string, any> } = {
     "siliconflow/deepseek-ai/DeepSeek-V4.1-Flash": {
       "specifications": {
         "version": 1,
-        "checkedAt": "2026-10-16",
+        "checkedAt": "2026-10-26",
+        "sourceUrls": [
+          "https://www.siliconflow.cn/models",
+          "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions",
+          "https://docs.siliconflow.cn/docs/release-notes/overview"
+        ],
+        "contextWindowTokens": 1048576,
         "officialInputModalities": [
           "text",
           "image"
@@ -25873,14 +25879,19 @@ const details: { checkedAt: string; models: Record<string, any> } = {
         "officialOutputModalities": [
           "text"
         ],
-        "contextWindowTokens": 1000000,
-        "contextWindowApproximate": false,
-        "sourceUrls": [
-          "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
-        ],
         "notes": [
-          "官方仓库对应型号卡；默认/原生上下文与需额外配置的扩展长度分开。"
-        ]
+          "渠道目录明确视觉输入及 1024K 上下文；最大输出未单独确认，不套用原厂值。",
+          "2026-10-21 升级至 1017，API ID 不变；渠道 1024K 与原厂 1000000 分别记录，不继承原厂最大输出。"
+        ],
+        "sourceScope": "service",
+        "resolvedModel": {
+          "modelId": "deepseek-v4.1-flash-1017",
+          "displayName": "DeepSeek V4.1 Flash 1017（渠道同 ID 升级）",
+          "effectiveDate": "2026-10-21",
+          "sourceUrls": [
+            "https://docs.siliconflow.cn/docs/release-notes/overview"
+          ]
+        }
       }
     },
     "together/deepseek-ai/DeepSeek-V4.1-Flash": {

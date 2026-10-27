@@ -46,13 +46,13 @@ test('official cards only contain input, output, context and source links',()=>{
 
 test('exact dates preserve different Seed 2.1 Pro context windows',()=>{
   assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260628'}).context,'256K tokens')
-  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'1.024M tokens')
+  assert.equal(modelCardSpecifications('ark',{id:'doubao-seed-2-1-pro-260915'}).context,'≈ 1M tokens')
   assert.equal(modelCardSpecifications('tokendance',{id:'seed-2.1-pro'}).context,'待确认')
 })
 
 test('missing native window can use this exact channel with distinct provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'seed-2.1-pro',specifications:{version:1,contextWindowTokens:262144,sourceUrls:['https://tokendance.space/models/seed-2.1-pro']}})
-  assert.equal(data.inputScope,'原厂');assert.equal(data.context,'262.144K tokens');assert.equal(data.contextScope,'渠道')
+  assert.equal(data.inputScope,'原厂');assert.equal(data.context,'≈ 262K tokens');assert.equal(data.contextScope,'渠道')
   assert.ok(data.sources.includes('https://tokendance.space/models/seed-2.1-pro'))
 })
 
@@ -100,7 +100,7 @@ test('channel-only windows keep native modality provenance and do not cross prov
   assert.equal(qianfan.context,'8K tokens')
   assert.ok(qianfan.sources.includes('https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j'))
   assert.equal(modelCardSpecifications('custom',model).context,'待确认')
-  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'65.536K tokens')
+  assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash'}).context,'≈ 66K tokens')
   assert.equal(modelCardSpecifications('bailian',{id:'qwen3-omni-flash-2025-09-15'}).context,'待确认')
 })
 
@@ -168,14 +168,14 @@ test('brand assets exist locally and model branding follows the vendor rather th
   assert.equal(container.querySelector('img').getAttribute('alt'),'')
 })
 
-test('image prompt limits replace only an unpublished window and retain units, direction and sources',()=>{
+test('image prompt limits remain in evidence without substituting for the card context window',()=>{
   const source='https://example.com/model/edit'
   const model={id:'specific-image',roles:['image'],capabilities:{maxPromptLength:500},specifications:{version:1,officialOutputModalities:['image'],sourceUrls:[source],promptLimits:[{kind:'editing',max:4096,unit:'bytes',sourceUrls:[source]}]}}
   const before=structuredClone(model)
   const data=modelCardSpecifications('custom',model)
   assert.deepEqual(data.limitRows,[{label:'编辑提示词上限',value:'4.096K 字节',sources:[source]}])
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model}))
-  assert.ok(screen.getByText('编辑提示词上限'));assert.equal(screen.queryByText('上下文窗口'),null);assert.equal(screen.queryByText('生图提示词上限'),null)
+  assert.ok(screen.getByText('上下文窗口'));assert.ok(screen.getByText('待确认'));assert.equal(screen.queryByText('编辑提示词上限'),null);assert.equal(screen.queryByText('生图提示词上限'),null)
   assert.doesNotMatch(container.textContent,/tokens/);assert.deepEqual(model,before)
   model.specifications.contextWindowTokens=128000
   assert.deepEqual(modelCardSpecifications('custom',model).limitRows,[{label:'上下文窗口',value:'128K tokens',sources:[]}])
@@ -199,7 +199,7 @@ test('specific channel pages preserve partial modalities and served context',()=
  assert.equal(card.context,'512K tokens');assert.equal(card.output,'待确认')
  model.specificModelSpecifications.sourceScope='manufacturer'
  model.specifications={version:1,contextWindowTokens:1048576,sourceUrls:['https://provider.example/model/exact-model']}
- assert.equal(modelCardSpecifications('fireworks',model).context,'1.048576M tokens')
+ assert.equal(modelCardSpecifications('fireworks',model).context,'≈ 1M tokens')
  model.specificModelSpecifications.sourceScope='service'
  assert.equal(modelCardSpecifications('fireworks',model).context,'512K tokens')
 })
@@ -210,13 +210,14 @@ test('verified alias display keeps request identity and newer prompt limits win'
  assert.equal(modelCardSpecifications('bailian',image).limitRows[0].value,'1.3K tokens')
 })
 
-test('context and both image prompt limits use exact decimal K/M, retaining units and approximate markers',()=>{
+test('context rounds for display while image prompt limits keep exact decimal values and units',()=>{
   const source='https://example.com/model'
-  for(const [max,expected] of [[1,'0.001K'],[800,'0.8K'],[1000,'1K'],[4096,'4.096K'],[262144,'262.144K'],[999999,'999.999K'],[1000000,'1M'],[1000001,'1.000001M'],[1048576,'1.048576M'],[10000000,'10M']]) {
+  for(const [max,expected,context] of [[1,'0.001K','1'],[800,'0.8K','800'],[1000,'1K','1K'],[4096,'4.096K','≈ 4K'],[262144,'262.144K','≈ 262K'],[999999,'999.999K','≈ 1M'],[1000000,'1M','1M'],[1000001,'1.000001M','≈ 1M'],[1048576,'1.048576M','≈ 1M'],[1500000,'1.5M','1.5M'],[10000000,'10M','10M']]) {
     const text={id:'decimal-text',specifications:{version:1,contextWindowTokens:max,sourceUrls:[source]}}
-    assert.equal(modelCardSpecifications('custom',text).context,`${expected} tokens`)
+    assert.equal(modelCardSpecifications('custom',text).context,`${context} tokens`)
+    assert.equal(text.specifications.contextWindowTokens,max)
     text.specifications.contextWindowApproximate=true
-    assert.equal(modelCardSpecifications('custom',text).context,`≈ ${expected} tokens`)
+    assert.equal(modelCardSpecifications('custom',text).context,`≈ ${context.replace(/^≈ /,'')} tokens`)
     for(const [unit,label] of [['characters','字符'],['bytes','字节'],['tokens','tokens']]) {
       const image={id:'decimal-image',specifications:{version:1,officialOutputModalities:['image'],sourceUrls:[source],promptLimits:['generation','editing'].map(kind=>({kind,max,unit,sourceUrls:[source]}))}}
       const before=structuredClone(image)
@@ -229,7 +230,7 @@ test('context and both image prompt limits use exact decimal K/M, retaining unit
 })
 
 test('reviewed context strings normalize decimal prefixes without dropping published conditions',()=>{
-  assert.equal(modelCardSpecifications('custom',{id:'xqwen14bchat'}).context,'131.072K（需 YaRN） tokens')
+  assert.equal(modelCardSpecifications('custom',{id:'xqwen14bchat'}).context,'≈ 131K（需 YaRN） tokens')
   assert.equal(modelCardSpecifications('custom',{id:'THUDM/GLM-4-9B-0414'}).context,'128K（需 YaRN；原生 32K） tokens')
   assert.equal(modelCardSpecifications('custom',{id:'xsparkx2'}).context,'192K tokens')
 })

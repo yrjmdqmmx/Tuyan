@@ -33,6 +33,8 @@ export interface ModelSpecificationFacts {
   officialInputModalities?: string[]
   officialOutputModalities?: string[]
   inputFormats?: string[]
+  /** Channel facts for display only, with per-row provenance; never request settings. */
+  serviceDetails?: {label: string; value: string; sourceUrls: string[]}[]
   notes?: string[]
 }
 export interface ModelSpecifications extends ModelSpecificationFacts {

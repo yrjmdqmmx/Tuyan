@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-19.v35",
+  "version": "2026-10-26.v39",
   "providers": {
     "deepseek": [
       {
@@ -32,7 +32,60 @@
         }
       }
     ],
-    "kimi": [],
+    "kimi": [
+      {
+        "id": "kimi-k3.1-pro",
+        "label": "Kimi K3.1 Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。 始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。 固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.kimi.com/docs/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k3.1-pro-highspeed",
+        "label": "Kimi K3.1 Pro Highspeed",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。 始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。 固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.kimi.com/docs/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      }
+    ],
     "zhipu": [
       {
         "id": "glm-5.3",
@@ -8693,6 +8746,109 @@
             "image"
           ]
         }
+      },
+      {
+        "id": "deepseek-v4.1-flash-1017",
+        "label": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing",
+            "ap-southeast-1",
+            "us-east-1",
+            "eu-central-1",
+            "ap-northeast-1"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access and supplier-activation"
+        }
+      },
+      {
+        "id": "MiniMax/MiniMax-M3.1-Flash",
+        "label": "MiniMax M3.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access and supplier-activation"
+        }
+      },
+      {
+        "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
+        "label": "MiMo V2.6 Pro UltraSpeed",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "bailian-openai-chat",
+        "availabilityNotes": "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "xiaomi",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://help.aliyun.com/zh/model-studio/mimo",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing"
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "workspace-access and supplier-activation"
+        }
       }
     ],
     "openai": [
@@ -11104,6 +11260,97 @@
             "cn-beijing"
           ]
         }
+      },
+      {
+        "id": "kimi-k3-1-pro-261024",
+        "label": "Kimi K3.1 Pro (261024)",
+        "roles": [
+          "main"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 发布表仅确认深度思考/函数调用/缓存；仅开放文本，视觉及参数上限待渠道专页核实。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-1-flash-261017",
+        "label": "DeepSeek V4.1 Flash (261017)",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing"
+          ]
+        }
+      },
+      {
+        "id": "deepseek-v4-1-flash-economy-261017",
+        "label": "DeepSeek V4.1 Flash Economy (261017)",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "ark-openai-chat",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-beijing"
+          ]
+        }
       }
     ],
     "bfl": [
@@ -12558,6 +12805,38 @@
             "image"
           ]
         }
+      },
+      {
+        "id": "MiniMax-M3.1-Flash",
+        "label": "MiniMax M3.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方支持视频但图研仅文本/图片；当前沿用 reasoning_split=true。 始终思考；effort 默认 max，可选 low/medium/high/xhigh/max；不新增思考控件。max_completion_tokens 建议 131072（不是默认值证据），最大 524288；max_tokens 已废弃但兼容。 国际公开单价 USD/百万 token：输入 0.15、输出 0.60、缓存读取 0.015；不外推国内账单。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://platform.minimax.io/docs/guides/text-generation",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "global",
+            "cn"
+          ]
+        }
       }
     ],
     "mistral": [
@@ -13014,6 +13293,34 @@
           "officialSourceUrl": "https://docs.mistral.ai/models/mistral-large-4-0",
           "lifecycle": "preview",
           "releasedAt": "2026-10-06",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "zai-glm-5-3-flash",
+        "label": "GLM 5.3 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。2026-10-22 GA；官方上下文写作 1M、输出 128k，后者没有精确整数字段证据，未猜测最大值。 USD/百万 token：输入 0.15、缓存 0.03、输出 0.50。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "zhipu",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.mistral.ai/models/zai-glm-5-3-flash",
           "inputModalities": [
             "text",
             "image"
@@ -14491,6 +14798,58 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+        "label": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.30、缓存 0.006、输出 1.20；US/Canada 专用路由及 25% 加价需独立适配。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "MiniMaxAI/MiniMax-M3.1-Flash",
+        "label": "MiniMax M3.1 Flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；US/Canada 专用路由及 25% 加价需独立适配。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "fireworks": [
@@ -15168,6 +15527,34 @@
           "verified": false,
           "verificationState": "catalog",
           "officialSourceUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "accounts/fireworks/models/minimax-m3p1-flash",
+        "label": "MiniMax M3.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。该精确 ID 的 Serverless 与图像输入均明确支持；上下文显示 1040k，未转换为未经证实的精确 token 数。 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；最大输出待确认。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://fireworks.ai/models/fireworks/minimax-m3p1-flash",
           "inputModalities": [
             "text",
             "image"
@@ -20273,6 +20660,32 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "anthropic/claude-opus-5.5",
+        "label": "Claude Opus 5.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "replicate-predictions",
+        "availabilityNotes": "2026-10-26 官方精确版本 Schema 已核对；仅文本。图像使用单数 image 字段且默认缩图，与现有 images 适配不符，另列待办；账户及真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "anthropic",
+          "verified": false,
+          "verificationState": "catalog",
+          "lifecycle": "stable",
+          "officialSourceUrl": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "runware": [
@@ -22712,12 +23125,12 @@
       },
       {
         "id": "bria:21@1",
-        "label": "Bria FIBO Edit",
+        "label": "Bria FIBO 2.0 Edit",
         "roles": [
           "image"
         ],
         "protocol": "provider-images",
-        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方更名 FIBO 2.0，AIR 未变；沿用现有适配。",
         "capabilities": {
           "referenceImages": true,
           "maxReferenceImages": 1,
@@ -22733,7 +23146,7 @@
           "verified": false,
           "verificationState": "catalog",
           "lifecycle": "stable",
-          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo-edit",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo-2-0-edit",
           "inputModalities": [
             "text",
             "image"
@@ -23517,12 +23930,12 @@
       },
       {
         "id": "bria:20@1",
-        "label": "Bria FIBO",
+        "label": "Bria FIBO 2.0",
         "roles": [
           "image"
         ],
         "protocol": "provider-images",
-        "availabilityNotes": "逐型号适配；真实权限/推理/费用未验证。",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方更名 FIBO 2.0，AIR 未变；沿用现有适配。",
         "capabilities": {
           "referenceImages": true,
           "maxReferenceImages": 1,
@@ -23538,7 +23951,7 @@
           "verified": false,
           "verificationState": "catalog",
           "lifecycle": "stable",
-          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo",
+          "officialSourceUrl": "https://runware.ai/docs/models/bria-fibo-2-0",
           "inputModalities": [
             "text",
             "image"
@@ -26956,6 +27369,118 @@
             "text"
           ]
         }
+      },
+      {
+        "id": "deepseek-v4.1-flash-1017",
+        "label": "DeepSeek V4.1 Flash 1017",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方输出写作 384k，未猜测精确 token 数。广州 CNY/百万 token：空闲输入/输出/缓存 1/4/0.02，高峰 2/8/0.04；按北京时间工作日 9–12、14–18 判峰，账户账单未验。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "deepseek",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k3.1-pro",
+        "label": "Kimi K3.1 Pro",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。渠道默认 reasoning_effort=high（与原厂 max 不同）；保持 K3 产品请求预算 16384 和 low。广州 CNY/百万 token 输入13、输出68、缓存1.3；最大输出受共享上下文约束。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "kimi-k3.1-pro-highspeed",
+        "label": "Kimi K3.1 Pro Highspeed",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。渠道默认 high；产品请求 low、16384。价格页写 K3 Pro HighSpeed，与该精确 API 名存在歧义，未强行绑定价格。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "moonshot",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
+      },
+      {
+        "id": "minimax-m3.1-flash",
+        "label": "MiniMax M3.1 Flash",
+        "roles": [
+          "main",
+          "vision"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方输出写作 512k；不套用原厂精确值。渠道默认 adaptive，保留 reasoning_split=true，未传禁用思考。广州 CNY/百万 token 输入1、输出4、缓存0.1。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 3
+        },
+        "metadata": {
+          "vendor": "minimax",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "text"
+          ]
+        }
       }
     ],
     "xiaomi": [
@@ -30047,6 +30572,64 @@
             "cn-huabei-1"
           ]
         }
+      },
+      {
+        "id": "spark-x2.6",
+        "label": "Spark X2.6",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
+      },
+      {
+        "id": "spark-x2.6-4b",
+        "label": "Spark X2.6 4B",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0
+        },
+        "metadata": {
+          "vendor": "xunfei",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "inputModalities": [
+            "text"
+          ],
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "cn-huabei-1"
+          ]
+        }
       }
     ],
     "longcat": [
@@ -30515,6 +31098,12 @@
         "lifecycle": "legacy",
         "replacementModelId": "gpt-6-sol",
         "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations#2026-10-01-gpt-53-codex-gpt-51-gpt-54-nano"
+      },
+      "gpt-5.1-2025-11-13": {
+        "lifecycle": "legacy",
+        "expirationDate": "2027-04-01",
+        "lifecycleSourceUrl": "https://developers.openai.com/api/docs/deprecations",
+        "availabilityNotes": "2026-10-26 核对官方下线日期 2027-04-01；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
       }
     },
     "gemini": {
@@ -30633,6 +31222,24 @@
         "expirationDate": "2026-10-31",
         "expirationAt": "2026-10-31T00:00:00+08:00",
         "lifecycleSourceUrl": "https://intl.cloud.tencent.com/zh/announce/detail/101537"
+      },
+      "minimax-m2.7": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-17",
+        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-17；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
+      },
+      "hy-image-v3": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-12",
+        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-12；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
+      },
+      "seedream-image-v5.0-lite": {
+        "lifecycle": "legacy",
+        "expirationDate": "2026-11-24",
+        "lifecycleSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "availabilityNotes": "2026-10-26 核对官方下线日期 2026-11-24；官方未给具体时刻，沿用现有日期级禁选规则。历史 ID/默认选择保留，真实账户状态未验。"
       }
     },
     "xiaomi": {

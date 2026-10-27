@@ -6,6 +6,17 @@ export type TokenDanceCatalogSnapshot = {
   state: 'ready' | 'partial' | 'unavailable'; cause: string | null; checkedAt: number | null;
   expiresAt: number | null; stale: boolean; failureCount: number; alert: 'none' | 'warning' | 'critical';
 }
+export type TokenDanceCatalogPresence = { status: 'listed' | 'absent'; checkedAt: string; sourceUrl: string }
+// Only a complete, successfully parsed directory establishes absence. A cached
+// successful snapshot remains evidence; a failed/empty/malformed read does not.
+export function tokenDanceCatalogPresence(snapshot: TokenDanceCatalogSnapshot, id: string, previous?: TokenDanceCatalogPresence): TokenDanceCatalogPresence | undefined {
+  if (snapshot.checkedAt === null || !snapshot.models.length || snapshot.issues.some(issue => issue.index >= 0)) return previous
+  return {
+    status: snapshot.models.some(model => model.id === id) ? 'listed' : 'absent',
+    checkedAt: new Date(snapshot.checkedAt).toISOString(),
+    sourceUrl: 'https://tokendance.space/gateway/v1/models',
+  }
+}
 export class TokenDanceCatalogError extends Error {
   constructor(public causeCode: string, public httpStatus?: number) { super('TokenDance catalog: ' + causeCode) }
 }

@@ -1,3 +1,4 @@
+import WorkspaceBailianConnection, {cleanBailianConnection} from './WorkspaceBailianConnection.jsx';
 import WorkspaceModelCatalog, {catalogRows} from './WorkspaceModelCatalog.jsx';
 import WorkspaceModelPicker from './WorkspaceModelPicker.jsx';
 import {ModelBrandLogo} from '../components/ModelBrandLogo.jsx';
@@ -28,9 +29,9 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
     e.preventDefault(); setFormError('');
     if (!form.label.trim()) { setFormError('请填写连接名称'); return; }
     if (form.scope === 'account' && !models.userId) { setFormError('请先登录图研'); return; }
-    let normalized;try{normalized=cleanCustomConnection(form);}catch(e){setFormError(e.message);return;}
+    let normalized;try{normalized=cleanBailianConnection(cleanCustomConnection(form));}catch(e){setFormError(e.message);return;}
     const previous = library.connections.find(c => c.id === form.id);
-    if (previous && (previous.scope !== form.scope || previous.region !== form.region || JSON.stringify(previous.custom)!==JSON.stringify(normalized.custom)) && !secret.trim()) { setFormError('更换保存位置或服务区域时，请重新输入要使用的密钥。已有密钥不会自动复制。'); return; }
+    if (previous && (previous.scope !== form.scope || previous.region !== form.region || JSON.stringify(previous.custom)!==JSON.stringify(normalized.custom) || JSON.stringify(previous.bailian)!==JSON.stringify(normalized.bailian)) && !secret.trim()) { setFormError('更换保存位置、服务地区或业务空间时，请重新输入要使用的密钥。已有密钥不会自动复制。'); return; }
     if (await models.save({ ...library, connections: [...library.connections.filter(c => c.id !== form.id), { ...normalized, label: form.label.trim() }] }, { id: form.id, value: secret })) { setForm(null); setSecret(''); }
   }
   const openConnection = (c, provider) => { setForm(c || { id: crypto.randomUUID(), provider: provider || providers.find(p => p !== 'tokendance') || 'openai', label: '', scope: 'browser', region: 'global', disabled: false }); setSecret(''); setFormError(''); };
@@ -70,6 +71,7 @@ export function WorkspaceModelManager({ models, onSignIn, health, onUseApi, init
       <WorkspaceChannelPicker value={form.provider} providers={providers.filter(p => p !== 'tokendance')} disabled={library.connections.some(c => c.id === form.id)} onChange={provider => setForm({ ...form, provider, ...(provider==='custom'?{custom:{version:1,connectionId:form.id,protocol:'openai-chat',baseUrl:'',auth:'bearer',catalogFormat:'none'}}:{}) })}/>
       </div>
       {form.provider==='custom'?<CustomConnectionFields value={form} onChange={next=>{setForm(next);setSecret('');}}/>:<p className="tw-muted tw-connection-hint">使用该渠道的官方 API 地址。</p>}
+      {form.provider === 'bailian' && <WorkspaceBailianConnection value={form} onChange={next=>{setForm(next);setSecret('');}}/>}
       {form.provider === 'minimax' && <label>服务区域<select value={form.region} onChange={e => setForm({ ...form, region: e.target.value })}><option value="global">国际</option><option value="cn">国内</option></select></label>}
       <fieldset><legend>密钥保存位置</legend>{[['browser', '保存在当前浏览器', '仅此浏览器可用；清除网站数据后需重新填写。'], ['account', '绑定图研账号', models.userId ? '同一图研账号可用；密钥在服务端加密保存。' : '登录图研后可用；密钥在服务端加密保存。']].map(([value, title, description]) => <label className={`tw-storage-option ${form.scope === value ? 'is-selected' : ''}`} key={value}><input type="radio" name="scope" checked={form.scope === value} disabled={value === 'account' && !models.userId} onChange={() => { setForm({ ...form, scope: value }); setSecret(''); }}/><span><strong>{title}</strong><small>{description}</small></span></label>)}</fieldset>
       <label><span><KeyRound size={16} aria-hidden="true"/> API 密钥</span><input aria-label="API 密钥" type="password" autoComplete="off" value={secret} onChange={e => setSecret(e.target.value)} placeholder="输入 API 密钥" maxLength={16384}/><small className="tw-connection-hint">留空保留同一保存位置的已有密钥。切换位置不会自动复制或上传密钥。</small></label>

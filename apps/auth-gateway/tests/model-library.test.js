@@ -35,3 +35,16 @@ test('malformed JSON never reflects a credential fragment in its error', async()
  const server=app.listen(0,'127.0.0.1');await new Promise(r=>server.once('listening',r));
  try {const response=await fetch(`http://127.0.0.1:${server.address().port}/api/model-library`,{method:'PUT',headers:{Origin:'http://localhost','X-Workspace-Account':'A','Content-Type':'application/json'},body:'{"credentials":{"connection":"PRIVATE_KEY_FRAGMENT"}' });assert.equal(response.status,400);assert.doesNotMatch(await response.text(),/PRIVATE_KEY_FRAGMENT|credentials|connection/);}finally{await new Promise(r=>server.close(r));}
 });
+
+test('Bailian workspace and region persist as nonsecret metadata and changes invalidate stored credentials',async()=>{
+ const store=createModelLibraryStore({db:database(),secret:'fixture'});
+ const config={workspaceId:'workspace-one',region:'cn-beijing'};
+ const input={...seed,connections:[{...seed.connections[0],provider:'bailian',bailian:config}]};
+ let saved=await store.put('A',input);assert.deepEqual(saved.connections[0].bailian,config);assert.equal(saved.connections[0].hasCredential,true);
+ saved=await store.put('A',{...saved,connections:saved.connections.map(c=>({...c,label:'Renamed'}))});assert.equal(saved.connections[0].hasCredential,true);
+ saved=await store.put('A',{...saved,connections:saved.connections.map(c=>({...c,bailian:{...config,workspaceId:'workspace-two'}}))});assert.equal(saved.connections[0].hasCredential,false);await assert.rejects(store.resolve('A','connection'));
+ saved=await store.put('A',{...saved,credentials:seed.credentials});assert.equal(saved.connections[0].hasCredential,true);
+ saved=await store.put('A',{...saved,connections:saved.connections.map(c=>({...c,bailian:{...c.bailian,region:'us-east-1'}}))});assert.equal(saved.connections[0].hasCredential,false);
+ await assert.rejects(store.put('A',{...saved,connections:saved.connections.map(c=>({...c,bailian:{...config,workspaceId:'https://evil.test'}}))}),{status:400});
+ assert.doesNotMatch(JSON.stringify(saved),/fixture-secret-never-return/);
+});

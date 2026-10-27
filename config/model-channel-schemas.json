@@ -24439,8 +24439,10 @@
           "enum": [
             "low",
             "medium",
-            "high"
-          ]
+            "high",
+            "ultra"
+          ],
+          "description": "官方新增 ultra：固定约 2K，忽略 image_size/negative_prompt；现有图研请求仍显式 low。low/medium 每输出 MP 0.025 USD，参考图分别按不超过输出面积计费；high 另加固定 0.125 USD。ultra 具体报价待核，不自动开放新档位。"
         },
         "image_size": {
           "anyOf": [

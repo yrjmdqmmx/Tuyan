@@ -50,12 +50,15 @@ test('v35 catalog preserves channel-specific vision roles and renders Reflection
   }
   const models = { ...savedModels(...additions[0]), library: { revision: 0, connections: [], models: [] } };
   render(React.createElement(WorkspaceModelCatalog, { models, onConnection: () => {} }));
+  fireEvent.click(within(screen.getByLabelText('模型渠道筛选')).getByRole('button', { name: /^Together AI/ }));
+  fireEvent.click(within(screen.getByLabelText('模型厂商筛选')).getByRole('button', { name: /^Reflection/ }));
   fireEvent.change(screen.getByRole('textbox', { name: '搜索模型目录' }), { target: { value: additions[0][1] } });
   const card = screen.getByRole('article');
   assert.ok(card.classList.contains('tw-catalog-card'));
   assert.match(card.textContent, /Reflection/);
   assert.ok(card.querySelector('img[src="/brand/catalog/reflection.png"]'));
-  assert.ok(within(card).getByText('规格与来源'));
+  assert.ok(within(card).getByLabelText('官方文档规格'));
+  assert.equal(within(card).queryByText('规格与来源'), null);
   assert.equal(within(card).getByRole('button', { name: /添加/ }).disabled, false);
 });
 

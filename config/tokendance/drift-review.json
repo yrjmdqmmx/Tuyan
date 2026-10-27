@@ -7,9 +7,9 @@
         "main",
         "optimize"
       ],
-      "reviewedAt": "2026-09-25",
+      "reviewedAt": "2026-10-26",
       "sourceUrl": "https://tokendance.space/gateway/v1/models",
-      "reason": "Current public catalog absence rechecked. The existing runtime catalog guard blocks invocation while missing. Preserve historical identity; no official retirement conclusion. See docs/tokendance/drift-review-20260925.md."
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
     },
     {
       "id": "deepseek-v4-flash-vision-exp",
@@ -19,9 +19,9 @@
         "optimize",
         "vision"
       ],
-      "reviewedAt": "2026-09-25",
+      "reviewedAt": "2026-10-26",
       "sourceUrl": "https://tokendance.space/gateway/v1/models",
-      "reason": "Current public catalog absence rechecked and already recorded in the 2026-09-19 runtime isolation review. Keep invocation blocked while missing; do not substitute V4.1 or infer retirement. See docs/tokendance/drift-review-20260925.md."
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
     },
     {
       "id": "deepseek-v3.2",
@@ -30,9 +30,9 @@
         "main",
         "optimize"
       ],
-      "reviewedAt": "2026-10-16",
+      "reviewedAt": "2026-10-26",
       "sourceUrl": "https://tokendance.space/gateway/v1/models",
-      "reason": "2026-10-16 public catalog absence rechecked. Preserve the historical identity and runtime missing-model block; do not infer official retirement or silently substitute another model. See docs/model-catalog/2026-10-16-update.md."
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
     },
     {
       "id": "qwen3-max",
@@ -41,9 +41,31 @@
         "main",
         "optimize"
       ],
-      "reviewedAt": "2026-10-16",
+      "reviewedAt": "2026-10-26",
       "sourceUrl": "https://tokendance.space/gateway/v1/models",
-      "reason": "2026-10-16 public catalog absence rechecked. Preserve the historical identity and runtime missing-model block; do not infer official retirement or silently substitute another model. See docs/model-catalog/2026-10-16-update.md."
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
+    },
+    {
+      "id": "qwen3-30b-a3b-instruct-2507",
+      "selectedProtocol": "openai:chat-completions",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "reviewedAt": "2026-10-26",
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
+    },
+    {
+      "id": "qwen3.6-max-preview",
+      "selectedProtocol": "openai:chat-completions",
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "reviewedAt": "2026-10-26",
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reason": "Current complete public directory and official website reconciled by exact ID. Hide from current choices, preserve history and defaults, and keep invocation blocked while absent. Absence alone is not retirement. See docs/model-catalog/2026-10-26-tokendance-reconciliation.md."
     }
   ]
 }

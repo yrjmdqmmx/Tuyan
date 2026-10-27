@@ -1,0 +1,3168 @@
+{
+  "checkedAt": "2026-10-26",
+  "baseline": {
+    "startedAt": "2026-10-26T05:34:29.014730+00:00",
+    "root": "/Users/a1-6/.config/superpowers/worktrees/paperbanana-tuyan/tuyan-v400-workflow-20261009",
+    "origin": "https://github.com/yrjmdqmmx/Tuyan.git",
+    "branch": "codex/tuyan-v400-workflow-20261009",
+    "head": "5e6989f59416e44d9f22fd26703d3830ed861ea7"
+  },
+  "baselineArtifact": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/baseline.json",
+  "additions": [
+    {
+      "provider": "kimi",
+      "id": "kimi-k3.1-pro",
+      "label": "Kimi K3.1 Pro",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。 始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。 固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "moonshot",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://platform.kimi.com/docs/models",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+          "https://platform.kimi.com/docs/pricing/chat"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。",
+          "始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。",
+          "固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "kimi",
+      "id": "kimi-k3.1-pro-highspeed",
+      "label": "Kimi K3.1 Pro Highspeed",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。 始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。 固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "moonshot",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://platform.kimi.com/docs/models",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.kimi.com/docs/models",
+          "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+          "https://platform.kimi.com/docs/pricing/chat"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "仅开放文本：原厂视觉要求 Base64/ms://，当前通用路径还可能转发公网 URL，视觉待适配。",
+          "始终思考；原厂 reasoning_effort 默认 max，可选 low/high/max；max_completion_tokens 默认 131072，最大 1048576，受输入输出共享上下文约束。",
+          "固定采样采用厂商默认；新账户需实际充值至少 10 元，赠券不能替代，未验证账户。"
+        ],
+        "contextWindowTokens": 1048576,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "minimax",
+      "id": "MiniMax-M3.1-Flash",
+      "label": "MiniMax M3.1 Flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方支持视频但图研仅文本/图片；当前沿用 reasoning_split=true。 始终思考；effort 默认 max，可选 low/medium/high/xhigh/max；不新增思考控件。max_completion_tokens 建议 131072（不是默认值证据），最大 524288；max_tokens 已废弃但兼容。 国际公开单价 USD/百万 token：输入 0.15、输出 0.60、缓存读取 0.015；不外推国内账单。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "minimax",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://platform.minimax.io/docs/guides/text-generation",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "global",
+          "cn"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://platform.minimax.io/docs/guides/text-generation",
+          "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+          "https://platform.minimax.io/docs/pricing/overview",
+          "https://platform.minimax.cn/docs/guides/text-generation"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方支持视频但图研仅文本/图片；当前沿用 reasoning_split=true。",
+          "始终思考；effort 默认 max，可选 low/medium/high/xhigh/max；不新增思考控件。max_completion_tokens 建议 131072（不是默认值证据），最大 524288；max_tokens 已废弃但兼容。",
+          "国际公开单价 USD/百万 token：输入 0.15、输出 0.60、缓存读取 0.015；不外推国内账单。"
+        ],
+        "contextWindowTokens": 1000000,
+        "maxOutputTokens": 524288
+      }
+    },
+    {
+      "provider": "mistral",
+      "id": "zai-glm-5-3-flash",
+      "label": "GLM 5.3 Flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。2026-10-22 GA；官方上下文写作 1M、输出 128k，后者没有精确整数字段证据，未猜测最大值。 USD/百万 token：输入 0.15、缓存 0.03、输出 0.50。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "zhipu",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.mistral.ai/models/zai-glm-5-3-flash",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.mistral.ai/models/zai-glm-5-3-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "2026-10-22 GA；官方上下文写作 1M、输出 128k，后者没有精确整数字段证据，未猜测最大值。",
+          "USD/百万 token：输入 0.15、缓存 0.03、输出 0.50。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "together",
+      "id": "deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "label": "DeepSeek V4.1 Flash 1017",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.30、缓存 0.006、输出 1.20；US/Canada 专用路由及 25% 加价需独立适配。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "deepseek",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。",
+          "标准路由公开 USD/百万 token：输入 0.30、缓存 0.006、输出 1.20；US/Canada 专用路由及 25% 加价需独立适配。"
+        ],
+        "contextWindowTokens": 1000000
+      }
+    },
+    {
+      "provider": "together",
+      "id": "MiniMaxAI/MiniMax-M3.1-Flash",
+      "label": "MiniMax M3.1 Flash",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；US/Canada 专用路由及 25% 加价需独立适配。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "minimax",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.together.ai/docs/serverless/models",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.together.ai/docs/serverless/models"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。",
+          "标准路由公开 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；US/Canada 专用路由及 25% 加价需独立适配。"
+        ],
+        "contextWindowTokens": 1048576
+      }
+    },
+    {
+      "provider": "fireworks",
+      "id": "accounts/fireworks/models/minimax-m3p1-flash",
+      "label": "MiniMax M3.1 Flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。该精确 ID 的 Serverless 与图像输入均明确支持；上下文显示 1040k，未转换为未经证实的精确 token 数。 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；最大输出待确认。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "minimax",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://fireworks.ai/models/fireworks/minimax-m3p1-flash",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://fireworks.ai/models/fireworks/minimax-m3p1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "该精确 ID 的 Serverless 与图像输入均明确支持；上下文显示 1040k，未转换为未经证实的精确 token 数。",
+          "USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；最大输出待确认。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "id": "kimi-k3-1-pro-261024",
+      "label": "Kimi K3.1 Pro (261024)",
+      "roles": [
+        "main"
+      ],
+      "protocol": "ark-openai-chat",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 发布表仅确认深度思考/函数调用/缓存；仅开放文本，视觉及参数上限待渠道专页核实。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "moonshot",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "cn-beijing"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "发布表仅确认深度思考/函数调用/缓存；仅开放文本，视觉及参数上限待渠道专页核实。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-1-flash-261017",
+      "label": "DeepSeek V4.1 Flash (261017)",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "ark-openai-chat",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "deepseek",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "cn-beijing"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。"
+        ]
+      }
+    },
+    {
+      "provider": "ark",
+      "id": "deepseek-v4-1-flash-economy-261017",
+      "label": "DeepSeek V4.1 Flash Economy (261017)",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "ark-openai-chat",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。 官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "deepseek",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "cn-beijing"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+          "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "北京渠道；账号开通权限未验。未套用原厂上下文、最大输出或价格。",
+          "官方 261017 继承多模态；经济版同权重能力，速度/价格不同；沿用现有非思考请求。"
+        ]
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "id": "deepseek-v4.1-flash-1017",
+      "label": "DeepSeek V4.1 Flash 1017",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方输出写作 384k，未猜测精确 token 数。广州 CNY/百万 token：空闲输入/输出/缓存 1/4/0.02，高峰 2/8/0.04；按北京时间工作日 9–12、14–18 判峰，账户账单未验。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "deepseek",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/130079",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方输出写作 384k，未猜测精确 token 数。广州 CNY/百万 token：空闲输入/输出/缓存 1/4/0.02，高峰 2/8/0.04；按北京时间工作日 9–12、14–18 判峰，账户账单未验。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "id": "kimi-k3.1-pro",
+      "label": "Kimi K3.1 Pro",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。渠道默认 reasoning_effort=high（与原厂 max 不同）；保持 K3 产品请求预算 16384 和 low。广州 CNY/百万 token 输入13、输出68、缓存1.3；最大输出受共享上下文约束。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "moonshot",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132232",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道默认 reasoning_effort=high（与原厂 max 不同）；保持 K3 产品请求预算 16384 和 low。广州 CNY/百万 token 输入13、输出68、缓存1.3；最大输出受共享上下文约束。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "id": "kimi-k3.1-pro-highspeed",
+      "label": "Kimi K3.1 Pro Highspeed",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。渠道默认 high；产品请求 low、16384。价格页写 K3 Pro HighSpeed，与该精确 API 名存在歧义，未强行绑定价格。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "moonshot",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132232",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "渠道默认 high；产品请求 low、16384。价格页写 K3 Pro HighSpeed，与该精确 API 名存在歧义，未强行绑定价格。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true,
+        "maxOutputTokens": 1048576
+      }
+    },
+    {
+      "provider": "tokenhub",
+      "id": "minimax-m3.1-flash",
+      "label": "MiniMax M3.1 Flash",
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。官方输出写作 512k；不套用原厂精确值。渠道默认 adaptive，保留 reasoning_split=true，未传禁用思考。广州 CNY/百万 token 输入1、输出4、缓存0.1。 仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。",
+      "capabilities": {
+        "referenceImages": true,
+        "maxReferenceImages": 3
+      },
+      "metadata": {
+        "vendor": "minimax",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/130051",
+        "inputModalities": [
+          "text",
+          "image"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://cloud.tencent.com/document/product/1823/130051",
+          "https://cloud.tencent.com/document/product/1823/132246",
+          "https://cloud.tencent.com/document/product/1823/130055"
+        ],
+        "officialInputModalities": [
+          "text",
+          "image",
+          "video"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "官方输出写作 512k；不套用原厂精确值。渠道默认 adaptive，保留 reasoning_split=true，未传禁用思考。广州 CNY/百万 token 输入1、输出4、缓存0.1。",
+          "仅文本/图片，未扩展视频/工具流程；公开 1M 为渠道表述。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "iflytek",
+      "id": "spark-x2.6",
+      "label": "Spark X2.6",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "xunfei",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "cn-huabei-1"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。",
+          "公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "iflytek",
+      "id": "spark-x2.6-4b",
+      "label": "Spark X2.6 4B",
+      "roles": [
+        "main"
+      ],
+      "protocol": "openai-chat-completions",
+      "availabilityNotes": "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "xunfei",
+        "lifecycle": "stable",
+        "verified": false,
+        "verificationState": "catalog",
+        "officialSourceUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ],
+        "regions": [
+          "cn-huabei-1"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+          "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html"
+        ],
+        "officialInputModalities": [
+          "text"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。",
+          "公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。"
+        ],
+        "contextWindowTokens": 1000000,
+        "contextWindowApproximate": true
+      }
+    },
+    {
+      "provider": "tokendance",
+      "id": "kimi-k3.1-pro",
+      "name": "MoonshotAI: Kimi K3.1 Pro",
+      "created": 1790697646,
+      "description": "Kimi K3.1 Pro 是全新 K3.1 系列的第一个模型，也是我们迄今能力最强的 3 万亿级参数模型，支持 100 万上下文。K3.1 Pro 在代码、3D 创作、金融研究和其他长程 Agent 能力上的提升尤为显著。",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages",
+        "openai:responses"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "渠道公开目录未提供视觉契约；仅文本。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-26",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "moonshot"
+    },
+    {
+      "provider": "tokendance",
+      "id": "minimax-m3.1-flash",
+      "name": "MiniMax: MiniMax M3.1 Flash",
+      "created": 1792409610,
+      "description": "原生多模态、1M 上下文的 Frontier Coding 模型",
+      "context_length": 1000000,
+      "supported_protocols": [
+        "openai:chat-completions",
+        "anthropic:messages"
+      ],
+      "inputModalities": [
+        "text"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "roles": [
+        "main",
+        "optimize"
+      ],
+      "excludedReason": "",
+      "conflicts": [
+        "渠道公开目录未提供视觉契约；仅文本。"
+      ],
+      "sourceUrl": "https://tokendance.space/gateway/v1/models",
+      "reviewedAt": "2026-10-26",
+      "verification": "catalog",
+      "selectedProtocol": "openai:chat-completions",
+      "vendorId": "minimax"
+    },
+    {
+      "provider": "replicate",
+      "id": "anthropic/claude-opus-5.5",
+      "label": "Claude Opus 5.5",
+      "roles": [
+        "main"
+      ],
+      "protocol": "replicate-predictions",
+      "availabilityNotes": "2026-10-26 官方精确版本 Schema 已核对；仅文本。图像使用单数 image 字段且默认缩图，与现有 images 适配不符，另列待办；账户及真实调用未验证。",
+      "capabilities": {
+        "referenceImages": false,
+        "maxReferenceImages": 0
+      },
+      "metadata": {
+        "vendor": "anthropic",
+        "verified": false,
+        "verificationState": "catalog",
+        "lifecycle": "stable",
+        "officialSourceUrl": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+        "inputModalities": [
+          "text"
+        ],
+        "outputModalities": [
+          "text"
+        ]
+      },
+      "specifications": {
+        "version": 1,
+        "checkedAt": "2026-10-26",
+        "sourceScope": "service",
+        "sourceUrls": [
+          "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
+        ],
+        "maxOutputTokens": 128000,
+        "officialInputModalities": [
+          "text",
+          "image"
+        ],
+        "officialOutputModalities": [
+          "text"
+        ],
+        "notes": [
+          "固定渠道版本 2b34585f42fc1b504790158f605972051c387bfd2e8abd863f314fff6d010b48；不套用原厂上下文或价格。",
+          "effort 默认 low，可选 low/medium/high/xhigh/max；始终 adaptive thinking。max_tokens 默认 8192、范围1024–128000，包含思考，产品仍请求8192。",
+          "图片字段 image 与当前数组 images 不同且默认缩为0.5MP；未开放视觉或新增控件。"
+        ]
+      }
+    }
+  ],
+  "publicCatalogDeltas": {
+    "openrouter": {
+      "previousCount": 471,
+      "currentCount": 467,
+      "added": [
+        "inception/mercury-3",
+        "liquid/lfm-2.5-2.6b",
+        "minimax/minimax-m3.1-flash",
+        "moonshotai/kimi-k3.1-pro",
+        "recursive/flint-v1.0:free"
+      ],
+      "absentNotRetirementEvidence": [
+        "deepseek/deepseek-r1",
+        "google/gemini-2.5-flash-lite:batch",
+        "google/gemini-2.5-flash:batch",
+        "google/gemini-2.5-pro:batch",
+        "microsoft/wizardlm-2-8x22b",
+        "openai/gpt-3.5-turbo",
+        "openai/gpt-3.5-turbo-instruct",
+        "openai/gpt-3.5-turbo:batch",
+        "sao10k/l3.3-euryale-70b"
+      ]
+    },
+    "tokendance": {
+      "previousCount": 110,
+      "currentCount": 112,
+      "added": [
+        "deepseek-fetch",
+        "deepseek-search",
+        "kimi-k3.1-pro",
+        "minimax-m3.1-flash"
+      ],
+      "absentNotRetirementEvidence": [
+        "qwen3-30b-a3b-instruct-2507",
+        "qwen3.6-max-preview"
+      ]
+    },
+    "novita": {
+      "previousCount": 95,
+      "currentCount": 97,
+      "added": [
+        "deepseek/deepseek-v4.1-flash-1017",
+        "minimax/minimax-m3.1-flash",
+        "moonshotai/kimi-k3.1-pro",
+        "moonshotai/kimi-k3.1-pro-highspeed"
+      ],
+      "absentNotRetirementEvidence": [
+        "xiaomimimo/mimo-v2.5",
+        "xiaomimimo/mimo-v2.5-pro"
+      ]
+    },
+    "runware": {
+      "previousCount": 380,
+      "currentCount": 383,
+      "added": [
+        "heygen:voice@1.0",
+        "heygen:voice@1.0-turbo",
+        "heygen:voice@1.0-turbo-free",
+        "klingai:kling-video@4.0"
+      ],
+      "absentNotRetirementEvidence": [
+        "openai:1@1"
+      ]
+    },
+    "iflytek": {
+      "previousCount": 53,
+      "currentCount": 55,
+      "added": [
+        "spark-x2.6",
+        "spark-x2.6-4b"
+      ],
+      "absentNotRetirementEvidence": []
+    },
+    "replicate-official": {
+      "addedLinks": [
+        "anthropic/claude-opus-5.5",
+        "pixverse/pixverse-v6-max",
+        "prunaai/p-video-2-pro-avatar"
+      ],
+      "absentLinksNotRetirementEvidence": [
+        "luma/ray-2-540p",
+        "luma/ray-2-720p",
+        "luma/ray-flash-2-540p",
+        "luma/ray-flash-2-720p"
+      ]
+    },
+    "replicate": {
+      "addedLinks": [],
+      "absentLinksNotRetirementEvidence": []
+    }
+  },
+  "sources": [
+    {
+      "provider": "openrouter",
+      "key": "openrouter",
+      "url": "https://openrouter.ai/api/v1/models",
+      "checkedAt": "2026-10-26T05:36:17.454162+00:00",
+      "status": 200,
+      "finalUrl": "https://openrouter.ai/api/v1/models",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openrouter.raw",
+      "sha256": "759642c6bc69f47804a8812bc68d110e071d0f970082ce7c33b1355a3cc39182",
+      "bytes": 791577,
+      "textChanged": true,
+      "addedLines": 12001,
+      "removedLines": 11522
+    },
+    {
+      "provider": "openrouter",
+      "key": "openrouter-images",
+      "url": "https://openrouter.ai/api/v1/images/models",
+      "checkedAt": "2026-10-26T05:36:17.454345+00:00",
+      "status": 0,
+      "finalUrl": "https://openrouter.ai/api/v1/images/models",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to openrouter.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openrouter-images.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 3173
+    },
+    {
+      "provider": "openrouter",
+      "key": "openrouter-qwen-pro",
+      "url": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-pro/endpoints",
+      "checkedAt": "2026-10-26T05:36:17.454388+00:00",
+      "status": 200,
+      "finalUrl": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-pro/endpoints",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openrouter-qwen-pro.raw",
+      "sha256": "be4d5112f3cc5f592ed18e3483f81651085a5b5f699135e8909eac60d995a694",
+      "bytes": 728,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "openrouter",
+      "key": "openrouter-qwen-turbo",
+      "url": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-turbo/endpoints",
+      "checkedAt": "2026-10-26T05:36:17.454415+00:00",
+      "status": 200,
+      "finalUrl": "https://openrouter.ai/api/v1/images/models/qwen/qwen-image-2.1-turbo/endpoints",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openrouter-qwen-turbo.raw",
+      "sha256": "799db8013fe6cb3c82e174e6283ad65dcd18012ceeda05205d39248001bc34db",
+      "bytes": 732,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "tokendance",
+      "key": "td-live",
+      "url": "https://tokendance.space/gateway/v1/models",
+      "checkedAt": "2026-10-26T05:36:17.454440+00:00",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/gateway/v1/models",
+      "contentType": "application/json; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/td-live.raw",
+      "sha256": "85a9441d4e67a188530259832755d37813c9629659654d8571110338ed3658e6",
+      "bytes": 59816,
+      "textChanged": true,
+      "addedLines": 81,
+      "removedLines": 58
+    },
+    {
+      "provider": "tokendance",
+      "key": "td-changelog",
+      "url": "https://tokendance.space/docs/changelog.md",
+      "checkedAt": "2026-10-26T05:36:17.454463+00:00",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/docs/changelog.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/td-changelog.raw",
+      "sha256": "6706f602d7411b0ce5a5a4d80fa16711c1c4c49ed9a8dad2274166f4360b3ae6",
+      "bytes": 44605,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "tokendance",
+      "key": "td-model1017",
+      "url": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+      "checkedAt": "2026-10-26T05:36:17.454487+00:00",
+      "status": 200,
+      "finalUrl": "https://tokendance.space/models/deepseek-v4.1-flash-1017",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/td-model1017.raw",
+      "sha256": "b8b42d85039bfa15dc258d8e3413502f6f82d540b588af442f22a97ee78a86d3",
+      "bytes": 2122,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "fal",
+      "key": "fal-public",
+      "url": "https://api.fal.ai/v1/models?limit=100",
+      "checkedAt": "2026-10-26T05:36:17.454509+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-public.raw",
+      "sha256": "bc661f3ea2e47a22916e5a1c2c10487289149e405979592de0ccf562b0a10111",
+      "bytes": 74826,
+      "textChanged": true,
+      "addedLines": 1371,
+      "removedLines": 1375
+    },
+    {
+      "provider": "fal",
+      "key": "falkrea3",
+      "url": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "checkedAt": "2026-10-26T05:36:17.656593+00:00",
+      "status": 0,
+      "finalUrl": "https://fal.ai/models/krea/v3/text-to-image/api",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to fal.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/falkrea3.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 218
+    },
+    {
+      "provider": "fal",
+      "key": "falkrea3edit",
+      "url": "https://fal.ai/models/krea/v3/edit/api",
+      "checkedAt": "2026-10-26T05:36:17.662486+00:00",
+      "status": 200,
+      "finalUrl": "https://fal.ai/models/krea/v3/edit/api",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/falkrea3edit.raw",
+      "sha256": "762ac7e234e35ee2f046542908f8f93bc27caf0a4bb69e4bf0fe32eeeccc0fb5",
+      "bytes": 321925,
+      "textChanged": true,
+      "addedLines": 3,
+      "removedLines": 3
+    },
+    {
+      "provider": "fal",
+      "key": "fal-schema-4",
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/text-to-image",
+      "checkedAt": "2026-10-26T05:36:17.667944+00:00",
+      "status": 200,
+      "finalUrl": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/text-to-image",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-schema-4.raw",
+      "sha256": "8ae09ad984061b5c0e629a7007846b3908b7ee7e8153dfb7f1b70aeba4855d4a",
+      "bytes": 7397,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1
+    },
+    {
+      "provider": "fal",
+      "key": "fal-schema-5",
+      "url": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/edit",
+      "checkedAt": "2026-10-26T05:36:18.230235+00:00",
+      "status": 200,
+      "finalUrl": "https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=krea/v3/edit",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-schema-5.raw",
+      "sha256": "472a074e7a6c26a38f9f5b9485208530afab932ddfd085c160a74d0d5d58b9f8",
+      "bytes": 8150,
+      "textChanged": true,
+      "addedLines": 3,
+      "removedLines": 2
+    },
+    {
+      "provider": "runware",
+      "key": "runware-index",
+      "url": "https://runware.ai/docs/models/index.json",
+      "checkedAt": "2026-10-26T05:36:18.253716+00:00",
+      "status": 200,
+      "finalUrl": "https://runware.ai/docs/models/index.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runware-index.raw",
+      "sha256": "e0235e2f27e8eead94dc68bed529e089a819862f8476d97bb5adaaf858b8bb95",
+      "bytes": 127646,
+      "textChanged": true,
+      "addedLines": 65,
+      "removedLines": 21
+    },
+    {
+      "provider": "runware",
+      "key": "runwareklein",
+      "url": "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json",
+      "checkedAt": "2026-10-26T05:36:18.694358+00:00",
+      "status": 200,
+      "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein/schema.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runwareklein.raw",
+      "sha256": "491400fc361bbe5abde39bc1b54a5457b29e2dacc5f653a6cdc981e39797fe9b",
+      "bytes": 35203,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1
+    },
+    {
+      "provider": "runware",
+      "key": "runwarekleinbase",
+      "url": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json",
+      "checkedAt": "2026-10-26T05:36:18.742243+00:00",
+      "status": 0,
+      "finalUrl": "https://runware.ai/docs/models/bfl-flux-3-image-klein-base/schema.json",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to runware.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runwarekleinbase.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 876
+    },
+    {
+      "provider": "runware",
+      "key": "runwareqwen21turbo",
+      "url": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json",
+      "checkedAt": "2026-10-26T05:36:19.290098+00:00",
+      "status": 200,
+      "finalUrl": "https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo/schema.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runwareqwen21turbo.raw",
+      "sha256": "7df969e16b659fd22ed69be2401cc863877e0f9843e1f1ff159a30847f854ee9",
+      "bytes": 32661,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1
+    },
+    {
+      "provider": "novita",
+      "key": "novitadir",
+      "url": "https://api.novita.ai/v3/openai/models",
+      "checkedAt": "2026-10-26T05:36:19.414949+00:00",
+      "status": 200,
+      "finalUrl": "https://api.novita.ai/v3/openai/models",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/novitadir.raw",
+      "sha256": "aa8ae6b2a63d6828581e5af31cc8b247eed265b4babb605fdefe94e4873a7de3",
+      "bytes": 126403,
+      "textChanged": true,
+      "addedLines": 235,
+      "removedLines": 116
+    },
+    {
+      "provider": "novita",
+      "key": "novitaprice",
+      "url": "https://novita.ai/pricing",
+      "checkedAt": "2026-10-26T05:36:19.435451+00:00",
+      "status": 200,
+      "finalUrl": "https://novita.ai/pricing",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/novitaprice.raw",
+      "sha256": "17f1cdfc7511cff1a9921b0a8b2810c1d003118bf01c90aac9066581b83e1c8a",
+      "bytes": 798863,
+      "textChanged": true,
+      "addedLines": 26,
+      "removedLines": 0
+    },
+    {
+      "provider": "novita",
+      "key": "novitaindex",
+      "url": "https://docs.novita.ai/llms.txt",
+      "checkedAt": "2026-10-26T05:36:19.740424+00:00",
+      "status": 0,
+      "finalUrl": "https://docs.novita.ai/llms.txt",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to docs.novita.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/novitaindex.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 109
+    },
+    {
+      "provider": "openai",
+      "key": "openai",
+      "url": "https://developers.openai.com/api/docs/models",
+      "checkedAt": "2026-10-26T05:36:19.743095+00:00",
+      "status": 0,
+      "finalUrl": "https://developers.openai.com/api/docs/models",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to developers.openai.com:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openai.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 887
+    },
+    {
+      "provider": "openai",
+      "key": "openai-changelog",
+      "url": "https://developers.openai.com/api/docs/changelog.md",
+      "checkedAt": "2026-10-26T05:36:20.109543+00:00",
+      "status": 200,
+      "finalUrl": "https://developers.openai.com/api/docs/changelog.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openai-changelog.raw",
+      "sha256": "fd180bcc5673a9f6052ac00299c33b92a9213a15151e5827ae9be0ad6b8215ab",
+      "bytes": 77952,
+      "textChanged": true,
+      "addedLines": 17,
+      "removedLines": 0
+    },
+    {
+      "provider": "openai",
+      "key": "openai-deprecations",
+      "url": "https://developers.openai.com/api/docs/deprecations.md",
+      "checkedAt": "2026-10-26T05:36:20.573015+00:00",
+      "status": 200,
+      "finalUrl": "https://developers.openai.com/api/docs/deprecations.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openai-deprecations.raw",
+      "sha256": "b5d1cafefc8a491f2c095d77359a6ca185498baa5f65a66bac1cb722e188855f",
+      "bytes": 42211,
+      "textChanged": true,
+      "addedLines": 53,
+      "removedLines": 37
+    },
+    {
+      "provider": "anthropic",
+      "key": "anthropic",
+      "url": "https://platform.claude.com/docs/en/models/overview.md",
+      "checkedAt": "2026-10-26T05:36:20.949918+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.claude.com/docs/en/models/overview.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/anthropic.raw",
+      "sha256": "0bee72dee7cbb689a714c14458091412889a24d64364843f1db2ecd1f7b93483",
+      "bytes": 22012,
+      "textChanged": true,
+      "addedLines": 11,
+      "removedLines": 9
+    },
+    {
+      "provider": "anthropic",
+      "key": "anthropic-deprecations",
+      "url": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "checkedAt": "2026-10-26T05:36:21.162166+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.claude.com/docs/en/about-claude/model-deprecations.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/anthropic-deprecations.raw",
+      "sha256": "d2fd9f71fed176557d5ed32e2bd212e72dce5dab836bf62b5a2b40dba2fda0d4",
+      "bytes": 14616,
+      "textChanged": true,
+      "addedLines": 18,
+      "removedLines": 18
+    },
+    {
+      "provider": "anthropic",
+      "key": "anthropic-changelog",
+      "url": "https://platform.claude.com/docs/en/release-notes/overview.md",
+      "checkedAt": "2026-10-26T05:36:21.371465+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.claude.com/docs/en/release-notes/overview.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/anthropic-changelog.raw",
+      "sha256": "9254c03e98ba7b435f920bd473165e2b04afe562ce7d016fd8ac8a382fd479bb",
+      "bytes": 133503,
+      "textChanged": true,
+      "addedLines": 78,
+      "removedLines": 60
+    },
+    {
+      "provider": "gemini",
+      "key": "gemini",
+      "url": "https://ai.google.dev/gemini-api/docs/changelog",
+      "checkedAt": "2026-10-26T05:36:21.953879+00:00",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/changelog",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/gemini.raw",
+      "sha256": "7803d7ca968d0131d87e334511c75e9f6d0207dfadd76c77fef14af5ce1ed8c1",
+      "bytes": 174883,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "gemini",
+      "key": "geminilatest",
+      "url": "https://ai.google.dev/gemini-api/docs/latest-model",
+      "checkedAt": "2026-10-26T05:36:22.285356+00:00",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/latest-model",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/geminilatest.raw",
+      "sha256": "e1130a1a72f2ae9e334582c0e715101550dd1cbcb8a5a74c81721c0322063669",
+      "bytes": 156214,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "gemini",
+      "key": "gemini-deprecations",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "checkedAt": "2026-10-26T05:36:22.482780+00:00",
+      "status": 0,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to ai.google.dev:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/gemini-deprecations.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 644
+    },
+    {
+      "provider": "gemini",
+      "key": "gemini-pricing",
+      "url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "checkedAt": "2026-10-26T05:36:22.688061+00:00",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/pricing",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/gemini-pricing.raw",
+      "sha256": "1a8f7d341b2770ed9470d94043889670f8b562c6f6b7a3e4aaa97fcce69b764c",
+      "bytes": 253703,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 45
+    },
+    {
+      "provider": "gemini",
+      "key": "geminiargon",
+      "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+      "checkedAt": "2026-10-26T05:36:22.824725+00:00",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/geminiargon.raw",
+      "sha256": "1322f3f0455fd601c86703df81a7b2097a06e4cf8d6bb8307d2a65e3c375e395",
+      "bytes": 107789,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "deepseek",
+      "key": "deepseek",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "checkedAt": "2026-10-26T05:36:23.290270+00:00",
+      "status": 200,
+      "finalUrl": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/deepseek.raw",
+      "sha256": "b856a6e93fa4793ecc8f3fd03a01bb7d8f7572f78a4739da8ce6dbdb09328d66",
+      "bytes": 26043,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "deepseek",
+      "key": "deepseek-changelog",
+      "url": "https://api-docs.deepseek.com/updates/",
+      "checkedAt": "2026-10-26T05:36:23.625043+00:00",
+      "status": 200,
+      "finalUrl": "https://api-docs.deepseek.com/updates/",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/deepseek-changelog.raw",
+      "sha256": "9abda5ba89b86be5d82ad045864dbe5047e0908b45c161d8a4631d4d5fcb6f18",
+      "bytes": 52380,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "deepseek",
+      "key": "deepseek1017",
+      "url": "https://api-docs.deepseek.com/news/news261017/",
+      "checkedAt": "2026-10-26T05:36:23.676729+00:00",
+      "status": 200,
+      "finalUrl": "https://api-docs.deepseek.com/news/news261017/",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/deepseek1017.raw",
+      "sha256": "c557ba334297a0a802282431dd15c9ba6942846a71860051c1c7b9e53d5dc037",
+      "bytes": 23915,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "deepseek",
+      "key": "deepseek-chat",
+      "url": "https://api-docs.deepseek.com/api/create-chat-completion",
+      "checkedAt": "2026-10-26T05:36:23.766891+00:00",
+      "status": 200,
+      "finalUrl": "https://api-docs.deepseek.com/api/create-chat-completion/",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/deepseek-chat.raw",
+      "sha256": "5f89e4bafbec8808896d7890ad23ca4caaa8a19ff226d881efae63a61a12d169",
+      "bytes": 144485,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "deepseek",
+      "key": "deepseek-vision",
+      "url": "https://api-docs.deepseek.com/guides/vision",
+      "checkedAt": "2026-10-26T05:36:23.822569+00:00",
+      "status": 200,
+      "finalUrl": "https://api-docs.deepseek.com/guides/vision/",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/deepseek-vision.raw",
+      "sha256": "53c5ad4dcd6433fe7130cea78113e2b2bba119ee42ec7591759e8f6f66b51ae9",
+      "bytes": 81887,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "kimi",
+      "key": "kimi",
+      "url": "https://platform.kimi.com/docs/models",
+      "checkedAt": "2026-10-26T05:36:23.872930+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/kimi.raw",
+      "sha256": "b0a097d87f5d52d85350d7febb4fecde4ffda08cfc524b34b8c06a8de39881e7",
+      "bytes": 311156,
+      "textChanged": true,
+      "addedLines": 17,
+      "removedLines": 12
+    },
+    {
+      "provider": "siliconflow",
+      "key": "siliconflow",
+      "url": "https://www.siliconflow.cn/models",
+      "checkedAt": "2026-10-26T05:36:24.083084+00:00",
+      "status": 200,
+      "finalUrl": "https://www.siliconflow.cn/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/siliconflow.raw",
+      "sha256": "84cd54962dafb1ddfabd68a0163255c17220c1e79d390109f9f31c11371ab9bc",
+      "bytes": 550867,
+      "textChanged": true,
+      "addedLines": 24,
+      "removedLines": 13
+    },
+    {
+      "provider": "siliconflow",
+      "key": "siliconchat",
+      "url": "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions",
+      "checkedAt": "2026-10-26T05:36:24.188460+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.siliconflow.cn/docs/api/chat-completions-post",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/siliconchat.raw",
+      "sha256": "ef916bd8876edfa48663d1b995505e0394370c1fe78c6667569013e1f3c22356",
+      "bytes": 629724,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "siliconflow",
+      "key": "siliconflow-changelog",
+      "url": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "checkedAt": "2026-10-26T05:36:24.290357+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.siliconflow.cn/docs/release-notes/overview",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/siliconflow-changelog.raw",
+      "sha256": "c020f2c0c1f6813e570c4a4087db241faea7f7a2c223b9c701427c8dc7c742f4",
+      "bytes": 306287,
+      "textChanged": true,
+      "addedLines": 5,
+      "removedLines": 1
+    },
+    {
+      "provider": "mistral",
+      "key": "mistral-models",
+      "url": "https://docs.mistral.ai/models",
+      "checkedAt": "2026-10-26T05:36:24.611790+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.mistral.ai/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/mistral-models.raw",
+      "sha256": "436af2fc557411e93da8115e6a2a884a38c06e5d69b362d1dbd118a40459f30d",
+      "bytes": 1439916,
+      "textChanged": true,
+      "addedLines": 31,
+      "removedLines": 13
+    },
+    {
+      "provider": "mistral",
+      "key": "mistral-changelog",
+      "url": "https://docs.mistral.ai/getting-started/changelog",
+      "checkedAt": "2026-10-26T05:36:24.629569+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.mistral.ai/resources/changelogs",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/mistral-changelog.raw",
+      "sha256": "490daf6f2f250750a6268d153e313676da98a405e6e1ce1110784db3d9b95ffa",
+      "bytes": 1604654,
+      "textChanged": true,
+      "addedLines": 12,
+      "removedLines": 0
+    },
+    {
+      "provider": "mistral",
+      "key": "mistral-index",
+      "url": "https://docs.mistral.ai/llms.txt",
+      "checkedAt": "2026-10-26T05:36:24.715029+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.mistral.ai/llms.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/mistral-index.raw",
+      "sha256": "f84d660cd48e17b5d1cb39035efb11fa7e85481d8534b9a0e7ec8ff84a1a0e2d",
+      "bytes": 79710,
+      "textChanged": true,
+      "addedLines": 60,
+      "removedLines": 11
+    },
+    {
+      "provider": "together",
+      "key": "together",
+      "url": "https://docs.together.ai/docs/serverless/models",
+      "checkedAt": "2026-10-26T05:36:24.754356+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.together.ai/docs/serverless/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/together.raw",
+      "sha256": "f5e8a031a24e38488c1da845b6098d52d356dfab56eee2f6803d2b35d4432db6",
+      "bytes": 492432,
+      "textChanged": true,
+      "addedLines": 24,
+      "removedLines": 4
+    },
+    {
+      "provider": "together",
+      "key": "together-chat",
+      "url": "https://docs.together.ai/reference/chat-completions.md",
+      "checkedAt": "2026-10-26T05:36:24.769005+00:00",
+      "status": 0,
+      "finalUrl": "https://docs.together.ai/reference/chat-completions.md",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to docs.together.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/together-chat.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 1004
+    },
+    {
+      "provider": "together",
+      "key": "beam-model-card",
+      "url": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/raw/main/README.md",
+      "checkedAt": "2026-10-26T05:36:24.803830+00:00",
+      "status": 200,
+      "finalUrl": "https://huggingface.co/reflection/Beam-1.0-501B-A23B/raw/main/README.md",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/beam-model-card.raw",
+      "sha256": "62d54c638f3bb62c15fcb782af39242584c65cd41e4d8618700a2213de48aacb",
+      "bytes": 41703,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 2
+    },
+    {
+      "provider": "fireworks",
+      "key": "fireworkslive",
+      "url": "https://fireworks.ai/models",
+      "checkedAt": "2026-10-26T05:36:24.971265+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fireworkslive.raw",
+      "sha256": "021db0bae4d727f26c9d1d8ce397f60ff7a1dbaee0839cdd9ac5eacfdf2b8a0e",
+      "bytes": 655367,
+      "textChanged": true,
+      "addedLines": 79,
+      "removedLines": 1006
+    },
+    {
+      "provider": "fireworks",
+      "key": "fireworks-deprecations",
+      "url": "https://docs.fireworks.ai/deployments/deprecation",
+      "checkedAt": "2026-10-26T05:36:25.546517+00:00",
+      "status": 404,
+      "finalUrl": "https://docs.fireworks.ai/deployments/deprecation",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fireworks-deprecations.raw",
+      "sha256": "a8ef420e76a6a0dc22bca5f76a090d10d68b1242820a718b40302858f8fdca8e",
+      "bytes": 124709,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-deepseek1017",
+      "url": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+      "checkedAt": "2026-10-26T05:36:25.745321+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-deepseek1017.raw",
+      "sha256": "2d6a30e76b16b20eab77db86d31c6cb7e32b4ed81b3ccda0acfd527431497919",
+      "bytes": 303886,
+      "textChanged": true,
+      "addedLines": 60,
+      "removedLines": 30
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-beam",
+      "url": "https://fireworks.ai/models/fireworks/beam-1p0-501b-a23b",
+      "checkedAt": "2026-10-26T05:36:26.104337+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models/fireworks/beam-1p0-501b-a23b",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-beam.raw",
+      "sha256": "5f0bb951700538c89bfe04760a4db5518bf3ed4d67ff8f38baadf2a3e733346c",
+      "bytes": 288502,
+      "textChanged": true,
+      "addedLines": 59,
+      "removedLines": 31
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-step5",
+      "url": "https://fireworks.ai/models/fireworks/step-5-preview-fp8",
+      "checkedAt": "2026-10-26T05:36:26.237761+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models/fireworks/step-5-preview-fp8",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-step5.raw",
+      "sha256": "d52bbed855f010d162f757645e16122dc83736e0affba067c5bb0149d90e7e22",
+      "bytes": 286220,
+      "textChanged": true,
+      "addedLines": 59,
+      "removedLines": 31
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-musefp4",
+      "url": "https://fireworks.ai/models/fireworks/muse-spark-open-nvfp4",
+      "checkedAt": "2026-10-26T05:36:26.496924+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models/fireworks/muse-spark-open-nvfp4",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-musefp4.raw",
+      "sha256": "049d974fe21414e42c734703c609301a40b93a8a748309a5940e781f8942f11d",
+      "bytes": 293552,
+      "textChanged": true,
+      "addedLines": 57,
+      "removedLines": 30
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-chat",
+      "url": "https://docs.fireworks.ai/api-reference/post-chatcompletions.md",
+      "checkedAt": "2026-10-26T05:36:26.535790+00:00",
+      "status": 0,
+      "finalUrl": "https://docs.fireworks.ai/api-reference/post-chatcompletions.md",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to docs.fireworks.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-chat.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 2077
+    },
+    {
+      "provider": "xai",
+      "key": "xai",
+      "url": "https://docs.x.ai/developers/models",
+      "checkedAt": "2026-10-26T05:36:26.724745+00:00",
+      "status": 0,
+      "finalUrl": "https://docs.x.ai/developers/models",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to docs.x.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/xai.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 254
+    },
+    {
+      "provider": "xai",
+      "key": "xai-changelog",
+      "url": "https://docs.x.ai/developers/release-notes",
+      "checkedAt": "2026-10-26T05:36:26.985203+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.x.ai/developers/release-notes",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/xai-changelog.raw",
+      "sha256": "4a7531ab7ded2d48dfc3689b118b4dd1193e8c99a5ed6bb0c048a29a528eb241",
+      "bytes": 566898,
+      "textChanged": true,
+      "addedLines": 3,
+      "removedLines": 3
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax",
+      "url": "https://platform.minimax.io/docs/release-notes/models",
+      "checkedAt": "2026-10-26T05:36:27.512126+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.io/docs/release-notes/models",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax.raw",
+      "sha256": "b51868dc1f02305aa0e1d744eb2ad8b6034a967b2c4661f1c85ae34db41f3863",
+      "bytes": 594321,
+      "textChanged": true,
+      "addedLines": 9,
+      "removedLines": 3
+    },
+    {
+      "provider": "stepfun",
+      "key": "stepindex",
+      "url": "https://platform.stepfun.com/docs/llms.txt",
+      "checkedAt": "2026-10-26T05:36:27.612525+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.stepfun.com/docs/llms.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/stepindex.raw",
+      "sha256": "17ccdfdab26c47a7851191d166e447dc8ec4799783f28702b4b12d52c62361c6",
+      "bytes": 14071,
+      "textChanged": true,
+      "addedLines": 29,
+      "removedLines": 29
+    },
+    {
+      "provider": "stepfun",
+      "key": "steplist",
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/list.md",
+      "checkedAt": "2026-10-26T05:36:27.745508+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/list.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/steplist.raw",
+      "sha256": "255deeb0932657140cc9d6b7469c0c7a58b8ce14639a3c4a00fcd102e578ea3a",
+      "bytes": 19162,
+      "textChanged": true,
+      "addedLines": 358,
+      "removedLines": 1410
+    },
+    {
+      "provider": "stepfun",
+      "key": "stepretire",
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/deprecations.md",
+      "checkedAt": "2026-10-26T05:36:27.816016+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/deprecations.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/stepretire.raw",
+      "sha256": "e7c41879aff8f848871a659a7eb1bf935cb556df1a2e61646f61be3002bc0c86",
+      "bytes": 2500,
+      "textChanged": true,
+      "addedLines": 13,
+      "removedLines": 13
+    },
+    {
+      "provider": "stepfun",
+      "key": "step5",
+      "url": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview.md",
+      "checkedAt": "2026-10-26T05:36:28.086304+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.stepfun.com/docs/zh/guides/models/step-5-preview.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/step5.raw",
+      "sha256": "a999cfffc4fc9fea673066bafb412b2d45f10747841c781600f2d03ab0a8082c",
+      "bytes": 5633,
+      "textChanged": true,
+      "addedLines": 40,
+      "removedLines": 42
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhuball",
+      "url": "https://cloud.tencent.com/document/product/1823/130051",
+      "checkedAt": "2026-10-26T05:36:28.217194+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.com/document/product/1823/130051",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhuball.raw",
+      "sha256": "c8f909338d656846322a47c612509c72c03a7de9b4ddc84312df5bd7d0d01fb2",
+      "bytes": 986,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhubguide",
+      "url": "https://cloud.tencent.com/document/product/1823/130079",
+      "checkedAt": "2026-10-26T05:36:28.241800+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.com/document/product/1823/130079",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhubguide.raw",
+      "sha256": "41ecb57aa38c1c6cb31502b6afc0510e8b29a77fc38128492c24b265a483e5a5",
+      "bytes": 987,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhubretire",
+      "url": "https://intl.cloud.tencent.com/zh/announce/detail/101537",
+      "checkedAt": "2026-10-26T05:36:28.259899+00:00",
+      "status": 200,
+      "finalUrl": "https://intl.cloud.tencent.com/zh/announce/detail/101537",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhubretire.raw",
+      "sha256": "4a476a188bd566b8d5657855475eba323e37339d0cf1e99a4e799251ae00788e",
+      "bytes": 104887,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "xiaomi",
+      "key": "xiaomi",
+      "url": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "checkedAt": "2026-10-26T05:36:28.413213+00:00",
+      "status": 200,
+      "finalUrl": "https://mimo.mi.com/docs/en-US/quick-start/model",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/xiaomi.raw",
+      "sha256": "890b2d3ba48eea0fa66384ddb624b208be8dab945e64abc93543ad905334a6dd",
+      "bytes": 12968,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "xiaomi",
+      "key": "xiaomiall",
+      "url": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "checkedAt": "2026-10-26T05:36:28.415469+00:00",
+      "status": 200,
+      "finalUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/xiaomiall.raw",
+      "sha256": "86ea39d8ef1026076ac6642995bdde4961918c7115fb90dbe62a75aeb7c091e2",
+      "bytes": 153468,
+      "textChanged": true,
+      "addedLines": 3,
+      "removedLines": 19
+    },
+    {
+      "provider": "xiaomi",
+      "key": "xiaomi-deprecations",
+      "url": "https://mimo.mi.com/docs/en-US/updates/deprecate",
+      "checkedAt": "2026-10-26T05:36:28.577589+00:00",
+      "status": 200,
+      "finalUrl": "https://mimo.mi.com/docs/en-US/updates/deprecate",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/xiaomi-deprecations.raw",
+      "sha256": "198f7140c8d245032153415c6a4513595b04d7252f5b24b899c31c5cc5925a41",
+      "bytes": 136688,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1
+    },
+    {
+      "provider": "qianfan",
+      "key": "qianfan",
+      "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "checkedAt": "2026-10-26T05:36:28.675271+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qianfan.raw",
+      "sha256": "ca330060538a5621f6412cb0aa0861a1a00a44e24c07d4df215a45d222027eef",
+      "bytes": 375173,
+      "textChanged": true,
+      "addedLines": 4,
+      "removedLines": 4
+    },
+    {
+      "provider": "qianfan",
+      "key": "qianfan-chat",
+      "url": "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+      "checkedAt": "2026-10-26T05:36:28.790912+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qianfan-chat.raw",
+      "sha256": "f502774b713191a874d555b5965b7d0cc61e6758830f0066ca9e60acfc3c999a",
+      "bytes": 515755,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "qianfan",
+      "key": "qianfan-vision",
+      "url": "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+      "checkedAt": "2026-10-26T05:36:28.830672+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan-api/s/rm7u7qdiq",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qianfan-vision.raw",
+      "sha256": "ea971cb6ff3d1e74d3de9e64adc50bdfc1cf66b09a0a3ba638a46f4dc6c6e04b",
+      "bytes": 422465,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "qianfan",
+      "key": "qianfan-price",
+      "url": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "checkedAt": "2026-10-26T05:36:28.893436+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.baidu.com/doc/qianfan/s/wmh4sv6ya",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qianfan-price.raw",
+      "sha256": "4c45a0372be5ea5103e9a6737cebd8b4c384850308ee287ee9ae506139f1b3d4",
+      "bytes": 415456,
+      "textChanged": true,
+      "addedLines": 4,
+      "removedLines": 4
+    },
+    {
+      "provider": "longcat",
+      "key": "longcat-models",
+      "url": "https://longcat.ai/platform/docs/zh/models",
+      "checkedAt": "2026-10-26T05:36:29.335421+00:00",
+      "status": 200,
+      "finalUrl": "https://longcat.ai/platform/docs/zh/models",
+      "contentType": "application/json; charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/longcat-models.raw",
+      "sha256": "4ae4c37d1093c4034fc907458447fb3f195fe21428004eed7b6b8677d76b2370",
+      "bytes": 421,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "longcat",
+      "key": "longcat",
+      "url": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "checkedAt": "2026-10-26T05:36:29.387163+00:00",
+      "status": 0,
+      "finalUrl": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to longcat.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/longcat.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 166
+    },
+    {
+      "provider": "replicate",
+      "key": "replicate-official",
+      "url": "https://replicate.com/collections/official",
+      "checkedAt": "2026-10-26T05:36:29.450211+00:00",
+      "status": 200,
+      "finalUrl": "https://replicate.com/collections/official",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/replicate-official.raw",
+      "sha256": "2980f837a3b8bfc84062679fb84124b587439e3404417aeb24446bd2085dd591",
+      "bytes": 2042012,
+      "textChanged": true,
+      "addedLines": 758,
+      "removedLines": 763
+    },
+    {
+      "provider": "replicate",
+      "key": "replicate",
+      "url": "https://replicate.com/collections/text-to-image",
+      "checkedAt": "2026-10-26T05:36:29.510189+00:00",
+      "status": 200,
+      "finalUrl": "https://replicate.com/collections/text-to-image",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/replicate.raw",
+      "sha256": "050b5fa38e0c5b1ad5445a9536ac8032b8de5c91074b1d6217e4065814ebb886",
+      "bytes": 417156,
+      "textChanged": true,
+      "addedLines": 111,
+      "removedLines": 111
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-models",
+      "url": "https://help.aliyun.com/zh/model-studio/models",
+      "checkedAt": "2026-10-26T05:36:29.795463+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/models",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-models.raw",
+      "sha256": "10412d6ceee0f48f480e8143e273c03a181697a92842e0fc5e42f53e80167f10",
+      "bytes": 94954,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 2
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-new",
+      "url": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "checkedAt": "2026-10-26T05:36:30.401210+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/newly-released-models",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-new.raw",
+      "sha256": "2b444ea12341a7341e05a357d9d0b6660ffb17f4ed7ab3d1804e48336476da5c",
+      "bytes": 1398376,
+      "textChanged": true,
+      "addedLines": 38,
+      "removedLines": 1
+    },
+    {
+      "provider": "bailian",
+      "key": "qwen21",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+      "checkedAt": "2026-10-26T05:36:30.541897+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qwen21.raw",
+      "sha256": "6d0c558c4d1ca4fd30f18563b02bc22c20cabb8357778a870d6357249086a34b",
+      "bytes": 252173,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 1
+    },
+    {
+      "provider": "bailian",
+      "key": "qwenimageapi",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "checkedAt": "2026-10-26T05:36:31.521924+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-api",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qwenimageapi.raw",
+      "sha256": "bd40f68363d21fbd0517e4d4943b861d19f26b1292e312aeed61e9de06c381a4",
+      "bytes": 125479,
+      "textChanged": true,
+      "addedLines": 3,
+      "removedLines": 611
+    },
+    {
+      "provider": "bailian",
+      "key": "qwenimageedit",
+      "url": "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api",
+      "checkedAt": "2026-10-26T05:36:31.553741+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/qwenimageedit.raw",
+      "sha256": "ceccce5e547d9b9cacf8305b17e3ac2a900b5ee6be3ef844c6a4c3492990a202",
+      "bytes": 146921,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 2
+    },
+    {
+      "provider": "ark",
+      "key": "ark-rendered",
+      "url": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "checkedAt": "2026-10-26T05:36:31.753821+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ark-rendered.raw",
+      "sha256": "de73465312b9d78320ac60206294861c55f5fc791158133dfde416147675d4fa",
+      "bytes": 12049,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 1062,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "ark",
+      "key": "ark-retirement-rendered",
+      "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "checkedAt": "2026-10-26T05:36:31.882748+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ark-retirement-rendered.raw",
+      "sha256": "39837f535e8c3d40e05f2f7399f5bc7017ddf4cdb2aff1aba1919a747d045dd4",
+      "bytes": 12049,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 1007,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "sensenova",
+      "key": "sensenova-rendered",
+      "url": "https://platform.sensenova.cn/docs",
+      "checkedAt": "2026-10-26T05:36:31.974854+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.sensenova.cn/docs",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/sensenova-rendered.raw",
+      "sha256": "5f6f3dde6c83bce200fd693cad8a40cab6fbc9473a308d3bcf4397f8ba95c9db",
+      "bytes": 15638,
+      "textChanged": true,
+      "addedLines": 1,
+      "removedLines": 7048,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "zhipu",
+      "key": "zhipu",
+      "url": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "checkedAt": "2026-10-26T05:36:32.135587+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.bigmodel.cn/cn/guide/start/model-overview",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/zhipu.raw",
+      "sha256": "152ee9f9ba0a0f6d3f73cfe937b49704d98c264076ed55695d7d932e6c404c5a",
+      "bytes": 248378,
+      "textChanged": true,
+      "addedLines": 4,
+      "removedLines": 0
+    },
+    {
+      "provider": "recraft",
+      "key": "recraft",
+      "url": "https://www.recraft.ai/docs/api-reference/appendix",
+      "checkedAt": "2026-10-26T05:36:32.175826+00:00",
+      "status": 200,
+      "finalUrl": "https://www.recraft.ai/docs/api-reference/appendix",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/recraft.raw",
+      "sha256": "b9a3a0f2867af274f35430b40f625434aa390547becbe86fc73229e539ce655e",
+      "bytes": 164824,
+      "textChanged": true,
+      "addedLines": 4,
+      "removedLines": 2
+    },
+    {
+      "provider": "recraft",
+      "key": "recraftstyles",
+      "url": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-styles",
+      "checkedAt": "2026-10-26T05:36:32.280212+00:00",
+      "status": 200,
+      "finalUrl": "https://www.recraft.ai/docs/api-reference/models/recraft-v4-styles",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/recraftstyles.raw",
+      "sha256": "66edca7eb3733c5b6f7c7a38f2932ab10c968004c8c5795213928e404ee7791f",
+      "bytes": 346115,
+      "textChanged": true,
+      "addedLines": 4,
+      "removedLines": 2
+    },
+    {
+      "provider": "bfl",
+      "key": "bfl",
+      "url": "https://api.bfl.ai/openapi.json",
+      "checkedAt": "2026-10-26T05:36:32.404807+00:00",
+      "status": 200,
+      "finalUrl": "https://api.bfl.ai/openapi.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bfl.raw",
+      "sha256": "ea458c661ef8b0e03d72ee6b29267451f5a04ae65f35e55ea8a87e53645ef670",
+      "bytes": 88278,
+      "textChanged": true,
+      "addedLines": 91,
+      "removedLines": 2
+    },
+    {
+      "provider": "stability",
+      "key": "stability-schema",
+      "url": "https://api.stability.ai/v2alpha/openapi",
+      "checkedAt": "2026-10-26T05:36:32.537988+00:00",
+      "status": 200,
+      "finalUrl": "https://api.stability.ai/v2alpha/openapi",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/stability-schema.raw",
+      "sha256": "c0ddc0808d050f806bf090ab9deabe70f1a3b37469517b963bcef0237dbc430c",
+      "bytes": 217047,
+      "textChanged": true,
+      "addedLines": 17,
+      "removedLines": 17
+    },
+    {
+      "provider": "stability",
+      "key": "stability",
+      "url": "https://platform.stability.ai/docs/api-reference",
+      "checkedAt": "2026-10-26T05:36:32.559563+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.stability.ai/docs/api-reference",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/stability.raw",
+      "sha256": "f1bd2b0dcc00dffb28b2fa5a89ffb2340f5382119bbf4e96af896f0d212b4405",
+      "bytes": 1909,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 1
+    },
+    {
+      "provider": "ideogram",
+      "key": "ideogram-v2",
+      "url": "https://developer.ideogram.ai/v2/llms.txt",
+      "checkedAt": "2026-10-26T05:36:32.987377+00:00",
+      "status": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/llms.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ideogram-v2.raw",
+      "sha256": "09e81080a3971db3103ff1ed0380a3650acf506bcc2d9c72f2aa0320b48f1a12",
+      "bytes": 11514,
+      "textChanged": true,
+      "addedLines": 2,
+      "removedLines": 0
+    },
+    {
+      "provider": "ideogram",
+      "key": "ideogram-v2-overview",
+      "url": "https://developer.ideogram.ai/v2/ideogram-api/api-overview.md",
+      "checkedAt": "2026-10-26T05:36:33.144497+00:00",
+      "status": 0,
+      "finalUrl": "https://developer.ideogram.ai/v2/ideogram-api/api-overview.md",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to developer.ideogram.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ideogram-v2-overview.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "textChanged": true,
+      "addedLines": 0,
+      "removedLines": 135
+    },
+    {
+      "provider": "ideogram",
+      "key": "ideogram-v2-generate45",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5.md",
+      "checkedAt": "2026-10-26T05:36:33.300427+00:00",
+      "status": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ideogram-v2-generate45.raw",
+      "sha256": "3910a726c81900f15534ef2ba5a42456b1040b536256f42708cefb49f9142982",
+      "bytes": 18970,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "ideogram",
+      "key": "ideogram-v2-precise45",
+      "url": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5.md",
+      "checkedAt": "2026-10-26T05:36:33.360852+00:00",
+      "status": 200,
+      "finalUrl": "https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ideogram-v2-precise45.raw",
+      "sha256": "174846071df84757ed47850e71d0e73c1b67d1c68da7ea5146d7fb6021e81e46",
+      "bytes": 20194,
+      "textChanged": true,
+      "addedLines": 20,
+      "removedLines": 8
+    },
+    {
+      "provider": "ideogram",
+      "key": "ideogram-v1",
+      "url": "https://developer.ideogram.ai/v1/llms.txt",
+      "checkedAt": "2026-10-26T05:36:33.545946+00:00",
+      "status": 200,
+      "finalUrl": "https://developer.ideogram.ai/v1/llms.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ideogram-v1.raw",
+      "sha256": "7567fbb870698825a8cd7dd34e82c92d0b9b8183fa96fba8b62183be4ffde36d",
+      "bytes": 7190,
+      "textChanged": false,
+      "addedLines": 0,
+      "removedLines": 0
+    },
+    {
+      "provider": "iflytek",
+      "key": "iflytek",
+      "url": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "checkedAt": "2026-10-26T05:36:33.785126+00:00",
+      "status": 200,
+      "finalUrl": "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/iflytek.raw",
+      "sha256": "45cb4088b58339b6994c923603216ef5b353dc1aa362ca270361b2b35b0f2254",
+      "bytes": 285710,
+      "textChanged": true,
+      "addedLines": 526,
+      "removedLines": 56
+    },
+    {
+      "provider": "antling",
+      "key": "antling",
+      "url": "https://developer.ant-ling.com/zh-CN/docs/getting-started/changelog/",
+      "checkedAt": "2026-10-26T05:36:33.808021+00:00",
+      "status": 200,
+      "finalUrl": "https://developer.ant-ling.com/zh-CN/docs/getting-started/changelog/",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/antling.raw",
+      "sha256": "30727d15d3bd8249bf0b34356b3acd607b706e0e5175660b8922cc0578b55635",
+      "bytes": 125492,
+      "textChanged": true,
+      "addedLines": 11,
+      "removedLines": 5
+    },
+    {
+      "provider": "kimi",
+      "key": "kimi31",
+      "url": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "checkedAt": "2026-10-26T05:37:39.920346+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/kimi31.raw",
+      "sha256": "ae0bf5d0a775433335d3afac57430348d637977f611f3a321919e3d6d571b8a2",
+      "bytes": 763094
+    },
+    {
+      "provider": "kimi",
+      "key": "kimi-price",
+      "url": "https://platform.kimi.com/docs/pricing/chat",
+      "checkedAt": "2026-10-26T05:37:39.920523+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.kimi.com/docs/pricing/chat",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/kimi-price.raw",
+      "sha256": "05b97e8b8896738c8ef77e773b691e64e5c43e90367a00a4e2b39431b48b0900",
+      "bytes": 297338
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax-text",
+      "url": "https://platform.minimax.io/docs/guides/text-generation",
+      "checkedAt": "2026-10-26T05:37:39.920586+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.io/docs/guides/text-generation",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax-text.raw",
+      "sha256": "9108aef8f343b764dd56352ec9afb6808bc54c589c2154b552bcb7096efc8d7c",
+      "bytes": 687613
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax-pricing",
+      "url": "https://platform.minimax.io/docs/pricing/overview",
+      "checkedAt": "2026-10-26T05:37:39.920622+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.io/docs/pricing/overview",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax-pricing.raw",
+      "sha256": "bc9e60d39b6047c41699cd609b927c0378ed85d69ee2af4239b6a5ccc0ec3a8a",
+      "bytes": 683843
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax-index",
+      "url": "https://platform.minimax.io/docs/llms.txt",
+      "checkedAt": "2026-10-26T05:37:39.920650+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.io/docs/llms.txt",
+      "contentType": "text/plain; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax-index.raw",
+      "sha256": "cc90b0b2889f3ec6d8737c4dbe9c04650961fab21c0cf68e80efb81cb9e4723f",
+      "bytes": 25479
+    },
+    {
+      "provider": "mistral",
+      "key": "mistral-glm53flash",
+      "url": "https://docs.mistral.ai/models/zai-glm-5-3-flash.md",
+      "checkedAt": "2026-10-26T05:37:39.920673+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.mistral.ai/models/zai-glm-5-3-flash.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/mistral-glm53flash.raw",
+      "sha256": "78327eb434dbfd6fca78f27fd9e79c840438df6cb809d51f2e76d1ceb233e0a7",
+      "bytes": 724
+    },
+    {
+      "provider": "fireworks",
+      "key": "fw-minimax31",
+      "url": "https://fireworks.ai/models/fireworks/minimax-m3p1-flash/",
+      "checkedAt": "2026-10-26T05:37:40.708442+00:00",
+      "status": 200,
+      "finalUrl": "https://fireworks.ai/models/fireworks/minimax-m3p1-flash",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fw-minimax31.raw",
+      "sha256": "2d721a82fdad38d88fd51300d47fd6bcdea4a57326cb8d7ceb1bd7e9edfd2657",
+      "bytes": 297147
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-price",
+      "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "checkedAt": "2026-10-26T05:37:40.750340+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-pricing",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-price.raw",
+      "sha256": "43aab2ac306529c48c6785dd2268272cd6a51a472a00f91718bf8ad6bb9dff16",
+      "bytes": 1468957
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-deepseek",
+      "url": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+      "checkedAt": "2026-10-26T05:37:40.831910+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/deepseek-api",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-deepseek.raw",
+      "sha256": "3e77ec192b3ee26ed5bb9f4f7d3e99b003a9e4ee8bc16ef65fb494dbe0fdfdd7",
+      "bytes": 139616
+    },
+    {
+      "provider": "runware",
+      "key": "runware-fibo2",
+      "url": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+      "checkedAt": "2026-10-26T05:37:41.157177+00:00",
+      "status": 0,
+      "finalUrl": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to runware.ai:443",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runware-fibo2.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "provider": "runware",
+      "key": "runware-fibo2edit",
+      "url": "https://runware.ai/docs/models/bria-fibo-2-0-edit/schema.json",
+      "checkedAt": "2026-10-26T05:37:41.261861+00:00",
+      "status": 200,
+      "finalUrl": "https://runware.ai/docs/models/bria-fibo-2-0-edit/schema.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runware-fibo2edit.raw",
+      "sha256": "4e536f96699a591fe99e0f8cc65d83a36cf0255977e4cc22fe146864bebad776",
+      "bytes": 40957
+    },
+    {
+      "provider": "anthropic",
+      "key": "anthropic-migration",
+      "url": "https://platform.claude.com/docs/en/api/migration-2026-10-21.md",
+      "checkedAt": "2026-10-26T05:37:41.468087+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.claude.com/docs/en/api/migration-2026-10-21.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/anthropic-migration.raw",
+      "sha256": "d62c034a78e4d90e8403ab74cb26357adb9504f1403a0ab917842b48931cabf9",
+      "bytes": 80896
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax-chat",
+      "url": "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+      "checkedAt": "2026-10-26T05:40:16.851381+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.io/docs/api-reference/text-chat-openai.md",
+      "contentType": "text/markdown; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax-chat.raw",
+      "sha256": "cbe3a4f4232bbb45d41b40235036a97fae764549892d5044eeecc26aa3ba378e",
+      "bytes": 61345
+    },
+    {
+      "provider": "minimax",
+      "key": "minimax-cn",
+      "url": "https://platform.minimaxi.com/docs/guides/text-generation",
+      "checkedAt": "2026-10-26T05:40:16.851549+00:00",
+      "status": 200,
+      "finalUrl": "https://platform.minimax.cn/docs/guides/text-generation",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/minimax-cn.raw",
+      "sha256": "9d325385dbef6d6e6748aabcb2f3a14e4209ebaacc30c80496a9d2eb3f995b43",
+      "bytes": 668717
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-minimax",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax",
+      "checkedAt": "2026-10-26T05:40:16.851638+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-minimax.raw",
+      "sha256": "2681dd65cc974a62b0da065cd2ace1f12179f1cd08b622e2abd52eee19fb2643",
+      "bytes": 24666,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-mimo",
+      "url": "https://help.aliyun.com/zh/model-studio/xiaomi-mimo",
+      "checkedAt": "2026-10-26T05:40:16.851704+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/xiaomi-mimo",
+      "contentType": "",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-mimo.raw",
+      "sha256": "2681dd65cc974a62b0da065cd2ace1f12179f1cd08b622e2abd52eee19fb2643",
+      "bytes": 24666,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "iflytek",
+      "key": "iflytek-chat",
+      "url": "https://www.xfyun.cn/doc/spark/maas_deepseek_api.html",
+      "checkedAt": "2026-10-26T05:40:16.851778+00:00",
+      "status": 404,
+      "finalUrl": "https://www.xfyun.cn/doc/spark/maas_deepseek_api.html",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/iflytek-chat.raw",
+      "sha256": "07a4c662894d52026391d09a37b54bb17b763600fcb399d2e2ef437e3e950e0f",
+      "bytes": 154
+    },
+    {
+      "provider": "together",
+      "key": "together-geo",
+      "url": "https://docs.together.ai/docs/serverless/geo-specific-inference",
+      "checkedAt": "2026-10-26T05:40:17.310681+00:00",
+      "status": 200,
+      "finalUrl": "https://docs.together.ai/docs/serverless/geo-specific-inference",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/together-geo.raw",
+      "sha256": "2174fa56398f199ed774d17d1fb979091feb5547e601a43fa0a79cb094490e7a",
+      "bytes": 391299
+    },
+    {
+      "provider": "openrouter",
+      "key": "openrouter-images-followup",
+      "url": "https://openrouter.ai/api/v1/images/models",
+      "checkedAt": "2026-10-26T05:40:17.331115+00:00",
+      "status": 200,
+      "finalUrl": "https://openrouter.ai/api/v1/images/models",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/openrouter-images-followup.raw",
+      "sha256": "2d5fa0ffd80a21a8f442d26b337a7d076a35ed6e7da322016c4e7f1084dab1f2",
+      "bytes": 47730
+    },
+    {
+      "provider": "runware",
+      "key": "runware-fibo2-followup",
+      "url": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+      "checkedAt": "2026-10-26T05:40:17.803782+00:00",
+      "status": 200,
+      "finalUrl": "https://runware.ai/docs/models/bria-fibo-2-0/schema.json",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/runware-fibo2-followup.raw",
+      "sha256": "a11ed7dd1e62027239c418e84871d51a92d89f86de5da4ca00a68a793a9b63c4",
+      "bytes": 39161
+    },
+    {
+      "provider": "gemini",
+      "key": "gemini-deprecations-followup",
+      "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "checkedAt": "2026-10-26T05:40:18.141679+00:00",
+      "status": 200,
+      "finalUrl": "https://ai.google.dev/gemini-api/docs/deprecations",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/gemini-deprecations-followup.raw",
+      "sha256": "af7097a1117202bcab3982ed35ae57cef51f042e02a4bd2ad751662ed140614a",
+      "bytes": 121478
+    },
+    {
+      "provider": "longcat",
+      "key": "longcat-followup",
+      "url": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "checkedAt": "2026-10-26T05:40:18.582229+00:00",
+      "status": 200,
+      "finalUrl": "https://longcat.ai/platform/docs/zh/image-video-understanding",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/longcat-followup.raw",
+      "sha256": "dc83e2ee0d7ab94cf05571fdc2194c22b16226671142faddb002fc167c761cf6",
+      "bytes": 57573
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-kimi",
+      "url": "https://cloud.tencent.com/document/product/1823/132232",
+      "checkedAt": "2026-10-26T05:46:06.328442+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.com/document/product/1823/132232",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhub-kimi.raw",
+      "sha256": "f0c3846146235fbc1d0ebeccc2df2351b3c7b34118c43ec8952fb6d5fc35c25d",
+      "bytes": 989,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-minimax",
+      "url": "https://cloud.tencent.com/document/product/1823/132246",
+      "checkedAt": "2026-10-26T05:46:06.328650+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.com/document/product/1823/132246",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhub-minimax.raw",
+      "sha256": "b9ecebef49b9954e820a351dd67867afeb16e657ab87ebdbb84c44d2fe7c5c34",
+      "bytes": 987,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-cn-list",
+      "url": "https://cloud.tencent.cn/document/product/1823/130051",
+      "checkedAt": "2026-10-26T05:46:06.328700+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.cn/document/product/1823/130051",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhub-cn-list.raw",
+      "sha256": "fbcc8bb501a4d2137a65c257e6d2a990904eacbb258e205ce5e9b9ba83436e41",
+      "bytes": 985,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-cn-retire",
+      "url": "https://cloud.tencent.cn/document/product/1823/131180",
+      "checkedAt": "2026-10-26T05:46:06.328750+00:00",
+      "status": 200,
+      "finalUrl": "https://cloud.tencent.cn/document/product/1823/131180",
+      "contentType": "text/html",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/tokenhub-cn-retire.raw",
+      "sha256": "694a5fbd52f2caadef21e6ac98cd4b29ee01986ef533166790abd458e83e5673",
+      "bytes": 986,
+      "contentVerification": "HTML shell / content unavailable via this transport; not a delisting signal"
+    },
+    {
+      "provider": "iflytek",
+      "key": "iflytek-chat-v2",
+      "url": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "checkedAt": "2026-10-26T05:46:06.328930+00:00",
+      "status": 200,
+      "finalUrl": "https://maas.xfyun.cn/doc/guide/3%E3%80%81API%20%E6%8E%A5%E5%8F%A3/3.1%20%E6%98%9F%E7%81%AB%E6%A8%A1%E5%9E%8B%20API/3.1.1%20Chat.html",
+      "contentType": "text/html; charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/iflytek-chat-v2.raw",
+      "sha256": "fa2251aab08608a0fd443f54bfba6921a21405e27043392edd798f1807e9dc00",
+      "bytes": 122022
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-minimax-api",
+      "url": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+      "checkedAt": "2026-10-26T05:46:06.456612+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-minimax-api.raw",
+      "sha256": "bae2a6c379a36be1602e0e873f733e53e736ab712ad920e5cfabc161171dfb52",
+      "bytes": 108306
+    },
+    {
+      "provider": "bailian",
+      "key": "bailian-mimo-ultra",
+      "url": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "checkedAt": "2026-10-26T05:46:06.487571+00:00",
+      "status": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/mimo-v2-6-pro-ultraspeed",
+      "contentType": "text/html;charset=UTF-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/bailian-mimo-ultra.raw",
+      "sha256": "f6177b67570b0467ce2125c5a31529da9b9bfd911db83899ab37559539cbbb7b",
+      "bytes": 55962
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-2",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=Mg",
+      "checkedAt": "2026-10-26T05:39:00.210033+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=Mg",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-2.raw",
+      "sha256": "a9e6596d53d935ad8a7f71dd9014c6ea565803764f26d3baae646793dae09559",
+      "bytes": 71757
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-3",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=Mw",
+      "checkedAt": "2026-10-26T05:39:02.841370+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=Mw",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-3.raw",
+      "sha256": "a22fb1d12ac85bb6fa016389860a9a1687112f21ccf0d1d30d76e9f9b6303e16",
+      "bytes": 73517
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-4",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=NA",
+      "checkedAt": "2026-10-26T05:39:05.164675+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=NA",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-4.raw",
+      "sha256": "17ea0735ad25bbb1395fbb1e07a40fdf52e1e2aa201be744fd5a72c96cf63f9e",
+      "bytes": 73192
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-5",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=NQ",
+      "checkedAt": "2026-10-26T05:39:07.881598+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=NQ",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-5.raw",
+      "sha256": "f69edebce4f2317045a0940b6b7ad21d48c9c608b3df24468257693479756f5d",
+      "bytes": 73032
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-6",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=Ng",
+      "checkedAt": "2026-10-26T05:39:10.140549+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=Ng",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-6.raw",
+      "sha256": "0c14063643207c3202333f22ddd085b01c970c1a0720805d9bbe5b71b8bdd519",
+      "bytes": 72250
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-7",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=Nw",
+      "checkedAt": "2026-10-26T05:39:12.811011+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=Nw",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-7.raw",
+      "sha256": "0f5dea810b66dc16d26fd910144cde1a0cde79a11d214e4b2fb40c57dc210b8e",
+      "bytes": 71394
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-8",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=OA",
+      "checkedAt": "2026-10-26T05:39:15.152575+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=OA",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-8.raw",
+      "sha256": "5cf295371d3f94c7622ce311b15ad820cffaf223e12c116a7f14e120c88d60f4",
+      "bytes": 71279
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-9",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=OQ",
+      "checkedAt": "2026-10-26T05:39:17.614133+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=OQ",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-9.raw",
+      "sha256": "bba79ddee97e2fe4ef26195812dc468dc9d938abe2d0b243a9945bc46060f37e",
+      "bytes": 70542
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-10",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=MTA",
+      "checkedAt": "2026-10-26T05:39:19.926022+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=MTA",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-10.raw",
+      "sha256": "fdfdfeb955a9ac477507fa6a316add637bd8fc4bcd1e631ea3fdfd140df8d765",
+      "bytes": 69540
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-11",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=MTE",
+      "checkedAt": "2026-10-26T05:39:22.182615+00:00",
+      "status": 200,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=MTE",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-11.raw",
+      "sha256": "cef63db06d4535f88512b2dabbaa00c8b08a83248a5a0b44539c44169f751cf4",
+      "bytes": 70752
+    },
+    {
+      "provider": "fal",
+      "key": "fal-page-12",
+      "url": "https://api.fal.ai/v1/models?limit=100&cursor=MTI",
+      "checkedAt": "2026-10-26T05:39:24.401801+00:00",
+      "status": 429,
+      "finalUrl": "https://api.fal.ai/v1/models?limit=100&cursor=MTI",
+      "contentType": "application/json",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/fal-page-12.raw",
+      "sha256": "0fe9d8eac5478e2ba91cda15adfbad2db45b820b71fe57a4f14b99cc7a661444",
+      "bytes": 62
+    },
+    {
+      "provider": "replicate",
+      "key": "replicate-claude55",
+      "url": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+      "checkedAt": "2026-10-26T05:57:39.287101+00:00",
+      "status": 200,
+      "finalUrl": "https://replicate.com/anthropic/claude-opus-5.5/api/schema",
+      "contentType": "text/html; charset=utf-8",
+      "transport": "curl TLS verified",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/replicate-claude55.raw",
+      "sha256": "7e38aabeec194dbf5029eab47505c8c283328a0790a55047e333350d68bce855",
+      "bytes": 152519
+    },
+    {
+      "provider": "ark",
+      "key": "ark-retirement-browser",
+      "url": "https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh",
+      "checkedAt": "2026-10-26",
+      "transport": "public rendered browser accessibility text",
+      "status": "rendered",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ark-retirement-browser.txt",
+      "sha256": "f5f4138c50d2d383e4699a18fd76ed298e9d1c97ecd26fa7b67ee8fb9ac37a4b",
+      "bytes": 45779
+    },
+    {
+      "provider": "ark",
+      "key": "ark-release-browser",
+      "url": "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh",
+      "checkedAt": "2026-10-26",
+      "transport": "public rendered browser accessibility text",
+      "status": "rendered",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ark-release-browser.txt",
+      "sha256": "bda222e4c54771893012c3f44a85b79cb2e7806f4fbc8d50ba014f769c3302fc",
+      "bytes": 52099
+    },
+    {
+      "provider": "ark",
+      "key": "ark-deepseek1017-browser",
+      "url": "https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash",
+      "checkedAt": "2026-10-26",
+      "transport": "public rendered browser accessibility text",
+      "status": "rendered",
+      "artifactPath": "/Users/a1-6/.codex/artifacts/tuyan-weekly-model-catalog-20261026/sources/ark-deepseek1017-browser.txt",
+      "sha256": "a79c40bb5eb02d214bf39698232ca3bbdd0c85fb8af6b6f0b53c74b8f17291c9",
+      "bytes": 33687
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-list-web",
+      "url": "https://cloud.tencent.com/document/product/1823/130051",
+      "checkedAt": "2026-10-26",
+      "transport": "web rendered official page",
+      "status": "rendered",
+      "evidenceNote": "4 new text/vision IDs; MiniMax M2.7 2026-11-17, hy-image-v3 2026-11-12, Seedream lite 2026-11-24"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-kimi-web",
+      "url": "https://cloud.tencent.com/document/product/1823/132232",
+      "checkedAt": "2026-10-26",
+      "transport": "web rendered official page",
+      "status": "rendered",
+      "evidenceNote": "K3.1 exact IDs; default high; max_completion_tokens 131072/1048576; URL/base64 table inconsistent, retain conservative Data URI path"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-minimax-web",
+      "url": "https://cloud.tencent.cn/document/product/1823/132246",
+      "checkedAt": "2026-10-26",
+      "transport": "web rendered official page",
+      "status": "rendered",
+      "evidenceNote": "minimax-m3.1-flash; OpenAI chat; reasoning_split; adaptive default; 1M/512K channel notation"
+    },
+    {
+      "provider": "tokenhub",
+      "key": "tokenhub-price-web",
+      "url": "https://cloud.tencent.com/document/product/1823/130055",
+      "checkedAt": "2026-10-26",
+      "transport": "web rendered official page",
+      "status": "rendered",
+      "evidenceNote": "Guangzhou postpaid prices captured separately; HighSpeed display-name ambiguity not silently mapped"
+    }
+  ],
+  "provenance": "官方目录/API/Schema；不包含账户凭据或真实模型结果。"
+}

@@ -1,3 +1,4 @@
+import { normalizeBailianWorkspace } from './bailian-workspace.js'
 import { enumerateArkCatalog, arkCatalogProgress, type ArkCatalogProgress, type CatalogCredentials } from './ark-catalog.js'
 import details from './provider-model-details.js'
 
@@ -255,9 +256,12 @@ export async function readProviderCatalog(provider: string, options: { fetcher?:
   let endpoint=def.url || ''
   if(provider==='minimax' && options.region==='cn') {endpoint='https://api.minimax.cn/v1/models';base.sourceUrls=['https://platform.minimaxi.com/docs/api-reference/models/openai/list-models']}
   if(provider==='bailian') {
-    // Current Tuyan Bailian inference route is Beijing; do not cross regions.
-    if(!/^[a-zA-Z0-9-]{1,64}$/.test(options.workspaceId || ''))return {...base,state:'needs-configuration',message:'请输入北京业务空间 ID 以读取百炼目录'}
-    endpoint=`https://${options.workspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models`
+    // This directory contract is Beijing-only; never silently send another region's key.
+    if(options.region && !['cn','global','cn-beijing'].includes(options.region))return {...base,state:'needs-configuration',message:'当前目录读取仅支持北京；其他地区可使用已核对的静态目录。'}
+    try {
+      const workspace=normalizeBailianWorkspace({workspaceId:options.workspaceId,region:'cn-beijing'})!
+      endpoint=`https://${workspace.workspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/models`
+    } catch {return {...base,state:'needs-configuration',message:'请输入有效的北京业务空间 ID 以读取百炼目录'}}
   }
   if(provider==='fireworks' && options.workspaceId){
     if(!/^[a-zA-Z0-9-]{1,64}$/.test(options.workspaceId))return {...base,state:'needs-configuration',message:'请输入有效的 Fireworks 账户 ID'}
