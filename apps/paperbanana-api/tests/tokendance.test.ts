@@ -16,12 +16,12 @@ const { STATIC_MODEL_REGISTRY: web } = createRequire(import.meta.url)('../../web
 const sizes = JSON.parse(readFileSync(new URL('../../../config/image-size-contracts.json', import.meta.url), 'utf8'))
 const secret = Buffer.alloc(32, 37).toString('base64')
 
-test('all 103 reviewed IDs are accounted for, all eligible roles agree across Web and Core, and discovery reports changes', () => {
-  assert.equal(catalog.models.length, 103)
-  assert.equal(new Set(catalog.models.map((m: any) => m.id)).size, 103)
+test('all 105 retained reviewed IDs are accounted for, all eligible roles agree across Web and Core, and discovery reports changes', () => {
+  assert.equal(catalog.models.length, 105)
+  assert.equal(new Set(catalog.models.map((m: any) => m.id)).size, 105)
   const included = catalog.models.filter((m: any) => m.roles.length)
-  assert.equal(included.length, 72)
-  for (const [role, count] of Object.entries({ main: 70, vision: 29, image: 2, optimize: 70, refine: 2 })) assert.equal(included.filter((m: any) => m.roles.includes(role)).length, count)
+  assert.equal(included.length, 74)
+  for (const [role, count] of Object.entries({ main: 72, vision: 29, image: 2, optimize: 72, refine: 2 })) assert.equal(included.filter((m: any) => m.roles.includes(role)).length, count)
   // Mini Program synchronization and verification are explicitly deferred this round.
   assert.deepEqual(TOKENDANCE_MODELS.filter(m => m.roles.length).map(m => m.id).sort(), included.map((m: any) => m.id).sort())
   for (const model of catalog.models) {
@@ -301,7 +301,7 @@ test('real legacy adapters dispatch every eligible text and vision ID plus both 
       if (model.roles.includes('vision')) assert.equal(await runtime.legacy.callVisionModel('tokendance', model.id, 'fixture', 'm', 'c', [{ url: 'https://example.com/figure.png' }]), 'scientific text')
       if (model.roles.includes('image')) for (const source of ['', 'data:image/png;base64,' + runtime.image.toString('base64')]) assert.ok(await runtime.legacy.callImageModel('tokendance', model.id, 'fixture', 'figure', '16:9', source, '2K', true))
     }
-    assert.equal(requests.length, 103)
+    assert.equal(requests.length, 105)
     for (const { url, init } of requests) { assert.equal(init.headers['X-App-URL'], TOKENDANCE_APP_URL); assert.ok(url.startsWith('https://tokendance.space/gateway/')); assert.equal('models' in JSON.parse(init.body), false) }
   } finally { await runtime.close() }
 })

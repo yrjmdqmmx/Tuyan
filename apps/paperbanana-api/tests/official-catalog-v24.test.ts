@@ -27,7 +27,7 @@ const presentation = read('config/model-presentation.json')
 const auditTime = Date.parse('2026-09-22T12:00:00+08:00')
 const image = { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB' }
 const roleSet = (roles: string[]) => [...new Set(roles.map(role => role.startsWith('image-') ? 'image' : role))].sort()
-const laterIndependentlyAudited = new Set(['LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017']) // v3.8.1 and catalog-20261019 have independent exact-set and wire oracles.
+const laterIndependentlyAudited = new Set(['LongCat-2.5-Preview', 'deepseek-v4.1-flash-1017', 'spark-x2.6', 'spark-x2.6-4b']) // v3.8.1, catalog-20261019 and catalog-20261026 have independent identity and wire oracles.
 const isV24 = (row: any) => !laterIndependentlyAudited.has(row.id)
 const ids = (rows: any[]) => rows.filter(isV24).map(row => row.id).sort()
 const notSent = (error: any) => error.localInputFailure === true && error.requestState === 'not_sent'

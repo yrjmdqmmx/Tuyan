@@ -49,14 +49,14 @@ test('every supported static text/vision identity reaches its actual adapter wit
       captured=[];pending=undefined
       const images=role==='vision'?[{filename:'x.png',mimeType:'image/png',url:`data:image/png;base64,${r.image.toString('base64')}`}]:[]
       try {
-        const answer=await r.legacy.callTextModel(profile.provider,model,'fixture-key','system','user',images,{thinkingRole:role})
+        const answer=await r.legacy.callTextModel(profile.provider,model,'fixture-key','system','user',images,{thinkingRole:role,...(profile.provider==='bailian'?{bailian:{workspaceId:'fixture-workspace',region:'cn-beijing'}}:{})})
         assert.equal(answer,'Visible answer')
         const request=Array.isArray(captured[0].body)?captured[0].body[0]:captured[0].body
         for(const c of profile.controls)if(options[c.key]!==undefined)assert.deepEqual(get(request,c.field),c.wireValues?.[String(options[c.key])]??options[c.key],c.field)
         assert.equal(captured.length,1,'no inferred or automatic retry')
         snapshot=compileThinkingSelection({...snapshot,options:{}},role)
         captured=[];pending=undefined
-        await r.legacy.callTextModel(profile.provider,model,'fixture-key','system','user',images,{thinkingRole:role})
+        await r.legacy.callTextModel(profile.provider,model,'fixture-key','system','user',images,{thinkingRole:role,...(profile.provider==='bailian'?{bailian:{workspaceId:'fixture-workspace',region:'cn-beijing'}}:{})})
         const defaultRequest=Array.isArray(captured[0].body)?captured[0].body[0]:captured[0].body
         for(const field of profile.clearFields)assert.equal(get(defaultRequest,field),undefined,`provider default must omit ${field}`)
         identities++

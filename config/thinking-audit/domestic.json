@@ -14266,6 +14266,419 @@
       "notes": [
         "未从相近旧型号或原厂参数继承此渠道的开关、强度枚举和默认值。"
       ]
+    },
+    {
+      "id": "catalog-20261026:kimi:kimi-k3.1-pro",
+      "provider": "kimi",
+      "modelIds": [
+        "kimi-k3.1-pro"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://platform.kimi.com/docs/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:kimi:kimi-k3.1-pro-highspeed",
+      "provider": "kimi",
+      "modelIds": [
+        "kimi-k3.1-pro-highspeed"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://platform.kimi.com/docs/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:ark:deepseek-v4-1-flash-261017",
+      "provider": "ark",
+      "modelIds": [
+        "deepseek-v4-1-flash-261017"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "ark-openai-chat"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:ark:deepseek-v4-1-flash-economy-261017",
+      "provider": "ark",
+      "modelIds": [
+        "deepseek-v4-1-flash-economy-261017"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "ark-openai-chat"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:ark:kimi-k3-1-pro-261024",
+      "provider": "ark",
+      "modelIds": [
+        "kimi-k3-1-pro-261024"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "ark-openai-chat"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:minimax:MiniMax-M3.1-Flash",
+      "provider": "minimax",
+      "modelIds": [
+        "MiniMax-M3.1-Flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://platform.minimax.io/docs/guides/text-generation"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokendance:kimi-k3.1-pro",
+      "provider": "tokendance",
+      "modelIds": [
+        "kimi-k3.1-pro"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/gateway/v1/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokendance:minimax-m3.1-flash",
+      "provider": "tokendance",
+      "modelIds": [
+        "minimax-m3.1-flash"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://tokendance.space/gateway/v1/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokenhub:deepseek-v4.1-flash-1017",
+      "provider": "tokenhub",
+      "modelIds": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokenhub:kimi-k3.1-pro",
+      "provider": "tokenhub",
+      "modelIds": [
+        "kimi-k3.1-pro"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokenhub:kimi-k3.1-pro-highspeed",
+      "provider": "tokenhub",
+      "modelIds": [
+        "kimi-k3.1-pro-highspeed"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:tokenhub:minimax-m3.1-flash",
+      "provider": "tokenhub",
+      "modelIds": [
+        "minimax-m3.1-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://cloud.tencent.com/document/product/1823/130051"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:iflytek:spark-x2.6",
+      "provider": "iflytek",
+      "modelIds": [
+        "spark-x2.6"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:iflytek:spark-x2.6-4b",
+      "provider": "iflytek",
+      "modelIds": [
+        "spark-x2.6-4b"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999"
+      ],
+      "checkedAt": "2026-10-27"
     }
   ],
   "excluded": [

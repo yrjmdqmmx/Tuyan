@@ -88,8 +88,8 @@ type LegacyPolicyModule = {
   configureProviderWorkflow(hooks: any): void
   configureRuntimeFetch(fetchImpl?: typeof fetch): void
   fetchWithRetry(url: string, options: RequestInit | undefined, label: string, attempts?: number): Promise<Response>
-  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal; region?: 'cn' | 'global' }): Promise<string>
-  callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>, region?: 'cn' | 'global'): Promise<string>
+  callTextModel(provider: string, model: string, apiKey: string, system: string, user: string, images?: Array<Record<string, string>>, policy?: { attempts?: number; signal?: AbortSignal; region?: 'cn' | 'global'; bailian?: import('../../../packages/api/src/bailian-workspace.js').BailianWorkspace }): Promise<string>
+  callVisionModel(provider: string, model: string, apiKey: string, methodContent: string, caption: string, images: Array<Record<string, string>>, region?: 'cn' | 'global', custom?: unknown, thinkingRole?: 'main' | 'vision', bailian?: import('../../../packages/api/src/bailian-workspace.js').BailianWorkspace): Promise<string>
   callImageModel(provider: string, model: string, apiKey: string, prompt: string, aspectRatio: string, sourceImage?: string, imageSize?: string, strictImageSize?: boolean, region?: 'cn' | 'global', custom?: unknown, edit?: import('../../../packages/api/src/image-channel-adapters.js').ImageChannelInput['edit']): Promise<string>
   callRecraftSvg(model: string, apiKey: string, prompt: string, aspectRatio: string): Promise<string>
   pollBailianImageTask(taskId: string, apiKey: string, policy?: { intervalMs: number; timeoutMs: number }): Promise<any>
@@ -1663,6 +1663,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
   })
   const arkModels = new Map<string, any>(ark.providers.ark.models.map((model: any) => [model.id, model]))
   assert.deepEqual(new Set(arkModels.keys()), new Set([
+    'deepseek-v4-1-flash-261017', 'deepseek-v4-1-flash-economy-261017', 'kimi-k3-1-pro-261024',
     'doubao-seedream-5-0-flash-260915',
     'doubao-seed-2-1-pro-260915', 'deepseek-v4-1-flash-260910', 'glm-5-3-flash-260828',
     'doubao-seed-2-1-pro-260628',
@@ -6169,6 +6170,7 @@ test('catalog repair: every selectable static main and vision model dispatches i
     requests++
     const body = JSON.parse(String(init?.body))
     const { provider, model } = current
+    if (provider === 'bailian' && ['deepseek-v4.1-flash-1017', 'MiniMax/MiniMax-M3.1-Flash', 'xiaomi/mimo-v2.6-pro-ultraspeed'].includes(model.id)) assert.equal(url, 'https://fixture-workspace.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions')
     if (provider !== 'gemini') assert.equal(body.model, model.id, `${provider}: IDs must not migrate while still supported`)
     if (provider === 'gemini') {
       assert.ok(url.includes(`/models/${model.id}:generateContent`), url)
@@ -6190,8 +6192,9 @@ test('catalog repair: every selectable static main and vision model dispatches i
   })
   try {
     for (current of catalogs) {
-      if (current.model.roles.includes('main')) assert.equal(await legacy.callTextModel(current.provider, current.model.id, 'fixture-only', 'system', 'user'), 'fixture-ok', `${current.provider}/${current.model.id} main`)
-      if (current.model.roles.includes('vision')) assert.equal(await legacy.callVisionModel(current.provider, current.model.id, 'fixture-only', 'method', 'caption', [{ url: 'https://fixture.example/input.png', mimeType: 'image/png' }]), 'fixture-ok', `${current.provider}/${current.model.id} vision`)
+      const bailian = current.provider === 'bailian' ? { workspaceId: 'fixture-workspace', region: 'cn-beijing' } : undefined
+      if (current.model.roles.includes('main')) assert.equal(await legacy.callTextModel(current.provider, current.model.id, 'fixture-only', 'system', 'user', [], { bailian }), 'fixture-ok', `${current.provider}/${current.model.id} main`)
+      if (current.model.roles.includes('vision')) assert.equal(await legacy.callVisionModel(current.provider, current.model.id, 'fixture-only', 'method', 'caption', [{ url: 'https://fixture.example/input.png', mimeType: 'image/png' }], undefined, undefined, 'vision', bailian), 'fixture-ok', `${current.provider}/${current.model.id} vision`)
     }
     assert.ok(requests > 300, 'exercise the complete static role list')
   } finally { legacy.configureRuntimeFetch() }

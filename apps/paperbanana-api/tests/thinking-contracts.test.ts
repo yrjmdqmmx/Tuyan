@@ -138,7 +138,7 @@ test('each supported exact model/role/protocol maps every allowed enum value and
         assert.equal(output.max_tokens, 16384, label)
         assert.equal(output.max_output_tokens, 4096, label)
         assert.equal(output.quality, 'high', label)
-        assert.equal(output.reasoning_split, true, label)
+        assert.equal(output.reasoning_split, snapshot.clearFields.includes('reasoning_split') ? undefined : true, label)
         cases++
       } catch (error: any) { failures.push(`${label}: ${error.message}`) }
     }

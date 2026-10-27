@@ -11287,7 +11287,9 @@
           ],
           "regions": [
             "cn-beijing"
-          ]
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
         }
       },
       {
@@ -11318,7 +11320,9 @@
           ],
           "regions": [
             "cn-beijing"
-          ]
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
         }
       },
       {
@@ -11349,7 +11353,9 @@
           ],
           "regions": [
             "cn-beijing"
-          ]
+          ],
+          "requiresEntitlement": true,
+          "entitlement": "需要在火山方舟控制台开通对应模型服务；以当前账号权限为准"
         }
       }
     ],

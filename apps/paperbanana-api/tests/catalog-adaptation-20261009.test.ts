@@ -66,7 +66,9 @@ test('Kimi exact mappings clear incompatible controls and sampling; fixed models
 })
 test('seven pinned text models obey independent Replicate schemas; vision stays limited',()=>{
  const ajv=new (Ajv2020 as any)({strict:false,validateFormats:false});let count=0
- for(const m of catalog.replicate.models.filter((m:any)=>m.roles.includes('main'))) {
+ // Preserve the seven October 9 identities; Opus 5.5 has its own October 26 schema oracle.
+ for(const id of ['google/gemini-3.5-flash','deepseek-ai/deepseek-v3.1','google/gemini-3-flash','google/gemini-2.5-flash','moonshotai/kimi-k2-thinking','qwen/qwen3-235b-a22b-instruct-2507','qwen/qwen3-7-plus']) {
+  const m=catalog.replicate.models.find((m:any)=>m.id===id&&m.roles.includes('main'));assert.ok(m,id)
   const b=buildReplicateTextBody({...textInput,model:m.id,images:m.roles.includes('vision')?[{url:png().dataUrl}]:[]});const e=evidence.replicateSchemas[m.id]
   assert.equal(b.version,e.version);assert.ok(ajv.compile(e.input)(b.input),m.id);assert.equal(m.verified,false);count++
  }

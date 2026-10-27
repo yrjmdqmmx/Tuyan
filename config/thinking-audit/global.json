@@ -65245,6 +65245,153 @@
         "https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017"
       ],
       "checkedAt": "2026-10-19"
+    },
+    {
+      "id": "catalog-20261026:mistral:zai-glm-5-3-flash",
+      "provider": "mistral",
+      "modelIds": [
+        "zai-glm-5-3-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.mistral.ai/models/zai-glm-5-3-flash"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:together:deepseek-ai/DeepSeek-V4.1-Flash-1017",
+      "provider": "together",
+      "modelIds": [
+        "deepseek-ai/DeepSeek-V4.1-Flash-1017"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:together:MiniMaxAI/MiniMax-M3.1-Flash",
+      "provider": "together",
+      "modelIds": [
+        "MiniMaxAI/MiniMax-M3.1-Flash"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://docs.together.ai/docs/serverless/models"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:fireworks:accounts/fireworks/models/minimax-m3p1-flash",
+      "provider": "fireworks",
+      "modelIds": [
+        "accounts/fireworks/models/minimax-m3p1-flash"
+      ],
+      "roles": [
+        "main",
+        "vision"
+      ],
+      "protocols": [
+        "openai-chat-completions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://fireworks.ai/models/fireworks/minimax-m3p1-flash"
+      ],
+      "checkedAt": "2026-10-27"
+    },
+    {
+      "id": "catalog-20261026:replicate:anthropic/claude-opus-5.5",
+      "provider": "replicate",
+      "modelIds": [
+        "anthropic/claude-opus-5.5"
+      ],
+      "roles": [
+        "main"
+      ],
+      "protocols": [
+        "replicate-predictions"
+      ],
+      "status": "unconfirmed",
+      "statusReason": "本轮已核实精确目录与适配协议；可调思考参数尚未独立核实，保留渠道默认。",
+      "controls": [],
+      "clearFields": [],
+      "requestMappings": [],
+      "constraints": {
+        "neverIncreaseOutputBudget": true
+      },
+      "conflicts": [],
+      "notes": [
+        "不从同系列或原厂继承此渠道的参数、枚举与默认值；未执行真实推理。"
+      ],
+      "sourceUrls": [
+        "https://replicate.com/anthropic/claude-opus-5.5/api/schema"
+      ],
+      "checkedAt": "2026-10-27"
     }
   ],
   "excluded": [
