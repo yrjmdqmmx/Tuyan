@@ -3,7 +3,7 @@ import { mergeAccountHistory, HISTORY_REFRESH_MS, historyRetryDelay, savedHistor
 // One scheduler per account controller. Only read-only history requests retry;
 // generation admission, saved task identities and conflict copies are untouched.
 export class WorkspaceHistorySync {
-  constructor({controller,notify,canRefresh = () => true,now = Date.now,setTimer = setTimeout,clearTimer = clearTimeout}) {
+  constructor({controller,notify,canRefresh = () => true,now = Date.now,setTimer = (fn,ms) => setTimeout(fn,ms),clearTimer = id => clearTimeout(id)}) {
     Object.assign(this,{controller,notify,canRefresh,now,setTimer,clearTimer});
     this.failures=0;this.nextDue=0;this.started=false;this.disposed=false;this.inFlight=null;
   }

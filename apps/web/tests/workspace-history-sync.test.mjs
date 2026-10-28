@@ -33,6 +33,17 @@ test('history page requests coalesce across hydration and background refresh wit
   await client.history(0);assert.equal(calls,1,'recent successful pages are shared');
 });
 
+test('default timers preserve the browser Window receiver instead of passing the scheduler as this', async t => {
+  const calls=[];
+  for(const name of ['setTimeout','clearTimeout'])t.mock.method(globalThis,name,function(...args){
+    assert.ok(this===undefined || this===globalThis,'browser timer would throw Illegal invocation');
+    calls.push([name,...args]);return 1;
+  });
+  const f=fixture(()=>page()),sync=new WorkspaceHistorySync({controller:f.controller,notify:()=>{}});
+  try {await sync.refresh();assert.ok(calls.some(([name,,delay])=>name==='setTimeout'&&delay>0&&delay<=300000));}
+  finally {sync.dispose();}
+});
+
 test('page cooldown prevents the 5-second workspace poll from hammering a failed history endpoint', async () => {
   let now=0,calls=0;const reader=createHistoryReader(async()=>{calls++;throw timeout();},()=>now);
   for(const delay of [15000,60000,180000,300000,300000]) {
