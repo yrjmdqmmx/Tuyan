@@ -92,6 +92,16 @@ test('disposing an old account ignores its late response and does not schedule a
   assert.deepEqual(f.controller.state,before);assert.deepEqual(f.messages,[]);assert.equal(f.timers.size,0);
 });
 
+test('reconnecting before the retry deadline rearms a timer paused by an offline completion', async () => {
+  const pending=deferred(),f=fixture(()=>pending.promise);f.sync.start();f.visible(false);
+  pending.reject(timeout());await f.sync.inFlight;assert.equal(f.timers.size,0);
+  f.advance(5000);f.visible(true);f.sync.wake();
+  assert.equal(f.calls.length,1,'reconnect still respects the server cooldown');
+  assert.equal([...f.timers.values()][0].delay,10000,'the retry must not depend on another focus event');
+  f.controller.client.history=async()=>page();f.advance(10000);[...f.timers.values()][0].fn();await f.sync.inFlight;
+  assert.match(f.messages.at(-1).historyStatus,/历史已更新/);f.sync.dispose();
+});
+
 test('partially read pages remain saved and a later retry recovers without duplicates or data loss', async () => {
   let failing=true;const f=fixture(offset=>offset===0?page([job('first')],25):failing?Promise.reject(timeout()):page([job('second')]));
   const before=structuredClone(f.controller.state.tasks);await f.sync.refresh();

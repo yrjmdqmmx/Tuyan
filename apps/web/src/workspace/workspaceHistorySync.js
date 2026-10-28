@@ -8,7 +8,11 @@ export class WorkspaceHistorySync {
     this.failures=0;this.nextDue=0;this.started=false;this.disposed=false;this.inFlight=null;
   }
   start() { if(this.started || this.disposed)return;this.started=true;void this.refresh(); }
-  wake() { if(this.started && this.now()>=this.nextDue)void this.refresh(); }
+  wake() {
+    if(!this.started || this.disposed)return;
+    if(this.now()>=this.nextDue)void this.refresh();
+    else this.schedule(); // A hidden/offline completion may have no live timer.
+  }
   schedule() {
     this.clearTimer(this.timer);
     if(!this.disposed && this.canRefresh())this.timer=this.setTimer(()=>this.wake(),Math.max(0,this.nextDue-this.now()));
