@@ -67,7 +67,7 @@ test('task search includes title and drafts, scopes archive filter to tasks, and
   assert.equal(JSON.stringify(state),before);
 });
 
-test('all three groups render; typing and cancelling keep navigation expansion, scroll, and task content', async () => {
+test('task, draft, function and tool groups render; typing and cancelling keep navigation expansion, scroll, and task content', async () => {
   setup();const before=JSON.stringify(latest);
   fireEvent.click(screen.getByRole('button',{name:'打开侧边栏'}));
   fireEvent.click(screen.getByRole('button',{name:'资源与帮助'}));

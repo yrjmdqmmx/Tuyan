@@ -1,5 +1,5 @@
 import { applyTaskDeletions, deletionMarkers, permanentlyRemoveTask, taskMaterialIds } from '../../../../packages/api/src/workspace-deletion.mjs';
-import { readAccountHistory } from './workspaceHistory.js';
+import { createHistoryReader, readAccountHistory } from './workspaceHistory.js';
 import { cleanWorkspace } from '../../../../packages/api/src/workspace-sync.mjs';
 import { newWorkspace, uid, taskHasContent, hasRequirements } from './workspaceState.js';
 
@@ -189,15 +189,18 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
     }
     return cleanWorkspace(out);
   }
-  const historyCache=new Map();let hydratedDeletions='';
-  async function history(offset=0) {
-    const data=await readAccountHistory({baseUrl,userId,fetcher,offset});
+  const historyCache=new Map();let hydratedDeletions=null;
+  const historyReader=createHistoryReader(offset=>readAccountHistory({baseUrl,userId,fetcher,offset}));
+  async function history(offset=0, options) {
+    const data=await historyReader.read(offset, options);
     for(const job of data.jobs)historyCache.set(job.id,{expires:Date.now()+240000,job});
     return data;
   }
   async function hydrate(wireState, existing) {
     if (!wireState) return null;
-    const deleted=JSON.stringify(wireState.purgedTasks||[]);if(deleted!==hydratedDeletions){resultCache.clear();historyCache.clear();hydratedDeletions=deleted;}
+    const deleted=JSON.stringify(wireState.purgedTasks||[]);
+    if(hydratedDeletions!==null && deleted!==hydratedDeletions){resultCache.clear();historyCache.clear();historyReader.clear();}
+    hydratedDeletions=deleted;
     const out = cleanWorkspace(wireState), known = new Map(versionsOf(existing || {tasks:[]}).filter(v=>v.resultId && v.url).map(v=>[v.resultId,v.url]));
     if(versionsOf(out).some(v=>v.history && (!historyCache.has(v.history.jobId) || historyCache.get(v.history.jobId).expires<Date.now()))){
       try {let offset=0;do {const data=await history(offset);if(data.nextOffset==null || data.nextOffset<=offset)break;offset=data.nextOffset;}while(true);}
@@ -226,7 +229,7 @@ export function createWorkspaceClient({ baseUrl = '', userId, fetcher = fetch })
     for (const t of out.tasks) for (const d of [...Object.values(t.branches).flatMap(b=>[b.draft,...Object.values(b.refinements)]), ...t.runs.map(r=>r.input)]) for (const a of d.attachments) { a.status='local'; a.browserSaved=true; }
     return out;
   }
-  return { history, deleteTask:async(taskId,revision)=>{const saved=await request('/tasks/'+encodeURIComponent(taskId),'DELETE',{revision});resultCache.clear();historyCache.clear();return saved;}, get:revision=>request(Number.isSafeInteger(revision)?`?revision=${revision}`:''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
+  return { history, deleteTask:async(taskId,revision)=>{const saved=await request('/tasks/'+encodeURIComponent(taskId),'DELETE',{revision});resultCache.clear();historyCache.clear();historyReader.clear();return saved;}, get:revision=>request(Number.isSafeInteger(revision)?`?revision=${revision}`:''), put:(revision,state)=>request('','PUT',{revision,state}), wire, hydrate };
 }
 
 export class WorkspaceSyncController {

@@ -9,7 +9,14 @@ const draftFields = ['text', 'caption', 'avoid', 'attachments', 'mode', 'setting
 const draftContent = d => JSON.stringify(draftFields.map(field => d[field]));
 const draftHasContent = d => draftContent({ ...d, mode: 'simple' }) !== draftContent(newDraft());
 export const hasRequirements = d => !!(d.text || d.caption || d.avoid || d.attachments.length);
-export const taskHasContent = t => !t.automaticTitle || t.runs.length > 0 || Object.values(t.branches).some(b => draftHasContent(b.draft) || Object.values(b.refinements).some(draftHasContent));
+// Admission, not an attempted submission, makes a task permanent. Keep legacy
+// history/results and manually saved SVGs visible without migrating their data.
+export const isFormalTask = t => t.runs.some(r => r.accepted || r.execution?.jobId || r.history)
+  || Object.values(t.branches).some(b => b.groups.some(g => g.candidates.some(c => c.versions.length)));
+export const taskHasContent = t => isFormalTask(t) || !t.automaticTitle || t.runs.length > 0 || Object.values(t.branches).some(b => draftHasContent(b.draft) || Object.values(b.refinements).some(draftHasContent));
+export const taskUpdatedAt = t => Math.max(t.updatedAt || 0, ...t.runs.map(r => r.createdAt || 0));
+export const savedTaskDrafts = tasks => tasks.filter(t => !t.deleted && !t.archived && !isFormalTask(t) && taskHasContent(t))
+  .sort((a, b) => taskUpdatedAt(b) - taskUpdatedAt(a));
 export const currentTask = s => s.tasks.find(t => t.id === s.selectedTaskId);
 export const currentBranch = s => currentTask(s).branches[currentTask(s).path];
 // The visible version is the next operation's source. Existing per-version
@@ -104,9 +111,13 @@ export function workspaceReducer(state, action) {
     const task=newTask(action.id || uid(),currentTask(s)?.path || 'png');
     task.title=action.template.title;task.automaticTitle=false;
     Object.assign(task.branches[task.path].draft,{text:action.template.methodContent,caption:action.template.caption,avoid:action.template.negativePrompt,revision:1});
+    task.updatedAt=action.at || Date.now();
     s.tasks.unshift(task);s.selectedTaskId=task.id;return s;
   }
   if (action.type === 'CREATE_TASK') {
+    const drafts = savedTaskDrafts(s.tasks);
+    const draft = drafts.find(t => t.id === s.selectedTaskId) || drafts[0];
+    if (draft) { s.selectedTaskId = draft.id; return s; }
     const empty = s.tasks.find(t => !t.deleted && !t.archived && !taskHasContent(t));
     if (empty) { empty.path = currentTask(s)?.path || empty.path; s.selectedTaskId = empty.id; return s; }
     const task = newTask(action.id || uid(), currentTask(s)?.path || 'png');
@@ -144,7 +155,7 @@ export function workspaceReducer(state, action) {
       for (const field of changed) d[field] = copy(action.patch[field]);
       if (changed.every(field => field === 'mode')) return s;
       d.revision++;
-      if (t.automaticTitle && !t.runs.length) t.title = d.text.trim().split('\n')[0].slice(0, 32) || '新任务';
+      if (t.automaticTitle && !isFormalTask(t)) t.title = d.text.trim().split('\n')[0].slice(0, 32) || '新任务';
       break;
     }
     case 'ADD_ATTACHMENTS':

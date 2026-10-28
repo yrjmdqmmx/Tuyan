@@ -109,7 +109,7 @@ test('creating repeatedly does not multiply empty sidebar tasks', () => {
   let s = newWorkspace('a'); s = act(s, 'CREATE_TASK', { id: 'b' }); s = act(s, 'CREATE_TASK', { id: 'c' });
   assert.equal(s.tasks.length, 1);
 });
-test('supplements and setting-only drafts are preserved as separate tasks', () => {
+test('new task reopens supplement and setting-only drafts without altering them', () => {
   const settings = currentDraft(newWorkspace('defaults')).settings;
   for (const patch of [
     { caption: '研究流程图' },
@@ -119,9 +119,8 @@ test('supplements and setting-only drafts are preserved as separate tasks', () =
   ]) {
     let s = act(newWorkspace('a'), 'EDIT_DRAFT', { patch });
     s = act(s, 'CREATE_TASK', { id: 'b' });
-    assert.equal(s.tasks.length, 2);
-    assert.equal(currentTask(s).id, 'b');
-    s = act(s, 'SELECT_TASK', { id: 'a' });
+    assert.equal(s.tasks.length, 1);
+    assert.equal(currentTask(s).id, 'a');
     for (const [key, value] of Object.entries(patch)) assert.deepEqual(currentDraft(s)[key], value);
   }
 });

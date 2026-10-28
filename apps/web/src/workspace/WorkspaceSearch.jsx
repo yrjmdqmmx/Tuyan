@@ -12,8 +12,10 @@ export default function WorkspaceSearch({ tasks, searchStateRef, capabilities, r
   function onQuery(value) { searchStateRef.current.query = value; setQuery(value); }
   function onArchived(value) { searchStateRef.current.archived = value; setArchived(value); }
   const destinations = searchDestinations(query, capabilities);
+  const matches = searchTasks(taskIndex, query, archived);
   const groups = [
-    ['任务', searchTasks(taskIndex, query, archived)],
+    ['任务', matches.filter(entry => entry.group === '任务')],
+    ['草稿', matches.filter(entry => entry.group === '草稿')],
     ['功能', destinations.filter(entry => entry.group === '功能')],
     ['工具', destinations.filter(entry => entry.group === '工具')],
   ];

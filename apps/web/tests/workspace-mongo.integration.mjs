@@ -5,7 +5,7 @@ import {IDBFactory} from 'fake-indexeddb';
 import {createAuthRuntime} from '../../auth-gateway/src/auth.js';
 import {createWorkspaceRouter} from '../../auth-gateway/src/workspace-sync.js';
 import {createWorkspaceCache,WorkspaceSyncController,createWorkspaceClient,equal} from '../src/workspace/workspaceSync.js';
-import {newWorkspace,workspaceReducer} from '../src/workspace/workspaceState.js';
+import {newWorkspace,newTask,workspaceReducer} from '../src/workspace/workspaceState.js';
 const requireGateway=createRequire(new URL('../../auth-gateway/package.json',import.meta.url));
 const {MongoClient,ObjectId}=requireGateway('mongodb'),express=requireGateway('express');
 const uri=process.env.WORKSPACE_COMPAT_TEST_URI;
@@ -28,7 +28,7 @@ test('real Mongo replica set: account CAS, independent-origin clients and durabl
  const shared=createWorkspaceCache(new IDBFactory()),separate=createWorkspaceCache(new IDBFactory());
  async function tab(cache,transport,id,restoreId){const c=new WorkspaceSyncController({cache,key:'account',client:transport.client,recoveryId:id,restoreId});tabs.push(c);await c.init();stopTimer(c);await c.sync();stopTimer(c);return c;}
  try{
-  let seed=edit(newWorkspace('one'),'one','base one');seed=workspaceReducer(seed,{type:'CREATE_TASK',id:'two'});seed=edit(seed,'two','base two');await auth.workspaceStore.put('test-owner',0,seed);
+  let seed=edit(newWorkspace('one'),'one','base one');seed={...seed,selectedTaskId:'two',tasks:[...seed.tasks,newTask('two')]};seed=edit(seed,'two','base two');await auth.workspaceStore.put('test-owner',0,seed);
   await t.test('actual transaction CAS rejects stale writes; accepted content remains intact',async()=>{
    const before=await auth.workspaceStore.get('test-owner');const outcomes=await Promise.allSettled([auth.workspaceStore.put('test-owner',before.revision,seed),auth.workspaceStore.put('test-owner',before.revision,seed)]);
    assert.equal(outcomes.filter(r=>r.status==='fulfilled').length,1);assert.equal(outcomes.find(r=>r.status==='rejected').reason.status,409);assert.equal((await auth.workspaceStore.get('test-owner')).revision,before.revision+1);

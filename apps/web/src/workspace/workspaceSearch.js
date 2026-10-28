@@ -1,5 +1,5 @@
 import { ECOSYSTEM_TOOLS } from '../ecosystem/catalog.js';
-import { PATHS, taskHasContent } from './workspaceState.js';
+import { PATHS, isFormalTask, taskHasContent } from './workspaceState.js';
 
 // Navigation only. Never put execution, creation, import, or save callbacks here.
 // ResourceLinks uses the same page list so navigation and search cannot drift.
@@ -55,9 +55,9 @@ export function searchDestinations(query, {isAdmin = false, models = true, setti
 
 export function indexSearchTasks(tasks) {
   return tasks.filter(taskHasContent).map(task => ({
-    id:task.id, name:task.title, archived:task.archived || task.deleted, updatedAt:task.updatedAt || 0,
+    id:task.id, name:task.title, group:isFormalTask(task) ? '任务' : '草稿', archived:task.archived || task.deleted, updatedAt:task.updatedAt || 0,
     text:normalize([task.title, ...task.runs.map(run => run.input.text), ...Object.values(task.branches).flatMap(branch => [branch.draft.text,...Object.values(branch.refinements).map(draft => draft.text)])].join(' ')),
-    description:`${task.deleted ? '旧版移除 · ' : task.archived ? '已归档 · ' : ''}${PATHS[task.path]} · ${task.runs.length} 次执行`, target:{taskId:task.id},
+    description:`${task.deleted ? '旧版移除 · ' : task.archived ? '已归档 · ' : ''}${PATHS[task.path]} · ${isFormalTask(task) ? `${task.runs.length} 次执行` : task.activeRunId ? '正在确认提交' : '尚未正式提交'}`, target:{taskId:task.id},
   })).sort((a,b) => b.updatedAt - a.updatedAt);
 }
 

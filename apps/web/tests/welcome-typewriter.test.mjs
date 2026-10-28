@@ -96,7 +96,9 @@ test('hidden tabs and open panels pause the loop and unmount removes listeners',
 
 function Harness({ initial = newWorkspace('welcome-task') }) {
   const [state, dispatch] = useReducer(workspaceReducer, initial);
-  return React.createElement(TaskWorkspace, { state, dispatch, onFiles() {}, onSubmit() {}, user: { name: '小研' } });
+  return React.createElement(TaskWorkspace, { state, dispatch, onFiles() {}, onSubmit() {
+    dispatch({type:'BEGIN',runId:'welcome-run'});dispatch({type:'ACCEPT',runId:'welcome-run'});dispatch({type:'FINISH',runId:'welcome-run'});
+  }, user: { name: '小研' } });
 }
 test('IME start stops immediately; clearing typed text does not restart; a new task can animate', t => {
   const clock = setup(t); render(React.createElement(Harness));
@@ -106,7 +108,10 @@ test('IME start stops immediately; clearing typed text does not restart; a new t
   fireEvent.change(input, { target: { value: '研究内容' } }); fireEvent.compositionEnd(input);
   fireEvent.change(input, { target: { value: '' } });
   clock.tick(20000); assert.equal(phase(), 'stopped'); assert.equal(input.value, '');
-  fireEvent.change(input, { target: { value: '为另一个新任务保留这份草稿' } });
+  fireEvent.change(input, { target: { value: '新建应继续这份草稿' } });
+  fireEvent.click(screen.getByRole('button', { name: '新建任务' })); assert.equal(phase(), 'stopped');
+  assert.equal(input.value, '新建应继续这份草稿');
+  fireEvent.click(screen.getByRole('button', { name: '生成图像' }));
   fireEvent.click(screen.getByRole('button', { name: '新建任务' })); assert.equal(phase(), 'typing');
 });
 

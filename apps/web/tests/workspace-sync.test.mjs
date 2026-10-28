@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { IDBFactory } from 'fake-indexeddb';
 import { File } from 'node:buffer';
 import { cleanWorkspace } from '../../../packages/api/src/workspace-sync.mjs';
-import { newWorkspace, workspaceReducer, currentDraft, taskHasContent } from '../src/workspace/workspaceState.js';
+import { newWorkspace, newTask, workspaceReducer, currentDraft, taskHasContent } from '../src/workspace/workspaceState.js';
 import { createWorkspaceCache, WorkspaceSyncController, createWorkspaceClient, mergeWorkspaces, readLegacy, ORIGINAL_SCOPE, versionsOf } from '../src/workspace/workspaceSync.js';
 import { saveBrowserMaterial, browserFile } from '../src/lib/browserMaterials.js';
 import { restoreWorkspaceOriginal } from '../src/workspace/workspaceMaterials.js';
@@ -22,7 +22,7 @@ test('same-task conflicts preserve both complete histories; unrelated tasks merg
  const base=draft(newWorkspace('t'),'base'),local=draft(base,'device A'),remote=draft(base,'device B');
  const merged=mergeWorkspaces(base,local,remote,()=> 'copy');assert.equal(merged.conflicts,1);assert.equal(merged.state.selectedTaskId,'t');
  assert.equal(merged.state.tasks.find(t=>t.id==='copy').branches.png.draft.text,'device A');assert.equal(merged.state.tasks.find(t=>t.id==='t').branches.png.draft.text,'device B');
- const other=workspaceReducer(remote,{type:'CREATE_TASK',id:'other'});const result=mergeWorkspaces(base,base,other);assert.equal(result.conflicts,0);assert.equal(result.state.tasks.length,2);
+ const other={...remote,selectedTaskId:'other',tasks:[...remote.tasks,newTask('other')]};const result=mergeWorkspaces(base,base,other);assert.equal(result.conflicts,0);assert.equal(result.state.tasks.length,2);
 });
 test('two isolated devices sync drafts/settings, handle offline conflict and retain queued state across reload',async()=>{
  const remote=server(),cacheA=createWorkspaceCache(new IDBFactory()),a=await ready(remote,cacheA);
@@ -153,7 +153,7 @@ test('an edit made during a quiet revision check is uploaded, not dropped by the
 test('task and path browsing stays local; real edits still upload and failures remain visible',async()=>{
  const backend=server(),cache=createWorkspaceCache(new IDBFactory()),c=await ready(backend,cache);
  try {
-  c.setState(()=>draft(newWorkspace('one'),'first draft'));c.setState(s=>workspaceReducer(s,{type:'CREATE_TASK',id:'two'}));
+  c.setState(()=>draft(newWorkspace('one'),'first draft'));c.setState(s=>({...s,selectedTaskId:'two',tasks:[...s.tasks,newTask('two')]}));
   c.setState(s=>draft(s,'second draft'));await c.sync();clearTimeout(c.timer);
   const revision=c.revision,generation=c.generation,events=[];c.notify=value=>events.push(value.status);
   let scheduled=0;c.schedule=()=>{scheduled++;};

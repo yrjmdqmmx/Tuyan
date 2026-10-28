@@ -2,7 +2,7 @@ import TaskActionMenu from './TaskActionMenu.jsx';
 import { useState } from 'react';
 import { PanelLeftClose, Plus, Search, Boxes, ChartNoAxesColumn, BookOpen, ChevronDown, LoaderCircle, SquarePen } from 'lucide-react';
 import { logoUrl } from '../config.js';
-import { taskHasContent } from './workspaceState.js';
+import { isFormalTask, savedTaskDrafts, taskUpdatedAt } from './workspaceState.js';
 import ResourceLinks from './ResourceLinks.jsx';
 import SidebarAccount from './SidebarAccount.jsx';
 import SidebarTooltip, { searchShortcut } from './SidebarTooltip.jsx';
@@ -10,7 +10,8 @@ import TashanLogo from './TashanLogo.jsx';
 
 export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavigate, onRename, onDelete, onSignIn, onSignOut, onAccountSettings, onAdmin, accountPending = false, user, mobile = false, page = 'workspace' }) {
   const [resources, setResources] = useState(false);
-  const visible = state.tasks.filter(t => !t.deleted && !t.archived && taskHasContent(t)).sort((a,b)=>Math.max(b.updatedAt||0,...b.runs.map(r=>r.createdAt))-Math.max(a.updatedAt||0,...a.runs.map(r=>r.createdAt)));
+  const visible = state.tasks.filter(t => !t.deleted && !t.archived && isFormalTask(t)).sort((a,b)=>taskUpdatedAt(b)-taskUpdatedAt(a));
+  const drafts = savedTaskDrafts(state.tasks);
   function select(id) { dispatch({ type: 'SELECT_TASK', id }); onNavigate('workspace'); if (mobile) onClose(); }
   function create() { dispatch({ type: 'CREATE_TASK' }); onNavigate('workspace'); if (mobile) onClose(); }
   const rows = tasks => tasks.map(t => {
@@ -43,6 +44,9 @@ export default function TaskSidebar({ state, dispatch, onClose, onSearch, onNavi
         {visible.some(t => t.pinned) && <section><h2>置顶</h2>{rows(visible.filter(t => t.pinned))}</section>}
         <section><h2>最近任务</h2>{rows(visible.filter(t => !t.pinned))}{!visible.length && <p className="tw-muted">还没有任务</p>}</section>
       </nav>
+      {drafts.length > 0 && <nav className="tw-tasks tw-drafts" aria-label="草稿">
+        <section><h2>草稿</h2>{rows(drafts)}</section>
+      </nav>}
     </div>
     <div className={mobile ? "tw-mobile-nav-footer" : "tw-sidebar-account-slot"}>
       {mobile && <button type="button" className="tw-mobile-create" onClick={create}><SquarePen size={22} />新建任务</button>}

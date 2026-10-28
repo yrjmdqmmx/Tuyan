@@ -462,3 +462,6 @@
   background-repeat:no-repeat;background-position:right 12px center;background-size:16px 16px;
 }
 @media(forced-colors:active){.tw-shell select:not([multiple]):not([size]),.tw-dialog select:not([multiple]):not([size]){appearance:auto;-webkit-appearance:auto;background-image:none}}
+
+/* Saved drafts stay separate from the formal task navigation. */
+.tw-tasks.tw-drafts{padding-top:0}

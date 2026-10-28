@@ -254,14 +254,16 @@ for (const error of ['', '本地模拟失败']) test(`finished mobile execution 
 });
 
 test('mobile navigation closes on new task and task selection while preserving existing input', async () => {
+  let latest;
   let initial = workspaceReducer(newWorkspace('mobile'), { type:'RENAME', title:'保留草稿' });
-  render(React.createElement(Harness, { initial }));
+  render(React.createElement(Harness, { initial, onState:state => {latest=state;} }));
   fireEvent.change(screen.getByRole('textbox', { name:'绘图要求' }), { target:{ value:'未提交的绘图要求' } });
   fireEvent.click(screen.getByRole('button', { name:'打开侧边栏' }));
   await waitFor(() => assert.ok(document.activeElement === screen.getByRole('button', { name:'关闭任务导航' })));
   fireEvent.click(screen.getByRole('button', { name:'新建任务' }));
   assert.equal(screen.queryByRole('dialog'), null);
-  assert.equal(screen.getByRole('textbox', { name:'绘图要求' }).value, '');
+  assert.equal(screen.getByRole('textbox', { name:'绘图要求' }).value, '未提交的绘图要求');
+  assert.equal(latest.tasks.length, 1);
   fireEvent.click(screen.getByRole('button', { name:'打开侧边栏' }));
   fireEvent.click(screen.getByRole('button', { name:'保留草稿', exact:true }));
   assert.equal(screen.queryByRole('dialog'), null);
@@ -577,7 +579,7 @@ test('selecting a search result exits both mobile layers and releases their scro
   await settleFocus();
   fireEvent.click(screen.getByRole('button', {name:'搜索',exact:true}));
   await settleFocus();
-  fireEvent.click(screen.getByRole('button', {name:/本地任务草稿.*0 次执行/}));
+  fireEvent.click(screen.getByRole('button', {name:/本地任务草稿.*尚未正式提交/}));
   await settleFocus();
   assert.equal(screen.queryByRole('dialog'), null);
   assert.equal(container.querySelector('.tw-shell').classList.contains('tw-mobile-nav-open'), false);

@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {IDBFactory} from 'fake-indexeddb';
 import {createWorkspaceCache,WorkspaceSyncController,mergeWorkspaces,equal,createWorkspaceClient} from '../src/workspace/workspaceSync.js';
-import {newWorkspace,workspaceReducer,currentDraft} from '../src/workspace/workspaceState.js';
+import {newWorkspace,newTask,workspaceReducer,currentDraft} from '../src/workspace/workspaceState.js';
 import {cleanWorkspace} from '../../../packages/api/src/workspace-sync.mjs';
 const edit=(s,text,taskId)=>workspaceReducer(s,{type:'EDIT_DRAFT',taskId,patch:{text}});
 function server(initial){let state=structuredClone(initial),revision=1,offline=false,puts=0;return {get:async n=>{if(offline)throw Error('offline');return n===revision?{revision,unchanged:true}:{revision,state:structuredClone(state)};},wire:async s=>structuredClone(s),hydrate:async s=>structuredClone(s),put:async(r,s)=>{if(offline)throw Error('offline');if(r!==revision)throw Object.assign(Error('WORKSPACE_CONFLICT'),{status:409});state=structuredClone(s);puts++;return {revision:++revision};},offline:v=>offline=v,read:()=>state,puts:()=>puts};}
-const seed=()=>workspaceReducer(edit(newWorkspace('one'),'first'),{type:'CREATE_TASK',id:'two'});
+// Legacy accounts can contain several unsubmitted drafts. Seed them directly.
+const seed=()=>({...edit(newWorkspace('one'),'first'),selectedTaskId:'two',tasks:[...edit(newWorkspace('one'),'first').tasks,newTask('two')]});
 async function controller(client,cache,id){const c=new WorkspaceSyncController({key:'account',client,cache,recoveryId:id});await c.init();clearTimeout(c.timer);await c.sync();clearTimeout(c.timer);return c;}
 async function settle(...controllers){for(let i=0;i<3;i++)for(const c of controllers){await c.sync();clearTimeout(c.timer);}}
 
@@ -90,7 +91,8 @@ test('a rename dialog opened before a remote rename cannot silently overwrite it
 
 
 test('concurrent task additions converge despite different local ordering; mode is shared content',async()=>{
- const backend=server(edit(newWorkspace('one'),'seed'));backend.wire=async s=>cleanWorkspace(s);
+ let seed=edit(newWorkspace('one'),'seed');seed=workspaceReducer(seed,{type:'BEGIN',runId:'seed-run'});seed=workspaceReducer(seed,{type:'ACCEPT',runId:'seed-run'});seed=workspaceReducer(seed,{type:'FINISH',runId:'seed-run'});
+ const backend=server(seed);backend.wire=async s=>cleanWorkspace(s);
  const a=await controller(backend,createWorkspaceCache(new IDBFactory()),'A'),b=await controller(backend,createWorkspaceCache(new IDBFactory()),'B');
  try{
   a.setState(s=>workspaceReducer(s,{type:'CREATE_TASK',id:'from-a'}));a.setState(s=>edit(s,'created in A'));
