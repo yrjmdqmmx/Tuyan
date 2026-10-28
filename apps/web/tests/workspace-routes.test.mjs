@@ -129,12 +129,12 @@ test('anonymous public navigation stays accessible, while workbench and administ
   await navigate('/?admin=users&a_id=42');
   await screen.findByRole('heading', {name:'登录图研'});
   assert.equal(screen.queryByRole('navigation', {name:'后台导航'}), null);
-  assert.equal(screen.queryByLabelText('绘图要求'), null);
+  assert.equal(screen.queryByRole('textbox', {name:'绘图要求'}), null);
   await navigate('/?view=guide');
   assert.ok(screen.getByRole('heading', {name:'使用教程', level:1}));
   await navigate('/?view=legacy');
   await screen.findByRole('heading', {name:'登录图研'});
-  assert.equal(screen.queryByLabelText('绘图要求'), null);
+  assert.equal(screen.queryByRole('textbox', {name:'绘图要求'}), null);
 });
 
 test('leaderboard deep routes and navigation use browser history; signed-out submission offers login without posting', async () => {

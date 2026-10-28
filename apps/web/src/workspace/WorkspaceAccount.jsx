@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AUTH_BASE_DEFAULT, AUTH_ENABLED, AUTH_REQUIRED, logoUrl, LOCAL_CONSUMPTION_TEST, authClient } from '../config.js';
+import { AUTH_BASE_DEFAULT, AUTH_ENABLED, AUTH_REQUIRED, LOCAL_CONSUMPTION_TEST, authClient } from '../config.js';
 import { useAuthSession } from '../hooks/useAuthSession.js';
 import { useWatcha } from '../hooks/useWatcha.js';
 import AuthPanel from '../components/AuthPanel.jsx';
 import AccountSettingsDialog from '../components/AccountSettingsDialog.jsx';
 import AccessibleDialog from '../components/AccessibleDialog.jsx';
 import { X } from 'lucide-react';
+import WorkspaceLogin from './WorkspaceLogin.jsx';
 
 // UI adapter only: the host uses the existing Better Auth client and account components.
 // Session data never enters task drafts, snapshots, exports or browser task storage.
@@ -54,10 +55,7 @@ export default function WorkspaceAccount({ children, beforeSignOut, loginRequest
     : authStatus === 429 ? '账号检查过于频繁，请稍后重试。任务与草稿已保留。'
       : '暂时无法检查登录状态，任务与草稿已保留。请确认连接后重试。' : '');
   return <>
-    {requireLogin && !user ? <main className="tw-login-required" style={{maxWidth:520,margin:'8vh auto',padding:'0 20px'}}>
-      <header style={{textAlign:'center',marginBottom:24}}><img src={logoUrl} alt="图研 Tuyan" width="56" height="56" /><h1>登录图研</h1><p>登录后使用工作台。每个账号最多同时执行两个任务，其余任务排队。</p></header>
-      {auth.isPending ? <p role="status">正在确认登录状态…</p> : <AuthPanel client={client} watcha={watcha} onAuthenticated={authenticated} />}
-    </main> : children({ user, watcha, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
+    {requireLogin && !user ? <WorkspaceLogin pending={auth.isPending} client={client} watcha={watcha} onAuthenticated={authenticated} /> : children({ user, watcha, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
       onEmailChanged: async () => { action.current++; auth.clear(); afterLogin.current=null; setError('登录邮箱已更换，请使用新邮箱重新登录。'); setPanel('login'); },
       accountPending: auth.isPending || signingOut })}
     {message && <div className="tw-auth-message" role="alert"><span>{message}</span>{!signingOut && <button type="button" disabled={auth.isPending} onClick={async () => { setError(''); await auth.refresh(); }}>{auth.isPending ? '正在检查…' : '重新检查'}</button>}</div>}

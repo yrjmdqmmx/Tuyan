@@ -16,7 +16,7 @@ import WelcomeTypewriter from './WelcomeTypewriter.jsx';
 import { currentTask, currentBranch, PATHS, currentDraft } from './workspaceState.js';
 import { ACCOUNT_SETTINGS_SECTIONS } from './accountSettingsSections.js';
 
-export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress }) {
+export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTask, onSubmit, onFiles, busy = false, uploadError = '', missingOriginal, onRestoreOriginal, saveStatus = '', user = null, onSignIn, onSignOut, onAccountSettings, accountPending = false, renderModels, renderRecovery, renderSettings, renderOptimize, renderPage, renderAccount, isAdmin = false, renderSvgEditor, onDownload, onCloseUnaccepted, headerTools, executionProgress, presentationOnly = false }) {
   const task = currentTask(state), branch = currentBranch(state);
   const nickname = user?.name?.trim();
   const [welcomeStoppedTasks, setWelcomeStoppedTasks] = useState(() => new Set());
@@ -68,9 +68,10 @@ export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTas
     update(); media.addEventListener('change', update); return () => media.removeEventListener('change', update);
   }, []);
   useEffect(() => {
+    if (presentationOnly) return;
     const key = e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k' && !e.isComposing) { e.preventDefault(); openSearch(); } };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
-  }, []);
+  }, [presentationOnly]);
   useEffect(() => { setPanel(null); }, [state.selectedTaskId]);
   useEffect(() => {
     if (!composerFocus) return;
@@ -93,7 +94,7 @@ export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTas
     onAccountSettings: (renderAccount || onAccountSettings) && (() => { setMobileOpen(false); if (renderAccount) setPage('账户设置'); else onAccountSettings(); }),
   };
   const hasStarted = task.runs.length > 0 || task.path === 'svg';
-  useWorkspaceEntrance(shellRef, page === 'workspace' && !hasStarted && !task.deleted);
+  useWorkspaceEntrance(shellRef, !presentationOnly && page === 'workspace' && !hasStarted && !task.deleted);
   function openComposerPanel(next, event) {
     composerDialogTriggerRef.current = event.currentTarget;
     setSettingsSection(null);
@@ -141,7 +142,7 @@ export default function TaskWorkspace({ navigation, state, dispatch, onDeleteTas
         {headerTools && <div className="tw-header-tools">{headerTools}</div>}
       </header>}
       {page !== 'workspace' ? <div key={`${page}:${modelView || ""}:${modelVisit}:${pageTool || ""}`} data-settings-view={page === '账户设置' ? (accountSection ? 'detail' : 'index') : undefined} className={`tw-page ${['models', '排行榜', '他山科研生态', '站长页', '社区评估题审核', '账户设置'].includes(page) ? 'tw-page-wide' : ''} ${page === '账户设置' ? 'tw-settings-page' : ''}`}><div className="tw-page-body">{page === 'models' ? renderModels?.({ management: true, headerTarget: modelHeaderTarget, initialView: modelView, onClose: () => setPage('workspace') }) : page === '账户设置' && renderAccount ? renderAccount({mobile,section:accountSection,onSectionChange:changeAccountSection,onOpenTask:id=>{if(state.tasks.some(t=>t.id===id&&!t.deleted)){dispatch({type:'SELECT_TASK',id});setPage('workspace');}}}) : renderPage?.(page, () => setPage('workspace'), setPage, {initialTool:pageTool, navigation, tasks:state.tasks, onSelectTask:id=>selectSearchResult({taskId:id})})}</div></div>
-        : task.deleted ? <div className="tw-empty-body"><p role="status">此任务由旧版本移除，内容仍保留。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button><button type="button" disabled={!askDelete} onClick={()=>askDelete(task)}>彻底删除</button></div> : !hasStarted ? <div className="tw-empty-body"><div className="tw-welcome"><WelcomeTypewriter key={task.id} nickname={nickname} stopped={welcomeStopped} paused={Boolean(panel || mobileOpen)} /></div><HomeTemplateCarousel key={task.id} mobile={mobile} stopped={welcomeStopped} paused={Boolean(panel || mobileOpen)} onApply={template=>dispatch({type:'APPLY_TEMPLATE',template})}/>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
+        : task.deleted ? <div className="tw-empty-body"><p role="status">此任务由旧版本移除，内容仍保留。</p><button type="button" onClick={()=>dispatch({type:'RESTORE_TASK'})}>恢复任务</button><button type="button" disabled={!askDelete} onClick={()=>askDelete(task)}>彻底删除</button></div> : !hasStarted ? <div className="tw-empty-body"><div className="tw-welcome"><WelcomeTypewriter key={task.id} nickname={nickname} stopped={presentationOnly || welcomeStopped} paused={Boolean(panel || mobileOpen)} /></div><HomeTemplateCarousel key={task.id} mobile={mobile} stopped={presentationOnly || welcomeStopped} paused={Boolean(panel || mobileOpen)} onApply={template=>dispatch({type:'APPLY_TEMPLATE',template})}/>{currentDraft(state).settings[currentDraft(state).mode].ratio !== 'auto' && <RatioCanvas ratio={currentDraft(state).settings[currentDraft(state).mode].ratio}/>}{composer}
         </div> : <><ResultWorkspace executionProgress={executionProgress} renderRecovery={renderRecovery} userId={user?.id} key={`${task.id}:${task.path}`} state={state} dispatch={dispatch} renderSvgEditor={renderSvgEditor} onDownload={onDownload} onCloseUnaccepted={!busy ? onCloseUnaccepted : null} /><div className="tw-docked">{composer}</div></>}
     </main>
     {mobile && mobileOpen && <div inert={panel === 'search' || deletion ? true : undefined} aria-hidden={panel === 'search' || deletion ? true : undefined}><WorkspaceDialog title="任务导航" className="tw-mobile-nav-dialog" backdropClassName="tw-mobile-nav-backdrop" onClose={() => setMobileOpen(false)}>{sidebar}</WorkspaceDialog></div>}

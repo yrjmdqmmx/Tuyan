@@ -21,6 +21,7 @@ import './components/generationSettingsDrawer.css';
 import './components/leaderboard-mobile.css';
 import './components/changelog.css';
 import './components/header-navigation.css';
+import WorkspaceFrame from './workspace/WorkspaceFrame.jsx';
 
 const WorkspaceRoot = lazy(() => import('./workspace/WorkspaceRoot.jsx'));
 // Local acceptance only: the production build removes this branch and fixture.
@@ -28,5 +29,5 @@ const WorkspacePreview = import.meta.env.DEV ? lazy(() => import('./workspace/Wo
 const workspacePreview = import.meta.env.DEV && new URLSearchParams(globalThis.location?.search).get('workspacePreview') === '1';
 
 createRoot(document.getElementById('root')).render(
-  <AppLocaleProvider><Suspense fallback={<p role="status">正在载入任务工作区…</p>}>{workspacePreview ? <WorkspacePreview /> : <WorkspaceRoot />}</Suspense>{globalThis.location?.origin === 'https://tuyansci.cn' && <footer className="icp-footer"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026071869号-3</a></footer>}</AppLocaleProvider>,
+  <AppLocaleProvider><WorkspaceFrame><Suspense fallback={<p role="status">正在载入任务工作区…</p>}>{workspacePreview ? <WorkspacePreview /> : <WorkspaceRoot />}</Suspense></WorkspaceFrame></AppLocaleProvider>,
 );

@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import WorkspaceAccount from '../src/workspace/WorkspaceAccount.jsx';
 import {AppLocaleProvider} from '../src/components/BenchmarkLocale.jsx';
 const nativeFetch=globalThis.fetch;
+window.matchMedia = query => ({ matches: false, media: query, addEventListener() {}, removeEventListener() {} });
 afterEach(()=>{cleanup();globalThis.fetch=nativeFetch;});
 function mount(client,onMount=()=>{}) {
  globalThis.fetch=async()=>Response.json({available:false});
@@ -25,4 +26,19 @@ test('unavailable account service never opens the workspace or erases browser dr
  mount({getSession:async()=>{throw Error('offline')}},()=>mounts++);
  await screen.findByRole('heading',{name:'登录账号'});await waitFor(()=>assert.ok(screen.getByRole('alert')));
  assert.equal(mounts,0);assert.equal(window.localStorage.getItem('retained-draft'),'existing-content');window.localStorage.removeItem('retained-draft');
+});
+test('mandatory login shows an inert empty workspace and cannot be dismissed or open background search',async()=>{
+ const user=userEvent.setup();const {container}=mount({getSession:async()=>({data:null})});
+ await screen.findByRole('heading',{name:'登录账号'});
+ const background=container.querySelector('.tw-login-background');
+ assert.ok(background.hasAttribute('inert'));assert.equal(background.getAttribute('aria-hidden'),'true');
+ assert.ok(background.querySelector('.tw-shell'));assert.equal(background.querySelectorAll('[data-task-id]').length,0);
+ assert.equal(screen.getByLabelText('密码').hasAttribute('placeholder'),false);
+ await user.keyboard('{Escape}{Control>}k{/Control}');
+ assert.equal(screen.getAllByRole('dialog').length,1);assert.ok(screen.getByRole('dialog',{name:'登录图研'}));
+ assert.equal(screen.queryByRole('dialog',{name:'搜索'}),null);
+ await user.click(screen.getByRole('button',{name:'忘记密码'}));
+ assert.ok(screen.getByRole('heading',{name:'忘记密码'}));
+ await user.click(screen.getByRole('button',{name:'返回登录'}));
+ assert.ok(screen.getByLabelText('密码'));
 });
