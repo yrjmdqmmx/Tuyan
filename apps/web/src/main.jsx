@@ -1,5 +1,6 @@
 import './components/github.css';
 import './components/google.css';
+import './components/social-identity.css';
 import './components/wechat.css';
 import './components/menus.css';
 import './focus.css';

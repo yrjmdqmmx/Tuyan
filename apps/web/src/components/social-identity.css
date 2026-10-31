@@ -1,0 +1,86 @@
+.social-identity-account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  margin: 0 0 12px;
+  border: 1px solid #dfe5df;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.social-identity-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.social-identity-brand > img {
+  display: block;
+  flex: none;
+  width: 28px;
+  height: auto;
+  max-height: 28px;
+  object-fit: contain;
+}
+
+.social-identity-account h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.social-identity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.social-identity-account .social-identity-action,
+.social-identity-account .social-identity-cancel {
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 1px solid #dce2dc;
+  border-radius: 9px;
+  background: #fff;
+  color: #293c31;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.social-identity-account .social-identity-cancel {
+  border-color: transparent;
+  color: #69736d;
+}
+
+.social-identity-account button:not(:disabled):hover { background: #f3f6f1; }
+.social-identity-account button:focus-visible { outline: 2px solid #355f4a; outline-offset: 3px; }
+.social-identity-account button:disabled { opacity: .6; cursor: default; }
+
+.social-identity-account .social-identity-linked {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: #355f4a;
+  font-size: 13px;
+}
+
+.social-identity-account > .error-line {
+  flex-basis: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .social-identity-account { padding: 16px; gap: 12px; }
+}
