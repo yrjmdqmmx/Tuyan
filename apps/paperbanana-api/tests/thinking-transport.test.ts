@@ -85,9 +85,11 @@ test('actual image builders preserve quality/size while injecting documented nat
       return Response.json(href.endsWith('/status')?{status:'COMPLETED'}:{images:[{url:'https://assets.example.org/fixture.png'}]})
     })
     let identities=0,edits=0
+    const excluded:string[]=[]
     for(const profile of THINKING_PROFILES.filter(p=>p.status==='supported'&&p.roles.includes('image')))for(const model of profile.modelIds) {
       const entry=(STATIC_MODEL_REGISTRY as any)[profile.provider]?.models.find((m:any)=>m.id===model)
-      if(!entry || entry.selectable===false)continue
+      assert.ok(entry,`missing historical image identity: ${profile.provider}/${model}`)
+      if(entry.selectable===false) { excluded.push(`${profile.provider}/${model}`); continue }
       const options=selectedOptions(profile)
       snapshot=compileThinkingSelection({provider:profile.provider,modelId:model,protocol:entry.roleProtocols?.image||entry.protocol,options},'image')
       captured=[];pending=undefined
@@ -106,7 +108,8 @@ test('actual image builders preserve quality/size while injecting documented nat
         identities++
       }catch(error:any){assert.fail(`${profile.provider}/${model}/image: ${String(error.message).slice(0,350)}`)}
     }
-    assert.equal(identities,32)
+    assert.deepEqual(excluded,['fal/imagineart/imagineart-2.0-preview/text-to-image'])
+    assert.equal(identities,31,'only the explicitly removed fal identity leaves current adapter coverage')
     t.diagnostic(`${identities} image generation and ${edits} eligible editing identities`)
   }finally{await r.close()}
 })
