@@ -1,0 +1,73 @@
+// Explicit local-only harness: actual payment sandbox + isolated Mongo ledger,
+// fixture login identity + simulated model executor. Never a production entry.
+import express from 'express';
+import {MongoClient} from 'mongodb';
+import {readFile} from 'node:fs/promises';
+import {randomBytes} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import {createServer} from '../../web/node_modules/vite/dist/node/index.js';
+import react from '../../web/node_modules/@vitejs/plugin-react/dist/index.js';
+import {accountWorkspaceStore} from '../src/workspace-lifecycle.js';
+import {createWorkspaceStore,createWorkspaceRouter} from '../src/workspace-sync.js';
+import {createPlusStore,PLUS_MUTATIONS} from '../src/plus-store.js';
+import {ensurePlusIndexes} from '../src/plus-indexes.js';
+import {createPlusWatcha} from '../src/plus-watcha.js';
+import {createPlusService,createPlusSimulationExecutor} from '../src/plus-service.js';
+import {createPlusRouter} from '../src/plus-router.js';
+const uri=process.env.PLUS_PREVIEW_MONGO_URI;
+if(!/^mongodb:\/\/127\.0\.0\.1:\d+\//.test(uri||''))throw Error('Explicit isolated loopback Mongo required');
+const port=Number(process.env.PLUS_PREVIEW_PORT||5189),origin=`http://127.0.0.1:${port}`;
+const dbName=process.env.PLUS_PREVIEW_DB||'tuyan_plus_sandbox_20261031';
+if(!/^tuyan_plus_sandbox_[a-zA-Z0-9_]+$/.test(dbName))throw Error('Sandbox DB name required');
+const mockPayment=process.env.PLUS_PREVIEW_PAYMENT==='mock';
+const previewRole=process.env.PLUS_PREVIEW_ROLE||'';
+if(!['','admin','ordinary'].includes(previewRole)||previewRole&&!mockPayment)throw Error('Role preview requires isolated mock payment');
+if(mockPayment&&!dbName.endsWith('_mock'))throw Error('Mock payment requires separate _mock database');
+const keyFile=process.env.PLUS_SANDBOX_KEY_FILE,resourceFile=process.env.PLUS_SANDBOX_RESOURCE_FILE;
+if(!mockPayment&&(!keyFile||!resourceFile))throw Error('Private sandbox file paths required');
+const resources=mockPayment?{environment:'sandbox',applicationId:'local-mock',entitlementId:'local-mock'}:JSON.parse(await readFile(resourceFile,'utf8'));
+if(resources.environment!=='sandbox')throw Error('Sandbox resources required');
+const apiKey=mockPayment?'':(await readFile(keyFile,'utf8')).trim();
+const userId=process.env.PLUS_PREVIEW_USER_ID||(mockPayment?'plus-local-mock-20261031':'plus-preview-user-20261031');
+if(!/^plus-(?:local|preview|prelaunch)-[A-Za-z0-9_-]{1,80}$/.test(userId))throw Error('Explicit fictional Plus test identity required');
+const sandboxConfig={enabled:true,environment:'sandbox',executionMode:'simulation',newPurchasesEnabled:true,newTasksEnabled:true,paymentConfigured:true,apiKey,entitlementId:resources.entitlementId,returnUrl:origin+'/__plus_preview'};
+const config=previewRole?{...sandboxConfig,adminOnly:true,environment:'live',executionMode:'disabled',newPurchasesEnabled:false,newTasksEnabled:false,paymentConfigured:false,apiKey:'',entitlementId:''}:sandboxConfig;
+const mongoClient=new MongoClient(uri);await mongoClient.connect();const db=mongoClient.db(dbName);
+await ensurePlusIndexes(db);
+await db.collection('user').updateOne({_id:userId},{$setOnInsert:{email:'plus-preview@example.test',createdAt:new Date()}},{upsert:true});
+const store=accountWorkspaceStore({db,mongoClient,factory:options=>createPlusStore({...options,namespace:`sandbox:${resources.applicationId}:${resources.entitlementId}`}),mutations:PLUS_MUTATIONS});
+const workspaceStore=accountWorkspaceStore({db,mongoClient,factory:createWorkspaceStore,mutations:['put','saveResult','importHistory','beginDelete','finishDelete']});
+const cookie=randomBytes(32).toString('hex'),secret=randomBytes(32).toString('hex');
+const cookieName=`tuyan_plus_fixture_${port}`;
+const auth={optionalSession:async request=>request.get('cookie')?.split('; ').includes(cookieName+'='+cookie)?{user:{id:userId}}:null};
+// Deterministic fixture dates are not replacements for Watcha's real response.
+const payment=previewRole?{access:async()=>({access:'denied'})}:mockPayment?{access:async()=>({access:'granted',startsAt:1793404800,expiresAt:1795996800})}:createPlusWatcha({config});
+const simulationExecutor=createPlusSimulationExecutor();
+const executor={...simulationExecutor,async preflight({workspace}){if(!workspace)return;const task=(await workspaceStore.get(userId)).state?.tasks.find(t=>t.id===workspace.taskId);if(!task||task.deleted||task.activeRunId!==workspace.runId)throw Object.assign(Error('PLUS_WORKSPACE_CHANGED'),{code:'PLUS_WORKSPACE_CHANGED',status:409});}};
+const service=createPlusService({config,store,payment,secret,executor});
+const app=express();app.disable('x-powered-by');
+app.use((req,res,next)=>{if(req.get('host')!==`127.0.0.1:${port}`)return res.sendStatus(403);res.set('Cache-Control','no-store');next();});
+app.use('/api/plus',createPlusRouter({auth,service,config,isAllowed:user=>previewRole==='admin'&&user.id===userId,frontendOrigins:[origin]}));
+app.use('/api/workspace',createWorkspaceRouter({auth,store:workspaceStore,frontendOrigins:[origin],history:async()=>({jobs:[],complete:true,nextCursor:null})}));
+app.get(['/health','/paperbanana-api'],(_req,res)=>res.json({code:0,ok:true,runtime:'gateway',backendMode:'gateway',workspaceExecutionContractVersion:1,executionEnabled:false,simulation:true}));
+app.get('/__plus_workbench',(_req,res)=>res.redirect('/?plus_workbench=1'));
+app.get('/api/model-library',async(req,res)=>{if(!await auth.optionalSession(req))return res.sendStatus(401);res.json({version:1,revision:0,connections:[],models:[]});});
+app.get('/api/tokendance/connection',(_req,res)=>res.json({enabled:false,connected:false}));
+app.post('/paperbanana-api',express.json({limit:'160kb'}),(req,res)=>{
+  const action=req.body?.action;
+  if(action==='health')return res.json({code:0,ok:true,runtime:'gateway',backendMode:'gateway',workspaceExecutionContractVersion:1,executionEnabled:false,simulation:true});
+  if(action==='modelRegistry')return res.json({code:0,registryVersion:1,thinkingContractVersion:1,providers:{}});
+  if(action==='adminStatus')return res.json({code:0,isAdmin:previewRole==='admin'});
+  res.status(409).json({code:'LOCAL_SIMULATION_ONLY',error:'此本地预览只允许 Plus 模拟任务'});
+});
+const webRoot=fileURLToPath(new URL('../../web/',import.meta.url)),repoRoot=fileURLToPath(new URL('../../../',import.meta.url));
+const vite=await createServer({configFile:false,root:webRoot,plugins:[react()],define:{'import.meta.env.VITE_PLUS_PREPARATION_UI':'"true"','import.meta.env.VITE_API_BASE':'""'},server:{middlewareMode:true,hmr:{port:port+10000,host:'127.0.0.1'},fs:{allow:[repoRoot]}},appType:'custom'});
+app.get(['/','/__plus_preview','/__plus_workbench'],async(req,res,next)=>{try{
+  res.cookie(cookieName,cookie,{httpOnly:true,sameSite:'strict',path:'/',maxAge:3600_000});
+  const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图研 Plus · ${mockPayment?'本地模拟':'支付沙箱'}</title><style>body{margin:0;background:#f3f6f3;color:#243b2c}*{box-sizing:border-box}</style><div id="root" data-user="${userId}" data-role="${previewRole}" data-payment="${mockPayment?'mock':'sandbox'}"></div><script type="module" src="/src/plus/${req.query.plus_workbench==='1'?'PlusWorkspacePreview':'PlusPreview'}.jsx"></script></html>`;
+  res.type('html').send(await vite.transformIndexHtml(req.originalUrl,html));
+}catch(error){next(error);}});
+app.use(vite.middlewares);
+const server=app.listen(port,'127.0.0.1',()=>console.log(JSON.stringify({preview:origin+'/__plus_preview',database:dbName,models:'simulation-only',payment:mockPayment?'local-mock':'sandbox',identity:'local-fixture'})));
+let closing=false;async function close(){if(closing)return;closing=true;await new Promise(r=>server.close(r));await vite.close();await mongoClient.close();}
+process.on('SIGINT',()=>void close());process.on('SIGTERM',()=>void close());

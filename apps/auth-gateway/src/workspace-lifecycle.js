@@ -16,7 +16,7 @@ export async function assertWorkspaceAccountActive(db, userId) {
 }
 
 function sessionDatabase(db, session) {
-  const positions = { find:1, findOne:1, insertOne:1, insertMany:1, updateOne:2,
+  const positions = { find:1, findOne:1, countDocuments:1, insertOne:1, insertMany:1, updateOne:2,
     updateMany:2, replaceOne:2, deleteOne:1, deleteMany:1, findOneAndUpdate:2 };
   return { collection(name) {
     const collection = db.collection(name);

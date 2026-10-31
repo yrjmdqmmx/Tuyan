@@ -1,6 +1,8 @@
 import { createGoogleOAuth, isGoogleEmail } from './google-oauth.js';
 import { createGithubOAuth, isGithubEmail } from './github-oauth.js';
 import { createWechatOAuth, isWechatEmail } from './wechat-oauth.js';
+import { createPlusStore, PLUS_MUTATIONS } from './plus-store.js';
+import { ensurePlusIndexes } from './plus-indexes.js';
 import { createPhoneAuth, isPhoneEmail } from './phone-auth.js';
 import { createSmsTransport } from './sms.js';
 import { accountWorkspaceStore, WORKSPACE_ACCOUNT_COLLECTIONS } from './workspace-lifecycle.js';
@@ -59,7 +61,8 @@ export async function createAuthRuntime(
   let imageLibrary, legacyImageCleanup;
   let status = { ok: true, checkedAt: null };
   try { await ensureAccountIndexes(db); } catch (error) { await mongoClient.close(); throw error; }
-  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user') });
+  if(config.plus?.enabled)try{await ensurePlusIndexes(db);}catch(error){await mongoClient.close();throw error;}
+  const deletionStore = createDeletionStore(db.collection('accountDeletionOperations'), () => new Date(), { mongoClient, users: db.collection('user'),plusCycles:db.collection('plusCycles'),plusOperations:db.collection('plusOperations'),plusAccounts:db.collection('plusAccounts') });
 
   const advanced = {
     useSecureCookies: config.production,
@@ -241,6 +244,7 @@ export async function createAuthRuntime(
     },
     accountProfile: createAccountProfile({db,mongoClient,limiter,transport,deliveryEnabled:emailConfig.deliveryEnabled,secret:config.authSecret}),
     deletionStore,
+    plusStore: config.plus?.enabled ? accountWorkspaceStore({db,mongoClient,factory:options=>createPlusStore({...options,namespace:`${config.plus.environment}:${config.plus.applicationId}:${config.plus.entitlementId}`}),mutations:PLUS_MUTATIONS}) : undefined,
     workspaceExecutionStore: accountWorkspaceStore({ db, mongoClient, factory:createWorkspaceExecutionStore, mutations:['claim','closeUnaccepted','update','adoptHistory'] }),
     modelLibraryStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createModelLibraryStore({...options,secret:config.authSecret}), mutations:['put'] }),
     workspaceStore: accountWorkspaceStore({ db, mongoClient, factory:options=>createWorkspaceStore({...options,imageLibrary:config.imageLibraryEnabled?{save:(...args)=>imageLibrary.save(...args),read:(...args)=>imageLibrary.read(...args),status:(...args)=>imageLibrary.status(...args)}:undefined}), mutations:['put','saveResult','importHistory','beginDelete','finishDelete'] }),

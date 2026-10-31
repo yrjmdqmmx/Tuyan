@@ -94,12 +94,16 @@ async function runtimeFetch(input: string | URL | Request, init?: RequestInit): 
     } catch { /* Ordinary non-JSON/multipart inference request. */ }
   }
   const submitting = Boolean(call && !['GET', 'HEAD'].includes(method) && !resultPoll)
+  let preparedInit=applyThinkingTransport(url, init, providerWorkflow.thinking?.())
   if (submitting) {
     assertWorkflowCanSubmit()
+    if(providerWorkflow.beforeTransport)preparedInit=await providerWorkflow.beforeTransport(url,preparedInit)
+    try{assertWorkflowCanSubmit();if(preparedInit?.signal?.aborted)throw Object.assign(new Error('请求已在发送前取消。'),{name:'AbortError',localInputFailure:true,requestState:'not_sent'})}
+    catch(error){await providerWorkflow.transportNotSent?.();throw error}
     call!.submitted = true
   }
   try {
-    const response = await fetchImpl(input, applyThinkingTransport(url, init, providerWorkflow.thinking?.()))
+    const response = await fetchImpl(input, preparedInit)
     if (submitting && response.status >= 500) {
       call!.transportFailure = unknownPaidCall(new Error(`模型请求返回 HTTP ${response.status}，结果及费用未确认。`), response.status)
       stopWorkflow(call!.transportFailure)
@@ -253,6 +257,8 @@ type RefineImageBody = {
 }
 
 type ModelRoutingMetadata = {
+  plusPreset?: import('../src/plus-plan.js').PlusPresetRequest
+  plusBilling?: any
   visionMode: VisionMode
   thinkingConfig?: ThinkingConfiguration
   thinkingSnapshot?: ThinkingSnapshot
@@ -298,6 +304,8 @@ export function toCreateExecutionBody(body: CreateJobBody): CreateExecutionBody 
   const routed = body as CreateJobBody & ModelRoutingMetadata
   return definedExecutionFields({
     action: 'createJob',
+    plusPreset: routed.plusPreset,
+    plusBilling: routed.plusBilling,
     provider: routed.provider,
     providerRegions: routed.providerRegions,
     modelRoutes: routed.modelRoutes,
@@ -338,6 +346,8 @@ export function toRefineExecutionBody(body: RefineImageBody): RefineExecutionBod
   const routed = body as RefineImageBody & ModelRoutingMetadata
   return definedExecutionFields({
     action: 'refineImage',
+    plusPreset: routed.plusPreset,
+    plusBilling: routed.plusBilling,
     provider: routed.provider,
     providerRegions: routed.providerRegions,
     modelRoutes: routed.modelRoutes,
@@ -1801,7 +1811,7 @@ export * from '../../../packages/api/src/tokendance.js'
 import { ImageSizeContract, ResolvedImageSize, resolveImageSize, imageAspectRatiosByResolution } from '../../../packages/types/src/image-size-contract.js'
 export * from '../../../packages/types/src/image-size-contract.js'
 import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'
-function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { return measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)) }
+function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { const run=()=>measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)); return providerWorkflow.stage?providerWorkflow.stage(stage,run):run() }
 // Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.
 
 
@@ -4434,6 +4444,13 @@ async function universalApiCheck(body: any) {
 }
 
 type ProviderWorkflowHooks = {
+  transportNotSent?():Promise<void>
+  plusManagedAvailable?():boolean
+  plusOperation?(userId:string,operationKey:string):Promise<string|null>
+  beforeTransport?(url:string,init:RequestInit|undefined):Promise<RequestInit|undefined>
+  billingSummary?(jobId:string,userId:string):Promise<any>
+  stage?<T>(stage:string,operation:()=>Promise<T>):Promise<T>
+  plusUsageEnabled?():boolean
   prepare?(task: AdmittedJobTask): Promise<void>
   cancelPrepared?(task: AdmittedJobTask): Promise<void>
   thinking?(): ThinkingSnapshotRole | undefined
@@ -4572,9 +4589,13 @@ export default async function (ctx: CoreContext) {
     }
 
     if (action === 'health') {
-      return ok({ ok: true, runtime: 'node', version: '0.1.14' })
+      return ok({ ok: true, runtime: 'node', version: '0.1.14', plusManagedContractVersion:providerWorkflow.plusManagedAvailable?.()?1:0 })
     }
     if(materialActions.has(action))return await materialAction(body as any)
+    if(action==='getPlusOperation'){
+      if(typeof body.userId!=='string'||typeof body.operationKey!=='string'||!providerWorkflow.plusOperation)return badRequest('Plus 查询不可用');
+      const id=await providerWorkflow.plusOperation(body.userId,body.operationKey);return id?getJob(id):ok({job:null});
+    }
     if (action === 'createJob') {
       return await createJob(body as CreateJobBody, ctx)
     }
@@ -5933,6 +5954,9 @@ async function refineImage(body: RefineImageBody, ctx: CoreContext) {
   Object.assign(normalizedBodyWithSecrets,journalFields(body))
   if(body.materialFiles!==undefined){const refs=await materialFilesService.bind(body as any,body.materialFiles);originalContext={...originalContext,generationPath:'model-v1',materialFiles:refs};body.materialFiles=refs;normalizedBodyWithSecrets.materialFiles=refs}
   else if(originalContext?.materialFiles?.length)materialError('原任务的服务器材料已清理，请从浏览器恢复原件后再精修。',409)
+  // Managed Plus edits retain the independent post-edit review even when the
+  // source is an upload without an older generationContext or auxiliary files.
+  if((body as any).plusPreset)originalContext={...originalContext,generationPath:'model-v1'}
   if(originalContext?.generationPath==='model-v1'&&originalContext.outputFormat==='svg')return {...fail('SVG 请恢复原始材料和源码，在 SVG 模式下由主模型修改；不能通过图片精修转换为 PNG。',400),businessCode:'SVG_SOURCE_EDIT_REQUIRED',requestState:'not_sent'}
 
   let uploadedSource: Awaited<ReturnType<typeof validateRefineUploadSource>> | undefined
@@ -8179,7 +8203,7 @@ async function callVisionModelRaw(
       },
       body: checkedReferenceRequest(provider, visionModelName, requestBody),
     }, `${provider} vision model ${visionModelName}`)
-    return parseChatModelResponse(response, requestBody.stream === true, auditedChannelContract(provider, visionModelName)?.refreshAccounting
+    return parseChatModelResponse(response, requestBody.stream === true, auditedChannelContract(provider, visionModelName)?.refreshAccounting || providerWorkflow.plusUsageEnabled?.()
       ? async data => { await recordRefreshedModelCall(provider, visionModelName, data, response, 'vision') }
       : undefined)
   }
@@ -8330,7 +8354,7 @@ async function callTextModelRaw(
       ...(provider === 'bailian' && bailianWorkspaceModel(model) ? {redirect:'error' as const} : {}),
       ...(policy.signal ? { signal: policy.signal } : {}),
     }, `${provider} text model ${textModelName}`, policy.attempts)
-    return parseChatModelResponse(response, requestBody.stream === true, auditedChannelContract(provider, textModelName)?.refreshAccounting
+    return parseChatModelResponse(response, requestBody.stream === true, auditedChannelContract(provider, textModelName)?.refreshAccounting || providerWorkflow.plusUsageEnabled?.()
       ? async data => { await recordRefreshedModelCall(provider, textModelName, data, response, images.length ? 'vision' : 'text') }
       : undefined, provider === 'bailian' && bailianWorkspaceModel(model))
   }
@@ -8543,11 +8567,11 @@ async function recordXaiCall(model: string, data: any, response: Response, opera
  * are separate evidence. Only the newly audited identities opt in. */
 async function recordRefreshedModelCall(provider: string, model: string, data: any, response: Response, operation: string) {
   const contract = auditedChannelContract(provider, model)
-  if (!contract?.refreshAccounting) return
+  if (!contract?.refreshAccounting && !providerWorkflow.plusUsageEnabled?.()) return
   const cost = provider === 'openrouter' ? data.usage?.cost : undefined
-  await providerWorkflow.record({ provider, model, protocol: contract.textProtocol, operation,
+  await providerWorkflow.record({ provider, model, protocol: contract?.textProtocol || 'bailian-openai-chat', operation,
     requestId: data.id || response.headers.get('x-request-id') || response.headers.get('request-id') || null,
-    resolvedModel: data.model || null, usage: data.usage || null, publicPrice: contract.price,
+    resolvedModel: data.model || null, usage: data.usage || null, publicPrice: contract?.price || null,
     estimatedCost: null, reportedCost: typeof cost === 'number' && Number.isFinite(cost) && cost >= 0
       ? { amount: cost, currency: 'USD', source: 'provider-response' } : null,
     invoiceCost: null, billingStatus: 'unconfirmed',
@@ -9306,19 +9330,29 @@ export async function parseChatModelResponse(response: Response, streaming = fal
   const wire = (await readResponseWithLimit(response, 8 * 1024 * 1024, 'Chat event stream')).toString('utf8')
   let text = ''
   let complete = false
+  let identity: any = {}
+  let usage: any = null
+  let failure: Error | undefined
   for (const event of wire.replace(/\r\n/g, '\n').split(/\n\n/)) {
     const payload = event.split('\n').filter((line) => line.startsWith('data:')).map((line) => line.slice(5).trimStart()).join('\n')
     if (!payload) continue
     if (payload === '[DONE]') { complete = true; continue }
     let data: any
-    try { data = JSON.parse(payload) } catch { throw new Error('Invalid Chat event stream') }
-    if (data.error || data.code) throw new Error(data.error?.message || data.message || String(data.code))
+    try { data = JSON.parse(payload) } catch { failure ||= new Error('Invalid Chat event stream'); continue }
+    if (data.id) identity.id = data.id
+    if (data.model) identity.model = data.model
+    if (data.usage) usage = data.usage
+    if (data.error || data.code) { failure ||= new Error(data.error?.message || data.message || String(data.code)); continue }
     const choice = data.choices?.find((item: any) => item.index === 0) || data.choices?.[0]
-    if (!choice) continue // Usage-only events.
+    if (!choice) continue // The final usage event has an empty choices array.
     text += visibleChatContent(choice.delta?.content)
-    if (choice.finish_reason === 'length' || choice.finish_reason === 'content_filter') throw new Error(`Chat stream ended with ${choice.finish_reason}`)
+    // Keep reading the final usage event even if the output is unusable.
+    if (choice.finish_reason === 'length' || choice.finish_reason === 'content_filter') failure ||= new Error(`Chat stream ended with ${choice.finish_reason}`)
     if (choice.finish_reason === 'stop') complete = true
   }
+  // Cumulative usage is a single receipt, never a charge for each SSE chunk.
+  if (record) await record({...identity, usage})
+  if (failure) throw failure
   if (!complete || !text.trim()) throw new Error('Chat event stream ended without a complete text response')
   return text
 }
@@ -9532,6 +9566,17 @@ async function wan27SourceDataUrl(source:NormalizedSourceImage, renderOnWhite=fa
   return `data:${mime};base64,${submitted.toString('base64')}`
 }
 
+// Qwen Image 3.0 officially accepts inline bytes. Preserve the actual source
+// instead of introducing a second upload/signed-URL dependency for each edit.
+async function qwen3SourceDataUrl(source:NormalizedSourceImage) {
+  const bytes=Buffer.from(source.base64,'base64')
+  if(!bytes.length||bytes.length>10_000_000)throw new ReferenceUploadValidationError('千问图片为空或超过 10 MB；未发送图片请求。')
+  const meta=await sharp(bytes,{limitInputPixels:64_000_000,failOn:'warning'}).metadata()
+  if(!['png','jpeg','webp','gif','tiff'].includes(meta.format||'')||!meta.width||!meta.height||Math.max(meta.width,meta.height)>8000||Math.max(meta.width/meta.height,meta.height/meta.width)>10)throw new ReferenceUploadValidationError('千问输入图片格式或尺寸超限；每边不得超过 8000 px，宽高比不超过 10:1。')
+  const mime=meta.format==='jpeg'?'image/jpeg':`image/${meta.format}`
+  return `data:${mime};base64,${bytes.toString('base64')}`
+}
+
 async function callBailianImage(
   model: string,
   apiKey: string,
@@ -9549,7 +9594,7 @@ async function callBailianImage(
   if (/^wan2\.7-image/.test(model)) parameters.thinking_mode = true
   if (/^qwen-image-(?:2\.[01]|3\.0)/.test(model)) parameters.prompt_extend = true
   const content: any[] = []
-  if (source) content.push({ image: /^wan2\.7-image(?:-pro)?$/.test(model) ? await wan27SourceDataUrl(source) : await toBailianImageUrl(source.remoteUrl || source.dataUrl) })
+  if (source) content.push({ image: /^wan2\.7-image(?:-pro)?$/.test(model) ? await wan27SourceDataUrl(source) : /^qwen-image-3\.0(?:-pro)?$/.test(model) ? await qwen3SourceDataUrl(source) : await toBailianImageUrl(source.remoteUrl || source.dataUrl) })
   content.push({ text: prompt })
   const response = await fetchWithRetry('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', {
     method: 'POST',
@@ -9572,6 +9617,9 @@ async function callBailianImage(
   }, `bailian image model ${model}`)
   const data = await parseDashScopeResponse(response, maxProviderImageResponseBytes, 'Bailian image response')
   const imageUrl = extractDashScopeImageUrl(data)
+  // Persist usage before downloading output: a failed download can still have
+  // consumed a billable image. This is usage evidence, not an invoice claim.
+  if(providerWorkflow.plusUsageEnabled?.())await providerWorkflow.record({provider:'bailian',model,protocol:'bailian-multimodal-generation',operation:source?'image_edit':'image',requestId:data.request_id||null,usage:data.usage||null,imageSize,size,billingStatus:'unconfirmed'})
   if (!imageUrl) throw new Error('阿里百炼图片模型没有返回图片地址')
   return await fetchImageAsBase64(imageUrl, 'Bailian generated image download', maxProviderImageBytes)
 }
@@ -11499,6 +11547,7 @@ async function publicJob(job: any) {
   return {
     recovery: job.recovery || null,
     providerCalls: job.providerCalls || [],
+    ...(job.plusBilling?{plusUsage:await providerWorkflow.billingSummary?.(job._id,String(job.userId))}:{}),
     ...(job.sourceProtocol?{sourceProtocol:job.sourceProtocol}:{}),
     ...(job.thinkingConfig ? { thinkingConfig: job.thinkingConfig, thinkingSnapshot: job.thinkingSnapshot } : {}),
     refineInputs: job.refineInputs || null,

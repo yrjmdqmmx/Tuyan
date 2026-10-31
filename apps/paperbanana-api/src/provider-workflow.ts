@@ -1,4 +1,6 @@
+import {createPlusBudget} from './plus-budget.js'
 import { operationalMetrics } from './operational-metrics.js'
+import {plusThinking,plusPhase,type PlusPhase} from './plus-plan.js'
 import {sourceProtocolMismatch,assertSourceProtocolTask,type SourceProtocolSnapshot} from './source-provenance.js'
 import { normalizeUniversalRoute, universalCredential, UniversalApiError } from '../../../packages/api/src/universal-api.js'
 import { AsyncLocalStorage } from 'node:async_hooks'
@@ -12,7 +14,7 @@ import type { createTokenDanceService } from './tokendance-service.js'
 type ConnectionService = ReturnType<typeof createTokenDanceService>
 type Task = { sourceProtocol?: SourceProtocolSnapshot; admissionVersion?: 1; jobId: string; kind: string; body: any; routeSecrets: Record<string, string>; numCandidates?: number; maxCriticRounds?: number }
 type FatalState = { error?: unknown; onFatal?: (error: unknown) => void }
-type Context = { task: Task; scope: string; counts: Map<string, number>; fatal: FatalState; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image' }
+type Context = { task: Task; scope: string; counts: Map<string, number>; fatal: FatalState; stepId?: string; thinkingRole?: 'main' | 'vision' | 'image'; plusPhase?:PlusPhase }
 const version = 'tokendance-workflow-v2-reference-budget'
 const isReferenceValidationError = isLocalInputFailure
 
@@ -36,8 +38,9 @@ function assertCallsAllowed(current: Context) {
 
 /** Paid calls are durably claimed BEFORE transport and committed AFTER their
  * complete result is stored. An abandoned claim is never automatically retried. */
-export function createProviderWorkflow({ db, service, now = () => Date.now() }: { db: Db; service: ConnectionService; now?: () => number }) {
+export function createProviderWorkflow({ db, service, now = () => Date.now(), plusEnabled=process.env.PAPERBANANA_PLUS_PREPARED==='true' }: { db: Db; service: ConnectionService; now?: () => number; plusEnabled?:boolean }) {
   const context = new AsyncLocalStorage<Context>()
+  const plusBudget = createPlusBudget(db)
   const instanceId = randomUUID()
   const executions = db.collection<any>('paperbanana_provider_executions')
   const steps = db.collection<any>('paperbanana_provider_steps')
@@ -85,7 +88,8 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     if (!current) return operation()
     assertCallsAllowed(current)
     const thinkingRole = role || (Array.isArray(descriptor) ? ({text:'main',vision:'vision',image:'image'} as const)[descriptor[0] as 'text'|'vision'|'image'] : undefined)
-    const thinking = thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[thinkingRole] : undefined
+    const phase=Array.isArray(descriptor)&&descriptor[0]==='materials'?'material':current.plusPhase
+    const thinking = plusThinking(current.task.body,thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[thinkingRole] : undefined,thinkingRole,phase)
     if (thinking && Array.isArray(descriptor) && (thinking.provider !== descriptor[1] || thinking.modelId !== descriptor[2])) throw Object.assign(new Error('模型调用与原任务思考配置不一致，未发送。'), {name:'ThinkingConfigValidationError',localInputFailure:true,requestState:'not_sent'})
     // Keep descriptors byte-identical for all historical tasks.
     const digest = createHash('sha256').update(JSON.stringify(thinking ? [descriptor, {thinking}] : descriptor)).digest('hex')
@@ -116,7 +120,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       // Composite steps (e.g. reference selection) may contain multiple paid
       // calls. Keep their own checkpoints when the enclosing step fails later.
       operationalMetrics.increment('workflow.started')
-      const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id, thinkingRole: thinkingRole || current.thinkingRole }, operation)
+      const result = await context.run({ ...current, scope: current.scope + '/' + digest + ':' + occurrence, counts: new Map(), stepId:id, thinkingRole: thinkingRole || current.thinkingRole,plusPhase:phase }, operation)
       const count = await writeResult(id, current.task.body.userId, result)
       await steps.updateOne({ _id: id, state: { $in: ['running','awaiting'] } }, { $set: { state: 'complete', chunks: count, completedAt: new Date(now()) } })
       operationalMetrics.increment('workflow.completed')
@@ -167,9 +171,12 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
   // New authenticated jobs must be recoverable BEFORE admission acknowledges
   // them. Legacy direct run() callers retain their historical checkpoint path.
   async function prepare(task: Task) {
+    if(task.body.plusBilling&&!plusEnabled)throw Object.assign(new Error('Plus 模型执行尚未启用'),{name:'PlusBudgetValidationError',localInputFailure:true,requestState:'not_sent'})
     if (!isManaged(task) && (!task.body.userId || task.body.userId.startsWith('guest:'))) return
     task.admissionVersion = 1
     await saveSnapshot(task)
+    await plusBudget.prepare(task)
+    if(task.body.plusBilling)await jobs.updateOne({_id:task.jobId},{$set:{plusBilling:{version:1,operationKey:task.body.plusBilling.operationKey}}})
   }
   async function cancelPrepared(task: Task) {
     await executions.deleteOne({ _id: task.jobId, userId: task.body.userId, instanceId, admissionVersion: 1, state: 'queued' })
@@ -272,9 +279,16 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     if (updated.modifiedCount) await jobs.updateOne({ _id: jobId }, { $set: { status: 'failed', error: recovery.message, recovery } })
   }
   return {
+    plusManagedAvailable:()=>plusEnabled,
+    transportNotSent:async()=>{const current=context.getStore();if(current)await plusBudget.notSent(current.task,current.stepId)},
+    beforeTransport:async (url:string,init:RequestInit|undefined)=>{const current=context.getStore();return current?plusBudget.claim(current.task,current.stepId,url,init):init},
+    plusOperation:(userId:string,operationKey:string)=>plusBudget.find(userId,operationKey),
+    billingSummary:(jobId:string,userId:string)=>plusBudget.summary(jobId,userId),
     prepare, cancelPrepared, run, call, reconcile, active:()=>Boolean(context.getStore()),
     thinkingAvailable: () => Boolean(service.cipher),
-    thinking() { const current = context.getStore(); return current?.thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole] : undefined },
+    thinking() { const current = context.getStore(); return current?.thinkingRole ? plusThinking(current.task.body,current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole],current.thinkingRole,current.plusPhase) : undefined },
+    plusUsageEnabled:()=>Boolean(context.getStore()?.task.body.plusPreset),
+    stage<T>(stage:string,operation:()=>Promise<T>){const current=context.getStore();return current?.task.body.plusPreset?context.run({...current,plusPhase:plusPhase(stage)},operation):operation()},
     async pending() {
       const current = context.getStore()
       if (!current?.stepId) return undefined
@@ -299,8 +313,10 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
     },
     async key(original: string) { const current = context.getStore(); return current ? (await service.credential(current.task.body.userId)).key : original },
     async record(info: unknown) { const current = context.getStore(); if (current) {
-      const thinking = current.thinkingRole ? current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole] : undefined
-      await jobs.updateOne({ _id: current.task.jobId }, { $addToSet: { providerCalls: thinking ? {...(info as object), thinking} : info } } as any)
+      const thinking = current.thinkingRole ? plusThinking(current.task.body,current.task.body.thinkingSnapshot?.roles?.[current.thinkingRole],current.thinkingRole,current.plusPhase) : undefined
+      await plusBudget.record(current.task,current.stepId,info)
+      const entry=current.task.body.plusPreset?{...(info as object),workflowStepId:current.stepId,plusPhase:current.plusPhase}:info
+      await jobs.updateOne({ _id: current.task.jobId }, { $addToSet: { providerCalls: thinking ? {...(entry as object), thinking} : entry } } as any)
     } },
     async resume(jobId: string, userId: string, enqueue: (task: any) => Promise<any>, customKeys?: string) {
       if(await db.collection('paperbanana_task_deletions').findOne({userId,jobId}))throw new TokenDanceError(409,'任务已彻底删除，无法恢复。')
@@ -338,6 +354,7 @@ export function createProviderWorkflow({ db, service, now = () => Date.now() }: 
       } catch (error) { await executions.updateOne({ _id: jobId, state: 'queued' }, { $set: { state: 'blocked' } }); throw error }
     },
     async ensureIndexes() {
+      if(plusEnabled)await plusBudget.indexes()
       for (const collection of [executions, steps, chunks]) await collection.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
       await steps.createIndex({ jobId: 1, state: 1 })
     },

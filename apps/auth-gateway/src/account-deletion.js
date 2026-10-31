@@ -9,7 +9,7 @@ const valid = (result) => result?.status >= 200 && result.status < 300 && result
 
 // This collection is in the Auth database so deleting Auth and advancing to
 // acknowledgement can be committed in one transaction (see deleteAuthUser).
-export function createDeletionStore(collection, now = () => new Date(), { mongoClient, users } = {}) {
+export function createDeletionStore(collection, now = () => new Date(), { mongoClient, users, plusCycles, plusOperations, plusAccounts } = {}) {
   if (Boolean(mongoClient) !== Boolean(users)) throw new Error('ACCOUNT_DELETION_TRANSACTION_CONFIGURATION_REQUIRED');
   return {
     async begin(userId, accountGeneration = '') {
@@ -22,6 +22,13 @@ export function createDeletionStore(collection, now = () => new Date(), { mongoC
           // transaction durably freezes the account, before Core is called.
           const touched = await users.updateOne(authUserFilter(userId), { $inc: { watchaWriteVersion: 1 } }, options);
           if (touched.matchedCount !== 1) throw new Error('ACCOUNT_DELETION_USER_UNAVAILABLE');
+        }
+        if(plusCycles&&plusOperations){
+          const seconds=Math.floor(now().getTime()/1000);
+          const cycle=await plusCycles.findOne({userId:String(userId),$or:[{status:'refund_requested'},{status:{$in:['active','review_required','suspended']},expiresAt:{$gt:seconds}},{held:{$gt:0}}]},options);
+          const operation=await plusOperations.findOne({userId:String(userId),status:{$in:['reserved','submitting','running','unknown']}},options);
+          const checkout=plusAccounts&&await plusAccounts.findOne({userId:String(userId),checkoutPending:true},options);
+          if(cycle||operation||checkout)throw Object.assign(new Error('请先处理 Plus 待确认支付、有效会员、退款或待核对任务，再注销账号。'),{status:409,code:'PLUS_ACCOUNT_SETTLEMENT_REQUIRED'});
         }
         await collection.updateOne({ _id: userId }, { $setOnInsert: {
           operationId: randomUUID(), userId, accountGeneration, contractVersion: VERSION, phase: 'business',

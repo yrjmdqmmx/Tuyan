@@ -60,6 +60,8 @@ jobs:
           node --test deploy/hk-single-host/tests/gateway-edge-contract.test.mjs
       - name: Verify workspace and profile lifecycle transactions on real MongoDB
         run: bash apps/auth-gateway/tests/integration/run-workspace-sync.sh
+      - name: Verify Plus payment and credit transactions with isolated MongoDB
+        run: bash apps/auth-gateway/tests/integration/run-plus.sh
       - name: Verify account queues and eight concurrent tasks with offline models
         run: bash apps/paperbanana-api/tests/integration/run-concurrent-tasks.sh
       - name: Preflight real mixed figure workflow with offline model fixtures

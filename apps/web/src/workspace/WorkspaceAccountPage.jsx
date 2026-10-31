@@ -1,6 +1,8 @@
 import GithubIdentityPanel from '../components/GithubIdentityPanel.jsx';
 import GoogleIdentityPanel from '../components/GoogleIdentityPanel.jsx';
 import WechatIdentityPanel from '../components/WechatIdentityPanel.jsx';
+import PlusPanel from '../components/PlusPanel.jsx';
+import '../components/plus.css';
 import PhoneBindingPanel from '../components/PhoneBindingPanel.jsx';
 import { visibleAccountEmail } from '../hooks/usePhoneAuth.js';
 import { useCallback, useState } from 'react';
@@ -20,7 +22,7 @@ import './account-profile.css';
 
 const SECTION_ICONS = { profile: UserRound, account: ShieldCheck, storage: HardDrive, language: Languages };
 
-export default function WorkspaceAccountPage({ preview = false, account, sync, state, models, onExport, onOpenTask, mobile = false, section, onSectionChange, apiBase = AUTH_BASE_DEFAULT }) {
+export default function WorkspaceAccountPage({ isAdmin = false, preview = false, account, sync, state, models, onExport, onOpenTask, mobile = false, section, onSectionChange, apiBase = AUTH_BASE_DEFAULT }) {
   const { locale, setLocale } = useAppLocale();
   const [localSection,setLocalSection]=useState(null);
   const selectedSection = section === undefined ? localSection : section;
@@ -52,6 +54,7 @@ export default function WorkspaceAccountPage({ preview = false, account, sync, s
       </div>
       <section hidden={page!=='profile'} aria-label="使用情况">{account.user&&<><h3 className="tw-usage-title">使用情况</h3><DrawingActivity key={`activity:${userId}`} userId={userId} request={request}/></>}</section>
       <div hidden={page!=='account'}>
+    <PlusPanel enabled={isAdmin && !preview} key={`plus:${userId}`} userId={userId} apiBase={apiBase}/>
     {account.user && <GithubIdentityPanel controller={account.github} loggedIn/>}
     {account.user && <GoogleIdentityPanel controller={account.google} loggedIn/>}
     {account.user && <WechatIdentityPanel controller={account.wechat} loggedIn/>}

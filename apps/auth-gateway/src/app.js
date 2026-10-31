@@ -1,4 +1,9 @@
+import {createPlusReconciler} from './plus-reconciler.js';
+import {createPlusCoreExecutor} from './plus-executor.js';
 import { createTaskDeletionCleanup } from './workspace-task-deletion.js';
+import { createPlusRouter } from './plus-router.js';
+import { createPlusService, createPlusSimulationExecutor } from './plus-service.js';
+import { createPlusWatcha } from './plus-watcha.js';
 import { createImageLibraryRouter, createImageLibraryBridge } from './image-library.js';
 import { bailianRouteFields } from './bailian-workspace.js';
 import { workspaceExecutionMiddleware } from './workspace-execution.js';
@@ -108,10 +113,17 @@ export function createApp({
   app.use('/api/workspace', createWorkspaceRouter({ auth, store: auth.workspaceStore, frontendOrigins: config.frontendOrigins, isMaintenance, history:createWorkspaceHistory({backend,auth}), cleanupTask:createTaskDeletionCleanup({backend}) }));
   app.use('/api/model-library', createModelLibraryRouter({ auth, store: auth.modelLibraryStore, frontendOrigins: config.frontendOrigins, isMaintenance }));
   app.use('/api/account/profile', createAccountProfileRouter({ auth, backend, frontendOrigins: config.frontendOrigins, isMaintenance }));
+  const plusService=config.plus?.enabled&&auth.plusStore?createPlusService({config:config.plus,store:auth.plusStore,payment:createPlusWatcha({config:config.plus}),secret:config.authSecret,executor:config.plus.executionMode==='simulation'?createPlusSimulationExecutor():config.plus.executionMode==='managed'?createPlusCoreExecutor({backend,workspaceStore:auth.workspaceStore,config:config.plus}):undefined}):undefined;
+  if(plusService&&config.plus.backgroundReconciliationEnabled)app.locals.plusReconciler=createPlusReconciler({service:plusService,store:auth.plusStore,logger});
+  app.use('/api/plus',createPlusRouter({auth,service:plusService,config:config.plus,frontendOrigins:config.frontendOrigins,isMaintenance,isAllowed:user=>isAdminUser(config,user)}));
   app.use('/api/ecosystem', createEcosystemRouter({ auth, frontendOrigins: config.frontendOrigins, worker: config.ecosystem, isMaintenance }));
   app.use(express.json({ limit: '1mb' }));
   // Enforce account access before either workspace execution or the legacy action router.
   app.use('/paperbanana-api', asyncRoute(async (request, _response, next) => {
+    if(request.body?.action==='getPlusOperation')return _response.status(403).json({error:'此查询仅供套餐后端使用'});
+    // Managed billing authority is server-only; legacy/BYOK input cannot forge it.
+    if(request.body){delete request.body.plusBilling;delete request.body.plusPreset;}
+
     if (request.method === 'POST' && config.requireLogin !== false && !PUBLIC_READ_ACTIONS.has(String(request.body?.action || 'health'))) {
       await requireSession(auth, request);
     }

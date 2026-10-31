@@ -20,7 +20,7 @@ export function workspaceExecutionIssue(health,request) {
   if(request.numCandidates>health.maxCandidates||request.maxCriticRounds>health.maxReviews)return '本地真实验收每次限一个候选、一轮评审，请在绘图设置调整。';
   return '';
 }
-export function buildWorkspaceRequest({task,run,models}) {
+export function buildWorkspaceRequest({task,run,models,plus=false}) {
   const input=run.input,s=input.settings[input.mode],target=locateVersion(task,run.parentId),source=input.attachments.find(a=>a.purpose==='source');
   const sourceSettings=target?task.runs.find(r=>r.id===target.runId)?.input:null;
   const pngEdit=run.path==='png'&&Boolean(target||source), settings={action:pngEdit?'refineImage':'createJob',generationPath:'model-v1',outputFormat:run.path,taskName:getFigureType(s.figureTypeId)?.kind==='data'?'plot':'diagram',visionMode:s.models?.vision?'assist':'none',pipelineMode:s.pipelineMode||'full',retrievalSetting:s.retrievalSetting||'auto',manualReferenceIds:s.manualReferenceIds||[],maxCriticRounds:s.reviews,numCandidates:(run.parentId||source)?1:s.candidates,figureTypeId:s.figureTypeId,aspectRatio:s.ratio,...(s.imageSize?{imageSize:s.imageSize}:{}),journalSelection:s.journalSelection||null};
@@ -32,6 +32,14 @@ export function buildWorkspaceRequest({task,run,models}) {
   if(input.attachments.filter(a=>a.purpose==='source').length>1||target&&source)throw Error('一次修改只能指定一个原图或已保存版本。');
   if(source&&run.path==='svg'&&source.format!=='svg')throw Error('矢量路径修改原件需要 SVG；不会自动把位图转换成 SVG。');
   if(source&&run.path==='png'&&!['png','jpg','jpeg','webp'].includes(source.format))throw Error('图像路径的待修改原图需要 PNG、JPEG 或 WebP。');
+
+  const content={figureAnalysis:{referencePreferences:s.referencePreferences||{}},figureSpecVersion:TAXONOMY_VERSION,requirements:input.text,methodContent:input.text,caption:input.caption,negativePrompt:input.avoid,editInstruction:input.text+(input.caption?`\n指定图注：${input.caption}`:'')+(input.avoid?`\n避免出现：${input.avoid}`:''),sourceContentType:sourceSettings?.settings[sourceSettings.mode]?.journalSelection?.contentType||journalFigureContent(sourceSettings?.settings[sourceSettings.mode]?.figureTypeId)||s.journalSelection?.contentType||journalFigureContent(s.figureTypeId)||'schematic'};
+  if(s.plusMode){
+    if(!plus)throw Error('Plus 执行尚未开放，未改用个人模型。');
+    if(s.refineMask||s.refineStructured)throw Error('当前 Plus 图片型号尚未确认支持遮罩或结构化编辑，请清除对应选项后继续。');
+    if(pngEdit&&input.attachments.some(a=>a.purpose==='reference'))throw Error('当前 Plus 图片修改接口只接收一张原图；辅助参考图暂未开放。');
+    return {...settings,...content,visionMode:'assist',pipelineMode:'full',imageSize:s.imageSize||'2K',workspaceExecution:{...executionEnvelope(task.id,run.id),models:{}}};
+  }
 
   // Older ordinary presets saved the same connection/model twice. Reuse a
   // confirmed multimodal main model; an explicit advanced assistant is retained.
@@ -55,7 +63,7 @@ export function buildWorkspaceRequest({task,run,models}) {
   const submission=buildModelSubmission({configurationMode:input.mode,modelRoutes:routes,registry:models.registry,registryStatus:models.registryStatus,providerRegions:regions,requiredRoles:roles});
   return {...settings,figureAnalysis:{referencePreferences:s.referencePreferences||{}},...submission,...workspaceThinkingSubmission(s,models,run.path,pngEdit,roles),figureSpecVersion:TAXONOMY_VERSION,requirements:input.text,methodContent:input.text,caption:input.caption,negativePrompt:input.avoid,editInstruction:input.text+(input.caption?`\n指定图注：${input.caption}`:'')+(input.avoid?`\n避免出现：${input.avoid}`:''),sourceContentType:sourceSettings?.settings[sourceSettings.mode]?.journalSelection?.contentType||journalFigureContent(sourceSettings?.settings[sourceSettings.mode]?.figureTypeId)||s.journalSelection?.contentType||journalFigureContent(s.figureTypeId)||'schematic',workspaceExecution:{...executionEnvelope(task.id,run.id),libraryRevision:models.library.revision,models:refs}};
 }
-export async function startWorkspaceRun({base,userId,task,run,models,simulation,request=buildWorkspaceRequest({task,run,models})}) {
+export async function startWorkspaceRun({base,userId,task,run,models,simulation,dispatchPrepared,request=buildWorkspaceRequest({task,run,models})}) {
   const health={runtime:'gateway',backendMode:'gateway'}, uploaded=[],target=locateVersion(task,run.parentId),files=[];
   const body={...request,workspaceAccount:userId,workspaceExecution:{...request.workspaceExecution,browserCredentials:{}}};
   // Never load or transmit real keys to the local simulation.
@@ -94,11 +102,11 @@ export async function startWorkspaceRun({base,userId,task,run,models,simulation,
     if(simulation){body.workspaceExecution.simulation={format:run.path,kind:run.kind,sourceVersionId:run.parentId,sourceCount:files.filter(f=>f.purpose==='source').length,materialCount:files.length};}
     // Submission is deliberately not retried. Recovery uses task/run identities.
     dispatched=true;
-    return await (request.action==='refineImage'?refineImageRequest:createJobRequest)(base,health,body);
+    return dispatchPrepared?await dispatchPrepared(body):await (request.action==='refineImage'?refineImageRequest:createJobRequest)(base,health,body);
   } catch(error) {
     // Uploaded originals may be in use if a response was lost. Existing server
     // lifecycle handles expiry; never delete potentially consumed originals here.
-    error.beforeDispatch=!dispatched;error.preparedMaterialIds=uploaded;throw error;
+    if(error.beforeDispatch===undefined)error.beforeDispatch=!dispatched;error.preparedMaterialIds=uploaded;throw error;
   }
 }
 export async function recoverWorkspaceRun(base,userId,taskId,runId){const res=await fetch(base+'/paperbanana-api',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json','X-Workspace-Account':userId},body:JSON.stringify({action:'workspaceExecutionStatus',workspaceExecution:executionEnvelope(taskId,runId)}),signal:AbortSignal.timeout(15000)});const data=await res.json();if(!res.ok)throw Error(data.error||'执行状态暂时无法确认');return data.execution;}

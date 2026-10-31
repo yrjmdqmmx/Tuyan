@@ -11,7 +11,7 @@ export async function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, oper
   }
 }
 export function isLocalInputFailure(error: any) {
-  return !error?.uncertain && (['MaterialInputRequiredError','ModelPlanValidationError','SvgRenderValidationError'].includes(error?.name) && error?.requestState === 'not_sent'
+  return !error?.uncertain && (['MaterialInputRequiredError','ModelPlanValidationError','SvgRenderValidationError','PlusBudgetValidationError'].includes(error?.name) && error?.requestState === 'not_sent'
     || error?.name === 'ReferenceUploadValidationError'
     || error?.name === 'ThinkingConfigValidationError' && error?.localInputFailure === true && error?.requestState === 'not_sent'
     || ['TokenDanceError', 'UniversalApiError'].includes(error?.name) && error?.requestState === 'not_sent' && error?.status === 400)

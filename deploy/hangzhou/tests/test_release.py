@@ -6,6 +6,15 @@ def manifest():
  return {'version':1,'id':'storage-test-20261018','expected_images':{k:'sha256:'+'a'*64 for k in r.SERVICES},'services':{'core':{'env':{'OSS_REGION':'oss-cn-hangzhou'}}}}
 
 class SafetyTests(unittest.TestCase):
+ def test_plus_patch_is_live_admin_gateway_only_and_rejects_unsafe_values(self):
+  settings={'PLUS_ENABLED':'true','PLUS_ADMIN_ONLY':'true','PLUS_PAYMENT_ENVIRONMENT':'live','PLUS_EXECUTION_MODE':'disabled','PLUS_NEW_PURCHASES_ENABLED':'false','PLUS_NEW_TASKS_ENABLED':'false','PLUS_LIVE_COMMERCE_READY':'false','PLUS_PAYMENT_RETURN_URL':'https://tuyansci.cn/?view=account&section=account'}
+  for service in ['gateway','cn-gateway']:
+   m=manifest();m['services']={service:{'env':settings}};r.validate(m)
+  m=manifest();m['services']={'core':{'env':{'PAPERBANANA_PLUS_PREPARED':'false'}}};r.validate(m)
+  bad=[('gateway','PAPERBANANA_PLUS_PREPARED','true'),('core','PLUS_ENABLED','true'),('gateway','PLUS_ADMIN_ONLY','false'),('gateway','PLUS_PAYMENT_ENVIRONMENT','sandbox'),('gateway','PLUS_EXECUTION_MODE','simulation'),('gateway','PLUS_BAILIAN_API_KEY','x\nOTHER=value'),('gateway','PLUS_PAYMENT_RETURN_URL','https://example.com/'),('gateway','PLUS_PRICING_FILE','/tmp/unreviewed.json'),('gateway','PLUS_WATCHA_SANDBOX_API_KEY','fixture-'+'x'*30)]
+  for service,key,value in bad:
+   m=manifest();m['services']={service:{'env':{key:value}}}
+   with self.assertRaises(ValueError):r.validate(m)
  def test_identity_configuration_is_gateway_only_and_cannot_enable_sms(self):
   settings={'GOOGLE_OAUTH_ENABLED':'true','GITHUB_OAUTH_ENABLED':'true','AUTH_SMS_ENABLED':'false','AUTH_SMS_DELIVERY_ENABLED':'false','WECHAT_OAUTH_ENABLED':'false','AUTH_IDENTITY_PROXY_URL':'http://10.78.0.1:3129','GOOGLE_CLIENT_ID':'123-localfixture.apps.googleusercontent.com','GOOGLE_CLIENT_SECRET':'fixture-'+'x'*24,'GITHUB_CLIENT_ID':'fixtureclientid','GITHUB_CLIENT_SECRET':'x'*40}
   for service in ['gateway','cn-gateway']:

@@ -31,6 +31,22 @@ IDENTITY_PATTERNS = {
  'AUTH_SMS_ENABLED': r'false', 'AUTH_SMS_DELIVERY_ENABLED': r'false', 'WECHAT_OAUTH_ENABLED': r'false',
 }
 
+
+# Scoped administrator pilot only. Sandbox, simulation and public rollout cannot
+# be enabled by the production configuration patcher.
+PLUS_PATTERNS = {
+ 'PLUS_ENABLED': r'true|false', 'PLUS_ADMIN_ONLY': r'true',
+ 'PLUS_PAYMENT_ENVIRONMENT': r'live', 'PLUS_EXECUTION_MODE': r'disabled|managed',
+ **{key: r'true|false' for key in ['PLUS_MODEL_EXECUTION_ENABLED', 'PLUS_NEW_PURCHASES_ENABLED', 'PLUS_NEW_TASKS_ENABLED', 'PLUS_BACKGROUND_RECONCILIATION_ENABLED', 'PLUS_LIVE_COMMERCE_READY']},
+ 'PLUS_BAILIAN_API_KEY': r'[A-Za-z0-9_-]{20,512}',
+ 'PLUS_WATCHA_LIVE_API_KEY': r'[A-Za-z0-9_-]{20,512}',
+ 'PLUS_WATCHA_APPLICATION_ID': r'app_[a-z0-9]{16,80}',
+ 'PLUS_WATCHA_LIVE_SKU_ID': r'sku_[a-z0-9]{16,80}',
+ 'PLUS_WATCHA_LIVE_ENTITLEMENT_ID': r'ent_[a-z0-9]{16,80}',
+ 'PLUS_PAYMENT_RETURN_URL': r'https://(?:tuyansci\.cn|www\.paperbanana\.asia)/\?view=account&section=account',
+ 'PLUS_PRICING_FILE': r'/app/apps/auth-gateway/billing/plus-[a-z0-9-]{8,80}\.json',
+}
+
 def pending_upload_filter(cutoff):
     # Upload receipts are retained for account cleanup after their signed URLs
     # expire. Only live preparations block a release; unknown states/deadlines
@@ -72,6 +88,12 @@ def validate(m):
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
+            if key == 'PAPERBANANA_PLUS_PREPARED':
+                if name != 'core' or value not in {'true', 'false'}: raise ValueError('invalid Core Plus preparation switch')
+                continue
+            if key in PLUS_PATTERNS:
+                if name not in {'gateway', 'cn-gateway'} or not isinstance(value, str) or not re.fullmatch(PLUS_PATTERNS[key], value): raise ValueError('invalid administrator Plus configuration')
+                continue
             if key in IDENTITY_PATTERNS:
                 if name not in {'gateway', 'cn-gateway'} or not isinstance(value, str) or not re.fullmatch(IDENTITY_PATTERNS[key], value): raise ValueError('invalid identity configuration')
                 continue
