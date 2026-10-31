@@ -4,6 +4,20 @@
   "scope": "Web display only; primary vendor and service documents; unresolved fields stay null.",
   "models": [
     {
+      "id": "novita-ming-image-0.1-design",
+      "model": "Ming Image 0.1 Design",
+      "lookupIds": ["ming-image-0.1-design"],
+      "providers": ["novita"],
+      "input": "文本；其他模态待确认",
+      "output": "图像；其他模态待确认",
+      "context": null,
+      "sourceScope": "service",
+      "sources": ["https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img"],
+      "note": "专用文生图文档确认文本输入、图像输出；通用目录的其他模态、分类与限额仍有冲突，不扩展运行时能力。",
+      "checkedAt": "2026-10-28",
+      "status": "partial"
+    },
+    {
       "id": "C0001",
       "model": "GPT Audio",
       "lookupIds": [

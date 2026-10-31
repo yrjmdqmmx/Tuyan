@@ -129,7 +129,7 @@ function annotateModelForRole(model, { role, outputFormat, operation }) {
   return {
     ...model,
     selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch) || generationMismatch || editingMismatch,
-    selectionDisabledReason: (expired ? `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
+    selectionDisabledReason: (expired ? model.catalogReview?.status === 'pending' ? `待确认：${model.catalogReview.reason}` : `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
       || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : '')
       || (generationMismatch ? '该模型仅支持图像编辑' : '')

@@ -29,7 +29,7 @@ export const PROVIDER_CATALOGS: Record<string, CatalogDefinition> = {
   replicate: { access:'key', url:'https://api.replicate.com/v1/models', parser:'replicate', source:'https://replicate.com/docs/reference/http/#models.list' },
   bailian: { access:'workspace', parser:'bailian', source:'https://help.aliyun.com/zh/model-studio/list-models', note:'北京目录需要业务空间 ID；不会把中国区密钥发送到海外区域' },
   ark: { access:'control-plane', source:'https://docs.volcengine.com/docs/ark/list-foundation-models-api?lang=zh', note:'目录管理使用 AccessKey/SecretKey；推理 API Key 不能替代管理凭据' },
-  sensenova: { access:'control-plane', url:'https://api.sensenova.cn/v1/llm/models', source:'https://console.sensecore.cn/micro/help/docs/model-as-a-service/nova/overview/Models/GetModelList/', note:'旧版目录需要 SenseCore JWT，不能套用 token.sensenova.cn 的推理密钥' },
+  sensenova: { access:'key', url:'https://token.sensenova.cn/v1/models', source:'https://platform.sensenova.cn/docs', note:'使用 token.sensenova.cn 的 API Key 读取目录；旧 SenseCore JWT 不适用于此入口' },
   zhipu: { access:'documents', source:'https://docs.bigmodel.cn/llms.txt', note:'官方接口索引未列出模型目录 API，按具体型号文档核查' },
   recraft: { access:'documents', source:'https://www.recraft.ai/docs/llms.txt', note:'官方未提供已确认的模型枚举接口' },
   bfl: { access:'documents', source:'https://docs.bfl.ai/llms.txt', note:'按具体模型的生成与编辑接口核查，未确认目录 API' },
@@ -104,6 +104,7 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
     const vision = row.capabilities?.image_input?.supported ?? row.capabilities?.vision?.supported
     if (typeof vision === 'boolean') { input = vision ? ['text','image'] : ['text']; output = ['text'] }
   }
+  if (provider === 'sensenova') facts.maxOutputTokens = validLimit(row.max_output_length)
   if (provider === 'gemini') { facts.maxInputTokens=validLimit(row.inputTokenLimit); facts.maxOutputTokens=validLimit(row.outputTokenLimit) }
   if (provider === 'mistral' && row.capabilities) {
     if (row.capabilities.completion_chat === true) { input=row.capabilities.vision ? ['text','image'] : ['text']; output=['text'] }
@@ -250,8 +251,7 @@ export async function readProviderCatalog(provider: string, options: { fetcher?:
       return {...base,models:[...found.values()],state:progress.phase==='done'?'ready':'partial',...(progress.phase!=='done'?{continuation:{ark:progress}}:{}),message:`已读取 ${found.size} 个基础型号、版本或接入点${progress.phase==='done'?'':'，继续读取剩余分页'}`}
     }catch{return {...base,state:found.size?'partial':'error',continuation:{ark:progress},models:[...found.values()],message:signal.aborted?'Ark 目录读取超时，结果未完整':'Ark 目录读取失败，请检查管理凭据和只读权限'}}
   }
-  if (provider==='sensenova' && !options.catalogCredentials?.token) return {...base,state:'needs-configuration',message:def.note || '需要目录凭据'}
-  const apiKey=String(provider==='sensenova' ? options.catalogCredentials?.token || '' : options.apiKey || '').trim()
+  const apiKey=String(options.apiKey || '').trim()
   if ((def.access==='key' || def.access==='workspace' || options.privateModels) && !apiKey) return {...base,state:'needs-key',message:'填写此渠道的 API Key 后读取账户目录'}
   let endpoint=def.url || ''
   if(provider==='minimax' && options.region==='cn') {endpoint='https://api.minimax.cn/v1/models';base.sourceUrls=['https://platform.minimaxi.com/docs/api-reference/models/openai/list-models']}

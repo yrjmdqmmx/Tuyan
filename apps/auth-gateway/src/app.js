@@ -631,7 +631,7 @@ function normalizeProviderAccountCatalogBody(body) {
     return { action:'providerAccountCatalog', mode:'catalog', provider,
       apiKeys: { [provider]: key }, continuation:body.continuation, region:body.region, workspaceId:body.workspaceId,
       privateModels:body.privateModels === true,
-      ...(provider==='ark' ? {catalogCredentials:{accessKeyId:body.catalogCredentials?.accessKeyId,secretAccessKey:body.catalogCredentials?.secretAccessKey,sessionToken:body.catalogCredentials?.sessionToken}} : provider==='sensenova' ? {catalogCredentials:{token:body.catalogCredentials?.token}} : {}),
+      ...(provider==='ark' ? {catalogCredentials:{accessKeyId:body.catalogCredentials?.accessKeyId,secretAccessKey:body.catalogCredentials?.secretAccessKey,sessionToken:body.catalogCredentials?.sessionToken}} : {}),
       // Preserve forbidden fields so Core rejects a mixed metadata/inference request.
       ...(body.probes !== undefined ? {probes:body.probes} : {}),
       ...(body.confirmPaidImageProbe !== undefined ? {confirmPaidImageProbe:body.confirmPaidImageProbe} : {}),

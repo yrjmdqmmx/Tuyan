@@ -1174,6 +1174,8 @@ test('metadata catalog forwards only the selected channel key and explicit direc
   assert.deepEqual(body.apiKeys,{openai:'selected'});assert.equal(body.catalogCredentials,undefined);assert.equal(body.accessToken,undefined);assert.deepEqual(body.continuation,{page:2});assert.match(body.userId,/^guest:/)
   await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'ark',apiKeys:{ark:'inference'},catalogCredentials:{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS',unrelated:'discard'}})
   assert.deepEqual(backend.calls[1].body.catalogCredentials,{accessKeyId:'AK',secretAccessKey:'SK',sessionToken:'STS'})
+  await post(baseUrl,{action:'providerAccountCatalog',mode:'catalog',provider:'sensenova',apiKeys:{sensenova:'current-key',openai:'unrelated'},catalogCredentials:{token:'old-jwt'}})
+  assert.deepEqual(backend.calls[2].body.apiKeys,{sensenova:'current-key'});assert.equal(backend.calls[2].body.catalogCredentials,undefined)
  })
 })
 

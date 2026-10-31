@@ -11,7 +11,7 @@ import { STATIC_MODEL_REGISTRY as catalog, STATIC_MODEL_REGISTRY_VERSION } from 
 const additions=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261026/additions.json',import.meta.url),'utf8'))
 const endpoints:Record<string,string>={kimi:'https://api.moonshot.cn/v1/chat/completions',minimax:'https://api.minimax.io/v1/chat/completions',mistral:'https://api.mistral.ai/v1/chat/completions',together:'https://api.together.ai/v1/chat/completions',fireworks:'https://api.fireworks.ai/inference/v1/chat/completions',ark:'https://ark.cn-beijing.volces.com/api/v3/chat/completions',tokenhub:'https://tokenhub.tencentmaas.com/v1/chat/completions',iflytek:'https://maas-api.cn-huabei-1.xf-yun.com/v2/chat/completions',tokendance:'https://tokendance.space/gateway/v1/chat/completions'}
 test('weekly 19 identities preserve defaults and keep unsupported protocol paths closed',()=>{
- assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-26.v39')
+ assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-31.v42')
  assert.equal(Object.values(catalog).reduce((n:number,p:any)=>n+p.models.length,0),1125)
  const defaults=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261016/baseline-defaults.json',import.meta.url),'utf8'))
  for(const [p,v] of Object.entries(defaults))assert.deepEqual(catalog[p].defaults,v)

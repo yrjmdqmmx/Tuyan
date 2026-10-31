@@ -13,6 +13,30 @@ import { MODEL_CHANNEL_LABELS, presentRegistryModel } from '../src/lib/modelPres
 import fs from 'node:fs'
 afterEach(cleanup)
 
+test('Novita shows confirmed text-to-image facts offline and after conflicting catalog refresh', () => {
+  const historical = STATIC_MODEL_REGISTRY.novita.models.find(m => m.id === 'ming-image-0.1-design')
+  for (const specifications of [undefined, {
+    version: 1, officialInputModalities: ['text', 'image', 'audio', 'video'],
+    officialOutputModalities: ['text', 'image', 'audio', 'video'], contextWindowTokens: 0,
+    sourceUrls: ['https://api.novita.ai/v3/openai/models'],
+  }]) {
+    const model = { ...historical, specifications }, before = structuredClone(model)
+    const card = modelCardSpecifications('novita', model)
+    assert.equal(card.input, '文本；其他模态待确认')
+    assert.equal(card.output, '图像；其他模态待确认')
+    assert.equal(card.context, '待确认')
+    assert.deepEqual(modalityIconStates(card.input).map(x => x.state), ['supported', 'unknown', 'unknown', 'unknown'])
+    assert.deepEqual(modalityIconStates(card.output).map(x => x.state), ['unknown', 'supported', 'unknown', 'unknown'])
+    assert.ok(card.sources.includes('https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img'))
+    const view = render(React.createElement(ModelSpecifications, { provider: 'novita', model }))
+    assert.equal(view.container.querySelectorAll('.is-unknown').length, 6)
+    assert.match(screen.getByRole('note').textContent, /待确认/)
+    assert.deepEqual(model, before, 'display correction never expands runtime capabilities or changes history')
+    view.unmount()
+  }
+  assert.equal(modelCardSpecifications('custom', { id: historical.id }).input, '待确认')
+})
+
 test('documented specifications never change adapted capabilities or request limits', () => {
   const model = STATIC_MODEL_REGISTRY.gemini.models.find(m=>m.id==='gemini-nano-banana-2.1')
   const before = structuredClone(model)

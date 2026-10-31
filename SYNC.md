@@ -1,3 +1,12 @@
+## 2026-10-31 · 指定渠道与角色筛选 v42 发布整合
+
+- 从当前发布分支 bd8dec2f 整合，仅移植 SenseNova 目录 API Key / GET 入口、Together 0813 到期纠正、fal ImagineArt 排除、Novita 文本输入/图像输出及冲突提示、角色筛选联动。v40/v41 其他渠道生命周期改动保留在原工作树，未带入本次发行。
+- Stability `sd3.5-flash` 按用户要求移出当前目录，新增 `catalogRemoval.reason: official-metadata-conflict`，不声称永久停服；fal 使用 `public-catalog-unavailable`。内部历史 ID 和默认值保留，旧配置不删除/换模，移除条目的调用在发送前返回 not_sent。
+- [x] Web / Core / Gateway / shared：目录移除/待确认字段、Novita 已审规格、渠道/厂商/总数按角色同步；无对应角色的渠道隐藏，失效筛选自动回到有效项。我的模型逻辑保持，无账户数据迁移。
+- [x] 本地验证：Web 1302/1302、Core 定向 455/455、Gateway 239 通过/1 既有跳过，类型/构建/生成物检查通过；Chrome 角色/键盘/指定渠道及隔离数据保留通过。
+- [ ] 上线：用户已授权；等待本轮 CI、两站版本与生产 Chrome 回执。禁止调用付费模型。
+- [ ] 小程序继续暂停；恢复时接入 v42 可选字段与目录排除规则，不能自动替换历史路由。
+
 ## 2026-10-31 · GitHub / Google 正式双站登录发布
 
 - [x] Gateway：两个正式客户端的回调均覆盖 `tuyansci.cn` 与 `api.paperbanana.asia`；通过 `AUTH_IDENTITY_PROXY_URL=http://10.78.0.1:3129` 访问四个固定身份接口，不跟随跳转、不切换出口重试。香港独立 CONNECT 监听仅允许 GitHub token/profile、Google token/JWKS 域名，模型出口 3128 的白名单不变。

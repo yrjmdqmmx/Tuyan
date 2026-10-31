@@ -1,4 +1,4 @@
-import { ArrowDownToLine, ArrowUpFromLine, ScanText, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
+import { ArrowDownToLine, ArrowUpFromLine, ScanText, ExternalLink, Info, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
 import { modelCardSpecifications } from '../lib/modelCardSpecifications'
 import { modalityIconStates } from '../lib/modelModalityIcons'
 import { useAppLocale } from './BenchmarkLocale.jsx'
@@ -35,6 +35,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
       <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd><ModalityIcons value={data.output} scope={data.outputScope} direction="输出模态" /></dd></div>
       <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={`${t(data.context)}${data.contextScope ? ` · ${t(data.contextScope)}` : ''}`}>{t(data.context)}</dd></div>
     </dl>
+    {model?.catalogReview?.status === 'pending' && <span className="model-spec-review" role="note" tabIndex={0} title={model.catalogReview.reason} aria-label={`${t('待确认')}：${model.catalogReview.reason}`}><Info size={13} aria-hidden="true" />{t('待确认')}</span>}
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
   </div>
 }

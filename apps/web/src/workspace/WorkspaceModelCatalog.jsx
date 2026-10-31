@@ -16,7 +16,7 @@ export function catalogRows(registry, { provider = '', developer = '', role = ''
   const needle = query.trim().toLocaleLowerCase();
   return orderModelChannels(Object.keys(registry?.providers || {})).flatMap(id => {
     if (provider && id !== provider) return [];
-    return (registry.providers[id].models || []).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model)).filter(model => !role || model.roles?.includes(role))
+    return (registry.providers[id].models || []).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !model.catalogRemoval && (model.catalogReview?.status === 'pending' || !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model))).filter(model => !role || model.roles?.includes(role))
       .filter(model => !developer || modelDeveloper(id, model).id === developer)
       .filter(model => !needle || [model.id, model.label, model.vendor, model.developerName, ...modelDeveloperAliases(modelDeveloper(id, model).id), channelName(id, registry), ...(model.roles || []).map(r => ROLE_NAMES[r])].join(' ').toLocaleLowerCase().includes(needle))
       .map(model => ({ provider: id, model }));
@@ -42,22 +42,26 @@ function matchesRow({ provider, model, connection }, { developer, role, query },
     (!needle || [model.id, model.label, model.vendor, identity.label, ...modelDeveloperAliases(identity.id), channelName(provider, registry), connection?.label, connection?.id, ...(model.roles || []).map(id => ROLE_NAMES[id])].join(' ').toLocaleLowerCase().includes(needle));
 }
 
-export default function WorkspaceModelCatalog({ models, onConnection, mode = 'catalog', onBrowse, onEditCustom }) {
+export default function WorkspaceModelCatalog({ models, onConnection, mode = 'catalog', onBrowse, onEditCustom, role: selectedRole, onRoleChange }) {
   const { registry, library, busy, ready, registryStatus } = models;
-  const [provider, setProvider] = useState(''), [role, setRole] = useState(''), [query, setQuery] = useState('');
+  const [provider, setProvider] = useState(''), [localRole, setLocalRole] = useState(''), [query, setQuery] = useState('');
+  const role = selectedRole ?? localRole;
+  const setRole = onRoleChange || setLocalRole;
   const [developer, setDeveloper] = useState('');
   const [limit, setLimit] = useState(PAGE_SIZE), [adding, setAdding] = useState(null), [connectionId, setConnectionId] = useState('');
   const [saveError, setSaveError] = useState('');
   const saved = mode === 'library';
   const scrollRef = useRef(null);
   const allRows = useMemo(() => saved ? libraryRows(library, registry) : catalogRows(registry), [saved, library, registry]);
-  const providers = orderModelChannels(saved ? [...new Set(allRows.map(row => row.provider))] : Object.keys(registry?.providers || {}));
-  const channelCounts = useMemo(() => allRows.reduce((counts, row) => {
+  // Catalog facets share the selected role; saved-library behavior stays unchanged.
+  const roleRows = useMemo(() => saved || !role ? allRows : allRows.filter(row => row.model.roles?.includes(role)), [allRows, saved, role]);
+  const providers = orderModelChannels([...new Set(roleRows.map(row => row.provider))]);
+  const channelCounts = useMemo(() => roleRows.reduce((counts, row) => {
     counts[row.provider] = (counts[row.provider] || 0) + 1;
     return counts;
-  }, {}), [allRows]);
+  }, {}), [roleRows]);
   const providerId = providers.includes(provider) ? provider : providers.find(id => channelCounts[id]) || providers[0] || '';
-  const channelRows = useMemo(() => allRows.filter(row => row.provider === providerId), [allRows, providerId]);
+  const channelRows = useMemo(() => roleRows.filter(row => row.provider === providerId), [roleRows, providerId]);
   const developers = useMemo(() => {
     const groups = new Map();
     for (const row of channelRows) {
@@ -69,11 +73,14 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   }, [channelRows]);
   const activeDeveloper = developers.find(item => item.id === developer) || developers[0];
   const developerId = activeDeveloper?.id || '';
+  useEffect(() => {
+    if (!saved) { setProvider(providerId); setDeveloper(developerId); }
+  }, [saved, providerId, developerId]);
   const rows = useMemo(() => channelRows.filter(row => matchesRow(row, { developer: developerId, role, query }, registry)), [channelRows, registry, developerId, role, query]);
   useEffect(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, [providerId, developerId, role, query]);
   function chooseProvider(id) {
     setProvider(id);
-    setDeveloper(developerId && allRows.some(row => row.provider === id && modelDeveloper(row.provider, row.model).id === developerId) ? developerId : '');
+    setDeveloper(developerId && roleRows.some(row => row.provider === id && modelDeveloper(row.provider, row.model).id === developerId) ? developerId : '');
     setLimit(PAGE_SIZE);
   }
   const connections = adding ? library.connections.filter(c => c.provider === adding.provider && !c.disabled) : [];

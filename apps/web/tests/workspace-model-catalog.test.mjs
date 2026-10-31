@@ -4,11 +4,79 @@ import assert from 'node:assert/strict';
 import React from 'react';
 import {render,screen,fireEvent,cleanup,waitFor,within} from '@testing-library/react';
 import WorkspaceModelCatalog,{catalogRows} from '../src/workspace/WorkspaceModelCatalog.jsx';
+import {WorkspaceModelManager} from '../src/workspace/WorkspaceModelPanels.jsx';
+import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js';
+import {filterRegistryModels} from '../src/lib/modelRegistry.js';
 
 afterEach(cleanup);
 const registry={providers:{openai:{models:[{id:'shared-v1',label:'Shared model',roles:['main','vision']},{id:'image-v1',label:'Image model',roles:['image']},{id:'retired',label:'Retired model',roles:['main'],selectable:false,lifecycle:'legacy',lifecycleSourceUrl:'https://example.com/retirements',disabledReason:'渠道已确认于 2026-09-10 停用此型号'}]},tokendance:{models:[{id:'shared-v1',label:'Shared model',roles:['main']}]}}};
 const library={revision:1,connections:[{id:'direct',label:'Direct',provider:'openai'},{id:'gateway',label:'Gateway',provider:'tokendance'}],models:[]};
 const props={models:{registry,library,registryStatus:'ready',ready:true,busy:false,save:async()=>true},onConnection:()=>{}};
+
+test('role changes update channel, manufacturer and catalog counts and resolve incompatible selections without writes',()=>{
+ const r={providers:{
+  tokendance:{models:[
+   {id:'deepseek-text',vendorId:'deepseek',roles:['main']},
+   {id:'seedream-image',vendorId:'bytedance',roles:['image']},
+   {id:'seedream-image-2',vendorId:'bytedance',roles:['image']},
+  ]},
+  deepseek:{models:[{id:'direct-text',vendorId:'deepseek',roles:['main']}]},
+  openai:{models:[{id:'gpt-image',vendorId:'openai',roles:['image']},{id:'gpt-text',vendorId:'openai',roles:['main']}]},
+  fal:{models:[]},
+ }};
+ const before=structuredClone(library);let writes=0;
+ const models={...props.models,registry:r,userId:'fixture',save:()=>{writes++;}};
+ const view=render(React.createElement(WorkspaceModelManager,{models}));
+ const channels=within(screen.getByRole('complementary',{name:'模型渠道筛选'}));
+ const makers=within(screen.getByRole('complementary',{name:'模型厂商筛选'}));
+ const tabs=within(screen.getByRole('navigation',{name:'模型管理视图'}));
+ const choose=name=>{fireEvent.click(screen.getByRole('combobox',{name:'模型角色'}));fireEvent.click(screen.getByRole('option',{name,exact:true}));};
+ assert.ok(tabs.getByRole('button',{name:/模型目录\s*6$/}));
+ assert.ok(makers.getByRole('button',{name:/深度求索\s*1$/,pressed:true}));
+ choose('绘图模型');
+ assert.ok(tabs.getByRole('button',{name:/模型目录\s*3$/}));
+ assert.equal(channels.queryByRole('button',{name:/深度求索|fal/}),null);
+ assert.ok(channels.getByRole('button',{name:/观猹 TokenDance\s*2$/,pressed:true}));
+ assert.ok(channels.getByRole('button',{name:/OpenAI\s*1$/}));
+ assert.ok(makers.getByRole('button',{name:/字节跳动\s*2$/,pressed:true}));
+ assert.equal(makers.queryByRole('button',{name:/深度求索/}),null);
+ assert.equal(screen.getAllByRole('article').length,2);
+ choose('主模型');
+ fireEvent.click(channels.getByRole('button',{name:/深度求索\s*1$/}));
+ choose('绘图模型');
+ assert.ok(channels.getByRole('button',{name:/观猹 TokenDance\s*2$/,pressed:true}));
+ assert.equal(screen.getAllByRole('article').length,2);
+ choose('视觉理解');
+ assert.ok(tabs.getByRole('button',{name:/模型目录\s*0$/}));
+ assert.equal(channels.queryAllByRole('button').length,0);
+ assert.equal(makers.queryAllByRole('button').length,0);
+ assert.ok(screen.getByText('没有匹配的模型'));
+ fireEvent.click(screen.getByRole('button',{name:'清除筛选'}));
+ assert.ok(tabs.getByRole('button',{name:/模型目录\s*6$/}));
+ choose('绘图模型');
+ view.rerender(React.createElement(WorkspaceModelManager,{models:{...models,registry:{providers:{openai:r.providers.openai}}}}));
+ assert.ok(channels.getByRole('button',{name:/OpenAI\s*1$/,pressed:true}));
+ assert.ok(tabs.getByRole('button',{name:/模型目录\s*1$/}));
+ assert.equal(screen.getAllByRole('article').length,1);
+ assert.equal(writes,0);assert.deepEqual(library,before);
+});
+
+test('reviewed catalog restores Together, hides fal from current choices and preserves saved entries without writes',t=>{
+ t.mock.method(Date,'now',()=>Date.parse('2026-10-28T12:00:00+08:00'));
+ const ids={together:'deepseek-ai/DeepSeek-V4-Pro-0813',fal:'imagineart/imagineart-2.0-preview/text-to-image',novita:'ming-image-0.1-design',stability:'sd3.5-flash'};
+ const source={providers:Object.fromEntries(Object.entries(ids).map(([p,id])=>[p,{...STATIC_MODEL_REGISTRY[p],models:STATIC_MODEL_REGISTRY[p].models.filter(m=>m.id===id)}]))};
+ assert.deepEqual(new Set(catalogRows(source).map(row=>row.provider)),new Set(['together','novita']));
+ assert.equal(filterRegistryModels(source.providers.fal.models,{role:'image'}).length,0);
+ assert.equal(filterRegistryModels(source.providers.together.models,{role:'main'})[0].id,ids.together);
+ const saved={connections:[{id:'fal-old',provider:'fal'}],models:[{id:'history',connectionId:'fal-old',modelId:ids.fal}]},before=structuredClone(saved);let writes=0;
+ render(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,registry:source,library:saved,save:async()=>{writes++;return true;}}}));
+ fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/Together AI/}));
+ assert.equal(screen.getByRole('button',{name:/添加 DeepSeek-V4-Pro-0813/}).disabled,false);
+ assert.equal(screen.queryByRole('note'),null);
+ fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/Novita/}));
+ assert.match(screen.getByRole('note').getAttribute('aria-label'),/已确认专用文生图 JSON 协议.*待确认仅限通用目录/);
+ assert.equal(writes,0);assert.deepEqual(saved,before);
+});
 
 test('catalog is visible before connection setup, filters real roles and retains channel identity',()=>{
  render(React.createElement(WorkspaceModelCatalog,{...props,models:{...props.models,library:{connections:[],models:[]}}}));
@@ -212,4 +280,16 @@ test('my models retain offline entries and missing connections without allowing 
  fireEvent.click(within(screen.getByRole('complementary',{name:'模型渠道筛选'})).getByRole('button',{name:/自定义/}));
  assert.ok(screen.getByText('连接不存在'));
  assert.ok(screen.getByRole('button',{name:'停用 custom-id · missing'}).disabled);
+});
+
+test('pending evidence is visible without reopening expired models or rewriting saved configurations',t=>{
+ t.mock.method(Date,'now',()=>Date.parse('2026-10-28T12:00:00+08:00'));
+ const review={status:'pending',reason:'官方目录与到期记录冲突，保持原有调用限制。',checkedAt:'2026-10-28',sourceUrls:['https://docs.together.ai/docs/serverless/models']};
+ const source={providers:{together:{models:[{id:'conflict',label:'Conflict model',roles:['main'],expirationDate:'2026-09-29',catalogReview:review},{id:'removed',roles:['main'],catalogRemoval:{reason:'official-retirement'},expirationDate:'2026-09-01'}]}}};
+ const saved={connections:[{id:'old',provider:'together'}],models:[{id:'kept',connectionId:'old',modelId:'removed'}]};const before=structuredClone(saved);let writes=0;
+ assert.deepEqual(catalogRows(source).map(row=>row.model.id),['conflict']);
+ render(React.createElement(WorkspaceModelCatalog,{models:{...props.models,registry:source,library:saved,save:async()=>{writes++;return true;}}}));
+ assert.match(screen.getByRole('note').getAttribute('aria-label'),/待确认.*官方目录与到期记录冲突/);
+ assert.equal(screen.getByRole('button',{name:'添加 Conflict model · Together AI'}).disabled,true);
+ assert.equal(writes,0);assert.deepEqual(saved,before);
 });

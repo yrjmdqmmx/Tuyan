@@ -939,6 +939,8 @@ type ProviderAccountCatalogBody = {
 }
 
 type ModelRegistryEntry = {
+  catalogRemoval?: { reason: 'public-catalog-unavailable' | 'official-metadata-conflict'; checkedAt: string; sourceUrl: string }
+  catalogReview?: { status: 'pending'; checkedAt: string; reason: string; sourceUrls: string[] }
   catalogAliases?: string[]
   catalogDiscovered?: boolean
   catalogPresence?: TokenDanceCatalogPresence
@@ -1197,7 +1199,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-10-26.v39'
+const modelRegistryVersion = '2026-10-31.v42'
 const inputOptimizationContractVersion = 1 as const
 const inputOptimizationTimeoutMs = 45_000
 const inputOptimizationLimits: Record<InputOptimizationTarget, number> = {
@@ -2971,7 +2973,7 @@ Object.assign(staticModelRegistry.siliconflow.models.find((model) => model.id ==
 Object.assign(staticModelRegistry.siliconflow.models.find((model) => model.id === "MiniMaxAI/MiniMax-M2.5")!, {"lifecycle":"legacy","selectable":false,"disabledReason":"渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。","expirationDate":"2026-09-11","lifecycleSourceUrl":"https://docs.siliconflow.cn/docs/release-notes/overview","replacementModelId":""})
 Object.assign(staticModelRegistry.siliconflow.models.find((model) => model.id === "Pro/MiniMaxAI/MiniMax-M2.5")!, {"lifecycle":"legacy","selectable":false,"disabledReason":"渠道已确认于 2026-09-11 停用此型号；保留原配置和历史记录，请手动选择可用型号。","expirationDate":"2026-09-11","lifecycleSourceUrl":"https://docs.siliconflow.cn/docs/release-notes/overview","replacementModelId":""})
 Object.assign(staticModelRegistry.siliconflow.models.find((model) => model.id === "baidu/ERNIE-Image-Turbo")!, {"lifecycle":"legacy","selectable":false,"disabledReason":"硅基流动公告此型号于2026-09-30停用；历史ID保留，请手动选择可用型号。","expirationDate":"2026-09-30","lifecycleSourceUrl":"https://docs.siliconflow.cn/docs/release-notes/overview","replacementModelId":""})
-Object.assign(staticModelRegistry.together.models.find((model) => model.id === "deepseek-ai/DeepSeek-V4-Pro-0813")!, {"lifecycle":"legacy","expirationDate":"2026-09-29","lifecycleSourceUrl":"https://docs.together.ai/docs/deprecations","replacementModelId":"deepseek-ai/DeepSeek-V4.1-Flash"})
+Object.assign(staticModelRegistry.together.models.find((model) => model.id === "deepseek-ai/DeepSeek-V4-Pro-0813")!, {"lifecycle":"stable","expirationDate":null,"lifecycleSourceUrl":"https://docs.together.ai/docs/serverless/models","replacementModelId":"","availabilityNotes":"2026-10-28 核对 Together 当前 Serverless 目录、专用接口文档与停服公告：此精确 ID 仍在列，未找到其停服公告；已清除误记的到期日期与替代建议。账户权限与真实推理未验证。"})
 Object.assign(staticModelRegistry.together.models.find((model) => model.id === "deepseek-ai/DeepSeek-V4-Flash-0731")!, {"lifecycle":"legacy","expirationDate":"2026-09-29","lifecycleSourceUrl":"https://docs.together.ai/docs/deprecations","replacementModelId":"deepseek-ai/DeepSeek-V4.1-Flash"})
 Object.assign(staticModelRegistry.tokenhub.models.find((model) => model.id === "glm-5.1")!, {"expirationDate":"2026-10-08","expirationAt":"2026-10-08T00:00:00+08:00","lifecycle":"legacy"})
 Object.assign(staticModelRegistry.tokenhub.models.find((model) => model.id === "glm-5v-turbo")!, {"expirationDate":"2026-10-30","expirationAt":"2026-10-30T00:00:00+08:00","lifecycle":"legacy"})
@@ -3015,6 +3017,9 @@ Object.assign(staticModelRegistry.ark.models.find((model) => model.id === "douba
 Object.assign(staticModelRegistry.ark.models.find((model) => model.id === "doubao-seedream-4-5-251128")!, {"lifecycle":"legacy","expirationDate":"2026-11-24","expirationAt":"2026-11-24T14:00:00+08:00","lifecycleSourceUrl":"https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh","availabilityNotes":"2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"})
 Object.assign(staticModelRegistry.ark.models.find((model) => model.id === "doubao-seedream-5-0-260128")!, {"lifecycle":"legacy","expirationDate":"2026-11-24","expirationAt":"2026-11-24T14:00:00+08:00","lifecycleSourceUrl":"https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh","availabilityNotes":"2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"})
 Object.assign(staticModelRegistry.ark.models.find((model) => model.id === "deepseek-v4-pro-260425")!, {"lifecycle":"legacy","expirationDate":"2026-11-24","expirationAt":"2026-11-24T14:00:00+08:00","lifecycleSourceUrl":"https://docs.volcengine.com/docs/ark/model-deprecation-notice?lang=zh","availabilityNotes":"2026-10-19 核对方舟官方 EOS 公告：服务截止 2026-11-24 14:00（UTC+8）。历史 ID 与默认配置保留，平台不静默替换；上游可能迁移接入点或关停，账户实际状态未验证。"})
+Object.assign(staticModelRegistry.fal.models.find((model) => model.id === "imagineart/imagineart-2.0-preview/text-to-image")!, {"selectable":false,"disabledReason":"当前公开目录不可用：精确型号目录、接口 schema 与文档均返回 404，已移出当前可选目录；原配置与历史记录保留。","catalogRemoval":{"reason":"public-catalog-unavailable","checkedAt":"2026-10-28","sourceUrl":"https://api.fal.ai/v1/models?endpoint_id=imagineart%2Fimagineart-2.0-preview%2Ftext-to-image&expand=openapi-3.0"},"catalogReview":{"status":"pending","checkedAt":"2026-10-28","reason":"已确认当前公开目录不可用；永久停服状态、停服日期与替代型号仍待确认。恢复选择前需重新核对官方证据。","sourceUrls":["https://api.fal.ai/v1/models?endpoint_id=imagineart%2Fimagineart-2.0-preview%2Ftext-to-image&expand=openapi-3.0","https://fal.ai/api/openapi/queue/openapi.json?endpoint_id=imagineart/imagineart-2.0-preview/text-to-image","https://fal.ai/models/imagineart/imagineart-2.0-preview/text-to-image/api"]}})
+Object.assign(staticModelRegistry.novita.models.find((model) => model.id === "ming-image-0.1-design")!, {"catalogReview":{"status":"pending","checkedAt":"2026-10-28","reason":"已确认专用文生图 JSON 协议与 image 角色；待确认仅限通用目录的 chat 分类、模态及限额字段，不据此扩展角色或能力。账户权限与真实调用未验证。","sourceUrls":["https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img","https://api.novita.ai/v3/openai/models","https://novita.ai/models/model-detail/ming-image-0.1-design"]}})
+Object.assign(staticModelRegistry.stability.models.find((model) => model.id === "sd3.5-flash")!, {"catalogReview":{"status":"pending","checkedAt":"2026-10-28","reason":"当前官方 API 正文与价格页列出 Flash，但新旧 OpenAPI 的 model 枚举均未列出；文档冲突与协议可用性仍待确认。","sourceUrls":["https://docs.stability.ai/api-reference/generate/stable-diffusion-35","https://docs.stability.ai/openapi.json","https://docs.stability.ai/pricing","https://api.stability.ai/v2alpha/openapi"]},"selectable":false,"disabledReason":"官方接口资料存在冲突，已暂停此型号并移出当前可选目录；原配置与历史记录保留。","catalogRemoval":{"reason":"official-metadata-conflict","checkedAt":"2026-10-31","sourceUrl":"https://docs.stability.ai/openapi.json"}})
 for (const model of staticModelRegistry.bailian.models) model.regions = ["cn-beijing"]
 for (const model of staticModelRegistry.ark.models) model.regions = ["cn-beijing"]
 for (const model of staticModelRegistry.siliconflow.models) model.regions = ["cn"]
@@ -4849,8 +4854,10 @@ async function browsePublicCatalog(provider:string):Promise<PublicCatalogResult>
   } finally { if(timer)clearTimeout(timer) }
 }
 function mergeDiscoveredCatalog(provider: string, registry: ProviderModelRegistry, discovered: any[]): ProviderModelRegistry {
-  const byId = new Map(registry.models.map(model => [model.id, model]))
+  const removed = new Set(staticModelRegistry[provider as Exclude<Provider, 'openrouter'>]?.models.filter(model => model.catalogRemoval).map(model => model.id) || [])
+  const byId = new Map(registry.models.filter(model => !removed.has(model.id)).map(model => [model.id, model]))
   for (const row of discovered) {
+    if (removed.has(row.id)) continue
     // TokenDance mixes models and tools in one feed. Only previously audited
     // role/protocol entries belong in model cards, including account reads.
     if (provider === 'tokendance' && !byId.has(row.id)) continue
@@ -5242,8 +5249,8 @@ function publicProviderModelRegistry(registry: ProviderModelRegistry): ProviderM
     ...registry,
     models: sortModelsNewestFirst(registry.models)
       .map(applyModelLifecycle)
-      // Keep unavailable identities for saved routes/history, never selectable.
-      .filter((model) => model.roles.length > 0),
+      // Keep audited removals in the internal history index, outside the current directory.
+      .filter((model) => model.roles.length > 0 && !model.catalogRemoval),
   }
 }
 
@@ -11873,6 +11880,7 @@ async function assertCatalogModelActive(provider: string, model: string) {
   const entry = staticModelRegistry[provider as Exclude<Provider, 'openrouter'>]?.models.find(item => item.id === normalizeModelName(provider, model))
   if (entry) {
     const active = applyModelLifecycle(entry)
+    if (entry.catalogRemoval) throw Object.assign(new Error(active.disabledReason || `型号 ${model} 已移出当前可选目录；原配置保留，请手动选择。`), { requestState: 'not_sent', localInputFailure: true, retryable: false })
     if (!active.selectable) throw new Error(active.disabledReason || `型号 ${model} 当前不可用，请手动选择。`)
     if(['fal','runware','novita'].includes(provider)){
       const registry=await providerModelRegistry(provider as Provider)

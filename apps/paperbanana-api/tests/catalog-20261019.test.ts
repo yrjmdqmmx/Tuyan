@@ -16,7 +16,7 @@ const added=[
 ] as const
 
 test('weekly additions preserve all prior defaults, remain unverified and keep unadapted discoveries closed',()=>{
- assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-26.v39')
+ assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-31.v42')
  assert.equal(Object.values(catalog).reduce((n:number,p:any)=>n+p.models.length,0),1125)
  const defaults=JSON.parse(fs.readFileSync(new URL('./fixtures/catalog-20261016/baseline-defaults.json',import.meta.url),'utf8'))
  for(const [provider,expected]of Object.entries(defaults))assert.deepEqual(catalog[provider].defaults,expected)

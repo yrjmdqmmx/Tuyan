@@ -49,7 +49,7 @@ test('reviewed TokenDance absences remain blocked and newly discovered specialis
 })
 
 test('v32 preserves all channel defaults and exposes 20 exact unverified identities',()=>{
-  assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-26.v39')
+  assert.equal(STATIC_MODEL_REGISTRY_VERSION,'2026-10-31.v42')
   for(const [provider,defaults]of Object.entries(fixture('baseline-defaults.json')))assert.deepEqual(catalog[provider].defaults,defaults)
   assert.equal(added.length,20)
   for(const {provider,modelId}of added){
