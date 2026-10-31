@@ -1,3 +1,6 @@
+import { useGoogle } from './hooks/useGoogle.js';
+import { useGithub } from './hooks/useGithub.js';
+import { useWechat } from './hooks/useWechat.js';
 import useProviderCatalogs from './hooks/useProviderCatalogs.js';
 import JournalRulePicker from './components/JournalRulePicker.jsx';
 import RefineSourceContext from './components/RefineSourceContext.jsx';
@@ -337,6 +340,9 @@ export default function App() {
   const isAdmin = Boolean(currentUser?.id && adminIdentity === currentUser.id);
   const authReady = !AUTH_REQUIRED || Boolean(!authSession.isPending && currentUser);
   const tokenDance = useTokenDance(apiBaseNormalized, currentUser?.id, !authSession.isPending);
+  const wechat = useWechat(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {await authSession.refresh();setShowAuthPanel(false);});
+  const github = useGithub(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {await authSession.refresh();setShowAuthPanel(false);});
+  const google = useGoogle(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {await authSession.refresh();setShowAuthPanel(false);});
   const watcha = useWatcha(AUTH_BASE_DEFAULT, currentUser?.id, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {
     await authSession.refresh();
     setShowAuthPanel(false);
@@ -1753,7 +1759,8 @@ export default function App() {
           <AccountSettingsDialog
             apiBase={apiBaseNormalized}
             productionPreview={LOCAL_CONSUMPTION_TEST}
-            watcha={watcha}
+            watcha={watcha} wechat={wechat} github={github} google={google}
+            userId={currentUser.id}
             email={currentUser.email || ''}
             onClose={() => setShowAccountDialog(false)}
             onDeleted={handleAccountDeleted}
@@ -1801,13 +1808,13 @@ export default function App() {
           <p>{t("正在检查登录状态")}</p>
         </section>
       ) : AUTH_REQUIRED && !currentUser ? (
-        <AuthPanel watcha={watcha} onAuthenticated={handleEmailAuthenticated} />
+        <AuthPanel watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={handleEmailAuthenticated} />
       ) : (
         <>
       {AUTH_UI_ENABLED && showAuthPanel && !currentUser ? (
         AUTH_ENABLED ? (
           <AuthPanel
-            watcha={watcha}
+            watcha={watcha} wechat={wechat} github={github} google={google}
             onAuthenticated={handleEmailAuthenticated}
             onCancel={() => setShowAuthPanel(false)}
           />
@@ -1819,7 +1826,7 @@ export default function App() {
       {['generate', 'refine'].includes(activeTab) && !(compactLayout && activeTab === 'generate') && Object.values(activeModelRoutes).some(route => route?.accessProvider === 'tokendance') && <TokenDanceStatus controller={tokenDance} onOpenAccount={openAccount} />}
 
       {activeTab === 'account' && (
-        <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} onReturn={returnFromAccount} returnLabel={t(accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台')} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
+        <AccountPage user={currentUser} controller={tokenDance} watcha={watcha} wechat={wechat} github={github} google={google} onReturn={returnFromAccount} returnLabel={t(accountReturn.current.tab === 'refine' ? '返回精修图片' : accountReturn.current.tab === 'records' ? '返回任务记录' : '返回工作台')} onManageAccount={() => setShowAccountDialog(true)} onSignOut={handleSignOut} onSignIn={() => setShowAuthPanel(true)} />
       )}
       <div style={{ display: activeTab === 'account' ? 'none' : 'contents' }} aria-hidden={activeTab === 'account' ? true : undefined}>
       {workspaceTab === 'generate' ? (

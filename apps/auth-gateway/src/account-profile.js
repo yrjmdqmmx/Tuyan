@@ -1,3 +1,6 @@
+import { isGoogleEmail } from './google-oauth.js';
+import { isGithubEmail } from './github-oauth.js';
+import { isWechatEmail } from './wechat-oauth.js';
 import express from 'express';
 import { createHmac, randomBytes, randomInt, timingSafeEqual } from 'node:crypto';
 import sharp from 'sharp';
@@ -54,8 +57,9 @@ export function createAccountProfile({ db, mongoClient, limiter, transport, deli
     async startEmail(session, input, ip) {
       if (!deliveryEnabled) throw fail(503,'邮件服务尚未启用，暂时不能更换邮箱');
       const newEmail = normalizeEmail(input), userId = String(session.user.id);
-      if (!validEmail(newEmail)) throw fail(400,'请输入有效的新邮箱');
+      if (!validEmail(newEmail) || (isWechatEmail(newEmail) || isGithubEmail(newEmail) || isGoogleEmail(newEmail))) throw fail(400,'请输入有效的新邮箱');
       const user = await current(db,session);
+      if ((isWechatEmail(user.email) || isGithubEmail(user.email) || isGoogleEmail(user.email))) throw fail(400,'当前账号尚未绑定邮箱，请先使用账户中的其他登录方式');
       if (newEmail === normalizeEmail(user.email)) throw fail(400,'新邮箱与当前邮箱相同');
       // Separate user and destination budgets prevent one account spamming many addresses.
       for (const [kind,value] of [['profile-user',userId],['email',user.email],['email',newEmail],['ip',ip]]) {

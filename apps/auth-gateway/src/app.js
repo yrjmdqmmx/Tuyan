@@ -99,8 +99,8 @@ export function createApp({
 
   app.all('/api/auth/*', (request, response, next) => {
     const path = request.path.replace(/\/+$/, '');
-    if (isMaintenance() && ((request.method === 'POST' && path.startsWith('/api/auth/watcha/'))
-      || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
+    if (isMaintenance() && ((request.method === 'POST' && (path.startsWith('/api/auth/watcha/') || path.startsWith('/api/auth/phone/') || path.startsWith('/api/auth/wechat/') || path.startsWith('/api/auth/github/') || path.startsWith('/api/auth/google/')))
+      || path === '/api/auth/oauth2/callback/google' || path === '/api/auth/google/launch' || path === '/api/auth/oauth2/callback/github' || path === '/api/auth/github/launch' || path === '/api/auth/oauth2/callback/wechat' || path === '/api/auth/wechat/launch' || path === '/api/auth/oauth2/callback/watcha' || path === '/api/auth/watcha/mini-launch')) return maintenanceResponse(response, config);
     next();
   }, createBoundedAuthHandler(auth.webHandler));
   if(config.imageLibraryEnabled)auth.configureImageLibrary?.(createImageLibraryBridge(backend));

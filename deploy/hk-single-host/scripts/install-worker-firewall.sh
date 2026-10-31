@@ -120,6 +120,8 @@ swap_firewall_rules() {
   iptables -A "$staging_chain" -s "$worker_source" -j REJECT
 
   iptables -A "$staging_chain" -s "$gateway_source" -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  # Identity-only CONNECT listener across the existing WireGuard tunnel.
+  iptables -A "$staging_chain" -s "$gateway_source" -d 10.78.0.1 -p tcp --dport 3129 -m conntrack --ctstate NEW -j ACCEPT
   for gateway_ip in "${gateway_ips[@]}"; do
     iptables -A "$staging_chain" -s "$gateway_source" -d "$gateway_ip" -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
   done

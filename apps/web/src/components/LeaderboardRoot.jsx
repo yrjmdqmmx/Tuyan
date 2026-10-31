@@ -1,9 +1,13 @@
+import { useGithub } from '../hooks/useGithub.js'
+import { useWechat } from '../hooks/useWechat.js'
 import { Suspense, createContext, lazy, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { adminStatusRequest, submitFeedbackRequest } from '@paperbanana/api'
 
 import { appPath } from '../appPaths.js'
 import {
   AUTH_ENABLED,
+  AUTH_BASE_DEFAULT,
+  LOCAL_CONSUMPTION_TEST,
   CLIENT_VERSION,
   authClient,
 } from '../config.js'
@@ -142,6 +146,16 @@ export function SitePageShell({ apiBase, backendMode, route = {}, section = 'lea
   const [adminIdentity, setAdminIdentity] = useState(null)
   const compact = useCompactLayout()
   const userId = auth.session?.user?.id
+  const wechat = useWechat(AUTH_BASE_DEFAULT, userId, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {
+    const result = await auth.refresh()
+    if (!result?.user) throw new Error('登录状态尚未确认，请重试')
+    setShowAuth(false)
+  })
+  const github = useGithub(AUTH_BASE_DEFAULT, userId, AUTH_ENABLED && !LOCAL_CONSUMPTION_TEST, async () => {
+    const result = await auth.refresh()
+    if (!result?.user) throw new Error('登录状态尚未确认，请重试')
+    setShowAuth(false)
+  })
   useEffect(() => {
     if (!compact || !userId || auth.isPending) return undefined
     let cancelled = false
@@ -197,9 +211,9 @@ export function SitePageShell({ apiBase, backendMode, route = {}, section = 'lea
       <AgentConnectionDialog open={showAgentConnection} onClose={() => setShowAgentConnection(false)} />
       {auth.error ? <div className="service-alert" role="status">{t("登录状态检查失败：")}{auth.error.message || String(auth.error)}</div> : null}
       {showAuth && !auth.session?.user ? (AUTH_ENABLED
-        ? <AuthPanel onAuthenticated={async () => { await auth.refresh(); setShowAuth(false) }} onCancel={() => setShowAuth(false)} />
+        ? <AuthPanel apiBase={AUTH_BASE_DEFAULT} wechat={wechat} github={github} onAuthenticated={async () => { await auth.refresh(); setShowAuth(false) }} onCancel={() => setShowAuth(false)} />
         : <AuthUnavailablePanel onCancel={() => setShowAuth(false)} />) : null}
-      {showAccount && auth.session?.user ? <Suspense fallback={null}><AccountSettingsDialog apiBase={apiBase} email={auth.session.user.email || ''} onClose={() => setShowAccount(false)} onDeleted={accountDeleted} /></Suspense> : null}
+      {showAccount && auth.session?.user ? <Suspense fallback={null}><AccountSettingsDialog wechat={wechat} github={github} userId={auth.session.user.id} apiBase={apiBase} email={auth.session.user.email || ''} onClose={() => setShowAccount(false)} onDeleted={accountDeleted} /></Suspense> : null}
       <FeedbackDialog open={showFeedback} isSubmitting={feedbackPending} error={feedbackError} success={feedbackSuccess} onClose={closeFeedback} onSubmit={submitFeedback} />
       {children}
     </div>

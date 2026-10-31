@@ -11,10 +11,16 @@ Used beside the Watcha identity heading and OAuth login/binding actions. Adjacen
 
 ## Workbench assets (2026-09-20)
 
-- `github-invertocat.svg`: unmodified `GitHub Logos/SVG/GitHub_Invertocat_Black.svg` from the [official GitHub brand toolkit](https://brand.github.com/foundations/logo), [download archive](https://brand.github.com/GitHub_Logos.zip). SHA-256: `693d7abe6f899646cc2e96856723b45e95f71885a54910b2749f6decdf7e1ee1`. Keep its 98:96 aspect ratio; adjacent text labels the repository link.
+- `github-invertocat.svg`: unmodified `GitHub Logos/SVG/GitHub_Invertocat_Black.svg` from the [official GitHub brand toolkit](https://brand.github.com/foundations/logo), [download archive](https://brand.github.com/GitHub_Logos.zip). SHA-256: `693d7abe6f899646cc2e96856723b45e95f71885a54910b2749f6decdf7e1ee1`. Keep its 98:96 aspect ratio; adjacent text labels repository links and GitHub login.
 - `watcha-invite-light.png`: unmodified [official Light invitation badge, style 2](https://tos.watcha.cn/public/images/invite-1-white.png), 4500 × 972. SHA-256: `1834109f70ecb59f7630f2ecde8bbed128fbf70735ea5aff91daabf2ea1116d1`. Links to `https://watcha.cn/products/tu-yan?utm_source=product-badge&utm_content=invite`; contains no added rating or endorsement.
 - `tuyan-logo-transparent.png`: 512 × 512 RGBA PNG derived from the user's existing logo attachment, without redrawing or resizing. The ivory tile and all interior artwork are protected; only the exterior white matte is removed, with the original exterior shadow recovered as partial alpha. No global white replacement. The header adds no background, border, crop, or artificial shadow.
 - `tuyan-avatar-round-v1.png`: 1254 × 1254 RGBA PNG generated with the built-in image generation tool on 2026-10-21 from the existing Tuyan mascot. Circular avatar composition with transparent corners; used only as the default account avatar. User-uploaded avatars retain precedence, and the brand logo remains unchanged.
 - `../miniprogram-code.png`: unchanged user-supplied `下载.png`, 430 × 430, SHA-256 `5fb33337aff16eb418da495b4cd96ce7680d208278542779e899468d9807cc0b`. Preserve the original white background and all margins; do not crop, redraw, or make transparent.
 
 - `wechat-mark.svg`: unmodified white double-chat-bubble SVG used by the [official WeChat website](https://www.wechat.com/en/). [Original asset](https://newres.wechat.com/t/fed_upload/fdf269b2-1de3-4bb9-95c5-00150433b7f1/MjliNWVm.svg). SHA-256: `c1e78351ce133b28e919a69a29725f3e1f3a35a2ae3b70e307704ae2a9a2d006`. Preserve the 384:310 drawing ratio; display on a separate green UI background for contrast. Adjacent text labels the Mini Program dialog button.
+
+## Google 登录
+
+- `google-g.png`: 官方彩色 G 标志，来源 https://developers.google.com/static/identity/images/g-logo.png 。未重绘或改色；SHA-256 `d1ce9c2af0b10a7333abc99bc706f9a6a199e5b65bf3e3009624f076b8638e6a`。
+- `google-sans-medium.ttf`: Google Fonts Google Sans 500，Google 标识文字子集（3200 字节），自托管；来源 `https://fonts.gstatic.com/l/font?kit=4Ua_rENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrw2IKlitSmtdkVUOA&skey=c30756b8cf584a60&v=v76`。许可证 `google-sans-OFL.txt`，来源 https://github.com/google/fonts/blob/main/ofl/googlesans/OFL.txt 。
+- 按钮规范：https://developers.google.com/identity/branding-guidelines 。

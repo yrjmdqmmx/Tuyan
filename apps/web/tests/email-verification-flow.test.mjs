@@ -14,7 +14,7 @@ function clientFixture(data = { verificationStatusToken: 'observer-fixture' }) {
   };
 }
 async function signup(client, onAuthenticated = () => assert.fail('verification must not sign in')) {
-  render(React.createElement(AuthPanel, { client, onAuthenticated }));
+  render(React.createElement(AuthPanel, { client, onAuthenticated, phoneController: { status: {available:false, pending:false} } }));
   fireEvent.click(screen.getByRole('button', { name: '没有账号，去注册' }));
   changeControl(screen.getByLabelText('邮箱'), { target: { value: 'fixture@163.test' } });
   changeControl(screen.getByLabelText('密码'), { target: { value: 'fixture-password' } });

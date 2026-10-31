@@ -1,9 +1,13 @@
+import GithubIdentityPanel from './GithubIdentityPanel.jsx';
+import GoogleIdentityPanel from './GoogleIdentityPanel.jsx';
+import WechatIdentityPanel from './WechatIdentityPanel.jsx';
+import { visibleAccountEmail } from '../hooks/usePhoneAuth.js';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { ArrowLeft, ShieldCheck, UserRound } from 'lucide-react';
 import TokenDancePanel from './TokenDancePanel';
 import WatchaIdentityPanel from './WatchaIdentityPanel';
 
-export default function AccountPage({ user, controller, watcha, onReturn, returnLabel, onManageAccount, onSignOut, onSignIn }) {
+export default function AccountPage({ user, controller, watcha, wechat, github, google, onReturn, returnLabel, onManageAccount, onSignOut, onSignIn }) {
   const { t } = useAppLocale()
   return <section className="account-page" aria-labelledby="account-page-title">
     <div className="account-page-heading">
@@ -13,10 +17,10 @@ export default function AccountPage({ user, controller, watcha, onReturn, return
     <div className="account-layout">
       <aside className="account-identity account-card">
         <div className="account-card-title"><UserRound size={20} /><h3>{t("图研账号")}</h3></div>
-        {user ? <><strong className="account-email">{user.email || user.name || t('已登录用户')}</strong><span className="account-status"><ShieldCheck size={15} />{t("已登录图研")}</span>
+        {user ? <><strong className="account-email">{visibleAccountEmail(user.email) || user.name || t('已登录用户')}</strong><span className="account-status"><ShieldCheck size={15} />{t("已登录图研")}</span>
           <p>{t("任务记录属于当前图研账号。连接渠道后，模型调用使用你授权的渠道账户额度。")}</p>
           <div className="account-identity-actions"><button type="button" className="account-button" onClick={onManageAccount}>{t("账号与隐私")}</button><button type="button" className="account-button account-button-quiet" onClick={onSignOut}>{t("退出登录")}</button></div>
-          <WatchaIdentityPanel controller={watcha} user={user} />
+          <GithubIdentityPanel controller={github} loggedIn/><GoogleIdentityPanel controller={google} loggedIn/><WechatIdentityPanel controller={wechat} loggedIn/><WatchaIdentityPanel controller={watcha} user={user} />
         </> : <><p>{t("登录图研后，连接自己的模型渠道并管理充值记录。")}</p><button type="button" className="account-button account-button-primary" onClick={onSignIn}>{t("登录 / 注册")}</button></>}
       </aside>
       <TokenDancePanel controller={controller} />

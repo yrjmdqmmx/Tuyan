@@ -6,7 +6,7 @@ import { newWorkspace } from './workspaceState.js';
 
 const noop = () => {};
 
-export default function WorkspaceLogin({ pending, client, watcha, onAuthenticated }) {
+export default function WorkspaceLogin({ pending, client, watcha, wechat, github, google, apiBase, onAuthenticated }) {
   // A fresh presentation only: never mount the account's stores or execution hooks.
   const [background] = useState(() => newWorkspace('login-background'));
   return <div className="tw-login-required">
@@ -15,7 +15,7 @@ export default function WorkspaceLogin({ pending, client, watcha, onAuthenticate
     </div>
     <AccessibleDialog open onClose={noop} labelledBy="tw-required-login-title" backdropClassName="tw-auth-backdrop tw-required-login-backdrop" className="tw-auth-dialog tw-required-login-dialog">
       <h2 className="tw-sr" id="tw-required-login-title">登录图研</h2>
-      {pending ? <p className="tw-login-pending" role="status">正在确认登录状态…</p> : <AuthPanel client={client} watcha={watcha} onAuthenticated={onAuthenticated} />}
+      {pending ? <p className="tw-login-pending" role="status">正在确认登录状态…</p> : <AuthPanel apiBase={apiBase} client={client} watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={onAuthenticated} />}
     </AccessibleDialog>
   </div>;
 }

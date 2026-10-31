@@ -1,3 +1,8 @@
+import { loadGoogleConfig } from './google-oauth.js';
+import { loadIdentityProxy } from './identity-transport.js';
+import { loadGithubConfig } from './github-oauth.js';
+import { loadWechatConfig } from './wechat-oauth.js';
+import { loadSmsConfig } from './sms.js';
 const DEFAULT_ORIGINS = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -82,6 +87,11 @@ export function loadGatewayConfig(env = process.env) {
   }
 
   return {
+    identityProxyUrl: loadIdentityProxy(env),
+    sms: loadSmsConfig(env),
+    wechat: loadWechatConfig(env),
+    github: loadGithubConfig(env),
+    google: loadGoogleConfig(env),
     watcha: { enabled: watchaEnabled, clientId: watchaEnabled ? required(env, 'WATCHA_CLIENT_ID') : '',
       clientSecret: watchaEnabled ? required(env, 'WATCHA_CLIENT_SECRET') : '', scopes: watchaScopes.join(' ') },
     production,

@@ -53,6 +53,11 @@ jobs:
           node --test packages/tuyan-knowledge/tests/*.test.js skills/tuyan-scientific-figure/tests/*.test.mjs
       - run: python3 -m unittest discover -s deploy/hangzhou/tests -v
       - run: pnpm --filter @paperbanana/auth-gateway test
+      - name: Verify social login and binding against isolated MongoDB and mock providers
+        run: |
+          bash apps/auth-gateway/tests/integration/run-github.sh
+          bash apps/auth-gateway/tests/integration/run-google.sh
+          node --test deploy/hk-single-host/tests/gateway-edge-contract.test.mjs
       - name: Verify workspace and profile lifecycle transactions on real MongoDB
         run: bash apps/auth-gateway/tests/integration/run-workspace-sync.sh
       - name: Verify account queues and eight concurrent tasks with offline models

@@ -143,8 +143,8 @@
 .tw-account-popover .tw-account-notice{margin:2px 10px 8px;color:#7a7e79;font-size:11px;line-height:1.6}
 .tw-account[aria-expanded=true],.tw-rail-control.tw-rail-account[aria-expanded=true]{background:#e9ebe7}
 
-.tw-auth-backdrop{z-index:6000;padding:20px}.tw-auth-dialog{position:relative;width:min(460px,100%);max-height:calc(100dvh - 40px);overflow:auto;border-radius:20px;background:white;box-shadow:0 18px 60px #16241b30;padding:20px}
-.tw-auth-dialog .auth-panel{margin:0;padding:12px 4px 4px;border:0;box-shadow:none;width:auto;max-width:none}.tw-auth-dialog .section-head{padding-right:28px}.tw-auth-close{position:absolute;top:12px;right:12px;border:0;border-radius:8px;background:transparent;display:grid;place-items:center;width:36px;height:36px;cursor:pointer}
+.tw-auth-backdrop{z-index:6000;padding:20px}.tw-auth-dialog{position:relative;width:min(430px,100%);max-height:calc(100dvh - 40px);overflow:auto;border-radius:20px;background:white;box-shadow:0 18px 60px #16241b30;padding:28px}
+.tw-auth-dialog .auth-panel{margin:0;padding:0;border:0;box-shadow:none;width:auto;max-width:none}.tw-auth-dialog .section-head{padding-right:28px}.tw-auth-close{position:absolute;top:12px;right:12px;border:0;border-radius:8px;background:transparent;display:grid;place-items:center;width:36px;height:36px;cursor:pointer}
 .tw-login-required,.tw-login-background{height:100%;min-height:0}
 .tw-login-required{position:relative;isolation:isolate}
 .tw-login-background{pointer-events:none;user-select:none;overflow:hidden}
@@ -153,7 +153,7 @@
 .tw-required-login-backdrop>.tw-required-login-dialog{max-height:100%;border:1px solid #e1e5df;background:rgb(255 255 255 / 97%);box-shadow:0 24px 80px #1b302323}
 .tw-required-login-dialog .section-head{padding-right:0}
 .tw-login-pending{padding:24px 12px;margin:0;color:#68716b;text-align:center}
-@media(max-width:767px){.tw-login-required>.tw-required-login-backdrop{padding:16px}.tw-required-login-backdrop>.tw-required-login-dialog{padding:16px;border-radius:18px}}
+@media(max-width:767px){.tw-login-required>.tw-required-login-backdrop{padding:16px}.tw-required-login-backdrop>.tw-required-login-dialog{padding:24px 20px;border-radius:18px}}
 .tw-account-settings-host .dialog-backdrop{z-index:6000}.tw-auth-message{position:fixed;z-index:6500;bottom:16px;right:16px;max-width:calc(100vw - 32px);display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff7ed;color:#783f1c;border:1px solid #ead3b9;border-radius:12px;font-size:13px;box-shadow:0 4px 18px #0001}.tw-auth-message button{border:0;background:transparent;color:inherit;text-decoration:underline;cursor:pointer;white-space:nowrap}
 .tw-sync-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:7px 16px;background:#f6f7f5;border-bottom:1px solid #e5e7e2;font-size:12px;color:#57615c}
 .tw-sync-bar>span{flex:1;min-width:180px}.tw-sync-bar button{border:0;background:transparent;color:#29483d;cursor:pointer;padding:5px;border-radius:5px}.tw-sync-bar button:hover{background:#e8ece7}

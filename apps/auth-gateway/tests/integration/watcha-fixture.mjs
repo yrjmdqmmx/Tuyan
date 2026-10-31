@@ -1,4 +1,4 @@
-// A loopback-only fixture. No provider request or real mail delivery is possible.
+// Loopback-only fixture. Mail is mocked; OAuth providers can be explicitly injected.
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
 import { MongoClient } from 'mongodb';
@@ -8,9 +8,10 @@ import { createAuthRuntime } from '../../src/auth.js';
 import { createBoundedAuthHandler } from '../../src/auth-http.js';
 import express from 'express';
 
-export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, databaseBarrier } = {}) {
+export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, databaseBarrier, sms, smsTransport, phoneCaptchaRenderer, phoneFixtureOutbox, wechat, wechatFetch, github, githubFetch, google, googleFetch, callbackOrigin } = {}) {
   if (!/^mongodb:\/\/127\.0\.0\.1:\d+\//.test(uri || '')) throw new Error('Disposable loopback Mongo required');
   if (webOrigin && !/^http:\/\/127\.0\.0\.1:\d+$/.test(webOrigin)) throw new Error('Loopback Web origin required');
+  if (callbackOrigin && !/^http:\/\/127\.0\.0\.1:\d+$/.test(callbackOrigin)) throw new Error('Loopback callback origin required');
   const client = new MongoClient(uri); await client.connect();
   const dbName = `watcha_fixture_${randomUUID().replaceAll('-', '')}`;
   const db = client.db(dbName); const mail = []; const calls = [];
@@ -18,7 +19,11 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, 
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
   const frontend = webOrigin || origin;
-  const config = { mongoUri: uri, mongoDbName: dbName, authSecret: 'local-watcha-fixture-secret-not-production', authBaseUrl: origin,
+  const config = { mongoUri: uri, mongoDbName: dbName, authSecret: 'local-watcha-fixture-secret-not-production', authBaseUrl: callbackOrigin || origin,
+    ...(wechat ? {wechat} : {}),
+    ...(github ? {github} : {}),
+    ...(google ? {google} : {}),
+    ...(sms ? {sms} : {}),
     frontendOrigins: [origin, frontend, 'https://servicewechat.com', 'https://developers.weixin.qq.com'], production: false,
     watcha: { enabled: true, clientId: 'fixture-id', clientSecret: 'fixture-secret', scopes: 'read email' },
     authEmail: { deliveryEnabled: true, requireVerification: true, windowMax: mailMax, dailyMax: mailMax,
@@ -43,7 +48,7 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, 
       return database;
     }
   }
-  const runtime = await createAuthRuntime(config, { MongoClientClass: FixtureMongoClient, logger: { info() {}, warn() {} }, ...(now ? { watchaNow: now } : {}),
+  const runtime = await createAuthRuntime(config, { MongoClientClass: FixtureMongoClient, logger: { info() {}, warn() {} }, googleFetch, ...(now?{googleNow:now}:{}), githubFetch, ...(now?{githubNow:now}:{}), wechatFetch, ...(now?{wechatNow:now}:{}), smsTransport, phoneCaptchaRenderer, ...(now ? {phoneNow:now}:{}), ...(now ? { watchaNow: now } : {}),
     directMailClientFactory: () => ({ async singleSendMail(message) { mail.push(message); return { body: { requestId: 'fixture' } }; } }),
     watchaFetch: async (url, options) => {
       calls.push({ url, method: options.method });
@@ -58,10 +63,10 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, 
       return Response.json({ statusCode: 200, data: { user_id: id, nickname: `观猹测试 ${id}` } });
     } });
   app.use((req, res, next) => {
-    if (req.headers.host !== new URL(origin).host) return res.sendStatus(403);
+    if (![new URL(origin).host, ...(callbackOrigin ? [new URL(callbackOrigin).host] : [])].includes(req.headers.host)) return res.sendStatus(403);
     if (req.headers.origin && ![origin, frontend].includes(req.headers.origin)) return res.sendStatus(403);
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin || frontend);
-    res.setHeader('Access-Control-Allow-Credentials', 'true'); res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true'); res.setHeader('Access-Control-Allow-Headers', 'Content-Type,X-Workspace-Account');
     if (req.method === 'OPTIONS') return res.sendStatus(204);
     next();
   });
@@ -69,6 +74,7 @@ export async function createWatchaFixture({ uri, webOrigin, mailMax = 100, now, 
     const params = new URLSearchParams({ state: String(req.query.state), code: String(req.query.identity || '9001') });
     res.redirect(`${origin}/api/auth/oauth2/callback/watcha?${params}`);
   });
+  if (phoneFixtureOutbox) app.get('/fixture/phone', (_req,res)=>res.json(phoneFixtureOutbox));
   app.get('/fixture/mail', (_req, res) => res.json(mail.map((row) => ({ to: row.toAddress, text: row.textBody }))));
   app.all('/api/auth/*', createBoundedAuthHandler(async (request) => {
     const response = await runtime.webHandler(request);

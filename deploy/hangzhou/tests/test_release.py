@@ -6,6 +6,13 @@ def manifest():
  return {'version':1,'id':'storage-test-20261018','expected_images':{k:'sha256:'+'a'*64 for k in r.SERVICES},'services':{'core':{'env':{'OSS_REGION':'oss-cn-hangzhou'}}}}
 
 class SafetyTests(unittest.TestCase):
+ def test_identity_configuration_is_gateway_only_and_cannot_enable_sms(self):
+  settings={'GOOGLE_OAUTH_ENABLED':'true','GITHUB_OAUTH_ENABLED':'true','AUTH_SMS_ENABLED':'false','AUTH_SMS_DELIVERY_ENABLED':'false','WECHAT_OAUTH_ENABLED':'false','AUTH_IDENTITY_PROXY_URL':'http://10.78.0.1:3129','GOOGLE_CLIENT_ID':'123-localfixture.apps.googleusercontent.com','GOOGLE_CLIENT_SECRET':'fixture-'+'x'*24,'GITHUB_CLIENT_ID':'fixtureclientid','GITHUB_CLIENT_SECRET':'x'*40}
+  for service in ['gateway','cn-gateway']:
+   m=manifest();m['services']={service:{'env':settings}};r.validate(m)
+  for service,key,value in [('core','GITHUB_OAUTH_ENABLED','true'),('gateway','AUTH_SMS_ENABLED','true'),('gateway','AUTH_SMS_DELIVERY_ENABLED','true'),('gateway','WECHAT_OAUTH_ENABLED','true'),('gateway','AUTH_IDENTITY_PROXY_URL','http://10.78.0.1:3128'),('gateway','GOOGLE_CLIENT_SECRET','x\nSECRET=other'),('gateway','GOOGLE_CLIENT_SECRET',None)]:
+   m=manifest();m['services']={service:{'env':{key:value}}}
+   with self.assertRaises(ValueError):r.validate(m)
  def test_preserves_unrelated_credentials_and_routes(self):
   text='# operator data\nSECRET=fixture-only\nPAPERBANANA_HK_PROXY_URL=http://10.78.0.1:3128\nOSS_REGION=oss-cn-hongkong\n'
   actual=r.patch_env(text,{'OSS_REGION':'oss-cn-hangzhou','PAPERBANANA_OSS_SERVER_ENDPOINT_MODE':'internal'})

@@ -2,7 +2,8 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-RUN corepack enable
+# Raster CAPTCHA rendering needs a known font in the minimal Alpine image.
+RUN apk add --no-cache font-dejavu && corepack enable
 
 # Build from the repository root:
 #   docker build -f apps/auth-gateway/Dockerfile -t paperbanana-auth-gateway .

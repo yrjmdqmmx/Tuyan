@@ -118,3 +118,21 @@ provider secrets.
 ### 微信小程序观猹身份接续
 
 3.3.0 增加 `watcha/mini-status`、`mini-start`、`mini-launch`、`mini-exchange`、`mini-cancel`。沿用已登记观猹回调与现有服务端凭据，使用发起 Cookie 和浏览器一次性接续码共同兑换。既有 Web 登录兼容；`mini-status.miniProgramSupported` 控制小程序启用。详见 [`docs/miniprogram-watcha-2026-09-10.md`](../../docs/miniprogram-watcha-2026-09-10.md)。部署本 Gateway 补充之前，小程序继续提供邮箱登录。
+
+## 手机号验证码登录
+
+本地新增阿里云 SMS 适配，默认关闭。配置、费用、数据兼容和离线验收见 [手机号登录接入说明](../../docs/auth/phone-login.md)。
+
+## WeChat website sign-in (disabled by default)
+
+Web QR login and explicit account linking use the WeChat Open Platform **Website App**. Configure `WECHAT_OAUTH_ENABLED`, `WECHAT_WEB_APP_ID`, and server-only `WECHAT_WEB_APP_SECRET` only after approval. The callback domain must match `AUTH_BASE_URL`. Never substitute Mini Program credentials or infer identity from nickname/UnionID. Existing account ownership and stored tasks/drafts remain unchanged.
+
+See [application, endpoints and mock verification](../../docs/auth/wechat-login.md). This integration is local and unpublished; real provider/browser verification remains outstanding.
+
+### GitHub 登录（默认关闭）
+
+网页 GitHub 注册、登录、原账号绑定使用独立 OAuth 身份插件；原有邮箱/观猹/手机号继续使用。`GITHUB_OAUTH_ENABLED=false` 时入口隐藏。启用与准确回调、最小权限和本地模拟测试见 [GitHub 接入说明](../../docs/auth/github-login.md)。没有仓库集成或自动账号合并。
+
+### Google 登录（默认关闭）
+
+Google OIDC 服务端校验与原账号绑定使用独立插件；手机号/邮箱/观猹/GitHub 保留。仅 `openid profile`，固定 `sub` 关联，不按邮箱合并。配置、准确回调和模拟验证见 [Google 接入说明](../../docs/auth/google-login.md)。生产默认关闭；云侧本地测试客户端已创建并完成真实注册/登录/原账号绑定验收，不是线上可用声明。

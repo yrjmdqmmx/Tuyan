@@ -1,3 +1,6 @@
+import { useGoogle } from '../hooks/useGoogle.js';
+import { useGithub } from '../hooks/useGithub.js';
+import { useWechat } from '../hooks/useWechat.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AUTH_BASE_DEFAULT, AUTH_ENABLED, AUTH_REQUIRED, LOCAL_CONSUMPTION_TEST, authClient } from '../config.js';
 import { useAuthSession } from '../hooks/useAuthSession.js';
@@ -25,6 +28,9 @@ export default function WorkspaceAccount({ children, beforeSignOut, loginRequest
     setPanel(afterLogin.current === 'settings' ? 'settings' : null);
     afterLogin.current = null;
   }, [auth.refresh]);
+  const wechat = useWechat(apiBase, user?.id, enabled && !productionPreview, authenticated);
+  const github = useGithub(apiBase, user?.id, enabled && !productionPreview, authenticated);
+  const google = useGoogle(apiBase, user?.id, enabled && !productionPreview, authenticated);
   const watcha = useWatcha(apiBase, user?.id, enabled, authenticated);
   function login(destination = null) { setError(''); afterLogin.current = destination; setPanel('login'); }
   const closeSettings = useCallback(() => setPanel(null), []);
@@ -55,15 +61,15 @@ export default function WorkspaceAccount({ children, beforeSignOut, loginRequest
     : authStatus === 429 ? '账号检查过于频繁，请稍后重试。任务与草稿已保留。'
       : '暂时无法检查登录状态，任务与草稿已保留。请确认连接后重试。' : '');
   return <>
-    {requireLogin && !user ? <WorkspaceLogin pending={auth.isPending} client={client} watcha={watcha} onAuthenticated={authenticated} /> : children({ user, watcha, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
+    {requireLogin && !user ? <WorkspaceLogin apiBase={apiBase} pending={auth.isPending} client={client} watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={authenticated} /> : children({ user, watcha, wechat, github, google, onSignIn: () => login(), onSignOut: signOut, onAccountSettings: () => user ? setPanel('settings') : login('settings'), refreshAccount: auth.refresh, beforeEmailChange: beforeSignOut,
       onEmailChanged: async () => { action.current++; auth.clear(); afterLogin.current=null; setError('登录邮箱已更换，请使用新邮箱重新登录。'); setPanel('login'); },
       accountPending: auth.isPending || signingOut })}
     {message && <div className="tw-auth-message" role="alert"><span>{message}</span>{!signingOut && <button type="button" disabled={auth.isPending} onClick={async () => { setError(''); await auth.refresh(); }}>{auth.isPending ? '正在检查…' : '重新检查'}</button>}</div>}
     {panel === 'login' && !user && !requireLogin && <AccessibleDialog open onClose={() => setPanel(null)} labelledBy="tw-login-title" backdropClassName="tw-auth-backdrop" className="tw-auth-dialog">
       <h2 className="tw-sr" id="tw-login-title">登录图研</h2>
       <button type="button" className="tw-auth-close" aria-label="关闭登录" onClick={() => setPanel(null)}><X size={20} /></button>
-      {enabled ? <AuthPanel client={client} watcha={watcha} onAuthenticated={authenticated} onCancel={() => setPanel(null)} /> : <section className="auth-panel"><h2>账号服务尚未连接</h2><p>请使用已配置现有图研账号服务的本地入口。当前任务仍保留在浏览器。</p></section>}
+      {enabled ? <AuthPanel apiBase={apiBase} client={client} watcha={watcha} wechat={wechat} github={github} google={google} onAuthenticated={authenticated} onCancel={() => setPanel(null)} /> : <section className="auth-panel"><h2>账号服务尚未连接</h2><p>请使用已配置现有图研账号服务的本地入口。当前任务仍保留在浏览器。</p></section>}
     </AccessibleDialog>}
-    {panel === 'settings' && user && <div className="tw-account-settings-host"><AccountSettingsDialog apiBase={apiBase} email={user.email || ''} watcha={watcha} productionPreview={productionPreview} onClose={closeSettings} onDeleted={() => { action.current++; auth.clear(); setPanel(null); }} /></div>}
+    {panel === 'settings' && user && <div className="tw-account-settings-host"><AccountSettingsDialog userId={user.id} apiBase={apiBase} email={user.email || ''} watcha={watcha} wechat={wechat} github={github} google={google} productionPreview={productionPreview} onClose={closeSettings} onDeleted={() => { action.current++; auth.clear(); setPanel(null); }} /></div>}
   </>;
 }

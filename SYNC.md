@@ -1,3 +1,57 @@
+## 2026-10-31 · GitHub / Google 正式双站登录发布
+
+- [x] Gateway：两个正式客户端的回调均覆盖 `tuyansci.cn` 与 `api.paperbanana.asia`；通过 `AUTH_IDENTITY_PROXY_URL=http://10.78.0.1:3129` 访问四个固定身份接口，不跟随跳转、不切换出口重试。香港独立 CONNECT 监听仅允许 GitHub token/profile、Google token/JWKS 域名，模型出口 3128 的白名单不变。
+- [x] 发布配置：`GITHUB_OAUTH_ENABLED` / `GOOGLE_OAUTH_ENABLED` 启用；`AUTH_SMS_ENABLED` / `AUTH_SMS_DELIVERY_ENABLED` / `WECHAT_OAUTH_ENABLED` 明确关闭。凭据仅存放在受限环境文件；部署脚本仅允许网关接收受限身份配置，禁止通过本批配置启用短信。
+- [x] Web：邮箱、观猹保留；GitHub / Google / 观猹为同层级上下排列，使用真实品牌图标。短信不可用时默认邮箱；新增账号需确认，原账号可显式绑定，不按邮箱自动合并，不覆盖工作区。
+- [x] 测试：完整网关/Web 回归及 GitHub、Google 隔离 Mongo 注册、回访、绑定、冲突和数据保留场景；CI 增加两组集成与出口防火墙回归。全部使用模拟身份服务，无模型或短信调用。
+- [ ] 其他端：沿用下面各认证契约的适配待办；此批仅启用 Web OAuth，不新增原生端登录方式。
+- 发布范围与回滚见 [生产接入记录](docs/auth/social-login-production.md)。源码从共享工作树隔离，未包含另一会话的 Plus 实现。
+
+## 2026-10-31 · Google 注册登录与原账号绑定（本地接入，未上线）
+
+- [x] Gateway：新增默认关闭 `GOOGLE_OAUTH_ENABLED` / `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`，`/api/auth/google/{start,launch,status,complete,cancel}` 与 `/api/auth/oauth2/callback/google`。OAuth code + S256 PKCE + 独立 OIDC nonce；`jose` 验证 Google RS256 签名、公钥、issuer/audience/azp/sub/iat/exp；原浏览器一次性兑换，事务、限流、维护和注销代际保护。
+- [x] Web：手机号默认（服务可用时）；邮箱、观猹、GitHub 保留。第三方按钮上下等宽，Google 官方 G 与字体自托管。新账号显式确认，旧账号绑定冲突拒绝；只按 `sub` 关联，不按邮箱合并。新增只读 `googleOnly` / 内部 `@google.tuyan.invalid` 隐藏邮箱，不能公开邮箱注册/发送邮件；注销要求 Google 再授权。账号 ID 与全部业务数据保留。
+- [x] 模拟与界面：Google/GitHub/短信隔离 Mongo 验证、JWT 拒绝路径、网关及 Web 相关回归和生产构建；桌面/手机真实组件模拟 UI 验收。这些模拟测试未调用真实 Google 身份接口、图研模型或短信，不连接生产数据。
+- [x] 云侧：用户已授权接受政策、创建本地 Web OAuth 客户端并保存密钥；现有 My First Project 已设外部测试模式，仅添加当前 Google 测试账号、仅声明 openid/profile。真实 Google 注册、回访、原账号绑定和绑定后回访均在独立本地数据库通过，账号 ID 与数据摘要保持一致；见 [Google 接入说明](docs/auth/google-login.md)。未关联新的结算账号、未配置服务器、未提交/推送/上线。
+- [ ] 其他端：小程序继续暂停；以后适配 `googleOnly` 和隐藏内部邮箱。网站短期票据不可当作原生 Google 登录接口；生产客户端、双站真实登录/绑定及上线另行执行。
+
+## 2026-10-31 · GitHub 注册登录及原账号绑定（本地完成，未上线）
+
+- [x] Gateway：新增默认关闭 `GITHUB_OAUTH_ENABLED` / `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`，`/api/auth/github/{start,launch,status,complete,cancel}` 与 `/api/auth/oauth2/callback/github`。服务端 OAuth code + S256 PKCE；一次性 state/浏览器票据，回调不直接建立另一域名会话；维护、数据库限流及账号注销生命周期保护。
+- [x] Web：手机号可用时仍默认，保留邮箱和观猹；GitHub 新用户显式确认注册，原账号在账户页绑定，冲突拒绝且不按邮箱合并。账户 ID、已有任务、草稿、模型配置不迁移。内部 `@github.tuyan.invalid` 邮箱不展示、不发送邮件；`githubOnly` 只读字段；GitHub 专属账号注销须再次授权。微信按用户新决定继续关闭，保留未发布代码。
+- [x] 模拟验证：隔离 Mongo 事务覆盖注册/回访/绑定、任务草稿配置保留、冲突、并发重放、过期、错误来源、会话撤销与注销证明；网关及 Web 相关回归、生产构建、桌面/手机视口验证完成。这些模拟测试没有访问生产数据库、调用模型、收费短信或真实 GitHub 身份接口。
+- [x] 本地真实授权：用户授权创建 `图研 Tuyan 本地测试` OAuth App（3980116），仅 loopback 4315 回调；生成密钥安全落盘（目录 700、文件 600），截图中旧密钥经确认已撤销。真实 GitHub 注册、刷新恢复、退出回访同一 ID 通过；4 次身份 API 调用、1 用户/1 映射、无持久令牌，不连接生产数据。
+- [ ] 生产启用：另行配置生产专用 OAuth App、服务端凭据和 `/api/auth/oauth2/callback/github`（不是 Better Auth 默认路径）；双站真实验收、上线均未执行，默认开关仍关闭。配置和验证记录见 [GitHub 接入说明](docs/auth/github-login.md)。
+- [ ] 其他端：小程序继续暂停；不得复用浏览器短时票据作为原生登录接口，恢复前处理 `githubOnly` 和内部邮箱隐藏。
+
+## 2026-10-31 · 网页微信扫码登录及原账号绑定（本地待发布）
+
+- [x] Gateway：新增默认关闭的 `WECHAT_OAUTH_ENABLED` / `WECHAT_WEB_APP_ID` / `WECHAT_WEB_APP_SECRET`；`/api/auth/wechat/{start,launch,status,complete,cancel}` 和 `/api/auth/oauth2/callback/wechat`。固定网站应用扫码协议，保留原用户 ID；微信映射冲突拒绝，不自动合并。跨站回调通过短时桥接票据，原浏览器赎回会话；维护模式、限流、日志脱敏、注销生命周期保护齐备。
+- [x] Web：短信仍默认（配置可用时），邮箱密码/观猹保留；增加微信入口、首次注册确认、账户设置绑定及微信专属账号注销再验证；隐藏内部 `@wechat.tuyan.invalid` 标识。保持既有任务/草稿/配置存储逻辑。
+- [x] 模拟验证：专属临时 Mongo 事务及模拟微信接口覆盖绑定不改用户数据、冲突、单次性、失效、会话撤销和注销；未调用真实微信身份接口、短信或模型。
+- [ ] 配置/生产：用户还需申请企业微信开放平台账号及网站应用；AppSecret 仅服务端保存。当前浏览器访问平台受站点安全策略阻止，未注册、付款或申请提交。真实扫码、双站浏览器验收与上线另行授权。
+- [ ] 其他端：不复用网站应用 AppID 作为小程序或 App 登录；小程序暂停，其他端本轮未改。恢复时处理 `wechat` 账号类型和内部邮箱隐藏，不自动按 UnionID 合并。
+- 详见 [接入与申请说明](docs/auth/wechat-login.md)。既有短信工作、云侧报备监控、未提交并行改动均保留。
+
+## 2026-10-31 · 短信服务开通、60 秒重发与登录布局（应用未上线）
+
+- [x] 云服务：经用户单独确认服务协议后，阿里云 SMS 已开通，控制台显示正常/企业用户。用户提交的“图研短信验证”企业资质现已审核通过；企业全称签名已提交，三家运营商报备中（2026-10-31 15:09 左右复核，“可用-异常”源于报备尚未完成），保留平台赠送签名。未购买套餐、未发收费短信、未配置服务器凭据或部署。
+- [x] 云侧防滥用：已开启验证码防盗刷监控，保存日 200 / 月 5,000 条硬限额及 160 / 4,000 条预警；每号码 1/分钟、5/小时、10/日，无白名单，自动复购关闭。云侧窗口时区未明确，不与应用 UTC 窗口混同。
+- [x] Gateway：同号码冷却固定 60 秒，冷却错误 `Retry-After` / `retryAfter` 返回实际剩余秒数，成功发送响应仍为 60；59.999 秒拒绝、60 秒允许的边界已用模拟短信和 Mongo 验证。
+- [x] Web：手机验证码/邮箱密码切换，观猹独立入口，紧凑表单及窄屏适配；切换保留输入和倒计时。31 项相关回归通过。
+- [x] 验证码模板：用户单独允许阿里云平台内容审核后，`SMS_512662428` 已审核通过、状态正常；正文“图研验证码为${code}，5分钟内有效，请勿泄露。”，变量 `code` 为数字。关联企业全称签名，不依赖未注册的“图研”商标。
+- [x] 专用凭据：用户完成本人核身后，`tuyan-sms` / `Tuyan SMS Login` 已创建，控制台登录关闭、无用户组；唯一个人策略 `TuyanSmsSendOnly` v1，仅允许 HTTPS `dysms:SendSms`，控制台绑定 1 / 1 成功。密钥与非密钥参数仅保存本机 `/Users/a1-6/.codex/private/tuyan-sms/credentials.env`，目录 `700`、文件 `600`；下载临时副本已移入私有目录。未使用新密钥发起调用，两个 SMS 开关仍为 false。SendSms 为操作级授权，不能限定签名/模板；应用仅提交单号码并执行原有防滥用限制。
+- [ ] 后续：等待签名运营商报备；服务器凭据配置、真实短信验收及应用部署仍待明确授权。其他端暂停，既有任务/草稿未改动。本轮未修改认证实现，沿用此前模拟回归结果。
+
+## 2026-10-31 · +86 手机号验证码登录与原账号绑定（本地接入，未上线）
+
+- [x] Gateway：新增 `GET /api/auth/phone/status`、`POST /phone/challenge`、`/phone/send-code`、`/phone/verify`（后三者均在 `/api/auth` 下）；目的 `login|link|delete`，手机号输入兼容 11 位或 `+86`。绑定/注销必须有效会话及 `X-Workspace-Account`。验证码 5 分钟 / 单次 / 最多 5 次；图形校验 2 分钟单次；Mongo 原子消费、身份唯一索引和多实例共享发送限额。
+- [x] Web：可用时默认手机号，保留邮箱/观猹切换；账户页绑定、冲突不合并、倒计时；手机号新账号兼容注销证明。任务、草稿、模型配置及现有 user ID 无迁移/删除。真实手机号只存认证账号映射；列表返回脱敏号码。
+- [x] 配置：`AUTH_SMS_ENABLED` 与 `AUTH_SMS_DELIVERY_ENABLED` 均默认 false；专用 `ALIBABA_SMS_ACCESS_KEY_ID/SECRET/SIGN_NAME/TEMPLATE_CODE/CODE_VARIABLE`。全站默认日 200 / 月 5000 次发送请求，分别可用 `AUTH_SMS_GLOBAL_DAILY_MAX/MONTHLY_MAX` 调整；月界按 UTC。阿里云 SMS SDK 固定杭州端点、禁重试；镜像补充 CAPTCHA 字体。见 [接入与费用说明](docs/auth/phone-login.md)。
+- [x] 本地验证：Gateway 207 通过 / 1 既有测试跳过；Web 47 通过；手机号 10 组真实 Mongo 场景（macOS 与 Alpine）、观猹 14 组回归、Web/镜像构建和桌面/手机视口检查通过。
+- [ ] 正式配置：短信服务、企业资质与验证码模板已就绪，尚待签名三网报备及专用凭据；当前无真实密钥、未发送收费短信、未调用图研真实模型、未部署。阿里云模板内容检测已获用户单独授权。最新进度见本文件顶部及 `docs/auth/phone-login.md`。
+- [ ] 其他端：小程序及原生端继续暂停。恢复时先读取 availability，已有邮箱/观猹不受影响；`phoneOnly` 为只读可选用户字段，内部 `@phone.tuyan.invalid` 邮箱不可用于邮件、展示或账号合并；首期只支持首次绑定，不换绑或自动合并。
+
 ## 2026-10-27 · 模型目录 v39 与模型管理发布
 
 - [x] CI 修正：补齐本轮 19 个精确渠道型号的 28 个角色/协议思考登记，未知控制明确未确认并保持渠道默认；Web/Core/shared 重新生成。修正历史目录测试与百炼业务空间 fixture，保留独立请求断言。小程序继续暂停。

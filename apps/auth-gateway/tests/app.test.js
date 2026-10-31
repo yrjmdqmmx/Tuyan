@@ -1128,13 +1128,22 @@ test('a durable deletion blocks new work even before Core first accepts the clea
 test('maintenance blocks Watcha mutations and OAuth callback while allowing status and email sign-in', async () => {
   const auth = fakeAuth();
   await withApp({ auth, isMaintenance: () => true }, async ({ baseUrl }) => {
-    for (const path of ['watcha/start', 'watcha/email-code', 'watcha/complete', 'watcha/link', 'watcha/unlink', 'watcha/delete-confirmation', 'watcha/mini-start', 'watcha/mini-exchange', 'watcha/mini-cancel']) {
+    for (const path of ['google/start', 'google/complete', 'google/cancel', 'github/start', 'github/complete', 'github/cancel', 'wechat/start', 'wechat/complete', 'wechat/cancel', 'watcha/start', 'watcha/email-code', 'watcha/complete', 'watcha/link', 'watcha/unlink', 'watcha/delete-confirmation', 'watcha/mini-start', 'watcha/mini-exchange', 'watcha/mini-cancel']) {
       const response = await fetch(`${baseUrl}/api/auth/${path}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
       assert.equal(response.status, 503, path);
     }
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/wechat?state=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/wechat/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/github/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/google/launch?ticket=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/github?state=fixture`)).status, 503);
+    assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/google?state=fixture`)).status, 503);
     assert.equal((await fetch(`${baseUrl}/api/auth/oauth2/callback/watcha?state=fixture`)).status, 503);
     assert.equal((await fetch(`${baseUrl}/api/auth/watcha/mini-launch?state=fixture`)).status, 503);
     assert.equal(auth.webRequests.length, 0);
+    assert.equal((await fetch(`${baseUrl}/api/auth/wechat/status`)).status, 200);
+    assert.equal((await fetch(`${baseUrl}/api/auth/github/status`)).status, 200);
+    assert.equal((await fetch(`${baseUrl}/api/auth/google/status`)).status, 200);
     assert.equal((await fetch(`${baseUrl}/api/auth/watcha/status`)).status, 200);
     assert.equal((await fetch(`${baseUrl}/api/auth/sign-in/email`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })).status, 200);
   });

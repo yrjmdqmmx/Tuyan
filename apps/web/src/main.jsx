@@ -1,3 +1,6 @@
+import './components/github.css';
+import './components/google.css';
+import './components/wechat.css';
 import './components/menus.css';
 import './focus.css';
 import './components/journal-rules.css'
@@ -14,6 +17,7 @@ import { AppLocaleProvider } from './components/BenchmarkLocale.jsx';
 import './styles.css';
 import './components/tokendance.css';
 import './components/watcha.css';
+import './components/phone-auth.css';
 import './components/benchmark.css';
 import './components/admin/admin.css';
 import './mobile-workbench.css';

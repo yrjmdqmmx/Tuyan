@@ -1,7 +1,12 @@
+import GithubIdentityPanel from './GithubIdentityPanel.jsx';
+import GoogleIdentityPanel from './GoogleIdentityPanel.jsx';
+import WechatIdentityPanel from './WechatIdentityPanel.jsx';
+import PhoneCodeForm from './PhoneCodeForm.jsx';
+import { usePhoneAuth } from '../hooks/usePhoneAuth.js';
 import { accountPageUrl } from '../lib/runtimePolicy.js';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Loader2, MailCheck, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, Loader2, MailCheck } from 'lucide-react';
 import { authClient, LOCAL_CONSUMPTION_TEST } from '../config';
 import { formatErrorMessage } from '../utils';
 import { useEmailVerificationStatus } from '../hooks/useEmailVerificationStatus';
@@ -10,8 +15,11 @@ import WatchaIdentityPanel from './WatchaIdentityPanel';
 const VERIFIED_URL = accountPageUrl('email-verified.html');
 const RESET_URL = accountPageUrl('reset-password.html');
 
-export default function AuthPanel({ onAuthenticated, onCancel, client = authClient, watcha }) {
+export default function AuthPanel({ onAuthenticated, onCancel, client = authClient, watcha, apiBase, phoneController, wechat, github, google }) {
   const { t } = useAppLocale()
+  const defaultPhone = usePhoneAuth(apiBase, undefined, !phoneController);
+  const phone = phoneController || defaultPhone;
+  const [method,setMethod] = useState('phone');
   const [existingAccount, setExistingAccount] = useState(false);
   const [mode, setMode] = useState('sign-in');
   const [email, setEmail] = useState('');
@@ -92,6 +100,11 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
     }
   }
 
+  if (google?.status?.pending?.newAccount) return <section className="auth-panel google-registration"><header className="auth-panel-heading"><h2>Google 授权完成</h2></header><p>此 Google 账号尚未关联图研账号。已有任务？请登录原账号后绑定。</p><button type="button" className="primary-button" disabled={google.busy} onClick={()=>google.complete(true)}>创建新账号</button><button type="button" className="text-button" disabled={google.busy} onClick={()=>google.cancel()}>使用原账号登录</button>{google.error?<p role="alert" className="error-line">{google.error}</p>:null}</section>;
+  if (github?.status?.pending?.newAccount) return <section className="auth-panel github-registration"><header className="auth-panel-heading"><h2>GitHub 授权完成</h2></header><p>此 GitHub 尚未关联图研账号。已有任务？请登录原账号后绑定。</p><button type="button" className="primary-button" disabled={github.busy} onClick={()=>github.complete(true)}>创建新账号</button><button type="button" className="text-button" disabled={github.busy} onClick={()=>github.cancel()}>使用原账号登录</button>{github.error?<p role="alert" className="error-line">{github.error}</p>:null}</section>;
+
+  if (wechat?.status?.pending?.newAccount) return <section className="auth-panel wechat-registration"><header className="auth-panel-heading"><h2>微信授权完成</h2></header><p>此微信尚未关联图研账号。已有任务？请先登录原账号，再到账户设置绑定微信。</p><button type="button" className="primary-button" disabled={wechat.busy} onClick={()=>wechat.complete(true)}>创建新账号</button><button type="button" className="text-button" disabled={wechat.busy} onClick={()=>wechat.cancel()}>使用原账号登录</button>{wechat.error?<p role="alert" className="error-line">{wechat.error}</p>:null}</section>;
+
   if (mode === 'pending-verification' || mode === 'recovery-sent') {
     const verification = mode === 'pending-verification';
     const verified = verification && verificationStatus === 'verified';
@@ -108,23 +121,36 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
 
   const forgot = mode === 'forgot';
   const pendingWatcha = Boolean(watcha?.status?.pending && !existingAccount);
+  const showPhone = method === 'phone' && phone.status.available && !pendingWatcha && !existingAccount && !forgot && !isSignUp;
   return (
     <section className="auth-panel">
-      <div className="section-head"><ShieldCheck size={22} /><div><h2>{t(forgot ? '忘记密码' : isSignUp ? '注册账号' : '登录账号')}</h2><p>{t(forgot ? '输入邮箱后，我们会发送密码重置链接。' : LOCAL_CONSUMPTION_TEST ? '使用现有图研账号登录；注册、邮箱验证和找回密码由正式账号服务处理。' : '登录后可同步任务记录与账号数据。')}</p></div></div>
-      {!existingAccount && !forgot && !isSignUp ? <WatchaIdentityPanel controller={watcha} onSignIn={() => { setExistingAccount(true); setMode('sign-in'); setError(''); }} /> : null}
+      <header className="auth-panel-heading"><h2>{t(forgot ? '忘记密码' : isSignUp ? '注册账号' : '登录账号')}</h2>{forgot || LOCAL_CONSUMPTION_TEST ? <p>{t(forgot ? '输入邮箱后，我们会发送密码重置链接。' : '使用现有图研账号登录；注册、邮箱验证和找回密码由正式账号服务处理。')}</p> : null}</header>
+      {phone.status.available && !pendingWatcha && !existingAccount && !forgot && !isSignUp ? <div className="phone-auth-methods" role="group" aria-label="登录方式"><button type="button" aria-pressed={showPhone} onClick={()=>setMethod("phone")}>手机验证码</button><button type="button" aria-pressed={!showPhone} onClick={()=>setMethod("other")}>邮箱密码</button></div> : null}
+      {phone.status.available && !pendingWatcha && !existingAccount ? <div hidden={!showPhone}><PhoneCodeForm controller={phone} onVerified={onAuthenticated}/></div> : null}
+      {!showPhone ? <>
+      {pendingWatcha ? <WatchaIdentityPanel controller={watcha} onSignIn={() => { setExistingAccount(true); setMode('sign-in'); setError(''); }} /> : null}
       {existingAccount && watcha?.status?.pending ? <p role="status">{t("请登录已有图研账号，然后在账户页确认绑定观猹。")}</p> : null}
       {!pendingWatcha || forgot || isSignUp ? <>
       <form className="auth-form" onSubmit={submitAuth}>
         {isSignUp ? <label className="field"><span>{t("昵称")}</span><input className="auth-name-input" value={name} onChange={(event) => setName(event.target.value)} placeholder={t("可选")} autoComplete="name" maxLength={24} /></label> : null}
-        <label className="field"><span>{t("邮箱")}</span><input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required /></label>
-        {!forgot ? <label className="field"><span>{t("密码")}</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} maxLength={128} autoComplete={isSignUp ? 'new-password' : 'current-password'} required /></label> : null}
-        <button className="primary-button" type="submit" disabled={isSubmitting || !email || (!forgot && (password.length < 8 || password.length > 128))}>{isSubmitting ? <Loader2 className="spin" size={18} /> : <ShieldCheck size={18} />}{t(forgot ? '发送重置链接' : isSignUp ? '注册并验证邮箱' : '登录')}</button>
+        <label className="field"><span>{t("邮箱")}</span><input type="email" value={email} onChange={(event) => { setMethod('other'); setEmail(event.target.value); }} placeholder="you@example.com" autoComplete="email" required /></label>
+        {!forgot ? <label className="field"><span>{t("密码")}</span><input type="password" value={password} onChange={(event) => { setMethod('other'); setPassword(event.target.value); }} minLength={8} maxLength={128} autoComplete={isSignUp ? 'new-password' : 'current-password'} required /></label> : null}
+        <button className="primary-button" type="submit" disabled={isSubmitting || !email || (!forgot && (password.length < 8 || password.length > 128))}>{isSubmitting ? <Loader2 className="spin" size={18} /> : null}{t(forgot ? '发送重置链接' : isSignUp ? '注册并验证邮箱' : '登录')}</button>
         {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
       </form>
+      <div className="auth-form-links">
       {!isSignUp && !forgot ? <button className="text-button" type="button" onClick={() => { setMode('forgot'); setError(''); }}>{t("忘记密码")}</button> : null}
       <button className="text-button" type="button" onClick={() => { setMode(isSignUp || forgot ? 'sign-in' : 'sign-up'); setError(''); }}>{t(isSignUp || forgot ? '返回登录' : '没有账号，去注册')}</button>
+      </div>
       </> : null}
       {existingAccount && watcha?.status?.pending ? <button className="text-button" type="button" onClick={() => { setExistingAccount(false); setMode('sign-in'); }}>{t("返回观猹注册")}</button> : null}
+      </> : null}
+      {!pendingWatcha && !existingAccount && !forgot && !isSignUp ? <div className="auth-social-methods" role="group" aria-label={t('第三方登录')}>
+        <WatchaIdentityPanel controller={watcha} compact />
+        <GithubIdentityPanel controller={github}/>
+        <GoogleIdentityPanel controller={google}/>
+        <WechatIdentityPanel controller={wechat}/>
+      </div> : null}
       {onCancel ? <button className="text-button muted" type="button" onClick={onCancel}>{t("暂不登录")}</button> : null}
     </section>
   );

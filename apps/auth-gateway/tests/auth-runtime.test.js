@@ -351,7 +351,7 @@ function transactionalFixture(failAt = '') {
     session: [{ userId: id }, { userId: String(id) }],
     account: [{ userId: id }, { userId: String(id) }],
     user: [{ _id: id, id: String(id) }],
-    watchaTransactions: [], watchaEmailCodes: [], watchaDeletionConfirmations: [],
+    watchaTransactions: [], watchaEmailCodes: [], watchaDeletionConfirmations: [], phoneCodes: [], phoneChallenges: [], phoneConfirmations: [], wechatTransactions: [], wechatConfirmations: [], githubTransactions: [], githubConfirmations: [], googleTransactions: [], googleConfirmations: [],
     ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,[{userId:String(id)}]])),
   };
   const operations = [];
@@ -440,17 +440,17 @@ test('hard deletion commits session, account, and user removal in one Mongo tran
   assert.deepEqual(Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])), {
     session: 0,
     account: 0,
-    user: 0, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,0])),
+    user: 0, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, phoneCodes: 0, phoneChallenges: 0, phoneConfirmations: 0, wechatTransactions: 0, wechatConfirmations: 0, githubTransactions: 0, githubConfirmations: 0, googleTransactions: 0, googleConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,0])),
   });
   assert.equal(fixture.ended(), 1);
-  assert.deepEqual(fixture.operations.map(({ name }) => name), ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations', ...WORKSPACE_ACCOUNT_COLLECTIONS, 'session', 'account', 'user']);
+  assert.deepEqual(fixture.operations.map(({ name }) => name), ['watchaTransactions', 'watchaEmailCodes', 'watchaDeletionConfirmations', 'phoneCodes', 'phoneChallenges', 'phoneConfirmations', 'wechatTransactions', 'wechatConfirmations', 'githubTransactions', 'githubConfirmations', 'googleTransactions', 'googleConfirmations', ...WORKSPACE_ACCOUNT_COLLECTIONS, 'session', 'account', 'user']);
   const candidates = fixture.operations.find(({ name }) => name === 'session').query.userId.$in;
   assert.ok(candidates.some((value) => typeof value === 'string'));
   assert.ok(candidates.some((value) => value instanceof ObjectId));
 });
 
 test('hard deletion rolls back without partial auth loss on every injected delete failure', async () => {
-  for (const failAt of [...WORKSPACE_ACCOUNT_COLLECTIONS, 'session', 'account', 'user', 'user-missing']) {
+  for (const failAt of ['phoneCodes','phoneChallenges','phoneConfirmations','wechatTransactions','wechatConfirmations','githubTransactions','githubConfirmations','googleTransactions','googleConfirmations',...WORKSPACE_ACCOUNT_COLLECTIONS, 'session', 'account', 'user', 'user-missing']) {
     const fixture = transactionalFixture(failAt);
     const runtime = await runtimeForTransaction(fixture);
 
@@ -460,7 +460,7 @@ test('hard deletion rolls back without partial auth loss on every injected delet
     );
     assert.deepEqual(
       Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
-      { session: 2, account: 2, user: 1, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,1])) },
+      { session: 2, account: 2, user: 1, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, phoneCodes: 0, phoneChallenges: 0, phoneConfirmations: 0, wechatTransactions: 0, wechatConfirmations: 0, githubTransactions: 0, githubConfirmations: 0, googleTransactions: 0, googleConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,1])) },
       failAt,
     );
     assert.equal(fixture.ended(), 1);
@@ -473,6 +473,6 @@ test('hard deletion rejects an empty current-session user id', async () => {
   await assert.rejects(() => runtime.deleteUser(''), /Auth user id is required/);
   assert.deepEqual(
     Object.fromEntries(Object.entries(fixture.state).map(([name, rows]) => [name, rows.length])),
-    { session: 2, account: 2, user: 1, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,1])) },
+    { session: 2, account: 2, user: 1, watchaTransactions: 0, watchaEmailCodes: 0, watchaDeletionConfirmations: 0, phoneCodes: 0, phoneChallenges: 0, phoneConfirmations: 0, wechatTransactions: 0, wechatConfirmations: 0, githubTransactions: 0, githubConfirmations: 0, googleTransactions: 0, googleConfirmations: 0, ...Object.fromEntries(WORKSPACE_ACCOUNT_COLLECTIONS.map(name=>[name,1])) },
   );
 });

@@ -1,0 +1,72 @@
+/* Authentication stays within the existing workspace dialog. */
+.auth-panel .auth-panel-heading { margin:0 0 24px; }
+.auth-panel-heading h2 { margin:0; font-size:24px; line-height:1.35; font-weight:650; color:#202b25; }
+.auth-panel-heading p { margin:10px 0 0; color:#707a73; font-size:13px; line-height:1.6; }
+.auth-panel .auth-form { display:flex; flex-direction:column; gap:18px; }
+.auth-panel .auth-form .field { margin:0; }
+.auth-panel .auth-form input { min-height:48px; font-size:16px; border-radius:10px; border-color:#dce2db; background:#fff; }
+.auth-panel .auth-form input:focus { border-color:#356651; box-shadow:0 0 0 3px #35665112; }
+.auth-panel .auth-form .primary-button { margin:4px 0 0; min-height:48px; background:#315e4e; color:#fff; font-size:15px; font-weight:600; box-shadow:none; }
+.auth-panel .auth-form .primary-button:disabled { color:#8b978e; background:#e9ede7; cursor:default; }
+.auth-panel .auth-form .primary-button:not(:disabled):hover { background:#244a3c; }
+.auth-panel .auth-form-links { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; }
+.auth-panel .auth-form-links .text-button { margin:0; padding:8px 0; min-height:40px; font-size:13px; font-weight:500; color:#587064; }
+.phone-auth-methods { display:flex; gap:28px; border-bottom:1px solid #e9ece7; margin:0 0 24px; }
+.phone-auth-methods button { border:0; border-bottom:2px solid transparent; padding:0 0 12px; background:transparent; color:#7a837c; cursor:pointer; font:inherit; font-size:15px; line-height:24px; }
+.phone-auth-methods button[aria-pressed=true] { border-bottom-color:#315e4e; color:#244a3c; font-weight:600; }
+.phone-auth-methods button:focus-visible { outline:2px solid #315e4e; outline-offset:4px; border-radius:2px; }
+.phone-code-form { display:flex; flex-direction:column; gap:18px; }
+.phone-code-form .field { display:flex; flex-direction:column; gap:8px; margin:0; }
+.phone-code-form .field>span,.phone-code-field>label { color:#58675c; font-size:13px; font-weight:500; }
+.phone-number-input,.phone-code-row { display:flex; align-items:center; min-width:0; border:1px solid #dce2db; border-radius:10px; background:#fff; }
+.phone-number-input { gap:12px; padding-left:14px; }
+.phone-number-input>span { flex-shrink:0; color:#66766a; font-size:14px; font-weight:500; padding-right:12px; border-right:1px solid #e5e9e2; }
+.phone-number-input input,.phone-code-row input { min-width:0; width:100%; border:0!important; box-shadow:none!important; background:transparent!important; }
+.phone-number-input input { padding-left:0; }
+.phone-number-input:focus-within,.phone-code-row:focus-within { border-color:#356651; box-shadow:0 0 0 3px #35665112; }
+.phone-code-send { flex:none; align-self:center; min-height:44px; padding:8px 12px; border:0; background:transparent; color:#315e4e; font:inherit; font-size:13px; font-weight:550; white-space:nowrap; cursor:pointer; }
+.phone-code-send:disabled { color:#9ba59c; cursor:default; }
+.phone-code-send:focus-visible { outline:2px solid #315e4e; outline-offset:-4px; border-radius:8px; }
+.phone-captcha-row { display:grid; grid-template-columns:minmax(0,1fr) 132px; gap:12px; align-items:end; background:#f6f8f4; border:1px solid #e5eae2; border-radius:12px; padding:12px; }
+.phone-captcha-row>.secondary-button { grid-column:1/-1; }
+.phone-captcha-image { padding:0; border:1px solid #dce2db; border-radius:9px; overflow:hidden; cursor:pointer; height:48px; background:#f0f3ef; }
+.phone-captcha-image img { width:100%; height:100%; object-fit:contain; }
+.phone-code-form .secondary-button { border:1px solid #d6dbd3; border-radius:10px; background:#fff; color:#285b48; padding:10px 12px; min-height:44px; font:inherit; font-size:14px; cursor:pointer; }
+.phone-code-form .secondary-button:disabled { color:#8b978e; background:#e9ede7; cursor:default; }
+.phone-registration-notice,.phone-status { margin:0; font-size:12px; color:#79847b; line-height:1.5; }
+.phone-code-form .error-line { margin:0; font-size:13px; }
+.phone-code-form input { min-height:48px; }
+.phone-binding-panel .phone-code-form { max-width:420px; }
+/* Peer identity providers stack vertically with the same button treatment. */
+.auth-panel .auth-social-methods { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; gap:12px; margin-top:24px; padding-top:20px; border-top:1px solid #e9ece7; }
+.auth-panel .auth-social-methods:empty { display:none; }
+.auth-panel .auth-social-methods>section { min-width:0; }
+.auth-panel .auth-social-methods>.watcha-identity { grid-column:1/-1; }
+.auth-panel .watcha-login-compact { margin:0; padding:0; border:0; }
+.auth-panel .auth-provider-button { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; min-height:48px; margin:0; padding:11px 12px; border:1px solid #dce2db; border-radius:10px; background:#fff; color:#35483d; font:inherit; font-size:14px; font-weight:500; line-height:24px; cursor:pointer; box-shadow:none; }
+.auth-panel .auth-provider-button>img { display:block; flex:none; width:24px; height:24px; object-fit:contain; }
+.auth-panel .auth-provider-button>span { min-width:0; }
+.auth-panel .auth-provider-button:not(:disabled):hover { border-color:#aebfb3; background:#f6f8f4; }
+.auth-panel .auth-provider-button:focus-visible { outline:2px solid #315e4e; outline-offset:3px; }
+.auth-panel .auth-provider-button:disabled { opacity:.6; cursor:default; }
+.auth-panel .auth-social-methods p { margin:8px 0 0; font-size:13px; line-height:1.5; overflow-wrap:anywhere; }
+@media(max-width:420px) {
+  .phone-captcha-row { grid-template-columns:minmax(0,1fr) 116px; gap:8px; }
+  .phone-code-send { padding-inline:10px; }
+}
+
+@layer control-focus {
+  /* The dialog receives programmatic focus while authentication is loading. */
+  .tw-required-login-dialog:focus-visible {
+    outline:none!important; border-color:#e1e5df!important; box-shadow:0 24px 80px #1b302323!important;
+  }
+  .phone-number-input>input:focus,.phone-code-row>input:focus {
+    outline:none!important; box-shadow:none!important;
+  }
+  .phone-number-input:has(>input:focus),.phone-code-row:has(>input:focus) {
+    border-color:var(--control-focus)!important; outline:1px solid var(--control-focus)!important; outline-offset:-1px!important;
+  }
+  .phone-number-input:has(>input:focus-visible),.phone-code-row:has(>input:focus-visible) {
+    border-color:var(--control-focus-keyboard)!important; outline-color:var(--control-focus-keyboard)!important;
+  }
+}

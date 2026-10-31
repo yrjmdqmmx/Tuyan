@@ -1,3 +1,8 @@
+import GithubIdentityPanel from '../components/GithubIdentityPanel.jsx';
+import GoogleIdentityPanel from '../components/GoogleIdentityPanel.jsx';
+import WechatIdentityPanel from '../components/WechatIdentityPanel.jsx';
+import PhoneBindingPanel from '../components/PhoneBindingPanel.jsx';
+import { visibleAccountEmail } from '../hooks/usePhoneAuth.js';
 import { useCallback, useState } from 'react';
 import { Check, ChevronRight, HardDrive, Languages, LogOut, ShieldCheck, Trash2, UserRound } from 'lucide-react';
 import { defaultAvatarUrl, AUTH_BASE_DEFAULT } from '../config.js';
@@ -35,7 +40,7 @@ export default function WorkspaceAccountPage({ preview = false, account, sync, s
       const result = await response.json(); if (!response.ok || result.error) throw Error(result.message || result.error?.message || '保存失败');
   }
   return <div className="tw-account-page tw-settings-layout">
-    {overview && <div className="tw-settings-overview-identity"><img src={account.user?.image || defaultAvatarUrl} alt="当前头像"/><h2>{account.user?.name?.trim() || (account.user ? '图研用户' : '未登录')}</h2><p>{account.user?.email || '登录后管理个人资料和已保存图片'}</p></div>}
+    {overview && <div className="tw-settings-overview-identity"><img src={account.user?.image || defaultAvatarUrl} alt="当前头像"/><h2>{account.user?.name?.trim() || (account.user ? '图研用户' : '未登录')}</h2><p>{visibleAccountEmail(account.user?.email) || '登录后管理个人资料和已保存图片'}</p></div>}
     <nav className="tw-settings-nav" aria-label="设置分类" hidden={mobile && !overview}>{ACCOUNT_SETTINGS_SECTIONS.map(({id,label,description})=>{
       const Icon = SECTION_ICONS[id];
       return <button type="button" key={id} data-settings-section={id} aria-label={label} aria-current={!mobile && page===id?'page':undefined} onClick={()=>selectSection(id)}><Icon className="tw-settings-entry-icon" size={22} aria-hidden="true"/><span className="tw-settings-entry-copy"><span>{label}</span><small>{description}</small></span><ChevronRight className="tw-settings-entry-chevron" size={19} aria-hidden="true"/></button>;
@@ -47,6 +52,10 @@ export default function WorkspaceAccountPage({ preview = false, account, sync, s
       </div>
       <section hidden={page!=='profile'} aria-label="使用情况">{account.user&&<><h3 className="tw-usage-title">使用情况</h3><DrawingActivity key={`activity:${userId}`} userId={userId} request={request}/></>}</section>
       <div hidden={page!=='account'}>
+    {account.user && <GithubIdentityPanel controller={account.github} loggedIn/>}
+    {account.user && <GoogleIdentityPanel controller={account.google} loggedIn/>}
+    {account.user && <WechatIdentityPanel controller={account.wechat} loggedIn/>}
+    {account.user && <PhoneBindingPanel key={userId} apiBase={apiBase} userId={userId}/>}
     {account.watcha && <section className="tw-management-section"><h3>观猹账号</h3><WatchaIdentityPanel controller={account.watcha} user={account.user} onSignIn={account.onSignIn}/></section>}
     <section className="tw-management-section"><h3>TokenDance 模型授权</h3><TokenDancePanel controller={models.tokenDance}/></section>
     <section className="tw-management-section"><h3>隐私</h3><div className="tw-action-row"><a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a><a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a></div></section>

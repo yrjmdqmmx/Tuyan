@@ -22,6 +22,14 @@ OSS_KEYS = {'PAPERBANANA_BUCKET', 'OSS_REGION', 'OSS_INTERNAL_ENDPOINT', 'OSS_PU
  'PAPERBANANA_BENCH_OSS_BUCKET', 'PAPERBANANA_BENCH_OSS_REGION', 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT', 'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE'}
 ADMISSION_BOUNDS = {'PAPERBANANA_MAX_ACTIVE_JOBS': (1, 8), 'PAPERBANANA_MAX_JOBS_PER_OWNER': (1, 2), 'PAPERBANANA_MAX_JOBS_PER_IP': (1, 40), 'PAPERBANANA_MAX_PENDING_JOBS': (0, 32)}
 ADMISSION_KEYS = set(ADMISSION_BOUNDS)
+IDENTITY_PATTERNS = {
+ 'GITHUB_OAUTH_ENABLED': r'true|false', 'GOOGLE_OAUTH_ENABLED': r'true|false',
+ 'GITHUB_CLIENT_ID': r'[A-Za-z0-9]{10,100}', 'GITHUB_CLIENT_SECRET': r'[A-Za-z0-9_-]{20,256}',
+ 'GOOGLE_CLIENT_ID': r'[0-9]+-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com',
+ 'GOOGLE_CLIENT_SECRET': r'[A-Za-z0-9_-]{20,256}',
+ 'AUTH_IDENTITY_PROXY_URL': r'http://10\.78\.0\.1:3129',
+ 'AUTH_SMS_ENABLED': r'false', 'AUTH_SMS_DELIVERY_ENABLED': r'false', 'WECHAT_OAUTH_ENABLED': r'false',
+}
 
 def pending_upload_filter(cutoff):
     # Upload receipts are retained for account cleanup after their signed URLs
@@ -64,6 +72,9 @@ def validate(m):
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
+            if key in IDENTITY_PATTERNS:
+                if name not in {'gateway', 'cn-gateway'} or not isinstance(value, str) or not re.fullmatch(IDENTITY_PATTERNS[key], value): raise ValueError('invalid identity configuration')
+                continue
             if name == 'plot' or key not in OSS_KEYS | ADMISSION_KEYS | {'PAPERBANANA_CODE_SHA', 'PAPERBANANA_IMAGE_LIBRARY_ENABLED', 'PAPERBANANA_OPERATIONS_ENABLED', 'PAPERBANANA_OPERATIONS_TOKEN'} or not isinstance(value, str) or re.search(r'[\s\x00$`"\x27\\]', value): raise ValueError('unsupported environment patch')
             if key == 'PAPERBANANA_CODE_SHA':
                 if name not in {'core', 'benchmark'} or not re.fullmatch('[a-f0-9]{40}', value): raise ValueError('invalid code provenance')
