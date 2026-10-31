@@ -40,6 +40,8 @@
 /* Peer identity providers stack vertically with the same button treatment. */
 .auth-panel .auth-social-methods { display:grid; grid-template-columns:minmax(0,1fr); align-items:start; gap:12px; margin-top:24px; padding-top:20px; border-top:1px solid #e9ece7; }
 .auth-panel .auth-social-methods:empty { display:none; }
+.auth-panel .auth-policy-links { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 20px; margin-top:18px; font-size:12px; }
+.auth-panel .auth-policy-links a { padding:4px 0; color:#587064; text-underline-offset:3px; }
 .auth-panel .auth-social-methods>section { min-width:0; }
 .auth-panel .auth-social-methods>.watcha-identity { grid-column:1/-1; }
 .auth-panel .watcha-login-compact { margin:0; padding:0; border:0; }

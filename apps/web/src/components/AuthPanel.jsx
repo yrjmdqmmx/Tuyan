@@ -152,6 +152,10 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
         <WechatIdentityPanel controller={wechat}/>
       </div> : null}
       {onCancel ? <button className="text-button muted" type="button" onClick={onCancel}>{t("暂不登录")}</button> : null}
+      <nav className="auth-policy-links" aria-label={t('隐私与条款')}>
+        <a href="/privacy-policy.html" target="_blank" rel="noopener noreferrer">{t('隐私政策')}</a>
+        <a href="/terms-of-service.html" target="_blank" rel="noopener noreferrer">{t('服务条款')}</a>
+      </nav>
     </section>
   );
 }
