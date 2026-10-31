@@ -11,7 +11,10 @@ test('privacy policy describes the current Web and WeChat Mini Program data flow
   assert.match(source, /2026-10-31/)
   assert.match(source, /可通过 Web 与微信小程序使用/)
   assert.match(source, /available on the Web and WeChat Mini Program/)
-  assert.match(source, /阿里云香港|Alibaba Cloud Hong Kong/)
+  assert.match(source, /阿里云杭州/)
+  assert.match(source, /Alibaba Cloud Hangzhou/)
+  assert.match(source, /受限恢复副本/)
+  assert.doesNotMatch(source, /阿里云香港|Alibaba Cloud Hong Kong/)
   assert.match(source, /新加坡.*出口|Singapore.*egress/is)
   assert.match(source, /clientPlatform/)
   assert.match(source, /IP 地址|IP address/)
@@ -41,7 +44,8 @@ test('each canonical Web legal document makes the required current data disclosu
 
   for (const [name, path, requiresNoTracking] of documents) {
     const source = await readFile(new URL(path, import.meta.url), 'utf8')
-    assert.match(source, /香港|Hong Kong/, `${name} must disclose Hong Kong service`)
+    assert.match(source, /杭州|Hangzhou/, `${name} must disclose the Hangzhou business service`)
+    assert.match(source, /香港|Hong Kong/, `${name} must disclose Hong Kong transit or recovery copies`)
     assert.match(source, /新加坡|Singapore/, `${name} must disclose possible Singapore egress`)
     assert.match(source, /方舟|Ark/, `${name} must name Ark`)
     assert.match(source, /短生命周期|临时|ephemeral/i, `${name} must disclose ephemeral BYOK forwarding`)

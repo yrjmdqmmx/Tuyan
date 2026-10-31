@@ -146,12 +146,12 @@
   <ul>
     <li><strong>您选择哪个平台，您的生成输入就会被传输给哪个平台并由其处理。</strong> 这些第三方对您数据的收集、使用、留存与跨境传输，受其各自的隐私政策与服务条款约束，超出本应用的控制范围。</li>
     <li>我们建议您在使用前阅读所选平台的隐私政策，并避免在生成输入中提交敏感、保密或受合规约束的内容。</li>
-    <li>按渠道和路由策略，OpenAI、Gemini、OpenRouter 以及策略指定的 provider 流量可能通过位于新加坡的受限模型出口节点建立不解密内容的 TLS CONNECT 通道；阿里云百炼、方舟与 OSS 不因本说明而被宣称走该出口。出口节点不保存 API Key、提示词、图片或完整 URL。</li>
+    <li>按渠道和路由策略，模型请求从杭州直连所选平台，或通过香港、新加坡的受限模型出口节点建立不解密内容的 TLS CONNECT 通道。阿里云百炼、方舟等国内入口直接访问；出口节点不保存 API Key、提示词、图片或完整 URL。</li>
   </ul>
 
   <h2>5. 数据存储位置与留存期限</h2>
   <ul>
-    <li>您的账号、任务记录与生成结果存储在运营方位于<strong>阿里云香港</strong>的主服务、MongoDB 与 OSS 中。</li>
+    <li>您的账号、任务记录与生成结果的主数据存储在运营方位于<strong>阿里云杭州</strong>的业务服务、MongoDB 与私有 OSS 中；香港仅保留迁移时的受限恢复副本。</li>
     <li>我们仅在为实现本政策所述目的所必需的期间内保留您的信息。当您删除账号后，相关数据将按第 7 条所述被永久删除。</li>
     <li>本地缓存随您卸载本应用或在应用内清理而被清除。</li>
     <li>跨境数据传输：当您主动选择境外第三方模型平台时，您的生成输入和 API Key 会传输到该平台所在国家或地区。请在提交前确认您有权进行该传输。</li>
@@ -170,7 +170,7 @@
   <p>如需行使上述权利，请通过第 12 条的联系方式与我们联系。我们会在适用法律规定的期限内响应。</p>
 
   <h2>7. 账号与数据删除</h2>
-  <p>您可随时在本应用内永久删除您的账号：<strong>「设置 → 账号 → 删除账号」</strong>，并按提示<strong>重新输入登录密码进行二次确认</strong>。删除账号将永久清除：</p>
+  <p>您可在本应用内通过<strong>「账户与设置 → 账户 → 永久删除账号」</strong>发起注销，按页面提示<strong>重新验证身份并输入“删除账号”确认</strong>。身份验证方式取决于您的账号登录方式。删除账号将永久清除：</p>
   <ul>
     <li>您的账号本身；</li>
     <li>您的所有任务记录与生成结果；</li>
@@ -266,12 +266,12 @@
   <ul>
     <li><strong>Whichever platform you select is the platform to which your generation inputs are transmitted and by which they are processed.</strong> Those third parties' practices are governed by their own policies and are beyond the App's control.</li>
     <li>We recommend reading the privacy policy of the platform you select and avoiding sensitive, confidential, or regulated content in your inputs.</li>
-    <li>Depending on the selected provider and routing policy, OpenAI, Gemini, OpenRouter, and policy-designated provider traffic may establish a TLS CONNECT tunnel through a restricted Singapore egress node. The node does not decrypt content or retain API Keys, prompts, images, or full URLs. Alibaba Cloud Bailian, Ark, and OSS are not represented as using that egress by this disclosure.</li>
+    <li>Depending on the selected provider and routing policy, model requests connect directly from Hangzhou to the selected platform or use a TLS CONNECT tunnel through a restricted Hong Kong or Singapore egress node. Domestic endpoints such as Alibaba Cloud Bailian and Ark are accessed directly. Egress nodes do not decrypt content or retain API Keys, prompts, images, or full URLs.</li>
   </ul>
 
   <h2>5. Where Data Is Stored and Retention</h2>
   <ul>
-    <li>Your account, job records, and generated results are stored by the Operator on the primary service, MongoDB, and OSS in <strong>Alibaba Cloud Hong Kong</strong>.</li>
+    <li>Primary account, job-record and generated-result data is stored by the Operator on the business services, MongoDB and private OSS in <strong>Alibaba Cloud Hangzhou, China</strong>. Restricted recovery copies from the earlier migration remain in Hong Kong.</li>
     <li>We retain your information only as long as necessary for the purposes described here. When you delete your account, data is permanently deleted as described in Section 7.</li>
     <li>Local caches are removed when you uninstall the App or clear them in-app.</li>
     <li>Cross-border transfers: when you actively select an overseas third-party model platform, your generation inputs and API Key are transferred to the country or region where that platform operates. Confirm that you are authorized to make that transfer before submitting content.</li>
@@ -290,7 +290,7 @@
   <p>To exercise these rights, contact us using Section 12. We will respond within the timeframe required by applicable law.</p>
 
   <h2>7. Account and Data Deletion</h2>
-  <p>You can permanently delete your account at any time: <strong>Settings → Account → Delete Account</strong>, confirming by <strong>re-entering your sign-in password</strong>. Deleting your account permanently removes:</p>
+  <p>You can request account deletion through <strong>Account and Settings → Account → Permanently Delete Account</strong>. Follow the on-screen steps to <strong>verify your identity again and enter “删除账号” to confirm</strong>. The verification method depends on how you sign in. Deleting your account permanently removes:</p>
   <ul>
     <li>Your account itself;</li>
     <li>All your job records and generated results;</li>
