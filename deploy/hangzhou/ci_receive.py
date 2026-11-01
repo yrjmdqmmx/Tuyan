@@ -139,7 +139,7 @@ def openacad_deploy(c,h,m,dest):
   if marker.exists() and marker.read_text()==ident:marker.unlink()
   raise
 
-def deploy(project,stream):
+def _deploy(project,stream):
  c=CONFIG[project];line=stream.readline(32769)
  if len(line)>32768:raise ValueError('header too large')
  h=json.loads(line);validate_header(h,c)
@@ -177,6 +177,24 @@ def deploy(project,stream):
    else:openacad_deploy(c,h,m,dest)
    receipt={'project':project,'source':h['sha'],'run':h['run'],'status':'healthy','target':'Hangzhou','modelCalls':0,'registrySources':registry_sources,'images':{k:inspect(v)['Image'] for k,v in c['services'].items()},'web':str(dest/'web'),'completedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())}
    (dest/'receipt.json').write_text(json.dumps(receipt,indent=2));print(json.dumps(receipt),flush=True)
+
+def load_retention():
+ p=pathlib.Path(__file__).with_name('retention.py');spec=importlib.util.spec_from_file_location('hz_retention',p);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+
+def deploy(project,stream):
+ retention=load_retention()
+ # One lease covers download, import, publish and retention across both projects.
+ with retention.locks(retention.LOCKS[:1],blocking=True):
+  retention.require_space()
+  _deploy(project,stream)
+  try:
+   result=retention.cleanup(apply=True,lease_held=True)
+   audit=pathlib.Path(__file__).with_name('retention-receipts');audit.mkdir(mode=0o700,exist_ok=True)
+   (audit/(str(time.time_ns())+'.json')).write_text(json.dumps(result,indent=2))
+   print(json.dumps({'retention':{'status':'partial' if result['imageFailures'] else 'ok','removedImages':len(result['removedImages']),'removedReleases':len(result['removedReleases']),'availableBytes':result['after']['availableBytes']}}),flush=True)
+  except Exception as error:
+   # Retention is after the healthy receipt; failure must not roll back a healthy release.
+   print(json.dumps({'retention':{'status':'failed','errorType':type(error).__name__}}),file=sys.stderr,flush=True)
 
 def main():
  os.umask(0o077);project=sys.argv[1]
