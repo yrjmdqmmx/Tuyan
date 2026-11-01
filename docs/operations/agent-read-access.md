@@ -1,10 +1,10 @@
 # 图研运营数据：Agent 只读接入
 
-状态：本地实现已验收，Owner 已授权本批生产发布，部署验收进行中。基于发布分支 `fd3959ba` 的独立工作树，公开科研知识 `/mcp` 保持原契约。
+状态：2026-11-01 已按 Owner 授权上线 `051f2220`，CI、双站版本与健康检查、HTTP/MCP 协议和实际 Mongo 汇总核对通过。Grokbot 客户端注册由 Owner 交付接入指令后完成；详见 [发布验收记录](2026-11-01-agent-ops-release.md)。公开科研知识 `/mcp` 保持原契约。
 
 ## 接入方式
 
-部署并启用后，首选远程 Streamable HTTP MCP：`https://tuyansci.cn/api/agent-ops/mcp`。同一份查询也提供普通 HTTP。可用 [OpenAPI 文档](agent-ops.openapi.json) 导入支持 OpenAPI 的 Agent。
+已启用的远程 Streamable HTTP MCP：`https://tuyansci.cn/api/agent-ops/mcp`。同一份查询也提供普通 HTTP。可用 [OpenAPI 文档](agent-ops.openapi.json) 导入支持 OpenAPI 的 Agent。
 
 | MCP 工具 | HTTP GET | 权限 |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ Authorization: Bearer <由客户端凭据库注入>
 
 > 查询图研运营数据时只使用 tuyan_ops_* 工具。报告北京时间范围、来源采样时间与缺失项。未知、不可用、过期和零值必须区分；遵循响应中的 definitions，不把保留账户数当日活，不把任务次数当收入。只做读取与分析，不尝试调用写接口或模型。
 
-## 凭据与部署配置（本轮未执行）
+## 凭据与部署配置
 
 1. 经生产发布授权后，在私密目录生成新的随机服务凭据：
 
@@ -64,18 +64,20 @@ Authorization: Bearer <由客户端凭据库注入>
 
 4. 确认 Nginx 将该路径只转发至 Gateway，Core 内部接口不对公网开放。选择一个 Gateway 作为 Agent 入口即可；不因有两个站点而重复建监控。每个 Gateway 实例每凭据 60 次/分钟、聚合并发上限 4、Core 查询 5 秒、网络 7 秒、MCP 请求 16 KiB、Core 响应 128 KiB。两个独立网关的配额不共享；这些读查询仍会消耗数据库资源，建议常规报表按需调用，勿高频轮询。
 
-5. 发布后用专用凭据验证 initialize、tools/list 和三个只读调用，确认实际来源与时间正确；检查无权限/过期凭据为 401、越权为 403、HTTP 写方法为 405、公共 `/mcp` 无私有工具。这些生产/Grokbot 验收当前待做。
+5. 发布后用专用凭据验证 initialize、tools/list 和三个只读调用，确认实际来源与时间正确；检查无权限/过期凭据为 401、越权为 403、HTTP 写方法为 405、公共 `/mcp` 无私有工具。本轮线上已验证协议调用、匿名/无效凭据、Origin、写方法、额外参数和公开 MCP 隔离；到期与 scope 等分支由离线测试覆盖。Grokbot 自身的工具注册和调用尚需客户端执行接入指令。
 
 撤销：从 `TUYAN_OPS_AGENT_TOKENS` 移除该记录并重启/滚动更新对应 Gateway；每次请求重新校验到期时间。轮换可短期保留两个不同 ID/摘要，客户端更新后撤销旧记录。紧急关闭设 enabled=false 并重启 Gateway。不会撤销普通用户登录，也不会删除业务数据。
 
 ## 本地验证
 
-2026-11-01：Gateway 全量 270 通过 / 1 既有跳过，Core 全量 1593 通过 / 1 既有跳过，采样脚本 4 项通过；Core 类型检查、构建通过。离线凭据生成/0600 权限/禁止覆盖及 OpenAPI JSON 检查通过；仅使用一次性测试凭据，未创建生产密钥。测试生成的无关渲染产物移出隔离工作树，历史证据文件保持原样。
+2026-11-01：Gateway 全量 270 通过 / 1 既有跳过，Core 全量 1593 通过 / 1 既有跳过，采样脚本 4 项通过；Core 类型检查、构建通过。离线凭据生成/0600 权限/禁止覆盖及 OpenAPI JSON 检查通过；实现阶段仅使用一次性测试凭据；生产专用凭据在随后获得发布授权后单独创建，值不入仓库。测试生成的无关渲染产物移出隔离工作树，历史证据文件保持原样。
 
-安全/协议测试使用模拟账户、模拟聚合数据和本地 HTTP 服务，不读取生产业务数据，不调用模型、短信或支付。覆盖禁用默认值、令牌隔离/期限/scope、只读方法、参数注入、数据投影、失败/空数据/未知分类、限流、MCP 并发、公开 MCP 隔离、响应体上限、禁止跳转、主机快照保密/过期与原子替换。Core 类型检查和构建已通过；真实 Mongo 数据口径及真实客户端连接仍需发布前/后授权验收。
+安全/协议测试使用模拟账户、模拟聚合数据和本地 HTTP 服务，不读取生产业务数据，不调用模型、短信或支付。覆盖禁用默认值、令牌隔离/期限/scope、只读方法、参数注入、数据投影、失败/空数据/未知分类、限流、MCP 并发、公开 MCP 隔离、响应体上限、禁止跳转、主机快照保密/过期与原子替换。Core 类型检查和构建已通过；随后经 Owner 授权完成生产 HTTP/MCP 与真实 Mongo 口径验收；Grokbot 真实客户端连接仍由接入指令完成。
 
 ## 宿主 Mac 一键查询
 
 `scripts/tuyan-ops-client.py` 可复制到用户私密目录，与 `agent-secret.json` 相邻。执行 `python3 <私密目录>/tuyan-ops-client.py doctor` 可验证三个 HTTP 入口；其他命令为 `overview`、`failures`、`health`，前两项支持 `--from` / `--to`。程序使用系统 CA 验证 TLS、禁止重定向、固定 HTTPS 目标、限制响应大小；不会打印凭据或把凭据放进进程参数。
 
 Grokbot 如果在隔离虚拟机运行，需要使用宿主 Mac 的终端工具调用该路径；不要误把虚拟机的同名路径视为宿主文件。也可通过其私密凭据导入机制连接远程 MCP。实际连接仍应由客户端运行 doctor 或 tools/list 验证。
+
+当前接入文件位于 Owner Mac 的 `/Users/a1-6/.config/tuyan-ops/grokbot-20261101/`：`CONNECT.txt` 是给 Agent 的指令，`mcp-settings.json` 含私密认证头，禁止回显。该目录的 `tuyan-ops-client.py doctor` 已通过线上自检。现有数据库权限不提供全局 serverStatus，health 对该分项返回不可用；不影响账户/任务汇总、队列、进程和主机数据各自的可用性。

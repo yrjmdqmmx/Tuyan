@@ -1,11 +1,12 @@
-## 2026-11-01 · Agent 运营只读 API / MCP（本地实现，默认关闭）
+## 2026-11-01 · Agent 运营只读 API / MCP（生产已启用）
 
 - [x] Gateway：独立 `/api/agent-ops/{overview,failures,health}` GET 与 `/api/agent-ops/mcp`，三项固定只读工具；新 `TUYAN_OPS_AGENT_ENABLED` / `TUYAN_OPS_AGENT_TOKENS` / 可选 `TUYAN_OPS_HOST_SNAPSHOT_FILE`，内部沿用 `PAPERBANANA_OPERATIONS_TOKEN`。服务凭据只存摘要、限定 scope/期限，限流、并发/体积/时间窗口限制；不复用管理员会话，不开放用户明细或任意 action。
 - [x] Core / shared：独立只读内部 transport 增加 `/internal/operations/overview`、`/internal/operations/failures`；只做保留任务计数与固定失败分类。共享窗口定义 `[from,to)`、最大 90 天；缺失、未知、零值分开，不推断 DAU/历史总量/收费。
 - [x] 运维脚本：既有采样器可选输出单份原子替换的主机汇总快照；复用既有服务/定时器，不创建监控、不清理历史；私有权限与独立只读目录挂载见文档。
 - [x] Web / 小程序 / 退役原生端：不接入该私有管理接口，无 UI/用户 API 契约变更。公开 `/mcp` 保持科研知识用途。
 - [x] 发布准备：Owner 已授权本批发布；补充 CN Gateway 专用环境白名单与固定只读主机快照挂载，沿用现有发布锁/五镜像前置校验/回滚。增加零依赖 `tuyan-ops-client.py`，凭据只从相邻私密文件读取、不输出或放进参数。
-- [ ] 发布 / Grokbot：正在进行 CI、独立凭据配置、实际 Mongo 口径核对；Grokbot 实际连接由 Owner 使用接入指令完成。不调用模型、短信或支付，不新增监控。
+- [x] 发布：`051f2220` / [CI 41312747009](https://github.com/yrjmdqmmx/Tuyan/actions/runs/41312747009) 全部成功；双站版本与健康检查、三个 HTTP/MCP 工具、24 小时与 30 天 Mongo 独立汇总核对、只读/鉴权拒绝和公开 MCP 隔离通过。只启用 CN 私有入口，既有采样器复用；数据库全局性能指标因既有权限限制明确不可用。见 [发布验收记录](docs/operations/2026-11-01-agent-ops-release.md)。
+- [ ] Grokbot：Owner Mac 私密目录已备好接入说明、MCP 配置和通过线上自检的 HTTP 脚本；由 Owner 把指令交给 Grokbot 完成实际工具注册。没有调用模型、短信或支付，没有新增监控。
 - 接入契约、OpenAPI、凭据生成和撤销步骤见 [Agent 运营读取](docs/operations/agent-read-access.md)。独立分支 `codex/tuyan-ops-agent-20261101`；其他会话工作树保留。
 
 ## 2026-11-01 · 杭州磁盘清理与发布产物保留
