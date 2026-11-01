@@ -4,6 +4,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import TCPServer
 import threading
 import unittest
+import json
+import tempfile
+import stat
 from unittest.mock import patch
 from types import SimpleNamespace
 
@@ -13,6 +16,28 @@ spec.loader.exec_module(observer)
 
 
 class ObservationTests(unittest.TestCase):
+    def test_latest_host_is_atomic_small_private_and_excludes_core_secrets(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            history = output / "hz-2026-11-01.jsonl"
+            history.write_text("existing evidence\n")
+            record = {"version": 1, "node": "hz", "sampledAt": "2026-11-01T00:00:00Z",
+                      "host": {"rootDiskBytes": {"total": 1000, "available": 30}, "networkCounters": {"private": 1}},
+                      "core": {"key": "PRIVATE_SENTINEL"}}
+            observer.write_latest_host(output, record)
+            target = output / "hz-latest.json"
+            self.assertNotIn("PRIVATE_SENTINEL", target.read_text())
+            self.assertNotIn("networkCounters", target.read_text())
+            self.assertEqual(stat.S_IMODE(target.stat().st_mode), 0o600)
+            record["host"]["rootDiskBytes"]["available"] = 40
+            observer.write_latest_host(output, record)
+            self.assertEqual(json.loads(target.read_text())["host"]["rootDiskBytes"]["available"], 40)
+            self.assertEqual(history.read_text(), "existing evidence\n")
+            self.assertEqual(list(output.glob("*.tmp")), [])
+            with patch.object(observer.os, "fchown") as owner:
+                observer.write_latest_host(output, record, reader_uid=1000)
+                self.assertEqual(owner.call_args.args[1:], (1000, -1))
+
     def test_container_probe_uses_private_loopback_and_never_passes_a_secret_argument(self):
         with patch.object(observer.subprocess, "run", return_value=SimpleNamespace(stdout='{"version":1}')) as run:
             result = observer.container_core_snapshot("isolated-core")

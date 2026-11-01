@@ -16,6 +16,7 @@ import { promisify } from 'node:util';
 import { createBoundedAuthHandler } from './auth-http.js';
 import { readGuestIdentity, resolveGuestIdentity } from './guest-identity.js';
 import { createTuyanMcpRouter } from './mcp.js';
+import { createOpsRouter } from './ops-router.js';
 import { authorizeJobOwner, normalizeRefineSource } from './ownership.js';
 import { redactErrorForLog } from './redaction.js';
 import { createWorkspaceHistory } from './workspace-history.js';
@@ -85,6 +86,8 @@ export function createApp({
   const accountDeletionOperations = new Map();
   app.disable('x-powered-by');
   app.set('trust proxy', config.trustProxy);
+  app.use('/api/agent-ops', createOpsRouter({ config: config.opsAgent, accounts: auth.adminAccounts,
+    coreUrl: config.backend?.url, logger, nowMs: () => nowSeconds() * 1000 }));
   app.use('/mcp', createTuyanMcpRouter({ logger, nowMs: () => nowSeconds() * 1000 }));
 
   const origins = new Set(config.frontendOrigins);

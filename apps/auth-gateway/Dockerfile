@@ -19,6 +19,7 @@ COPY --chown=node:node packages/tuyan-knowledge packages/tuyan-knowledge
 COPY --chown=node:node packages/figure-taxonomy packages/figure-taxonomy
 COPY --chown=node:node packages/api/src/workspace-*.mjs packages/api/src/
 COPY --chown=node:node packages/api/src/plus*.mjs packages/api/src/
+COPY --chown=node:node packages/api/src/ops-read-contract.mjs packages/api/src/
 COPY --chown=node:node packages/api/src/journal-*.js packages/api/src/
 
 WORKDIR /app/apps/auth-gateway

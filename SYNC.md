@@ -1,3 +1,12 @@
+## 2026-11-01 · Agent 运营只读 API / MCP（本地实现，默认关闭）
+
+- [x] Gateway：独立 `/api/agent-ops/{overview,failures,health}` GET 与 `/api/agent-ops/mcp`，三项固定只读工具；新 `TUYAN_OPS_AGENT_ENABLED` / `TUYAN_OPS_AGENT_TOKENS` / 可选 `TUYAN_OPS_HOST_SNAPSHOT_FILE`，内部沿用 `PAPERBANANA_OPERATIONS_TOKEN`。服务凭据只存摘要、限定 scope/期限，限流、并发/体积/时间窗口限制；不复用管理员会话，不开放用户明细或任意 action。
+- [x] Core / shared：独立只读内部 transport 增加 `/internal/operations/overview`、`/internal/operations/failures`；只做保留任务计数与固定失败分类。共享窗口定义 `[from,to)`、最大 90 天；缺失、未知、零值分开，不推断 DAU/历史总量/收费。
+- [x] 运维脚本：既有采样器可选输出单份原子替换的主机汇总快照；复用既有服务/定时器，不创建监控、不清理历史；私有权限与独立只读目录挂载见文档。
+- [x] Web / 小程序 / 退役原生端：不接入该私有管理接口，无 UI/用户 API 契约变更。公开 `/mcp` 保持科研知识用途。
+- [ ] 发布 / Grokbot：待授权部署、独立凭据配置、实际 Mongo 口径核对与客户端连接验收。本轮未改生产配置或推送发布，不调用模型、短信或支付，未创建生产密钥。
+- 接入契约、OpenAPI、凭据生成和撤销步骤见 [Agent 运营读取](docs/operations/agent-read-access.md)。独立分支 `codex/tuyan-ops-agent-20261101`；其他会话工作树保留。
+
 ## 2026-11-01 · 杭州磁盘清理与发布产物保留
 
 - [x] 运维：经用户明确授权，先释放 OCI 缓存，再删除 56 个过期镜像及 21 套图研旧前端目录；追加授权后核实并删除一份重复迁移镜像归档及校验文件。磁盘 97% → 49%，可用约 38.6 GiB。保留图研当前及两个回滚版本、OpenAcad 当前/回滚/实际运行目录；所有容器引用的镜像均保留。

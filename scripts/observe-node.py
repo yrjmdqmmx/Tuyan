@@ -13,6 +13,8 @@ import re
 from pathlib import Path
 import stat
 import subprocess
+import sys
+import tempfile
 import time
 import urllib.error
 import urllib.parse
@@ -69,6 +71,26 @@ def host_snapshot():
     result["rootDiskBytes"] = {"total": fs.f_blocks * fs.f_frsize, "available": fs.f_bavail * fs.f_frsize}
     result["rootInodes"] = {"total": fs.f_files, "available": fs.f_favail}
     return result
+
+
+def write_latest_host(output, record, reader_uid=None):
+    """Small atomic projection for a read-only Gateway mount; no new scheduler."""
+    host = record["host"]
+    snapshot = {"version": 1, "node": record["node"], "sampledAt": record["sampledAt"],
+                "host": {key: host[key] for key in ("loadAverage", "cpuCount", "memoryBytes", "rootDiskBytes", "rootInodes") if key in host}}
+    target = output / (record["node"] + "-latest.json")
+    temporary = None
+    try:
+        # No credentials/Core/container details; retain private file permissions.
+        with tempfile.NamedTemporaryFile(mode="w", dir=output, prefix=record["node"] + "-latest-", suffix=".tmp", delete=False) as handle:
+            temporary = Path(handle.name)
+            if reader_uid is not None:
+                os.fchown(handle.fileno(), reader_uid, -1)
+            json.dump(snapshot, handle, separators=(",", ":"))
+        os.replace(temporary, target)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def containers_snapshot():
@@ -186,10 +208,16 @@ def main():
     parser.add_argument("--core-container", help="Existing Core container, read its loopback endpoint without publishing a port")
     parser.add_argument("--credentials-file", type=Path)
     parser.add_argument("--containers", action="store_true")
+    parser.add_argument("--agent-host-dir", type=Path, help="Existing dedicated directory for the optional aggregate host snapshot")
+    parser.add_argument("--agent-host-uid", type=int, help="Gateway reader UID for the private snapshot (deployment opt-in)")
     parser.add_argument("--unit", action="append", default=[], help="Existing proxy/tunnel service name to observe; never restarts it")
     args = parser.parse_args()
     if not 1 <= args.samples <= 10080 or args.interval < 15:
         parser.error("samples must be 1..10080 and interval >= 15 seconds")
+    if bool(args.agent_host_dir) != (args.agent_host_uid is not None):
+        parser.error("--agent-host-dir and --agent-host-uid must be provided together")
+    if args.agent_host_dir and (not args.agent_host_dir.is_absolute() or not args.agent_host_dir.is_dir() or args.agent_host_uid < 1):
+        parser.error("agent snapshot requires an existing absolute directory and a non-root reader UID")
     if len(args.unit) > 8 or any(not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9@_.-]{0,100}\.service", unit) for unit in args.unit):
         parser.error("at most eight explicit service unit names are allowed")
     if args.core_container and (args.core_url or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,100}", args.core_container)):
@@ -220,6 +248,12 @@ def main():
             record["services"] = services_snapshot(args.unit)
         with target.open("a") as handle:
             handle.write(json.dumps(record, separators=(",", ":")) + "\n")
+        if args.agent_host_dir:
+            try:
+                write_latest_host(args.agent_host_dir, record, args.agent_host_uid)
+            except (OSError, ValueError):
+                # Optional Agent projection must not stop the existing observation stream.
+                print("Agent host projection unavailable; existing observation retained", file=sys.stderr)
         if sample + 1 < args.samples:
             time.sleep(max(0, args.interval - (time.monotonic() - started)))
 

@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tuyan private read-only operations",
+    "version": "1.0.0",
+    "description": "Deployment candidate, disabled until configured. Aggregate observations only. Preserve source availability, sampledAt, window and definitions. Never infer DAU, lifetime totals, charges or revenue."
+  },
+  "servers": [{ "url": "https://tuyansci.cn" }],
+  "security": [{ "agentBearer": [] }],
+  "paths": {
+    "/api/agent-ops/overview": { "get": {
+      "operationId": "tuyan_ops_overview",
+      "summary": "Read retained account and Core job counts, not DAU or revenue",
+      "parameters": [{ "$ref": "#/components/parameters/from" }, { "$ref": "#/components/parameters/to" }],
+      "responses": { "200": { "$ref": "#/components/responses/aggregate" }, "400": { "description": "Invalid window or extra query fields" }, "401": { "description": "Missing, invalid or expired service credential" }, "403": { "description": "Missing overview:read scope or browser origin" }, "429": { "description": "Rate limit; respect Retry-After" }, "503": { "description": "Reader busy; retry later" } }
+    } },
+    "/api/agent-ops/failures": { "get": {
+      "operationId": "tuyan_ops_failures",
+      "summary": "Read failed-job counts by fixed category, stage and request state",
+      "parameters": [{ "$ref": "#/components/parameters/from" }, { "$ref": "#/components/parameters/to" }],
+      "responses": { "200": { "$ref": "#/components/responses/aggregate" }, "400": { "description": "Invalid window or extra query fields" }, "401": { "description": "Missing, invalid or expired service credential" }, "403": { "description": "Missing failures:read scope or browser origin" }, "429": { "description": "Rate limit; respect Retry-After" }, "503": { "description": "Reader busy; retry later" } }
+    } },
+    "/api/agent-ops/health": { "get": {
+      "operationId": "tuyan_ops_health",
+      "summary": "Read partial Core and existing host observations; check stale/available flags",
+      "responses": { "200": { "$ref": "#/components/responses/aggregate" }, "400": { "description": "No query parameters allowed" }, "401": { "description": "Missing, invalid or expired service credential" }, "403": { "description": "Missing health:read scope or browser origin" }, "429": { "description": "Rate limit; respect Retry-After" }, "503": { "description": "Reader busy; retry later" } }
+    } }
+  },
+  "components": {
+    "securitySchemes": { "agentBearer": { "type": "http", "scheme": "bearer", "description": "Independent revocable operations credential from a private credential store; never an administrator session or Core transport key." } },
+    "parameters": {
+      "from": { "in": "query", "name": "from", "required": false, "schema": { "type": "string", "format": "date-time" }, "description": "Inclusive createdAt, UTC with milliseconds (2026-11-01T00:00:00.000Z). Provide both from/to or neither. At most 90 days. Default last 24 hours ending at current minute." },
+      "to": { "in": "query", "name": "to", "required": false, "schema": { "type": "string", "format": "date-time" }, "description": "Exclusive createdAt, UTC with milliseconds. Must be after from and no later than now." }
+    },
+    "responses": { "aggregate": { "description": "Source availability is per section. Missing data is not zero; health stale is not current. See definitions in the response.", "content": { "application/json": { "schema": { "type": "object", "required": ["schemaVersion", "operation", "sampledAt", "timezone", "definitions"], "properties": { "schemaVersion": { "const": 1 }, "operation": { "enum": ["overview", "failures", "health"] }, "sampledAt": { "type": "string", "format": "date-time" }, "timezone": { "const": "Asia/Shanghai" }, "definitions": { "type": "object", "additionalProperties": { "type": "string" } } }, "additionalProperties": true } } } } }
+  }
+}

@@ -3,6 +3,7 @@ import { loadIdentityProxy } from './identity-transport.js';
 import { loadGithubConfig } from './github-oauth.js';
 import { loadWechatConfig } from './wechat-oauth.js';
 import { loadPlusConfig } from './plus-config.js';
+import { loadOpsConfig } from './ops-config.js';
 import { loadSmsConfig } from './sms.js';
 const DEFAULT_ORIGINS = [
   'http://localhost:5173',
@@ -88,6 +89,7 @@ export function loadGatewayConfig(env = process.env) {
   }
 
   return {
+    opsAgent: loadOpsConfig(env),
     plus: loadPlusConfig(env),
     identityProxyUrl: loadIdentityProxy(env),
     sms: loadSmsConfig(env),

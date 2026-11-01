@@ -8,6 +8,7 @@ import http from 'node:http'
 import express, { type Express, type NextFunction, type Request, type Response } from 'express'
 
 import { redactLogValue } from './redaction.js'
+import { parseOpsQuery, OpsQueryError } from '../../../packages/api/src/ops-read-contract.mjs'
 
 export type CoreContext = {
   request: { method: string }
@@ -48,6 +49,7 @@ type AppDependencies = {
   readinessProbe: ReadinessProbe
   healthSnapshot: () => Readiness
   operationsSnapshot?: () => unknown | Promise<unknown>
+  operationsRead?: (kind: 'overview' | 'failures', input: unknown) => Promise<unknown>
   config: AppConfig
   logger: ServiceLogger
   adminOperations?: { handle(body: Record<string, unknown>, isAdmin: boolean): Promise<Record<string, unknown>> }
@@ -145,7 +147,7 @@ function handlerHeaders(request: Request): Request['headers'] {
 }
 
 export function createApp({
-  handler, readinessProbe, healthSnapshot, operationsSnapshot, config, logger, benchmarkService, adminOperations,
+  handler, readinessProbe, healthSnapshot, operationsSnapshot, operationsRead, config, logger, benchmarkService, adminOperations,
   prepareScientificV2RegistryAuthority, tokenDance, providerWorkflow, resumeTokenDanceJob, requiresTokenDanceCredential, requiresCustomCredential,
 }: AppDependencies): Express {
   const app = express()
@@ -216,6 +218,21 @@ export function createApp({
     try { return response.json(await operationsSnapshot()) }
     catch { return response.status(503).json({ error: 'Operations snapshot unavailable' }) }
   })
+
+  for (const kind of ['overview', 'failures'] as const) {
+    app.get(`/internal/operations/${kind}`, async (request, response) => {
+      response.set('Cache-Control', 'no-store')
+      for (const header of Object.keys(corsHeaders)) response.removeHeader(header)
+      if (!operationsRead || !config.operationsToken) return response.sendStatus(404)
+      if (request.get('origin') || !tokensMatch(request.get('x-paperbanana-operations-token') || '', config.operationsToken)) {
+        return response.status(401).json({ error: 'Unauthorized internal transport' })
+      }
+      try { return response.json(await operationsRead(kind, parseOpsQuery(kind, request.query))) }
+      catch (error) {
+        return response.status(error instanceof OpsQueryError ? 400 : 503).json({ error: error instanceof OpsQueryError ? error.message : 'Operations source unavailable' })
+      }
+    })
+  }
 
   async function invokeLegacy(request: Request, response: Response) {
     const token = request.get('x-paperbanana-gateway-token') || ''

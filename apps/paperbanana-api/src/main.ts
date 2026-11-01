@@ -23,6 +23,7 @@ import { createScientificV2RegistryAuthority } from './scientific-v2-production-
 import { createGracefulShutdown } from './shutdown.js'
 import { createProcessObservation, operationalMetrics } from './operational-metrics.js'
 import { createDatabaseObservation } from './operations-snapshot.js'
+import { createOperationsRead } from './operations-read.js'
 
 const serviceName = 'paperbanana-api'
 const version = '0.1.0'
@@ -184,7 +185,7 @@ async function main(): Promise<void> {
     handler: runtime.handler,
     readinessProbe,
     healthSnapshot,
-    ...(operationsEnabled ? { operationsSnapshot: async () => ({
+    ...(operationsEnabled ? { operationsRead: createOperationsRead(mongo.db), operationsSnapshot: async () => ({
       version: 1, sampledAt: new Date().toISOString(), codeSha: buildProvenance.codeSha,
       metrics: operationalMetrics.snapshot(), admission: core.getJobAdmissionState(),
       limits: { ...config.admission, candidateConcurrency: Math.max(1, Math.min(6, Number(process.env.PAPERBANANA_CANDIDATE_CONCURRENCY || 1) || 1)), singleReplica: config.singleReplica },
