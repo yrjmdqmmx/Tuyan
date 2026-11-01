@@ -1,4 +1,5 @@
-import importlib.util,pathlib,unittest,tempfile,tarfile,io,json
+import importlib.util,pathlib,unittest,tempfile,tarfile,io,json,contextlib
+from unittest import mock
 spec=importlib.util.spec_from_file_location('receiver',pathlib.Path(__file__).parents[1]/'ci_receive.py');r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
 class ReceiverTests(unittest.TestCase):
  def header(self):return dict(sha='a'*40,run='123',attempt='1',branch=r.BRANCH,repository='yrjmdqmmx/Tuyan',token='fixture',username='fixture',size=20,sha256='b'*64,expected={})
@@ -25,4 +26,14 @@ class ReceiverTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as td:
    root=pathlib.Path(td);a=root/'a';b=root/'b';a.mkdir();b.mkdir();link=root/'current';link.symlink_to(a)
    r.atomic_link(b,link);self.assertEqual(link.resolve(),b.resolve());self.assertTrue(a.exists())
+ def test_failed_deployment_never_runs_retention(self):
+  maintenance=mock.Mock();maintenance.LOCKS=['fixture'];maintenance.locks.return_value=contextlib.nullcontext()
+  with mock.patch.object(r,'load_retention',return_value=maintenance),mock.patch.object(r,'_deploy',side_effect=RuntimeError('fixture failure')):
+   with self.assertRaises(RuntimeError):r.deploy('tuyan',io.BytesIO())
+  maintenance.require_space.assert_called_once();maintenance.cleanup.assert_not_called()
+ def test_retention_failure_does_not_turn_a_healthy_deployment_into_rollback(self):
+  maintenance=mock.Mock();maintenance.LOCKS=['fixture'];maintenance.locks.return_value=contextlib.nullcontext();maintenance.cleanup.side_effect=ValueError('fixture invalid metadata')
+  with mock.patch.object(r,'load_retention',return_value=maintenance),mock.patch.object(r,'_deploy') as deploy:
+   r.deploy('tuyan',io.BytesIO())
+  deploy.assert_called_once();maintenance.cleanup.assert_called_once_with(apply=True,lease_held=True)
 if __name__=='__main__':unittest.main()

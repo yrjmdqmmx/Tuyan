@@ -78,3 +78,16 @@ GitHub Pages 环境仅新增精确发布分支 `codex/hangzhou-production` 的�
 ## 国内静态资源传输
 
 `nginx/` 保存当前杭州域名配置，静态 JS / CSS / SVG 启用 gzip 与 Accept-Encoding Vary；账号和任务 JSON 不加入此压缩范围。宿主配置由运维单独备份、`nginx -t` 验证后 reload；CI 只切换静态 release 目录，不覆盖 Nginx。不要用 `deploy/icp-domains-20261015` 的历史跨境 upstream 配置覆盖现网。
+
+## 发布产物保留（2026-11-01）
+
+杭州共享发布器使用 `retention.py` 管理图研和 OpenAcad 的发布产物，只在健康发布回执写入后执行，不新建定时器或监控。宿主脚本由运维安装，业务 CI 包不能替换它们。
+
+- 每个项目保留当前版本及其前两次成功版本、最近三次成功版本；另外保留所有容器（包括停止的容器）引用的镜像、Compose 工作目录和挂载来源，以及 24 小时内的新发布目录。
+- 只删除有合法成功回执的过期 `ci-<run>-<attempt>-<sha>` 目录。未知、失败和旧手工发布目录不自动清理；不进入业务数据目录或备份目录。
+- 镜像候选必须来自上述过期回执，全部标签属于指定的 Core/Gateway/Benchmark/Plot/OpenAcad 五个镜像仓库。精确标签逐个删除，禁止 `--force` 和全局 `prune`。删除失败时保留相关旧发布回执，供审查后重试。
+- OCI 缓存保留受保护版本的 manifest/config/layer 及共享层，也保留 24 小时内未归档的 manifest。先原子更新 index，再移除不再引用的 blob；元数据、符号链接或路径校验失败即停止。
+- 全流程共享 `hangzhou-release-retention.lock`；清理还取得既有镜像导入锁、CI 发布锁、手工发布锁。下载前可用空间不足 8 GiB 时拒绝发布，避免继续拉取/解包占满磁盘。
+- 清理失败不会回滚已经健康的新版本。CI 输出明确的 `retention` 状态；执行记录保存在宿主 `operations/hangzhou/retention-receipts/`，异常写入发布日志。
+
+只读清单：`sudo python3 /opt/paperbanana/operations/hangzhou/retention.py`。已授权维护时才加 `--apply`。升级宿主脚本需使用相同锁、确认无旧版发布器进程，并核对被替换脚本摘要。Docker 的 reclaimable 数字不等于可直接删除的容量。
