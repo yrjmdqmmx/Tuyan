@@ -6,6 +6,20 @@ def manifest():
  return {'version':1,'id':'storage-test-20261018','expected_images':{k:'sha256:'+'a'*64 for k in r.SERVICES},'services':{'core':{'env':{'OSS_REGION':'oss-cn-hangzhou'}}}}
 
 class SafetyTests(unittest.TestCase):
+ def test_agent_read_config_is_cn_only_bounded_and_preserves_other_settings(self):
+  records=json.dumps([{'id':'grokbot','sha256':'a'*64,'scopes':['overview:read','health:read'],'expiresAt':'2027-01-01T00:00:00.000Z'}],separators=(',',':'))
+  settings={'TUYAN_OPS_AGENT_ENABLED':'true','TUYAN_OPS_AGENT_TOKENS':records,'TUYAN_OPS_HOST_SNAPSHOT_FILE':r.AGENT_HOST_FILE,'PAPERBANANA_OPERATIONS_TOKEN':'b'*64}
+  m=manifest();m['services']={'cn-gateway':{'env':settings}};r.validate(m)
+  for service,key,value in [('gateway','TUYAN_OPS_AGENT_ENABLED','true'),('core','TUYAN_OPS_AGENT_TOKENS',records),('cn-gateway','TUYAN_OPS_AGENT_ENABLED','yes'),('cn-gateway','TUYAN_OPS_HOST_SNAPSHOT_FILE','/etc/shadow'),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records.replace('overview:read','admin:write')),('cn-gateway','TUYAN_OPS_AGENT_TOKENS',records+'\nSECRET=x')]:
+   m=manifest();m['services']={service:{'env':{key:value}}}
+   with self.assertRaises(ValueError):r.validate(m)
+  text='services:\n  auth-gateway:\n    volumes:\n      - /opt/paperbanana/control:/opt/paperbanana/control:ro\n'
+  actual=r.with_agent_host_mount(text);self.assertIn(r.AGENT_HOST_MOUNT,actual)
+  self.assertIn('/opt/paperbanana/control:/opt/paperbanana/control:ro',actual)
+  self.assertEqual(r.with_agent_host_mount(actual),actual)
+  inline='services:\n  auth-gateway:\n    volumes: [/opt/paperbanana/control:/opt/paperbanana/control:ro]\n'
+  self.assertEqual(r.with_agent_host_mount(inline),actual)
+  with self.assertRaises(ValueError):r.with_agent_host_mount(text.replace('volumes:','other:'))
  def test_plus_patch_is_live_admin_gateway_only_and_rejects_unsafe_values(self):
   settings={'PLUS_ENABLED':'true','PLUS_ADMIN_ONLY':'true','PLUS_PAYMENT_ENVIRONMENT':'live','PLUS_EXECUTION_MODE':'disabled','PLUS_NEW_PURCHASES_ENABLED':'false','PLUS_NEW_TASKS_ENABLED':'false','PLUS_LIVE_COMMERCE_READY':'false','PLUS_PAYMENT_RETURN_URL':'https://tuyansci.cn/?view=account&section=account'}
   for service in ['gateway','cn-gateway']:

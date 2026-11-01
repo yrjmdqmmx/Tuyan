@@ -1,6 +1,6 @@
 # 图研运营数据：Agent 只读接入
 
-状态：本地实现，默认关闭；尚未部署、设置生产凭据或连接 Grokbot。基于发布分支 `fd3959ba` 的独立工作树，公开科研知识 `/mcp` 保持原契约。
+状态：本地实现已验收，Owner 已授权本批生产发布，部署验收进行中。基于发布分支 `fd3959ba` 的独立工作树，公开科研知识 `/mcp` 保持原契约。
 
 ## 接入方式
 
@@ -58,7 +58,7 @@ Authorization: Bearer <由客户端凭据库注入>
    | `PAPERBANANA_OPERATIONS_TOKEN` | 与 Core 对应的独立内部只读凭据，至少 32 字符；绝不能给 Agent |
    | `TUYAN_OPS_HOST_SNAPSHOT_FILE` | 可选，容器内 `/run/tuyan-ops-host/hz-latest.json` |
 
-   Core 沿用 `PAPERBANANA_OPERATIONS_ENABLED=true` 和内部 `PAPERBANANA_OPERATIONS_TOKEN`，新版本增加两个固定聚合 GET。拒绝用 Gateway/admin/Auth secret 作为 Agent 凭据或复用为内部只读凭据。新增配置须进入实际部署的受限环境传递流程，本次未修改生产 Compose、工作流或密钥。
+   Core 沿用 `PAPERBANANA_OPERATIONS_ENABLED=true` 和内部 `PAPERBANANA_OPERATIONS_TOKEN`，新版本增加两个固定聚合 GET。拒绝用 Gateway/admin/Auth secret 作为 Agent 凭据或复用为内部只读凭据。`release.py` 只允许 CN Gateway 使用 `TUYAN_OPS_*` 配置；快照挂载固定为 `/var/lib/tuyan-observation/agent:/run/tuyan-ops-host:ro`，不允许任意宿主目录。保留原发布锁、五镜像比较与配置回滚。
 
 3. 主机容量可选接入：复用已有 `observe-node.py` 服务/定时器，不新增监控。升级脚本后，在其既有采样命令加 `--agent-host-dir <专用目录> --agent-host-uid <Gateway运行UID>`。专用目录需事先建立并允许该 UID 读取/遍历；快照以 0600、该 UID 所有权原子替换。需由有权设置文件属主的既有采样进程执行。仅把这个专用目录以只读方式挂到 Gateway 的 `/run/tuyan-ops-host`；不要挂原始 JSONL、Docker socket 或全量运维目录。挂目录而非单文件，避免原子替换后容器仍读旧 inode。采样仍写原有历史记录，不删除数据。不加新参数时采样器行为不变。
 
@@ -73,3 +73,9 @@ Authorization: Bearer <由客户端凭据库注入>
 2026-11-01：Gateway 全量 270 通过 / 1 既有跳过，Core 全量 1593 通过 / 1 既有跳过，采样脚本 4 项通过；Core 类型检查、构建通过。离线凭据生成/0600 权限/禁止覆盖及 OpenAPI JSON 检查通过；仅使用一次性测试凭据，未创建生产密钥。测试生成的无关渲染产物移出隔离工作树，历史证据文件保持原样。
 
 安全/协议测试使用模拟账户、模拟聚合数据和本地 HTTP 服务，不读取生产业务数据，不调用模型、短信或支付。覆盖禁用默认值、令牌隔离/期限/scope、只读方法、参数注入、数据投影、失败/空数据/未知分类、限流、MCP 并发、公开 MCP 隔离、响应体上限、禁止跳转、主机快照保密/过期与原子替换。Core 类型检查和构建已通过；真实 Mongo 数据口径及真实客户端连接仍需发布前/后授权验收。
+
+## 宿主 Mac 一键查询
+
+`scripts/tuyan-ops-client.py` 可复制到用户私密目录，与 `agent-secret.json` 相邻。执行 `python3 <私密目录>/tuyan-ops-client.py doctor` 可验证三个 HTTP 入口；其他命令为 `overview`、`failures`、`health`，前两项支持 `--from` / `--to`。程序使用系统 CA 验证 TLS、禁止重定向、固定 HTTPS 目标、限制响应大小；不会打印凭据或把凭据放进进程参数。
+
+Grokbot 如果在隔离虚拟机运行，需要使用宿主 Mac 的终端工具调用该路径；不要误把虚拟机的同名路径视为宿主文件。也可通过其私密凭据导入机制连接远程 MCP。实际连接仍应由客户端运行 doctor 或 tools/list 验证。

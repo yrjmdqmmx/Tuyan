@@ -4,7 +4,8 @@
 - [x] Core / shared：独立只读内部 transport 增加 `/internal/operations/overview`、`/internal/operations/failures`；只做保留任务计数与固定失败分类。共享窗口定义 `[from,to)`、最大 90 天；缺失、未知、零值分开，不推断 DAU/历史总量/收费。
 - [x] 运维脚本：既有采样器可选输出单份原子替换的主机汇总快照；复用既有服务/定时器，不创建监控、不清理历史；私有权限与独立只读目录挂载见文档。
 - [x] Web / 小程序 / 退役原生端：不接入该私有管理接口，无 UI/用户 API 契约变更。公开 `/mcp` 保持科研知识用途。
-- [ ] 发布 / Grokbot：待授权部署、独立凭据配置、实际 Mongo 口径核对与客户端连接验收。本轮未改生产配置或推送发布，不调用模型、短信或支付，未创建生产密钥。
+- [x] 发布准备：Owner 已授权本批发布；补充 CN Gateway 专用环境白名单与固定只读主机快照挂载，沿用现有发布锁/五镜像前置校验/回滚。增加零依赖 `tuyan-ops-client.py`，凭据只从相邻私密文件读取、不输出或放进参数。
+- [ ] 发布 / Grokbot：正在进行 CI、独立凭据配置、实际 Mongo 口径核对；Grokbot 实际连接由 Owner 使用接入指令完成。不调用模型、短信或支付，不新增监控。
 - 接入契约、OpenAPI、凭据生成和撤销步骤见 [Agent 运营读取](docs/operations/agent-read-access.md)。独立分支 `codex/tuyan-ops-agent-20261101`；其他会话工作树保留。
 
 ## 2026-11-01 · 杭州磁盘清理与发布产物保留

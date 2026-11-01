@@ -22,6 +22,35 @@ OSS_KEYS = {'PAPERBANANA_BUCKET', 'OSS_REGION', 'OSS_INTERNAL_ENDPOINT', 'OSS_PU
  'PAPERBANANA_BENCH_OSS_BUCKET', 'PAPERBANANA_BENCH_OSS_REGION', 'PAPERBANANA_BENCH_OSS_INTERNAL_ENDPOINT', 'PAPERBANANA_BENCH_OSS_PUBLIC_ENDPOINT', 'PAPERBANANA_BENCH_OSS_SERVER_ENDPOINT_MODE'}
 ADMISSION_BOUNDS = {'PAPERBANANA_MAX_ACTIVE_JOBS': (1, 8), 'PAPERBANANA_MAX_JOBS_PER_OWNER': (1, 2), 'PAPERBANANA_MAX_JOBS_PER_IP': (1, 40), 'PAPERBANANA_MAX_PENDING_JOBS': (0, 32)}
 ADMISSION_KEYS = set(ADMISSION_BOUNDS)
+AGENT_HOST_MOUNT = '/var/lib/tuyan-observation/agent:/run/tuyan-ops-host:ro'
+AGENT_HOST_FILE = '/run/tuyan-ops-host/hz-latest.json'
+
+def validate_agent_tokens(value):
+    try:
+        if not isinstance(value, str) or len(value) > 4096 or re.search(r'[\n\r\x00$`\\]', value): raise ValueError()
+        rows = json.loads(value)
+        if not isinstance(rows, list) or not 1 <= len(rows) <= 8: raise ValueError()
+        ids, hashes = set(), set()
+        for row in rows:
+            if not isinstance(row, dict) or set(row) != {'id', 'sha256', 'scopes', 'expiresAt'}: raise ValueError()
+            if not re.fullmatch(r'[A-Za-z0-9_-]{1,40}', row['id']) or not re.fullmatch(r'[a-f0-9]{64}', row['sha256']): raise ValueError()
+            if row['id'] in ids or row['sha256'] in hashes: raise ValueError()
+            if not isinstance(row['scopes'], list) or not 1 <= len(row['scopes']) <= 3 or any(s not in {'overview:read','failures:read','health:read'} for s in row['scopes']): raise ValueError()
+            if not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z', row['expiresAt']): raise ValueError()
+            datetime.datetime.fromisoformat(row['expiresAt'])
+            ids.add(row['id']); hashes.add(row['sha256'])
+    except (ValueError, TypeError, KeyError): raise ValueError('invalid operations agent token records') from None
+
+def with_agent_host_mount(text):
+    # Only the existing CN Gateway and one fixed read-only aggregate directory.
+    line = '      - ' + AGENT_HOST_MOUNT
+    if line in text.splitlines(): return text
+    inline = '    volumes: [/opt/paperbanana/control:/opt/paperbanana/control:ro]'
+    if text.count(inline) == 1 and text.count('  auth-gateway:\n') == 1 and '/run/tuyan-ops-host' not in text:
+        return text.replace(inline, '    volumes:\n' + line + '\n      - /opt/paperbanana/control:/opt/paperbanana/control:ro', 1)
+    if '/run/tuyan-ops-host' in text or text.count('  auth-gateway:\n') != 1 or text.count('    volumes:\n') != 1:
+        raise ValueError('unexpected CN Gateway aggregate mount layout')
+    return text.replace('    volumes:\n', '    volumes:\n' + line + '\n', 1)
 IDENTITY_PATTERNS = {
  'GITHUB_OAUTH_ENABLED': r'true|false', 'GOOGLE_OAUTH_ENABLED': r'true|false',
  'GITHUB_CLIENT_ID': r'[A-Za-z0-9]{10,100}', 'GITHUB_CLIENT_SECRET': r'[A-Za-z0-9_-]{20,256}',
@@ -88,6 +117,12 @@ def validate(m):
         if set(change) - {'image', 'env'}: raise ValueError('unknown change')
         if 'image' in change and not re.fullmatch(r'(?:[a-z0-9./:_-]+@)?sha256:[a-f0-9]{64}', change['image']): raise ValueError('image must be immutable')
         for key, value in change.get('env', {}).items():
+            if key.startswith('TUYAN_OPS_'):
+                if name != 'cn-gateway': raise ValueError('operations agent is limited to the CN Gateway')
+                if key == 'TUYAN_OPS_AGENT_ENABLED' and value in {'true','false'}: continue
+                if key == 'TUYAN_OPS_HOST_SNAPSHOT_FILE' and value == AGENT_HOST_FILE: continue
+                if key == 'TUYAN_OPS_AGENT_TOKENS': validate_agent_tokens(value); continue
+                raise ValueError('invalid operations agent configuration')
             if key == 'PAPERBANANA_PLUS_PREPARED':
                 if name != 'core' or value not in {'true', 'false'}: raise ValueError('invalid Core Plus preparation switch')
                 continue
@@ -105,7 +140,7 @@ def validate(m):
             elif key == 'PAPERBANANA_OPERATIONS_ENABLED':
                 if name != 'core' or value not in {'true', 'false'}: raise ValueError('invalid operations switch')
             elif key == 'PAPERBANANA_OPERATIONS_TOKEN':
-                if name != 'core' or not re.fullmatch('[a-f0-9]{64}', value): raise ValueError('invalid dedicated operations token')
+                if name not in {'core', 'cn-gateway'} or not re.fullmatch('[a-f0-9]{64}', value): raise ValueError('invalid dedicated operations token')
             elif key in ADMISSION_KEYS:
                 low, high = ADMISSION_BOUNDS[key]
                 if name != 'core' or not re.fullmatch(r'0|[1-9][0-9]*', value) or not low <= int(value) <= high: raise ValueError('invalid bounded admission limit')
@@ -162,6 +197,11 @@ def main(m, apply=False, keep=False):
                     text, n = re.subn(r'(?m)^    image: .+$', '    image: '+change['image'], text)
                     if n != 1: raise ValueError('unexpected new-domain Compose layout')
                     files[p] = text
+            if change.get('env', {}).get('TUYAN_OPS_HOST_SNAPSHOT_FILE') == AGENT_HOST_FILE:
+                p = CN/'compose.yaml'
+                source = pathlib.Path(AGENT_HOST_MOUNT.split(':')[0])
+                if not source.is_dir() or source.is_symlink() or source.stat().st_uid != 1000: raise ValueError('aggregate snapshot directory must be prepared for the Gateway reader')
+                files[p] = with_agent_host_mount(files.get(p, original[p]))
         # Do not expose env values or full Compose output in terminal receipts.
         print(json.dumps({'id':m['id'],'services':sorted(touched),'files':[str(p) for p in files],'apply':apply}), flush=True)
         if not apply: return
