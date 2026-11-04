@@ -25,7 +25,8 @@ export default function WorkspaceAccount({ children, beforeSignOut, loginRequest
     if (operation !== action.current) return;
     if (!session?.user) throw new Error('登录状态尚未确认，请重试。当前任务内容已保留。');
     setError('');
-    setPanel(afterLogin.current === 'settings' ? 'settings' : null);
+    // Never reopen the account/deletion dialog automatically after login; it only opens on an explicit click while signed in.
+    setPanel(null);
     afterLogin.current = null;
   }, [auth.refresh]);
   const wechat = useWechat(apiBase, user?.id, enabled && !productionPreview, authenticated);

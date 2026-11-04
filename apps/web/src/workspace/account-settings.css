@@ -69,3 +69,15 @@
 .tw-account-page .tw-language-options>button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:16px 20px;background:#fff;border:0;text-align:left;cursor:pointer}
 .tw-account-page .tw-language-options>button+button{border-top:1px solid #e3e7e1}
 .tw-language-options>button[aria-pressed=true]{background:#f3f7f0;color:#315f51}
+.tw-account-rows-continued{border-top:0;margin-top:-28px}
+.tw-account-row .tw-account-muted{color:#8a928b}
+.tw-account-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+.tw-account-row-actions>button,.tw-account-row-actions>a{border:0;padding:0;background:none;color:#355f4a;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;text-decoration:none}
+.tw-account-row-actions>.tw-account-quiet{color:#7b837c}
+.tw-account-row-actions>button:disabled{opacity:.55;cursor:default}
+.tw-account-row-actions>button:focus-visible,.tw-account-row-actions>a:focus-visible{outline:2px solid #355f4a;outline-offset:3px}
+.tw-account-binding{border-bottom:1px solid #e3e7e1}.tw-account-binding>.tw-account-row{border-bottom:0}
+.tw-account-row-detail{padding:0 0 22px 108px;max-width:460px}.tw-account-row-detail p{margin:0 0 8px;font-size:13px}.tw-account-row-detail .error-line{color:#b42318}
+@media(max-width:767px){.tw-account-row-detail{padding-left:0;max-width:none}}
+.tw-account-page .tw-account-row-actions>button:not(:disabled):hover,.tw-account-page .tw-account-row-actions>button:active{background:none;color:#24493a;text-decoration:underline;text-underline-offset:3px}
+.tw-account-page .tw-account-row-actions>button{min-height:0;box-shadow:none}
