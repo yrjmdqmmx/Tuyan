@@ -144,3 +144,16 @@ test('language is separate; top account actions retain logout and deletion confi
  assert.equal(screen.getByRole('button',{name:'English',exact:true}).getAttribute('aria-pressed'),'true');
  await userEvent.click(screen.getByRole('button',{name:'简体中文',exact:true}));
 });
+test('account page lists identity bindings under the login email in order phone, GitHub, Google, Watcha, before subscription',async()=>{
+  globalThis.fetch=async url=>new Response(JSON.stringify(String(url).includes('/phone/status')?{available:true,linked:false}:String(url).endsWith('/activity')?activity:{maxBytes:100000000,usedBytes:0,images:[]}));
+  const provider=name=>({status:{available:true,linked:name==='github'},busy:false,error:'',start(){},complete(){},cancel(){}});
+  const watcha={status:{available:true,linked:true,hasPassword:true,emailVerified:true},busy:false,refresh(){},requestCode(){},unlink(){}};
+  render(React.createElement(WorkspaceAccountPage,{...props,account:{...props.account,github:provider('github'),google:provider('google'),watcha},section:'account',onSectionChange(){}}));
+  await screen.findByRole('button',{name:'绑定手机号'});
+  const bindings=screen.getByTestId('identity-bindings');
+  const order=[...bindings.querySelectorAll('section[aria-label]')].map(s=>s.getAttribute('aria-label'));
+  assert.deepEqual(order.filter(l=>['手机号登录','GitHub 登录','Google 登录','观猹账号'].includes(l)),['手机号登录','GitHub 登录','Google 登录','观猹账号']);
+  const email=screen.getByText('登录邮箱');
+  assert.ok(email.compareDocumentPosition(bindings)&Node.DOCUMENT_POSITION_FOLLOWING,'bindings follow login email');
+  assert.equal(bindings.querySelector('.phone-binding-panel').classList.contains('social-identity-account'),true);
+});

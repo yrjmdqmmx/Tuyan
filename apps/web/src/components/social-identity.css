@@ -84,3 +84,15 @@
 @media (max-width: 480px) {
   .social-identity-account { padding: 16px; gap: 12px; }
 }
+
+.social-identity-account .social-identity-icon { flex: none; width: 28px; height: 28px; color: #293c31; }
+.social-identity-account .social-identity-detail { color: #69736d; font-size: 14px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.social-identity-account > .social-identity-form { flex-basis: 100%; min-width: 0; }
+.tw-identity-bindings { margin: 0 0 28px; }
+.tw-identity-bindings > h3 { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: #293c31; }
+.tw-identity-bindings .watcha-identity { margin: 0 0 12px; padding: 18px 20px; border-color: #dfe5df; border-radius: 14px; background: #fff; }
+.tw-identity-bindings .watcha-heading strong { font-size: 16px; font-weight: 600; line-height: 1.5; }
+.tw-identity-bindings .watcha-identity > p { margin: 8px 0 0; }
+.tw-identity-bindings .watcha-identity > .text-button { margin-top: 8px; margin-right: 12px; }
+@media (max-width: 480px) { .tw-identity-bindings .watcha-identity { padding: 16px; } }
+.tw-identity-bindings .watcha-identity .watcha-login-button { width: auto; }

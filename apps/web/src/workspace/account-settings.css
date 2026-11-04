@@ -13,7 +13,7 @@
 .tw-account-rows{border-top:1px solid #e3e7e1;margin-bottom:28px}
 .tw-account-row{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:16px;align-items:center;padding:24px 0;border-bottom:1px solid #e3e7e1}
 .tw-account-row>span{color:#6b756d;font-size:14px}.tw-account-row strong{font-weight:450;overflow-wrap:anywhere}
-.tw-account-row>button,.tw-account-row .tw-profile-avatar-actions button{border:0;background:none;color:#355f4a;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.tw-account-row>button,.tw-account-row .tw-profile-avatar-actions button{border:0;padding:0;background:none;color:#355f4a;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
 .tw-account-avatar-row{display:flex;align-items:center;gap:18px}.tw-account-page .tw-account-avatar-row .tw-avatar-edit{width:52px;height:52px;margin:0}.tw-account-page .tw-account-avatar-row .tw-avatar-edit>span{width:22px;height:22px}.tw-account-page .tw-account-avatar-row .tw-avatar-edit svg{width:12px}
 .tw-account-avatar-row small{font-size:12px;color:#7b837c;line-height:1.7}.tw-account-row .tw-profile-avatar-actions{margin:0;flex-direction:column;gap:6px;align-items:flex-end}
 .tw-account-row .tw-profile-form{margin:0;max-width:100%;display:flex;flex-wrap:wrap;align-items:end;gap:10px}

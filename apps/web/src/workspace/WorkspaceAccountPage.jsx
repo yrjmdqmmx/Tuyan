@@ -54,12 +54,15 @@ export default function WorkspaceAccountPage({ isAdmin = false, preview = false,
       </div>
       <section hidden={page!=='profile'} aria-label="使用情况">{account.user&&<><h3 className="tw-usage-title">使用情况</h3><DrawingActivity key={`activity:${userId}`} userId={userId} request={request}/></>}</section>
       <div hidden={page!=='account'}>
+    {(account.user || account.watcha) && <section className="tw-identity-bindings" aria-label="账号绑定" data-testid="identity-bindings">
+      <h3>账号绑定</h3>
+      {account.user && <PhoneBindingPanel key={userId} apiBase={apiBase} userId={userId}/>}
+      {account.user && <GithubIdentityPanel controller={account.github} loggedIn/>}
+      {account.user && <GoogleIdentityPanel controller={account.google} loggedIn/>}
+      {account.user && <WechatIdentityPanel controller={account.wechat} loggedIn/>}
+      {account.watcha && <section className="tw-identity-watcha" aria-label="观猹账号"><WatchaIdentityPanel controller={account.watcha} user={account.user} onSignIn={account.onSignIn}/></section>}
+    </section>}
     <PlusPanel enabled={isAdmin && !preview} key={`plus:${userId}`} userId={userId} apiBase={apiBase}/>
-    {account.user && <GithubIdentityPanel controller={account.github} loggedIn/>}
-    {account.user && <GoogleIdentityPanel controller={account.google} loggedIn/>}
-    {account.user && <WechatIdentityPanel controller={account.wechat} loggedIn/>}
-    {account.user && <PhoneBindingPanel key={userId} apiBase={apiBase} userId={userId}/>}
-    {account.watcha && <section className="tw-management-section"><h3>观猹账号</h3><WatchaIdentityPanel controller={account.watcha} user={account.user} onSignIn={account.onSignIn}/></section>}
     <section className="tw-management-section"><h3>TokenDance 模型授权</h3><TokenDancePanel controller={models.tokenDance}/></section>
     <section className="tw-management-section"><h3>隐私</h3><div className="tw-action-row"><a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a><a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a></div></section>
       </div>
