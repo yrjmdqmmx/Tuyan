@@ -1,3 +1,12 @@
+## 2026-11-04 · 短信登录验收补齐（本地分支，默认关闭）
+
+- [x] Gateway：复用既有 `/api/auth/phone/{status,challenge,send-code,verify}`、Better Auth 用户/身份/会话和 Mongo 事务；新增规范变量 `SMS_LOGIN_ENABLED`、`ALIYUN_SMS_ACCESS_KEY_ID/ACCESS_KEY_SECRET/SIGN_NAME/TEMPLATE_CODE`，旧 `AUTH_SMS_ENABLED` / `ALIBABA_SMS_*` 仅在对应新变量缺失时兼容。保留 `AUTH_SMS_DELIVERY_ENABLED=false` 独立发送开关及全站额度，关闭变更接口返回 404 `PHONE_DISABLED`。
+- [x] Gateway / Web：新增 `PHONE_CODE_EXPIRED` (400)、`PHONE_TOO_MANY_ATTEMPTS` (429)，第五次正确验证仍有效，第五次错误后锁定；前端清除失效凭据。原有原子消费/唯一身份索引/图形校验/60 秒倒计时保持，手机号输入增加错误状态及 `+86` 粘贴规范化，其他登录方式保留。
+- [x] 本地验证：增加 `tests/integration/sms-login.mongo.mjs`，普通 CI 调用原 `run-phone.sh` 运行新旧模拟短信 Mongo 测试；Web/Gateway 完整单测与本地 Mongo 已验收。具体命令、计数和环境限制见 [SMS 接入文档](docs/auth/sms-login.md)。无真实短信或付费 API 调用。
+- [x] 文档 / 配置示例：本轮使用用户指定模板 `SMS_512637812` / `code`，与旧准备记录的 `SMS_512662428` 区分；补充最小 RAM 权限、杭州 `gateway.env`、国内网关配置复核和环境变更需重建服务说明。未改服务器、部署开关、其他分支/工作树。
+- [ ] 生产：签名运营商报备、指定模板实际审核状态、服务器配置、真实投递与双入口上线另行核实/授权；本次仅本地提交，不推送、合并或部署。
+- [ ] 其他端：小程序继续暂停；恢复时消费 availability、新错误码及原手机号契约，不接入内部占位邮箱。
+
 ## 2026-11-01 · Agent 运营只读 API / MCP（生产已启用）
 
 - [x] Gateway：独立 `/api/agent-ops/{overview,failures,health}` GET 与 `/api/agent-ops/mcp`，三项固定只读工具；新 `TUYAN_OPS_AGENT_ENABLED` / `TUYAN_OPS_AGENT_TOKENS` / 可选 `TUYAN_OPS_HOST_SNAPSHOT_FILE`，内部沿用 `PAPERBANANA_OPERATIONS_TOKEN`。服务凭据只存摘要、限定 scope/期限，限流、并发/体积/时间窗口限制；不复用管理员会话，不开放用户明细或任意 action。

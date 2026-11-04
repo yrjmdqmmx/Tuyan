@@ -3,6 +3,22 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {loadSmsConfig,createSmsTransport} from '../src/sms.js';
 import {normalizePhone,maskPhone,renderPhoneCaptcha} from '../src/phone-auth.js';
+test('requested SMS env names configure the existing sender; explicit false wins over legacy enablement',()=>{
+ const env={SMS_LOGIN_ENABLED:'true',AUTH_SMS_DELIVERY_ENABLED:'true',ALIYUN_SMS_ACCESS_KEY_ID:'fixture-id',ALIYUN_SMS_ACCESS_KEY_SECRET:'fixture-secret',ALIYUN_SMS_SIGN_NAME:'测试',ALIYUN_SMS_TEMPLATE_CODE:'SMS_512637812'};
+ assert.deepEqual(loadSmsConfig(env),{enabled:true,deliveryEnabled:true,dailyMax:200,monthlyMax:5000,accessKeyId:'fixture-id',accessKeySecret:'fixture-secret',signName:'测试',templateCode:'SMS_512637812',codeVariable:'code'});
+ assert.equal(loadSmsConfig({SMS_LOGIN_ENABLED:'false',AUTH_SMS_ENABLED:'true'}).enabled,false);
+ assert.equal(createSmsTransport(loadSmsConfig({SMS_LOGIN_ENABLED:'true'})),null);
+ assert.throws(()=>loadSmsConfig({...env,SMS_LOGIN_ENABLED:'false',AUTH_SMS_ENABLED:'true'}),/required/);
+ assert.throws(()=>loadSmsConfig({...env,ALIYUN_SMS_ACCESS_KEY_ID:''}),/ALIYUN_SMS_ACCESS_KEY_ID/);
+ assert.equal(loadSmsConfig({...env,ALIBABA_SMS_TEMPLATE_CODE:'SMS_OLD'}).templateCode,'SMS_512637812');
+});
+
+test('SMS template accepts only the code variable and redacts transport failures',async()=>{
+ const config={enabled:true,deliveryEnabled:true,accessKeyId:'fixture',accessKeySecret:'fixture',signName:'测试',templateCode:'SMS_512637812',codeVariable:'other'};
+ assert.throws(()=>createSmsTransport(config,()=>({})),/SMS_TEMPLATE_CONFIGURATION_INVALID/);
+ const sender=createSmsTransport({...config,codeVariable:'code'},()=>({async sendSmsWithOptions(){throw Error('13800001234 123456 fixture-secret');}}));
+ await assert.rejects(()=>sender.send({phone:'+8613800001234',code:'123456'}),error=>error.message==='SMS_DELIVERY_UNCONFIRMED');
+});
 test('SMS is disabled without configuration and cannot enable delivery by itself',()=>{
  assert.deepEqual(loadSmsConfig({}),{enabled:false,deliveryEnabled:false,dailyMax:200,monthlyMax:5000});
  assert.equal(createSmsTransport(loadSmsConfig({})),null);

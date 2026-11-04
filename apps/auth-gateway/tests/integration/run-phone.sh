@@ -21,4 +21,5 @@ if [[ "${PHONE_FIXTURE_BROWSER:-0}" == '1' ]]; then
  node "$repo_dir/apps/auth-gateway/tests/integration/phone-fixture.mjs"
 else
  node "$repo_dir/apps/auth-gateway/tests/integration/phone-auth.mjs"
+ node --test "$repo_dir/apps/auth-gateway/tests/integration/sms-login.mongo.mjs"
 fi

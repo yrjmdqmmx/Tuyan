@@ -107,7 +107,7 @@ export function createPhoneAuth({config, db, mongoClient, transport, now = () =>
   function endpoint(path, method, work) {
     return createAuthEndpoint(path,{method,requireHeaders:true},async ctx => {
       ctx.setHeader('Cache-Control','no-store');
-      if (!enabled && path !== '/phone/status') throw fail('DISABLED','SERVICE_UNAVAILABLE');
+      if (!enabled && path !== '/phone/status') throw fail('DISABLED','NOT_FOUND');
       if (method === 'POST' && (!origins.has(ctx.headers.get('origin')) || ctx.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json')) throw fail('INVALID_ORIGIN','FORBIDDEN');
       try { return await work(ctx); }
       catch (error) {
@@ -123,9 +123,21 @@ export function createPhoneAuth({config, db, mongoClient, transport, now = () =>
     await bucket(`verify-ip:${ip(ctx)}`,60,900);
     const requestId = ctx.body?.requestId, code = ctx.body?.code;
     if (!validId(requestId)) throw fail('INVALID_CODE');
-    const row = await codes.findOneAndUpdate({_id:hmac(`${purpose}:${hmac(phone)}:${bound.binding}`),requestId,ready:true,expiresAt:{$gt:now()},attempts:{$lt:5}},{$inc:{attempts:1}},{returnDocument:'after'});
+    const identity = {_id:hmac(`${purpose}:${hmac(phone)}:${bound.binding}`),requestId,ready:true};
+    const row = await codes.findOneAndUpdate({...identity,expiresAt:{$gt:now()},attempts:{$lt:5}},{$inc:{attempts:1}},{returnDocument:'after'});
+    if (!row) {
+      // Classify only a proof already bound to this browser/session and request.
+      // Never use this read to authorize; the attempt limit above stays atomic.
+      const previous = await codes.findOne(identity,{projection:{expiresAt:1,attempts:1}});
+      if (previous && +previous.expiresAt <= +now()) throw fail('CODE_EXPIRED');
+      if (previous?.attempts >= 5) throw fail('TOO_MANY_ATTEMPTS','TOO_MANY_REQUESTS');
+      throw fail('INVALID_CODE');
+    }
     const expected = hmac(`${requestId}:${String(code || '')}`);
-    if (!row || typeof code !== 'string' || !/^\d{6}$/.test(code) || !timingSafeEqual(Buffer.from(row.codeHash),Buffer.from(expected))) throw fail('INVALID_CODE');
+    if (typeof code !== 'string' || !/^\d{6}$/.test(code) || !timingSafeEqual(Buffer.from(row.codeHash),Buffer.from(expected))) {
+      if (row.attempts >= 5) throw fail('TOO_MANY_ATTEMPTS','TOO_MANY_REQUESTS');
+      throw fail('INVALID_CODE');
+    }
     if (purpose !== 'login' && row.generation !== bound.generation) throw fail('ACCOUNT_CHANGED','CONFLICT');
     return {phone,purpose,bound,row};
   }

@@ -35,8 +35,8 @@ try {
  const stored=await db.collection('phoneCodes').findOne({});assert.equal(JSON.stringify(stored).includes(proof.code),false);assert.equal(JSON.stringify(stored).includes(proof.phone),false);
  assert.equal((await browser().json('phone/verify',proof)).data.code,'PHONE_CHALLENGE_EXPIRED');
  const invalid=proof.code==='111111'?'222222':'111111';
- for(let i=0;i<5;i++)assert.equal((await b.json('phone/verify',{...proof,code:invalid})).data.code,'PHONE_INVALID_CODE');
- assert.equal((await b.json('phone/verify',proof)).data.code,'PHONE_INVALID_CODE');
+ for(let i=0;i<5;i++)assert.equal((await b.json('phone/verify',{...proof,code:invalid})).data.code,i===4?'PHONE_TOO_MANY_ATTEMPTS':'PHONE_INVALID_CODE');
+ assert.equal((await b.json('phone/verify',proof)).data.code,'PHONE_TOO_MANY_ATTEMPTS');
  clock=new Date(+clock+59999);
  const boundary=await challenge(b,'13800000001');
  const early=await b.json('phone/send-code',{phone:'13800000001',purpose:'login',challengeId:boundary.challengeId,captcha:boundary.captcha});
@@ -62,7 +62,7 @@ try {
  console.log('PASS phone login returns original immutable ID; tasks, drafts, model settings and results unchanged');
  const conflict=browser();const other=await existing(conflict,'other@example.test');clock=new Date(+clock+61000);proof=await issue(conflict,'13800000002','link');assert.equal((await conflict.json('phone/verify',proof)).data.code,'PHONE_BINDING_CONFLICT');assert.equal((await conflict.json('get-session')).data.user.id,other);
  assert.equal(await db.collection('account').countDocuments({providerId:'phone',userId:new ObjectId(other)}),0);
- await clearLimits();const expiryBrowser=browser();proof=await issue(expiryBrowser,'13800000003');clock=new Date(+clock+300001);assert.equal((await expiryBrowser.json('phone/verify',proof)).data.code,'PHONE_INVALID_CODE');
+ await clearLimits();const expiryBrowser=browser();proof=await issue(expiryBrowser,'13800000003');clock=new Date(+clock+300001);assert.equal((await expiryBrowser.json('phone/verify',proof)).data.code,'PHONE_CODE_EXPIRED');
  const expiredCaptcha=await challenge(expiryBrowser,'13800000004');clock=new Date(+clock+120001);assert.equal((await expiryBrowser.json('phone/send-code',{phone:'13800000004',purpose:'login',challengeId:expiredCaptcha.challengeId,captcha:expiredCaptcha.captcha})).data.code,'PHONE_CAPTCHA_INVALID');
  console.log('PASS cross-account conflict cannot merge/overwrite; OTP and CAPTCHA expire server-side');
  await clearLimits();rejectSend=true;const failed=await challenge(expiryBrowser,'13800000005');const count=sms.length;
