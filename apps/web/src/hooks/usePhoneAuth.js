@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { AUTH_BASE_DEFAULT } from '../config.js';
 
 const messages = {
-  PHONE_INVALID_NUMBER:'请输入中国大陆 11 位手机号', PHONE_INVALID_CODE:'验证码无效、已过期或尝试次数过多，请重新获取',
+  PHONE_INVALID_NUMBER:'请输入中国大陆 11 位手机号', PHONE_INVALID_CODE:'验证码不正确或已失效，请检查后重试',
+  PHONE_CODE_EXPIRED:'验证码已过期，请重新获取', PHONE_TOO_MANY_ATTEMPTS:'验证码尝试次数过多，请重新获取',
   PHONE_CAPTCHA_INVALID:'图形验证码不正确或已过期，请重新获取', PHONE_CHALLENGE_EXPIRED:'验证已过期，请重新获取',
   PHONE_RATE_LIMIT:'发送或验证过于频繁，请稍后再试', PHONE_BINDING_CONFLICT:'手机号已绑定其他账号，不能合并或覆盖账号数据',
   PHONE_ALREADY_LINKED:'当前账号已绑定手机号', PHONE_SIGN_IN_REQUIRED:'登录已失效，请重新登录', PHONE_ACCOUNT_CHANGED:'账号已切换，请重新打开此页面',
