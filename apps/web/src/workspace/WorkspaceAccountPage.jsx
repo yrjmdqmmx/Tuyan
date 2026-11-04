@@ -1,19 +1,15 @@
-import GithubIdentityPanel from '../components/GithubIdentityPanel.jsx';
-import GoogleIdentityPanel from '../components/GoogleIdentityPanel.jsx';
-import WechatIdentityPanel from '../components/WechatIdentityPanel.jsx';
 import PlusPanel from '../components/PlusPanel.jsx';
 import '../components/plus.css';
-import PhoneBindingPanel from '../components/PhoneBindingPanel.jsx';
 import { visibleAccountEmail } from '../hooks/usePhoneAuth.js';
 import { useCallback, useState } from 'react';
 import { Check, ChevronRight, HardDrive, Languages, LogOut, ShieldCheck, Trash2, UserRound } from 'lucide-react';
 import { defaultAvatarUrl, AUTH_BASE_DEFAULT } from '../config.js';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 import TokenDancePanel from '../components/TokenDancePanel.jsx';
-import WatchaIdentityPanel from '../components/WatchaIdentityPanel.jsx';
 import '../components/watcha.css';
 import '../components/tokendance.css';
 import AccountProfileEditor from './AccountProfileEditor.jsx';
+import AccountBindingRows from './AccountBindingRows.jsx';
 import WorkspaceStoragePage from './WorkspaceStoragePage.jsx';
 import { ACCOUNT_SETTINGS_SECTIONS } from './accountSettingsSections.js';
 import './account-settings.css';
@@ -54,12 +50,8 @@ export default function WorkspaceAccountPage({ isAdmin = false, preview = false,
       </div>
       <section hidden={page!=='profile'} aria-label="使用情况">{account.user&&<><h3 className="tw-usage-title">使用情况</h3><DrawingActivity key={`activity:${userId}`} userId={userId} request={request}/></>}</section>
       <div hidden={page!=='account'}>
+    <AccountBindingRows account={account} apiBase={apiBase} userId={userId}/>
     <PlusPanel enabled={isAdmin && !preview} key={`plus:${userId}`} userId={userId} apiBase={apiBase}/>
-    {account.user && <GithubIdentityPanel controller={account.github} loggedIn/>}
-    {account.user && <GoogleIdentityPanel controller={account.google} loggedIn/>}
-    {account.user && <WechatIdentityPanel controller={account.wechat} loggedIn/>}
-    {account.user && <PhoneBindingPanel key={userId} apiBase={apiBase} userId={userId}/>}
-    {account.watcha && <section className="tw-management-section"><h3>观猹账号</h3><WatchaIdentityPanel controller={account.watcha} user={account.user} onSignIn={account.onSignIn}/></section>}
     <section className="tw-management-section"><h3>TokenDance 模型授权</h3><TokenDancePanel controller={models.tokenDance}/></section>
     <section className="tw-management-section"><h3>隐私</h3><div className="tw-action-row"><a href="/privacy-policy.html" target="_blank" rel="noreferrer">隐私政策</a><a href="/terms-of-service.html" target="_blank" rel="noreferrer">服务条款</a></div></section>
       </div>
