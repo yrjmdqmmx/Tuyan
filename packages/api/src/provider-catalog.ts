@@ -1,6 +1,7 @@
 import { normalizeBailianWorkspace } from './bailian-workspace.js'
 import { enumerateArkCatalog, arkCatalogProgress, type ArkCatalogProgress, type CatalogCredentials } from './ark-catalog.js'
 import details from './provider-model-details.js'
+import { auditedModelSpecs } from './model-audit.js'
 
 /** Read-only discovery. A catalog entry never grants permission to run inference. */
 export type CatalogDefinition = { access: 'public' | 'key' | 'workspace' | 'control-plane' | 'documents'; url?: string; source: string; note?: string; parser?: string; auth?: string }
@@ -81,7 +82,19 @@ export function schemaPromptLimits(schema:any, root:any, kinds:string[], source:
 }
 export function exactModelDetails(provider: string, id: string) {
   // No family-prefix matching or removal of snapshot/preview/pro suffixes.
-  return detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
+  const base = detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
+  // Preserve the vendor/base archive; overlay only the exact channel identity.
+  return provider === 'tokendance' ? { ...base, specifications: channelModelSpecifications(provider, id, base?.specifications) } : base
+}
+
+export function channelModelSpecifications(provider: string, id: string, specifications: any = {}) {
+  if (provider !== 'tokendance') return specifications
+  const { fields } = auditedModelSpecs(provider, id)
+  return { ...specifications, version: 1,
+    officialInputModalities: fields.inputModalities.value ?? undefined,
+    officialOutputModalities: fields.outputModalities.value ?? undefined,
+    modalityFacts: { inputModalities: fields.inputModalities, outputModalities: fields.outputModalities },
+  }
 }
 
 export function normalizeCatalogModel(provider: string, row: any, source: string) {
@@ -152,7 +165,7 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
   if (output?.length) facts.officialOutputModalities=output
   if (context) facts.contextWindowTokens=context
   // Live channel limits take precedence over a previously reviewed channel page.
-  const specifications={...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])}
+  const specifications=channelModelSpecifications(provider, id, {...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])})
   const shutdown = provider === 'openai' && typeof row.shutdown_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(row.shutdown_date) && Number.isFinite(Date.parse(row.shutdown_date)) ? row.shutdown_date : undefined
   return { id, ...(shutdown ? {expirationDate:shutdown,lifecycleSourceUrl:source} : {}), catalogAliases:unique([row.id,row.air,row.endpoint_id,...(Array.isArray(row.aliases)?row.aliases:[])].filter(Boolean)), label:row.display_name || row.displayName || row.metadata?.display_name || row.title || exact?.label || row.name || id,
     vendor:exact?.vendor || row.organization || row.owned_by || row.owner || row.provider || provider,
@@ -170,8 +183,10 @@ export function mergeCatalogRows(rows:any[]) {
     const contextConflict=a.contextWindowTokens && b.contextWindowTokens && a.contextWindowTokens!==b.contextWindowTokens
     merged.set(row.id,{...previous,...row,catalogAliases:unique([...(previous.catalogAliases || []),...(row.catalogAliases || [])]),specifications:{...a,...b,
       sourceUrls:unique([...(a.sourceUrls || []),...(b.sourceUrls || [])]),
-      officialInputModalities:unique([...(a.officialInputModalities || []),...(b.officialInputModalities || [])]),
-      officialOutputModalities:unique([...(a.officialOutputModalities || []),...(b.officialOutputModalities || [])]),
+      officialInputModalities:(b.modalityFacts || a.modalityFacts)?.inputModalities
+        ? (b.modalityFacts || a.modalityFacts).inputModalities.value ?? undefined : unique([...(a.officialInputModalities || []),...(b.officialInputModalities || [])]),
+      officialOutputModalities:(b.modalityFacts || a.modalityFacts)?.outputModalities
+        ? (b.modalityFacts || a.modalityFacts).outputModalities.value ?? undefined : unique([...(a.officialOutputModalities || []),...(b.officialOutputModalities || [])]),
       ...(contextConflict?{contextWindowTokens:undefined,contextWindowStatus:undefined,notes:['同一调用 ID 的目录规格存在冲突，待核对']}:{}),
     }})
   }

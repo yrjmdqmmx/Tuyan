@@ -20,6 +20,11 @@ const model = (channel, id) => registry.providers[channel].models.find(m => m.id
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
+const r21Url = row => row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl
+const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
+  const archived = final.find(row => row.channel === channel && row.modelId === modelId)
+  return { channel, modelId, oldUrl, finalUrl: r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl }) }
+}).filter(row => row.oldUrl !== row.finalUrl)
 const changedLinksFromR8 = () => before.rows.map(({ channel, modelId, oldUrl }) => ({ channel, modelId, oldUrl,
   finalUrl: modelCardSpecifications(channel, models.get(channel + '/' + modelId)).sources[0] || null })).filter(row => row.oldUrl !== row.finalUrl)
 // R13 replaces all seven failures with operator-verified vendor sources.
@@ -53,7 +58,7 @@ test('R12 full registry retains the three pre-R9 Bailian model pages over list p
     assertLink('bailian', model('bailian', id), url, '官方文档')
   }
 })
-test('R12C all 74 Chrome captures choose 67 verified channel pages and 7 vendor fallbacks in both layouts', () => {
+test('R21 all 74 cards link channel pages while preserving R12 evidence for seven missing pages', () => {
   assert.equal(rendered.rows.length, 74)
   assert.equal(rendered.rows.filter(row => row.rendersModel).length, 67)
   assert.match(rendered.method, /Model not found/)
@@ -73,9 +78,9 @@ test('R12C all 74 Chrome captures choose 67 verified channel pages and 7 vendor 
       assert.equal(link.scope, 'vendor')
       assert.equal(link.kind, 'vendor-doc')
       assert.doesNotMatch(link.url, /^https:\/\/tokendance\.space\//)
-      assertLink('tokendance', entry, link.url, '原厂规格')
+      assertLink('tokendance', entry, row.url, '官方文档')
       for (const projection of [entry, STATIC_MODEL_REGISTRY.tokendance.models.find(m => m.id === entry.id)])
-        assert.ok(!modelCardSpecifications('tokendance', projection).sources.includes(row.url))
+        assert.deepEqual(modelCardSpecifications('tokendance', projection).sources, [row.url])
     }
   }
   assert.deepEqual(rejected.sort(), ['deepseek-chat-v3-0324', 'deepseek-v3.2', 'deepseek-v4-flash', 'deepseek-v4-flash-vision-exp', 'qwen3-30b-a3b-instruct-2507', 'qwen3-max', 'qwen3.6-max-preview'].sort())
@@ -161,7 +166,8 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
       actualExceptions.push(exception)
     } else assert.ok(sourceSpecificity(finalUrl) >= sourceSpecificity(row.r11Url), key + ': ' + row.r11Url + ' -> ' + finalUrl)
   }
-  assert.deepEqual(actualExceptions, exceptions.rows, 'no stale or broadened exception entries')
+  assert.deepEqual(actualExceptions, exceptions.rows.filter(row => row.channel !== 'tokendance'), 'R21 removes only the exact qwen3-max generic fallback')
+  assert.deepEqual(exceptions.rows.filter(row => row.channel === 'tokendance').map(row => [row.scope, row.modelId]), [['full', 'qwen3-max'], ['static', 'qwen3-max']])
   assert.equal(new Set(exceptions.rows.map(row => row.channel + '/' + row.modelId)).size, 8)
 })
 test('R12C an endpoint replacement prefers same-host model documentation, then vendor model documentation, then generic', () => {
@@ -176,14 +182,14 @@ test('R12C an endpoint replacement prefers same-host model documentation, then v
 })
 test('R12 final changed fixture exactly covers R8 differences using full objects and static-only identities', () => {
   assert.equal(models.size, 1064); assert.equal(before.rows.length, 1064)
-  assert.deepEqual(final, changedLinksFromR8())
+  assert.deepEqual(expectedR21Changes, changedLinksFromR8())
   assert.ok(final.every(row => !Object.hasOwn(row, 'status')), 'HTTP evidence lives in the separate R12D fixture')
 })
 
 test('R12D final HTTP fixture exactly covers all 397 full-object R8 first-link changes', () => {
   assert.equal(linkChecks.length, 397)
   assert.equal(new Set(linkChecks.map(row => row.channel + '/' + row.modelId)).size, 397)
-  assert.deepEqual(linkChecks.map(linkIdentity), changedLinksFromR8())
+  assert.deepEqual(expectedR21Changes, changedLinksFromR8(), 'R21 changes are checked independently of historical HTTP evidence')
   assert.deepEqual(linkChecks.map(linkIdentity), final)
   const distinct = new Map()
   for (const row of linkChecks) {
@@ -230,11 +236,11 @@ test('R13 has no remaining 404/410 exceptions and preserves seven original 404/A
   assert.deepEqual(actual, httpExceptions, 'no missing, stale or broadened HTTP exceptions')
 })
 
-test('R12D every checked final link remains the visible link in normal and compact cards', () => {
+test('R12D links retain current DOM coverage with the explicit R21 TokenDance page policy', () => {
   for (const row of linkChecks) {
     const entry = models.get(row.channel + '/' + row.modelId)
     const card = modelCardSpecifications(row.channel, entry)
-    assertLink(row.channel, entry, row.finalUrl, modelSourceName(card, row.finalUrl))
+    assertLink(row.channel, entry, r21Url(row), modelSourceName(card, r21Url(row)))
   }
 })
 

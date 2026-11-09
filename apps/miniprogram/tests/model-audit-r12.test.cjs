@@ -19,8 +19,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
   const rendered = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json')))
   const cases = [...rendered.rows.map(row => {
-    const link = JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'))).details['tokendance/' + row.modelId].sourceLinks[0]
-    return ['tokendance', row.modelId, row.rendersModel ? row.url : link.url, row.rendersModel ? '官方文档' : '原厂规格']
+    return ['tokendance', row.modelId, row.url, '官方文档']
   }),
     ...[['qwen3.8-max', 'qwen3-8-max'], ['qwen3.7-max-2026-06-08', 'qwen3-7-max'], ['qwen3.8-flash', 'vision-model']].map(([id, page]) => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/' + page, '官方文档']),
     ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/model-depreciation', '下线公告'])]
@@ -93,14 +92,14 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
   assert.equal(cards, 1064)
 })
 
-test('R13B compiled picker labels every notice and uses the exact DeepSeek vendor release', () => {
+test('R13B compiled picker labels every notice and uses the R21 DeepSeek channel page', () => {
   const cases = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r13b-notice-cards.json')))
   assert.equal(cases.length, 25)
   const filename = path.join(root, 'apps/miniprogram/miniprogram/components/model-picker/model-picker.js')
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
   for (const row of [...cases.map(row => ({ ...row, label: '下线公告' })), {
-    channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://api-docs.deepseek.com/news/news250325', label: '原厂规格',
+    channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://tokendance.space/models/deepseek-chat-v3-0324', label: '官方文档',
   }]) {
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)

@@ -4,8 +4,7 @@ import path from 'node:path'
 const modalityFields = ['inputModalities', 'outputModalities']
 import { channelOwns } from '../../apps/web/src/lib/modelCardSources.js'
 export { channelOwns }
-export function readModalityEvidence(root) {
-  const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
+export function readModalityEvidence(root, read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))) {
   const index = new Map(), references = new Map(), files = new Set(), ambiguousTables = []
   function add(key, field, value, sourceUrl, file, priority, extra = {}) {
     const channel = key.split('/')[0]

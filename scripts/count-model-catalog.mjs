@@ -9,9 +9,11 @@ import { execFileSync } from 'node:child_process'
 import { build } from 'esbuild'
 import { loadCard, displayValues, isKnown, countCards, readRegistry } from './lib/model-card-audit.mjs'
 import { tokenDanceCatalogResponse } from '../test-support/tokendance-catalog.mjs'
-import tokenDanceSnapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109.json' with { type: 'json' }
+import defaultTokenDanceSnapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109.json' with { type: 'json' }
 const scriptRoot = fileURLToPath(new URL('../', import.meta.url))
 const root = path.resolve(process.argv[2]?.startsWith('--') ? scriptRoot : process.argv[2] || scriptRoot)
+const snapshotArg = process.argv.indexOf('--tokendance-snapshot')
+const tokenDanceSnapshot = snapshotArg < 0 ? defaultTokenDanceSnapshot : JSON.parse(fs.readFileSync(process.argv[snapshotArg + 1], 'utf8'))
 const registryArg = process.argv.indexOf('--registry')
 const registryFile = registryArg < 0 ? null : process.argv[registryArg + 1]
 const commitArg = process.argv.indexOf('--source-commit')
@@ -55,7 +57,7 @@ try {
       catalogRequests.push(String(url))
       // Public unauthenticated TokenDance snapshot, 2026-11-09 (119 rows).
       // public OpenRouter/fal/Runware/Novita catalogs are unavailable offline.
-      return String(url)==='https://tokendance.space/gateway/v1/models' ? tokenDanceCatalogResponse() : Response.json({error:'Offline catalog fixture'},{status:503})
+      return String(url)==='https://tokendance.space/gateway/v1/models' ? (snapshotArg < 0 ? tokenDanceCatalogResponse() : Response.json({ data: tokenDanceSnapshot.data })) : Response.json({error:'Offline catalog fixture'},{status:503})
     })
     mock=await coreModule.exports.modelRegistry({})
   }

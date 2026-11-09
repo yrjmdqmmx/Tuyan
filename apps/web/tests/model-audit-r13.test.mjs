@@ -130,19 +130,22 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })
 
-test('R13B DeepSeek V3-0324 uses the verified vendor release in full/static and both layouts', () => {
+test('R21 DeepSeek V3-0324 shows the channel page and retains R13B vendor evidence without inheriting its modalities', () => {
   const channel = 'tokendance', id = 'deepseek-chat-v3-0324', url = 'https://api-docs.deepseek.com/news/news250325'
+  const channelUrl = 'https://tokendance.space/models/' + id
   const link = MODEL_AUDIT_DATA.details[channel + '/' + id].sourceLinks[0]
   assert.equal(link.url, url); assert.equal(link.scope, 'vendor'); assert.equal(link.checkedAt, '2026-11-09')
   assert.deepEqual(MODEL_AUDIT_DATA.sourceChecks[url], { status: 200, contentType: 'text/html', checkedAt: '2026-11-09', finalUrl: url + '/', title: 'V3-0324 Release | DeepSeek API Docs' })
   const matches = all.filter(row => row.channel === channel && row.model.id === id)
   assert.equal(matches.length, 2)
   for (const { model } of matches) {
-    assert.equal(modelCardSpecifications(channel, model).sources[0], url)
+    const card = modelCardSpecifications(channel, model)
+    assert.deepEqual(card.sources, [channelUrl])
+    assert.equal(card.inputFact.state, 'unknown'); assert.equal(card.outputFact.state, 'unknown')
     for (const compactSources of [false, true]) {
       const view = render(React.createElement(ModelSpecifications, { provider: channel, model, compactSources }))
-      assert.equal(view.getByRole('link').getAttribute('href'), url)
-      assert.equal(view.getByRole('link').textContent, '原厂规格 · api-docs.deepseek.com')
+      assert.equal(view.getByRole('link').getAttribute('href'), channelUrl)
+      assert.equal(view.getByRole('link').textContent, '官方文档 · tokendance.space')
       view.unmount()
     }
   }

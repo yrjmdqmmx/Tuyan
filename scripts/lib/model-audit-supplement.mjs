@@ -1,6 +1,8 @@
 // Offline, exact-pair evidence overrides. No name inference or provider requests.
 import deadLinks from '../../config/channel-audit/dead-links-20261109.json' with { type: 'json' }
 import { isDeadSource } from '../../apps/web/src/lib/modelCardSources.js'
+import tokenDance from '../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
+import tokenDanceCatalog from '../../config/tokendance/catalog.json' with { type: 'json' }
 export function supplementModelAudit(snapshot, supplement, removed, addendum = { scheduledDeprecations: [] }) {
   const data = structuredClone(snapshot)
   const intern = (list, value) => {
@@ -61,6 +63,36 @@ export function supplementModelAudit(snapshot, supplement, removed, addendum = {
       data.details[key] ||= {}
       data.details[key].unsupportedModalities ||= {}
       data.details[key].unsupportedModalities[field] = evidence.values
+    }
+  }
+  // The portal architecture is the model page's exhaustive channel declaration.
+  // A missing capture/404 supplies no capability or delisting evidence.
+  for (const model of tokenDanceCatalog.models.filter(model => model.roles.length)) {
+    const key = 'tokendance/' + model.id
+    if (!removed[key] && !data.rows[key]) data.rows[key] = [...data.fields.map(() => intern(data.facts, [null, 'unknown', null, null])), 0, null]
+  }
+  for (const [key, row] of Object.entries(data.rows)) {
+    if (!key.startsWith('tokendance/')) continue
+    const id = key.slice('tokendance/'.length), capture = tokenDance.portal[id]
+    const sourceUrl = 'https://tokendance.space/models/' + id
+    const detail = data.details[key] ||= {}
+    for (const [field, portalField] of [['inputModalities', 'input_modalities'], ['outputModalities', 'output_modalities']]) {
+      const values = capture?.status === 200 ? capture.architecture?.[portalField] : null
+      const known = Array.isArray(values) && values.length > 0
+      if (known && (capture.checkedAt.slice(0, 10) !== data.verifiedAt || values.some(value => !['text', 'image', 'audio', 'video', 'file', 'document', 'embedding'].includes(value))))
+        throw new Error(`Invalid TokenDance architecture: ${key}/${field}`)
+      row[data.fields.indexOf(field)] = intern(data.facts, known
+        ? [values, 'known', 'channel', intern(data.sources, sourceUrl)] : [null, 'unknown', null, null])
+      detail.suppressFallback = [...new Set([...(detail.suppressFallback || []), field])]
+      if (known) {
+        detail.unsupportedModalities ||= {}
+        detail.unsupportedModalities[field] = ['text', 'image', 'audio', 'video'].filter(value => !values.includes(value))
+      }
+    }
+    if (capture?.status === 200) {
+      detail.sourceLinks = [{ url: sourceUrl, scope: 'channel', kind: 'model-page', checkedAt: capture.checkedAt.slice(0, 10) },
+        ...(detail.sourceLinks || []).filter(link => link.url !== sourceUrl)]
+      row[5] = intern(data.sources, sourceUrl)
     }
   }
   // Drop unused facts/sources as well as removed rows, keeping regeneration stable.

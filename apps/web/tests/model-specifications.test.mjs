@@ -77,7 +77,7 @@ test('exact dates preserve different Seed 2.1 Pro context windows',()=>{
 
 test('missing native window can use this exact channel with distinct provenance',()=>{
   const data=modelCardSpecifications('tokendance',{id:'seed-2.1-pro',specifications:{version:1,contextWindowTokens:262144,sourceUrls:['https://tokendance.space/models/seed-2.1-pro']}})
-  assert.equal(data.inputScope,'图研既有核实');assert.match(data.input,/文本/);assert.equal(data.context,'256K tokens');assert.equal(data.contextScope,'渠道')
+  assert.equal(data.inputScope,'渠道');assert.deepEqual(data.fields.inputModalities.value,['text','image','video']);assert.equal(data.fields.inputModalities.sourceUrl,'https://tokendance.space/models/seed-2.1-pro');assert.equal(data.context,'256K tokens');assert.equal(data.contextScope,'渠道')
   assert.equal(data.sources[0], 'https://tokendance.space/models/seed-2.1-pro')
   assert.ok(!data.sources.includes('https://tokendance.space/gateway/v1/models'))
   assert.equal(data.fields.totalContextTokens.sourceUrl, 'https://tokendance.space/gateway/v1/models', 'API evidence stays in the full facts, separate from visible links')

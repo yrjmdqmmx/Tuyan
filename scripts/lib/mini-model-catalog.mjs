@@ -40,7 +40,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
       if (field.endsWith('Modalities')) {
         const original = audit.fields[field]
         // Store operands, never the union. Zero references the registry field.
-        if (original.state === 'known' && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
+        if (original.state === 'known' && !original.suppressFallback && !original.unsupportedModalities?.length && existing[field]?.value?.some(x => !original.value.includes(x))) {
           value = original.value
           prior = existing[field].value
         }
@@ -60,6 +60,7 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     const note = data.details[key]?.note, suffix = merged.totalContextTokens?.suffix
     if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
     if (data.details[key]?.unsupportedModalities) details[key] = { ...details[key], unsupportedModalities: data.details[key].unsupportedModalities }
+    if (data.details[key]?.suppressFallback) details[key] = { ...details[key], suppressFallback: data.details[key].suppressFallback }
   }
   // Encode only exact round trips of already resolved links. Shared templates
   // reuse registry IDs; they never choose or invent a model's destination.
@@ -80,7 +81,9 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
   const keys = Object.entries(providers).flatMap(([channel, provider]) => provider.models.map(model => channel + '/' + model.id))
   // Unverified flags and tombstone evidence are not read by the Mini UI.
   const removed = Object.fromEntries(Object.entries(data.removed).map(([key, value]) => [key, [value.replacementApiId, value.displayName, value.replacementDisplayName || null]]))
-  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources: compactSources, sourceTemplates, rows: keys.map(key => rows[key] || null), details, notices: data.notices, removed }
+  // Optional details share the existing row identity; slot 5 stays the source label.
+  const detailRows = keys.map(key => details[key] ? [...rows[key].slice(0, 5), rows[key][5] || null, details[key]] : rows[key] || null)
+  return { verifiedAt: data.verifiedAt, fields: data.fields, facts, sources: compactSources, sourceTemplates, rows: detailRows, details: {}, notices: data.notices, removed }
 }
 
 export function webModelAudit(data, providers) {

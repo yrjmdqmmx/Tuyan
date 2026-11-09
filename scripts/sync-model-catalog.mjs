@@ -338,8 +338,10 @@ ${transformSync(`const registry = require('./static-model-catalog.js').STATIC_MO
 ${needsImageInput.toString()}
 ${supportedModalities.toString()}
 const models = Object.entries(registry).flatMap(([channel, provider]) => provider.models.map(model => [channel + '/' + model.id, model]))
+data.details = Object.fromEntries(models.flatMap(([key], index) => data.rows[index][6] ? [[key, data.rows[index][6]]] : []))
 data.rows = Object.fromEntries(models.map(([key, model], index) => {
   const row = data.rows[index]
+  row.splice(6)
   row.splice(4, 0, 0)
   if (row[5] === -2) row[5] = data.sources.push('https://tokendance.space/models/' + model.id) - 1
   if (row[5] <= -3) {
@@ -354,7 +356,7 @@ data.rows = Object.fromEntries(models.map(([key, model], index) => {
     const value = fact[0] === 0 ? model[field] : fact[0]
     const prior = fact[4] === 0 ? model[field] : fact[4]
     const excluded = data.details[key]?.unsupportedModalities?.[field] || []
-    const image = i === 0 && needsImageInput(model) && !excluded.includes('image')
+    const image = i === 0 && needsImageInput(model) && !data.details[key]?.suppressFallback?.includes(field) && !excluded.includes('image')
     const values = supportedModalities(value, prior, image).filter(value => !excluded.includes(value))
     const product = image && !supportedModalities(value, prior).includes('image')
     row[i] = data.facts.push([values.length ? values : null, values.length ? 'known' : fact[1], product ? 'product' : fact[2], product ? null : fact[3]]) - 1

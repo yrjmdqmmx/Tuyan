@@ -8,7 +8,7 @@ import { isApiSource, sourceSpecificity, isDeadSource } from '../apps/web/src/li
 const root = fileURLToPath(new URL('../', import.meta.url)), check = process.argv.includes('--check')
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
 const before = read('apps/web/tests/fixtures/r12-links-before.json')
-const card = await loadCard(root)
+const card = await loadCard(root, process.argv.includes('--frozen-head') ? '8c456709' : null)
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rowsOf(readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-head.json')))) models.set(row.channel + '/' + row.model.id, row.model)
 const checks = read('config/channel-audit/model-audit-supplement-20261109.json').sourceChecks

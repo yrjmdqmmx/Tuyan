@@ -4767,6 +4767,15 @@ function mergeDiscoveredCatalog(provider: string, registry: ProviderModelRegistr
 function enrichSpecificPages(provider: string, registry: ProviderModelRegistry) {
   return { ...registry, models: registry.models.map(model => {
     const exact = exactModelDetails(provider, model.id)
+    if (provider === 'tokendance' && exact) {
+      const facts = exact.specifications.modalityFacts
+      return { ...model, specificModelSpecifications: exact.specifications,
+        inputModalities: facts.inputModalities.value ?? [], outputModalities: facts.outputModalities.value ?? [],
+        specifications: { ...model.specifications, version: 1 as const,
+          officialInputModalities: facts.inputModalities.value ?? undefined,
+          officialOutputModalities: facts.outputModalities.value ?? undefined, modalityFacts: facts },
+      }
+    }
     return exact ? { ...model, specificModelSpecifications: exact.specifications } : model
   }).map(applyModelLifecycle) }
 }

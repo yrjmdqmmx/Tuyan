@@ -1,16 +1,12 @@
 // Offline review only: exact catalog identities and captured official table evidence.
 // Run after generators. --check verifies the committed report without writes.
 import fs from 'node:fs'
-import { build } from 'esbuild'
+import { modalityIconStates as icons } from '../apps/web/src/lib/modelModalityIcons.js'
 import { fileURLToPath } from 'node:url'
-import { readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
+import { loadCard, readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url))
 const read = name => JSON.parse(fs.readFileSync(root + name, 'utf8'))
-const bundle = await build({ stdin: { contents: `export { modelCardSpecifications as card } from './apps/web/src/lib/modelCardSpecifications.js';
-export { modalityIconStates as icons } from './apps/web/src/lib/modelModalityIcons.js';`, resolveDir: root }, bundle: true, format: 'cjs', platform: 'node', write: false, logLevel: 'silent' })
-const module = { exports: {} }
-new Function('module', 'exports', bundle.outputFiles[0].text)(module, module.exports)
-const { card, icons } = module.exports
+const card = await loadCard(root, process.argv.includes('--frozen-head') ? '8c456709' : null)
 const arg = process.argv.indexOf('--registry')
 const registry = (arg >= 0 ? readRegistry(process.argv[arg + 1]) : readPackedRegistry(root + 'apps/web/tests/fixtures/r11-registry-head.json')).providers
 const pairs = new Map(read('config/channel-audit/input-20261109.json').pairs.map(row => [row.channel + '/' + row.apiModelId, row]))

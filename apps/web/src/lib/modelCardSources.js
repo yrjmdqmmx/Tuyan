@@ -12,7 +12,7 @@ export function isApiSource(value, checks = {}) {
   try {
     const url = new URL(value), check = checks[value] || {}
     const path = decodeURIComponent(url.pathname)
-    return /\/v\d+\/models(?:\b|\/|$)|\/gateway(?:\/|$)|\/api\/v\d+(?:\/|$)|\.json$/i.test(path)
+    return /\/v\d+\/models(?:\b|\/|$)|\/gateway(?:\/|$)|\/portal\/api(?:\/|$)|\/api\/v\d+(?:\/|$)|\.json$/i.test(path)
       || /^api\./i.test(url.hostname) && /\/models?(?:\/|$)/i.test(path)
       || url.hostname === 'replicate.com' && /^\/[^/]+\/[^/]+\/api\/schema\/?$/i.test(path)
       || /(?:\/|\+)json(?:\s*;|$)/i.test(check.contentType || '')
@@ -48,6 +48,12 @@ function modelPageForEndpoint(value, model, captured) {
 }
 
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
+  // PM channel-page policy also applies to historical cards without a capture.
+  // This navigation target does not establish a capability or HTTP success.
+  if (channel === 'tokendance' && model.id) {
+    const url = 'https://tokendance.space/models/' + model.id
+    return { sources: [url], channelSources: [url], vendorSources: [], lifecycleSources: [] }
+  }
   const links = audit.sourceLinks || []
   const fieldSources = Object.values(fields).flatMap(fact => fact.sourceUrls || [fact.sourceUrl])
   const channelSources = safeSources([

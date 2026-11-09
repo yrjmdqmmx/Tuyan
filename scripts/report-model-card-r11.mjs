@@ -2,7 +2,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { loadCard, readRegistry, readPackedRegistry, rowsOf, countCards, fields, isKnown, writeOrCheck } from './lib/model-card-audit.mjs'
+import { loadCard, archivedAuditText, readRegistry, readPackedRegistry, rowsOf, countCards, fields, isKnown, writeOrCheck } from './lib/model-card-audit.mjs'
 import { readModalityEvidence, modalityDisagreements } from './lib/model-card-modality-evidence.mjs'
 import { modalityIconStates } from '../apps/web/src/lib/modelModalityIcons.js'
 const root = fileURLToPath(new URL('../', import.meta.url))
@@ -12,7 +12,8 @@ const check = process.argv.includes('--check')
 const baselineRoot = path.resolve(root, arg('--baseline') || '../Tuyan-wt-baseline')
 const headRegistry = arg('--head-registry') ? readRegistry(arg('--head-registry')) : readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-head.json'))
 const mainRegistry = arg('--main-registry') ? readRegistry(arg('--main-registry')) : readPackedRegistry(path.join(root, 'apps/web/tests/fixtures/r11-registry-main.json'))
-const card = await loadCard(root), headRows = rowsOf(headRegistry), mainRows = rowsOf(mainRegistry)
+const frozenHead = process.argv.includes('--frozen-head') ? '8c456709' : null
+const card = await loadCard(root, frozenHead), headRows = rowsOf(headRegistry), mainRows = rowsOf(mainRegistry)
 // --frozen-main makes CI independent of a sibling worktree. The fixture was
 // captured by actually loading main's own card code and records its SHA-256.
 const main = process.argv.includes('--frozen-main') ? read('apps/web/tests/fixtures/r11-main-rendered.json') : await (async () => {
@@ -34,7 +35,7 @@ const counts = { date: '2026-11-09', commits: { main: 'c7b6a2fc', head: '1576ee0
   knownRule: 'Displayed value != unknown. Baseline 待确认/官方未公布/未单列 and absent maximum-output row normalize to 未知. 不适用 is included, with numeric and not-applicable subtotals. main never renders max output, even when hidden limitRows contain it.',
   main: summarize(main), head: summarize(head), lossCounts, losses, unexplainedLosses: losses.filter(row => row.reason === 'unexplained') }
 writeOrCheck(path.join(root, 'docs/model-card-audit-20261109-r11-counts.json'), JSON.stringify(counts, null, 2) + '\n', check)
-const evidence = readModalityEvidence(root), misleading = [], noEvidence = [], partialEvidence = [], positiveOnlyEvidence = []
+const evidence = readModalityEvidence(root, frozenHead ? file => JSON.parse(archivedAuditText(root, frozenHead, file)) : undefined), misleading = [], noEvidence = [], partialEvidence = [], positiveOnlyEvidence = []
 for (const { channel, model } of headRows) {
   const key = channel + '/' + model.id, facts = card(channel, model), official = evidence.index.get(key)
   if (!official) noEvidence.push(key)

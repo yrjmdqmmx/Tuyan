@@ -8,6 +8,7 @@ import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
 import { mergeCardFacts } from '../src/lib/catalogCardFacts.js'
 import { modalityIconStates } from '../src/lib/modelModalityIcons.js'
+import channelSnapshot from '../../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import baseline from './fixtures/model-modalities-main-c7b6a2fc.json' with { type: 'json' }
 
 const require = createRequire(import.meta.url)
@@ -24,6 +25,15 @@ test('every static card retains main supported modalities and all product image-
     const needsImage = model.roles.some(role => ['vision', 'edit', 'source-image', 'reference-image'].includes(role))
       || caps.referenceImages || caps.requiresSourceImage || caps.imageEditing || caps.imageEditMode === 'direct-edit'
       || model.operations?.some(op => op.requiresSourceImage || op.requiresImageInput)
+    if (provider === 'tokendance') {
+      const architecture = channelSnapshot.portal[model.id]?.architecture
+      for (const [field, wire] of [['inputModalities', 'input_modalities'], ['outputModalities', 'output_modalities']]) {
+        assert.deepEqual(card.fields[field].value, architecture?.[wire] || null, key + '/' + field)
+        assert.equal(card.fields[field].state, architecture ? 'known' : 'unknown', key + '/' + field)
+      }
+      assert.deepEqual(model, before, key + ' display must not mutate execution data')
+      continue
+    }
     if (needsImage) assert.ok(card.fields.inputModalities.value?.includes('image'), key + ' requires image input')
     for (const field of ['inputModalities', 'outputModalities']) {
       for (const modality of baseline.modalities[key]?.[field] || []) {
