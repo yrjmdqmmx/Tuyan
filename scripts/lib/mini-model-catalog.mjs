@@ -65,6 +65,9 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     const vendorSources = links.vendorSources.filter(url => url !== sourceUrl)
     if (vendorSources.length && Object.values(merged).some(fact => fact.provenance === 'vendor')) details[key] = { ...details[key], vendorSources }
     if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
+    for (const field of ['fieldVerifiedAt', 'fieldSources']) if (Object.hasOwn(data.details[key] || {}, field)) details[key] = { ...details[key], [field]: data.details[key][field] }
+    const retirementSources = links.lifecycleSources.filter(url => url !== sourceUrl)
+    if (retirementSources.length) details[key] = { ...details[key], retirementSources }
   }
   // Encode only exact round trips of already resolved links. Shared templates
   // reuse registry IDs; they never choose or invent a model's destination.

@@ -28,7 +28,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    fireEvent.click(screen.getByRole('button',{name:/^输入模态/}))
    const dialog=screen.getByRole('dialog'),links=within(dialog).queryAllByRole('link')
    assert.deepEqual(dialogIssues(dialog.querySelector('.tw-preserve-text').textContent),[],card)
-   assert.deepEqual(links.map(a=>a.getAttribute('href')),expectedHumanRows(old.rows).map(r=>r.url),card)
+   assert.deepEqual(links.map(a=>a.getAttribute('href')),expectedHumanRows(old.rows,card,'web').map(r=>r.url),card)
    assert.equal(new Set(links.map(a=>a.textContent)).size,links.length,card)
    for(const link of links) {
     assert.ok(link.classList.contains('model-evidence-source'),card)
@@ -43,7 +43,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    }
    cleanup();cards++
    const lifecycle=modelCardSpecifications(provider,model).lifecycle
-   if(lifecycle?.state==='scheduled') {
+   if(lifecycle?.state==='scheduled' && lifecycle.sourceUrl) {
     render(React.createElement(ModelLifecycleBadge,{provider,lifecycle}))
     fireEvent.click(screen.getByRole('button'))
     const link=within(screen.getByRole('dialog')).getByRole('link')
@@ -55,7 +55,7 @@ test('R24 I2 all 1064 Web evidence dialogs and seven notices have readable style
    }
   }
  }finally{style.remove()}
- assert.equal(cards,1064);assert.equal(rows,2450);assert.equal(notices,7)
+ assert.equal(cards,1064);assert.equal(rows,2449);assert.equal(notices,4)
  t.diagnostic(JSON.stringify({cards,rows,notices,titleFindings:0,copyFindings:0}))
 })
 

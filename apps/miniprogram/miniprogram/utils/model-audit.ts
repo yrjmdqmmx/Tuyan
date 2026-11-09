@@ -24,12 +24,14 @@ export function auditedModelSpecs(channel: string, id: string) {
     result[field] = { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: fact[3] === null ? null : MODEL_AUDIT_DATA.sources[fact[3]], verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null }
   })
   const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
+  for (const [field, date] of Object.entries(details?.fieldVerifiedAt || {})) result[field].verifiedAt = date as string
+  for (const [field, url] of Object.entries(details?.fieldSources || {})) result[field].sourceUrl = url as string | null
   result.totalContextTokens.suffix = details?.suffix
   if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
   for (const [field, values] of Object.entries(details?.modalityMasks || {})) result[field].modalityMasks = values as string[]
   for (const [field, values] of Object.entries(details?.unsupportedModalities || {})) result[field].unsupportedModalities = values as string[]
   for (const field of details?.suppressFallback || []) result[field].suppressFallback = true
-  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLabel: row?.[6] || '官方文档', vendorSources: details?.vendorSources || [], note: details?.note || '' }
+  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], sourceLabel: row?.[6] || '官方文档', vendorSources: details?.vendorSources || [], retirementSources: details?.retirementSources || [], excludedSources: details?.excludedSources || [], note: details?.note || '' }
 }
 
 export function removedModel(channel: string, id: string, now = Date.now()) {

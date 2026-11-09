@@ -1,3 +1,4 @@
+import evidenceI4 from '../../../test-support/fixtures/source-evidence-i4-r24.json' with {type:'json'}
 import {expectedHumanUrl} from '../../../test-support/source-links-i3-r24.mjs'
 import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
@@ -24,8 +25,8 @@ const model = (channel, id) => registry.providers[channel].models.find(m => m.id
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
-const r21Url = row => row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
-  || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl)
+const r21Url = row => evidenceI4.web.find(r => r.card === row.channel + '/' + row.modelId)?.after[0]?.url || (row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
+  || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl))
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
   return { channel, modelId, oldUrl, finalUrl: expectedHumanUrl(r21Url({ channel, modelId, finalUrl: archived?.finalUrl || oldUrl })) }
@@ -49,11 +50,11 @@ function assertLink(channel, entry, url, label) {
     view.unmount()
   }
 }
-test('R12 full registry scheduled and retired Qwen3.5 Plus cards put 下线公告 first', t => {
+test('R24 I4 scheduled and retired Qwen3.5 Plus cards use the verified specification page', t => {
   for (const date of ['2026-11-09', '2027-01-20']) {
     t.mock.method(Date, 'now', () => Date.parse(date))
     for (const id of ['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'])
-      assertLink('bailian', model('bailian', id), 'https://help.aliyun.com/zh/model-studio/model-depreciation', '下线公告')
+      assertLink('bailian', model('bailian', id), 'https://help.aliyun.com/zh/model-studio/qwen3-5-plus', '官方文档')
   }
 })
 test('R12 full registry retains the three pre-R9 Bailian model pages over list pages', () => {

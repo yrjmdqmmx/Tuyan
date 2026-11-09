@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 145,
+    "assertionAndFixtureInputChanges": 150,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 617,
-    "justified": 761,
+    "justified": 766,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -25,7 +25,8 @@
     "R24 Phase I1 replaces the R9/R10 self-derived title expectations with fixed literals (297 URL/label objects and the exact Kimi K3 title). The Core source filter gains a string type predicate after accurate .d.mts declarations expose nullable URLs; it changes no expected value. The Mini historical byte ceiling remains unchanged.",
     "R24 Phase I2 preserves all source URLs/order/roles and all picker/execution locks. Only source-title spelling and field-source attribution change. The strict scan replaces opaque-ID and picker-slug exemptions; Web and Mini dialog scans include duplicate lines, internal terms and source/no-source contradictions. Staged Mini compilation prevents temporary budget overruns; both old size guards stay unchanged.",
     "R24 Phase I3: the operator real-browser check found that I2 link selectors lost to the later workspace reset. Cascade tests parse all imported CSS with selector specificity and source order. Source title scans now reject counter/format qualifiers and machine-document URLs. Exact I3 row changes, captures and literal HTML mappings are recorded; all existing model names, execution locks, vendor coverage, 65536 and the 15-model decision remain asserted. The I2 report is preserved verbatim inside the historical fixture and I3 is appended as a new comparison.",
-    "R24 I3 local audit harness (not Git-tracked): .audit-input/r24/i3-invariants.test.mjs retains all six Phase H checks. Two expectations change: vendor raw fact URLs and archived screenshot URLs are mapped through the independent source-links-i3-r24.json literal table before matching human anchors. The old harness remains unchanged. This preserves 166 vendor-field checks, all 1064 picker names, all 15 image-input decisions and all 15 screenshot-card identities; it does not run screenshots. The original harness file SHA-256 is 20063c9788589720baa28451f24948d96e8df3bba56195f774bf608aae15992c."
+    "R24 I3 local audit harness (not Git-tracked): .audit-input/r24/i3-invariants.test.mjs retains all six Phase H checks. Two expectations change: vendor raw fact URLs and archived screenshot URLs are mapped through the independent source-links-i3-r24.json literal table before matching human anchors. The old harness remains unchanged. This preserves 166 vendor-field checks, all 1064 picker names, all 15 image-input decisions and all 15 screenshot-card identities; it does not run screenshots. The original harness file SHA-256 is 20063c9788589720baa28451f24948d96e8df3bba56195f774bf608aae15992c.",
+    "R24 Phase I4: operator browser verification and eight public documentation GET captures correct 19 retirement/spec citations across eight cards. Thirteen Qwen3.5 facts retain values with the exact vendor URL, four unsupported N/A fields become unknown, and two MiMo text-input facts retain their explicit supporting quote. Independent literal source corrections cover six cards per client; new Web/Mini tests scan all 1064 cards and reject unsupported retirement/spec pairs. The local I4 invariants adapt seven lifecycle-link expectations to four supported anchors while preserving names, execution, registry and all 15 deferred image-input assertions. I2/I3 source reports remain frozen; I4 is appended. All four execution locks and both Mini byte guards are unchanged."
   ],
   "files": [
     {
@@ -56,7 +57,7 @@
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "091de66ff37cdba896ee03bb12f32cc55efd36d8d12caf75d450ec5a522d8357",
+      "diffSha256": "6db1e08c6598d3adcb20b2247773a2a52b682f0a1a395cc16168d63bb7bc75c6",
       "changes": [
         {
           "line": 105,
@@ -525,6 +526,20 @@
             "apps/web/tests/model-card-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Bailian Plus first source is model-depreciation; secondary rows are vendor-only; 19 notice rows / three appended notices",
+          "new": "Bailian Plus first source is qwen3-5-plus; separate retirement rows are asserted; 14 notice rows / only TokenDance appended notice",
+          "reason": "Three unsupported Bailian primary citations and two image-card secondary citations are dropped; TokenDance keeps one separately supported citation. All 80 exact projection cases remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -773,7 +788,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "6564e1d922f57fa5a6e139cb9af096849d579bbec99a4d4c59a65682e2268c0d",
+      "diffSha256": "3a7ddb7455d0489eab3e9669a9d3ac02625dd50b515302b159796c4fd95f0b46",
       "changes": [
         {
           "line": 85,
@@ -1091,12 +1106,26 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Bailian Plus generic retirement first source, including after cutoff; R8 deltas exclude I4",
+          "new": "Bailian Plus exact specification page before/after cutoff; R8 deltas include independently frozen six-card source corrections",
+          "reason": "The notice does not name the model or value. Exact specification evidence now supplies the primary link; historical 397 HTTP captures remain unchanged.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "d2f442d9f1ee83b2ab0a411a919fe1c1fb423987f5b3c2c88c74198485e8003e",
+      "diffSha256": "881ebffdf645383f3a6ce4ea9318d5b31959518509f28922f068d39c34e23965",
       "changes": [
         {
           "line": 40,
@@ -1391,6 +1420,20 @@
             "packages/api/src/card-data/source-titles.json"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "32 primary notice cards over full/static projections",
+          "new": "26 primary notice cards; also classify llms-full.txt as retirement",
+          "reason": "The three unsupported Bailian notices are removed in each projection. Secondary TokenDance retirement role remains checked.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1428,7 +1471,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "070b0fda7a02b7a07db02a51001f310dc452d3704ef1b96f2395d738e16f0251",
+      "diffSha256": "d664a4e31cbecae0dbb6ff244a6081933af6ebb34d915dd607d241e56ed339c7",
       "changes": [
         {
           "line": 35,
@@ -1679,6 +1722,20 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Mini field URL only when equal to the primary source",
+          "new": "Reviewed I4 fields keep their explicit URL, including secondary vendor/retirement-supported facts; other fields retain the primary-only rule",
+          "reason": "Mini must expose the dated per-field vendor pointer for 65536. Values, states and provenance continue to match Web across all four fields and 1064 cards.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1834,7 +1891,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "22f04c3905c60586c06d5a6674703d143bef47b5068221bcb02f8831ea5c3931",
+      "diffSha256": "8d254b9de62712d036403f7700e36f991f2e3f652339631ea11af6dfb9ed5de3",
       "changes": [
         {
           "line": 90,
@@ -1961,6 +2018,20 @@
           "evidence": [
             "apps/web/tests/fixtures/model-audit-r9-source-rows-r24.json",
             "docs/model-card-source-titles-r24.md"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "TokenDance sources consist of channel plus vendor URLs",
+          "new": "TokenDance sources include separate lifecycle URLs",
+          "reason": "The single verified channel retirement citation is not a specification source. Literal first-row oracle remains independent.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -2495,7 +2566,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "609708dfee96177c28715fa8e67122e77887401e6cf9a202cbba116129f05fcd",
+      "diffSha256": "fdedc80536adb91b96536a503dd08cbd08bbbbd63cec343b071da5c8f10858ac",
       "changes": [
         {
           "line": 2,
@@ -18788,7 +18859,7 @@
     {
       "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "63fbb4b7e0257efa51f629199852b67a8cfc0d279f106b687303c5e4b3c95a72",
+      "diffSha256": "0a041324d18d6c9cba508caf52d67d7dd3b671020a3722968c035dec83f9efa2",
       "changes": [
         {
           "line": 25,
@@ -18814,13 +18885,27 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Ordered URLs equal the pre-I4 frozen mapping; every scheduled notice has a link",
+          "new": "Ordered URLs equal that mapping plus literal I4 evidence corrections; only supported notice anchors are rendered",
+          "reason": "Preserves all 1064 names, ordered URLs, title scans and interactions while removing unsupported citations.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
     {
       "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "e1f833a60d1089dede47f2a9fc04270074386bf518e0fb1e44f3acaa9330eec9",
+      "diffSha256": "bdc8033c6ef039ed0a2a5e8896160fa0b3d9a7b3f12ced54e07fd3d2b7fc249c",
       "changes": [
         {
           "line": 16,
@@ -18844,6 +18929,20 @@
           "evidence": [
             "docs/model-card-source-titles-r24.md",
             "scripts/source-titles-i3-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Ordered URLs equal the pre-I4 frozen mapping; every scheduled notice has a link",
+          "new": "Ordered URLs equal that mapping plus literal I4 evidence corrections; only supported notice anchors are rendered",
+          "reason": "Preserves all 1064 names, ordered URLs, title scans and interactions while removing unsupported citations.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -18897,7 +18996,7 @@
     {
       "file": "apps/auth-gateway/tests/model-modality-r21.test.js",
       "comparisonBase": "fd29cf36",
-      "diffSha256": "a7a1e22dcc832d8cb32c84ef073eaf5926f7d0f4ad6c13dd394ef67469df7875",
+      "diffSha256": "b2e3b9064230321bbc415ffd719a381841e73673edefbf331f8037d048324228",
       "changes": [
         {
           "phase": "R23 Phase H2",
@@ -18926,6 +19025,20 @@
             "test-support/fixtures/model-card-r24.json",
             "apps/miniprogram/tests/model-card-r24.test.cjs",
             "apps/web/tests/model-card-r24.test.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Only channel page plus vendor fields are sources",
+          "new": "Additionally require the exact TokenDance llms-full.txt retirement URL and dated 下线公告 label",
+          "reason": "Retirement evidence is separately sourced, not vendor maximum-output evidence.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
           ],
           "verdict": "JUSTIFIED"
         }
@@ -20720,9 +20833,23 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Three Bailian qwen3.5-plus variants cite model-depreciation / 下线公告",
+          "new": "The same three literal objects cite qwen3-5-plus / 官方文档 · 百炼 · Qwen3.5 Plus",
+          "reason": "Fetched exact model/snapshot sections support the fields; generic retirement page does not name them. Remaining 294 literal objects unchanged.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "98c07114058f65e5ca225fdaf3c1c9f04cc1da2596106ff67ac66a15ce32fe26"
+      "diffSha256": "dd6de5680d849d56faaaf56c2fc24c8d2fc0f660234af5e8f5e9bfd4582e3c62"
     },
     {
       "file": "scripts/card-presentation-r22b.test.mjs",
@@ -20772,9 +20899,23 @@
             "docs/model-card-source-titles-r24.md"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "I3 ordered URL inventory; Web 2450 / Mini 1103 rows and seven notice anchors",
+          "new": "Literal I4 ordered URL inventory; Web 2449 / Mini 1102 rows and four notice anchors",
+          "reason": "Both image-card citations removed, one additional TokenDance citation added. Three Bailian primary links replaced; their lifecycle-only anchors removed. All 1064 dialogs and styling/copy checks remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "51ba214754c0febe419698ac38a999602de93d0c4ffd0282a6129806194027d2"
+      "diffSha256": "8046831ca05a72fa519bb2b2587a32c1f5da4400d870976d813c4c0cab1f3605"
     },
     {
       "file": "apps/miniprogram/tests/model-card-i2-r24.test.cjs",
@@ -20792,9 +20933,23 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "I3 ordered URL inventory; Web 2450 / Mini 1103 rows and seven notice anchors",
+          "new": "Literal I4 ordered URL inventory; Web 2449 / Mini 1102 rows and four notice anchors",
+          "reason": "Both image-card citations removed, one additional TokenDance citation added. Three Bailian primary links replaced; their lifecycle-only anchors removed. All 1064 dialogs and styling/copy checks remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "a568288224f000413b9dc3693bde4154b632bf6e19b0be48e030ddb51e6e827c"
+      "diffSha256": "66c6f04bcde0e7377c6f27a0d7b113de9a55dbdbd693168b42138b3d85f37200"
     },
     {
       "file": "scripts/source-titles-r24.test.mjs",
@@ -20832,9 +20987,128 @@
             "scripts/source-titles-i3-r24.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "All llms-full.txt URLs fail human-link scan",
+          "new": "Only exact https://tokendance.space/llms-full.txt is permitted",
+          "reason": "Operator confirms this human-readable prose is the only model-specific channel retirement source; negative tests keep other text/API URLs blocked.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "dcab355ea8a55a0d2ddb735888767060b6953c00471baaeba78314cbeaab4c75"
+      "diffSha256": "ff445ce7cdda7ea8912b4cc6fb9f56e5691673583cc40b4b666030473b3ad958"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-r24.test.cjs",
+      "comparisonBase": "f8ff7648",
+      "changes": [
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Three reported cards retain the generic notice",
+          "new": "All three reject the generic URL; TokenDance alone retains its independently sourced dated retirement link",
+          "reason": "The old assertion preserved a correct label on an unsupported citation. Rendering/copy interactions and all-card historical/retirement scans remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "f07286d3238fcdaf2b06cff2f5e05983acf3535dfa5fd3740a327485e52c0157"
+    },
+    {
+      "file": "apps/web/tests/model-card-r24.test.mjs",
+      "comparisonBase": "f8ff7648",
+      "changes": [
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Three reported cards retain the generic notice",
+          "new": "All three reject the generic URL; TokenDance alone retains its independently sourced dated retirement link",
+          "reason": "The old assertion preserved a correct label on an unsupported citation. Rendering/copy interactions and all-card historical/retirement scans remain.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "5fb34d8c58b8c147ec54b5db83e1d8ac0591f0c6fa1319a1d96a40b2f4c81812"
+    },
+    {
+      "file": "test-support/fixtures/model-card-r24.json",
+      "comparisonBase": "f8ff7648",
+      "changes": [
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "All three original cards implicitly retain the same notice",
+          "new": "Historical rejected notice retained for negative assertions; currentNotices explicitly contains only TokenDance llms-full.txt with 2027-01-19",
+          "reason": "Image cards have no verified retirement source. Fixture explicitly distinguishes the superseded URL from the supported current one.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "64bf3e0fddc485778fcbf54561a723111924662ab71cbe8da23455df669756b0"
+    },
+    {
+      "file": "test-support/source-links-i3-r24.mjs",
+      "comparisonBase": "f8ff7648",
+      "changes": [
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Only the frozen I3 human-format mapping may change source rows",
+          "new": "Additionally apply an independent literal six-card I4 mapping when a card/client is provided",
+          "reason": "All unlisted rows remain exact. The new frozen before/after fixture also checks starting-HEAD identities, names, labels and URLs.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "282d0a244e5e4d7d8b0cabb8a0f95b462848af2c815050f379af9361775a9149"
+    },
+    {
+      "file": "test-support/source-review-r24.mjs",
+      "comparisonBase": "f8ff7648",
+      "changes": [
+        {
+          "phase": "R24 Phase I4",
+          "comparisonBase": "f8ff7648",
+          "line": 1,
+          "old": "Every scheduled lifecycle yields one URL row",
+          "new": "Seven scheduled lifecycles remain, but three unsupported citations yield no anchor row",
+          "reason": "No invented replacement for an empty article; current public dialogs omit unsupported citations.",
+          "evidence": [
+            "docs/model-card-qwen35plus-evidence-r24.md",
+            "config/channel-audit/review-r24-20261110.json",
+            "test-support/fixtures/source-evidence-i4-r24.json"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "20bc987b0a009c6f7eb6aa328faa1a5a2583210da7b2920380beca9f23ce753a"
     }
   ]
 }

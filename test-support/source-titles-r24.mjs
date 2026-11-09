@@ -10,7 +10,7 @@ export function titleIssues(row,name,id) {
   const counter = [...row.label.matchAll(/[（(]((?:(?:文档|页面|资料|来源|链接|副本|版本|Document|Page|Source|Link|Copy)\s*)?\d+)[）)]/gi)].some(([,v]) => !/^\d{4}$/.test(v) || ![name,id].some(s => s?.includes(v)))
   const numbered = [...row.label.matchAll(/[（(]([^（）()]*\s+\d+)[）)]/g)].some(([,v]) => ![name,id].some(s => s?.includes(v)))
   if(/[（(](?:(?:Markdown|MDX?|HTML?|PDF|JSON|XML|YAML|TXT)(?:\s*(?:格式|文档|页面|版|版本))?|文档|文本|纯文本|网页|格式)(?:\s*\d+)?[）)]/i.test(row.label) || counter || numbered) issues.push('meaningless counter or format qualifier')
-  if(/\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))(?:[?#]|$)/i.test(row.url) && !/^https:\/\/(?:github\.com|huggingface\.co)\/[^/]+\/[^/]+\/blob\//.test(row.url)) issues.push('machine document link')
+  if(row.url!=='https://tokendance.space/llms-full.txt' && /\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))(?:[?#]|$)/i.test(row.url) && !/^https:\/\/(?:github\.com|huggingface\.co)\/[^/]+\/[^/]+\/blob\//.test(row.url)) issues.push('machine document link')
   if(parts.length!==3 || !roles.has(parts[0]) || parts.slice(1).some(s=>!s.trim())) issues.push('missing role/site/page segment or extra separator')
   if(/ - | \| | – |·(?:百度|阿里|DeepSeek)/.test(row.label)) issues.push('site suffix')
   if(/\bNews\d+\b|#[\w-]+/i.test(row.label)) issues.push('URL fragment')

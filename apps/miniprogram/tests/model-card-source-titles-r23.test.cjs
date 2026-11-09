@@ -30,7 +30,7 @@ test('R23F all 1064 compiled Mini cards and copy dialogs pass the title scan; ge
  for(const [provider,entry]of Object.entries(STATIC_MODEL_REGISTRY))for(const model of entry.models){
   const card=provider+'/'+model.id,data=context.present(model,'','',provider),old=titleBaseline.mini.find(row=>row.card===card)
   const rows=structuredClone(data.specSources)
-  assert.equal(data.label,old.name,card);assert.deepEqual(rows.map(row=>row.url),expectedHumanRows(old.rows).map(row=>row.url),card)
+  assert.equal(data.label,old.name,card);assert.deepEqual(rows.map(row=>row.url),expectedHumanRows(old.rows,card,'mini').map(row=>row.url),card)
   assert.equal(new Set(rows.map(row=>row.label)).size,rows.length,card)
   assert.equal(new Set(rows.map(row=>shared.sourceIdentity(row.url))).size,rows.length,card)
   const roles=rows.map(row=>({...row,label:row.label.split(' · ')[0]}))

@@ -62928,5 +62928,350 @@
         }
       }
     ]
+  },
+  "I4": {
+    "phase": "R24 Phase I4",
+    "baseline": "f8ff7648",
+    "counts": {
+      "web": {
+        "cards": 1064,
+        "sourceRowsBefore": 2450,
+        "sourceRows": 2449,
+        "changedCards": 6,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      },
+      "mini": {
+        "cards": 1064,
+        "sourceRowsBefore": 1103,
+        "sourceRows": 1102,
+        "changedCards": 6,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      },
+      "notices": {
+        "cards": 7,
+        "sourceRowsBefore": 7,
+        "sourceRows": 4,
+        "changedCards": 3,
+        "titleFindings": 0,
+        "dialogFindings": 0
+      }
+    },
+    "changes": [
+      {
+        "client": "web",
+        "card": "siliconflow/Qwen/Qwen-Image-Edit",
+        "before": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen-Image-Edit"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          },
+          {
+            "url": "https://www.siliconflow.cn/models",
+            "label": "官方文档 · SiliconFlow · 模型列表"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen-Image-Edit"
+          },
+          {
+            "url": "https://www.siliconflow.cn/models",
+            "label": "官方文档 · SiliconFlow · 模型列表"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.5-plus",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.5-plus-2026-02-15",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "bailian/qwen3.5-plus-2026-04-20",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "label": "官方文档 · 百炼 · 模型定价"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "tokendance/qwen3.5-plus",
+        "before": [
+          {
+            "url": "https://tokendance.space/models/qwen3.5-plus",
+            "label": "官方文档 · TokenDance · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://tokendance.space/models/qwen3.5-plus",
+            "label": "官方文档 · TokenDance · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "原厂规格 · 百炼 · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://tokendance.space/llms-full.txt",
+            "label": "下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）"
+          }
+        ]
+      },
+      {
+        "client": "web",
+        "card": "qianfan/qwen-image-edit",
+        "before": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen Image Edit"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          },
+          {
+            "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+            "label": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）"
+          },
+          {
+            "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+            "label": "官方文档 · 百度千帆 · 模型列表"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen Image Edit"
+          },
+          {
+            "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/klqx7b1i5",
+            "label": "官方文档 · 百度千帆 · 千帆 ModelBuilder 旧版入口（平台首页）"
+          },
+          {
+            "url": "https://cloud.baidu.com/doc/qianfan/s/rmh4stp0j",
+            "label": "官方文档 · 百度千帆 · 模型列表"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "siliconflow/Qwen/Qwen-Image-Edit",
+        "before": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen-Image-Edit"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen-Image-Edit"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "bailian/qwen3.5-plus",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "bailian/qwen3.5-plus-2026-02-15",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "bailian/qwen3.5-plus-2026-04-20",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "官方文档 · 百炼 · Qwen3.5 Plus"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "tokendance/qwen3.5-plus",
+        "before": [
+          {
+            "url": "https://tokendance.space/models/qwen3.5-plus",
+            "label": "官方文档 · TokenDance · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://tokendance.space/models/qwen3.5-plus",
+            "label": "官方文档 · TokenDance · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+            "label": "原厂规格 · 百炼 · Qwen3.5 Plus"
+          },
+          {
+            "url": "https://tokendance.space/llms-full.txt",
+            "label": "下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）"
+          }
+        ]
+      },
+      {
+        "client": "mini",
+        "card": "qianfan/qwen-image-edit",
+        "before": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen Image Edit"
+          },
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": [
+          {
+            "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+            "label": "官方文档 · Hugging Face · Qwen Image Edit"
+          }
+        ]
+      },
+      {
+        "client": "notices",
+        "card": "bailian/qwen3.5-plus",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": []
+      },
+      {
+        "client": "notices",
+        "card": "bailian/qwen3.5-plus-2026-02-15",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": []
+      },
+      {
+        "client": "notices",
+        "card": "bailian/qwen3.5-plus-2026-04-20",
+        "before": [
+          {
+            "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+            "label": "下线公告 · 百炼 · 模型下线公告"
+          }
+        ],
+        "after": []
+      }
+    ]
   }
 }

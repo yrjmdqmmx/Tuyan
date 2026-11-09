@@ -29,7 +29,7 @@ export async function collectSourceReview() {
     const text=(footer?.getAttribute('aria-label') || '').replace(rows[0]?.label+'\n','')
     const tooltips=[...dom.window.document.querySelectorAll('.model-modality-icon')].map(el=>el.title)
     current.web.push({card,name:data.sourceModel.displayName,rows,text,tooltips})
-    if(data.lifecycle?.state==='scheduled') current.notices.push({card,name:data.sourceModel.displayName,rows:[{url:data.lifecycle.sourceUrl,label:'下线公告 · '+web.sourceTitle(data.lifecycle.sourceUrl)}]})
+    if(data.lifecycle?.state==='scheduled') current.notices.push({card,name:data.sourceModel.displayName,rows:data.lifecycle.sourceUrl ? [{url:data.lifecycle.sourceUrl,label:'下线公告 · '+web.sourceTitle(data.lifecycle.sourceUrl)}] : []})
   }
   for(const [provider,entry] of Object.entries(require('../apps/miniprogram/miniprogram/utils/static-model-catalog.js').STATIC_MODEL_REGISTRY)) for(const model of entry.models) {
     const data=context.present(model,'','',provider),dialogs=[]

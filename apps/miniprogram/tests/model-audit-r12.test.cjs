@@ -25,7 +25,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     return ['tokendance', row.modelId, expectedTokenDanceSources(row.modelId)[0], row.rendersModel ? '官方文档' : '原厂规格']
   }),
     ...[['qwen3.8-max', 'qwen3-8-max'], ['qwen3.7-max-2026-06-08', 'qwen3-7-max'], ['qwen3.8-flash', 'vision-model']].map(([id, page]) => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/' + page, '官方文档']),
-    ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/model-depreciation', '下线公告'])]
+    ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/qwen3-5-plus', '官方文档'])]
   assert.equal(cases.length, 80)
   for (const [channel, id, url, label] of cases) {
     const model = full.providers[channel].models.find(m => m.id === id)
@@ -34,7 +34,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, staticModel)}))])
+    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url, staticModel) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:source === r24.noticeUrl ? r24.noticeLabel : '原厂规格 · '+sourceTitle(source, staticModel)})), ...small.retirementSources.map(url => ({url,label:'下线公告 · '+sourceTitle(url,staticModel)}))])
   }
 })
 
@@ -107,7 +107,7 @@ test('R13B pre-phase-2 static notice priorities and all 34 visible notices remai
   }
   let notices = 0
   for (const [channel, provider] of Object.entries(oldStatic)) for (const model of provider.models) {
-    if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(web(channel, model).sources[0])) notices++
+    if (/llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(web(channel, model).sources[0])) notices++
   }
   assert.equal(notices, 34)
 })
@@ -131,7 +131,7 @@ test('R13B compiled picker resolves full-model source priorities and retains not
   const appendedNotices = []
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
     for (const { url, label } of context.present(model, '', '', channel).specSources) {
-      if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
+      if (/llms-full\.txt|deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
         notices++
         const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
         if (!primary) appendedNotices.push(channel + '/' + model.id)
@@ -139,6 +139,6 @@ test('R13B compiled picker resolves full-model source priorities and retains not
       }
     }
   }
-  assert.equal(notices, 19)
-  assert.deepEqual(appendedNotices.sort(), ['tokendance/qwen3.5-plus', 'qianfan/qwen-image-edit', 'siliconflow/Qwen/Qwen-Image-Edit'].sort())
+  assert.equal(notices, 14)
+  assert.deepEqual(appendedNotices.sort(), ['tokendance/qwen3.5-plus'])
 })

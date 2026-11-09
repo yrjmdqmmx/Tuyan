@@ -1,0 +1,698 @@
+{
+  "phase": "R24 Phase I4",
+  "verifiedAt": "2026-11-10",
+  "operatorVerification": {
+    "timeAsiaShanghai": "2026-11-10T07:05:00+08:00 (approximately)",
+    "authority": "Operator real-browser verification supplied in TASK_I4.md",
+    "pages": [
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+        "updatedAt": "2026-10-27",
+        "finding": "Zero qwen3.5-plus / Qwen3.5-Plus / 65536 / 65,536 matches."
+      },
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+        "updatedAt": "2026-10-10",
+        "quotes": [
+          "最大输出长度 65536",
+          "最大输出长度（思考模式下）65536",
+          "上下文长度 1000000",
+          "最大输入长度 991808",
+          "Text Image Video -> Text"
+        ]
+      },
+      {
+        "url": "https://tokendance.space/models/qwen3.5-plus",
+        "quotes": [
+          "该模型版本功能等同于快照模型qwen3.5-plus-2026-02-15",
+          "1.0M",
+          "文本+图像+视频→文本"
+        ],
+        "finding": "Fully rendered; no maximum-output field and no retirement notice."
+      }
+    ]
+  },
+  "captures": [
+    {
+      "url": "https://www.aliyun.com/notice/118728",
+      "httpStatus": 200,
+      "finalUrl": "https://www.aliyun.com/notice/118728",
+      "fetchStartUTC": "2026-11-09T23:08:48.178489+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:48.717061+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:48.178489+08:00",
+      "sha256": "293c75d0d08dc908619041e96ce50536221b6bd30ea273ef341b97b35ad53a0e",
+      "bytes": 30424,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-aliyun-118728.html",
+      "limitation": "Article container empty; only family-level heading and metadata returned; no individual model IDs.",
+      "excerpts": [
+        "【大模型服务平台百炼】部分Qwen3.5系列旧版本模型下线通知"
+      ]
+    },
+    {
+      "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "httpStatus": 200,
+      "finalUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "fetchStartUTC": "2026-11-09T23:08:35.794773+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:36.103140+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:35.794773+08:00",
+      "sha256": "0de614a2f50a5c72825facb9afe5bee561b08887f392c137437ebdf2eff94847",
+      "bytes": 138245,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-mimo-deprecate.html",
+      "excerpts": [
+        "API 参数完全适配，mimo-v2.5-pro 仅支持文本输入，替换为 mimo-v2.6-pro 后将支持多模态理解",
+        "mimo-v2.5-pro"
+      ]
+    },
+    {
+      "url": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "httpStatus": 200,
+      "finalUrl": "https://mimo.mi.com/docs/zh-CN/quick-start/summary/model",
+      "fetchStartUTC": "2026-11-09T23:08:35.977145+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:36.313600+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:35.977145+08:00",
+      "sha256": "c35ceeb4f70470151cde7b6c5243efbc0101307f08e65c2f1002dd083fd1e988",
+      "bytes": 153919,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-mimo-model.html",
+      "excerpts": [
+        "mimo-v2.5-pro、mimo-v2.5 模型已于北京时间 2026.10.21 10:00 正式下线，建议尽快切换至新版模型。详见 模型下线 。"
+      ],
+      "finding": "Current specification table names mimo-v2.6-pro and mimo-v2.6-flash, not the retired V2.5 Pro."
+    },
+    {
+      "url": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+      "httpStatus": 200,
+      "finalUrl": "https://mimo.mi.com/models/en-US/mimo-v2.5-pro",
+      "fetchStartUTC": "2026-11-09T23:08:36.112093+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:36.313534+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:36.112093+08:00",
+      "sha256": "9db6ee29ae63eb2b55ff0a4aff7211316124fbee879e4bf839be2ada2a9e291e",
+      "bytes": 13419,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-mimo-pro.html",
+      "excerpts": [],
+      "finding": "GET returned a shell; no model-specific specification text."
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "httpStatus": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "fetchStartUTC": "2026-11-09T23:08:35.792456+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:36.625178+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:35.792456+08:00",
+      "sha256": "3e1ba6005639ae3f503cfc2dc081ce26432cd47778a5a97be7b4cc67d8ab83f6",
+      "bytes": 60657,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-model-depreciation.html",
+      "absentTerms": {
+        "qwen3.5-plus": 0,
+        "Qwen3.5-Plus": 0,
+        "65536": 0,
+        "65,536": 0,
+        "qwen-image-edit": 0,
+        "Qwen-Image-Edit": 0
+      },
+      "excerpts": [
+        "模型下线机制说明",
+        "模型下线指旧版本模型停止提供服务"
+      ]
+    },
+    {
+      "url": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+      "httpStatus": 200,
+      "finalUrl": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+      "fetchStartUTC": "2026-11-09T23:08:36.323107+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:38.199260+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:36.323107+08:00",
+      "sha256": "1b8d6569d2997de29e3c35d63786c2a5887218db1ececa07c3858bfd472ad529",
+      "bytes": 235884,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-qwen-image-edit.html",
+      "excerpts": [
+        "Another standout feature of Qwen-Image-Edit is its accurate text editing capability, which stems from Qwen-Image's deep expertise in text rendering."
+      ]
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "httpStatus": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "fetchStartUTC": "2026-11-09T23:08:35.792602+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:36.531371+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:35.792602+08:00",
+      "sha256": "047fcf99898573808c5fe9b0ca98b6828699b9fca964b91526f375bb75061777",
+      "bytes": 121613,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-qwen3-5-plus.html",
+      "excerpts": [
+        "输入模态\nText Image Video",
+        "qwen3.5-plus",
+        "输出模态\nText",
+        "上下文长度\n1000000",
+        "最大输出长度\n65536",
+        "qwen3.5-plus-2026-02-15",
+        "输入模态\nImage Text Video",
+        "qwen3.5-plus-2026-04-20"
+      ]
+    },
+    {
+      "url": "https://tokendance.space/llms-full.txt",
+      "httpStatus": 200,
+      "finalUrl": "https://tokendance.space/llms-full.txt",
+      "fetchStartUTC": "2026-11-09T23:08:35.792668+00:00",
+      "fetchEndUTC": "2026-11-09T23:08:35.974712+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T07:08:35.792668+08:00",
+      "sha256": "46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046",
+      "bytes": 331710,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/i4-tokendance-llms-full.txt",
+      "excerpts": [
+        "### 北京时间 2027 年 1 月 19 日 10:00：Qwen3.5 Plus 下线",
+        "- [Qwen: Qwen3.5 Plus](/models/qwen3.5-plus)（`qwen3.5-plus`）：建议切换至 [Qwen: Qwen3.8 Flash](/models/qwen3.8-flash)（`qwen3.8-flash`）。"
+      ]
+    }
+  ],
+  "priorCaptures": [
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "httpStatus": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
+      "fetchStartUTC": "2026-11-09T22:06:44.580962+00:00",
+      "fetchEndUTC": "2026-11-09T22:06:45.219308+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T06:06:44.580962+08:00",
+      "sha256": "0ae8de8cf993fdb5fa59ecc49da53de99976c6e0cb0f7bd03ea74cf237eef253",
+      "bytes": 60657,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/model-depreciation.html"
+    },
+    {
+      "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "httpStatus": 200,
+      "finalUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "fetchStartUTC": "2026-11-09T22:06:44.581091+00:00",
+      "fetchEndUTC": "2026-11-09T22:06:45.417333+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T06:06:44.581091+08:00",
+      "sha256": "fef9a14c34dfb54263e27b777ab906970f17f98e0fb8d6dc26583d276a7a845e",
+      "bytes": 121613,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/qwen3-5-plus.html"
+    },
+    {
+      "url": "https://tokendance.space/models/qwen3.5-plus",
+      "httpStatus": 200,
+      "finalUrl": "https://tokendance.space/models/qwen3.5-plus",
+      "fetchStartUTC": "2026-11-09T22:06:44.582476+00:00",
+      "fetchEndUTC": "2026-11-09T22:06:44.759936+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T06:06:44.582476+08:00",
+      "sha256": "71bbeddbb1dd3e547180ae7af16234b118459290d78cafacc7377f652dd3dbb2",
+      "bytes": 2122,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/qwen3.5-plus.html"
+    },
+    {
+      "url": "https://tokendance.space/llms-full.txt",
+      "httpStatus": 200,
+      "finalUrl": "https://tokendance.space/llms-full.txt",
+      "fetchStartUTC": "2026-11-09T22:12:23.205206+00:00",
+      "fetchEndUTC": "2026-11-09T22:12:23.435784+00:00",
+      "fetchTimeAsiaShanghai": "2026-11-10T06:12:23.205206+08:00",
+      "sha256": "46b344b1fd51f0364ce562c3fc56c9db18ffe7836736938e26901326593fa046",
+      "bytes": 331710,
+      "curlExit": 0,
+      "error": "",
+      "file": ".audit-input/r24/fetches/tokendance-llms-full.txt"
+    }
+  ],
+  "models": {
+    "bailian/qwen3.5-plus": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输入模态\nText Image Video",
+          "identityQuote": "qwen3.5-plus"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输出模态\nText",
+          "identityQuote": "qwen3.5-plus"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "上下文长度\n1000000",
+          "identityQuote": "qwen3.5-plus"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "最大输出长度\n65536",
+          "identityQuote": "qwen3.5-plus"
+        }
+      },
+      "decision": "Repoint supported facts to exact vendor specification; generic retirement mechanism names none of these models.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "retirementDecision": "Drop unsupported public retirement citation. 118728 GET has only a family title/empty article and cannot confirm individual IDs. Existing execution cutoff stays unchanged by instruction."
+    },
+    "bailian/qwen3.5-plus-2026-02-15": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输入模态\nText Image Video",
+          "identityQuote": "qwen3.5-plus-2026-02-15"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输出模态\nText",
+          "identityQuote": "qwen3.5-plus-2026-02-15"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "上下文长度\n1000000",
+          "identityQuote": "qwen3.5-plus-2026-02-15"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "最大输出长度\n65536",
+          "identityQuote": "qwen3.5-plus-2026-02-15"
+        }
+      },
+      "decision": "Repoint supported facts to exact vendor specification; generic retirement mechanism names none of these models.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "retirementDecision": "Drop unsupported public retirement citation. 118728 GET has only a family title/empty article and cannot confirm individual IDs. Existing execution cutoff stays unchanged by instruction."
+    },
+    "bailian/qwen3.5-plus-2026-04-20": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "image",
+            "text",
+            "video"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输入模态\nImage Text Video",
+          "identityQuote": "qwen3.5-plus-2026-04-20"
+        },
+        "outputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "输出模态\nText",
+          "identityQuote": "qwen3.5-plus-2026-04-20"
+        },
+        "totalContextTokens": {
+          "value": 1000000,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "上下文长度\n1000000",
+          "identityQuote": "qwen3.5-plus-2026-04-20"
+        },
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "channel",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "最大输出长度\n65536",
+          "identityQuote": "qwen3.5-plus-2026-04-20"
+        }
+      },
+      "decision": "Repoint supported facts to exact vendor specification; generic retirement mechanism names none of these models.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+      "retirementDecision": "Drop unsupported public retirement citation. 118728 GET has only a family title/empty article and cannot confirm individual IDs. Existing execution cutoff stays unchanged by instruction."
+    },
+    "bailian/xiaomi/mimo-v2.5-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+          "quote": "API 参数完全适配，mimo-v2.5-pro 仅支持文本输入，替换为 mimo-v2.6-pro 后将支持多模态理解",
+          "identityQuote": "mimo-v2.5-pro"
+        }
+      },
+      "decision": "Retain vendor text-input fact: exact model and value are present in retirement notice. No channel retirement inferred."
+    },
+    "qianfan/qwen-image-edit": {
+      "fields": {
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "quote": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "quote": null
+        }
+      },
+      "decision": "Retirement page names neither qwen-image-edit nor Qwen-Image-Edit. Existing vendor model card describes image editing but gives no context/output token limit or N/A claim. Clear both unsupported facts; suppress fallback.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "checkedAlternative": {
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+        "quote": "Another standout feature of Qwen-Image-Edit is its accurate text editing capability, which stems from Qwen-Image's deep expertise in text rendering.",
+        "finding": "No context/output token limit or not-applicable statement."
+      }
+    },
+    "siliconflow/Qwen/Qwen-Image-Edit": {
+      "fields": {
+        "totalContextTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "quote": null
+        },
+        "maxOutputTokens": {
+          "value": null,
+          "state": "unknown",
+          "provenance": null,
+          "sourceUrl": null,
+          "quote": null
+        }
+      },
+      "decision": "Retirement page names neither qwen-image-edit nor Qwen-Image-Edit. Existing vendor model card describes image editing but gives no context/output token limit or N/A claim. Clear both unsupported facts; suppress fallback.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "checkedAlternative": {
+        "sourceUrl": "https://huggingface.co/Qwen/Qwen-Image-Edit",
+        "quote": "Another standout feature of Qwen-Image-Edit is its accurate text editing capability, which stems from Qwen-Image's deep expertise in text rendering.",
+        "finding": "No context/output token limit or not-applicable statement."
+      }
+    },
+    "tokendance/qwen3.5-plus": {
+      "fields": {
+        "maxOutputTokens": {
+          "value": 65536,
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "quote": "最大输出长度\n65536",
+          "identityQuote": "qwen3.5-plus"
+        }
+      },
+      "decision": "Repoint supported facts to exact vendor specification; generic retirement mechanism names none of these models.",
+      "excludedSources": [
+        "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      ],
+      "note": "沿用百炼同一 API ID 的原厂记录；TokenDance 模型页未标注最大输出",
+      "retirement": {
+        "sourceUrl": "https://tokendance.space/llms-full.txt",
+        "stopDate": "2027-01-19",
+        "quote": "### 北京时间 2027 年 1 月 19 日 10:00：Qwen3.5 Plus 下线",
+        "identityQuote": "- [Qwen: Qwen3.5 Plus](/models/qwen3.5-plus)（`qwen3.5-plus`）：建议切换至 [Qwen: Qwen3.8 Flash](/models/qwen3.8-flash)（`qwen3.8-flash`）。",
+        "title": "Qwen3.5 Plus 下线（2027-01-19）"
+      },
+      "retirementDecision": "Previously no audited TokenDance lifecycle date; show the channel retirement citation/date only. Do not introduce an execution cutoff."
+    },
+    "tokenhub/mimo-v2.5-pro": {
+      "fields": {
+        "inputModalities": {
+          "value": [
+            "text"
+          ],
+          "state": "known",
+          "provenance": "vendor",
+          "sourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+          "quote": "API 参数完全适配，mimo-v2.5-pro 仅支持文本输入，替换为 mimo-v2.6-pro 后将支持多模态理解",
+          "identityQuote": "mimo-v2.5-pro"
+        }
+      },
+      "decision": "Retain vendor text-input fact: exact model and value are present in retirement notice. No channel retirement inferred."
+    }
+  },
+  "retirementSpecEvidence": [
+    {
+      "key": "bailian/xiaomi/mimo-v2.5-pro",
+      "field": "inputModalities",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "value": [
+        "text"
+      ],
+      "quote": "API 参数完全适配，mimo-v2.5-pro 仅支持文本输入，替换为 mimo-v2.6-pro 后将支持多模态理解",
+      "identityQuote": "mimo-v2.5-pro",
+      "valueQuote": "仅支持文本输入",
+      "verifiedAt": "2026-11-10"
+    },
+    {
+      "key": "tokenhub/mimo-v2.5-pro",
+      "field": "inputModalities",
+      "sourceUrl": "https://mimo.mi.com/docs/zh-CN/updates/deprecate",
+      "value": [
+        "text"
+      ],
+      "quote": "API 参数完全适配，mimo-v2.5-pro 仅支持文本输入，替换为 mimo-v2.6-pro 后将支持多模态理解",
+      "identityQuote": "mimo-v2.5-pro",
+      "valueQuote": "仅支持文本输入",
+      "verifiedAt": "2026-11-10"
+    }
+  ],
+  "scanBefore": {
+    "cards": 1064,
+    "matches": [
+      {
+        "key": "siliconflow/Qwen/Qwen-Image-Edit",
+        "field": "totalContextTokens",
+        "value": null,
+        "state": "not-applicable",
+        "provenance": "vendor",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "siliconflow/Qwen/Qwen-Image-Edit",
+        "field": "maxOutputTokens",
+        "value": null,
+        "state": "not-applicable",
+        "provenance": "vendor",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus",
+        "field": "inputModalities",
+        "value": [
+          "image",
+          "text",
+          "video"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus",
+        "field": "outputModalities",
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus",
+        "field": "totalContextTokens",
+        "value": 1000000,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus",
+        "field": "maxOutputTokens",
+        "value": 65536,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-02-15",
+        "field": "inputModalities",
+        "value": [
+          "image",
+          "text",
+          "video"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-02-15",
+        "field": "outputModalities",
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-02-15",
+        "field": "totalContextTokens",
+        "value": 1000000,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-02-15",
+        "field": "maxOutputTokens",
+        "value": 65536,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-04-20",
+        "field": "inputModalities",
+        "value": [
+          "image",
+          "text",
+          "video"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-04-20",
+        "field": "outputModalities",
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-04-20",
+        "field": "totalContextTokens",
+        "value": 1000000,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/qwen3.5-plus-2026-04-20",
+        "field": "maxOutputTokens",
+        "value": 65536,
+        "state": "known",
+        "provenance": "channel",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "bailian/xiaomi/mimo-v2.5-pro",
+        "field": "inputModalities",
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "vendor",
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+      },
+      {
+        "key": "tokendance/qwen3.5-plus",
+        "field": "maxOutputTokens",
+        "value": 65536,
+        "state": "known",
+        "provenance": "vendor",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "tokenhub/mimo-v2.5-pro",
+        "field": "inputModalities",
+        "value": [
+          "text"
+        ],
+        "state": "known",
+        "provenance": "vendor",
+        "url": "https://mimo.mi.com/docs/zh-CN/updates/deprecate"
+      },
+      {
+        "key": "qianfan/qwen-image-edit",
+        "field": "totalContextTokens",
+        "value": null,
+        "state": "not-applicable",
+        "provenance": "vendor",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      },
+      {
+        "key": "qianfan/qwen-image-edit",
+        "field": "maxOutputTokens",
+        "value": null,
+        "state": "not-applicable",
+        "provenance": "vendor",
+        "url": "https://help.aliyun.com/zh/model-studio/model-depreciation"
+      }
+    ]
+  }
+}

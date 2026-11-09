@@ -2,7 +2,10 @@
 // call the implementation to derive expected links in render/parity tests.
 import pairs from './fixtures/source-links-i3-r24.json' with {type:'json'}
 export const expectedHumanUrl=url=>Object.hasOwn(pairs,url)?pairs[url]:url
-export const expectedHumanRows=rows=>{
+import evidence from './fixtures/source-evidence-i4-r24.json' with {type:'json'}
+export const expectedHumanRows=(rows,card,client='web')=>{
+ const correction=evidence[client]?.find(row=>row.card===card)
+ if(correction)return correction.after
  const result=[]
  for(const row of rows) {
   const url=expectedHumanUrl(row.url)

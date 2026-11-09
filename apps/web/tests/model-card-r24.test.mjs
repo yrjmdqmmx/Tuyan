@@ -17,11 +17,16 @@ test('R24 Web keeps retirement roles in the three reported cards and their dialo
     const slash = key.indexOf('/'), provider = key.slice(0, slash), id = key.slice(slash + 1)
     const model = STATIC_MODEL_REGISTRY[provider].models.find(model => model.id === id)
     const rows = modelSourceRows(modelCardSpecifications(provider, model))
-    assert.deepEqual(rows.find(row => row.url === fixture.noticeUrl), {url: fixture.noticeUrl, label: fixture.noticeLabel})
+    assert.ok(!rows.some(row => row.url === fixture.noticeUrl))
+    const expected = fixture.currentNotices[key]
     render(React.createElement(ModelSpecifications, {provider, model}))
     fireEvent.click(screen.getByRole('button', {name: /^输入模态/}))
-    const link = within(screen.getByRole('dialog')).getByRole('link', {name: fixture.noticeLabel})
-    assert.equal(link.getAttribute('href'), fixture.noticeUrl)
+    const dialog = screen.getByRole('dialog')
+    if (expected) {
+      assert.deepEqual(rows.find(row => row.url === expected.url), expected)
+      assert.equal(within(dialog).getByRole('link', {name: expected.label}).getAttribute('href'), expected.url)
+    } else assert.ok(!rows.some(row => row.label.startsWith('下线公告')))
+    assert.ok(!dialog.innerHTML.includes(fixture.noticeUrl))
     cleanup()
   }
   assert.equal(titleSourceRows([{url:fixture.noticeUrl,label:'渠道公告'}])[0].label, '渠道公告 · 百炼 · 模型下线公告')

@@ -20,7 +20,7 @@ const current = {web:[],mini:[]}, notices = []
 for (const [provider, entry] of Object.entries(web.STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
   const card = provider+'/'+model.id, data = web.modelCardSpecifications(provider,model)
   current.web.push({card,name:data.sourceModel.displayName,rows:web.modelSourceRows(data)})
-  if (data.lifecycle?.state === 'scheduled') {
+  if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
     const url = data.lifecycle.sourceUrl
     const old = titleBaseline.web.find(row=>row.card===card).rows.find(row=>row.url===url)
     assert.ok(old,card+' lifecycle URL in baseline')
@@ -40,11 +40,11 @@ for (const client of ['web','mini']) {
   for (const card of cards) {
     const old = prior.find(row=>row.card===card.card)
     assert.equal(card.name,old.name,card.card)
-    assert.deepEqual(card.rows.map(row=>row.url),expectedHumanRows(old.rows).map(row=>row.url),card.card)
+    assert.deepEqual(card.rows.map(row=>row.url),expectedHumanRows(old.rows,card.card,client).map(row=>row.url),card.card)
     for (const [i,row] of card.rows.entries()) {
       const retirementCorrection = r24.noticeCards.includes(card.card) && row.url === r24.noticeUrl
-      assert.equal(row.label.split(' · ')[0], retirementCorrection ? '下线公告' : expectedHumanRows(old.rows)[i].label.split(' · ')[0], card.card)
-      if(row.label!==expectedHumanRows(old.rows)[i].label) changes.push({client,card:card.card,url:row.url,before:expectedHumanRows(old.rows)[i].label,after:row.label})
+      assert.equal(row.label.split(' · ')[0], retirementCorrection ? '下线公告' : expectedHumanRows(old.rows,card.card,client)[i].label.split(' · ')[0], card.card)
+      if(row.label!==expectedHumanRows(old.rows,card.card,client)[i].label) changes.push({client,card:card.card,url:row.url,before:expectedHumanRows(old.rows,card.card,client)[i].label,after:row.label})
       const subject=row.label.split(' · ').slice(2).join(' · ').replace(/（(?:Markdown|控制台|英文|文档)(?: \d+)?）$/,'').replace(/ API 文档$/,'')
       const reason = subject===card.name && /[-_/]|^[a-z]/.test(subject)
         ? 'Exact curated picker name; required to retain its spelling and separators.'
@@ -77,7 +77,8 @@ const report = [
   '**Stability confirmed:** `stable diffusion 35` → `Stable Diffusion 3.5`. The actual Web `stability/sd3.5-flash` row at `https://docs.stability.ai/api-reference/generate/stable-diffusion-35` is listed below; Mini tests also exercise that page with all four `sd3.5-*` cards. Mini currently exposes the existing generic API-reference link for those cards, so its generic title remains `API 文档`.', '',
   '**BFL casing:** the committed picker name is `FLUX-2-klein-4b`, so that own-page title stays exact. A separate shared/Mini regression supplies the curated name `FLUX.2 [klein] 4B` and requires that exact punctuation/casing. All 1,064 picker names remain unchanged. The two Replicate source rows whose picker name is `qwen3-7-plus` now say `Qwen3.7 Plus`; the picker itself remains unchanged.', '',
   'Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无此型号** with the existing verification date in Web tooltips/dialogs and Mini icon dialogs: '+historicalIds.map(id=>'`'+id+'`').join(', ')+'. Other hints and all modality states remain unchanged.', '',
-  '## R24 Phase I1 role corrections', '', 'The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.', '',
+  '## R24 Phase I1 role corrections (superseded by I4)', '', 'The retirement notice at https://help.aliyun.com/zh/model-studio/model-depreciation retains 下线公告 on tokendance/qwen3.5-plus, qianfan/qwen-image-edit and siliconflow/Qwen/Qwen-Image-Edit in both clients. Vendor provenance and links remain intact. The role guard permits only these three card/URL pairs to differ from the frozen baseline. New R24 tests scan all 1,064 cards per client and require every retirement source to keep its role.', '',
+  'I4 removes unsupported retirement citations and substitutes independently reviewed specification/retirement URLs through a six-card literal mapping per client. See model-card-qwen35plus-evidence-r24.md for decisions and quotes.', '',
   '## Every changed title','',
   '| Client | Card | URL | Before | After |','| --- | --- | --- | --- | --- |',
   ...changes.map(row=>`| ${[row.client,row.card,row.url,row.before,row.after].map(cell).join(' | ')} |`),'',

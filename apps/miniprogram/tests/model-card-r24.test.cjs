@@ -14,21 +14,22 @@ test('R24 Mini preserves retirement labels in all 1064 cards and the three repor
   const historical = new Set()
   for (const [provider, entry] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of entry.models) {
     const card = context.present(model,'','',provider), key = provider + '/' + model.id
+    if (fixture.noticeCards.includes(key)) assert.ok(!card.specSources.some(row => row.url === fixture.noticeUrl))
     for (const row of card.specSources) {
       const url = new URL(row.url)
       if (/deprecat|depreciat|retire|sunset|下线/i.test(decodeURIComponent(url.pathname)) || /aliyun\.com$/.test(url.hostname) && /^\/notice\/\d+/.test(url.pathname) || url.hostname === 'docs.x.ai' && url.pathname.startsWith('/developers/migration/')) {
         assert.match(row.label, /^下线公告 · /, key); notices++
       }
-      if (fixture.noticeCards.includes(key) && row.url === fixture.noticeUrl) {
-        assert.equal(row.label, fixture.noticeLabel)
+      if (fixture.currentNotices[key] && row.url === fixture.currentNotices[key].url) {
+        assert.equal(row.label, fixture.currentNotices[key].label)
         definition.methods.copySource({currentTarget:{dataset:{url:row.url,source:row.label,notice:card.auditMessage}}})
-        assert.ok(modal.content.endsWith(fixture.noticeLabel)); examples++
+        assert.ok(modal.content.endsWith(fixture.currentNotices[key].label)); examples++
       }
     }
     for (const icon of card.specRows.flatMap(row=>row.icons)) if (icon.tooltip.includes('渠道页无此型号')) {assert.equal(provider,'tokendance'); historical.add(model.id)}
     cards++
   }
-  assert.equal(cards,1064); assert.equal(examples,3); assert.ok(notices>3)
+  assert.equal(cards,1064); assert.equal(examples,1); assert.ok(notices>3)
   assert.deepEqual([...historical].sort(),fixture.historicalIds)
   assert.deepEqual([...historicalChannelIds(pages)].sort(),fixture.historicalIds)
   const missing = historicalChannelIds({...pages,...fixture.syntheticPages})

@@ -131,7 +131,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
     const card = modelCardSpecifications(channel, model)
     for (const url of card.sources) {
       const { hostname, pathname } = new URL(url)
-      const notice = /deprecat|depreciat|retire|sunset|下线/i.test(pathname)
+      const notice = /llms-full\.txt|deprecat|depreciat|retire|sunset|下线/i.test(pathname)
         || /(^|\.)aliyun\.com$/.test(hostname) && /^\/notice\/\d+\/?$/.test(pathname)
         || hostname === 'docs.x.ai' && pathname.startsWith('/developers/migration/')
       if (!notice) continue
@@ -144,7 +144,7 @@ test('R13B catalog-wide notice links are labelled 下线公告 regardless of cha
       }
     }
   }
-  assert.equal(visible, 32, '16 full-registry and 16 fully resolved static notice cards')
+  assert.equal(visible, 26, '13 full-registry and 13 static notice cards; three unsupported Bailian primary citations removed per projection')
   const ordinary = modelCardSources({ channel: 'unknown', audit: {}, fields: {}, model: { officialSourceUrl: 'https://example.test/notice/118177' } })
   assert.equal(modelSourceName(ordinary, ordinary.sources[0]), '官方文档')
 })

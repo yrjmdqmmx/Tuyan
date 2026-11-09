@@ -88,6 +88,9 @@ for (const row of read('config/channel-audit/source-titles-r24-i3.json').capture
   assert.equal(row.httpStatus, 200); assert.match(row.sha256, /^[a-f0-9]{64}$/)
   for (const url of [row.url, ...(row.aliases || [])]) sourceTitles[url] = row.displayTitle
 }
+for (const model of Object.values(read('config/channel-audit/review-r24-20261110.json').models)) {
+  if (model.retirement) sourceTitles[model.retirement.sourceUrl] = model.retirement.title
+}
 // Compile only titles referenced by card inputs. Capture indexes also contain
 // authentication/protocol pages that no card links to; keep those in evidence,
 // not in either client. Include all fact/notice links, not just primary rows.

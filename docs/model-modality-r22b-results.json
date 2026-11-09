@@ -12,7 +12,7 @@
     "historicalFallbacks": 7,
     "missingFallbacks": 0,
     "sourceRowsBefore": 2489,
-    "sourceRowsAfter": 2450,
+    "sourceRowsAfter": 2449,
     "duplicateUrlRowsBefore": 13,
     "duplicateUrlRowsAfter": 0,
     "duplicateLabelsBefore": 974,
@@ -1031,8 +1031,8 @@
           "value": 65536,
           "state": "known",
           "provenance": "vendor",
-          "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
-          "verifiedAt": "2026-11-09"
+          "sourceUrl": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+          "verifiedAt": "2026-11-10"
         }
       }
     },

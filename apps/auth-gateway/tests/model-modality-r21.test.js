@@ -23,7 +23,8 @@ test('R21 Gateway sources keep reviewed channel pages and labelled vendor field 
     const vendorUrls = Object.values(audit.fields).filter(fact => fact.provenance === 'vendor')
       .flatMap(fact => fact.sourceUrls || [fact.sourceUrl]).filter(Boolean)
     const reviewed = expectedTokenDanceSources(id)
-    const expected = [...reviewed, ...vendorUrls].filter((url, index, urls) =>
+    const retirement = id === 'qwen3.5-plus' ? ['https://tokendance.space/llms-full.txt'] : []
+    const expected = [...reviewed, ...vendorUrls, ...retirement].filter((url, index, urls) =>
       urls.findIndex(other => sourceIdentity(other) === sourceIdentity(url)) === index)
     const data = modelCardSources({ channel: 'tokendance', model: { id }, audit, fields: audit.fields })
     assert.deepEqual(data.sources, expected, id)
@@ -34,6 +35,7 @@ test('R21 Gateway sources keep reviewed channel pages and labelled vendor field 
       assert.equal(isApiSource(url), false, id + ': ' + url)
     }
     for (const row of modelSourceRows(data).slice(reviewed.length)) {
+      if (retirement.includes(row.url)) { assert.equal(row.label, '下线公告 · TokenDance · Qwen3.5 Plus 下线（2027-01-19）'); continue }
       assert.ok(vendorUrls.some(url => sourceIdentity(url) === sourceIdentity(row.url)), id + ': ' + row.url)
       if (row.url === r24.noticeUrl) assert.equal(row.label, r24.noticeLabel, id)
       else assert.match(row.label, /^原厂规格 · /, id)

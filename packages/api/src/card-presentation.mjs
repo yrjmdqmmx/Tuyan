@@ -34,6 +34,8 @@ export function humanSourceUrl(value) {
 }
 export function isMachineDocument(value) {
   const path = value.split(/[?#]/)[0]
+  // This public text document contains the only model-specific channel notice.
+  if (path === 'https://tokendance.space/llms-full.txt') return false
   return /\/(?:llms(?:-full)?\.txt|[^/]+\.(?:md|mdx))\/?$/i.test(path)
     && !/^https:\/\/(?:github\.com\/[^/]+\/[^/]+\/blob\/|huggingface\.co\/[^/]+\/[^/]+\/blob\/)/.test(path)
 }

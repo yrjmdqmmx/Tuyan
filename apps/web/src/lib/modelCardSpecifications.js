@@ -60,11 +60,12 @@ export function modelCardSpecifications(provider, model, registry) {
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
   const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''
   const pureImage = image && !fields.outputModalities.value?.includes?.('text') && !['totalContextTokens', 'maxOutputTokens'].some(key => fields[key].state === 'known')
-  const limit = fact => pureImage && fact.state === 'unknown' ? '不适用' : text(fact)
+  const limit = fact => pureImage && fact.state === 'unknown' && !fact.suppressFallback ? '不适用' : text(fact)
   const context = limit(fields.totalContextTokens)
   const maxOutput = limit(fields.maxOutputTokens)
   const retired = removedModel(provider, model.id)
-  const lifecycle = auditedModelLifecycle(provider, model.id)
+  const originalLifecycle = auditedModelLifecycle(provider, model.id)
+  const lifecycle = originalLifecycle && audit.excludedSources.includes(originalLifecycle.sourceUrl) ? { ...originalLifecycle, sourceUrl: null } : originalLifecycle
   const sources = modelCardSources({ channel: provider, model, audit, fields,
     lifecycle: lifecycle || (retired ? { ...retired, state: 'retired' } : null), checks: MODEL_AUDIT_DATA.sourceChecks })
   return {

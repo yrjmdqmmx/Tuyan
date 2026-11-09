@@ -44,7 +44,7 @@ test('R23F all 1064 rendered Web cards and evidence/notice dialogs pass the titl
     const data = modelCardSpecifications(provider, model), rows = modelSourceRows(data), card = provider + '/' + model.id
     const old = titleBaseline.web.find(row => row.card === card)
     assert.equal(data.sourceModel.displayName, old.name, card)
-    assert.deepEqual(rows.map(row => row.url), expectedHumanRows(old.rows).map(row => row.url), card)
+    assert.deepEqual(rows.map(row => row.url), expectedHumanRows(old.rows,card,'web').map(row => row.url), card)
     assert.equal(new Set(rows.map(row => row.label)).size, rows.length, card)
     assert.equal(new Set(rows.map(row => sourceIdentity(row.url))).size, rows.length, card)
     render(React.createElement(ModelSpecifications, {provider, model, compactSources:true}))
@@ -58,7 +58,7 @@ test('R23F all 1064 rendered Web cards and evidence/notice dialogs pass the titl
     assert.deepEqual(links.map(link => ({url:link.getAttribute('href'),label:link.textContent})), rows)
     renderedRows += links.length
     cards.push({card, name:old.name, rows}); cleanup()
-    if (data.lifecycle?.state === 'scheduled') {
+    if (data.lifecycle?.state === 'scheduled' && data.lifecycle.sourceUrl) {
       render(React.createElement(ModelLifecycleBadge, {provider,lifecycle:data.lifecycle}))
       fireEvent.click(screen.getByRole('button'))
       const link = within(screen.getByRole('dialog')).getByRole('link')

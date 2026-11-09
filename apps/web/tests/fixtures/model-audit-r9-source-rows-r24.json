@@ -276,16 +276,16 @@
     "label": "官方文档 · 百炼 · Qwen3.5 Omni Plus"
   },
   "bailian/qwen3.5-plus": {
-    "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
-    "label": "下线公告 · 百炼 · 模型下线公告"
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
   },
   "bailian/qwen3.5-plus-2026-02-15": {
-    "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
-    "label": "下线公告 · 百炼 · 模型下线公告"
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
   },
   "bailian/qwen3.5-plus-2026-04-20": {
-    "url": "https://help.aliyun.com/zh/model-studio/model-depreciation",
-    "label": "下线公告 · 百炼 · 模型下线公告"
+    "url": "https://help.aliyun.com/zh/model-studio/qwen3-5-plus",
+    "label": "官方文档 · 百炼 · Qwen3.5 Plus"
   },
   "bailian/wan2.7-image": {
     "url": "https://help.aliyun.com/zh/model-studio/wan2-7-image",

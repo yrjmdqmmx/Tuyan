@@ -53,10 +53,12 @@ function modelPageForEndpoint(value, model, captured) {
 }
 
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
+  const visible = url => !(audit.excludedSources || []).includes(url) && visibleSource(url)
+  const notices = safeSources((audit.sourceLinks || []).filter(link => link.kind === 'retirement-notice').map(link => link.url)).filter(visible)
   const fieldVendors = uniqueSources(safeSources(Object.values(fields).filter(fact => fact.provenance === 'vendor').flatMap(fact => fact.sourceUrls || [fact.sourceUrl])).filter(url => visibleSource(url) && !isApiSource(url, checks)))
   if (channel === 'tokendance' && model.id) {
     const url = 'https://tokendance.space/models/' + model.id
-    if (isVerifiedTokenDancePage(url)) return { sources: uniqueSources([url, ...fieldVendors]), channelSources: [url], vendorSources: fieldVendors, lifecycleSources: [] }
+    if (isVerifiedTokenDancePage(url)) return { sources: uniqueSources([url, ...fieldVendors, ...notices]).filter(visible), channelSources: [url], vendorSources: fieldVendors.filter(visible), lifecycleSources: notices }
     const fallback = tokenDancePages[model.id]?.fallback
     if (fallback) return Object.fromEntries(Object.entries(fallback).map(([key, urls]) => [key, uniqueSources([...urls, ...(['sources', 'vendorSources'].includes(key) ? fieldVendors : [])].filter(visibleSource))]))
   }
@@ -77,7 +79,7 @@ export function modelCardSources({ channel, model = {}, audit, fields, lifecycle
     ...links.map(link => link.url)])
   const urls = safeSources([...links.filter(link => link.kind === 'model-page' || link.scope === 'vendor').map(link => link.url),
     ...captured.map(url => isApiSource(url, checks) ? modelPageForEndpoint(url, model, captured) : url)])
-    .filter(url => visibleSource(url) && !isApiSource(url, checks) && checks[url]?.rendersModel !== false)
+    .filter(url => visible(url) && !isApiSource(url, checks) && checks[url]?.rendersModel !== false)
   const channelHosts = new Set(channelSources.map(url => new URL(url).hostname))
   for (const url of urls) if (channelOwns(channel, url) && !channelSources.includes(url)) channelSources.push(url)
   // A tagged vendor announcement describes the source, not channel availability.
@@ -128,7 +130,7 @@ export function isVerifiedTokenDancePage(value) {
   } catch { return false }
 }
 const visibleSource = url => !isDeadSource(url) && !isApiSource(url)
-  && (new URL(url).hostname !== 'tokendance.space' || isVerifiedTokenDancePage(url))
+  && (new URL(url).hostname !== 'tokendance.space' || isVerifiedTokenDancePage(url) || url === 'https://tokendance.space/llms-full.txt')
 
 export function modelSourceRows(data) {
   const vendors = new Set(data.vendorSources.map(sourceIdentity))
