@@ -10,7 +10,7 @@
 - MOVE 中 **42 文件与 `git show b1b86c05:<file>` 字节一致**。只读比较确认这 44 文件在 `2a977d60` 后没有后续提交变更。`App.jsx` 全部恢复，不保留其中任何 R15 hunk。
 - MOVE 中 `styles.css`、`workspace.css` 仅保留下表模型配置所需规则，并将网格规则限定到 `.tw-field.control-field`；任务、绘图、精修等恢复原标签与原间距。R16 卡片页脚、域名省略与完整 title 保留。
 - R15 AST 审计只扫描明确列出的 KEEP JSX 文件，allow-list 仅保留其中 **5 个**单控件 checkbox/radio 例外，逐项类型、数量及理由断言保留。DOM 仍逐字段检查不包裹控件和有效关联，原 `fields >= 65` 门槛未降低；补入保留范围内通用 API 配置、视觉及 Gemini 图像表单。移出表单不再混入本 PR 的 R15 渲染场景。
-- 下方 [R15/R17 split](#r15r17-split) 列出全部 45 个保留位置；全部 134 个移出位置（恢复后行号、原 R15 行号、control/标题）见 [codex/label-control-audit 移交清单](../.audit-input/r17/moved-list.md)。独立 PR 由操作方准备，本会话没有创建或修改它。
+- 下方 [R15/R17 split](#r15r17-split) 列出全部 45 个保留位置；全部 134 个移出位置（恢复后行号、原 R15 行号、control/标题）见 [PR #250 codex/label-control-audit](https://github.com/yrjmdqmmx/Tuyan/pull/250) 描述中的逐项清单。独立 Draft PR 为 #250。
 
 | 共享文件位置 | 保留或调整的精确规则及原因 |
 | --- | --- |
@@ -158,7 +158,7 @@ node --import tsx --import ./tests/dom-setup.mjs --test tests/inactive-route-ui.
 
 ### R15/R17 split
 
-R15 原 179 处拆分为 **保留 45 处 / 12 个 JSX 文件**、**移出 134 处 / 34 个 JSX 文件**。操作方 KEEP 18 / MOVE 44 文件分类保持；`ControlField.*` 与模型失效提示组件/CSS 计入 KEEP 文件，但不增加控件位置数量。下表为 #245 保留项（当前源码 file:line / control）；完整移出项及当前、R15 双行号见 [codex/label-control-audit 移交清单](../.audit-input/r17/moved-list.md)。未操作该 PR 的其他工作树。
+R15 原 179 处拆分为 **保留 45 处 / 12 个 JSX 文件**、**移出 134 处 / 34 个 JSX 文件**。操作方 KEEP 18 / MOVE 44 文件分类保持；`ControlField.*` 与模型失效提示组件/CSS 计入 KEEP 文件，但不增加控件位置数量。下表为 #245 保留项（当前源码 file:line / control）；完整移出项及当前、R15 双行号见 [PR #250 codex/label-control-audit](https://github.com/yrjmdqmmx/Tuyan/pull/250) 描述中的逐项清单。未操作该 PR 的其他工作树。
 
 | file:line | control / 标题 |
 | --- | --- |
