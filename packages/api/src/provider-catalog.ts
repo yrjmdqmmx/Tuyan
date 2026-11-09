@@ -80,9 +80,13 @@ export function schemaPromptLimits(schema:any, root:any, kinds:string[], source:
   // Conflicting or unbounded alternatives cannot establish one maximum.
   return !missing && limits.size===1 ? kinds.map(kind=>({kind,max:[...limits][0],unit:'characters',field:'prompt',sourceUrls:[source]})) : []
 }
-export function exactModelDetails(provider: string, id: string) {
+function executionModelDetails(provider: string, id: string) {
   // No family-prefix matching or removal of snapshot/preview/pro suffixes.
-  const base = detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
+  return detailModels[`${provider}/${id}`] || (id.startsWith('openai/') ? detailModels[id] : undefined)
+}
+
+export function exactModelDetails(provider: string, id: string) {
+  const base = executionModelDetails(provider, id)
   // Preserve the vendor/base archive; overlay only the exact channel identity.
   const specifications = channelModelSpecifications(provider, id, base?.specifications)
   return specifications.modalityFacts ? { ...base, specifications } : base
@@ -110,7 +114,9 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
   if (provider === 'replicate') id = row.owner && row.name ? `${row.owner}/${row.name}` : ''
   if (provider === 'novita' && new URL(source).pathname === '/v3/model') id = row.sd_name_in_api || row.sd_name || (Number.isSafeInteger(row.id) ? `novita-model:${row.id}` : row.name)
   if (!id || typeof id !== 'string' || id.length > 512) return null
-  const exact = exactModelDetails(provider, id)
+  // Execution metadata uses the unchanged base archive. Channel review facts
+  // are applied only to the display specifications below.
+  const exact = executionModelDetails(provider, id)
   if (provider === 'runware' && exact?.apiIdentifier) id = exact.apiIdentifier
   const facts: any = { version:1, checkedAt:new Date().toISOString().slice(0,10), sourceUrls:[source] }
   if(provider==='novita' && new URL(source).pathname==='/v3/model')facts.sourceUrls.push('https://docs.novita.ai/api-reference/model-apis-get-model')
@@ -171,12 +177,13 @@ export function normalizeCatalogModel(provider: string, row: any, source: string
   if (output?.length) facts.officialOutputModalities=output
   if (context) facts.contextWindowTokens=context
   // Live channel limits take precedence over a previously reviewed channel page.
-  const specifications=channelModelSpecifications(provider, id, {...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])})
+  const executionSpecifications={...exact?.specifications,...facts,sourceUrls:unique([...(exact?.specifications?.sourceUrls || []),...facts.sourceUrls])}
+  const specifications=channelModelSpecifications(provider, id, executionSpecifications)
   const shutdown = provider === 'openai' && typeof row.shutdown_date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(row.shutdown_date) && Number.isFinite(Date.parse(row.shutdown_date)) ? row.shutdown_date : undefined
   return { id, ...(shutdown ? {expirationDate:shutdown,lifecycleSourceUrl:source} : {}), catalogAliases:unique([row.id,row.air,row.endpoint_id,...(Array.isArray(row.aliases)?row.aliases:[])].filter(Boolean)), label:row.display_name || row.displayName || row.metadata?.display_name || row.title || exact?.label || row.name || id,
     vendor:exact?.vendor || row.organization || row.owned_by || row.owner || row.provider || provider,
     vendorId:exact?.vendorId || row.organization || row.owned_by || row.owner || row.provider || provider,
-    specifications, inputModalities:specifications.officialInputModalities || [], outputModalities:specifications.officialOutputModalities || [],
+    specifications, inputModalities:executionSpecifications.officialInputModalities || [], outputModalities:executionSpecifications.officialOutputModalities || [],
     catalogSourceUrl:source, officialSourceUrl:exact?.specifications?.sourceUrls?.[0] || def.source, catalogDiscovered:true }
 }
 

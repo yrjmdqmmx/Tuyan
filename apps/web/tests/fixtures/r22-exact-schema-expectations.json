@@ -1,0 +1,162 @@
+[
+  {
+    "key": "replicate/google/gemini-3-flash",
+    "field": "inputModalities",
+    "modality": "video",
+    "sourceUrl": "https://replicate.com/google/gemini-3-flash/api/schema",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "audio"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:nano-banana@2.1",
+    "field": "inputModalities",
+    "modality": "file",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "video"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:nano-banana@2.1",
+    "field": "outputModalities",
+    "modality": "text",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-1/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:nano-banana@2-lite",
+    "field": "inputModalities",
+    "modality": "file",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-lite/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "video"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:nano-banana@2-lite",
+    "field": "outputModalities",
+    "modality": "text",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2-lite/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:4@3",
+    "field": "inputModalities",
+    "modality": "file",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "video"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:4@3",
+    "field": "outputModalities",
+    "modality": "text",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-2/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:gemini@3.1-pro",
+    "field": "inputModalities",
+    "modality": "file",
+    "sourceUrl": "https://runware.ai/docs/models/google-gemini-3-1-pro/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "video",
+      "audio"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:gemini@3-flash",
+    "field": "inputModalities",
+    "modality": "file",
+    "sourceUrl": "https://runware.ai/docs/models/google-gemini-3-flash/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image",
+      "video",
+      "audio"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/google:4@2",
+    "field": "outputModalities",
+    "modality": "text",
+    "sourceUrl": "https://runware.ai/docs/models/google-nano-banana-pro/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/runware:152@1",
+    "field": "inputModalities",
+    "modality": "video",
+    "sourceUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-3b-instruct/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  },
+  {
+    "key": "runware/runware:152@2",
+    "field": "inputModalities",
+    "modality": "video",
+    "sourceUrl": "https://runware.ai/docs/models/alibaba-qwen2-5-vl-7b-instruct/schema.json",
+    "checkedAt": "2026-10-16",
+    "expected": [
+      "text",
+      "image"
+    ],
+    "evidence": "packages/api/src/provider-model-details.ts",
+    "reason": "Exact hosted schema already present in main; full-object resolution replaces the broader manufacturer-only static layer. Omission remains unknown."
+  }
+]

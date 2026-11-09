@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import vm from 'node:vm'
 import { fileURLToPath } from 'node:url'
-import { loadCard, archivedAuditText, readPackedRegistry } from '../../../scripts/lib/model-card-audit.mjs'
+import { loadCard, archivedAuditText } from '../../../scripts/lib/model-card-audit.mjs'
 import React from 'react'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
@@ -13,6 +13,7 @@ import { mergeCardFacts } from '../src/lib/catalogCardFacts.js'
 import { modalityIconStates } from '../src/lib/modelModalityIcons.js'
 import channelSnapshot from '../../../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with { type: 'json' }
 import baseline from './fixtures/model-modalities-main-c7b6a2fc.json' with { type: 'json' }
+import schemaExpectations from './fixtures/r22-exact-schema-expectations.json' with { type: 'json' }
 import phase2 from '../../../config/channel-audit/model-modality-phase2-20261109.json' with { type: 'json' }
 
 const require = createRequire(import.meta.url)
@@ -21,7 +22,6 @@ const rows = Object.entries(STATIC_MODEL_REGISTRY).flatMap(([provider, entry]) =
 afterEach(cleanup)
 const root = fileURLToPath(new URL('../../../', import.meta.url))
 const beforeCard = await loadCard(root, 'd1fe6ff6')
-const beforeCore = readPackedRegistry(root + 'apps/web/tests/fixtures/r11-registry-head.json')
 
 test('the pre-phase-2 static baseline still retains every previously supported modality', () => {
   const source = archivedAuditText(root, 'd1fe6ff6', 'apps/web/src/lib/staticModelCatalog.js').replace(/export const /g, 'const ')
@@ -62,9 +62,14 @@ test('every static card retains main supported modalities and all product image-
       : phase2.reviews[key]?.[field]?.decisions[modality]
     const checkSupport = (field, modality) => {
       const state = reviewedState(field, modality), fact = card.fields[field]
-      const fullBefore = beforeCore.providers[provider]?.models.find(row => row.id === model.id)
-      const previouslySupported = fullBefore ? beforeCard(provider, fullBefore).fields[field].value?.includes(modality) || false : true
-      assert.equal(fact.value?.includes(modality) || false, state ? state === 'supported' : previouslySupported, key + '/' + field + '/' + modality)
+      const exact = schemaExpectations.find(row => row.key === key && row.field === field && row.modality === modality)
+      if (state) assert.equal(fact.value?.includes(modality) || false, state === 'supported', key + '/' + field + '/' + modality)
+      else if (exact) {
+        assert.deepEqual(fact.value, exact.expected, key + '/exact-schema')
+        assert.equal(fact.sourceUrl, exact.sourceUrl)
+        assert.equal(fact.verifiedAt, exact.checkedAt)
+        assert.ok(!fact.unsupportedModalities?.includes(modality), 'schema omission remains unknown')
+      } else assert.ok(fact.value?.includes(modality), key + '/' + field + ' lost main ' + modality)
       if (state) assert.equal(fact.unsupportedModalities?.includes(modality) || false, state === 'unsupported', key + '/reviewed-' + modality)
     }
     if (needsImage) checkSupport('inputModalities', 'image')

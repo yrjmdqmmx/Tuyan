@@ -14,7 +14,7 @@ test('R21 Core exact channel specifications leave the base/vendor archive intact
   assert.deepEqual(details.models['tokendance/qwen3.6-plus'], base)
   const qwen = normalizeCatalogModel('tokendance', { id: 'qwen3.6-plus', inputModalities: ['text', 'image', 'video'] }, tokenDanceSnapshot.sourceUrl)!
   const merged = mergeCatalogRows([{ id: qwen.id, specifications: base.specifications }, qwen])[0]
-  assert.deepEqual(qwen.inputModalities, ['text'])
+  assert.deepEqual(qwen.inputModalities, ['text', 'image', 'video'])
   assert.deepEqual(merged.specifications.officialInputModalities, ['text'])
   const hidden = exactModelDetails('tokendance', 'deepseek-v4-flash-vision-exp').specifications
   assert.equal(hidden.officialInputModalities, undefined)
@@ -36,8 +36,8 @@ test('R21 real Core modelRegistry objects preserve channel facts through all enr
     assertTokenDanceFacts((id: string) => ({ fields: find(id).specifications.modalityFacts }))
     for (const model of models) {
       const facts = auditedModelSpecs('tokendance', model.id).fields
-      assert.deepEqual(model.inputModalities, facts.inputModalities.value || [])
-      assert.deepEqual(model.outputModalities, facts.outputModalities.value || [])
+      assert.deepEqual(model.specifications.modalityFacts.inputModalities, facts.inputModalities)
+      assert.deepEqual(model.specifications.modalityFacts.outputModalities, facts.outputModalities)
     }
     assert.equal(runtime.providerCalls.length, 0)
   } finally { await runtime.close() }

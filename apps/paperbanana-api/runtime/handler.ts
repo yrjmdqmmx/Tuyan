@@ -4771,8 +4771,6 @@ function enrichSpecificPages(provider: string, registry: ProviderModelRegistry) 
     if (exact?.specifications.modalityFacts) {
       const facts = exact.specifications.modalityFacts
       return { ...model, specificModelSpecifications: exact.specifications,
-        inputModalities: facts.inputModalities ? facts.inputModalities.value ?? [] : model.inputModalities,
-        outputModalities: facts.outputModalities ? facts.outputModalities.value ?? [] : model.outputModalities,
         specifications: { ...model.specifications, version: 1 as const,
           ...(facts.inputModalities ? { officialInputModalities: facts.inputModalities.value ?? undefined } : {}),
           ...(facts.outputModalities ? { officialOutputModalities: facts.outputModalities.value ?? undefined } : {}), modalityFacts: facts },

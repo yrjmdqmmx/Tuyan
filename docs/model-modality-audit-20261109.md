@@ -483,3 +483,181 @@ For Bailian, the exact `MiniMax/MiniMax-M3.1-Flash` and `xiaomi/mimo-v2.6-pro-ul
 | Mini source budget | **1,569,244 ≤ 1,572,864 bytes**, unchanged; **3,620 bytes** spare. |
 
 All work and validation are local: no Git writes, network, paid calls, other-worktree changes or deployment.
+
+
+## R22 Phase A
+
+PM review of PR #251, items 1 and 4 only. Work stayed in this checkout on `codex/model-modality-audit`; HEAD remains `c84c159c`, with read-only comparison to `8c456709`. No git write commands, other worktrees, network access, secrets, paid calls, deployments or container image builds were used.
+
+### Execution capability restored
+
+The offline before/after comparison found **54 changed top-level modality fields on 47 registry models** at PR HEAD (45 input arrays, 9 output arrays). Channel counts by changed field were TokenDance 21, Bailian 17, fal 15 and Ideogram 1. `enrichSpecificPages` now leaves top-level execution fields intact. `normalizeCatalogModel` also uses the original exact/base archive to derive execution modalities, applying reviewed channel overlays only to display specifications; the frozen normalization comparison covers **113 identities** that previously differed under at least one input scenario.
+
+Channel facts remain in `specifications` (`officialInputModalities`, `officialOutputModalities`, `modalityFacts`), `specificModelSpecifications`, audit display facts and `cardSpecifications`. Existing TokenDance/Bailian icons, links, provenance and all **1,064 static picker names** are retained. No model roles, selection/verification state, adapters, protocols, reference-image flags or limits were promoted or removed by this fix.
+
+The audit checked `provider-catalog.ts`, `model-card-projection.mjs`, Web static/catalog facts, `sync-model-catalog.mjs`, Mini's decoded static catalog/normalizer/decoder/upload policy/picker, and Gateway's audit decorator. The generated Web and Mini execution projections already match main; their encoding and display-only differences remain. Running the catalog generator produced no additional generated-file changes. Core's two PR-added modality tests now assert the display specification fields rather than requiring top-level execution capability to equal display facts.
+
+### Frozen main oracle and per-end tests
+
+The checked-in artifact is [`test-support/fixtures/execution-capability-8c456709.json`](../test-support/fixtures/execution-capability-8c456709.json). Generate or verify it offline with:
+
+```sh
+node scripts/freeze-execution-capability.mjs
+node scripts/freeze-execution-capability.mjs --check
+```
+
+The generator uses `git show 8c456709:<path>` through an in-memory loader. Historical product modules are bundled/evaluated without a checkout, temporary worktree or repository Git mutation. Both sides use the fixed clock `2026-11-09T12:00:00.000Z`, an empty product environment, the pre-existing main TokenDance metadata snapshot and synthetic metadata for the three OpenRouter defaults. Other public catalogs return a mocked 503. Database, storage, image processing and real transport are disabled. This is an execution-parity oracle, not a claim about current live catalog availability.
+
+Coverage:
+
+- **31 static providers / 1,064 static models**, preserving model order and every non-display property, including complete nested capabilities, reference policies, roles, protocols, availability and limits. The projection excludes only `specifications`, `specificModelSpecifications`, `cardSpecifications` and `auditSpecifications`.
+- **32 full-registry providers / 1,064 returned models** in the deterministic offline scenario: 1,061 original Core entries plus three synthetic OpenRouter entries. The three static-only identities omitted by main's lifecycle processing remain omitted by current Core.
+- **8,512 actual Core `resolveReferenceImageMode` decisions**: every returned model × vanilla/planner-critic × none/assist vision × references absent/present.
+- **2,128 catalog-normalization cases**: every static identity with absent and explicitly supplied modality metadata. Exact-ID aliases, source pointers and all other returned execution fields are compared too.
+- Web checks all static and live registry projections, `mainModelCanReadImages`, `workflowModelVisionStatus`, `workflowVisionError` and `modelRefinePresentation` used by the application.
+- Mini checks decoded static data, static/live `normalizeModelRegistry`, the exact decoded `audited-input-policy`, static reference defaults, and the real compiled `generation-settings-sheet.effectiveRoles`, `index.refreshReferenceModeState` and `index.submitJob` methods. The static normalization scenario includes the same three synthetic OpenRouter rows to satisfy main's mandatory-provider contract (1,067 rows); live normalization covers 1,064. Submission is stopped at mocked infrastructure/payload boundaries; no task or upload is created.
+- Gateway checks its actual in-memory registry HTTP response against main and verifies `withModelAudit` does not mutate capability or the input model.
+
+Each endpoint owns a new `execution-capability-r22.test.*` test in its test directory. Display assertions and the 1,064-name picker test run alongside these checks.
+
+### Complete changed-expectation review
+
+[`model-modality-changed-tests.md`](model-modality-changed-tests.md) and its [JSON manifest](model-modality-changed-tests.json) enumerate **14 pre-existing test files**, **68 assertion or test-input changes**, and **615 semantic per-model changes** in the one changed, pre-existing consumed JSON fixture (`config/model-audit.generated.json`). The classification is **682 JUSTIFIED**, **1 UNJUSTIFIED / RESTORED**, **0 FLAGGED**. Existing historical JSON under `tests/fixtures` is unchanged; PR-added fixtures are explicitly distinguished.
+
+The unjustified change was R6A's blanket allowance for any baseline modality loss whenever archived full-object output also omitted it. That general exemption is removed. Original positive-retention assertions apply to all unreviewed entries, with only **12 explicit omissions across nine exact Replicate/Runware schema identities** pinned to their already-existing source/date/complete array in `r22-exact-schema-expectations.json`. Unknown schema omissions are never asserted as unsupported. The earlier channel-specific table and portal changes remain justified by their exact evidence.
+
+```sh
+node scripts/report-changed-tests.mjs --check
+```
+
+This recomputes the changed pre-existing test-file set from `git diff 8c456709 -- '*test*' '*tests*'`, detects directly consumed changed JSON fixtures, verifies diff hashes, counts, evidence paths and Markdown/JSON agreement. A negative regression removes one file from the manifest and requires the check to fail.
+
+### Validation
+
+| Check | Result |
+| --- | --- |
+| Web full suite: `cd apps/web && NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2` | **1,467 passed, 0 failed** |
+| Web `npm run build` | Passed; existing large-chunk advisory only |
+| Mini `npm test` / `npm run build` | **160 passed, 0 failed** / passed |
+| `node --test scripts/*.test.mjs` | **43 passed, 0 failed** |
+| Gateway `npm test` | **203 passed, 87 environment binding failures, 1 skipped** |
+| Core `node --import tsx --test tests/*model*.test.ts tests/provider-catalog.test.ts tests/reference-selection.test.ts tests/reference-upload-policy.test.ts` | **60 passed, 19 environment binding failures** |
+| Core new/touched tests: `node --import tsx --test tests/execution-capability-r22.test.ts tests/model-modality-r21.test.ts tests/model-modality-phase2.test.ts` | **6 passed, 0 failed** |
+| Core `npm run check` | Passed |
+| `sync-model-catalog`, `generate-model-audit`, `report-model-modality-r21`, `report-model-modality-phase2`, `freeze-execution-capability`, `report-changed-tests` with `--check` | All passed |
+| `git diff --check` | Passed |
+
+Mini source is **1,569,244 bytes**, runtime excluding `.ts` is **1,144,677 bytes**. The original source limit remains **1,572,864 bytes**, leaving **3,620 bytes**. The frozen execution oracle lives outside the Mini package. No package-budget or binding-test assertion was relaxed.
+
+### Environment-only localhost failures
+
+Every failure below reports exactly `listen EPERM: operation not permitted 127.0.0.1`; there were no other failure categories in either broader run. They remain unmodified and need a localhost-enabled environment. Gateway's one pre-existing skip is reported separately by its runner. All new per-end parity checks use in-memory infrastructure and pass here.
+
+| Endpoint / file:line | Test | Failure |
+| --- | --- | --- |
+| Core / `apps/paperbanana-api/tests/model-material-workflow.test.ts:1:2247` | gateway/Core: formats x retrieval x uploads; data and mixed types; revised-version review | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:2463` | production regression: 10 auto results fit the actual main or observer budget, then reach generation | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:4863` | no useful references or fewer references than budget never causes quota filling | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:6257` | uploaded and retrieved images share the actual planner budget; corrupted, duplicate bytes and overlarge refs are skipped | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:10170` | text-only main cannot consume gallery metadata alone; basic and assist both read images | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:12334` | historical 10-vs-8 task gets a read-only Chinese explanation without rewriting uncertain charges | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:15387` | reference selection, prepared bytes and completed planner survive balance recovery without repeated calls | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:16998` | plot rendering and optional enhancement success or fallback remain separate visible stages | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-selection.test.ts:1:19251` | SVG generation failure reports rendering after a successful saved plan | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:1403` | 8 real uploads, >5MiB originals, processing and vanilla main-model analysis reach generation | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:4055` | 100 MB actual storage roundtrip; ten-file and 10 MB byte ceilings cannot be bypassed | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:4864` | decode bounds, lossless failure, actual Base64 request budget, and processing concurrency reject before providers | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:6580` | supported photographic WebP is retained before PNG expansion, and Bailian includes its VL fallback bounds | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:7977` | Bailian compatibility retry receives derivatives within the actual fallback model budget | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:9612` | owned extensionless JPEG sources keep working through Gateway and the real refine adapter | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:10975` | SVG retains vector detail at model size and refuses silent text loss; HTTP busy finalize is retryable | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:12723` | processed aggregate budget stops a real multi-image batch before a paid transport | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:13285` | TokenDance invalid reference bytes fail with actionable input errors before any paid call | `listen EPERM` |
+| Core / `apps/paperbanana-api/tests/reference-upload-policy.test.ts:1:15269` | Seedream 14px is rejected before queueing and 15px reaches the exact refine adapter | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/account-profile.test.js:78:1` | HTTP profile requires current account, trusted write origin and JSON; activity never accepts a body identity | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:155:1` | allows exact WeChat origins and rejects lookalike domains | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:212:1` | Better Auth receives bounded request bodies through the Web handler bridge | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:227:1` | Better Auth rejects bodies larger than 1 MiB with the stable envelope | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:241:1` | Better Auth counts chunked bytes instead of trusting Content-Length | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:256:1` | Better Auth still receives a valid chunked body below the limit | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:269:1` | keeps HTTP-200 business envelopes including public saturation code 429 | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:278:1` | relays a real upstream HTTP status and envelope unchanged | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:287:1` | optimizeInputs relays the business envelope with an exact anonymous DTO and dedicated timeout | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:337:1` | maintenance blocks optimizeInputs before it reaches the backend | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:347:1` | modelRegistry is a public read-only backend action | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:364:1` | large public registries negotiate gzip and preserve every catalog field on the wire | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:406:1` | registry errors and other public responses are not compressed by the registry path | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:420:1` | benchmark public actions are anonymous read-only backend actions | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:435:1` | benchmark prompt submissions require an account and replace forged identity | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:453:1` | benchmark admin actions require immutable admin identity before forwarding | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:468:1` | benchmark prompt moderation actions use the existing immutable admin transport | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:484:1` | anonymous writes receive a stable guest owner while raw forwarding headers are not relayed | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:509:1` | logged-in writes use the account identity and never create a guest cookie | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:522:1` | create and refine preserve explicit mixed routes and legacy fields without top-provider rewrites | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:585:1` | providerAccountCatalog receives the same authenticated-or-guest write principal as jobs | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:613:1` | getJob allows a matching guest owner and rejects missing or mismatched ownership | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:636:1` | getJob rejects historical email-only ownership and accepts immutable-id admins | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:652:1` | matching an admin email or caller token never grants admin access | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:681:1` | getJob rotates a valid previous-key guest cookie while preserving access | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:715:1` | guest identity never enables myJobs, admin lists, or account deletion | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:734:1` | refine checks source job ownership before dispatch and prefers the object key | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:760:1` | refine rejects cross-owner object keys and external URLs before dispatch | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:784:1` | maintenance mode dynamically blocks the exact mutating set but preserves reads and auth | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:810:1` | health is cached liveness, ready probes dependencies, and public routes expose the Node backend | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:841:1` | ready returns 503 if either auth or backend is unavailable | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:850:1` | account deletion mutates auth only after semantic backend success | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:875:1` | account deletion preflights the v3 contract before any destructive backend call | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:897:1` | concurrent account deletion requests share one destructive operation | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:939:1` | account deletion succeeds after commit even when cookie clearing fails | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:965:1` | account deletion treats password-store failures as internal errors, not bad passwords | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:984:1` | unexpected internal failures return a generic 500 and log only redacted detail | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1016:1` | route-shaped multi-key failures keep every BYOK secret out of logs and the public 500 | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1044:1` | account deletion persists retry on business failure or incomplete success without deleting Auth | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1061:1` | account deletion refuses a legacy cleanup response that cannot prove complete object deletion | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1076:1` | maintenance blocks account deletion before password or backend calls | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1091:1` | returns a stable 1 MiB JSON body error envelope | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1104:1` | account status uses the session identity and internal deletion actions are not public | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1117:1` | a durable deletion blocks new work even before Core first accepts the cleanup request | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1128:1` | maintenance blocks Watcha mutations and OAuth callback while allowing status and email sign-in | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1152:1` | account deletion confirmation replaces only password reauthentication and keeps email matching | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1170:1` | metadata catalog forwards only the selected channel key and explicit directory credentials | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1183:1` | production workspace execution is advertised only with all durable stores mounted | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/app.test.js:1197:1` | production requires login before any task, upload, export or paid helper can be dispatched | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/bailian-workspace.test.js:29:1` | paused workspace execution cannot resume against a newly selected business space or region | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:20:1` | ecosystem requires live account and trusted origin before parsing and forwarding | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:32:1` | unconfigured or maintained service fails closed, never touching Core or worker | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:37:1` | malformed and excessive payloads never reach the worker | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:45:1` | gateway preserves duplicate JSON properties for strict worker rejection | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:53:1` | worker errors are bounded and hidden; expired sessions cannot receive results | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:62:1` | concurrent account renders are rejected, then released after completion | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ecosystem.test.js:69:1` | worker timeout aborts the request and rate window bounds repeated renders | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/image-library.test.js:7:1` | image HTTP routes require session, origin and account; map only live tasks and never trust supplied ownership | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:98:1` | initialize advertises only tools and resources without creating state | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:119:1` | tools/list exposes one read-only closed-schema tool | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:138:1` | tool calls return the selected public workflow without forwarding arguments | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:160:1` | tool calls reject free text, extra fields, invalid versions, and invalid enums | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:185:1` | resources list in stable order and dynamic workflow resources can be read | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:210:1` | MCP has an independent 64 KiB request ceiling | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:221:1` | anonymous journal and taxonomy resources retain their wire hashes without business calls | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:236:1` | MCP limits each client IP to 60 requests per minute | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:248:1` | MCP operational logs exclude arguments and user-controlled values | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:270:1` | MCP logs normalize unknown method names instead of recording arbitrary text | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/mcp.test.js:281:1` | stateless MCP serves concurrent read requests without sessions | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/model-library.test.js:25:1` | library writes require current identity and trusted Origin; lifecycle closure cannot leave a late write | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/model-library.test.js:33:1` | malformed JSON never reflects a credential fragment in its error | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ops-agent.test.js:76:1` | authentication excludes anonymous, cookie, query, expired keys and browser requests | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ops-agent.test.js:89:1` | HTTP responses and audits use fixed projections, scopes, methods and bounded queries | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ops-agent.test.js:119:1` | MCP initialize/discovery/parallel tool calls work statelessly with no write tools | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ops-agent.test.js:141:1` | bounded per-credential rate limit and body limit | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/ops-agent.test.js:213:1` | actual Gateway mounts private ops before public CORS/auth and keeps public MCP separate | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/plus-access.test.js:7:1` | every Plus route rejects ordinary or forged admin requests before payment or ledger access | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/plus-access.test.js:31:1` | admin-only router fails closed when no admin checker is wired | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-deletion.test.js:27:1` | HTTP deletion authenticates account and origin; cleanup failure is durable and GET retries without rerunning any model | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-execution.test.js:17:1` | HTTP envelope preserves normal downstream route; credentials are resolved only for selected roles, no replay after lost response | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-execution.test.js:44:1` | input optimization resolves only main credentials and shares the task execution lock | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-execution.test.js:55:1` | paused execution resumes only its original job and binding; duplicate resume never dispatches twice | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-execution.test.js:65:1` | a stale competing run cannot dispatch after the previous task lock is released | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-execution.test.js:72:1` | workspace is rechecked after slow routing and atomic claim before dispatch | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-history.test.js:6:1` | history route authenticates, binds pagination to session identity and rejects foreign jobs even for administrators | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-sync.test.js:35:1` | HTTP routes require live identity, matching account header and trusted write origin | `listen EPERM` |
+| Gateway / `apps/auth-gateway/tests/workspace-sync.test.js:72:1` | revision-only reads work across trusted origins with the same account and preserve CAS | `listen EPERM` |

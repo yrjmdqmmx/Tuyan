@@ -32,7 +32,7 @@ test('phase 2 Core channel tables and partial masks survive full registry enrich
     for (const field of ['inputModalities','outputModalities']) {
       assert.deepEqual(auditedModelSpecs('bailian',id).fields[field].value, row[field])
       assert.deepEqual(exactModelDetails('bailian',id).specifications.modalityFacts[field].value, row[field])
-      assert.deepEqual(models.get(key)[field], row[field])
+      assert.deepEqual(models.get(key).specifications.modalityFacts[field].value, row[field])
     }
   }
   for (const key of Object.keys(evidence.links)) {
