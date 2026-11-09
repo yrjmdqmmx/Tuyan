@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-31.v42",
+  "version": "2026-11-09.v43",
   "providers": {
     "deepseek": [
       {
@@ -8853,6 +8853,78 @@
     ],
     "openai": [
       {
+        "id": "gpt-image-2.6-flare",
+        "label": "GPT Image 2.6 Flare",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [],
+          "selectable": false,
+          "disabledReason": "型号已收录；本次证据未包含输出尺寸契约，待核实后启用。"
+        }
+      },
+      {
+        "id": "gpt-image-2.6-sunburst",
+        "label": "GPT Image 2.6 Sunburst",
+        "roles": [
+          "image"
+        ],
+        "protocol": "openai-images",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": true,
+          "maxReferenceImages": 1,
+          "imageGeneration": true,
+          "imageEditing": true,
+          "imageEditMode": "direct-edit",
+          "outputFormats": [
+            "png"
+          ]
+        },
+        "metadata": {
+          "vendor": "OpenAI",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst",
+          "inputModalities": [
+            "text",
+            "image"
+          ],
+          "outputModalities": [
+            "image"
+          ],
+          "regions": [],
+          "selectable": false,
+          "disabledReason": "型号已收录；本次证据未包含输出尺寸契约，待核实后启用。"
+        }
+      },
+      {
         "id": "gpt-5.1",
         "label": "gpt-5.1",
         "roles": [
@@ -14859,6 +14931,33 @@
       }
     ],
     "fireworks": [
+      {
+        "id": "accounts/fireworks/models/kimi-k3p1-pro",
+        "label": "Kimi K3.1 Pro",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "Kimi",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://fireworks.ai/models/fireworks/kimi-k3p1-pro",
+          "regions": [
+            "global-endpoint"
+          ]
+        }
+      },
       {
         "id": "accounts/fireworks/models/kimi-k2p5",
         "label": "Kimi K2.5",
@@ -25993,6 +26092,33 @@
     ],
     "tokenhub": [
       {
+        "id": "hy4",
+        "label": "HY4",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "tencent",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://cloud.tencent.com/document/product/1823/132252",
+          "regions": [
+            "cn-endpoint"
+          ]
+        }
+      },
+      {
         "id": "hy-image-v3",
         "label": "HyImage 3.0",
         "roles": [
@@ -30640,6 +30766,36 @@
     ],
     "longcat": [
       {
+        "id": "LongCat-2.5",
+        "label": "LongCat 2.5",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "meituan",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://longcat.chat/platform/docs/change-log",
+          "outputModalities": [
+            "text"
+          ],
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
         "id": "LongCat-2.0",
         "label": "LongCat 2.0",
         "roles": [
@@ -30716,6 +30872,60 @@
       }
     ],
     "antling": [
+      {
+        "id": "Ling-3.2-flash",
+        "label": "Ling-3.2-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
+      {
+        "id": "Ling-3.1-flash",
+        "label": "Ling-3.1-flash",
+        "roles": [
+          "main"
+        ],
+        "protocol": "openai-chat-completions",
+        "availabilityNotes": "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。",
+        "capabilities": {
+          "referenceImages": false,
+          "maxReferenceImages": 0,
+          "imageGeneration": false,
+          "imageEditing": false,
+          "imageEditMode": "none",
+          "outputFormats": []
+        },
+        "metadata": {
+          "vendor": "ant",
+          "lifecycle": "stable",
+          "verified": false,
+          "verificationState": "catalog",
+          "officialSourceUrl": "https://developer.ant-ling.com/zh-CN/docs/api-reference/",
+          "regions": [
+            "account-region"
+          ]
+        }
+      },
       {
         "id": "Ling-3.0-flash-VL",
         "label": "Ling 3.0-flash-VL",

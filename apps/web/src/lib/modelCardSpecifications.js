@@ -1,3 +1,4 @@
+import { auditedModelSpecs, auditedModelLifecycle } from './modelAudit.js'
 import reviewedModels from '../data/model-card-specifications.json'
 
 const reviewedById = new Map()
@@ -15,34 +16,6 @@ export function safeOfficialSources(values) {
 const names = { text: '文本', image: '图像', audio: '音频', video: '视频', file: '文件', document: '文件' }
 const formatModalities = values => Array.isArray(values) && values.length
   ? values.map(value => names[value]).filter(Boolean).join('、') || null : null
-const formatFactModalities = (facts, key) => {
-  const text = formatModalities(facts?.[key])
-  return text && `${text}${facts.modalitiesComplete === false ? '；其他模态待确认' : ''}`
-}
-const formatDecimalLimit = value => {
-  const million = value >= 1_000_000
-  // Keep the exact integer limit when scaling; K/M are decimal, never binary.
-  const number = new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: million ? 6 : 3 })
-    .format(value / (million ? 1_000_000 : 1_000))
-  return `${number}${million ? 'M' : 'K'}`
-}
-// Context cards favor readable magnitudes; source values and request limits stay exact.
-const formatContextLimit = (value, approximate = false) => {
-  const unit = value >= 999_500 ? 1_000_000 : value >= 1_000 ? 1_000 : 1
-  const number = new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: unit === 1_000_000 ? 1 : 0 }).format(value / unit)
-  const rounded = Number(number) * unit !== value
-  return `${approximate || rounded ? '≈ ' : ''}${number}${unit === 1_000_000 ? 'M' : unit === 1_000 ? 'K' : ''}`
-}
-const formatContext = facts => Number.isSafeInteger(facts?.contextWindowTokens) && facts.contextWindowTokens > 0
-  ? `${formatContextLimit(facts.contextWindowTokens, facts.contextWindowApproximate)} tokens` : null
-const formatReviewedContext = value => {
-  if (!value) return null
-  const match = /^([\d,]+(?:\.\d+)?)\s*([KM]?)(.*)$/i.exec(value)
-  if (!match) return `${value} tokens`
-  const count = Number(match[1].replaceAll(',', '')) * ({ K: 1_000, M: 1_000_000 }[match[2].toUpperCase()] || 1)
-  return Number.isSafeInteger(count) && count > 0 ? `${formatContextLimit(count)}${match[3]} tokens` : null
-}
-
 function reviewedSpecification(provider, model) {
   const entry = reviewedById.get(model.id)
   return entry && (!entry.providers || entry.providers.includes(provider))
@@ -58,76 +31,25 @@ export function modelCardName(provider, model) {
 }
 
 export function modelCardSpecifications(provider, model) {
-  const reviewed = reviewedSpecification(provider, model)
-  const channel = model.specifications?.version === 1 ? model.specifications : null
-  const manufacturer = channel?.manufacturer?.identity === 'matched' ? channel.manufacturer : null
-  const layers = []
-  const detailed = model.specificModelSpecifications
-  if (detailed) layers.push({
-    input:formatFactModalities(detailed, 'officialInputModalities'), output:formatFactModalities(detailed, 'officialOutputModalities'),
-    context:formatContext(detailed), sources:safeOfficialSources(detailed.sourceUrls), scope:detailed.sourceScope === 'service' || provider === 'runware' ? '渠道' : '原厂',
-  })
-  if (reviewed) layers.push({
-    input: reviewed.input, output: reviewed.output,
-    context: formatReviewedContext(reviewed.context),
-    sources: safeOfficialSources(reviewed.sources), scope: reviewed.sourceScope === 'service' ? '渠道' : '原厂',
-    sourcesByField: Object.fromEntries(['input', 'output', 'context'].filter(key => reviewed[`${key}Sources`]).map(key => [key, safeOfficialSources(reviewed[`${key}Sources`])])),
-    scopeByField: Object.fromEntries(['input', 'output', 'context'].filter(key => reviewed[`${key}SourceScope`]).map(key => [key, reviewed[`${key}SourceScope`] === 'service' ? '渠道' : '原厂'])),
-  })
-  // A reviewed unresolved variant must not inherit old manufacturer references.
-  if (!reviewed && manufacturer) layers.push({
-    input: formatModalities(manufacturer.officialInputModalities), output: formatModalities(manufacturer.officialOutputModalities),
-    context: formatContext(manufacturer), sources: safeOfficialSources(manufacturer.sourceUrls), scope: '原厂',
-  })
-  if (channel) layers.push({
-    input: formatModalities(channel.officialInputModalities) && `${formatModalities(channel.officialInputModalities)}${channel.modalitiesComplete === false ? '；其他模态待确认' : ''}`, output: formatModalities(channel.officialOutputModalities) && `${formatModalities(channel.officialOutputModalities)}${channel.modalitiesComplete === false ? '；其他模态待确认' : ''}`,
-    context: formatContext(channel), sources: safeOfficialSources(channel.sourceUrls), scope: '渠道',
-  })
-  const data = { sources: [], limitRows: [] }
-  for (const key of ['input', 'output', 'context']) {
-    // A hosted API's numeric window takes precedence over native weight configuration.
-    const ordered = channel?.serviceDetails?.length
-      ? [layers.at(-1), ...layers.slice(0, -1)]
-      : key === 'context' && detailed?.sourceScope !== 'service' && formatContext(channel)
-      ? [layers.find(item => item.scope === '渠道' && item.context === formatContext(channel)), ...layers].filter(Boolean) : layers
-    const layer = ordered.find(item => item[key] && (item.sourcesByField?.[key] || item.sources).length)
-    data[key] = layer?.[key] || '待确认'
-    data[`${key}Scope`] = layer?.scopeByField?.[key] || layer?.scope || ''
-    if (layer) data.sources.push(...(layer.sourcesByField?.[key] || layer.sources))
+  const audit = auditedModelSpecs(provider, model.id)
+  const fields = audit.fields
+  const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }
+  const text = fact => fact.state === 'known'
+    ? Array.isArray(fact.value) ? formatModalities(fact.value) : `${fact.value.toLocaleString('en-US')} tokens`
+    : labels[fact.state]
+  const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
+  const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : ''
+  const context = image ? '不适用' : text(fields.totalContextTokens)
+  const maxOutput = image ? '不适用' : text(fields.maxOutputTokens)
+  return {
+    input: text(fields.inputModalities), output: text(fields.outputModalities), context, maxOutput,
+    inputFact: fields.inputModalities, outputFact: fields.outputModalities,
+    inputScope: scope(fields.inputModalities), outputScope: scope(fields.outputModalities),
+    contextScope: scope(fields.totalContextTokens), maxOutputScope: scope(fields.maxOutputTokens),
+    sources: safeOfficialSources([...Object.values(fields).map(fact => fact.sourceUrl), audit.sourceUrl,
+      model.officialSourceUrl, ...(model.specifications?.sourceUrls || []), ...(model.specificModelSpecifications?.sourceUrls || [])]),
+    checkedAt: audit.verifiedAt, unverified: audit.unverified,
+    lifecycle: auditedModelLifecycle(provider, model.id),
+    limitRows: [{label:'上下文窗口',value:context}, {label:'最大输出',value:maxOutput}],
   }
-  // Input/output token limits never substitute for a published context window.
-  if (data.context === '待确认' && (detailed?.contextWindowStatus === 'not-published' || channel?.contextWindowStatus === 'not-published')) data.context = '官方未公布'
-  if (data.context === '待确认' && (reviewed?.maxInputTokens || channel?.maxInputTokens)) data.context = '未单列'
-  // Image prompt lengths replace an unpublished context row, keeping their actual units.
-  // A prompt limit cannot override a published token context or any runtime request cap.
-  const hasContext = layers.some(layer => layer.context && layer.sources.length)
-  if (!hasContext && /图像/.test(data.output)) {
-    for (const kind of ['generation', 'editing']) {
-      const limit = [detailed, channel, reviewed, ...(!reviewed && manufacturer ? [manufacturer] : [])]
-        .flatMap(facts => Array.isArray(facts?.promptLimits) ? facts.promptLimits : [])
-        .find(item => item?.kind === kind && Number.isSafeInteger(item.max) && item.max > 0
-          && ['characters', 'bytes', 'tokens'].includes(item.unit) && safeOfficialSources(item.sourceUrls).length)
-      if (limit) {
-        const sources = safeOfficialSources(limit.sourceUrls)
-        data.limitRows.push({ label: kind === 'generation' ? '生图提示词上限' : '编辑提示词上限',
-          value: `${formatDecimalLimit(limit.max)} ${{ characters: '字符', bytes: '字节', tokens: 'tokens' }[limit.unit]}`, sources })
-        data.sources.push(...sources)
-      }
-    }
-  }
-  if (!data.limitRows.length) data.limitRows.push({ label: '上下文窗口', value: data.context, sources: [] })
-  if (channel?.serviceDetails?.length) {
-    for (const [key, label] of [['maxInputTokens','最大输入'], ['maxOutputTokens','最大输出']]) {
-      if (Number.isSafeInteger(channel[key]) && channel[key] > 0) data.limitRows.push({label, value: `${channel[key].toLocaleString('en-US')} tokens`, sources: safeOfficialSources(channel.sourceUrls)})
-    }
-    data.serviceDetails = channel.serviceDetails.filter(row => row.label && row.value && safeOfficialSources(row.sourceUrls).length)
-    data.checkedAt = channel.checkedAt
-    data.productInput = model.capabilities?.referenceImages === true ? `文本、图像（最多${model.capabilities.maxReferenceImages || '待确认'}张）` : '文本；图片尚未接入'
-    data.productOutput = '文本；图片理解可用于绘图规划与评审，不直接生成图片'
-    data.productLimits = '图片：4MiB/张、12MiB合计、4096像素边长、8MP/张；编码后请求≤20MB'
-    data.sources.push(...channel.sourceUrls, ...data.serviceDetails.flatMap(row => row.sourceUrls))
-  }
-  if (!data.sources.length) data.sources.push(...(detailed?.sourceUrls || []), ...(channel?.sourceUrls || []), ...(reviewed?.sources || []), model.officialSourceUrl, model.releaseSourceUrl, model.releaseOrderSourceUrl)
-  data.sources = safeOfficialSources(data.sources)
-  return data
 }

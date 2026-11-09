@@ -475,6 +475,7 @@ export function resolveModelRouting(body: Record<string, any>, inactiveObserver 
   }
 
   const activeRoutes = Object.fromEntries(Object.entries(modelRoutes).filter(([role]) => isActive(role)))
+  for (const route of Object.values(activeRoutes)) assertAuditedModelAvailable(route.accessProvider, route.modelId)
   checkedModelRegions(body.providerRegions, activeRoutes)
   const routingMode: ModelRoutingMode = new Set(Object.values(activeRoutes).map((route) => route.accessProvider === 'custom' ? ['custom',route.custom?.baseUrl,route.custom?.protocol,route.custom?.auth].join('|') : route.accessProvider)).size === 1
     ? 'single'
@@ -513,6 +514,7 @@ async function resolveCreateModelRouting(body:Record<string,any>) {
   let inactiveObserver=false
   if(body.action !== 'refineImage' && body.pipelineMode==='vanilla' && normalizeTaskName(body.taskName)!=='plot') {
     const main=normalizeModelRoute(body.modelRoutes?.main || {accessProvider:body.provider,modelId:body.mainModelName},'main')
+    assertAuditedModelAvailable(main.accessProvider, main.modelId)
     inactiveObserver=(await referenceModelCapability(main.accessProvider,main.modelId,main.custom)).status==='supported'
   }
   return resolveModelRouting(body,inactiveObserver)
@@ -949,6 +951,7 @@ type ProviderAccountCatalogBody = {
 }
 
 type ModelRegistryEntry = {
+  auditChannel?: string
   catalogRemoval?: { reason: 'public-catalog-unavailable' | 'official-metadata-conflict'; checkedAt: string; sourceUrl: string }
   catalogReview?: { status: 'pending'; checkedAt: string; reason: string; sourceUrls: string[] }
   catalogAliases?: string[]
@@ -1209,7 +1212,7 @@ type BenchImportCache = {
 }
 let importCache: BenchImportCache | null = null
 
-const modelRegistryVersion = '2026-10-31.v42'
+const modelRegistryVersion = '2026-11-09.v43'
 const inputOptimizationContractVersion = 1 as const
 const inputOptimizationTimeoutMs = 45_000
 const inputOptimizationLimits: Record<InputOptimizationTarget, number> = {
@@ -1778,6 +1781,10 @@ function upsertAuditedModel(provider: Exclude<Provider, 'openrouter'>, entry: Mo
 // BEGIN GENERATED AUDITED CATALOG
 import { MODEL_CHANNEL_LABELS, orderModelChannels, ModelVersion, normalizeModelVersion, modelVersionLabel, modelVersionDetail, openRouterModelVersion, modelLifecycleLabel, modelDeveloperName, modelDeveloperAliases, modelDeveloper, presentRegistryModel, validModelReleaseDate, sortModelsNewestFirst } from '../../../packages/types/src/model-presentation.js'
 export * from '../../../packages/types/src/model-presentation.js'
+import { MODEL_AUDIT_DATA } from '../../../packages/api/src/model-audit-data.js'
+export * from '../../../packages/api/src/model-audit-data.js'
+import { AuditFact, auditedModelSpecs, auditedModelLifecycle, assertAuditedModelAvailable, withModelAudit, assertModelLibraryAdditions } from '../../../packages/api/src/model-audit.js'
+export * from '../../../packages/api/src/model-audit.js'
 import { MODEL_PRESENTATION } from '../../../packages/types/src/model-presentation-data.js'
 export * from '../../../packages/types/src/model-presentation-data.js'
 import { AUDITED_CHANNEL_CONTRACTS } from '../../../packages/api/src/audited-channel-data.js'
@@ -1813,6 +1820,8 @@ export * from '../../../packages/types/src/image-size-contract.js'
 import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'
 function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { const run=()=>measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)); return providerWorkflow.stage?providerWorkflow.stage(stage,run):run() }
 // Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.
+
+
 
 
 
@@ -2198,6 +2207,8 @@ upsertAuditedModel('bailian', registryEntry("qwen-image-2.1-turbo", "Qwen Image 
 upsertAuditedModel('bailian', registryEntry("deepseek-v4.1-flash-1017", "DeepSeek V4.1 Flash 1017", ["main","vision"], "bailian-openai-chat", "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"vendor":"deepseek","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/deepseek-api","inputModalities":["text","image"],"outputModalities":["text"],"regions":["cn-beijing","ap-southeast-1","us-east-1","eu-central-1","ap-northeast-1"],"requiresEntitlement":true,"entitlement":"workspace-access and supplier-activation"}))
 upsertAuditedModel('bailian', registryEntry("MiniMax/MiniMax-M3.1-Flash", "MiniMax M3.1 Flash", ["main","vision"], "bailian-openai-chat", "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"vendor":"minimax","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax","inputModalities":["text","image"],"outputModalities":["text"],"regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access and supplier-activation"}))
 upsertAuditedModel('bailian', registryEntry("xiaomi/mimo-v2.6-pro-ultraspeed", "MiMo V2.6 Pro UltraSpeed", ["main","vision"], "bailian-openai-chat", "2026-10-26 核对百炼精确型号与 Chat 图片合同；支持主模型和视觉角色，图片经 Base64 Data URL 提交。图研最多3张、4MiB/张；官方音视频/工具能力不等于产品接入。需业务空间、对应地区密钥及服务权限，真实调用与生产未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"vendor":"xiaomi","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://help.aliyun.com/zh/model-studio/mimo","inputModalities":["text","image"],"outputModalities":["text"],"regions":["cn-beijing"],"requiresEntitlement":true,"entitlement":"workspace-access and supplier-activation"}))
+upsertAuditedModel('openai', registryEntry("gpt-image-2.6-flare", "GPT Image 2.6 Flare", ["image"], "openai-images", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":true,"maxReferenceImages":1,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"vendor":"OpenAI","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models/gpt-image-2.6-flare","inputModalities":["text","image"],"outputModalities":["image"],"regions":[],"selectable":false,"disabledReason":"型号已收录；本次证据未包含输出尺寸契约，待核实后启用。"}))
+upsertAuditedModel('openai', registryEntry("gpt-image-2.6-sunburst", "GPT Image 2.6 Sunburst", ["image"], "openai-images", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":true,"maxReferenceImages":1,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"vendor":"OpenAI","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst","inputModalities":["text","image"],"outputModalities":["image"],"regions":[],"selectable":false,"disabledReason":"型号已收录；本次证据未包含输出尺寸契约，待核实后启用。"}))
 upsertAuditedModel('openai', registryEntry("gpt-5.1", "gpt-5.1", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
 upsertAuditedModel('openai', registryEntry("gpt-5.2", "gpt-5.2", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
 upsertAuditedModel('openai', registryEntry("gpt-4o", "gpt-4o", ["main","vision"], "openai-chat-completions", "官方目录支持；访问权限以当前账号及接入地区为准。", {}, {"vendor":"OpenAI","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developers.openai.com/api/docs/models"}))
@@ -2392,6 +2403,7 @@ upsertAuditedModel('together', registryEntry("nvidia/NVIDIA-Nemotron-3.5-Super-V
 upsertAuditedModel('together', registryEntry("reflection/Beam-1.0-501B-A23B", "Reflection Beam 1.0 501B A23B", ["main"], "openai-chat-completions", "2026-10-19 官方目录与现有 Chat Completions 请求协议核对；账户、真实调用及模型质量未验证。仅文本角色；不从其他渠道继承视觉或思考控件。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"reflection","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.together.ai/docs/serverless/models","inputModalities":["text"],"outputModalities":["text"]}))
 upsertAuditedModel('together', registryEntry("deepseek-ai/DeepSeek-V4.1-Flash-1017", "DeepSeek V4.1 Flash 1017", ["main"], "openai-chat-completions", "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.30、缓存 0.006、输出 1.20；US/Canada 专用路由及 25% 加价需独立适配。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"deepseek","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.together.ai/docs/serverless/models","inputModalities":["text"],"outputModalities":["text"]}))
 upsertAuditedModel('together', registryEntry("MiniMaxAI/MiniMax-M3.1-Flash", "MiniMax M3.1 Flash", ["main"], "openai-chat-completions", "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。只出现在 Chat 表，未在该渠道 Vision 表确认；仅文本。官方未单独给出最大输出。 标准路由公开 USD/百万 token：输入 0.15、缓存 0.015、输出 0.60；US/Canada 专用路由及 25% 加价需独立适配。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"minimax","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://docs.together.ai/docs/serverless/models","inputModalities":["text"],"outputModalities":["text"]}))
+upsertAuditedModel('fireworks', registryEntry("accounts/fireworks/models/kimi-k3p1-pro", "Kimi K3.1 Pro", ["main"], "openai-chat-completions", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":false,"maxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"Kimi","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://fireworks.ai/models/fireworks/kimi-k3p1-pro","regions":["global-endpoint"]}))
 upsertAuditedModel('fireworks', registryEntry("accounts/fireworks/models/kimi-k2p5", "Kimi K2.5", ["main","vision"], "openai-chat-completions", "当前官方 VLM 示例支持；旧图片工作流文档 404，本轮不开放未确认的图片 API。", {"referenceImages":true,"maxReferenceImages":3}, {"vendor":"Moonshot","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://app.fireworks.ai/models/fireworks/kimi-k2p5","regions":["global-endpoint"],"inputModalities":["text","image"],"outputModalities":["text"]}))
 upsertAuditedModel('fireworks', registryEntry("accounts/fireworks/models/kimi-k3", "Kimi K3", ["main","vision"], "openai-chat-completions", "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://app.fireworks.ai/models/fireworks/kimi-k3","inputModalities":["text","image"],"outputModalities":["text"],"vendor":"Kimi"}))
 upsertAuditedModel('fireworks', registryEntry("accounts/fireworks/models/kimi-k2p7-code", "Kimi K2.7 Code", ["main","vision"], "openai-chat-completions", "官方目录核对日期 2026-09-07；账户权限与真实推理未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://app.fireworks.ai/models/fireworks/kimi-k2p7-code","inputModalities":["text","image"],"outputModalities":["text"],"vendor":"Kimi"}))
@@ -2724,6 +2736,7 @@ upsertAuditedModel('runware', registryEntry("recraft:v4.1@flash", "Runware - Rec
 upsertAuditedModel('runware', registryEntry("bfl:flux@3-image-klein", "FLUX 3 Image Klein", ["image"], "provider-images", "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。", {"referenceImages":true,"maxReferenceImages":4,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"vendor":"black-forest-labs","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://runware.ai/docs/models/bfl-flux-3-image-klein","inputModalities":["text","image"],"outputModalities":["image"],"releasedAt":"2026-10-15"}))
 upsertAuditedModel('runware', registryEntry("bfl:flux@3-image-klein-base", "FLUX 3 Image Klein Base", ["image"], "provider-images", "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。", {"referenceImages":true,"maxReferenceImages":4,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"vendor":"black-forest-labs","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://runware.ai/docs/models/bfl-flux-3-image-klein-base","inputModalities":["text","image"],"outputModalities":["image"],"releasedAt":"2026-10-15"}))
 upsertAuditedModel('runware', registryEntry("alibaba:qwen-image@2.1-turbo", "Qwen-Image-2.1-Turbo", ["image"], "provider-images", "2026-10-16 官方目录/接口核对；账户权限、真实调用及输出质量未验证。尺寸及参考图数量按 Runware schema，独立于原厂。", {"referenceImages":true,"maxReferenceImages":10,"imageGeneration":true,"imageEditing":true,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"vendor":"alibaba","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo","inputModalities":["text","image"],"outputModalities":["image"],"releasedAt":"2026-10-09"}))
+upsertAuditedModel('tokenhub', registryEntry("hy4", "HY4", ["main"], "openai-chat-completions", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":false,"maxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"tencent","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://cloud.tencent.com/document/product/1823/132252","regions":["cn-endpoint"]}))
 upsertAuditedModel('tokenhub', registryEntry("hy-image-v3", "HyImage 3.0", ["image"], "provider-images", "已实现专用适配；账户权限、计费与真实输出未验证。", {"imageGeneration":true,"imageEditing":true,"referenceImages":true,"maxReferenceImages":3,"imageEditMode":"direct-edit","outputFormats":["png"]}, {"verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://cloud.tencent.com/document/product/1823/135745","inputModalities":["text","image"],"outputModalities":["image"],"vendor":"tencent","regions":["cn-endpoint"]}))
 upsertAuditedModel('tokenhub', registryEntry("hy3", "Hy3", ["main"], "openai-chat-completions", "逐型号字段适配；广州端点，真实调用与权限未验证。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"tencent","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://cloud.tencent.com/document/product/1823/132252","inputModalities":["text"],"outputModalities":["text"],"regions":["cn-endpoint"]}))
 upsertAuditedModel('tokenhub', registryEntry("hy-vision-2.0-instruct", "HY-Vision-2.0-Instruct", ["main","vision"], "openai-chat-completions", "逐型号字段适配；广州端点，真实调用与权限未验证。", {"referenceImages":true,"maxReferenceImages":3}, {"vendor":"tencent","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://cloud.tencent.com/document/product/1823/136956","inputModalities":["text","image"],"outputModalities":["text"],"regions":["cn-endpoint"]}))
@@ -2864,8 +2877,11 @@ upsertAuditedModel('iflytek', registryEntry("xspark13b6k", "Spark Lite", ["main"
 upsertAuditedModel('iflytek', registryEntry("xqwen14bchat", "Qwen_v2.5_14b_Instruct", ["main"], "anthropic-messages", "官方目录及协议已核对；账号权限、真实调用和账单未验证。", {"referenceImages":false,"maxReferenceImages":0,"providerMaxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"alibaba","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999","inputModalities":["text"],"outputModalities":["text"],"regions":["cn-huabei-1"]}))
 upsertAuditedModel('iflytek', registryEntry("spark-x2.6", "Spark X2.6", ["main"], "openai-chat-completions", "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"xunfei","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999","inputModalities":["text"],"outputModalities":["text"],"regions":["cn-huabei-1"]}))
 upsertAuditedModel('iflytek', registryEntry("spark-x2.6-4b", "Spark X2.6 4B", ["main"], "openai-chat-completions", "2026-10-26 官方目录及请求协议核对；账户权限、真实调用、质量与最终账单未验证。serviceId 是实际 API ID；不使用 pretrainedModel 内部名。现有 OpenAI v2 请求，max_completion_tokens=2048 沿用产品预算；未开放 Responses。 公开 1M 上下文，最大输出未明确；促销价格只代表核查日，免费标价不代表账户权益。", {"referenceImages":false,"maxReferenceImages":0}, {"vendor":"xunfei","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999","inputModalities":["text"],"outputModalities":["text"],"regions":["cn-huabei-1"]}))
+upsertAuditedModel('longcat', registryEntry("LongCat-2.5", "LongCat 2.5", ["main"], "openai-chat-completions", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":false,"maxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"meituan","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://longcat.chat/platform/docs/change-log","outputModalities":["text"],"regions":["account-region"]}))
 upsertAuditedModel('longcat', registryEntry("LongCat-2.0", "LongCat 2.0", ["main"], "openai-chat-completions", "官方目录及协议已核对；账号权限、真实调用和账单未验证。", {"referenceImages":false,"maxReferenceImages":0,"providerMaxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"meituan","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://longcat.chat/platform/docs/zh/api/models.html","inputModalities":["text"],"outputModalities":["text"],"regions":["account-region"]}))
 upsertAuditedModel('longcat', registryEntry("LongCat-2.5-Preview", "LongCat 2.5-Preview", ["main","vision"], "openai-chat-completions", "官方视觉教程已核对并接入现有识图流程；支持文本及图片理解，不代表生图或编辑。官方暂定最多 50 张、10MB/张、比例不超过 200:1；图研保守限制 3 张、4MiB/张、8MP。真实调用和账单未验证。", {"referenceImages":true,"maxReferenceImages":3,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[],"providerMaxReferenceImages":50}, {"vendor":"meituan","verified":false,"verificationState":"catalog","lifecycle":"preview","officialSourceUrl":"https://longcat.ai/platform/docs/zh/image-video-understanding","inputModalities":["text","image"],"outputModalities":["text"],"regions":["account-region"],"roleReasons":{"main":"官方 API 支持文本、思考与图片理解。","vision":"官方视觉教程给出精确 ID、image_url 内容块、Base64/URL 示例；复用既有识图流程。","image":"视觉理解不等于生图；原厂图片生成 API 的 ID 与调用契约尚未确认。"}}))
+upsertAuditedModel('antling', registryEntry("Ling-3.2-flash", "Ling-3.2-flash", ["main"], "openai-chat-completions", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":false,"maxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"ant","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developer.ant-ling.com/zh-CN/docs/api-reference/","regions":["account-region"]}))
+upsertAuditedModel('antling', registryEntry("Ling-3.1-flash", "Ling-3.1-flash", ["main"], "openai-chat-completions", "2026-11-09 官方型号证据已核对；账号权限与真实调用未验证。", {"referenceImages":false,"maxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"ant","lifecycle":"stable","verified":false,"verificationState":"catalog","officialSourceUrl":"https://developer.ant-ling.com/zh-CN/docs/api-reference/","regions":["account-region"]}))
 upsertAuditedModel('antling', registryEntry("Ling-3.0-flash-VL", "Ling 3.0-flash-VL", ["main","vision"], "openai-chat-completions", "官方目录与协议已核对；账号权限、真实调用及账单未验证。", {"referenceImages":true,"maxReferenceImages":3,"providerMaxReferenceImages":40,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"ant","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/","inputModalities":["text","image"],"outputModalities":["text"],"regions":["account-region"]}))
 upsertAuditedModel('antling', registryEntry("Ling-3.0-flash", "Ling 3.0-flash", ["main"], "openai-chat-completions", "官方目录与协议已核对；账号权限、真实调用及账单未验证。", {"referenceImages":false,"maxReferenceImages":0,"providerMaxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"ant","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/","inputModalities":["text"],"outputModalities":["text"],"regions":["account-region"]}))
 upsertAuditedModel('antling', registryEntry("Ling-3.0-tiny", "Ling 3.0-tiny", ["main"], "openai-chat-completions", "官方目录与协议已核对；账号权限、真实调用及账单未验证。", {"referenceImages":false,"maxReferenceImages":0,"providerMaxReferenceImages":0,"imageGeneration":false,"imageEditing":false,"imageEditMode":"none","outputFormats":[]}, {"vendor":"ant","verified":false,"verificationState":"catalog","lifecycle":"stable","officialSourceUrl":"https://developer.ant-ling.com/zh-CN/docs/api-reference/openai/","inputModalities":["text"],"outputModalities":["text"],"regions":["account-region"]}))
@@ -4288,7 +4304,7 @@ Object.assign(staticModelRegistry["bailian"].models.find(model => model.id === "
 Object.assign(staticModelRegistry["bailian"].models.find(model => model.id === "MiniMax/MiniMax-M3.1-Flash")!, {"label":"MiniMax M3.1 Flash","version":{"kind":"unconfirmed","checkedAt":"2026-10-26","sourceUrl":"https://help.aliyun.com/zh/model-studio/minimax-api-by-minimax"},"apiIdentifier":"MiniMax/MiniMax-M3.1-Flash"})
 Object.assign(staticModelRegistry["bailian"].models.find(model => model.id === "xiaomi/mimo-v2.6-pro-ultraspeed")!, {"label":"MiMo V2.6 Pro UltraSpeed","version":{"kind":"unconfirmed","checkedAt":"2026-10-26","sourceUrl":"https://help.aliyun.com/zh/model-studio/mimo"},"apiIdentifier":"xiaomi/mimo-v2.6-pro-ultraspeed"})
 for (const [provider, registry] of Object.entries(staticModelRegistry)) {
-  registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
+  registry.models = sortModelsNewestFirst(registry.models.map(model => ({...presentRegistryModel(provider, model), auditChannel: provider})))
 }
 // END GENERATED AUDITED CATALOG
 
@@ -4683,6 +4699,7 @@ export default async function (ctx: CoreContext) {
     }
     return fail(`Unknown action: ${action}`, 400)
   } catch (error: any) {
+    if (['MODEL_RETIRED', 'MODEL_CHANNEL_UNAVAILABLE'].includes(error?.businessCode)) return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
     if (String(action).startsWith('imageLibrary') && error?.status) return fail(error.message,error.status)
     if(error?.name==='MaterialError')return {...fail(error.message,error.statusCode||400),businessCode:error.businessCode||'MATERIAL_READ_ERROR'}
     if (error?.name === 'UniversalApiError') return {...fail(error.message, error.status || 400), failure: publicExecutionFailure(error), requestState: error.requestState}
@@ -4991,7 +5008,7 @@ export async function modelRegistry(body: ModelRegistryBody) {
   }))
   for (const [provider, registry] of Object.entries(providers)) {
     if (!registry) continue
-    registry.models = enrichSpecificPages(provider, registry).models
+    registry.models = enrichSpecificPages(provider, registry).models.map(model => withModelAudit(provider, model))
     registry.models = registry.models.map(model => ({ ...model, capabilities: {
       ...model.capabilities,
       referenceGeneration: referenceGenerationSupport({accessProvider:provider,modelId:model.id}, model),
@@ -5188,12 +5205,14 @@ async function optimizeInputs(body: OptimizeInputsBody) {
   }
 
   try {
+    assertAuditedModelAvailable(provider, modelId)
     const registry = await registryForModelRoute(normalizeModelRoute(route, 'main'))
     const entry = registry.models.find((candidate) => candidate.id === modelId)
     if (!entry || entry.selectable !== true || !entry.roles.includes('main')) {
       return invalidInputOptimizationRoute()
     }
-  } catch {
+  } catch (error: any) {
+    if (['MODEL_RETIRED', 'MODEL_CHANNEL_UNAVAILABLE'].includes(error?.businessCode)) return {...fail(error.message,400),businessCode:error.businessCode,replacement:error.replacement,requestState:'not_sent'}
     return invalidInputOptimizationRoute()
   }
 
@@ -10369,13 +10388,15 @@ function openRouterOutputFormats(parameters: any) {
 }
 
 function applyModelLifecycle(model: ModelRegistryEntry): ModelRegistryEntry {
+  const audited = withModelAudit(model.auditChannel || '', model)
+  if (audited.auditLifecycle) return audited
   const date = model.expirationDate
   // Retain far-future provider placeholders as evidence; do not describe them
   // as a guaranteed service lifetime. Earliest dates never disable a model.
-  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date) || date.startsWith('2098')) return model
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date) || date.startsWith('2098')) return audited
   const retired = Date.now() >= modelExpirationTime(model)
   return {
-    ...model, lifecycle: 'legacy', recommended: false,
+    ...audited, lifecycle: 'legacy', recommended: false,
     selectable: retired ? false : model.selectable,
     ...(retired ? { disabledReason: `官方服务已于 ${date} 到期${model.replacementModelId ? `，请改用 ${model.replacementModelId}` : ''}` } : {}),
   }
@@ -10407,6 +10428,7 @@ async function validateModelRouting(
   registries = new Map<Provider, ProviderModelRegistry>(),
 ): Promise<Map<Provider, ProviderModelRegistry>> {
   const requiredRoles = uniqueRouteRoles(roles)
+  for (const role of requiredRoles) assertAuditedModelAvailable(modelRoutes[role].accessProvider, modelRoutes[role].modelId)
   for (const provider of new Set(requiredRoles.map((role) => modelRoutes[role].accessProvider))) {
     if (provider === 'custom' || registries.has(provider)) continue
     try {
@@ -11923,6 +11945,7 @@ function toOpenRouterModel(model: string) {
 }
 
 async function assertCatalogModelActive(provider: string, model: string) {
+  assertAuditedModelAvailable(provider, model)
   const disabled = auditedDisabledIdentities[provider]?.[String(model).trim()]
   if (disabled) throw new Error(disabled.reason || '所选型号已停用，原配置已保留，请手动选择。')
   if (provider === 'openrouter' && model.endsWith(':batch')) throw new Error('此型号仅支持异步 Batch API，请手动选择同步型号。')

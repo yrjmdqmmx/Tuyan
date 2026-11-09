@@ -1,3 +1,4 @@
+import { auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js'
 import { createPortal } from 'react-dom'
 import { useDialogLayer } from './AccessibleDialog.jsx'
 import { useAppLocale } from './BenchmarkLocale.jsx'
@@ -57,7 +58,7 @@ export default function ModelPicker({
     : model.id === effectiveRoute.modelId
   const visiblePartition = (partition) => (savedOnly
     ? [...partition.compatible, ...partition.incompatible].filter(model => !model.savedChoice?.hidden)
-    : partition.compatible).filter(model => !model.catalogMissing)
+    : partition.compatible).filter(model => !model.catalogMissing && !auditedModelLifecycle(model.auditChannel, model.id)?.blocked)
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
   const sourceRegistry = registry?.providers
     ? registry
@@ -71,7 +72,7 @@ export default function ModelPicker({
       }
   const effectiveRegistry = useMemo(() => ({ ...sourceRegistry, providers: Object.fromEntries(Object.entries(sourceRegistry.providers || {}).map(([id, entry]) => [id, { ...entry, models: entry.models.map((model) => {
     const presented = presentRegistryModel(id, model)
-    return { ...presented, label: modelCardName(id, presented), catalogMissing: modelMissingFromCatalog(sourceRegistry, id, model) }
+    return { ...withModelAudit(id, presented), label: modelCardName(id, presented), catalogMissing: modelMissingFromCatalog(sourceRegistry, id, model) }
   }) }])) }), [registry, models, provider])
   const providerIds = useMemo(() => [
     ...(allowCustom && !savedOnly ? ['custom'] : []),

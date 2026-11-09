@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_audit_1 = require("../../utils/model-audit");
 const model_presentation_1 = require("../../utils/model-presentation");
 const model_registry_store_1 = require("../../utils/model-registry-store");
 const provider_regions_1 = require("../../utils/provider-regions");
@@ -24,6 +25,8 @@ Component({
         },
     },
     data: {
+        savedLifecycle: '',
+        savedReplacement: '',
         step: 'providers',
         roleLabel: '主模型',
         providerCards: [],
@@ -69,6 +72,9 @@ Component({
                     count: this.compatibleModels(id).length,
                 });
             }).filter(item => item.count > 0);
+            const lifecycle = (0, model_audit_1.auditedModelLifecycle)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
+            const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement));
+            this.setData({ savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '' });
             const selectedProvider = String(this.properties.selectedProvider || '');
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
             const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];
@@ -159,6 +165,16 @@ Component({
                 return;
             this.triggerEvent('select', { provider: this.data.activeProvider, modelId });
         },
+        confirmReplacement() {
+            const replacement = this.data.savedReplacement;
+            if (!replacement || !this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement))
+                return;
+            wx.showModal({ title: '确认切换模型', content: `${this.properties.selectedModel} → ${replacement}。只修改当前选择，其他预设与历史记录保持不变。`, success: result => {
+                    if (result.confirm && this.compatibleModels(String(this.properties.selectedProvider)).some(model => model.id === replacement))
+                        this.triggerEvent('select', { provider: this.properties.selectedProvider, modelId: replacement });
+                } });
+        },
+        copySource(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.url || '') }); },
         copyId(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }); },
         toggleDetails(event) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }); },
         close() { this.triggerEvent('close'); },
@@ -168,7 +184,14 @@ function normalizeRole(value) { return value === 'image' || value === 'vision' ?
 function roleLabel(role) { return role === 'image' ? '图像生成模型' : role === 'vision' ? '参考图识别模型' : '主模型'; }
 function presentModel(model, selectedProvider, selectedModel, providerId) {
     var _a, _b, _c;
+    const audit = (0, model_audit_1.auditedModelSpecs)(providerId, model.id), lifecycle = (0, model_audit_1.auditedModelLifecycle)(providerId, model.id);
+    const names = { text: '文本', image: '图像', audio: '音频', video: '视频', file: '文件', document: '文件' };
+    const display = (fact) => { var _a; return fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${(_a = fact.value) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US')} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'; };
+    const image = model.roles.includes('image') || (Array.isArray(audit.fields.outputModalities.value) && audit.fields.outputModalities.value.some(x => x === 'image' || x === 'video'));
     return {
+        specRows: [['inputModalities', '输入'], ['outputModalities', '输出'], ['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => ({ label, value: image && key.endsWith('Tokens') ? '不适用' : display(audit.fields[key]), origin: audit.fields[key].provenance === 'vendor' ? '源自原厂' : '' })),
+        specSources: [...new Set([...Object.values(audit.fields).map(f => f.sourceUrl), audit.sourceUrl].filter((url) => Boolean(url)))],
+        verifiedAt: audit.verifiedAt || '', auditMessage: [lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message, audit.unverified ? '未核实' : ''].filter(Boolean).join(' · '),
         id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
         serviceTier: model.serviceTier || '', versionLabel: (0, model_presentation_1.modelVersionLabel)(model), versionText: (0, model_presentation_1.modelVersionDetail)(model), apiIdentifier: model.apiIdentifier || model.id,

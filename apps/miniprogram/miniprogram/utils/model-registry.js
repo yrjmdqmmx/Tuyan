@@ -6,6 +6,7 @@ exports.modelAvailabilityPresentation = modelAvailabilityPresentation;
 exports.partitionRegistryModels = partitionRegistryModels;
 exports.groupRegistryModels = groupRegistryModels;
 exports.findRegistryModel = findRegistryModel;
+const model_audit_1 = require("./model-audit");
 const model_presentation_1 = require("./model-presentation");
 exports.MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'];
 function normalizeModelRegistry(input) {
@@ -39,12 +40,13 @@ function normalizeModelRegistry(input) {
     };
 }
 function normalizeProvider(providerId, input) {
+    var _a;
     const source = asRecord(input);
     const defaultsSource = asRecord(source.defaults);
     const modelsSource = Array.isArray(source.models) ? source.models : [];
     if (!modelsSource.length)
         throw new Error(`${providerId} 模型目录为空。`);
-    const models = (0, model_presentation_1.sortModelsNewestFirst)(modelsSource.map((model) => (0, model_presentation_1.presentRegistryModel)(providerId, normalizeModel(model))));
+    const models = (0, model_presentation_1.sortModelsNewestFirst)(modelsSource.map((model) => (0, model_audit_1.withModelAudit)(providerId, (0, model_presentation_1.presentRegistryModel)(providerId, normalizeModel(model)))));
     const uniqueIds = new Set(models.map((model) => model.id));
     if (uniqueIds.size !== models.length)
         throw new Error(`${providerId} 模型目录包含重复 ID。`);
@@ -55,7 +57,10 @@ function normalizeProvider(providerId, input) {
     };
     const labels = { main: '主模型', image: '图像模型', vision: '识别模型' };
     for (const role of ['main', 'image', 'vision']) {
-        if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role)))
+        // Newly exposed roles may have no channel default; keep the saved blank choice.
+        if (!defaults[role])
+            continue;
+        if ((_a = (0, model_audit_1.auditedModelLifecycle)(providerId, defaults[role])) === null || _a === void 0 ? void 0 : _a.blocked)
             continue;
         const entry = models.find((model) => model.id === defaults[role]);
         const catalogQuarantined = (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);
@@ -144,6 +149,7 @@ function modelAvailabilityPresentation(model) {
 function partitionRegistryModels(models, options) {
     const query = stringValue(options.query).toLocaleLowerCase('zh-CN');
     const annotated = models
+        .filter(model => { var _a; return !((_a = (0, model_audit_1.auditedModelLifecycle)(model.auditChannel || '', model.id)) === null || _a === void 0 ? void 0 : _a.blocked); })
         .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
         .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
         .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))

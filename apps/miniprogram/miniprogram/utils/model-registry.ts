@@ -1,9 +1,11 @@
+import { auditedModelLifecycle, withModelAudit } from './model-audit'
 import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
+  auditChannel?: string
   id: string
   version?: ModelVersion
   apiIdentifier?: string
@@ -118,7 +120,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   const defaultsSource = asRecord(source.defaults)
   const modelsSource = Array.isArray(source.models) ? source.models : []
   if (!modelsSource.length) throw new Error(`${providerId} 模型目录为空。`)
-  const models = sortModelsNewestFirst(modelsSource.map((model) => presentRegistryModel(providerId, normalizeModel(model))))
+  const models = sortModelsNewestFirst(modelsSource.map((model) => withModelAudit(providerId, presentRegistryModel(providerId, normalizeModel(model)))))
   const uniqueIds = new Set(models.map((model) => model.id))
   if (uniqueIds.size !== models.length) throw new Error(`${providerId} 模型目录包含重复 ID。`)
 
@@ -129,7 +131,9 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   }
   const labels: Record<ModelRole, string> = { main: '主模型', image: '图像模型', vision: '识别模型' }
   for (const role of ['main', 'image', 'vision'] as const) {
-    if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role))) continue
+    // Newly exposed roles may have no channel default; keep the saved blank choice.
+    if (!defaults[role]) continue
+    if (auditedModelLifecycle(providerId, defaults[role])?.blocked) continue
     const entry = models.find((model) => model.id === defaults[role])
     const catalogQuarantined = entry?.selectable === false && Boolean(entry.disabledReason)
     if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
@@ -226,6 +230,7 @@ export function partitionRegistryModels(
 ): RegistryModelPartition {
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
+    .filter(model => !auditedModelLifecycle(model.auditChannel || '', model.id)?.blocked)
     .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))

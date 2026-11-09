@@ -14,3 +14,7 @@
 .model-panel .model-close::after,.model-panel .step-back::after,.model-panel .provider-card::after,.model-panel .model-select::after,.model-panel .model-details-toggle::after,.model-panel .model-copy::after{border:0}
 
 .model-steps{display:flex;align-items:center;gap:4px;padding:4px 0}.model-panel .flow-step{flex:1;min-width:0;width:0;margin:0;padding:10px 2px;border-radius:7px;background:#e8ede7;color:#64766b;font-size:12px;line-height:1.5;font-weight:600;white-space:nowrap}.model-panel .flow-step.active{background:#315e50;color:#fff}.model-panel .flow-step::after{border:0}.flow-arrow{flex:none;color:#8b998f;font-size:11px}.model-path{padding:10px 0 4px;font-size:12px;line-height:1.6;color:#4e6b5d;overflow-wrap:anywhere}.step-caption{font-size:12px;color:#758379}
+
+.model-audit-specs { padding: 12rpx 20rpx; font-size: 24rpx; }
+.model-audit-specs > view { display:flex; justify-content:space-between; gap:12rpx; padding:4rpx 0; }
+.model-audit-specs text { overflow-wrap:anywhere; min-width:0; }

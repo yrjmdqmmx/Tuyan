@@ -67,7 +67,7 @@ const imageOnly = { ...provider('recraft'), defaults: { main: '', image: 'recraf
 const partial = normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: textOnly, recraft: imageOnly } })
 assert.equal(partial.providers.anthropic.defaults.image, '')
 assert.equal(partial.providers.recraft.defaults.main, '')
-assert.throws(() => normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: '' } } } }), /默认主模型/)
+assert.equal(normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: '' } } } }).providers.anthropic.defaults.main, '')
 
 const datedFixture = registry()
 datedFixture.providers.openai.models[0].expirationDate = '2000-01-01'

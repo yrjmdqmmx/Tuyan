@@ -1562,7 +1562,7 @@ test('modelRegistry exposes rich model-level metadata and current direct-provide
 
   const gemini = await invokeTrusted(legacy, context({ action: 'modelRegistry', provider: 'gemini' }))
   assert.equal(gemini.code, 0)
-  assert.match(gemini.registryVersion, /^2026-10-/)
+  assert.equal(gemini.registryVersion, '2026-11-09.v43')
   assert.deepEqual(gemini.providers.gemini.defaults, {
     main: 'gemini-3.7-flash',
     image: 'gemini-3.1-flash-image',
@@ -3014,7 +3014,7 @@ test('OpenRouter global catalog reports catalog compatibility without inventing 
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider: 'openrouter' }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-31.v42')
+    assert.equal(registry.registryVersion, '2026-11-09.v43')
     const models = new Map<string, any>(registry.providers.openrouter.models.map((entry: any) => [entry.id, entry]))
     assert.equal(models.get('openai/gpt-5.6-sol')?.lifecycle, 'stable', 'curated stable default remains stable')
     for (const id of ['vendor/production-like', 'vendor/model-preview', 'vendor/image-preview']) {
@@ -5176,7 +5176,7 @@ test('v14 static image registry exposes exact canonical generation and refinemen
       request: { method: 'POST' }, body: { action: 'modelRegistry', provider }, headers: {},
       response: { setHeader() {}, status() {} },
     })
-    assert.equal(registry.registryVersion, '2026-10-31.v42')
+    assert.equal(registry.registryVersion, '2026-11-09.v43')
     const models = new Map<string, any>(registry.providers[provider].models.map((entry: any) => [entry.id, entry]))
     for (const [modelId, ratios] of Object.entries(providerExpected)) {
       const capabilities = models.get(modelId)?.capabilities

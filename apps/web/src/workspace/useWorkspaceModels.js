@@ -4,6 +4,7 @@ import useBackendRegistry from '../hooks/useBackendRegistry.js';
 import { browserCredentialKey, emptyLibrary } from './workspaceModels.js';
 import {useTokenDance} from '../hooks/useTokenDance.js';
 import { tokenDanceLibraryAddition } from './tokenDanceLibrary.js';
+import { assertModelLibraryAdditions } from '../lib/modelAudit.js';
 
 export default function useWorkspaceModels(userId, base = API_BASE_DEFAULT) {
   const catalog = useBackendRegistry(base, { refreshMs: 0, timeoutMs: 60000 });
@@ -33,6 +34,7 @@ export default function useWorkspaceModels(userId, base = API_BASE_DEFAULT) {
     if (lock.current || !ready) return false;
     lock.current = true; setBusy(true); setError('');
     try {
+      assertModelLibraryAdditions(next, library);
       const connections = next.connections.map(({ hasCredential, ...c }) => c);
       const body = { revision: library.revision, connections, models: next.models };
       if (credentialChange?.value) {

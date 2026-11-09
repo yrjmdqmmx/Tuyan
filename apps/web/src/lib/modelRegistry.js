@@ -1,4 +1,6 @@
 import { modelDeveloper, sortModelsNewestFirst } from './modelPresentation.js'
+import { auditedModelLifecycle } from './modelAudit.js'
+export const modelAuditLifecycle = model => auditedModelLifecycle(model?.auditChannel, model?.id)
 // Missing catalogue entries are hidden in every selectable list, without
 // deleting saved identities or treating a failed catalogue load as removal.
 export function modelMissingFromCatalog(registry, provider, modelOrId) {
@@ -18,6 +20,8 @@ export function modelMissingFromCatalog(registry, provider, modelOrId) {
 // Browsing hides confirmed retirements, not temporary failures or adapter gaps.
 // Historical identities remain in the registry and saved task configuration.
 export function modelRetiredFromCatalog(model, now = Date.now()) {
+  const audited = auditedModelLifecycle(model?.auditChannel, model?.id, now)
+  if (audited) return audited.blocked
   const cutoff = model?.expirationAt || (model?.expirationDate && !model.expirationDate.startsWith('2098') ? `${model.expirationDate}T00:00:00Z` : '');
   const cutoffTime = Date.parse(cutoff);
   if (Number.isFinite(cutoffTime)) return now >= cutoffTime;
@@ -25,6 +29,7 @@ export function modelRetiredFromCatalog(model, now = Date.now()) {
     && /已确认.*停用|官方已.*(?:停服|退役)|公告此型号.*停用|完整托管目录已不再提供/.test(model.disabledReason || '');
 }
 export function modelUnavailableForSelection(model) {
+  if (modelAuditLifecycle(model)?.blocked) return true
   return model?.catalogPresence?.status === 'absent' || model?.selectable === false || Boolean(model?.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
 }
 export function mergeProviderRegistry(fallback, registry) {
@@ -118,6 +123,7 @@ function registryModelSearchValues(model) {
 }
 
 function annotateModelForRole(model, { role, outputFormat, operation }) {
+  const audited = modelAuditLifecycle(model)
   const expired = Boolean(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`))
   const outputFormats = model.capabilities?.outputFormats || []
   const roleMismatch = !model.roles?.includes(role)
@@ -128,8 +134,8 @@ function annotateModelForRole(model, { role, outputFormat, operation }) {
     && Array.isArray(model.capabilities?.refineResolutions) && !model.capabilities.refineResolutions.length
   return {
     ...model,
-    selectionDisabled: expired || model.selectable === false || roleMismatch || Boolean(formatMismatch) || generationMismatch || editingMismatch,
-    selectionDisabledReason: (expired ? model.catalogReview?.status === 'pending' ? `待确认：${model.catalogReview.reason}` : `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
+    selectionDisabled: audited?.blocked || expired || model.selectable === false || roleMismatch || Boolean(formatMismatch) || generationMismatch || editingMismatch,
+    selectionDisabledReason: (audited?.blocked ? audited.message : '') || (expired ? model.catalogReview?.status === 'pending' ? `待确认：${model.catalogReview.reason}` : `官方服务已于 ${model.expirationDate} 到期` : '') || model.disabledReason
       || (roleMismatch ? model.roleReasons?.[role] || `服务端未授权该模型用于${role === 'image' ? '图像生成' : '当前角色'}` : '')
       || (formatMismatch ? `该模型不支持 ${outputFormat.toUpperCase()} 输出` : '')
       || (generationMismatch ? '该模型仅支持图像编辑' : '')

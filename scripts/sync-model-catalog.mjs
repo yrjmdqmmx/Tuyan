@@ -21,6 +21,15 @@ const end = '// END GENERATED AUDITED CATALOG'
 const sizeConfig = JSON.parse(fs.readFileSync(path.join(root, 'config/image-size-contracts.json'), 'utf8'))
 const sizeRuntime = fs.readFileSync(path.join(root, 'packages/types/src/image-size-contract.ts'), 'utf8')
 const lines = [start, '// Source: config/model-catalog-updates.json; run node scripts/sync-model-catalog.mjs.']
+const modelAudit = JSON.parse(fs.readFileSync(path.join(root, 'config/model-audit.generated.json'), 'utf8'))
+const modelAuditData = 'export const MODEL_AUDIT_DATA: any = ' + JSON.stringify(modelAudit) + '\n'
+write(path.join(root, 'packages/api/src/model-audit-data.ts'), '// Generated from config/model-audit.generated.json\n' + modelAuditData)
+const modelAuditSource = fs.readFileSync(path.join(root, 'packages/api/src/model-audit.ts'), 'utf8').replace(/^import .* from .*\n/gm, '')
+lines.push(modelAuditData, modelAuditSource)
+write(path.join(root, 'apps/web/src/lib/modelAudit.js'), '// Generated from packages/api/src/model-audit.ts and config/model-audit.generated.json\n' + modelAuditData.replace(': any', '') + ts.transpileModule(modelAuditSource, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated from packages/api/src/model-audit.ts and config/model-audit.generated.json\n' + modelAuditData.replace(': any', '') + ts.transpileModule(modelAuditSource, {compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText)
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit-data.js'), '// Generated audit data; existing lossless catalog codec.\nmodule.exports = require("./unpack-model-catalog.js").unpackModelCatalog(' + JSON.stringify(packModelCatalog(modelAudit)) + ')' + '\n')
+write(path.join(root, 'apps/miniprogram/miniprogram/utils/model-audit.ts'), '// Generated from packages/api/src/model-audit.ts\nconst MODEL_AUDIT_DATA = require(\'./model-audit-data.js\')\n' + modelAuditSource)
 const presentation = JSON.parse(fs.readFileSync(path.join(root, 'config/model-presentation.json'), 'utf8'))
 const presentationData = `export const MODEL_PRESENTATION: {
   channels: Record<string, string>;
@@ -45,7 +54,7 @@ const imageChannelRoutes = JSON.parse(fs.readFileSync(path.join(root, 'config/im
 const routeModule = '// Generated from config/image-channel-routes.json.\nexport const IMAGE_CHANNEL_ROUTES: Record<string, any> = ' + JSON.stringify(imageChannelRoutes) + '\n'
 write(path.join(root, 'packages/api/src/image-channel-routes.ts'), routeModule)
 const channelAuditDir = path.join(root, 'config/channel-audit')
-const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
+const auditContracts = Object.assign({}, ...['runware-contracts.json','cn-contracts.json','official-contracts.json','frontier-refresh-contracts.json','v381-contracts.json','catalog-20261009-contracts.json','catalog-20261016-contracts.json','catalog-20261019-contracts.json','catalog-20261026-contracts.json','catalog-20261109-contracts.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditRefine = Object.assign({}, ...['runware-refine-controls.json','cn-refine-controls.json','official-refine-controls.json','catalog-20261016-refine-controls.json'].map(name => JSON.parse(fs.readFileSync(path.join(channelAuditDir,name),'utf8'))))
 const auditData = 'export const AUDITED_CHANNEL_CONTRACTS: Record<string, any> = ' + JSON.stringify(auditContracts) + '\n'
 const auditedInputPolicy = Object.fromEntries(Object.entries(auditContracts).filter(([,c])=>c.generateInputPolicy!==false).map(([key,c]) => {
@@ -187,7 +196,7 @@ for (const row of versionAudit.models.filter(row => row.channel !== 'openrouter'
   lines.push(`Object.assign(staticModelRegistry[${JSON.stringify(row.channel)}].models.find(model => model.id === ${JSON.stringify(row.apiModelId)})!, ${JSON.stringify({label:row.displayName,version,...(row.apiIdentifier ? {apiIdentifier:row.apiIdentifier} : {})})})`)
 }
 lines.push(`for (const [provider, registry] of Object.entries(staticModelRegistry)) {
-  registry.models = sortModelsNewestFirst(registry.models.map(model => presentRegistryModel(provider, model)))
+  registry.models = sortModelsNewestFirst(registry.models.map(model => ({...presentRegistryModel(provider, model), auditChannel: provider})))
 }`)
 lines.push(end)
 const block = lines.join('\n')
@@ -216,6 +225,8 @@ function useModule(file, embedded) {
   runtimeImports.push(`export * from '${specifier}'`)
 }
 useModule('packages/types/src/model-presentation.ts', presentationRuntime)
+useModule('packages/api/src/model-audit-data.ts', modelAuditData)
+useModule('packages/api/src/model-audit.ts', modelAuditSource)
 useModule('packages/types/src/model-presentation-data.ts')
 useModule('packages/api/src/audited-channel-data.ts', auditData)
 useModule('packages/api/src/audited-channel-contracts.ts', fs.readFileSync(path.join(root,'packages/api/src/audited-channel-contracts.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
@@ -237,7 +248,7 @@ useModule('packages/api/src/tokendance-models.ts', tokenDanceModels)
 useModule('packages/api/src/tokendance.ts', fs.readFileSync(path.join(root,'packages/api/src/tokendance.ts'),'utf8').replace(/^import .* from .*\n/gm,''))
 useModule('packages/types/src/image-size-contract.ts', sizeRuntime)
 runtimeImports.push("import { measureGeneration, withGenerationPerformance } from '../src/generation-performance.js'",
-  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { return measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)) }")
+  "function atJobStage<T>(stage: keyof typeof JOB_FAILURE_STAGES, operation: () => Promise<T>): Promise<T> { const run=()=>measureGeneration('phase:' + stage, () => rawAtJobStage(stage, operation)); return providerWorkflow.stage?providerWorkflow.stage(stage,run):run() }")
 runtimeBlock = runtimeBlock.replace(start, start+'\n'+runtimeImports.join('\n'))
 source = source.includes(start)
   ? source.slice(0, source.indexOf(start)) + runtimeBlock + source.slice(source.indexOf(end) + end.length)

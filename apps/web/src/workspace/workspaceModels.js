@@ -1,3 +1,4 @@
+import { auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js';
 import { bailianRouteFields, bailianWorkspaceIssue, bailianWorkspaceModel } from '../lib/bailianWorkspace.js';
 import { universalModelEntry, normalizeUniversalConnection, normalizeUniversalRoute } from '../lib/universalContract.js';
 import { partitionRegistryModels, modelMissingFromCatalog } from '../lib/modelRegistry.js';
@@ -6,13 +7,15 @@ export const emptyLibrary = () => ({ revision: 0, connections: [], models: [] })
 export const customBindingChanged=(entry,connection)=>entry.custom&&['connectionId','baseUrl','protocol','auth'].some(key=>normalizeUniversalConnection(entry.custom)[key]!==connection?.custom?.[key]);
 export function libraryModelMissingFromCatalog(entry, library, registry) {
   const provider = library.connections.find(c => c.id === entry.connectionId)?.provider;
+  if (auditedModelLifecycle(provider, entry.modelId)) return false;
   return Boolean(provider) && !entry.custom && modelMissingFromCatalog(registry, provider, entry.modelId);
 }
 export function modelOption(entry, library, registry, role, path, editing, tokenDance) {
   const connection = library.connections.find(c => c.id === entry.connectionId);
   const model = entry.custom ? universalModelEntry({ accessProvider: 'custom', modelId: entry.modelId, custom: entry.custom }) : registry?.providers?.[connection?.provider]?.models.find(m => m.id === entry.modelId);
-  const partition = partitionRegistryModels(model ? [model] : [], { role, outputFormat: path, operation: editing ? 'editing' : 'generation' });
-  const reason = entry.disabled || connection?.disabled ? '已停用'
+  const lifecycle = auditedModelLifecycle(connection?.provider, entry.modelId);
+  const partition = partitionRegistryModels(model ? [withModelAudit(connection?.provider, model)] : [], { role, outputFormat: path, operation: editing ? 'editing' : 'generation' });
+  const reason = lifecycle?.blocked ? lifecycle.message : entry.disabled || connection?.disabled ? '已停用'
     : entry.custom && customBindingChanged(entry,connection) ? '连接已改变，请重新确认此型号的能力' : !model || libraryModelMissingFromCatalog(entry, library, registry) ? '当前目录未收录此精确型号'
     : !partition.compatible.length ? partition.incompatible[0]?.selectionDisabledReason || '不支持当前角色'
     : connection.provider === 'bailian' && bailianWorkspaceModel(entry.modelId) && !(registry?.bailianWorkspaceContractVersion >= 2) ? '当前后端尚未支持百炼业务空间接入，请更新服务'

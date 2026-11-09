@@ -37,13 +37,15 @@ test('main package and static media stay within conservative source byte budgets
       return entry.isDirectory() ? files(file) : [file]
     })
   }
+  // The synchronized v43 catalog and audit snapshot add offline specifications.
+  // Keep at least 256 KiB below the 2 MiB main-package limit, including TS sources.
   const all = files(root)
   const bytes = (list) => list.reduce((n, file) => n + fs.statSync(file).size, 0)
-  assert.ok(bytes(all) < 1.5 * 1024 * 1024, `including TS sources, total is ${bytes(all)} bytes`)
+  assert.ok(bytes(all) < 1.75 * 1024 * 1024, `including TS sources, total is ${bytes(all)} bytes`)
   const media = all.filter((file) => /\.(png|jpe?g|svg|webp|gif|mp3|wav|aac|mp4)$/i.test(file))
   assert.ok(bytes(media) < 200 * 1024, `media total is ${bytes(media)} bytes`)
   // WeChat compiles TS and minifies JS; even the unminified runtime stays below
   // the quality threshold. This check is not a substitute for its native scan.
   const runtime = all.filter((file) => !file.endsWith('.ts'))
-  assert.ok(bytes(runtime) < 1.5 * 1024 * 1024, `runtime source total is ${bytes(runtime)} bytes`)
+  assert.ok(bytes(runtime) < 1.75 * 1024 * 1024, `runtime source total is ${bytes(runtime)} bytes`)
 })

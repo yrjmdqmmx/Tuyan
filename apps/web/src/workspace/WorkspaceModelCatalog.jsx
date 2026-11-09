@@ -1,3 +1,5 @@
+import { auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js';
+import ModelReplacement from './ModelReplacement.jsx';
 import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Plus, Check, ChevronDown, ArrowRight } from 'lucide-react';
@@ -16,7 +18,7 @@ export function catalogRows(registry, { provider = '', developer = '', role = ''
   const needle = query.trim().toLocaleLowerCase();
   return orderModelChannels(Object.keys(registry?.providers || {})).flatMap(id => {
     if (provider && id !== provider) return [];
-    return (registry.providers[id].models || []).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !model.catalogRemoval && (model.catalogReview?.status === 'pending' || !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model))).filter(model => !role || model.roles?.includes(role))
+    return (registry.providers[id].models || []).filter(model => !auditedModelLifecycle(id, model.id)?.blocked).map(model => withModelAudit(id, model)).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !model.catalogRemoval && (model.catalogReview?.status === 'pending' || !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model))).filter(model => !role || model.roles?.includes(role))
       .filter(model => !developer || modelDeveloper(id, model).id === developer)
       .filter(model => !needle || [model.id, model.label, model.vendor, model.developerName, ...modelDeveloperAliases(modelDeveloper(id, model).id), channelName(id, registry), ...(model.roles || []).map(r => ROLE_NAMES[r])].join(' ').toLocaleLowerCase().includes(needle))
       .map(model => ({ provider: id, model }));
@@ -31,7 +33,7 @@ export function libraryRows(library, registry) {
     const model = entry.custom
       ? universalModelEntry({ accessProvider: 'custom', modelId: entry.modelId, custom: { ...entry.custom, ...connection?.custom } })
       : registry?.providers?.[provider]?.models?.find(item => item.id === entry.modelId);
-    return { provider, model: model || { id: entry.modelId, roles: [] }, entry, connection };
+    return { provider, model: withModelAudit(provider, model || { id: entry.modelId, roles: [] }), entry, connection };
   });
 }
 
@@ -124,6 +126,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
               <div className="tw-catalog-tags">{(model.roles || []).filter(r => ROLE_NAMES[r]).map(r => <span key={r}>{ROLE_NAMES[r]}</span>)}{!model.roles?.length && <span>角色待确认</span>}</div>
             </div>
             {saved && <div className="tw-catalog-connection" title={`${savedConnection?.label || '连接不存在'} · ${entry.connectionId}`}><span>{savedConnection?.label || '连接不存在'} · {entry.connectionId.slice(0, 8)}</span>{entry.custom && <button onClick={() => onEditCustom(entry)}>配置能力</button>}</div>}
+            {saved && <ModelReplacement provider={id} modelId={model.id} models={models} entry={entry}/>}
             <ModelSpecifications provider={id} model={model} compactSources footerActions={<div className="tw-catalog-card-actions">
               {saved ? <><span className={entry.disabled || unavailable || savedConnection?.disabled || !savedConnection ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.disabledReason || '已添加不代表调用已验证；停用保留任务记录'}>{entry.disabled ? '已停用' : !savedConnection ? '连接不存在' : savedConnection.disabled ? '连接已停用' : unavailable ? '暂不可用' : '已添加'}</span><button disabled={!ready || busy} aria-label={`${entry.disabled ? '启用' : '停用'} ${model.label || model.id} · ${savedConnection?.label || entry.connectionId}`} onClick={() => models.save({ ...library, models: library.models.map(item => item.id === entry.id ? { ...item, disabled: !item.disabled } : item) })}>{entry.disabled ? '启用' : '停用'}</button></> : <>{unavailable ? <span className="tw-catalog-unavailable" title={model.disabledReason || '当前不可选'}>暂不可用</span> : added > 0 && <span className="tw-catalog-added"><Check size={12}/>已添加</span>}
               <button disabled={!ready || busy || registryStatus !== 'ready' || unavailable} aria-label={`添加 ${model.label || model.id} · ${channelName(id, registry)}`} onClick={() => openAdd({ provider: id, model })}><Plus size={15}/><span>添加</span></button></>}

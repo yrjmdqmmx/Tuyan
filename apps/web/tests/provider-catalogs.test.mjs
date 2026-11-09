@@ -27,9 +27,9 @@ test('resuming an account directory retains previously discovered rows',async()=
 })
 test('specific page facts override unresolved overview and do not substitute prompt character counts',()=>{
  const m={id:'qwen3.8-max',specificModelSpecifications:{officialInputModalities:['text','image','video'],officialOutputModalities:['text'],contextWindowTokens:1000000,sourceUrls:['https://help.aliyun.com/zh/model-studio/qwen3-8-max']}}
- const card=modelCardSpecifications('tokendance',m);assert.equal(card.context,'1M tokens');assert.equal(card.input,'文本、图像、视频');assert.ok(card.sources[0].endsWith('qwen3-8-max'))
+ const card=modelCardSpecifications('tokendance',m);assert.equal(card.context,'1,000,000 tokens');assert.equal(card.input,'文本');assert.equal(card.inputScope,'原厂')
  const image=modelCardSpecifications('openai',{id:'image',specificModelSpecifications:{officialInputModalities:['text','image'],officialOutputModalities:['image'],contextWindowStatus:'not-published',sourceUrls:['https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst']}})
- assert.equal(image.context,'官方未公布')
+ assert.equal(image.context,'未知')
 })
 
 
@@ -43,7 +43,7 @@ test('account pagination does not replace earlier live specifications with the s
 
 test('unknown model facts still retain the exact directory source',()=>{
  const card=modelCardSpecifications('fal',{id:'new-endpoint',specifications:{version:1,sourceUrls:['https://fal.ai/models/new-endpoint/api']}})
- assert.equal(card.context,'待确认');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint/api'])
+ assert.equal(card.context,'未知');assert.deepEqual(card.sources,['https://fal.ai/models/new-endpoint/api'])
 })
 
 test('supplemental private catalogs retain public rows and disappear when the selected key changes',async()=>{

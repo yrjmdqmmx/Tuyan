@@ -1,3 +1,13 @@
+## 2026-11-09 · 模型卡审计规格与生命周期（本地分支 v43，未发布）
+
+- [x] Core / shared：增补 `auditChannel` / `auditSpecifications` / `auditLifecycle`；精确渠道+ID、逐值 provenance/source/date、null 与明确不支持分开。61 已下架、4 将下线、7 Fireworks serverless 渠道不可用；新任务在提供商传输前返回 `MODEL_RETIRED` / `MODEL_CHANNEL_UNAVAILABLE` 与替代建议。日期 UTC 驱动，未核实不改变原可用性。
+- [x] 目录：只新增 7 个允许型号；antling 两个 Ling ID 已由证据确认，五个文本型号复用原适配器；OpenAI 两个 2.6 图像型号缺少输出尺寸契约，收录但禁用。保留 Preview、默认值、原定价和权限。静态目录 1,132 项中 667 未核实。
+- [x] Web：既有目录/选择器/我的模型/预设展示独立四项规格、来源及状态；退休条目从新选择隐藏，已保存身份保留；仅显式确认才切换同渠道精确替代型号。桌面 ≥1280 三列、窄屏单列，完整中文/新增英文文案。
+- [x] Gateway：模型库拒绝新增退休或渠道不可用身份，已有条目允许原样保存，不自动改写预设和历史。
+- [x] 小程序：同步 v43 目录、审计数据和选择器，保留当前旧选择并提供确认切换；离线规格压缩复用现有 codec，122 项测试通过。小程序仍暂停发布。
+- [x] 本地验证 / 文档：生成器、模拟传输、相关 UI/Gateway 测试、类型检查与 Web 构建完成；Web 12 项既有失败、Core 1 项既有到期失败均已基线复现。数据来源、计数分母、预览方式与测试边界见 [验收说明](docs/model-card-audit-20261109.md)。没有真实或付费模型调用。
+- [ ] 后续验收 / 发布：沙箱不支持本地监听且 Chrome 启动失败，1280/390 实屏验收及微信原生包扫描未完成；生产发布需要另行授权，本轮不推送、合并、部署。
+
 ## 2026-11-04 · 短信登录验收补齐（本地分支，默认关闭）
 
 - [x] Gateway：复用既有 `/api/auth/phone/{status,challenge,send-code,verify}`、Better Auth 用户/身份/会话和 Mongo 事务；新增规范变量 `SMS_LOGIN_ENABLED`、`ALIYUN_SMS_ACCESS_KEY_ID/ACCESS_KEY_SECRET/SIGN_NAME/TEMPLATE_CODE`，旧 `AUTH_SMS_ENABLED` / `ALIBABA_SMS_*` 仅在对应新变量缺失时兼容。保留 `AUTH_SMS_DELIVERY_ENABLED=false` 独立发送开关及全站额度，关闭变更接口返回 404 `PHONE_DISABLED`。

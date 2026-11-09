@@ -1,3 +1,4 @@
+import { auditedModelLifecycle } from '../lib/modelAudit.js';
 import { useMemo } from 'react';
 import ModelPicker from '../components/ModelPicker.jsx';
 import { ROLE_NAMES, modelOption, selectedModelReference, libraryModelMissingFromCatalog } from './workspaceModels.js';
@@ -27,7 +28,7 @@ export default function WorkspaceModelPicker({ models, role, path, editing, curr
           reference: selectedModelReference(option),
           // Keep the saved reference available to the trigger, while omitting
           // models absent from the channel's current catalogue from choices.
-          hidden: !option.model || libraryModelMissingFromCatalog(entry, models.library, models.registry),
+          hidden: auditedModelLifecycle(provider, entry.modelId)?.blocked || !option.model || libraryModelMissingFromCatalog(entry, models.library, models.registry),
           description: multipleConnections ? `${option.connection.label} · ${option.connectionId.slice(0, 8)}` : '',
           disabledReason: option.reason || (models.registryStatus !== 'ready' ? '正在等待可用模型目录，已有配置保留。' : ''),
         },

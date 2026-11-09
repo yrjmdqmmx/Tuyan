@@ -36,7 +36,8 @@ function workflowTextResponse(body) {
   return 'Create a clear scientific workflow diagram with readable labels and directional arrows. Preserve all reference labels, values, colors and connections.';
 }
 
-export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173', database, authStores = {}, secondFrontendOrigin, secondaryAuthStores = {} } = {}) {
+export async function createRefineRuntime({ port = 0, startServer = true, providerDelay = 0, tokenDance = false, retrievalResponse = null, frontendOrigin = 'http://127.0.0.1:5173', database, authStores = {}, secondFrontendOrigin, secondaryAuthStores = {} } = {}) {
+  if (!startServer && (tokenDance || secondFrontendOrigin)) throw new Error('HTTP fixture features require startServer');
   const db = database || memoryDb();
   const objects = new Map();
   const prepared = new Map();
@@ -236,9 +237,9 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     cachedStatus: () => ({ ok: true }), ready: async () => ({ ok: true }),
   };
   app.use(createApp({ config, auth, backend, isMaintenance: () => false, logger: { info() {}, warn() {}, error() {} } }));
-  const server = app.listen(port, '127.0.0.1');
-  await once(server, 'listening');
-  baseUrl = 'http://127.0.0.1:' + server.address().port;
+  const server = startServer ? app.listen(port, '127.0.0.1') : null;
+  if (server) await once(server, 'listening');
+  baseUrl = server ? 'http://127.0.0.1:' + server.address().port : 'http://fixture.invalid';
   let secondServer, secondaryBaseUrl;
   if (secondFrontendOrigin) {
     secondServer = createApp({ config: { ...config, frontendOrigins: [secondFrontendOrigin] }, auth: { ...auth, ...secondaryAuthStores }, backend, isMaintenance: () => false, logger: { info() {}, warn() {}, error() {} } }).listen(0, '127.0.0.1');
@@ -257,7 +258,7 @@ export async function createRefineRuntime({ port = 0, providerDelay = 0, tokenDa
     async close() {
       await legacy.drainJobAdmission(); legacy.configureRuntimeFetch();
       if (secondServer) await new Promise(resolve => { secondServer.close(resolve); secondServer.closeAllConnections(); });
-      await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
+      if (server) await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
       if (oldGateway === undefined) delete process.env.PAPERBANANA_GATEWAY_TOKEN;
       else process.env.PAPERBANANA_GATEWAY_TOKEN = oldGateway;
     },
