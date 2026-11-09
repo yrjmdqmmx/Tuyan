@@ -749,3 +749,63 @@ node scripts/report-changed-tests.mjs --check
 ```
 
 A fresh public capture, if needed in a later authorized documentation audit, uses `node --experimental-vm-modules scripts/capture-tokendance-pages.mjs --capture`; it is not part of offline validation. Run `sync-card-display`, then `sync-model-catalog` and `sync-reference-upload` after changing the source evidence or lossless codec.
+
+
+## R22 Phase C
+
+PM review of PR #251, item 3. Base remains `main 8c456709`; this phase starts from `2550c736` on `codex/model-modality-audit` in this checkout. This is a display change. Execution-capability facts and decisions, all 1,064 picker names, captured TokenDance links, deduplicated descriptive source rows, visible vendor provenance, and text → image → video → audio display order remain covered by the existing tests.
+
+### State → visual → wording
+
+| Evidence state / provenance | Web and Mini visual | Accessible wording, using image as the example |
+| --- | --- | --- |
+| Supported / known positive | Existing solid Lucide glyph in the normal text colour | `图像：支持` |
+| Explicit omission from an exhaustive channel list (`provenance: channel` with `unsupportedModalities`, or a channel `unsupported` fact) | Muted glyph with a separate 2px diagonal strike | `图像：渠道未开放` |
+| Explicit exclusion from model/vendor evidence | The same muted glyph and diagonal strike | `图像：不支持` |
+| Unknown / unconfirmed / masked by a channel review | Muted dashed treatment with a small `?` badge; no strike | `图像：未知` |
+| Legacy non-exhaustive text-only omission (`unlisted`) | The uncertainty visual, never the exclusion strike | Existing `图像：官方未列支持` qualification remains |
+| Existing conditional support | Existing glyph with `*` | Existing `有条件支持` qualification remains |
+
+An omitted item in a non-exhaustive list is never promoted to an exclusion. Channel omission does not establish a limitation of the underlying model. The `unsupported` machine state is retained for compatibility; provenance controls its user-facing wording. The same pure helper supplies Web and the generated Mini presentation data. No source fact or execution field is rewritten.
+
+Regular Web and Mini glyphs retain a **20 × 20px** footprint; compact Web catalog cards retain their existing **18 × 18px** footprint and 7px gap. Marks are absolutely positioned within the footprint, so state changes add no row or legend. Web uses `--ink`, `--muted`, `--ink-soft` and `--surface`; Mini reuses its existing `#213b2f` / `#68786d` colours and embeds the same Lucide Type/Image/Video/AudioLines SVG paths as CSS masks, with no new image files. Web uncertainty uses dashed SVG strokes; Mini uses an inset dashed outline. The question mark and exclusion line remain distinct in monochrome. Calculated distinguishing-mark contrast on active card, selected-card and dialog backgrounds is at least **4.26:1**; disabled-card opacity remains subject to the existing disabled presentation.
+
+### Original evidence and details
+
+`sync-card-display.mjs` generates `packages/api/src/card-data/modality-evidence.json` from the existing local captures. TokenDance quotes come from `tokendance-catalog-snapshot-20261109b.json` and are limited to the 67 verified exact pages already established in Phase B. The generator asserts `architecture.modality` equals the stored input/output arrays joined by `→`; only the modality labels and comma separators are localized. Original ordering is retained in the quote even when the display icons use text/image/video/audio order. The verification date is the November 9 portal capture, not the later rendered-page check.
+
+Qwen3.6 Plus uses **`渠道标注：文本→文本（2026-11-09）`** on both input and output icons. Its omitted image/video/audio labels say **渠道未开放**, and no TokenDance card presentation says 不支持. The seven unknown historical identities retain unknown state and `渠道未标注此模态（核实日期 2026-11-09）`.
+
+Bailian uses the literal stored `quote` for all 34 Phase 2 identities, including English `Text` / `Image` / `Video` / `Audio`, plus Kimi K3's original R10 pipe-delimited table quote. Keys include the exact model ID as well as the source page: different variants on the same page retain their individual quotes. All channel-derived exclusion icons have an original captured quote and date. Other positive facts show their source subject/provenance and stored date. Unknowns show `渠道未标注此模态（核实日期 …）` for channel evidence/review masks, or `暂无官方资料` where no official modality evidence is available; no capability wording is invented from roles or model names.
+
+Web preserves per-icon `role="img"` names, hides decorative marks from assistive technology, and makes the existing modality row a keyboard/touch trigger for the existing evidence dialog. The trigger also includes each state in its accessible name. The same dialog works in compact cards and without an available source link. Source-link touch behavior remains available. Mini binds `aria-label`, `data-state`, and the same evidence text to each icon; its tap modal does not change the selected model or copy an empty link.
+
+### Tests, package budget and expectation review
+
+New tests cover three distinct classes/data states, accessible names, exact Qwen and per-identity Bailian quotes, all 74 TokenDance cards, vendor exclusions, unknown evidence, strike/question/dashed structure, immutable facts, Mini modal interaction and shared/generated-helper parity across all 1,064 identities. DOM interaction tests cover 1280 and 390 viewport settings plus compact variants, including no-source cards. Contrast tests read the actual CSS tokens and check active backgrounds against 3:1.
+
+The existing R21 Qwen labels change from 不支持 to 渠道未开放. The existing R22B icon-order assertion now reads accessible names rather than titles because titles carry evidence; the order stays unchanged. These two tests were introduced after main and are separately hashed against `2550c736` in the [changed-test ledger](model-modality-changed-tests.md). Five main-existing test files also update presentation-only expectations: the Kimi K3 channel wording, three tests prohibiting question badges, explicit keyboard traversal of the two evidence controls between model selections, and the library test selecting its Backup action by name now that evidence buttons exist. Fact, unknown-state, source, execution and selection assertions remain intact; every change is recorded with its reason. The ledger also covers the Mini `build` script's post-tsc compaction. `report-changed-tests.mjs --check` validates both inventories and their diff hashes.
+
+To stay within both pre-existing byte ceilings, the Mini build compacts **only** the picker component's generated JavaScript using the existing esbuild dependency. TypeScript stays readable; identifiers are retained; `sync-card-display --check` independently reproduces the artifact from TypeScript. UTF-8 output and grouped evidence avoid shipping the capture archives. No package-budget assertion is relaxed.
+
+| Validation | Result |
+| --- | --- |
+| Web full | **1,477/1,477 pass**, zero failures/skips |
+| Mini full | **166/166 pass**, zero failures/skips |
+| Scripts full | **50/50 pass**, zero failures/skips |
+| Core regression and execution lock | **7/7 pass**, zero failures/skips |
+| Gateway regression and execution lock | **5/5 pass**, zero failures/skips |
+| Web and Mini builds; Core build/typecheck | All pass |
+| 17 applicable generator/report/layout checks, including every requested `--check` | All pass |
+| Docker COPY import checks | 4 Core, 16 benchmark-image and 1 Gateway bundle resolve; no images built |
+| Changed-test ledger; `git diff --check` | Pass |
+
+**Mini source: 1,568,957 / 1,572,864 bytes**, leaving **3,907 bytes**. Runtime excluding `.ts`: **1,143,962 bytes**; media **189,978 bytes**. The older **1,569,427-byte** ceiling also passes, with **470 bytes** spare. Compared with Phase B, source grows by **3,971 bytes**. Commands, counts and log hashes are recorded in [Phase C validation](model-modality-r22c-validation.json).
+
+Final full-suite validation includes the revised expectations and keyboard traversal. An intermediate scripts run overlapped the Mini compiler before its compaction step and measured temporary JS output; the completed build and subsequent standalone scripts suite pass without any budget changes.
+
+### Validation limits
+
+The offline Playwright CLI was launched with the update notifier disabled and an offline browser context. Chrome exited with **SIGABRT / kill EPERM** before opening the review page, reproducing the previous environment restriction. Consequently, no real-browser 1280/390 screenshots or native WeChat screenshots are claimed. DOM/CSS, interaction and numerical contrast checks are evidence for structure and behavior, not a substitute for native visual acceptance.
+
+The prior broader Core/Gateway socket failures and unrelated `sync-workflow` drift remain recorded in Phases A/B; those files and expectations are untouched. No production deployment, paid/inference request, image build, other-worktree operation, or git write command is part of Phase C. Mini deployment remains paused.

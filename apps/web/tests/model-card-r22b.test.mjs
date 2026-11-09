@@ -70,7 +70,7 @@ test('R22B modality text, icons and tooltip subjects sort copies as text image v
   assert.equal(card.input,'文本、图像、视频、音频、文件')
   assert.deepEqual(modalityIconStates(card.input,card.inputFact).map(row=>row.id),['text','image','video','audio'])
   render(React.createElement(ModelSpecifications,{provider:'tokendance',model:model('tokendance','kimi-k3.1-pro')}))
-  assert.deepEqual(within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img').map(node=>node.title),['文本：支持','图像：支持','视频：支持','音频：不支持'])
+  assert.deepEqual(within(screen.getByRole('group',{name:'输入模态'})).getAllByRole('img').map(node=>node.getAttribute('aria-label')),['文本：支持','图像：支持','视频：支持','音频：渠道未开放'])
   assert.deepEqual(model('tokendance','kimi-k3.1-pro').roles,['main'], 'vision role remains execution-based')
 })
 test('R22B every vendor-only TokenDance limit is visibly attributed beside the value', () => {

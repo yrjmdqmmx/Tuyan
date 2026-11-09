@@ -11,11 +11,13 @@
 .model-spec-source-domain { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; word-break: normal; }
 .model-spec-sources a:focus-visible { outline: 2px solid var(--accent, #267f68); outline-offset: 3px; border-radius: 3px; }
 .model-modality-icons { display: inline-flex; flex-wrap: wrap; max-width: 100%; align-items: center; justify-content: flex-end; gap: 8px; vertical-align: middle; }
-.model-modality-icon { position: relative; display: inline-flex; color: var(--text, #1b2328); }
-.model-modality-icon.is-unlisted { color: #adb4b8; }
-.model-modality-icon.is-unsupported { color: #adb4b8; }
-.model-modality-icon.is-unknown, .model-spec-unknown { color: #adb4b8; }
-.model-modality-icon sup { position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; }
+.model-modality-icon { position: relative; display: inline-flex; width: 20px; height: 20px; flex: 0 0 20px; color: var(--ink); }
+.model-modality-icon.is-unsupported, .model-modality-icon.is-unknown, .model-modality-icon.is-unlisted { color: var(--muted); }
+.model-modality-icon.is-unknown > svg, .model-modality-icon.is-unlisted > svg { stroke-dasharray: 2 2; }
+.model-modality-strike { position: absolute; inset: calc(50% - 1px) 0 auto; height: 2px; background: currentColor; transform: rotate(-45deg); }
+.model-modality-icon sup { position: absolute; top: 0; right: 0; font-size: 10px; line-height: 1; }
+.model-modality-icon .model-modality-question { top: auto; bottom: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); color: var(--ink-soft); font-weight: 700; text-align: center; }
+.model-spec-unknown { color: var(--muted); }
 .model-brand-logo { width: 24px; height: 24px; flex: 0 0 24px; object-fit: contain; vertical-align: middle; }
 .model-brand-placeholder { color: var(--text-secondary, #69726e); }
 .model-picker .model-brand-heading, .model-route-drawer .model-brand-heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
@@ -29,3 +31,6 @@
 .tw-dialog.model-evidence-dialog { min-height:0; height:auto; }
 
 .model-spec-origin { display: block; color: var(--text-secondary, #667085); font-size: 11px; font-weight: 400; }
+
+.model-specs .model-modality-trigger { all: unset; display: inline-flex; max-width: 100%; vertical-align: middle; cursor: help; }
+.model-specs .model-modality-trigger:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 3px; }

@@ -31,6 +31,17 @@ for (const file of [...review.files, ...review.fixtures]) {
     for (const evidence of row.evidence) assert.ok(fs.existsSync(path.join(root, evidence.split('#')[0])), evidence)
   }
 }
+// Follow-up review also covers expectations introduced on this feature branch.
+for (const file of review.followupChanges || []) {
+  assert.equal(file.comparisonBase, '2550c736')
+  const diff = git(['diff', '--no-ext-diff', '--no-renames', '--unified=0', file.comparisonBase, '--', file.file])
+  assert.equal(file.diffSha256, createHash('sha256').update(diff).digest('hex'), 'Follow-up review is stale: ' + file.file)
+  assert.ok(file.changes.length)
+  for (const row of file.changes) {
+    assert.ok(row.old && row.new && row.reason && row.verdict === 'JUSTIFIED')
+    for (const evidence of row.evidence) assert.ok(fs.existsSync(path.join(root, evidence.split('#')[0])))
+  }
+}
 const changes = review.files.flatMap(file => file.changes)
 const fixtureChanges = review.fixtures.flatMap(file => file.changes)
 const counts = { files: files.length, assertionAndFixtureInputChanges: changes.length, consumedJsonFixtures: consumedFixtures.length,
@@ -42,11 +53,12 @@ const cell = value => (typeof value === 'string' ? value : JSON.stringify(value)
 const table = entries => ['| File:line | Old expectation → new expectation | Reason and evidence | Verdict |', '| --- | --- | --- | --- |',
   ...entries.flatMap(file => file.changes.map(row => `| [${file.file}:${row.line}](../${file.file}#L${row.line})${row.oldLine ? ` (${row.comparisonBase || 'main'}:${row.oldLine})` : ''} | ${cell(row.old)} → ${cell(row.new)} | ${row.phase ? cell(row.phase) + '. ' : ''}${row.supersededBy ? 'Historical transition, superseded by ' + cell(row.supersededBy) + '. ' : ''}${cell(row.reason)} ${row.evidence.map(e => `[${e}](../${e})`).join('; ')} | ${row.verdict}${row.resolution ? ' / ' + row.resolution : ''} |`))].join('\n')
 const markdown = [
-  '# Changed test expectations — R22 Phases A and B', '',
+  '# Changed test expectations — R22 Phases A, B and C', '',
   `Baseline: \`${base}\`. This inventory covers every changed pre-existing test file from \`git diff ${base} -- '*test*' '*tests*'\`, plus changed JSON fixtures directly consumed by those tests. New test files are not pre-existing expectations.`, '',
-  `Counts: **${counts.files} test files**, **${counts.assertionAndFixtureInputChanges} assertion or test-input changes**, **${counts.consumedJsonFixtures} consumed JSON fixture**, **${counts.semanticFixtureChanges} semantic fixture changes**; **${counts.justified} JUSTIFIED**, **${counts.unjustifiedRestored} UNJUSTIFIED / RESTORED**, **${counts.flagged} FLAGGED**.`, '',
+  `Counts: **${counts.files} test files**, **${counts.assertionAndFixtureInputChanges} assertion or test-input changes**, **${counts.consumedJsonFixtures} consumed JSON fixtures**, **${counts.semanticFixtureChanges} semantic fixture changes**; **${counts.justified} JUSTIFIED**, **${counts.unjustifiedRestored} UNJUSTIFIED / RESTORED**, **${counts.flagged} FLAGGED**.`, '',
   ...review.notes.flatMap(note => [note, '']),
   '## Assertions and test inputs', '', table(review.files), '',
+  '## Phase C follow-up expectations introduced after main', '', table(review.followupChanges || []), '',
   '## Consumed JSON fixture changes', '',
   'The generated audit fixture interns values and URLs. The table resolves those indices to exact per-model expectations; unused pool entries and index renumbering are storage changes, not additional assertions. JSON pointers identify individual values in the machine-readable report. No pre-existing tests/fixtures JSON file changed.', '', table(review.fixtures), '',
   '## Verification', '',

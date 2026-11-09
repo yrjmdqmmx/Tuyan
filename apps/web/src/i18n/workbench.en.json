@@ -1,4 +1,5 @@
 {
+  "渠道未开放": "Not available on this channel",
   "目录暂不可用": "Catalog temporarily unavailable",
   "OpenRouter model catalog is temporarily unavailable": "OpenRouter model catalog is temporarily unavailable",
   "精修评审会逐项核对遮罩、辅助图用途和结构化约束。材料页与精修输入超过模型单次容量时会分批观察，可能增加调用；证据不足或核对缺失不会显示通过。完整流程的风格方案格式无效或材料不足时，会在绘图前停止。": "Editing review checks masks, reference purposes, and structured constraints individually. Material pages and editing inputs are observed in batches when they exceed the model's per-call capacity, which can add calls. Missing checks or insufficient evidence cannot pass. In the full workflow, an invalid styling plan or missing material stops the task before drawing.",

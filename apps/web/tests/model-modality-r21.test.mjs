@@ -29,7 +29,7 @@ test('R21 channel declarations and silence defeat stale base unions and product 
   }
 })
 test('R21 renders promoted inputs, explicit unsupported Qwen inputs and hidden unknowns with model-page links', () => {
-  for (const [id, labels] of [['qwen3.6-plus', ['图像：不支持', '视频：不支持']], ['kimi-k3.1-pro', ['图像：支持', '视频：支持']], ['minimax-m3.1-flash', ['图像：支持']], ['deepseek-v4.1-flash-1017', ['图像：支持']], ['deepseek-v4-flash-vision-exp', ['文本：未知', '图像：未知', '视频：未知']]]) {
+  for (const [id, labels] of [['qwen3.6-plus', ['图像：渠道未开放', '视频：渠道未开放']], ['kimi-k3.1-pro', ['图像：支持', '视频：支持']], ['minimax-m3.1-flash', ['图像：支持']], ['deepseek-v4.1-flash-1017', ['图像：支持']], ['deepseek-v4-flash-vision-exp', ['文本：未知', '图像：未知', '视频：未知']]]) {
     render(React.createElement(ModelSpecifications, { provider: 'tokendance', model: model(id) }))
     const group = within(screen.getByRole('group', { name: '输入模态' }))
     for (const label of labels) group.getByRole('img', { name: label })

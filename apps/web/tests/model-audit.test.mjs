@@ -108,7 +108,7 @@ test('Ling evidence preserves partial uncertainty and compact sources expose pro
   const view=render(React.createElement(ModelSpecifications,{provider:'antling',model,compactSources:true}));
   assert.equal(view.container.querySelectorAll('dl > div').length,4);
   assert.equal(view.container.querySelectorAll('.is-unknown').length,6);
-  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,0);
+  assert.equal(view.container.querySelectorAll('.is-unknown .model-modality-question[aria-hidden="true"]').length,6);
   assert.equal(screen.queryByText('核实日期'),null);assert.equal(screen.queryByText('未核实'),null);
   assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
   view.unmount();

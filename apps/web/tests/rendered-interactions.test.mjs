@@ -159,7 +159,7 @@ test('rendered model cards omit verification badges and keep unsupported specifi
   assert.equal(card.querySelectorAll('dl dt').length, 4)
   assert.equal(card.querySelectorAll('dl dd').length, 4)
   assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown').length, 8)
-  assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown sup').length, 0)
+  assert.equal(card.querySelectorAll('.model-modality-icon.is-unknown .model-modality-question[aria-hidden="true"]').length, 8)
   assert.equal(card.querySelectorAll('[role=img][aria-label$="：未知"]').length, 8)
   assert.equal(card.querySelectorAll('dd')[2].textContent, '未知')
   assert.doesNotMatch(catalogCard.textContent, /稳定版/)
@@ -467,9 +467,19 @@ test('rendered model list reveals compatible batches and wraps keyboard focus wi
   const model24 = container.querySelectorAll('.model-option-select')[24]
   await new Promise((resolve) => setTimeout(resolve, 80))
   assert.equal(document.activeElement, model24)
+  for (const direction of ['输入模态', '输出模态']) {
+    await user.tab()
+    assert.ok(document.activeElement.classList.contains('model-modality-trigger'))
+    assert.ok(document.activeElement.getAttribute('aria-label').startsWith(direction))
+  }
   await user.tab()
   assert.equal(document.activeElement, container.querySelectorAll('.model-option-select')[25])
   assert.equal(screen.queryByText(/暂不兼容/), null)
+  for (const direction of ['输入模态', '输出模态']) {
+    await user.tab()
+    assert.ok(document.activeElement.classList.contains('model-modality-trigger'))
+    assert.ok(document.activeElement.getAttribute('aria-label').startsWith(direction))
+  }
   await user.tab()
   assert.equal(document.activeElement === screen.getByRole('button', { name: '关闭模型选择' }), true)
 })

@@ -270,7 +270,7 @@ test('my model cards preserve connection identity, specifications and exact-entr
  assert.equal(saved.models[0].disabled,true);
  changeControl(screen.getByLabelText('搜索已添加模型'),{target:{value:'Backup'}});
  assert.equal(screen.getAllByRole('article').length,1);
- assert.match(within(screen.getByRole('article')).getByRole('button').getAttribute('aria-label'),/Backup/);
+ assert.match(within(screen.getByRole('article')).getByRole('button',{name:/Backup/}).getAttribute('aria-label'),/Backup/);
  assert.equal(screen.queryByRole('button',{name:/全部渠道|全部厂商/}),null);
 });
 
