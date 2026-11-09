@@ -44,6 +44,23 @@ test('packing preserves Unicode, primitive values, object order and independent 
   for (const primitive of [null,true,false,0,-12,1.25,'']) verify(primitive)
 })
 
+test('similar nested records round-trip without cyclic bases or shared mutable fields', () => {
+  let child = null
+  const records = []
+  for (let i = 0; i < 30; i++) {
+    child = { name: `模型 ${i}`, child, enabled: true }
+    records.push({ name: `模型 ${i}`, child, enabled: true, roles: ['main', 'vision'], limits: { images: 3, tokens: 8192 } })
+  }
+  const { restored } = verify(records)
+  restored[1].child.name = 'changed'
+  assert.equal(restored[2].child.child.name, '模型 1')
+})
+
+test('the decoder still accepts the previous packed format', () => {
+  const legacy = { root: 0, nodes: [[2, 1, 2, 3], [1, 4, 5], 'legacy', [4, '1.6.6'], 'id', 'roles', 'vision'] }
+  assert.deepEqual(unpackModelCatalog(legacy), { id: 'legacy', roles: ['vision', 'vision'] })
+})
+
 test('the full catalog round-trips through the shipped decoder and stays below the unchanged package budget', () => {
   const source = fs.readFileSync(path.join(root,'apps/web/src/lib/staticModelCatalog.js'),'utf8').replace(/export const /g,'const ')
   const value = vm.runInNewContext(source + ';({channels:EXTENDED_MODEL_CHANNELS,registry:STATIC_MODEL_REGISTRY})')

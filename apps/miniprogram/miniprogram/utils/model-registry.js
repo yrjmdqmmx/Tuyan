@@ -55,7 +55,8 @@ function normalizeProvider(providerId, input) {
     };
     const labels = { main: '主模型', image: '图像模型', vision: '识别模型' };
     for (const role of ['main', 'image', 'vision']) {
-        if (!defaults[role] && !models.some((model) => model.selectable !== false && model.roles.includes(role)))
+        // A channel may offer a role without preselecting a model for that role.
+        if (!defaults[role])
             continue;
         const entry = models.find((model) => model.id === defaults[role]);
         const catalogQuarantined = (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);

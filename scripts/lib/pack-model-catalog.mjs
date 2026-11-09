@@ -65,5 +65,42 @@ export function packModelCatalog(value) {
     }
     return node
   })
+  // Similar records share the same key list. Store only changed values against
+  // an earlier record, without dropping fields or changing their order.
+  const expanded = packed.map(node => Array.isArray(node) && node[0] === 4
+    ? node[1].split('.').map(value => parseInt(value, 36)) : node)
+  const levels = []
+  function level(index) {
+    if (levels[index] !== undefined) return levels[index]
+    const node = expanded[index]
+    return levels[index] = Array.isArray(node)
+      ? 1 + Math.max(0, ...(node[0] === 3 ? [node[1]] : node.slice(1)).map(level)) : 0
+  }
+  // Dependency order prevents a delta base from referring back to its child.
+  const dependencyOrder = expanded.map((_, index) => index).sort((a, b) => level(a) - level(b) || a - b)
+  const groups = new Map(), depths = []
+  for (const index of dependencyOrder) {
+    const node = expanded[index]
+    if (!Array.isArray(node) || node[0] !== 2) continue
+    const candidates = groups.get(node[1]) || []
+    let best = packed[index], depth = 0
+    for (const base of candidates) {
+      if (depths[base] >= 8) continue
+      const positions = [], values = []
+      for (let i = 2; i < node.length; i++) if (node[i] !== expanded[base][i]) {
+        positions.push(i - 2)
+        values.push(node[i])
+      }
+      const delta = [5, `${base.toString(36)}:${positions.map(i => i.toString(36)).join('.')}:${values.map(i => i.toString(36)).join('.')}`]
+      if (JSON.stringify(delta).length < JSON.stringify(best).length) {
+        best = delta
+        depth = depths[base] + 1
+      }
+    }
+    packed[index] = best
+    depths[index] = depth
+    candidates.push(index)
+    groups.set(node[1], candidates)
+  }
   return { sourceDigest: createHash('sha256').update(JSON.stringify(value)).digest('hex'), root: remap.get(root), nodes: packed }
 }
