@@ -1,5 +1,5 @@
 import ModelReplacement from './ModelReplacement.jsx';
-import { auditedModelLifecycle } from '../lib/modelAudit.js';
+import { removedModel, auditedModelLifecycle } from '../lib/modelAudit.js';
 import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 import MenuSelect from '../components/MenuSelect.jsx';
 import WorkspaceBailianConnection, {cleanBailianConnection} from './WorkspaceBailianConnection.jsx';
@@ -111,14 +111,14 @@ export function WorkspaceModelConfig({ models, draft, path, editing, onChange, o
       const options = library.models.map(m => modelOption(m, library, registry, role, path, editing, summary?.tokenDance));
       const current = selected[role], option = options.find(o => o.id === current?.libraryModelId);
       const lifecycle = current && auditedModelLifecycle(option?.connection?.provider || current.accessProvider, current.modelId);
+      const removed = current && removedModel(option?.connection?.provider || current.accessProvider, current.modelId);
       const main = selected.main && library.models.find(m => m.id === selected.main.libraryModelId);
       const mainVision = main && modelOption(main, library, registry, 'vision', path, editing, summary?.tokenDance);
       return <div className="tw-role-card" key={role}><WorkspaceModelPicker models={models} role={role} path={path} editing={editing} current={current} onManage={onManage} onChange={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>
 
-        {current && <ModelReplacement provider={option?.connection?.provider || current.accessProvider} modelId={current.modelId} models={models} entry={option} onReplace={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>}
-        {lifecycle && <p role="status">{t(lifecycle.label)}{lifecycle.state === 'scheduled' && ` · ${t('将于{date}下线', {date:lifecycle.stopDate.slice(0,10)})}`}{lifecycle.replacement && ` · ${t('建议替换为')} ${lifecycle.replacement}`}</p>}
-        {option?.reason && !lifecycle?.blocked && <p role="status">{option.reason}。请在模型管理中处理，系统不会替换型号。</p>}{role === 'vision' && !current && <p className="tw-muted">{mainVision && !mainVision.reason ? '当前主模型具备视觉角色能力；需要视觉处理时可复用主模型。' : '需要视觉分析时须补充符合条件的模型。无视觉步骤时不会调用。'}</p>}
-        {draft.mode==='advanced' && current && <ThinkingSettings role={role} settings={thinking} registry={registry} operation={editing?'editing':'generation'} onChange={(role,value)=>onChange({...settings,thinking:{...settings.thinking,[role]:{libraryModelId:selected[role].libraryModelId,options:value.options}}})}/>}
+        <div className="tw-catalog-card-actions">{lifecycle && <div className="tw-catalog-tags"><span title={lifecycle.message}>{t('将下线')}</span></div>}{current && <ModelReplacement provider={option?.connection?.provider || current.accessProvider} modelId={current.modelId} models={models} entry={option} onReplace={reference => onChange({ ...settings, models: { ...selected, [role]: reference } })}/>}</div>
+        {option?.reason && !removed && <p role="status">{option.reason}。请在模型管理中处理，系统不会替换型号。</p>}{role === 'vision' && !current && <p className="tw-muted">{mainVision && !mainVision.reason ? '当前主模型具备视觉角色能力；需要视觉处理时可复用主模型。' : '需要视觉分析时须补充符合条件的模型。无视觉步骤时不会调用。'}</p>}
+        {draft.mode==='advanced' && current && !removed && <ThinkingSettings role={role} settings={thinking} registry={registry} operation={editing?'editing':'generation'} onChange={(role,value)=>onChange({...settings,thinking:{...settings.thinking,[role]:{libraryModelId:selected[role].libraryModelId,options:value.options}}})}/>}
       </div>;
     })}<button className="tw-text-button" onClick={onManage}>前往模型管理，添加型号或配置连接 →</button></div>;
 }

@@ -1,0 +1,25 @@
+// Offline, exact-pair evidence overrides. No name inference or provider requests.
+export function supplementModelAudit(snapshot, supplement, removed) {
+  const data = structuredClone(snapshot)
+  const intern = (list, value) => {
+    const index = list.findIndex(item => JSON.stringify(item) === JSON.stringify(value))
+    return index < 0 ? list.push(value) - 1 : index
+  }
+  for (const key of Object.keys(removed)) { delete data.rows[key]; delete data.notices[key] }
+  data.details = {}
+  for (const [key, model] of Object.entries(supplement.models)) {
+    data.rows[key] = [...data.fields.map(field => intern(data.facts, [model[field], model[field] === null ? 'unknown' : 'known', 'channel', intern(data.sources, model.fieldSources[field])])), 0, intern(data.sources, model.sourceUrls[0])]
+    data.details[key] = { unknownInputModalities: model.unknownInputModalities, sourceUrls: model.sourceUrls, note: model.note }
+  }
+  // Drop unused facts/sources as well as removed rows, keeping regeneration stable.
+  const facts = [], sources = []
+  for (const row of Object.values(data.rows)) {
+    for (let i = 0; i < data.fields.length; i++) {
+      const fact = [...data.facts[row[i]]]
+      fact[3] = fact[3] === null ? null : intern(sources, data.sources[fact[3]])
+      row[i] = intern(facts, fact)
+    }
+    row[5] = row[5] === null ? null : intern(sources, data.sources[row[5]])
+  }
+  return { ...data, facts, sources, removed }
+}

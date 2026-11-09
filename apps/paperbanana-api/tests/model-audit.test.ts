@@ -1,14 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { auditedModelLifecycle, auditedModelSpecs, assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
+import { removedModel, auditedModelLifecycle, auditedModelSpecs, assertAuditedModelAvailable } from '../../../packages/api/src/model-audit.js'
 import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 
 test('scheduled notices change at the stated date and serverless restrictions are channel scoped', () => {
   const id='qwen3.5-plus'
   assert.equal(auditedModelLifecycle('bailian',id,Date.parse('2027-01-18T23:59:59Z'))?.state,'scheduled')
-  assert.equal(auditedModelLifecycle('bailian',id,Date.parse('2027-01-19T00:00:00Z'))?.state,'retired')
-  assert.throws(()=>assertAuditedModelAvailable('bailian',id,Date.parse('2027-01-19')), (e:any)=>e.code==='MODEL_RETIRED' && e.replacement==='qwen3.8-flash')
-  assert.equal(auditedModelLifecycle('fireworks','accounts/fireworks/models/glm-5p2')?.state,'channel-unavailable')
+  assert.equal(removedModel('bailian',id,Date.parse('2027-01-19T00:00:00Z'))?.replacementApiId,'qwen3.8-flash')
+  assert.throws(()=>assertAuditedModelAvailable('bailian',id,Date.parse('2027-01-19')), (e:any)=>e.code==='MODEL_UNAVAILABLE' && e.replacement==='qwen3.8-flash')
+  assert.equal(removedModel('fireworks','accounts/fireworks/models/glm-5p2')?.replacementApiId,'accounts/fireworks/models/glm-5p3')
   assert.equal(auditedModelLifecycle('zhipu','glm-5.2'),null)
   assert.equal(auditedModelLifecycle('openai','unresolved'),null)
   assert.equal(auditedModelSpecs('openai','unresolved').unverified,true)
@@ -44,14 +44,26 @@ test('retired text, image, vision and serverless requests fail before any transp
   const runtime:any=await createRefineRuntime({startServer:false});let calls=0
   try {
     runtime.legacy.configureRuntimeFetch(async()=>{ calls++;throw Error('Transport must not be reached') })
-    const expected=(code:string,replacement?:string)=>(e:any)=>e.businessCode===code&&e.requestState==='not_sent'&&(!replacement||e.replacement===replacement)&&/已下架|渠道不可用/.test(e.message)
-    await assert.rejects(runtime.legacy.callTextModel('xiaomi','mimo-v2.5','fixture','system','prompt'),expected('MODEL_RETIRED','mimo-v2.6-flash'))
-    await assert.rejects(runtime.legacy.callImageModel('stepfun','step-image-edit-2','fixture','prompt','1:1'),expected('MODEL_RETIRED'))
-    await assert.rejects(runtime.legacy.callVisionModel('xiaomi','mimo-v2.5-pro','fixture','prompt',[]),expected('MODEL_RETIRED','mimo-v2.6-pro'))
-    await assert.rejects(runtime.legacy.callTextModel('fireworks','accounts/fireworks/models/glm-5p2','fixture','system','prompt'),expected('MODEL_CHANNEL_UNAVAILABLE'))
-    assert.throws(()=>runtime.legacy.resolveModelRouting({provider:'xiaomi',mainModelName:'mimo-v2.5',outputFormat:'svg',visionMode:'none'}),expected('MODEL_RETIRED'))
+    const expected=(code:string,replacement?:string)=>(e:any)=>e.businessCode===code&&e.requestState==='not_sent'&&(!replacement||e.replacement===replacement)&&/原型号已不可用，请重新选择/.test(e.message)
+    await assert.rejects(runtime.legacy.callTextModel('xiaomi','mimo-v2.5','fixture','system','prompt'),expected('MODEL_UNAVAILABLE','mimo-v2.6-flash'))
+    await assert.rejects(runtime.legacy.callImageModel('stepfun','step-image-edit-2','fixture','prompt','1:1'),expected('MODEL_UNAVAILABLE'))
+    await assert.rejects(runtime.legacy.callVisionModel('xiaomi','mimo-v2.5-pro','fixture','prompt',[]),expected('MODEL_UNAVAILABLE','mimo-v2.6-pro'))
+    await assert.rejects(runtime.legacy.callTextModel('fireworks','accounts/fireworks/models/glm-5p2','fixture','system','prompt'),expected('MODEL_UNAVAILABLE'))
+    assert.throws(()=>runtime.legacy.resolveModelRouting({provider:'xiaomi',mainModelName:'mimo-v2.5',outputFormat:'svg',visionMode:'none'}),expected('MODEL_UNAVAILABLE'))
     const response = await runtime.invoke({action:'createJob',userId:'owner',provider:'xiaomi',mainModelName:'mimo-v2.5',outputFormat:'svg',visionMode:'none',methodContent:'Draw a diagram showing input, processing and output.',caption:'Fixture diagram',apiKey:'fixture'})
-    assert.equal(response.businessCode,'MODEL_RETIRED');assert.match(response.message || response.error,/mimo-v2.6-flash/)
+    assert.equal(response.businessCode,'MODEL_UNAVAILABLE');assert.match(response.message || response.error,/mimo-v2.6-flash/)
     assert.equal(calls,0)
+  } finally { await runtime.close() }
+})
+
+test('account catalog refresh cannot resurrect a removed Fireworks identity', async () => {
+  const runtime:any=await createRefineRuntime({startServer:false})
+  try {
+    runtime.legacy.configureRuntimeFetch(async()=>Response.json({data:[{id:'accounts/fireworks/models/glm-5p2'},{id:'accounts/fireworks/models/glm-5p3'}]}))
+    const result=await runtime.legacy.readAccountModelCatalog({provider:'fireworks',apiKeys:{fireworks:'fixture'},privateModels:true})
+    const registry=result.data?.providerRegistry || result.providerRegistry
+    assert.ok(registry)
+    assert.equal(registry.models.some((model:any)=>model.id==='accounts/fireworks/models/glm-5p2'),false)
+    assert.equal(registry.models.some((model:any)=>model.id==='accounts/fireworks/models/glm-5p3'),true)
   } finally { await runtime.close() }
 })

@@ -1,0 +1,199 @@
+{
+  "verifiedAt": "2026-11-09",
+  "convention": "Published 1M and 256K use binary token multiples (1048576 and 262144), matching the audit snapshot. No shared-window claim. Unlisted modalities remain unknown.",
+  "models": {
+    "antling/Ling-3.2-flash": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "unknownInputModalities": [
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "totalContextTokens": 1048576,
+      "maxOutputTokens": null,
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "fieldSources": {
+        "inputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "outputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+      },
+      "note": ""
+    },
+    "antling/Ling-3.1-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "unknownInputModalities": [
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "totalContextTokens": 1048576,
+      "maxOutputTokens": null,
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "fieldSources": {
+        "inputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "outputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+      },
+      "note": ""
+    },
+    "antling/Ling-3.0-flash-VL": {
+      "inputModalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "unknownInputModalities": [
+        "audio"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "totalContextTokens": 262144,
+      "maxOutputTokens": null,
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "fieldSources": {
+        "inputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "outputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+      },
+      "note": ""
+    },
+    "antling/Ling-3.0-flash": {
+      "inputModalities": [
+        "text"
+      ],
+      "unknownInputModalities": [
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "totalContextTokens": 262144,
+      "maxOutputTokens": null,
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "fieldSources": {
+        "inputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "outputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+      },
+      "note": "原生上下文窗口 256K，官方另列最高可扩展至 1M。"
+    },
+    "antling/Ling-3.0-tiny": {
+      "inputModalities": [
+        "text"
+      ],
+      "unknownInputModalities": [
+        "image",
+        "audio",
+        "video"
+      ],
+      "outputModalities": [
+        "text"
+      ],
+      "totalContextTokens": null,
+      "maxOutputTokens": null,
+      "sourceUrls": [
+        "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "https://developer.ant-ling.com/zh-CN/docs/tutorials/multimodal-understanding/",
+        "https://developer.ant-ling.com/zh-CN/docs/api-reference/"
+      ],
+      "fieldSources": {
+        "inputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "outputModalities": "https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/",
+        "totalContextTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/",
+        "maxOutputTokens": "https://developer.ant-ling.com/zh-CN/docs/models/ling/"
+      },
+      "note": ""
+    }
+  },
+  "fireworksServerless": {
+    "deepseek-v4-flash-0731": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/deepseek-v4p1-flash"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "deepseek-v4-flash-vision-exp": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/deepseek-v4p1-flash"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "deepseek-v4-pro-0813": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/deepseek-v4p1-flash"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "glm-5p2": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/glm-5p3"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "kimi-k2p6": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/glm-5p3",
+        "accounts/fireworks/models/kimi-k3"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "kimi-k2p7-code": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/glm-5p3",
+        "accounts/fireworks/models/kimi-k3"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    },
+    "muse-glimmer-30b": {
+      "replacementApiIds": [
+        "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b"
+      ],
+      "serverlessSupported": true,
+      "verifiedAt": "2026-11-09"
+    }
+  }
+}

@@ -2,6 +2,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 
 export const AUDIT_DATE = '2026-11-09'
 const fields = ['inputModalities', 'outputModalities', 'totalContextTokens', 'maxOutputTokens']
@@ -75,7 +76,10 @@ export function generateModelAudit({ pairs, mappings, canonical, deprecations, c
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const input = path.resolve(process.argv[2] || '.audit-input')
   const read = name => JSON.parse(fs.readFileSync(path.join(input, `${name}.json`), 'utf8'))
-  const data = generateModelAudit({ pairs: read('configured-pair-comparison'), mappings: read('canonical-mappings'), canonical: read('canonical-models'), deprecations: read('deprecations'), claims: read('six-claims-recheck'), channels: read('channel-official-meta') })
+  const configRoot = new URL('../config/', import.meta.url)
+  const supplement = JSON.parse(fs.readFileSync(new URL('channel-audit/model-audit-supplement-20261109.json', configRoot), 'utf8'))
+  const removed = JSON.parse(fs.readFileSync(new URL('removed-models.json', configRoot), 'utf8'))
+  const data = supplementModelAudit(generateModelAudit({ pairs: read('configured-pair-comparison'), mappings: read('canonical-mappings'), canonical: read('canonical-models'), deprecations: read('deprecations'), claims: read('six-claims-recheck'), channels: read('channel-official-meta') }), supplement, removed)
   const output = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../config/model-audit.generated.json')
   const content = JSON.stringify(data, null, 0) + '\n'
   if (process.argv.includes('--check')) {

@@ -1103,9 +1103,7 @@
   "未公布": "Not published",
   "不适用": "Not applicable",
   "最大输出": "Max output",
-  "已下架": "Retired",
   "将下线": "Retiring soon",
-  "渠道不可用": "Channel unavailable",
   "未核实": "Unverified",
   "核实日期": "Verified on",
   "建议替换为": "Suggested replacement:",
@@ -1119,5 +1117,11 @@
   "使用同一渠道连接。原型号将保留并停用，替代型号加入我的模型；其他已保存预设和历史任务保持原型号。": "Use the same channel connection. Keep and disable the original entry, and add the replacement to My models. Other saved presets and historical tasks retain their original model.",
   "当前预设的此角色会切换为替代型号。": "This role in the current preset will use the replacement.",
   "替代型号的能力和账户可用性可能不同，请核对后确认。": "Capabilities and account availability may differ. Review before confirming.",
-  "确认切换": "Confirm replacement"
+  "确认切换": "Confirm replacement",
+  "模态未知": "Modalities unknown",
+  "渠道公布": "Published by channel",
+  "下线公告": "Retirement notice",
+  "原厂规格": "Vendor specifications",
+  "原型号已不可用，请重新选择": "The previous model is unavailable. Please select another model",
+  "，可改选 {model}": "; available replacement: {model}"
 }

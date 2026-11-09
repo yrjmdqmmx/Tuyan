@@ -7680,19 +7680,6 @@
       "maxRatio": 3,
       "alignment": 32
     },
-    "stepfun-step-2x-large": {
-      "mode": "table",
-      "auto": "square",
-      "tiers": {
-        "1K": {
-          "sizes": {
-            "1:1": "1024x1024",
-            "8:5": "1280x800",
-            "5:8": "800x1280"
-          }
-        }
-      }
-    },
     "stepfun-step-image-edit-2": {
       "mode": "table",
       "auto": "square",
@@ -9527,102 +9514,12 @@
       ],
       "notes": "直接编辑。"
     },
-    "bailian/qwen-image-max": {
-      "generation": "bailianQwenLegacyGen",
-      "editing": "bailianQwenLegacyGen",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-max-2025-12-30": {
-      "generation": "bailianQwenLegacyGen",
-      "editing": "bailianQwenLegacyGen",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-plus": {
-      "generation": "bailianQwenLegacyGen",
-      "editing": "bailianQwenLegacyGen",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-plus-2026-01-09": {
-      "generation": "bailianQwenLegacyGen",
-      "editing": "bailianQwenLegacyGen",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
     "bailian/qwen-image": {
       "generation": "bailianQwenLegacyGen",
       "editing": "bailianQwenLegacyGen",
       "reviewedAt": "2026-09-07",
       "sources": [
         "https://help.aliyun.com/zh/model-studio/qwen-image-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit-max": {
-      "generation": null,
-      "editing": "bailianQwenLegacyEdit",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit-max-2026-01-16": {
-      "generation": null,
-      "editing": "bailianQwenLegacyEdit",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit-plus": {
-      "generation": null,
-      "editing": "bailianQwenLegacyEdit",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit-plus-2025-12-15": {
-      "generation": null,
-      "editing": "bailianQwenLegacyEdit",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit-plus-2025-10-30": {
-      "generation": null,
-      "editing": "bailianQwenLegacyEdit",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
-      ],
-      "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
-    },
-    "bailian/qwen-image-edit": {
-      "generation": null,
-      "editing": "providerDefaultInherited",
-      "reviewedAt": "2026-09-07",
-      "sources": [
-        "https://help.aliyun.com/zh/model-studio/qwen-image-edit-api"
       ],
       "notes": "北京渠道仍服务至 2026-10-10；旧生成固定五档尺寸，旧编辑使用独立限制。"
     },
@@ -12374,32 +12271,6 @@
       "reviewedAt": "2026-09-22",
       "sources": [
         "https://platform.sensenova.cn/docs"
-      ]
-    },
-    "stepfun/step-2x-large": {
-      "generation": "stepfun-step-2x-large",
-      "editing": "stepfun-step-2x-large",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://platform.stepfun.com/docs/zh/guides/models/image",
-        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
-        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
-        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
-        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
-        "https://platform.stepfun.com/docs/zh/api-reference/images/image2image"
-      ]
-    },
-    "stepfun/step-image-edit-2": {
-      "generation": "stepfun-step-image-edit-2",
-      "editing": "stepfun-step-image-edit-2-edit",
-      "reviewedAt": "2026-09-22",
-      "sources": [
-        "https://platform.stepfun.com/docs/zh/guides/models/image",
-        "https://platform.stepfun.com/docs/zh/api-reference/images/image",
-        "https://platform.stepfun.com/docs/zh/guides/pricing/details",
-        "https://platform.stepfun.com/docs/zh/guides/image-offline-notice",
-        "https://platform.stepfun.ai/docs/en/guides/image-offline-notice",
-        "https://platform.stepfun.com/docs/zh/api-reference/images/edits"
       ]
     },
     "qianfan/musesteamer-air-image": {

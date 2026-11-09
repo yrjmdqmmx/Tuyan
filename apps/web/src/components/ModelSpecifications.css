@@ -10,11 +10,7 @@
 .model-modality-icon { position: relative; display: inline-flex; color: var(--text, #1b2328); }
 .model-modality-icon.is-unlisted { color: #adb4b8; }
 .model-modality-icon.is-unsupported { color: #adb4b8; }
-.model-spec-origin { color: var(--text-secondary, #69726e); cursor: help; }
-.model-spec-review { flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; width: 100%; }
-.model-spec-review > span { display: inline-flex; align-items: center; gap: 3px; }
-.model-spec-lifecycle { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 4px 0 8px; font-size: 12px; color: var(--text-secondary, #596671); overflow-wrap: anywhere; }
-.model-modality-icon.is-unknown { color: #8c7040; border-bottom: 1px dashed currentColor; }
+.model-modality-icon.is-unknown, .model-spec-unknown { color: #adb4b8; }
 .model-modality-icon sup { position: absolute; top: -4px; right: -4px; font-size: 10px; line-height: 1; }
 .model-brand-logo { width: 24px; height: 24px; flex: 0 0 24px; object-fit: contain; vertical-align: middle; }
 .model-brand-placeholder { color: var(--text-secondary, #69726e); }
@@ -25,5 +21,3 @@
 .model-provider-rail .model-brand-caption strong { white-space: normal; overflow-wrap: anywhere; }
 .model-vendor-rail button > span { min-width: 0; overflow-wrap: anywhere; text-align: left; }
 @media (max-width: 480px) { .model-specs { font-size: 12px; } .model-specs > div { gap: 8px; } .model-specs dt { flex-wrap: wrap; gap: 3px; } .model-specs dt small { font-size: 9px; } }
-
-.model-spec-review { display: inline-flex; align-items: center; gap: 4px; margin: 0; padding: 4px 0; font-size: 12px; line-height: 1.5; color: var(--text-secondary, #676767); cursor: help; }

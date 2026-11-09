@@ -26,6 +26,7 @@ Component({
     },
     data: {
         savedLifecycle: '',
+        removedHint: '',
         savedReplacement: '',
         step: 'providers',
         roleLabel: '主模型',
@@ -74,7 +75,7 @@ Component({
             }).filter(item => item.count > 0);
             const lifecycle = (0, model_audit_1.auditedModelLifecycle)(String(this.properties.selectedProvider), String(this.properties.selectedModel));
             const replacement = this.compatibleModels(String(this.properties.selectedProvider)).find(model => model.id === (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.replacement));
-            this.setData({ savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '' });
+            this.setData({ removedHint: (0, model_audit_1.removedModelHint)(String(this.properties.selectedProvider), String(this.properties.selectedModel)), savedLifecycle: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '', savedReplacement: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.state) === 'scheduled' ? (replacement === null || replacement === void 0 ? void 0 : replacement.id) || '' : '' });
             const selectedProvider = String(this.properties.selectedProvider || '');
             const activeProvider = providerCards.some(item => item.id === selectedProvider) ? selectedProvider : '';
             const vendorCards = activeProvider ? this.vendorsFor(activeProvider) : [];
@@ -174,7 +175,8 @@ Component({
                         this.triggerEvent('select', { provider: this.properties.selectedProvider, modelId: replacement });
                 } });
         },
-        copySource(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.url || '') }); },
+        copySource(event) { wx.showModal({ title: '官方文档', content: [event.currentTarget.dataset.notice, event.currentTarget.dataset.url].filter(Boolean).join('\n'), confirmText: '复制链接', success: result => { if (result.confirm)
+                wx.setClipboardData({ data: String(event.currentTarget.dataset.url || '') }); } }); },
         copyId(event) { wx.setClipboardData({ data: String(event.currentTarget.dataset.model || '') }); },
         toggleDetails(event) { const id = String(event.currentTarget.dataset.model || ''); this.setData({ expandedModel: this.data.expandedModel === id ? '' : id }); },
         close() { this.triggerEvent('close'); },
@@ -189,9 +191,10 @@ function presentModel(model, selectedProvider, selectedModel, providerId) {
     const display = (fact) => { var _a; return fact.state === 'known' ? Array.isArray(fact.value) ? fact.value.map(x => names[x]).join('、') : `${(_a = fact.value) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US')} tokens` : fact.state === 'unsupported' ? '不支持' : fact.state === 'not-applicable' ? '不适用' : '未知'; };
     const image = model.roles.includes('image') || (Array.isArray(audit.fields.outputModalities.value) && audit.fields.outputModalities.value.some(x => x === 'image' || x === 'video'));
     return {
-        specRows: [['inputModalities', '输入'], ['outputModalities', '输出'], ['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => ({ label, value: image && key.endsWith('Tokens') ? '不适用' : display(audit.fields[key]), origin: audit.fields[key].provenance === 'vendor' ? '源自原厂' : '' })),
+        vendorLabel: (0, model_presentation_1.modelDeveloper)(providerId, model).label, channelLabel: PROVIDER_LABELS[providerId],
+        specRows: [['inputModalities', '输入'], ['outputModalities', '输出'], ['totalContextTokens', '上下文窗口'], ['maxOutputTokens', '最大输出']].map(([key, label]) => ({ label, value: image && key.endsWith('Tokens') ? '不适用' : key.endsWith('Modalities') && audit.fields[key].state === 'unknown' ? '模态未知' : display(audit.fields[key]), origin: '', unknown: audit.fields[key].state === 'unknown', unknownText: (audit.fields[key].unknownModalities || []).map(x => names[x] + '?').join('、') })),
         specSources: [...new Set([...Object.values(audit.fields).map(f => f.sourceUrl), audit.sourceUrl].filter((url) => Boolean(url)))],
-        verifiedAt: audit.verifiedAt || '', auditMessage: [lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message, audit.unverified ? '未核实' : ''].filter(Boolean).join(' · '),
+        verifiedAt: '', auditMessage: (lifecycle === null || lifecycle === void 0 ? void 0 : lifecycle.message) || '',
         id: model.id, label: model.label, recommended: model.recommended, requiresEntitlement: model.requiresEntitlement,
         availabilityNotes: [model.availabilityNotes, ((_a = model.capabilities) === null || _a === void 0 ? void 0 : _a.requiresSourceImage) ? '仅图像编辑' : '', model.expirationDate && !model.expirationDate.startsWith('2098') ? `官方到期日：${model.expirationDate}` : '', model.earliestRetirementDate ? `最早退役日：${model.earliestRetirementDate}，以正式公告为准` : '', model.replacementModelId ? `迁移目标：${model.replacementModelId}` : ''].filter(Boolean).join(' · '),
         serviceTier: model.serviceTier || '', versionLabel: (0, model_presentation_1.modelVersionLabel)(model), versionText: (0, model_presentation_1.modelVersionDetail)(model), apiIdentifier: model.apiIdentifier || model.id,

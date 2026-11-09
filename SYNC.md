@@ -1,4 +1,17 @@
-## 2026-11-09 · 模型卡审计规格与生命周期（本地分支 v43，未发布）
+## 2026-11-09 · 模型卡第二轮：物理删除旧型号、紧凑卡片与离线计数（本地 v43，未发布）
+
+本条覆盖下方第一轮的“隐藏退休型号 / 渠道不可用 / 自动替换入口”方案；PR #245 的 base 仍为 `codex/hangzhou-production`。
+
+- [x] Core / shared / 目录：从源配置和旧静态声明删除 61 个已下线 + 7 个 Fireworks serverless 型号，生成目录 1064 项；账号目录合并也不能重新引入。`config/removed-models.json` 仅留精确身份与消息证据，调用前统一返回 `MODEL_UNAVAILABLE`、中文替代提示与 `requestState=not_sent`。4 个将下线型号保留，其他渠道同名模型不变。
+- [x] Gateway：禁止新增已移除身份；已有模型库、预设、任务不迁移/删改。7 条预览库记录原样往返仍为 7，相关审计测试 3/3。
+- [x] Web：目录、我的模型及选择器复用紧凑卡片，规格只有输入/输出/上下文/最大输出四行；一个命名来源承载 date/provenance/unknown/lifecycle 的可访问 tooltip，触屏用既有对话框。已移除引用仅显示空槽提示，无卡片、旧状态或切换动作；将下线确认保留取消按钮。
+- [x] 规格 / 生成器：Ling 五项严格采用 `config/channel-audit/model-audit-supplement-20261109.json` 的已知/未知模态和原生窗口，最大输出未知，不推断共享窗口；普通同步不依赖 `.audit-input/`。Fireworks 建议须同时满足通告、Serverless Supported、精确可选 ID。
+- [x] 小程序：同步删除和空槽行为，只打包显示必需审计字段及现有选择/执行约束；恢复 1.5 MiB 原预算，123/123 测试及类型/构建通过。仍暂停发布。
+- [x] 验证 / 文档：只读 `scripts/count-model-catalog.mjs` 在 head/base 都运行，静态 1125 → 1064，目录 923 → 919（57 项原已隐藏）；完整删除明细、每渠道计数、所有测试结果与精确本地夹具见 [第二轮验收](docs/model-card-audit-20261109.md) / [截图路径](docs/model-card-audit-20261109-preview.md)。Web 12 个基线失败、Core 1 个既有到期失败、Gateway 87 个沙箱监听失败明确保留；未进行真实或付费调用。
+- [ ] Owner 决策：原 StepFun 出厂绘图默认 `step-2x-large` 已删除，默认值留空，请指定替代或继续留空；Ant Ling 11 月 15 日未来下线的 3 个在库型号本轮只报告，待另行决策。
+- [ ] 外部验收：沙箱 `listen EPERM` / Chrome 退出 134，尚无桌面 1280 / 移动 390 实屏及微信原生包扫描。生产 1408 缺同一时点 registry 快照，不能逐 ID 分摊与本地 919 的 489 差额。本轮没有 commit、push、merge、部署。
+
+## 2026-11-09 · 模型卡审计规格与生命周期（第一轮历史，已由上方第二轮覆盖）
 
 - [x] Core / shared：增补 `auditChannel` / `auditSpecifications` / `auditLifecycle`；精确渠道+ID、逐值 provenance/source/date、null 与明确不支持分开。61 已下架、4 将下线、7 Fireworks serverless 渠道不可用；新任务在提供商传输前返回 `MODEL_RETIRED` / `MODEL_CHANNEL_UNAVAILABLE` 与替代建议。日期 UTC 驱动，未核实不改变原可用性。
 - [x] 目录：只新增 7 个允许型号；antling 两个 Ling ID 已由证据确认，五个文本型号复用原适配器；OpenAI 两个 2.6 图像型号缺少输出尺寸契约，收录但禁用。保留 Preview、默认值、原定价和权限。静态目录 1,132 项中 667 未核实。

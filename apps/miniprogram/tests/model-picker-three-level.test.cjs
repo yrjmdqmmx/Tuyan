@@ -54,3 +54,13 @@ test('role and directory changes reset stale browse state; incompatible saved ro
  const f=picker('main',routeFor('kimi','main')),p=f.instance;p.selectProvider(tap('provider','kimi'));p.selectVendor(tap('vendor','月之暗面'));p.properties.role='image';f.definition.observers['show, registryVersion, providerRegions, role, outputFormat, selectedProvider, selectedModel'].call(p);assert.equal(p.data.step,'providers');assert.equal(p.data.activeProvider,'');assert.equal(p.data.activeVendor,'');assert.equal(p.data.activeModelLabel,'');p.choose(tap('model','kimi-k3'));assert.equal(f.events.length,0);
  const old=getModelRegistryState().registry;getModelRegistryState().registry=null;p.resetFlow();assert.equal(p.data.providerCards.length,0);assert.equal(p.data.visibleCompatibleModels.length,0);getModelRegistryState().registry=old;
 });
+
+test('removed saved IDs show empty-slot hints without cards, switch actions or selection writes',()=>{
+ for(const route of [{accessProvider:'xiaomi',modelId:'mimo-v2.5'},{accessProvider:'fireworks',modelId:'accounts/fireworks/models/glm-5p2'}]) {
+  const {instance:p,events}=picker('main',route);
+  assert.match(p.data.removedHint,/原型号已不可用，请重新选择，可改选/);
+  assert.equal(p.data.savedReplacement,'');assert.equal(p.data.savedLifecycle,'');
+  assert.equal(p.properties.selectedModel,route.modelId);assert.equal(events.length,0);
+  assert.equal(p.compatibleModels(route.accessProvider).some(model=>model.id===route.modelId),false);
+ }
+});

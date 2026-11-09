@@ -1,12 +1,10 @@
-import { auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js'
+import { removedModel, withModelAudit } from '../lib/modelAudit.js'
 import { createPortal } from 'react-dom'
 import { useDialogLayer } from './AccessibleDialog.jsx'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { ModelSpecifications } from './ModelSpecifications.jsx'
 import { ModelBrandLogo } from './ModelBrandLogo.jsx'
 import { modelCardName } from '../lib/modelCardSpecifications'
-import { thinkingProfile } from '../lib/thinking'
-import ThinkingStatus from './ThinkingStatus.jsx'
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, Check, ChevronDown, Search, Sparkles, X } from 'lucide-react'
 import { DEFAULT_WEB_PROVIDER } from '../lib/modelRouting'
@@ -58,8 +56,10 @@ export default function ModelPicker({
     : model.id === effectiveRoute.modelId
   const visiblePartition = (partition) => (savedOnly
     ? [...partition.compatible, ...partition.incompatible].filter(model => !model.savedChoice?.hidden)
-    : partition.compatible).filter(model => !model.catalogMissing && !auditedModelLifecycle(model.auditChannel, model.id)?.blocked)
+    : partition.compatible).filter(model => !model.catalogMissing && !removedModel(model.auditChannel, model.id))
   const effectiveRoute = route || { accessProvider: provider, modelId: value }
+  const removed = removedModel(effectiveRoute.accessProvider, effectiveRoute.modelId)
+  const removedHint = removed ? t('原型号已不可用，请重新选择') + (removed.replacementApiId ? t('，可改选 {model}',{model:removed.replacementApiId}) : '') : ''
   const sourceRegistry = registry?.providers
     ? registry
     : {
@@ -160,7 +160,7 @@ export default function ModelPicker({
         return
       }
       if (event.key !== 'Tab') return
-      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])].filter(element => {let ancestor=element.parentElement;while(ancestor&&ancestor!==panelRef.current){if(ancestor.tagName==='DETAILS'&&!ancestor.open&&!(element.tagName==='SUMMARY'&&element.parentElement===ancestor))return false;ancestor=ancestor.parentElement}return true})
+      const focusable = [...(panelRef.current?.querySelectorAll(FOCUSABLE) || [])].filter(element => {if(element.tabIndex<0)return false;let ancestor=element.parentElement;while(ancestor&&ancestor!==panelRef.current){if(ancestor.tagName==='DETAILS'&&!ancestor.open&&!(element.tagName==='SUMMARY'&&element.parentElement===ancestor))return false;ancestor=ancestor.parentElement}return true})
       if (!focusable.length) return
       const first = focusable[0]
       const last = focusable.at(-1)
@@ -370,15 +370,13 @@ export default function ModelPicker({
             <article key={model.savedChoice?.id || model.id} data-model-id={model.id} onClick={(event) => {
               // Keep source links and the keyboard-accessible title button independent.
               if (!event.target.closest('a, button, input, select, textarea, summary')) chooseModel(model)
-            }} className={`model-option ${visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
+            }} className={`model-option tw-catalog-card ${visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? 'active' : ''}`}>
               <button type="button" className="model-option-select" data-model-index={rowIndex} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} aria-label={t("选择 {v0}", {v0: [model.label || model.id, model.savedChoice?.description].filter(Boolean).join(" · ")})} onClick={() => chooseModel(model)}>
-                <span className="model-option-main model-brand-heading"><ModelBrandLogo brand={model.vendorId} /><strong>{model.label || model.id}</strong></span>
+                <span className="model-option-main model-brand-heading"><span className="tw-catalog-logo"><ModelBrandLogo brand={model.vendorId} /></span><span className="model-brand-caption"><strong>{model.label || model.id}</strong><small>{model.vendor} / {providerDisplayName(selectedProvider, providerConfigs)}{model.savedChoice?.description ? ` · ${model.savedChoice.description}` : ''}</small></span></span>
                 {visionMode !== 'none' && isSelected(model) && effectiveRoute.accessProvider === selectedProvider ? <Check size={18} /> : null}
               </button>
-              {model.savedChoice?.description ? <p className="model-option-note">{model.savedChoice.description}</p> : null}
-              <ModelSpecifications provider={selectedProvider} model={model} />
-              {model.savedChoice?.disabledReason ? <p className="model-option-note" role="status">{model.savedChoice.disabledReason}</p> : null}
-              <ThinkingStatus compact profile={thinkingProfile(selectedProvider, model.id, role, model.roleProtocols?.[role] || model.protocol)} role={role} operation={operation} />
+              <div className="tw-catalog-card-meta"><code title={model.id}>{model.id}</code><div className="tw-catalog-tags">{model.roles?.map(r => <span key={r}>{t({main:'主模型',image:'绘图模型',vision:'视觉理解'}[r] || r)}</span>)}{model.auditLifecycle?.state === 'scheduled' && <span title={model.auditLifecycle.message}>{t('将下线')}</span>}</div></div>
+              <ModelSpecifications provider={selectedProvider} model={model} compactSources footerActions={<div className="tw-catalog-card-actions"><span className={model.savedChoice?.disabledReason ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.savedChoice?.disabledReason}>{savedOnly ? t(model.savedChoice?.disabledReason ? '暂不可用' : '已添加') : ''}</span><button type="button" tabIndex={-1} title={model.savedChoice?.disabledReason} disabled={Boolean(model.selectionDisabled || model.savedChoice?.disabledReason)} onClick={() => chooseModel(model)}>{t(isSelected(model) ? '已选' : '选择')}</button></div>} />
             </article>
           ))}
         </div>
@@ -441,8 +439,8 @@ export default function ModelPicker({
       <span id={labelId} className="model-picker-label">{t(label)}</span>
       <button type="button" className={`model-picker-trigger${role === 'vision' && visionMode === 'none' ? ' model-picker-trigger-compact' : ''}`} aria-expanded={open} aria-labelledby={labelId} onClick={openPicker}>
         <span>
-          <strong className="model-brand-heading">{selectedModel && visionMode !== 'none' ? <ModelBrandLogo brand={selectedModel.vendorId} /> : null}{t(role === 'vision' && visionMode === 'none' ? '无' : selectedModel?.label || effectiveRoute.modelId || '请选择模型')}</strong>
-          {role === 'vision' && visionMode === 'none' ? null : <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor, selectedModel?.savedChoice?.description].filter(Boolean))].join(' · ')}</small>}
+          <strong className="model-brand-heading">{selectedModel && !removedHint && visionMode !== 'none' ? <ModelBrandLogo brand={selectedModel.vendorId} /> : null}{t(role === 'vision' && visionMode === 'none' ? '无' : removedHint || selectedModel?.label || effectiveRoute.modelId || '请选择模型')}</strong>
+          {removedHint || role === 'vision' && visionMode === 'none' ? null : <small>{[...new Set([providerDisplayName(effectiveRoute.accessProvider, providerConfigs), selectedModel?.vendor, selectedModel?.savedChoice?.description].filter(Boolean))].join(' · ')}</small>}
           {visionMode !== 'none' && effectiveRoute.accessProvider === 'custom' && customSummary ? <small className="model-custom-summary">{customSummary}</small> : null}
         </span>
         <ChevronDown size={17} />

@@ -9,7 +9,7 @@ import {WorkspaceModelConfig} from '../src/workspace/WorkspaceModelPanels.jsx';
 import {modelOption} from '../src/workspace/workspaceModels.js';
 import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx';
 import {STATIC_MODEL_REGISTRY} from '../src/lib/staticModelCatalog.js';
-import {MODEL_AUDIT_DATA,auditedModelLifecycle,auditedModelSpecs} from '../src/lib/modelAudit.js';
+import {MODEL_AUDIT_DATA,removedModel,auditedModelLifecycle,auditedModelSpecs} from '../src/lib/modelAudit.js';
 import {modalityIconStates} from '../src/lib/modelModalityIcons.js';
 
 afterEach(cleanup);
@@ -17,45 +17,49 @@ const registry={providers:STATIC_MODEL_REGISTRY};
 const library={connections:[{id:'c',provider:'xiaomi',label:'小米连接',hasCredential:true}],models:[{id:'old',connectionId:'c',modelId:'mimo-v2.5'}]};
 const setup=()=>({registry,library:structuredClone(library),ready:true,busy:false,registryStatus:'ready',save:async()=>true});
 
-test('all 61 retired and seven serverless identities are hidden from catalog, retained in saved library even if absent from registry',()=>{
+test('all 61 retired and seven serverless identities are hidden from catalog, removed from cards while saved data stays unchanged',()=>{
   const now=Date.parse('2026-11-09'),visible=new Set(catalogRows(registry).map(row=>row.provider+'/'+row.model.id));
-  for(const key of Object.keys(MODEL_AUDIT_DATA.notices)){
+  for(const key of Object.keys(MODEL_AUDIT_DATA.removed)){
     const split=key.indexOf('/'),provider=key.slice(0,split),modelId=key.slice(split+1);
-    if(!auditedModelLifecycle(provider,modelId,now)?.blocked)continue;
+    if(!removedModel(provider,modelId,now))continue;
     assert.equal(visible.has(key),false,key);
     const saved={connections:[{id:'c',provider}],models:[{id:'old',connectionId:'c',modelId}]},before=structuredClone(saved);
-    assert.equal(libraryRows(saved,{providers:{[provider]:{models:[]}}}).length,1);
+    assert.equal(libraryRows(saved,{providers:{[provider]:{models:[]}}}).length,0);
     assert.deepEqual(saved,before);
   }
 });
 test('retired saved selection remains on trigger but cannot be chosen for new tasks or presets',()=>{
   const models=setup(),before=structuredClone(models.library),entry=models.library.models[0];
-  assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/已下架/);
+  assert.match(modelOption(entry,models.library,registry,'main','svg',false).reason,/原型号已不可用，请重新选择/);
   render(React.createElement(WorkspaceModelPicker,{models,role:'main',path:'svg',current:{libraryModelId:'old',modelId:entry.modelId,accessProvider:'xiaomi'},onChange:()=>assert.fail('No automatic switch')}));
-  assert.match(screen.getByRole('button',{name:'主模型'}).textContent,/MiMo|mimo/i);
+  assert.match(screen.getByRole('button',{name:'主模型'}).textContent,/原型号已不可用，请重新选择，可改选 mimo-v2.6-flash/);
   fireEvent.click(screen.getByRole('button',{name:'主模型'}));
   assert.equal(screen.queryByRole('button',{name:/选择.*mimo-v2.5/}),null);
   assert.deepEqual(models.library,before);
 });
 test('replacement requires confirmation, retains original, and only switches the explicitly selected preset',async()=>{
-  const models=setup(),before=structuredClone(models.library);let writes=0,saved,selected;
+  const models=setup();models.library.connections[0].provider='bailian';models.library.models[0].modelId='qwen3.5-plus';
+  const before=structuredClone(models.library);let writes=0,saved,selected;
   models.save=async value=>{writes++;saved=value;return true;};
-  const view=render(React.createElement(ModelReplacement,{provider:'xiaomi',modelId:'mimo-v2.5',models,entry:models.library.models[0],onReplace:value=>{selected=value;}}));
+  const view=render(React.createElement(ModelReplacement,{provider:'bailian',modelId:'qwen3.5-plus',models,entry:models.library.models[0],onReplace:value=>{selected=value;}}));
   fireEvent.click(screen.getByRole('button',{name:/切换到/}));assert.equal(writes,0);assert.deepEqual(models.library,before);
+  fireEvent.click(screen.getByRole('button',{name:'取消'}));assert.equal(writes,0);assert.deepEqual(models.library,before);
+  fireEvent.click(screen.getByRole('button',{name:/切换到 qwen3.8-flash/}));
   fireEvent.click(screen.getByRole('button',{name:'确认切换'}));
   await waitFor(()=>assert.equal(writes,1));
-  assert.equal(saved.models.find(item=>item.id==='old').modelId,'mimo-v2.5');
+  assert.equal(saved.models.find(item=>item.id==='old').modelId,'qwen3.5-plus');
   assert.equal(saved.models.find(item=>item.id==='old').disabled,true);
-  assert.equal(selected.modelId,'mimo-v2.6-flash');assert.equal(selected.connectionId,'c');
+  assert.equal(selected.modelId,'qwen3.8-flash');assert.equal(selected.connectionId,'c');
   assert.deepEqual(models.library,before);view.unmount();
 });
 test('saved presets still show lifecycle and replacement when their library binding is absent',t=>{
   t.mock.method(Date,'now',()=>Date.parse('2026-11-09'));
   const models=setup();models.library.models=[];
-  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','已下架','mimo-v2.6-flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
+  for(const [provider,modelId,label,replacement] of [['xiaomi','mimo-v2.5','原型号已不可用，请重新选择','mimo-v2.6-flash'],['bailian','qwen3.5-plus','将于2027-01-19下线','qwen3.8-flash']]){
     const draft={mode:'simple',settings:{simple:{models:{main:{libraryModelId:'missing',accessProvider:provider,modelId}}}}},before=structuredClone(draft);
     const view=render(React.createElement(WorkspaceModelConfig,{models,draft,path:'svg',onChange:()=>assert.fail('No automatic preset rewrite')}));
-    assert.ok(screen.getByText(text=>text.includes(label)&&text.includes(replacement)));
+    if(provider==='xiaomi') assert.ok(screen.getByText(text=>text.includes(label)&&text.includes(replacement)));
+    else assert.match(screen.getByText('将下线').title,/2027-01-19.*qwen3.8-flash/);
     assert.deepEqual(draft,before);view.unmount();
   }
 });
@@ -64,7 +68,7 @@ test('scheduled status stays selectable before deadline and flips without rewrit
   t.mock.method(Date,'now',()=>Date.parse('2027-01-18T23:59:59Z'));
   assert.equal(catalogRows(r).length,1);
   render(React.createElement(ModelSpecifications,{provider:'bailian',model}));
-  assert.ok(screen.getByText('将于2027-01-19下线'));assert.ok(screen.getByText(/qwen3.8-flash/));
+  assert.match(screen.getByRole('link').title,/将于2027-01-19下线/);assert.match(screen.getByRole('link').title,/qwen3.8-flash/);
   Date.now.mock.mockImplementation(()=>Date.parse('2027-01-19'));
   assert.equal(catalogRows(r).length,0);assert.deepEqual(model,before);
 });
@@ -74,7 +78,7 @@ test('unknown and explicitly unsupported modalities differ, with no invented tok
   assert.deepEqual(modalityIconStates('不支持',{state:'unsupported',value:null}).map(x=>x.state),Array(4).fill('unsupported'));
   const model=STATIC_MODEL_REGISTRY.openai.models.find(m=>m.id==='gpt-image-2.6-flare');
   const {container}=render(React.createElement(ModelSpecifications,{provider:'openai',model}));
-  assert.equal(screen.getAllByText('不适用').length,2);assert.ok(screen.getByText('未核实'));
+  assert.equal(screen.getAllByText('不适用').length,2);assert.match(screen.getByRole('link').title,/未核实/);
   assert.equal(container.querySelectorAll('.is-unsupported').length,5);
   assert.doesNotMatch([...container.querySelectorAll('dd')].map(n=>n.textContent).join(' '),/tokens|∞|unlimited|\b0\b/);
 });
@@ -86,4 +90,30 @@ test('unverified account catalogs preserve availability and provenance never cro
   assert.equal(vendor.fields.maxOutputTokens.provenance,'vendor');
   assert.equal(vendor.fields.totalContextTokens.provenance,'channel');
   assert.equal(auditedModelSpecs('custom','deepseek-v4-pro').fields.totalContextTokens.value,null);
+});
+
+test('Ling evidence preserves partial uncertainty and compact sources expose provenance/date accessibly',()=>{
+  const partial=auditedModelSpecs('antling','Ling-3.1-flash');
+  assert.deepEqual(modalityIconStates('',partial.fields.inputModalities).map(x=>x.state),['supported','unknown','unknown','unknown']);
+  const model=STATIC_MODEL_REGISTRY.antling.models.find(m=>m.id==='Ling-3.1-flash');
+  const view=render(React.createElement(ModelSpecifications,{provider:'antling',model,compactSources:true}));
+  assert.equal(view.container.querySelectorAll('dl > div').length,4);
+  assert.equal(view.container.querySelectorAll('.is-unknown sup').length,3);
+  assert.equal(screen.queryByText('核实日期'),null);assert.equal(screen.queryByText('未核实'),null);
+  assert.equal(screen.getAllByRole('link').length,1);assert.match(screen.getByRole('link').getAttribute('aria-label'),/2026-11-09/);
+  view.unmount();
+  render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}));
+  assert.equal(screen.getAllByText('模态未知').length,2);
+});
+test('removed models never offer the old replacement confirmation flow',()=>{
+  const models=setup();
+  render(React.createElement(ModelReplacement,{provider:'xiaomi',modelId:'mimo-v2.5',models,entry:models.library.models[0]}));
+  assert.equal(screen.queryByRole('button'),null);
+});
+
+test('all Fireworks replacement hints match selectable exact-channel IDs and removed StepFun default stays empty',()=>{
+  for(const [key,notice] of Object.entries(MODEL_AUDIT_DATA.removed).filter(([key])=>key.startsWith('fireworks/'))) {
+    assert.ok(STATIC_MODEL_REGISTRY.fireworks.models.some(model=>model.id===notice.replacementApiId && model.selectable!==false),key);
+  }
+  assert.equal(STATIC_MODEL_REGISTRY.stepfun.defaults.image,'');
 });

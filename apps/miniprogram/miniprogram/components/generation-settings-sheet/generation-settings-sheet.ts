@@ -1,3 +1,4 @@
+import { removedModelHint } from '../../utils/model-audit'
 import { openTokenDance, hasTokenDanceConnection } from '../../utils/tokendance'
 import { MODEL_CHANNEL_LABELS, orderModelChannels } from '../../utils/model-presentation'
 import { getModelRegistryState } from '../../utils/model-registry-store'
@@ -170,7 +171,7 @@ Component({
         return {
           role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
           provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
-          modelId: route.modelId, modelLabel: model?.label || route.modelId,
+          modelId: route.modelId, modelLabel: removedModelHint(route.accessProvider, route.modelId) || model?.label || route.modelId,
           required: executionRoles.includes(role),
           credentialAction: route.accessProvider === 'tokendance' ? (connected ? '管理授权' : '连接账户') : '配置 Key',
           credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean(selectedKeys[route.accessProvider]?.trim()),

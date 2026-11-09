@@ -6,6 +6,7 @@ import path from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import vm from 'node:vm'
+import { miniModelCatalog } from './lib/mini-model-catalog.mjs'
 import { packModelCatalog } from './lib/pack-model-catalog.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
@@ -47,7 +48,7 @@ test('packing preserves Unicode, primitive values, object order and independent 
 test('the full catalog round-trips through the shipped decoder and stays below the unchanged package budget', () => {
   const source = fs.readFileSync(path.join(root,'apps/web/src/lib/staticModelCatalog.js'),'utf8').replace(/export const /g,'const ')
   const value = vm.runInNewContext(source + ';({channels:EXTENDED_MODEL_CHANNELS,registry:STATIC_MODEL_REGISTRY})')
-  const {packed} = verify(value)
+  const {packed} = verify(miniModelCatalog(value))
   const packageRoot = path.join(root,'apps/miniprogram/miniprogram')
   const dataFile = path.join(packageRoot,'utils/static-model-catalog-data.js')
   function bytes(dir) {
@@ -67,4 +68,21 @@ test('shared presentation metadata remains lossless with the existing shipped co
   const {restored} = verify(original)
   assert.deepEqual(restored, original)
   assert.deepEqual(require('../apps/miniprogram/miniprogram/utils/model-presentation-data.js'), original)
+})
+
+test('Mini evidence projection preserves every execution and selection constraint',()=>{
+  const source = fs.readFileSync(path.join(root,'apps/web/src/lib/staticModelCatalog.js'),'utf8').replace(/export const /g,'const ')
+  const full = JSON.parse(JSON.stringify(vm.runInNewContext(source+';({channels:EXTENDED_MODEL_CHANNELS,registry:STATIC_MODEL_REGISTRY})')))
+  const mini = miniModelCatalog(full)
+  assert.deepEqual(mini.channels,full.channels)
+  for(const [channel,provider] of Object.entries(full.registry)) {
+    assert.deepEqual(mini.registry[channel].defaults,provider.defaults)
+    assert.equal(mini.registry[channel].models.length,provider.models.length)
+    provider.models.forEach((model,index)=>{
+      const result=mini.registry[channel].models[index]
+      for(const key of ['id','roles','selectable','disabledReason','requiresEntitlement','entitlement','regions','roleReasons','protocol','expirationDate','expirationAt','releaseOrder']) assert.deepEqual(result[key],model[key],channel+'/'+model.id+'/'+key)
+      const caps={...model.capabilities};delete caps.sizeSourceUrls;delete caps.sizeReviewedAt
+      assert.deepEqual(result.capabilities,caps,channel+'/'+model.id+'/capabilities')
+    })
+  }
 })

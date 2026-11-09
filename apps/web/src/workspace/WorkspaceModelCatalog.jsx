@@ -1,5 +1,4 @@
-import { auditedModelLifecycle, withModelAudit } from '../lib/modelAudit.js';
-import ModelReplacement from './ModelReplacement.jsx';
+import { removedModel, removedModelHint, withModelAudit } from '../lib/modelAudit.js';
 import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Plus, Check, ChevronDown, ArrowRight } from 'lucide-react';
@@ -18,7 +17,7 @@ export function catalogRows(registry, { provider = '', developer = '', role = ''
   const needle = query.trim().toLocaleLowerCase();
   return orderModelChannels(Object.keys(registry?.providers || {})).flatMap(id => {
     if (provider && id !== provider) return [];
-    return (registry.providers[id].models || []).filter(model => !auditedModelLifecycle(id, model.id)?.blocked).map(model => withModelAudit(id, model)).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !model.catalogRemoval && (model.catalogReview?.status === 'pending' || !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model))).filter(model => !role || model.roles?.includes(role))
+    return (registry.providers[id].models || []).filter(model => !removedModel(id, model.id)).map(model => withModelAudit(id, model)).filter(model => model.roles?.some(role => ROLE_NAMES[role])).filter(model => !model.catalogRemoval && (model.catalogReview?.status === 'pending' || !modelMissingFromCatalog(registry, id, model) && !modelRetiredFromCatalog(model))).filter(model => !role || model.roles?.includes(role))
       .filter(model => !developer || modelDeveloper(id, model).id === developer)
       .filter(model => !needle || [model.id, model.label, model.vendor, model.developerName, ...modelDeveloperAliases(modelDeveloper(id, model).id), channelName(id, registry), ...(model.roles || []).map(r => ROLE_NAMES[r])].join(' ').toLocaleLowerCase().includes(needle))
       .map(model => ({ provider: id, model }));
@@ -53,6 +52,7 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
   const [limit, setLimit] = useState(PAGE_SIZE), [adding, setAdding] = useState(null), [connectionId, setConnectionId] = useState('');
   const [saveError, setSaveError] = useState('');
   const saved = mode === 'library';
+  const removedEntries = saved ? library.models.filter(entry => removedModel(library.connections.find(c => c.id === entry.connectionId)?.provider, entry.modelId)) : [];
   const scrollRef = useRef(null);
   const allRows = useMemo(() => saved ? libraryRows(library, registry) : catalogRows(registry), [saved, library, registry]);
   // Catalog facets share the selected role; saved-library behavior stays unchanged.
@@ -114,20 +114,20 @@ export default function WorkspaceModelCatalog({ models, onConnection, mode = 'ca
       </div>
       <div className="tw-catalog-caption"><span>{providerId ? channelName(providerId, registry) : '模型目录'}{activeDeveloper && ` / ${activeDeveloper.label}`} <strong>{rows.length}</strong> 个型号</span>{saved ? <button className="tw-text-button" onClick={onBrowse}><Plus size={14}/>从目录添加</button> : <span>同一模型在不同渠道分别列出</span>}</div>
       <div className="tw-catalog-scroll" ref={scrollRef} tabIndex={0} aria-label={saved ? '已添加模型卡片' : '模型目录卡片'}>
+      {removedEntries.map(entry => <p className="tw-info" role="status" key={entry.id} title={entry.modelId}>{removedModelHint(library.connections.find(c => c.id === entry.connectionId)?.provider, entry.modelId)}</p>)}
       <div className="tw-catalog-grid">
         {rows.slice(0, limit).map(({ provider: id, model, entry, connection: savedConnection }) => {
           const added = library.models.filter(m => m.modelId === model.id && library.connections.some(c => c.id === m.connectionId && c.provider === id)).length;
           const unavailable = modelUnavailableForSelection(model);
           const developer = modelDeveloper(id, model);
           return <article className="tw-catalog-card" key={entry?.id || `${id}:${model.id}`}>
-            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><h3 title={model.label || model.id}>{model.label || model.id}</h3><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}</p></div></div>
+            <div className="tw-catalog-card-head"><span className="tw-catalog-logo"><ModelBrandLogo brand={developer.id}/></span><div><h3 title={model.label || model.id}>{model.label || model.id}</h3><p title={`${developer.label || model.vendor || channelName(id, registry)} / ${channelName(id, registry)}`}>{developer.label || model.vendor || channelName(id, registry)}<span> / </span>{channelName(id, registry)}{savedConnection ? ` · ${savedConnection.label}` : ''}</p></div></div>
             <div className="tw-catalog-card-meta">
               <code title={model.id}>{model.id}</code>
-              <div className="tw-catalog-tags">{(model.roles || []).filter(r => ROLE_NAMES[r]).map(r => <span key={r}>{ROLE_NAMES[r]}</span>)}{!model.roles?.length && <span>角色待确认</span>}</div>
+              <div className="tw-catalog-tags">{model.auditLifecycle?.state === 'scheduled' && <span title={model.auditLifecycle.message}>将下线</span>}{(model.roles || []).filter(r => ROLE_NAMES[r]).map(r => <span key={r}>{ROLE_NAMES[r]}</span>)}{!model.roles?.length && <span>角色待确认</span>}</div>
             </div>
-            {saved && <div className="tw-catalog-connection" title={`${savedConnection?.label || '连接不存在'} · ${entry.connectionId}`}><span>{savedConnection?.label || '连接不存在'} · {entry.connectionId.slice(0, 8)}</span>{entry.custom && <button onClick={() => onEditCustom(entry)}>配置能力</button>}</div>}
-            {saved && <ModelReplacement provider={id} modelId={model.id} models={models} entry={entry}/>}
             <ModelSpecifications provider={id} model={model} compactSources footerActions={<div className="tw-catalog-card-actions">
+              {saved && entry.custom && <button onClick={() => onEditCustom(entry)}>配置能力</button>}
               {saved ? <><span className={entry.disabled || unavailable || savedConnection?.disabled || !savedConnection ? 'tw-catalog-unavailable' : 'tw-catalog-added'} title={model.disabledReason || '已添加不代表调用已验证；停用保留任务记录'}>{entry.disabled ? '已停用' : !savedConnection ? '连接不存在' : savedConnection.disabled ? '连接已停用' : unavailable ? '暂不可用' : '已添加'}</span><button disabled={!ready || busy} aria-label={`${entry.disabled ? '启用' : '停用'} ${model.label || model.id} · ${savedConnection?.label || entry.connectionId}`} onClick={() => models.save({ ...library, models: library.models.map(item => item.id === entry.id ? { ...item, disabled: !item.disabled } : item) })}>{entry.disabled ? '启用' : '停用'}</button></> : <>{unavailable ? <span className="tw-catalog-unavailable" title={model.disabledReason || '当前不可选'}>暂不可用</span> : added > 0 && <span className="tw-catalog-added"><Check size={12}/>已添加</span>}
               <button disabled={!ready || busy || registryStatus !== 'ready' || unavailable} aria-label={`添加 ${model.label || model.id} · ${channelName(id, registry)}`} onClick={() => openAdd({ provider: id, model })}><Plus size={15}/><span>添加</span></button></>}
             </div>}/>

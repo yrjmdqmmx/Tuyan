@@ -1,4 +1,4 @@
-import { auditedModelLifecycle, withModelAudit } from './model-audit'
+import { removedModel, withModelAudit } from './model-audit'
 import { normalizeModelVersion, ModelVersion, presentRegistryModel, modelDeveloper, sortModelsNewestFirst } from './model-presentation'
 export const MODEL_PROVIDER_IDS = ['gemini', 'openai', 'bailian', 'ark', 'openrouter', 'deepseek', 'kimi', 'zhipu', 'siliconflow', 'anthropic', 'recraft', 'xai', 'bfl', 'stability', 'ideogram', 'minimax', 'mistral', 'together', 'fireworks', 'fal', 'replicate', 'runware', 'tokenhub', 'xiaomi', 'sensenova', 'stepfun', 'qianfan', 'iflytek', 'longcat', 'antling', 'novita', 'tokendance'] as const
 export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
@@ -133,7 +133,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   for (const role of ['main', 'image', 'vision'] as const) {
     // Newly exposed roles may have no channel default; keep the saved blank choice.
     if (!defaults[role]) continue
-    if (auditedModelLifecycle(providerId, defaults[role])?.blocked) continue
+    if (removedModel(providerId, defaults[role])) continue
     const entry = models.find((model) => model.id === defaults[role])
     const catalogQuarantined = entry?.selectable === false && Boolean(entry.disabledReason)
     if (!entry || (entry.selectable === false && !catalogQuarantined) || !entry.roles.includes(role)) {
@@ -230,7 +230,7 @@ export function partitionRegistryModels(
 ): RegistryModelPartition {
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
-    .filter(model => !auditedModelLifecycle(model.auditChannel || '', model.id)?.blocked)
+    .filter(model => !removedModel(model.auditChannel || '', model.id))
     .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))

@@ -83,7 +83,9 @@ test('v35 retired Ark identity remains visible and disabled without replacing a 
   render(React.createElement(WorkspaceModelPicker, { models, role: 'main', path: 'svg', current, onChange: value => changes.push(value) }));
   fireEvent.click(screen.getByRole('button', { name: '主模型', exact: true }));
   const card = screen.getByRole('article');
-  assert.match(card.textContent, /2026-09-21/);
+  assert.match(card.querySelector('.model-spec-sources a').getAttribute('aria-label'), /2026-09-21/);
+  assert.match(card.querySelector('.tw-catalog-unavailable').title, /2026-09-21/);
+  assert.equal(card.querySelector('.model-option-note, .thinking-status'), null);
   assert.equal(within(card).getByRole('button', { name: /^选择 / }).disabled, true);
   fireEvent.click(card);
   assert.deepEqual(changes, []);

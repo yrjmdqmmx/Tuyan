@@ -40,7 +40,6 @@ function normalizeModelRegistry(input) {
     };
 }
 function normalizeProvider(providerId, input) {
-    var _a;
     const source = asRecord(input);
     const defaultsSource = asRecord(source.defaults);
     const modelsSource = Array.isArray(source.models) ? source.models : [];
@@ -60,7 +59,7 @@ function normalizeProvider(providerId, input) {
         // Newly exposed roles may have no channel default; keep the saved blank choice.
         if (!defaults[role])
             continue;
-        if ((_a = (0, model_audit_1.auditedModelLifecycle)(providerId, defaults[role])) === null || _a === void 0 ? void 0 : _a.blocked)
+        if ((0, model_audit_1.removedModel)(providerId, defaults[role]))
             continue;
         const entry = models.find((model) => model.id === defaults[role]);
         const catalogQuarantined = (entry === null || entry === void 0 ? void 0 : entry.selectable) === false && Boolean(entry.disabledReason);
@@ -149,7 +148,7 @@ function modelAvailabilityPresentation(model) {
 function partitionRegistryModels(models, options) {
     const query = stringValue(options.query).toLocaleLowerCase('zh-CN');
     const annotated = models
-        .filter(model => { var _a; return !((_a = (0, model_audit_1.auditedModelLifecycle)(model.auditChannel || '', model.id)) === null || _a === void 0 ? void 0 : _a.blocked); })
+        .filter(model => !(0, model_audit_1.removedModel)(model.auditChannel || '', model.id))
         .filter((model) => model.selectable !== false && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
         .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
         .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))

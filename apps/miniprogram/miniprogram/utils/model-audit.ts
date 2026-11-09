@@ -7,6 +7,7 @@ export interface AuditFact {
   provenance: 'channel' | 'vendor' | null
   sourceUrl: string | null
   verifiedAt: string | null
+  unknownModalities?: string[]
 }
 export function auditedModelSpecs(channel: string, id: string) {
   const row = MODEL_AUDIT_DATA.rows[channel + '/' + id]
@@ -15,7 +16,24 @@ export function auditedModelSpecs(channel: string, id: string) {
     const fact = row ? MODEL_AUDIT_DATA.facts[row[index]] : [null, 'unknown', null, null]
     result[field] = { value: fact[0], state: fact[1], provenance: fact[2], sourceUrl: fact[3] === null ? null : MODEL_AUDIT_DATA.sources[fact[3]], verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null }
   })
-  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null }
+  const details = MODEL_AUDIT_DATA.details?.[channel + '/' + id]
+  if (details?.unknownInputModalities) result.inputModalities.unknownModalities = details.unknownInputModalities
+  return { fields: result, unverified: !row || row[4] === 1, verifiedAt: row ? MODEL_AUDIT_DATA.verifiedAt : null, sourceUrl: row && row[5] !== null ? MODEL_AUDIT_DATA.sources[row[5]] : null, sourceUrls: details?.sourceUrls || [], note: details?.note || '' }
+}
+
+// Message-only tombstones are never catalog entries or replacement actions.
+export function removedModel(channel: string, id: string, now = Date.now()) {
+  const key = channel + '/' + String(id).trim()
+  const removed = MODEL_AUDIT_DATA.removed?.[key]
+  if (removed) return removed as { stopDate: string; replacementApiId: string | null; sourceUrl: string }
+  const notice = MODEL_AUDIT_DATA.notices[key]
+  return notice && now >= Date.parse(notice.stopDate)
+    ? { stopDate: notice.stopDate, replacementApiId: notice.replacement, sourceUrl: notice.sourceUrl } : null
+}
+
+export function removedModelHint(channel: string, id: string, now = Date.now()) {
+  const removed = removedModel(channel, id, now)
+  return removed ? `原型号已不可用，请重新选择${removed.replacementApiId ? `，可改选 ${removed.replacementApiId}` : ''}` : ''
 }
 
 // Date-only notices take effect at the start of the stated UTC calendar day.
@@ -24,19 +42,16 @@ export function auditedModelLifecycle(channel: string, id: string, now = Date.no
   const notice = MODEL_AUDIT_DATA.notices[channel + '/' + String(id).trim()]
   if (!notice || notice.scope === 'serverless' && channel !== 'fireworks') return null
   const elapsed = now >= Date.parse(notice.stopDate)
-  const state = !elapsed ? 'scheduled' : notice.scope === 'full' ? 'retired' : 'channel-unavailable'
-  const label = state === 'retired' ? '已下架' : state === 'channel-unavailable' ? '渠道不可用' : '将下线'
-  // Some audit entries contain a family suggestion, not an exact replacement ID.
-  const replacement = notice.replacement === 'Dep' ? null : notice.replacement?.replace(/^Dep -> /, '') || null
-  return { ...notice, replacement, state, label, blocked: elapsed, message: `${state === 'scheduled' ? `将于${notice.stopDate.slice(0,10)}下线` : label}${replacement ? `；建议替换为 ${replacement}` : ''}` }
+  if (elapsed) return null
+  const replacement = notice.replacement || null
+  return { ...notice, replacement, state: 'scheduled', label: '将下线', blocked: false, message: `将于${notice.stopDate.slice(0,10)}下线${replacement ? `；可改选 ${replacement}` : ''}` }
 }
 
 export function assertAuditedModelAvailable(channel: string, id: string, now = Date.now()) {
-  const lifecycle = auditedModelLifecycle(channel, id, now)
-  if (lifecycle?.blocked) throw Object.assign(new Error(`模型 ${id} ${lifecycle.message}。原配置已保留，请确认后切换。`), {
-    businessCode: lifecycle.state === 'retired' ? 'MODEL_RETIRED' : 'MODEL_CHANNEL_UNAVAILABLE',
-    code: lifecycle.state === 'retired' ? 'MODEL_RETIRED' : 'MODEL_CHANNEL_UNAVAILABLE',
-    statusCode: 400, replacement: lifecycle.replacement, sourceUrl: lifecycle.sourceUrl,
+  const removed = removedModel(channel, id, now)
+  if (removed) throw Object.assign(new Error(`模型 ${id}：${removedModelHint(channel, id, now)}。`), {
+    businessCode: 'MODEL_UNAVAILABLE', code: 'MODEL_UNAVAILABLE',
+    statusCode: 400, replacement: removed.replacementApiId, sourceUrl: removed.sourceUrl,
     requestState: 'not_sent', localInputFailure: true, retryable: false,
   })
 }
@@ -44,7 +59,7 @@ export function assertAuditedModelAvailable(channel: string, id: string, now = D
 export function withModelAudit<T extends { id: string }>(channel: string, model: T, now = Date.now()) {
   const lifecycle = auditedModelLifecycle(channel, model.id, now)
   return { ...model, auditChannel: channel, auditSpecifications: auditedModelSpecs(channel, model.id), auditLifecycle: lifecycle,
-    ...(lifecycle?.blocked ? { selectable: false, disabledReason: lifecycle.message } : {}) }
+    ...(removedModel(channel, model.id, now) ? { selectable: false, disabledReason: removedModelHint(channel, model.id, now) } : {}) }
 }
 
 export function assertModelLibraryAdditions(next: any, previous: any, now = Date.now()) {

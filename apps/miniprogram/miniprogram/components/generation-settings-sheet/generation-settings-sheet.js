@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const model_audit_1 = require("../../utils/model-audit");
 const tokendance_1 = require("../../utils/tokendance");
 const model_presentation_1 = require("../../utils/model-presentation");
 const model_registry_store_1 = require("../../utils/model-registry-store");
@@ -178,7 +179,7 @@ Component({
                 return {
                     role, label: role === 'main' ? '主模型' : role === 'image' ? '图像生成模型' : '参考图识别模型',
                     provider: route.accessProvider, providerLabel: PROVIDER_LABELS[route.accessProvider] || route.accessProvider,
-                    modelId: route.modelId, modelLabel: (model === null || model === void 0 ? void 0 : model.label) || route.modelId,
+                    modelId: route.modelId, modelLabel: (0, model_audit_1.removedModelHint)(route.accessProvider, route.modelId) || (model === null || model === void 0 ? void 0 : model.label) || route.modelId,
                     required: executionRoles.includes(role),
                     credentialAction: route.accessProvider === 'tokendance' ? (connected ? '管理授权' : '连接账户') : '配置 Key',
                     credentialReady: route.accessProvider === 'tokendance' ? connected : Boolean((_a = selectedKeys[route.accessProvider]) === null || _a === void 0 ? void 0 : _a.trim()),

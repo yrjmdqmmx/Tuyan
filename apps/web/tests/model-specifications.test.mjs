@@ -29,8 +29,8 @@ test('Novita shows confirmed text-to-image facts offline and after conflicting c
     assert.deepEqual(modalityIconStates(card.output).map(x => x.state), ['unknown', 'unknown', 'unknown', 'unknown'])
     assert.ok(card.sources.includes('https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img'))
     const view = render(React.createElement(ModelSpecifications, { provider: 'novita', model }))
-    assert.equal(view.container.querySelectorAll('.is-unknown').length, 8)
-    assert.match(screen.getByRole('note').textContent, /未核实/)
+    assert.equal(screen.getAllByText('模态未知').length, 2)
+    assert.match(screen.getByRole('link').title, /未核实/)
     assert.deepEqual(model, before, 'display correction never expands runtime capabilities or changes history')
     view.unmount()
   }
@@ -158,8 +158,8 @@ test('modality icons distinguish known, missing and conditional published capabi
   assert.equal(states.find(x=>x.id==='file').detail,'文件（PDF）')
   assert.equal(modalityIconStates('文本')[1].state,'unlisted')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'custom',model:{id:'unknown'}}))
-  assert.equal(container.querySelectorAll('.is-unknown').length,8)
-  assert.equal(screen.getAllByRole('img',{name:'图像：未知'}).length,2)
+  assert.equal(container.querySelectorAll('.is-unknown').length,0)
+  assert.equal(screen.getAllByText('模态未知').length,2)
   assert.doesNotMatch(container.textContent,/（原厂）|（渠道）/)
 })
 
@@ -226,5 +226,5 @@ test('context and max output retain independent exact integers and per-value pro
   assert.equal(data.context,'1,048,576 tokens');assert.equal(data.maxOutput,'393,216 tokens')
   assert.equal(data.contextScope,'渠道');assert.equal(data.maxOutputScope,'原厂')
   const {container}=render(React.createElement(ModelSpecifications,{provider:'tokendance',model:{id:'deepseek-v4-pro'}}))
-  assert.ok(screen.getAllByText('源自原厂').length);assert.match(container.textContent,/2026-11-09/)
+  assert.match(screen.getByRole('link').title,/源自原厂/);assert.match(screen.getByRole('link').title,/2026-11-09/)
 })

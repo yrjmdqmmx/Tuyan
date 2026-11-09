@@ -8,6 +8,7 @@ import { useAppLocale } from '../components/BenchmarkLocale.jsx';
 // Historical identities and other presets are never rewritten by rendering.
 export function replacementModel(provider, modelId, registry) {
   const lifecycle = auditedModelLifecycle(provider, modelId);
+  if (lifecycle?.state !== 'scheduled') return null;
   const replacement = registry?.providers?.[provider]?.models?.find(model => model.id === lifecycle?.replacement);
   return replacement && !modelUnavailableForSelection(withModelAudit(provider, replacement)) ? replacement : null;
 }
@@ -28,13 +29,13 @@ export default function ModelReplacement({ provider, modelId, models, entry, onR
     setConfirming(false);
   }
   return <>
-    <button className="tw-text-button" disabled={!models.ready || models.busy || models.registryStatus !== 'ready'} onClick={() => { setConfirming(true); setError(''); }}>{t('切换到')} {replacement.label || replacement.id}</button>
+    <button className="tw-text-button" disabled={!models.ready || models.busy || models.registryStatus !== 'ready'} onClick={() => { setConfirming(true); setError(''); }}>{t('切换到')} {replacement.id}</button>
     {confirming && <WorkspaceDialog title={t('确认切换模型')} onClose={() => setConfirming(false)}>
       <p>{modelId} → {replacement.id}</p>
       <p>{t('使用同一渠道连接。原型号将保留并停用，替代型号加入我的模型；其他已保存预设和历史任务保持原型号。')}{onReplace ? t('当前预设的此角色会切换为替代型号。') : ''}</p>
       <p>{t('替代型号的能力和账户可用性可能不同，请核对后确认。')}</p>
       {error && <p role="alert">{error}</p>}
-      <button className="tw-primary" disabled={models.busy || !models.ready} onClick={confirm}>{t('确认切换')}</button>
+      <footer className="tw-connection-footer"><div><button disabled={models.busy} onClick={() => setConfirming(false)}>{t('取消')}</button><button className="tw-primary" disabled={models.busy || !models.ready} onClick={confirm}>{t('确认切换')}</button></div></footer>
     </WorkspaceDialog>}
   </>;
 }
