@@ -938,3 +938,36 @@ are in the validation JSON. `/tmp/r22d-ci` was deleted after validation, includi
 its temporary dependency links. The starting branch/HEAD and all prior product
 work are preserved; no Git write command, network lookup, paid request,
 production action, other-worktree operation or image build was performed.
+
+## R23 Phase E
+
+PM re-review of PR #251, starting head `42ee9ffd`, branch `codex/model-modality-audit`, frozen main `8c456709`. Scope: items 1, 2, 3, 5 and 6. All work stayed in this checkout, offline; no Git writes/config-file edits, secrets, paid calls, deployment or image builds. `sync-agent-knowledge` and `sync-workflow` were not touched.
+
+- **Item 1 — vendor links:** verified TokenDance pages remain first; each field's human vendor evidence is appended and canonically deduplicated. Appended rows use the `原厂规格` role prefix and descriptive subjects. Existing notice labels remain; Mini explicitly records `role: vendor` for the two MiMo URLs that serve as both the primary retirement notice and vendor input evidence. Core's display-only `cardSpecifications.vendorSources` array carries these links to Mini; its static projection carries the same evidence. Across all **1,064 cards / 166 vendor-attributed fields** per client, missing field-linked vendor URLs fall from **14 to 0 on Web** (the reported TokenDance set) and **37 to 0 on Mini** (the broader single-source limitation). Web tests open every actual React evidence dialog and inspect `<a href>`; Mini tests inspect compiled `specSources`, WXML bindings and every copy-dialog/clipboard callback. Verified links, primary order, deduplication, icons, raw provenance and names are preserved.
+- **Item 2 — registry acceptance:** restored the exact main `missingProviders` expression in Mini TS and rebuilt JS. Both phase-2 tests now supply the frozen main OpenRouter provider solely to satisfy the existing contract; their original **1,061 Core card comparisons** remain unchanged. A positive complete-catalog control and five independent negative cases require the exact main error even when `unavailableProviders` explains the missing provider.
+- **Item 3 — ledger stability:** `diffSha256` now hashes length-delimited old/new file contents, with no diff headers or abbreviated object IDs. Regenerated Markdown/JSON and the frozen inventory. Both `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.abbrev GIT_CONFIG_VALUE_0=7` and `...=12` pass `node scripts/report-changed-tests.mjs --check`; the script suite exercises both settings. History-free inventory/content/tamper checks remain active. The ledger records the expanded source-row expectations, three exact additional vendor-notice identities, and contract-valid phase-2 fixtures; no execution or picker-name expectation was weakened.
+- **Item 5 — machine links:** the complete before/after scan found **one visible machine URL on one Web card**, `stability/sd3.5-flash` → `https://api.stability.ai/v2alpha/openapi`; Mini already omitted that secondary link. After filtering, **0 visible API/JSON links on both clients**. Stability keeps its existing human API-reference page. OpenAPI/Swagger, JSON/YAML suffixes, machine API hosts/routes, MIME types and redirects are covered by concrete tests; human fal and documentation `/api` pages remain valid. Existing explicit model-list endpoint detection is retained. See [all before/after links](model-card-api-links-r23.md).
+- **Item 6 — compressed oracle:** replaced the **13,538,408-byte** JSON with [`execution-capability-8c456709.json.gz`](../test-support/fixtures/execution-capability-8c456709.json.gz), **578,207 bytes**, saving **12,960,201 bytes**. Node `gzipSync(..., {level: 9})` has mtime 0 and no filename header. The shared loader uses `gunzipSync`; all four execution locks still compare every model and decision against the same frozen values. Full-history `--check` regenerates main and compares decompressed bytes; unavailable history skips cleanly and committed-fixture tests continue. The other fixtures are at most 410,091 bytes and have existing readers; none required another compression migration.
+
+Validation (final counts are also recorded in `model-modality-r23-validation.json`):
+
+| Check | Result |
+| --- | --- |
+| Web full suite: `cd apps/web && NODE_OPTIONS=--no-experimental-webstorage node --import tsx --import ./tests/dom-setup.mjs --test --test-concurrency=2` | **1,479/1,479** |
+| Web `npm run build` | Pass |
+| Mini `npm test` and `npm run build` | 168/168; build passes |
+| Mini source / runtime / media bytes | **1,569,099 / 1,143,762 / 189,978**; source limit **1,572,864**, 3,765 bytes remaining; older 1,569,427-byte guard also passes |
+| `node --test scripts/*.test.mjs` | 56/56 |
+| `node --test packages/api/src/*.test.js` | 33/33 |
+| Core execution, R22B projection and phase-2 tests | 4/4 |
+| Gateway execution and phase-2 tests | 2/2 |
+| All four execution-capability-r22 tests and picker-name lock | All 1,064 models and names match frozen main |
+| Ten requested `--check` scripts | Pass: sync-model-catalog, generate-model-audit, report-model-modality-r21, report-model-modality-phase2, sync-card-display, report-model-modality-r22b, report-changed-tests, freeze-execution-capability, check-docker-bundles, freeze-audit-sources |
+| Ledger with core.abbrev 7 and 12 | Both pass, via environment injection only |
+| Git whitespace/error check | Pass |
+
+Mini retains readable TS; only the generated picker and its audit helper are compacted after tsc, preserving both existing package ceilings. The R22B current report was regenerated for its additional source rows and Mini rule; historical evidence and R21/phase-2 reports remain intact.
+
+The flow checked is model card → evidence dialog → vendor source link or copy action. Browser plugin is unavailable; the local browser-test server fails with `listen EPERM: operation not permitted 127.0.0.1:5183`. Browser screenshots/native WeChat rendering therefore remain unverified. DOM and compiled Mini interaction checks pass. No Core/Gateway test in the targeted run has a localhost EPERM failure; broader previously documented socket-suite failures were outside this run. An initial Core command at repository root could not resolve package-local `tsx`; the corrected command runs from `apps/paperbanana-api` and passes. Early regression failures (single-source assumptions and incomplete phase-2 registries) are fixed and listed in the ledger.
+
+Repository file-byte totals: **546,786,785 before → 533,872,981 after**, a **12,913,804-byte reduction**, including all seven new intended files without staging. Existing tracked paths alone total **533,279,693 bytes** after the deletion; the new intended files add **593,288 bytes**. Method: sum file sizes from `git ls-files -z`, omit deleted paths, and add `git ls-files --others --exclude-standard -z`; exclude `.git`, dependencies and ignored build outputs.

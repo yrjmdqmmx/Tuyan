@@ -33,7 +33,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url, label: label + ' · ' + sourceTitle(url) }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + id) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])
   }
 })
 
@@ -124,16 +124,20 @@ test('R13B compiled picker resolves full-model source priorities and retains not
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
     assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + sourceTitle(url) }])
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ ...(['bailian/xiaomi/mimo-v2.5-pro', 'tokenhub/mimo-v2.5-pro'].includes(channel + '/' + modelId) ? {role:'vendor'} : {}), url, label: label + ' · ' + sourceTitle(url) }, ...small.vendorSources.filter(source => source !== url).map(source => ({url:source,label:'原厂规格 · '+sourceTitle(source)}))])
   }
   let notices = 0
+  const appendedNotices = []
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
     for (const { url, label } of context.present(model, '', '', channel).specSources) {
       if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
         notices++
-        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)
+        const primary = auditedModelSpecs(channel, model.id).sourceUrl === url
+        if (!primary) appendedNotices.push(channel + '/' + model.id)
+        assert.equal(label, (primary ? '下线公告' : '原厂规格') + ' · ' + sourceTitle(url), channel + '/' + model.id)
       }
     }
   }
-  assert.equal(notices, 16)
+  assert.equal(notices, 19)
+  assert.deepEqual(appendedNotices.sort(), ['tokendance/qwen3.5-plus', 'qianfan/qwen-image-edit', 'siliconflow/Qwen/Qwen-Image-Edit'].sort())
 })

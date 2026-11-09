@@ -5,6 +5,7 @@ import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { fileURLToPath } from 'node:url'
+import { changedTestHash } from './lib/changed-test-hash.mjs'
 import { hasCommit, requireHistory } from './lib/git-history.mjs'
 
 const root = fileURLToPath(new URL('../', import.meta.url)), base = '8c456709'
@@ -14,7 +15,7 @@ const manifestPath = manifestArg < 0 ? path.join(root, 'docs/model-modality-chan
 const review = JSON.parse(fs.readFileSync(manifestPath, 'utf8'))
 const check = process.argv.includes('--check')
 const inventoryPath = path.join(root, 'test-support/fixtures/changed-tests-inventory.json')
-const commits = [base, '2550c736']
+const commits = [...new Set([base, ...(review.followupChanges || []).map(row => row.comparisonBase)])]
 if (!check) requireHistory(root, commits)
 const historyAvailable = commits.every(commit => hasCommit(root, commit))
 const hash = text => createHash('sha256').update(text).digest('hex')
@@ -29,7 +30,7 @@ if (historyAvailable) {
     testSources.some(test => fs.readFileSync(path.join(root, test), 'utf8').includes(path.basename(file)))).sort()
   const capture = (file, comparisonBase = base) => ({ file, comparisonBase,
     contentSha256: hash(fs.readFileSync(path.join(root, file))),
-    diffSha256: hash(git(['diff', '--no-ext-diff', '--no-renames', '--unified=0', comparisonBase, '--', file])),
+    diffSha256: changedTestHash(git(['show', comparisonBase + ':' + file]), fs.readFileSync(path.join(root, file))),
   })
   inventory = { base, files: files.map(file => capture(file)), fixtures: fixtures.map(file => capture(file)),
     followupChanges: (review.followupChanges || []).map(file => capture(file.file, file.comparisonBase)) }
@@ -58,7 +59,7 @@ for (const file of [...review.files, ...review.fixtures]) {
 }
 // Follow-up review also covers expectations introduced on this feature branch.
 for (const file of review.followupChanges || []) {
-  assert.equal(file.comparisonBase, '2550c736')
+  assert.ok(['2550c736', '42ee9ffd'].includes(file.comparisonBase))
   verifyFile(file, inventory.followupChanges)
   assert.ok(file.changes.length)
   for (const row of file.changes) {
@@ -79,16 +80,16 @@ const cell = value => (typeof value === 'string' ? value : JSON.stringify(value)
 const table = entries => ['| File:line | Old expectation → new expectation | Reason and evidence | Verdict |', '| --- | --- | --- | --- |',
   ...entries.flatMap(file => file.changes.map(row => `| [${file.file}:${row.line}](../${file.file}#L${row.line})${row.oldLine ? ` (${row.comparisonBase || 'main'}:${row.oldLine})` : ''} | ${cell(row.old)} → ${cell(row.new)} | ${row.phase ? cell(row.phase) + '. ' : ''}${row.supersededBy ? 'Historical transition, superseded by ' + cell(row.supersededBy) + '. ' : ''}${cell(row.reason)} ${row.evidence.map(e => `[${e}](../${e})`).join('; ')} | ${row.verdict}${row.resolution ? ' / ' + row.resolution : ''} |`))].join('\n')
 const markdown = [
-  '# Changed test expectations — R22 Phases A, B and C', '',
+  '# Changed test expectations — R22 and R23 Phase E', '',
   `Baseline: \`${base}\`. This inventory covers every changed pre-existing test file from \`git diff ${base} -- '*test*' '*tests*'\`, plus changed JSON fixtures directly consumed by those tests. New test files are not pre-existing expectations.`, '',
   `Counts: **${counts.files} test files**, **${counts.assertionAndFixtureInputChanges} assertion or test-input changes**, **${counts.consumedJsonFixtures} consumed JSON fixtures**, **${counts.semanticFixtureChanges} semantic fixture changes**; **${counts.justified} JUSTIFIED**, **${counts.unjustifiedRestored} UNJUSTIFIED / RESTORED**, **${counts.flagged} FLAGGED**.`, '',
   ...review.notes.flatMap(note => [note, '']),
   '## Assertions and test inputs', '', table(review.files), '',
-  '## Phase C follow-up expectations introduced after main', '', table(review.followupChanges || []), '',
+  '## Follow-up expectations introduced after main', '', table(review.followupChanges || []), '',
   '## Consumed JSON fixture changes', '',
   'The generated audit fixture interns values and URLs. The table resolves those indices to exact per-model expectations; unused pool entries and index renumbering are storage changes, not additional assertions. JSON pointers identify individual values in the machine-readable report. No pre-existing tests/fixtures JSON file changed.', '', table(review.fixtures), '',
   '## Verification', '',
-  '`node scripts/report-changed-tests.mjs --check` independently recomputes the changed pre-existing file list, checks directly consumed JSON fixtures, checks every diff hash and review count, and verifies this Markdown matches the JSON. A negative test removes a reviewed file and requires the guard to fail.', '',
+  '`node scripts/report-changed-tests.mjs --check` independently recomputes the changed pre-existing file list, checks directly consumed JSON fixtures, checks every old/new blob-content hash (independent of Git diff formatting and core.abbrev) and review count, and verifies this Markdown matches the JSON. A negative test removes a reviewed file and requires the guard to fail.', '',
 ].join('\n')
 const output = path.join(root, 'docs/model-modality-changed-tests.md')
 if (process.argv.includes('--check')) assert.equal(fs.readFileSync(output, 'utf8'), markdown, 'Changed-test Markdown drift')

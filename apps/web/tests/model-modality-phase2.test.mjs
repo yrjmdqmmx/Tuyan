@@ -15,7 +15,8 @@ test('phase 2 full Core objects, saved IDs, library rows, picker options and Min
   const registry = await phase2Registry(), byKey = new Map()
   const require = createRequire(import.meta.url)
   const { normalizeModelRegistry } = require('../../miniprogram/miniprogram/utils/model-registry.js')
-  const mini = normalizeModelRegistry(registry)
+  const { readExecutionFixture } = await import('../../../test-support/execution-capability.mjs')
+  const mini = normalizeModelRegistry({...registry, providers:{...registry.providers, openrouter:readExecutionFixture().core.openrouter}})
   let count = 0, differences = 0
   for (const [channel, provider] of Object.entries(registry.providers)) for (const model of provider.models) {
     const key = channel + '/' + model.id, card = modelCardSpecifications(channel, model)

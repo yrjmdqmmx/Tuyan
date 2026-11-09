@@ -12,7 +12,7 @@
     "historicalFallbacks": 7,
     "missingFallbacks": 0,
     "sourceRowsBefore": 2489,
-    "sourceRowsAfter": 2479,
+    "sourceRowsAfter": 2494,
     "duplicateUrlRowsBefore": 13,
     "duplicateUrlRowsAfter": 0,
     "duplicateLabelsBefore": 974,
@@ -23,7 +23,7 @@
   },
   "rules": {
     "links": "Only exact TokenDance model pages with successful rendered-content evidence, date and hash may be linked. Seven failures use original main vendor links.",
-    "sources": "One normalized URL per source list. Roles retained; curated titles or readable path subjects distinguish sources. Mini preserves one primary source per card and copy dialog.",
+    "sources": "One normalized URL per source list. Roles retained; curated titles or readable path subjects distinguish sources. Mini preserves the primary source and copy dialog; R23 appends vendor field sources.",
     "modalities": "Display-only order: text, image, video, audio, then other modalities. Stored arrays unchanged.",
     "vendor": "All known vendor-only fields visibly show 源自原厂; null/unknown stays unknown. Four prior catalog fallbacks sourced solely from vendor pages are classified vendor at the display boundary; original evidence and verification dates remain.",
     "vision": "视觉理解 is derived from the execution vision role in ModelPicker/presentRegistryModel and Mini. kimi-k3.1-pro has roles=[main]; image/video display facts do not enable vision execution."

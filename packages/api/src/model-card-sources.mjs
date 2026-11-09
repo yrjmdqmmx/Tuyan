@@ -14,10 +14,12 @@ export function isApiSource(value, checks = {}) {
   try {
     const url = new URL(value), check = checks[value] || {}
     const path = decodeURIComponent(url.pathname)
-    return /\/v\d+\/models(?:\b|\/|$)|\/gateway(?:\/|$)|\/portal\/api(?:\/|$)|\/api\/v\d+(?:\/|$)|\.json$/i.test(path)
-      || /^api\./i.test(url.hostname) && /\/models?(?:\/|$)/i.test(path)
+    const humanDocs = /^(?:docs|developers|api-docs)\./i.test(url.hostname) || /\/(?:docs|documentation|api-docs)(?:\/|$)/i.test(path)
+    return /\/openapi|\/swagger|\.(?:json|ya?ml)\/?$/i.test(path)
+      || /(?:\/|\+)(?:json|yaml|x-yaml)(?:\s*;|$)/i.test(check.contentType || '')
+      || /\/gateway(?:\/|$)|\/portal\/api(?:\/|$)|\/v\d+(?:alpha|beta)?\/models(?:\b|\/|$)/i.test(path)
+      || !humanDocs && (/^api\./i.test(url.hostname) || /^\/api\/|\/api\/v\d+(?:\/|$)/i.test(path))
       || url.hostname === 'replicate.com' && /^\/[^/]+\/[^/]+\/api\/schema\/?$/i.test(path)
-      || /(?:\/|\+)json(?:\s*;|$)/i.test(check.contentType || '')
       || !!(check.finalUrl && check.finalUrl !== value && isApiSource(check.finalUrl))
   } catch { return true }
 }
@@ -50,11 +52,12 @@ function modelPageForEndpoint(value, model, captured) {
 }
 
 export function modelCardSources({ channel, model = {}, audit, fields, lifecycle, checks = {} }) {
+  const fieldVendors = uniqueSources(safeSources(Object.values(fields).filter(fact => fact.provenance === 'vendor').flatMap(fact => fact.sourceUrls || [fact.sourceUrl])).filter(url => visibleSource(url) && !isApiSource(url, checks)))
   if (channel === 'tokendance' && model.id) {
     const url = 'https://tokendance.space/models/' + model.id
-    if (isVerifiedTokenDancePage(url)) return { sources: [url], channelSources: [url], vendorSources: [], lifecycleSources: [] }
+    if (isVerifiedTokenDancePage(url)) return { sources: uniqueSources([url, ...fieldVendors]), channelSources: [url], vendorSources: fieldVendors, lifecycleSources: [] }
     const fallback = tokenDancePages[model.id]?.fallback
-    if (fallback) return Object.fromEntries(Object.entries(fallback).map(([key, urls]) => [key, uniqueSources(urls.filter(visibleSource))]))
+    if (fallback) return Object.fromEntries(Object.entries(fallback).map(([key, urls]) => [key, uniqueSources([...urls, ...(['sources', 'vendorSources'].includes(key) ? fieldVendors : [])].filter(visibleSource))]))
   }
   const links = audit.sourceLinks || []
   const fieldSources = Object.values(fields).flatMap(fact => fact.sourceUrls || [fact.sourceUrl])
@@ -127,7 +130,8 @@ const visibleSource = url => !isDeadSource(url) && !isApiSource(url)
   && (new URL(url).hostname !== 'tokendance.space' || isVerifiedTokenDancePage(url))
 
 export function modelSourceRows(data) {
-  const rows = uniqueSources(data.sources).map(url => ({url, label: modelSourceName(data, url) + ' · ' + sourceTitle(url)}))
+  const vendors = new Set(data.vendorSources.map(sourceIdentity))
+  const rows = uniqueSources(data.sources).map((url, index) => ({url, label: (index > 0 && vendors.has(sourceIdentity(url)) ? '原厂规格' : modelSourceName(data, url)) + ' · ' + sourceTitle(url)}))
   const counts = new Map()
   for (const row of rows) counts.set(row.label, (counts.get(row.label) || 0) + 1)
   return rows.map(row => counts.get(row.label) > 1 ? { ...row, label: row.label + ' · ' + new URL(sourceIdentity(row.url)).host + new URL(sourceIdentity(row.url)).pathname + new URL(sourceIdentity(row.url)).search } : row)

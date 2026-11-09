@@ -87,7 +87,7 @@ test('R9 channel evidence remains available; R12 permits only notices, human pag
     const first = data.sources[0]
     assert.ok(first && !isApiSource(first, web.MODEL_AUDIT_DATA.sourceChecks), provider + '/' + model.id)
     assert.ok(data.channelSources.includes(first) || data.vendorSources.includes(first) || data.lifecycleSources.includes(first), provider + '/' + model.id)
-    if (provider === 'tokendance') assert.deepEqual(data.sources, ['https://tokendance.space/models/' + model.id])
+    if (provider === 'tokendance') assert.deepEqual(data.sources, ['https://tokendance.space/models/' + model.id, ...data.vendorSources])
     else assert.ok(data.sources.includes(model.officialSourceUrl), 'secondary evidence is retained')
     const view = render(React.createElement(ModelSpecifications, { provider, model }))
     assert.equal(screen.getByRole('link').getAttribute('href'), first, provider + '/' + model.id)

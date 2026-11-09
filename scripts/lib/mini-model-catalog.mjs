@@ -49,8 +49,8 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
         if (JSON.stringify(value) === JSON.stringify(model[field])) value = 0
         if (prior && JSON.stringify(prior) === JSON.stringify(model[field])) prior = 0
       }
-      // The picker renders one card source, never per-field evidence URLs.
-      // Keep a reference when it is that same source; full evidence stays in Web/API.
+      // Per-field slots reference the primary URL when equal. Additional vendor
+      // links are stored once in details; the full evidence stays in Web/API.
       return intern(facts, [value, fact.state, fact.provenance, fact.sourceUrl && fact.sourceUrl === sourceUrl ? -1 : null, ...(prior !== undefined ? [prior] : [])])
     }), sourceUrl === 'https://tokendance.space/models/' + model.id && channel === 'tokendance'
       && data.details[key]?.sourceLinks?.some(link => link.url === sourceUrl && link.kind === 'model-page' && link.checkedAt)
@@ -61,6 +61,8 @@ export function miniModelAudit(data, providers, fallback = () => ({})) {
     if (note || suffix) details[key] = { ...(note ? { note } : {}), ...(suffix ? { suffix } : {}) }
     if (data.details[key]?.unsupportedModalities) details[key] = { ...details[key], unsupportedModalities: data.details[key].unsupportedModalities }
     if (data.details[key]?.suppressFallback) details[key] = { ...details[key], suppressFallback: data.details[key].suppressFallback }
+    const vendorSources = links.vendorSources.filter(url => url !== sourceUrl)
+    if (vendorSources.length && Object.values(merged).some(fact => fact.provenance === 'vendor')) details[key] = { ...details[key], vendorSources }
     if (data.details[key]?.modalityMasks) details[key] = { ...details[key], modalityMasks: data.details[key].modalityMasks }
   }
   // Encode only exact round trips of already resolved links. Shared templates

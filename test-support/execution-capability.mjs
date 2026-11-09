@@ -1,5 +1,6 @@
 // R22 offline oracle. Tests read committed inputs/expectations, never Git history.
 import fs from 'node:fs'
+import { gunzipSync } from 'node:zlib'
 import path from 'node:path'
 import vm from 'node:vm'
 import assert from 'node:assert/strict'
@@ -11,7 +12,8 @@ import { build } from 'esbuild'
 export const root = fileURLToPath(new URL('../', import.meta.url))
 export const baselineCommit = '8c456709'
 export const frozenTime = '2026-11-09T12:00:00.000Z'
-export const fixturePath = path.join(root, 'test-support/fixtures/execution-capability-8c456709.json')
+export const fixturePath = path.join(root, 'test-support/fixtures/execution-capability-8c456709.json.gz')
+export const readExecutionFixture = () => JSON.parse(gunzipSync(fs.readFileSync(fixturePath)))
 const require = createRequire(new URL('../apps/paperbanana-api/package.json', import.meta.url))
 const deny = () => { throw Error('R22: infrastructure/network calls are forbidden') }
 class FrozenDate extends Date {

@@ -2,10 +2,10 @@
   "base": "8c456709",
   "counts": {
     "files": 23,
-    "assertionAndFixtureInputChanges": 118,
+    "assertionAndFixtureInputChanges": 124,
     "consumedJsonFixtures": 2,
     "semanticFixtureChanges": 616,
-    "justified": 733,
+    "justified": 739,
     "unjustifiedRestored": 1,
     "flagged": 0
   },
@@ -17,7 +17,8 @@
     "The picker-name fixture and tests are preserved: all 1064 static names must equal main. Existing historical fixture JSON files under tests/fixtures are unchanged. Newly added R21/phase-2 evidence and report JSON, the name fixture, the R22 execution fixture, and the twelve-case schema fixture are new files rather than edits to pre-existing fixtures.",
     "All evidence references are local archived records or code rules. This review made no network requests and does not newly verify channel availability, account entitlement, model quality or HTTP status.",
     "R22 Phase B retains the Phase A review ledger. Rows marked Phase B compare c76e9c2a to the current worktree; earlier rows are historical decisions, and overlapping edits are marked superseded. Whole-file diff hashes and the required file inventory still use main 8c456709. No historical evidence fixture is rewritten. New-since-main R21 tests also switch only their seven link expectations and displayed modality order; the new Phase B tests independently check all 74 pages, all 1064 source lists, vendor labels and Docker COPY layouts.",
-    "R22 Phase C preserves fact/unknown, execution, name, source and selection assertions and both Mini byte ceilings. Five main-existing test files update presentation expectations: channel wording, decorative question badges, keyboard traversal of evidence controls and selecting the named Backup action after adding evidence buttons. Two expectations introduced after main are separately hashed against 2550c736: R21 Qwen accessible names and R22B accessible-name order rather than tooltip titles. Each change below gives its reason. The Mini build-script change is also reviewed. New Phase C tests independently check state distinctions, per-identity captured evidence, mobile/compact dialogs and non-colour contrast."
+    "R22 Phase C preserves fact/unknown, execution, name, source and selection assertions and both Mini byte ceilings. Five main-existing test files update presentation expectations: channel wording, decorative question badges, keyboard traversal of evidence controls and selecting the named Backup action after adding evidence buttons. Two expectations introduced after main are separately hashed against 2550c736: R21 Qwen accessible names and R22B accessible-name order rather than tooltip titles. Each change below gives its reason. The Mini build-script change is also reviewed. New Phase C tests independently check state distinctions, per-identity captured evidence, mobile/compact dialogs and non-colour contrast.",
+    "R23 Phase E: review diffSha256 values now hash length-delimited old/new file bytes, independent of core.abbrev, Git diff formatting or configuration. Frozen inventory content hashes and history-free tamper checks remain active. The five Mini single-source/notice expectations and the phase-2 contract fixture changes below preserve their original primary links, all 1061 Core card checks and both byte ceilings. The four execution locks and history-free loader now decompress the same frozen JSON bytes; no execution expectation changed. Picker and audit-helper generated JS are compacted after tsc to preserve package budgets."
   ],
   "files": [
     {
@@ -44,11 +45,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6622428d41f6e602534e294663c3a3b163e87c8e9f14cdee272a7a048fc93272"
+      "diffSha256": "bfe48e8c9e6a92249577e3f5ae8329df6e8370c9d3c5d2711e86d413d0c95f1e"
     },
     {
       "file": "apps/miniprogram/tests/model-audit-r12.test.cjs",
-      "diffSha256": "ec16ff572273eea15e7e1ca4f384c1c1c9abe4789b37973a467b0ee05da0958b",
+      "diffSha256": "9fe3442b01adf54553b30a2becc0884cbdfd5c3be138d3e0ce1f8ae2bfb3876f",
       "changes": [
         {
           "line": 105,
@@ -385,6 +386,76 @@
             "scripts/card-presentation-r22b.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 36,
+          "old": "Exactly one primary source row",
+          "new": "Original primary URL/label followed by each deduplicated vendor source",
+          "reason": "R23 requires every vendor-attributed field to retain a visible vendor link. Primary source order and labels are unchanged; full-catalog tests independently match field URLs to rendered/copy-dialog links.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 127,
+          "old": "Exactly one source row for full-model notice cases",
+          "new": "Original primary notice row followed by vendor specification rows; the two dual-role MiMo notice URLs retain their notice label and explicitly carry role=vendor",
+          "reason": "Retain notice priority while exposing the vendor evidence behind the displayed values. The URL is also the vendor input-modality evidence, so Mini retains its vendor role without changing the notice label.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 137,
+          "old": "Every visible notice URL has 下线公告 prefix",
+          "new": "Primary notice URLs keep 下线公告; appended vendor evidence has 原厂规格 prefix",
+          "reason": "The three newly visible vendor evidence rows use the required vendor role; their descriptive page titles still identify the retirement notice.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 141,
+          "old": "16 visible notice URLs",
+          "new": "19: the original 16 plus three pinned appended vendor sources",
+          "reason": "No original notice is removed. Additional field sources belong exactly to siliconflow/Qwen/Qwen-Image-Edit, tokendance/qwen3.5-plus and qianfan/qwen-image-edit.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 142,
+          "old": "No appended source identity assertion",
+          "new": "Exact three appended notice card identities",
+          "reason": "Pin the added vendor rows rather than accepting a larger unexplained count.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -452,11 +523,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "bfb21f77fb63e2df8a26f2bc8a2982dbbc07fb149704a3633779bb055f078048"
+      "diffSha256": "bf8a19e961e7eda38237eeb81fd21fc02040e136f123896f80beaf1587e793ff"
     },
     {
       "file": "apps/paperbanana-api/tests/provider-catalog.test.ts",
-      "diffSha256": "03c3f3d2c85f3447b0d5321665eeedb81745324843110bed9bf0ffd4b078c527",
+      "diffSha256": "f7d4ecd8f514581c4cf741c2bb507caf966fe03bc8a8ed70cdac4f6c95fe2551",
       "changes": [
         {
           "line": 95,
@@ -474,7 +545,7 @@
     },
     {
       "file": "apps/web/tests/bailian-multimodal.test.mjs",
-      "diffSha256": "5b3c7a17b274f78a1d944651c0373a92ee78ce36ce7f1b826ba4a919274fb737",
+      "diffSha256": "c00a89960d2092a6682127dd8a557eee82f6e9fff16cf6eaa7ce220652d206de",
       "changes": [
         {
           "line": 19,
@@ -550,11 +621,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "9e17317f2b034ca70dd9cd33c7789a6507bf9b3ce3a4e0bf3e6ea74da2bf8b1b"
+      "diffSha256": "a14ae1c2f993be2a720124a7e5a56681be0be83d29a4ec41528daed9559a3e30"
     },
     {
       "file": "apps/web/tests/model-audit-r11.test.mjs",
-      "diffSha256": "3c285e049bc72336e0804f90162c64171d47ddc9cba585fd7f05a4684103c0bf",
+      "diffSha256": "ff638a88f615b0acd640f2fb2566ae456cacb2e69c00b671b68db61dbd40125a",
       "changes": [
         {
           "line": 17,
@@ -588,7 +659,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r12.test.mjs",
-      "diffSha256": "8e55be5d4ab3748d1d202d7ef49db47ecdbff2950489c07370d4e8ae705161c5",
+      "diffSha256": "67ca5ae6d2701cc562211f5613ea244a8fd1df28d5f58dcf28484b4573099881",
       "changes": [
         {
           "line": 85,
@@ -859,7 +930,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r13.test.mjs",
-      "diffSha256": "d5a849a6da06c854fda105314891bfc272222a3de95716b91fe5bfd701c727c8",
+      "diffSha256": "60d3ce9aac39448ae1af221757737df10926439b3e3c4c37820d8d806b7dd702",
       "changes": [
         {
           "line": 40,
@@ -1146,7 +1217,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r4.test.mjs",
-      "diffSha256": "ca840e20ca0d9b975d5fb7bbbf7d69ea8ffb0e29f940c99b1240f3944c70719c",
+      "diffSha256": "183c1b2f157f3d3988d664b88b82403af84f16cc78d127ece4e98b78b968b77e",
       "changes": [
         {
           "line": 17,
@@ -1178,7 +1249,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r6a.test.mjs",
-      "diffSha256": "849e97cba607727854f37ea69e342c94b22f3cda47e7d2e6e7f02ec0959af252",
+      "diffSha256": "92c5df713c04ef05dfc881068cc29074c38ddcefdc6b2402b34c2bb28e85c1ef",
       "changes": [
         {
           "line": 35,
@@ -1493,11 +1564,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "da8c19061bf43c1beb0c16acafb907d84233d0baffa14f5dad828b5c92b11160"
+      "diffSha256": "09d25f34d92cc06c5f6eae42b41e138196fd1aca11acfdd3bbf760bf69d82cc0"
     },
     {
       "file": "apps/web/tests/model-audit-r8.test.mjs",
-      "diffSha256": "d60ab46a9430981b77d7e1831f3abece80c3457d106002bac441409c6b6470bf",
+      "diffSha256": "c6acf39ff58f5c915f50bceb459df7f2a29f7c39b8d2bdec1a4ce9fc3e208313",
       "changes": [
         {
           "line": 94,
@@ -1555,7 +1626,7 @@
     },
     {
       "file": "apps/web/tests/model-audit-r9.test.mjs",
-      "diffSha256": "443095e597a248bcef138dfcbd912049fc90afc10b37b9c462d976f30b6e876b",
+      "diffSha256": "83b14cddafb94ceaa65aa64ca081ae9260f0bb073610f83855673f56119ca3d8",
       "changes": [
         {
           "line": 90,
@@ -1629,6 +1700,19 @@
             "scripts/card-presentation-r22b.test.mjs"
           ],
           "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 90,
+          "old": "TokenDance sources contain only the verified channel URL",
+          "new": "Verified channel URL remains first, followed by the vendor source list",
+          "reason": "Fix the 14 missing vendor-link cards while preserving channel priority. Independent R23 DOM tests match every vendor field to its actual clickable URL.",
+          "evidence": [
+            "apps/web/tests/model-card-r23.test.mjs",
+            "packages/api/src/model-card-sources.mjs"
+          ],
+          "verdict": "JUSTIFIED"
         }
       ]
     },
@@ -1651,7 +1735,7 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "38b384ef8968ec0ef572cf5d8df4de4f4e7fdc1bee54e8a6de2faa891a0b0e7e"
+      "diffSha256": "0e65dd8dc752651a9ba2be48a8ff04f57bb4e2b9245c55bee1146449da4e5ab7"
     },
     {
       "file": "apps/web/tests/model-card-footer-r16.test.mjs",
@@ -1717,11 +1801,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "df09bcae7c6156138447d6d398ae1726922cc1fc1ca76d5585ea7203725aee64"
+      "diffSha256": "6e32834ec614cc2228a8610c0d818612b399d8156698223b6ff8a4842a523d21"
     },
     {
       "file": "apps/web/tests/model-specifications.test.mjs",
-      "diffSha256": "dc12fded15b6bc408410915300d41124252c81db4811adf943f9b468095603bd",
+      "diffSha256": "bad71c524aa4de2e243c5dcac06abc85bb62dae61b25e3b505acba452a677253",
       "changes": [
         {
           "line": 80,
@@ -1763,7 +1847,7 @@
     },
     {
       "file": "apps/web/tests/provider-catalogs.test.mjs",
-      "diffSha256": "1ba5dcb64a01e7304081bf8696cfd1a188bcc4c907721585a67557c891a8cc14",
+      "diffSha256": "2336a855eca2ad95acca683a74b76d7c161d7fe20dbc8dd086e3165bdc8f05fb",
       "changes": [
         {
           "line": 30,
@@ -1828,7 +1912,7 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "6af056005aa1cde857402668f745352b2915c1c0f172547834d34959179a57a6"
+      "diffSha256": "e7b45eda797d156e26432dfb685aa16ec35071e8f609e3f5c93ecb8accb2b1dc"
     },
     {
       "file": "apps/web/tests/tokendance-catalog-r14.test.mjs",
@@ -1894,7 +1978,7 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "3b59c8314ffab9a00046c6b5223202ecd6b916365e318d9f9736cf348010cdfd"
+      "diffSha256": "4155ca447f9702be95d74fa40cbda44fcc99545195fe9034afc90cb435a277f5"
     },
     {
       "file": "apps/web/tests/workspace-model-catalog.test.mjs",
@@ -1915,11 +1999,11 @@
           "verdict": "JUSTIFIED"
         }
       ],
-      "diffSha256": "7aef107b47507d3d3d73bb28c8d92bd89ef13565a2649ed39dfc1001399cbc19"
+      "diffSha256": "3d172dabfbf0e9e1aa91bf5d5411625baf071982066e3b8db579c6ac13b09c21"
     },
     {
       "file": "scripts/model-card-audit.test.mjs",
-      "diffSha256": "439a6a157d029f2bc21545f620ca19903b34233d066ac71d191c4bfcd4314836",
+      "diffSha256": "a1ea5cd25d53d1c2e9b94cf30653bc40243855c5a7143bc0ba94583788e515c7",
       "changes": [
         {
           "line": 53,
@@ -1953,7 +2037,7 @@
     },
     {
       "file": "scripts/pack-model-catalog.test.mjs",
-      "diffSha256": "439b44d8f15cb013d815827c60fafdc47538f210c5eda0333796d6ff3310605d",
+      "diffSha256": "5ad8fe8b3a4b737eabc43e4ed60f72302bb0054d537ec29d9a0d4f90dd9e980c",
       "changes": [
         {
           "line": 68,
@@ -2060,7 +2144,7 @@
   "fixtures": [
     {
       "file": "apps/miniprogram/package.json",
-      "diffSha256": "cdc03a80483763d7cb65b9654f7bd4099fc6a9ce0b35e6715d5ceab61f15367f",
+      "diffSha256": "c37ccec825bb7936638254720c92cf0f0545d496bac548ab07c7ffa86b79d906",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -2080,7 +2164,7 @@
     },
     {
       "file": "config/model-audit.generated.json",
-      "diffSha256": "c4484bbfbf547108929ae0c05d11819cb2241fdc06e4988d6365f02ea140cd09",
+      "diffSha256": "609708dfee96177c28715fa8e67122e77887401e6cf9a202cbba116129f05fcd",
       "changes": [
         {
           "line": 2,
@@ -18171,7 +18255,7 @@
     {
       "file": "apps/web/tests/model-modality-r21.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "2752302efc46560194bf04ad58eb1d3bd3d580b401a52ca6ba510acf7cf6ad94",
+      "diffSha256": "f5979fe13f2a5698cdd99e71b0e0a65f95ebbe188e5d71972d374c6d78a91264",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -18193,7 +18277,7 @@
     {
       "file": "apps/web/tests/model-card-r22b.test.mjs",
       "comparisonBase": "2550c736",
-      "diffSha256": "0c5473853a4e37159cf2b81c376f71e4d329fb27a72014dceea305e748daab0f",
+      "diffSha256": "3e2e7b6ee172d337113f2acbe681f6fed09f665f464ead0d1e1e69fe67063eb5",
       "changes": [
         {
           "phase": "R22 Phase C",
@@ -18211,6 +18295,89 @@
           "verdict": "JUSTIFIED"
         }
       ]
+    },
+    {
+      "file": "apps/miniprogram/tests/model-modality-phase2.test.cjs",
+      "comparisonBase": "42ee9ffd",
+      "changes": [
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 16,
+          "old": "normalizeModelRegistry accepts offline Core registry without OpenRouter",
+          "new": "Supply frozen main OpenRouter provider, then normalize",
+          "reason": "Restore main required-provider validation. The offline transport fixture deliberately omits OpenRouter; adding its frozen provider satisfies the production contract without relaxing it.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 22,
+          "old": "Check all 1,061 offline Core card projections",
+          "new": "Keep all 1,061 checks; exclude only the added OpenRouter contract filler",
+          "reason": "The checked Core identities, modality facts, masks and primary links are unchanged. All 1,064 static cards and execution fields have independent coverage.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 40,
+          "old": "No complete-catalog control in missing-provider test",
+          "new": "Complete five-provider catalog normalizes successfully",
+          "reason": "Prove each later failure is caused by removal of that one provider.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        },
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 44,
+          "old": "No unavailableProviders missing-provider regression",
+          "new": "Each of the five required providers is rejected independently, even with unavailableProviders set",
+          "reason": "Pins the exact main validation error and prevents the original acceptance regression.",
+          "evidence": [
+            "docs/model-card-api-links-r23.md",
+            "apps/web/tests/model-card-r23.test.mjs",
+            "apps/miniprogram/tests/model-card-r23.test.cjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "5d3d28ea29a170153c9f5fa7d790c7871cd5a893b45cbab1e23e221947686bea"
+    },
+    {
+      "file": "apps/web/tests/model-modality-phase2.test.mjs",
+      "comparisonBase": "42ee9ffd",
+      "changes": [
+        {
+          "phase": "R23 Phase E",
+          "comparisonBase": "42ee9ffd",
+          "line": 19,
+          "old": "Pass incomplete offline Core catalog to Mini normalizer",
+          "new": "Add frozen main OpenRouter provider for normalization; keep the original 1061-model comparison loop",
+          "reason": "Restore main required-provider acceptance in the Web cross-client integration test, without changing any compared model, field or expectation.",
+          "evidence": [
+            "apps/miniprogram/tests/model-modality-phase2.test.cjs",
+            "test-support/execution-capability.mjs"
+          ],
+          "verdict": "JUSTIFIED"
+        }
+      ],
+      "diffSha256": "5823063d2f8458693a7b9fd1d3a4d4554e4940cfb1f1f4ef7399996ceb8fc116"
     }
   ]
 }

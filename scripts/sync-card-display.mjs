@@ -13,13 +13,15 @@ const write = (file, value) => {
   if (check) assert.equal(fs.readFileSync(target, 'utf8'), value, 'Card display drift: ' + file)
   else { fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, value) }
 }
-// Compact only this component's generated JS; retain readable TS and names.
+// Compact the picker and its audit helper's generated JS; retain readable TS and names.
 // The Mini build runs this after tsc so both size ceilings remain meaningful.
 const ts = createRequire(new URL('../apps/miniprogram/package.json', import.meta.url))('typescript')
 const picker = 'apps/miniprogram/miniprogram/components/model-picker/model-picker'
 const options = ts.convertCompilerOptionsFromJson(read('apps/miniprogram/tsconfig.json').compilerOptions, root).options
-const compiled = ts.transpileModule(fs.readFileSync(path.join(root, picker + '.ts'), 'utf8'), { compilerOptions: options }).outputText
-write(picker + '.js', transformSync(compiled, { minifyWhitespace: true, minifySyntax: true, charset: 'utf8', target: 'es2019' }).code)
+for (const target of [picker, 'apps/miniprogram/miniprogram/utils/model-audit']) {
+  const compiled = ts.transpileModule(fs.readFileSync(path.join(root, target + '.ts'), 'utf8'), { compilerOptions: options }).outputText
+  write(target + '.js', transformSync(compiled, { minifyWhitespace: true, minifySyntax: true, charset: 'utf8', target: 'es2019' }).code)
+}
 if (process.argv.includes('--mini-picker')) process.exit(0)
 for (const [name, source] of Object.entries({
   'reviewed-models': 'apps/web/src/data/model-card-specifications.json',
@@ -65,7 +67,7 @@ const compactQuotes = [...groups].map(([key, rows]) => [...JSON.parse(key), [...
 write('packages/api/src/card-data/modality-evidence.json', JSON.stringify(compactQuotes) + '\n')
 // Mini uses the same small title/order implementation, without shipping archives.
 const presentation = fs.readFileSync(path.join(root, 'packages/api/src/card-presentation.mjs'), 'utf8')
-// URL canonicalization is Web/Core-only: Mini has one primary source per card.
+// URL canonicalization is Web/Core-only: Mini receives deduplicated source rows.
 const mini = presentation.slice(0, presentation.indexOf('// Normalize identity')) + presentation.slice(presentation.indexOf('// Stored title:'))
 const modality = fs.readFileSync(path.join(root, 'packages/api/src/modality-presentation.mjs'), 'utf8').replace(/^import .*\n/gm, '')
 const combined = `const evidence = ${JSON.stringify(compactQuotes)};\n` + mini + modality

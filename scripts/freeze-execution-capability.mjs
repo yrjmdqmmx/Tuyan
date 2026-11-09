@@ -1,6 +1,7 @@
 // Read-only baseline generation: git show 8c456709:<path>, bundled/evaluated in
 // memory with a fixed clock, empty environment and mocked metadata transport.
 import fs from 'node:fs'
+import { gzipSync, gunzipSync } from 'node:zlib'
 import path from 'node:path'
 import assert from 'node:assert/strict'
 import { gitText, requireHistory } from './lib/git-history.mjs'
@@ -27,7 +28,7 @@ const fixture = {
 // Minification is lossless; --check still regenerates every field and decision.
 for (const [file, value] of [[inputPath, inputs], [fixturePath, fixture]]) {
   const text = JSON.stringify(value) + '\n'
-  if (process.argv.includes('--check')) assert.equal(fs.readFileSync(file, 'utf8'), text, 'Frozen main execution fixture drift: ' + file)
-  else { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, text) }
+  if (process.argv.includes('--check')) assert.equal((file.endsWith('.gz') ? gunzipSync(fs.readFileSync(file)).toString('utf8') : fs.readFileSync(file, 'utf8')), text, 'Frozen main execution fixture drift: ' + file)
+  else { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, file.endsWith('.gz') ? gzipSync(text, { level: 9 }) : text) }
 }
 console.log(JSON.stringify({ ...fixture.counts, check: process.argv.includes('--check'), fixture: path.relative(process.cwd(), fixturePath) }))

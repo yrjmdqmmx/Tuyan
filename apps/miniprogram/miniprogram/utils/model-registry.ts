@@ -6,7 +6,7 @@ export type ModelProviderId = typeof MODEL_PROVIDER_IDS[number]
 export type ModelRole = 'main' | 'image' | 'vision'
 
 export interface RegistryModel {
-  cardSpecifications?: {fields: Record<string, AuditFact>; sourceUrl: string | null; sourceLabel: string; note: string}
+  cardSpecifications?: {fields: Record<string, AuditFact>; sourceUrl: string | null; sourceLabel: string; vendorSources?: string[]; note: string}
   catalogPresence?: {status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl?: string}
   auditChannel?: string
   id: string
@@ -98,7 +98,7 @@ export function normalizeModelRegistry(input: unknown): ModelRegistry {
     throw new Error('服务端模型路由契约不可用。')
   }
   const providerSource = asRecord(source.providers)
-  const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id] && !stringValue(asRecord(source.unavailableProviders)[id]))
+  const missingProviders = ['gemini', 'openai', 'bailian', 'ark', 'openrouter'].filter((id) => !providerSource[id])
   if (missingProviders.length) throw new Error('服务端模型目录必须包含五个 API 渠道。')
 
   const providers: Partial<Record<ModelProviderId, RegistryProvider>> = {}

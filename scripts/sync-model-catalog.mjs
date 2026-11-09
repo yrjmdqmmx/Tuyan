@@ -40,7 +40,7 @@ write(path.join(root, 'apps/auth-gateway/src/model-audit.js'), '// Generated fro
 // All runtimes share the same display names and unavailable wording.
 const clientAuditSource = modelAuditSource
 const miniAuditSource = clientAuditSource
-  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档'")
+  .replace('sourceLinks: details?.sourceLinks || []', "sourceLabel: row?.[6] || '官方文档', vendorSources: details?.vendorSources || []")
   .replace(/export function modelDisplayName[\s\S]*?(?=export function removedModelHint)/, `export function modelDisplayName(channel: string, id: string): string {
   return removedModel(channel, id)?.displayName
     || STATIC_MODEL_REGISTRY[channel]?.models.find((model: { id: string }) => model.id === id)?.label

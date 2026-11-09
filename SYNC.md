@@ -1,3 +1,12 @@
+## 2026-11-09 · R23 Phase E: vendor evidence, registry validation and stable test artifacts (not deployed)
+
+- [x] Shared / Core / Gateway: display-only `cardSpecifications.vendorSources` carries deduplicated human vendor evidence; verified TokenDance pages remain first. API/OpenAPI/JSON/YAML/Swagger machine links are filtered. Execution fields, actions, environment variables and picker identities are unchanged.
+- [x] Web / Mini: every vendor-attributed field has its vendor URL in the rendered evidence/copy dialog across 1,064 cards; missing-link cards Web 14 → 0, Mini 37 → 0. Both clients show 0 machine links; descriptive roles, notice priorities, icons and provenance remain. Mini required-provider validation is restored exactly to main; phase-2 tests supply contract-valid offline fixtures.
+- [x] Test infrastructure: content-based ledger hashes pass with core.abbrev 7 and 12. The unchanged execution oracle is gzip-compressed to 578,207 bytes; all four locks still compare 1,064 models, and history-free tests/maintenance skips are retained. The changed-test ledger records each revised expectation.
+- [x] Mini: source 1,569,099 / 1,572,864 bytes; the older 1,569,427-byte guard also passes. Generated audit-helper JS is compacted alongside the picker; readable TS remains.
+- [x] Validation: Web 1,479/1,479, Mini 168/168, scripts 56/56, shared API 33/33, Core 4/4 and Gateway 2/2; both client builds and all ten requested maintenance checks pass. Results and file-byte delta: [R23 Phase E](docs/model-modality-audit-20261109.md#r23-phase-e).
+- [ ] Existing browser/native boundary: local server binding fails with EPERM at 127.0.0.1:5183; browser screenshots and native WeChat rendering remain unverified. No Git writes, network, paid calls, secrets, deploy, image builds or other-worktree work; Mini deployment remains paused. `sync-agent-knowledge` and `sync-workflow` are untouched.
+
 ## 2026-11-09 · R22 Phase D: history-independent CI tests (not deployed)
 
 - [x] Shared test infrastructure / Core / Gateway: execution tests use committed baseline metadata/defaults and the unchanged 1,064-model execution oracle. The oracle is losslessly minified; no runtime execution, API/action/env, registry identity or reference-image decision changes.

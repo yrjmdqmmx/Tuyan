@@ -4,3 +4,4 @@ export function coreDecisions(core: any, registry: any): Promise<Record<string, 
 export function catalogDecisions(core: any, registry: any): Record<string, any>
 export function executionRegistry(registry: any): Record<string, any>
 export function webProducts(commit?: string): Promise<any>
+export function readExecutionFixture(): any
