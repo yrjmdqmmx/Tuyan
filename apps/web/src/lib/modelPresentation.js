@@ -42,7 +42,7 @@ export function modelVersionLabel(model) {
 }
 export function modelVersionDetail(model) {
     const version = normalizeModelVersion(model.version);
-    const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本待确认';
+    const current = version?.id ? (version.kind === 'unconfirmed' ? '目录版本：' : '已核对版本：') + version.id : '具体版本未知';
     return [modelVersionLabel(model), current, version?.checkedAt ? '核对于 ' + version.checkedAt : ''].filter(Boolean).join(' · ');
 }
 // Public catalog identity is not an immutable-weights guarantee. Never copy the

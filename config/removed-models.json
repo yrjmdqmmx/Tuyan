@@ -87,7 +87,7 @@
     "stopDate": "2026-10-10",
     "replacementApiId": "deepseek-v4-flash-0731",
     "sourceUrl": "https://help.aliyun.com/zh/model-studio/model-depreciation",
-    "displayName": "DeepSeek-V4-Flash（具体版本待确认）",
+    "displayName": "DeepSeek-V4-Flash",
     "replacementDisplayName": "DeepSeek-V4-Flash-0731"
   },
   "bailian/glm-4.5": {

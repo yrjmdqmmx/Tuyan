@@ -3254,7 +3254,7 @@
     {
       "channel": "deepseek",
       "apiModelId": "deepseek-v4-flash",
-      "displayName": "DeepSeek-V4-Flash（具体版本待确认）",
+      "displayName": "DeepSeek-V4-Flash",
       "kind": "unconfirmed",
       "versionId": "deepseek-v4-flash",
       "checkedAt": "2026-09-21",
@@ -3759,7 +3759,7 @@
     {
       "channel": "siliconflow",
       "apiModelId": "deepseek-ai/DeepSeek-V4-Pro",
-      "displayName": "DeepSeek-V4-Pro（具体版本待确认）",
+      "displayName": "DeepSeek-V4-Pro",
       "kind": "unconfirmed",
       "versionId": "deepseek-ai/DeepSeek-V4-Pro",
       "checkedAt": "2026-09-21",
@@ -3773,7 +3773,7 @@
     {
       "channel": "siliconflow",
       "apiModelId": "deepseek-ai/DeepSeek-V4-Flash",
-      "displayName": "DeepSeek-V4-Flash（具体版本待确认）",
+      "displayName": "DeepSeek-V4-Flash",
       "kind": "unconfirmed",
       "versionId": "deepseek-ai/DeepSeek-V4-Flash",
       "checkedAt": "2026-09-21",
@@ -5488,7 +5488,7 @@
     {
       "channel": "bailian",
       "apiModelId": "deepseek-v4-pro",
-      "displayName": "DeepSeek-V4-Pro（具体版本待确认）",
+      "displayName": "DeepSeek-V4-Pro",
       "kind": "unconfirmed",
       "versionId": "deepseek-v4-pro",
       "checkedAt": "2026-09-21",
@@ -5530,7 +5530,7 @@
     {
       "channel": "bailian",
       "apiModelId": "vanchin/deepseek-v4-pro",
-      "displayName": "DeepSeek-V4-Pro · Vanchin（具体版本待确认）",
+      "displayName": "DeepSeek-V4-Pro · Vanchin",
       "kind": "unconfirmed",
       "versionId": "vanchin/deepseek-v4-pro",
       "checkedAt": "2026-09-21",

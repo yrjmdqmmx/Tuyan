@@ -5,16 +5,20 @@ import { generateModelAudit } from './generate-model-audit.mjs'
 import { supplementModelAudit } from './lib/model-audit-supplement.mjs'
 
 const sourceUrl = 'https://vendor.example/models/exact'
-test('R8 all removed names match the frozen exact main labels and missing names fail generation', () => {
+test('R8 removed names match frozen main labels with one documented R9 override; missing names fail generation', () => {
   const read = path => JSON.parse(fs.readFileSync(new URL(path, import.meta.url), 'utf8'))
   const removed = read('../config/removed-models.json')
   const oracle = read('../apps/web/tests/fixtures/removed-model-names-main-c7b6a2fc.json')
+  const overrides = read('../apps/web/tests/fixtures/removed-model-name-overrides-r9.json')
+  assert.deepEqual(Object.keys(overrides), ['bailian/deepseek-v4-flash'])
+  assert.equal(overrides['bailian/deepseek-v4-flash'].displayName, 'DeepSeek-V4-Flash')
+  assert.ok(overrides['bailian/deepseek-v4-flash'].reason.trim())
   const input = read('../config/model-audit.generated.json')
   const supplement = read('../config/channel-audit/model-audit-supplement-20261109.json')
   assert.equal(Object.keys(removed).length, 68)
   for (const [key, row] of Object.entries(removed)) {
     assert.ok(row.displayName?.trim(), key)
-    assert.equal(row.displayName, oracle.models[key].displayName, key)
+    assert.equal(row.displayName, overrides[key]?.displayName || oracle.models[key].displayName, key)
     assert.equal(row.replacementDisplayName, oracle.models[key].replacementDisplayName, key)
     const missing = structuredClone(removed)
     delete missing[key].displayName

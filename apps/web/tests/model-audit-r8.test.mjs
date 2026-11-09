@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import React from 'react'
 import { render, screen, within, fireEvent, cleanup } from '@testing-library/react'
 import names from './fixtures/removed-model-names-main-c7b6a2fc.json' with { type: 'json' }
+import nameOverrides from './fixtures/removed-model-name-overrides-r9.json' with { type: 'json' }
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { MODEL_AUDIT_DATA, assertAuditedModelAvailable } from '../src/lib/modelAudit.js'
 import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
@@ -22,12 +23,13 @@ function noRawIds(text, id, row) {
   }
 }
 
-test('R8 every removed identity renders its verbatim main label in notices, confirmations and errors', () => {
+test('R8 every removed identity renders its verbatim main label except the documented R9 override', () => {
   assert.equal(names.commit, 'c7b6a2fc')
   assert.equal(Object.keys(names.models).length, 68)
   assert.deepEqual(Object.keys(MODEL_AUDIT_DATA.removed), Object.keys(names.models))
   let confirmations = 0
-  for (const [key, row] of Object.entries(names.models)) {
+  for (const [key, original] of Object.entries(names.models)) {
+    const row = { ...original, ...nameOverrides[key] }
     const slash = key.indexOf('/'), provider = key.slice(0, slash), id = key.slice(slash + 1)
     assert.equal(MODEL_AUDIT_DATA.removed[key].displayName, row.displayName, key)
     const expected = `${row.displayName}：原型号已不可用，请重新选择。${row.replacementApiId ? `推荐：${row.replacementDisplayName}` : ''}`

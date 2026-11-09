@@ -6,6 +6,7 @@ const vm = require('node:vm')
 const { loadComponent } = require('./helpers/component.cjs')
 const { STATIC_MODEL_REGISTRY } = require('../miniprogram/utils/static-model-catalog.js')
 const names = require('../../web/tests/fixtures/removed-model-names-main-c7b6a2fc.json')
+const nameOverrides = require('../../web/tests/fixtures/removed-model-name-overrides-r9.json')
 const { getModelRegistryState } = require('../miniprogram/utils/model-registry-store.js')
 const { auditedModelSpecs } = require('../miniprogram/utils/model-audit.js')
 function noRawIds(text, id, row) {
@@ -13,10 +14,11 @@ function noRawIds(text, id, row) {
     if (apiId && apiId !== label) assert.ok(!text.includes(apiId), `${apiId}: ${text}`)
   }
 }
-test('R8 compiled mini notices and both confirmation paths use the exact main names for every removal', () => {
+test('R8 compiled mini notices and confirmations use exact main names with the documented R9 override', () => {
   let confirmations = 0
   getModelRegistryState().registry = { providers: STATIC_MODEL_REGISTRY }
-  for (const [key, row] of Object.entries(names.models)) {
+  for (const [key, original] of Object.entries(names.models)) {
+    const row = { ...original, ...nameOverrides[key] }
     const slash = key.indexOf('/'), provider = key.slice(0, slash), id = key.slice(slash + 1)
     const replacement = STATIC_MODEL_REGISTRY[provider].models.find(m => m.id === row.replacementApiId)
     const role = replacement?.roles.includes('main') ? 'main' : replacement?.roles[0] || 'main'

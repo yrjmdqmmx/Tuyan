@@ -1,6 +1,102 @@
-# 模型卡审计验收 · 2026-11-09 R8
+# 模型卡审计验收 · 2026-11-09 R9
 
-## R8：PM 小项修正（当前验收）
+## R9：显示名清理与渠道来源优先（当前验收）
+
+基线为 `785b99df`。全程未运行 Git 写命令；无真实/付费模型调用、提交、推送或部署。
+
+- 小米移除项显示名逐字保留 `MiMo-v2.5` / `MiMo-v2.5-pro`。
+- `config/removed-models.json` 的 `bailian/deepseek-v4-flash` 显示名改为 `DeepSeek-V4-Flash`。原 `c7b6a2fc` 名称夹具保留不动，`removed-model-name-overrides-r9.json` 仅允许这一身份覆盖并写明原因；Web、小程序和生成器原有逐项断言继续覆盖全部 68 项，未降低数量、跳过或删减断言。
+- 清查同类文案：版本目录中 5 个名称的“（具体版本待确认）”备注一并移除，包含 DeepSeek 直连、硅基两项及百炼两项；共享无具体版本提示改为“具体版本未知”。Core/Web/小程序派生目录同步，不改变模型 ID、版本事实、调用标识、能力或权限。历史审计文档和冻结名称夹具保留原文用于追溯；运行时清理正则仅作防御，不输出该措辞。
+- 卡片来源统一按**最终展示字段**的 `provenance === 'channel'` 选择安全 HTTPS 来源（输入、输出、上下文、最大输出的固定顺序），优先于生命周期、原厂及通用目录链接；只有没有展示字段的渠道审计来源时，才沿用既有来源回退，包括 `officialSourceUrl`。已被回退替换的审计字段不能抢占首链接。全部次级证据仍在详情中，下线徽标和弹层保留；共享 URL 同时被标记为原厂来源时，渠道事实的首链接仍标为“官方文档”。
+- 百炼 `kimi-k3` 可见链接为 `https://help.aliyun.com/zh/model-studio/kimi-k3`，文字为“官方文档 · help.aliyun.com”，title 沿用“核实日期 2026-11-09”格式。**当前基线 R8 已输出该链接**，因此它不计入本轮实际变化的 46 项；新增 DOM 测试另外注入 `huggingface.co` 通用目录来源，确认无法覆盖百炼证据，普通/紧凑卡片与触屏详情均覆盖。
+
+### R9 全目录首链接变化
+
+按精确 `channel/id` 对比修改前后的生产 `modelCardSpecifications(...).sources[0]`，全静态目录 **1,064 张中 46 张改变、1,018 张不变**，不是角色重复数，也不是来源列表中的 URL 数。只改变来源优先级，没有添加/删除卡片或修改规格事实。
+
+| 渠道 | 首链接变化数 |
+| --- | ---: |
+| TokenDance / `tokendance` | 38 |
+| 百炼 / `bailian` | 3 |
+| Ant Ling / `antling` | 5 |
+| 合计 | **46** |
+
+沿用现有只读离线计数器 `node scripts/count-model-catalog.mjs . --keys`：静态 1064、完整 mock registry 1061、可见目录 919、可选 878。mock 可见集合中受影响 **8 张**（百炼 3 + Ant Ling 5）；该夹具的 TokenDance 账号目录为空，38 项仍完整纳入全静态统计。直接以静态 registry 驱动目录时可见 985 张，其中 44 张受影响，另 2 张 TokenDance 小米旧型号被生命周期过滤。以上不是实时生产账号目录的计数。
+
+### R9 验证
+
+| 验证 | 结果 |
+| --- | --- |
+| Web 受影响模型/卡片/目录测试 | **87/87**，包括新增 R9 四项：跨运行时显示名/通知/错误、Kimi 链接与 title 日期、全目录来源规则与安全回退、触屏详情 |
+| Web 全量 | **1360/1372**，12 失败，0 跳过 |
+| 同环境只读基线 | `git archive HEAD` 导出 `785b99df` 到临时目录，复跑 4 个失败文件 **20/32**；12 个失败名称与本轮完全一致 |
+| 小程序全量 / build | **134/134**；`tsc` 通过；预算测试 **2/2** |
+| Core model-audit / Gateway model-audit | **8/8** / **6/6**；本地夹具与模拟传输 |
+| scripts 全量 | **30/30** |
+| 审计生成器 / 目录同步 / 参考上传同步 | 已生成；`generate-model-audit.mjs --check`、`sync-model-catalog.mjs --check`、`sync-reference-upload.mjs --check` 均通过 |
+| Web build | 通过；保留已有大 chunk 警告 |
+| Git diff 空白检查 | 通过 |
+
+小程序源码 **1,567,915 bytes**、runtime **1,144,691 bytes**、媒体 **189,978 bytes**；相对 R8 源码减少 **140 bytes**，原上限 **1,572,864** 未改，余 **4,949 bytes**。预算测试未修改，生成 `.js` 与 `.ts` 一致。
+
+Web 既有失败分布：`inactive-route-ui` 1、`professional-custom-v381` 8、`workflow-v400-ui` 2、`workspace-migration` 1。日志为 `/tmp/r9-web-full.log`、`/tmp/r9-baseline-web.log`，其他测试/构建为 `/tmp/r9-*.log`。额外检查历史版本报表生成器 `sync-model-version-report.mjs --check` 时，当前和 `785b99df` 基线都报同一 `docs/model-version-mapping.csv` 漂移；该旧报表不属于本轮双 sync，未批量重写历史报表。
+
+验证路径：模型卡 → 查看“官方文档 · help.aliyun.com”链接/title → 触屏点击 → 详情显示同一 URL 与核实日期。Browser 插件未提供；`pnpm --dir apps/web exec playwright --version` 返回 command not found，未安装依赖。证据为真实组件 DOM/交互测试；未声称完成真浏览器截图或微信原生扫描，小程序继续暂停发布。
+
+### R9 附录：46 张首链接变化完整列表
+
+下表每行是一张精确渠道卡片，按渠道/ID 排序；完整 URL 保留以便复查。
+
+| 精确渠道 / 型号 | 修改前可见链接 | 修改后可见链接 |
+| --- | --- | --- |
+| `antling/Ling-3.0-flash` | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ |
+| `antling/Ling-3.0-flash-VL` | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ |
+| `antling/Ling-3.0-tiny` | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ |
+| `antling/Ling-3.1-flash` | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ |
+| `antling/Ling-3.2-flash` | https://developer.ant-ling.com/zh-CN/docs/models/ling/ | https://developer.ant-ling.com/zh-CN/docs/api-reference/chat/openai/ |
+| `bailian/qwen3.7-max-2026-06-08` | https://help.aliyun.com/zh/model-studio/qwen3-7-max | https://help.aliyun.com/zh/model-studio/models |
+| `bailian/qwen3.8-flash` | https://help.aliyun.com/zh/model-studio/vision-model | https://help.aliyun.com/zh/model-studio/models |
+| `bailian/qwen3.8-max` | https://help.aliyun.com/zh/model-studio/qwen3-8-max | https://help.aliyun.com/zh/model-studio/models |
+| `tokendance/deepseek-v4-pro` | https://api-docs.deepseek.com/quick_start/pricing/ | https://tokendance.space/gateway/v1/models |
+| `tokendance/deepseek-v4.1-flash` | https://api-docs.deepseek.com/quick_start/pricing/ | https://tokendance.space/gateway/v1/models |
+| `tokendance/dots-3-note-preview` | https://github.com/studio-dots-ai/dots3-note-prev | https://tokendance.space/gateway/v1/models |
+| `tokendance/glm-5.3-flashx` | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | https://tokendance.space/gateway/v1/models |
+| `tokendance/hy4-preview` | https://huggingface.co/tencent/Hy4-preview | https://tokendance.space/gateway/v1/models |
+| `tokendance/kimi-k2.5` | https://tokendance.space/docs/kimi-thinking-models.md | https://tokendance.space/gateway/v1/models |
+| `tokendance/kimi-k2.6` | https://platform.kimi.com/docs/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/kimi-k2.7-code` | https://platform.kimi.com/docs/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/kimi-k3` | https://platform.kimi.com/docs/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/mimo-v2.5` | https://mimo.mi.com/docs/zh-CN/updates/deprecate | https://tokendance.space/gateway/v1/models |
+| `tokendance/mimo-v2.5-pro` | https://mimo.mi.com/docs/zh-CN/updates/deprecate | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3-vl-plus` | https://platform.qianwenai.com/docs/developer-guides/getting-started/vision-models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.5-35b-a3b` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.5-flash` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.5-plus` | https://help.aliyun.com/zh/model-studio/model-depreciation | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.6-plus` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.7-max` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.7-plus` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.8-flash` | https://help.aliyun.com/zh/model-studio/vision-model | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.8-max` | https://help.aliyun.com/zh/model-studio/qwen3-8-max | https://tokendance.space/gateway/v1/models |
+| `tokendance/qwen3.8-max-0902` | https://help.aliyun.com/zh/model-studio/models | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-2.0-lite` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-2.0-mini` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-2.0-pro` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-2.1-pro` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-2.1-turbo` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seed-evolving` | https://www.volcengine.com/docs/82379/1330310 | https://tokendance.space/gateway/v1/models |
+| `tokendance/seedream-5.0-lite` | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | https://tokendance.space/gateway/v1/models |
+| `tokendance/seedream-5.0-pro` | https://docs.volcengine.com/docs/ark/seedream-4-0-5-0?lang=zh | https://tokendance.space/gateway/v1/models |
+| `tokendance/spark-x2.5-1.7b` | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 | https://tokendance.space/gateway/v1/models |
+| `tokendance/spark-x2.5-4b` | https://maas.xfyun.cn/api/v1/gpt-finetune/model/base/list-v2?page=1&size=9999 | https://tokendance.space/gateway/v1/models |
+| `tokendance/step-3.5-flash` | https://platform.stepfun.com/docs/zh/guides/models/list | https://tokendance.space/gateway/v1/models |
+| `tokendance/step-3.7-flash` | https://platform.stepfun.com/docs/zh/guides/models/list | https://tokendance.space/gateway/v1/models |
+| `tokendance/step-5-preview` | https://platform.stepfun.com/docs/zh/guides/models/list | https://tokendance.space/gateway/v1/models |
+| `tokendance/unifuncs-s3` | https://unifuncs.com/api/deepsearch | https://tokendance.space/gateway/v1/models |
+| `tokendance/unifuncs-s3-pro` | https://unifuncs.com/api/deepsearch | https://tokendance.space/gateway/v1/models |
+| `tokendance/unifuncs-u3` | https://unifuncs.com/api/deepresearch | https://tokendance.space/gateway/v1/models |
+| `tokendance/unifuncs-u3-pro` | https://unifuncs.com/api/deepresearch | https://tokendance.space/gateway/v1/models |
+
+## R8：PM 小项修正（历史验收，R9 覆盖显示名与来源规则）
 
 基于 PR #245 的 `942f6078`。只读 Git；未执行 Git 写命令，未调用真实/付费模型，未提交、推送或部署。以下覆盖 R7/R6B 的显示名、错误文案、token 单位与百炼 Kimi K3 结论。
 

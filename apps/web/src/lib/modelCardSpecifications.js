@@ -46,6 +46,10 @@ export function modelCardSpecifications(provider, model) {
   const limit = fact => pureImage && fact.state === 'unknown' ? '不适用' : text(fact)
   const context = limit(fields.totalContextTokens)
   const maxOutput = limit(fields.maxOutputTokens)
+  // Link to the channel evidence behind the displayed facts, before generic
+  // catalog/vendor pages. Discarded audit facts must not claim this priority.
+  const channelSources = safeOfficialSources(Object.values(fields)
+    .filter(fact => fact.provenance === 'channel').flatMap(fact => fact.sourceUrls || [fact.sourceUrl]))
   return {
     fields, conflicts,
     input: text(fields.inputModalities), output: text(fields.outputModalities), context, maxOutput,
@@ -57,8 +61,10 @@ export function modelCardSpecifications(provider, model) {
     note: [audit.note, conflicts.length && '审计与既有规格有差异；保留已知模态，未核实值回退'].filter(Boolean).join('；'),
     serviceDetails: model.specifications?.serviceDetails,
     productInput: model.capabilities?.referenceImages ? '文本、图像' : '文本',
+    channelSources,
     vendorSources: Object.values(fields).filter(fact => fact.provenance === 'vendor').map(fact => fact.sourceUrl),
-    sources: safeOfficialSources([auditedModelLifecycle(provider, model.id)?.sourceUrl, ...audit.sourceUrls,...Object.values(fields).flatMap(fact => fact.sourceUrls || [fact.sourceUrl]), audit.sourceUrl,
+    sources: safeOfficialSources([...channelSources,
+      auditedModelLifecycle(provider, model.id)?.sourceUrl, ...audit.sourceUrls,...Object.values(fields).flatMap(fact => fact.sourceUrls || [fact.sourceUrl]), audit.sourceUrl,
       model.officialSourceUrl, ...(model.catalogReview?.sourceUrls || []), ...(model.specifications?.sourceUrls || []), ...(model.specificModelSpecifications?.sourceUrls || [])]),
     checkedAt: audit.verifiedAt || Object.values(fields).find(f => f.verifiedAt)?.verifiedAt, unverified: audit.unverified,
     lifecycle: auditedModelLifecycle(provider, model.id),

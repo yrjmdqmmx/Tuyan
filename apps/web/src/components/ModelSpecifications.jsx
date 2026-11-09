@@ -28,7 +28,7 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const { t } = useAppLocale()
   const [showSources, setShowSources] = useState(false)
   const data = modelCardSpecifications(provider, model)
-  const sourceName = url => url === data.lifecycle?.sourceUrl ? '下线公告'
+  const sourceName = url => data.channelSources.includes(url) ? '官方文档' : url === data.lifecycle?.sourceUrl ? '下线公告'
     : data.vendorSources.includes(url) ? '原厂规格' : '官方文档'
   const provenance = [['输入', data.inputScope], ['输出', data.outputScope], ['上下文窗口', data.contextScope], ['最大输出', data.maxOutputScope]]
     .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : ['图研既有核实', '图研输入要求'].includes(scope) ? scope : '渠道公布')}`)
