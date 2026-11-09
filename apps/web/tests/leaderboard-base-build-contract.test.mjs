@@ -39,6 +39,10 @@ test('non-root Vite build keeps every leaderboard entry and runtime fallback und
       'leaderboard/admin/prompt-submissions/index.html',
     ]) builtScript(outputDir, relativeHtml)
 
+    for (const file of ['robots.txt', 'sitemap.xml']) {
+      assert.equal(readFileSync(join(outputDir, file), 'utf8'), readFileSync(new URL(`../public/${file}`, import.meta.url), 'utf8'))
+    }
+
     assert.match(builtScript(outputDir, 'leaderboard/index.html'), /(?:\/paperbanana\/|appPaths-)/u)
     assert.match(builtScript(outputDir, 'leaderboard/methodology/index.html'), /(?:\/paperbanana\/|appPaths-)/u)
     assert.match(builtScript(outputDir, '404.html'), /(?:\/paperbanana\/|appPaths-)/u)
