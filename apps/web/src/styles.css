@@ -1627,7 +1627,7 @@ button {
   margin-bottom: 14px;
 }
 
-.field span, .field.control-field > label {
+.field :is(span, label) {
   color: var(--ink-soft);
   font-size: 13px;
   font-weight: 680;
@@ -5498,7 +5498,7 @@ figcaption {
 .universal-role-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; margin-bottom: 14px; }
 .universal-role-heading p { color: var(--muted); margin: 0; }
 .universal-role .field { margin: 0 0 13px; gap: 6px; }
-.universal-role .field span, .universal-role .control-field > label { font-size: 12px; }
+.universal-role .field :is(span, label), .universal-role .control-field > label { font-size: 12px; }
 .universal-role .field small { color: var(--muted); font-size: 11px; line-height: 1.6; font-weight: 400; }
 .universal-role input, .universal-role :is(select, .ui-select) { min-width: 0; width: 100%; font-size: 13px; }
 .universal-role input[type="checkbox"] { width: 16px; height: 16px; flex: 0 0 16px; accent-color: var(--sage); }
