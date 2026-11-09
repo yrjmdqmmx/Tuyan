@@ -464,7 +464,7 @@
 @media(prefers-reduced-motion:reduce){.tw-template-deck-inner{transform:none}}
 /* The selected result is also the source for the next instruction. */
 .tw-target-picker{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.tw-target-picker>span{font-size:11px;color:var(--tw-muted)}
+.tw-target-picker > :is(span, label){font-size:11px;color:var(--tw-muted)}
 .tw-target-picker>:is(select, .ui-select){width:100%;min-width:0;max-width:100%;min-height:30px;border:0;background:transparent;color:var(--tw-ink);font:inherit;font-size:12px;padding:2px 20px 2px 0;text-overflow:ellipsis}
 .tw-target:has(.tw-target-error){flex-wrap:wrap}
 .tw-target-error{flex-basis:100%;color:#8a523a;font-size:12px}

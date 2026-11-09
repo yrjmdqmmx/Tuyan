@@ -29,7 +29,7 @@
   .benchmark-site-shell .pareto-toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; margin-bottom: 20px; }
   .benchmark-site-shell .pareto-toolbar .bench-view-switch { grid-column: 1 / -1; margin: 0 0 4px; }
   .benchmark-site-shell .pareto-metric-label { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 16px; max-width: none; margin: 0; }
-  .benchmark-site-shell .pareto-metric-label > span { position: static; width: auto; height: auto; margin: 0; clip: auto; overflow: visible; white-space: normal; color: var(--bench-muted); font-size: 13px; }
+  .benchmark-site-shell .pareto-metric-label > :is(span, label) { position: static; width: auto; height: auto; margin: 0; clip: auto; overflow: visible; white-space: normal; color: var(--bench-muted); font-size: 13px; }
   .benchmark-site-shell .pareto-metric-label :is(select, .ui-select) { min-width: 0; min-height: 48px; font-size: 16px; border-radius: 10px; }
   .benchmark-site-shell .pareto-search input { height: 48px; font-size: 16px; border-radius: 10px; padding-right: 42px; }
   .benchmark-site-shell .pareto-search button { width: 44px; height: 44px; right: 2px; }

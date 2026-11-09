@@ -25,7 +25,8 @@ export function scanLabelControls(file, text) {
         }
         node.children.forEach(find);
         const row = { file, line: source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1, controls };
-        if (tag === 'ControlField') fields.push(row);
+        if (tag === 'ControlField') fields.push({ ...row, className: node.openingElement.attributes.properties
+          .find(attr => attr.name?.getText(source) === 'className')?.initializer?.text || '' });
         else if (controls.length) wrappers.push(row);
       }
     }

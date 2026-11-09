@@ -632,7 +632,7 @@
   gap: 3px;
 }
 
-.reference-facet span {
+.reference-facet :is(span, label) {
   color: var(--muted);
   font-size: 9px;
   font-weight: 760;
@@ -1626,7 +1626,7 @@ button {
   margin-bottom: 14px;
 }
 
-.field span {
+.field :is(span, label) {
   color: var(--ink-soft);
   font-size: 13px;
   font-weight: 680;
@@ -5422,7 +5422,7 @@ figcaption {
 .refine-model-line small { flex-shrink: 0; margin-left: auto; font-size: 10px; color: var(--sage); }
 .refine-parameter-fields { min-width: 0; margin: 0; padding: 0; border: 0; }
 .refine-parameter-fields > .field { max-width: 210px; }
-.refine-parameter-fields .field > span { font-size: 12px; }
+.refine-parameter-fields .field > :is(span, label) { font-size: 12px; }
 .refine-parameter-fields :is(select, .ui-select) { min-height: 36px; padding-block: 7px; font-size: 12px; }
 .refine-submit-area { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); }
 .refine-submit-area > .primary-button { margin: 0; width: 100%; min-height: 44px; }
