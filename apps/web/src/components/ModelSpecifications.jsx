@@ -1,8 +1,9 @@
+import { sourceTitle } from '../../../../packages/api/src/card-presentation.mjs'
 import { modelLifecycleMessage } from '../lib/modelUnavailablePresentation.js'
 import { useState } from 'react'
 import { ArrowDownToLine, ArrowUpFromLine, ScanText, TextCursorInput, ExternalLink, Type, Image, AudioLines, Video, FileText } from 'lucide-react'
 import { modelCardSpecifications } from '../lib/modelCardSpecifications'
-import { modelSourceName } from '../lib/modelCardSources.js'
+import { modelSourceRows, modelSourceName } from '../lib/modelCardSources.js'
 import { modalityIconStates } from '../lib/modelModalityIcons'
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import WorkspaceDialog from '../workspace/WorkspaceDialog.jsx'
@@ -29,34 +30,34 @@ export function ModelSpecifications({ provider, model, compactSources = false, f
   const { t } = useAppLocale()
   const [showSources, setShowSources] = useState(false)
   const data = modelCardSpecifications(provider, model)
-  const sourceName = url => modelSourceName(data, url)
+  const sourceRows = modelSourceRows(data)
+  const vendorOrigin = scope => scope === '原厂' ? <small className="model-spec-origin">{t('源自原厂')}</small> : null
   const provenance = [['输入', data.inputScope], ['输出', data.outputScope], ['上下文窗口', data.contextScope], ['最大输出', data.maxOutputScope]]
     .filter(([, scope]) => scope).map(([label, scope]) => `${t(label)}：${t(scope === '原厂' ? '源自原厂' : ['图研既有核实', '图研输入要求'].includes(scope) ? scope : '渠道公布')}`)
   const catalogDates = Object.entries(data.fields).filter(([, fact]) => fact.provenance === 'catalog' && fact.verifiedAt)
     .map(([field, fact]) => `${t({inputModalities:'输入',outputModalities:'输出',totalContextTokens:'上下文窗口',maxOutputTokens:'最大输出'}[field])}：${t('图研既有核实')} ${fact.verifiedAt}`)
   const details = [data.checkedAt && `${t('核实日期')} ${data.checkedAt}`, ...provenance, ...catalogDates,
     data.contextExact && `${t('上下文窗口')}：${data.contextExact}`, data.maxOutputExact && `${t('最大输出')}：${data.maxOutputExact}`,
-    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note,
-    ...data.sources.map(url => `${t(sourceName(url))} · ${new URL(url).hostname}`)].filter(Boolean).join('\n')
+    (data.unverified || model.catalogReview?.status === 'pending') && t('未核实'), model.catalogReview?.reason, model.savedChoice?.disabledReason, modelLifecycleMessage(provider, data.lifecycle), data.note].filter(Boolean).join('\n')
   const url = data.sources[0]
   const sources = <div className={`model-spec-sources${compactSources ? ' is-compact' : ''}`} aria-label={t('官方文档')}>
-    {url ? <a href={url} title={`${details}\n${data.sources.join('\n')}`} aria-label={details} target="_blank" rel="noopener noreferrer" onClick={event => {
+    {url ? <a href={url} title={`${details}\n${sourceRows.map(row => row.label).join('\n')}\n${data.sources.join('\n')}`} aria-label={`${sourceRows[0].label}\n${details}`} target="_blank" rel="noopener noreferrer" onClick={event => {
       // Touch devices expose the same evidence through the existing dialog.
       if (window.matchMedia?.('(hover: none)').matches) { event.preventDefault(); setShowSources(true) }
-    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{t(sourceName(url))} · </span><span className="model-spec-source-domain" title={url}>{new URL(url).hostname}</span></span></a>
+    }}><ExternalLink size={13} aria-hidden="true" /><span className="model-spec-source-text"><span className="model-spec-source-label">{t(modelSourceName(data, url))} · </span><span className="model-spec-source-domain" title={url}>{sourceRows[0].label.slice(modelSourceName(data, url).length + 3)}</span></span></a>
       : <span title={`${details}\n${data.sources.join('\n')}`} aria-label={details}>{t('官方文档待确认')}</span>}
   </div>
   return <div className="model-card-specifications">
     <dl className="model-specs" aria-label={t('官方文档规格')}>
-      <div><dt><ArrowDownToLine size={14} aria-hidden="true" />{t('输入')}</dt><dd><ModalityIcons value={data.input} fact={data.inputFact} direction="输入模态" /></dd></div>
-      <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd><ModalityIcons value={data.output} fact={data.outputFact} direction="输出模态" /></dd></div>
-      <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={data.contextExact || undefined} className={data.context === '未知' ? 'model-spec-unknown' : undefined}>{t(data.context)}</dd></div>
-      <div><dt><TextCursorInput size={14} aria-hidden="true" />{t('最大输出')}</dt><dd title={data.maxOutputExact || undefined} className={data.maxOutput === '未知' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}</dd></div>
+      <div><dt><ArrowDownToLine size={14} aria-hidden="true" />{t('输入')}</dt><dd><ModalityIcons value={data.input} fact={data.inputFact} direction="输入模态" />{vendorOrigin(data.inputScope)}</dd></div>
+      <div><dt><ArrowUpFromLine size={14} aria-hidden="true" />{t('输出')}</dt><dd><ModalityIcons value={data.output} fact={data.outputFact} direction="输出模态" />{vendorOrigin(data.outputScope)}</dd></div>
+      <div><dt><ScanText size={14} aria-hidden="true" />{t('上下文窗口')}</dt><dd title={data.contextExact || undefined} className={data.context === '未知' ? 'model-spec-unknown' : undefined}>{t(data.context)}{vendorOrigin(data.contextScope)}</dd></div>
+      <div><dt><TextCursorInput size={14} aria-hidden="true" />{t('最大输出')}</dt><dd title={data.maxOutputExact || undefined} className={data.maxOutput === '未知' ? 'model-spec-unknown' : undefined}>{t(data.maxOutput)}{vendorOrigin(data.maxOutputScope)}</dd></div>
     </dl>
     {footerActions ? <div className="model-spec-footer">{sources}{footerActions}</div> : sources}
     {showSources && <WorkspaceDialog className="model-evidence-dialog" title={t('官方文档规格')} onClose={() => setShowSources(false)}>
       <p className="tw-preserve-text">{details}</p>
-      {data.sources.map(source => <p key={source}><a href={source} target="_blank" rel="noopener noreferrer">{t(sourceName(source))} · {new URL(source).hostname}</a></p>)}
+      {sourceRows.map(source => <p key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a></p>)}
     </WorkspaceDialog>}
   </div>
 }
@@ -69,6 +70,6 @@ export function ModelLifecycleBadge({ lifecycle, provider }) {
     <span className="tw-catalog-tags"><span className="is-unavailable" role="button" tabIndex={0} title={message} aria-label={`将下线：${message}`} onClick={() => setOpen(true)} onKeyDown={event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setOpen(true) }
     }}>将下线</span></span>
-    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p><a href={lifecycle.sourceUrl} target="_blank" rel="noopener noreferrer">下线公告 · {new URL(lifecycle.sourceUrl).hostname}</a></WorkspaceDialog></div>}
+    {open && <div onClick={event => event.stopPropagation()}><WorkspaceDialog className="model-evidence-dialog" title="下线公告" onClose={() => setOpen(false)}><p>{message}</p><a href={lifecycle.sourceUrl} target="_blank" rel="noopener noreferrer">下线公告 · {sourceTitle(lifecycle.sourceUrl)}</a></WorkspaceDialog></div>}
   </>
 }

@@ -1,3 +1,4 @@
+import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -32,7 +33,7 @@ test('R10 full live registry keeps channel exclusions, visible source and date i
       for (const label of ['音频', '视频']) input.getByRole('img', { name: `${label}：不支持` })
       for (const label of ['图像', '音频', '视频']) output.getByRole('img', { name: `${label}：不支持` })
       const link = screen.getByRole('link')
-      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · help.aliyun.com')
+      assert.equal(link.getAttribute('href'), source); assert.equal(link.textContent, '官方文档 · 百炼 · Kimi-K3 模型页')
       assert.match(link.title, /^核实日期 2026-11-09\n/)
       assert.match(link.title, /输入：渠道公布/)
       assert.doesNotMatch(link.title, /输入：图研既有核实/)

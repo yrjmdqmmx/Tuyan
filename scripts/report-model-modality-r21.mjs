@@ -1,4 +1,6 @@
 // Offline full-object execution and DOM verification; all transport is denied.
+// Historical R21 report stays reproducible at Phase A; current R22B is audited separately.
+import { archivedAuditText } from './lib/model-card-audit.mjs';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
@@ -22,7 +24,8 @@ Date.now=()=>Date.parse('2026-11-09T12:00:00Z');
 const {memoryDb}=await import(pathToFileURL(path.join(root,'test-support/memory-db.mjs')));
 globalThis.__r21Db=memoryDb();
 globalThis.__r21Sharp=coreRequire('sharp');
-const coreBundle=await build({entryPoints:[path.join(root,'apps/paperbanana-api/src/core-entry.mjs')],bundle:true,format:'cjs',platform:'node',write:false,define:{'import.meta.url':JSON.stringify('data:text/javascript,offline-r21')},nodePaths:[path.join(root,'apps/paperbanana-api/node_modules')],logLevel:'silent',plugins:[{name:'offline-infrastructure',setup(b){b.onResolve({filter:/(?:core-services\.(?:js|ts)|^sharp)$/},a=>({path:a.path,namespace:'offline'}));b.onLoad({filter:/.*/,namespace:'offline'},a=>({loader:'js',contents:a.path==='sharp'?'export default globalThis.__r21Sharp':'export const database=globalThis.__r21Db; export const objectStorage={bucket:()=>({})};'}));}}]});
+const archived={name:'r21-archive-c76e9c2a',setup(b){b.onLoad({filter:/\.(?:[cm]?js|jsx|ts|json)$/},a=>{if(!a.path.startsWith(root)||a.path.includes('/node_modules/'))return;return {contents:archivedAuditText(root,'c76e9c2a',path.relative(root,a.path)),loader:a.path.endsWith('.json')?'json':a.path.endsWith('.jsx')?'jsx':a.path.endsWith('.ts')?'ts':'js'};});}};
+const coreBundle=await build({entryPoints:[path.join(root,'apps/paperbanana-api/src/core-entry.mjs')],bundle:true,format:'cjs',platform:'node',write:false,define:{'import.meta.url':JSON.stringify('data:text/javascript,offline-r21')},nodePaths:[path.join(root,'apps/paperbanana-api/node_modules')],logLevel:'silent',plugins:[archived,{name:'offline-infrastructure',setup(b){b.onResolve({filter:/(?:core-services\.(?:js|ts)|^sharp)$/},a=>({path:a.path,namespace:'offline'}));b.onLoad({filter:/.*/,namespace:'offline'},a=>({loader:'js',contents:a.path==='sharp'?'export default globalThis.__r21Sharp':'export const database=globalThis.__r21Db; export const objectStorage={bucket:()=>({})};'}));}}]});
 const core={exports:{}};new Function('module','exports','require',coreBundle.outputFiles[0].text)(core,core.exports,coreRequire);
 const snapshot=JSON.parse(fs.readFileSync(path.join(root,'config/channel-audit/tokendance-catalog-snapshot-20261109b.json'),'utf8'));
 const requests=[];core.exports.configureRuntimeFetch(async url=>{requests.push(String(url));return String(url)==='https://tokendance.space/gateway/v1/models'?Response.json({data:snapshot.data}):Response.json({error:'Offline catalog fixture'},{status:503});});
@@ -37,7 +40,7 @@ export {auditedModelSpecs} from './apps/web/src/lib/modelAudit.js';
 export {modalityIconStates} from './apps/web/src/lib/modelModalityIcons.js';
 export {STATIC_MODEL_REGISTRY} from './apps/web/src/lib/staticModelCatalog.js';
 export {catalogRows} from './apps/web/src/workspace/WorkspaceModelCatalog.jsx';`;
-const bundle=await build({stdin:{contents:entry,resolveDir:root,loader:'js'},bundle:true,format:'cjs',platform:'node',write:false,jsx:'automatic',loader:{'.css':'empty','.svg':'dataurl','.png':'dataurl'},define:{'import.meta.env':'{}'},nodePaths:[path.join(root,'apps/web/node_modules')],logLevel:'silent'});
+const bundle=await build({plugins:[archived],stdin:{contents:entry,resolveDir:root,loader:'js'},bundle:true,format:'cjs',platform:'node',write:false,jsx:'automatic',loader:{'.css':'empty','.svg':'dataurl','.png':'dataurl'},define:{'import.meta.env':'{}'},nodePaths:[path.join(root,'apps/web/node_modules')],logLevel:'silent'});
 const ui={exports:{}};new Function('module','exports','require',bundle.outputFiles[0].text)(ui,ui.exports,webRequire);const u=ui.exports;
 const reviewed=JSON.parse(fs.readFileSync(path.join(root,'apps/web/src/data/model-card-specifications.json'),'utf8'));
 const pages=JSON.parse(fs.readFileSync(path.join(root,'config/channel-audit/specific-model-page-overrides.json'),'utf8'));

@@ -661,3 +661,91 @@ Every failure below reports exactly `listen EPERM: operation not permitted 127.0
 | Gateway / `apps/auth-gateway/tests/workspace-history.test.js:6:1` | history route authenticates, binds pagination to session identity and rejects foreign jobs even for administrators | `listen EPERM` |
 | Gateway / `apps/auth-gateway/tests/workspace-sync.test.js:35:1` | HTTP routes require live identity, matching account header and trusted write origin | `listen EPERM` |
 | Gateway / `apps/auth-gateway/tests/workspace-sync.test.js:72:1` | revision-only reads work across trusted origins with the same account and preserve CAS | `listen EPERM` |
+
+## R22 Phase B
+
+Items 2, 5 and 6 plus the Docker bundle regression are addressed on `codex/model-modality-audit`, starting at `c76e9c2a`; the execution/name baseline remains `8c456709`. No Git writes, other-worktree access, image builds, inference, authenticated requests, deployment, or secret reads were used. External traffic was limited to unauthenticated public GETs for TokenDance model documentation and the SPA assets/data needed to render those pages.
+
+### Item 2 — rendered TokenDance pages
+
+The new [capture](../config/channel-audit/tokendance-rendered-pages-20261110.json) covers **74/74** identities: HTML **74 HTTP 200** SPA shells; exact portal JSON **67 HTTP 200 / 7 HTTP 404**; rendered content **67 real model pages / 7 “Model not found”**. Audit date is **2026-11-10, Asia/Shanghai**; raw UTC acquisition timestamps remain in every response (2026-11-09 18:24–18:25 UTC). Each row preserves HTML, portal JSON, rendered text, per-body SHA-256, and a combined evidence hash. Public model-page stats/timeseries dependencies and 22 actual JavaScript assets have recorded hashes as well.
+
+The requested headless Chrome launch failed before navigation with `SIGABRT` / `kill EPERM`. The successful fallback evaluates the actual downloaded SPA ES modules in separate JSDOM contexts, replaying each exact captured model response and allowing only public page dependencies. A real-page decision requires the exact portal slug and matching rendered model heading, with no “Model not found” text. This is rendered DOM/text evidence, not Chrome layout or screenshot QA. Analytics, login, CAPTCHA, and other unrelated API requests are not loaded.
+
+`model-card-sources.mjs` admits a TokenDance URL only through the date/hash-backed exact-ID allowlist. An uncaptured identity with no retained vendor/original source renders **官方文档待确认** without an anchor. All seven historical identities have an original main source, captured with the actual main resolver through read-only `git show`; none needs the no-link fallback:
+
+| Historical ID | Restored first link from main |
+| --- | --- |
+| `deepseek-v4-flash-vision-exp` | https://api-docs.deepseek.com/news/news260821/ |
+| `deepseek-v4-flash` | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash |
+| `deepseek-v3.2` | https://huggingface.co/deepseek-ai/DeepSeek-V3.2 |
+| `deepseek-chat-v3-0324` | https://api-docs.deepseek.com/news/news250325 |
+| `qwen3.6-max-preview` | https://help.aliyun.com/zh/model-studio/qwen3-6-max |
+| `qwen3-30b-a3b-instruct-2507` | https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507 |
+| `qwen3-max` | https://help.aliyun.com/zh/model-studio/models |
+
+The seven model records and their unknown modality facts remain present. A missing page is not a delisting or execution-capability decision. Web tests exercise ID-only and full static cards, Core tests inspect complete registry projections, Gateway tests relay those projections, and compiled Mini tests inspect both links and visible cards. All four ends retain the earlier execution locks.
+
+### Item 5 — named and deduplicated sources
+
+The shared [presentation helper](../packages/api/src/card-presentation.mjs) uses a stored page title where meaningful (the DeepSeek V3-0324 release title), curated subjects for common pages, and readable path subjects otherwise. Role prefixes such as **官方文档**, **原厂规格**, and **下线公告** remain separate from the page name. Bailian DeepSeek-V4.1-Flash now shows **官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页**; its list source is **官方文档 · 百炼 · 模型列表**. Colliding subjects receive a path/host distinction.
+
+URL identity ignores trailing slashes, fragments and tracking parameters (`utm_*`, `ref`, `referrer`, `fbclid`, `gclid`, `msclkid`), sorts other query parameters, and preserves meaningful query differences. The first original navigation URL is retained; evidence archives are not normalized in place. Across **1,064 cards**, duplicate canonical URL rows fall **13 → 0**, and repeated role-plus-host visible labels fall **974 → 0**. Total source rows are **2,489 → 2,479**: dedupe removes 13 and restored historical vendor lists add three secondary rows. The dialog’s prose no longer repeats its link list. The Bailian example has four distinct named links, each appearing once.
+
+Mini retains its established one-primary-source card/copy-dialog footprint and uses the same title helper. All 1,064 Mini cards have unique URL/label rows; the live Core primary link and offline compact primary link agree. Source rendering does not modify provenance, dates, or selection state.
+
+### Item 6 — modality order, vendor attribution, and the vision tag
+
+Display order is **text, image, video, audio**, followed by any other modalities. Icons, Chinese lists, icon tooltips, and Mini supported/unsupported/unknown lists use this order. Sorting operates on copies; stored modality arrays and execution decisions remain exactly equal to main.
+
+The provenance rule is **retain independently known vendor values and visibly label them 源自原厂 beside the value**. Qwen3.6 Plus keeps its exact vendor value `65536` and compact `≈ 66K tokens`, now with the visible vendor label. Applied uniformly to TokenDance, this labels **20 token fields across 18 cards** (16 max-output fields and four context fields). **63 token fields remain unknown** (58 outputs, five contexts). Four previously `catalog` fallbacks whose sources are exclusively vendor pages (two historical Qwen contexts and two MiMo outputs) are classified `vendor` at the display merge boundary; source URLs, values, verification dates and original archives remain intact. Channel modality facts are unchanged. No unknown becomes zero or infinity.
+
+**视觉理解 is execution-based.** `ModelPicker.jsx` maps `model.roles` to tags; the workspace catalog filters and renders the same roles via `ROLE_NAMES`; Mini checks `model.roles.includes('vision')`. TokenDance `kimi-k3.1-pro` has `roles: ['main']` at the frozen baseline. Its image/video input display facts therefore coexist with no vision execution tag. That rule and role list were deliberately preserved.
+
+### Docker layout and shared data
+
+Core’s card projection no longer imports Web files or `config` across package boundaries. Pure rules live in `packages/api/src/catalog-card-facts.mjs`, `model-card-sources.mjs`, and `card-presentation.mjs`; package-local `card-data/*.json` is generated from canonical evidence by `sync-card-display.mjs --check`. The existing Web paths re-export the shared rules. Core’s four compensating Web/config COPY instructions are removed. The benchmark-worker Dockerfile already copies `packages/api/src`, so its embedded Core build now has the same complete dependency tree. Gateway’s production import graph needs no added COPY.
+
+Both Core and benchmark build stages use `/workspace`; Core runs from `/workspace/apps/paperbanana-api`. At Phase A, Core had compensating Web/config COPY instructions, but the benchmark image invokes that same Core build without those files. The earlier Core-only source reachability check did not exercise actual destination layout or the benchmark image’s embedded Core build. The new [Docker-context simulator](../scripts/check-docker-bundles.mjs) parses actual COPY/WORKDIR/stage instructions, applies `.dockerignore`, reconstructs their destinations in a temporary tree, and executes the exact package esbuild commands with installed dependencies. Workspace dependency links point into the copied tree, so original-checkout sources cannot hide missing COPY entries. It resolves **4 Core bundles, 16 bundles in the benchmark-worker layout (4 Core + 12 worker), and Gateway’s complete local runtime imports**. No Docker command, image, dependency install, server start or network is involved.
+
+### Preservation, size and expectation review
+
+The [current Phase B report](model-modality-r22b-results.json) verifies all **1,064 picker names equal main**, all **1,061 full Core cards** agree with Web fields, and full-vs-static first-source differences remain **zero**. Historical R10/R11/R12/R21/Phase 2 evidence and report files remain unchanged; their check commands explicitly use archived source versions. Current behavior has independent Phase B tests/report coverage.
+
+Mini’s lossless catalog codec now encodes delta references with a single-character `^` tag, escaping literal prefixes and retaining legacy tag-5 decoding. Roundtrip, digest, independent-container ownership and both byte-budget assertions remain enforced; no model field was removed. Reference-upload policy data was regenerated through its existing sync script to use the same encoding.
+
+The [changed-test ledger](model-modality-changed-tests.md) retains Phase A decisions and adds explicit Phase B transitions against `c76e9c2a`. Whole-file diff hashes and pre-existing file inventory still use main. Current totals: **20 test files, 110 assertion/input review rows, 615 semantic fixture rows, 724 justified, one previously restored unjustified change, zero flagged**. Changes cover only verified-link fallbacks, page-subject labels, display order and the lossless wire-tag assertion; roles, availability, upload/execution locks, unknown states and package budgets are retained.
+
+Mini source: **1,564,986 / 1,572,864 bytes**, runtime excluding `.ts`: **1,139,989 bytes**, media: **189,978 bytes**, remaining source budget: **7,878 bytes**. The stricter R15 ceiling of 1,569,427 bytes also passes. Mini deployment remains paused.
+
+### Final validation
+
+Exact commands, counts and log hashes are in [validation JSON](model-modality-r22b-validation.json).
+
+| Check | Result |
+| --- | --- |
+| Web full suite, required command with concurrency 2 | **1,472 / 1,472 pass** |
+| Mini `npm test` | **163 / 163 pass** |
+| `node --test scripts/*.test.mjs` | **48 / 48 pass** |
+| Core touched/new tests plus R21/Phase 2/execution lock | **7 / 7 pass** |
+| Gateway R21/Phase 2/execution lock, including verified-link relay | **5 / 5 pass** |
+| Web build; Mini build; Core `pnpm --filter @paperbanana/paperbanana-api build`; Core typecheck | **All pass** |
+| Docker COPY-layout simulation | **Core, benchmark and Gateway pass; no images built** |
+| Catalog, audit, R21, Phase 2, changed-test ledger, frozen execution and all new Phase B `--check` commands | **All pass** |
+| Reference upload, thinking, agent knowledge, model version, archived R10/R11/R12 checks | **All pass** |
+| `sync-workflow.mjs --check` | **Existing drift** in `apps/miniprogram/miniprogram/utils/workflow.ts`; both generator and target are unchanged from Phase A. Kept intact. |
+| `sync-agent-distributions.mjs --check` | **Not applicable**: usage requires `skill|mcp <existing-independent-repo>`. Guard exits before any target access; other worktrees are forbidden for this task. |
+
+The R10/R12 commands use `--frozen-head`; R11 additionally uses `--frozen-main` to avoid a sibling checkout. Seventeen applicable generator/report/layout checks pass, one unrelated pre-existing workflow check reports drift, and the independent-repository distribution command is outside scope. No touched Core/Gateway test encountered localhost EPERM. The older Phase A socket failure list above remains an environmental follow-up, not a newly passed suite. Chrome visual rendering and native WeChat scanning remain unperformed; the 74-page rendered-text evidence and compiled Mini template tests have the boundaries described above.
+
+Reproduce the new checks without network:
+
+```sh
+node scripts/capture-tokendance-pages.mjs --check
+node scripts/sync-card-display.mjs --check
+node scripts/check-docker-bundles.mjs --check
+node scripts/report-model-modality-r22b.mjs --check
+node scripts/report-changed-tests.mjs --check
+```
+
+A fresh public capture, if needed in a later authorized documentation audit, uses `node --experimental-vm-modules scripts/capture-tokendance-pages.mjs --capture`; it is not part of offline validation. Run `sync-card-display`, then `sync-model-catalog` and `sync-reference-upload` after changing the source evidence or lossless codec.

@@ -1,10 +1,12 @@
+import { productBundle } from '../test-support/execution-capability.mjs'
 // Read-only baseline import; reports/fixtures are always under this checkout.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadCard, archivedAuditText, readRegistry, readPackedRegistry, rowsOf, countCards, fields, isKnown, writeOrCheck } from './lib/model-card-audit.mjs'
 import { readModalityEvidence, modalityDisagreements } from './lib/model-card-modality-evidence.mjs'
-import { modalityIconStates } from '../apps/web/src/lib/modelModalityIcons.js'
+import { modalityIconStates as currentIcons } from '../apps/web/src/lib/modelModalityIcons.js'
+const modalityIconStates = process.argv.includes('--frozen-head') ? (await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", '8c456709')).modalityIconStates : currentIcons
 const root = fileURLToPath(new URL('../', import.meta.url))
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1] }
 const read = file => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))

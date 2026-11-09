@@ -5,6 +5,7 @@ type CatalogNode = null | boolean | number | string | Array<number | string>
 export function unpackModelCatalog(data: { root: number; nodes: CatalogNode[] }): any {
   function expand(index: number): any {
     let node = data.nodes[index]
+    if (typeof node === 'string' && node.startsWith('^')) node = [5, node.slice(1)]
     if (typeof node === 'string' && node.startsWith('~')) node = node.slice(1).split('.').map(n => parseInt(n,36))
     if (!Array.isArray(node)) return node
     if (node[0] === 6) return node[1]

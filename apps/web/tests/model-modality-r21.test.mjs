@@ -1,3 +1,4 @@
+import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
 import React from 'react'
@@ -32,7 +33,7 @@ test('R21 renders promoted inputs, explicit unsupported Qwen inputs and hidden u
     render(React.createElement(ModelSpecifications, { provider: 'tokendance', model: model(id) }))
     const group = within(screen.getByRole('group', { name: '输入模态' }))
     for (const label of labels) group.getByRole('img', { name: label })
-    assert.equal(screen.getByRole('link').getAttribute('href'), 'https://tokendance.space/models/' + id)
+    assert.equal(screen.getByRole('link').getAttribute('href'), expectedTokenDanceSources(id)[0])
     cleanup()
   }
 })
@@ -42,7 +43,7 @@ test('R21 portal API URLs are audit evidence only, including redirects and encod
   assert.equal(isApiSource('https://example.com/model', { 'https://example.com/model': { finalUrl: api } }), true)
   for (const { id } of tokenDanceBefore.rows) {
     const sources = modelCardSources({ channel: 'tokendance', model: { id }, audit: { sourceUrl: api }, fields: {} }).sources
-    assert.deepEqual(sources, ['https://tokendance.space/models/' + id])
+    assert.deepEqual(sources, expectedTokenDanceSources(id))
     assert.ok(sources.every(url => !isApiSource(url)))
   }
   assert.ok(!modelCardSources({ channel: 'custom', audit: { sourceUrl: api }, fields: {} }).sources.includes(api))

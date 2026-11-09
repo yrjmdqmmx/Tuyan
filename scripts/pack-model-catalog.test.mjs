@@ -65,7 +65,7 @@ test('the decoder still accepts the previous packed format', () => {
 test('positional array deltas round-trip nested arrays with independent ownership', () => {
   const rows = Array.from({length: 24}, (_, i) => [null, false, {name:'相同🌏'}, ...Array.from({length:30}, (_, j) => j === 15 ? i : j)])
   const {packed, restored} = verify(rows)
-  assert.ok(packed.nodes.some(node => Array.isArray(node) && node[0] === 5))
+  assert.ok(packed.nodes.some(node => typeof node === 'string' && node.startsWith('^')))
   restored[0][2].name = 'changed'
   assert.equal(restored[1][2].name, '相同🌏')
 })

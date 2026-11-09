@@ -1,3 +1,5 @@
+import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
+import { sourceTitle } from '../../../packages/api/src/card-presentation.mjs'
 import test, { afterEach, beforeEach } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
@@ -5,7 +7,7 @@ import React from 'react'
 import { render, cleanup } from '@testing-library/react'
 import { ModelSpecifications } from '../src/components/ModelSpecifications.jsx'
 import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
-import { isApiSource, modelCardSources, modelSourceName, sourceSpecificity } from '../src/lib/modelCardSources.js'
+import { isApiSource, modelCardSources, modelSourceName, modelSourceRows, sourceSpecificity } from '../src/lib/modelCardSources.js'
 import { MODEL_AUDIT_DATA } from '../src/lib/modelAudit.js'
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { unpackRegistry, rowsOf } from '../../../scripts/lib/model-card-audit.mjs'
@@ -21,7 +23,7 @@ const model = (channel, id) => registry.providers[channel].models.find(m => m.id
 const models = new Map(rowsOf(STATIC_MODEL_REGISTRY).map(row => [row.channel + '/' + row.model.id, row.model]))
 for (const row of rows) models.set(row.channel + '/' + row.model.id, row.model)
 const linkIdentity = ({ channel, modelId, oldUrl, finalUrl }) => ({ channel, modelId, oldUrl, finalUrl })
-const r21Url = row => phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
+const r21Url = row => row.channel === 'tokendance' ? expectedTokenDanceSources(row.modelId)[0] : phase2.sourceChanges.find(change => change.key === row.channel + '/' + row.modelId)?.after
   || (row.channel === 'tokendance' ? 'https://tokendance.space/models/' + row.modelId : row.finalUrl)
 const expectedR21Changes = before.rows.map(({ channel, modelId, oldUrl }) => {
   const archived = final.find(row => row.channel === channel && row.modelId === modelId)
@@ -42,7 +44,7 @@ function assertLink(channel, entry, url, label) {
     const view = render(React.createElement(ModelSpecifications, { provider: channel, model: entry, compactSources }))
     const link = view.getByRole('link')
     assert.equal(link.getAttribute('href'), url)
-    assert.equal(link.textContent, label + ' · ' + new URL(url).hostname)
+    assert.equal(link.textContent, modelSourceRows(card)[0].label)
     view.unmount()
   }
 }
@@ -60,7 +62,7 @@ test('R12 full registry retains the three pre-R9 Bailian model pages over list p
     assertLink('bailian', model('bailian', id), url, '官方文档')
   }
 })
-test('R21 all 74 cards link channel pages while preserving R12 evidence for seven missing pages', () => {
+test('R22B all 74 cards require rendered pages and retain seven main vendor fallbacks', () => {
   assert.equal(rendered.rows.length, 74)
   assert.equal(rendered.rows.filter(row => row.rendersModel).length, 67)
   assert.match(rendered.method, /Model not found/)
@@ -80,9 +82,9 @@ test('R21 all 74 cards link channel pages while preserving R12 evidence for seve
       assert.equal(link.scope, 'vendor')
       assert.equal(link.kind, 'vendor-doc')
       assert.doesNotMatch(link.url, /^https:\/\/tokendance\.space\//)
-      assertLink('tokendance', entry, row.url, '官方文档')
+      assertLink('tokendance', entry, expectedTokenDanceSources(entry.id)[0], '原厂规格')
       for (const projection of [entry, STATIC_MODEL_REGISTRY.tokendance.models.find(m => m.id === entry.id)])
-        assert.deepEqual(modelCardSpecifications('tokendance', projection).sources, [row.url])
+        assert.deepEqual(modelCardSpecifications('tokendance', projection).sources, expectedTokenDanceSources(entry.id))
     }
   }
   assert.deepEqual(rejected.sort(), ['deepseek-chat-v3-0324', 'deepseek-v3.2', 'deepseek-v4-flash', 'deepseek-v4-flash-vision-exp', 'qwen3-30b-a3b-instruct-2507', 'qwen3-max', 'qwen3.6-max-preview'].sort())
@@ -168,7 +170,7 @@ test('R12C every full/static card preserves R11 specificity with exact, reasoned
       actualExceptions.push(exception)
     } else assert.ok(sourceSpecificity(finalUrl) >= sourceSpecificity(row.r11Url), key + ': ' + row.r11Url + ' -> ' + finalUrl)
   }
-  assert.deepEqual(actualExceptions, exceptions.rows.filter(row => row.channel !== 'tokendance'), 'R21 removes only the exact qwen3-max generic fallback')
+  assert.deepEqual(actualExceptions, exceptions.rows, 'R22B restores the exact qwen3-max generic fallback; an unrendered page is not more specific evidence')
   assert.deepEqual(exceptions.rows.filter(row => row.channel === 'tokendance').map(row => [row.scope, row.modelId]), [['full', 'qwen3-max'], ['static', 'qwen3-max']])
   assert.equal(new Set(exceptions.rows.map(row => row.channel + '/' + row.modelId)).size, 8)
 })

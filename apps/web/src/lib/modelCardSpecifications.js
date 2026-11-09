@@ -1,3 +1,4 @@
+import { displayModalities, displayModalityText } from '../../../../packages/api/src/card-presentation.mjs'
 import { auditedModelSpecs, auditedModelLifecycle, removedModel, MODEL_AUDIT_DATA } from './modelAudit.js'
 import { modelCardSources } from './modelCardSources.js'
 import { catalogCardFacts, mergeCardFacts } from './catalogCardFacts.js'
@@ -31,7 +32,7 @@ export function safeOfficialSources(values) {
 }
 const names = { text: '文本', image: '图像', audio: '音频', video: '视频', file: '文件', document: '文件' }
 const formatModalities = values => Array.isArray(values) && values.length
-  ? values.map(value => names[value]).filter(Boolean).join('、') || null : null
+  ? displayModalities(values).map(value => names[value]).filter(Boolean).join('、') || null : null
 function reviewedSpecification(provider, model) {
   const entry = reviewedById.get(model.id)
   return entry && (!entry.providers || entry.providers.includes(provider))
@@ -53,7 +54,7 @@ export function modelCardSpecifications(provider, model, registry) {
   const { fields, conflicts } = mergeCardFacts(audit, catalogCardFacts(provider, model, reviewedModels, specificPages), model)
   const labels = { unknown: '未知', unsupported: '不支持', 'not-applicable': '不适用' }
   const text = fact => fact.state === 'known'
-    ? Array.isArray(fact.value) ? fact.displayValue || formatModalities(fact.value) : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(fact.value, fact.approximate)} tokens${fact.suffix || ''}`
+    ? Array.isArray(fact.value) ? (fact.displayValue ? displayModalityText(fact.displayValue) : formatModalities(fact.value)) : `${typeof fact.value === 'string' ? fact.value.replace(/[km]$/i, unit => unit.toUpperCase()) : formatContextLimit(fact.value, fact.approximate)} tokens${fact.suffix || ''}`
     : labels[fact.state]
   const image = model.roles?.includes('image') || fields.outputModalities.value?.some?.(x => x === 'image' || x === 'video')
   const scope = fact => fact.provenance === 'vendor' ? '原厂' : fact.provenance === 'channel' ? '渠道' : fact.provenance === 'catalog' ? '图研既有核实' : fact.provenance === 'product' ? '图研输入要求' : ''

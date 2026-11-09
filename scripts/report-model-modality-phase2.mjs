@@ -1,15 +1,20 @@
+// Historical Phase 2 report uses Phase A sources; current R22B has its own report.
+import { productBundle } from '../test-support/execution-capability.mjs'
+import snapshot from '../config/channel-audit/tokendance-catalog-snapshot-20261109b.json' with {type:'json'}
 // Offline full Core -> Web/Mini projection audit. No provider transport is used.
 import fs from 'node:fs'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { phase2Registry, assertPhase2Facts, evidence } from '../test-support/phase2-modality.mjs'
 import { loadCard, writeOrCheck } from './lib/model-card-audit.mjs'
-import { modalityIconStates } from '../apps/web/src/lib/modelModalityIcons.js'
+const { modalityIconStates } = await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", 'c76e9c2a')
 import before from '../config/channel-audit/model-modality-phase2-before-20261109.json' with {type:'json'}
 import { STATIC_MODEL_REGISTRY } from '../apps/web/src/lib/staticModelCatalog.js'
 const root=fileURLToPath(new URL('../',import.meta.url)), check=process.argv.includes('--check')
 Date.now=()=>Date.parse('2026-11-09T12:00:00Z')
-const registry=await phase2Registry(), card=await loadCard(root)
+const core=await productBundle("export { modelRegistry, configureRuntimeFetch } from './apps/paperbanana-api/runtime/handler.ts'", 'c76e9c2a')
+core.configureRuntimeFetch(async url=>String(url)===snapshot.sourceUrl?Response.json({data:snapshot.data}):Response.json({error:'offline fixture'},{status:503}))
+const registry=await core.modelRegistry({}), card=await loadCard(root,'c76e9c2a')
 const all=Object.entries(registry.providers).flatMap(([channel,p])=>p.models.map(model=>({key:channel+'/'+model.id,channel,model,card:card(channel,model)})))
 const byKey=new Map(all.map(r=>[r.key,r]))
 assert.equal(all.length,1061)

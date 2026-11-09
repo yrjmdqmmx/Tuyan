@@ -1,3 +1,4 @@
+import { expectedTokenDanceSources } from '../../../test-support/card-review-r22.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { auditedModelSpecs, withModelAudit } from '../src/model-audit.js'
@@ -16,7 +17,7 @@ test('R21 Gateway source pointers render model pages only; portal evidence never
   assert.equal(isApiSource(api), true)
   for (const { id } of tokenDanceBefore.rows) {
     const audit = auditedModelSpecs('tokendance', id)
-    assert.deepEqual(modelCardSources({ channel: 'tokendance', model: { id }, audit, fields: audit.fields }).sources, ['https://tokendance.space/models/' + id])
+    assert.deepEqual(modelCardSources({ channel: 'tokendance', model: { id }, audit, fields: audit.fields }).sources, expectedTokenDanceSources(id))
     assert.ok(audit.sourceLinks.every(link => !isApiSource(link.url)))
   }
 })

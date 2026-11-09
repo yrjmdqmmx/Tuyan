@@ -105,7 +105,7 @@ test('partial lists are unions, omissions stay unknown, and a source-image opera
   const result = mergeCardFacts(audit, { inputModalities: prior }, { operations: [{ requiresImageInput: true }] })
   assert.deepEqual(result.fields.inputModalities.value, ['text', 'video', 'image'])
   assert.equal(result.fields.inputModalities.provenance, 'product')
-  assert.deepEqual(modalityIconStates('', result.fields.inputModalities).map(x => x.state), ['supported', 'supported', 'unknown', 'supported'])
+  assert.deepEqual(modalityIconStates('', result.fields.inputModalities).map(x => x.state), ['supported', 'supported', 'supported', 'unknown'])
   assert.equal(result.fields.totalContextTokens.state, 'unknown')
   const qualified = { ...prior, displayValue: '文本、视频（需指定采样参数）' }
   assert.equal(mergeCardFacts(audit, { inputModalities: qualified }).fields.inputModalities.displayValue, qualified.displayValue)

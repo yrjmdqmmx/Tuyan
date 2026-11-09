@@ -9,10 +9,11 @@ test('R21 compiled Mini facts match every channel declaration without unioning b
   assertTokenDanceFacts(id => auditedModelSpecs('tokendance', id))
 })
 test('R21 Mini visible sources are model pages, never portal JSON', async () => {
+  const {expectedTokenDanceSources}=await import('../../../test-support/card-review-r22.mjs')
   const { tokenDanceBefore } = await import('../../../test-support/tokendance-modality-assertions.mjs')
   const { isApiSource } = await import('../../web/src/lib/modelCardSources.js')
   assert.equal(isApiSource('https://tokendance.space/portal/api/models/qwen3.6-plus'), true)
-  for (const { id } of tokenDanceBefore.rows) assert.equal(auditedModelSpecs('tokendance', id).sourceUrl, 'https://tokendance.space/models/' + id)
+  for (const { id } of tokenDanceBefore.rows) assert.equal(auditedModelSpecs('tokendance', id).sourceUrl, expectedTokenDanceSources(id)[0])
 })
 test('R21 compiled Mini picker renders Qwen exclusions and all three promoted cards', () => {
   const picker = loadComponent('components/model-picker/model-picker.js').instance
@@ -25,6 +26,6 @@ test('R21 compiled Mini picker renders Qwen exclusions and all three promoted ca
     const row = picker.data.visibleCompatibleModels.find(m => m.id === id).specRows[0]
     assert.equal(row.unknownText, '')
     for (const label of supported) assert.ok(row.value.includes(label), id + '/' + label)
-    if (id === 'qwen3.6-plus') assert.equal(row.unsupportedText, '图像、音频、视频')
+    if (id === 'qwen3.6-plus') assert.equal(row.unsupportedText, '图像、视频、音频')
   }
 })

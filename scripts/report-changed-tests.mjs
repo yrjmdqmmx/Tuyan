@@ -40,9 +40,9 @@ const counts = { files: files.length, assertionAndFixtureInputChanges: changes.l
 assert.deepEqual(review.counts, counts, 'Review counts are stale')
 const cell = value => (typeof value === 'string' ? value : JSON.stringify(value)).replaceAll('|', '&#124;').replaceAll('\n', '<br>').replaceAll('`', '&#96;')
 const table = entries => ['| File:line | Old expectation → new expectation | Reason and evidence | Verdict |', '| --- | --- | --- | --- |',
-  ...entries.flatMap(file => file.changes.map(row => `| [${file.file}:${row.line}](../${file.file}#L${row.line})${row.oldLine ? ` (main:${row.oldLine})` : ''} | ${cell(row.old)} → ${cell(row.new)} | ${cell(row.reason)} ${row.evidence.map(e => `[${e}](../${e})`).join('; ')} | ${row.verdict}${row.resolution ? ' / ' + row.resolution : ''} |`))].join('\n')
+  ...entries.flatMap(file => file.changes.map(row => `| [${file.file}:${row.line}](../${file.file}#L${row.line})${row.oldLine ? ` (${row.comparisonBase || 'main'}:${row.oldLine})` : ''} | ${cell(row.old)} → ${cell(row.new)} | ${row.phase ? cell(row.phase) + '. ' : ''}${row.supersededBy ? 'Historical transition, superseded by ' + cell(row.supersededBy) + '. ' : ''}${cell(row.reason)} ${row.evidence.map(e => `[${e}](../${e})`).join('; ')} | ${row.verdict}${row.resolution ? ' / ' + row.resolution : ''} |`))].join('\n')
 const markdown = [
-  '# Changed test expectations — R22 Phase A', '',
+  '# Changed test expectations — R22 Phases A and B', '',
   `Baseline: \`${base}\`. This inventory covers every changed pre-existing test file from \`git diff ${base} -- '*test*' '*tests*'\`, plus changed JSON fixtures directly consumed by those tests. New test files are not pre-existing expectations.`, '',
   `Counts: **${counts.files} test files**, **${counts.assertionAndFixtureInputChanges} assertion or test-input changes**, **${counts.consumedJsonFixtures} consumed JSON fixture**, **${counts.semanticFixtureChanges} semantic fixture changes**; **${counts.justified} JUSTIFIED**, **${counts.unjustifiedRestored} UNJUSTIFIED / RESTORED**, **${counts.flagged} FLAGGED**.`, '',
   ...review.notes.flatMap(note => [note, '']),

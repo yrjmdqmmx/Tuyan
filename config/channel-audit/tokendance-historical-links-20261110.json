@@ -1,0 +1,81 @@
+{
+  "base": "8c456709",
+  "method": "Actual main modelCardSpecifications via read-only git show; ID-only resolver",
+  "rows": {
+    "deepseek-v4-flash-vision-exp": {
+      "sources": [
+        "https://api-docs.deepseek.com/news/news260821/",
+        "https://api-docs.deepseek.com/quick_start/pricing/"
+      ],
+      "vendorSources": [
+        "https://api-docs.deepseek.com/news/news260821/",
+        "https://api-docs.deepseek.com/quick_start/pricing/"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "deepseek-v4-flash": {
+      "sources": [
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "https://api-docs.deepseek.com/news/news260424/",
+        "https://api-docs.deepseek.com/quick_start/pricing/"
+      ],
+      "vendorSources": [
+        "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+        "https://api-docs.deepseek.com/quick_start/pricing/"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "deepseek-v3.2": {
+      "sources": [
+        "https://huggingface.co/deepseek-ai/DeepSeek-V3.2"
+      ],
+      "vendorSources": [
+        "https://huggingface.co/deepseek-ai/DeepSeek-V3.2"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "deepseek-chat-v3-0324": {
+      "sources": [
+        "https://api-docs.deepseek.com/news/news250325"
+      ],
+      "vendorSources": [
+        "https://api-docs.deepseek.com/news/news250325"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "qwen3.6-max-preview": {
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-max"
+      ],
+      "vendorSources": [
+        "https://help.aliyun.com/zh/model-studio/qwen3-6-max"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "qwen3-30b-a3b-instruct-2507": {
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"
+      ],
+      "vendorSources": [
+        "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    },
+    "qwen3-max": {
+      "sources": [
+        "https://help.aliyun.com/zh/model-studio/models"
+      ],
+      "vendorSources": [
+        "https://help.aliyun.com/zh/model-studio/models"
+      ],
+      "channelSources": [],
+      "lifecycleSources": []
+    }
+  }
+}

@@ -1,7 +1,9 @@
+import { productBundle } from '../test-support/execution-capability.mjs'
 // Offline review only: exact catalog identities and captured official table evidence.
 // Run after generators. --check verifies the committed report without writes.
 import fs from 'node:fs'
-import { modalityIconStates as icons } from '../apps/web/src/lib/modelModalityIcons.js'
+import { modalityIconStates as currentIcons } from '../apps/web/src/lib/modelModalityIcons.js'
+const icons = process.argv.includes('--frozen-head') ? (await productBundle("export { modalityIconStates } from './apps/web/src/lib/modelModalityIcons.js'", '8c456709')).modalityIconStates : currentIcons
 import { fileURLToPath } from 'node:url'
 import { loadCard, readRegistry, readPackedRegistry } from './lib/model-card-audit.mjs'
 const root = fileURLToPath(new URL('../', import.meta.url))

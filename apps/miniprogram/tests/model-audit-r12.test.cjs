@@ -1,3 +1,4 @@
+const {sourceTitle}=require('../miniprogram/utils/card-presentation.js')
 const test = require('node:test')
 const assert = require('node:assert/strict')
 const fs = require('node:fs')
@@ -18,8 +19,9 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
   const rendered = JSON.parse(fs.readFileSync(path.join(root, 'apps/web/tests/fixtures/r12-tokendance-rendered.json')))
+  const {expectedTokenDanceSources}=await import('../../../test-support/card-review-r22.mjs')
   const cases = [...rendered.rows.map(row => {
-    return ['tokendance', row.modelId, row.url, '官方文档']
+    return ['tokendance', row.modelId, expectedTokenDanceSources(row.modelId)[0], row.rendersModel ? '官方文档' : '原厂规格']
   }),
     ...[['qwen3.8-max', 'qwen3-8-max'], ['qwen3.7-max-2026-06-08', 'qwen3-7-max'], ['qwen3.8-flash', 'vision-model']].map(([id, page]) => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/' + page, '官方文档']),
     ...['qwen3.5-plus', 'qwen3.5-plus-2026-02-15', 'qwen3.5-plus-2026-04-20'].map(id => ['bailian', id, 'https://help.aliyun.com/zh/model-studio/model-depreciation', '下线公告'])]
@@ -31,7 +33,7 @@ test('R12 compiled Mini URLs and labels match full Web objects for 74 captured p
     assert.equal(modelSourceName(card, url), label); assert.equal(small.sourceLabel, label)
     const staticModel = STATIC_MODEL_REGISTRY[channel].models.find(m => m.id === id)
     const presented = context.present(staticModel, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ url, label: label + ' · ' + sourceTitle(url) }])
   }
 })
 
@@ -80,7 +82,7 @@ test('R13 compiled picker shows all seven vendor replacements and no catalog car
     assert.equal(small.sourceUrl, finalUrl); assert.equal(small.sourceLabel, label)
     assert.equal(require('../miniprogram/utils/model-audit.js').removedModel(channel, modelId), null)
     const presented = context.present(entry, '', '', channel)
-    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + new URL(finalUrl).hostname }])
+    assert.deepEqual(structuredClone(presented.specSources), [{ url: finalUrl, label: label + ' · ' + sourceTitle(finalUrl) }])
   }
   let cards = 0
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
@@ -116,20 +118,20 @@ test('R13B compiled picker resolves full-model source priorities and retains not
   const context = { Component() {}, exports: {}, require: createRequire(filename) }
   vm.runInNewContext(fs.readFileSync(filename, 'utf8') + '\nthis.present = presentModel', context, { filename })
   for (const row of [...cases.map(row => ({ ...row, url: row.fullFirstUrl, label: row.url === row.fullFirstUrl ? '下线公告' : '官方文档' })), {
-    channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://tokendance.space/models/deepseek-chat-v3-0324', label: '官方文档',
+    channel: 'tokendance', modelId: 'deepseek-chat-v3-0324', url: 'https://api-docs.deepseek.com/news/news250325', label: '原厂规格',
   }]) {
     const { channel, modelId, url, label } = row
     const entry = STATIC_MODEL_REGISTRY[channel].models.find(model => model.id === modelId)
     const small = auditedModelSpecs(channel, modelId)
     assert.equal(small.sourceUrl, url); assert.equal(small.sourceLabel, label)
-    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + new URL(url).hostname }])
+    assert.deepEqual(structuredClone(context.present(entry, '', '', channel).specSources), [{ url, label: label + ' · ' + sourceTitle(url) }])
   }
   let notices = 0
   for (const [channel, provider] of Object.entries(STATIC_MODEL_REGISTRY)) for (const model of provider.models) {
     for (const { url, label } of context.present(model, '', '', channel).specSources) {
       if (/deprecat|depreciat|retire|sunset|下线|aliyun\.com\/notice\/\d+|docs\.x\.ai\/developers\/migration\//i.test(url)) {
         notices++
-        assert.equal(label, '下线公告 · ' + new URL(url).hostname, channel + '/' + model.id)
+        assert.equal(label, '下线公告 · ' + sourceTitle(url), channel + '/' + model.id)
       }
     }
   }

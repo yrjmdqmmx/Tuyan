@@ -106,7 +106,7 @@ export function packModelCatalog(value) {
   }
   // Numeric references are common enough to warrant a one-character tag.
   // Escape literal strings with that prefix; the decoder still accepts tag 4.
-  const compact = packed.map(node => typeof node === 'string' && node.startsWith('~') ? [6, node]
-    : Array.isArray(node) && node[0] === 4 ? '~' + node[1] : node)
+  const compact = packed.map(node => typeof node === 'string' && /^[~^]/.test(node) ? [6, node]
+    : Array.isArray(node) && node[0] === 4 ? '~' + node[1] : Array.isArray(node) && node[0] === 5 ? '^' + node[1] : node)
   return { sourceDigest: createHash('sha256').update(JSON.stringify(value)).digest('hex'), root: remap.get(root), nodes: compact }
 }

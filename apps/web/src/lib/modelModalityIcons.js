@@ -1,8 +1,8 @@
 const modalities = [
   { id: 'text', label: '文本' },
   { id: 'image', label: '图像' },
-  { id: 'audio', label: '音频' },
   { id: 'video', label: '视频' },
+  { id: 'audio', label: '音频' },
 ]
 
 // Preserve uncertainty and qualifications instead of deriving capabilities from roles.

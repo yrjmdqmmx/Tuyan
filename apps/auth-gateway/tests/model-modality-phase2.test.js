@@ -1,3 +1,4 @@
+import { assertReviewedLinks } from '../../../test-support/card-review-r22.mjs'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createServer } from 'node:http'
@@ -15,4 +16,5 @@ test('phase 2 Gateway relays all 1061 complete model objects and their display p
   const models = new Map(Object.entries(response.body.providers).flatMap(([channel,provider])=>provider.models.map(model=>[channel+'/'+model.id,model])))
   assert.equal(models.size,1061)
   assertPhase2Facts(key=>models.get(key).cardSpecifications)
+  assertReviewedLinks(id=>models.get('tokendance/'+id).cardSpecifications)
 })
