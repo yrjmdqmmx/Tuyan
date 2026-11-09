@@ -190,6 +190,24 @@
       "comparisonBase": "1dcd8b13",
       "contentSha256": "0bda6c1f02ff31e6eeb4c3991d723f67df4c30009bea2cbc94da2b521037759e",
       "diffSha256": "7551a3e8ca16e245cf4efbe5492cda9637d1109f51d216f4137a5c4686b17d82"
+    },
+    {
+      "file": "apps/web/tests/model-card-source-titles-r23.test.mjs",
+      "comparisonBase": "fd29cf36",
+      "contentSha256": "a8b62af35dd33e65afab266b8b929b4c7a578b93f212458c0cff5d54a383e8e7",
+      "diffSha256": "65d043d78ebfed75d2b167f0df019bd0ca37a327998a0e3482d5fd170ec01a23"
+    },
+    {
+      "file": "apps/miniprogram/tests/model-card-source-titles-r23.test.cjs",
+      "comparisonBase": "fd29cf36",
+      "contentSha256": "b35280b902a2bd35c89266ccc9d810ca6afd7049eecff234e560038b44c7b824",
+      "diffSha256": "b07946431100a4dd578659ab8d30da43d56c5335b1b8dc1e42e5e7b962b69b8a"
+    },
+    {
+      "file": "test-support/source-titles-r23.mjs",
+      "comparisonBase": "fd29cf36",
+      "contentSha256": "3149cf63c1ce7a18f771dd1c8b37a1c1df479b53369524c4f9b8145b46f508b6",
+      "diffSha256": "f01620e36b2251c000db8a7f4ded6c2e5447ff20659caf23afd43296438816dd"
     }
   ]
 }

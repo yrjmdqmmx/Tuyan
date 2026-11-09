@@ -7,7 +7,7 @@ import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js'
 import { modelCardSpecifications } from '../src/lib/modelCardSpecifications.js'
 import { modelSourceRows } from '../src/lib/modelCardSources.js'
 import { sourceTitle, sourceIdentity } from '../../../packages/api/src/card-presentation.mjs'
-import { historicalIds, titleExamples, titleIssues, titleBaseline, scanTitles } from '../../../test-support/source-titles-r23.mjs'
+import { historicalIds, titleExamples, f3TitleExamples, titleIssues, titleBaseline, scanTitles } from '../../../test-support/source-titles-r23.mjs'
 afterEach(cleanup)
 
 test('R23F source titles preserve real model names, API subjects and version/date separators', () => {
@@ -20,6 +20,21 @@ test('R23F source titles preserve real model names, API subjects and version/dat
     const name = label.includes('diffusion') ? 'Stable Diffusion 3.5' : label.includes('qwen') ? 'Qwen3.8 Max' : 'GPT-6.1 Sol'
     assert.ok(titleIssues({url:'https://docs.example.test/models/gpt-6.1-sol',label}, name).length, label)
   }
+})
+
+test('R23F3 known model punctuation survives general/quickstart slugs and genuine hyphens remain', () => {
+  for (const [url, model, expected] of f3TitleExamples) assert.equal(sourceTitle(url, model), expected, url)
+  for (const token of ['Qwen3-8', 'K2-7', 'V4-1']) {
+    assert.ok(titleIssues({url:'https://docs.example.test/general',label:'官方文档 · Example · ' + token}, 'Unrelated Card')
+      .some(issue => issue.startsWith('hyphenated dotted version:')), token)
+  }
+  assert.ok(titleIssues({url:'https://docs.example.test/general',label:'官方文档 · Example · Custom V7-2'}, 'Custom', 'custom-v7.2')
+    .includes('hyphenated dotted version: V7-2'))
+  for (const name of ['Qwen3-8B', 'Qwen3.8-27B', 'DeepSeek-R1-0528']) {
+    assert.deepEqual(titleIssues({url:'https://docs.example.test/' + name,label:'官方文档 · Example · ' + name}, name), [])
+  }
+  const card = modelCardSpecifications('stability', STATIC_MODEL_REGISTRY.stability.models.find(model => model.id === 'sd3.5-flash'))
+  assert.equal(modelSourceRows(card).find(row => row.url.endsWith('/stable-diffusion-35')).label, '官方文档 · Stability · Stable Diffusion 3.5')
 })
 
 test('R23F all 1064 rendered Web cards and evidence/notice dialogs pass the title scan without changing URLs or names', t => {

@@ -13,6 +13,15 @@ test('R23F compiled Mini preserves the four title examples and version/date sepa
  for(const version of ['3-5','3_5','3.8','4.1','v2.6','2507','0813'])assert.ok(sourceTitle('https://docs.example.test/models/model-'+version).toLowerCase().includes(version.replace('_','-')))
 })
 
+test('R23F3 compiled Mini restores known dotted versions and preserves curated/true hyphens',async()=>{
+ const {f3TitleExamples,titleIssues}=await import('../../../test-support/source-titles-r23.mjs')
+ for(const [url,model,expected]of f3TitleExamples)assert.equal(sourceTitle(url,model),expected,url)
+ for(const token of ['Qwen3-8','K2-7','V4-1'])assert.ok(titleIssues({url:'https://docs.example.test/general',label:'官方文档 · Example · '+token},'Unrelated Card').some(issue=>issue.startsWith('hyphenated dotted version:')),token)
+ for(const model of STATIC_MODEL_REGISTRY.stability.models.filter(model=>model.id.startsWith('sd3.5'))){
+  assert.equal(sourceTitle('https://docs.stability.ai/api-reference/generate/stable-diffusion-35',model),'Stability · Stable Diffusion 3.5')
+ }
+})
+
 test('R23F all 1064 compiled Mini cards and copy dialogs pass the title scan; generated titles match the shared helper',async t=>{
  const {scanTitles,titleBaseline}=await import('../../../test-support/source-titles-r23.mjs')
  const shared=await import('../../../packages/api/src/card-presentation.mjs')

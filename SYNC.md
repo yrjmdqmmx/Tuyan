@@ -1,3 +1,12 @@
+## 2026-11-09 · R23 Phase F3: catalog-backed source version punctuation (not deployed)
+
+- [x] Shared / Web / Mini: separator-normalized model IDs/names restore dotted source-title versions on own, family and general/quickstart pages. Curated casing, real hyphens and BFL brackets are preserved; Mini reuses its existing catalog. Display-only metadata, with no action/env/routing/execution contract changes.
+- [x] Web / Mini: all **1,064 cards per client**, **2,494 Web / 1,103 Mini source rows** and seven Web lifecycle dialogs scan with **0 findings**. Complete changes vs `1dcd8b13`: **2,198 Web + 973 Mini + 3 lifecycle titles**. F3 adds 59 Web / 48 Mini corrections vs Phase F. Stability `35` is explicitly confirmed as **3.5**. [Complete inventory and F3 cases](docs/model-card-source-titles-r23.md#r23-f3-corrections).
+- [x] Review: 19 extra shared/compiled-client title cases; three follow-up ledger entries against `fd29cf36`; ledger/checks green, 0 flagged. All names, ordered URLs, roles, historical hints and four execution locks are preserved.
+- [x] Mini: **1,569,424 / 1,572,864 bytes**, **3,440 bytes remaining**; the unchanged older 1,569,427-byte guard also passes. Generated CommonJS/declaration compaction preserves exports/types; no features or evidence removed.
+- [x] Validation: Web **1,483/1,483**, Mini **172/172**, scripts **58/58**, API **33/33**, targeted Core **4/4** and Gateway **2/2**; both builds and all **11 requested maintenance checks** pass. [Audit](docs/model-modality-audit-20261109.md#r23-phase-f3), [validation record](docs/model-modality-r23f3-validation.json).
+- [ ] Existing boundary: browser screenshots/native WeChat rendering remain unverified; Mini deployment remains paused. No Git writes, network, secrets, paid calls, deployment, image builds or other-worktree changes. `sync-agent-knowledge` and `sync-workflow` are untouched.
+
 ## 2026-11-09 · R23 Phase F: readable source titles and historical hints (not deployed)
 
 - [x] Shared / Web / Mini: source-link subjects prefer the unchanged curated card name, then captured page titles, then readable paths with numeric separators preserved. Roles, ordered URLs and deduplication are retained. All 1,064 names and execution capabilities remain identical to main; no action/env/provider-routing contract changes.

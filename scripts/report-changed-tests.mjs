@@ -59,7 +59,7 @@ for (const file of [...review.files, ...review.fixtures]) {
 }
 // Follow-up review also covers expectations introduced on this feature branch.
 for (const file of review.followupChanges || []) {
-  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13'].includes(file.comparisonBase))
+  assert.ok(['2550c736', '42ee9ffd', '1dcd8b13', 'fd29cf36'].includes(file.comparisonBase))
   verifyFile(file, inventory.followupChanges)
   assert.ok(file.changes.length)
   for (const row of file.changes) {
@@ -80,7 +80,7 @@ const cell = value => (typeof value === 'string' ? value : JSON.stringify(value)
 const table = entries => ['| File:line | Old expectation → new expectation | Reason and evidence | Verdict |', '| --- | --- | --- | --- |',
   ...entries.flatMap(file => file.changes.map(row => `| [${file.file}:${row.line}](../${file.file}#L${row.line})${row.oldLine ? ` (${row.comparisonBase || 'main'}:${row.oldLine})` : ''} | ${cell(row.old)} → ${cell(row.new)} | ${row.phase ? cell(row.phase) + '. ' : ''}${row.supersededBy ? 'Historical transition, superseded by ' + cell(row.supersededBy) + '. ' : ''}${cell(row.reason)} ${row.evidence.map(e => `[${e}](../${e})`).join('; ')} | ${row.verdict}${row.resolution ? ' / ' + row.resolution : ''} |`))].join('\n')
 const markdown = [
-  '# Changed test expectations — R22 and R23 Phases E/F', '',
+  '# Changed test expectations — R22 and R23 Phases E/F/F3', '',
   `Baseline: \`${base}\`. This inventory covers every changed pre-existing test file from \`git diff ${base} -- '*test*' '*tests*'\`, plus changed JSON fixtures directly consumed by those tests. New test files are not pre-existing expectations.`, '',
   `Counts: **${counts.files} test files**, **${counts.assertionAndFixtureInputChanges} assertion or test-input changes**, **${counts.consumedJsonFixtures} consumed JSON fixtures**, **${counts.semanticFixtureChanges} semantic fixture changes**; **${counts.justified} JUSTIFIED**, **${counts.unjustifiedRestored} UNJUSTIFIED / RESTORED**, **${counts.flagged} FLAGGED**.`, '',
   ...review.notes.flatMap(note => [note, '']),

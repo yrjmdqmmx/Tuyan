@@ -1015,3 +1015,44 @@ Validation (machine-readable commands and counts: [Phase F validation](model-mod
 | Git whitespace/error check | Pass |
 
 The final scan also reruns after strengthening the host/duplicate-phrase negative controls. Earlier initial-run failures were the obsolete source-label/historical-hint expectations, the saved-ID title-resolution mismatch fixed above, and a new DOM test comparing encoded `href` properties to literal Unicode URLs (corrected to the actual `href` attribute). All changed expectations are recorded in the ledger. Browser screenshots and native WeChat rendering remain unverified from the earlier environment boundary; this phase validates DOM and compiled Mini interactions, with no new browser/native or production claim. Mini deployment remains paused.
+
+
+## R23 Phase F3
+
+Item 4 follow-up from committed Phase F `fd29cf36`; the complete title inventory still compares against pre-F `1dcd8b13`, with frozen main `8c456709` retained for names and execution. Work stayed offline in this checkout. No Git write commands, network requests, secrets, paid calls, deployment, image builds or other-worktree changes; `sync-agent-knowledge` and `sync-workflow` remain untouched.
+
+The shared title generator now indexes catalog IDs and display-name prefixes after separator normalization. Exact card matches retain their curated display name; shared family pages and general/quickstart pages recover known punctuation across providers, while keeping surrounding page words. Known dotted spellings outrank slug spellings. Parameter and release hyphens remain valid, including `Qwen3.8-27B`, `Qwen3-8B` and `DeepSeek-R1-0528`. Short IDs cannot rename an unrelated family, and BFL bracketed subjects retain complete brackets and `FLUX.1.1` punctuation without copying Markdown escapes from other catalog labels. Package-local generated name data keeps the Core Docker layout independent of Web; Mini reads its already-shipped registry instead of adding another catalog copy.
+
+The requested cases now read **Qwen3.6 Max, Qwen3.8 Max, Qwen3.7 Plus, Qwen3.6 Plus, Qwen3.5 Omni Flash / Plus, Kimi K2.6 Quickstart, Kimi K2.7 Code Quickstart, Kimi K3.1 Pro Quickstart, Recraft V4.1 and DeepSeek V4.1 Flash**. **Stable Diffusion 3.5** is explicitly verified on the actual Web `stability/sd3.5-flash` source row and against all four `sd3.5-*` models in the Mini helper. Mini still exposes their original generic API-reference link, whose subject remains `API 文档`. The committed BFL picker name is `FLUX-2-klein-4b`; its own-page title stays exact. A shared/Mini regression also supplies `FLUX.2 [klein] 4B` and requires that exact curated spelling. Two Web source rows and one Mini row for Replicate's unchanged picker label `qwen3-7-plus` now use the known dotted title `Qwen3.7 Plus`.
+
+The independent scan reads all catalog IDs/names plus the current card ID/name and rejects letter/version tokens such as `Qwen3-8`, `K2-7` and `V4-1` when the dotted counterpart is known. Exact curated names no longer exempt this defect. Negative controls use unrelated cards, and a separate custom-ID control proves that the current ID participates. Genuine known hyphens and parameter tokens such as `31B` are distinguished from lost/split versions. Both clients run **19 additional title cases**, retain every Phase F assertion, and still exercise the rendered Web evidence/notice dialogs and compiled Mini copy callbacks.
+
+| Surface | Cards | Source rows | Changed titles vs 1dcd8b13 | Changed cards | Findings |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Web | 1,064 | 2,494 | 2,198 | 1,031 | 0 |
+| Mini | 1,064 | 1,103 | 973 | 966 | 0 |
+| Web lifecycle dialogs | 7 | 7 | 3 | 3 | 0 |
+
+The [regenerated complete before/after list](model-card-source-titles-r23.md#r23-f3-corrections) includes **3,174 changed title instances** against `1dcd8b13` and a short F3 corrections section. Compared with committed Phase F, this follow-up changes **59 Web and 48 Mini title instances**. All 1,064 card identities and picker names per client, ordered URLs, role prefixes, deduplication, historical hints and execution locks remain unchanged. The current R22B source-label inventory is regenerated as well.
+
+Mini source is **1,569,424 / 1,572,864 bytes**, leaving **3,440 bytes**; runtime is **1,144,004 bytes**, media **189,978 bytes**. This is a **478-byte increase** from Phase F. The unchanged older **1,569,427-byte** test also passes, with three bytes remaining. The generated helper uses explicit CommonJS exports and compact declaration whitespace/parameter identifiers; the public types/exports, readable shared implementation and both byte limits are preserved. No feature or evidence was removed to meet the limits.
+
+The [changed-test ledger](model-modality-changed-tests.md) records three F3 follow-up entries against `fd29cf36` for the Web test, Mini test and independent heuristic. Existing expectations are retained; the heuristic's known-name and parameter-token exceptions are explicitly reviewed. Content hashes, frozen inventory, history-independent execution fixtures and `core.abbrev` 7/12 checks remain intact, with **0 flagged** expectations.
+
+Validation results are recorded in [the F3 validation JSON](model-modality-r23f3-validation.json). Browser screenshots and native WeChat rendering remain outside this offline DOM/compiled-client validation; Mini deployment remains paused.
+
+| Final validation | Result |
+| --- | --- |
+| Web full suite with the requested NODE_OPTIONS/imports/concurrency | **1,483/1,483** |
+| Mini `npm test` | **172/172** |
+| `node --test scripts/*.test.mjs` | **58/58** |
+| `node --test packages/api/src/*.test.js` | **33/33** |
+| Targeted Core execution/projection/phase-2 tests | **4/4** |
+| Targeted Gateway execution/phase-2 tests | **2/2** |
+| Web / Mini `npm run build` | Both pass |
+| Mini package and older R15 size guards | Both pass unchanged |
+| All ten TASK_F maintenance scripts plus `report-source-titles-r23 --check` | **11/11 pass** |
+| Changed-test ledger, including `core.abbrev` 7/12 | Pass |
+| Git whitespace/error check | Pass |
+
+The initial full suites passed before final manual review found BFL bracket-prefix artifacts. Those were fixed and covered, then both builds and every requested suite/check were rerun on the final implementation. Earlier targeted failures for the unknown `v2.6` suffix and the older Mini byte ceiling were resolved in code/generated compaction; no existing expectation or limit was loosened.

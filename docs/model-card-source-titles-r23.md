@@ -1,17 +1,40 @@
-# R23 Phase F — source title scan
+# R23 Phase F / F3 — source title scan
 
 Baseline: `1dcd8b13` (pre-F), frozen in `test-support/fixtures/source-titles-1dcd8b13.json.gz`. The fixture contains every Web/Mini card name, URL and label; tests require all 1,064 identities, names and ordered URL lists per client to remain identical. No network or Git writes.
 
 | Client | Cards | Source rows | Changed titles | Changed cards | Unresolved heuristic findings |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| web | 1064 | 2494 | 2193 | 1031 | 0 |
-| mini | 1064 | 1103 | 969 | 962 | 0 |
+| web | 1064 | 2494 | 2198 | 1031 | 0 |
+| mini | 1064 | 1103 | 973 | 966 | 0 |
 
 Also scanned **7 Web lifecycle dialogs**; **3** changed titles are listed separately below. Web tests open every rendered evidence dialog, check the card link/tooltip, and compare every anchor. Mini tests invoke every copy dialog and clipboard callback. Shared-helper parity is checked on all Mini rows.
 
-Heuristics cover collapsed/split numeric versions, raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. Deliberate exact curated names and release codes are retained and enumerated below; negative examples prove the scanner rejects each defect class. Zero duplicate URLs/labels; role prefixes and source ordering are unchanged.
+Heuristics cover collapsed/split numeric versions, hyphens replacing known dotted versions (letter/version tokens such as Qwen3-8, K2-7 and V4-1), raw hosts/paths, API-prefix subjects, case/punctuation differing from the curated name, leftover slug separators, trailing ellipses and repeated words. The dotted-version oracle independently reads every catalog ID/name, plus the current card ID/name. Genuine parameter/release hyphens such as Qwen3-8B, Qwen3.8-27B and DeepSeek-R1-0528 remain valid. Zero duplicate URLs/labels; role prefixes and source ordering are unchanged.
 
-Title priority: exact card/picker name for its own model page; captured human page title for a general page; readable path subject with numeric separators preserved. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Captured-title data is compiled against referenced card inputs; Mini additionally uses its complete source projection, including vendor and field links. Original captures remain unchanged.
+Title priority: curated card/picker name for its own model page, correcting a known dotted version even if its picker label encodes a slug; captured human page title for a general page; longest separator-normalized catalog name/ID match, including family prefixes and quickstart suffixes; readable path fallback. API documentation uses its model subject plus API 文档. Colliding labels get human format/language qualifiers, never a URL suffix. Mini reuses its existing catalog; package-local shared name data is generated from the same registry. Original captures remain unchanged.
+
+## R23 F3 corrections
+
+Shared/general pages now recover version dots from known model identities across providers, even when the current card is a dated or different model. Surrounding page words remain readable. These regression cases run against both shared Web and compiled Mini helpers:
+
+| Page slug | Corrected subject |
+| --- | --- |
+| qwen3-6-max | Qwen3.6 Max |
+| qwen3-8-max | Qwen3.8 Max |
+| qwen3-7-plus | Qwen3.7 Plus |
+| qwen3-6-plus | Qwen3.6 Plus |
+| qwen3-5-omni-flash | Qwen3.5 Omni Flash |
+| qwen3-5-omni-plus | Qwen3.5 Omni Plus |
+| kimi-k2-6-quickstart | Kimi K2.6 Quickstart |
+| kimi-k2-7-code-quickstart | Kimi K2.7 Code Quickstart |
+| kimi-k3-1-pro-quickstart | Kimi K3.1 Pro Quickstart |
+| recraft-v4-1 | Recraft V4.1 |
+| deepseek-v4-1-flash | DeepSeek V4.1 Flash |
+| deepseek-r1-0528 | DeepSeek-R1-0528 |
+
+**Stability confirmed:** `stable diffusion 35` → `Stable Diffusion 3.5`. The actual Web `stability/sd3.5-flash` row at `https://docs.stability.ai/api-reference/generate/stable-diffusion-35` is listed below; Mini tests also exercise that page with all four `sd3.5-*` cards. Mini currently exposes the existing generic API-reference link for those cards, so its generic title remains `API 文档`.
+
+**BFL casing:** the committed picker name is `FLUX-2-klein-4b`, so that own-page title stays exact. A separate shared/Mini regression supplies the curated name `FLUX.2 [klein] 4B` and requires that exact punctuation/casing. All 1,064 picker names remain unchanged. The two Replicate source rows whose picker name is `qwen3-7-plus` now say `Qwen3.7 Plus`; the picker itself remains unchanged.
 
 Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无此型号** with the existing verification date in Web tooltips/dialogs and Mini icon dialogs: `deepseek-v4-flash-vision-exp`, `deepseek-v4-flash`, `deepseek-v3.2`, `deepseek-chat-v3-0324`, `qwen3.6-max-preview`, `qwen3-30b-a3b-instruct-2507`, `qwen3-max`. Other hints and all modality states remain unchanged.
 
@@ -23,25 +46,26 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | deepseek/deepseek-v4-flash-vision-exp | https://api-docs.deepseek.com/guides/vision/ | 官方文档 · DeepSeek · vision | 官方文档 · DeepSeek · Vision |
 | web | deepseek/deepseek-v4-flash-vision-exp | https://api-docs.deepseek.com/news/news261017/ | 官方文档 · DeepSeek · news261017 | 官方文档 · DeepSeek · News261017 |
 | web | deepseek/deepseek-v4-pro | https://api-docs.deepseek.com/guides/vision/ | 官方文档 · DeepSeek · vision | 官方文档 · DeepSeek · Vision |
+| web | deepseek/deepseek-v4-pro | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 |
 | web | deepseek/deepseek-v4-flash | https://api-docs.deepseek.com/guides/vision/ | 官方文档 · DeepSeek · vision | 官方文档 · DeepSeek · Vision |
 | web | deepseek/deepseek-v4-flash | https://api-docs.deepseek.com/news/news261017/ | 官方文档 · DeepSeek · news261017 | 官方文档 · DeepSeek · News261017 |
 | web | kimi/kimi-k3 | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
 | web | kimi/kimi-k3 | https://platform.kimi.com/docs/guide/kimi-k3-quickstart | 官方文档 · kimi.com · kimi k3 quickstart | 官方文档 · Kimi · Kimi K3 Quickstart |
 | web | kimi/kimi-k3 | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
 | web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
-| web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2-7 Code Quickstart |
+| web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2.7 Code Quickstart |
 | web | kimi/kimi-k2.7-code | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
-| web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2-7 Code Quickstart |
+| web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2.7 Code Quickstart |
 | web | kimi/kimi-k2.7-code-highspeed | https://www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · kimi.com · 模型列表 · www.kimi.com/code/docs/en/kimi-code/models | 官方文档 · Kimi · 模型列表（英文） |
 | web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 · platform.kimi.com/docs/models | 官方文档 · Kimi · 模型列表（文档） |
 | web | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
 | web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
-| web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart | 官方文档 · kimi.com · kimi k2 6 quickstart | 官方文档 · Kimi · Kimi K2-6 Quickstart |
+| web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/guide/kimi-k2-6-quickstart | 官方文档 · kimi.com · kimi k2 6 quickstart | 官方文档 · Kimi · Kimi K2.6 Quickstart |
 | web | kimi/kimi-k2.6 | https://platform.kimi.com/docs/get-api-key | 官方文档 · kimi.com · get api key | 官方文档 · Kimi · Get API Key |
-| web | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3-1 Pro Quickstart |
+| web | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3.1 Pro Quickstart |
 | web | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
 | web | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/pricing/chat | 官方文档 · kimi.com · chat | 官方文档 · Kimi · Chat |
-| web | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3-1 Pro Quickstart |
+| web | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3.1 Pro Quickstart |
 | web | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/models | 官方文档 · kimi.com · 模型列表 | 官方文档 · Kimi · 模型列表 |
 | web | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/pricing/chat | 官方文档 · kimi.com · chat | 官方文档 · Kimi · Chat |
 | web | zhipu/glm-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
@@ -96,7 +120,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | zhipu/cogview-3-flash | https://docs.bigmodel.cn/cn/guide/start/model-overview | 官方文档 · bigmodel.cn · model overview | 官方文档 · 智谱 · 模型概览 |
 | web | zhipu/cogview-4 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · cogview-4 |
 | web | zhipu/cogview-4 | https://docs.bigmodel.cn/cn/guide/start/model-overview | 官方文档 · bigmodel.cn · model overview | 官方文档 · 智谱 · 模型概览 |
-| web | zhipu/cogview-4-250304 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · CogView 4 |
+| web | zhipu/cogview-4-250304 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · cogview-4 |
 | web | zhipu/cogview-4-250304 | https://docs.bigmodel.cn/cn/guide/start/model-overview | 官方文档 · bigmodel.cn · model overview | 官方文档 · 智谱 · 模型概览 |
 | web | zhipu/glm-image | https://docs.bigmodel.cn/cn/guide/models/image-generation/glm-image | 官方文档 · bigmodel.cn · glm image | 官方文档 · 智谱 · GLM Image |
 | web | zhipu/glm-image | https://docs.bigmodel.cn/cn/guide/start/model-overview | 官方文档 · bigmodel.cn · model overview | 官方文档 · 智谱 · 模型概览 |
@@ -147,7 +171,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | siliconflow/Qwen/Qwen2.5-32B-Instruct | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
 | web | siliconflow/Qwen/Qwen2.5-72B-Instruct | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B-Instruct |
 | web | siliconflow/Qwen/Qwen2.5-72B-Instruct | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
-| web | siliconflow/Qwen/Qwen2.5-72B-Instruct-128K | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B Instruct |
+| web | siliconflow/Qwen/Qwen2.5-72B-Instruct-128K | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B-Instruct |
 | web | siliconflow/Qwen/Qwen2.5-72B-Instruct-128K | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
 | web | siliconflow/Qwen/Qwen2.5-7B-Instruct | https://huggingface.co/Qwen/Qwen2.5-7B-Instruct | 官方文档 · Hugging Face · Qwen2.5 7B Instruct | 官方文档 · Hugging Face · Qwen2.5-7B-Instruct |
 | web | siliconflow/Qwen/Qwen2.5-7B-Instruct | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
@@ -284,31 +308,31 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | recraft/recraftv4_1 | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
 | web | recraft/recraftv4_1_flash | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash | 官方文档 · recraft.ai · recraft v4 1 flash | 官方文档 · Recraft · Recraft V4.1 Flash |
 | web | recraft/recraftv4_1_flash | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
-| web | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_pro | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_utility | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| web | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | web | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/tools/image-to-image | 官方文档 · recraft.ai · image to image | 官方文档 · Recraft · Image To Image |
 | web | recraft/recraftv4_1_vector | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
@@ -339,7 +363,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | recraft/recraftv2 | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · recraftv2 |
 | web | recraft/recraftv2 | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv2 | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
-| web | recraft/recraftv2_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · Recraft V2 |
+| web | recraft/recraftv2_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · recraftv2 |
 | web | recraft/recraftv2_vector | https://www.recraft.ai/docs/api-reference/appendix | 官方文档 · recraft.ai · appendix | 官方文档 · Recraft · Appendix |
 | web | recraft/recraftv2_vector | https://www.recraft.ai/docs | 官方文档 · recraft.ai · docs | 官方文档 · Recraft · 文档首页 |
 | web | xai/grok-4.7 | https://docs.x.ai/developers/models/grok-4.7 | 官方文档 · x.ai · grok 4.7 | 官方文档 · xAI · Grok 4.7 |
@@ -445,7 +469,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | gemini/gemini-2.5-pro | https://ai.google.dev/gemini-api/docs/models | 官方文档 · ai.google.dev · 模型列表 | 官方文档 · Google · 模型列表 |
 | web | bailian/deepseek-v4.1-flash | https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash | 官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 百炼 · DeepSeek-V4.1-Flash |
 | web | bailian/deepseek-v4.1-flash | https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash | 官方文档 · Hugging Face · DeepSeek V4.1 Flash | 官方文档 · Hugging Face · DeepSeek-V4.1-Flash |
-| web | bailian/qwen3.8-max-0902 | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3-8 Max |
+| web | bailian/qwen3.8-max-0902 | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3.8 Max |
 | web | bailian/ZHIPU/GLM-5.3-Flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
 | web | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/vision-model | 官方文档 · 百炼 · vision model | 官方文档 · 百炼 · Vision Model |
 | web | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/text-generation-model | 官方文档 · 百炼 · text generation model | 官方文档 · 百炼 · Text Generation Model |
@@ -469,6 +493,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | bailian/deepseek-v4.1-flash-1017 | https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions | 官方文档 · 百炼 · qwen api via openai chat completions | 官方文档 · 百炼 · Qwen API Via OpenAI Chat Completions |
 | web | bailian/deepseek-v4.1-flash-1017 | https://help.aliyun.com/zh/model-studio/context-cache | 官方文档 · 百炼 · context cache | 官方文档 · 百炼 · Context Cache |
 | web | bailian/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro-0813 |
+| web | bailian/vanchin/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 |
 | web | bailian/vanchin/deepseek-v4-pro-0813 | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/qwen-image-3.0 | https://help.aliyun.com/zh/model-studio/qwen-image-3-0 | 官方文档 · 百炼 · qwen image 3 0 | 官方文档 · 百炼 · Qwen Image 3.0 |
 | web | bailian/qwen-image-3.0 | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 官方文档 · 百炼 · qwen image generation and editing api reference | 官方文档 · 百炼 · Qwen Image Generation And Editing API Reference |
@@ -507,39 +532,39 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | bailian/qwen-image-2.1-pro | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 官方文档 · 百炼 · qwen image generation and editing api reference | 官方文档 · 百炼 · Qwen Image Generation And Editing API Reference |
 | web | bailian/qwen-image-2.1-turbo | https://help.aliyun.com/zh/model-studio/qwen-image-2-1-turbo | 官方文档 · 百炼 · qwen image 2 1 turbo | 官方文档 · 百炼 · Qwen Image 2.1 Turbo |
 | web | bailian/qwen-image-2.1-turbo | https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference | 官方文档 · 百炼 · qwen image generation and editing api reference | 官方文档 · 百炼 · Qwen Image Generation And Editing API Reference |
-| web | bailian/qwen-image-2.0-pro-2026-06-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
+| web | bailian/qwen-image-2.0-pro-2026-06-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | web | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
 | web | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
 | web | bailian/qwen-image-2.0 | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
-| web | bailian/qwen-image-2.0-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2-0 |
+| web | bailian/qwen-image-2.0-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
 | web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
 | web | bailian/qwen-image-2.0-pro | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
-| web | bailian/qwen-image-2.0-pro-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
-| web | bailian/qwen-image-2.0-pro-2026-04-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
-| web | bailian/qwen-image | https://help.aliyun.com/zh/model-studio/qwen-image-api | 官方文档 · 百炼 · qwen image api | 官方文档 · 百炼 · Qwen Image API |
+| web | bailian/qwen-image-2.0-pro-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
+| web | bailian/qwen-image-2.0-pro-2026-04-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
+| web | bailian/qwen-image | https://help.aliyun.com/zh/model-studio/qwen-image-api | 官方文档 · 百炼 · qwen image api | 官方文档 · 百炼 · Qwen-image API |
 | web | bailian/qwen-image | https://huggingface.co/Qwen/Qwen-Image | 官方文档 · Hugging Face · Qwen Image | 官方文档 · Hugging Face · Qwen-image |
 | web | bailian/qwen3.7-max | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7-max |
-| web | bailian/qwen3.7-max-2026-05-17 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| web | bailian/qwen3.7-max-2026-05-20 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| web | bailian/qwen3.7-max-2026-06-08 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| web | bailian/qwen3.7-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
+| web | bailian/qwen3.7-max-2026-05-17 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| web | bailian/qwen3.7-max-2026-05-20 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| web | bailian/qwen3.7-max-2026-06-08 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| web | bailian/qwen3.7-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
 | web | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
 | web | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/zh/model-studio/models | 官方文档 · 百炼 · 模型列表（文档） |
 | web | bailian/qwen3.7-plus | https://help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表 · help.aliyun.com/en/model-studio/models | 官方文档 · 百炼 · 模型列表（英文） |
-| web | bailian/qwen3.7-plus-2026-05-26 | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3-7 Plus |
+| web | bailian/qwen3.7-plus-2026-05-26 | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
 | web | bailian/qwen3.6-27b | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6 27B | 官方文档 · Hugging Face · Qwen3.6-27b |
 | web | bailian/qwen3.6-35b-a3b | https://huggingface.co/Qwen/Qwen3.6-35B-A3B | 官方文档 · Hugging Face · Qwen3.6 35B A3B | 官方文档 · Hugging Face · Qwen3.6-35b-a3b |
 | web | bailian/qwen3.6-plus | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3.6-plus |
-| web | bailian/qwen3.6-plus-2026-04-02 | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3-6 Plus |
+| web | bailian/qwen3.6-plus-2026-04-02 | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3.6 Plus |
 | web | bailian/qwen3.5-122b-a10b | https://huggingface.co/Qwen/Qwen3.5-122B-A10B | 官方文档 · Hugging Face · Qwen3.5 122B A10B | 官方文档 · Hugging Face · Qwen3.5-122b-a10b |
 | web | bailian/qwen3.5-27b | https://huggingface.co/Qwen/Qwen3.5-27B | 官方文档 · Hugging Face · Qwen3.5 27B | 官方文档 · Hugging Face · Qwen3.5-27b |
 | web | bailian/qwen3.5-35b-a3b | https://huggingface.co/Qwen/Qwen3.5-35B-A3B | 官方文档 · Hugging Face · Qwen3.5 35B A3B | 官方文档 · Hugging Face · Qwen3.5-35b-a3b |
 | web | bailian/qwen3.5-397b-a17b | https://huggingface.co/Qwen/Qwen3.5-397B-A17B | 官方文档 · Hugging Face · Qwen3.5 397B A17B | 官方文档 · Hugging Face · Qwen3.5-397b-a17b |
 | web | bailian/qwen3.5-omni-flash | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5-omni-flash |
-| web | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3-5 Omni Flash |
+| web | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | web | bailian/qwen3.5-omni-plus | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
-| web | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3-5 Omni Plus |
+| web | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
 | web | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
 | web | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
 | web | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
@@ -548,6 +573,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/step-3.7-flash | 官方文档 · stepfun.com · step 3.7 flash | 官方文档 · StepFun · step-3.7-flash |
 | web | bailian/vanchin/deepseek-v4-pro | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/vanchin/deepseek-v3.2-think | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
+| web | bailian/vanchin/deepseek-v3.1-terminus | https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus | 官方文档 · Hugging Face · DeepSeek V3.1 Terminus | 官方文档 · Hugging Face · DeepSeek-V3.1-Terminus |
 | web | bailian/vanchin/deepseek-v3.1-terminus | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/vanchin/deepseek-v3 | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/wan2.7-image | https://help.aliyun.com/zh/model-studio/wan2-7-image | 官方文档 · 百炼 · wan2 7 image | 官方文档 · 百炼 · Wan 2.7 Image |
@@ -569,7 +595,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | bailian/qwen-plus-2025-07-14 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | web | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · aliyun.com · 118177 | 下线公告 · 百炼 · 文档 118177 |
 | web | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| web | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · Unisound U2 By Unisound |
+| web | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · unisound-u2 By Unisound |
 | web | bailian/vanchin/deepseek-r1 | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
 | web | bailian/wanx-v1 | https://help.aliyun.com/zh/model-studio/wanx-v1 | 官方文档 · 百炼 · wanx v1 | 官方文档 · 百炼 · wanx-v1 |
 | web | bailian/wanx2.0-t2i-turbo | https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo | 官方文档 · 百炼 · wanx2 0 t2i turbo | 官方文档 · 百炼 · wanx2.0-t2i-turbo |
@@ -642,7 +668,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1.md | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1 · 2025-11-13（Markdown） |
 | web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1 · 2025-11-13（文档） |
-| web | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT 5.1 |
+| web | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1 |
 | web | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5.md | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5 · 2025-08-07（Markdown） |
 | web | openai/gpt-5 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
@@ -676,7 +702,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini.md | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini · 2025-04-14（Markdown） |
 | web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini · 2025-04-14（文档） |
-| web | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT 4.1 Mini |
+| web | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini |
 | web | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano.md | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT-4.1-nano · 2025-04-14（Markdown） |
 | web | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
@@ -746,7 +772,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · o1 · 2024-12-17（Markdown） |
 | web | openai/o1 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/o1 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · o1 · 2024-12-17（文档） |
-| web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · O1 |
+| web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · o1 |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · o1-pro · 2025-03-19（Markdown） |
@@ -758,7 +784,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · o3 · 2025-04-16（Markdown） |
 | web | openai/o3 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/o3 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · o3 · 2025-04-16（文档） |
-| web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · O3 |
+| web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · o3 |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models | 官方文档 · developers.openai.com · 模型列表 | 官方文档 · OpenAI · 模型列表 |
 | web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/deprecations | 下线公告 · developers.openai.com · deprecations | 下线公告 · OpenAI · 模型下线公告 |
 | web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · o3-mini · 2025-01-31（Markdown） |
@@ -782,9 +808,9 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | ark/deepseek-v4-1-flash-260910 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
 | web | ark/deepseek-v4-1-flash-260910 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
 | web | ark/deepseek-v4-1-flash-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/deepseek-v4-1-flash-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4-1 Flash |
+| web | ark/deepseek-v4-1-flash-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
 | web | ark/deepseek-v4-1-flash-economy-261017 | https://docs.volcengine.com/docs/ark/model-release-announcement?lang=zh | 官方文档 · volcengine.com · model release announcement | 官方文档 · 火山方舟 · Model Release Announcement |
-| web | ark/deepseek-v4-1-flash-economy-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4-1 Flash |
+| web | ark/deepseek-v4-1-flash-economy-261017 | https://ark.volcengine.com/region:cn-beijing/docs/deepseek-v4-1-flash | 官方文档 · ark.volcengine.com · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 火山方舟 · DeepSeek V4.1 Flash |
 | web | ark/deepseek-v4-flash-260425 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
 | web | ark/deepseek-v4-flash-260425 | https://docs.volcengine.com/docs/82379/1159178?lang=zh | 官方文档 · volcengine.com · 1159178 | 官方文档 · 火山方舟 · 文档 1159178 |
 | web | ark/deepseek-v4-flash-ga-260731 | https://www.volcengine.com/docs/82379/1330310 | 官方文档 · volcengine.com · 1330310 | 官方文档 · 火山方舟 · 文档 1330310 |
@@ -870,17 +896,17 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | bfl/flux-2-pro | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
 | web | bfl/flux-2-pro-preview | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro]-preview | 官方文档 · bfl.ml · generate or edit an image with flux2 [pro] preview | 官方文档 · BFL · FLUX-2-pro-preview |
 | web | bfl/flux-2-pro-preview | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
-| web | bfl/flux-kontext-max | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [max] | 官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Max] |
+| web | bfl/flux-kontext-max | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [max] | 官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [max] |
 | web | bfl/flux-kontext-max | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
-| web | bfl/flux-kontext-pro | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [pro] | 官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Pro] |
+| web | bfl/flux-kontext-pro | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [pro] | 官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [pro] |
 | web | bfl/flux-kontext-pro | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
 | web | bfl/flux-3-image | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3 | 官方文档 · bfl.ml · generate an image with flux 3 | 官方文档 · BFL · Generate An Image With FLUX 3 |
-| web | bfl/flux-3-image-klein | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein | 官方文档 · bfl.ml · generate an image with flux 3 klein | 官方文档 · BFL · Generate An Image With FLUX 3 Klein |
-| web | bfl/flux-dev | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev] | 官方文档 · bfl.ml · generate an image with flux1 [dev] | 官方文档 · BFL · Generate An Image With Flux1 [Dev] |
+| web | bfl/flux-3-image-klein | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein | 官方文档 · bfl.ml · generate an image with flux 3 klein | 官方文档 · BFL · Generate An Image With FLUX.3 Klein |
+| web | bfl/flux-dev | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev] | 官方文档 · bfl.ml · generate an image with flux1 [dev] | 官方文档 · BFL · Generate An Image With FLUX.1 [dev] |
 | web | bfl/flux-dev | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
-| web | bfl/flux-pro-1.1 | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro] | 官方文档 · bfl.ml · generate an image with flux11 [pro] | 官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] |
+| web | bfl/flux-pro-1.1 | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro] | 官方文档 · bfl.ml · generate an image with flux11 [pro] | 官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] |
 | web | bfl/flux-pro-1.1 | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
-| web | bfl/flux-pro-1.1-ultra | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode | 官方文档 · bfl.ml · generate an image with flux11 [pro] ultra mode | 官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] Ultra Mode |
+| web | bfl/flux-pro-1.1-ultra | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode | 官方文档 · bfl.ml · generate an image with flux11 [pro] ultra mode | 官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] Ultra Mode |
 | web | bfl/flux-pro-1.1-ultra | https://docs.bfl.ai/ | 官方文档 · bfl.ai · 文档首页 | 官方文档 · BFL · 文档首页 |
 | web | stability/sd3.5-flash | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | web | stability/sd3.5-flash | https://platform.stability.ai/docs/getting-started/models | 官方文档 · stability.ai · 模型列表 | 官方文档 · Stability · 模型列表 |
@@ -936,7 +962,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档） |
 | web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/generate/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档 2） |
 | web | ideogram/ideogram-4-5 | https://developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 · developer.ideogram.ai/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · Ideogram · Ideogram 4.5（文档 3） |
-| web | ideogram/ideogram-edit | https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4-5 |
+| web | ideogram/ideogram-edit | https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4.5 |
 | web | ideogram/ideogram-edit | https://developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/v1/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（文档） |
 | web | ideogram/ideogram-edit | https://developer.ideogram.ai/ | 官方文档 · developer.ideogram.ai · 文档首页 | 官方文档 · Ideogram · 文档首页 |
 | web | ideogram/ideogram-edit | https://developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · developer.ideogram.ai · edit with prompt · developer.ideogram.ai/api-reference/edit-images/edit-with-prompt | 官方文档 · Ideogram · Edit With Prompt（文档 2） |
@@ -1142,7 +1168,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | together/ideogram/ideogram-3.0 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | web | together/ideogram/ideogram-4.0 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/ideogram/ideogram-4.0 | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
-| web | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://www.together.ai/models/llama-3-3-70b | 官方文档 · together.ai · llama 3 3 70b | 官方文档 · Together · Llama 3-3-70b |
+| web | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://www.together.ai/models/llama-3-3-70b | 官方文档 · together.ai · llama 3 3 70b | 官方文档 · Together · Llama 3.3 70B |
 | web | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | web | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | web | together/meta-models/Muse-Glimmer-30B | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
@@ -1178,8 +1204,8 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 | https://fireworks.ai/models | 官方文档 · fireworks.ai · 模型列表 | 官方文档 · Fireworks · 模型列表 |
 | web | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It（文档） |
 | web | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://app.fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · app.fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It（控制台） |
-| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT Oss 120b（文档） |
-| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://app.fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · app.fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT Oss 120b（控制台） |
+| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B（文档） |
+| web | fireworks/accounts/fireworks/models/gpt-oss-120b | https://app.fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · app.fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B（控制台） |
 | web | fireworks/accounts/fireworks/models/kimi-k3p1-pro | https://fireworks.ai/models/fireworks/kimi-k3p1-pro | 官方文档 · fireworks.ai · kimi k3p1 pro | 官方文档 · Fireworks · Kimi K3.1 Pro |
 | web | fireworks/accounts/fireworks/models/minimax-m3p1-flash | https://fireworks.ai/models/fireworks/minimax-m3p1-flash | 官方文档 · fireworks.ai · minimax m3p1 flash | 官方文档 · Fireworks · MiniMax M3.1 Flash |
 | web | fireworks/accounts/fireworks/models/muse-spark-open | https://fireworks.ai/models/fireworks/muse-spark-open | 官方文档 · fireworks.ai · muse spark open | 官方文档 · Fireworks · Muse Spark Open |
@@ -1195,7 +1221,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | fireworks/accounts/fireworks/models/step-3p7-flash-nvfp4 | https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4 | 官方文档 · app.fireworks.ai · step 3p7 flash nvfp4 | 官方文档 · Fireworks · Step 3.7 Flash · NVFP4（控制台） |
 | web | fal/alibaba/qwen-image-3/text-to-image | https://fal.ai/models/alibaba/qwen-image-3/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Qwen-image-3 API 文档 |
 | web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/text-to-image/api | 官方文档 · fal · Seedream v5 Flash API 文档 |
-| web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal · Seedream V5 Flash Edit API 文档 |
+| web | fal/bytedance/seedream/v5/flash/text-to-image | https://fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal.ai · api · fal.ai/models/bytedance/seedream/v5/flash/edit/api | 官方文档 · fal · Seedream v5 Flash Edit API 文档 |
 | web | fal/bytedance/seedream/v5/pro/text-to-image | https://fal.ai/models/bytedance/seedream/v5/pro/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream · v5 · pro API 文档 |
 | web | fal/fal-ai/bytedance/seedream/v5/lite/edit | https://fal.ai/models/fal-ai/bytedance/seedream/v5/lite/edit/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream · v5 · lite · edit API 文档 |
 | web | fal/fal-ai/bytedance/seedream/v4.5/text-to-image | https://fal.ai/models/fal-ai/bytedance/seedream/v4.5/text-to-image/api | 官方文档 · fal.ai · api | 官方文档 · fal · Seedream · v4.5 API 文档 |
@@ -1212,11 +1238,11 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | fal/fal-ai/flux-pro/v1.1 | https://fal.ai/models/fal-ai/flux-pro/v1.1/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-pro · v1.1 API 文档 |
 | web | fal/fal-ai/flux-pro/v1.1-ultra | https://fal.ai/models/fal-ai/flux-pro/v1.1-ultra/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-pro · v1.1-ultra API 文档 |
 | web | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/base/text-to-image/api | 官方文档 · fal · FLUX.3 Klein Base API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal · FLUX 3 Klein Base Edit Image API 文档 |
+| web | fal/blackforestlabs/flux-3/klein/base/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/base/edit-image/api | 官方文档 · fal · FLUX.3 Klein Base Edit Image API 文档 |
 | web | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/text-to-image/api | 官方文档 · fal · FLUX.3 Klein API 文档 |
-| web | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal · FLUX 3 Klein Edit Image API 文档 |
+| web | fal/blackforestlabs/flux-3/klein/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/klein/edit-image/api | 官方文档 · fal · FLUX.3 Klein Edit Image API 文档 |
 | web | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/text-to-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/text-to-image/api | 官方文档 · fal · FLUX.3 API 文档 |
-| web | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal · FLUX 3 Edit Image API 文档 |
+| web | fal/blackforestlabs/flux-3/text-to-image | https://fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal.ai · api · fal.ai/models/blackforestlabs/flux-3/edit-image/api | 官方文档 · fal · FLUX.3 Edit Image API 文档 |
 | web | fal/fal-ai/flux-1/schnell | https://fal.ai/models/fal-ai/flux-1/schnell/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-1 · schnell API 文档 |
 | web | fal/fal-ai/flux-lora | https://fal.ai/models/fal-ai/flux-lora/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX-lora API 文档 |
 | web | fal/fal-ai/flux/dev | https://fal.ai/models/fal-ai/flux/dev/api | 官方文档 · fal.ai · api | 官方文档 · fal · FLUX · dev API 文档 |
@@ -1377,8 +1403,8 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | replicate/qwen/qwen-image-edit-plus | https://replicate.com/collections/official | 官方文档 · replicate.com · official | 官方文档 · Replicate · Official |
 | web | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507 | 官方文档 · Hugging Face · Qwen3 235B A22B Instruct 2507 | 官方文档 · Hugging Face · qwen3-235b-a22b-instruct-2507 |
 | web | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507 | 官方文档 · replicate.com · qwen3 235b a22b instruct 2507 | 官方文档 · Replicate · qwen3-235b-a22b-instruct-2507 |
-| web | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · qwen3-7-plus |
-| web | replicate/qwen/qwen3-7-plus | https://replicate.com/qwen/qwen3-7-plus | 官方文档 · replicate.com · qwen3 7 plus | 官方文档 · Replicate · qwen3-7-plus |
+| web | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
+| web | replicate/qwen/qwen3-7-plus | https://replicate.com/qwen/qwen3-7-plus | 官方文档 · replicate.com · qwen3 7 plus | 官方文档 · Replicate · Qwen3.7 Plus |
 | web | replicate/recraft-ai/recraft-v4.1 | https://replicate.com/recraft-ai/recraft-v4.1 | 官方文档 · replicate.com · recraft v4.1 | 官方文档 · Replicate · recraft-v4.1 |
 | web | replicate/recraft-ai/recraft-v4.1 | https://replicate.com/collections/official | 官方文档 · replicate.com · official | 官方文档 · Replicate · Official |
 | web | replicate/recraft-ai/recraft-v4-pro | https://replicate.com/recraft-ai/recraft-v4-pro | 官方文档 · replicate.com · recraft v4 pro | 官方文档 · Replicate · recraft-v4-pro |
@@ -1519,7 +1545,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | tokendance/qwen3.8-max-0902 | https://tokendance.space/models/qwen3.8-max-0902 | 官方文档 · TokenDance · qwen3.8 max 0902 | 官方文档 · TokenDance · Qwen3.8-Max-0902 |
 | web | tokendance/qwen3.7-max | https://tokendance.space/models/qwen3.7-max | 官方文档 · TokenDance · qwen3.7 max | 官方文档 · TokenDance · Qwen3.7 Max |
 | web | tokendance/qwen3.7-plus | https://tokendance.space/models/qwen3.7-plus | 官方文档 · TokenDance · qwen3.7 plus | 官方文档 · TokenDance · Qwen3.7 Plus |
-| web | tokendance/qwen3.6-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-6-max | 原厂规格 · 百炼 · qwen3 6 max | 原厂规格 · 百炼 · Qwen3-6 Max |
+| web | tokendance/qwen3.6-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-6-max | 原厂规格 · 百炼 · qwen3 6 max | 原厂规格 · 百炼 · Qwen3.6 Max |
 | web | tokendance/qwen3.6-plus | https://tokendance.space/models/qwen3.6-plus | 官方文档 · TokenDance · qwen3.6 plus | 官方文档 · TokenDance · Qwen3.6 Plus |
 | web | tokendance/qwen3.5-35b-a3b | https://tokendance.space/models/qwen3.5-35b-a3b | 官方文档 · TokenDance · qwen3.5 35b a3b | 官方文档 · TokenDance · Qwen3.5-35B-A3B |
 | web | tokendance/qwen3.5-flash | https://tokendance.space/models/qwen3.5-flash | 官方文档 · TokenDance · qwen3.5 flash | 官方文档 · TokenDance · Qwen3.5 Flash |
@@ -1568,7 +1594,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | runware/google:nano-banana@2.1 | https://runware.ai/docs/models/google-nano-banana-2-1 | 官方文档 · runware.ai · google nano banana 2 1 | 官方文档 · Runware · Runware - Nano Banana 2.1 |
 | web | runware/google:nano-banana@2.1 | https://ai.google.dev/gemini-api/docs/models/gemini-nano-banana-2.1 | 官方文档 · ai.google.dev · gemini nano banana 2.1 | 官方文档 · Google · Gemini Nano Banana 2.1 |
 | web | runware/bfl:flux@3-image | https://runware.ai/docs/models/bfl-flux-3-image | 官方文档 · runware.ai · bfl flux 3 image | 官方文档 · Runware · Runware - FLUX 3 Image |
-| web | runware/ideogram:4.5@0 | https://runware.ai/docs/models/ideogram-4-5 | 官方文档 · runware.ai · ideogram 4 5 | 官方文档 · Runware · Ideogram 4-5 |
+| web | runware/ideogram:4.5@0 | https://runware.ai/docs/models/ideogram-4-5 | 官方文档 · runware.ai · ideogram 4 5 | 官方文档 · Runware · Ideogram 4.5 |
 | web | runware/ideogram:4.5@precise-edit | https://runware.ai/docs/models/ideogram-4-5-precise-edit | 官方文档 · runware.ai · ideogram 4 5 precise edit | 官方文档 · Runware · Runware - Ideogram 4.5 Precise Edit |
 | web | runware/bytedance:seedream@5.0-flash | https://runware.ai/docs/models/bytedance-seedream-5-0-flash | 官方文档 · runware.ai · bytedance seedream 5 0 flash | 官方文档 · Runware · Runware - Seedream 5.0 Flash |
 | web | runware/recraft:v4.1@flash | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash | 官方文档 · recraft.ai · recraft v4 1 flash | 官方文档 · Recraft · Runware - Recraft V4.1 Flash |
@@ -1872,11 +1898,13 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | tokenhub/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 正式版 |
 | web | tokenhub/deepseek-v4-pro-0813 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | web | tokenhub/deepseek-v4-pro-0813 | https://cloud.tencent.com/document/product/1823/132248 | 官方文档 · cloud.tencent.com · 132248 | 官方文档 · 腾讯云 · 文档 132248 |
+| web | tokenhub/deepseek/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 |
 | web | tokenhub/deepseek/deepseek-v4-pro-0813 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | web | tokenhub/deepseek/deepseek-v4-pro-0813 | https://cloud.tencent.com/document/product/1823/132248 | 官方文档 · cloud.tencent.com · 132248 | 官方文档 · 腾讯云 · 文档 132248 |
 | web | tokenhub/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash 0731 正式版 |
 | web | tokenhub/deepseek-v4-flash-0731 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | web | tokenhub/deepseek-v4-flash-0731 | https://cloud.tencent.com/document/product/1823/132248 | 官方文档 · cloud.tencent.com · 132248 | 官方文档 · 腾讯云 · 文档 132248 |
+| web | tokenhub/deepseek/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash 0731 |
 | web | tokenhub/deepseek/deepseek-v4-flash-0731 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | web | tokenhub/deepseek/deepseek-v4-flash-0731 | https://cloud.tencent.com/document/product/1823/132248 | 官方文档 · cloud.tencent.com · 132248 | 官方文档 · 腾讯云 · 文档 132248 |
 | web | tokenhub/deepseek-v4-flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | 官方文档 · Hugging Face · DeepSeek V4 Flash | 官方文档 · Hugging Face · DeepSeek-V4-Flash |
@@ -2212,9 +2240,9 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | web | novita/ming-image-0.1-design | https://docs.novita.ai/api-reference/model-apis-ming-image-txt2img | 官方文档 · novita.ai · model apis ming image txt2img | 官方文档 · Novita · Model Apis Ming Image Txt2img |
 | web | novita/ming-image-0.1-design | https://docs.novita.ai/api-reference/model-apis-llm-list-models | 官方文档 · novita.ai · model apis llm list models | 官方文档 · Novita · Model Apis Llm List Models |
 | web | novita/ming-image-0.1-design | https://novita.ai/models/model-detail/ming-image-0.1-design | 官方文档 · novita.ai · ming image 0.1 design | 官方文档 · Novita · Ming Image 0.1 Design |
-| mini | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2-7 Code Quickstart |
-| mini | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3-1 Pro Quickstart |
-| mini | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3-1 Pro Quickstart |
+| mini | kimi/kimi-k2.7-code-highspeed | https://platform.kimi.com/docs/guide/kimi-k2-7-code-quickstart | 官方文档 · kimi.com · kimi k2 7 code quickstart | 官方文档 · Kimi · Kimi K2.7 Code Quickstart |
+| mini | kimi/kimi-k3.1-pro | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3.1 Pro Quickstart |
+| mini | kimi/kimi-k3.1-pro-highspeed | https://platform.kimi.com/docs/guide/kimi-k3-1-pro-quickstart | 官方文档 · kimi.com · kimi k3 1 pro quickstart | 官方文档 · Kimi · Kimi K3.1 Pro Quickstart |
 | mini | zhipu/glm-5.3 | https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3 | 官方文档 · bigmodel.cn · glm 5.3 | 官方文档 · 智谱 · GLM-5.3 |
 | mini | zhipu/glm-5.3-flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM-5.3-flash |
 | mini | zhipu/glm-5.3-flashx | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
@@ -2241,7 +2269,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | zhipu/glm-4v-flash | https://docs.bigmodel.cn/cn/guide/models/free/glm-4v-flash | 官方文档 · bigmodel.cn · glm 4v flash | 官方文档 · 智谱 · GLM-4v-flash |
 | mini | zhipu/cogview-3-flash | https://docs.bigmodel.cn/cn/guide/models/free/cogview-3-flash | 官方文档 · bigmodel.cn · cogview 3 flash | 官方文档 · 智谱 · cogview-3-flash |
 | mini | zhipu/cogview-4 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · cogview-4 |
-| mini | zhipu/cogview-4-250304 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · CogView 4 |
+| mini | zhipu/cogview-4-250304 | https://docs.bigmodel.cn/cn/guide/models/image-generation/cogview-4 | 官方文档 · bigmodel.cn · cogview 4 | 官方文档 · 智谱 · cogview-4 |
 | mini | zhipu/glm-image | https://docs.bigmodel.cn/cn/guide/models/image-generation/glm-image | 官方文档 · bigmodel.cn · glm image | 官方文档 · 智谱 · GLM Image |
 | mini | siliconflow/XingChenAGI/Xing4.0-29B | https://huggingface.co/XingChen-AGI/Xing4.0-29B-A4B | 官方文档 · Hugging Face · Xing4.0 29B A4B | 官方文档 · Hugging Face · Xing4.0-29B A4B |
 | mini | siliconflow/tencent/Hy4-preview | https://huggingface.co/tencent/Hy4-preview | 官方文档 · Hugging Face · Hy4 preview | 官方文档 · Hugging Face · Hy4-preview |
@@ -2261,7 +2289,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | siliconflow/Pro/Qwen/Qwen2.5-7B-Instruct | https://huggingface.co/Qwen/Qwen2.5-7B-Instruct | 官方文档 · Hugging Face · Qwen2.5 7B Instruct | 官方文档 · Hugging Face · Qwen2.5-7B-Instruct |
 | mini | siliconflow/Qwen/Qwen2.5-32B-Instruct | https://huggingface.co/Qwen/Qwen2.5-32B-Instruct | 官方文档 · Hugging Face · Qwen2.5 32B Instruct | 官方文档 · Hugging Face · Qwen2.5-32B-Instruct |
 | mini | siliconflow/Qwen/Qwen2.5-72B-Instruct | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B-Instruct |
-| mini | siliconflow/Qwen/Qwen2.5-72B-Instruct-128K | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B Instruct |
+| mini | siliconflow/Qwen/Qwen2.5-72B-Instruct-128K | https://huggingface.co/Qwen/Qwen2.5-72B-Instruct | 官方文档 · Hugging Face · Qwen2.5 72B Instruct | 官方文档 · Hugging Face · Qwen2.5-72B-Instruct |
 | mini | siliconflow/Qwen/Qwen2.5-7B-Instruct | https://huggingface.co/Qwen/Qwen2.5-7B-Instruct | 官方文档 · Hugging Face · Qwen2.5 7B Instruct | 官方文档 · Hugging Face · Qwen2.5-7B-Instruct |
 | mini | siliconflow/deepseek-ai/DeepSeek-V4.1-Flash | https://www.siliconflow.cn/models | 官方文档 · siliconflow.cn · 模型列表 | 官方文档 · SiliconFlow · 模型列表 |
 | mini | siliconflow/deepseek-ai/DeepSeek-V4-Flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | 官方文档 · Hugging Face · DeepSeek V4 Flash | 官方文档 · Hugging Face · DeepSeek-V4-Flash |
@@ -2318,13 +2346,13 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | anthropic/claude-haiku-4-5-20251001 | https://platform.claude.com/docs/en/models/haiku-4-5/overview | 官方文档 · claude.com · overview | 官方文档 · Claude · Haiku 4-5 |
 | mini | recraft/recraftv4_1 | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | mini | recraft/recraftv4_1_flash | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash | 官方文档 · recraft.ai · recraft v4 1 flash | 官方文档 · Recraft · Recraft V4.1 Flash |
-| mini | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
-| mini | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4-1 |
+| mini | recraft/recraftv4_1_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_utility | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_utility_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_utility_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_utility_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
+| mini | recraft/recraftv4_1_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1 | 官方文档 · recraft.ai · recraft v4 1 | 官方文档 · Recraft · Recraft V4.1 |
 | mini | recraft/recraftv4 | https://www.recraft.ai/docs/api-reference/models/recraft-v4 | 官方文档 · recraft.ai · recraft v4 | 官方文档 · Recraft · recraftv4 |
 | mini | recraft/recraftv4_pro | https://www.recraft.ai/docs/api-reference/models/recraft-v4 | 官方文档 · recraft.ai · recraft v4 | 官方文档 · Recraft · Recraft V4 |
 | mini | recraft/recraftv4_pro_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v4 | 官方文档 · recraft.ai · recraft v4 | 官方文档 · Recraft · Recraft V4 |
@@ -2332,7 +2360,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | recraft/recraftv3 | https://www.recraft.ai/docs/api-reference/models/recraft-v3 | 官方文档 · recraft.ai · recraft v3 | 官方文档 · Recraft · recraftv3 |
 | mini | recraft/recraftv3_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v3 | 官方文档 · recraft.ai · recraft v3 | 官方文档 · Recraft · Recraft V3 |
 | mini | recraft/recraftv2 | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · recraftv2 |
-| mini | recraft/recraftv2_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · Recraft V2 |
+| mini | recraft/recraftv2_vector | https://www.recraft.ai/docs/api-reference/models/recraft-v2 | 官方文档 · recraft.ai · recraft v2 | 官方文档 · Recraft · recraftv2 |
 | mini | xai/grok-4.7 | https://docs.x.ai/developers/models/grok-4.7 | 官方文档 · x.ai · grok 4.7 | 官方文档 · xAI · Grok 4.7 |
 | mini | xai/grok-4.6 | https://docs.x.ai/developers/models/grok-4.6 | 官方文档 · x.ai · grok 4.6 | 官方文档 · xAI · Grok 4.6 |
 | mini | xai/grok-4.5 | https://docs.x.ai/developers/models/grok-4.5 | 官方文档 · x.ai · grok 4.5 | 官方文档 · xAI · Grok-4.5 |
@@ -2363,7 +2391,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | gemini/gemini-2.5-flash-lite | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite | 官方文档 · ai.google.dev · gemini 2.5 flash lite | 官方文档 · Google · Gemini 2.5 Flash-Lite |
 | mini | gemini/gemini-2.5-pro | https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro | 官方文档 · ai.google.dev · gemini 2.5 pro | 官方文档 · Google · Gemini 2.5 Pro |
 | mini | bailian/deepseek-v4.1-flash | https://help.aliyun.com/zh/model-studio/deepseek-v4-1-flash | 官方文档 · 百炼 · DeepSeek-V4.1-Flash 模型页 | 官方文档 · 百炼 · DeepSeek-V4.1-Flash |
-| mini | bailian/qwen3.8-max-0902 | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3-8 Max |
+| mini | bailian/qwen3.8-max-0902 | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3.8 Max |
 | mini | bailian/ZHIPU/GLM-5.3-Flash | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
 | mini | bailian/qwen3.8-flash | https://help.aliyun.com/zh/model-studio/vision-model | 官方文档 · 百炼 · vision model | 官方文档 · 百炼 · Vision Model |
 | mini | bailian/kimi-k3 | https://help.aliyun.com/zh/model-studio/kimi-k3 | 官方文档 · 百炼 · Kimi-K3 模型页 | 官方文档 · 百炼 · Kimi K3 (Bailian hosted) |
@@ -2372,6 +2400,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | bailian/ZHIPU/GLM-5.3-FlashX | https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash | 官方文档 · bigmodel.cn · glm 5.3 flash | 官方文档 · 智谱 · GLM 5.3 Flash |
 | mini | bailian/deepseek-v4.1-flash-1017 | https://help.aliyun.com/zh/model-studio/deepseek-api | 官方文档 · 百炼 · deepseek api | 官方文档 · 百炼 · DeepSeek API |
 | mini | bailian/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro-0813 |
+| mini | bailian/vanchin/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 |
 | mini | bailian/qwen-image-3.0 | https://help.aliyun.com/zh/model-studio/qwen-image-3-0 | 官方文档 · 百炼 · qwen image 3 0 | 官方文档 · 百炼 · Qwen Image 3.0 |
 | mini | bailian/qwen-image-3.0-pro | https://help.aliyun.com/zh/model-studio/qwen-image-3-0-pro | 官方文档 · 百炼 · qwen image 3 0 pro | 官方文档 · 百炼 · Qwen Image 3.0 Pro |
 | mini | bailian/qwen3.8-max | https://help.aliyun.com/zh/model-studio/qwen3-8-max | 官方文档 · 百炼 · qwen3 8 max | 官方文档 · 百炼 · Qwen3.8 Max |
@@ -2387,34 +2416,35 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | bailian/kimi/kimi-k2.5 | https://huggingface.co/moonshotai/Kimi-K2.5 | 官方文档 · Hugging Face · Kimi K2.5 | 官方文档 · Hugging Face · Kimi-k2.5 |
 | mini | bailian/qwen-image-2.1-pro | https://help.aliyun.com/zh/model-studio/qwen-image-2-1-pro | 官方文档 · 百炼 · qwen image 2 1 pro | 官方文档 · 百炼 · Qwen Image 2.1 Pro |
 | mini | bailian/qwen-image-2.1-turbo | https://help.aliyun.com/zh/model-studio/qwen-image-2-1-turbo | 官方文档 · 百炼 · qwen image 2 1 turbo | 官方文档 · 百炼 · Qwen Image 2.1 Turbo |
-| mini | bailian/qwen-image-2.0-pro-2026-06-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
+| mini | bailian/qwen-image-2.0-pro-2026-06-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
 | mini | bailian/qwen-image-2.0 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
-| mini | bailian/qwen-image-2.0-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2-0 |
+| mini | bailian/qwen-image-2.0-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0 | 官方文档 · 百炼 · qwen image 2 0 | 官方文档 · 百炼 · Qwen Image 2.0 |
 | mini | bailian/qwen-image-2.0-pro | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
-| mini | bailian/qwen-image-2.0-pro-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
-| mini | bailian/qwen-image-2.0-pro-2026-04-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2-0 Pro |
-| mini | bailian/qwen-image | https://help.aliyun.com/zh/model-studio/qwen-image-api | 官方文档 · 百炼 · qwen image api | 官方文档 · 百炼 · Qwen Image API |
+| mini | bailian/qwen-image-2.0-pro-2026-03-03 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
+| mini | bailian/qwen-image-2.0-pro-2026-04-22 | https://help.aliyun.com/zh/model-studio/qwen-image-2-0-pro | 官方文档 · 百炼 · qwen image 2 0 pro | 官方文档 · 百炼 · Qwen Image 2.0 Pro |
+| mini | bailian/qwen-image | https://help.aliyun.com/zh/model-studio/qwen-image-api | 官方文档 · 百炼 · qwen image api | 官方文档 · 百炼 · Qwen-image API |
 | mini | bailian/qwen3.7-max | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7-max |
-| mini | bailian/qwen3.7-max-2026-05-17 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| mini | bailian/qwen3.7-max-2026-05-20 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| mini | bailian/qwen3.7-max-2026-06-08 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
-| mini | bailian/qwen3.7-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3-7 Max |
+| mini | bailian/qwen3.7-max-2026-05-17 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| mini | bailian/qwen3.7-max-2026-05-20 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| mini | bailian/qwen3.7-max-2026-06-08 | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
+| mini | bailian/qwen3.7-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-7-max | 官方文档 · 百炼 · qwen3 7 max | 官方文档 · 百炼 · Qwen3.7 Max |
 | mini | bailian/qwen3.7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
-| mini | bailian/qwen3.7-plus-2026-05-26 | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3-7 Plus |
+| mini | bailian/qwen3.7-plus-2026-05-26 | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
 | mini | bailian/qwen3.6-27b | https://huggingface.co/Qwen/Qwen3.6-27B | 官方文档 · Hugging Face · Qwen3.6 27B | 官方文档 · Hugging Face · Qwen3.6-27b |
 | mini | bailian/qwen3.6-35b-a3b | https://huggingface.co/Qwen/Qwen3.6-35B-A3B | 官方文档 · Hugging Face · Qwen3.6 35B A3B | 官方文档 · Hugging Face · Qwen3.6-35b-a3b |
 | mini | bailian/qwen3.6-plus | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3.6-plus |
-| mini | bailian/qwen3.6-plus-2026-04-02 | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3-6 Plus |
+| mini | bailian/qwen3.6-plus-2026-04-02 | https://help.aliyun.com/zh/model-studio/qwen3-6-plus | 官方文档 · 百炼 · qwen3 6 plus | 官方文档 · 百炼 · Qwen3.6 Plus |
 | mini | bailian/qwen3.5-omni-flash | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5-omni-flash |
-| mini | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3-5 Omni Flash |
+| mini | bailian/qwen3.5-omni-flash-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-flash | 官方文档 · 百炼 · qwen3 5 omni flash | 官方文档 · 百炼 · Qwen3.5 Omni Flash |
 | mini | bailian/qwen3.5-omni-plus | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
-| mini | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3-5 Omni Plus |
+| mini | bailian/qwen3.5-omni-plus-2026-03-15 | https://help.aliyun.com/zh/model-studio/qwen3-5-omni-plus | 官方文档 · 百炼 · qwen3 5 omni plus | 官方文档 · 百炼 · Qwen3.5 Omni Plus |
 | mini | bailian/qwen3-max | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
 | mini | bailian/qwen3-max-2025-09-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
 | mini | bailian/qwen3-max-2026-01-23 | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
 | mini | bailian/qwen3-max-preview | https://www.aliyun.com/notice/118344 | 下线公告 · aliyun.com · 118344 | 下线公告 · 百炼 · 文档 118344 |
 | mini | bailian/stepfun/step-3.7-flash | https://platform.stepfun.com/docs/zh/guides/models/list | 原厂规格 · stepfun.com · list | 原厂规格 · StepFun · List |
 | mini | bailian/vanchin/deepseek-v3.2-think | https://help.aliyun.com/zh/model-studio/deepseek-api-by-vanchin | 官方文档 · 百炼 · deepseek api by vanchin | 官方文档 · 百炼 · DeepSeek API By Vanchin |
+| mini | bailian/vanchin/deepseek-v3.1-terminus | https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Terminus | 官方文档 · Hugging Face · DeepSeek V3.1 Terminus | 官方文档 · Hugging Face · DeepSeek-V3.1-Terminus |
 | mini | bailian/wan2.7-image | https://help.aliyun.com/zh/model-studio/wan2-7-image | 官方文档 · 百炼 · wan2 7 image | 官方文档 · 百炼 · Wan 2.7 Image |
 | mini | bailian/wan2.7-image-pro | https://help.aliyun.com/zh/model-studio/wan2-7-image-pro | 官方文档 · 百炼 · wan2 7 image pro | 官方文档 · 百炼 · Wan 2.7 Image Pro |
 | mini | bailian/wan2.6-image | https://help.aliyun.com/zh/model-studio/wan2-6-image | 官方文档 · 百炼 · wan2 6 image | 官方文档 · 百炼 · wan2.6-image |
@@ -2428,7 +2458,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | bailian/qwen-plus-2025-07-14 | https://help.aliyun.com/zh/model-studio/qwen-plus | 官方文档 · 百炼 · qwen plus | 官方文档 · 百炼 · Qwen Plus |
 | mini | bailian/qwen-turbo | https://www.aliyun.com/notice/118177 | 下线公告 · aliyun.com · 118177 | 下线公告 · 百炼 · 文档 118177 |
 | mini | bailian/qwen3-coder-next | https://www.aliyun.com/notice/118345 | 下线公告 · aliyun.com · 118345 | 下线公告 · 百炼 · 文档 118345 |
-| mini | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · Unisound U2 By Unisound |
+| mini | bailian/unisound/unisound-u2 | https://help.aliyun.com/zh/model-studio/unisound-u2-by-unisound | 官方文档 · 百炼 · unisound u2 by unisound | 官方文档 · 百炼 · unisound-u2 By Unisound |
 | mini | bailian/wanx-v1 | https://help.aliyun.com/zh/model-studio/wanx-v1 | 官方文档 · 百炼 · wanx v1 | 官方文档 · 百炼 · wanx-v1 |
 | mini | bailian/wanx2.0-t2i-turbo | https://help.aliyun.com/zh/model-studio/wanx2-0-t2i-turbo | 官方文档 · 百炼 · wanx2 0 t2i turbo | 官方文档 · 百炼 · wanx2.0-t2i-turbo |
 | mini | bailian/wanx2.1-imageedit | https://help.aliyun.com/zh/model-studio/wanx-image-edit-api-reference | 官方文档 · 百炼 · wanx image edit api reference | 官方文档 · 百炼 · Wanx Image Edit API Reference |
@@ -2459,7 +2489,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | openai/gpt-5.2-2025-12-11 | https://developers.openai.com/api/docs/models/gpt-5.2 | 官方文档 · developers.openai.com · gpt 5.2 | 官方文档 · OpenAI · GPT 5.2 |
 | mini | openai/gpt-5.2-pro | https://developers.openai.com/api/docs/models/gpt-5.2-pro.md | 官方文档 · developers.openai.com · gpt 5.2 pro.md | 官方文档 · OpenAI · GPT-5.2-pro · 2025-12-11 |
 | mini | openai/gpt-5.1 | https://developers.openai.com/api/docs/models/gpt-5.1.md | 官方文档 · developers.openai.com · gpt 5.1.md | 官方文档 · OpenAI · GPT-5.1 · 2025-11-13 |
-| mini | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT 5.1 |
+| mini | openai/gpt-5.1-2025-11-13 | https://developers.openai.com/api/docs/models/gpt-5.1 | 官方文档 · developers.openai.com · gpt 5.1 | 官方文档 · OpenAI · GPT-5.1 |
 | mini | openai/gpt-5 | https://developers.openai.com/api/docs/models/gpt-5.md | 官方文档 · developers.openai.com · gpt 5.md | 官方文档 · OpenAI · GPT-5 · 2025-08-07 |
 | mini | openai/gpt-5-2025-08-07 | https://developers.openai.com/api/docs/models/gpt-5 | 官方文档 · developers.openai.com · gpt 5 | 官方文档 · OpenAI · GPT 5 |
 | mini | openai/gpt-5-mini | https://developers.openai.com/api/docs/models/gpt-5-mini.md | 官方文档 · developers.openai.com · gpt 5 mini.md | 官方文档 · OpenAI · GPT-5-mini · 2025-08-07 |
@@ -2471,7 +2501,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | openai/gpt-4.1 | https://developers.openai.com/api/docs/models/gpt-4.1.md | 官方文档 · developers.openai.com · gpt 4.1.md | 官方文档 · OpenAI · GPT-4.1 · 2025-04-14 |
 | mini | openai/gpt-4.1-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1 | 官方文档 · developers.openai.com · gpt 4.1 | 官方文档 · OpenAI · GPT 4.1 |
 | mini | openai/gpt-4.1-mini | https://developers.openai.com/api/docs/models/gpt-4.1-mini.md | 官方文档 · developers.openai.com · gpt 4.1 mini.md | 官方文档 · OpenAI · GPT-4.1 Mini · 2025-04-14 |
-| mini | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT 4.1 Mini |
+| mini | openai/gpt-4.1-mini-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-mini | 官方文档 · developers.openai.com · gpt 4.1 mini | 官方文档 · OpenAI · GPT-4.1 Mini |
 | mini | openai/gpt-4.1-nano | https://developers.openai.com/api/docs/models/gpt-4.1-nano.md | 官方文档 · developers.openai.com · gpt 4.1 nano.md | 官方文档 · OpenAI · GPT-4.1-nano · 2025-04-14 |
 | mini | openai/gpt-4.1-nano-2025-04-14 | https://developers.openai.com/api/docs/models/gpt-4.1-nano | 官方文档 · developers.openai.com · gpt 4.1 nano | 官方文档 · OpenAI · GPT 4.1 Nano |
 | mini | openai/gpt-4o | https://developers.openai.com/api/docs/models/gpt-4o.md | 官方文档 · developers.openai.com · gpt 4o.md | 官方文档 · OpenAI · GPT-4o · 2024-08-06 |
@@ -2497,11 +2527,11 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | openai/gpt-image-2.6-flare | https://developers.openai.com/api/docs/models/gpt-image-2.6-flare | 官方文档 · developers.openai.com · gpt image 2.6 flare | 官方文档 · OpenAI · GPT Image 2.6 Flare |
 | mini | openai/gpt-image-2.6-sunburst | https://developers.openai.com/api/docs/models/gpt-image-2.6-sunburst | 官方文档 · developers.openai.com · gpt image 2.6 sunburst | 官方文档 · OpenAI · GPT Image 2.6 Sunburst |
 | mini | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · developers.openai.com · o1.md | 官方文档 · OpenAI · o1 · 2024-12-17 |
-| mini | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · O1 |
+| mini | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · developers.openai.com · o1 | 官方文档 · OpenAI · o1 |
 | mini | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · developers.openai.com · o1 pro.md | 官方文档 · OpenAI · o1-pro · 2025-03-19 |
 | mini | openai/o1-pro-2025-03-19 | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · developers.openai.com · o1 pro | 官方文档 · OpenAI · O1 Pro |
 | mini | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · developers.openai.com · o3.md | 官方文档 · OpenAI · o3 · 2025-04-16 |
-| mini | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · O3 |
+| mini | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · developers.openai.com · o3 | 官方文档 · OpenAI · o3 |
 | mini | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · developers.openai.com · o3 mini.md | 官方文档 · OpenAI · o3-mini · 2025-01-31 |
 | mini | openai/o3-mini-2025-01-31 | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · developers.openai.com · o3 mini | 官方文档 · OpenAI · O3 Mini |
 | mini | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro.md | 官方文档 · developers.openai.com · o3 pro.md | 官方文档 · OpenAI · o3-pro · 2025-06-10 |
@@ -2551,13 +2581,13 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | bfl/flux-2-max | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[max] | 官方文档 · bfl.ml · generate or edit an image with flux2 [max] | 官方文档 · BFL · FLUX-2-max |
 | mini | bfl/flux-2-pro | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro] | 官方文档 · bfl.ml · generate or edit an image with flux2 [pro] | 官方文档 · BFL · FLUX-2-pro |
 | mini | bfl/flux-2-pro-preview | https://docs.bfl.ml/api-reference/models/generate-or-edit-an-image-with-flux2-[pro]-preview | 官方文档 · bfl.ml · generate or edit an image with flux2 [pro] preview | 官方文档 · BFL · FLUX-2-pro-preview |
-| mini | bfl/flux-kontext-max | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [max] | 官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Max] |
-| mini | bfl/flux-kontext-pro | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [pro] | 官方文档 · BFL · Edit Or Create An Image With Flux1 Kontext [Pro] |
+| mini | bfl/flux-kontext-max | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[max] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [max] | 官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [max] |
+| mini | bfl/flux-kontext-pro | https://docs.bfl.ml/api-reference/models/edit-or-create-an-image-with-flux1-kontext-[pro] | 官方文档 · bfl.ml · edit or create an image with flux1 kontext [pro] | 官方文档 · BFL · Edit Or Create An Image With FLUX.1 Kontext [pro] |
 | mini | bfl/flux-3-image | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3 | 官方文档 · bfl.ml · generate an image with flux 3 | 官方文档 · BFL · Generate An Image With FLUX 3 |
-| mini | bfl/flux-3-image-klein | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein | 官方文档 · bfl.ml · generate an image with flux 3 klein | 官方文档 · BFL · Generate An Image With FLUX 3 Klein |
-| mini | bfl/flux-dev | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev] | 官方文档 · bfl.ml · generate an image with flux1 [dev] | 官方文档 · BFL · Generate An Image With Flux1 [Dev] |
-| mini | bfl/flux-pro-1.1 | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro] | 官方文档 · bfl.ml · generate an image with flux11 [pro] | 官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] |
-| mini | bfl/flux-pro-1.1-ultra | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode | 官方文档 · bfl.ml · generate an image with flux11 [pro] ultra mode | 官方文档 · BFL · Generate An Image With FLUX.1.1 [Pro] Ultra Mode |
+| mini | bfl/flux-3-image-klein | https://docs.bfl.ml/api-reference/utility/generate-an-image-with-flux-3-klein | 官方文档 · bfl.ml · generate an image with flux 3 klein | 官方文档 · BFL · Generate An Image With FLUX.3 Klein |
+| mini | bfl/flux-dev | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux1-[dev] | 官方文档 · bfl.ml · generate an image with flux1 [dev] | 官方文档 · BFL · Generate An Image With FLUX.1 [dev] |
+| mini | bfl/flux-pro-1.1 | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro] | 官方文档 · bfl.ml · generate an image with flux11 [pro] | 官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] |
+| mini | bfl/flux-pro-1.1-ultra | https://docs.bfl.ml/api-reference/models/generate-an-image-with-flux11-[pro]-ultra-mode | 官方文档 · bfl.ml · generate an image with flux11 [pro] ultra mode | 官方文档 · BFL · Generate An Image With FLUX.1.1 [pro] Ultra Mode |
 | mini | stability/sd3.5-flash | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | mini | stability/sd3.5-large | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
 | mini | stability/sd3.5-large-turbo | https://platform.stability.ai/docs/api-reference#tag/Generate/paths/~1v2beta~1stable-image~1generate~1sd3/post | 官方文档 · stability.ai · api reference | 官方文档 · Stability · API 文档 |
@@ -2576,7 +2606,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | ideogram/V_1_TURBO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate | 官方文档 · Ideogram · Generate |
 | mini | ideogram/AUTO | https://developer.ideogram.ai/v1/api-reference/legacy-endpoints/generate | 官方文档 · developer.ideogram.ai · generate | 官方文档 · Ideogram · Generate |
 | mini | ideogram/ideogram-4-5 | https://developer.ideogram.ai/v2/api-reference/images/generate/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4.5 |
-| mini | ideogram/ideogram-edit | https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4-5 |
+| mini | ideogram/ideogram-edit | https://developer.ideogram.ai/v2/api-reference/images/precise-edit/ideogram-4-5 | 官方文档 · developer.ideogram.ai · ideogram 4 5 | 官方文档 · Ideogram · Ideogram 4.5 |
 | mini | ideogram/p-image-ideogram | https://developer.ideogram.ai/v2/api-reference/images/generate/p-image-ideogram | 官方文档 · developer.ideogram.ai · p image ideogram | 官方文档 · Ideogram · p-image-ideogram |
 | mini | minimax/MiniMax-M2.7-highspeed | https://platform.minimax.cn/docs/api-reference/text-anthropic-api | 官方文档 · minimax.cn · text anthropic api | 官方文档 · MiniMax · Text Anthropic API |
 | mini | minimax/MiniMax-M2.5-highspeed | https://platform.minimax.cn/docs/api-reference/text-anthropic-api | 官方文档 · minimax.cn · text anthropic api | 官方文档 · MiniMax · Text Anthropic API |
@@ -2640,7 +2670,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | together/google/imagen-4.0-ultra | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | mini | together/ideogram/ideogram-3.0 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | mini | together/ideogram/ideogram-4.0 | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
-| mini | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://www.together.ai/models/llama-3-3-70b | 官方文档 · together.ai · llama 3 3 70b | 官方文档 · Together · Llama 3-3-70b |
+| mini | together/meta-llama/Llama-3.3-70B-Instruct-Turbo | https://www.together.ai/models/llama-3-3-70b | 官方文档 · together.ai · llama 3 3 70b | 官方文档 · Together · Llama 3.3 70B |
 | mini | together/meta-models/Muse-Glimmer-30B | https://docs.together.ai/docs/serverless-models | 官方文档 · together.ai · serverless models | 官方文档 · Together · Serverless Models |
 | mini | together/meta-models/Muse-Spark-Open-816B-A42B | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
 | mini | together/nvidia/NVIDIA-Nemotron-3.5-Super-VL | https://docs.together.ai/docs/serverless/models | 官方文档 · together.ai · 模型列表 | 官方文档 · Together · 模型列表 |
@@ -2659,7 +2689,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | fireworks/accounts/fireworks/models/deepseek-v4p1-flash | https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash | 官方文档 · fireworks.ai · deepseek v4p1 flash | 官方文档 · Fireworks · DeepSeek-V4.1-Flash |
 | mini | fireworks/accounts/fireworks/models/deepseek-v4p1-flash-1017 | https://fireworks.ai/models/deepseek-ai/deepseek-v4p1-flash-1017 | 官方文档 · fireworks.ai · deepseek v4p1 flash 1017 | 官方文档 · Fireworks · DeepSeek V4.1 Flash 1017 |
 | mini | fireworks/accounts/fireworks/models/gemma-4-31b-it | https://fireworks.ai/models/fireworks/gemma-4-31b-it | 官方文档 · fireworks.ai · gemma 4 31b it | 官方文档 · Fireworks · Gemma 4-31b It |
-| mini | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT Oss 120b |
+| mini | fireworks/accounts/fireworks/models/gpt-oss-120b | https://fireworks.ai/models/fireworks/gpt-oss-120b | 官方文档 · fireworks.ai · gpt oss 120b | 官方文档 · Fireworks · GPT-OSS 120B |
 | mini | fireworks/accounts/fireworks/models/kimi-k3p1-pro | https://fireworks.ai/models/fireworks/kimi-k3p1-pro | 官方文档 · fireworks.ai · kimi k3p1 pro | 官方文档 · Fireworks · Kimi K3.1 Pro |
 | mini | fireworks/accounts/fireworks/models/minimax-m3p1-flash | https://fireworks.ai/models/fireworks/minimax-m3p1-flash | 官方文档 · fireworks.ai · minimax m3p1 flash | 官方文档 · Fireworks · MiniMax M3.1 Flash |
 | mini | fireworks/accounts/fireworks/models/muse-spark-open | https://fireworks.ai/models/fireworks/muse-spark-open | 官方文档 · fireworks.ai · muse spark open | 官方文档 · Fireworks · Muse Spark Open |
@@ -2771,7 +2801,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | replicate/qwen/qwen-image-edit | https://replicate.com/qwen/qwen-image-edit | 官方文档 · replicate.com · qwen image edit | 官方文档 · Replicate · Qwen-image-edit |
 | mini | replicate/qwen/qwen-image-edit-plus | https://replicate.com/qwen/qwen-image-edit-plus | 官方文档 · replicate.com · qwen image edit plus | 官方文档 · Replicate · Qwen-image-edit-plus |
 | mini | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507 | 官方文档 · Hugging Face · Qwen3 235B A22B Instruct 2507 | 官方文档 · Hugging Face · qwen3-235b-a22b-instruct-2507 |
-| mini | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · qwen3-7-plus |
+| mini | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3 7 plus | 官方文档 · 百炼 · Qwen3.7 Plus |
 | mini | replicate/recraft-ai/recraft-v4.1 | https://replicate.com/recraft-ai/recraft-v4.1 | 官方文档 · replicate.com · recraft v4.1 | 官方文档 · Replicate · recraft-v4.1 |
 | mini | replicate/recraft-ai/recraft-v4-pro | https://replicate.com/recraft-ai/recraft-v4-pro | 官方文档 · replicate.com · recraft v4 pro | 官方文档 · Replicate · recraft-v4-pro |
 | mini | replicate/recraft-ai/recraft-v3 | https://replicate.com/recraft-ai/recraft-v3 | 官方文档 · replicate.com · recraft v3 | 官方文档 · Replicate · recraft-v3 |
@@ -2859,7 +2889,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | tokendance/qwen3.8-max-0902 | https://tokendance.space/models/qwen3.8-max-0902 | 官方文档 · TokenDance · qwen3.8 max 0902 | 官方文档 · TokenDance · Qwen3.8-Max-0902 |
 | mini | tokendance/qwen3.7-max | https://tokendance.space/models/qwen3.7-max | 官方文档 · TokenDance · qwen3.7 max | 官方文档 · TokenDance · Qwen3.7 Max |
 | mini | tokendance/qwen3.7-plus | https://tokendance.space/models/qwen3.7-plus | 官方文档 · TokenDance · qwen3.7 plus | 官方文档 · TokenDance · Qwen3.7 Plus |
-| mini | tokendance/qwen3.6-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-6-max | 原厂规格 · 百炼 · qwen3 6 max | 原厂规格 · 百炼 · Qwen3-6 Max |
+| mini | tokendance/qwen3.6-max-preview | https://help.aliyun.com/zh/model-studio/qwen3-6-max | 原厂规格 · 百炼 · qwen3 6 max | 原厂规格 · 百炼 · Qwen3.6 Max |
 | mini | tokendance/qwen3.6-plus | https://tokendance.space/models/qwen3.6-plus | 官方文档 · TokenDance · qwen3.6 plus | 官方文档 · TokenDance · Qwen3.6 Plus |
 | mini | tokendance/qwen3.5-35b-a3b | https://tokendance.space/models/qwen3.5-35b-a3b | 官方文档 · TokenDance · qwen3.5 35b a3b | 官方文档 · TokenDance · Qwen3.5-35B-A3B |
 | mini | tokendance/qwen3.5-flash | https://tokendance.space/models/qwen3.5-flash | 官方文档 · TokenDance · qwen3.5 flash | 官方文档 · TokenDance · Qwen3.5 Flash |
@@ -2907,7 +2937,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | runware/alibaba:qwen-image@2.1-turbo | https://runware.ai/docs/models/alibaba-qwen-image-2-1-turbo | 官方文档 · runware.ai · alibaba qwen image 2 1 turbo | 官方文档 · Runware · Qwen-Image-2.1-Turbo |
 | mini | runware/google:nano-banana@2.1 | https://runware.ai/docs/models/google-nano-banana-2-1 | 官方文档 · runware.ai · google nano banana 2 1 | 官方文档 · Runware · Runware - Nano Banana 2.1 |
 | mini | runware/bfl:flux@3-image | https://runware.ai/docs/models/bfl-flux-3-image | 官方文档 · runware.ai · bfl flux 3 image | 官方文档 · Runware · Runware - FLUX 3 Image |
-| mini | runware/ideogram:4.5@0 | https://runware.ai/docs/models/ideogram-4-5 | 官方文档 · runware.ai · ideogram 4 5 | 官方文档 · Runware · Ideogram 4-5 |
+| mini | runware/ideogram:4.5@0 | https://runware.ai/docs/models/ideogram-4-5 | 官方文档 · runware.ai · ideogram 4 5 | 官方文档 · Runware · Ideogram 4.5 |
 | mini | runware/ideogram:4.5@precise-edit | https://runware.ai/docs/models/ideogram-4-5-precise-edit | 官方文档 · runware.ai · ideogram 4 5 precise edit | 官方文档 · Runware · Runware - Ideogram 4.5 Precise Edit |
 | mini | runware/bytedance:seedream@5.0-flash | https://runware.ai/docs/models/bytedance-seedream-5-0-flash | 官方文档 · runware.ai · bytedance seedream 5 0 flash | 官方文档 · Runware · Runware - Seedream 5.0 Flash |
 | mini | runware/recraft:v4.1@flash | https://www.recraft.ai/docs/api-reference/models/recraft-v4-1-flash | 官方文档 · recraft.ai · recraft v4 1 flash | 官方文档 · Recraft · Runware - Recraft V4.1 Flash |
@@ -3053,7 +3083,9 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 | mini | tokenhub/deepseek-v4.1-flash-1017 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | mini | tokenhub/deepseek/deepseek-v4-flash-vision-exp | https://api-docs.deepseek.com/news/news260821/ | 官方文档 · DeepSeek · news260821 | 官方文档 · DeepSeek · News260821 |
 | mini | tokenhub/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 正式版 |
+| mini | tokenhub/deepseek/deepseek-v4-pro-0813 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-0813 | 官方文档 · Hugging Face · DeepSeek V4 Pro 0813 | 官方文档 · Hugging Face · DeepSeek-V4-Pro 0813 |
 | mini | tokenhub/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash 0731 正式版 |
+| mini | tokenhub/deepseek/deepseek-v4-flash-0731 | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731 | 官方文档 · Hugging Face · DeepSeek V4 Flash 0731 | 官方文档 · Hugging Face · DeepSeek-V4-Flash 0731 |
 | mini | tokenhub/deepseek-v4-flash | https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash | 官方文档 · Hugging Face · DeepSeek V4 Flash | 官方文档 · Hugging Face · DeepSeek-V4-Flash |
 | mini | tokenhub/deepseek-v4-flash-202605 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
 | mini | tokenhub/deepseek-v4-pro-202606 | https://cloud.tencent.com/document/product/1823/130051 | 官方文档 · cloud.tencent.com · 130051 | 官方文档 · 腾讯云 · 文档 130051 |
@@ -3187,7 +3219,7 @@ Historical unknown hints: exactly these seven TokenDance IDs show **渠道页无
 
 ## Retained spelling and opaque identifiers
 
-The following **1151** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
+The following **1144** source-row instances merit manual explanation but are not unresolved defects. These are exact curated spellings, release codes, or page identifiers with no captured human title; changing their model names would violate the picker-name lock.
 
 | Client | Card | URL | Retained title | Justification |
 | --- | --- | --- | --- | --- |
@@ -3404,12 +3436,10 @@ The following **1151** source-row instances merit manual explanation but are not
 | web | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo | 官方文档 · OpenAI · GPT-3.5-turbo · 0125（文档） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · OpenAI · o1 · 2024-12-17（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o1 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · o1 · 2024-12-17（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · O1 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · OpenAI · o1-pro · 2025-03-19（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro | 官方文档 · OpenAI · o1-pro · 2025-03-19（文档） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · OpenAI · o3 · 2025-04-16（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o3 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · o3 · 2025-04-16（文档） | Exact curated picker name; required to retain its spelling and separators. |
-| web | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · O3 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · OpenAI · o3-mini · 2025-01-31（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini | 官方文档 · OpenAI · o3-mini · 2025-01-31（文档） | Exact curated picker name; required to retain its spelling and separators. |
 | web | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro.md | 官方文档 · OpenAI · o3-pro · 2025-06-10（Markdown） | Exact curated picker name; required to retain its spelling and separators. |
@@ -3578,8 +3608,6 @@ The following **1151** source-row instances merit manual explanation but are not
 | web | replicate/qwen/qwen-image-edit-plus | https://replicate.com/qwen/qwen-image-edit-plus | 官方文档 · Replicate · Qwen-image-edit-plus | Exact curated picker name; required to retain its spelling and separators. |
 | web | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507 | 官方文档 · Hugging Face · qwen3-235b-a22b-instruct-2507 | Exact curated picker name; required to retain its spelling and separators. |
 | web | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://replicate.com/qwen/qwen3-235b-a22b-instruct-2507 | 官方文档 · Replicate · qwen3-235b-a22b-instruct-2507 | Exact curated picker name; required to retain its spelling and separators. |
-| web | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3-7-plus | Exact curated picker name; required to retain its spelling and separators. |
-| web | replicate/qwen/qwen3-7-plus | https://replicate.com/qwen/qwen3-7-plus | 官方文档 · Replicate · qwen3-7-plus | Exact curated picker name; required to retain its spelling and separators. |
 | web | replicate/recraft-ai/recraft-v4.1 | https://replicate.com/recraft-ai/recraft-v4.1 | 官方文档 · Replicate · recraft-v4.1 | Exact curated picker name; required to retain its spelling and separators. |
 | web | replicate/recraft-ai/recraft-v4-pro | https://replicate.com/recraft-ai/recraft-v4-pro | 官方文档 · Replicate · recraft-v4-pro | Exact curated picker name; required to retain its spelling and separators. |
 | web | replicate/recraft-ai/recraft-v3 | https://replicate.com/recraft-ai/recraft-v3 | 官方文档 · Replicate · recraft-v3 | Exact curated picker name; required to retain its spelling and separators. |
@@ -4040,10 +4068,8 @@ The following **1151** source-row instances merit manual explanation but are not
 | mini | openai/chatgpt-image-latest | https://developers.openai.com/api/docs/models/chatgpt-image-latest.md | 官方文档 · OpenAI · chatgpt-image-latest | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/gpt-3.5-turbo | https://developers.openai.com/api/docs/models/gpt-3.5-turbo.md | 官方文档 · OpenAI · GPT-3.5-turbo · 0125 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/o1 | https://developers.openai.com/api/docs/models/o1.md | 官方文档 · OpenAI · o1 · 2024-12-17 | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/o1-2024-12-17 | https://developers.openai.com/api/docs/models/o1 | 官方文档 · OpenAI · O1 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | openai/o1-pro | https://developers.openai.com/api/docs/models/o1-pro.md | 官方文档 · OpenAI · o1-pro · 2025-03-19 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/o3 | https://developers.openai.com/api/docs/models/o3.md | 官方文档 · OpenAI · o3 · 2025-04-16 | Exact curated picker name; required to retain its spelling and separators. |
-| mini | openai/o3-2025-04-16 | https://developers.openai.com/api/docs/models/o3 | 官方文档 · OpenAI · O3 | Opaque documentation/news identifier; no captured page title available in the offline inputs. Kept intact, without inventing a subject. |
 | mini | openai/o3-mini | https://developers.openai.com/api/docs/models/o3-mini.md | 官方文档 · OpenAI · o3-mini · 2025-01-31 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/o3-pro | https://developers.openai.com/api/docs/models/o3-pro.md | 官方文档 · OpenAI · o3-pro · 2025-06-10 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | openai/o4-mini | https://developers.openai.com/api/docs/models/o4-mini.md | 官方文档 · OpenAI · o4-mini · 2025-04-16 | Exact curated picker name; required to retain its spelling and separators. |
@@ -4161,7 +4187,6 @@ The following **1151** source-row instances merit manual explanation but are not
 | mini | replicate/qwen/qwen-image-edit | https://replicate.com/qwen/qwen-image-edit | 官方文档 · Replicate · Qwen-image-edit | Exact curated picker name; required to retain its spelling and separators. |
 | mini | replicate/qwen/qwen-image-edit-plus | https://replicate.com/qwen/qwen-image-edit-plus | 官方文档 · Replicate · Qwen-image-edit-plus | Exact curated picker name; required to retain its spelling and separators. |
 | mini | replicate/qwen/qwen3-235b-a22b-instruct-2507 | https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507 | 官方文档 · Hugging Face · qwen3-235b-a22b-instruct-2507 | Exact curated picker name; required to retain its spelling and separators. |
-| mini | replicate/qwen/qwen3-7-plus | https://help.aliyun.com/zh/model-studio/qwen3-7-plus | 官方文档 · 百炼 · qwen3-7-plus | Exact curated picker name; required to retain its spelling and separators. |
 | mini | replicate/recraft-ai/recraft-v4.1 | https://replicate.com/recraft-ai/recraft-v4.1 | 官方文档 · Replicate · recraft-v4.1 | Exact curated picker name; required to retain its spelling and separators. |
 | mini | replicate/recraft-ai/recraft-v4-pro | https://replicate.com/recraft-ai/recraft-v4-pro | 官方文档 · Replicate · recraft-v4-pro | Exact curated picker name; required to retain its spelling and separators. |
 | mini | replicate/recraft-ai/recraft-v3 | https://replicate.com/recraft-ai/recraft-v3 | 官方文档 · Replicate · recraft-v3 | Exact curated picker name; required to retain its spelling and separators. |
