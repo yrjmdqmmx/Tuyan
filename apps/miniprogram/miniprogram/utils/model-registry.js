@@ -56,7 +56,7 @@ function normalizeProvider(providerId, input) {
     };
     const labels = { main: '主模型', image: '图像模型', vision: '识别模型' };
     for (const role of ['main', 'image', 'vision']) {
-        // Newly exposed roles may have no channel default; keep the saved blank choice.
+        // A channel may offer a role without preselecting a model for that role.
         if (!defaults[role])
             continue;
         if ((0, model_audit_1.removedModel)(providerId, defaults[role]))

@@ -131,7 +131,7 @@ function normalizeProvider(providerId: ModelProviderId, input: unknown): Registr
   }
   const labels: Record<ModelRole, string> = { main: '主模型', image: '图像模型', vision: '识别模型' }
   for (const role of ['main', 'image', 'vision'] as const) {
-    // Newly exposed roles may have no channel default; keep the saved blank choice.
+    // A channel may offer a role without preselecting a model for that role.
     if (!defaults[role]) continue
     if (removedModel(providerId, defaults[role])) continue
     const entry = models.find((model) => model.id === defaults[role])

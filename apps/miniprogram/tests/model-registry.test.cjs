@@ -59,7 +59,7 @@ assert.deepEqual(groupRegistryModels(partition.compatible).map((group) => group.
 console.log('model-registry.test.cjs passed')
 
 // Older servers remain usable while new channels roll out. New partial-role
-// catalogs are valid only when every role they do expose has a valid default.
+// catalogs validate configured defaults but may require an explicit user choice.
 const previousProviders = Object.fromEntries(['gemini', 'openai', 'bailian', 'ark', 'openrouter'].map((id) => [id, provider(id)]))
 assert.equal(normalizeModelRegistry({ ...registry(), providers: previousProviders }).providers.xai, undefined)
 const textOnly = { ...provider('anthropic'), defaults: { main: 'anthropic-main', image: '', vision: 'anthropic-vision' }, models: provider('anthropic').models.filter((item) => !item.roles.includes('image')) }
@@ -67,7 +67,10 @@ const imageOnly = { ...provider('recraft'), defaults: { main: '', image: 'recraf
 const partial = normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: textOnly, recraft: imageOnly } })
 assert.equal(partial.providers.anthropic.defaults.image, '')
 assert.equal(partial.providers.recraft.defaults.main, '')
-assert.equal(normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: '' } } } }).providers.anthropic.defaults.main, '')
+const noDefault = normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: '' } } } })
+assert.equal(noDefault.providers.anthropic.defaults.main, '')
+assert.equal(noDefault.providers.anthropic.models.some(model => model.roles.includes('main')), true)
+assert.throws(() => normalizeModelRegistry({ ...registry(), providers: { ...previousProviders, anthropic: { ...textOnly, defaults: { ...textOnly.defaults, main: 'missing' } } } }), /默认主模型/)
 
 const datedFixture = registry()
 datedFixture.providers.openai.models[0].expirationDate = '2000-01-01'
@@ -98,7 +101,10 @@ try {
 
 const uploadPolicy = require('../miniprogram/utils/reference-upload-policy.js')
 const withUpload = normalizeModelRegistry({ ...registry(), referenceUpload: uploadPolicy.referenceUploadContract() })
-assert.equal(withUpload.referenceUpload.platform.maxTotalBytes, 80 * 1024 * 1024)
+assert.equal(withUpload.referenceUpload.platform.maxCount, 10)
+assert.equal(withUpload.referenceUpload.platform.maxBytes, 10_000_000)
+assert.equal(withUpload.referenceUpload.platform.maxTotalBytes, 100_000_000)
+assert.equal(withUpload.referenceUpload.platform.maxSvgBytes, 10_000_000)
 const referenceFiles = Array.from({length:8}, () => ({size: 6 * 1024 * 1024}))
 const qwenPolicy = uploadPolicy.activeReferenceUploadPolicy(withUpload.referenceUpload, {accessProvider:'tokendance', modelId:'qwen3.8-flash'})
 assert.equal(uploadPolicy.referenceUploadSelectionError(referenceFiles, qwenPolicy), '')

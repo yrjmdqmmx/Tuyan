@@ -7,6 +7,16 @@ export function unpackModelCatalog(data: { root: number; nodes: CatalogNode[] })
     let node = data.nodes[index]
     if (!Array.isArray(node)) return node
     if (node[0] === 4) node = String(node[1]).split('.').map(n => parseInt(n,36))
+    if (node[0] === 5) {
+      const [base, positions, values] = String(node[1]).split(':')
+      const result = expand(parseInt(base, 36))
+      const keys = Object.keys(result)
+      const references = values ? values.split('.') : []
+      if (positions) positions.split('.').forEach((position, i) => {
+        result[keys[parseInt(position, 36)]] = expand(parseInt(references[i], 36))
+      })
+      return result
+    }
     if (node[0] === 3) return expand(node[1] as number) + node[2]
     if (node[0] === 1) return (node.slice(1) as number[]).map(expand)
     const result: Record<string, any> = {}
