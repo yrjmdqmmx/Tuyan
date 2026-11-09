@@ -1,4 +1,3 @@
-import ControlField from './ControlField.jsx';
 import GithubIdentityPanel from './GithubIdentityPanel.jsx';
 import GoogleIdentityPanel from './GoogleIdentityPanel.jsx';
 import WechatIdentityPanel from './WechatIdentityPanel.jsx';
@@ -133,9 +132,9 @@ export default function AuthPanel({ onAuthenticated, onCancel, client = authClie
       {existingAccount && watcha?.status?.pending ? <p role="status">{t("请登录已有图研账号，然后在账户页确认绑定观猹。")}</p> : null}
       {!pendingWatcha || forgot || isSignUp ? <>
       <form className="auth-form" onSubmit={submitAuth}>
-        {isSignUp ? <ControlField className="field" label={<span>{t("昵称")}</span>}><input className="auth-name-input" value={name} onChange={(event) => setName(event.target.value)} placeholder={t("可选")} autoComplete="name" maxLength={24} /></ControlField> : null}
-        <ControlField className="field" label={<span>{t("邮箱")}</span>}><input type="email" value={email} onChange={(event) => { setMethod('other'); setEmail(event.target.value); }} placeholder="you@example.com" autoComplete="email" required /></ControlField>
-        {!forgot ? <ControlField className="field" label={<span>{t("密码")}</span>}><input type="password" value={password} onChange={(event) => { setMethod('other'); setPassword(event.target.value); }} minLength={8} maxLength={128} autoComplete={isSignUp ? 'new-password' : 'current-password'} required /></ControlField> : null}
+        {isSignUp ? <label className="field"><span>{t("昵称")}</span><input className="auth-name-input" value={name} onChange={(event) => setName(event.target.value)} placeholder={t("可选")} autoComplete="name" maxLength={24} /></label> : null}
+        <label className="field"><span>{t("邮箱")}</span><input type="email" value={email} onChange={(event) => { setMethod('other'); setEmail(event.target.value); }} placeholder="you@example.com" autoComplete="email" required /></label>
+        {!forgot ? <label className="field"><span>{t("密码")}</span><input type="password" value={password} onChange={(event) => { setMethod('other'); setPassword(event.target.value); }} minLength={8} maxLength={128} autoComplete={isSignUp ? 'new-password' : 'current-password'} required /></label> : null}
         <button className="primary-button" type="submit" disabled={isSubmitting || !email || (!forgot && (password.length < 8 || password.length > 128))}>{isSubmitting ? <Loader2 className="spin" size={18} /> : null}{t(forgot ? '发送重置链接' : isSignUp ? '注册并验证邮箱' : '登录')}</button>
         {error ? <div className="error-line"><AlertTriangle size={16} /> {formatErrorMessage(error)}</div> : null}
       </form>

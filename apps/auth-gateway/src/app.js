@@ -536,6 +536,7 @@ function relay(response, result) {
 }
 
 async function relayModelRegistry(request, response, result) {
+  // Relay Core's audited absence even when catalogHealth reports empty/timeout.
   // Only the public capability catalog uses this path. Do not compress account,
   // credential, authorization or task responses, or cache them alongside it.
   response.set('Cache-Control', 'no-store');

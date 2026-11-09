@@ -36,7 +36,7 @@
   .benchmark-site-shell .pareto-filter-toggle { min-height: 48px; border-radius: 10px; font-size: 14px; }
   .benchmark-site-shell .pareto-filters { padding: 16px; gap: 20px; border-radius: 12px; margin-bottom: 20px; background: #f3f6ef; }
   .benchmark-site-shell .pareto-filters :is(:is(select, .ui-select), input:not([type=range])) { min-height: 48px; font-size: 16px; border-radius: 8px; }
-  .benchmark-site-shell .pareto-filters :is(label, .control-field, legend) { font-size: 14px; }
+  .benchmark-site-shell .pareto-filters :is(label, legend) { font-size: 14px; }
   .benchmark-site-shell .pareto-budget-values { font-size: 13px; margin-block: 8px 16px; }
   .benchmark-site-shell .pareto-budget-presets { gap: 8px; }
   .benchmark-site-shell .pareto-budget-presets button { flex: 1 1 auto; min-height: 44px; font-size: 13px; }
@@ -86,7 +86,7 @@
   .benchmark-site-shell .pareto-data { margin-top: 24px; }
   .benchmark-site-shell .pareto-data > summary { min-height: 52px; font-size: 14px; }
   .benchmark-site-shell .pareto-data-settings { padding: 16px; }
-  .benchmark-site-shell .pareto-data-settings :is(label, .control-field) { min-width: 0; font-size: 14px; }
+  .benchmark-site-shell .pareto-data-settings label { min-width: 0; font-size: 14px; }
   .benchmark-site-shell .pareto-data-settings :is(select, .ui-select) { width: 100%; min-width: 0; min-height: 48px; font-size: 16px; white-space: normal; }
   .benchmark-site-shell .pareto-data-settings p, .benchmark-site-shell .pareto-method-grid p { font-size: 13px; line-height: 1.75; }
   .benchmark-site-shell .pareto-method-grid h3 { margin-bottom: 6px; font-size: 15px; }

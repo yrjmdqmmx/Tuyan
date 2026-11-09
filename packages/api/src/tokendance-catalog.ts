@@ -7,12 +7,13 @@ export type TokenDanceCatalogSnapshot = {
   expiresAt: number | null; stale: boolean; failureCount: number; alert: 'none' | 'warning' | 'critical';
 }
 export type TokenDanceCatalogPresence = { status: 'listed' | 'absent' | 'unverified'; cause?: string; checkedAt: string | null; sourceUrl: string }
-// A failed read supersedes historical absence for display, never for calling.
-// Only a fresh, non-empty, completely parsed directory establishes absence.
-export function tokenDanceCatalogPresence(snapshot: TokenDanceCatalogSnapshot, id: string): TokenDanceCatalogPresence {
+// Failure cannot erase an audited absence. Only a fresh, non-empty parsed
+// directory may supersede it; models without absence evidence stay unverified.
+export function tokenDanceCatalogPresence(snapshot: TokenDanceCatalogSnapshot, id: string, audited?: TokenDanceCatalogPresence): TokenDanceCatalogPresence {
   const cause = snapshot.cause || (snapshot.stale ? 'stale' : snapshot.state === 'unavailable' || snapshot.checkedAt === null ? 'unavailable' : !snapshot.models.length ? 'empty' : null)
   const listed = snapshot.models.some(model => model.id === id)
   const unverified = cause || (!listed && snapshot.issues.some(issue => issue.index >= 0) ? 'partial' : null)
+  if (unverified && audited?.status === 'absent') return { ...audited }
   return {
     status: unverified ? 'unverified' : listed ? 'listed' : 'absent',
     ...(unverified ? { cause: unverified } : {}),
@@ -57,10 +58,11 @@ export function parseTokenDanceCatalog(value: unknown): Pick<TokenDanceCatalogSn
   return { models, issues, total: data.length }
 }
 
-export function tokenDanceCatalogModelReason(snapshot: TokenDanceCatalogSnapshot, id: string, expectedProtocol: string): string | null {
-  const presence = tokenDanceCatalogPresence(snapshot, id)
+export function tokenDanceCatalogModelReason(snapshot: TokenDanceCatalogSnapshot, id: string, expectedProtocol: string, audited?: TokenDanceCatalogPresence): string | null {
+  const presence = tokenDanceCatalogPresence(snapshot, id, audited)
   const unverified = '当前目录暂时无法确认该模型，已暂停调用；请稍后刷新目录。'
   if (presence.status === 'unverified' && presence.cause !== 'partial') return unverified
+  if (presence.status === 'absent') return '当前目录未列出该模型，已暂停调用；请刷新目录或主动选择其他模型。'
   const issue = snapshot.issues.find(issue => issue.id === id)
   if (issue) return tokenDanceCatalogIssueMessage(issue.reason) + '，已暂停调用；请等待供应商修复或主动选择其他模型。'
   if (presence.status === 'unverified') return unverified

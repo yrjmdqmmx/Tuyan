@@ -1,4 +1,3 @@
-import ControlField from './ControlField.jsx';
 import MenuSelect from './MenuSelect.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { FileImage, UploadCloud, X } from 'lucide-react';
@@ -61,7 +60,7 @@ export default function ReferenceUploadPanel({ images, policy = activeReferenceU
                   <X size={14} />
                 </button>
               </figcaption>
-              {onPurposeChange ? <div className="reference-purpose"><ControlField label={t("参考用途")}><MenuSelect aria-label={t("参考图 {v0} 用途", {v0: index+1})} value={image.purpose} disabled={disabled || isUploading} onChange={event=>onPurposeChange(image.id,{purpose:event.target.value})}><option value="content">{t("内容")}</option><option value="layout">{t("布局")}</option><option value="color">{t("配色")}</option><option value="style">{t("风格")}</option></MenuSelect></ControlField><ControlField label={t("补充说明")}><input aria-label={t("参考图 {v0} 说明", {v0: index+1})} value={image.note} maxLength={300} disabled={disabled || isUploading} onChange={event=>onPurposeChange(image.id,{note:event.target.value})} placeholder={t("例如：只参考箭头配色")}/></ControlField></div> : null}
+              {onPurposeChange ? <div className="reference-purpose"><label>{t("参考用途")}<MenuSelect aria-label={t("参考图 {v0} 用途", {v0: index+1})} value={image.purpose} disabled={disabled || isUploading} onChange={event=>onPurposeChange(image.id,{purpose:event.target.value})}><option value="content">{t("内容")}</option><option value="layout">{t("布局")}</option><option value="color">{t("配色")}</option><option value="style">{t("风格")}</option></MenuSelect></label><label>{t("补充说明")}<input aria-label={t("参考图 {v0} 说明", {v0: index+1})} value={image.note} maxLength={300} disabled={disabled || isUploading} onChange={event=>onPurposeChange(image.id,{note:event.target.value})} placeholder={t("例如：只参考箭头配色")}/></label></div> : null}
             </figure>
           ))}
         </div>

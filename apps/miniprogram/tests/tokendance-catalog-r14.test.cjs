@@ -38,3 +38,34 @@ test('R14 mini paused cards bind both muted style and disabled button while reta
   assert.match(wxml,/item.disabled \? 'is-paused'/);assert.match(wxml,/disabled="{{item.disabled}}"/);assert.match(wxml,/{{item.disabledReason}}/)
   assert.match(css,/\.model-row\.is-paused\s*{\s*opacity:\s*\.55/)
 })
+
+const absentIds = require('../../../test-support/tokendance-absent-r17.json')
+for (const mode of ['empty','timeout','snapshot']) test(`R17 compiled mini Core-fed ${mode}: seven audited absences hidden and 65 cards retained`,async()=>{
+  const {tokenDanceTestRuntime}=await import('../../../test-support/tokendance-runtime-r17.mjs')
+  const runtime=await tokenDanceTestRuntime(mode)
+  try {
+    const response=await runtime.invoke({action:'modelRegistry',provider:'tokendance'})
+    const providers=structuredClone(STATIC_MODEL_REGISTRY)
+    providers.openrouter=structuredClone(providers.openai)
+    providers.tokendance=response.providers.tokendance
+    const wire={...response,providers},before=JSON.stringify(wire)
+    const registry=normalizeModelRegistry(wire),models=registry.providers.tokendance.models
+    assert.equal(models.length,74)
+    const visible=new Map()
+    for(const role of ['main','image','vision']){
+      const partition=partitionRegistryModels(models,{role})
+      for(const model of [...partition.compatible,...partition.incompatible])visible.set(model.id,model)
+      if(mode!=='snapshot')assert.equal(partition.compatible.length,0)
+    }
+    for(const id of absentIds)assert.equal(visible.has(id),false,id)
+    assert.equal(visible.size,65)
+    for(const model of visible.values()){
+      assert.equal(model.catalogPresence.status,mode==='snapshot'?'listed':'unverified')
+      assert.equal(model.selectable,mode==='snapshot')
+      if(mode!=='snapshot')assert.match(model.disabledReason,/暂时无法确认/)
+    }
+    assert.equal(JSON.stringify(wire),before)
+    assert.equal(runtime.providerCalls.length,0)
+    assert.equal(runtime.tokenDanceCalls.length,0)
+  }finally{await runtime.close()}
+})

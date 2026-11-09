@@ -11,8 +11,9 @@ export function modelMissingFromCatalog(registry, provider, modelOrId) {
   const unavailable = Boolean(registry?.unavailableProviders?.[provider])
   const model = typeof modelOrId === 'object' ? modelOrId : channel?.models?.find(entry => entry.id === id)
   const health = registry?.catalogHealth?.[provider]
-  if (model?.catalogPresence?.status === 'unverified' || health?.stale || health?.cause || ['unavailable', 'error'].includes(health?.state)) return false
+  // Confirmed audit absence survives failed reads; only unknown presence is greyed.
   if (model?.catalogPresence?.status === 'absent') return true
+  if (model?.catalogPresence?.status === 'unverified' || health?.stale || health?.cause || ['unavailable', 'error'].includes(health?.state)) return false
   const healthy = health?.state === 'ready'
   return Boolean(health?.issues?.some(issue => issue.id === id && issue.reason === 'missing_live')
     || (!unavailable && healthy && registry?.providers && !channel)

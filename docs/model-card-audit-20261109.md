@@ -1,10 +1,99 @@
-# 模型卡审计验收 · 2026-11-09 R15
+# 模型卡审计验收 · 2026-11-09 R17
 
-## R15：模型配置标签、间距与移动端失效提示（当前验收）
+## R17：范围拆分、原生标签关联与失败态审计缺席（当前验收）
+
+按 `.audit-input/r17/CODEX_TASK_R17.md`，在 PR #245 `codex/model-card-specs` / `a409ab69` 上完成本地修改。未运行 Git 写命令，未访问其他工作树，未调用真实/付费模型或支付接口，未部署，未删除用户配置。历史记录和默认选择保持；本节覆盖 R14 的“失败抹掉已审缺席”规则及 R15 的跨全站标签范围。
+
+### 1 · R15/R17 split 与共享文件例外
+
+- **179 = 45 保留 + 134 移出**。45 处位于 12 个 JSX 文件，134 处位于 34 个 JSX 文件。操作方 KEEP 18 / MOVE 44 文件分类核对后不变；KEEP 还包含组件与样式支持文件。
+- MOVE 中 **42 文件与 `git show b1b86c05:<file>` 字节一致**。只读比较确认这 44 文件在 `2a977d60` 后没有后续提交变更。`App.jsx` 全部恢复，不保留其中任何 R15 hunk。
+- MOVE 中 `styles.css`、`workspace.css` 仅保留下表模型配置所需规则，并将网格规则限定到 `.tw-field.control-field`；任务、绘图、精修等恢复原标签与原间距。R16 卡片页脚、域名省略与完整 title 保留。
+- R15 AST 审计只扫描明确列出的 KEEP JSX 文件，allow-list 仅保留其中 **5 个**单控件 checkbox/radio 例外，逐项类型、数量及理由断言保留。DOM 仍逐字段检查不包裹控件和有效关联，原 `fields >= 65` 门槛未降低；补入保留范围内通用 API 配置、视觉及 Gemini 图像表单。移出表单不再混入本 PR 的 R15 渲染场景。
+- 下方 [R15/R17 split](#r15r17-split) 列出全部 45 个保留位置；全部 134 个移出位置（恢复后行号、原 R15 行号、control/标题）见 [codex/label-control-audit 移交清单](../.audit-input/r17/moved-list.md)。独立 PR 由操作方准备，本会话没有创建或修改它。
+
+| 共享文件位置 | 保留或调整的精确规则及原因 |
+| --- | --- |
+| `apps/web/src/styles.css:1`、`:2` | `ControlField.css`、`modelUnavailable.css` 导入；保留独立字段布局与名称 nowrap / ≤480px 改选独占一行、左对齐、8px 间距。 |
+| `apps/web/src/styles.css:344` | `.model-picker-label` 下距 8px；保留模型选择器标签间距。 |
+| `apps/web/src/styles.css:1630`、`:5501` | `.field.control-field > label`、`.universal-role .control-field > label` 继承原 span 的字号/颜色/字重；R17 原生标签不能丢失原标题样式。 |
+| `apps/web/src/styles.css:5536` | `.universal-size-row :is(label, .control-field)`；保留自定义模型尺寸配置的字号与最小宽度。精修 `.reference-purpose`、`.refine-structured-fields` 恢复 pre-R15。 |
+| `apps/web/src/workspace/workspace.css:71` | 保留 `.tw-field.control-field` 的 grid / 8px / min-width，内部原生控件与 `.ui-select` 全宽、margin 0，`.model-picker-label` margin 0，`.tw-preset-group > button` 左对齐；恢复普通 `.tw-field input` 的 pre-R15 6px 上距。 |
+| `apps/web/src/workspace/workspace.css:72`、`:180`、`:221` | 普通预设与 `.tw-role-card` 共用边框、圆角、14px padding、背景和外距，配置页 14px 顶距 / 首项顶距 0。 |
+| `apps/web/src/workspace/workspace.css:178`、`:179` | 模型库筛选和连接表单支持 `.control-field`；连接标题支持同级 span/原生 label。选择器限于字段层，避免新 label 重复获得组布局；账户 `.tw-profile-form` 与任务 `.tw-supplements` 恢复原 label 规则。 |
+| `apps/web/src/workspace/workspace.css:484` | `.tw-model-config .tw-preset-group > small { margin:0 }`；普通预设说明与按钮间保持 8px。 |
+
+KEEP 内 `workspaceModels.css` 与 `tokendance.css` 同步原生标题选择器，组样式限于直接子级，避免 label 再获得字段组的外距或尺寸限制。
+
+### 2 · ControlField 原生关联
+
+原生 `input` / `textarea` / `select` 均使用控件同级 `<label htmlFor={id}>`，不包裹控件。已有 ID 保持；仅给 htmlFor 时用它补 ID；两者均无时由 `useId` 产生稳定、实例唯一 ID。保留独立 accessible name、原输入事件和属性；原 span 的标题属性转到 label。`MenuSelect` 保持同级非点击 span 和 `aria-labelledby`，点击标题不打开菜单。
+
+新增 15 项测试覆盖三类原生控件 × 四种 ID/htmlFor 组合、实例 ID 唯一及重渲染稳定、菜单标题不弹出、TokenDance 充值金额标签正确关联原 `td-recharge-amount` 且不创建支付。jsdom 使用任务允许的 `label.htmlFor === input.id`、`label.control === input` 与 `getByLabelText` 原生关联证据；不将 jsdom 的 label 点击当作真实浏览器焦点验收。
+
+### 3 · TokenDance 失败态与 65 张卡片
+
+共享 `tokenDanceCatalogPresence` / `tokenDanceCatalogModelReason` 接收结构化静态审计在列记录；空、超时、格式错误、过期缓存及不完整读取均不能覆盖已审 `absent`。Core 传入静态记录，Gateway 原样中继，Web 在渠道故障判断之前识别 `absent`，小程序沿用编译后的 absent 过滤并补明注释。没有 UI 型号硬编码；七个 ID 只出现在测试夹具、审计数据和文档中。
+
+原静态标记已覆盖六个型号。第七个 `deepseek-v4-flash` 没有 TokenDance 退役记录，也不能借原厂同名型号判定退役；本轮从已提交的 `config/channel-audit/tokendance-catalog-snapshot-20261109.json`（119 条，`2026-11-09T11:43:00Z`，公开目录捕获）逐 ID 复核缺席，在 `config/tokendance/catalog.json` 与 `drift-review.json` 补记渠道缺席，再生成 Core/Web/小程序目录。没有新增线上请求。
+
+七个精确身份：`deepseek-v4-flash-vision-exp`、`deepseek-v4-flash`、`deepseek-v3.2`、`deepseek-chat-v3-0324`、`qwen3.6-max-preview`、`qwen3-30b-a3b-instruct-2507`、`qwen3-max`。这是已审缺席，不扩大为跨渠道退役；成功目录重新列出未退役精确 ID 时仍允许恢复。
+
+**空/超时：74 个 wire 历史身份 − 2 个独立到期 MiMo − 7 个已审缺席 = 65 张可见置灰卡**，全部不可选并提示“暂时无法确认”。操作方原见 72 张是 `74 − 2`，R17 恢复七个隐藏后与 PM 预期 65 一致。连接、历史 ID、默认及保存选择不删除。119 条非空快照仍为 65 张可选卡；旧 112 条完整目录仍为 66 张可见卡，之后精确旧 ID 复现仍可恢复，未更改非空目录语义。没有缺席证据的型号在失败时才保留为 unverified。
+
+### R17 验证
+
+| 项目 | 结果 |
+| --- | --- |
+| Web 受影响回归 | **216/216**；R15 保留范围、15 项原生关联、R16 页脚、模型审计全部轮次、TokenDance 失败/非空目录、模型管理与通用配置。 |
+| Web 全量 | **1419 通过 / 12 失败 / 0 跳过，共 1431**；12 个失败逐名与本文 R15 / SYNC R16 已记录清单一致，集合比较无新增。此次没有重新运行旧提交的基线测试，不把历史记录写成新基线验证。 |
+| Core | **43/43**；TokenDance cache/目录/reconciliation/R14-R17、模型审计/R13；完整 112/119 行、empty/timeout/all_invalid、过期/不完整目录、恢复精确旧 ID 与零推理断言。 |
+| Gateway | **13/13**；共享 producer 小场景与真实 Core 完整响应经内存 HTTP JSON relay，七项 absent、65 张、保存历史身份及原提示。 |
+| 小程序 | **154/154** 全套；真实 Core 三模式经编译后归一化/分区，七项隐藏、65 张、不可选提示及原 wire 不变；原两项包体测试和 R15 不增长断言均保留通过。 |
+| scripts | **18/18**；审计生成、卡片来源/完整 Core 计数、119 条公开快照与离线预览。 |
+| 生成与一致性 | `generate-model-audit`、`sync-model-catalog`、`sync-reference-upload` 已运行，各自 `--check` 通过。 |
+| 构建与静态检查 | Web Vite build（`envFile:false`，不读本地秘密配置）及原技能静态资源构建成功；小程序 `build` / `check`、Core `check`、Gateway `check` 成功。Web 只有既有大 chunk 提示。 |
+| 范围与差异 | 42 个 MOVE 文件逐字节等于 pre-R15；18 KEEP 文件分类不变；179 个 AST 位置均有唯一去向；`git diff --check` 通过。 |
+
+小程序最终 **source 1,569,387 / runtime 1,145,245 / media 189,978 bytes**。相对 R16 source **+221**，距原 **1,572,864** 上限余 **3,477 bytes**；原预算及测试未改。生成后、编译后均未超过上限；生成 `.js` 与 `.ts` 一致。R15 相对 R14 的 **1,569,427** 更严格断言也通过（余 40 bytes）。
+
+复现命令（按各包目录执行测试）：
+
+```sh
+# apps/web
+pnpm test tests/model-audit*.test.mjs tests/model-card-footer-r16.test.mjs tests/control-field-r17.test.mjs tests/tokendance*.test.mjs tests/workspace-model*.test.mjs tests/workspace-settings.test.mjs tests/universal*.test.mjs
+pnpm test
+# apps/paperbanana-api
+node --import tsx --test tests/tokendance-r14.test.ts tests/tokendance-catalog.test.ts tests/tokendance-reconciliation.test.ts tests/model-audit.test.ts tests/model-audit-r13.test.ts
+# apps/auth-gateway
+node --test tests/tokendance-catalog.test.js tests/model-audit.test.js
+# 仓库根目录
+pnpm --dir apps/miniprogram test
+node --test scripts/generate-model-audit.test.mjs scripts/tokendance-preview-catalog.test.mjs scripts/model-card*.test.mjs
+node scripts/generate-model-audit.mjs
+node scripts/sync-model-catalog.mjs
+node scripts/sync-reference-upload.mjs
+node scripts/generate-model-audit.mjs --check
+node scripts/sync-model-catalog.mjs --check
+node scripts/sync-reference-upload.mjs --check
+pnpm --dir apps/miniprogram build
+pnpm --dir apps/miniprogram check
+pnpm --dir apps/paperbanana-api check
+pnpm --dir apps/auth-gateway check
+pnpm --dir apps/web exec node --input-type=module -e 'import {build} from "vite"; await build({envFile:false});'
+pnpm --dir apps/web exec node scripts/publish-agent-skills.mjs
+```
+
+
+Browser plugin not available；实际 `pnpm --dir apps/web exec playwright --version` 返回 command not found。验证流为模型配置 → 标签关联/菜单标题点击 → 原生关联正确且菜单不打开，以及模型目录 → empty/timeout → 七项隐藏、其他卡片置灰、选择保留。DOM/CSS 和编译组件验证完成；真实浏览器 URL/title、控制台、桌面/移动截图及微信原生扫描未验收，既有实屏待办继续保留。未安装浏览器依赖。
+
+---
+
+## R15：模型配置标签、间距与移动端失效提示（历史验收，范围由 R17 覆盖）
 
 按 `.audit-input/r15/CODEX_TASK_R15.md` 完成；R14 已提交基线为 `b1b86c059e4ea1220ab97cc3745d429e75d952c3`。保留 R14 TokenDance、在列状态及已保存配置。未运行修改 Git 引用、索引或工作树的 Git 命令；没有真实/付费模型调用、生产/服务器变更或用户配置删除。`../Tuyan-wt-baseline` 未访问；基线对照只从 R14 提交读取源码导出到 `/tmp`，仅运行下述四文件测试，没有构建或改写基线源码。
 
-### R15 界面与审计范围
+### R15 原始界面与审计范围（历史记录）
 
 - 普通预设使用 `ControlField`：标题为控件同级 `span`，通过稳定、实例唯一的 `aria-labelledby` 关联，符合任务允许的独立标签方案；没有 label 包裹 input/select/textarea/button。点击标题不会打开菜单，控件点击/键盘选择沿用 `MenuSelect`。已有独立 aria-label 保留；组件透传原输入事件、禁用状态、引用与表单字段。
 - 普通预设复用 `tw-field` 纵向网格和角色组公共边框/外距规则，标题在上、选择器全宽；标签→控件、字段→“应用此连接的默认组合”→说明均为 **8px**。去掉旧字段的额外 6px margin 及说明的额外 6px margin；主模型/视觉理解标签下距同为 8px。角色卡仍为实际角色数量，预设不算模型角色。
@@ -13,7 +102,7 @@
 - 全量 AST 扫描 `apps/web/src/**/*.{js,jsx,ts,tsx}` 并复核余下 label，发现 **198 处**包裹控件；其中 **179 处 / 46 个 JSX 文件**拆为 `ControlField`，覆盖工作区、模型管理、旧工作台、图型/期刊/参考设置、账户、SVG、评测后台及工具生态。CSS 原以 label 为对象的字段布局同步匹配 `.control-field`，保留各处原纵向/横向布局。
 - 显式保留 **19 处** Web 例外：11 个复选框位置、2 个单选卡位置、4 个文件上传入口、2 个工具栏滑杆。它们的文字与控件有意共享点击区域；滑杆原有横排间距且无下拉悬停样式。源代码 allow-list 按文件、控件类型、数量和理由严格比对；渲染测试还限制每个允许 label 只能含一个控件。小程序 WXML 仅发现 1 处注销确认复选框，理由相同；其余未包裹控件的独立 label 无需修改。
 
-### R15 验证
+### R15 验证（历史结果）
 
 | 项目 | 结果 |
 | --- | --- |
@@ -67,212 +156,59 @@ node --import tsx --import ./tests/dom-setup.mjs --test tests/inactive-route-ui.
 | `tests/workflow-v400-ui.test.mjs` | model-v1 SVG data figure omits an unused editing-only image route credential |
 | `tests/workspace-migration.test.mjs` | advanced API import saves a separate connection without copying old credentials or changing task selection |
 
-### R15 全部 label 包裹控件位置清单
+### R15/R17 split
 
-行号为 R15 最终源码，按源码位置逐项列出；同一行存在多个字段时分别记录。`MenuSelect` 实际渲染 button/combobox；条件分支中的多种控件同列。下表 **199 行 = Web 198 + 小程序 1**，完整保留 fixed / not 与理由。
+R15 原 179 处拆分为 **保留 45 处 / 12 个 JSX 文件**、**移出 134 处 / 34 个 JSX 文件**。操作方 KEEP 18 / MOVE 44 文件分类保持；`ControlField.*` 与模型失效提示组件/CSS 计入 KEEP 文件，但不增加控件位置数量。下表为 #245 保留项（当前源码 file:line / control）；完整移出项及当前、R15 双行号见 [codex/label-control-audit 移交清单](../.audit-input/r17/moved-list.md)。未操作该 PR 的其他工作树。
 
-| file:line | control | fixed or not | why |
-| --- | --- | --- | --- |
-| `apps/web/src/App.jsx:1698` | input · 开发后端地址 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/App.jsx:1705` | input "number" · 候选图数量 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/App.jsx:1708` | input "number" · 评审轮数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/App.jsx:1724` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/AccountSettingsDialog.jsx:132` | input · 注销邮箱验证码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/AccountSettingsDialog.jsx:134` | input "password" · 当前登录密码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/AccountSettingsDialog.jsx:136` | input · 输入“删除账号”确认 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/AuthPanel.jsx:136` | input · 昵称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/AuthPanel.jsx:137` | input "email" · 邮箱 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/AuthPanel.jsx:138` | input "password" · 密码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:86` | input · 单图估算 USD | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:86` | input · 自动 Judge USD | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:86` | input · 总预算 USD | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:87` | input · 公开价格来源 HTTPS | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:91` | input · Run ID | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:92` | textarea · 纳入公开精选的 Sample ID（逗号或换行分隔） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:92` | input "file" · 导入 | not（显式例外） | 上传文字有意触发隐藏文件输入，保留可点击入口 |
-| `apps/web/src/components/BenchmarkAdminPanel.jsx:93` | textarea · 精选证据 JSON（sampleId / kind / caption） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkEvidencePages.jsx:324` | textarea · 评估提示词 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkEvidencePages.jsx:325` | textarea · 想测试的模型能力 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkEvidencePages.jsx:326` | textarea · 必须出现的内容或关系 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkEvidencePages.jsx:327` | textarea · 不允许出现的结果 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkEvidencePages.jsx:328` | textarea · 补充说明 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:18` | MenuSelect（button/combobox） · 模型研发厂商 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:26` | input · 最低价格 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:26` | input · 最高价格 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:57` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/BenchmarkPareto.jsx:106` | MenuSelect（button/combobox） · 评测维度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:107` | input / button "button" · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkPareto.jsx:119` | MenuSelect（button/combobox） · 成本来源 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkParetoScatter.jsx:225` | MenuSelect（button/combobox） · 成本刻度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkRankingFilters.jsx:16` | input "search" / button "button" · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/BenchmarkRankingFilters.jsx:20` | MenuSelect（button/combobox） · 模型研发厂商 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FeedbackDialog.jsx:74` | textarea · 反馈内容 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FeedbackDialog.jsx:84` | input · 联系方式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:18` | MenuSelect（button/combobox） · 面板坐标尺度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:19` | input · 面板名称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:19` | MenuSelect（button/combobox） · 子图类型 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:19` | textarea · 本面板正文 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:19` | textarea · 本面板图注 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:30` | MenuSelect（button/combobox） · 数据输入格式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:32` | textarea · 数据行 JSON | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:32` | textarea · 数据表（CSV，第一行为列名） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:34` | input · 数据来源 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:35` | input · {field} 单位 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:36` | MenuSelect（button/combobox） / textarea / input {field.kind==='number'?'number':'text'} · {optionLabel(field.key)} · options.{field.key}{field.optional?'（可选）':''} {f | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:39` | MenuSelect（button/combobox） · 分析方法 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:40` | textarea · 计算方法与数据处理说明 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:41` | input "number" · 面积比例系数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:42` | input · {key==='startLabel'?'起始系列名称':'结束系列名称'} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:43` | input "number" · 分箱数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:44` | input "number" · 累计初值 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:45` | input "number" · {type.id==='violin'?'密度带宽系数':'密度带宽（同数值单位）'} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:46` | MenuSelect（button/combobox） · 无效应参考值 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:47` | MenuSelect（button/combobox） · P值口径 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:48` | textarea · 动态数值字段单位（JSON 对象） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureInputs.jsx:52` | input · 等值线数值（逗号分隔） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureReferencePreferences.jsx:15` | input · 研究主题或学科关键词 可选 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureReferencePreferences.jsx:16` | MenuSelect（button/combobox） · 排布偏好 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureReferencePreferences.jsx:17` | MenuSelect（button/combobox） · 内容密度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/FigureTypePicker.jsx:34` | input "search" · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalBookshelf.jsx:107` | input "search" · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalBookshelf.jsx:108` | MenuSelect（button/combobox） · 学科 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:58` | MenuSelect（button/combobox） · 投稿阶段 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:59` | MenuSelect（button/combobox） · 图件用途 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:60` | input "number" · 最终排版宽度（mm） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:61` | MenuSelect（button/combobox） · 图像构成 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:71` | MenuSelect（button/combobox） · 图像性质 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/JournalRulePicker.jsx:77` | MenuSelect（button/combobox） · 精修原图性质 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/MaterialUploadPanel.jsx:6` | input "file" · 选择文件 | not（显式例外） | 上传文字有意触发隐藏文件输入，保留可点击入口 |
-| `apps/web/src/components/MaterialUploadPanel.jsx:12` | input "file" · 替换文件 | not（显式例外） | 上传文字有意触发隐藏文件输入，保留可点击入口 |
-| `apps/web/src/components/ModelPicker.jsx:365` | input "search" · 搜索{t(label)} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ModelRoutingSettings.jsx:132` | MenuSelect（button/combobox） · 稀宇科技区域 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ModelRoutingSettings.jsx:137` | input "password" · {t(label)} 接入密钥  <KeyRound s | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ModelRoutingSettings.jsx:170` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/PhoneCodeForm.jsx:27` | input "tel" · 手机号<span aria-hidden="true | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PhoneCodeForm.jsx:31` | input · 图形验证码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PlusPanel.jsx:97` | select · 格式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PlusPanel.jsx:98` | select · 模式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PlusPanel.jsx:99` | input "number" · 候选数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PlusPanel.jsx:100` | input "number" · 评审轮数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/PlusPanel.jsx:101` | select · 清晰度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceLibraryPanel.jsx:91` | input "search" · 搜索参考案例 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceLibraryPanel.jsx:92` | MenuSelect（button/combobox） · 图类大类 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceLibraryPanel.jsx:92` | MenuSelect（button/combobox） · 具体图型 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceLibraryPanel.jsx:93` | MenuSelect（button/combobox） · 研究领域 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceUploadPanel.jsx:25` | input "file" · {t(isInspecting ? '检查图片中' : isUploading ? '上传中' : | not（显式例外） | 上传文字有意触发隐藏文件输入，保留可点击入口 |
-| `apps/web/src/components/ReferenceUploadPanel.jsx:64` | MenuSelect（button/combobox） · 参考用途 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/ReferenceUploadPanel.jsx:64` | input · 补充说明 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/RefineMaskEditor.jsx:53` | input "range" · 笔刷大小 | not（显式例外） | 工具栏滑杆及文字共用操作区域，已有横向间距，无下拉悬停样式 |
-| `apps/web/src/components/RefinePanel.jsx:64` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/RefinePanel.jsx:65` | textarea · {t(label)} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/RefineSourceContext.jsx:14` | MenuSelect（button/combobox） · 原图性质 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/Select.jsx:17` | MenuSelect（button/combobox） · {t(label)} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:41` | input {type} · {label} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:408` | MenuSelect（button/combobox） · 文字对齐 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:408` | MenuSelect（button/combobox） · 字形 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:409` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:410` | MenuSelect（button/combobox） · 箭头方向 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:410` | MenuSelect（button/combobox） · 线条样式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:411` | MenuSelect（button/combobox） · 选中节点 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:412` | MenuSelect（button/combobox） · 圆弧段 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:414` | MenuSelect（button/combobox） · 圆弧方向 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:415` | MenuSelect（button/combobox） · 弧线大小 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/SvgEditorCanvas.jsx:448` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/SvgResultWorkspace.jsx:140` | MenuSelect（button/combobox） · 此浏览器的草稿 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/TokenDancePanel.jsx:71` | input "number" · 充值金额（人民币元） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:27` | MenuSelect（button/combobox） · 认证方式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:28` | MenuSelect（button/combobox） · 调用兼容变体 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:30` | MenuSelect（button/combobox） · 模型目录接口规则 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:102` | MenuSelect（button/combobox） · 连接模板 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:108` | MenuSelect（button/combobox） · API 协议 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:109` | input · Base URL（含版本，不含操作路径） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:114` | input "password" · API Key | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:115` | input "datetime-local" · 令牌到期时间（本地时间，仅当前页） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:128` | input · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalApiSettings.jsx:135` | input · 准确模型 ID 支持手动填写 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalCapabilities.jsx:28` | input "number" · {t(title)}{layer==='service'?' · 服务方':''} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalCapabilities.jsx:29` | input · {t(scope==='inputLimits'?'允许的输入格式':'允许的输出格式')}{layer==='service'?' · | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalCapabilities.jsx:41` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/UniversalCapabilities.jsx:55` | input · {t(title)} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalCapabilities.jsx:60` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/UniversalConnections.jsx:84` | MenuSelect（button/combobox） · 已保存连接 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalConnections.jsx:92` | input · 连接名称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:14` | MenuSelect（button/combobox） · 部署对应的原厂型号（请在 Azure 控制台核对） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:18` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/components/UniversalExtensions.jsx:23` | MenuSelect（button/combobox） · 工具使用的图像型号 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:24` | input · 图像型号的 Azure 部署名 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:26` | MenuSelect（button/combobox） · 质量 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:27` | MenuSelect（button/combobox） · 格式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:35` | MenuSelect（button/combobox） · 已核验请求格式的型号 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/UniversalExtensions.jsx:37` | input "number" · 图生图重绘强度（0 保留原图，1 忽略原图） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/WatchaIdentityPanel.jsx:50` | input "email" · 接收验证的邮箱 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/WatchaIdentityPanel.jsx:66` | input · 邮箱验证码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/WorkflowOptions.jsx:66` | input "radio" · 整项选择 | not（显式例外） | 整项单选卡及说明有意共用点击目标 |
-| `apps/web/src/components/admin/AdminCommon.jsx:17` | MenuSelect（button/combobox） · 每页 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminDetails.jsx:31` | MenuSelect（button/combobox） · 跟进状态 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminDetails.jsx:31` | input · 能力分类 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminDetails.jsx:31` | textarea · 题目内容 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminDetails.jsx:32` | textarea · 处理说明 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:17` | MenuSelect（button/combobox） · {title} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:24` | input · 搜索 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:24` | MenuSelect（button/combobox） · 搜索范围 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:24` | input · 用户 ID | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:25` | input · 模型 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:25` | input · 能力分类 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:26` | input "date" · {state.section === 'users' ? '注册日期从' : '创建日期从'} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:26` | input "date" · 至（含当天） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:26` | MenuSelect（button/combobox） · 排序 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:36` | MenuSelect（button/combobox） · 统计范围 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:36` | input "date" · 开始日期 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/components/admin/AdminWorkspace.jsx:36` | input "date" · 结束日期 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:91` | MenuSelect（button/combobox） · {label} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:97` | textarea · 或粘贴表格数据 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:103` | MenuSelect（button/combobox） / input · 着色字段{availableFields.length ? | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:104` | MenuSelect（button/combobox） · 视角 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:105` | MenuSelect（button/combobox） · 色标 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:107` | MenuSelect（button/combobox） · 图表类型 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:110` | input · 图表标题（可选） | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/ecosystem/ResearchEcosystem.jsx:129` | input "range" · 预览缩放 | not（显式例外） | 工具栏滑杆及文字共用操作区域，已有横向间距，无下拉悬停样式 |
-| `apps/web/src/workspace/AccountProfileEditor.jsx:26` | input · 账号昵称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/AccountProfileEditor.jsx:35` | input "email" · 新邮箱 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/AccountProfileEditor.jsx:35` | input · 当前邮箱验证码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/AccountProfileEditor.jsx:35` | input · 新邮箱验证码 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/ResultWorkspace.jsx:45` | MenuSelect（button/combobox） · 生成组 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/ResultWorkspace.jsx:69` | MenuSelect（button/combobox） · 与哪个版本比较 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/TaskComposer.jsx:79` | MenuSelect（button/combobox） · 当前修改对象 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/TaskComposer.jsx:95` | input · 指定图注 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/TaskComposer.jsx:95` | input · 避免出现 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/TaskWorkspace.jsx:157` | input · 任务名称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceApiSetup.jsx:31` | MenuSelect（button/combobox） · 配置角色 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceApiSetup.jsx:34` | input · 新连接名称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceApiSetup.jsx:34` | MenuSelect（button/combobox） · 密钥保存位置 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:10` | MenuSelect（button/combobox） · 业务空间接入 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:11` | input · 百炼业务空间 ID | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:12` | MenuSelect（button/combobox） · 百炼服务地区 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | input "url" · API 基础地址 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | MenuSelect（button/combobox） · 接口协议 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | MenuSelect（button/combobox） · 鉴权方式 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | input "datetime-local" · 令牌到期时间 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceCustomModel.jsx:19` | input · 精确模型 ID | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceDrawingSettings.jsx:29` | MenuSelect（button/combobox） · 比例 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceDrawingSettings.jsx:30` | MenuSelect（button/combobox） · 清晰度 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceDrawingSettings.jsx:32` | MenuSelect（button/combobox） · 图库检索 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceDrawingSettings.jsx:33` | MenuSelect（button/combobox） · 候选数量 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceDrawingSettings.jsx:33` | MenuSelect（button/combobox） · 评审轮数 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelCatalog.jsx:124` | input · 工具滑杆 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelCatalog.jsx:155` | MenuSelect（button/combobox） · 所属连接 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:63` | MenuSelect（button/combobox） · 自定义连接 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:63` | MenuSelect（button/combobox） · 模型角色 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:73` | input · 连接名称 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:78` | MenuSelect（button/combobox） · 服务区域 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:79` | input "radio" · 整项选择 | not（显式例外） | 整项单选卡及说明有意共用点击目标 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:80` | input "password" · API 密钥 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceModelPanels.jsx:111` | MenuSelect（button/combobox） · 普通预设 | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceRefineControls.jsx:23` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/web/src/workspace/WorkspaceRefineControls.jsx:23` | textarea · {label} | fixed | 拆为独立标题与 aria-labelledby 控件；保留现有类及选择/输入逻辑，悬停仅作用于控件 |
-| `apps/web/src/workspace/WorkspaceSearch.jsx:31` | input "checkbox" · 复选确认/选项 | not（显式例外） | 文字与复选框共用点击目标，切换意图一致 |
-| `apps/miniprogram/miniprogram/components/account-settings/account-settings.wxml:38` | checkbox · 我理解删除不可撤销 | not（显式例外） | 点击确认文字切换同一复选框，无下拉控件或挤压布局 |
+| file:line | control / 标题 |
+| --- | --- |
+| `apps/web/src/components/ModelPicker.jsx:365` | input "search" · { {t("搜索")}{t(label)}} |
+| `apps/web/src/components/ModelRoutingSettings.jsx:132` | MenuSelect · {{t("稀宇科技区域")}} |
+| `apps/web/src/components/ModelRoutingSettings.jsx:137` | input "password" · {{t(label)}{t(" 接入密钥")}} |
+| `apps/web/src/components/TokenDancePanel.jsx:71` | input "number" · {t("充值金额（人民币元）")} |
+| `apps/web/src/components/UniversalApiSettings.jsx:27` | MenuSelect · {{t("认证方式")}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:28` | MenuSelect · {{t("调用兼容变体")}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:30` | MenuSelect · {{t("模型目录接口规则")}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:102` | MenuSelect · {{t('连接模板')}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:108` | MenuSelect · {{t('API 协议')}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:109` | input · {{t('Base URL（含版本，不含操作路径）')}} |
+| `apps/web/src/components/UniversalApiSettings.jsx:114` | input "password" · {API Key} |
+| `apps/web/src/components/UniversalApiSettings.jsx:115` | input "datetime-local" · {令牌到期时间（本地时间，仅当前页）} |
+| `apps/web/src/components/UniversalApiSettings.jsx:128` | input · {t("{v0} 搜索模型", {v0: label})} |
+| `apps/web/src/components/UniversalApiSettings.jsx:135` | input · {{t("准确模型 ID ")}{t("支持手动填写")}} |
+| `apps/web/src/components/UniversalCapabilities.jsx:28` | input "number" · {{t(title)}{layer==='service'?' · 服务方':''}} |
+| `apps/web/src/components/UniversalCapabilities.jsx:29` | input · {{t(scope==='inputLimits'?'允许的输入格式':'允许的输出格式')}{layer==='service'?' · 服务方':''}} |
+| `apps/web/src/components/UniversalCapabilities.jsx:55` | input · {t(title)} |
+| `apps/web/src/components/UniversalConnections.jsx:84` | MenuSelect · {已保存连接} |
+| `apps/web/src/components/UniversalConnections.jsx:92` | input · {连接名称} |
+| `apps/web/src/components/UniversalExtensions.jsx:14` | MenuSelect · {部署对应的原厂型号（请在 Azure 控制台核对）} |
+| `apps/web/src/components/UniversalExtensions.jsx:23` | MenuSelect · {工具使用的图像型号} |
+| `apps/web/src/components/UniversalExtensions.jsx:24` | input · {图像型号的 Azure 部署名} |
+| `apps/web/src/components/UniversalExtensions.jsx:26` | MenuSelect · {质量} |
+| `apps/web/src/components/UniversalExtensions.jsx:27` | MenuSelect · {格式} |
+| `apps/web/src/components/UniversalExtensions.jsx:35` | MenuSelect · {已核验请求格式的型号} |
+| `apps/web/src/components/UniversalExtensions.jsx:37` | input "number" · {图生图重绘强度（0 保留原图，1 忽略原图）} |
+| `apps/web/src/workspace/WorkspaceApiSetup.jsx:31` | MenuSelect · {配置角色} |
+| `apps/web/src/workspace/WorkspaceApiSetup.jsx:34` | input · {新连接名称} |
+| `apps/web/src/workspace/WorkspaceApiSetup.jsx:34` | MenuSelect · {密钥保存位置} |
+| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:10` | MenuSelect · {业务空间接入} |
+| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:11` | input · {百炼业务空间 ID} |
+| `apps/web/src/workspace/WorkspaceBailianConnection.jsx:12` | MenuSelect · {百炼服务地区} |
+| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | input "url" · {API 基础地址} |
+| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | MenuSelect · {接口协议} |
+| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | MenuSelect · {鉴权方式} |
+| `apps/web/src/workspace/WorkspaceCustomModel.jsx:12` | input "datetime-local" · {令牌到期时间} |
+| `apps/web/src/workspace/WorkspaceCustomModel.jsx:19` | input · {精确模型 ID} |
+| `apps/web/src/workspace/WorkspaceModelCatalog.jsx:124` | input · {saved ? '搜索已添加模型' : '搜索模型目录'} |
+| `apps/web/src/workspace/WorkspaceModelCatalog.jsx:155` | MenuSelect · {所属连接} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:63` | MenuSelect · {自定义连接} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:63` | MenuSelect · {模型角色} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:73` | input · {连接名称} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:78` | MenuSelect · {服务区域} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:80` | input "password" · { API 密钥} |
+| `apps/web/src/workspace/WorkspaceModelPanels.jsx:111` | MenuSelect · {普通预设} |
 
+保留文件中仅 **5 处**有意包裹控件：`ModelRoutingSettings` 1 个 checkbox、`UniversalCapabilities` 2 个 checkbox、`UniversalExtensions` 1 个 checkbox、`WorkspaceModelPanels` 1 个 radio；逐项理由仍由 R15 allow-list 精确核对。范围外的 14 处历史例外不再属于本 PR 的 Web 标签测试范围；小程序注销确认 checkbox 的原测试保留。
 
 ## R14：TokenDance 空目录与结构化在列状态（当前验收）
 

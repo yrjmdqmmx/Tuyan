@@ -8,6 +8,7 @@ import WorkspaceModelCatalog, {catalogRows} from '../src/workspace/WorkspaceMode
 import ModelPicker from '../src/components/ModelPicker.jsx'
 import {ModelSpecifications} from '../src/components/ModelSpecifications.jsx'
 import {modelMissingFromCatalog} from '../src/lib/modelRegistry.js'
+import absentIds from '../../../test-support/tokendance-absent-r17.json' with { type: 'json' }
 afterEach(cleanup)
 const id='qwen3.8-flash'
 for (const mode of ['empty','timeout','missing','all_invalid']) test(`R14 Web Core-fed ${mode}: visible paused cards, channel retained and saved selection unchanged`,async()=>{
@@ -15,7 +16,14 @@ for (const mode of ['empty','timeout','missing','all_invalid']) test(`R14 Web Co
   try {
     if(mode==='missing'||mode==='all_invalid')runtime.legacy.configureRuntimeFetch(async()=>Response.json({data:mode==='missing'?[{id:'other',supported_protocols:['openai:chat-completions']}]:[null]}))
     const registry=await runtime.invoke({action:'modelRegistry',provider:'tokendance'})
-    assert.equal(catalogRows(registry).length,mode==='missing'?0:72, 'only the two independently expired MiMo cards remain hidden on failure')
+    assert.equal(catalogRows(registry).length,mode==='missing'?0:65, 'two expired MiMo cards and seven audited absences remain hidden on failure')
+    const visibleIds=catalogRows(registry).map(row=>row.model.id)
+    for(const absentId of absentIds) assert.equal(visibleIds.includes(absentId),false,absentId)
+    if(mode!=='missing') for(const row of catalogRows(registry)) {
+      assert.equal(row.model.selectable,false)
+      assert.equal(row.model.catalogPresence.status,'unverified')
+      assert.match(row.model.disabledReason,/暂时无法确认/)
+    }
     const model=registry.providers.tokendance.models.find(m=>m.id===id)
     registry.providers.tokendance.models=[model]
     assert.equal(model.catalogPresence.status,mode==='missing'?'absent':'unverified')
@@ -64,4 +72,15 @@ test('R14 compact source keeps its full domain and URL while R16 prevents letter
   assert.match(css,/\.model-spec-footer\s*{[^}]*flex-wrap:wrap;/)
   assert.doesNotMatch(css,/\.model-spec-sources[^{}]*\{[^}]*(?:overflow-wrap:anywhere|word-break:break-all|white-space:normal)/)
   assert.match(css,/\.tw-catalog-card\.is-paused\s*{\s*opacity:\s*\.6/)
+})
+
+test('R17 healthy TokenDance snapshot still hides exactly audited absences and expired MiMo cards',async()=>{
+  const runtime=await createRefineRuntime({startServer:false,tokenDanceCatalogMode:'snapshot'})
+  try {
+    const registry=await runtime.invoke({action:'modelRegistry',provider:'tokendance'})
+    const visible=catalogRows(registry)
+    assert.equal(visible.length,65)
+    assert.ok(visible.every(row=>row.model.selectable && row.model.catalogPresence.status==='listed'))
+    for(const id of absentIds)assert.equal(visible.some(row=>row.model.id===id),false,id)
+  } finally {await runtime.close()}
 })

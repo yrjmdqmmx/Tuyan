@@ -14,9 +14,12 @@ const absentIds = ['deepseek-chat-v3-0324', 'deepseek-v3.2', 'deepseek-v4-flash-
 const visible = (registry: any) => registry.providers.tokendance.models.filter((m: any) => !modelMissingFromCatalog(registry, 'tokendance', m) && !modelRetiredFromCatalog(m))
 const deepseek = (registry: any) => visible(registry).filter((m: any) => m.id.startsWith('deepseek-')).map((m: any) => m.id).sort()
 
-test('audited fallback shows six DeepSeek models, preserves historical IDs/defaults and does not relist absences on failure', () => {
+test('R17 audited fallback shows five DeepSeek models, preserves historical IDs/defaults and does not relist absences on failure', () => {
   const registry = { providers: STATIC_MODEL_REGISTRY, unavailableProviders: { tokendance: '目录读取失败' } }
-  assert.deepEqual(deepseek(registry), deepseekIds)
+  assert.deepEqual(deepseek(registry), deepseekIds.filter(id => id !== 'deepseek-v4-flash'))
+  const flash = registry.providers.tokendance.models.find((m: any) => m.id === 'deepseek-v4-flash')
+  assert.equal(flash.catalogPresence.status, 'absent')
+  assert.equal(flash.catalogPresence.checkedAt, '2026-11-09T11:43:00Z')
   for (const id of absentIds) {
     const m = registry.providers.tokendance.models.find((m: any) => m.id === id)
     assert.ok(m, 'historical ID retained: ' + id)
@@ -54,8 +57,11 @@ test('current 112-row directory yields six DeepSeek model cards and excludes too
     assert.ok(deepseek(recovered).includes('deepseek-v3.2'))
     runtime.legacy.configureRuntimeFetch(async () => { throw new Error('offline fixture') })
     const failed = await runtime.invoke({ action: 'modelRegistry', provider: 'tokendance', refreshCatalog: true })
-    assert.ok(deepseek(failed).includes('deepseek-v3.2'), 'failed refresh retains historical cards as unverified')
-    assert.ok(failed.providers.tokendance.models.every((m: any) => m.catalogPresence.status === 'unverified'))
+    assert.equal(deepseek(failed).includes('deepseek-v3.2'), false, 'failure cannot erase the static audited absence')
+    for (const model of failed.providers.tokendance.models) {
+      const audited = STATIC_MODEL_REGISTRY.tokendance.models.find((m: any) => m.id === model.id)?.catalogPresence
+      assert.equal(model.catalogPresence.status, audited?.status === 'absent' ? 'absent' : 'unverified')
+    }
     assert.ok(visible(failed).every((m: any) => m.selectable === false))
   } finally { await runtime.close() }
 })

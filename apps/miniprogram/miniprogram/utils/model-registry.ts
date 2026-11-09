@@ -233,6 +233,7 @@ export function partitionRegistryModels(
   const query = stringValue(options.query).toLocaleLowerCase('zh-CN')
   const annotated = models
     .filter(model => !removedModel(model.auditChannel || '', model.id))
+    // Core retains audited absence on failure; only unverified cards stay grey.
     .filter((model) => model.catalogPresence?.status !== 'absent' && (model.selectable !== false || model.catalogPresence?.status === 'unverified') && !(model.expirationDate && !model.expirationDate.startsWith('2098') && Date.now() >= Date.parse(model.expirationAt || `${model.expirationDate}T00:00:00Z`)))
     .filter((model) => model.roles.includes(options.role) || Boolean(model.roleReasons[options.role]))
     .filter((model) => !options.recommendedOnly || (model.recommended && model.lifecycle === 'stable'))

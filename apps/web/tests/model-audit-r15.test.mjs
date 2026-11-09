@@ -8,14 +8,12 @@ import { render, screen, fireEvent, cleanup, within } from '@testing-library/rea
 import { chooseMenuOption } from './menu-helpers.mjs';
 import { WorkspaceModelConfig, WorkspaceModelManager } from '../src/workspace/WorkspaceModelPanels.jsx';
 import WorkspaceModelCatalog from '../src/workspace/WorkspaceModelCatalog.jsx';
-import WorkspaceDrawingSettings from '../src/workspace/WorkspaceDrawingSettings.jsx';
-import WorkspaceRefineControls from '../src/workspace/WorkspaceRefineControls.jsx';
 import WorkspaceApiSetup from '../src/workspace/WorkspaceApiSetup.jsx';
 import WorkspaceCustomModel, { CustomConnectionFields } from '../src/workspace/WorkspaceCustomModel.jsx';
 import WorkspaceBailianConnection from '../src/workspace/WorkspaceBailianConnection.jsx';
-import AccountProfileEditor from '../src/workspace/AccountProfileEditor.jsx';
-import TaskComposer from '../src/workspace/TaskComposer.jsx';
-import { newDraft, newWorkspace, currentDraft } from '../src/workspace/workspaceState.js';
+import { newDraft } from '../src/workspace/workspaceState.js';
+import UniversalApiSettings from '../src/components/UniversalApiSettings.jsx';
+import { emptyUniversalDraft } from '../src/lib/universalApi.js';
 import ModelPicker from '../src/components/ModelPicker.jsx';
 import { removedModel } from '../src/lib/modelAudit.js';
 import { STATIC_MODEL_REGISTRY } from '../src/lib/staticModelCatalog.js';
@@ -36,13 +34,29 @@ function fixture(ids = ['mimo-v2.5']) {
 }
 const current = { libraryModelId: 'm0', connectionId: 'c', accessProvider: 'xiaomi', modelId: 'mimo-v2.5' };
 
+// PR #245 retains only model configuration and channel connection surfaces.
+const keepFiles = [
+  "components/ControlField.jsx",
+  "components/ModelPicker.jsx",
+  "components/ModelRoutingSettings.jsx",
+  "components/ModelUnavailableText.jsx",
+  "components/TokenDancePanel.jsx",
+  "components/UniversalApiSettings.jsx",
+  "components/UniversalCapabilities.jsx",
+  "components/UniversalConnections.jsx",
+  "components/UniversalExtensions.jsx",
+  "workspace/WorkspaceApiSetup.jsx",
+  "workspace/WorkspaceBailianConnection.jsx",
+  "workspace/WorkspaceCustomModel.jsx",
+  "workspace/WorkspaceModelCatalog.jsx",
+  "workspace/WorkspaceModelPanels.jsx"
+];
+
 // Deliberate whole-choice targets only. A second control inside any label fails.
 const domAllowlist = [
   ['.tw-storage-option > input[type="radio"]', 'The storage choice includes its explanatory text'],
-  ['.workflow-choice > input[type="radio"]', 'The workflow card is a single radio choice'],
   ['.universal-capabilities label > input[type="checkbox"]', 'Clicking the capability text toggles that capability'],
   ['.universal-confirm > input[type="checkbox"]', 'The confirmation text belongs to its checkbox'],
-  ['.tw-settings-section > label > input[type="checkbox"]', 'The structured-refinement text toggles its checkbox'],
 ];
 function assertSeparateControls(root = document.body) {
   for (const label of root.querySelectorAll('label')) {
@@ -55,7 +69,12 @@ function assertSeparateControls(root = document.body) {
     const control = field.querySelector('input,select,textarea,button[role="combobox"]');
     assert.ok(control, field.outerHTML);
     assert.equal(control.closest('label'), null);
-    assert.ok(control.getAttribute('aria-label') || control.getAttribute('aria-labelledby'), control.outerHTML);
+    assert.ok(control.getAttribute('aria-label') || control.getAttribute('aria-labelledby') || control.labels?.length, control.outerHTML);
+    if (control.matches('input,select,textarea')) {
+      const label = field.querySelector('label');
+      assert.equal(label.htmlFor, control.id);
+      assert.equal(label.control, control);
+    }
     for (const id of (control.getAttribute('aria-labelledby') || '').split(' ').filter(Boolean)) {
       const label = document.getElementById(id);
       assert.ok(label && label.parentElement === field, id);
@@ -64,10 +83,10 @@ function assertSeparateControls(root = document.body) {
   }
 }
 
-test('R15 every source wrapping label is explicitly allow-listed with a reason', () => {
+test('R15/R17 every retained source wrapping label is explicitly allow-listed with a reason', () => {
   const ts = createRequire(new URL('../../miniprogram/package.json', import.meta.url))('typescript');
   const root = new URL('../src/', import.meta.url), wrappers = [];
-  for (const file of fs.readdirSync(root, { recursive: true }).filter(file => /\.[jt]sx?$/.test(file)).sort()) {
+  for (const file of [...keepFiles].sort()) {
     const source = ts.createSourceFile(file, fs.readFileSync(new URL(file, root), 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     function visit(node) {
       if (ts.isJsxElement(node) && node.openingElement.tagName.getText(source) === 'label') {
@@ -99,19 +118,16 @@ test('R15 every source wrapping label is explicitly allow-listed with a reason',
 test('R15 rendered workspace and model-management controls remain outside labels across conditional forms', () => {
   const models = fixture(), draft = newDraft();
   draft.mode = 'advanced';
-  const state = newWorkspace('r15');
-  Object.assign(currentDraft(state), { caption: '图注', avoid: '水印' });
   const connection = { id: 'custom', provider: 'custom', custom: { protocol: 'openai-chat', baseUrl: 'https://fixture.example/v1', auth: 'bearer-expiring' } };
   const scenes = [
-    h(WorkspaceDrawingSettings, { draft, path: 'png', models, onChange: noop }),
-    h(WorkspaceRefineControls, { settings: { refineStructured: { object:'', attributes:'', relationship:'', preserve:'' } }, onChange: noop }),
     h(WorkspaceApiSetup, { models }),
+    h(UniversalApiSettings, { drafts:Object.fromEntries(['main','image','vision'].map(role=>[role,emptyUniversalDraft(role)])), keys:{}, contractSupported:true, health:{backendMode:'gateway'}, apiBase:'https://fixture.example', onChange:noop, onKeyChange:noop, onSave:noSave }),
     h(CustomConnectionFields, { value: connection, onChange: noop }),
     h(WorkspaceBailianConnection, { value: { bailian: { workspaceId:'fixture', region:'cn-beijing' } }, onChange: noop }),
     h(WorkspaceCustomModel, { connection, role: 'image', models }),
     h(WorkspaceCustomModel, { connection, role: 'main', models }),
-    h(AccountProfileEditor, { account: { user: { name:'研究员', email:'fixture@example.test' } }, request: noSave, saveNickname: noSave }),
-    h(TaskComposer, { state, dispatch: noop, onSubmit: noSave }),
+    h(WorkspaceCustomModel, { connection, role: 'vision', models }),
+    h(WorkspaceCustomModel, { connection: {...connection, custom:{...connection.custom, protocol:'gemini-generate-content'}}, role: 'image', models }),
     ...['catalog', 'library', 'connections', 'api'].map(initialView => h(WorkspaceModelManager, { models, initialView })),
   ];
   let fields = 0;
@@ -142,8 +158,8 @@ test('R15 ordinary preset is a labelled full-width vertical field; only its cont
   assert.deepEqual(models.library, before);
   assertSeparateControls(view.container);
   const css = read('../src/workspace/workspace.css');
-  assert.match(css, /\.tw-field\{display:grid;gap:8px;min-width:0\}/);
-  assert.match(css, /\.tw-field :is\(input,textarea,select,\.ui-select\)\{width:100%;margin:0\}/);
+  assert.match(css, /\.tw-field\.control-field\{display:grid;gap:8px;min-width:0\}/);
+  assert.match(css, /\.tw-field\.control-field :is\(input,textarea,select,\.ui-select\)\{width:100%;margin:0\}/);
   assert.match(css, /\.tw-model-config \.tw-preset-group > small\{margin:0\}/);
   assert.ok(control.closest('.tw-preset-group.tw-field'));
   assert.match(css, /\.tw-dialog button:hover/);

@@ -4,6 +4,7 @@ import { createRefineRuntime } from '../../../test-support/refine-runtime.mjs'
 import { createTokenDanceCatalogCache, tokenDanceCatalogPresence, tokenDanceCatalogModelReason } from '../../../packages/api/src/tokendance-catalog.js'
 // @ts-expect-error Independent untyped Web consumer verifies the wire contract.
 import { modelMissingFromCatalog } from '../../web/src/lib/modelRegistry.js'
+import absentIds from '../../../test-support/tokendance-absent-r17.json' with { type: 'json' }
 const id = 'qwen3.8-flash', protocol = 'openai:chat-completions'
 const row = (id: string) => ({ id, supported_protocols: [protocol] })
 
@@ -20,11 +21,12 @@ for (const mode of ['empty', 'timeout', 'missing', 'all_invalid'] as const) test
     assert.ok(channel.defaults.main)
     for (const model of channel.models) {
       assert.equal(model.selectable, false)
-      assert.equal(model.catalogPresence.status, mode === 'missing' ? 'absent' : 'unverified')
-      assert.equal(modelMissingFromCatalog(registry, 'tokendance', model), mode === 'missing')
+      const absent = mode === 'missing' || absentIds.includes(model.id)
+      assert.equal(model.catalogPresence.status, absent ? 'absent' : 'unverified')
+      assert.equal(modelMissingFromCatalog(registry, 'tokendance', model), absent)
       const retired = ['mimo-v2.5', 'mimo-v2.5-pro'].includes(model.id)
-      assert.match(model.disabledReason, retired ? /官方服务已于 2026-10-21 到期/ : mode === 'missing' ? /当前目录未列出/ : /暂时无法确认/)
-      if (mode !== 'missing') {
+      assert.match(model.disabledReason, retired ? /官方服务已于 2026-10-21 到期/ : absent ? /当前目录未列出/ : /暂时无法确认/)
+      if (!absent) {
         assert.equal(model.catalogPresence.cause, mode)
         assert.doesNotMatch(model.disabledReason, /未列出|下线|不再提供/)
       }
@@ -69,4 +71,23 @@ test('R14 preview defaults to the dated public 119-row snapshot', async () => {
     assert.equal(model.selectable, true)
     assert.equal(runtime.providerCalls.length, 0)
   } finally { await runtime.close() }
+})
+
+test('R17 audited absence survives empty, timeout, stale reappearance and partial reads until fresh reappearance', async () => {
+  const audited = {status:'absent' as const, checkedAt:'2026-10-26', sourceUrl:'https://tokendance.space/gateway/v1/models'}
+  let response = async () => Response.json({data:[row(id)]})
+  const cache = createTokenDanceCatalogCache({appUrl:'offline-test',fetcher:()=>response(),retryMs:0})
+  await cache.get(true)
+  for (const fail of [async()=>Response.json({data:[]}), async()=>{throw new DOMException('', 'TimeoutError')}, async()=>Response.json({data:[row('other'),null]})]) {
+    response = fail
+    const snapshot = await cache.get(true)
+    assert.deepEqual(tokenDanceCatalogPresence(snapshot,id,audited),audited)
+    assert.match(tokenDanceCatalogModelReason(snapshot,id,protocol,audited)!,/当前目录未列出/)
+    assert.equal(tokenDanceCatalogPresence(snapshot,'never-audited').status,'unverified')
+  }
+  response = async()=>Response.json({data:[row(id)]})
+  const fresh = await cache.get(true)
+  assert.equal(tokenDanceCatalogPresence(fresh,id,audited).status,'listed')
+  assert.equal(tokenDanceCatalogModelReason(fresh,id,protocol,audited),null)
+  assert.equal(tokenDanceCatalogPresence(fresh,'other').status,'absent')
 })

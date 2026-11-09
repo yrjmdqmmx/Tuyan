@@ -1,4 +1,3 @@
-import ControlField from './ControlField.jsx';
 import { useAppLocale } from './BenchmarkLocale.jsx'
 import { useEffect, useRef, useState } from 'react';
 import { AlertTriangle, CheckCircle2, Loader2, MessageSquare, Send, X } from 'lucide-react';
@@ -71,7 +70,9 @@ export default function FeedbackDialog({ open, isSubmitting, error, success, onC
             </div>
           </div>
 
-          <ControlField className="field" label={<span>{t("反馈内容")}</span>}><textarea
+          <label className="field">
+            <span>{t("反馈内容")}</span>
+            <textarea
               value={message}
               onChange={(event) => setMessage(event.target.value)}
               maxLength={2000}
@@ -79,15 +80,17 @@ export default function FeedbackDialog({ open, isSubmitting, error, success, onC
               placeholder={t("描述遇到的问题、期望的功能或使用体验。")}
             />
             <small className="field-help">{messageLength}/2000</small>
-          </ControlField>
+          </label>
 
-          <ControlField className="field" label={<span>{t("联系方式")}</span>}><input
+          <label className="field">
+            <span>{t("联系方式")}</span>
+            <input
               value={contact}
               onChange={(event) => setContact(event.target.value)}
               maxLength={300}
               placeholder={t("可选：邮箱、微信或其他联系方式")}
             />
-          </ControlField>
+          </label>
 
           <button className="primary-button" type="submit" disabled={!canSubmit}>
             {isSubmitting ? <Loader2 className="spin" size={18} /> : <Send size={18} />}{t("提交反馈")}</button>

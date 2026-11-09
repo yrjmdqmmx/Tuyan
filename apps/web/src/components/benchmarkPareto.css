@@ -26,7 +26,7 @@
 .pareto-filter-toggle{display:flex;align-items:center;justify-content:center;gap:7px;min-height:40px;white-space:nowrap;padding:7px 12px;border:1px solid #d8dcd3;border-radius:7px;background:#fffefa}
 .pareto-filter-toggle b{font-size:11px;background:#e6edde;padding:0 5px;border-radius:4px}
 .pareto-filters{display:grid;grid-template-columns:180px minmax(200px,1fr) 210px;gap:14px 26px;padding:16px 18px;margin-bottom:14px;border:1px solid #dedfd5;border-radius:9px;background:#f5f3eb}
-.pareto-filters :is(label, .control-field),.pareto-data-settings :is(label, .control-field){display:grid;gap:5px;font-size:12px;font-weight:600}
+.pareto-filters label,.pareto-data-settings label{display:grid;gap:5px;font-size:12px;font-weight:600}
 .pareto-filters input:not([type="range"]){min-width:0;width:100%;height:37px;border:1px solid #d4d8cd;border-radius:6px;padding:7px 9px;background:#fffefa}
 .pareto-budget{padding:0;margin:0;border:0;min-width:0}
 .pareto-budget legend{padding:0;font-size:12px;font-weight:600}
@@ -55,8 +55,8 @@
 .pareto-chart-controls>button:hover,.pareto-chart-settings>summary:hover{background:#f0f3eb}
 .pareto-chart-controls output{font-size:11px;min-width:25px;text-align:center;font-variant-numeric:tabular-nums}
 .pareto-chart-settings{position:relative}
-.pareto-chart-settings>:is(label, .control-field),.pareto-chart-settings>small{position:absolute;right:0;z-index:12;width:220px;background:#fffefa;border:1px solid #d9dfd0;padding:12px;border-radius:8px;box-shadow:0 5px 18px #24352114}
-.pareto-chart-settings>:is(label, .control-field){top:39px;display:flex;align-items:center;gap:12px;font-size:12px}
+.pareto-chart-settings>label,.pareto-chart-settings>small{position:absolute;right:0;z-index:12;width:220px;background:#fffefa;border:1px solid #d9dfd0;padding:12px;border-radius:8px;box-shadow:0 5px 18px #24352114}
+.pareto-chart-settings>label{top:39px;display:flex;align-items:center;gap:12px;font-size:12px}
 .pareto-chart-settings :is(select, .ui-select){max-width:100%;min-height:34px;border:1px solid #d9dfd0;background:#fff;border-radius:5px;padding:4px 8px}
 .pareto-chart-settings>small{top:105px;font-size:11px;border-top:0;box-shadow:none}
 .pareto-canvas{height:clamp(520px,65svh,760px);position:relative;min-width:0}
@@ -216,7 +216,7 @@
 .pareto-chart.is-touch .pareto-chart-controls output{min-width:38px;font-size:14px;font-weight:600}
 .pareto-chart.is-touch .pareto-chart-controls .pareto-expand-chart{padding-inline:10px;background:#e6eee1;color:#315c3c;gap:5px}
 .pareto-chart.is-touch .pareto-expand-chart>span{display:inline;font-size:13px}
-.pareto-chart.is-touch .pareto-chart-settings>:is(label, .control-field),.pareto-chart.is-touch .pareto-chart-settings>small{left:0;right:auto}
+.pareto-chart.is-touch .pareto-chart-settings>label,.pareto-chart.is-touch .pareto-chart-settings>small{left:0;right:auto}
 .pareto-touch-hint{padding:5px 4px 3px;font-size:12px!important;color:#62725b}
 .pareto-chart.is-touch .pareto-canvas{height:clamp(480px,65svh,620px)}
 .pareto-chart.is-touch .pareto-cluster-options{max-height:210px}

@@ -1,4 +1,3 @@
-import ControlField from './ControlField.jsx';
 import { useBenchmarkLocale } from './BenchmarkLocale.jsx'
 import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ExternalLink, Image as ImageIcon, Loader2, Search, Send, X } from 'lucide-react'
@@ -321,11 +320,11 @@ export function BenchmarkPromptSubmissionForm({ authenticated, onSubmit }) {
   }
   return (
     <form className="bench-prompt-form" onSubmit={submit}>
-      <ControlField label={t("评估提示词")}><textarea required minLength={3} maxLength={4000} value={fields.prompt} onChange={update('prompt')} /></ControlField>
-      <ControlField label={t("想测试的模型能力")}><textarea required minLength={3} maxLength={1000} value={fields.capability} onChange={update('capability')} /></ControlField>
-      <ControlField label={t("必须出现的内容或关系")}><textarea maxLength={1000} value={fields.requiredElements} onChange={update('requiredElements')} /></ControlField>
-      <ControlField label={t("不允许出现的结果")}><textarea maxLength={1000} value={fields.forbiddenResults} onChange={update('forbiddenResults')} /></ControlField>
-      <ControlField label={t("补充说明")}><textarea maxLength={1000} value={fields.notes} onChange={update('notes')} /></ControlField>
+      <label>{t("评估提示词")}<textarea required minLength={3} maxLength={4000} value={fields.prompt} onChange={update('prompt')} /></label>
+      <label>{t("想测试的模型能力")}<textarea required minLength={3} maxLength={1000} value={fields.capability} onChange={update('capability')} /></label>
+      <label>{t("必须出现的内容或关系")}<textarea maxLength={1000} value={fields.requiredElements} onChange={update('requiredElements')} /></label>
+      <label>{t("不允许出现的结果")}<textarea maxLength={1000} value={fields.forbiddenResults} onChange={update('forbiddenResults')} /></label>
+      <label>{t("补充说明")}<textarea maxLength={1000} value={fields.notes} onChange={update('notes')} /></label>
       <p>{t("仅接受文字，不支持图片、附件或外部链接。投稿不会改变当前榜单。")}</p>
       <button type="submit" disabled={submitting}><Send size={16} />{submitting ? t("正在提交…") : t("提交候选提示词")}</button>
       {status ? <strong role="status">{t(status)}</strong> : null}{error ? <strong role="alert">{t("提交失败：")}{t(error)}</strong> : null}

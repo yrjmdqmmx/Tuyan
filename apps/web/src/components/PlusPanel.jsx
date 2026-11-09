@@ -1,4 +1,3 @@
-import ControlField from './ControlField.jsx';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {PLUS_PRESETS,PLUS_PRODUCT} from '../../../../packages/api/src/plus.mjs';
 const date=value=>value?new Date(value*1000).toLocaleString('zh-CN',{dateStyle:'medium',timeStyle:'short'}):'—';
@@ -94,11 +93,11 @@ export function PlusSimulationTasks({request,member,pending,onChange,allowStart=
   return <details className="tw-plus-simulation"><summary>积分流程演练</summary><p>模拟扣分与占位结果，不代表正式扣分标准，不调用模型。</p>
     {!allowStart&&<p role="status">新任务已暂停，原任务仍可查询和结算。</p>}
     <fieldset disabled={busy||locked||!allowStart}><legend>任务设置</legend><div className="tw-plus-fields">
-      <ControlField label={<>格式</>}><select value={spec.path} onChange={e=>change({path:e.target.value})}><option value="png">PNG</option><option value="svg">SVG</option></select></ControlField>
-      <ControlField label={<>模式</>}><select value={spec.mode} onChange={e=>change({mode:e.target.value})}>{Object.entries(PLUS_PRESETS).map(([id,p])=><option key={id} value={id}>{p.label}</option>)}</select></ControlField>
-      <ControlField label={<>候选数</>}><input type="number" min="1" max="6" value={spec.candidates} onChange={e=>change({candidates:Number(e.target.value)})}/></ControlField>
-      <ControlField label={<>评审轮数</>}><input type="number" min="1" max="5" value={spec.reviews} onChange={e=>change({reviews:Number(e.target.value)})}/></ControlField>
-      <ControlField label={<>清晰度</>}><select value={spec.imageSize} onChange={e=>change({imageSize:e.target.value})}>{['1K','2K'].map(x=><option key={x}>{x}</option>)}</select></ControlField>
+      <label>格式<select value={spec.path} onChange={e=>change({path:e.target.value})}><option value="png">PNG</option><option value="svg">SVG</option></select></label>
+      <label>模式<select value={spec.mode} onChange={e=>change({mode:e.target.value})}>{Object.entries(PLUS_PRESETS).map(([id,p])=><option key={id} value={id}>{p.label}</option>)}</select></label>
+      <label>候选数<input type="number" min="1" max="6" value={spec.candidates} onChange={e=>change({candidates:Number(e.target.value)})}/></label>
+      <label>评审轮数<input type="number" min="1" max="5" value={spec.reviews} onChange={e=>change({reviews:Number(e.target.value)})}/></label>
+      <label>清晰度<select value={spec.imageSize} onChange={e=>change({imageSize:e.target.value})}>{['1K','2K'].map(x=><option key={x}>{x}</option>)}</select></label>
     </div></fieldset>
     {!locked&&!terminal&&<button onClick={estimate} disabled={busy||!allowStart||member.status!=='active'}>查看本次预留积分</button>}
     {quote&&<div className="tw-plus-confirm"><strong>本次预留 {quote.credits} 积分（模拟）</strong><p>提交后先预留；结果或费用未知时保持预留，等待核对。</p><button className="tw-primary" disabled={busy||!allowStart} onClick={submit}>确认并开始演练</button><button disabled={busy} onClick={()=>setQuote(null)}>取消</button></div>}

@@ -1,4 +1,3 @@
-import ControlField from '../components/ControlField.jsx';
 import MenuSelect from '../components/MenuSelect.jsx';
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowUp, Plus, SlidersHorizontal, Boxes, Sparkles, Lightbulb, X, FileText, ChevronDown } from 'lucide-react';
@@ -76,7 +75,7 @@ export default function TaskComposer({ plusEnabled=false, state, dispatch, onSub
     {plusUi&&<div className="tw-plus-source"><MenuSelect aria-label="模型使用方式" value={isPlus?'plus':'personal'} disabled={busy||!!run} onChange={e=>setPlus(e.target.value==='plus'?'fast':null)}><option value="personal">我的模型</option><option value="plus">Plus 积分</option></MenuSelect></div>}
     {target ? <div className="tw-target">
       {!target.loadError && <img src={target.url} alt="修改目标缩略图" />}
-      <ControlField className="tw-target-picker" label={<span>当前修改对象</span>}><MenuSelect aria-label="当前修改对象" value={target.id} onChange={e => dispatch({ type: 'VIEW', versionId: e.target.value })}>{targets.map(v => <option key={v.id} value={v.id}>{versionLabel(v, true)}{v.loadError ? ' · 图片不可用' : ''}</option>)}</MenuSelect></ControlField>
+      <label className="tw-target-picker"><span>当前修改对象</span><MenuSelect aria-label="当前修改对象" value={target.id} onChange={e => dispatch({ type: 'VIEW', versionId: e.target.value })}>{targets.map(v => <option key={v.id} value={v.id}>{versionLabel(v, true)}{v.loadError ? ' · 图片不可用' : ''}</option>)}</MenuSelect></label>
       {target.loadError && <span role="status" className="tw-target-error">{target.loadError}</span>}
     </div> : <div className="tw-composer-intent"><span>{source ? `修改对象：${source.filename}` : run ? '正在生成，可准备下一轮要求' : '新方案'} · {PATHS[t.path]}</span></div>}
     <div className="tw-composer-topline">
@@ -92,7 +91,7 @@ export default function TaskComposer({ plusEnabled=false, state, dispatch, onSub
       {!!d.attachments.length && <div className="tw-attachments">{d.attachments.map(a => <div className="tw-attachment" key={a.id}><FileText size={17} /><span title={a.filename}>{a.filename}</span><MenuSelect aria-label={`${a.filename} 的用途`} value={a.purpose || ''} onChange={e => edit({ attachments: d.attachments.map(item => item.id === a.id ? { ...item, purpose: e.target.value } : item) })}>
         <option value="">确认用途</option><option value="research">研究材料</option><option value="reference">参考图片</option><option value="source">待修改原图</option>
       </MenuSelect>{pngEditing && a.purpose === 'reference' && <MenuSelect aria-label={`${a.filename} 的参考目的`} value={a.referencePurpose || ''} onChange={e => edit({attachments:d.attachments.map(item => item.id===a.id ? {...item,referencePurpose:e.target.value} : item)})}><option value="">确认参考目的</option><option value="content">内容</option><option value="layout">布局</option><option value="color">配色</option><option value="style">风格</option></MenuSelect>}<button type="button" className="tw-icon" aria-label={`移除 ${a.filename}`} onClick={() => edit({ attachments: d.attachments.filter(item => item.id !== a.id) })}><X size={15} /></button></div>)}</div>}
-      {(d.caption || d.avoid) && <div className="tw-supplements"><ControlField label={<>指定图注</>}><input value={d.caption} onChange={e => edit({ caption: e.target.value })} /></ControlField><ControlField label={<>避免出现</>}><input value={d.avoid} onChange={e => edit({ avoid: e.target.value })} /></ControlField></div>}
+      {(d.caption || d.avoid) && <div className="tw-supplements"><label>指定图注<input value={d.caption} onChange={e => edit({ caption: e.target.value })} /></label><label>避免出现<input value={d.avoid} onChange={e => edit({ avoid: e.target.value })} /></label></div>}
       {mobile ? <div className="tw-mobile-composer-toolbar" role="group" aria-label="绘图工具" onPointerDown={e => {
         // Keep the keyboard and toolbar still until the button's click fires.
         if (e.target.closest('button') && document.activeElement === textRef.current) e.preventDefault();

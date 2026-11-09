@@ -1,4 +1,3 @@
-import ControlField from './components/ControlField.jsx';
 import { useGoogle } from './hooks/useGoogle.js';
 import { useGithub } from './hooks/useGithub.js';
 import { useWechat } from './hooks/useWechat.js';
@@ -1695,19 +1694,25 @@ export default function App() {
         ) : (
         <>
           {CUSTOM_API_BASE_ENABLED ? (
-            <ControlField className="field" label={<span>{t("开发后端地址")}</span>}><input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder={t("仅本地开发构建可修改")} />
-            </ControlField>
+            <label className="field">
+              <span>{t("开发后端地址")}</span>
+              <input value={apiBase} onChange={(event) => setApiBase(event.target.value)} placeholder={t("仅本地开发构建可修改")} />
+            </label>
           ) : (
             <div className="service-boundary-note"><ShieldCheck size={16} />{t(hasCustomRoutes ? '请求经图研后端转发至你明确配置并通过安全校验的模型服务地址；密钥仅用于对应接入。' : '已锁定图研官方后端，API 密钥不会发送到用户指定的第三方地址。')}</div>
           )}
 
           <div className="settings-grid">
-            <ControlField className="field compact" data-focus-setting="candidate-count" tabIndex={-1} label={<span>{t("候选图数量")}</span>}><input type="number" aria-label={t("候选图数量")} min="1" max={WORKFLOW_LIMITS.maxCandidates} step="1" inputMode="numeric" value={numCandidates} onChange={(event) => setNumCandidates(event.target.value === '' ? '' : event.target.valueAsNumber)} />
+            <label className="field compact" data-focus-setting="candidate-count" tabIndex={-1}>
+              <span>{t("候选图数量")}</span>
+              <input type="number" aria-label={t("候选图数量")} min="1" max={WORKFLOW_LIMITS.maxCandidates} step="1" inputMode="numeric" value={numCandidates} onChange={(event) => setNumCandidates(event.target.value === '' ? '' : event.target.valueAsNumber)} />
               <small>{t("1–6 张；数量不代表并发数，更多候选会增加调用与等待。")}</small>
-            </ControlField>
-            <ControlField className="field compact" data-focus-setting="review-count" tabIndex={-1} label={<span>{t("评审轮数")}</span>}><input type="number" aria-label={t("评审轮数")} min="1" max={WORKFLOW_LIMITS.maxCriticRounds} step="1" inputMode="numeric" value={maxCriticRounds} onChange={(event) => setMaxCriticRounds(event.target.value === '' ? '' : event.target.valueAsNumber)} />
+            </label>
+            <label className="field compact" data-focus-setting="review-count" tabIndex={-1}>
+              <span>{t("评审轮数")}</span>
+              <input type="number" aria-label={t("评审轮数")} min="1" max={WORKFLOW_LIMITS.maxCriticRounds} step="1" inputMode="numeric" value={maxCriticRounds} onChange={(event) => setMaxCriticRounds(event.target.value === '' ? '' : event.target.valueAsNumber)} />
               <small>{t("最多 ")}{WORKFLOW_LIMITS.maxCriticRounds}{t(" 轮。每轮评审一次、必要时修改一次；通过即提前结束。最后一轮修改后结束，不自动追加复审。")}</small>
-            </ControlField>
+            </label>
           </div>
 
           {workflowSaveError ? <p role="status">{t('浏览器存储不可用，工作流设置仅保留在当前页面。')}</p> : null}
